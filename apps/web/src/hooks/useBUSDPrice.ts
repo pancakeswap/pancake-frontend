@@ -107,7 +107,7 @@ export function useStablecoinPrice(
 
       // if price impact is too high, don't show price
       if (hideIfPriceImpactTooHigh) {
-        const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+        const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade as unknown as SmartRouterTrade<TradeType>)
 
         if (!priceImpactWithoutFee || warningSeverity(priceImpactWithoutFee) > 2) {
           return undefined
@@ -142,8 +142,8 @@ export function useStablecoinPrice(
 export default function useBUSDPrice(currency?: Currency): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveChainId()
   const wrapped = currency?.wrapped
-  const wnative = chainId && WNATIVE[chainId]
-  const stable = chainId && (BUSD[chainId] || USDC[chainId])
+  const wnative = chainId ? WNATIVE[chainId] : undefined
+  const stable = chainId ? BUSD[chainId] || USDC[chainId] : undefined
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
