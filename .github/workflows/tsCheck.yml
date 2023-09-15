@@ -34,7 +34,7 @@ jobs:
 
       - name: Detecting files changed
         id: files
-        uses: umani/changed-files@v4.0.0
+        uses: umani/changed-files@v4.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           pattern: '^.*\.ts$'
