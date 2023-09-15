@@ -171,7 +171,7 @@ const config: (
       hideSubNav: true,
       items: [
         {
-          label: t('Event'),
+          label: t('Uranus Communities'),
           href: 'https://blog.pancakeswap.finance/?category=Birthday',
           status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
