@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.8.6
+
+### Patch Changes
+
+- e491ed2ba: Fix module not found under nodejs esm resolution
+
 ## 4.8.5
 
 ### Patch Changes
