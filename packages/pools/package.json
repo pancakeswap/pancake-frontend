@@ -21,7 +21,7 @@
     "@pancakeswap/tokens": "workspace:*",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
-    "viem": "1.10.9",
+    "viem": "^1.10.14",
     "wagmi": "^1.4.1"
   },
   "devDependencies": {
