@@ -3,6 +3,9 @@
   "version": "0.0.3",
   "private": true,
   "main": "index.ts",
+  "scripts": {
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": "./index.ts",

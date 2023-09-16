@@ -2,7 +2,8 @@
   "name": "@pancakeswap/utils",
   "version": "5.0.5",
   "scripts": {
-    "test": "vitest --run --globals"
+    "test": "vitest --run --globals",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "private": true,
   "peerDependencies": {
