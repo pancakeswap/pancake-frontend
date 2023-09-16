@@ -11,7 +11,7 @@
   ],
   "trustedDependencies": [
     "turbo",
-    "sentry-cli"
+    "@sentry/cli"
   ],
   "scripts": {
     "dev": "turbo run dev --filter=web... --concurrency=21",
