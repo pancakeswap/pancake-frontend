@@ -24,7 +24,7 @@
     "bignumber.js": "^9.0.0",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",
-    "viem": "^1.10.14"
+    "viem": "1.10.9"
   },
   "peerDependencies": {
     "next": "13.4.2",
