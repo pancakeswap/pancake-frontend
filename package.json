@@ -69,7 +69,7 @@
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
     "tsx": "^3.12.6",
-    "turbo": "1.10.13",
+    "turbo": "1.10.14",
     "typescript": "^5.1.3",
     "vitest": "^0.34.4"
   },
