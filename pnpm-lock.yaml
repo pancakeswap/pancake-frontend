@@ -1501,9 +1501,6 @@ importers:
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
-      '@pancakeswap/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
