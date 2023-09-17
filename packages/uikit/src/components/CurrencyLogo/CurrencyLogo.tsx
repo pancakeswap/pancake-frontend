@@ -1,6 +1,5 @@
 import { ChainId, Currency } from "@pancakeswap/sdk";
 import { useMemo } from "react";
-import { WrappedTokenInfo } from "@pancakeswap/token-lists";
 import { styled } from "styled-components";
 import { useHttpLocations } from "@pancakeswap/hooks";
 
@@ -19,11 +18,13 @@ export function CurrencyLogo({
   size = "24px",
   style,
 }: {
-  currency?: Currency;
+  currency?: Currency & {
+    logoURI?: string | undefined;
+  };
   size?: string;
   style?: React.CSSProperties;
 }) {
-  const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined);
+  const uriLocations = useHttpLocations(currency?.logoURI ? currency.logoURI : undefined);
 
   const srcs: string[] = useMemo(() => {
     if (currency?.isNative) return [];
@@ -31,7 +32,7 @@ export function CurrencyLogo({
     if (currency?.isToken) {
       const logoUrls = getCurrencyLogoUrls(currency);
 
-      if (currency instanceof WrappedTokenInfo) {
+      if (currency?.logoURI) {
         return [...uriLocations, ...logoUrls];
       }
       return [...logoUrls];

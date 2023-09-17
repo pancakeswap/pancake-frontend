@@ -1498,9 +1498,6 @@ importers:
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
-      '@pancakeswap/token-lists':
-        specifier: workspace:*
-        version: link:../token-lists
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
