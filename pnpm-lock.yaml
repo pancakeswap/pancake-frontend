@@ -1492,9 +1492,6 @@ importers:
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../localization
-      '@pancakeswap/pools':
-        specifier: workspace:*
-        version: link:../pools
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
