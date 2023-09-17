@@ -268,14 +268,6 @@ export function StakingModalTemplate({
     ],
   )
 
-  const prevDepositedAmount = usePrevious(depositedAmount)
-
-  useEffect(() => {
-    if (prevDepositedAmount && !depositedAmount.equalTo(prevDepositedAmount)) {
-      setStakeAmount('')
-    }
-  }, [depositedAmount, prevDepositedAmount])
-
   if (isConfirmed) {
     return (
       <Modal

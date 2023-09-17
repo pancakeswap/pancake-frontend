@@ -55,8 +55,6 @@ export default function FixedStakingOverview({
   calculator?: ReactNode
   isBoost?: boolean
 }) {
-  console.log('isBoost: ', isBoost)
-
   const { t } = useTranslation()
 
   const apr = useMemo(() => (isBoost ? boostAPR : lockAPR), [boostAPR, isBoost, lockAPR])
