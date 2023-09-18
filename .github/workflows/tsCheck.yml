@@ -8,6 +8,7 @@ jobs:
     name: Typescript Error Check
     runs-on: ubuntu-latest
     permissions: write-all
+    if: github.event.pull_request.head.repo.full_name == github.repository
 
     steps:
       - uses: actions/checkout@v3
@@ -62,7 +63,7 @@ jobs:
           echo 'Files removed: ${{steps.files.outputs.files_deleted}}'
 
       - name: Check typescript errors
-        uses: chefjackson/action-check-typescript@v1.1.0
+        uses: chefjackson/action-check-typescript@v1.1.2
         if: steps.files.outputs.changed == 'true'
         env:
           NODE_OPTIONS: '--max_old_space_size=4096'
