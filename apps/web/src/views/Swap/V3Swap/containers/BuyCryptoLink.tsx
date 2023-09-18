@@ -23,7 +23,7 @@ export const BuyCryptoLink = memo(function BuyCryptoInstruction({ currency }: Pr
   return (
     <Row alignItems="center" justifyContent="center" mb="4px">
       <Text fontSize="14px">
-        {t('Insufficent Funds?')}{' '}
+        {t('Insufficient Funds?')}{' '}
         <InternalLink href={`/buy-crypto?inputCurrency=${currency.symbol}`}>{t('Buy Crypto here.')}</InternalLink>
       </Text>
     </Row>
