@@ -14,17 +14,17 @@ export const usePollBlockNumber = () => {
   const { data: blockNumber } = useBlockNumber({
     chainId,
     onBlock: (data) => {
-      mutate(['blockNumber', chainId], data)
+      mutate(['blockNumber', chainId], Number(data))
     },
     onSuccess: (data) => {
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))?.data) {
-        mutate(['initialBlockNumber', chainId], data)
+        mutate(['initialBlockNumber', chainId], Number(data))
       }
       if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
         const fetchInitialBlockTimestamp = async () => {
           const provider = viemClients[chainId as keyof typeof viemClients]
           if (provider) {
-            const block = await provider.getBlock({ blockNumber })
+            const block = await provider.getBlock({ blockNumber: data })
             mutate(['initialBlockTimestamp', chainId], Number(block.timestamp))
           }
         }
@@ -36,7 +36,7 @@ export const usePollBlockNumber = () => {
   useSWR(
     chainId && ['blockNumberFetcher', chainId],
     async () => {
-      mutate(['blockNumber', chainId], blockNumber)
+      mutate(['blockNumber', chainId], Number(blockNumber))
     },
     {
       revalidateOnMount: false,
@@ -49,7 +49,7 @@ export const usePollBlockNumber = () => {
   useSWR(
     chainId && [FAST_INTERVAL, 'blockNumber', chainId],
     async () => {
-      return blockNumber
+      return Number(blockNumber)
     },
     {
       refreshInterval: FAST_INTERVAL,
@@ -59,7 +59,7 @@ export const usePollBlockNumber = () => {
   useSWR(
     chainId && [SLOW_INTERVAL, 'blockNumber', chainId],
     async () => {
-      return blockNumber
+      return Number(blockNumber)
     },
     {
       refreshInterval: SLOW_INTERVAL,
