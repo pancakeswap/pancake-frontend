@@ -62,13 +62,14 @@ jobs:
           echo 'Files removed: ${{steps.files.outputs.files_deleted}}'
 
       - name: Check typescript errors
-        uses: chefjackson/action-check-typescript@v1.0.6
+        uses: chefjackson/action-check-typescript@v1.1.0
         if: steps.files.outputs.changed == 'true'
         env:
           NODE_OPTIONS: '--max_old_space_size=4096'
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           use-check: true
+          list-all-errors: false
           check-fail-mode: errors_in_pr
           files-changed: ${{steps.files.outputs.files_updated}}
           files-added: ${{steps.files.outputs.files_created}}
