@@ -166,7 +166,6 @@ const config: (
     },
     {
       label: t('Birthday'),
-      extends: true,
       icon: BirthdayIcon,
       hideSubNav: true,
       items: [
@@ -177,7 +176,12 @@ const config: (
         },
         {
           label: t('Mercury Mysteries'),
-          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-1-uranus-communities-unite-with-your-local-de-fi-heroes',
+          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-2-mercury-mysteries-the-enigma-of-multichain-swaps',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('Venus Protectors'),
+          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-3-venus-protector-pancake-protectors-birthday-nft',
           status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
