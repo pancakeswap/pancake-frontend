@@ -200,8 +200,8 @@ export default function V3FormView({
     if (feeAmount) {
       setActiveQuickAction(undefined)
       onBothRangeInput({
-        leftTypedValue: null,
-        rightTypedValue: null,
+        leftTypedValue: undefined,
+        rightTypedValue: undefined,
       })
     }
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
@@ -352,9 +352,9 @@ export default function V3FormView({
   const translationData = useMemo(
     () => ({
       amountA: !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : '',
-      symbolA: !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : '',
+      symbolA: !depositADisabled && currencies[Field.CURRENCY_A]?.symbol ? currencies[Field.CURRENCY_A].symbol : '',
       amountB: !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : '',
-      symbolB: !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : '',
+      symbolB: !depositBDisabled && currencies[Field.CURRENCY_B]?.symbol ? currencies[Field.CURRENCY_B].symbol : '',
     }),
     [depositADisabled, depositBDisabled, parsedAmounts, locale, currencies],
   )
@@ -372,7 +372,7 @@ export default function V3FormView({
 
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
-      minWidth={['100%', , '420px']}
+      minWidth={['100%', null, '420px']}
       title={t('Add Liquidity')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
@@ -415,8 +415,8 @@ export default function V3FormView({
     <V3SubmitButton
       addIsUnsupported={addIsUnsupported}
       addIsWarning={addIsWarning}
-      account={account}
-      isWrongNetwork={isWrongNetwork}
+      account={account ?? undefined}
+      isWrongNetwork={Boolean(isWrongNetwork)}
       approvalA={approvalA}
       approvalB={approvalB}
       isValid={isValid}
@@ -456,12 +456,16 @@ export default function V3FormView({
           leftTypedValue: tryParsePrice(
             baseCurrency.wrapped,
             quoteCurrency.wrapped,
-            (currentPrice * zoomLevel?.initialMin ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin).toString(),
+            (
+              currentPrice * (zoomLevel?.initialMin ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin)
+            ).toString(),
           ),
           rightTypedValue: tryParsePrice(
             baseCurrency.wrapped,
             quoteCurrency.wrapped,
-            (currentPrice * zoomLevel?.initialMax ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax).toString(),
+            (
+              currentPrice * (zoomLevel?.initialMax ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax)
+            ).toString(),
           ),
         })
       }
@@ -500,7 +504,7 @@ export default function V3FormView({
                 onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
               }
               disableCurrencySelect
-              value={formattedAmounts[Field.CURRENCY_A]}
+              value={formattedAmounts[Field.CURRENCY_A] ?? '0'}
               onUserInput={onFieldAInput}
               showQuickInputButton
               showMaxButton
@@ -521,7 +525,7 @@ export default function V3FormView({
               onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
             }
             disableCurrencySelect
-            value={formattedAmounts[Field.CURRENCY_B]}
+            value={formattedAmounts[Field.CURRENCY_B] ?? '0'}
             onUserInput={onFieldBInput}
             showQuickInputButton
             showMaxButton
@@ -567,8 +571,8 @@ export default function V3FormView({
                 currencyA={baseCurrency}
                 handleRateToggle={() => {
                   if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
-                    onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert()) ?? null)
-                    onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert()) ?? null)
+                    onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert()) ?? undefined)
+                    onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert()) ?? undefined)
                     onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
                   }
 
@@ -610,7 +614,7 @@ export default function V3FormView({
                   </AutoRow>
                 )}
                 <LiquidityChartRangeInput
-                  zoomLevel={QUICK_ACTION_CONFIGS?.[feeAmount]?.[activeQuickAction]}
+                  zoomLevel={activeQuickAction ? QUICK_ACTION_CONFIGS?.[feeAmount]?.[activeQuickAction] : undefined}
                   key={baseCurrency?.wrapped?.address}
                   currencyA={baseCurrency ?? undefined}
                   currencyB={quoteCurrency ?? undefined}

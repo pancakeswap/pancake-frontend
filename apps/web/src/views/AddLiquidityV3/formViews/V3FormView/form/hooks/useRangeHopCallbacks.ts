@@ -25,7 +25,7 @@ export function useRangeHopCallbacks(
     if (!(typeof tickLower === 'number') && baseToken && quoteToken && feeAmount && pool) {
       return tickToPrice(baseToken, quoteToken, pool.tickCurrent - TICK_SPACINGS[feeAmount])
     }
-    return null
+    return undefined
   }, [baseToken, quoteToken, tickLower, feeAmount, pool])
 
   const getIncrementLower = useCallback(() => {
@@ -36,7 +36,7 @@ export function useRangeHopCallbacks(
     if (!(typeof tickLower === 'number') && baseToken && quoteToken && feeAmount && pool) {
       return tickToPrice(baseToken, quoteToken, pool.tickCurrent + TICK_SPACINGS[feeAmount])
     }
-    return null
+    return undefined
   }, [baseToken, quoteToken, tickLower, feeAmount, pool])
 
   const getDecrementUpper = useCallback(() => {
@@ -47,7 +47,7 @@ export function useRangeHopCallbacks(
     if (!(typeof tickUpper === 'number') && baseToken && quoteToken && feeAmount && pool) {
       return tickToPrice(baseToken, quoteToken, pool.tickCurrent - TICK_SPACINGS[feeAmount])
     }
-    return null
+    return undefined
   }, [baseToken, quoteToken, tickUpper, feeAmount, pool])
 
   const getIncrementUpper = useCallback(() => {
@@ -58,7 +58,7 @@ export function useRangeHopCallbacks(
     if (!(typeof tickUpper === 'number') && baseToken && quoteToken && feeAmount && pool) {
       return tickToPrice(baseToken, quoteToken, pool.tickCurrent + TICK_SPACINGS[feeAmount])
     }
-    return null
+    return undefined
   }, [baseToken, quoteToken, tickUpper, feeAmount, pool])
 
   const getSetFullRange = useCallback(() => {

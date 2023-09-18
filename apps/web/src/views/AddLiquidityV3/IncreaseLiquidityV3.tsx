@@ -284,7 +284,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
 
   const [onPresentIncreaseLiquidityModal] = useModal(
     <TransactionConfirmationModal
-      minWidth={['100%', , '420px']}
+      minWidth={['100%', null, '420px']}
       title="Increase Liquidity"
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
@@ -317,8 +317,8 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     <V3SubmitButton
       addIsUnsupported={addIsUnsupported}
       addIsWarning={addIsWarning}
-      account={account}
-      isWrongNetwork={isWrongNetwork}
+      account={account ?? undefined}
+      isWrongNetwork={Boolean(isWrongNetwork)}
       approvalA={approvalA}
       approvalB={approvalB}
       isValid={isValid}
@@ -372,7 +372,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                   onPercentInput={(percent) =>
                     onFieldAInput(maxAmounts?.[Field.CURRENCY_A]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
                   }
-                  value={formattedAmounts[Field.CURRENCY_A]}
+                  value={formattedAmounts[Field.CURRENCY_A] ?? '0'}
                   onUserInput={onFieldAInput}
                   showQuickInputButton
                   showMaxButton
@@ -391,7 +391,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                   onPercentInput={(percent) =>
                     onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
                   }
-                  value={formattedAmounts[Field.CURRENCY_B]}
+                  value={formattedAmounts[Field.CURRENCY_B] ?? '0'}
                   onUserInput={onFieldBInput}
                   showQuickInputButton
                   showMaxButton

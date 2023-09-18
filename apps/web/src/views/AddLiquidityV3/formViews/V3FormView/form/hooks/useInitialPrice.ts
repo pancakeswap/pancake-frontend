@@ -1,11 +1,14 @@
-import { Token } from '@pancakeswap/swap-sdk-core'
+import { Price, Token } from '@pancakeswap/swap-sdk-core'
 import { tryParsePrice } from 'hooks/v3/utils'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 
 export const useInitialPrice = (baseToken?: Token, quoteToken?: Token) => {
   const { query } = useRouter()
-  const [{ initialPriceLower, initialPriceUpper }, setInitial] = useState({
+  const [{ initialPriceLower, initialPriceUpper }, setInitial] = useState<{
+    initialPriceLower: Price<Token, Token> | undefined
+    initialPriceUpper: Price<Token, Token> | undefined
+  }>({
     initialPriceLower: undefined,
     initialPriceUpper: undefined,
   })

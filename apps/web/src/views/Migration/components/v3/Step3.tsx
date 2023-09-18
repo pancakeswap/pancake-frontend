@@ -64,7 +64,7 @@ export function Step3() {
   const { theme } = useTheme()
   const { chainId } = useActiveChainId()
 
-  const [token0, token1] = MOCK_TOKENS[chainId] || MOCK_TOKENS[ChainId.BSC]
+  const [token0, token1] = chainId && MOCK_TOKENS[chainId] ? MOCK_TOKENS[chainId] : MOCK_TOKENS[ChainId.BSC]
 
   const formState = useV3FormState()
 

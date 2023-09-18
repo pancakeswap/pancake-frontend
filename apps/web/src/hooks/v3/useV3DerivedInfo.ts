@@ -59,7 +59,8 @@ export default function useV3DerivedInfo(
 
   const { address: account } = useAccount()
 
-  const { independentField, typedValue, leftRangeTypedValue, rightRangeTypedValue, startPriceTypedValue } = formState
+  const { independentField, typedValue, leftRangeTypedValue, rightRangeTypedValue, startPriceTypedValue } =
+    formState || {}
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
@@ -220,7 +221,7 @@ export default function useV3DerivedInfo(
 
   // amounts
   const independentAmount: CurrencyAmount<Currency> | undefined = useMemo(
-    () => tryParseCurrencyAmount(typedValue, currencies[independentField]),
+    () => tryParseCurrencyAmount(typedValue, independentField ? currencies[independentField] : undefined),
     [typedValue, currencies, independentField],
   )
 
@@ -374,14 +375,14 @@ export default function useV3DerivedInfo(
     currencyAAmount &&
     (currencyAAmount?.equalTo(0) || currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount))
   ) {
-    errorMessage = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_A]?.symbol })
+    errorMessage = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_A]?.symbol ?? '' })
   }
 
   if (
     currencyBAmount &&
     (currencyBAmount?.equalTo(0) || currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount))
   ) {
-    errorMessage = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_B]?.symbol })
+    errorMessage = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_B]?.symbol ?? '' })
   }
 
   const invalidPool = poolState === PoolState.INVALID

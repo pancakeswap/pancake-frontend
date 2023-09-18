@@ -18,18 +18,18 @@ type FullRange = true
 
 export interface MintState {
   readonly independentField: Field
-  readonly typedValue: string
+  readonly typedValue: string | undefined
   readonly startPriceTypedValue: string // for the case when there's no liquidity
-  readonly leftRangeTypedValue: Price<Token, Token> | FullRange
-  readonly rightRangeTypedValue: Price<Token, Token> | FullRange
+  readonly leftRangeTypedValue: Price<Token, Token> | FullRange | undefined
+  readonly rightRangeTypedValue: Price<Token, Token> | FullRange | undefined
 }
 
 export const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
   startPriceTypedValue: '',
-  leftRangeTypedValue: null,
-  rightRangeTypedValue: null,
+  leftRangeTypedValue: undefined,
+  rightRangeTypedValue: undefined,
 }
 
 const reducer = createReducer<MintState>(initialState, (builder) =>

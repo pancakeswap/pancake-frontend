@@ -21,14 +21,14 @@ export default function RangeSelector({
 }: {
   priceLower?: Price<Token, Token>
   priceUpper?: Price<Token, Token>
-  getDecrementLower: () => Price<Token, Token>
-  getIncrementLower: () => Price<Token, Token>
-  getDecrementUpper: () => Price<Token, Token>
-  getIncrementUpper: () => Price<Token, Token>
-  onLeftRangeInput: (typedValue: Price<Token, Token>) => void
-  onRightRangeInput: (typedValue: Price<Token, Token>) => void
-  currencyA?: Currency | null
-  currencyB?: Currency | null
+  getDecrementLower: () => Price<Token, Token> | undefined
+  getIncrementLower: () => Price<Token, Token> | undefined
+  getDecrementUpper: () => Price<Token, Token> | undefined
+  getIncrementUpper: () => Price<Token, Token> | undefined
+  onLeftRangeInput: (typedValue: Price<Token, Token> | undefined) => void
+  onRightRangeInput: (typedValue: Price<Token, Token> | undefined) => void
+  currencyA?: Currency | undefined
+  currencyB?: Currency | undefined
   feeAmount?: number
   ticksAtLimit: { [bound in Bound]?: boolean | undefined }
 }) {

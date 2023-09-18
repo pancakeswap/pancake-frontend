@@ -12,7 +12,7 @@ import { Field } from '../formViews/V3FormView/form/actions'
 interface V3SubmitButtonProps {
   addIsUnsupported: boolean
   addIsWarning: boolean
-  account: string
+  account?: string
   isWrongNetwork: boolean
   approvalA: ApprovalState
   approvalB: ApprovalState
@@ -78,7 +78,7 @@ export function V3SubmitButton({
     [approvalA, approvalB, isValid],
   )
 
-  let buttons = null
+  let buttons: ReactNode = null
   if (addIsUnsupported || addIsWarning) {
     buttons = (
       <Button disabled mb="4px">
