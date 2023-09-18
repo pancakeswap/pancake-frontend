@@ -1,17 +1,7 @@
 import { useMemo, useState, memo, useCallback } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import {
-  Button,
-  Text,
-  useModal,
-  Flex,
-  Box,
-  CopyButton,
-  Loading,
-  Skeleton,
-  Swap as SwapUI,
-  ArrowDropDownIcon,
-} from '@pancakeswap/uikit'
+import { Button, Text, useModal, Flex, Box, CopyButton, Loading, Skeleton, ArrowDropDownIcon } from '@pancakeswap/uikit'
+import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'

@@ -12,11 +12,11 @@ import {
   Tag,
   Grid,
   BscScanIcon,
-  ListLogo,
   useTooltip,
   HelpIcon,
   AutoColumn,
 } from '@pancakeswap/uikit'
+import { ListLogo } from '@pancakeswap/widgets-internal'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import useSWRImmutable from 'swr/immutable'

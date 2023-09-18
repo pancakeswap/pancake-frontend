@@ -2,7 +2,8 @@ import { CSSProperties, ReactElement } from 'react'
 import { BaseCurrency } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
-import { AutoColumn, AutoRow, Button, Flex, RowFixed, Text, useMatchBreakpoints, ListLogo } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Button, Flex, RowFixed, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ListLogo } from './ListLogo'
 
 const TokenSection = styled.div<{ dim?: boolean }>`
   padding: 4px 20px;

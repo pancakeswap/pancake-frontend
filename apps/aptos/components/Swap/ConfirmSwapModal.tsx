@@ -1,12 +1,8 @@
 import { useCallback, memo, useMemo } from 'react'
 import { Trade, Currency, TradeType, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
-import {
-  InjectedModalProps,
-  LinkExternal,
-  Text,
-  TransactionErrorContent,
-  ConfirmationPendingContent,
-} from '@pancakeswap/uikit'
+import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
+import { TransactionErrorContent, ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
+
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { Field } from 'state/swap'
 import { useTranslation } from '@pancakeswap/localization'

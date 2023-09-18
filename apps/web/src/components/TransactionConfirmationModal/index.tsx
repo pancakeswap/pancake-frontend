@@ -7,7 +7,6 @@ import {
   Text,
   ArrowUpIcon,
   Link,
-  ConfirmationPendingContent,
   Modal,
   InjectedModalProps,
   ModalProps,
@@ -15,6 +14,7 @@ import {
   AutoColumn,
   ColumnCenter,
 } from '@pancakeswap/uikit'
+import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'

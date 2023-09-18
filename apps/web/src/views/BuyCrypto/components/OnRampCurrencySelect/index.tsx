@@ -8,9 +8,9 @@ import {
   Flex,
   BoxProps,
   Skeleton,
-  NumericalInput,
   CurrencyLogo,
 } from '@pancakeswap/uikit'
+import { NumericalInput } from '@pancakeswap/widgets-internal'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { Currency } from '@pancakeswap/sdk'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'

@@ -9,9 +9,9 @@ import {
   Tag,
   useMatchBreakpoints,
   BscScanIcon,
-  TransactionErrorContent,
-  ConfirmationPendingContent,
 } from '@pancakeswap/uikit'
+import { TransactionErrorContent, ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { memo, useCallback, useState } from 'react'

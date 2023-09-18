@@ -12,8 +12,8 @@ import {
   Button,
   useMatchBreakpoints,
   MODAL_SWIPE_TO_CLOSE_VELOCITY,
-  ImportList,
 } from '@pancakeswap/uikit'
+import { ImportList } from '@pancakeswap/widgets-internal'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import { useListState } from 'state/lists/lists'

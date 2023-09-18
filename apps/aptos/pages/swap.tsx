@@ -15,7 +15,6 @@ import {
   AtomBox,
   AutoColumn,
   Card,
-  confirmPriceImpactWithoutFee,
   Flex,
   HistoryIcon,
   IconButton,
@@ -23,10 +22,11 @@ import {
   Modal,
   ModalV2,
   Skeleton,
-  Swap as SwapUI,
   Text,
   useModal,
 } from '@pancakeswap/uikit'
+import { Swap as SwapUI, confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
+
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
