@@ -7,8 +7,7 @@ jobs:
   ts-check:
     name: Typescript Error Check
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
 
     steps:
       - uses: actions/checkout@v3
