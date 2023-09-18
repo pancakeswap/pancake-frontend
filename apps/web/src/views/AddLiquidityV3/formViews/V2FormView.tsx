@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useIsExpertMode } from '@pancakeswap/utils/user'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallback, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo } from 'react'
 import { Percent, Pair } from '@pancakeswap/sdk'
 
 import { CommitButton } from 'components/CommitButton'
@@ -59,7 +59,7 @@ export default function V2FormView({
   isOneWeiAttack,
   pair,
 }: LP2ChildrenProps) {
-  const mockFn = useCallback(() => null, [])
+  const mockFn = useCallback(() => undefined, [])
 
   const { chainId } = useActiveChainId()
   const { account, isWrongNetwork } = useActiveWeb3React()
@@ -70,7 +70,7 @@ export default function V2FormView({
     [pair, chainId],
   )
 
-  let buttons = null
+  let buttons: ReactNode = null
   if (addIsUnsupported || addIsWarning) {
     buttons = (
       <Button disabled mb="4px">
@@ -153,7 +153,7 @@ export default function V2FormView({
               }
             }}
             disableCurrencySelect
-            value={formattedAmounts[Field.CURRENCY_A]}
+            value={formattedAmounts[Field.CURRENCY_A] ?? '0'}
             onUserInput={onFieldAInput}
             showQuickInputButton
             showMaxButton
@@ -176,7 +176,7 @@ export default function V2FormView({
           }}
           maxAmount={maxAmounts[Field.CURRENCY_B]}
           disableCurrencySelect
-          value={formattedAmounts[Field.CURRENCY_B]}
+          value={formattedAmounts[Field.CURRENCY_B] ?? '0'}
           onUserInput={onFieldBInput}
           showQuickInputButton
           showMaxButton

@@ -8,9 +8,9 @@ import { tryParsePrice } from 'hooks/v3/utils'
 
 interface StepCounterProps {
   value: string
-  onUserInput: (value: Price<Token, Token>) => void
-  decrement: () => Price<Token, Token>
-  increment: () => Price<Token, Token>
+  onUserInput: (value: Price<Token, Token> | undefined) => void
+  decrement: () => Price<Token, Token> | undefined
+  increment: () => Price<Token, Token> | undefined
   decrementDisabled?: boolean
   incrementDisabled?: boolean
   feeAmount?: FeeAmount
