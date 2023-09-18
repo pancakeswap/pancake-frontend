@@ -5,6 +5,7 @@ export * from "./css/vars.css";
 export * from "./css/responsiveStyle";
 export * from "./css/breakpoints";
 export * from "./css/atoms";
+export * as SwapCSS from "./css/swap.css";
 
 // Components
 export * from "./components";
