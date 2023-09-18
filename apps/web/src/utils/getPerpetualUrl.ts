@@ -23,7 +23,7 @@ const supportV2Chains: ChainId[] = [ChainId.BSC, ChainId.ARBITRUM_ONE]
 
 export const getPerpetualUrl = ({ chainId, languageCode, isDark }: GetPerpetualUrlProps) => {
   if (!chainId || !languageCode) {
-    return ''
+    return 'https://perp.pancakeswap.finance/en/futures/v2/BTCUSD'
   }
 
   const perpChain = mapPerpChain(chainId)
