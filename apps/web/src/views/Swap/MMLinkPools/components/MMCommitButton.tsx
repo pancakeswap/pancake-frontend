@@ -67,6 +67,7 @@ export function MMSwapCommitButton({
   onUserInput,
   isPendingError,
   currentAllowance,
+  isExpertMode,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   // the callback to execute the swap
@@ -150,6 +151,7 @@ export function MMSwapCommitButton({
       trade={rfqTrade.trade} // show the info while refresh RFQ
       txHash={txHash}
       approval={approval}
+      isExpertMode={isExpertMode}
       attemptingTxn={attemptingTxn}
       originalTrade={tradeToConfirm}
       isPendingError={isPendingError}

@@ -42,6 +42,7 @@ interface ConfirmSwapModalProps {
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string
+  isExpertMode: boolean
   approval: ApprovalState
   swapErrorMessage?: string
   showApproveFlow: boolean
@@ -216,6 +217,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   txHash,
   approval,
   isRFQReady,
+  isExpertMode,
   attemptingTxn,
   originalTrade,
   isPendingError,
@@ -235,6 +237,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippage()
   const { recipient } = useSwapState()
+  const [isStartExpertMode, setIsStartExpertMode] = useState(false)
 
   const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
 
@@ -249,6 +252,14 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     revokeCallback,
     onConfirm,
   })
+
+  useEffect(() => {
+    if (isExpertMode && !isStartExpertMode) {
+      setIsStartExpertMode(true)
+      console.log('run once')
+      // startSwapFlow()
+    }
+  }, [])
 
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {

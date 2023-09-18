@@ -188,6 +188,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       trade={trade}
       txHash={txHash}
       approval={approvalState}
+      isExpertMode={isExpertMode}
       attemptingTxn={attemptingTxn}
       originalTrade={tradeToConfirm}
       isPendingError={isPendingError}
