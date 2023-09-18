@@ -173,6 +173,11 @@ const config: (
         {
           label: t('Uranus Communities'),
           href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-1-uranus-communities-unite-with-your-local-de-fi-heroes',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('Mercury Mysteries'),
+          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-1-uranus-communities-unite-with-your-local-de-fi-heroes',
           status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
