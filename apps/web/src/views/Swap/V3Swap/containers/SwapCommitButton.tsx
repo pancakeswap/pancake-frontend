@@ -40,6 +40,8 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 
 import { useAccount } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
 import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
@@ -57,6 +59,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   tradeError,
   tradeLoading,
 }: SwapCommitButtonPropsType) {
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const [isExpertMode] = useExpertMode()
@@ -183,6 +186,19 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     />,
   )
 
+  const { confirmModalState, pendingModalSteps, startSwapFlow } = useConfirmModalState({
+    txHash,
+    chainId,
+    approval: approvalState,
+    approvalToken: trade?.inputAmount?.currency,
+    isPendingError,
+    isExpertMode,
+    currentAllowance,
+    approveCallback,
+    revokeCallback,
+    onConfirm: handleSwap,
+  })
+
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
       trade={trade}
@@ -190,14 +206,13 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       approval={approvalState}
       attemptingTxn={attemptingTxn}
       originalTrade={tradeToConfirm}
-      isPendingError={isPendingError}
       showApproveFlow={showApproveFlow}
       currencyBalances={currencyBalances}
+      confirmModalState={confirmModalState}
+      pendingModalSteps={pendingModalSteps}
+      startSwapFlow={startSwapFlow}
       swapErrorMessage={swapErrorMessage}
       currentAllowance={currentAllowance}
-      onConfirm={handleSwap}
-      approveCallback={approveCallback}
-      revokeCallback={revokeCallback}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
@@ -215,9 +230,12 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       swapErrorMessage: undefined,
       txHash: undefined,
     })
+    if (isExpertMode) {
+      startSwapFlow()
+    }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [trade, onPresentConfirmModal])
+  }, [trade, onPresentConfirmModal, isExpertMode, startSwapFlow])
 
   // useEffect
   useEffect(() => {
@@ -310,7 +328,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         width="100%"
         variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
         disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
-        onClick={() => onSwapHandler()}
+        onClick={onSwapHandler}
       >
         {swapInputError ||
           (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||

@@ -13,6 +13,9 @@ import { WrapType } from 'hooks/useWrapCallback'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
 import { MMRfqTrade } from '../types'
@@ -68,6 +71,10 @@ export function MMSwapCommitButton({
   isPendingError,
   currentAllowance,
 }: SwapCommitButtonPropsType) {
+  const { chainId } = useActiveChainId()
+
+  const [isExpertMode] = useExpertMode()
+
   const { t } = useTranslation()
   // the callback to execute the swap
 
@@ -144,6 +151,19 @@ export function MMSwapCommitButton({
     />,
   )
 
+  const { confirmModalState, pendingModalSteps, startSwapFlow } = useConfirmModalState({
+    txHash,
+    chainId,
+    approval,
+    approvalToken: rfqTrade?.trade?.inputAmount.currency,
+    isPendingError,
+    isExpertMode,
+    currentAllowance,
+    approveCallback,
+    revokeCallback,
+    onConfirm: handleSwap,
+  })
+
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
       isMM
@@ -151,16 +171,15 @@ export function MMSwapCommitButton({
       txHash={txHash}
       approval={approval}
       attemptingTxn={attemptingTxn}
+      confirmModalState={confirmModalState}
+      pendingModalSteps={pendingModalSteps}
+      startSwapFlow={startSwapFlow}
       originalTrade={tradeToConfirm}
-      isPendingError={isPendingError}
       showApproveFlow={showApproveFlow}
       currencyBalances={currencyBalances}
       isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
       currentAllowance={currentAllowance}
       swapErrorMessage={swapErrorMessage || (!rfqTrade.trade && t('Unable request a quote'))}
-      onConfirm={handleSwap}
-      approveCallback={approveCallback}
-      revokeCallback={revokeCallback}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
@@ -178,9 +197,12 @@ export function MMSwapCommitButton({
       swapErrorMessage: undefined,
       txHash: undefined,
     })
+    if (isExpertMode) {
+      startSwapFlow()
+    }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [rfqTrade, onPresentConfirmModal])
+  }, [rfqTrade, onPresentConfirmModal, isExpertMode, startSwapFlow])
 
   // useEffect
   useEffect(() => {
@@ -222,7 +244,7 @@ export function MMSwapCommitButton({
       id="swap-button"
       variant="primary"
       disabled={!rfqTrade.rfq || !isValid || !!swapCallbackError}
-      onClick={() => onSwapHandler()}
+      onClick={onSwapHandler}
     >
       {parseMMError(swapInputError) || t('Swap')}
     </CommitButton>
