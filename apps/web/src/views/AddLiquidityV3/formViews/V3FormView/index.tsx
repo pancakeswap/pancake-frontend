@@ -61,7 +61,7 @@ import LockedDeposit from './components/LockedDeposit'
 import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
 import { useV3FormAddLiquidityCallback, useV3FormState } from './form/reducer'
-import { useInitialPrice } from './form/hooks/useInitialPrice'
+import { useInitialRange } from './form/hooks/useInitialRange'
 
 const StyledInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.colors.input};
@@ -341,7 +341,7 @@ export default function V3FormView({
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
 
-  const { initialPriceLower, initialPriceUpper } = useInitialPrice(baseCurrency?.wrapped, quoteCurrency?.wrapped)
+  useInitialRange(baseCurrency?.wrapped, quoteCurrency?.wrapped)
 
   const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper, getSetFullRange } =
     useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
@@ -621,8 +621,8 @@ export default function V3FormView({
                   feeAmount={feeAmount}
                   ticksAtLimit={ticksAtLimit}
                   price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
-                  priceLower={priceLower ?? initialPriceLower}
-                  priceUpper={priceUpper ?? initialPriceUpper}
+                  priceLower={priceLower}
+                  priceUpper={priceUpper}
                   onBothRangeInput={onBothRangePriceInput}
                   onLeftRangeInput={onLeftRangePriceInput}
                   onRightRangeInput={onRightRangePriceInput}
@@ -637,8 +637,8 @@ export default function V3FormView({
 
           <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)} gap="16px">
             <RangeSelector
-              priceLower={priceLower ?? initialPriceLower}
-              priceUpper={priceUpper ?? initialPriceUpper}
+              priceLower={priceLower}
+              priceUpper={priceUpper}
               getDecrementLower={getDecrementLower}
               getIncrementLower={getIncrementLower}
               getDecrementUpper={getDecrementUpper}
