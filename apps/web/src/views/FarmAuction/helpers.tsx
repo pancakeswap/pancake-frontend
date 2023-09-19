@@ -1,13 +1,14 @@
 import { toDate, add, differenceInHours } from 'date-fns'
 import { BSC_BLOCK_TIME, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { getBidderInfo } from 'config/constants/farmAuctions'
-import { bscRpcProvider } from 'utils/providers'
 import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'utils/types'
 import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import orderBy from 'lodash/orderBy'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 import { ContractFunctionResult } from 'viem'
+import { publicClient } from 'utils/wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
@@ -84,7 +85,7 @@ const getDateForBlock = async (currentBlock: number, block: number) => {
   // if block already happened we can get timestamp via .getBlock(block)
   if (currentBlock > block) {
     try {
-      const { timestamp } = await bscRpcProvider.getBlock({ blockNumber: BigInt(block) })
+      const { timestamp } = await publicClient({ chainId: ChainId.BSC }).getBlock({ blockNumber: BigInt(block) })
       return toDate(Number(timestamp) * 1000)
     } finally {
       // Use logic below
@@ -111,7 +112,7 @@ export const processAuctionData = async (
   }
 
   // Get all required data and blocks
-  const currentBlock = currentBlockNumber || Number(await bscRpcProvider.getBlockNumber())
+  const currentBlock = currentBlockNumber || Number(await publicClient({ chainId: ChainId.BSC }).getBlockNumber())
   const [startDate, endDate] = await Promise.all([
     getDateForBlock(currentBlock, processedAuctionData.startBlock),
     getDateForBlock(currentBlock, processedAuctionData.endBlock),

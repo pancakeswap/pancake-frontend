@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { request, gql } from 'graphql-request'
-import { bscRpcProvider } from 'utils/providers'
 import { GRAPH_HEALTH } from 'config/constants/endpoints'
+import { publicClient } from 'utils/wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 import { useSlowRefreshEffect } from './useRefreshEffect'
 
 export enum SubgraphStatus {
@@ -55,7 +56,9 @@ const useSubgraphHealth = (subgraphName?: string) => {
             }
           `,
             ),
-            currentBlockNumber ? Promise.resolve(currentBlockNumber) : Number(bscRpcProvider.getBlockNumber()),
+            currentBlockNumber
+              ? Promise.resolve(currentBlockNumber)
+              : Number(publicClient({ chainId: ChainId.BSC }).getBlockNumber()),
           ])
 
           const isHealthy = indexingStatusForCurrentVersion?.health === 'healthy'
