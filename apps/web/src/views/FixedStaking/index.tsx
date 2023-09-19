@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, FlexLayout, Heading, PageHeader, Pool, ToggleView, ViewMode } from '@pancakeswap/uikit'
+import { Flex, FlexLayout, Heading, PageHeader, ToggleView, ViewMode } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import Page from 'components/Layout/Page'
 import { useMemo, useState } from 'react'
 import min from 'lodash/min'

@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Flex, Heading, Tag, Box, Button, StarCircle, Pool } from '@pancakeswap/uikit'
+import { CardBody, Flex, Heading, Tag, Box, Button, StarCircle } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import BigNumber from 'bignumber.js'
 import first from 'lodash/first'
