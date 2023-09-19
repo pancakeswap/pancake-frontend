@@ -8,7 +8,7 @@ import { Ifo, IfoStatus } from 'config/constants/types'
 import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 

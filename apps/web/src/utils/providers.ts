@@ -1,14 +1,14 @@
 import { createPublicClient, http } from 'viem'
-import { bsc, polygon } from 'viem/chains'
-
-export const BSC_PROD_NODE = process.env.NEXT_PUBLIC_NODE_PRODUCTION || 'https://bsc.nodereal.io'
-
-export const bscRpcProvider = createPublicClient({
-  transport: http(BSC_PROD_NODE),
-  chain: bsc,
-})
+import { polygon } from 'viem/chains'
 
 export const polygonRpcProvider = createPublicClient({
   transport: http(),
   chain: polygon,
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+  pollingInterval: 6_000,
 })

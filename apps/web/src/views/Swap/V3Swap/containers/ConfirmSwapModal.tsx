@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   ApproveModalContent,
   Box,

@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ComputedFarmConfigV3, FarmV3SupportedChainId } from '@pancakeswap/farms/src'
 import { farmsV3 as ethFarm } from '@pancakeswap/farms/constants/1'
 import { farmsV3 as farm5 } from '@pancakeswap/farms/constants/5'

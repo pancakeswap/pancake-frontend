@@ -6,7 +6,7 @@ import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
 
 const StyledScanLink = styled(ScanLink)`

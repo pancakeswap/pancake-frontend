@@ -2,7 +2,7 @@ import { formatUnits } from 'viem'
 import { getPoolsConfig, getPoolContractBySousId, SUPPORTED_CHAIN_IDS, isLegacyPool } from '@pancakeswap/pools'
 import { describe, it } from 'vitest'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 describe.concurrent(
   'Config pools',

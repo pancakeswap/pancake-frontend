@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { getGasLimitOnChain, getDefaultGasLimit } from '@pancakeswap/multicall'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'

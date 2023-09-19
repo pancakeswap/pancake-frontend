@@ -8,7 +8,7 @@ import {
 import { infoClientETH, infoClient, infoStableSwapClient, v2Clients } from 'utils/graphql'
 import { GraphQLClient } from 'graphql-request'
 
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   ETH_TOKEN_BLACKLIST,
   PCS_ETH_START,

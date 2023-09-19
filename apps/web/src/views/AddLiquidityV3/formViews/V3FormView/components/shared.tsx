@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { styled } from 'styled-components'
 import type { ReactNode } from 'react'

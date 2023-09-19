@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 
 export const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['USDT']

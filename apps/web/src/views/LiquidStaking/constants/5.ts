@@ -1,4 +1,5 @@
-import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
+import { WETH9, NATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { LiquidStakingList, FunctionName } from 'views/LiquidStaking/constants/types'
 import { WBETH } from 'config/constants/liquidStaking'

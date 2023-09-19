@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { fetchCProxyAddress } from 'state/farms/fetchFarmUser'
 import { farmFetcher } from 'state/farms'
 import { Address } from 'wagmi'

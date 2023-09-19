@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, TradeType } from '@pancakeswap/sdk'
+import { TradeType } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import truncateHash from '@pancakeswap/utils/truncateHash'

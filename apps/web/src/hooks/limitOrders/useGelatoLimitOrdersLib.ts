@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ChainId as ChainIdType, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
 import { GELATO_HANDLER } from 'config/constants/exchange'
 import useSWRImmutable from 'swr/immutable'
