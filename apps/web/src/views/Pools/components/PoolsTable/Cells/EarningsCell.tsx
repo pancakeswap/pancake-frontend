@@ -29,7 +29,10 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
+  const earningTokenDollarBalance = getBalanceNumber(
+    earnings.multipliedBy(earningTokenPrice ?? 0),
+    earningToken.decimals,
+  )
   const hasEarnings = account && earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
@@ -56,13 +59,11 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
   return (
     <StyledCell role="cell">
       <Pool.CellContent>
-        <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {labelText}
-        </Text>
-        {!pool.userDataLoaded && account ? (
-          <Skeleton width="80px" height="16px" />
-        ) : (
+        {pool?.totalStaked?.gte(0) ? (
           <>
+            <Text fontSize="12px" color="textSubtle" textAlign="left">
+              {labelText}
+            </Text>
             <Flex>
               <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
                 <Balance
@@ -75,7 +76,7 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
                 />
                 {hasEarnings ? (
                   <>
-                    {earningTokenPrice > 0 && (
+                    {new BigNumber(earningTokenPrice ?? 0).gt(0) && (
                       <Balance
                         display="inline"
                         fontSize="12px"
@@ -94,6 +95,11 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
                 )}
               </Box>
             </Flex>
+          </>
+        ) : (
+          <>
+            <Skeleton width="30px" height="12px" mb="4px" />
+            <Skeleton width="80px" height="12px" />
           </>
         )}
       </Pool.CellContent>
