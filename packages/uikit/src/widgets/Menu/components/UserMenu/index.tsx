@@ -36,7 +36,7 @@ export const LabelText = styled.div`
   }
 `;
 
-const Menu = styled.div<{ isOpen: boolean }>`
+const Menu = styled.div<{ $isOpen: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: 16px;
@@ -47,8 +47,8 @@ const Menu = styled.div<{ isOpen: boolean }>`
   visibility: visible;
   z-index: 1001;
 
-  ${({ isOpen }) =>
-    !isOpen &&
+  ${({ $isOpen }) =>
+    !$isOpen &&
     `
     pointer-events: none;
     visibility: hidden;
@@ -129,7 +129,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         {!disabled && <ChevronDownIcon color="text" width="24px" />}
       </StyledUserMenu>
       {!disabled && (
-        <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} isOpen={isOpen}>
+        <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} $isOpen={isOpen}>
           <Box onClick={() => setIsOpen(false)}>{children?.({ isOpen })}</Box>
         </Menu>
       )}

@@ -20,8 +20,8 @@ const StyledCell = styled(Pool.BaseCell)`
   }
 `
 
-const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
-  transform: ${({ toggled }) => (toggled ? 'rotate(180deg)' : 'rotate(0)')};
+const ArrowIcon = styled(ChevronDownIcon)<{ $toggled: boolean }>`
+  transform: ${({ $toggled }) => ($toggled ? 'rotate(180deg)' : 'rotate(0)')};
   height: 24px;
 `
 
@@ -34,7 +34,7 @@ const ExpandActionCell: React.FC<React.PropsWithChildren<ExpandActionCellProps>>
           {expanded ? t('Hide') : t('Details')}
         </Text>
       )}
-      <ArrowIcon color="primary" toggled={expanded} />
+      <ArrowIcon color="primary" $toggled={expanded} />
     </StyledCell>
   )
 }

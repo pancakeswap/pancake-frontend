@@ -49,7 +49,6 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
   useIsomorphicLayoutEffect(() => {
     layerController();
   }, [layerController, items]);
-
   return (
     <AtomBox display={{ xs: "none", sm: "block" }} asChild>
       <SubMenuItemWrapper $isMobileOnly={isMobileOnly} {...props}>

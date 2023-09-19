@@ -9,7 +9,9 @@ export const StyledIconContainer = styled.div.withConfig({ shouldForwardProp })<
     activeBackgroundColor ? theme.colors[activeBackgroundColor] : "transparent"};
 `;
 
-export const StyledAnimatedIconComponent = styled.div<{
+export const StyledAnimatedIconComponent = styled("div").withConfig({
+  shouldForwardProp: (props) => !["isActive", "hasFillIcon"].includes(props),
+})<{
   isActive: boolean;
   height?: string;
   width?: string;
