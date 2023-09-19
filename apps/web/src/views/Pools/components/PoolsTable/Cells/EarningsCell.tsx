@@ -56,13 +56,11 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
   return (
     <StyledCell role="cell">
       <Pool.CellContent>
-        <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {labelText}
-        </Text>
-        {!pool.userDataLoaded && account ? (
-          <Skeleton width="80px" height="16px" />
-        ) : (
+        {pool?.totalStaked?.gte(0) ? (
           <>
+            <Text fontSize="12px" color="textSubtle" textAlign="left">
+              {labelText}
+            </Text>
             <Flex>
               <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
                 <Balance
@@ -94,6 +92,11 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
                 )}
               </Box>
             </Flex>
+          </>
+        ) : (
+          <>
+            <Skeleton width="40px" height="16px" />
+            <Skeleton width="80px" height="16px" />
           </>
         )}
       </Pool.CellContent>
