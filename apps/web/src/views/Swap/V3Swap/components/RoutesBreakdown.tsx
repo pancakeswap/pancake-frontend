@@ -3,22 +3,27 @@ import { Route } from '@pancakeswap/smart-router/evm'
 import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2 } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { memo } from 'react'
+import { useDebounce } from '@pancakeswap/hooks'
 
 import { RowBetween } from 'components/Layout/Row'
 import SwapRoute from 'views/Swap/components/SwapRoute'
 import { RouteDisplayModal } from './RouteDisplayModal'
+import { useWallchainStatus } from '../hooks/useWallchain'
 
 interface Props {
   routes?: Route[]
+  isMM?: boolean
 }
 
 const RouteInfoContainer = styled(RowBetween)`
   padding: 4px 24px 0;
 `
 
-export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [] }: Props) {
+export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], isMM }: Props) {
+  const [wallchainStatus] = useWallchainStatus()
   const { t } = useTranslation()
   const routeDisplayModal = useModalV2()
+  const deferWallchainStatus = useDebounce(wallchainStatus, 500)
 
   if (!routes.length) {
     return null
@@ -31,12 +36,18 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [] }: Pr
       <RouteInfoContainer>
         <span style={{ display: 'flex', alignItems: 'center' }}>
           <Text fontSize="14px" color="textSubtle">
-            {t('Route')}
+            {isMM ? t('MM Route') : deferWallchainStatus === 'found' ? t('Bonus Route') : t('Route')}
           </Text>
           <QuestionHelper
-            text={t(
-              'Route is automatically calculated based on your routing preference to achieve the best price for your trade.',
-            )}
+            text={
+              deferWallchainStatus === 'found'
+                ? t(
+                    'A Bonus route provided by API is automatically selected for your trade to achieve the best price for your trade.',
+                  )
+                : t(
+                    'Route is automatically calculated based on your routing preference to achieve the best price for your trade.',
+                  )
+            }
             ml="4px"
             placement="top-start"
           />

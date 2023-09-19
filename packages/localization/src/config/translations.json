@@ -2698,4 +2698,9 @@
   "Mercury Mysteries": "Mercury Mysteries",
   "Venus Protectors": "Venus Protectors",
   "Uranus Unity Rain": "Uranus Unity Rain"
+  "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.",
+  "MM Route": "MM Route",
+  "Bonus Route": "Bonus Route",
+  "The Market Maker (MM) route is automatically selected for your trade to achieve the best price for your trade.": "The Market Maker (MM) route is automatically selected for your trade to achieve the best price for your trade.",
+  "A Bonus route provided by API is automatically selected for your trade to achieve the best price for your trade.": "A Bonus route provided by API is automatically selected for your trade to achieve the best price for your trade."
 }
