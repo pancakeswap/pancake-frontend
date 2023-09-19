@@ -93,23 +93,23 @@ export function PoolControls<T>({
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const normalizedUrlSearch = useMemo(
-    () => (typeof router?.query?.search === "string" ? router.query.search : ""),
-    [router.query]
-  );
-  const [_searchQuery, setSearchQuery] = useQueryState("", "search");
-  const searchQuery = normalizedUrlSearch && !_searchQuery ? normalizedUrlSearch : _searchQuery;
-  const [sortOption, setSortOption] = useQueryState("hot", "sortBy");
-  const chosenPoolsLength = useRef(0);
+    () => (typeof router?.query?.search === 'string' ? router.query.search : ''),
+    [router.query],
+  )
+  const [_searchQuery, setSearchQuery] = useQueryState('', 'search')
+  const searchQuery = normalizedUrlSearch && !_searchQuery ? normalizedUrlSearch : _searchQuery
+  const [sortOption, setSortOption] = useQueryState('hot', 'sortBy')
+  const chosenPoolsLength = useRef(0)
 
   useEffect(() => {
-    if (!router.isReady) return;
-    if (typeof router.query?.sortBy === "string") {
-      setSortOption(router.query.sortBy);
+    if (!router.isReady) return
+    if (typeof router.query?.sortBy === 'string') {
+      setSortOption(router.query.sortBy)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
+  }, [router.isReady])
 
-  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools]);
+  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
   const openPoolsWithStartBlockFilter = useMemo(
     () =>
       openPools.filter((pool) =>
@@ -153,17 +153,17 @@ export function PoolControls<T>({
 
   const handleChangeSearchQuery = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(event.target.value);
+      setSearchQuery(event.target.value)
     },
-    [setSearchQuery]
-  );
+    [setSearchQuery],
+  )
 
   const handleSortOptionChange = useCallback(
     (option: OptionProps): void => {
-      setSortOption(option.value);
+      setSortOption(option.value)
     },
-    [setSortOption]
-  );
+    [setSortOption],
+  )
 
   let chosenPools: DeserializedPool<T>[]
   if (showFinishedPools) {
@@ -194,43 +194,43 @@ export function PoolControls<T>({
   const sortByItems = useMemo(
     () => [
       {
-        label: t("Hot"),
-        value: "hot",
+        label: t('Hot'),
+        value: 'hot',
       },
       {
-        label: t("APR"),
-        value: "apr",
+        label: t('APR'),
+        value: 'apr',
       },
       {
-        label: t("Earned"),
-        value: "earned",
+        label: t('Earned'),
+        value: 'earned',
       },
       {
-        label: t("Total staked"),
-        value: "totalStaked",
+        label: t('Total staked'),
+        value: 'totalStaked',
       },
       {
-        label: t("Latest"),
-        value: "latest",
+        label: t('Latest'),
+        value: 'latest',
       },
     ],
-    [t]
-  );
+    [t],
+  )
 
   const defaultOptionIndex = useMemo(() => {
     if (!router.isReady) {
-      return 0;
+      return 0
     }
-    if (typeof router.query?.sortBy === "string") {
-      const queryIndex = sortByItems.findIndex((option) => option.value === router.query?.sortBy);
+    if (typeof router.query?.sortBy === 'string') {
+      const queryIndex = sortByItems.findIndex((option) => option.value === router.query?.sortBy)
       if (queryIndex === -1) {
-        return 0;
+        return 0
       }
-      return queryIndex + 1;
+      return queryIndex + 1
     }
-    return 0;
+    return 0
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
+  }, [router.isReady])
 
   return (
     <>
