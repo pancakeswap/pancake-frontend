@@ -294,8 +294,8 @@ export function AprCalculator({
             {hasFarmApr ? t('APR (with farming)') : t('APR')}
           </Text>
         )}
-        <AprButtonContainer onClick={() => setOpen(true)} alignItems="center">
-          <AprText>{aprDisplay}%</AprText>
+        <AprButtonContainer alignItems="center">
+          <AprText onClick={() => setOpen(true)}>{aprDisplay}%</AprText>
           <IconButton variant="text" scale="sm" onClick={() => setOpen(true)}>
             <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
           </IconButton>
