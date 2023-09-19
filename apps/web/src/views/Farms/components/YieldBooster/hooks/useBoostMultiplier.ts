@@ -5,7 +5,7 @@ import useSWR from 'swr'
 import _toNumber from 'lodash/toNumber'
 import { Address, useAccount } from 'wagmi'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { YieldBoosterState } from './useYieldBoosterState'
 

@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'

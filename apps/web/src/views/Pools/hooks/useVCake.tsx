@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVCakeContract } from 'hooks/useContract'
 

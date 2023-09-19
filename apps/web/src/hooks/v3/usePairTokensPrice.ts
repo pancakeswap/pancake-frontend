@@ -1,5 +1,5 @@
 import { usePairPriceChartTokenData } from 'views/V3Info/hooks'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 

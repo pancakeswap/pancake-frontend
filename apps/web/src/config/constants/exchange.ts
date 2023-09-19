@@ -1,4 +1,5 @@
-import { ChainId, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
+import { Percent, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   bscTokens,
   bscTestnetTokens,

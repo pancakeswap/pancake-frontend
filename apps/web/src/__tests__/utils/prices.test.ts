@@ -1,4 +1,5 @@
-import { ChainId, Pair, Route, Token, Trade, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
+import { Pair, Route, Token, Trade, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { computeTradePriceBreakdown } from 'utils/exchange'
 
 describe('prices', () => {

@@ -559,6 +559,9 @@ importers:
       '@next/bundle-analyzer':
         specifier: 13.0.7
         version: 13.0.7
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../../packages/chains
       '@pancakeswap/farms':
         specifier: workspace:*
         version: link:../../packages/farms

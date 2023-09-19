@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { OnChainProvider } from '@pancakeswap/smart-router/evm'
 import { CHAINS } from 'config/chains'
 import { SERVER_NODES } from 'config/nodes'

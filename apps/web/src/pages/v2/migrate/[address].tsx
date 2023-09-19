@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { AppHeader } from 'components/App'
 import { BodyWrapper } from 'components/App/AppBody'
 import { useRouter } from 'next/router'

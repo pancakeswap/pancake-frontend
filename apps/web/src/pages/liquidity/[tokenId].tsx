@@ -1,4 +1,5 @@
-import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { isActiveV3Farm } from '@pancakeswap/farms'
 import {
   AtomBox,

@@ -8,7 +8,7 @@ import orderBy from 'lodash/orderBy'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 import { ContractFunctionResult } from 'viem'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'

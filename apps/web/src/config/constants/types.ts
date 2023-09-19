@@ -1,5 +1,6 @@
 import type { FarmConfigBaseProps, SerializedFarmConfig } from '@pancakeswap/farms'
-import { ChainId, Currency, CurrencyAmount, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import BigNumber from 'bignumber.js'
 import { Address } from 'wagmi'

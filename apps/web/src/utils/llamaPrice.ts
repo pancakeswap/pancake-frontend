@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 const CHAIN_MAPPING = {
   [ChainId.ETHEREUM]: 'ethereum',

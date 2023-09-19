@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import memoize from 'lodash/memoize'
 import {
   bsc as bsc_,

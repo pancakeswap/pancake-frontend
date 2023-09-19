@@ -1,4 +1,5 @@
-import { ChainId, Currency, CurrencyAmount, Price, WNATIVE, WETH9, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price, WNATIVE, WETH9, TradeType } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { BUSD, CAKE, USDC, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'

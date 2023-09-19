@@ -1,6 +1,6 @@
 import useSWRImmutable from 'swr/immutable'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ifoV3ABI } from '../config/abi/ifoV3'
 import { ifosConfig } from '../config/constants'
 import { Ifo } from '../config/constants/types'

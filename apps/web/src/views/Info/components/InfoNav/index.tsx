@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import {} from 'hooks/useSwitchNetwork'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'

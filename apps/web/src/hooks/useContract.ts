@@ -51,7 +51,8 @@ import {
   getAnniversaryAchievementContract,
 } from 'utils/contractHelpers'
 
-import { ChainId, WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
 import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import { multicallABI } from 'config/abi/Multicall'

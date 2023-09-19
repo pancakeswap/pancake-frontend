@@ -6,7 +6,7 @@ import { NftToken } from 'state/nftMarket/types'
 import { getNftApi } from 'state/nftMarket/helpers'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'wagmi'
 
 export interface GetProfileResponse {

@@ -1,7 +1,8 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import keyBy from 'lodash/keyBy'
 import { TickMath, tickToPrice } from '@pancakeswap/v3-sdk'
-import { Token, ChainId } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
 
 const PRICE_FIXED_DIGITS = 4

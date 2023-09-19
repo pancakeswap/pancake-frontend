@@ -1,7 +1,7 @@
 import { createFarmFetcherV3, fetchCommonTokenUSDValue } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { NextApiHandler } from 'next'
 import { getViemClients } from 'utils/viem.server'
 import { nativeEnum as zNativeEnum } from 'zod'
