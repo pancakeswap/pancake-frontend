@@ -7,16 +7,8 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { formatPercent, formatFraction, formatPrice } from '@pancakeswap/utils/formatFractions'
 
-import { useDensityChartData } from '@pancakeswap/uikit/components/LiquidityChartRangeInput/hooks'
-import {
-  LiquidityChartRangeInput,
-  Button,
-  DynamicSection,
-  Flex,
-  Message,
-  MessageText,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { Button, DynamicSection, Flex, Message, MessageText, useMatchBreakpoints } from '@pancakeswap/uikit'
+
 import { ScrollableContainer } from '@pancakeswap/uikit/components/RoiCalculatorModal/RoiCalculatorModal'
 import { Section } from './Section'
 import { DepositAmountInput } from './DepositAmount'
@@ -34,6 +26,8 @@ import { TwoColumns } from './TwoColumns'
 import { PriceChart } from './PriceChart'
 import { PriceInvertSwitch } from './PriceInvertSwitch'
 import { FarmingRewardsToggle } from './FarmingRewardsToggle'
+import { LiquidityChartRangeInput } from '../swap/LiquidityChartRangeInput'
+import { useDensityChartData } from '../swap/LiquidityChartRangeInput/hooks'
 
 export interface RoiCalculatorPositionInfo {
   priceLower?: Price<Token, Token>
