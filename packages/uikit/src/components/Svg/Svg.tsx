@@ -16,7 +16,9 @@ const spinStyle = css`
   animation: ${rotate} 2s linear infinite;
 `;
 
-const Svg = styled.svg<SvgProps>`
+const Svg = styled("svg").withConfig({
+  shouldForwardProp: (p) => !["spin"].includes(p),
+})<SvgProps>`
   align-self: center; // Safari fix
   fill: ${({ theme, color }) =>
     getThemeValue(theme, `colors.${color}`, color)}; // should use color and currentColor in svg path

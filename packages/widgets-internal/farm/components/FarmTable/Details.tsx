@@ -17,15 +17,15 @@ const Container = styled.div`
   }
 `
 
-const ArrowIcon = styled(ChevronDownIcon)<{ toggled?: boolean }>`
-  transform: ${({ toggled }) => (toggled ? 'rotate(180deg)' : 'rotate(0)')};
+const ArrowIcon = styled(ChevronDownIcon)<{ $toggled?: boolean }>`
+  transform: ${({ $toggled }) => ($toggled ? 'rotate(180deg)' : 'rotate(0)')};
   height: 20px;
 `
 
 const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ actionPanelToggled }) => {
   return (
     <Container>
-      <ArrowIcon color="primary" toggled={actionPanelToggled} />
+      <ArrowIcon color="primary" $toggled={actionPanelToggled} />
     </Container>
   )
 }

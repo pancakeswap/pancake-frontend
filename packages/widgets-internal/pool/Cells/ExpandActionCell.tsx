@@ -23,8 +23,8 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const ArrowIcon = styled((props: any) => <ChevronDownIcon {...props} />)<{ toggled?: boolean }>`
-  transform: ${({ toggled }) => (toggled ? 'rotate(180deg)' : 'rotate(0)')};
+const ArrowIcon = styled((props: any) => <ChevronDownIcon {...props} />)<{ $toggled?: boolean }>`
+  transform: ${({ $toggled }) => ($toggled ? 'rotate(180deg)' : 'rotate(0)')};
   height: 24px;
 `
 
@@ -40,7 +40,7 @@ export const ExpandActionCell: React.FC<React.PropsWithChildren<ExpandActionCell
           {expanded ? t('Hide') : t('Details')}
         </Text>
       )}
-      <ArrowIcon color="primary" toggled={expanded} />
+      <ArrowIcon color="primary" $toggled={expanded} />
     </StyledCell>
   )
 }

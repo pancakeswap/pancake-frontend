@@ -11,8 +11,8 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 import Expand from './Expand'
 
-const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
-  transform: ${({ toggled }) => (toggled ? 'rotate(180deg)' : 'rotate(0)')};
+const ArrowIcon = styled(ChevronDownIcon)<{ $toggled: boolean }>`
+  transform: ${({ $toggled }) => ($toggled ? 'rotate(180deg)' : 'rotate(0)')};
   height: 24px;
 `
 
@@ -62,7 +62,7 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, d
             </Text>
           </Flex>
         </Flex>
-        <ArrowIcon toggled={expanded} color="primary" ml="auto" />
+        <ArrowIcon $toggled={expanded} color="primary" ml="auto" />
       </Flex>
       {shouldRenderExpand && <Expand expanded={expanded} data={data} fetchUserVestingData={fetchUserVestingData} />}
     </Box>
