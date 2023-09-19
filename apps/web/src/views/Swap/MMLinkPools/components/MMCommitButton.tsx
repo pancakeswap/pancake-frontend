@@ -151,7 +151,7 @@ export function MMSwapCommitButton({
     />,
   )
 
-  const { confirmModalState, pendingModalSteps, startSwapFlow } = useConfirmModalState({
+  const { confirmModalState, pendingModalSteps, startSwapFlow, resetSwapFlow } = useConfirmModalState({
     txHash,
     chainId,
     approval,
@@ -197,12 +197,13 @@ export function MMSwapCommitButton({
       swapErrorMessage: undefined,
       txHash: undefined,
     })
+    resetSwapFlow()
     if (isExpertMode) {
       startSwapFlow()
     }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [rfqTrade, onPresentConfirmModal, isExpertMode, startSwapFlow])
+  }, [rfqTrade, onPresentConfirmModal, isExpertMode, startSwapFlow, resetSwapFlow])
 
   // useEffect
   useEffect(() => {

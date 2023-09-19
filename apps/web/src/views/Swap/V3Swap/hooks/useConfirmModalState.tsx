@@ -100,7 +100,7 @@ export const useConfirmModalState = ({
     [approveCallback, revokeCallback, onConfirm, onCancel],
   )
 
-  const resetFlow = useCallback(() => {
+  const resetSwapFlow = useCallback(() => {
     setConfirmModalState(ConfirmModalState.REVIEWING)
     setPendingModalSteps([])
     setPreviouslyPending(false)
@@ -108,11 +108,10 @@ export const useConfirmModalState = ({
   }, [])
 
   const startSwapFlow = useCallback(() => {
-    resetFlow()
     const steps = generateRequiredSteps()
     setPendingModalSteps(steps)
     performStep(steps[0])
-  }, [generateRequiredSteps, performStep, resetFlow])
+  }, [generateRequiredSteps, performStep])
 
   const checkHashIsReceipted = useCallback(
     async (hash) => {
@@ -167,5 +166,5 @@ export const useConfirmModalState = ({
     }
   }, [approval, txHash, confirmModalState, checkHashIsReceipted, performStep])
 
-  return { confirmModalState, pendingModalSteps, startSwapFlow }
+  return { confirmModalState, pendingModalSteps, startSwapFlow, resetSwapFlow }
 }

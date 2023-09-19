@@ -186,7 +186,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     />,
   )
 
-  const { confirmModalState, pendingModalSteps, startSwapFlow } = useConfirmModalState({
+  const { confirmModalState, pendingModalSteps, startSwapFlow, resetSwapFlow } = useConfirmModalState({
     txHash,
     chainId,
     approval: approvalState,
@@ -230,12 +230,13 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       swapErrorMessage: undefined,
       txHash: undefined,
     })
+    resetSwapFlow()
     if (isExpertMode) {
       startSwapFlow()
     }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [trade, onPresentConfirmModal, isExpertMode, startSwapFlow])
+  }, [trade, onPresentConfirmModal, isExpertMode, startSwapFlow, resetSwapFlow])
 
   // useEffect
   useEffect(() => {
