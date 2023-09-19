@@ -95,8 +95,8 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
           </>
         ) : (
           <>
-            <Skeleton width="40px" height="16px" />
-            <Skeleton width="80px" height="16px" />
+            <Skeleton width="30px" height="12px" mb="4px" />
+            <Skeleton width="80px" height="12px" />
           </>
         )}
       </Pool.CellContent>
