@@ -10,6 +10,7 @@ import {
   Message,
   InfoFilledIcon,
   Button,
+  Link,
 } from '@pancakeswap/uikit'
 import { ReactNode, useMemo } from 'react'
 import Divider from 'components/Divider'
@@ -128,13 +129,25 @@ export function FixedStakingModal({
                       mr="4px"
                     />
                     <Text fontSize="14px" color="textSubtle">
-                      {t('A withdrawal fee of 2% will be applied if amount is unstaked before locked period is up.')}
+                      {t(
+                        'Funds will not be available for withdrawal for the first 10 days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ',
+                      )}
+                      <Link
+                        style={{
+                          display: 'inline',
+                          fontSize: '14px',
+                        }}
+                        href="/"
+                        target="_blank"
+                      >
+                        Click here for more information
+                      </Link>
                     </Text>
                   </Flex>
                   {isStaked ? (
                     <Message variant="warning" my="8px">
                       <MessageText>
-                        {`You already have a position in ${lockPeriod}D lock period, adding stake to the position will restart the whole locking period.`}
+                        {`You already have a position in ${lockPeriod}D lock period, adding to the position will restart locking and non-withdrawal period`}
                       </MessageText>
                     </Message>
                   ) : null}

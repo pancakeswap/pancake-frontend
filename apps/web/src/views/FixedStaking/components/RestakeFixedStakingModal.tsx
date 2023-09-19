@@ -57,7 +57,7 @@ export function FixedRestakingModal({
           head={() => (
             <Message variant="primary" mb="24px">
               <MessageText>
-                {t('Adding stake to the position will restart the entire fixed staking period.')}
+                {t('Adding stake to the position will restart the lock and withdrawal period.')}
               </MessageText>
             </Message>
           )}

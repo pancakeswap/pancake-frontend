@@ -214,9 +214,10 @@ export function StakedPositionSection({
             stakePositionUserInfo={stakePositionUserInfo}
             withdrawalFee={withdrawalFee}
             poolIndex={poolIndex}
+            lastDayAction={stakePositionUserInfo.lastDayAction}
           >
-            {(openUnstakeModal) => (
-              <IconButton variant="secondary" onClick={openUnstakeModal} mr="6px">
+            {(openUnstakeModal, notAllowWithdrawal) => (
+              <IconButton disabled={notAllowWithdrawal} variant="secondary" onClick={openUnstakeModal} mr="6px">
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
             )}

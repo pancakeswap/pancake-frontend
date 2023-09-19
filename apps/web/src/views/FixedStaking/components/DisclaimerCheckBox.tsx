@@ -20,7 +20,7 @@ export function DisclaimerCheckBox({
             display: 'inline',
             fontSize: '14px',
           }}
-          href="/"
+          href="https://docs.pancakeswap.finance/simple-staking/faq"
           target="_blank"
         >
           Link of service agreement if needed.

@@ -10,6 +10,7 @@ import FixedStakingOverview from './FixedStakingOverview'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
 import { ModalTitle } from './ModalTitle'
+import { useCurrentDay } from '../hooks/useStakedPools'
 
 export function UnstakeBeforeEnededModal({
   token,
@@ -22,8 +23,10 @@ export function UnstakeBeforeEnededModal({
   unlockAPR,
   pools,
   poolEndDay,
+  lastDayAction,
   children,
 }: {
+  lastDayAction: number
   poolEndDay: number
   boostAPR: Percent
   unlockAPR: Percent
@@ -33,7 +36,7 @@ export function UnstakeBeforeEnededModal({
   stakePositionUserInfo: StakePositionUserInfo
   withdrawalFee: number
   poolIndex: number
-  children: (openModal: () => void) => ReactNode
+  children: (openModal: () => void, notAllowWithdrawal: boolean) => ReactNode
   pools: FixedStakingPool[]
 }) {
   const { t } = useTranslation()
@@ -67,9 +70,15 @@ export function UnstakeBeforeEnededModal({
     onSuccess: () => unstakeModal.onDismiss(),
   })
 
+  const poolLockPeriodUnit = lockPeriod / 3
+
+  const currentDay = useCurrentDay()
+
+  const notAllowWithdrawal = currentDay - lastDayAction > poolLockPeriodUnit
+
   return (
     <>
-      {children(unstakeModal.onOpen)}
+      {children(unstakeModal.onOpen, notAllowWithdrawal)}
       <ModalV2 {...unstakeModal} closeOnOverlayClick>
         <Modal
           title={<ModalTitle token={token} tokenTitle={token.symbol} lockPeriod={lockPeriod} />}
