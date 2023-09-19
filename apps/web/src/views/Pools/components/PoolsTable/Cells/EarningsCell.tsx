@@ -29,7 +29,10 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
+  const earningTokenDollarBalance = getBalanceNumber(
+    earnings.multipliedBy(earningTokenPrice ?? 0),
+    earningToken.decimals,
+  )
   const hasEarnings = account && earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
@@ -73,7 +76,7 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
                 />
                 {hasEarnings ? (
                   <>
-                    {earningTokenPrice > 0 && (
+                    {new BigNumber(earningTokenPrice ?? 0).gt(0) && (
                       <Balance
                         display="inline"
                         fontSize="12px"
