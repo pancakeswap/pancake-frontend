@@ -91,7 +91,7 @@ export const opbnbTestnet = {
   blockExplorers: {
     default: {
       name: 'opBNBScan',
-      url: 'https://testnet.opbnbscan.com/',
+      url: 'https://testnet.opbnbscan.com',
     },
   },
   contracts: {
