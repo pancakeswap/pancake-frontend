@@ -160,7 +160,7 @@ export const WETH9 = {
   ),
   [ChainId.OPBNB]: new ERC20Token(
     ChainId.OPBNB,
-    '0xe7798f023fc62146e8aa1b36da45fb70855a77ea',
+    '0xE7798f023fC62146e8Aa1b36Da45fb70855a77Ea',
     18,
     'ETH',
     'Binance-Peg Ethereum Token',

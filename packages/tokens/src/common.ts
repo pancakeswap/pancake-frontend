@@ -328,7 +328,7 @@ export const USDT = {
   ),
   [ChainId.OPBNB]: new ERC20Token(
     ChainId.OPBNB,
-    '0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3',
+    '0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3',
     18,
     'USDT',
     'Tether USD',
