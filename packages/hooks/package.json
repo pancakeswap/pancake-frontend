@@ -19,7 +19,6 @@
     "styled-components": "^6.0.7"
   },
   "devDependencies": {
-    "next": "*",
     "@types/js-cookie": "^3.0.2",
     "styled-components": "^6.0.7",
     "@types/react": "^18.2.21"

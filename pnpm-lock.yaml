@@ -1121,6 +1121,9 @@ importers:
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
+      next:
+        specifier: '*'
+        version: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
@@ -13891,7 +13894,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001425
+      caniuse-lite: 1.0.30001534
       electron-to-chromium: 1.4.284
       node-releases: 2.0.6
       update-browserslist-db: 1.0.10(browserslist@4.21.4)
