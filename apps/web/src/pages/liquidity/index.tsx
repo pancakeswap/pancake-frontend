@@ -182,8 +182,8 @@ export default function PoolListPage() {
       return v3PairsSection
         .filter((pair) => {
           if (
-            pair?.props?.positionDetails?.token0?.toLowerCase() === token0?.toLowerCase() &&
-            pair?.props?.positionDetails?.token1?.toLowerCase() === token1?.toLowerCase() &&
+            pair?.props?.positionDetails?.token0?.toLowerCase() === token0?.toLowerCase() ||
+            pair?.props?.positionDetails?.token1?.toLowerCase() === token1?.toLowerCase() ||
             pair?.props?.positionDetails?.fee === Number(fee ?? 0)
           ) {
             return pair
