@@ -80,7 +80,7 @@ export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
 export const bitQueryServerClient = new GraphQLClient(BIT_QUERY, {
   headers: {
     // only server, no `NEXT_PUBLIC` not going to expose in client
-    'X-API-KEY': process.env.BIT_QUERY_HEADER,
+    'X-API-KEY': process.env.BIT_QUERY_HEADER || '',
   },
   timeout: 5000,
 })
