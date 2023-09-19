@@ -55,7 +55,10 @@ const SWAP_INFO_BY_CHAIN = {
     v2: INFO_CLIENT_WITH_CHAIN[ChainId.LINEA_TESTNET],
     v3: V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET],
   },
-  [ChainId.OPBNB]: {},
+  [ChainId.OPBNB]: {
+    v2: INFO_CLIENT_WITH_CHAIN[ChainId.OPBNB],
+    v3: V3_SUBGRAPH_URLS[ChainId.OPBNB],
+  },
   [ChainId.OPBNB_TESTNET]: {},
   [ChainId.BASE]: {
     v3: V3_SUBGRAPH_URLS[ChainId.BASE],
