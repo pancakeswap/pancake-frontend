@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.63.6
+
+### Patch Changes
+
+- 5e3efdfe9: Resolved props from styled-component and DOM
+
 ## 0.63.5
 
 ### Patch Changes
