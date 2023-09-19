@@ -6,6 +6,7 @@
   },
   "private": true,
   "peerDependencies": {
+    "next": "*",
     "@pancakeswap/localization": "workspace:*",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",

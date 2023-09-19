@@ -1763,6 +1763,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      next:
+        specifier: '*'
+        version: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*

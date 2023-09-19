@@ -1,6 +1,6 @@
 import { useAccount } from 'wagmi'
 import { Pool } from '@pancakeswap/widgets-internal'
-import { updateQueryFromRouter } from '@pancakeswap/uikit'
+import updateQueryFromRouter from '@pancakeswap/utils/updateQueryFromRouter'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { useInitialBlockTimestamp } from 'state/block/hooks'
 import { Token } from '@pancakeswap/sdk'
