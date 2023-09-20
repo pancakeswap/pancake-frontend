@@ -14,8 +14,8 @@ import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { useAccount } from 'wagmi'
 import { fetchLimitOfMer, fetchLimitOfMoonpay, fetchLimitOfTransak } from 'views/BuyCrypto/hooks/useProviderQuotes'
 import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
-import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
   code: string
