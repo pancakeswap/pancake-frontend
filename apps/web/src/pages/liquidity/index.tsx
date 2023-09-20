@@ -183,8 +183,8 @@ export default function PoolListPage() {
       return v3PairsSection
         .filter((pair) => {
           if (
-            pair?.props?.positionDetails?.token0?.toLowerCase() === token0?.toLowerCase() ||
-            pair?.props?.positionDetails?.token1?.toLowerCase() === token1?.toLowerCase() ||
+            pair?.props?.positionDetails?.token0?.toLowerCase() === token0?.toLowerCase() &&
+            pair?.props?.positionDetails?.token1?.toLowerCase() === token1?.toLowerCase() &&
             pair?.props?.positionDetails?.fee === Number(fee ?? 0)
           ) {
             return pair
@@ -194,7 +194,7 @@ export default function PoolListPage() {
         .filter(Boolean)
     }
 
-    return v3PairsSection
+    return []
   }, [fee, isNeedFilterByQuery, showAllPositionWithQuery, token0, token1, v3PairsSection])
 
   const showAllPositionButton = useMemo(() => {
@@ -204,11 +204,20 @@ export default function PoolListPage() {
         isNeedFilterByQuery &&
         !showAllPositionWithQuery &&
         !v3Loading &&
-        !v2Loading
+        !v2Loading &&
+        (selectedTypeIndex === FILTER.ALL || selectedTypeIndex === FILTER.V3)
       )
     }
     return false
-  }, [filteredWithQueryFilter, isNeedFilterByQuery, showAllPositionWithQuery, v3PairsSection, v3Loading, v2Loading])
+  }, [
+    filteredWithQueryFilter,
+    isNeedFilterByQuery,
+    showAllPositionWithQuery,
+    v3PairsSection,
+    v3Loading,
+    v2Loading,
+    selectedTypeIndex,
+  ])
 
   const mainSection = useMemo(() => {
     let resultSection: null | JSX.Element | (JSX.Element[] | null | undefined)[] = null
@@ -226,13 +235,25 @@ export default function PoolListPage() {
       )
     } else {
       // Order should be v3, stable, v2
-      const sections = [filteredWithQueryFilter, stablePairsSection, v2PairsSection]
+      const sections = showAllPositionButton
+        ? [filteredWithQueryFilter]
+        : [v3PairsSection, stablePairsSection, v2PairsSection]
 
       resultSection = selectedTypeIndex ? sections.filter((_, index) => selectedTypeIndex === index + 1) : sections
     }
 
     return resultSection
-  }, [selectedTypeIndex, stablePairsSection, t, v2Loading, v2PairsSection, v3Loading, filteredWithQueryFilter])
+  }, [
+    selectedTypeIndex,
+    stablePairsSection,
+    t,
+    v2Loading,
+    v2PairsSection,
+    v3Loading,
+    v3PairsSection,
+    filteredWithQueryFilter,
+    showAllPositionButton,
+  ])
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
   const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
