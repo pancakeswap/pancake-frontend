@@ -17,47 +17,43 @@ import { erc20ABI } from 'wagmi'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
-  ${({ noMobileBorder, theme }) =>
-    noMobileBorder
-      ? `${theme.mediaQueries.md} {
-           padding: 0 16px;
-           border-left: 1px ${theme.colors.inputSecondary} solid;
-         }
-       `
-      : `border-left: 1px ${theme.colors.inputSecondary} solid;
-         padding: 0 8px;
-         ${theme.mediaQueries.sm} {
-           padding: 0 16px;
-         }
-       `}
-
-  ${({ noDesktopBorder, theme }) =>
-    noDesktopBorder &&
-    `${theme.mediaQueries.md} {
-           padding: 0;
-           border-left: none;
-         }
-       `}
-`
-
-const Grid = styled.div`
-  display: grid;
-  grid-gap: 16px 8px;
-  margin-top: 24px;
-  grid-template-columns: repeat(2, auto);
-  grid-template-areas:
-    'a d'
-    'b e'
-    'c f';
-
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 16px;
+  &:not(:last-child) {
+    border-right: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
+  }
+  &:nth-child(2n) {
+    border-right: none;
+  }
+  width: 50%;
   ${({ theme }) => theme.mediaQueries.sm} {
-    grid-gap: 16px;
+    &:not(:last-child) {
+      border-right: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
+      border-bottom: none;
+    }
+    &:nth-child(3) {
+      border-right: none;
+    }
+    width: 33%;
   }
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-areas: 'a b c d e';
-    grid-gap: 32px;
-    grid-template-columns: repeat(3, auto);
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: auto;
+    &:not(:last-child) {
+      border-right: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
+    }
+  }
+`
+const StyledWrapper = styled(Flex)`
+  margin-top: 24px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    flex-wrap: nowrap;
   }
 `
 
@@ -128,8 +124,8 @@ const CakeDataRow = () => {
   }, [isIntersecting])
 
   return (
-    <Grid>
-      <Flex flexDirection="column" style={{ gridArea: 'a' }}>
+    <StyledWrapper>
+      <StyledColumn>
         <Text color="text" bold>
           {t('Circulating Supply')}
         </Text>
@@ -139,8 +135,8 @@ const CakeDataRow = () => {
           <Skeleton height={24} width={126} my="4px" />
         )}
         <Text color="textSubtle">{t('Unit')}</Text>
-      </Flex>
-      <StyledColumn noMobileBorder style={{ gridArea: 'b' }}>
+      </StyledColumn>
+      <StyledColumn noMobileBorder>
         <Text bold>{t('Total supply')}</Text>
         {cakeSupply ? (
           <Balance color="secondary" decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
@@ -157,7 +153,7 @@ const CakeDataRow = () => {
 
         <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={750000000} />
       </StyledColumn> */}
-      <StyledColumn style={{ gridArea: 'c' }}>
+      <StyledColumn>
         <Text bold>{t('Market cap')}</Text>
         {mcap?.gt(0) && mcapString ? (
           <Heading color="secondary" scale="lg">
@@ -168,7 +164,7 @@ const CakeDataRow = () => {
         )}
         <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
-      <StyledColumn style={{ gridArea: 'd' }}>
+      <StyledColumn>
         <Text bold>{t('Token Burn')}</Text>
         {burnedBalance ? (
           <Balance color="secondary" decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
@@ -177,7 +173,7 @@ const CakeDataRow = () => {
         )}
         <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
-      <StyledColumn style={{ gridArea: 'e' }}>
+      <StyledColumn>
         <Text bold>{t('Current emissions')}</Text>
 
         {emissionsPerBlock ? (
@@ -189,7 +185,7 @@ const CakeDataRow = () => {
         )}
         <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
-    </Grid>
+    </StyledWrapper>
   )
 }
 
