@@ -6,8 +6,6 @@ import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModa
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { Field } from 'state/buyCrypto/actions'
-import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import styled from 'styled-components'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { CURRENT_CAMPAIGN_TIMESTAMP, ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
@@ -68,9 +66,6 @@ function AccordionItem({
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const { days, hours, minutes, seconds } = getTimePeriods(currentTimestamp - CURRENT_CAMPAIGN_TIMESTAMP)
-  const {
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-  } = useBuyCryptoState()
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = useCallback(() => {
