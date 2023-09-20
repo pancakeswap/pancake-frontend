@@ -173,10 +173,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
       })
       .catch((error) => {
-        if (error instanceof TransactionRejectedError) {
-          handleConfirmDismiss()
-          return
-        }
         setWallchainSecondaryStatus('not-found')
         setSwapState({
           attemptingTxn: false,
@@ -340,12 +336,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         id="swap-button"
         width="100%"
         disabled={
-          !isValid ||
-          (priceImpactSeverity > 3 && !isExpertMode) ||
-          !!swapCallbackError ||
-          !approved ||
-          statusWallchain === 'pending'
+          !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || statusWallchain === 'pending'
         }
+        onClick={() => onSwapHandler()}
       >
         {swapInputError ||
           (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||
