@@ -182,9 +182,13 @@ export default function PoolListPage() {
     if (isNeedFilterByQuery && !showAllPositionWithQuery && v3PairsSection) {
       return v3PairsSection
         .filter((pair) => {
+          const pairToken0 = pair?.props?.positionDetails?.token0?.toLowerCase()
+          const pairToken1 = pair?.props?.positionDetails?.token1?.toLowerCase()
+          const token0ToLowerCase = token0?.toLowerCase()
+          const token1ToLowerCase = token1?.toLowerCase()
           if (
-            pair?.props?.positionDetails?.token0?.toLowerCase() === token0?.toLowerCase() &&
-            pair?.props?.positionDetails?.token1?.toLowerCase() === token1?.toLowerCase() &&
+            ((pairToken0 === token0ToLowerCase && pairToken1 === token1ToLowerCase) ||
+              (pairToken0 === token1ToLowerCase && pairToken1 === token0ToLowerCase)) &&
             pair?.props?.positionDetails?.fee === Number(fee ?? 0)
           ) {
             return pair
