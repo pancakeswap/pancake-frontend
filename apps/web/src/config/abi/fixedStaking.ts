@@ -856,7 +856,12 @@ export const fixedStakingABI = [
       },
       {
         internalType: 'uint32',
-        name: 'withdrawalFee',
+        name: 'withdrawalCut1',
+        type: 'uint32',
+      },
+      {
+        internalType: 'uint32',
+        name: 'withdrawalCut2',
         type: 'uint32',
       },
       {
