@@ -52,30 +52,33 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
           {t("Don’t show this again")}
         </Text>
       </Flex>
-      <Button
-        mb="8px"
-        id="confirm-expert-mode"
-        onClick={() => {
-          // eslint-disable-next-line no-alert
-          if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === "confirm") {
-            toggleExpertMode();
-            setShowConfirmExpertModal(false);
-            if (isRememberChecked) {
-              setShowExpertModeAcknowledgement(false);
+      <Flex flexDirection="column">
+        <Button
+          mb="8px"
+          id="confirm-expert-mode"
+          onClick={() => {
+            // eslint-disable-next-line no-alert
+            if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === "confirm") {
+              toggleExpertMode();
+              setShowConfirmExpertModal(false);
+              if (isRememberChecked) {
+                setShowExpertModeAcknowledgement(false);
+              }
             }
-          }
-        }}
-      >
-        {t("Turn On Expert Mode")}
-      </Button>
-      <Button
-        variant="secondary"
-        onClick={() => {
-          setShowConfirmExpertModal(false);
-        }}
-      >
-        {t("Cancel")}
-      </Button>
+          }}
+        >
+          {t("Turn On Expert Mode")}
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setShowConfirmExpertModal(false);
+          }}
+        >
+          {t("Cancel")}
+        </Button>
+      </Flex>
     </Modal>
   );
 };
