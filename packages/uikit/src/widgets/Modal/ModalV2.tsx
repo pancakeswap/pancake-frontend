@@ -1,6 +1,6 @@
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { AnimatePresence, LazyMotion } from "framer-motion";
-import React, { createContext, useCallback, useRef, useState } from "react";
+import React, { createContext, useCallback, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
 import { BoxProps } from "../../components/Box";
@@ -48,46 +48,52 @@ export function ModalV2({
 }: ModalV2Props & BoxProps & { disableOutsidePointerEvents?: boolean }) {
   const animationRef = useRef<HTMLDivElement>(null);
 
-  const handleOverlayDismiss = (e: any) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (closeOnOverlayClick) {
-      onDismiss?.();
-    }
-  };
-  const portal = getPortalRoot();
+  const handleOverlayDismiss = useCallback(
+    (e: any) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (closeOnOverlayClick) {
+        onDismiss?.();
+      }
+    },
+    [closeOnOverlayClick, onDismiss]
+  );
+  const portal = useMemo(() => getPortalRoot(), []);
+  const providerValue = useMemo(() => ({ onDismiss }), [onDismiss]);
 
-  if (portal) {
-    return createPortal(
-      <ModalV2Context.Provider value={{ onDismiss }}>
-        <LazyMotion features={isMobile ? DomMax : DomAnimation}>
-          <AnimatePresence>
-            {isOpen && (
-              <DismissableLayer
-                role="dialog"
-                disableOutsidePointerEvents={disableOutsidePointerEvents}
-                onEscapeKeyDown={handleOverlayDismiss}
-              >
-                <StyledModalWrapper
-                  ref={animationRef}
-                  // @ts-ignore
-                  onAnimationStart={() => animationHandler(animationRef.current)}
-                  {...animationMap}
-                  variants={animationVariants}
-                  transition={{ duration: 0.3 }}
-                  {...props}
+  return useMemo(() => {
+    if (portal) {
+      return createPortal(
+        <ModalV2Context.Provider value={providerValue}>
+          <LazyMotion features={isMobile ? DomMax : DomAnimation}>
+            <AnimatePresence>
+              {isOpen && (
+                <DismissableLayer
+                  role="dialog"
+                  disableOutsidePointerEvents={disableOutsidePointerEvents}
+                  onEscapeKeyDown={handleOverlayDismiss}
                 >
-                  <Overlay onClick={handleOverlayDismiss} />
-                  {children}
-                </StyledModalWrapper>
-              </DismissableLayer>
-            )}
-          </AnimatePresence>
-        </LazyMotion>
-      </ModalV2Context.Provider>,
-      portal
-    );
-  }
+                  <StyledModalWrapper
+                    ref={animationRef}
+                    // @ts-ignore
+                    onAnimationStart={() => animationHandler(animationRef.current)}
+                    {...animationMap}
+                    variants={animationVariants}
+                    transition={{ duration: 0.3 }}
+                    {...props}
+                  >
+                    <Overlay onClick={handleOverlayDismiss} />
+                    {children}
+                  </StyledModalWrapper>
+                </DismissableLayer>
+              )}
+            </AnimatePresence>
+          </LazyMotion>
+        </ModalV2Context.Provider>,
+        portal
+      );
+    }
 
-  return null;
+    return null;
+  }, [children, disableOutsidePointerEvents, handleOverlayDismiss, isOpen, portal, props, providerValue]);
 }

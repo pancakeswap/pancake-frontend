@@ -1,11 +1,10 @@
 import { AnimatePresence, Variants, LazyMotion, domAnimation } from "framer-motion";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { isMobile } from "react-device-detect";
-import { DefaultTheme, ThemeProvider, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import debounce from "lodash/debounce";
-import { dark, light } from "../../theme";
 import getPortalRoot from "../../util/getPortalRoot";
 import isTouchDevice from "../../util/isTouchDevice";
 import { Arrow, StyledTooltip } from "./StyledTooltip";
@@ -32,13 +31,6 @@ const deviceActions: { [device in Devices]: DeviceAction } = {
     start: "mouseenter",
     end: "mouseleave",
   },
-};
-
-const invertTheme = (currentTheme: DefaultTheme) => {
-  if (currentTheme.isDark) {
-    return light;
-  }
-  return dark;
 };
 
 const useTooltip = (content: React.ReactNode, options?: TooltipOptions): TooltipRefs => {
@@ -206,29 +198,37 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     ],
   });
 
-  const tooltip = (
-    <StyledTooltip
-      data-theme={isDark ? "light" : "dark"}
-      {...animationMap}
-      variants={animationVariants}
-      transition={{ duration: 0.3 }}
-      ref={setTooltipElement}
-      style={styles.popper}
-      {...attributes.popper}
-    >
-      {content}
-      <Arrow ref={setArrowElement} style={styles.arrow} />
-    </StyledTooltip>
+  const tooltip = useMemo(() => {
+    return (
+      <StyledTooltip
+        data-theme={isDark ? "light" : "dark"}
+        {...animationMap}
+        variants={animationVariants}
+        transition={{ duration: 0.3 }}
+        ref={setTooltipElement}
+        style={styles.popper}
+        {...attributes.popper}
+      >
+        {content}
+        <Arrow ref={setArrowElement} style={styles.arrow} />
+      </StyledTooltip>
+    );
+  }, [attributes?.popper, content, isDark, styles?.arrow, styles?.popper]);
+
+  const AnimatedTooltip = useMemo(
+    () => (
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence>{visible && tooltip}</AnimatePresence>
+      </LazyMotion>
+    ),
+    [visible, tooltip]
   );
 
-  const AnimatedTooltip = (
-    <LazyMotion features={domAnimation}>
-      <AnimatePresence>{visible && tooltip}</AnimatePresence>
-    </LazyMotion>
+  const portal = useMemo(() => getPortalRoot(), []);
+  const tooltipInPortal = useMemo(
+    () => (portal && isInPortal ? createPortal(AnimatedTooltip, portal) : null),
+    [portal, isInPortal, AnimatedTooltip]
   );
-
-  const portal = getPortalRoot();
-  const tooltipInPortal = portal && isInPortal ? createPortal(AnimatedTooltip, portal) : null;
 
   return {
     targetRef: setTargetElement,
