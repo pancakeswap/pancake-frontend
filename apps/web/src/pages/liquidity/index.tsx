@@ -26,7 +26,6 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import Page from 'views/Page'
 import { useTranslation } from '@pancakeswap/localization'
-import { Pair } from '@pancakeswap/sdk'
 import { RangeTag } from 'components/RangeTag'
 import useV2PairsByAccount from 'hooks/useV2Pairs'
 import useStableConfig, {
@@ -50,7 +49,7 @@ const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
 `
 
-export const StableContextProvider = (props: { pair: LPStablePair; account: string }) => {
+export const StableContextProvider = (props: { pair: LPStablePair; account: string | undefined }) => {
   const stableConfig = useStableConfig({
     tokenA: props.pair?.token0,
     tokenB: props.pair?.token1,
@@ -59,6 +58,7 @@ export const StableContextProvider = (props: { pair: LPStablePair; account: stri
   if (!stableConfig.stableSwapConfig) return null
 
   return (
+    // @ts-ignore
     <StableConfigContext.Provider value={stableConfig}>
       <StablePairCard {...props} />
     </StableConfigContext.Provider>
@@ -96,15 +96,16 @@ export default function PoolListPage() {
   const isNeedFilterByQuery = useMemo(() => token0 && token1 && fee, [token0, token1, fee])
   const [showAllPositionWithQuery, setShowAllPositionWithQuery] = useState(false)
 
-  let v2PairsSection = null
+  let v2PairsSection: null | JSX.Element[] = null
 
   if (v2Pairs?.length) {
-    v2PairsSection = v2Pairs.map((pair) => (
-      <V2PairCard key={Pair.getAddress(pair.token0, pair.token1)} pair={pair} account={account} />
+    v2PairsSection = v2Pairs.map((pair, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <V2PairCard key={`${pair?.token0}-${pair?.token1}-${index}`} pair={pair} account={account} />
     ))
   }
 
-  let stablePairsSection = null
+  let stablePairsSection: null | JSX.Element[] = null
 
   if (stablePairs?.length) {
     stablePairsSection = stablePairs.map((pair) => (
@@ -112,7 +113,7 @@ export default function PoolListPage() {
     ))
   }
 
-  let v3PairsSection = null
+  let v3PairsSection: null | JSX.Element[] = null
 
   if (positions?.length) {
     const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
@@ -197,11 +198,16 @@ export default function PoolListPage() {
   }, [fee, isNeedFilterByQuery, showAllPositionWithQuery, token0, token1, v3PairsSection])
 
   const showAllPositionButton = useMemo(() => {
-    return v3PairsSection?.length > filteredWithQueryFilter?.length && isNeedFilterByQuery && !showAllPositionWithQuery
+    if (v3PairsSection && filteredWithQueryFilter) {
+      return (
+        v3PairsSection?.length > filteredWithQueryFilter?.length && isNeedFilterByQuery && !showAllPositionWithQuery
+      )
+    }
+    return false
   }, [filteredWithQueryFilter, isNeedFilterByQuery, showAllPositionWithQuery, v3PairsSection])
 
   const mainSection = useMemo(() => {
-    let resultSection = null
+    let resultSection: null | JSX.Element | (JSX.Element[] | null | undefined)[] = null
     if (v3Loading || v2Loading) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
