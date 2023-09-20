@@ -6,7 +6,6 @@ import { Flex } from "../../components/Box";
 import { Checkbox } from "../../components/Checkbox";
 import { InjectedModalProps, Modal } from "../Modal";
 import { Message } from "../../components/Message";
-import { useMatchBreakpoints } from "../../contexts";
 
 interface ExpertModalProps extends InjectedModalProps {
   setShowConfirmExpertModal: (show: boolean) => void;
@@ -20,7 +19,6 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
   toggleExpertMode,
 }) => {
   const [isRememberChecked, setIsRememberChecked] = useState(false);
-  const { isMobile } = useMatchBreakpoints();
 
   const { t } = useTranslation();
 
@@ -30,7 +28,7 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
       onBack={() => setShowConfirmExpertModal(false)}
       onDismiss={() => setShowConfirmExpertModal(false)}
       headerBackground="gradientCardHeader"
-      style={{ width: isMobile ? "100%" : "436px" }}
+      width={["100%", "100%", "100%", "436px"]}
     >
       <Message variant="warning" mb="24px">
         <Text>
@@ -52,30 +50,33 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
           {t("Don’t show this again")}
         </Text>
       </Flex>
-      <Button
-        mb="8px"
-        id="confirm-expert-mode"
-        onClick={() => {
-          // eslint-disable-next-line no-alert
-          if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === "confirm") {
-            toggleExpertMode();
-            setShowConfirmExpertModal(false);
-            if (isRememberChecked) {
-              setShowExpertModeAcknowledgement(false);
+      <Flex flexDirection="column">
+        <Button
+          mb="8px"
+          id="confirm-expert-mode"
+          onClick={() => {
+            // eslint-disable-next-line no-alert
+            if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === "confirm") {
+              toggleExpertMode();
+              setShowConfirmExpertModal(false);
+              if (isRememberChecked) {
+                setShowExpertModeAcknowledgement(false);
+              }
             }
-          }
-        }}
-      >
-        {t("Turn On Expert Mode")}
-      </Button>
-      <Button
-        variant="secondary"
-        onClick={() => {
-          setShowConfirmExpertModal(false);
-        }}
-      >
-        {t("Cancel")}
-      </Button>
+          }}
+        >
+          {t("Turn On Expert Mode")}
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setShowConfirmExpertModal(false);
+          }}
+        >
+          {t("Cancel")}
+        </Button>
+      </Flex>
     </Modal>
   );
 };
