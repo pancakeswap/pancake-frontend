@@ -2569,7 +2569,7 @@
   "Campaign ending": "Kết thúc chiến dịch",
   "Your locked staking is expired": "Thời gian khóa cọc của bạn sắp hết hạn",
   "Renew your stakings for": "Gia hạn đặt cọc thêm",
-  "Insufficent Funds?": "Bạn không có đủ tiền?",
+  "Insufficient Funds?": "Insufficient Funds?",
   "Traverse the Treasure Islands on Galxe now!": "Du hành đến Đảo Kho Báu trên Galxe ngay!",
   "Traverse the Treasure Islands!": "Du hành đến Đảo Kho Báu!",
   "Exclusive NFTs and treasures await!": "Các NFT và kho báu độc quyền đang chờ bạn!",
@@ -2694,5 +2694,8 @@
   "Happy Birthday!": "Happy Birthday!",
   "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.": "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.",
   "Birthday": "Birthday",
-  "Uranus Communities": "Uranus Communities"
+  "Uranus Communities": "Uranus Communities",
+  "Mercury Mysteries": "Mercury Mysteries",
+  "Venus Protectors": "Venus Protectors",
+  "Uranus Unity Rain": "Uranus Unity Rain"
 }
