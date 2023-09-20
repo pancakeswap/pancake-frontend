@@ -93,7 +93,7 @@ export default function PoolListPage() {
   const stablePairs = useLPTokensWithBalanceByAccount(account)
 
   const { token0, token1, fee } = router.query as { token0: string; token1: string; fee: string }
-  const isNeedFilterByQuery = useMemo(() => token0 && token1 && fee, [token0, token1, fee])
+  const isNeedFilterByQuery = useMemo(() => token0 || token1 || fee, [token0, token1, fee])
   const [showAllPositionWithQuery, setShowAllPositionWithQuery] = useState(false)
 
   let v2PairsSection: null | JSX.Element[] = null
@@ -186,13 +186,30 @@ export default function PoolListPage() {
           const pairToken1 = pair?.props?.positionDetails?.token1?.toLowerCase()
           const token0ToLowerCase = token0?.toLowerCase()
           const token1ToLowerCase = token1?.toLowerCase()
-          if (
-            ((pairToken0 === token0ToLowerCase && pairToken1 === token1ToLowerCase) ||
-              (pairToken0 === token1ToLowerCase && pairToken1 === token0ToLowerCase)) &&
-            pair?.props?.positionDetails?.fee === Number(fee ?? 0)
-          ) {
+
+          if (token0 && token1 && fee) {
+            if (
+              ((pairToken0 === token0ToLowerCase && pairToken1 === token1ToLowerCase) ||
+                (pairToken0 === token1ToLowerCase && pairToken1 === token0ToLowerCase)) &&
+              pair?.props?.positionDetails?.fee === Number(fee ?? 0)
+            ) {
+              return pair
+            }
+            return null
+          }
+
+          if (token0 && (pairToken0 === token0ToLowerCase || pairToken1 === token0ToLowerCase)) {
             return pair
           }
+
+          if (token1 && (pairToken0 === token1ToLowerCase || pairToken1 === token1ToLowerCase)) {
+            return pair
+          }
+
+          if (fee && pair?.props?.positionDetails?.fee === Number(fee ?? 0)) {
+            return pair
+          }
+
           return null
         })
         .filter(Boolean)
