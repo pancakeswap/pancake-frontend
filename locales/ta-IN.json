@@ -2569,7 +2569,7 @@
   "Campaign ending": "பிரச்சார முடிவு",
   "Your locked staking is expired": "உங்கள் பூட்டிய ஸ்டேக்கிங் காலாவதியானது",
   "Renew your stakings for": "இதற்கு உங்கள் ஸ்டேக்கிங்கை புதுப்பிக்கவும்",
-  "Insufficent Funds?": "போதிய நிதியில்லையா?",
+  "Insufficient Funds?": "Insufficient Funds?",
   "Traverse the Treasure Islands on Galxe now!": "Galxeல் உள்ள புதையல் தீவுகளைக் கடந்திடுங்கள்!",
   "Traverse the Treasure Islands!": "புதையல் தீவுகளைக் கடந்திடுங்கள்!",
   "Exclusive NFTs and treasures await!": "பிரத்தியேக NFTகள் மற்றும் பொக்கிஷங்கள் காத்திருக்கின்றன!",
@@ -2694,5 +2694,8 @@
   "Happy Birthday!": "Happy Birthday!",
   "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.": "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.",
   "Birthday": "Birthday",
-  "Uranus Communities": "Uranus Communities"
+  "Uranus Communities": "Uranus Communities",
+  "Mercury Mysteries": "Mercury Mysteries",
+  "Venus Protectors": "Venus Protectors",
+  "Uranus Unity Rain": "Uranus Unity Rain"
 }
