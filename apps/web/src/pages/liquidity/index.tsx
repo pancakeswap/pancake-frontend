@@ -200,11 +200,15 @@ export default function PoolListPage() {
   const showAllPositionButton = useMemo(() => {
     if (v3PairsSection && filteredWithQueryFilter) {
       return (
-        v3PairsSection?.length > filteredWithQueryFilter?.length && isNeedFilterByQuery && !showAllPositionWithQuery
+        v3PairsSection?.length > filteredWithQueryFilter?.length &&
+        isNeedFilterByQuery &&
+        !showAllPositionWithQuery &&
+        !v3Loading &&
+        !v2Loading
       )
     }
     return false
-  }, [filteredWithQueryFilter, isNeedFilterByQuery, showAllPositionWithQuery, v3PairsSection])
+  }, [filteredWithQueryFilter, isNeedFilterByQuery, showAllPositionWithQuery, v3PairsSection, v3Loading, v2Loading])
 
   const mainSection = useMemo(() => {
     let resultSection: null | JSX.Element | (JSX.Element[] | null | undefined)[] = null
@@ -232,6 +236,15 @@ export default function PoolListPage() {
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
   const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
+
+  const handleClickShowAllPositions = () => {
+    setShowAllPositionWithQuery(true)
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
 
   return (
     <Page>
@@ -293,12 +306,7 @@ export default function PoolListPage() {
               <Text color="textSubtle" mb="10px">
                 {t("Don't see a pair you joined?")}
               </Text>
-              <Button
-                scale="sm"
-                width="fit-content"
-                variant="secondary"
-                onClick={() => setShowAllPositionWithQuery(true)}
-              >
+              <Button scale="sm" width="fit-content" variant="secondary" onClick={handleClickShowAllPositions}>
                 {t('Show all positions')}
               </Button>
             </Flex>
