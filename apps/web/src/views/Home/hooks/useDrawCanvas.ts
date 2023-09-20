@@ -8,6 +8,7 @@ export const useDrawCanvas = (
   fps: number,
   canvasInterval: number,
   onVideoStartCallback?: () => void,
+  onVideoVideoEnd?: () => void,
 ) => {
   const video = videoRef?.current
   const canvas = canvasRef?.current
@@ -27,12 +28,10 @@ export const useDrawCanvas = (
 
     video.onended = () => {
       clearInterval(canvasInterval)
+      onVideoVideoEnd?.()
     }
     video.onplay = () => {
       onVideoStartCallback?.()
-      // window.setInterval(() => {
-      //   drawImage()
-      // }, 1000 / fps)
     }
   }
 

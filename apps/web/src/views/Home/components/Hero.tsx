@@ -142,7 +142,25 @@ const Hero = () => {
   const { isMobile } = useMatchBreakpoints()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval)
+  const { drawImage } = useDrawCanvas(
+    videoRef,
+    canvasRef,
+    width,
+    height,
+    fps,
+    canvasInterval,
+    () => {
+      canvasInterval = window.setInterval(() => {
+        drawImage?.()
+      }, 1000 / fps)
+    },
+    () => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 3
+        videoRef.current.play()
+      }
+    },
+  )
   useLayoutEffect(() => {
     canvasInterval = window.setInterval(() => {
       drawImage?.()
@@ -254,7 +272,7 @@ const Hero = () => {
             <CakeBox>
               <CakeCanvas width={width} height={height} ref={canvasRef} />
               <VideoWrapper>
-                <CakeVideo ref={videoRef} width={width} loop autoPlay muted playsInline>
+                <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
                   <source src="/assets/bunny.webm" type="video/webm" />
                   {/* <source src="/assets/bunny.mov" /> */}
                 </CakeVideo>
