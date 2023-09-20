@@ -2569,7 +2569,7 @@
   "Campaign ending": "कैंपेन समाप्त हो रहा है",
   "Your locked staking is expired": "आपकी लॉक की गई स्टेकिंग का समय समाप्त हुआ",
   "Renew your stakings for": "इसके लिए अपनी स्टेकिंग रिन्यू करें",
-  "Insufficent Funds?": "अपर्याप्त फंड?",
+  "Insufficient Funds?": "Insufficient Funds?",
   "Traverse the Treasure Islands on Galxe now!": "Galxe पर ट्रेज़र आईलैंड की यात्रा करें!",
   "Traverse the Treasure Islands!": "ट्रेज़र आईलैंड की यात्रा करें!",
   "Exclusive NFTs and treasures await!": "एक्सक्लूसिव NFT और ट्रेज़र इंतजार कर रहे हैं!",
@@ -2694,5 +2694,8 @@
   "Happy Birthday!": "Happy Birthday!",
   "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.": "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.",
   "Birthday": "Birthday",
-  "Uranus Communities": "Uranus Communities"
+  "Uranus Communities": "Uranus Communities",
+  "Mercury Mysteries": "Mercury Mysteries",
+  "Venus Protectors": "Venus Protectors",
+  "Uranus Unity Rain": "Uranus Unity Rain"
 }
