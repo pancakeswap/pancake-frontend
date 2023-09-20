@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, Link, HelpIcon, Message, MessageText } from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 
 const StyledLink = styled(Link)`

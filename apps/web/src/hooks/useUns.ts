@@ -3,7 +3,7 @@ import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
 import { polygonRpcProvider } from 'utils/providers'
 import { Address } from 'wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useUNSContract } from './useContract'
 
 function getUnsAddress(networkId) {

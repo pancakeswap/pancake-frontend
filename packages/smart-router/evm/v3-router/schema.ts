@@ -89,6 +89,7 @@ export const zRouterPostParams = z
     maxSplits: z.number().optional(),
     blockNumber: zBigNumber.optional(),
     poolTypes: zPoolTypes.optional(),
+    onChainQuoterGasLimit: zBigNumber.optional(),
   })
   .required({
     chainId: true,

@@ -1,5 +1,32 @@
 # @pancakeswap/pools
 
+## 4.0.11
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- 67d0780d1: Add wstETH pool
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/sdk@5.4.2
+  - @pancakeswap/tokens@0.4.3
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.10
+
+### Patch Changes
+
+- Updated dependencies [51b77c787]
+  - @pancakeswap/tokens@0.4.2
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.9
+
+### Patch Changes
+
+- 0641cc6ed: Add zkSync Pool
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.4.1
+
 ## 4.0.8
 
 ### Patch Changes

@@ -1,5 +1,7 @@
 import { styled, keyframes, css } from 'styled-components'
-import { Box, Flex, Text, useMatchBreakpoints, Pool, Farm, HelpIcon, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useMatchBreakpoints, HelpIcon, useTooltip } from '@pancakeswap/uikit'
+
+import { FarmWidget, Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -10,7 +12,7 @@ import PoolStatsInfo from '../PoolCard/PoolStatsInfo'
 import TableActions from './TableActions'
 import CakeTableActions from './CakeTableActions'
 
-const { ManualPoolTag } = Farm.Tags
+const { ManualPoolTag } = FarmWidget.Tags
 
 const expandAnimation = keyframes`
   from {

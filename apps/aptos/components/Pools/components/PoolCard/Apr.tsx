@@ -1,5 +1,5 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 
 const withShownApr = (AprComp) => (props) => {

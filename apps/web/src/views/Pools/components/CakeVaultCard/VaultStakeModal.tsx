@@ -14,8 +14,9 @@ import {
   Skeleton,
   Box,
   useToast,
-  Pool,
 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'

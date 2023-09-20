@@ -1,5 +1,18 @@
 # @pancakeswap/awgmi
 
+## 0.1.15
+
+### Patch Changes
+
+- dd10c9457: Fix utils should be private
+
+## 0.1.14
+
+### Patch Changes
+
+- Updated dependencies [a784ca6ed]
+  - @pancakeswap/utils@5.0.2
+
 ## 0.1.13
 
 ### Patch Changes

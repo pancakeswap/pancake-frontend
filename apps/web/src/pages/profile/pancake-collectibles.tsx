@@ -6,7 +6,7 @@ import PancakeCollectiblesPageRouter from 'views/Profile/components/PancakeColle
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { getProfileContract } from 'utils/contractHelpers'
 import { viemServerClients } from 'utils/viem.server'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ContractFunctionResult } from 'viem'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 

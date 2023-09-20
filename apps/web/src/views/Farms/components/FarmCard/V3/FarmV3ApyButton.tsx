@@ -3,19 +3,18 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRow,
   CalculateIcon,
-  Farm as FarmUI,
   Flex,
   IconButton,
   RocketIcon,
-  RoiCalculatorModalV2,
   Skeleton,
   Text,
   TooltipText,
   useMatchBreakpoints,
   useModalV2,
-  useRoi,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
+import { RoiCalculatorModalV2, useRoi } from '@pancakeswap/widgets-internal/roi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { Position, encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
@@ -300,7 +299,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
         </AutoRow>
       ) : (
         <>
-          <FarmUI.FarmApyButton
+          <FarmWidget.FarmApyButton
             variant="text-and-button"
             handleClickButton={(e) => {
               e.stopPropagation()
@@ -326,7 +325,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
                 <Text style={{ textDecoration: canBoosted ? 'line-through' : 'none' }}>{displayApr}%</Text>
               </Flex>
             </TooltipText>
-          </FarmUI.FarmApyButton>
+          </FarmWidget.FarmApyButton>
           {aprTooltip.tooltipVisible && aprTooltip.tooltip}
         </>
       )}

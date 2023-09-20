@@ -161,7 +161,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
 
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
-  const balance = !hideBalance && !!currency && formatAmount(selectedCurrencyBalance, 6)
+  const balance = !hideBalance && !!currency ? formatAmount(selectedCurrencyBalance, 6) : undefined
   return (
     <SwapUI.CurrencyInputPanel
       id={id}
@@ -233,7 +233,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
           </Flex>
           {account && !hideBalanceComp && (
             <Text
-              onClick={!disabled && onMax}
+              onClick={!disabled ? onMax : undefined}
               color="textSubtle"
               fontSize="12px"
               ellipsis
@@ -241,7 +241,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
               style={{ display: 'inline', cursor: 'pointer' }}
             >
               {!hideBalance && !!currency
-                ? balance?.replace('.', '')?.length > 12
+                ? (balance?.replace('.', '')?.length || 0) > 12
                   ? balance
                   : t('Balance: %balance%', { balance: balance ?? t('Loading') })
                 : ' -'}
@@ -258,7 +258,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   <Loading width="14px" height="14px" />
                 ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
                   <Text fontSize="12px" color="textSubtle" ellipsis>
-                    {`~${formatNumber(amountInDollar)} USD`}
+                    {`~${amountInDollar ? formatNumber(amountInDollar) : 0} USD`}
                   </Text>
                 ) : (
                   <Box height="18px" />

@@ -7,12 +7,13 @@ import {
   Box,
   useMatchBreakpoints,
   BalanceWithLoading,
-  Pool,
   useTooltip,
   HelpIcon,
   Button,
   useModal,
 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from '@pancakeswap/localization'

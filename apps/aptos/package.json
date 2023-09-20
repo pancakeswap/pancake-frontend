@@ -26,6 +26,7 @@
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/ui-wallets": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/widgets-internal": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
     "@tanstack/react-query": "^4.28.0",
     "@vanilla-extract/recipes": "^0.5.0",

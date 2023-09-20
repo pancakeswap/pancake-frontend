@@ -1,6 +1,7 @@
 import invariant from 'tiny-invariant'
 import { Currency, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
-import { ChainId, WETH9 } from './constants'
+import { ChainId } from '@pancakeswap/chains'
+import { WETH9 } from './constants'
 
 /**
  * Ether is the main usage of a 'native' currency, i.e. for Ethereum mainnet and all testnets

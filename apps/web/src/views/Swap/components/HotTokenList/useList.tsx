@@ -6,7 +6,7 @@ import { multiChainName } from 'state/info/constant'
 import { useTokenDatasSWR, useAllTokenHighLight } from 'state/info/hooks'
 import { useTokensData } from 'views/V3Info/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { parseV3TokenData, parseV2TokenData } from './utils'
 
 export const useBSCWhiteList = () => {

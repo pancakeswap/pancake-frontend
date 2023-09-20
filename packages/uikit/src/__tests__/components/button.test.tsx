@@ -1,4 +1,3 @@
-import React from "react";
 import { renderWithProvider } from "../../testHelpers";
 import Button from "../../components/Button/Button";
 
@@ -29,7 +28,7 @@ it("renders correctly", () => {
       color: var(--colors-invertedContrast);
     }
 
-    .c0 :focus-visible {
+    .c0:focus-visible {
       outline: none;
       box-shadow: var(--shadows-focus);
     }

@@ -129,7 +129,7 @@ const LimitOrders = () => {
     txHash: undefined,
   })
 
-  const [approvalState, approveCallback] = useApproveCallbackFromInputCurrencyAmount(parsedAmounts.input)
+  const { approvalState, approveCallback } = useApproveCallbackFromInputCurrencyAmount(parsedAmounts.input)
 
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 

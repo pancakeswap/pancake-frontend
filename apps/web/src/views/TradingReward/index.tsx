@@ -1,7 +1,7 @@
 import { Box } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import Banner from 'views/TradingReward/components/Banner'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
 import CurrentRewardPool from 'views/TradingReward/components/CurrentRewardPool'

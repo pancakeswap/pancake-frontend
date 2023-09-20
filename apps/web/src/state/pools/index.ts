@@ -5,7 +5,6 @@ import orderBy from 'lodash/orderBy'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { bscTokens, arbitrumTokens, CAKE } from '@pancakeswap/tokens'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { fetchTokenUSDValue } from '@pancakeswap/utils/llamaPrice'
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
 import {
   fetchPoolsTimeLimits,
@@ -30,7 +29,7 @@ import {
   getPoolAprByTokenPerSecond,
   getPoolAprByTokenPerBlock,
 } from '@pancakeswap/pools'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import {
   PoolsState,
@@ -46,6 +45,7 @@ import { Address, erc20ABI } from 'wagmi'
 import { isAddress } from 'utils'
 import { publicClient } from 'utils/wagmi'
 import { getViemClients } from 'utils/viem'
+import { fetchTokenUSDValue } from 'utils/llamaPrice'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import { getCakePriceFromOracle } from 'hooks/useCakePrice'

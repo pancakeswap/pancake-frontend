@@ -51,7 +51,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          author: PancakeSwap Bot <pancakeswap-bot@protonmail.com>
+          author: PancakeSwap Bot <github-bot@pancakeswap.com>
           token: ${{ secrets.LP_APR_PANCAKE_BOT }}
           delete-branch: true
           commit-message: 'chore: Update LP APRs for Farms'

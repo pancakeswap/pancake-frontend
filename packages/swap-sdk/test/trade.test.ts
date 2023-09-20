@@ -1,6 +1,7 @@
 import { TradeType, Percent, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { Pair, Route, Trade, Native } from '../src/entities'
-import { ChainId, WNATIVE } from '../src/constants'
+import { WNATIVE } from '../src/constants'
+import { ChainId } from '../src'
 
 describe('Trade', () => {
   const ETHER = Native.onChain(ChainId.BSC)

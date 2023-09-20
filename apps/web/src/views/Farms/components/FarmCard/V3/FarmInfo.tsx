@@ -1,4 +1,5 @@
-import { Farm as FarmUI, Flex, ModalV2 } from '@pancakeswap/uikit'
+import { Flex, ModalV2 } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
@@ -8,7 +9,7 @@ import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 
-const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmUI.FarmV3Card
+const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmWidget.FarmV3Card
 
 interface FarmInfoProps {
   farm: V3Farm

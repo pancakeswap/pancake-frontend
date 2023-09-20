@@ -1,15 +1,5 @@
-import {
-  Box,
-  Text,
-  Flex,
-  Card,
-  CardBody,
-  CardHeader,
-  Heading,
-  Progress,
-  Skeleton,
-  Farm as FarmUI,
-} from '@pancakeswap/uikit'
+import { Box, Text, Flex, Card, CardBody, CardHeader, Heading, Progress, Skeleton } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { useAccount } from 'wagmi'
 import { Vote } from 'state/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -18,7 +8,7 @@ import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 import TextEllipsis from '../components/TextEllipsis'
 
-const { VotedTag } = FarmUI.Tags
+const { VotedTag } = FarmWidget.Tags
 
 interface ResultsProps {
   choices: string[]

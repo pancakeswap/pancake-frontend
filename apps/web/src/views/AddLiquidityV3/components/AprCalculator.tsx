@@ -1,16 +1,11 @@
 import { Currency, CurrencyAmount, Token, ZERO, Price } from '@pancakeswap/sdk'
+import { TooltipText, Flex, CalculateIcon, Text, IconButton, QuestionHelper } from '@pancakeswap/uikit'
 import {
-  useRoi,
   RoiCalculatorModalV2,
   RoiCalculatorPositionInfo,
-  TooltipText,
-  Flex,
-  CalculateIcon,
-  Text,
-  IconButton,
-  QuestionHelper,
+  useRoi,
   useAmountsByUsdValue,
-} from '@pancakeswap/uikit'
+} from '@pancakeswap/widgets-internal/roi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
@@ -299,8 +294,8 @@ export function AprCalculator({
             {hasFarmApr ? t('APR (with farming)') : t('APR')}
           </Text>
         )}
-        <AprButtonContainer onClick={() => setOpen(true)} alignItems="center">
-          <AprText>{aprDisplay}%</AprText>
+        <AprButtonContainer alignItems="center">
+          <AprText onClick={() => setOpen(true)}>{aprDisplay}%</AprText>
           <IconButton variant="text" scale="sm" onClick={() => setOpen(true)}>
             <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
           </IconButton>

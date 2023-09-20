@@ -1,17 +1,17 @@
 {
   "name": "scripts",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "devDependencies": {
-    "viem": "^1.2.9",
-    "ethers": "^5.0.0",
-    "@types/lodash": "^4.14.168",
-    "node-fetch": "^2.6.7",
-    "bignumber.js": "^9.1.1",
-    "lodash": "^4.17.21",
     "@pancakeswap/aptos-swap-sdk": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
-    "graphql-request": "^5.0.0"
+    "@types/lodash": "^4.14.168",
+    "bignumber.js": "^9.1.1",
+    "ethers": "^5.0.0",
+    "graphql-request": "^5.0.0",
+    "lodash": "^4.17.21",
+    "node-fetch": "^2.6.7",
+    "viem": "^1.10.9"
   }
 }

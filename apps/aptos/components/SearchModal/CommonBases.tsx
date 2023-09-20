@@ -20,7 +20,7 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
   display: flex;
   padding: 6px;
   align-items: center;
-  :hover {
+  &:hover {
     cursor: ${({ disable }) => !disable && 'pointer'};
     background-color: ${({ theme, disable }) => !disable && theme.colors.background};
   }

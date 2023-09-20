@@ -61,14 +61,14 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   const { chainId } = useActiveChainId()
 
   const { data: token0Address } = useContractRead({
-    abi: pairContract.abi,
+    abi: pairContract?.abi,
     address: v2PairAddress,
     functionName: 'token0',
     chainId,
   })
 
   const { data: token1Address } = useContractRead({
-    abi: pairContract.abi,
+    abi: pairContract?.abi,
     address: v2PairAddress,
     functionName: 'token1',
     chainId,
@@ -77,7 +77,7 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   const token0 = useToken(token0Address)
   const token1 = useToken(token1Address)
 
-  const [, pair] = useV2Pair(token0, token1)
+  const [, pair] = useV2Pair(token0 ?? undefined, token1 ?? undefined)
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
   if (!token0Address || !token1Address || !pair || !totalSupply)
@@ -90,8 +90,8 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   return (
     <V2PairMigrate
       v2PairAddress={v2PairAddress}
-      token0={token0}
-      token1={token1}
+      token0={token0!}
+      token1={token1!}
       pair={pair}
       v2LPTotalSupply={totalSupply}
     />
@@ -236,7 +236,7 @@ function V2PairMigrate({
 
   useEffect(() => {
     if (feeAmount) {
-      onBothRangeInput({ leftTypedValue: null, rightTypedValue: null })
+      onBothRangeInput({ leftTypedValue: undefined, rightTypedValue: undefined })
     }
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -251,7 +251,7 @@ function V2PairMigrate({
     if (
       minPrice &&
       typeof minPrice === 'string' &&
-      !leftRangeTypedValue &&
+      leftRangeTypedValue &&
       typeof leftRangeTypedValue === 'object' &&
       !leftRangeTypedValue.equalTo(minPrice)
     ) {
@@ -260,7 +260,7 @@ function V2PairMigrate({
     if (
       maxPrice &&
       typeof maxPrice === 'string' &&
-      !rightRangeTypedValue &&
+      rightRangeTypedValue &&
       typeof rightRangeTypedValue === 'object' &&
       !rightRangeTypedValue.equalTo(maxPrice)
     ) {
@@ -359,16 +359,16 @@ function V2PairMigrate({
     s: `0x${string}`
     deadline: number
   } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(
+  const { approvalState, approveCallback } = useApproveCallback(
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
-    V2_ROUTER_ADDRESS[chainId],
+    chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
   )
 
   const pairContractRead = usePairContract(pair?.liquidityToken?.address)
 
   const approve = useCallback(async () => {
     // try to gather a signature for permission
-    const nonce = await pairContractRead.read.nonces([account])
+    const nonce = await pairContractRead?.read.nonces([account!])
 
     const EIP712Domain = [
       { name: 'name', type: 'string' },
@@ -393,7 +393,7 @@ function V2PairMigrate({
       owner: account,
       spender: migrator.address,
       value: pairBalance.toString(),
-      nonce: toHex(nonce),
+      nonce: toHex(nonce ?? 0),
       deadline: Number(deadline),
     }
 
@@ -493,8 +493,8 @@ function V2PairMigrate({
             fee: feeAmount,
             tickLower,
             tickUpper,
-            amount0Min: v3Amount0Min,
-            amount1Min: v3Amount1Min,
+            amount0Min: v3Amount0Min ?? 0n,
+            amount1Min: v3Amount1Min ?? 0n,
             recipient: account,
             deadline: deadlineToUse,
             refundAsETH: true, // hard-code this for now
@@ -506,7 +506,7 @@ function V2PairMigrate({
     setConfirmingMigration(true)
 
     migrator.estimateGas
-      .multicall([data], { account: migrator.account, value: 0n })
+      .multicall([data], { account: migrator.account!, value: 0n })
       .then((gasEstimate) => {
         return migrator.write
           .multicall([data], { gas: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
@@ -644,8 +644,8 @@ function V2PairMigrate({
                 setBaseToken((base) => (base.equals(token0) ? token1 : token0))
                 if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
                   onBothRangeInput({
-                    leftTypedValue: (invertPrice ? priceLower : priceUpper?.invert()) ?? null,
-                    rightTypedValue: (invertPrice ? priceUpper : priceLower?.invert()) ?? null,
+                    leftTypedValue: (invertPrice ? priceLower : priceUpper?.invert()) ?? undefined,
+                    rightTypedValue: (invertPrice ? priceUpper : priceLower?.invert()) ?? undefined,
                   })
                 }
               }}
@@ -807,20 +807,20 @@ function V2PairMigrate({
             {!isSuccessfullyMigrated && !isMigrationPending ? (
               <AutoColumn gap="md" style={{ flex: '1' }}>
                 <CommitButton
-                  variant={approval === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
+                  variant={approvalState === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
                   disabled={
-                    approval !== ApprovalState.NOT_APPROVED ||
+                    approvalState !== ApprovalState.NOT_APPROVED ||
                     signatureData !== null ||
                     invalidRange ||
                     confirmingMigration
                   }
                   onClick={approve}
                 >
-                  {approval === ApprovalState.PENDING ? (
+                  {approvalState === ApprovalState.PENDING ? (
                     <Dots>
                       <Trans>Enabling</Trans>
                     </Dots>
-                  ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
+                  ) : approvalState === ApprovalState.APPROVED || signatureData !== null ? (
                     <Trans>Enabled</Trans>
                   ) : (
                     <Trans>Enable</Trans>
@@ -833,7 +833,7 @@ function V2PairMigrate({
                 variant={isSuccessfullyMigrated ? 'success' : 'primary'}
                 disabled={
                   invalidRange ||
-                  (approval !== ApprovalState.APPROVED && signatureData === null) ||
+                  (approvalState !== ApprovalState.APPROVED && signatureData === null) ||
                   confirmingMigration ||
                   isMigrationPending ||
                   isSuccessfullyMigrated

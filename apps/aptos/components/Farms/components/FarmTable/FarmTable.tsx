@@ -1,6 +1,7 @@
 import { useRef, useMemo } from 'react'
 import { styled } from 'styled-components'
-import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
+import { RowType } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -77,7 +78,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
 
   const columns = useMemo(
     () =>
-      DesktopColumnSchema.map((column) => ({
+      FarmWidget.DesktopColumnSchema.map((column) => ({
         id: column.id,
         name: column.name,
         label: column.label,

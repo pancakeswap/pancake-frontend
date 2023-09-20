@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, TradeType } from '@pancakeswap/sdk'
+import { TradeType } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -46,7 +47,7 @@ export class TransactionRejectedError extends Error {}
 export default function useSendSwapTransaction(
   account?: Address,
   chainId?: number,
-  trade?: SmartRouterTrade<TradeType>, // trade to execute, required
+  trade?: SmartRouterTrade<TradeType> | null | undefined,
   swapCalls: SwapCall[] = [],
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()

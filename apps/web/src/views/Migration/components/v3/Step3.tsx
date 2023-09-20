@@ -2,7 +2,7 @@ import { useTheme } from '@pancakeswap/hooks'
 import { AtomBox, AutoColumn, AutoRow, Heading, LinkExternal, Text, Chart } from '@pancakeswap/uikit'
 import { format } from 'd3'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { LightCard } from 'components/Card'
@@ -64,7 +64,7 @@ export function Step3() {
   const { theme } = useTheme()
   const { chainId } = useActiveChainId()
 
-  const [token0, token1] = MOCK_TOKENS[chainId] || MOCK_TOKENS[ChainId.BSC]
+  const [token0, token1] = chainId && MOCK_TOKENS[chainId] ? MOCK_TOKENS[chainId] : MOCK_TOKENS[ChainId.BSC]
 
   const formState = useV3FormState()
 

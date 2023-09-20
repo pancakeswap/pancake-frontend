@@ -10,21 +10,21 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c9 {
+      .c10 {
       align-self: center;
       fill: var(--colors-primary);
       color: var(--colors-primary);
       flex-shrink: 0;
     }
 
-    .c5 {
+    .c6 {
       color: var(--colors-text);
       font-weight: 600;
       line-height: 1.5;
       font-size: 16px;
     }
 
-    .c7 {
+    .c8 {
       position: relative;
       align-items: center;
       border: 0;
@@ -48,19 +48,19 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c7 :focus-visible {
+    .c8:focus-visible {
       outline: none;
       box-shadow: var(--shadows-focus);
     }
 
-    .c7:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+    .c8:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       transform: translateY(1px);
       box-shadow: none;
     }
 
-    .c7:disabled,
-    .c7.pancake-button--disabled {
+    .c8:disabled,
+    .c8.pancake-button--disabled {
       background-color: var(--colors-backgroundDisabled);
       border-color: var(--colors-backgroundDisabled);
       box-shadow: none;
@@ -68,7 +68,7 @@ it("renders correctly", () => {
       cursor: not-allowed;
     }
 
-    .c8 {
+    .c9 {
       padding: 2px;
       width: 48px;
     }
@@ -79,7 +79,14 @@ it("renders correctly", () => {
       min-width: 320px;
     }
 
-    .c10 {
+    .c2 {
+      background: transparent;
+      padding: 12px 24px;
+    }
+
+    .c11 {
+      position: relative;
+      top: 0px;
       padding: 24px;
     }
 
@@ -87,13 +94,13 @@ it("renders correctly", () => {
       display: flex;
     }
 
-    .c6 {
+    .c7 {
       font-size: 20px;
       font-weight: 600;
       line-height: 1.1;
     }
 
-    .c2 {
+    .c4 {
       align-items: center;
       background: transparent;
       border-bottom: 1px solid var(--colors-cardBorder);
@@ -101,12 +108,12 @@ it("renders correctly", () => {
       padding: 12px 24px;
     }
 
-    .c4 {
+    .c5 {
       align-items: center;
       flex: 1;
     }
 
-    .c11 {
+    .c12 {
       flex-direction: column;
       overflow-y: auto;
       overflow-x: hidden;
@@ -129,31 +136,31 @@ it("renders correctly", () => {
     }
 
     @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
-      .c9 {
+      .c10 {
         filter: none!important;
       }
     }
 
     @media (hover: hover) {
-      .c7:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+      .c8:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
         opacity: 0.65;
       }
     }
 
     @media screen and (min-width: 968px) {
-      .c6 {
+      .c7 {
         font-size: 20px;
       }
     }
 
     @media screen and (min-width: 852px) {
-      .c2 {
+      .c4 {
         background: transparent;
       }
     }
 
     @media screen and (min-width: 852px) {
-      .c11 {
+      .c12 {
         display: flex;
         max-height: 90vh;
       }
@@ -177,26 +184,25 @@ it("renders correctly", () => {
           class="c1"
         >
           <div
-            background="transparent"
-            class="c2"
+            class="c2 c3 c4"
           >
             <div
-              class="c3 c4"
+              class="c3 c5"
             >
               <h2
-                class="c5 c6"
+                class="c6 c7"
               >
                 Title
               </h2>
             </div>
             <button
               aria-label="Close the dialog"
-              class="c7 c8"
+              class="c8 c9"
               scale="md"
               variant="text"
             >
               <svg
-                class="c9"
+                class="c10"
                 color="primary"
                 viewBox="0 0 24 24"
                 width="20px"
@@ -210,7 +216,7 @@ it("renders correctly", () => {
             </button>
           </div>
           <div
-            class="c10 c3 c11"
+            class="c11 c3 c12"
             style="align-items: normal;"
           >
             body

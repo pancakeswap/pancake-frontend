@@ -34,6 +34,7 @@ import {
   getTradingRewardTopTradesAddress,
   getVCakeAddress,
   getRevenueSharingPoolAddress,
+  getAnniversaryAchievementAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -51,7 +52,7 @@ import {
   cakeVaultV2ABI,
   getIfoCreditAddressContract as getIfoCreditAddressContract_,
 } from '@pancakeswap/pools'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { sidABI } from 'config/abi/SID'
 import { SIDResolverABI } from 'config/abi/SIDResolver'
@@ -81,6 +82,7 @@ import { tradingRewardABI } from 'config/abi/tradingReward'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
+import { anniversaryAchievementABI } from 'config/abi/anniversaryAchievement'
 import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
 import { getViemClients, viemClients } from 'utils/viem'
 import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
@@ -406,6 +408,15 @@ export const getRevenueSharingPoolContract = (signer?: WalletClient, chainId?: n
   return getContract({
     abi: revenueSharingPoolABI,
     address: getRevenueSharingPoolAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getAnniversaryAchievementContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: anniversaryAchievementABI,
+    address: getAnniversaryAchievementAddress(chainId),
     signer,
     chainId,
   })

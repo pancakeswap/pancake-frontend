@@ -1,11 +1,11 @@
 import { Bet, BetPosition } from 'state/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 
-export const formatUsd = (usd: number, displayedDecimals: number) => {
+export const formatUsd = (usd: number | undefined, displayedDecimals: number) => {
   return `$${formatNumber(usd || 0, displayedDecimals, displayedDecimals)}`
 }
 
-export const formatBnb = (bnb: number, displayedDecimals: number) => {
+export const formatBnb = (bnb: number | undefined, displayedDecimals: number) => {
   return bnb
     ? bnb.toLocaleString(undefined, {
         minimumFractionDigits: displayedDecimals,

@@ -1,6 +1,7 @@
 import { ContextData, TranslationKey } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
+import { ChainId } from '@pancakeswap/chains'
+
 
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
 export const DEFAULT_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']

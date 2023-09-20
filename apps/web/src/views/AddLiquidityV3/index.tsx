@@ -130,15 +130,15 @@ export function UniversalAddLiquidity({
         // not ideal, but for now clobber the other if the currency ids are equal
         return [currencyIdNew, undefined]
       }
-      // prevent weth + eth
-      const isETHOrWETHNew =
+      // prevent wnative + native
+      const isNATIVEOrWNATIVENew =
         currencyNew?.isNative || (chainId !== undefined && currencyIdNew === WNATIVE[chainId]?.address)
-      const isETHOrWETHOther =
+      const isNATIVEOrWNATIVEOther =
         currencyIdOther !== undefined &&
         (currencyIdOther === NATIVE[chainId]?.symbol ||
           (chainId !== undefined && getAddress(currencyIdOther) === WNATIVE[chainId]?.address))
 
-      if (isETHOrWETHNew && isETHOrWETHOther) {
+      if (isNATIVEOrWNATIVENew && isNATIVEOrWNATIVEOther) {
         return [currencyIdNew, undefined]
       }
 

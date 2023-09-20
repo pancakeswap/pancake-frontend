@@ -1,4 +1,6 @@
-import { Button, AutoRenewIcon, Skeleton, Pool } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
 import { Token } from '@pancakeswap/sdk'

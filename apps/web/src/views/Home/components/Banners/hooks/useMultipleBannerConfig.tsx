@@ -12,7 +12,6 @@ import { ZksyncBanner } from '../ZksyncBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import LineaBanner from '../LineaBanner'
-import MoonPayBanner from '../MoonPayBanner'
 import BaseBanner from '../BaseBanner'
 
 interface IBannerConfig {
@@ -39,15 +38,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <MoonPayBanner /> },
       { shouldRender: true, banner: <BaseBanner /> },
-      { shouldRender: true, banner: <LineaBanner /> },
-      { shouldRender: true, banner: <ArbitrumOneBanner /> },
-      { shouldRender: true, banner: <ZksyncBanner /> },
-      { shouldRender: true, banner: <PolygonZkEvmBanner /> },
-      { shouldRender: true, banner: <GalxeTraverseBanner /> },
-      { shouldRender: true, banner: <TradingRewardBanner /> },
-      { shouldRender: true, banner: <LiquidStakingBanner /> },
       {
         shouldRender: isRenderIFOBanner,
         banner: <IFOBanner />,
@@ -55,6 +46,13 @@ export const useMultipleBannerConfig = () => {
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <LineaBanner /> },
+      { shouldRender: true, banner: <ArbitrumOneBanner /> },
+      { shouldRender: true, banner: <ZksyncBanner /> },
+      { shouldRender: true, banner: <PolygonZkEvmBanner /> },
+      { shouldRender: true, banner: <GalxeTraverseBanner /> },
+      { shouldRender: true, banner: <TradingRewardBanner /> },
+      { shouldRender: true, banner: <LiquidStakingBanner /> },
       {
         shouldRender: isRenderCompetitionBanner,
         banner: <CompetitionBanner />,

@@ -2,7 +2,9 @@ import { styled } from 'styled-components'
 import { useMemo } from 'react'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
-import { Flex, Text, Box, useTooltip, HelpIcon, BalanceWithLoading, Pool, ButtonVariant } from '@pancakeswap/uikit'
+import { Flex, Text, Box, useTooltip, HelpIcon, BalanceWithLoading, ButtonVariant } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'

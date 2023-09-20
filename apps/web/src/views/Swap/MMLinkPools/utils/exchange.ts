@@ -20,7 +20,7 @@ export function useMMSwapContract() {
 // computes price breakdown for the trade
 export function computeTradePriceBreakdown(trade?: SmartRouterTrade<TradeType> | null): {
   priceImpactWithoutFee: Percent | undefined
-  realizedLPFee: CurrencyAmount<Currency> | undefined | null
+  lpFeeAmount: CurrencyAmount<Currency> | undefined | null
 } {
   // for each hop in our trade, take away the x*y=k price impact from 0.3% fees
   // e.g. for 3 tokens/2 hops: 1 - ((1 - .03) * (1-.03))
@@ -47,7 +47,7 @@ export function computeTradePriceBreakdown(trade?: SmartRouterTrade<TradeType> |
     trade &&
     (isStablePair ? trade.inputAmount.multiply(stableFeeRate) : trade.inputAmount.multiply(feeRate))
 
-  return { priceImpactWithoutFee: priceImpactWithoutFeePercent, realizedLPFee: realizedLPFeeAmount }
+  return { priceImpactWithoutFee: priceImpactWithoutFeePercent, lpFeeAmount: realizedLPFeeAmount }
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
@@ -102,7 +102,7 @@ export const parseMMParameter = (
     networkId: chainId,
     takerSideToken: inputCurrency?.isToken
       ? inputCurrency.address
-      : isForRFQ // RFQ needs native address and order book use WETH to get quote
+      : isForRFQ // RFQ needs native address and order book use WNATIVE to get quote
       ? NATIVE_CURRENCY_ADDRESS
       : inputCurrency.wrapped.address,
     makerSideToken: outputCurrency?.isToken

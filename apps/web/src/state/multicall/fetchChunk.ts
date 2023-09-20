@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { getViemClients } from 'utils/viem'
 import { multicallABI } from 'config/abi/Multicall'
 import { getMulticallAddress } from 'utils/addressHelpers'
@@ -10,6 +10,7 @@ const l2DifferentBlockNumberChains = [
   ChainId.ZKSYNC_TESTNET,
   ChainId.ARBITRUM_ONE,
   ChainId.ARBITRUM_GOERLI,
+  ChainId.OPBNB_TESTNET,
 ]
 
 export type FetchChunkResult = ReturnType<typeof fetchChunk>
@@ -26,8 +27,8 @@ export async function fetchChunk(
   minBlockNumber: number,
 ): Promise<{ results: any[]; blockNumber: number }> {
   console.debug('Fetching chunk', chainId, chunk, minBlockNumber)
-  let resultsBlockNumber: bigint
-  let returnData
+  let resultsBlockNumber: bigint | undefined
+  let returnData: any
   const client = getViemClients({ chainId })
   try {
     // prettier-ignore
@@ -69,7 +70,7 @@ export async function fetchChunk(
   const l2DifferentBlockNumber = l2DifferentBlockNumberChains.includes(chainId)
 
   if (Number(resultsBlockNumber) < minBlockNumber && !l2DifferentBlockNumber) {
-    console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
+    console.debug(`Fetched results for old block number: ${resultsBlockNumber?.toString()} vs. ${minBlockNumber}`)
   }
 
   return {

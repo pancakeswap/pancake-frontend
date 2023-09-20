@@ -1,5 +1,5 @@
 import { useProfile } from 'state/profile/hooks'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { Token } from '@pancakeswap/sdk'
 

@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { styled } from 'styled-components'
 import {
   Button,
@@ -18,7 +19,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { getBlockExploreLink, getBlockExploreName } from '../../utils'
+import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import AddToWalletButton, { AddToWalletTextOptions } from '../AddToWallet/AddToWalletButton'
 
 const Wrapper = styled.div`

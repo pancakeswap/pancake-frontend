@@ -118,7 +118,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   const { stableSwapConfig, stableSwapContract } = useContext(StableConfigContext)
 
-  const [approval, approveCallback] = useApproveCallback(
+  const { approvalState, approveCallback } = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
     needUnwrapped ? nativeHelperContract?.address : stableSwapConfig?.stableSwapAddress,
   )
@@ -171,7 +171,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
     let methodNames: string[]
     let args: Array<string | string[] | number | boolean>
     // we have approval, use normal remove liquidity
-    if (approval === ApprovalState.APPROVED) {
+    if (approvalState === ApprovalState.APPROVED) {
       methodNames = ['remove_liquidity']
       if (needUnwrapped) {
         args = [
@@ -319,7 +319,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       allowedSlippage={allowedSlippage}
       onRemove={onRemove}
       pendingText={pendingText}
-      approval={approval}
+      approval={approvalState}
       tokenA={tokenA}
       tokenB={tokenB}
       liquidityErrorMessage={liquidityErrorMessage}
@@ -545,15 +545,15 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
           ) : (
             <RowBetween>
               <Button
-                variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
-                onClick={approveCallback}
-                disabled={approval !== ApprovalState.NOT_APPROVED}
+                variant={approvalState === ApprovalState.APPROVED ? 'success' : 'primary'}
+                onClick={() => approveCallback()}
+                disabled={approvalState !== ApprovalState.NOT_APPROVED}
                 width="100%"
                 mr="0.5rem"
               >
-                {approval === ApprovalState.PENDING ? (
+                {approvalState === ApprovalState.PENDING ? (
                   <Dots>{t('Enabling')}</Dots>
-                ) : approval === ApprovalState.APPROVED ? (
+                ) : approvalState === ApprovalState.APPROVED ? (
                   t('Enabled')
                 ) : (
                   t('Enable')
@@ -574,7 +574,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                   onPresentRemoveLiquidity()
                 }}
                 width="100%"
-                disabled={!isValid || approval !== ApprovalState.APPROVED}
+                disabled={!isValid || approvalState !== ApprovalState.APPROVED}
               >
                 {error || t('Remove')}
               </Button>

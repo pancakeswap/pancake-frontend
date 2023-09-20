@@ -1,18 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
-import {
-  Box,
-  Farm as FarmUI,
-  FarmTableEarnedProps,
-  FarmTableFarmTokenInfoProps,
-  FarmTableLiquidityProps,
-  FarmTableMultiplierProps,
-  Flex,
-  Skeleton,
-  useMatchBreakpoints,
-  MobileColumnSchema,
-  DesktopColumnSchema,
-} from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { createElement, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -22,15 +11,16 @@ import ActionPanel from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
 
-const { FarmAuctionTag, CoreTag } = FarmUI.Tags
-const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
+const { MobileColumnSchema, DesktopColumnSchema } = FarmWidget
+const { FarmAuctionTag, CoreTag } = FarmWidget.Tags
+const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmWidget.FarmTable
 
 export interface RowProps {
   apr: AprProps
-  farm: FarmTableFarmTokenInfoProps
-  earned: FarmTableEarnedProps
-  multiplier: FarmTableMultiplierProps
-  liquidity: FarmTableLiquidityProps
+  farm: FarmWidget.FarmTableFarmTokenInfoProps
+  earned: FarmWidget.FarmTableEarnedProps
+  multiplier: FarmWidget.FarmTableMultiplierProps
+  liquidity: FarmWidget.FarmTableLiquidityProps
   details: FarmWithStakedValue
   type: 'core' | 'community'
   initialActivity?: boolean

@@ -13,7 +13,7 @@ const TextWrapper = styled.div<{
   color: ${({ theme, link, color }) => (link ? theme.colors.primary : color ?? theme.colors.text)};
   font-size: ${({ fontSize }) => fontSize ?? 'inherit'};
 
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 

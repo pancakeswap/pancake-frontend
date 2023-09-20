@@ -10,7 +10,7 @@ import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
 import { Address } from 'wagmi'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 const potteryDrawAddress = getPotteryDrawAddress()
 

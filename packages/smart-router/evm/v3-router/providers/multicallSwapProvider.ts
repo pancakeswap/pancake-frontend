@@ -1,7 +1,8 @@
 /* eslint-disable no-console, camelcase, @typescript-eslint/no-non-null-assertion */
-import { ChainId } from '@pancakeswap/sdk'
-import { encodeFunctionData, PublicClient, decodeFunctionResult, Address } from 'viem'
+import { BigintIsh, ChainId } from '@pancakeswap/sdk'
+import { encodeFunctionData, PublicClient, decodeFunctionResult } from 'viem'
 import stats from 'stats-lite'
+import { multicallByGasLimit } from '@pancakeswap/multicall'
 
 import IMulticallABI from '../../abis/InterfaceMulticall'
 import {
@@ -12,35 +13,15 @@ import {
   Result,
 } from './multicallProvider'
 
-const PANCAKE_MULTICALL_ADDRESSES = {
-  [ChainId.ETHEREUM]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
-  [ChainId.GOERLI]: '0x3D00CdB4785F0ef20C903A13596e0b9B2c652227',
-  [ChainId.BSC]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
-  [ChainId.BSC_TESTNET]: '0x3D00CdB4785F0ef20C903A13596e0b9B2c652227',
-  [ChainId.ARBITRUM_ONE]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
-  [ChainId.ARBITRUM_GOERLI]: '0x7a7e95c0b4d0Be710648C6f773ad0499923560bA',
-  [ChainId.POLYGON_ZKEVM]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
-  [ChainId.POLYGON_ZKEVM_TESTNET]: '0x5DCC00121b4a481D8EDF9782Df6c6CF398AF20B8',
-  [ChainId.ZKSYNC]: '0x2a76b93B9Cd441AE8aDA529e0e95826e00556351',
-  [ChainId.ZKSYNC_TESTNET]: '0xA47DDFb5D068bFaa8ceb7476A60d5C3Fb87E58D9',
-  [ChainId.LINEA]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
-  [ChainId.LINEA_TESTNET]: '0x32226588378236Fd0c7c4053999F88aC0e5cAc77',
-  [ChainId.OPBNB_TESTNET]: '0x6cc56b20bf8C4FfD58050D15AbA2978A745CC691',
-  [ChainId.BASE]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
-  [ChainId.BASE_TESTNET]: '0xEDd6EC404A7eeEDae3309A1607fDF72AEDd923FB',
-  [ChainId.SCROLL_SEPOLIA]: '0xEDd6EC404A7eeEDae3309A1607fDF72AEDd923FB',
-} as const satisfies Record<ChainId, Address>
-
 export type PancakeMulticallConfig = {
-  gasLimitPerCallOverride?: number
-}
+  gasLimitPerCall?: BigintIsh
 
-function isPromise<T>(p: any): p is Promise<T> {
-  if (typeof p === 'object' && typeof p.then === 'function') {
-    return true
-  }
+  // Total gas limit of the multicall happens in a single rpc call
+  gasLimit?: BigintIsh
 
-  return false
+  gasBuffer?: BigintIsh
+
+  dropUnexecutedCalls?: boolean
 }
 
 /**
@@ -57,12 +38,6 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
 
   constructor(protected chainId: ChainId, protected provider: PublicClient, protected gasLimitPerCall = 1_000_000) {
     super()
-    const multicallAddress = PANCAKE_MULTICALL_ADDRESSES[this.chainId]
-
-    if (!multicallAddress) {
-      throw new Error(`No address for Pancakeswap Multicall Contract on chain id: ${chainId}`)
-    }
-
     this.provider = provider
   }
 
@@ -71,10 +46,11 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
   ): Promise<{
     blockNumber: bigint
     results: Result<TReturn>[]
+    approxGasUsedPerSuccessCall: number
+    approxGasUsedPerFailCall: number
   }> {
-    const { addresses, functionName, functionParams, providerConfig, abi } = params
-
-    const blockNumberOverride = providerConfig?.blockNumber ?? undefined
+    const { addresses, functionName, functionParams, abi, additionalConfig } = params
+    const gasLimitPerCall = additionalConfig?.gasLimitPerCall ?? this.gasLimitPerCall
 
     const callData = encodeFunctionData({
       abi,
@@ -86,64 +62,61 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       return {
         target: address,
         callData,
-        gasLimit: BigInt(this.gasLimitPerCall),
+        gasLimit: BigInt(gasLimitPerCall),
       }
     })
 
     // console.log({ calls }, `About to multicall for ${functionName} across ${addresses.length} addresses`)
 
-    const {
-      result: [blockNumber, aggregateResults],
-    } = await this.provider.simulateContract({
-      abi: IMulticallABI,
-      address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
-      functionName: 'multicall',
-      args: [calls],
-      blockNumber: blockNumberOverride
-        ? isPromise(blockNumberOverride)
-          ? BigInt(Number(await blockNumberOverride))
-          : BigInt(Number(blockNumberOverride))
-        : undefined,
+    const { results: result, blockNumber } = await multicallByGasLimit(calls, {
+      gasLimit: additionalConfig?.gasLimit,
+      gasBuffer: additionalConfig?.gasBuffer,
+      dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
+      chainId: this.chainId,
+      client: this.provider,
     })
-
-    // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
-    //   blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
-    // })
 
     const results: Result<TReturn>[] = []
 
-    for (let i = 0; i < aggregateResults.length; i++) {
-      const { success, returnData } = aggregateResults[i]!
-
-      // Return data "0x" is sometimes returned for invalid calls.
-      if (!success || returnData.length <= 2) {
-        // console.log(
-        //   { result: aggregateResults[i] },
-        //   `Invalid result calling ${functionName} on address ${addresses[i]}`,
-        // )
+    const gasUsedForSuccess: number[] = []
+    const gasUsedForFail: number[] = []
+    for (const { result: callResult, success, gasUsed } of result) {
+      if (callResult === '0x' || !success) {
         results.push({
           success: false,
-          returnData,
+          returnData: callResult,
         })
+        gasUsedForFail.push(Number(gasUsed))
         continue
       }
-
-      results.push({
-        success: true,
-        result: decodeFunctionResult({
-          abi,
-          functionName,
-          data: returnData,
-        }) as TReturn,
-      })
+      try {
+        results.push({
+          success: true,
+          result: decodeFunctionResult({
+            abi,
+            functionName,
+            data: callResult as `0x${string}`,
+          }) as TReturn,
+        })
+        gasUsedForSuccess.push(Number(gasUsed))
+      } catch (e) {
+        results.push({
+          success: false,
+          returnData: callResult,
+        })
+      }
     }
 
     // console.log(
     //   { results },
     //   `Results for multicall on ${functionName} across ${addresses.length} addresses as of block ${blockNumber}`,
     // )
-
-    return { blockNumber, results }
+    return {
+      blockNumber,
+      results,
+      approxGasUsedPerSuccessCall: stats.percentile(gasUsedForSuccess, 99),
+      approxGasUsedPerFailCall: stats.percentile(gasUsedForFail, 99),
+    }
   }
 
   public async callSameFunctionOnContractWithMultipleParams<TFunctionParams extends any[] | undefined, TReturn>(
@@ -152,12 +125,10 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     blockNumber: bigint
     results: Result<TReturn>[]
     approxGasUsedPerSuccessCall: number
+    approxGasUsedPerFailCall: number
   }> {
-    const { address, functionName, functionParams, additionalConfig, providerConfig, abi } = params
-
-    const gasLimitPerCall = additionalConfig?.gasLimitPerCallOverride ?? this.gasLimitPerCall
-    const blockNumberOverride = providerConfig?.blockNumber ?? undefined
-
+    const { address, functionName, functionParams, abi, additionalConfig } = params
+    const gasLimitPerCall = additionalConfig?.gasLimitPerCall ?? this.gasLimitPerCall
     const calls = functionParams.map((functionParam) => {
       const callData = encodeFunctionData({
         abi,
@@ -177,55 +148,50 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     //   `About to multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params`,
     // )
 
-    const {
-      result: [blockNumber, aggregateResults],
-    } = await this.provider.simulateContract({
-      abi: IMulticallABI,
-      address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
-      functionName: 'multicall',
-      args: [calls],
-      blockNumber: blockNumberOverride ? BigInt(Number(blockNumberOverride)) : undefined,
+    const { results: result, blockNumber } = await multicallByGasLimit(calls, {
+      gasLimit: additionalConfig?.gasLimit,
+      gasBuffer: additionalConfig?.gasBuffer,
+      dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
+      chainId: this.chainId,
+      client: this.provider,
     })
 
     const results: Result<TReturn>[] = []
 
     const gasUsedForSuccess: number[] = []
-    for (let i = 0; i < aggregateResults.length; i++) {
-      const { success, returnData, gasUsed } = aggregateResults[i]!
-
-      // Return data "0x" is sometimes returned for invalid pools.
-      if (!success || returnData.length <= 2) {
-        // console.log(
-        //   { result: aggregateResults[i] },
-        //   `Invalid result calling ${functionName} with params ${functionParams[i]}`,
-        // )
+    const gasUsedForFail: number[] = []
+    for (const { result: callResult, success, gasUsed } of result) {
+      if (callResult === '0x' || !success) {
         results.push({
           success: false,
-          returnData,
+          returnData: callResult,
         })
+        gasUsedForFail.push(Number(gasUsed))
         continue
       }
-
-      gasUsedForSuccess.push(Number(gasUsed))
-
-      results.push({
-        success: true,
-        result: decodeFunctionResult({
-          abi,
-          functionName,
-          data: returnData,
-        }) as TReturn,
-      })
+      try {
+        results.push({
+          success: true,
+          result: decodeFunctionResult({
+            abi,
+            functionName,
+            data: callResult as `0x${string}`,
+          }) as TReturn,
+        })
+        gasUsedForSuccess.push(Number(gasUsed))
+      } catch (e) {
+        results.push({
+          success: false,
+          returnData: callResult,
+        })
+      }
     }
 
-    // console.log(
-    //   { results, functionName, address },
-    //   `Results for multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params. Results as of block ${blockNumber}`,
-    // )
     return {
       blockNumber,
       results,
       approxGasUsedPerSuccessCall: stats.percentile(gasUsedForSuccess, 99),
+      approxGasUsedPerFailCall: stats.percentile(gasUsedForFail, 99),
     }
   }
 
@@ -235,11 +201,11 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     blockNumber: bigint
     results: Result<TReturn>[]
     approxGasUsedPerSuccessCall: number
+    approxGasUsedPerFailCall: number
   }> {
-    const { address, functionNames, functionParams, additionalConfig, providerConfig, abi } = params
+    const { address, functionNames, functionParams, additionalConfig, abi } = params
 
-    const gasLimitPerCall = additionalConfig?.gasLimitPerCallOverride ?? this.gasLimitPerCall
-    const blockNumberOverride = providerConfig?.blockNumber ?? undefined
+    const gasLimitPerCall = additionalConfig?.gasLimitPerCall ?? this.gasLimitPerCall
 
     const calls = functionNames.map((functionName, i) => {
       const callData = encodeFunctionData({
@@ -260,59 +226,50 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     //   `About to multicall for ${functionNames.length} functions at address ${address} with ${functionParams?.length} different sets of params`,
     // )
 
-    const {
-      result: [blockNumber, aggregateResults],
-    } = await this.provider.simulateContract({
-      abi: IMulticallABI,
-      address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
-      functionName: 'multicall',
-      args: [calls],
-      blockNumber: blockNumberOverride ? BigInt(Number(blockNumberOverride)) : undefined,
+    const { results: result, blockNumber } = await multicallByGasLimit(calls, {
+      gasLimit: additionalConfig?.gasLimit,
+      gasBuffer: additionalConfig?.gasBuffer,
+      dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
+      chainId: this.chainId,
+      client: this.provider,
     })
-    // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
-    //   blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
-    // })
 
     const results: Result<TReturn>[] = []
 
     const gasUsedForSuccess: number[] = []
-    for (let i = 0; i < aggregateResults.length; i++) {
-      const { success, returnData, gasUsed } = aggregateResults[i]!
-
-      // Return data "0x" is sometimes returned for invalid pools.
-      if (!success || returnData.length <= 2) {
-        // console.log(
-        //   { result: aggregateResults[i] },
-        //   `Invalid result calling ${functionNames[i]} with ${functionParams ? functionParams[i] : '0'} params`,
-        // )
+    const gasUsedForFail: number[] = []
+    for (const [i, { result: callResult, success, gasUsed }] of result.entries()) {
+      if (callResult === '0x' || !success) {
         results.push({
           success: false,
-          returnData,
+          returnData: callResult,
         })
+        gasUsedForFail.push(Number(gasUsed))
         continue
       }
-
-      gasUsedForSuccess.push(Number(gasUsed))
-
-      results.push({
-        success: true,
-        result: decodeFunctionResult({
-          abi,
-          data: returnData,
-          functionName: functionNames[i]!,
-        }) as TReturn,
-      })
+      try {
+        results.push({
+          success: true,
+          result: decodeFunctionResult({
+            abi,
+            functionName: functionNames[i],
+            data: callResult as `0x${string}`,
+          }) as TReturn,
+        })
+        gasUsedForSuccess.push(Number(gasUsed))
+      } catch (e) {
+        results.push({
+          success: false,
+          returnData: callResult,
+        })
+      }
     }
 
-    // console.log(
-    //   { results, functionNames, address },
-    //   `Results for multicall for ${functionNames.length} functions at address ${address} with ${functionParams ? functionParams.length : ' 0'
-    //   } different sets of params. Results as of block ${blockNumber}`,
-    // )
     return {
       blockNumber,
       results,
       approxGasUsedPerSuccessCall: stats.percentile(gasUsedForSuccess, 99),
+      approxGasUsedPerFailCall: stats.percentile(gasUsedForFail, 99),
     }
   }
 }

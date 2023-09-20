@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useAtom, useAtomValue } from 'jotai'
 import ceil from 'lodash/ceil'
 import max from 'lodash/max'
@@ -15,6 +15,7 @@ import { useAccount } from 'wagmi'
 import { fetchLimitOfMer, fetchLimitOfMoonpay, fetchLimitOfTransak } from 'views/BuyCrypto/hooks/useProviderQuotes'
 import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 type CurrencyLimits = {
   code: string

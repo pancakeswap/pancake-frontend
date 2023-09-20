@@ -61,7 +61,7 @@ export const StyledModalWrapper = styled(m.div)`
       }
     }
   }
-`;
+` as typeof m.div;
 
 export const Context = createContext<ModalsContext>({
   isOpen: false,

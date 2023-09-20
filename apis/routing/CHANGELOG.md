@@ -1,5 +1,70 @@
 # routing-api
 
+## 0.2.9
+
+### Patch Changes
+
+- Updated dependencies [e491ed2ba]
+  - @pancakeswap/smart-router@4.8.6
+
+## 0.2.8
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/smart-router@4.8.5
+  - @pancakeswap/sdk@5.4.2
+  - @pancakeswap/v3-sdk@3.4.3
+  - @pancakeswap/farms@1.0.16
+
+## 0.2.7
+
+### Patch Changes
+
+- Updated dependencies [4cca3f688]
+  - @pancakeswap/smart-router@4.8.4
+
+## 0.2.6
+
+### Patch Changes
+
+- Updated dependencies [51b77c787]
+- Updated dependencies [bb83caccc]
+  - @pancakeswap/farms@1.0.15
+  - @pancakeswap/smart-router@4.8.3
+  - @pancakeswap/v3-sdk@3.4.2
+
+## 0.2.5
+
+### Patch Changes
+
+- @pancakeswap/farms@1.0.14
+- @pancakeswap/smart-router@4.8.2
+- @pancakeswap/v3-sdk@3.4.1
+
+## 0.2.4
+
+### Patch Changes
+
+- @pancakeswap/smart-router@4.8.2
+
+## 0.2.3
+
+### Patch Changes
+
+- @pancakeswap/smart-router@4.8.1
+
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies [a784ca6ed]
+- Updated dependencies [e4bfa0a15]
+  - @pancakeswap/smart-router@4.8.0
+  - @pancakeswap/farms@1.0.13
+  - @pancakeswap/v3-sdk@3.4.1
+
 ## 0.2.1
 
 ### Patch Changes

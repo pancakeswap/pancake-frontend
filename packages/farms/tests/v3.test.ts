@@ -12,6 +12,7 @@ const mainnetFarms = [
   farmsV3ConfigChainMap[ChainId.ZKSYNC],
   farmsV3ConfigChainMap[ChainId.ARBITRUM_ONE],
   farmsV3ConfigChainMap[ChainId.LINEA],
+  farmsV3ConfigChainMap[ChainId.BASE],
 ]
 
 function hasDuplicates(array: any[]) {

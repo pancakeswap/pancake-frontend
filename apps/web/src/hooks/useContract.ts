@@ -48,9 +48,11 @@ import {
   getTradingRewardTopTradesContract,
   getVCakeContract,
   getRevenueSharingPoolContract,
+  getAnniversaryAchievementContract,
 } from 'utils/contractHelpers'
 
-import { ChainId, WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
 import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import { multicallABI } from 'config/abi/Multicall'
@@ -405,4 +407,10 @@ export const useRevenueSharingPoolContract = ({ chainId: chainId_ }: { chainId?:
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getRevenueSharingPoolContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
+}
+
+export const useAnniversaryAchievementContract = ({ chainId: chainId_ }: { chainId?: ChainId } = {}) => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getAnniversaryAchievementContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
 }

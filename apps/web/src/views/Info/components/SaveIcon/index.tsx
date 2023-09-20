@@ -7,7 +7,7 @@ const HoverIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.6;
   }

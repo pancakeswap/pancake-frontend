@@ -12,7 +12,7 @@ const CardWrapper = styled(NextLinkFromReactRouter)`
   display: inline-block;
   min-width: 190px;
   margin-left: 16px;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.6;
   }

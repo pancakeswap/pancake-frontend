@@ -6,13 +6,17 @@
   "files": [
     "lib"
   ],
-  "repository": "https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/eslint-config-pancake",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/eslint-config"
+  },
   "license": "MIT",
   "author": "RabbitDoge",
   "private": true,
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.22.1",

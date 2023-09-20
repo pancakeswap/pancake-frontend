@@ -25,11 +25,11 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
   const [index, setIndex] = useState(0)
   const [campaignPage, setCampaignPage] = useState(1)
   const [campaignMaxPage, setCampaignMaxPages] = useState(1)
-  const [campaignLeaderBoardList, setCampaignLeaderBoardList] = useState({
+  const [campaignLeaderBoardList, setCampaignLeaderBoardList] = useState(() => ({
     campaignId: '0',
     campaignStart: 0,
     campaignClaimTime: 0,
-  })
+  }))
 
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
@@ -83,7 +83,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
           setCampaignPage(1)
           setCampaignLeaderBoardList(currentLeaderBoard)
         } else {
-          setCampaignPage(2)
+          setCampaignPage((prevState) => (prevState === 1 ? 2 : prevState))
           sliceAllLeaderBoard()
         }
       } else {

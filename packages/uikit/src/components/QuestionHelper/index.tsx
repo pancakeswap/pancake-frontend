@@ -11,8 +11,8 @@ interface Props extends BoxProps {
 }
 
 const QuestionWrapper = styled.div`
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     opacity: 0.7;
   }
 `;

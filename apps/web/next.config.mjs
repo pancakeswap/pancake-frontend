@@ -53,10 +53,10 @@ const config = {
   },
   transpilePackages: [
     '@pancakeswap/farms',
-    '@pancakeswap/pools',
     '@pancakeswap/localization',
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
+    '@pancakeswap/widgets-internal',
   ],
   reactStrictMode: true,
   swcMinify: true,

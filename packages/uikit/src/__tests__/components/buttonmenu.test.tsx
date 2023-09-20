@@ -37,7 +37,7 @@ it("renders correctly", () => {
       color: var(--colors-invertedContrast);
     }
 
-    .c1 :focus-visible {
+    .c1:focus-visible {
       outline: none;
       box-shadow: var(--shadows-focus);
     }
@@ -97,6 +97,7 @@ it("renders correctly", () => {
 
     <div
         class="c0"
+        variant="primary"
       >
         <button
           class="c1"

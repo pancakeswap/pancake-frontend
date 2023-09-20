@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import useSWR from 'swr'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
 import CardArticle from 'components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
@@ -67,6 +67,7 @@ const AllArticle = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const [query, setQuery] = useState('')
+  const articlesWrapperEl = useRef<HTMLDivElement>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategories, setSelectCategoriesSelected] = useState(0)
   const [sortBy, setSortBy] = useState('createAt:desc')
@@ -86,11 +87,15 @@ const AllArticle = () => {
 
   useEffect(() => {
     if (router.isReady && router.query.category) {
-      const searchedTopic = categoriesData?.find(
+      const searchedTopic: Categories | undefined = categoriesData?.find(
         (category) => category.name.toLowerCase() === (router.query.category as string).toLowerCase(),
       )
       if (searchedTopic) {
         setSelectCategoriesSelected(searchedTopic.id)
+        window.scrollTo({
+          top: articlesWrapperEl?.current?.offsetTop,
+          behavior: 'smooth',
+        })
       }
     }
   }, [categoriesData, router.isReady, router.query.category])
@@ -126,7 +131,7 @@ const AllArticle = () => {
   }
 
   return (
-    <StyledArticleContainer id="all">
+    <StyledArticleContainer id="all" ref={articlesWrapperEl}>
       <Text
         bold
         color="secondary"

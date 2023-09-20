@@ -171,11 +171,11 @@ export default function AddStableLiquidity({
   const needWrapped = currencyA?.isNative || currencyB?.isNative
 
   // check whether the user has approved tokens for addling LPs
-  const [approvalA, approveACallback] = useApproveCallback(
+  const { approvalState: approvalA, approveCallback: approveACallback } = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
     needWrapped ? nativeHelperContract?.address : stableSwapContract?.address,
   )
-  const [approvalB, approveBCallback] = useApproveCallback(
+  const { approvalState: approvalB, approveCallback: approveBCallback } = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
     needWrapped ? nativeHelperContract?.address : stableSwapContract?.address,
   )

@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/farms",
-  "version": "1.0.12",
+  "version": "1.0.16",
   "sideEffects": false,
   "private": true,
   "scripts": {
@@ -13,15 +13,15 @@
     "wrangler": "2.15.0"
   },
   "dependencies": {
-    "viem": "^1.2.9",
-    "date-fns": "^2.29.3",
-    "bignumber.js": "^9.0.0",
-    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
-    "@pancakeswap/v3-sdk": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "lodash": "^4.17.21"
+    "@pancakeswap/v3-sdk": "workspace:*",
+    "bignumber.js": "^9.0.0",
+    "date-fns": "^2.29.3",
+    "lodash": "^4.17.21",
+    "viem": "^1.10.9"
   }
 }

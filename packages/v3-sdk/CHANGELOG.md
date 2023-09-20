@@ -1,5 +1,21 @@
 # @pancakeswap/v3-sdk
 
+## 3.4.3
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/sdk@5.4.2
+  - @pancakeswap/tokens@0.4.3
+
+## 3.4.2
+
+### Patch Changes
+
+- Updated dependencies [51b77c787]
+  - @pancakeswap/tokens@0.4.2
+
 ## 3.4.1
 
 ### Patch Changes

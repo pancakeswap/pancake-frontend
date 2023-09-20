@@ -1,4 +1,5 @@
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { PANCAKE_BSC_MM, PANCAKE_ETH_MM } from 'config/constants/lists'
 import { ConnectorNames } from 'config/wallet'
 import { ExtendEthereum } from 'global'

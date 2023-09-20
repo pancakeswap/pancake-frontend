@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 export const SUPPORT_ONLY_BSC = [ChainId.BSC]
 export const SUPPORT_FARMS = [
@@ -13,6 +13,7 @@ export const SUPPORT_FARMS = [
   ChainId.ARBITRUM_ONE,
   ChainId.ARBITRUM_GOERLI,
   ChainId.LINEA,
+  ChainId.BASE,
 ]
 export const SUPPORT_BUY_CRYPTO = [
   ChainId.BSC,

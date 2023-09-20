@@ -1,4 +1,5 @@
-import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
+import { RowType } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
 
@@ -13,6 +14,8 @@ import { getDisplayApr } from '../getDisplayApr'
 
 import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 import Row, { RowProps } from './Row'
+
+const { V3DesktopColumnSchema, DesktopColumnSchema } = FarmWidget
 
 export interface ITableProps {
   header?: ReactNode

@@ -8,10 +8,10 @@ import { ModalProps } from "./types";
 
 export const mobileFooterHeight = 73;
 
-export const ModalHeader = styled.div<{ background?: string }>`
+export const ModalHeader = styled(Flex)<{ background?: string; headerBorderColor?: string }>`
   align-items: center;
   background: transparent;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border-bottom: 1px solid ${({ theme, headerBorderColor }) => headerBorderColor || theme.colors.cardBorder};
   display: flex;
   padding: 12px 24px;
 
@@ -82,4 +82,4 @@ export const ModalContainer = styled(MotionBox)`
     border-radius: 32px;
     max-height: 100vh;
   }
-`;
+` as typeof MotionBox;

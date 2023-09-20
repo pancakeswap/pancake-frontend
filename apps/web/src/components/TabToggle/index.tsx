@@ -2,7 +2,7 @@ import { Box, BoxProps, Flex } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 const Wrapper = styled(Flex)`
-  overflow-x: scroll;
+  overflow-x: auto;
   padding: 0;
   border-radius: 24px 24px 0 0;
   ::-webkit-scrollbar {

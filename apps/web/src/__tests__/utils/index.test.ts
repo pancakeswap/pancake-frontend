@@ -1,4 +1,5 @@
-import { Token, ChainId, Percent, CurrencyAmount } from '@pancakeswap/sdk'
+import { Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { getBlockExploreLink, isAddress, calculateGasMargin } from 'utils'
 import { calculateSlippageAmount, basisPointsToPercent } from 'utils/exchange'
 import { ADDRESS_ZERO } from '@pancakeswap/v3-sdk'
@@ -23,7 +24,7 @@ describe('utils', () => {
 
   describe('#calculateSlippageAmount', () => {
     it('bounds are correct', () => {
-      const tokenAmount = CurrencyAmount.fromRawAmount(new Token(ChainId.BSC, ADDRESS_ZERO, 0), '100')
+      const tokenAmount = CurrencyAmount.fromRawAmount(new Token(ChainId.BSC, ADDRESS_ZERO, 0, 'TOKEN'), '100')
       expect(() => calculateSlippageAmount(tokenAmount, -1)).toThrow()
       expect(calculateSlippageAmount(tokenAmount, 0).map((bound) => bound.toString())).toEqual(['100', '100'])
       expect(calculateSlippageAmount(tokenAmount, 100).map((bound) => bound.toString())).toEqual(['99', '101'])

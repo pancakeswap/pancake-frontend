@@ -8,9 +8,10 @@ import {
   TokenPairImage,
   FlexGap,
   Skeleton,
-  Pool,
   useModal,
 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { vaultPoolConfig } from 'config/constants/pools'

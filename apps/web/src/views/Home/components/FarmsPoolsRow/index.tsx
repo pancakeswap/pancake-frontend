@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { styled } from 'styled-components'
 import { Token } from '@pancakeswap/sdk'
-import { Flex, Box, SwapVertIcon, IconButton, Pool } from '@pancakeswap/uikit'
+import { Flex, Box, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import useGetTopFarmsByApr from 'views/Home/hooks/useGetTopFarmsByApr'

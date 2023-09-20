@@ -82,8 +82,8 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     currentLanguage: { locale },
   } = useTranslation()
 
-  // flag for receiving WETH
-  const [receiveWETH, setReceiveWETH] = useState(false)
+  // flag for receiving WNATIVE
+  const [receiveWNATIVE, setReceiveWNATIVE] = useState(false)
   const nativeCurrency = useNativeCurrency()
   const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
 
@@ -110,7 +110,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     feeValue1,
     outOfRange,
     error,
-  } = useDerivedV3BurnInfo(position, percent, receiveWETH)
+  } = useDerivedV3BurnInfo(position, percent, receiveWNATIVE)
 
   const { onPercentSelect } = useBurnV3ActionHandlers()
 
@@ -131,7 +131,10 @@ function Remove({ tokenId }: { tokenId: bigint }) {
 
   const positionManager = useV3NFTPositionManagerContract()
 
-  const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id === tokenId))
+  const isStakedInMCv3 = useMemo(
+    () => Boolean(tokenId && stakedTokenIds.find((id) => id === tokenId)),
+    [tokenId, stakedTokenIds],
+  )
 
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
@@ -324,7 +327,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     'TransactionConfirmationModalRemoveLiquidity',
   )
 
-  const showCollectAsWeth = Boolean(
+  const showCollectAsWNative = Boolean(
     liquidityValue0?.currency &&
       liquidityValue1?.currency &&
       (liquidityValue0.currency.isNative ||
@@ -482,16 +485,16 @@ function Remove({ tokenId }: { tokenId: bigint }) {
               </Flex>
             </LightGreyCard>
           </AutoColumn>
-          {showCollectAsWeth && (
+          {showCollectAsWNative && (
             <Flex justifyContent="space-between" alignItems="center" mb="16px">
               <Text mr="8px">
                 {t('Collect as')} {nativeWrappedSymbol}
               </Text>
               <Toggle
-                id="receive-as-weth"
+                id="receive-as-wnative"
                 scale="sm"
-                checked={receiveWETH}
-                onChange={() => setReceiveWETH((prevState) => !prevState)}
+                checked={receiveWNATIVE}
+                onChange={() => setReceiveWNATIVE((prevState) => !prevState)}
               />
             </Flex>
           )}

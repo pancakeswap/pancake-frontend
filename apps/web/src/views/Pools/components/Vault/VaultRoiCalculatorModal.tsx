@@ -5,8 +5,9 @@ import {
   RoiCalculatorModal,
   RoiCalculatorModalProps,
   CalculatorMode,
-  Pool,
 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useEffect, useState, useMemo } from 'react'

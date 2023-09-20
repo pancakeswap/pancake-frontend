@@ -34,7 +34,7 @@ export const PageButtons = styled.div`
 export const Arrow = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   padding: 0 20px;
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 `

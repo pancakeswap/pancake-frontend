@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Token, Currency, ChainId } from '@pancakeswap/sdk'
+import { Token, Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   Button,
   Text,

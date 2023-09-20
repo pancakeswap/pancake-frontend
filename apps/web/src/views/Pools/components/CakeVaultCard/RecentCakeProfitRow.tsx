@@ -1,4 +1,6 @@
-import { Flex, Pool, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'

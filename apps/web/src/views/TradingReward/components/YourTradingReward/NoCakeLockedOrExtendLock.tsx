@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
-import { Box, Text, Flex, Pool, SkeletonV2 } from '@pancakeswap/uikit'
+import { Box, Text, Flex, SkeletonV2 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import BigNumber from 'bignumber.js'

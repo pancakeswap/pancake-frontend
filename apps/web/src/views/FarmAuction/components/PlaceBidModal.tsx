@@ -17,7 +17,7 @@ import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { bscTokens, CAKE } from '@pancakeswap/tokens'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 const StyledModal = styled(Modal)`
   & > div:nth-child(2) {

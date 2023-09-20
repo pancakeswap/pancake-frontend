@@ -3,7 +3,7 @@ import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import ETH_WARNING_LIST from './1'
 import BSC_WARNING_LIST from './56'

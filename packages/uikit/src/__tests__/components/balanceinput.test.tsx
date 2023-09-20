@@ -105,7 +105,6 @@ it("renders correctly", () => {
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
                 placeholder="0.0"
-                scale="md"
                 value="14"
               />
             </div>
@@ -236,7 +235,6 @@ it("renders correctly with unit prop", () => {
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
                 placeholder="0.0"
-                scale="md"
                 value="14"
               />
               <div
@@ -315,7 +313,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       box-shadow: none;
     }
 
-    .c10 :focus-visible {
+    .c10:focus-visible {
       outline: none;
       box-shadow: var(--shadows-focus);
     }
@@ -454,7 +452,6 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
                 placeholder="0.0"
-                scale="md"
                 value="14"
               />
               <div

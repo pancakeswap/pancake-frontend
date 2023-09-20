@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
@@ -252,5 +252,9 @@ export default {
     [ChainId.ETHEREUM]: '0x',
     [ChainId.BSC]: '0xCD5d1935e9bfa4905f9f007C97aB1f1763dC1607',
     [ChainId.BSC_TESTNET]: '0xd2d1DD41700d9132d3286e0FcD8D6E1D8E5052F5',
+  },
+  anniversaryAchievement: {
+    [ChainId.BSC]: '0x0a073aa17275ef839ee77BC6c589D9E661270480',
+    [ChainId.BSC_TESTNET]: '0x',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

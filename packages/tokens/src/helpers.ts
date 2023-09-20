@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, Currency, Native, Token, WNATIVE } from '@pancakeswap/sdk'
 import { enumValues } from '@pancakeswap/utils/enumValues'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 
@@ -21,4 +21,9 @@ export function serializeTokens(unserializedTokens: any) {
   }, {} as any)
 
   return serializedTokens
+}
+
+export function unwrappedToken(token: Token): Currency {
+  if (token && token.equals(WNATIVE[token.chainId as keyof typeof WNATIVE])) return Native.onChain(token.chainId)
+  return token
 }

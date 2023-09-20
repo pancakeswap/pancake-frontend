@@ -1,8 +1,6 @@
 import {
   AutoColumn,
   Button,
-  Dots,
-  RowBetween,
   Text,
   Box,
   BunnyKnownPlaceholder,
@@ -15,13 +13,12 @@ import {
 } from '@pancakeswap/uikit'
 import { useIsExpertMode } from '@pancakeswap/utils/user'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallback, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo } from 'react'
 import { Percent, Pair } from '@pancakeswap/sdk'
 
 import { CommitButton } from 'components/CommitButton'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { Field } from 'state/mint/actions'
-import { ApprovalState } from 'hooks/useApproveCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { Bound } from 'config/constants/types'
@@ -32,6 +29,7 @@ import { CommonBasesType } from 'components/SearchModal/types'
 import { getBlockExploreLink } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
+import ApproveLiquidityTokens from 'views/AddLiquidityV3/components/ApproveLiquidityTokens'
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 import RangeSelector from './V3FormView/components/RangeSelector'
 
@@ -41,9 +39,13 @@ export default function V2FormView({
   addIsWarning,
   shouldShowApprovalGroup,
   approveACallback,
+  revokeACallback,
+  currentAllowanceA,
   approvalA,
   approvalB,
   approveBCallback,
+  revokeBCallback,
+  currentAllowanceB,
   showFieldBApproval,
   showFieldAApproval,
   currencies,
@@ -57,7 +59,7 @@ export default function V2FormView({
   isOneWeiAttack,
   pair,
 }: LP2ChildrenProps) {
-  const mockFn = useCallback(() => null, [])
+  const mockFn = useCallback(() => undefined, [])
 
   const { chainId } = useActiveChainId()
   const { account, isWrongNetwork } = useActiveWeb3React()
@@ -68,7 +70,7 @@ export default function V2FormView({
     [pair, chainId],
   )
 
-  let buttons = null
+  let buttons: ReactNode = null
   if (addIsUnsupported || addIsWarning) {
     buttons = (
       <Button disabled mb="4px">
@@ -82,28 +84,20 @@ export default function V2FormView({
   } else {
     buttons = (
       <AutoColumn gap="md">
-        {shouldShowApprovalGroup && (
-          <RowBetween style={{ gap: '8px' }}>
-            {showFieldAApproval && (
-              <Button onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
-                {approvalA === ApprovalState.PENDING ? (
-                  <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
-                ) : (
-                  t('Enable %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })
-                )}
-              </Button>
-            )}
-            {showFieldBApproval && (
-              <Button onClick={approveBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
-                {approvalB === ApprovalState.PENDING ? (
-                  <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
-                ) : (
-                  t('Enable %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })
-                )}
-              </Button>
-            )}
-          </RowBetween>
-        )}
+        <ApproveLiquidityTokens
+          approvalA={approvalA}
+          approvalB={approvalB}
+          showFieldAApproval={showFieldAApproval}
+          showFieldBApproval={showFieldBApproval}
+          approveACallback={approveACallback}
+          approveBCallback={approveBCallback}
+          revokeACallback={revokeACallback}
+          revokeBCallback={revokeBCallback}
+          currencies={currencies}
+          currentAllowanceA={currentAllowanceA}
+          currentAllowanceB={currentAllowanceB}
+          shouldShowApprovalGroup={shouldShowApprovalGroup}
+        />
         {isOneWeiAttack ? (
           <Message variant="warning">
             <Flex flexDirection="column">
@@ -159,7 +153,7 @@ export default function V2FormView({
               }
             }}
             disableCurrencySelect
-            value={formattedAmounts[Field.CURRENCY_A]}
+            value={formattedAmounts[Field.CURRENCY_A] ?? '0'}
             onUserInput={onFieldAInput}
             showQuickInputButton
             showMaxButton
@@ -182,7 +176,7 @@ export default function V2FormView({
           }}
           maxAmount={maxAmounts[Field.CURRENCY_B]}
           disableCurrencySelect
-          value={formattedAmounts[Field.CURRENCY_B]}
+          value={formattedAmounts[Field.CURRENCY_B] ?? '0'}
           onUserInput={onFieldBInput}
           showQuickInputButton
           showMaxButton

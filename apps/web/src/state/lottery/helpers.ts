@@ -6,7 +6,7 @@ import { getLotteryV2Contract } from 'utils/contractHelpers'
 import { bigIntToSerializedBigNumber } from '@pancakeswap/utils/bigNumber'
 import { NUM_ROUNDS_TO_FETCH_FROM_NODES } from 'config/constants/lottery'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ContractFunctionResult } from 'viem'
 
 const lotteryContract = getLotteryV2Contract()

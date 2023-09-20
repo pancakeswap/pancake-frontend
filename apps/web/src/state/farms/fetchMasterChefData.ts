@@ -1,5 +1,5 @@
 import chunk from 'lodash/chunk'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { publicClient } from 'utils/wagmi'
 import { farmFetcher } from 'state/farms'

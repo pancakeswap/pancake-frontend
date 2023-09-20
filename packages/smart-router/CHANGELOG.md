@@ -1,5 +1,68 @@
 # @pancakeswap/smart-router
 
+## 4.8.6
+
+### Patch Changes
+
+- e491ed2ba: Fix module not found under nodejs esm resolution
+
+## 4.8.5
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/multicall@3.1.1
+  - @pancakeswap/sdk@5.4.2
+  - @pancakeswap/v3-sdk@3.4.3
+  - @pancakeswap/tokens@0.4.3
+
+## 4.8.4
+
+### Patch Changes
+
+- 4cca3f688: Support dropping unexected multicalls
+- Updated dependencies [4cca3f688]
+  - @pancakeswap/multicall@3.1.0
+
+## 4.8.3
+
+### Patch Changes
+
+- bb83caccc: Accept nullish value to getExecutionPrice function
+- Updated dependencies [51b77c787]
+  - @pancakeswap/tokens@0.4.2
+  - @pancakeswap/v3-sdk@3.4.2
+  - @pancakeswap/multicall@3.0.1
+
+## 4.8.2
+
+### Patch Changes
+
+- Updated dependencies [5a9836d39]
+  - @pancakeswap/multicall@3.0.1
+
+## 4.8.1
+
+### Patch Changes
+
+- Updated dependencies [8337b09a8]
+  - @pancakeswap/multicall@3.0.0
+
+## 4.8.0
+
+### Minor Changes
+
+- a784ca6ed: Pancake Multicall release
+
+### Patch Changes
+
+- e4bfa0a15: Add mm route type
+- Updated dependencies [a784ca6ed]
+  - @pancakeswap/multicall@1.0.0
+  - @pancakeswap/tokens@0.4.1
+  - @pancakeswap/v3-sdk@3.4.1
+
 ## 4.7.1
 
 ### Patch Changes

@@ -272,4 +272,12 @@ export const ethereumTokens = {
     'CyberConnect',
     'https://cyberconnect.me/',
   ),
+  woo: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x4691937a7508860F876c9c0a2a617E7d9E945D4B',
+    18,
+    'WOO',
+    'Wootrade Network',
+    'https://woo.network',
+  ),
 }
