@@ -2,7 +2,6 @@ import { ContextData, TranslationKey } from '@pancakeswap/localization'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { ChainId } from '@pancakeswap/chains'
 
-
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
 export const DEFAULT_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 export const WHITELISTED_FIAT_CURRENCIES_BASE = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
@@ -27,6 +26,8 @@ const SUPPORTED_TRANSAK_LINEA_TOKENS = ['ETH', 'USDC']
 const SUPPORTED_TRANSAK_ZKSYNC_TOKENS = ['ETH']
 const SUPPORTED_TRANSAK_ZKEVM_TOKENS = ['ETH']
 const SUPPORTED_TRANSAK_BASE_TOKENS = ['ETH', 'USDC']
+
+export const CURRENT_CAMPAIGN_TIMESTAMP = 1694512859
 
 export enum ONRAMP_PROVIDERS {
   MoonPay = 'MoonPay',
