@@ -15,6 +15,8 @@ export interface FixedStakingPool {
   boostDayPercent: number
   unlockDayPercent: number
   lockPeriod: number
+  withdrawalCut1: number
+  withdrawalCut2: number
   withdrawalFee: number
   depositEnabled: boolean
   maxDeposit: number

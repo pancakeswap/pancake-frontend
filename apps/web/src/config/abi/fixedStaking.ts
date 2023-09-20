@@ -15,9 +15,9 @@ export const fixedStakingABI = [
       },
       {
         indexed: false,
-        internalType: 'uint128',
-        name: 'amount',
-        type: 'uint128',
+        internalType: 'uint256',
+        name: 'poolIndex',
+        type: 'uint256',
       },
       {
         indexed: true,
@@ -27,9 +27,9 @@ export const fixedStakingABI = [
       },
       {
         indexed: false,
-        internalType: 'uint256',
-        name: 'poolIndex',
-        type: 'uint256',
+        internalType: 'uint128',
+        name: 'amount',
+        type: 'uint128',
       },
     ],
     name: 'Deposit',
@@ -46,6 +46,12 @@ export const fixedStakingABI = [
       },
       {
         indexed: false,
+        internalType: 'uint256',
+        name: 'poolIndex',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
         internalType: 'address',
         name: 'token',
         type: 'address',
@@ -55,12 +61,6 @@ export const fixedStakingABI = [
         internalType: 'uint128',
         name: 'amount',
         type: 'uint128',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'poolIndex',
-        type: 'uint256',
       },
     ],
     name: 'Harvest',
@@ -241,6 +241,12 @@ export const fixedStakingABI = [
         type: 'address',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'poolIndex',
+        type: 'uint256',
+      },
+      {
         indexed: true,
         internalType: 'address',
         name: 'token',
@@ -249,26 +255,8 @@ export const fixedStakingABI = [
       {
         indexed: false,
         internalType: 'uint128',
-        name: 'totalInterest',
+        name: 'amount',
         type: 'uint128',
-      },
-      {
-        indexed: false,
-        internalType: 'uint128',
-        name: 'userDeposit',
-        type: 'uint128',
-      },
-      {
-        indexed: false,
-        internalType: 'uint128',
-        name: 'fee',
-        type: 'uint128',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'poolIndex',
-        type: 'uint256',
       },
     ],
     name: 'Withdraw',
@@ -323,7 +311,12 @@ export const fixedStakingABI = [
           },
           {
             internalType: 'uint32',
-            name: 'withdrawalFee',
+            name: 'withdrawalCut1',
+            type: 'uint32',
+          },
+          {
+            internalType: 'uint32',
+            name: 'withdrawalCut2',
             type: 'uint32',
           },
           {
@@ -421,7 +414,12 @@ export const fixedStakingABI = [
           },
           {
             internalType: 'uint32',
-            name: 'withdrawalFee',
+            name: 'withdrawalCut1',
+            type: 'uint32',
+          },
+          {
+            internalType: 'uint32',
+            name: 'withdrawalCut2',
             type: 'uint32',
           },
           {
@@ -533,6 +531,19 @@ export const fixedStakingABI = [
   },
   {
     inputs: [],
+    name: 'earn',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'getCurrentDay',
     outputs: [
       {
@@ -629,7 +640,12 @@ export const fixedStakingABI = [
               },
               {
                 internalType: 'uint32',
-                name: 'withdrawalFee',
+                name: 'withdrawalCut1',
+                type: 'uint32',
+              },
+              {
+                internalType: 'uint32',
+                name: 'withdrawalCut2',
                 type: 'uint32',
               },
               {
@@ -735,7 +751,7 @@ export const fixedStakingABI = [
       },
       {
         internalType: 'address',
-        name: '_stake',
+        name: '_earn',
         type: 'address',
       },
     ],
@@ -921,6 +937,19 @@ export const fixedStakingABI = [
   {
     inputs: [
       {
+        internalType: 'address',
+        name: '_newEarn',
+        type: 'address',
+      },
+    ],
+    name: 'setEarn',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'uint256',
         name: '_poolIndex',
         type: 'uint256',
@@ -952,32 +981,6 @@ export const fixedStakingABI = [
     name: 'setPoolState',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_newStake',
-        type: 'address',
-      },
-    ],
-    name: 'setStake',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'stake',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
     type: 'function',
   },
   {

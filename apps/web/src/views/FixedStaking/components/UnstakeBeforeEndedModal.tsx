@@ -10,7 +10,7 @@ import FixedStakingOverview from './FixedStakingOverview'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
 import { ModalTitle } from './ModalTitle'
-import { useCurrentDay } from '../hooks/useStakedPools'
+import { useShouldNotAllowWithdraw } from '../hooks/useStakedPools'
 
 export function UnstakeBeforeEnededModal({
   token,
@@ -70,11 +70,10 @@ export function UnstakeBeforeEnededModal({
     onSuccess: () => unstakeModal.onDismiss(),
   })
 
-  const poolLockPeriodUnit = lockPeriod / 3
-
-  const currentDay = useCurrentDay()
-
-  const notAllowWithdrawal = currentDay - lastDayAction > poolLockPeriodUnit
+  const notAllowWithdrawal = useShouldNotAllowWithdraw({
+    lastDayAction,
+    lockPeriod,
+  })
 
   return (
     <>
