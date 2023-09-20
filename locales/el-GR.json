@@ -2569,7 +2569,7 @@
   "Campaign ending": "Η καμπάνια τελειώνει",
   "Your locked staking is expired": "Το κλειδωμένο staking σας έχει λήξει",
   "Renew your stakings for": "Ανανεώστε τα staking σας για",
-  "Insufficent Funds?": "Ανεπαρκή κεφάλαια;",
+  "Insufficient Funds?": "Insufficient Funds?",
   "Traverse the Treasure Islands on Galxe now!": "Διασχίστε τα Νησιά του Θησαυρού στο Galxe τώρα!",
   "Traverse the Treasure Islands!": "Διασχίστε τα Νησιά του Θησαυρού!",
   "Exclusive NFTs and treasures await!": "Σας περιμένουν αποκλειστικά NFTs και θησαυροί!",
@@ -2694,5 +2694,8 @@
   "Happy Birthday!": "Happy Birthday!",
   "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.": "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.",
   "Birthday": "Birthday",
-  "Uranus Communities": "Uranus Communities"
+  "Uranus Communities": "Uranus Communities",
+  "Mercury Mysteries": "Mercury Mysteries",
+  "Venus Protectors": "Venus Protectors",
+  "Uranus Unity Rain": "Uranus Unity Rain"
 }
