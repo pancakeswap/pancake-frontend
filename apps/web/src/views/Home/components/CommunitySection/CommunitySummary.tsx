@@ -1,7 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text } from '@pancakeswap/uikit'
 
-import { styled } from 'styled-components'
+import { styled, css } from 'styled-components'
+
+export const sharedCss = css`
+  @media screen and (max-width: 396px) {
+    width: calc(100vw - 50px);
+  }
+  @media screen and (max-width: 762px) and (min-width: 700px) {
+    width: calc(50vw - 50px);
+  }
+`
 
 const Wrapper = styled.div`
   border-radius: 32px;
@@ -10,15 +19,13 @@ const Wrapper = styled.div`
   box-shadow: 0px 4px 0px 0px #3c1786;
   padding: 24px;
   box-sizing: border-box;
-  @media screen and (max-width: 396px) {
-    width: calc(100vw - 60px);
-  }
   width: 340px;
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 340px;
     padding: 24px 0px 24px 60px;
     height: 340px;
   }
+  ${sharedCss}
 `
 
 const StyledText = styled(Text)`
