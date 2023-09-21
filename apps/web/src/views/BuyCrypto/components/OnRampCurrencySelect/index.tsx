@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import styled from 'styled-components'
 import {
   ArrowDropDownIcon,
   Box,
@@ -13,19 +13,11 @@ import {
 } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAllOnRampTokens } from 'hooks/Tokens'
-import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
-
-const networkDisplay: { [id: number]: string } = {
-  [ChainId.ETHEREUM]: 'Ethereum',
-  [ChainId.BSC]: 'Binance Chain',
-  [ChainId.ZKSYNC]: 'ZK Sync',
-  [ChainId.ARBITRUM_ONE]: 'Arbitrum One',
-}
+import { fiatCurrencyMap, networkDisplay } from 'views/BuyCrypto/constants'
 
 const DropDownContainer = styled.div<{ error: boolean }>`
   width: 100%;
@@ -71,7 +63,7 @@ const ButtonAsset = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <Flex pl="8px">
+    <Flex>
       {id === 'onramp-input' ? (
         <FiatLogo currency={selectedCurrency} size="24px" style={{ marginRight: '8px' }} />
       ) : (
@@ -149,13 +141,13 @@ export const CurrencySelect = ({
             disabled={!selectedCurrency}
             loading={!selectedCurrency}
             className="token-amount-input"
-            value={value}
+            value={value as any}
             onBlur={onInputBlur}
-            onUserInput={onUserInput}
+            onUserInput={onUserInput as any}
             align="left"
           />
         ) : (
-          <Text>{networkDisplay[selectedCurrency?.chainId]}</Text>
+          <Text>{networkDisplay[selectedCurrency?.chainId as number]}</Text>
         )}
         <CurrencySelectButton
           className="open-currency-select-button"
@@ -163,7 +155,7 @@ export const CurrencySelect = ({
           onClick={onPresentCurrencyModal}
         >
           {selectedCurrency ? (
-            <ButtonAsset id={id} selectedCurrency={selectedCurrency} currencyLoading={currencyLoading} />
+            <ButtonAsset id={id} selectedCurrency={selectedCurrency} currencyLoading={currencyLoading as boolean} />
           ) : (
             <Flex>
               <Skeleton width="105px" height="26px" variant="round" isDark />

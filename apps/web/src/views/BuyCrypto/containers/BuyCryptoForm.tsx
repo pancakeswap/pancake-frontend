@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
-import { Text, Box } from '@pancakeswap/uikit'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Text, Box, Message } from '@pancakeswap/uikit'
 import {
   calculateDefaultAmount,
   fetchMinimumBuyAmount,
@@ -18,7 +18,7 @@ import { useChainId } from 'wagmi'
 import { FormHeader } from './FormHeader'
 import { FormContainer } from './FormContainer'
 import GetQuotesButton from '../components/GetQuotesButton'
-import { fiatCurrencyMap } from '../constants'
+import { fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
 import { CurrencySelect } from '../components/OnRampCurrencySelect'
 
 // Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),
@@ -46,17 +46,17 @@ export function BuyCryptoForm({
   } = useBuyCryptoState()
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
-    typedValue,
-    minAmount,
-    minBaseAmount,
-    maxAmount,
-    maxBaseAmount,
-    outputCurrencyId,
-    inputCurrencyId,
+    typedValue as string,
+    minAmount as number,
+    minBaseAmount as number,
+    maxAmount as number,
+    maxBaseAmount as number,
+    outputCurrencyId as string,
+    inputCurrencyId as string,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
 
-  const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
+  const outputCurrency: any = fiatCurrencyMap[outputCurrencyId as string]
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
   const handleTypeOutput = useCallback(
     (value: string) => {
@@ -68,13 +68,16 @@ export function BuyCryptoForm({
   )
   // need to relocate this
   const fetchMinBuyAmounts = useCallback(async () => {
-    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId as string, inputCurrencyId as string, chainId)
 
     if (!limitAmounts) return
 
     onFieldAInput(
       toString(
-        calculateDefaultAmount(limitAmounts.baseCurrency?.minBuyAmount, limitAmounts.baseCurrency.code.toUpperCase()),
+        calculateDefaultAmount(
+          limitAmounts.baseCurrency?.minBuyAmount,
+          limitAmounts.baseCurrency.code.toUpperCase() as string,
+        ),
       ),
     )
 
@@ -136,6 +139,16 @@ export function BuyCryptoForm({
             bottomElement={<></>}
           />
         </Box>
+        {[ChainId.BASE, ChainId.LINEA, ChainId.BSC, ChainId.ARBITRUM_ONE].includes(chainId) ? (
+          (chainId === ChainId.BSC && inputCurrencyId === 'USDT' && outputCurrencyId === 'USD') ||
+          (chainId === ChainId.ARBITRUM_ONE && inputCurrencyId === 'USDC.e' && outputCurrencyId === 'USD') ? (
+            <Message variant="warning" padding="16px">
+              <Text fontSize="15px" color="#D67E0B">
+                {getChainCurrencyWarningMessages(t, chainId)[chainId]}
+              </Text>
+            </Message>
+          ) : null
+        ) : null}
         <Text color="textSubtle" fontSize="14px" px="4px">
           {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}
         </Text>
