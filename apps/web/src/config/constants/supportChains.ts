@@ -20,7 +20,6 @@ export const SUPPORT_BUY_CRYPTO = [
   ChainId.ETHEREUM,
   ChainId.ARBITRUM_ONE,
   ChainId.ZKSYNC, // NO PROVIDER SUPPORT ZK_SYNC_ERA
-  ChainId.ZK_SYNC_ERA,
   ChainId.POLYGON_ZKEVM,
   ChainId.LINEA,
   ChainId.BASE,
