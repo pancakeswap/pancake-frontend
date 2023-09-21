@@ -152,7 +152,7 @@ const Hero = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { theme } = useTheme()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isXs } = useMatchBreakpoints()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { drawImage } = useDrawCanvas(
@@ -238,9 +238,21 @@ const Hero = () => {
           </Text>
 
           <Flex justifyContent={isMobile ? 'center' : 'start'}>
-            {!account && <ConnectWalletButton mr="8px" />}
+            {!account && (
+              <ConnectWalletButton
+                style={{ borderRadius: isMobile ? 12 : undefined }}
+                scale={isMobile ? 'sm' : 'md'}
+                mr="8px"
+              />
+            )}
             <NextLinkFromReactRouter to="/swap">
-              <Button variant={!account ? 'secondary' : 'primary'}>{t('Trade Now')}</Button>
+              <Button
+                scale={isMobile ? 'sm' : 'md'}
+                style={{ borderRadius: isMobile ? 12 : undefined }}
+                variant={!account ? 'secondary' : 'primary'}
+              >
+                {t('Trade Now')}
+              </Button>
             </NextLinkFromReactRouter>
           </Flex>
         </Flex>
