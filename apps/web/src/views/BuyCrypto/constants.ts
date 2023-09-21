@@ -159,6 +159,10 @@ export const getChainCurrencyWarningMessages = (
       'Note USDT quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a quote for USDT',
       { chainId: networkDisplay[chainId] },
     ),
+    [ChainId.ARBITRUM_ONE]: t(
+      'Note USDC.e quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a quote for USDC.e',
+      { chainId: networkDisplay[chainId] },
+    ),
     [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
       chainId: networkDisplay[chainId],
     }),

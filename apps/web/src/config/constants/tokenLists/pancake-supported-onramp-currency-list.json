@@ -92,10 +92,10 @@
     },
     {
       "name": "USD Coin Ethereum Bridged",
-      "address": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
       "symbol": "USDC.e",
-      "decimals": 6,
+      "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
       "chainId": 42161,
+      "decimals": 6,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
