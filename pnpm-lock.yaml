@@ -1429,6 +1429,9 @@ importers:
 
   packages/tokens:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
