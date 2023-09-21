@@ -17,22 +17,37 @@ const ImageLayer = styled.div`
   left: 0;
   pointer-events: none;
   overflow: hidden;
+  display: none;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: block;
+  }
 `
 const BnbBallRocket = styled.div`
   position: absolute;
-  bottom: 151px;
-  left: calc(50% - 72px - 650px);
+  left: -65px;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    bottom: 151px;
+    left: 20px;
+  }
 `
 const EthBallRocket = styled.div`
   position: absolute;
   right: 0;
-  bottom: -30px;
+  top: 81px;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    right: 0;
+    bottom: -30px;
+  }
 `
 
 const AptosBallRocket = styled.div`
   position: absolute;
-  top: 75px;
-  left: calc(50% - 42px + 520px);
+  top: 0px;
+  right: 98px;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    top: 72px;
+    right: 119px;
+  }
 `
 
 const Stats = () => {
@@ -40,7 +55,7 @@ const Stats = () => {
   const { data: tvl } = useSWRImmutable('tvl')
   const { data: txCount } = useSWRImmutable('totalTx30Days')
   const { data: addressCount } = useSWRImmutable('addressCount30Days')
-  const { isMobile, isSm, isMd } = useMatchBreakpoints()
+  const { isMobile, isSm, isMd, isXxl } = useMatchBreakpoints()
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column" overflow="hidden">
@@ -55,7 +70,7 @@ const Stats = () => {
         fontSize={isMobile ? '20px' : '32px'}
         mb={isMobile ? '32px' : '48px'}
       >
-        {t(' PancakeSwap’s Unstoppable Expansion')}
+        {t('PancakeSwap’s Unstoppable Expansion')}
       </Text>
       <Flex
         justifyContent="center"
@@ -81,15 +96,27 @@ const Stats = () => {
         <MetricsCard title={t('Total Value Locked:')} value={tvl} description={t('in the last 30 days')} prefix="$" />
       </Flex>
       <ChainTags />
-      <ImageLayer style={{ display: isMobile ? 'none' : 'block' }}>
+      <ImageLayer>
         <BnbBallRocket>
           <Image src={bnbBallRocket} alt="bnbBallRocket" width={144} height={168} placeholder="blur" />
         </BnbBallRocket>
         <EthBallRocket>
-          <Image src={ethBallRocket} alt="ethBallRocket" width={116} height={230} placeholder="blur" />
+          <Image
+            src={ethBallRocket}
+            alt="ethBallRocket"
+            width={isXxl ? 116 : 70}
+            height={isXxl ? 230 : 140}
+            placeholder="blur"
+          />
         </EthBallRocket>
         <AptosBallRocket>
-          <Image src={aptosBallRocket} alt="aptosBallRocket" width={84} height={101} placeholder="blur" />
+          <Image
+            src={aptosBallRocket}
+            alt="aptosBallRocket"
+            width={isXxl ? 84 : 53}
+            height={isXxl ? 101 : 64}
+            placeholder="blur"
+          />
         </AptosBallRocket>
       </ImageLayer>
     </Flex>
