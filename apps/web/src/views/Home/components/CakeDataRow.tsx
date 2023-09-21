@@ -134,7 +134,7 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        <Text color="textSubtle">{t('Unit')}</Text>
+        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       <StyledColumn noMobileBorder>
         <Text bold>{t('Total supply')}</Text>
@@ -146,7 +146,7 @@ const CakeDataRow = () => {
             <Skeleton height={24} width={126} my="4px" />
           </>
         )}
-        <Text color="textSubtle">{t('Unit')}</Text>
+        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       {/* <StyledColumn noMobileBorder style={{ gridArea: 'c' }}>
         <Text color="textSubtle">{t('Max Supply')}</Text>
@@ -162,7 +162,7 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        <Text color="textSubtle">{t('Unit')}</Text>
+        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       <StyledColumn>
         <Text bold>{t('Token Burn')}</Text>
@@ -171,7 +171,7 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        <Text color="textSubtle">{t('Unit')}</Text>
+        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       <StyledColumn>
         <Text bold>{t('Current emissions')}</Text>
@@ -183,7 +183,7 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        <Text color="textSubtle">{t('Unit')}</Text>
+        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
     </StyledWrapper>
   )
