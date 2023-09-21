@@ -131,7 +131,9 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <StyledScanLink
             icon={scanAddress.icon}
-            useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(scanAddress.chainId)}
+            useBscCoinFallback={
+              scanAddress.chainId ? [ChainId.BSC, ChainId.BSC_TESTNET].includes(scanAddress.chainId) : false
+            }
             href={scanAddress.link}
           >
             {t('View Contract')}
