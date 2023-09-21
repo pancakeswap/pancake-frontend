@@ -157,7 +157,7 @@ const CakeLeftLine = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 108px;
     height: 1px;
-    left: 272px;
+    left: 277px;
     top: 50%;
     transform: scaleX(0);
     transform-origin: right center;
@@ -280,8 +280,8 @@ const CakeBox = styled.div`
   height: 300px;
   overflow: hidden;
   ${({ theme }) => theme.mediaQueries.lg} {
-    width: 320px;
-    height: 320px;
+    width: 330px;
+    height: 360px;
   }
 `
 
