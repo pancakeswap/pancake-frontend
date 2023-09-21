@@ -134,7 +134,7 @@ export const CakeSectionRightBox = styled.div`
 const CakeLeftLine = styled.div`
   position: absolute;
   z-index: 2;
-  height: 108px;
+  height: 128px;
   width: 1px;
   left: 50%;
   top: 283px;

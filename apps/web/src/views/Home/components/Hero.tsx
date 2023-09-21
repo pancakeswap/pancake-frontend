@@ -130,6 +130,19 @@ const CakeCanvas = styled.canvas`
   background-color: transparent;
 `
 
+const StyledText = styled(Text)`
+  font-size: 32px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 40px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 64px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    font-size: 88px;
+  }
+`
+
 let canvasInterval = 0
 const fps = 60
 const width = 734
@@ -202,35 +215,15 @@ const Hero = () => {
       >
         <Flex flex="1" flexDirection="column">
           <Text textAlign={isMobile ? 'center' : 'left'} pr="10px" mb="16px">
-            <Text
-              display="inline-block"
-              lineHeight="110%"
-              fontSize={['32px', '32px', '64px', '88px']}
-              fontWeight={600}
-              color="text"
-              mr="8px"
-            >
+            <StyledText display="inline-block" lineHeight="110%" fontWeight={600} color="text" mr="8px">
               {t("Everyone's")}
-            </Text>
-            <Text
-              display="inline-block"
-              fontSize={['32px', '32px', '64px', '88px']}
-              fontWeight={600}
-              lineHeight="110%"
-              color="secondary"
-              mr="8px"
-            >
+            </StyledText>
+            <StyledText display="inline-block" fontWeight={600} lineHeight="110%" color="secondary" mr="8px">
               {t('Favorite')}
-            </Text>
-            <Text
-              display="inline-block"
-              lineHeight="110%"
-              fontSize={['32px', '32px', '64px', '88px']}
-              fontWeight={600}
-              color="text"
-            >
+            </StyledText>
+            <StyledText display="inline-block" lineHeight="110%" fontWeight={600} color="text">
               {t('DEX')}
-            </Text>
+            </StyledText>
           </Text>
           <Text
             mb="24px"
