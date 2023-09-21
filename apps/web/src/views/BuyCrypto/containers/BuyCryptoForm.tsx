@@ -46,13 +46,13 @@ export function BuyCryptoForm({
   } = useBuyCryptoState()
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
-    typedValue,
-    minAmount,
-    minBaseAmount,
-    maxAmount,
-    maxBaseAmount,
-    outputCurrencyId,
-    inputCurrencyId,
+    typedValue as string,
+    minAmount as number,
+    minBaseAmount as number,
+    maxAmount as number,
+    maxBaseAmount as number,
+    outputCurrencyId as string,
+    inputCurrencyId as string,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
 

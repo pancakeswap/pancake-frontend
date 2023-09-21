@@ -151,8 +151,8 @@ export function useBuyCryptoErrorInfo(
   }
 
   return {
-    amountError,
-    inputError,
+    amountError: amountError as string,
+    inputError: inputError as string,
   }
 }
 
