@@ -104,7 +104,7 @@ export const TwitterCards: React.FC = () => {
   const { t } = useTranslation()
   const tweets = useTweetsData()
   const { theme } = useTheme()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isXs } = useMatchBreakpoints()
   return (
     <Wrapper>
       <Text bold mb="24px">
@@ -120,7 +120,7 @@ export const TwitterCards: React.FC = () => {
         <VerifiedIcon ml="3px" mt="9px" color={theme.colors.secondary} />
       </Flex>
       <Flex style={{ gap: 0 }} alignItems="center" justifyContent="center">
-        <Text fontSize={14} color={theme.colors.textSubtle} style={isMobile ? mobileStyle : undefined}>
+        <Text fontSize={14} color={theme.colors.textSubtle} style={isXs ? mobileStyle : undefined}>
           @PancakeSwap
         </Text>
         <Divider />
