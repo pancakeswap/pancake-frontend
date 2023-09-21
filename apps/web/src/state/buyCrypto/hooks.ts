@@ -238,7 +238,7 @@ export async function queryParametersToBuyCryptoState(
     minBaseAmount: limitAmounts?.quoteCurrency?.minBuyAmount,
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
-    recipient: account,
+    recipient: account as string,
     userIpAddress: null,
   }
 }
@@ -279,12 +279,12 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
   useEffect(() => {
     const fetchData = async () => {
       if (!isReady || !chainId) return
-      const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
+      const parsed = await queryParametersToBuyCryptoState(query, account as string, chainId)
 
       dispatch(
         replaceBuyCryptoState({
           typedValue: parsed.minAmount
-            ? toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId))
+            ? (toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId)) as string)
             : '',
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,

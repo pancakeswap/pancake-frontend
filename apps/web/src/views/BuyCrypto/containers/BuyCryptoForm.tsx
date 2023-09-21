@@ -47,7 +47,7 @@ export function BuyCryptoForm({
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
     typedValue as string,
-    minAmount,
+    minAmount as string,
     minBaseAmount,
     maxAmount,
     maxBaseAmount,
@@ -68,7 +68,7 @@ export function BuyCryptoForm({
   )
   // need to relocate this
   const fetchMinBuyAmounts = useCallback(async () => {
-    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId as string, inputCurrencyId as string, chainId)
 
     if (!limitAmounts) return
 

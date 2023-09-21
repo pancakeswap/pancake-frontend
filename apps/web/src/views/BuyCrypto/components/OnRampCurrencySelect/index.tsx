@@ -143,7 +143,7 @@ export const CurrencySelect = ({
             className="token-amount-input"
             value={value as any}
             onBlur={onInputBlur}
-            onUserInput={onUserInput}
+            onUserInput={onUserInput as any}
             align="left"
           />
         ) : (

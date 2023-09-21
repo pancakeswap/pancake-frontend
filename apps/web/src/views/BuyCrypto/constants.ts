@@ -160,7 +160,7 @@ export const getChainCurrencyWarningMessages = (
       { chainId: networkDisplay[chainId] },
     ),
     [ChainId.ARBITRUM_ONE]: t(
-      'UEDC.e quotes are currently unavailable in USD on BNB Smart Chain. Please select another currency to receive USDC.e quotes',
+      'UEDC.e quotes are currently unavailable in USD on Arbitrum. Please select another currency to receive USDC.e quotes',
       { chainId: networkDisplay[chainId] },
     ),
     [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
