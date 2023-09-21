@@ -59,30 +59,6 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/eth/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599.png"
     },
     {
-      "name": "DAI StableCoin",
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
-      "symbol": "DAI",
-      "decimals": 18,
-      "chainId": 324,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
-    },
-    {
-      "name": "USD Coin",
-      "symbol": "USDC",
-      "address": "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4",
-      "chainId": 324,
-      "decimals": 6,
-      "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4.png"
-    },
-    {
-      "name": "Tether USD",
-      "symbol": "USDT",
-      "address": "0x493257fD37EDB34451f62EDf8D2a0C418852bA4C",
-      "chainId": 324,
-      "decimals": 6,
-      "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x493257fD37EDB34451f62EDf8D2a0C418852bA4C.png"
-    },
-    {
       "name": "USD Coin",
       "address": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
       "symbol": "USDC",

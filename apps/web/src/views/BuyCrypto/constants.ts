@@ -172,6 +172,20 @@ export const getChainCurrencyWarningMessages = (
   }
 }
 
+export const getChainLimitedTokenWarningMessages = (
+  t: (key: TranslationKey, data?: ContextData) => string,
+  chainId: number,
+) => {
+  return {
+    [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
+      chainId: networkDisplay[chainId],
+    }),
+    [ChainId.BASE]: t('%chainId% supports limited fiat currencies. USD are not supported', {
+      chainId: networkDisplay[chainId],
+    }),
+  }
+}
+
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
   USD: {
     name: 'United States Dollar',
