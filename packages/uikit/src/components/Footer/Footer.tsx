@@ -35,7 +35,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
   ...props
 }) => {
   const isMounted = useIsMounted();
-  const { isLg, isXl } = useMatchBreakpoints();
+  const { isXl, isXxl } = useMatchBreakpoints();
   return (
     <StyledFooter
       data-theme="dark"
@@ -78,9 +78,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
               ))}
             </StyledList>
           ))}
-          <Box display={["none", null, "block"]}>
-            {isLg || isXl ? <LogoIcon /> : <LogoWithTextIcon width="160px" />}
-          </Box>
+          <Box display={["none", null, "block"]}>{isXl ? <LogoIcon /> : <LogoWithTextIcon width="160px" />}</Box>
         </Flex>
         <StyledSocialLinks order={[2]} pb={["42px", null, "32px"]} mb={["0", null, "32px"]} />
         <StyledToolsContainer
