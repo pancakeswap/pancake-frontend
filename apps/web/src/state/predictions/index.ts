@@ -18,6 +18,7 @@ import {
 } from 'state/types'
 import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
+import { PredictionsRoundsResponse } from 'utils/types'
 import {
   FUTURE_ROUND_COUNT,
   LEADERBOARD_MIN_ROUNDS_PLAYED,
@@ -176,7 +177,7 @@ export const fetchNodeHistory = createAsyncThunk<
   const { bufferSeconds } = getState()
 
   // Turn the data from the node into a Bet object that comes from the graph
-  const bets: Bet[] = roundData.reduce((accum, round) => {
+  const bets: Bet[] = roundData.reduce((accum: any | PredictionsRoundsResponse, round: PredictionsRoundsResponse) => {
     const ledger = userRounds[Number(round.epoch)]
     const ledgerAmount = BigInt(ledger.amount)
     const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
@@ -387,7 +388,9 @@ export const predictionsSlice = createSlice({
     })
     builder.addCase(fetchAddressResult.rejected, (state, action) => {
       state.leaderboard.loadingState = FetchStatus.Fetched // TODO: should handle error
-      state.leaderboard.addressResults[action.payload] = null
+      if (action.payload) {
+        state.leaderboard.addressResults[action.payload] = null
+      }
     })
 
     // Leaderboard next page
@@ -424,7 +427,7 @@ export const predictionsSlice = createSlice({
       const currentRound = rounds?.[currentEpoch]
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
         futureRounds.push(
-          makeFutureRoundResponse(currentEpoch + i, Number(currentRound.startTimestamp) + intervalSeconds * i),
+          makeFutureRoundResponse(currentEpoch + i, Number(currentRound?.startTimestamp) + intervalSeconds * i),
         )
       }
 
