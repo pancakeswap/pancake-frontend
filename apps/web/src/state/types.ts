@@ -308,8 +308,8 @@ export interface ReduxNodeRound {
   rewardBaseCalAmount: string
   rewardAmount: string
   oracleCalled: boolean
-  lockOracleId: string
-  closeOracleId: string
+  lockOracleId: string | null
+  closeOracleId: string | null
 }
 
 export interface NodeRound {
@@ -319,14 +319,14 @@ export interface NodeRound {
   closeTimestamp: number | null
   lockPrice: bigint | null
   closePrice: bigint | null
-  totalAmount: bigint
-  bullAmount: bigint
-  bearAmount: bigint
-  rewardBaseCalAmount: bigint
-  rewardAmount: bigint
+  totalAmount: bigint | null
+  bullAmount: bigint | null
+  bearAmount: bigint | null
+  rewardBaseCalAmount: bigint | null
+  rewardAmount: bigint | null
   oracleCalled: boolean
-  closeOracleId: string
-  lockOracleId: string
+  closeOracleId: string | null
+  lockOracleId: string | null
 }
 
 export type LeaderboardFilterTimePeriod = '1d' | '7d' | '1m' | 'all'
