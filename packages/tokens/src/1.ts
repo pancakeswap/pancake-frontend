@@ -281,4 +281,12 @@ export const ethereumTokens = {
     'Wootrade Network',
     'https://woo.network',
   ),
+  pyusd: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x6c3ea9036406852006290770BEdFcAbA0e23A0e8',
+    6,
+    'PYUSD',
+    'PayPal USD',
+    'https://www.paypal.com/pyusd',
+  ),
 }
