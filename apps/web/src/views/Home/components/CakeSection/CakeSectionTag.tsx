@@ -87,7 +87,9 @@ export const PartnerTagsWrapper = styled(Marquee)`
   border-radius: 12px;
   mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
   -webkit-mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
+  padding-bottom: 3px;
   ${({ theme }) => theme.mediaQueries.lg} {
+    padding-bottom: 0px;
     height: ${MARQUEE_WIDTH}px !important;
     width: ${MARQUEE_WIDTH}px !important;
   }
