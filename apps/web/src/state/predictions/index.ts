@@ -85,7 +85,7 @@ type PredictionInitialization = Pick<
 >
 export const fetchPredictionData = createAsyncThunk<PredictionInitialization, Address, { extra: PredictionConfig }>(
   'predictions/fetchPredictionData',
-  async (account = null, { extra }) => {
+  async (account: Address = null, { extra }) => {
     // Static values
     const marketData = await getPredictionData(extra.address)
     const epochs =
@@ -454,7 +454,7 @@ export const predictionsSlice = createSlice({
       state.claimableStatuses = { ...state.claimableStatuses, ...claimableStatuses }
       state.hasHistoryLoaded = state.history.length === totalHistory || bets.length === 0
       state.totalHistory = totalHistory
-      state.currentHistoryPage = page
+      state.currentHistoryPage = page ?? 1
     })
   },
 })

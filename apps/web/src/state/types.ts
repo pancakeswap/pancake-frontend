@@ -332,7 +332,7 @@ export interface NodeRound {
 export type LeaderboardFilterTimePeriod = '1d' | '7d' | '1m' | 'all'
 
 export interface LeaderboardFilter {
-  address?: string
+  address?: null | string
   orderBy?: string
   timePeriod?: LeaderboardFilterTimePeriod
 }
@@ -359,7 +359,7 @@ export interface PredictionsState {
     [key: string]: boolean
   }
   leaderboard: {
-    selectedAddress: string
+    selectedAddress: null | string
     loadingState: TFetchStatus
     filters: LeaderboardFilter
     skip: number
