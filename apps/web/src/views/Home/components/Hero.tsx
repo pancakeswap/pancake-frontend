@@ -240,15 +240,15 @@ const Hero = () => {
           <Flex justifyContent={isMobile ? 'center' : 'start'}>
             {!account && (
               <ConnectWalletButton
-                style={{ borderRadius: isMobile ? 12 : undefined }}
-                scale={isMobile ? 'sm' : 'md'}
+                style={{ borderRadius: isXs ? 12 : undefined }}
+                scale={isXs ? 'sm' : 'md'}
                 mr="8px"
               />
             )}
             <NextLinkFromReactRouter to="/swap">
               <Button
-                scale={isMobile ? 'sm' : 'md'}
-                style={{ borderRadius: isMobile ? 12 : undefined }}
+                scale={isXs ? 'sm' : 'md'}
+                style={{ borderRadius: isXs ? 12 : undefined }}
                 variant={!account ? 'secondary' : 'primary'}
               >
                 {t('Trade Now')}
