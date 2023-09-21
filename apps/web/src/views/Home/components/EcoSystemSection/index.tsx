@@ -387,7 +387,7 @@ const EcoSystemSection: React.FC = () => {
           alignItems={isMobile || isMd ? undefined : 'center'}
         >
           <Image
-            style={{ marginRight: isMobile ? 'auto' : -72, marginLeft: isMobile ? 32 : 'auto' }}
+            style={{ marginRight: isMobile || isMd ? 'auto' : -72, marginLeft: isMobile || isMd ? 0 : 'auto' }}
             src={earnNftBunny}
             alt="earnNftBunny"
             width={296}
