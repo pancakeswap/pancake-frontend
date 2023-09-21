@@ -230,7 +230,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       try {
         const signature = await fetchMercuryoSignedUrl(account.address)
         setSig(signature as string)
-      } catch (e) {
+      } catch (e: any) {
         setError(e.toString())
       } finally {
         setTimeout(() => setLoading(false), 2000)
@@ -256,7 +256,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fixCurrency: true,
           address: account.address,
           signature: sig,
-          network: chainIdToMercuryoNetworkId[chainId],
+          network: chainIdToMercuryoNetworkId[chainId as number],
           merchantTransactionId: `${account.address}_${transactonId}`,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
