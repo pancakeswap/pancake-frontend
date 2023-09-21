@@ -50,7 +50,7 @@ export const fetchTransakSignedUrl = async (
   chainId: number,
 ) => {
   try {
-    const res = await fetch(`${'http://localhost:8081'}/generate-transak-sig`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-transak-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
