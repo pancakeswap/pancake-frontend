@@ -275,9 +275,13 @@ export const CakeSectionCenterBox = styled.div`
 
 const CakeBox = styled.div`
   position: relative;
-  width: 320px;
-  height: 320px;
+  width: 300px;
+  height: 300px;
   overflow: hidden;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 320px;
+    height: 320px;
+  }
 `
 
 const CakeVideo = styled.video`
@@ -292,9 +296,6 @@ const CakeCanvas = styled.canvas`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.75);
-  ${({ theme }) => theme.mediaQueries.md} {
-    transform: translate(-50%, -55%) scale(0.87);
-  }
   ${({ theme }) => theme.mediaQueries.lg} {
     transform: translate(-50%, -55%) scale(0.87);
   }
