@@ -11,15 +11,15 @@ import speaker from '../../images/community-items/4.png'
 import yellowBubble from '../../images/community-items/5.png'
 
 export const LeftImageWrapper = styled.div`
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    display: block;
-  }
   display: none;
   width: 391px;
   height: 620px;
   position: absolute;
   top: 110px;
-  left: calc(50% - 196px - 590px);
+  left: 10px;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    display: block;
+  }
   img {
     position: absolute;
 
@@ -55,19 +55,39 @@ const RightShadowWrapper = styled.div`
   width: 520px;
   height: 520px;
   bottom: -110px;
-  left: calc(50% - 196px - 230px);
+  left: calc(50% - 196px + 90px);
+  display: block;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    left: 50px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    left: calc(50% - 196px - 230px);
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    display: none;
+  }
   img {
     position: absolute;
     &.pinkBubble {
-      width: 150px;
-      top: 250px;
+      width: 100px;
+      top: 330px;
       left: 100px;
+      ${({ theme }) => theme.mediaQueries.sm} {
+        width: 150px;
+        top: 250px;
+        left: 100px;
+      }
       z-index: 3;
     }
     &.ring {
-      width: 250px;
-      top: 200px;
-      left: -50px;
+      width: 180px;
+      top: 250px;
+      left: -15px;
+      ${({ theme }) => theme.mediaQueries.sm} {
+        width: 250px;
+        top: 200px;
+        left: -50px;
+      }
       z-index: 1;
     }
   }
@@ -77,12 +97,24 @@ export const RightImageWrapper = styled.div`
   position: absolute;
   width: 520px;
   height: 520px;
+  left: calc(50% - 196px + 30px);
+  top: -206px;
+  z-index: 1;
+  transform: scale(0.8);
+  transform-origin: center center;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    transform: scale(1);
+    left: calc(50% - 196px + 60px);
+    top: -186px;
+  }
   ${({ theme }) => theme.mediaQueries.lg} {
     left: calc(50% - 196px + 290px);
     top: -140px;
   }
-  top: -110px;
-  left: calc(50% - 196px + 590px);
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    left: calc(50% - 196px + 490px);
+    top: -180px;
+  }
   img {
     position: absolute;
     &.pinkBubble {
@@ -119,19 +151,22 @@ export const RightImageWrapper = styled.div`
 
 export const RightTopBox: React.FC = () => {
   return (
-    <>
-      <RightImageWrapper>
-        <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
-        <Image className="ring" src={ring} alt="ring" />
-        <Image className="heart" src={heart} alt="heart" />
-        <Image className="speaker" src={speaker} alt="speaker" />
-        <Image className="yellowBubble" src={yellowBubble} alt="yellowBubble" />
-      </RightImageWrapper>
-      <RightShadowWrapper>
-        <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
-        <Image className="ring" src={ring} alt="ring" />
-      </RightShadowWrapper>
-    </>
+    <RightImageWrapper>
+      <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
+      <Image className="ring" src={ring} alt="ring" />
+      <Image className="heart" src={heart} alt="heart" />
+      <Image className="speaker" src={speaker} alt="speaker" />
+      <Image className="yellowBubble" src={yellowBubble} alt="yellowBubble" />
+    </RightImageWrapper>
+  )
+}
+
+export const RightBottomBox: React.FC = () => {
+  return (
+    <RightShadowWrapper>
+      <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
+      <Image className="ring" src={ring} alt="ring" />
+    </RightShadowWrapper>
   )
 }
 

@@ -7,6 +7,7 @@ import MultipleBanner from './components/Banners/MultipleBanner'
 import CakeDataRow from './components/CakeDataRow'
 import CakeSection from './components/CakeSection'
 import CommunitySection from './components/CommunitySection'
+import { RightTopBox } from './components/CommunitySection/ImagesOnBg'
 import EcoSystemSection from './components/EcoSystemSection'
 import Footer from './components/Footer'
 import Hero from './components/Hero'
@@ -171,6 +172,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         index={2}
         hasCurvedDivider={false}
       >
+        <RightTopBox />
         <CommunitySection />
       </PageSection>
       <PageSection

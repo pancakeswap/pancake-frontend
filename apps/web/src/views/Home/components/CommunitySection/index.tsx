@@ -4,18 +4,19 @@ import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import CompositeImage from '../CompositeImage'
 import CommunitySummary from './CommunitySummary'
 import { CommunityTags } from './CommunityTags'
 import { BlogCard, TwitterCards } from './TwitterCards'
-import { LeftBottomBox, RightTopBox } from './ImagesOnBg'
+import { LeftBottomBox, RightBottomBox } from './ImagesOnBg'
 
 const TransparentFrame = styled.div<{ isDark: boolean }>`
-  background: ${({ theme }) => (theme.isDark ? 'rgba(8, 6, 11, 0.6)' : ' rgba(255, 255, 255, 0.6)')};
+  position: relative;
+  z-index: 2;
+  background: ${({ theme }) => (theme.isDark ? 'rgba(0, 0, 0, 0.80)' : ' rgba(255, 255, 255, 0.8)')};
   padding: 16px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   box-sizing: border-box;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px);
   border-radius: 72px;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -121,7 +122,7 @@ const CommunitySection = () => {
         <TopRightImgWrapper>
           <CompositeImage {...topRightImage} />
         </TopRightImgWrapper> */}
-        <RightTopBox />
+        <RightBottomBox />
         <LeftBottomBox />
       </BgWrapper>
       <TransparentFrame isDark={theme.isDark}>
