@@ -68,7 +68,7 @@ function getMinMaxAmountCap(quotes: LimitQuote[]) {
 export const fetchMinimumBuyAmount = async (
   inputCurrencyId: string,
   outputCurrencyId: string,
-  chainId: number,
+  chainId: any,
 ): Promise<LimitQuote | undefined> => {
   try {
     const mercuryLimitQuote = await fetchLimitOfMer(inputCurrencyId, outputCurrencyId, chainId)
@@ -216,11 +216,13 @@ export function useBuyCryptoActionHandlers(): {
 export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   account: string | undefined,
-  chainId: number | undefined,
+  chainId: any,
 ): Promise<BuyCryptoState> {
   const DEFAULT_FIAT_CURRENCY = [ChainId.BASE, ChainId.LINEA].includes(chainId) ? 'EUR' : 'USD'
   const inputCurrency = parsedQs.inputCurrency as any
-  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency) ? inputCurrency : defaultTokenByChain[chainId]
+  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency)
+    ? inputCurrency
+    : defaultTokenByChain[chainId as any]
   const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr, chainId)
 
   return {

@@ -36,10 +36,10 @@ const initialState: BuyCryptoState = {
   [Field.OUTPUT]: {
     currencyId: '',
   },
-  minAmount: null,
-  minBaseAmount: null,
-  maxAmount: null,
-  maxBaseAmount: null,
+  minAmount: undefined,
+  minBaseAmount: undefined,
+  maxAmount: undefined,
+  maxBaseAmount: undefined,
   userIpAddress: null,
 }
 

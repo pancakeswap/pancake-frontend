@@ -46,7 +46,7 @@ export function BuyCryptoForm({
   } = useBuyCryptoState()
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
-    typedValue,
+    typedValue as string,
     minAmount,
     minBaseAmount,
     maxAmount,
@@ -56,7 +56,7 @@ export function BuyCryptoForm({
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
 
-  const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
+  const outputCurrency: any = fiatCurrencyMap[outputCurrencyId as string]
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
   const handleTypeOutput = useCallback(
     (value: string) => {
@@ -74,7 +74,10 @@ export function BuyCryptoForm({
 
     onFieldAInput(
       toString(
-        calculateDefaultAmount(limitAmounts.baseCurrency?.minBuyAmount, limitAmounts.baseCurrency.code.toUpperCase()),
+        calculateDefaultAmount(
+          limitAmounts.baseCurrency?.minBuyAmount,
+          limitAmounts.baseCurrency.code.toUpperCase() as string,
+        ),
       ),
     )
 
