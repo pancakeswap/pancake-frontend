@@ -210,13 +210,13 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           amount,
           theme.isDark,
           account.address,
-          chainId,
+          chainId as number,
         )
       } else if (provider === ONRAMP_PROVIDERS.Transak) {
-        result = await fetchTransakSignedUrl(inputCurrency, outputCurrency, amount, account.address, chainId)
+        result = await fetchTransakSignedUrl(inputCurrency, outputCurrency, amount, account.address, chainId as number)
       }
       setSignedIframeUrl(result)
-    } catch (e) {
+    } catch (e: any) {
       setError(e.toString())
     } finally {
       setTimeout(() => setLoading(false), 2000)
@@ -229,7 +229,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       setError(null)
       try {
         const signature = await fetchMercuryoSignedUrl(account.address)
-        setSig(signature)
+        setSig(signature as string)
       } catch (e) {
         setError(e.toString())
       } finally {
