@@ -62,7 +62,6 @@ export * from "./DateStep";
 export * from "./ReleasedChart";
 export * from "./BunnyKnownPlaceholder";
 export * from "./DropdownMenu";
-export * from "./LiquidityChartRangeInput";
 export * from "./CurrencyInput";
 export * from "./CurrencyLogo";
 export * from "./DynamicSection";

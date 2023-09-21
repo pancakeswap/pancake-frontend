@@ -12,8 +12,8 @@ import {
   RowBetween,
   Spinner,
   Text,
-  LiquidityChartRangeInput,
 } from '@pancakeswap/uikit'
+import { LiquidityChartRangeInput } from '@pancakeswap/widgets-internal'
 import { tryParsePrice } from 'hooks/v3/utils'
 import { GreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'

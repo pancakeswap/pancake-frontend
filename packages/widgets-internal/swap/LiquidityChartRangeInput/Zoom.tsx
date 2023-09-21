@@ -1,10 +1,9 @@
-import { ScaleLinear, select, zoom, ZoomBehavior, zoomIdentity, ZoomTransform } from "d3";
-import { useEffect, useMemo, useRef } from "react";
-import { styled } from "styled-components";
-import { ZoomInIcon, ZoomOutIcon, AutoRenewIcon } from "../Svg";
-import { Box } from "../Box";
+import { ScaleLinear, select, zoom, ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3'
+import { useEffect, useMemo, useRef } from 'react'
+import { styled } from 'styled-components'
+import { ZoomInIcon, ZoomOutIcon, AutoRenewIcon, Box } from '@pancakeswap/uikit'
 
-import { ZoomLevels } from "./types";
+import { ZoomLevels } from './types'
 
 const Wrapper = styled.div<{ count: number }>`
   display: grid;
@@ -14,7 +13,7 @@ const Wrapper = styled.div<{ count: number }>`
   position: absolute;
   top: -18px;
   right: 0;
-`;
+`
 
 export const ZoomOverlay = styled.rect`
   fill: transparent;
@@ -23,7 +22,7 @@ export const ZoomOverlay = styled.rect`
   &:active {
     cursor: grabbing;
   }
-`;
+`
 
 export default function Zoom({
   svg,
@@ -35,16 +34,16 @@ export default function Zoom({
   showResetButton,
   zoomLevels,
 }: {
-  svg: SVGElement | null;
-  xScale: ScaleLinear<number, number>;
-  setZoom: (transform: ZoomTransform) => void;
-  width: number;
-  height: number;
-  resetBrush: () => void;
-  showResetButton: boolean;
-  zoomLevels: ZoomLevels;
+  svg: SVGElement | null
+  xScale: ScaleLinear<number, number>
+  setZoom: (transform: ZoomTransform) => void
+  width: number
+  height: number
+  resetBrush: () => void
+  showResetButton: boolean
+  zoomLevels: ZoomLevels
 }) {
-  const zoomBehavior = useRef<ZoomBehavior<Element, unknown>>();
+  const zoomBehavior = useRef<ZoomBehavior<Element, unknown>>()
 
   const [zoomIn, zoomOut, zoomInitial, zoomReset] = useMemo(
     () => [
@@ -74,11 +73,11 @@ export default function Zoom({
           .transition()
           .call(zoomBehavior.current.scaleTo, 0.5),
     ],
-    [svg]
-  );
+    [svg],
+  )
 
   useEffect(() => {
-    if (!svg) return;
+    if (!svg) return
 
     zoomBehavior.current = zoom()
       .scaleExtent([zoomLevels.min, zoomLevels.max])
@@ -86,51 +85,51 @@ export default function Zoom({
         [0, 0],
         [width, height],
       ])
-      .on("zoom", ({ transform }: { transform: ZoomTransform }) => setZoom(transform));
+      .on('zoom', ({ transform }: { transform: ZoomTransform }) => setZoom(transform))
 
-    select(svg as Element).call(zoomBehavior.current);
-  }, [height, width, setZoom, svg, xScale, zoomBehavior, zoomLevels, zoomLevels.max, zoomLevels.min]);
+    select(svg as Element).call(zoomBehavior.current)
+  }, [height, width, setZoom, svg, xScale, zoomBehavior, zoomLevels, zoomLevels.max, zoomLevels.min])
 
   useEffect(() => {
     // reset zoom to initial on zoomLevel change
-    zoomInitial();
-  }, [zoomInitial, zoomLevels]);
+    zoomInitial()
+  }, [zoomInitial, zoomLevels])
 
   return (
     <Wrapper count={showResetButton ? 3 : 2}>
       {showResetButton && (
         <Box
           style={{
-            cursor: "pointer",
-            textAlign: "center",
-            paddingTop: "2px",
-            paddingLeft: "4px",
+            cursor: 'pointer',
+            textAlign: 'center',
+            paddingTop: '2px',
+            paddingLeft: '4px',
           }}
         >
           <AutoRenewIcon
             color="primary"
             width={20}
             onClick={() => {
-              resetBrush();
-              zoomReset();
+              resetBrush()
+              zoomReset()
             }}
           />
         </Box>
       )}
       <Box
         style={{
-          cursor: "pointer",
+          cursor: 'pointer',
         }}
       >
         <ZoomInIcon width={24} onClick={zoomIn} color="primary" />
       </Box>
       <Box
         style={{
-          cursor: "pointer",
+          cursor: 'pointer',
         }}
       >
         <ZoomOutIcon width={24} onClick={zoomOut} color="primary" />
       </Box>
     </Wrapper>
-  );
+  )
 }
