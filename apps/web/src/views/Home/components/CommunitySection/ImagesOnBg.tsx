@@ -112,7 +112,7 @@ export const RightImageWrapper = styled.div`
     top: -140px;
   }
   ${({ theme }) => theme.mediaQueries.xxl} {
-    left: calc(50% - 196px + 490px);
+    left: calc(100% - 326px);
     top: -180px;
   }
   img {
