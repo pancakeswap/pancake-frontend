@@ -46,8 +46,8 @@ interface LimitQuote {
   quoteCurrency: CurrencyLimits
 }
 
-function getMinMaxAmountCap(quotes: LimitQuote[]): LimitQuote {
-  return quotes.reduce((bestQuote: any, quote: any) => {
+function getMinMaxAmountCap(quotes: LimitQuote[]) {
+  return quotes.reduce((bestQuote, quote) => {
     if (!bestQuote) return quote
 
     return {
