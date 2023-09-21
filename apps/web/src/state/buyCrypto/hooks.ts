@@ -86,13 +86,13 @@ export const fetchMinimumBuyAmount = async (
 
 // from the current swap inputs, compute the best trade and return it.
 export function useBuyCryptoErrorInfo(
-  typedValue: string,
-  minAmount: number,
-  minBaseAmount: number,
-  maxAmount: number,
-  maxBaseAmount: number,
-  inputCurrencyId: string,
-  outputCurrencyId: string,
+  typedValue: string | undefined,
+  minAmount: number | undefined,
+  minBaseAmount: number | undefined,
+  maxAmount: number | undefined,
+  maxBaseAmount: number | undefined,
+  inputCurrencyId: string | undefined,
+  outputCurrencyId: string | undefined,
 ): {
   amountError: string | undefined
   inputError: string | undefined
@@ -284,7 +284,7 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
       dispatch(
         replaceBuyCryptoState({
           typedValue: parsed.minAmount
-            ? (toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId)) as string)
+            ? (toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId as string)) as string)
             : '',
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
