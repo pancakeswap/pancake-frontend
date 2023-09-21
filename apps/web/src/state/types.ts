@@ -365,7 +365,7 @@ export interface PredictionsState {
     skip: number
     hasMoreResults: boolean
     addressResults: {
-      [key: string]: PredictionUser
+      [key: string]: null | PredictionUser
     }
     results: PredictionUser[]
   }

@@ -85,7 +85,7 @@ type PredictionInitialization = Pick<
 >
 export const fetchPredictionData = createAsyncThunk<PredictionInitialization, Address, { extra: PredictionConfig }>(
   'predictions/fetchPredictionData',
-  async (account: Address = null, { extra }) => {
+  async (account: Address, { extra }) => {
     // Static values
     const marketData = await getPredictionData(extra.address)
     const epochs =
@@ -421,7 +421,7 @@ export const predictionsSlice = createSlice({
       })
 
       const futureRounds: ReduxNodeRound[] = []
-      const currentRound = rounds[currentEpoch]
+      const currentRound = rounds?.[currentEpoch]
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
         futureRounds.push(
           makeFutureRoundResponse(currentEpoch + i, Number(currentRound.startTimestamp) + intervalSeconds * i),
