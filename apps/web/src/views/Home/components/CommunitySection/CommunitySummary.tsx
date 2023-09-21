@@ -4,15 +4,18 @@ import { Flex, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 const Wrapper = styled.div`
-  width: 337px;
   border-radius: 32px;
   border: 2px solid #3c1786;
   background: var(--linear, linear-gradient(180deg, #7645d9 0%, #5121b1 100%));
   box-shadow: 0px 4px 0px 0px #3c1786;
   padding: 24px;
   box-sizing: border-box;
-
+  @media screen and (max-width: 396px) {
+    width: calc(100vw - 60px);
+  }
+  width: 340px;
   ${({ theme }) => theme.mediaQueries.sm} {
+    width: 340px;
     padding: 24px 0px 24px 60px;
     height: 340px;
   }
@@ -25,7 +28,7 @@ const StyledText = styled(Text)`
   font-size: 40px;
 `
 
-const LotteryCardContent = () => {
+const CommunitySummary = () => {
   const { t } = useTranslation()
 
   return (
@@ -54,4 +57,4 @@ const LotteryCardContent = () => {
   )
 }
 
-export default LotteryCardContent
+export default CommunitySummary

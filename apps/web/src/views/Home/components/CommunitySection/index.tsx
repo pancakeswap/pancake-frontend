@@ -25,7 +25,10 @@ const TransparentFrame = styled.div<{ isDark: boolean }>`
 `
 
 const StyledSwiper = styled(Swiper)`
-  width: 345px;
+  @media screen and (max-width: 396px) {
+    width: calc(100vw - 60px);
+  }
+  width: 340px;
   position: relative;
   padding-bottom: 3px;
   .swiper-pagination {
@@ -142,38 +145,35 @@ const CommunitySection = () => {
           <Text mb="40px" color="textSubtle" fontWeight={600} textAlign="center">
             {t('Together we can make the PancakeSwap community even stronger')}
           </Text>
-          <Flex m="0 auto" flexDirection={['column', null, null, 'row']} justifyContent="center" maxWidth="600px">
-            <Flex
-              flex="1"
-              maxWidth={['270px', '340px', null, '100%']}
-              mr={[null, null, null, '24px']}
-              mb={['32px', null, null, '0']}
+          <Flex
+            flexDirection={['column', null, null, 'row']}
+            alignItems="center"
+            style={{ gap: 24 }}
+            justifyContent="center"
+          >
+            <CommunitySummary />
+            <StyledSwiper
+              modules={[Autoplay, Pagination, EffectFade]}
+              spaceBetween={50}
+              observer
+              slidesPerView={1}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              speed={500}
+              autoplay={{ delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: false }}
+              loop
+              pagination={{ clickable: true }}
             >
-              <CommunitySummary />
-            </Flex>
-            <Flex flex="1" maxWidth={['270px', '340px', null, '100%']} justifyContent="center" alignItems="center">
-              <StyledSwiper
-                modules={[Autoplay, Pagination, EffectFade]}
-                spaceBetween={50}
-                observer
-                slidesPerView={1}
-                effect="fade"
-                fadeEffect={{ crossFade: true }}
-                speed={500}
-                autoplay={{ delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: false }}
-                loop
-                pagination={{ clickable: true }}
-              >
-                <SwiperSlide key="TwitterCards">
-                  <TwitterCards />
-                </SwiperSlide>
-                <SwiperSlide key="BlogCard">
-                  <BlogCard />
-                </SwiperSlide>
-              </StyledSwiper>
-            </Flex>
+              <SwiperSlide key="TwitterCards">
+                <TwitterCards />
+              </SwiperSlide>
+              <SwiperSlide key="BlogCard">
+                <BlogCard />
+              </SwiperSlide>
+            </StyledSwiper>
           </Flex>
         </Flex>
+
         <CommunityTags />
       </TransparentFrame>
     </>
