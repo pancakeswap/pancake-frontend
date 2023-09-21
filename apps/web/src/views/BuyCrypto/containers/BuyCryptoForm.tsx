@@ -140,8 +140,8 @@ export function BuyCryptoForm({
           />
         </Box>
         {[ChainId.BASE, ChainId.LINEA, ChainId.BSC, ChainId.ARBITRUM_ONE].includes(chainId) ? (
-          (chainId === ChainId.BSC && inputCurrencyId === 'USDT') ||
-          (chainId === ChainId.ARBITRUM_ONE && inputCurrencyId === 'USDC.e') ? (
+          (chainId === ChainId.BSC && inputCurrencyId === 'USDT' && outputCurrencyId === 'USD') ||
+          (chainId === ChainId.ARBITRUM_ONE && inputCurrencyId === 'USDC.e' && outputCurrencyId === 'USD') ? (
             <Message variant="warning" padding="16px">
               <Text fontSize="15px" color="#D67E0B">
                 {getChainCurrencyWarningMessages(t, chainId)[chainId]}
