@@ -1,5 +1,6 @@
 import { useIsMounted } from "@pancakeswap/hooks";
 import React from "react";
+import { useMatchBreakpoints } from "../../contexts";
 import { Box, Flex } from "../Box";
 import { Link } from "../Link";
 import {
@@ -16,7 +17,7 @@ import { vars } from "../../css/vars.css";
 import { Button } from "../Button";
 import CakePrice from "../CakePrice/CakePrice";
 import LangSelector from "../LangSelector/LangSelector";
-import { ArrowForwardIcon, LogoWithTextIcon } from "../Svg";
+import { ArrowForwardIcon, LogoIcon, LogoWithTextIcon } from "../Svg";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { FooterProps } from "./types";
 
@@ -34,6 +35,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
   ...props
 }) => {
   const isMounted = useIsMounted();
+  const { isLg, isXl } = useMatchBreakpoints();
   return (
     <StyledFooter
       data-theme="dark"
@@ -48,7 +50,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
         </StyledIconMobileContainer>
         <Flex
           order={[2, null, 1]}
-          flexDirection={["column", null, "row"]}
+          flexDirection={["column", "column", "column", "column", "row", "row"]}
           justifyContent="space-between"
           alignItems="flex-start"
           mb={["42px", null, "36px"]}
@@ -77,7 +79,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
             </StyledList>
           ))}
           <Box display={["none", null, "block"]}>
-            <LogoWithTextIcon width="160px" />
+            {isLg || isXl ? <LogoIcon /> : <LogoWithTextIcon width="160px" />}
           </Box>
         </Flex>
         <StyledSocialLinks order={[2]} pb={["42px", null, "32px"]} mb={["0", null, "32px"]} />
