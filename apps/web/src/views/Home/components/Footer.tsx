@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
-import { styled } from 'styled-components'
+import { styled, keyframes } from 'styled-components'
 import { useAccount } from 'wagmi'
 import Image from 'next/image'
 import CompositeImage from './CompositeImage'
@@ -11,6 +11,18 @@ import ctaPancake from '../images/cta-pancake.png'
 import ctaPancakeBig from '../images/cta-pancake-big.png'
 import ctaRock from '../images/cta-rock.png'
 import ctaRock2 from '../images/cta-rock-2.png'
+
+const floatingAnim = (x: string, y: string) => keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(${x}, ${y});
+  }
+  to {
+    transform: translate(0, 0px);
+  }
+`
 
 const ImageWrapper = styled.div`
   z-index: 2;
@@ -25,24 +37,44 @@ const ImageWrapper = styled.div`
     width: 120px;
     top: 20px;
     left: -40px;
+    display: none;
+    animation: ${floatingAnim('3px', '2px')} 3s ease-in-out 1s infinite;
+    ${({ theme }) => theme.mediaQueries.sm} {
+      display: block;
+    }
+    ${({ theme }) => theme.mediaQueries.lg} {
+      left: calc(50% - 60px - 300px);
+    }
   }
   .rock {
     position: absolute;
     width: 120px;
     top: 16px;
     right: 5px;
+    animation: ${floatingAnim('3px', '3px')} 3s ease-in-out 0.5s infinite;
+    ${({ theme }) => theme.mediaQueries.lg} {
+      left: calc(50% - 60px + 240px);
+    }
   }
   .big-pancake {
     width: 160px;
     position: absolute;
     bottom: 10px;
     right: -60px;
+    animation: ${floatingAnim('8px', '6px')} 3s ease-in-out 2.5s infinite;
+    ${({ theme }) => theme.mediaQueries.lg} {
+      left: calc(50% - 80px + 270px);
+    }
   }
   .rock2 {
     width: 140px;
     position: absolute;
     bottom: 10px;
     left: 20px;
+    animation: ${floatingAnim('1px', '1px')} 3s ease-in-out 3.5s infinite;
+    ${({ theme }) => theme.mediaQueries.lg} {
+      left: calc(50% - 70px - 240px);
+    }
   }
 `
 
