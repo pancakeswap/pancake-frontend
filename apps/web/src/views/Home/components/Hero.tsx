@@ -175,11 +175,8 @@ const Hero = () => {
     },
   )
   useLayoutEffect(() => {
-    canvasInterval = window.setInterval(() => {
-      drawImage?.()
-    }, 1000 / fps)
     return () => clearInterval(canvasInterval)
-  }, [drawImage])
+  }, [])
   return (
     <>
       <style jsx global>

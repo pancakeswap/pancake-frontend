@@ -312,6 +312,9 @@ const CakeSection: React.FC = () => {
   const rightRef = useRef<HTMLDivElement>(null)
   const played = useRef<boolean>(false)
   const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
+    canvasInterval = window.setInterval(() => {
+      drawImage?.()
+    }, 1000 / fps)
     setTimeout(() => {
       if (leftRef.current) leftRef.current?.classList.add('show')
       if (leftLineRef.current) leftLineRef.current?.classList.add('show')
@@ -335,9 +338,6 @@ const CakeSection: React.FC = () => {
   const { isMobile, isTablet } = useMatchBreakpoints()
   useLayoutEffect(() => {
     triggerAnimation()
-    canvasInterval = window.setInterval(() => {
-      drawImage?.()
-    }, 1000 / fps)
     return () => clearInterval(canvasInterval)
   }, [drawImage])
 
