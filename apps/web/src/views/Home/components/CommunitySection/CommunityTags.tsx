@@ -35,7 +35,7 @@ const CommunityTag = styled.div`
       fill: ${({ theme }) => (theme.isDark ? '#000000' : '#ffffff')};
     }
   }
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     width: 48px;
     height: 48px;
   }
