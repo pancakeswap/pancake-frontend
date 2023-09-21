@@ -48,6 +48,7 @@
     "@pancakeswap/tsconfig": "workspace:*",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@types/node": "^18.16.2",
+    "eslint-plugin-address": "^0.0.2",
     "eslint-plugin-lodash": "^7.4.0",
     "eslint-plugin-strict-null-checks": "0.0.21",
     "husky": "^7.0.0",
@@ -63,8 +64,8 @@
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
     "tsx": "^3.12.6",
-    "typescript": "^5.1.3",
     "turbo": "1.10.2",
+    "typescript": "^5.1.3",
     "vitest": "^0.27.2"
   },
   "volta": {
