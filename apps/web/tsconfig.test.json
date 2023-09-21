@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "skipLibCheck": true,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true,
