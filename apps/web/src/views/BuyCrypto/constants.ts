@@ -6,7 +6,6 @@ export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'B
 export const DEFAULT_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 export const WHITELISTED_FIAT_CURRENCIES_BASE = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
 export const WHITELISTED_FIAT_CURRENCIES_LINEA = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
-export const WHITELISTED_FIAT_CURRENCIES_ZKSYNC = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
 
 const MOONPAY_FEE_TYPES = ['Est. Total Fees', 'Networking Fees', 'Provider Fees']
 const MERCURYO_FEE_TYPES = ['Est. Total Fees']
@@ -87,7 +86,7 @@ export const whiteListedFiatCurrenciesMap: {
   [ChainId.BSC]: DEFAULT_FIAT_CURRENCIES,
   [ChainId.ETHEREUM]: DEFAULT_FIAT_CURRENCIES,
   [ChainId.ARBITRUM_ONE]: DEFAULT_FIAT_CURRENCIES,
-  [ChainId.ZKSYNC]: WHITELISTED_FIAT_CURRENCIES_ZKSYNC,
+  [ChainId.ZKSYNC]: DEFAULT_FIAT_CURRENCIES,
   [ChainId.LINEA]: WHITELISTED_FIAT_CURRENCIES_LINEA,
   [ChainId.POLYGON_ZKEVM]: DEFAULT_FIAT_CURRENCIES,
   [ChainId.BASE]: WHITELISTED_FIAT_CURRENCIES_BASE,
@@ -157,27 +156,13 @@ export const getChainCurrencyWarningMessages = (
 ) => {
   return {
     [ChainId.BSC]: t(
-      'USDT quotes are currently unavailable in USD on BNB Smart Chain. Please select another currency to receive USDT quotes',
+      'Note USDT quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a quote for USDT',
       { chainId: networkDisplay[chainId] },
     ),
     [ChainId.ARBITRUM_ONE]: t(
       'Note USDC.e quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a quote for USDC.e',
       { chainId: networkDisplay[chainId] },
     ),
-    [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
-      chainId: networkDisplay[chainId],
-    }),
-    [ChainId.BASE]: t('%chainId% supports limited fiat currencies. USD are not supported', {
-      chainId: networkDisplay[chainId],
-    }),
-  }
-}
-
-export const getChainLimitedTokenWarningMessages = (
-  t: (key: TranslationKey, data?: ContextData) => string,
-  chainId: number,
-) => {
-  return {
     [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
       chainId: networkDisplay[chainId],
     }),

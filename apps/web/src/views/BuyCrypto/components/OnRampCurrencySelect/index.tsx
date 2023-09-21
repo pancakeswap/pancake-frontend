@@ -63,7 +63,7 @@ const ButtonAsset = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <Flex pl="8px">
+    <Flex>
       {id === 'onramp-input' ? (
         <FiatLogo currency={selectedCurrency} size="24px" style={{ marginRight: '8px' }} />
       ) : (

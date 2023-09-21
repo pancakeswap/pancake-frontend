@@ -18,7 +18,7 @@ import { useChainId } from 'wagmi'
 import { FormHeader } from './FormHeader'
 import { FormContainer } from './FormContainer'
 import GetQuotesButton from '../components/GetQuotesButton'
-import { fiatCurrencyMap, getChainCurrencyWarningMessages, getChainLimitedTokenWarningMessages } from '../constants'
+import { fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
 import { CurrencySelect } from '../components/OnRampCurrencySelect'
 
 // Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),
@@ -137,14 +137,14 @@ export function BuyCryptoForm({
           />
         </Box>
         {[ChainId.BASE, ChainId.LINEA, ChainId.BSC, ChainId.ARBITRUM_ONE].includes(chainId) ? (
-          <Message variant="warning" padding="16px">
-            <Text fontSize="15px" color="#D67E0B">
-              {(chainId === ChainId.BSC && inputCurrencyId === 'USDT') ||
-              (chainId === ChainId.ARBITRUM_ONE && inputCurrencyId === 'USDC.e')
-                ? getChainLimitedTokenWarningMessages(t, chainId)[chainId]
-                : getChainCurrencyWarningMessages(t, chainId)[chainId]}
-            </Text>
-          </Message>
+          (chainId === ChainId.BSC && inputCurrencyId === 'USDT') ||
+          (chainId === ChainId.ARBITRUM_ONE && inputCurrencyId === 'USDC.e') ? (
+            <Message variant="warning" padding="16px">
+              <Text fontSize="15px" color="#D67E0B">
+                {getChainCurrencyWarningMessages(t, chainId)[chainId]}
+              </Text>
+            </Message>
+          ) : null
         ) : null}
         <Text color="textSubtle" fontSize="14px" px="4px">
           {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}
