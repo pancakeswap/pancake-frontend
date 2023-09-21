@@ -11,20 +11,20 @@
   "keywords": ["pancake", "default"],
   "tokens": [
     {
-      "name": "Binance USD",
-      "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-      "symbol": "BUSD",
-      "decimals": 18,
-      "chainId": 56,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/BUSD.png"
-    },
-    {
       "name": "Binance Pegged USDT",
       "symbol": "USDT",
       "address": "0x55d398326f99059fF775485246999027B3197955",
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x55d398326f99059fF775485246999027B3197955.png"
+    },
+    {
+      "name": "Binance Pegged USD Coin",
+      "symbol": "USDC",
+      "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
     },
     {
       "name": "USD Coin",
@@ -91,6 +91,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
+      "name": "USD Coin Ethereum Bridged",
+      "address": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+      "symbol": "USDC.e",
+      "decimals": 6,
+      "chainId": 42161,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
       "name": "USD Coin",
       "symbol": "USDC",
       "address": "0x176211869cA2b568f2A7D4EE941E073a821EE1ff",
@@ -105,14 +113,6 @@
       "chainId": 8453,
       "decimals": 6,
       "logoURI": "https://tokens.pancakeswap.finance/images/polygon-zkevm/0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035.png"
-    },
-    {
-      "name": "USD Coin Ethereum Bridged",
-      "address": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
-      "symbol": "USDC.e",
-      "decimals": 6,
-      "chainId": 42161,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     }
   ]
 }
