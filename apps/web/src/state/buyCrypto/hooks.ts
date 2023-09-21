@@ -86,16 +86,16 @@ export const fetchMinimumBuyAmount = async (
 
 // from the current swap inputs, compute the best trade and return it.
 export function useBuyCryptoErrorInfo(
-  typedValue: string | undefined,
-  minAmount: number | undefined,
-  minBaseAmount: number | undefined,
-  maxAmount: number | undefined,
-  maxBaseAmount: number | undefined,
-  inputCurrencyId: string | undefined,
-  outputCurrencyId: string | undefined,
+  typedValue: string,
+  minAmount: number,
+  minBaseAmount: number,
+  maxAmount: number,
+  maxBaseAmount: number,
+  inputCurrencyId: string,
+  outputCurrencyId: string,
 ): {
-  amountError: string | undefined
-  inputError: string | undefined
+  amountError: string
+  inputError: string
 } {
   const { address: account } = useAccount()
   const {
