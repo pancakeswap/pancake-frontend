@@ -152,7 +152,7 @@ const Hero = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { theme } = useTheme()
-  const { isMobile, isXs } = useMatchBreakpoints()
+  const { isMobile, isXs, isMd } = useMatchBreakpoints()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { drawImage } = useDrawCanvas(
@@ -204,7 +204,7 @@ const Hero = () => {
       <Flex
         position="relative"
         flexDirection={['column-reverse', null, null, 'row']}
-        alignItems={['flex-end', null, null, 'center']}
+        alignItems={['center', null, null, 'center']}
         justifyContent="center"
         mt={['50px', null, 0]}
         pl={['0px', '0px', '0px', '30px']}
