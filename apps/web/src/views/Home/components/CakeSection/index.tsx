@@ -275,8 +275,8 @@ export const CakeSectionCenterBox = styled.div`
 
 const CakeBox = styled.div`
   position: relative;
-  width: 360px;
-  height: 360px;
+  width: 320px;
+  height: 320px;
   overflow: hidden;
 `
 
@@ -291,7 +291,13 @@ const CakeCanvas = styled.canvas`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.75);
+  ${({ theme }) => theme.mediaQueries.md} {
+    transform: translate(-50%, -55%) scale(0.87);
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    transform: translate(-50%, -55%) scale(0.87);
+  }
   background-color: transparent;
 `
 
