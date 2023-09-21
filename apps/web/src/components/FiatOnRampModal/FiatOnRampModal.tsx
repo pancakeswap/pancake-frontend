@@ -228,7 +228,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       setLoading(true)
       setError(null)
       try {
-        const signature = await fetchMercuryoSignedUrl(account.address)
+        const signature = await fetchMercuryoSignedUrl(account.address as string)
         setSig(signature as string)
       } catch (e: any) {
         setError(e.toString())

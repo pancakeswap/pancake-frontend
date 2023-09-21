@@ -43,7 +43,7 @@ const usePriceQuotes = () => {
   )
 
   const fetchQuotes = useCallback(async () => {
-    if (!chainId) return
+    if (!chainId || outputCurrency || inputCurrency) return
     try {
       const providerQuotes = await fetchProviderQuotes({
         fiatCurrency: outputCurrency.toUpperCase(),

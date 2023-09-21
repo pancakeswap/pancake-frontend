@@ -46,7 +46,7 @@ interface LimitQuote {
   quoteCurrency: CurrencyLimits
 }
 
-function getMinMaxAmountCap(quotes: LimitQuote[]): LimitQuote {
+function getMinMaxAmountCap(quotes: LimitQuote[]) {
   return quotes.reduce((bestQuote, quote) => {
     if (!bestQuote) return quote
 
@@ -95,7 +95,7 @@ export function useBuyCryptoErrorInfo(
   outputCurrencyId: string,
 ): {
   amountError: string | undefined
-  inputError: string
+  inputError: string | undefined
 } {
   const { address: account } = useAccount()
   const {
@@ -216,7 +216,7 @@ export function useBuyCryptoActionHandlers(): {
 export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   account: string | undefined,
-  chainId: number,
+  chainId: number | undefined,
 ): Promise<BuyCryptoState> {
   const DEFAULT_FIAT_CURRENCY = [ChainId.BASE, ChainId.LINEA].includes(chainId) ? 'EUR' : 'USD'
   const inputCurrency = parsedQs.inputCurrency as any
