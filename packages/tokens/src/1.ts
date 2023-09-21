@@ -1,4 +1,5 @@
-import { ChainId, WETH9, ERC20Token } from '@pancakeswap/sdk'
+import { WETH9, ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import { CAKE, USDC, USDT, WBTC_ETH } from './common'
 
@@ -279,5 +280,13 @@ export const ethereumTokens = {
     'WOO',
     'Wootrade Network',
     'https://woo.network',
+  ),
+  pyusd: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x6c3ea9036406852006290770BEdFcAbA0e23A0e8',
+    6,
+    'PYUSD',
+    'PayPal USD',
+    'https://www.paypal.com/pyusd',
   ),
 }
