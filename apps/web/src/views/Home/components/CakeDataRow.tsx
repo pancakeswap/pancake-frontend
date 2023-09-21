@@ -22,8 +22,8 @@ const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: 
   align-items: center;
   padding: 12px 16px;
   &:not(:last-child) {
-    border-right: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
+    border-right: 1px solid ${({ theme }) => theme.colors.cardBorder};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   }
   &:nth-child(2n) {
     border-right: none;
@@ -31,7 +31,7 @@ const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: 
   width: 50%;
   ${({ theme }) => theme.mediaQueries.sm} {
     &:not(:last-child) {
-      border-right: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
+      border-right: 1px solid ${({ theme }) => theme.colors.cardBorder};
       border-bottom: none;
     }
     &:nth-child(3) {
@@ -43,7 +43,7 @@ const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: 
   ${({ theme }) => theme.mediaQueries.lg} {
     width: auto;
     &:not(:last-child) {
-      border-right: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
+      border-right: 1px solid ${({ theme }) => theme.colors.cardBorder};
     }
   }
 `
