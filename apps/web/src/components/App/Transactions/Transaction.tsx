@@ -2,6 +2,7 @@ import { styled } from 'styled-components'
 import { CheckmarkIcon, CloseIcon, ScanLink } from '@pancakeswap/uikit'
 import { getBlockExploreLink } from 'utils'
 import { TransactionDetails } from 'state/transactions/reducer'
+import { ChainId } from '@pancakeswap/chains'
 import CircleLoader from '../../Loader/CircleLoader'
 
 const TransactionState = styled.div<{ pending: boolean; success?: boolean }>`
@@ -30,7 +31,10 @@ export default function Transaction({ tx, chainId }: { tx: TransactionDetails; c
 
   return (
     <TransactionState pending={pending} success={success}>
-      <ScanLink chainId={chainId} href={getBlockExploreLink(tx.hash, 'transaction', chainId)}>
+      <ScanLink
+        useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)}
+        href={getBlockExploreLink(tx.hash, 'transaction', chainId)}
+      >
         {summary ?? tx.hash}
       </ScanLink>
       <IconWrapper pending={pending} success={success}>

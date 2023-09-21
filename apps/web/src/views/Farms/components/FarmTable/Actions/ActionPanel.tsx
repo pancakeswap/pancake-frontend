@@ -14,6 +14,7 @@ import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { useAccount } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
 import { FarmV3ApyButton } from '../../FarmCard/V3/FarmV3ApyButton'
 import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
@@ -222,7 +223,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink chainId={chainId} href={bsc}>
+              <StyledScanLink useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)} href={bsc}>
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>
@@ -345,7 +346,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink chainId={chainId} href={bsc}>
+              <StyledScanLink useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)} href={bsc}>
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>

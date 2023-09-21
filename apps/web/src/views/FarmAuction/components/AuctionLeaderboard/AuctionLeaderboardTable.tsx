@@ -139,7 +139,7 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
           {account && (
             <SubMenuItem
               as={ScanLink}
-              chainId={ChainId.BSC}
+              useBscCoinFallback
               href={getBlockExploreLink(account, 'address')}
               bold={false}
               color="text"

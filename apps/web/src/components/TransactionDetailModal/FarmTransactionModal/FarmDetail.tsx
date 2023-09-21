@@ -5,6 +5,7 @@ import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { FarmTransactionStatus, NonBscFarmTransactionStep } from 'state/transactions/actions'
+import { ChainId } from '@pancakeswap/chains'
 
 interface HarvestDetailProps {
   status: FarmTransactionStatus
@@ -39,7 +40,10 @@ const FarmDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({ ste
             <Flex>
               {isFail && <WarningIcon mr="4px" color="failure" />}
               {step.tx && (
-                <ScanLink chainId={step.chainId} href={getBlockExploreLink(step.tx, 'transaction', step.chainId)}>
+                <ScanLink
+                  useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(step.chainId)}
+                  href={getBlockExploreLink(step.tx, 'transaction', step.chainId)}
+                >
                   {getBlockExploreName(step.chainId)}
                 </ScanLink>
               )}

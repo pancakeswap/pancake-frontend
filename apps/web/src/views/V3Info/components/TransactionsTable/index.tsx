@@ -13,6 +13,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
 import { styled } from 'styled-components'
+import { ChainId } from '@pancakeswap/chains'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getBlockExploreLink } from 'utils'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -104,7 +105,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   return (
     <ResponsiveGrid>
       <ScanLink
-        chainId={multiChainId[chainName]}
+        useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
         href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
       >
         <Text fontWeight={400}>
@@ -124,7 +125,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
       </Text>
       <Text fontWeight={400}>
         <ScanLink
-          chainId={multiChainId[chainName]}
+          useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
           href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
         >
           {shortenAddress(transaction.sender)}

@@ -1025,7 +1025,10 @@ function PositionHistoryRow({
     return (
       <Box>
         <AutoRow>
-          <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <ScanLink
+            useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)}
+            href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
+          >
             <Flex flexDirection="column" alignItems="center">
               <Text ellipsis>{mobileDate}</Text>
               <Text fontSize="12px">{mobileTime}</Text>
@@ -1075,7 +1078,10 @@ function PositionHistoryRow({
       p="16px"
     >
       <AutoRow justifyContent="center">
-        <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+        <ScanLink
+          useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)}
+          href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
+        >
           <Text ellipsis>{desktopDate}</Text>
         </ScanLink>
       </AutoRow>

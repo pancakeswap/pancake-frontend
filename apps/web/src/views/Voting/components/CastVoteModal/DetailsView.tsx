@@ -125,7 +125,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
       </VotingBoxBorder>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
         {t('Your voting power at block')}
-        <StyledScanLink chainId={ChainId.BSC} href={getBlockExploreLink(block, 'block')} ml="8px">
+        <StyledScanLink useBscCoinFallback href={getBlockExploreLink(block, 'block')} ml="8px">
           {block}
         </StyledScanLink>
       </Text>

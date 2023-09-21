@@ -1861,6 +1861,9 @@ importers:
 
   packages/widgets-internal:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/farms':
         specifier: workspace:*
         version: link:../farms

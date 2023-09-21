@@ -25,6 +25,8 @@ import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { ChainId } from '@pancakeswap/chains'
+
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import BarChart from '../components/BarChart/alt'
 import LineChart from '../components/LineChart/alt'
@@ -160,7 +162,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
 
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
               <ScanLink
-                chainId={multiChainId[chainName]}
+                useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
                 href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                 mr="8px"
               >

@@ -11,6 +11,7 @@ import {
   ScanLink,
   LinkExternal,
 } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/chains'
 import { useIsExpertMode } from '@pancakeswap/utils/user'
 import { useTranslation } from '@pancakeswap/localization'
 import { ReactNode, useCallback, useMemo } from 'react'
@@ -112,7 +113,11 @@ export default function V2FormView({
               >
                 {t('Learn more how to fix')}
               </LinkExternal>
-              <ScanLink chainId={chainId} href={pairExplorerLink} mt="0.25rem">
+              <ScanLink
+                useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)}
+                href={pairExplorerLink}
+                mt="0.25rem"
+              >
                 {t('View pool on explorer')}
               </ScanLink>
             </Flex>

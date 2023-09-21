@@ -47,6 +47,7 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
+import { ChainId } from '@pancakeswap/chains'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -145,7 +146,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 <ScanLink
                   mr="8px"
                   color="primary"
-                  chainId={multiChainId[chainName]}
+                  useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
                   href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                 >
                   {t('View on %site%', { site: multiChainScan[chainName] })}
