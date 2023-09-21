@@ -47,7 +47,7 @@ export function BuyCryptoForm({
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
     typedValue as string,
-    minAmount as string,
+    minAmount as number,
     minBaseAmount,
     maxAmount,
     maxBaseAmount,

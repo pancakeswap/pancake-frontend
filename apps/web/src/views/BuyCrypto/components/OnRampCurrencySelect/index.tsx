@@ -154,7 +154,7 @@ export const CurrencySelect = ({
           selected={!!selectedCurrency}
           onClick={onPresentCurrencyModal}
         >
-          {selectedCurrency && currencyLoading ? (
+          {selectedCurrency ? (
             <ButtonAsset id={id} selectedCurrency={selectedCurrency} currencyLoading={currencyLoading as boolean} />
           ) : (
             <Flex>
