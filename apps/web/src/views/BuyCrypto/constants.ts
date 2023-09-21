@@ -156,11 +156,11 @@ export const getChainCurrencyWarningMessages = (
 ) => {
   return {
     [ChainId.BSC]: t(
-      'Note USDT quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a quote for USDT',
+      'USDT quotes are currently unavailable in USD on BNB Smart Chain. Please select another currency to receive USDT quotes',
       { chainId: networkDisplay[chainId] },
     ),
     [ChainId.ARBITRUM_ONE]: t(
-      'Note USDC.e quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a quote for USDC.e',
+      'UEDC.e quotes are currently unavailable in USD on BNB Smart Chain. Please select another currency to receive USDC.e quotes',
       { chainId: networkDisplay[chainId] },
     ),
     [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
