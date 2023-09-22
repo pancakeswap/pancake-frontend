@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import Image from 'next/Image'
+import Image from 'next/image'
 import React, { memo, useLayoutEffect, useRef, useCallback } from 'react'
 import { css, styled, keyframes } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
