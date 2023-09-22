@@ -187,6 +187,11 @@ const config: (
         {
           label: t('Uranus Unity Rain'),
           href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-1-uranus-unity-rain-showering-cake-rewards-on-telegram',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('Mars Lottery Paradise'),
+          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-4-mars-mystique-lottery-paradise',
           status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
