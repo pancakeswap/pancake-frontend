@@ -9,6 +9,7 @@ export const useDrawCanvas = (
   canvasInterval: number,
   onVideoStartCallback?: () => void,
   onVideoVideoEnd?: () => void,
+  additionalVideoRefs?: React.MutableRefObject<HTMLVideoElement>[],
 ) => {
   const video = videoRef?.current
   const canvas = canvasRef?.current
@@ -19,7 +20,12 @@ export const useDrawCanvas = (
     if (!canvas || !video || !context) return
     context.clearRect(0, 0, width, height)
     context.drawImage(video, 0, 0, width, height)
-  }, [canvas, video, height, width])
+    additionalVideoRefs?.forEach((ref) => {
+      const additionalVideo = ref.current
+      if (!additionalVideo) return
+      context.drawImage(additionalVideo, 0, 0, width, height)
+    })
+  }, [canvas, video, height, width, additionalVideoRefs])
 
   useLayoutEffect(() => {
     if (isElementReady) {

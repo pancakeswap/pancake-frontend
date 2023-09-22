@@ -23,18 +23,6 @@ const flyingAnim = () => keyframes`
   }
 `
 
-const fading = () => keyframes`
-  from {
-    opacity: 0.9;
-  }
-  50% {
-    opacity: 0.1;
-  }
-  to {
-    opacity: 0.9;
-  }
-`
-
 const BgWrapper = styled.div`
   z-index: -1;
   overflow: hidden;
@@ -80,7 +68,7 @@ const CakeBox = styled.div`
       transform: scale(1) translate(-50%, -50%);
     }
     position: relative;
-    width: 600px;
+    width: 615px;
     height: 736px;
     overflow: hidden;
     margin-bottom: -100px;
@@ -94,6 +82,7 @@ const VideoWrapper = styled.div`
 `
 
 const CakeVideo = styled.video``
+
 const CakeCanvas = styled.canvas`
   position: absolute;
   top: 50%;
@@ -126,6 +115,11 @@ const Hero = () => {
   const { theme } = useTheme()
   const { isMobile, isXs, isMd } = useMatchBreakpoints()
   const videoRef = useRef<HTMLVideoElement>(null)
+  const starVideoRef = useRef<HTMLVideoElement>(null)
+  const cakeVideoRef = useRef<HTMLVideoElement>(null)
+  const rock01VideoRef = useRef<HTMLVideoElement>(null)
+  const rock02VideoRef = useRef<HTMLVideoElement>(null)
+  const rock03VideoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { isIOS } = useIsIOS()
   const { drawImage } = useDrawCanvas(
@@ -146,8 +140,17 @@ const Hero = () => {
         videoRef.current.play()
       }
     },
+    [starVideoRef, cakeVideoRef, rock01VideoRef, rock02VideoRef, rock03VideoRef],
   )
   useLayoutEffect(() => {
+    starVideoRef.current?.play()
+    cakeVideoRef.current?.play()
+    rock01VideoRef.current?.play()
+    rock02VideoRef.current?.play()
+    setTimeout(() => {
+      rock03VideoRef.current?.play()
+    }, 3000)
+
     return () => clearInterval(canvasInterval)
   }, [])
   return (
@@ -253,6 +256,21 @@ const Hero = () => {
                   <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
                     <source src="/assets/bunny.webm" type="video/webm" />
                     {/* <source src="/assets/bunny.mov" /> */}
+                  </CakeVideo>
+                  <CakeVideo ref={starVideoRef} width={width} autoPlay loop muted playsInline>
+                    <source src="/assets/star.webm" type="video/webm" />
+                  </CakeVideo>
+                  <CakeVideo ref={cakeVideoRef} width={width} autoPlay loop muted playsInline>
+                    <source src="/assets/hero-cake.webm" type="video/webm" />
+                  </CakeVideo>
+                  <CakeVideo ref={rock01VideoRef} width={width} autoPlay loop muted playsInline>
+                    <source src="/assets/rock01.webm" type="video/webm" />
+                  </CakeVideo>
+                  <CakeVideo ref={rock02VideoRef} width={width} autoPlay loop muted playsInline>
+                    <source src="/assets/rock02.webm" type="video/webm" />
+                  </CakeVideo>
+                  <CakeVideo ref={rock03VideoRef} width={width} autoPlay loop muted playsInline>
+                    <source src="/assets/rock03.webm" type="video/webm" />
                   </CakeVideo>
                 </VideoWrapper>
               </CakeBox>
