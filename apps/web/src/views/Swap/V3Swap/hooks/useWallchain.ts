@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from 'react'
 import type WallchainSDK from '@wallchain/sdk'
 import type { TMEVFoundResponse } from '@wallchain/sdk'
 import { TOptions } from '@wallchain/sdk'
-import { Token, TradeType, Currency, ChainId } from '@pancakeswap/sdk'
+import { Token, TradeType, Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useWalletClient } from 'wagmi'
 import useSWRImmutable from 'swr/immutable'
@@ -238,7 +239,7 @@ export function useWallchainSwapCallArguments(
             let witness: false | Awaited<ReturnType<typeof sdk.signPermit>> = false
 
             if (needPermit) {
-              witness = await sdk.signPermit(srcToken as `0x${string}`, account, spender, amountIn)
+              witness = await sdk.signPermit(srcToken, account, spender, amountIn)
             }
 
             const data = await sdk.createNewTransaction(
@@ -248,8 +249,8 @@ export function useWallchainSwapCallArguments(
               previousSwapCalls[0].calldata,
               amountIn,
               previousSwapCalls[0].value,
-              srcToken as `0x${string}`,
-              dstToken as `0x${string}`,
+              srcToken,
+              dstToken,
               searcherSignature as `0x${string}`,
               searcherRequest as unknown as TMEVFoundResponse['searcherRequest'],
               witness,

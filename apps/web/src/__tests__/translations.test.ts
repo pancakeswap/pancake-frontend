@@ -1,6 +1,6 @@
 import Path from 'path'
 import fs from 'fs'
-import { describe, it } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import teams from 'config/constants/teams'
 import { NftLocation } from 'state/nftMarket/types'
 
@@ -148,30 +148,24 @@ describe('Check translations available', () => {
       }
     })
 
-    try {
-      expect(extractedKeys.size).toBe(0)
-    } catch (error) {
-      throw new Error(
-        `Found ${extractedKeys.size} key(s) ${JSON.stringify(
-          Array.from(extractedKeys.values()),
-          null,
-          '\t',
-        )} not in translation.json`,
-      )
-    }
+    expect(
+      extractedKeys.size,
+      `Found ${extractedKeys.size} key(s) ${JSON.stringify(
+        Array.from(extractedKeys.values()),
+        null,
+        '\t',
+      )} not in translation.json`,
+    ).toBe(0)
   })
 
   it('should use all translation key in translation.json', () => {
-    try {
-      expect(translationKeys.size).toBe(0)
-    } catch (error) {
-      throw new Error(
-        `Found unused ${translationKeys.size} key(s) ${JSON.stringify(
-          Array.from(translationKeys.values()),
-          null,
-          '\t',
-        )} in translation.json`,
-      )
-    }
+    expect(
+      translationKeys.size,
+      `Found unused ${translationKeys.size} key(s) ${JSON.stringify(
+        Array.from(translationKeys.values()),
+        null,
+        '\t',
+      )} in translation.json`,
+    ).toBe(0)
   })
 })

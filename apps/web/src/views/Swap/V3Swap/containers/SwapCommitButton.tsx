@@ -85,7 +85,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   const deadline = useTransactionDeadline()
   const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(trade, deadline)
-  const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState('not-found')
+  const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
   const routerAddress =
     statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
       ? approvalAddressForWallchain
@@ -180,7 +180,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
-          swapErrorMessage: typeof error === 'string' ? error : error.message,
+          swapErrorMessage: typeof error === 'string' ? error : error?.message,
           txHash: undefined,
         })
       })
