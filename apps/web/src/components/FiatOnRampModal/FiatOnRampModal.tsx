@@ -178,9 +178,9 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 }) {
   const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
 
-  const [error, setError] = useState<boolean | string | null>(false)
+  const [error, setError] = useState<boolean | string>(false)
   const [signedIframeUrl, setSignedIframeUrl] = useState<string>('')
-  const [sig, setSig] = useState<string | null>(null)
+  const [sig, setSig] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -199,7 +199,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       return
     }
     setLoading(true)
-    setError(null)
+    setError(false)
 
     try {
       let result = ''
@@ -226,7 +226,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     const fetchSig = async () => {
       setLoading(true)
-      setError(null)
+      setError(false)
       try {
         const signature = await fetchMercuryoSignedUrl(account.address)
         setSig(signature)
@@ -240,7 +240,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   }, [account.address])
 
   useEffect(() => {
-    if (provider === ONRAMP_PROVIDERS.Mercuryo) {
+    if (provider === ONRAMP_PROVIDERS.Mercuryo && chainId) {
       if (sig && window?.mercuryoWidget) {
         const transactonId = nanoid()
         // @ts-ignore
@@ -292,7 +292,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         {error ? (
           <Flex justifyContent="center" alignItems="center" alignContent="center">
             <ErrorText>
-              <Trans>something went wrong!</Trans>
+              <Trans>{t('something went wrong!')}</Trans>
             </ErrorText>
           </Flex>
         ) : (
