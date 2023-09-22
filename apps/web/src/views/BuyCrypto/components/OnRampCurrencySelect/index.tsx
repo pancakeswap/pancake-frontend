@@ -147,7 +147,7 @@ export const CurrencySelect = ({
             align="left"
           />
         ) : (
-          <Text>{networkDisplay[selectedCurrency?.chainId as number]}</Text>
+          <Text>{networkDisplay[selectedCurrency?.chainId]}</Text>
         )}
         <CurrencySelectButton
           className="open-currency-select-button"
@@ -155,7 +155,7 @@ export const CurrencySelect = ({
           onClick={onPresentCurrencyModal}
         >
           {selectedCurrency ? (
-            <ButtonAsset id={id} selectedCurrency={selectedCurrency} currencyLoading={currencyLoading as boolean} />
+            <ButtonAsset id={id} selectedCurrency={selectedCurrency} currencyLoading={currencyLoading} />
           ) : (
             <Flex>
               <Skeleton width="105px" height="26px" variant="round" isDark />

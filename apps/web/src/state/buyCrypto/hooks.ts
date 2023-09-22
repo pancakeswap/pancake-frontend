@@ -47,7 +47,7 @@ interface LimitQuote {
 }
 
 function getMinMaxAmountCap(quotes: LimitQuote[]) {
-  return quotes.reduce((bestQuote, quote) => {
+  return quotes.reduce((bestQuote: LimitQuote, quote: LimitQuote) => {
     if (!bestQuote) return quote
 
     return {
@@ -230,7 +230,7 @@ export async function queryParametersToBuyCryptoState(
       currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
-      currencyId: defaultCurr as string,
+      currencyId: defaultCurr,
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
@@ -238,7 +238,7 @@ export async function queryParametersToBuyCryptoState(
     minBaseAmount: limitAmounts?.quoteCurrency?.minBuyAmount,
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
-    recipient: account as string,
+    recipient: account,
     userIpAddress: null,
   }
 }
@@ -279,12 +279,12 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
   useEffect(() => {
     const fetchData = async () => {
       if (!isReady || !chainId) return
-      const parsed = await queryParametersToBuyCryptoState(query, account as string, chainId)
+      const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
 
       dispatch(
         replaceBuyCryptoState({
           typedValue: parsed.minAmount
-            ? (toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId as string)) as string)
+            ? toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId))
             : '',
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,

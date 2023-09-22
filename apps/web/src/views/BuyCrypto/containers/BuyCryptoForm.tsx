@@ -46,17 +46,17 @@ export function BuyCryptoForm({
   } = useBuyCryptoState()
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
-    typedValue as string,
-    minAmount as number,
-    minBaseAmount as number,
-    maxAmount as number,
-    maxBaseAmount as number,
-    outputCurrencyId as string,
-    inputCurrencyId as string,
+    typedValue,
+    minAmount,
+    minBaseAmount,
+    maxAmount,
+    maxBaseAmount,
+    outputCurrencyId,
+    inputCurrencyId,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
 
-  const outputCurrency: any = fiatCurrencyMap[outputCurrencyId as string]
+  const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
   const handleTypeOutput = useCallback(
     (value: string) => {
@@ -68,16 +68,13 @@ export function BuyCryptoForm({
   )
   // need to relocate this
   const fetchMinBuyAmounts = useCallback(async () => {
-    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId as string, inputCurrencyId as string, chainId)
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
 
     if (!limitAmounts) return
 
     onFieldAInput(
       toString(
-        calculateDefaultAmount(
-          limitAmounts.baseCurrency?.minBuyAmount,
-          limitAmounts.baseCurrency.code.toUpperCase() as string,
-        ),
+        calculateDefaultAmount(limitAmounts.baseCurrency?.minBuyAmount, limitAmounts.baseCurrency.code.toUpperCase()),
       ),
     )
 

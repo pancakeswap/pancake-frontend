@@ -208,7 +208,7 @@ export function useAllLists(): {
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
   const combinedMap: TokenAddressMap = {} as TokenAddressMap
   for (const chainId of enumValues(ChainId)) {
-    combinedMap[chainId as number] = { ...map1[chainId], ...map2[chainId] }
+    combinedMap[chainId] = { ...map1[chainId], ...map2[chainId] }
   }
   return combinedMap
 }

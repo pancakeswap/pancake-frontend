@@ -46,8 +46,8 @@ const usePriceQuotes = () => {
     if (!chainId || !outputCurrency || !inputCurrency) return
     try {
       const providerQuotes = await fetchProviderQuotes({
-        fiatCurrency: outputCurrency?.toUpperCase(),
-        cryptoCurrency: inputCurrency?.toUpperCase(),
+        fiatCurrency: outputCurrency.toUpperCase(),
+        cryptoCurrency: inputCurrency.toUpperCase(),
         fiatAmount: Number(amount).toString(),
         network: chainId,
       })

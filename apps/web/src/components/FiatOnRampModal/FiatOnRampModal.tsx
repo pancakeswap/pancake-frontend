@@ -210,10 +210,10 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           amount,
           theme.isDark,
           account.address,
-          chainId as number,
+          chainId,
         )
       } else if (provider === ONRAMP_PROVIDERS.Transak) {
-        result = await fetchTransakSignedUrl(inputCurrency, outputCurrency, amount, account.address, chainId as number)
+        result = await fetchTransakSignedUrl(inputCurrency, outputCurrency, amount, account.address, chainId)
       }
       setSignedIframeUrl(result)
     } catch (e: any) {
@@ -228,8 +228,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       setLoading(true)
       setError(null)
       try {
-        const signature = await fetchMercuryoSignedUrl(account.address as string)
-        setSig(signature as string)
+        const signature = await fetchMercuryoSignedUrl(account.address)
+        setSig(signature)
       } catch (e: any) {
         setError(e.toString())
       } finally {
@@ -256,7 +256,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fixCurrency: true,
           address: account.address,
           signature: sig,
-          network: chainIdToMercuryoNetworkId[chainId as number],
+          network: chainIdToMercuryoNetworkId[chainId],
           merchantTransactionId: `${account.address}_${transactonId}`,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
