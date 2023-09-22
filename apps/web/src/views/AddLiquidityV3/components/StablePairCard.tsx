@@ -4,11 +4,11 @@ import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiq
 import { LPStablePair } from 'views/Swap/hooks/useStableConfig'
 import { LiquidityCardRow } from 'components/LiquidityCardRow'
 
-export function StablePairCard({ pair, account }: { pair: LPStablePair; account: string }) {
+export function StablePairCard({ pair, account }: { pair: LPStablePair; account: string | undefined }) {
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
 
   const [token0Deposited, token1Deposited] = useGetRemovedTokenAmounts({
-    lpAmount: userPoolBalance?.quotient?.toString(),
+    lpAmount: userPoolBalance?.quotient?.toString() ?? '0',
   })
 
   return (
