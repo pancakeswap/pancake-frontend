@@ -58,7 +58,6 @@ export const StableContextProvider = (props: { pair: LPStablePair; account: stri
   if (!stableConfig.stableSwapConfig) return null
 
   return (
-    // @ts-ignore
     <StableConfigContext.Provider value={stableConfig}>
       <StablePairCard {...props} />
     </StableConfigContext.Provider>
