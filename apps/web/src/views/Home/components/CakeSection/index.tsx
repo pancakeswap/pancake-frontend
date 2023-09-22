@@ -1,23 +1,38 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import React, { useRef, useLayoutEffect, memo } from 'react'
-import { styled, css } from 'styled-components'
+import Image from 'next/Image'
+import React, { memo, useLayoutEffect, useRef, useCallback } from 'react'
+import { css, styled, keyframes } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
+import { useIsIOS } from '../../hooks/useIsIOS'
+import cakeImage from '../../images/cake.png'
+import { useObserver } from '../../hooks/useObserver'
 
 import {
-  CakeSectionTag,
   CakePartnerTag,
+  CakeSectionTag,
+  EcoSystemTagOuterWrapper,
+  FeatureTagsWrapper,
+  PartnerTagOuterWrapper,
+  PartnerTagsWrapper,
   useEcosystemTagData,
   usePartnerData,
-  FeatureTagsWrapper,
-  PartnerTagsWrapper,
-  EcoSystemTagOuterWrapper,
-  PartnerTagOuterWrapper,
 } from './CakeSectionTag'
 
 const LINE_TRANSITION_TIMES = 0.35
 const COVER_TRANSITION_TIMES = 0.45
+
+const cakeStaticAnimation = keyframes`
+  0%{
+    opacity: 0;
+    transform: scale(1.3);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(2);
+  }
+`
 
 const borderBoxAnimation = css`
   &:before {
@@ -283,6 +298,15 @@ const CakeBox = styled.div`
     width: 330px;
     height: 360px;
   }
+  &.is-ios {
+    overflow: visible;
+    > img {
+      width: 100%;
+      opacity: 0;
+      transform: scale(2);
+      animation: ${cakeStaticAnimation} 1s ease-in-out forwards;
+    }
+  }
 `
 
 const CakeVideo = styled.video`
@@ -319,10 +343,19 @@ const CakeSection: React.FC = () => {
   const leftLineRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
   const played = useRef<boolean>(false)
+  const cakeBoxRef = useRef<HTMLElement>(null)
+  const { isIOS } = useIsIOS()
   const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
     canvasInterval = window.setInterval(() => {
       drawImage?.()
     }, 1000 / fps)
+    triggerCssAnimation()
+  })
+  useObserver(cakeBoxRef, () => {
+    if (isIOS && cakeBoxRef.current) cakeBoxRef.current.classList.add('is-ios')
+  })
+
+  const triggerCssAnimation = useCallback(() => {
     setTimeout(() => {
       if (leftRef.current) leftRef.current?.classList.add('show')
       if (leftLineRef.current) leftLineRef.current?.classList.add('show')
@@ -331,15 +364,15 @@ const CakeSection: React.FC = () => {
       if (rightRef.current) rightRef.current?.classList.add('show')
     }, 2000)
     played.current = true
-  })
+  }, [])
 
-  const triggerAnimation = () => {
+  const triggerAnimation = useCallback(() => {
     if (played.current) {
       if (leftRef.current) leftRef.current?.classList.add('show')
       if (leftLineRef.current) leftLineRef.current?.classList.add('show')
       if (rightRef.current) rightRef.current?.classList.add('show')
     }
-  }
+  }, [])
 
   // const [isShow, setIsShow] = useState(() => false)
 
@@ -347,7 +380,7 @@ const CakeSection: React.FC = () => {
   useLayoutEffect(() => {
     triggerAnimation()
     return () => clearInterval(canvasInterval)
-  }, [drawImage])
+  }, [drawImage, triggerAnimation])
 
   return (
     <Flex
@@ -416,11 +449,17 @@ const CakeSection: React.FC = () => {
           </CakeLeftBorderBox>
         </CakeSectionLeftBox>
         <CakeSectionCenterBox>
-          <CakeBox>
-            <CakeCanvas width={width} height={height} ref={canvasRef} />
-            <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
-              <source src="/assets/cake-alpha.webm" type="video/webm" />
-            </CakeVideo>
+          <CakeBox ref={cakeBoxRef}>
+            {isIOS ? (
+              <Image src={cakeImage} alt="cake-alpha" onAnimationStart={triggerCssAnimation} />
+            ) : (
+              <>
+                <CakeCanvas width={width} height={height} ref={canvasRef} />
+                <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
+                  <source src="/assets/cake-alpha.webm" type="video/webm" />
+                </CakeVideo>
+              </>
+            )}{' '}
           </CakeBox>
           {/* <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" /> */}
         </CakeSectionCenterBox>
