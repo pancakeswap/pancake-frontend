@@ -225,6 +225,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   useEffect(() => {
     const fetchSig = async () => {
+      if (!account.address) return
       setLoading(true)
       setError(false)
       try {

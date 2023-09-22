@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
@@ -85,10 +86,10 @@ const ButtonAsset = ({
 
 interface CurrencySelectProps extends CurrencySearchModalProps, BoxProps {
   id: 'onramp-input' | 'onramp-output'
+  currencyLoading: boolean
   onUserInput?: (value: string) => void
   value?: string
   disableCurrencySelect?: boolean
-  currencyLoading?: boolean
   error?: boolean
   errorText?: string
   onInputBlur?: () => void
@@ -147,7 +148,7 @@ export const CurrencySelect = ({
             align="left"
           />
         ) : (
-          <Text>{networkDisplay[selectedCurrency?.chainId]}</Text>
+          <Text>{networkDisplay[selectedCurrency?.chainId as ChainId]}</Text>
         )}
         <CurrencySelectButton
           className="open-currency-select-button"

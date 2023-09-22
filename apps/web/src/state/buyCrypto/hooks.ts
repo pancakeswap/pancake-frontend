@@ -239,11 +239,11 @@ export async function queryParametersToBuyCryptoState(
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
-    userIpAddress: null,
+    userIpAddress: undefined,
   }
 }
 
-export function calculateDefaultAmount(minAmount: number, currencyCode: string): number {
+export function calculateDefaultAmount(minAmount: number, currencyCode: string | undefined): number {
   switch (currencyCode) {
     case 'USD':
       return 300
@@ -292,7 +292,7 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
           maxBaseAmount: parsed.maxBaseAmount,
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
-          recipient: null,
+          recipient: undefined,
         }),
       )
     }

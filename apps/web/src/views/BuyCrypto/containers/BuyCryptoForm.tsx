@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { Text, Box, Message } from '@pancakeswap/uikit'
@@ -56,7 +56,14 @@ export function BuyCryptoForm({
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
 
-  const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
+  const outputCurrency: {
+    symbol: string
+    name: string
+  } = useMemo(() => {
+    if (!outputCurrencyId) return fiatCurrencyMap.USD
+    return fiatCurrencyMap[outputCurrencyId]
+  }, [outputCurrencyId])
+
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
   const handleTypeOutput = useCallback(
     (value: string) => {
@@ -68,8 +75,9 @@ export function BuyCryptoForm({
   )
   // need to relocate this
   const fetchMinBuyAmounts = useCallback(async () => {
-    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
+    if (!outputCurrencyId || inputCurrencyId || chainId) return
 
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
     if (!limitAmounts) return
 
     onFieldAInput(

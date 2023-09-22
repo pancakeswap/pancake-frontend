@@ -102,14 +102,25 @@ export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: string[] } = {
   [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
 }
 
-export const networkDisplay: { [id: number]: string } = {
-  [ChainId.ETHEREUM]: 'Ethereum',
-  [ChainId.BSC]: 'BNB Smart Chain',
-  [ChainId.ZKSYNC]: 'zkSync Era',
-  [ChainId.ARBITRUM_ONE]: 'Arbitrum One',
-  [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
-  [ChainId.LINEA]: 'Linea Mainnet',
-  [ChainId.BASE]: 'Base Mainnet',
+export const networkDisplay = (chainId: ChainId | undefined): string => {
+  switch (chainId) {
+    case ChainId.ETHEREUM:
+      return 'Ethereum'
+    case ChainId.BSC:
+      return 'BNB Smart Chain'
+    case ChainId.ZKSYNC:
+      return 'zkSync Era'
+    case ChainId.ARBITRUM_ONE:
+      return 'Arbitrum One'
+    case ChainId.POLYGON_ZKEVM:
+      return 'Polygon zkEVM'
+    case ChainId.LINEA:
+      return 'Linea Mainnet'
+    case ChainId.BASE:
+      return 'Base Mainnet'
+    default:
+      return ''
+  }
 }
 
 export const chainIdToMercuryoNetworkId: { [id: number]: string } = {
