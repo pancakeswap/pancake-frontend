@@ -2582,6 +2582,10 @@
   "PolyNetwork Exploit.": "PolyNetwork Exploit.",
   "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
   "Twitter": "Twitter",
+  "Caution - lUSD Token": "Caution - lUSD Token",
+  "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ": "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ",
+  "exploit.": "exploit.",
+  "For more information, please refer to Linear Finance’s": "For more information, please refer to Linear Finance’s",
   "Rank (Top 50 users)": "Rank (Top 50 users)",
   "My Rank": "My Rank",
   "Current Round": "Current Round",
@@ -2704,5 +2708,7 @@
   "Bonus Route": "Bonus Route",
   "The Market Maker (MM) route is automatically selected for your trade to achieve the best price for your trade.": "The Market Maker (MM) route is automatically selected for your trade to achieve the best price for your trade.",
   "A Bonus route provided by API is automatically selected for your trade to achieve the best price for your trade.": "A Bonus route provided by API is automatically selected for your trade to achieve the best price for your trade.",
-  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
+  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!",
+  "Show all positions": "Show all positions",
+  "Mars Lottery Paradise": "Mars Lottery Paradise"
 }

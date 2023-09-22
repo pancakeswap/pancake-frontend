@@ -18,6 +18,7 @@ import {
 import { PositionDetails } from '@pancakeswap/farms'
 import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import { AppBody, AppHeader } from 'components/App'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
@@ -25,7 +26,6 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import Page from 'views/Page'
 import { useTranslation } from '@pancakeswap/localization'
-import { Pair } from '@pancakeswap/sdk'
 import { RangeTag } from 'components/RangeTag'
 import useV2PairsByAccount from 'hooks/useV2Pairs'
 import useStableConfig, {
@@ -49,7 +49,7 @@ const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
 `
 
-export const StableContextProvider = (props: { pair: LPStablePair; account: string }) => {
+export const StableContextProvider = (props: { pair: LPStablePair; account: string | undefined }) => {
   const stableConfig = useStableConfig({
     tokenA: props.pair?.token0,
     tokenB: props.pair?.token1,
@@ -78,8 +78,9 @@ function useHideClosePosition() {
 }
 
 export default function PoolListPage() {
-  const { account, chainId } = useAccountActiveChain()
   const { t } = useTranslation()
+  const router = useRouter()
+  const { account, chainId } = useAccountActiveChain()
 
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(FILTER.ALL)
   const [hideClosedPositions, setHideClosedPositions] = useHideClosePosition()
@@ -90,15 +91,20 @@ export default function PoolListPage() {
 
   const stablePairs = useLPTokensWithBalanceByAccount(account)
 
-  let v2PairsSection = null
+  const { token0, token1, fee } = router.query as { token0: string; token1: string; fee: string }
+  const isNeedFilterByQuery = useMemo(() => token0 || token1 || fee, [token0, token1, fee])
+  const [showAllPositionWithQuery, setShowAllPositionWithQuery] = useState(false)
+
+  let v2PairsSection: null | JSX.Element[] = null
 
   if (v2Pairs?.length) {
-    v2PairsSection = v2Pairs.map((pair) => (
-      <V2PairCard key={Pair.getAddress(pair.token0, pair.token1)} pair={pair} account={account} />
+    v2PairsSection = v2Pairs.map((pair, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <V2PairCard key={`${pair?.token0}-${pair?.token1}-${index}`} pair={pair} account={account} />
     ))
   }
 
-  let stablePairsSection = null
+  let stablePairsSection: null | JSX.Element[] = null
 
   if (stablePairs?.length) {
     stablePairsSection = stablePairs.map((pair) => (
@@ -106,7 +112,7 @@ export default function PoolListPage() {
     ))
   }
 
-  let v3PairsSection = null
+  let v3PairsSection: null | JSX.Element[] = null
 
   if (positions?.length) {
     const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
@@ -171,15 +177,77 @@ export default function PoolListPage() {
     })
   }
 
+  const filteredWithQueryFilter = useMemo(() => {
+    if (isNeedFilterByQuery && !showAllPositionWithQuery && v3PairsSection) {
+      return v3PairsSection
+        .filter((pair) => {
+          const pairToken0 = pair?.props?.positionDetails?.token0?.toLowerCase()
+          const pairToken1 = pair?.props?.positionDetails?.token1?.toLowerCase()
+          const token0ToLowerCase = token0?.toLowerCase()
+          const token1ToLowerCase = token1?.toLowerCase()
+
+          if (token0 && token1 && fee) {
+            if (
+              ((pairToken0 === token0ToLowerCase && pairToken1 === token1ToLowerCase) ||
+                (pairToken0 === token1ToLowerCase && pairToken1 === token0ToLowerCase)) &&
+              pair?.props?.positionDetails?.fee === Number(fee ?? 0)
+            ) {
+              return pair
+            }
+            return null
+          }
+
+          if (token0 && (pairToken0 === token0ToLowerCase || pairToken1 === token0ToLowerCase)) {
+            return pair
+          }
+
+          if (token1 && (pairToken0 === token1ToLowerCase || pairToken1 === token1ToLowerCase)) {
+            return pair
+          }
+
+          if (fee && pair?.props?.positionDetails?.fee === Number(fee ?? 0)) {
+            return pair
+          }
+
+          return null
+        })
+        .filter(Boolean)
+    }
+
+    return []
+  }, [fee, isNeedFilterByQuery, showAllPositionWithQuery, token0, token1, v3PairsSection])
+
+  const showAllPositionButton = useMemo(() => {
+    if (v3PairsSection && filteredWithQueryFilter) {
+      return (
+        v3PairsSection?.length > filteredWithQueryFilter?.length &&
+        isNeedFilterByQuery &&
+        !showAllPositionWithQuery &&
+        !v3Loading &&
+        !v2Loading &&
+        (selectedTypeIndex === FILTER.ALL || selectedTypeIndex === FILTER.V3)
+      )
+    }
+    return false
+  }, [
+    filteredWithQueryFilter,
+    isNeedFilterByQuery,
+    showAllPositionWithQuery,
+    v3PairsSection,
+    v3Loading,
+    v2Loading,
+    selectedTypeIndex,
+  ])
+
   const mainSection = useMemo(() => {
-    let resultSection = null
+    let resultSection: null | JSX.Element | (JSX.Element[] | null | undefined)[] = null
     if (v3Loading || v2Loading) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
           <Dots>{t('Loading')}</Dots>
         </Text>
       )
-    } else if (!v2PairsSection && !stablePairsSection && !v3PairsSection) {
+    } else if (!v2PairsSection && !stablePairsSection && !filteredWithQueryFilter) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
           {t('No liquidity found.')}
@@ -187,16 +255,37 @@ export default function PoolListPage() {
       )
     } else {
       // Order should be v3, stable, v2
-      const sections = [v3PairsSection, stablePairsSection, v2PairsSection]
+      const sections = showAllPositionButton
+        ? [filteredWithQueryFilter]
+        : [v3PairsSection, stablePairsSection, v2PairsSection]
 
       resultSection = selectedTypeIndex ? sections.filter((_, index) => selectedTypeIndex === index + 1) : sections
     }
 
     return resultSection
-  }, [selectedTypeIndex, stablePairsSection, t, v2Loading, v2PairsSection, v3Loading, v3PairsSection])
+  }, [
+    selectedTypeIndex,
+    stablePairsSection,
+    t,
+    v2Loading,
+    v2PairsSection,
+    v3Loading,
+    v3PairsSection,
+    filteredWithQueryFilter,
+    showAllPositionButton,
+  ])
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
   const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
+
+  const handleClickShowAllPositions = () => {
+    setShowAllPositionWithQuery(true)
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
 
   return (
     <Page>
@@ -253,6 +342,16 @@ export default function PoolListPage() {
         <Body>
           {mainSection}
           {selectedTypeIndex === FILTER.V2 ? <Liquidity.FindOtherLP /> : null}
+          {showAllPositionButton && (
+            <Flex alignItems="center" flexDirection="column">
+              <Text color="textSubtle" mb="10px">
+                {t("Don't see a pair you joined?")}
+              </Text>
+              <Button scale="sm" width="fit-content" variant="secondary" onClick={handleClickShowAllPositions}>
+                {t('Show all positions')}
+              </Button>
+            </Flex>
+          )}
         </Body>
         <CardFooter style={{ textAlign: 'center' }}>
           <NextLink href="/add" passHref>

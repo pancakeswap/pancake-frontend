@@ -45,4 +45,11 @@ export const farmsV3 = defineFarmV3Configs([
     token1: arbitrumTokens.lvl,
     feeAmount: FeeAmount.MEDIUM,
   },
+  {
+    pid: 7,
+    lpAddress: '0x5e3C3a063cc9A4AEB5310C7faDc2A98aEbDD245d',
+    token0: arbitrumTokens.weth,
+    token1: arbitrumTokens.mgp,
+    feeAmount: FeeAmount.MEDIUM,
+  },
 ])
