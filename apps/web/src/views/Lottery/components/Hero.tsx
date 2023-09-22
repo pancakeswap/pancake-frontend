@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { styled, keyframes } from 'styled-components'
 import { Box, Flex, Heading, Skeleton, Balance, Text, Button } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
@@ -186,6 +187,14 @@ const Hero = () => {
     )
   }
 
+  const onClickButton = useCallback(() => {
+    window.open(
+      'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-4-mars-mystique-lottery-paradise',
+      '_blank',
+      'noopener noreferrer',
+    )
+  }, [])
+
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center">
       <Decorations />
@@ -214,16 +223,7 @@ const Hero = () => {
             >
               <Image src="/images/lottery/birthday/birthday-cake-icon.png" width={50} height={50} alt="birthday-cion" />
             </Box>
-            <StyledLearnMoreButton
-              scale="sm"
-              onClick={() =>
-                window.open(
-                  'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-4-mars-mystique-lottery-paradise',
-                  '_blank',
-                  'noopener noreferrer',
-                )
-              }
-            >
+            <StyledLearnMoreButton scale="sm" onClick={onClickButton}>
               {t('Learn More')}
             </StyledLearnMoreButton>
           </Flex>
