@@ -19,6 +19,7 @@ import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { getAddress } from 'viem'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import SaveIcon from 'views/Info/components/SaveIcon'
 
@@ -323,8 +324,8 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${subgraphTokenName[token.address] ?? token.name} (${
-                          subgraphTokenSymbol[token.address] ?? token.symbol
+                        <Text>{`${(token.address && subgraphTokenName[getAddress(token.address)]) || token.name} (${
+                          (token.address && subgraphTokenSymbol[getAddress(token.address)]) || token.symbol
                         })`}</Text>
                       </Text>
                       <SaveIcon

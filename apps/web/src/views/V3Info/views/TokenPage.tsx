@@ -216,10 +216,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       fontSize={isXs || isSm ? '24px' : '40px'}
                       id="info-token-name-title"
                     >
-                      {subgraphTokenName[address.toLowerCase()] ?? tokenData.name}
+                      {(address && subgraphTokenName[address]) || tokenData.name}
                     </Text>
                     <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                      ({subgraphTokenSymbol[address.toLowerCase()] ?? tokenData.symbol})
+                      ({subgraphTokenSymbol[address] ?? tokenData.symbol})
                     </Text>
                   </Flex>
                   <Flex mt="8px" ml="46px" alignItems="center">

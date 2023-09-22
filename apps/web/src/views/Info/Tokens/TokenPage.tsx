@@ -53,6 +53,7 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
+import { getAddress } from 'viem'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -175,10 +176,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     fontSize={isXs || isSm ? '24px' : '40px'}
                     id="info-token-name-title"
                   >
-                    {subgraphTokenName[tokenData.address] ?? tokenData.name}
+                    {(tokenData.address && subgraphTokenName[getAddress(tokenData.address)]) || tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                    ({subgraphTokenSymbol[tokenData.address] ?? tokenData.symbol})
+                    ({(tokenData.address && subgraphTokenSymbol[getAddress(tokenData.address)]) ?? tokenData.symbol})
                   </Text>
                 </Flex>
                 <Flex mt="8px" ml="46px" alignItems="center">
