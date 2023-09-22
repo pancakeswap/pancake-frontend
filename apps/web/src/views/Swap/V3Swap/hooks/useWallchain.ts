@@ -165,9 +165,9 @@ export function useWallchainApi(
       setApprovalAddress(undefined)
       setMasterInput(undefined)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletClient, account, swapCalls, sdk, trade, setStatus])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   return [status, approvalAddress, masterInput]
 }
 

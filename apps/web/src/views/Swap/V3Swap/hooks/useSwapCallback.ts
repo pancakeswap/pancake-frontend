@@ -9,7 +9,6 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
-import { Address, Hex } from 'viem'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { SendTransactionResult } from 'wagmi/actions'
@@ -41,12 +40,6 @@ interface UseSwapCallbackArgs {
   feeOptions?: FeeOptions
   onWallchainDrop: () => void
   wallchainMasterInput?: TWallchainMasterInput
-}
-
-interface SwapCall {
-  address: Address
-  calldata: Hex
-  value: Hex
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
