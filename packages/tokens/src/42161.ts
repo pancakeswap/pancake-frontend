@@ -1,4 +1,5 @@
-import { ChainId, ERC20Token, WETH9 } from '@pancakeswap/sdk'
+import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { USDT, USDC, CAKE } from './common'
 
 export const arbitrumTokens = {
@@ -18,4 +19,5 @@ export const arbitrumTokens = {
     'Level Token',
     'https://level.finance/',
   ),
+  mgp: new ERC20Token(ChainId.ARBITRUM_ONE, '0xa61F74247455A40b01b0559ff6274441FAfa22A3', 18, 'MGP', 'Magpie Token'),
 }
