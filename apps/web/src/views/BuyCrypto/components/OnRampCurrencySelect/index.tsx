@@ -86,8 +86,8 @@ const ButtonAsset = ({
 interface CurrencySelectProps extends CurrencySearchModalProps, BoxProps {
   id: 'onramp-input' | 'onramp-output'
   currencyLoading: boolean
-  value: string
-  onUserInput: (value: string) => void
+  value?: string | undefined
+  onUserInput?: (value: string) => void
   disableCurrencySelect?: boolean
   error?: boolean
   errorText?: string
@@ -142,9 +142,9 @@ export const CurrencySelect = ({
             disabled={!selectedCurrency}
             loading={!selectedCurrency}
             className="token-amount-input"
-            value={value}
+            value={value as string}
             onBlur={onInputBlur}
-            onUserInput={onUserInput}
+            onUserInput={onUserInput as any}
             align="left"
           />
         ) : (
