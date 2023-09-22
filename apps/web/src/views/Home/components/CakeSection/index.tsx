@@ -343,7 +343,7 @@ const CakeSection: React.FC = () => {
   const leftLineRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
   const played = useRef<boolean>(false)
-  const cakeBoxRef = useRef<HTMLElement>(null)
+  const cakeBoxRef = useRef<HTMLDivElement>(null)
   const { isIOS } = useIsIOS()
   const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
     canvasInterval = window.setInterval(() => {
