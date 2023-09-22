@@ -17,7 +17,7 @@ import { atom, useAtom } from 'jotai'
 
 import Bottleneck from 'bottleneck'
 import { Address, Hex } from 'viem'
-import { WallchainKeys, WallchainPairs } from 'config/wallchain'
+import { WALLCHAIN_ENABLED, WallchainKeys, WallchainPairs } from 'config/wallchain'
 import { useSwapCallArguments } from './useSwapCallArguments'
 
 interface SwapCall {
@@ -89,7 +89,9 @@ function useWallchainSDK() {
   const { data: walletClient } = useWalletClient()
   const { chainId } = useActiveChainId()
   const { data: wallchainSDK } = useSWRImmutable(
-    chainId === ChainId.BSC && walletClient && ['wallchainSDK', walletClient.account, walletClient.chain],
+    chainId === ChainId.BSC &&
+      walletClient &&
+      WALLCHAIN_ENABLED && ['wallchainSDK', walletClient.account, walletClient.chain],
     async () => {
       const WallchainSDK = (await import('@wallchain/sdk')).default
       return new WallchainSDK({

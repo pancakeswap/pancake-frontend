@@ -6,9 +6,10 @@ import { useTooltip } from "../../hooks/useTooltip";
 interface ApproveModalContentProps {
   title: string;
   isMM: boolean;
+  isBonus: boolean;
 }
 
-export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title, isMM }) => {
+export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title, isMM, isBonus }) => {
   const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text>{t("Pancakeswap AMM includes V3, V2 and stable swap.")}</Text>,
@@ -28,7 +29,11 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title,
         </Text>
         <Flex>
           <Text fontSize="14px">{t("Swapping thru:")}</Text>
-          {isMM ? (
+          {isBonus ? (
+            <Text ml="4px" fontSize="14px">
+              {t("Bonus Route")}
+            </Text>
+          ) : isMM ? (
             <Text ml="4px" fontSize="14px">
               {t("Pancakeswap MM")}
             </Text>

@@ -31,6 +31,8 @@ import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContaine
 import { SwapTransactionErrorContent } from '../../components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
 import { ApproveStepFlow } from './ApproveStepFlow'
+import { useWallchainStatus } from '../hooks/useWallchain'
+import { useDebounce } from '@pancakeswap/hooks'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean
@@ -74,6 +76,8 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippage()
   const { recipient } = useSwapState()
+  const [wallchainStatus] = useWallchainStatus()
+  const isBonus = useDebounce(wallchainStatus === 'found', 500)
 
   const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
 
@@ -103,6 +107,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
         <ApproveModalContent
           title={t('Enable spending %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })}
           isMM={isMM}
+          isBonus={isBonus}
         />
       )
     }
