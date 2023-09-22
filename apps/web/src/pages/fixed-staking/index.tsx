@@ -1,10 +1,10 @@
-import { CHAIN_IDS } from 'utils/wagmi'
+import { ChainId } from '@pancakeswap/chains'
 import FixedStaking from 'views/FixedStaking'
 
 const FixedStakingPage = () => {
   return <FixedStaking />
 }
 
-FixedStakingPage.chains = CHAIN_IDS
+FixedStakingPage.chains = [ChainId.BSC]
 
 export default FixedStakingPage
