@@ -1,7 +1,7 @@
 import { bscTokens } from '@pancakeswap/tokens'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 
-export const WALLCHAIN_ENABLED = true
+export const WALLCHAIN_ENABLED = false
 
 export const WallchainKeys = {
   bsc: process.env.NEXT_PUBLIC_WALLCHAIN_BSC_KEY,
