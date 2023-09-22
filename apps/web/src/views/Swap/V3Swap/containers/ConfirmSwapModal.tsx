@@ -24,6 +24,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useSwapState } from 'state/swap/hooks'
 import { ApprovalState } from 'hooks/useApproveCallback'
+import { useDebounce } from '@pancakeswap/hooks'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import { ConfirmModalState, PendingConfirmModalState } from '../types'
 
@@ -32,7 +33,6 @@ import { SwapTransactionErrorContent } from '../../components/SwapTransactionErr
 import { TransactionConfirmSwapContent } from '../components'
 import { ApproveStepFlow } from './ApproveStepFlow'
 import { useWallchainStatus } from '../hooks/useWallchain'
-import { useDebounce } from '@pancakeswap/hooks'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean
@@ -95,7 +95,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 
     if (confirmModalState === ConfirmModalState.RESETTING_APPROVAL) {
-      return <ApproveModalContent title={t('Reset Approval on USDT')} isMM={isMM} />
+      return <ApproveModalContent title={t('Reset Approval on USDT')} isMM={isMM} isBonus={isBonus} />
     }
 
     if (
@@ -204,6 +204,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     )
   }, [
     isMM,
+    isBonus,
     trade,
     txHash,
     isRFQReady,
