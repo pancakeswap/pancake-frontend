@@ -183,8 +183,6 @@ export { default as BirthdayIcon } from "./Icons/Birthday";
 export { default as LineaIcon } from "./Icons/Linea";
 export { BaseIcon } from "./Icons/Base";
 export { default as ArbitrumIcon } from "./Icons/Arbitrum";
-export { ZksyncWithOutCircleIcon } from "./Icons/ZksyncWithOutCircle";
-export { default as Arbitrum } from "./Icons/Arbitrum";
 export { InsertChartOutlinedIcon } from "./Icons/InsertChartOutlined";
 export { GovernanceIcon } from "./Icons/Governance";
 export { FavoriteBorderIcon } from "./Icons/FavoriteBorder";
