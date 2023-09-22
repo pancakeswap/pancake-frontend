@@ -73,7 +73,7 @@ const loadData = async (account: string, sdk: WallchainSDK, swapCalls: SwapCall[
 const wrappedLoadData = limiter.wrap(loadData)
 
 const extractAddressFromCurrency = (currency: Currency): `0x${string}` => {
-  return currency.isNative ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' : (currency as Token).address
+  return currency.isNative ? '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' : (currency as Token).address
 }
 
 const extractTokensFromTrade = (trade: SmartRouterTrade<TradeType> | undefined | null) => {
@@ -167,6 +167,7 @@ export function useWallchainApi(
     }
   }, [walletClient, account, swapCalls, sdk, trade, setStatus])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return [status, approvalAddress, masterInput]
 }
 
