@@ -65,10 +65,11 @@ const CakeBox = styled.div`
   }
   ${({ theme }) => theme.mediaQueries.md} {
     > canvas {
-      transform: scale(1.14) translate(-50%, -50%);
+      transform: scale(1.08) translate(-50%, -50%);
+      transform: center center;
     }
     position: relative;
-    width: 615px;
+    width: 605px;
     height: 736px;
     overflow: hidden;
     margin-bottom: -100px;
@@ -254,7 +255,7 @@ const Hero = () => {
                 <CakeCanvas width={width} height={height} ref={canvasRef} />
                 <VideoWrapper>
                   <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
-                    <source src="/assets/bunny.webm" type="video/webm" />
+                    <source src="/assets/bunnyv2.webm" type="video/webm" />
                     {/* <source src="/assets/bunny.mov" /> */}
                   </CakeVideo>
                   <CakeVideo ref={starVideoRef} width={width} autoPlay loop muted playsInline>
