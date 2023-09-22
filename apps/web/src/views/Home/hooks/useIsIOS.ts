@@ -9,7 +9,7 @@ function iOS() {
 }
 
 export const useIsIOS = () => {
-  const [isIOS, setIsIOS] = useState(true)
+  const [isIOS, setIsIOS] = useState(false)
   useLayoutEffect(() => {
     if (iOS()) {
       setIsIOS(true)
