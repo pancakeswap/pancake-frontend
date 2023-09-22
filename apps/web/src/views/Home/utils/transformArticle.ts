@@ -1,4 +1,4 @@
-import { ResponseArticleDataType, PaginationType } from 'types'
+import { ResponseArticleDataType, PaginationType } from '../types'
 
 export interface ArticleDataType {
   id: number

@@ -47,7 +47,7 @@ const useAllArticle = ({
           },
         }
         const queryString = qs.stringify(urlParamsObject)
-        const response = await fetch(`/api/articles?${queryString}`)
+        const response = await fetch(`https://strapi-cms.pancakeswap.ai/api/articles?${queryString}`)
         const result: ResponseArticleType = await response.json()
         return {
           data: result.data.map((i: ResponseArticleDataType) => transformArticle(i)) ?? [],

@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon, Flex, Text } from '@pancakeswap/uiki
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { useRef, useCallback } from 'react'
+import useAllArticle from '../../hooks/useAllArticle'
 
 export const newsData = [
   {
@@ -139,6 +140,13 @@ export const NewsSection: React.FC = () => {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const scrollWrapper = useRef<HTMLDivElement>(null)
+  const { articlesData, isFetching } = useAllArticle({
+    query: '',
+    sortBy: '',
+    selectedCategories: 8,
+    languageOption: 'en',
+    currentPage: 1,
+  })
   const onButtonClick = useCallback((scrollTo: 'next' | 'pre') => {
     const scrollTarget = scrollWrapper.current
     if (!scrollTarget) return
@@ -148,7 +156,7 @@ export const NewsSection: React.FC = () => {
     }
     scrollTarget.scrollLeft -= 280
   }, [])
-
+  console.log(articlesData, 'articlesData????')
   return (
     <Flex flexDirection="column" style={{ gap: 36 }}>
       <Flex justifyContent="center" style={{ gap: 8 }}>
@@ -166,22 +174,26 @@ export const NewsSection: React.FC = () => {
           </ArrowButton>
         </Flex>
         <CardWrapper ref={scrollWrapper}>
-          {newsData.map((d) => (
+          {articlesData?.data.map((d) => (
             <NewsCard
               onClick={() => {
-                window.open(d.link, '_blank', 'noopener noreferrer')
+                window.open(d.newsOutBoundLink, '_blank', 'noopener noreferrer')
               }}
             >
               <ImageBox>
-                <img src={d.imageSrc} alt="" />
+                <img src={d.imgUrl} alt="" />
               </ImageBox>
               <ContentBox>
                 <Flex justifyContent="space-between">
                   <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
-                    {t('From')} [{d.platform}]
+                    {t('From')} [{d.newsFromPlatform}]
                   </Text>
                   <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
-                    {new Date(d.date).toLocaleString('en-US', { month: 'short', year: 'numeric', day: 'numeric' })}
+                    {new Date(d.publishedAt).toLocaleString('en-US', {
+                      month: 'short',
+                      year: 'numeric',
+                      day: 'numeric',
+                    })}
                   </Text>
                 </Flex>
                 <Text bold mt="20px" lineHeight="120%" style={{ whiteSpace: 'pre-wrap' }}>
