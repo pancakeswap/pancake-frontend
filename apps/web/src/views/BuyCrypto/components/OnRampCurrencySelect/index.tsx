@@ -135,7 +135,7 @@ export const CurrencySelect = ({
       <Flex justifyContent="space-between" py="4px" width="100%" alignItems="center">
         {topElement}
       </Flex>
-      <DropDownContainer error={error}>
+      <DropDownContainer error={error as any}>
         {id === 'onramp-input' ? (
           <NumericalInput
             error={error}
