@@ -43,7 +43,8 @@ const initialState: BuyCryptoState = {
   userIpAddress: undefined,
 }
 
-export const reducer = createReducer<BuyCryptoState>(initialState, (builder) => {
+/// casting builder as any as its causing a 'no overload match call' ts error
+export const reducer = createReducer<BuyCryptoState>(initialState, (builder: any) => {
   builder
     .addCase(resetBuyCryptoState, () => initialState)
     .addCase(typeInput, (state, { payload: { typedValue } }) => {
