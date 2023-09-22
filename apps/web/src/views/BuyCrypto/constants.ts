@@ -102,8 +102,8 @@ export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: string[] } = {
   [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
 }
 
-export const networkDisplay = (chainId: ChainId | undefined): string => {
-  switch (chainId) {
+export const getNetworkDisplay = (chainId: number | undefined): string => {
+  switch (chainId as ChainId) {
     case ChainId.ETHEREUM:
       return 'Ethereum'
     case ChainId.BSC:
