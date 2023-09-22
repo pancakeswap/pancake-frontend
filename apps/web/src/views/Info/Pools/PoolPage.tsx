@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
