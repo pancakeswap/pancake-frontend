@@ -52,20 +52,20 @@ const CakeBox = styled.div`
   width: 300px;
   height: 300px;
   > canvas {
-    transform: scale(0.5) translate(-50%, -50%);
+    transform: scale(0.6) translate(-50%, -50%);
     transform-origin: top left;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 500px;
     height: 500px;
     > canvas {
-      transform: scale(0.8) translate(-50%, -50%);
+      transform: scale(0.9) translate(-50%, -50%);
     }
     transform-origin: center center;
   }
   ${({ theme }) => theme.mediaQueries.md} {
     > canvas {
-      transform: scale(1) translate(-50%, -50%);
+      transform: scale(1.14) translate(-50%, -50%);
     }
     position: relative;
     width: 615px;
@@ -106,8 +106,8 @@ const StyledText = styled(Text)`
 
 let canvasInterval = 0
 const fps = 60
-const width = 734
-const height = 734
+const width = 600
+const height = 600
 
 const Hero = () => {
   const { t } = useTranslation()
