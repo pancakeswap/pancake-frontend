@@ -1,12 +1,14 @@
 import { styled, keyframes } from 'styled-components'
-import { Box, Flex, Heading, Skeleton, Balance } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, Skeleton, Balance, Text, Button } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
+import Image from 'next/image'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
+import { BirthdayDecorations } from './BirthdayDecorations'
 
 export const floatingStarsLeft = keyframes`
   from {
@@ -32,30 +34,6 @@ export const floatingStarsRight = keyframes`
   }
 `
 
-const floatingTicketLeft = keyframes`
-  from {
-    transform: translate(0,  0px);
-  }
-  50% {
-    transform: translate(-10px, 15px);
-  }
-  to {
-    transform: translate(0, -0px);
-  }
-`
-
-const floatingTicketRight = keyframes`
-  from {
-    transform: translate(0,  0px);
-  }
-  50% {
-    transform: translate(10px, 15px);
-  }
-  to {
-    transform: translate(0, -0px);
-  }
-`
-
 const mainTicketAnimation = keyframes`
   from {
     transform: rotate(0deg);
@@ -73,9 +51,13 @@ const TicketContainer = styled(Flex)`
 `
 
 const PrizeTotalBalance = styled(Balance)`
-  background: ${({ theme }) => theme.colors.gradientGold};
+  padding: 0 3px;
+  color: #ffffff;
+  background: #6532cd;
+  background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 7px transparent;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(14, 14, 44, 0.1);
 `
 
 const StyledBuyTicketButton = styled(BuyTicketsButton)<{ disabled: boolean }>`
@@ -109,104 +91,57 @@ const Decorations = styled.div`
   background: url(/images/decorations/bg-star.svg);
   background-repeat: no-repeat;
   background-position: center 0;
+  opacity: 0.8;
 `
 
-const StarsDecorations = styled(Box)`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  & img {
+const YellowText = styled(Text)`
+  position: relative;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 98%;
+  letter-spacing: 0.01em;
+  font-feature-settings: 'liga' off;
+  background: linear-gradient(166deg, #ffb237 -5.1%, #ffeb37 66.78%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  &::after {
+    letter-spacing: 0.01em;
+    background: linear-gradient(166deg, #ffb237 -5.1%, #ffeb37 66.78%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    content: attr(data-text);
+    text-shadow: 1.27551px 1.27551px 1.02041px rgba(0, 0, 0, 0.2);
+    -webkit-text-stroke: 4px #6532cd;
     position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
   }
+`
 
-  & :nth-child(1) {
-    animation: ${floatingStarsLeft} 3s ease-in-out infinite;
-    animation-delay: 0.25s;
-  }
-  & :nth-child(2) {
-    animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
-    animation-delay: 0.5s;
-  }
-  & :nth-child(3) {
-    animation: ${floatingStarsRight} 4s ease-in-out infinite;
-    animation-delay: 0.75s;
-  }
-  & :nth-child(4) {
-    animation: ${floatingTicketLeft} 6s ease-in-out infinite;
-    animation-delay: 0.2s;
-  }
-  & :nth-child(5) {
-    animation: ${floatingTicketRight} 6s ease-in-out infinite;
-  }
+const OutlineText = styled(Text)<{ color: string; backgroundColor: string; stroke?: number }>`
+  padding: 0 2px;
+  color: ${({ color }) => color};
+  background: ${({ backgroundColor }) => backgroundColor};
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: ${({ stroke }) => `${stroke ? `${stroke}px` : '4px'} transparent`};
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(14, 14, 44, 0.1);
+`
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & :nth-child(1) {
-      left: 3%;
-      top: 42%;
-    }
-    & :nth-child(2) {
-      left: 9%;
-      top: 23%;
-    }
-    & :nth-child(3) {
-      right: 2%;
-      top: 24%;
-    }
-    & :nth-child(4) {
-      left: 8%;
-      top: 67%;
-    }
-    & :nth-child(5) {
-      right: 8%;
-      top: 67%;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    & :nth-child(1) {
-      left: 10%;
-      top: 42%;
-    }
-    & :nth-child(2) {
-      left: 17%;
-      top: 23%;
-    }
-    & :nth-child(3) {
-      right: 10%;
-      top: 24%;
-    }
-    & :nth-child(4) {
-      left: 17%;
-      top: 67%;
-    }
-    & :nth-child(5) {
-      right: 17%;
-      top: 67%;
-    }
-  }
+const StyledLearnMoreButton = styled(Button)`
+  width: fit-content;
+  color: #533295;
+  background: linear-gradient(180deg, #ffd800 0%, #fdab32 100%);
+  margin: 20px 0 0 0;
+  align-self: center;
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    & :nth-child(1) {
-      left: 19%;
-      top: 42%;
-    }
-    & :nth-child(2) {
-      left: 25%;
-      top: 23%;
-    }
-    & :nth-child(3) {
-      right: 19%;
-      top: 24%;
-    }
-    & :nth-child(4) {
-      left: 24%;
-      top: 67%;
-    }
-    & :nth-child(5) {
-      right: 24%;
-      top: 67%;
-    }
+    margin: 0 0 0 8px;
   }
 `
 
@@ -225,16 +160,23 @@ const Hero = () => {
   const getHeroHeading = () => {
     if (status === LotteryStatus.OPEN) {
       return (
-        <>
+        <Flex zIndex={1} flexDirection="column" justifyContent="center">
           {prizeInBusd.isNaN() ? (
             <Skeleton my="7px" height={60} width={190} />
           ) : (
             <PrizeTotalBalance fontSize="64px" bold prefix="$" value={prizeTotal} mb="8px" decimals={0} />
           )}
-          <Heading mb="32px" scale="lg" color="#ffffff">
+          <OutlineText
+            textAlign="center"
+            color="#ffffff"
+            backgroundColor="#6532CD"
+            mb={['151px', '151px', '151px', '151px', '151px', '32px']}
+            stroke={5}
+            fontSize={['24px']}
+          >
             {t('in prizes!')}
-          </Heading>
-        </>
+          </OutlineText>
+        </Flex>
       )
     }
     return (
@@ -247,16 +189,46 @@ const Hero = () => {
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center">
       <Decorations />
-      <StarsDecorations display={['none', 'none', 'block']}>
-        <img src="/images/lottery/star-big.png" width="124px" height="109px" alt="" />
-        <img src="/images/lottery/star-small.png" width="70px" height="62px" alt="" />
-        <img src="/images/lottery/three-stars.png" width="130px" height="144px" alt="" />
-        <img src="/images/lottery/ticket-l.png" width="123px" height="83px" alt="" />
-        <img src="/images/lottery/ticket-r.png" width="121px" height="72px" alt="" />
-      </StarsDecorations>
-      <Heading style={{ zIndex: 1 }} mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
-        {t('The PancakeSwap Lottery')}
-      </Heading>
+      <BirthdayDecorations />
+      <Flex zIndex={1} flexDirection="column">
+        <OutlineText
+          textAlign="center"
+          id="lottery-hero-title"
+          color="#26FFCB"
+          backgroundColor="#6532CD"
+          mb="8px"
+          fontSize={['24px']}
+        >
+          {t('The PancakeSwap Birthday Lottery')}
+        </OutlineText>
+        <Flex mb="8px" flexDirection={['column', 'column', 'column', 'column', 'column', 'row']}>
+          <YellowText data-text={t('Mars Lottery Paradise!')}>{t('Mars Lottery Paradise!')}</YellowText>
+          <Flex justifyContent="center">
+            <Box
+              display={['block', 'block', 'block', 'block', 'block', 'none']}
+              position="relative"
+              top="6px"
+              right="-14px"
+              zIndex={1}
+              style={{ pointerEvents: 'none' }}
+            >
+              <Image src="/images/lottery/birthday/birthday-cake-icon.png" width={50} height={50} alt="birthday-cion" />
+            </Box>
+            <StyledLearnMoreButton
+              scale="sm"
+              onClick={() =>
+                window.open(
+                  'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-4-mars-mystique-lottery-paradise',
+                  '_blank',
+                  'noopener noreferrer',
+                )
+              }
+            >
+              {t('Learn More')}
+            </StyledLearnMoreButton>
+          </Flex>
+        </Flex>
+      </Flex>
       {getHeroHeading()}
       <TicketContainer
         position="relative"
