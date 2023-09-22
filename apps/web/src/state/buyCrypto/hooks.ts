@@ -50,17 +50,21 @@ function getMinMaxAmountCap(quotes: LimitQuote[]) {
   return quotes.reduce((bestQuote: LimitQuote, quote: LimitQuote) => {
     if (!bestQuote) return quote
 
+    const baseCurrency = {
+      code: bestQuote.baseCurrency.code,
+      maxBuyAmount: Math.min(bestQuote.baseCurrency.maxBuyAmount || 0, quote.baseCurrency.maxBuyAmount || 0),
+      minBuyAmount: Math.max(bestQuote.baseCurrency.minBuyAmount || 0, quote.baseCurrency.minBuyAmount || 0),
+    }
+
+    const quoteCurrency = {
+      code: bestQuote.quoteCurrency.code,
+      maxBuyAmount: Math.min(bestQuote.quoteCurrency.maxBuyAmount || 0, quote.quoteCurrency.maxBuyAmount || 0),
+      minBuyAmount: Math.max(bestQuote.quoteCurrency.minBuyAmount || 0, quote.quoteCurrency.minBuyAmount || 0),
+    }
+
     return {
-      baseCurrency: {
-        code: bestQuote.baseCurrency.code,
-        maxBuyAmount: min([bestQuote.baseCurrency.maxBuyAmount, quote.baseCurrency.maxBuyAmount]),
-        minBuyAmount: max([bestQuote.baseCurrency.minBuyAmount, quote.baseCurrency.minBuyAmount]),
-      },
-      quoteCurrency: {
-        code: bestQuote.quoteCurrency.code,
-        maxBuyAmount: min([bestQuote.quoteCurrency.maxBuyAmount, quote.quoteCurrency.maxBuyAmount]),
-        minBuyAmount: max([bestQuote.quoteCurrency.minBuyAmount, quote.quoteCurrency.minBuyAmount]),
-      },
+      baseCurrency,
+      quoteCurrency,
     }
   })
 }
@@ -196,7 +200,7 @@ export function useBuyCryptoActionHandlers(): {
     [],
   )
 
-  const onUsersIp = useCallback((ip: string | null) => {
+  const onUsersIp = useCallback((ip: string | undefined) => {
     dispatch(
       setUsersIpAddress({
         ip,

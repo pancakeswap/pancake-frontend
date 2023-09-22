@@ -43,19 +43,17 @@ const initialState: BuyCryptoState = {
   userIpAddress: undefined,
 }
 
-export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
+export const reducer = createReducer<BuyCryptoState>(initialState, (builder) => {
   builder
     .addCase(resetBuyCryptoState, () => initialState)
     .addCase(typeInput, (state, { payload: { typedValue } }) => {
-      return {
-        ...state,
-        typedValue,
-      }
+      state.typedValue = typedValue
     })
     .addCase(selectCurrency, (state, { payload: { currencyId, field } }) => {
-      return {
-        ...state,
-        [field]: { currencyId },
+      if (field === Field.INPUT) {
+        state[Field.INPUT].currencyId = currencyId
+      } else if (field === Field.OUTPUT) {
+        state[Field.OUTPUT].currencyId = currencyId
       }
     })
     .addCase(setMinAmount, (state, { payload: { minAmount, minBaseAmount, maxAmount, maxBaseAmount } }) => {
@@ -87,23 +85,16 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
           },
         },
       ) => {
-        return {
-          [Field.INPUT]: {
-            currencyId: inputCurrencyId,
-          },
-          [Field.OUTPUT]: {
-            currencyId: outputCurrencyId,
-          },
-          typedValue,
-          recipient,
-          minAmount,
-          minBaseAmount,
-          maxAmount,
-          maxBaseAmount,
-          userIpAddress: state.userIpAddress,
-        }
+        state[Field.INPUT].currencyId = inputCurrencyId
+        state[Field.OUTPUT].currencyId = outputCurrencyId
+        state.typedValue = typedValue
+        state.recipient = recipient
+        state.minAmount = minAmount
+        state.minBaseAmount = minBaseAmount
+        state.maxAmount = maxAmount
+        state.maxBaseAmount = maxBaseAmount
       },
-    ),
-)
+    )
+})
 
 export const buyCryptoReducerAtom = atomWithReducer(initialState, reducer)

@@ -75,7 +75,7 @@ export function BuyCryptoForm({
   )
   // need to relocate this
   const fetchMinBuyAmounts = useCallback(async () => {
-    if (!outputCurrencyId || inputCurrencyId || chainId) return
+    if (!outputCurrencyId || !inputCurrencyId || !chainId) return
 
     const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
     if (!limitAmounts) return
