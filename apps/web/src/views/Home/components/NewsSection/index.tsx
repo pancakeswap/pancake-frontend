@@ -5,59 +5,6 @@ import { styled } from 'styled-components'
 import { useRef, useCallback } from 'react'
 import useAllArticle from '../../hooks/useAllArticle'
 
-export const newsData = [
-  {
-    platform: 'cointelegraph',
-    title: 'PancakeSwap wants to cap token inflation rate at 3%–5% per year',
-    description:
-      'Decentralized exchange (DEX) PancakeSwap wants to lower its token inflation to anywhere between 3% and 5% per annum, far below current rates of over 20%.',
-    imageSrc:
-      'https://images.cointelegraph.com/images/1434_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjMtMDQvOWYxOGU4YjMtM2M0Ni00YjkxLTkzMDktM2RmNGU0ZGZjOWIwLmpwZw==.jpg',
-    link: 'https://cointelegraph.com/news/pancakeswap-wants-to-cap-token-inflation-rate-between-3-to-5-per-annum',
-    date: '2023-04-18',
-  },
-  {
-    platform: 'cointelegraph',
-    title: 'PancakeSwap wants to cap token inflation rate at 3%–5% per year',
-    description:
-      'Decentralized exchange (DEX) PancakeSwap wants to lower its token inflation to anywhere between 3% and 5% per annum, far below current rates of over 20%.',
-    imageSrc:
-      'https://images.cointelegraph.com/images/1434_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjMtMDQvOWYxOGU4YjMtM2M0Ni00YjkxLTkzMDktM2RmNGU0ZGZjOWIwLmpwZw==.jpg',
-    link: 'https://cointelegraph.com/news/pancakeswap-wants-to-cap-token-inflation-rate-between-3-to-5-per-annum',
-    date: '2023-04-18',
-  },
-  {
-    platform: 'cointelegraph',
-    title: 'PancakeSwap wants to cap token inflation rate at 3%–5% per year',
-    description:
-      'Decentralized exchange (DEX) PancakeSwap wants to lower its token inflation to anywhere between 3% and 5% per annum, far below current rates of over 20%.',
-    imageSrc:
-      'https://images.cointelegraph.com/images/1434_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjMtMDQvOWYxOGU4YjMtM2M0Ni00YjkxLTkzMDktM2RmNGU0ZGZjOWIwLmpwZw==.jpg',
-    link: 'https://cointelegraph.com/news/pancakeswap-wants-to-cap-token-inflation-rate-between-3-to-5-per-annum',
-    date: '2023-04-18',
-  },
-  {
-    platform: 'cointelegraph',
-    title: 'PancakeSwap wants to cap token inflation rate at 3%–5% per year',
-    description:
-      'Decentralized exchange (DEX) PancakeSwap wants to lower its token inflation to anywhere between 3% and 5% per annum, far below current rates of over 20%.',
-    imageSrc:
-      'https://images.cointelegraph.com/images/1434_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjMtMDQvOWYxOGU4YjMtM2M0Ni00YjkxLTkzMDktM2RmNGU0ZGZjOWIwLmpwZw==.jpg',
-    link: 'https://cointelegraph.com/news/pancakeswap-wants-to-cap-token-inflation-rate-between-3-to-5-per-annum',
-    date: '2023-04-18',
-  },
-  {
-    platform: 'cointelegraph',
-    title: 'PancakeSwap wants to cap token inflation rate at 3%–5% per year',
-    description:
-      'Decentralized exchange (DEX) PancakeSwap wants to lower its token inflation to anywhere between 3% and 5% per annum, far below current rates of over 20%.',
-    imageSrc:
-      'https://images.cointelegraph.com/images/1434_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjMtMDQvOWYxOGU4YjMtM2M0Ni00YjkxLTkzMDktM2RmNGU0ZGZjOWIwLmpwZw==.jpg',
-    link: 'https://cointelegraph.com/news/pancakeswap-wants-to-cap-token-inflation-rate-between-3-to-5-per-annum',
-    date: '2023-04-18',
-  },
-]
-
 const NewsCard = styled.div`
   width: 280px;
   height: 387px;
@@ -142,10 +89,10 @@ export const NewsSection: React.FC = () => {
   const scrollWrapper = useRef<HTMLDivElement>(null)
   const { articlesData, isFetching } = useAllArticle({
     query: '',
-    sortBy: '',
-    selectedCategories: 8,
+    sortBy: 'createAt:desc',
+    selectedCategories: 'News',
     languageOption: 'en',
-    currentPage: 1,
+    currentPage: 0,
   })
   const onButtonClick = useCallback((scrollTo: 'next' | 'pre') => {
     const scrollTarget = scrollWrapper.current
@@ -156,7 +103,6 @@ export const NewsSection: React.FC = () => {
     }
     scrollTarget.scrollLeft -= 280
   }, [])
-  console.log(articlesData, 'articlesData????')
   return (
     <Flex flexDirection="column" style={{ gap: 36 }}>
       <Flex justifyContent="center" style={{ gap: 8 }}>
@@ -174,35 +120,36 @@ export const NewsSection: React.FC = () => {
           </ArrowButton>
         </Flex>
         <CardWrapper ref={scrollWrapper}>
-          {articlesData?.data.map((d) => (
-            <NewsCard
-              onClick={() => {
-                window.open(d.newsOutBoundLink, '_blank', 'noopener noreferrer')
-              }}
-            >
-              <ImageBox>
-                <img src={d.imgUrl} alt="" />
-              </ImageBox>
-              <ContentBox>
-                <Flex justifyContent="space-between">
-                  <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
-                    {t('From')} [{d.newsFromPlatform}]
+          {!isFetching &&
+            articlesData?.data.map((d) => (
+              <NewsCard
+                onClick={() => {
+                  window.open(d.newsOutBoundLink, '_blank', 'noopener noreferrer')
+                }}
+              >
+                <ImageBox>
+                  <img src={d.imgUrl} alt="" />
+                </ImageBox>
+                <ContentBox>
+                  <Flex justifyContent="space-between">
+                    <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
+                      {t('From')} [{d.newsFromPlatform}]
+                    </Text>
+                    <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
+                      {new Date(d.createAt).toLocaleString('en-US', {
+                        month: 'short',
+                        year: 'numeric',
+                        day: 'numeric',
+                      })}
+                    </Text>
+                  </Flex>
+                  <Text bold mt="20px" lineHeight="120%" style={{ whiteSpace: 'pre-wrap' }}>
+                    {d.title}
                   </Text>
-                  <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
-                    {new Date(d.publishedAt).toLocaleString('en-US', {
-                      month: 'short',
-                      year: 'numeric',
-                      day: 'numeric',
-                    })}
-                  </Text>
-                </Flex>
-                <Text bold mt="20px" lineHeight="120%" style={{ whiteSpace: 'pre-wrap' }}>
-                  {d.title}
-                </Text>
-                <DescriptionBox>{d.description}</DescriptionBox>
-              </ContentBox>
-            </NewsCard>
-          ))}
+                  <DescriptionBox>{d.description}</DescriptionBox>
+                </ContentBox>
+              </NewsCard>
+            ))}
         </CardWrapper>
         <Flex alignItems="center" ml="8px">
           <ArrowButton>

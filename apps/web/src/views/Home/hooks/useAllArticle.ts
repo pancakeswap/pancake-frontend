@@ -2,11 +2,12 @@ import qs from 'qs'
 import useSWR from 'swr'
 import { ResponseArticleType, ResponseArticleDataType } from '../types'
 import { transformArticle, ArticleType } from '../utils/transformArticle'
+import { getArticle } from './getArticle'
 
 interface UseAllArticleProps {
   query: string
   currentPage: number
-  selectedCategories: number
+  selectedCategories: string
   sortBy: string
   languageOption: string
 }
@@ -16,7 +17,7 @@ interface AllArticleType {
   articlesData: ArticleType
 }
 
-const useAllArticle = ({
+const useAllNewsArticle = ({
   query,
   sortBy,
   currentPage,
@@ -25,47 +26,22 @@ const useAllArticle = ({
 }: UseAllArticleProps): AllArticleType => {
   const { data: articlesData, isLoading } = useSWR(
     ['/articles', query, currentPage, selectedCategories, sortBy, languageOption],
-    async () => {
-      try {
-        const urlParamsObject = {
-          ...(query && { _q: query }),
-          filters: {
-            ...(selectedCategories && {
-              categories: {
-                id: {
-                  $eq: selectedCategories,
-                },
-              },
-            }),
-          },
-          locale: languageOption,
+    () =>
+      getArticle({
+        url: '/articles',
+        urlParamsObject: {
           populate: 'categories,image',
-          sort: sortBy,
-          pagination: {
-            page: currentPage,
-            pageSize: 10,
+          sort: 'createAt:desc',
+          pagination: { limit: 9 },
+          filters: {
+            categories: {
+              name: {
+                $eq: 'News',
+              },
+            },
           },
-        }
-        const queryString = qs.stringify(urlParamsObject)
-        const response = await fetch(`https://strapi-cms.pancakeswap.ai/api/articles?${queryString}`)
-        const result: ResponseArticleType = await response.json()
-        return {
-          data: result.data.map((i: ResponseArticleDataType) => transformArticle(i)) ?? [],
-          pagination: { ...result.meta.pagination },
-        }
-      } catch (error) {
-        console.error('Fetch All Article Error: ', error)
-        return {
-          data: [],
-          pagination: {
-            page: 0,
-            pageSize: 0,
-            pageCount: 0,
-            total: 0,
-          },
-        }
-      }
-    },
+        },
+      }),
     {
       revalidateOnFocus: false,
       revalidateIfStale: false,
@@ -88,4 +64,4 @@ const useAllArticle = ({
   }
 }
 
-export default useAllArticle
+export default useAllNewsArticle
