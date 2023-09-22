@@ -20,12 +20,11 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 // import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
-import { multiChainId, multiChainScan } from 'state/info/constant'
+import { ChainLinkSupportChains, multiChainId, multiChainScan } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { ChainId } from '@pancakeswap/chains'
 
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import BarChart from '../components/BarChart/alt'
@@ -162,7 +161,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
 
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
               <ScanLink
-                useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
+                useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
                 href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                 mr="8px"
               >

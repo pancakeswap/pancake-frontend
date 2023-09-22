@@ -26,10 +26,15 @@ import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useState } from 'react'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { ChainId } from '@pancakeswap/chains'
 
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { multiChainId, multiChainScan, subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
+import {
+  ChainLinkSupportChains,
+  multiChainId,
+  multiChainScan,
+  subgraphTokenName,
+  subgraphTokenSymbol,
+} from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { styled } from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -187,7 +192,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   <ScanLink
                     mr="8px"
                     color="primary"
-                    useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
+                    useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
                     href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                   >
                     {t('View on %site%', { site: multiChainScan[chainName] })}

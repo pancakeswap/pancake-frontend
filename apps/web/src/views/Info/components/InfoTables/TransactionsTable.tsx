@@ -10,8 +10,7 @@ import { useChainNameByQuery } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
-import { ChainId } from '@pancakeswap/chains'
+import { multiChainId, subgraphTokenSymbol, ChainLinkSupportChains } from 'state/info/constant'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
@@ -111,7 +110,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   return (
     <ResponsiveGrid>
       <ScanLink
-        useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
+        useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
         href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
       >
         <Text>
@@ -139,7 +138,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
       <ScanLink
-        useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
+        useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
         href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
       >
         {domainName || truncateHash(transaction.sender)}

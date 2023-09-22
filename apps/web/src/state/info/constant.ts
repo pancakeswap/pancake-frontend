@@ -147,3 +147,5 @@ export const subgraphTokenSymbol = {
 }
 
 export const checkIsStableSwap = () => window.location.href.includes('stableSwap')
+
+export const ChainLinkSupportChains = [ChainId.BSC, ChainId.BSC_TESTNET]

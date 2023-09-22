@@ -25,7 +25,7 @@ import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPools
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { NextSeo } from 'next-seo'
 import { useMemo, useState } from 'react'
-import { checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
+import { checkIsStableSwap, multiChainId, multiChainScan, ChainLinkSupportChains } from 'state/info/constant'
 import {
   useChainIdByQuery,
   useChainNameByQuery,
@@ -145,7 +145,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
               <ScanLink
-                useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
+                useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
                 mr="8px"
                 href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
               >

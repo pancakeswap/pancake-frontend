@@ -24,7 +24,13 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { Duration } from 'date-fns'
 import { useMemo } from 'react'
-import { multiChainId, multiChainScan, subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
+import {
+  multiChainId,
+  multiChainScan,
+  subgraphTokenName,
+  subgraphTokenSymbol,
+  ChainLinkSupportChains,
+} from 'state/info/constant'
 import {
   useChainIdByQuery,
   useChainNameByQuery,
@@ -146,7 +152,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 <ScanLink
                   mr="8px"
                   color="primary"
-                  useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(multiChainId[chainName])}
+                  useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
                   href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                 >
                   {t('View on %site%', { site: multiChainScan[chainName] })}

@@ -75,6 +75,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import isPoolTickInRange from 'utils/isPoolTickInRange'
+import { ChainLinkSupportChains } from 'state/info/constant'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -1026,7 +1027,7 @@ function PositionHistoryRow({
       <Box>
         <AutoRow>
           <ScanLink
-            useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)}
+            useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
             href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
           >
             <Flex flexDirection="column" alignItems="center">
@@ -1079,7 +1080,7 @@ function PositionHistoryRow({
     >
       <AutoRow justifyContent="center">
         <ScanLink
-          useBscCoinFallback={[ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)}
+          useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
           href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
         >
           <Text ellipsis>{desktopDate}</Text>
