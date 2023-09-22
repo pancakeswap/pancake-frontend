@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useLayoutEffect } from 'react'
 
 export const useDrawCanvas = (
   videoRef: React.MutableRefObject<HTMLVideoElement>,
@@ -21,19 +21,20 @@ export const useDrawCanvas = (
     context.drawImage(video, 0, 0, width, height)
   }, [canvas, video, height, width])
 
-  if (isElementReady) {
-    video.onpause = () => {
-      clearInterval(canvasInterval)
+  useLayoutEffect(() => {
+    if (isElementReady) {
+      video.onpause = () => {
+        clearInterval(canvasInterval)
+      }
+      video.onended = () => {
+        clearInterval(canvasInterval)
+        onVideoVideoEnd?.()
+      }
+      video.onplay = () => {
+        onVideoStartCallback?.()
+      }
     }
-
-    video.onended = () => {
-      clearInterval(canvasInterval)
-      onVideoVideoEnd?.()
-    }
-    video.onplay = () => {
-      onVideoStartCallback?.()
-    }
-  }
+  }, [isElementReady, canvasInterval, onVideoStartCallback, onVideoVideoEnd, video])
 
   return { drawImage: isElementReady ? drawImage : null }
 }
