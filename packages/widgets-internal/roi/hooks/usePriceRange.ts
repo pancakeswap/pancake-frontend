@@ -7,11 +7,11 @@ import {
   tickToPrice,
   priceToClosestTick,
 } from '@pancakeswap/v3-sdk'
-import { Bound } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 
 import { tryParsePrice, tryParseTick } from '../utils'
+import { Bound } from '../../swap/LiquidityChartRangeInput'
 
 interface Params {
   feeAmount?: FeeAmount

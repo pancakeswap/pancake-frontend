@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { ChartEntry } from '@pancakeswap/uikit'
+import { ChartEntry } from '@pancakeswap/widgets-internal'
 import { TickProcessed } from 'hooks/v3/types'
 import { usePoolActiveLiquidity } from 'hooks/v3/usePoolTickData'
 import { useCallback, useMemo } from 'react'

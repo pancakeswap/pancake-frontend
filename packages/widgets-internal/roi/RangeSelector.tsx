@@ -3,7 +3,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { memo } from 'react'
 
-import { FlexGap, Bound } from '@pancakeswap/uikit'
+import { FlexGap } from '@pancakeswap/uikit'
+import { Bound } from '../swap/LiquidityChartRangeInput'
 import { StepCounter } from './StepCounter'
 
 // currencyA is the base token

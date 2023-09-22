@@ -15,7 +15,15 @@ export const SUPPORT_FARMS = [
   ChainId.LINEA,
   ChainId.BASE,
 ]
-export const SUPPORT_BUY_CRYPTO = [ChainId.BSC, ChainId.ETHEREUM, ChainId.ARBITRUM_ONE]
+export const SUPPORT_BUY_CRYPTO = [
+  ChainId.BSC,
+  ChainId.ETHEREUM,
+  ChainId.ARBITRUM_ONE,
+  ChainId.ZKSYNC, // NO PROVIDER SUPPORT ZK_SYNC_ERA
+  ChainId.POLYGON_ZKEVM,
+  ChainId.LINEA,
+  ChainId.BASE,
+]
 
 export const LIQUID_STAKING_SUPPORTED_CHAINS = [
   ChainId.BSC,
