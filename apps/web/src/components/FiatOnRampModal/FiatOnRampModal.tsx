@@ -293,7 +293,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         {error ? (
           <Flex justifyContent="center" alignItems="center" alignContent="center">
             <ErrorText>
-              <Trans>something went wrong</Trans>
+              <Trans>{t('something went wrong!')}</Trans>
             </ErrorText>
           </Flex>
         ) : (
