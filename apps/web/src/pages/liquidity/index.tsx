@@ -18,6 +18,7 @@ import {
 import { PositionDetails } from '@pancakeswap/farms'
 import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import { AppBody, AppHeader } from 'components/App'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
@@ -78,8 +79,9 @@ function useHideClosePosition() {
 }
 
 export default function PoolListPage() {
-  const { account, chainId } = useAccountActiveChain()
   const { t } = useTranslation()
+  const router = useRouter()
+  const { account, chainId } = useAccountActiveChain()
 
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(FILTER.ALL)
   const [hideClosedPositions, setHideClosedPositions] = useHideClosePosition()
@@ -89,6 +91,10 @@ export default function PoolListPage() {
   const { data: v2Pairs, loading: v2Loading } = useV2PairsByAccount(account)
 
   const stablePairs = useLPTokensWithBalanceByAccount(account)
+
+  const { token0, token1, fee } = router.query as { token0: string; token1: string; fee: string }
+  const isNeedFilterByQuery = useMemo(() => token0 && token1 && fee, [token0, token1, fee])
+  const [showAllPositionWithQuery, setShowAllPositionWithQuery] = useState(false)
 
   let v2PairsSection = null
 
@@ -171,6 +177,29 @@ export default function PoolListPage() {
     })
   }
 
+  const filteredWithQueryFilter = useMemo(() => {
+    if (isNeedFilterByQuery && !showAllPositionWithQuery && v3PairsSection) {
+      return v3PairsSection
+        .filter((pair) => {
+          if (
+            pair?.props?.positionDetails?.token0?.toLowerCase() === token0?.toLowerCase() &&
+            pair?.props?.positionDetails?.token1?.toLowerCase() === token1?.toLowerCase() &&
+            pair?.props?.positionDetails?.fee === Number(fee ?? 0)
+          ) {
+            return pair
+          }
+          return null
+        })
+        .filter(Boolean)
+    }
+
+    return v3PairsSection
+  }, [fee, isNeedFilterByQuery, showAllPositionWithQuery, token0, token1, v3PairsSection])
+
+  const showAllPositionButton = useMemo(() => {
+    return v3PairsSection?.length > filteredWithQueryFilter?.length && isNeedFilterByQuery && !showAllPositionWithQuery
+  }, [filteredWithQueryFilter, isNeedFilterByQuery, showAllPositionWithQuery, v3PairsSection])
+
   const mainSection = useMemo(() => {
     let resultSection = null
     if (v3Loading || v2Loading) {
@@ -179,7 +208,7 @@ export default function PoolListPage() {
           <Dots>{t('Loading')}</Dots>
         </Text>
       )
-    } else if (!v2PairsSection && !stablePairsSection && !v3PairsSection) {
+    } else if (!v2PairsSection && !stablePairsSection && !filteredWithQueryFilter) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
           {t('No liquidity found.')}
@@ -187,13 +216,13 @@ export default function PoolListPage() {
       )
     } else {
       // Order should be v3, stable, v2
-      const sections = [v3PairsSection, stablePairsSection, v2PairsSection]
+      const sections = [filteredWithQueryFilter, stablePairsSection, v2PairsSection]
 
       resultSection = selectedTypeIndex ? sections.filter((_, index) => selectedTypeIndex === index + 1) : sections
     }
 
     return resultSection
-  }, [selectedTypeIndex, stablePairsSection, t, v2Loading, v2PairsSection, v3Loading, v3PairsSection])
+  }, [selectedTypeIndex, stablePairsSection, t, v2Loading, v2PairsSection, v3Loading, filteredWithQueryFilter])
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
   const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
@@ -253,6 +282,21 @@ export default function PoolListPage() {
         <Body>
           {mainSection}
           {selectedTypeIndex === FILTER.V2 ? <Liquidity.FindOtherLP /> : null}
+          {showAllPositionButton && (
+            <Flex alignItems="center" flexDirection="column">
+              <Text color="textSubtle" mb="10px">
+                {t("Don't see a pair you joined?")}
+              </Text>
+              <Button
+                scale="sm"
+                width="fit-content"
+                variant="secondary"
+                onClick={() => setShowAllPositionWithQuery(true)}
+              >
+                {t('Show all positions')}
+              </Button>
+            </Flex>
+          )}
         </Body>
         <CardFooter style={{ textAlign: 'center' }}>
           <NextLink href="/add" passHref>
