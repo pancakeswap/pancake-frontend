@@ -2,11 +2,13 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useTheme from 'hooks/useTheme'
+import Image from 'next/image'
 import { useLayoutEffect, useRef } from 'react'
 import { keyframes, styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { useDrawCanvas } from '../hooks/useDrawCanvas'
-import { CompositeImageProps } from './CompositeImage'
+import { useIsIOS } from '../hooks/useIsIOS'
+import heroGif from '../images/hero.gif'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 
 const flyingAnim = () => keyframes`
@@ -57,36 +59,6 @@ const BunnyWrapper = styled.div`
     overflow: visible !important; // make sure the next-image pre-build blur image not be cropped
   }
 `
-
-const StarsWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  & :nth-child(2) {
-    animation: ${fading} 2s ease-in-out infinite;
-    animation-delay: 1s;
-  }
-
-  & :nth-child(3) {
-    animation: ${fading} 5s ease-in-out infinite;
-    animation-delay: 0.66s;
-  }
-
-  & :nth-child(4) {
-    animation: ${fading} 2.5s ease-in-out infinite;
-    animation-delay: 0.33s;
-  }
-`
-
-const starsImage: CompositeImageProps = {
-  path: '/images/home/lunar-bunny/',
-  attributes: [
-    { src: 'star-l', alt: '3D Star' },
-    { src: 'star-r', alt: '3D Star' },
-    { src: 'star-top-r', alt: '3D Star' },
-  ],
-}
 
 const CakeBox = styled.div`
   width: 300px;
@@ -155,6 +127,7 @@ const Hero = () => {
   const { isMobile, isXs, isMd } = useMatchBreakpoints()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const { isIOS } = useIsIOS()
   const { drawImage } = useDrawCanvas(
     videoRef,
     canvasRef,
@@ -271,15 +244,19 @@ const Hero = () => {
               alt={t('Lunar bunny')}
               unoptimized
             /> */}
-            <CakeBox>
-              <CakeCanvas width={width} height={height} ref={canvasRef} />
-              <VideoWrapper>
-                <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
-                  <source src="/assets/bunny.webm" type="video/webm" />
-                  {/* <source src="/assets/bunny.mov" /> */}
-                </CakeVideo>
-              </VideoWrapper>
-            </CakeBox>
+            {isIOS ? (
+              <Image src={heroGif} alt="hero-gif" />
+            ) : (
+              <CakeBox>
+                <CakeCanvas width={width} height={height} ref={canvasRef} />
+                <VideoWrapper>
+                  <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
+                    <source src="/assets/bunny.webm" type="video/webm" />
+                    {/* <source src="/assets/bunny.mov" /> */}
+                  </CakeVideo>
+                </VideoWrapper>
+              </CakeBox>
+            )}
           </BunnyWrapper>
           {/* <StarsWrapper>
             <CompositeImage {...starsImage} />
