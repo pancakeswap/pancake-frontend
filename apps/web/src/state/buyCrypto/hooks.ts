@@ -88,13 +88,13 @@ export const fetchMinimumBuyAmount = async (
 
 // from the current swap inputs, compute the best trade and return it.
 export function useBuyCryptoErrorInfo(
-  typedValue: string,
-  minAmount: number,
-  minBaseAmount: number,
-  maxAmount: number,
-  maxBaseAmount: number,
-  inputCurrencyId: string,
-  outputCurrencyId: string,
+  typedValue: string | undefined,
+  minAmount: number | undefined,
+  minBaseAmount: number | undefined,
+  maxAmount: number | undefined,
+  maxBaseAmount: number | undefined,
+  inputCurrencyId: string | undefined,
+  outputCurrencyId: string | undefined,
 ): {
   amountError: string
   inputError: string
@@ -104,11 +104,23 @@ export function useBuyCryptoErrorInfo(
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  let inputError: string | undefined
+  if (
+    !typedValue ||
+    !minAmount ||
+    !minBaseAmount ||
+    !maxAmount ||
+    !maxBaseAmount ||
+    !inputCurrencyId ||
+    !outputCurrencyId
+  ) {
+    return { amountError: '', inputError: '' }
+  }
+
+  let inputError = ''
+  let amountError = ''
+
   const isMinError = Number(typedValue) < minAmount
   const isMaxError = Number(typedValue) > maxAmount
-
-  let amountError: undefined | string
 
   if (isMinError) {
     amountError = t(
@@ -153,8 +165,8 @@ export function useBuyCryptoErrorInfo(
   }
 
   return {
-    amountError: amountError as string,
-    inputError: inputError as string,
+    amountError,
+    inputError,
   }
 }
 
@@ -162,7 +174,7 @@ export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
   onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
-  onUsersIp: (ip: string | null) => void
+  onUsersIp: (ip: string | undefined) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
