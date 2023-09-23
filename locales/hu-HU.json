@@ -635,7 +635,8 @@
   "Your Tickets": "Az Ön szelvényei",
   "in prizes!": "nyereményekben!",
   "Tickets on sale soon": "A szelvények hamarosan kaphatók",
-  "The PancakeSwap Lottery": "A PancakeSwap Lottó",
+  "The PancakeSwap Birthday Lottery": "The PancakeSwap Birthday Lottery",
+  "Mars Lottery Paradise!": "Mars Lottery Paradise!",
   "All History": "Az összes előzmény",
   "Winning Number": "Nyertes szám",
   "Prize pot": "Nyereményalap",
@@ -2582,6 +2583,10 @@
   "PolyNetwork Exploit.": "PolyNetwork kihasználás.",
   "For more information, please refer to MetisDAO’s": "További tájékoztatásért forduljon a MetisDAO szervezethez",
   "Twitter": "Twitter",
+  "Caution - lUSD Token": "Caution - lUSD Token",
+  "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ": "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ",
+  "exploit.": "exploit.",
+  "For more information, please refer to Linear Finance’s": "For more information, please refer to Linear Finance’s",
   "Rank (Top 50 users)": "Rangsor (50 legjobb felhasználó)",
   "My Rank": "Az én helyezésem",
   "Current Round": "Jelenlegi forduló",
@@ -2700,5 +2705,7 @@
   "Mercury Mysteries": "Mercury Mysteries",
   "Venus Protectors": "Venus Protectors",
   "Uranus Unity Rain": "Uranus Unity Rain",
-  "0%  Provider  Fee until Sep 12th!": "0% szolgáltatói díj szeptember 12-ig!"
+  "0%  Provider  Fee until Sep 12th!": "0% szolgáltatói díj szeptember 12-ig!",
+  "Show all positions": "Show all positions",
+  "Mars Lottery Paradise": "Mars Lottery Paradise"
 }
