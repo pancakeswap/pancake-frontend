@@ -635,7 +635,8 @@
   "Your Tickets": "Vos tickets",
   "in prizes!": "en prix !",
   "Tickets on sale soon": "Tickets bientôt en vente",
-  "The PancakeSwap Lottery": "La loterie PancakeSwap",
+  "The PancakeSwap Birthday Lottery": "The PancakeSwap Birthday Lottery",
+  "Mars Lottery Paradise!": "Mars Lottery Paradise!",
   "All History": "Historique",
   "Winning Number": "Numéro gagnant",
   "Prize pot": "Cagnotte",
@@ -2582,6 +2583,10 @@
   "PolyNetwork Exploit.": "Exploit PolyNetwork.",
   "For more information, please refer to MetisDAO’s": "Pour en savoir plus, consultez MetisDAO",
   "Twitter": "Twitter",
+  "Caution - lUSD Token": "Caution - lUSD Token",
+  "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ": "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ",
+  "exploit.": "exploit.",
+  "For more information, please refer to Linear Finance’s": "For more information, please refer to Linear Finance’s",
   "Rank (Top 50 users)": "Classement (50 principaux utilisateurs)",
   "My Rank": "Mon classement",
   "Current Round": "Tirage actuel",
@@ -2700,5 +2705,7 @@
   "Mercury Mysteries": "Mercury Mysteries",
   "Venus Protectors": "Venus Protectors",
   "Uranus Unity Rain": "Uranus Unity Rain",
-  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
+  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!",
+  "Show all positions": "Show all positions",
+  "Mars Lottery Paradise": "Mars Lottery Paradise"
 }
