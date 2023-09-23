@@ -635,7 +635,8 @@
   "Your Tickets": "Biletlerin",
   "in prizes!": "ödüllerde!",
   "Tickets on sale soon": "Biletler çok yakında satışta",
-  "The PancakeSwap Lottery": "PancakeSwap Çekilişi",
+  "The PancakeSwap Birthday Lottery": "The PancakeSwap Birthday Lottery",
+  "Mars Lottery Paradise!": "Mars Lottery Paradise!",
   "All History": "Tüm Geçmiş",
   "Winning Number": "Kazanan Sayı",
   "Prize pot": "Ödül havuzu",
@@ -2582,6 +2583,10 @@
   "PolyNetwork Exploit.": "PolyNetwork Kötüye Kullanımı.",
   "For more information, please refer to MetisDAO’s": "Daha fazla bilgi için lütfen MetisDAO'nun",
   "Twitter": "Twitter hesabına bakın",
+  "Caution - lUSD Token": "Caution - lUSD Token",
+  "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ": "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ",
+  "exploit.": "exploit.",
+  "For more information, please refer to Linear Finance’s": "For more information, please refer to Linear Finance’s",
   "Rank (Top 50 users)": "Sıralama (En iyi 50 kullanıcı)",
   "My Rank": "Sıralamam",
   "Current Round": "Mevcut Tur",
@@ -2700,5 +2705,7 @@
   "Mercury Mysteries": "Mercury Mysteries",
   "Venus Protectors": "Venus Protectors",
   "Uranus Unity Rain": "Uranus Unity Rain",
-  "0%  Provider  Fee until Sep 12th!": "12 Eylül'e kadar %0 Sağlayıcı Ücreti!"
+  "0%  Provider  Fee until Sep 12th!": "12 Eylül'e kadar %0 Sağlayıcı Ücreti!",
+  "Show all positions": "Show all positions",
+  "Mars Lottery Paradise": "Mars Lottery Paradise"
 }
