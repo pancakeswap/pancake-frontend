@@ -635,7 +635,8 @@
   "Your Tickets": "আপনার টিকিট",
   "in prizes!": "পুরষ্কারে!",
   "Tickets on sale soon": "টিকিটের মূল্যহ্রাস",
-  "The PancakeSwap Lottery": "PancakeSwap লটারি",
+  "The PancakeSwap Birthday Lottery": "The PancakeSwap Birthday Lottery",
+  "Mars Lottery Paradise!": "Mars Lottery Paradise!",
   "All History": "সমস্ত ইতিহাস",
   "Winning Number": "বিজয়ী নম্বর",
   "Prize pot": "পুরষ্কারের পট",
@@ -2582,6 +2583,10 @@
   "PolyNetwork Exploit.": "PolyNetwork Exploit.",
   "For more information, please refer to MetisDAO’s": "আরো তথ্যের জন্য অনুগ্রহ করে MetisDAO’s দেখুন",
   "Twitter": "টুইটার",
+  "Caution - lUSD Token": "Caution - lUSD Token",
+  "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ": "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ",
+  "exploit.": "exploit.",
+  "For more information, please refer to Linear Finance’s": "For more information, please refer to Linear Finance’s",
   "Rank (Top 50 users)": "র‍্যাঙ্ক (শীর্ষ 50 ব্যবহারকারী)",
   "My Rank": "আমার র‍্যাঙ্কিং",
   "Current Round": "বর্তমান রাউন্ড",
@@ -2700,5 +2705,7 @@
   "Mercury Mysteries": "Mercury Mysteries",
   "Venus Protectors": "Venus Protectors",
   "Uranus Unity Rain": "Uranus Unity Rain",
-  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
+  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!",
+  "Show all positions": "Show all positions",
+  "Mars Lottery Paradise": "Mars Lottery Paradise"
 }
