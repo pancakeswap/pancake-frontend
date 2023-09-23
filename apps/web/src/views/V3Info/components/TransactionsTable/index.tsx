@@ -11,7 +11,7 @@ import {
 } from '@pancakeswap/uikit'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
-import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
+import { multiChainId, subgraphTokenSymbol, ChainLinkSupportChains } from 'state/info/constant'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getBlockExploreLink } from 'utils'
@@ -104,7 +104,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   return (
     <ResponsiveGrid>
       <ScanLink
-        chainId={multiChainId[chainName]}
+        useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
         href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
       >
         <Text fontWeight={400}>
@@ -124,7 +124,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
       </Text>
       <Text fontWeight={400}>
         <ScanLink
-          chainId={multiChainId[chainName]}
+          useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
           href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
         >
           {shortenAddress(transaction.sender)}

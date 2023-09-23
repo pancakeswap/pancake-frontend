@@ -137,13 +137,15 @@ export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNa
 
 // FIXME: this should be per chain
 export const subgraphTokenName = {
-  '0x738d96caf7096659db4c1afbf1e1bdfd281f388c': 'Ankr Staked MATIC',
-  '0x14016e85a25aeb13065688cafb43044c2ef86784': 'True USD Old',
+  '0x738d96Caf7096659DB4C1aFbf1E1BDFD281f388C': 'Ankr Staked MATIC',
+  '0x14016E85a25aeb13065688cAFB43044C2ef86784': 'True USD Old',
 }
 
 // FIXME: this should be per chain
 export const subgraphTokenSymbol = {
-  '0x14016e85a25aeb13065688cafb43044c2ef86784': 'TUSDOLD',
+  '0x14016E85a25aeb13065688cAFB43044C2ef86784': 'TUSDOLD',
 }
 
 export const checkIsStableSwap = () => window.location.href.includes('stableSwap')
+
+export const ChainLinkSupportChains = [ChainId.BSC, ChainId.BSC_TESTNET]

@@ -28,7 +28,13 @@ import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { multiChainId, multiChainScan, subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
+import {
+  ChainLinkSupportChains,
+  multiChainId,
+  multiChainScan,
+  subgraphTokenName,
+  subgraphTokenSymbol,
+} from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { styled } from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -186,7 +192,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   <ScanLink
                     mr="8px"
                     color="primary"
-                    chainId={multiChainId[chainName]}
+                    useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
                     href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                   >
                     {t('View on %site%', { site: multiChainScan[chainName] })}
@@ -210,10 +216,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       fontSize={isXs || isSm ? '24px' : '40px'}
                       id="info-token-name-title"
                     >
-                      {subgraphTokenName[address.toLowerCase()] ?? tokenData.name}
+                      {(address && subgraphTokenName[address]) || tokenData.name}
                     </Text>
                     <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                      ({subgraphTokenSymbol[address.toLowerCase()] ?? tokenData.symbol})
+                      ({subgraphTokenSymbol[address] ?? tokenData.symbol})
                     </Text>
                   </Flex>
                   <Flex mt="8px" ml="46px" alignItems="center">
