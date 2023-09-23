@@ -635,7 +635,8 @@
   "Your Tickets": "Ваші білети",
   "in prizes!": "у призах!",
   "Tickets on sale soon": "Білети незабаром у продажу",
-  "The PancakeSwap Lottery": "Лотерея PancakeSwap",
+  "The PancakeSwap Birthday Lottery": "The PancakeSwap Birthday Lottery",
+  "Mars Lottery Paradise!": "Mars Lottery Paradise!",
   "All History": "Уся історія",
   "Winning Number": "Виграшний номер",
   "Prize pot": "Призовий банк",
@@ -2582,6 +2583,10 @@
   "PolyNetwork Exploit.": "PolyNetwork Exploit.",
   "For more information, please refer to MetisDAO’s": "Докладні відомості про MetisDAO наведено в",
   "Twitter": "Twitter",
+  "Caution - lUSD Token": "Caution - lUSD Token",
+  "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ": "Please exercise due caution when trading or providing liquidity for the lUSD token. The protocol was recently affected by an ",
+  "exploit.": "exploit.",
+  "For more information, please refer to Linear Finance’s": "For more information, please refer to Linear Finance’s",
   "Rank (Top 50 users)": "Рейтинг ( топ 50 користувачів)",
   "My Rank": "Мій рейтинг",
   "Current Round": "Поточний раунд",
@@ -2700,5 +2705,7 @@
   "Mercury Mysteries": "Mercury Mysteries",
   "Venus Protectors": "Venus Protectors",
   "Uranus Unity Rain": "Uranus Unity Rain",
-  "0%  Provider  Fee until Sep 12th!": "Комісія постачальника 0% до 12 вересня!"
+  "0%  Provider  Fee until Sep 12th!": "Комісія постачальника 0% до 12 вересня!",
+  "Show all positions": "Show all positions",
+  "Mars Lottery Paradise": "Mars Lottery Paradise"
 }
