@@ -6,7 +6,8 @@ import { CurrencyAmount, Price } from '@pancakeswap/sdk'
 
 import mockData from './mockData.json'
 import { LiquidityChartRangeInput } from './LiquidityChartRangeInput'
-import { cakeToken, bscToken } from '../../shared'
+import { cakeToken, bscToken } from '../../mockData'
+import { TickDataRaw } from './types'
 
 export default {
   title: 'Components/LiquidityChart',
@@ -31,7 +32,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
         liquidity={3799256509904881797n}
         feeAmount={FeeAmount.MEDIUM}
         formattedData={[]}
-        ticks={mockData}
+        ticks={mockData as unknown as TickDataRaw[]}
       />
     </div>
   )

@@ -18,6 +18,7 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "bignumber.js": "^9.0.0",
     "date-fns": "^2.29.3",
