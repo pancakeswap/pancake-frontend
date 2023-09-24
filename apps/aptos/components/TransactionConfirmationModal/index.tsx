@@ -18,7 +18,6 @@ import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { useActiveChainId } from 'hooks/useNetwork'
-import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
 
 const Wrapper = styled.div`
   width: 100%;
