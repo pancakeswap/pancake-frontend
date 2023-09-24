@@ -13,6 +13,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { getAddress } from 'viem'
 
+import { isAddress } from 'utils'
 import { v3InfoPath } from '../../constants'
 import { usePoolsData, useSearchData, useTokensData } from '../../hooks'
 import { PoolData } from '../../types'
@@ -324,8 +325,11 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${(token.address && subgraphTokenName[getAddress(token.address)]) || token.name} (${
-                          (token.address && getAddress(subgraphTokenSymbol[token.address])) || token.symbol
+                        <Text>{`${
+                          (token.address && subgraphTokenName[isAddress(token.address) || undefined]) || token.name
+                        } (${
+                          (token.address && getAddress(subgraphTokenSymbol[isAddress(token.address) || undefined])) ||
+                          token.symbol
                         })`}</Text>
                       </Text>
                       {/* <SaveIcon
@@ -393,8 +397,8 @@ const Search = () => {
                         chainName={chainName}
                       />
                       <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
-                        <Text>{`${subgraphTokenSymbol[p.token0.address] ?? p.token0.symbol} / ${
-                          subgraphTokenSymbol[p.token1.address] ?? p.token1.symbol
+                        <Text>{`${subgraphTokenSymbol[isAddress(p.token0.address) || undefined] ?? p.token0.symbol} / ${
+                          subgraphTokenSymbol[isAddress(p.token1.address) || undefined] ?? p.token1.symbol
                         }`}</Text>
                       </Text>
                       <GreyBadge ml="10px" style={{ fontSize: 14 }}>

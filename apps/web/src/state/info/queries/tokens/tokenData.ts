@@ -92,6 +92,7 @@ const fetchTokenData = async (
         twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}
       }
     `
+    console.info(query)
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)
     return { data, error: false }
   } catch (error) {
