@@ -58,7 +58,7 @@ const ifos: Ifo[] = [
   },
   {
     id: 'squad',
-    address: '0x57eb2e676863435a140f8bc2a0f0e955c36ed446',
+    address: '0x57EB2e676863435A140F8Bc2a0F0e955C36ED446',
     isActive: false,
     cIFO: true,
     name: 'SQUAD',
@@ -83,7 +83,7 @@ const ifos: Ifo[] = [
   },
   {
     id: 'mgp',
-    address: '0x3fe5a79d4264fe65a1a9e3938286428a0e2e214d',
+    address: '0x3FE5A79d4264fe65A1a9E3938286428a0E2e214D',
     isActive: false,
     name: 'MGP',
     plannedStartTime: 1666872000,
@@ -153,7 +153,7 @@ const ifos: Ifo[] = [
   },
   {
     id: 'co',
-    address: '0x8baeee7d68cb332c63b3e4a8740072121070a2df',
+    address: '0x8baEEE7d68cB332C63B3E4A8740072121070A2df',
     isActive: false,
     name: 'CO',
     poolBasic: {
@@ -290,7 +290,7 @@ const ifos: Ifo[] = [
   },
   {
     id: 'era',
-    address: '0x527201a43f8da24ce9b7c21744a0706942f41fa3',
+    address: '0x527201A43f8da24cE9B7C21744a0706942F41Fa3',
     isActive: false,
     name: 'ERA (Game of Truth)',
     poolBasic: {

@@ -61,24 +61,24 @@ describe.concurrent(
     // The first pid using the new factory
     // BSC
     const START_PID = 2
-    const FACTORY_ADDRESS = '0xca143ce32fe78f1f7019d7d551a6402fc5350c73'
+    const FACTORY_ADDRESS = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
     const newFarmsToTest = farmsToTest.filter((farmSet) => farmSet[0] >= START_PID)
 
     it.each(newFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
       const lpContract = getLpContract(farm.lpAddress)
       const factory = await lpContract.read.factory()
-      expect(factory.toLowerCase()).toEqual(FACTORY_ADDRESS)
+      expect(factory).toEqual(FACTORY_ADDRESS)
     })
 
     // ETH
     const ETH_START_PID = 124
-    const ETH_FACTORY_ADDRESS = '0x1097053fd2ea711dad45caccc45eff7548fcb362'
+    const ETH_FACTORY_ADDRESS = '0x1097053Fd2ea711dad45caCcc45EfF7548fCB362'
     const ethNewFarmsToTest = farms1ToTest.filter((farmSet) => farmSet[0] >= ETH_START_PID)
 
     it.each(ethNewFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
       const lpContract = getLpContract(farm.lpAddress, farm.token.chainId)
       const factory = await lpContract.read.factory()
-      expect(factory.toLowerCase()).toEqual(ETH_FACTORY_ADDRESS)
+      expect(factory).toEqual(ETH_FACTORY_ADDRESS)
     })
   },
   { timeout: 50_000 },
