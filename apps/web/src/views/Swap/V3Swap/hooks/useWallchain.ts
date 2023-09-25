@@ -132,7 +132,10 @@ export function useWallchainApi(
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, deadline, feeOptions)
 
   useEffect(() => {
-    if (!sdk || !walletClient || !trade) return
+    if (!sdk || !walletClient || !trade) {
+      setStatus('not-found')
+      return
+    }
     if (trade.routes.length === 0 || trade.inputAmount.currency.chainId !== ChainId.BSC) return
     if (lastUpdate > Date.now() - 2000) return
     const includesPair = trade.routes.some(
