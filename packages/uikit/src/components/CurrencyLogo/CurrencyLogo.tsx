@@ -24,7 +24,7 @@ export function CurrencyLogo({
   size?: string;
   style?: React.CSSProperties;
 }) {
-  const uriLocations = useHttpLocations(currency?.logoURI ? currency.logoURI : undefined);
+  const uriLocations = useHttpLocations(currency?.logoURI);
 
   const srcs: string[] = useMemo(() => {
     if (currency?.isNative) return [];
