@@ -7,7 +7,7 @@ import useTheme from 'hooks/useTheme'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
 import { LotterySubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import {
-  BIRTHDAY_THEME,
+  TITLE_BG,
   GET_TICKETS_BG,
   FINISHED_ROUNDS_BG,
   FINISHED_ROUNDS_BG_DARK,
@@ -29,25 +29,6 @@ const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
-const BirthdayCake = styled('div')`
-  display: none;
-  position: absolute;
-  top: 140px;
-  right: -150px;
-  width: 261px;
-  height: 295px;
-  z-index: 1;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-image: url(/images/lottery/birthday/cake3.png);
-  pointer-events: none;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    display: block;
-  }
-`
-
 const Lottery = () => {
   useFetchLottery()
   useStatusTransitions()
@@ -64,7 +45,7 @@ const Lottery = () => {
   return (
     <>
       <LotteryPage>
-        <PageSection background={BIRTHDAY_THEME} index={1} hasCurvedDivider={false}>
+        <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>
         <PageSection
@@ -75,8 +56,7 @@ const Lottery = () => {
           dividerPosition="top"
           index={2}
         >
-          <Flex position="relative" alignItems="center" justifyContent="center" flexDirection="column" pt="24px">
-            <BirthdayCake />
+          <Flex alignItems="center" justifyContent="center" flexDirection="column" pt="24px">
             {status === LotteryStatus.OPEN && (
               <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
                 {t('Get your tickets now!')}
