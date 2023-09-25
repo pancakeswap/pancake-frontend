@@ -49,6 +49,13 @@ export const farmsV3 = defineFarmV3Configs([
   },
   // Keep those farms on top
   {
+    pid: 41,
+    lpAddress: '0x1427009d457e06e1266648B8EAa88B7b2117E26c',
+    token0: ethereumTokens.rochi,
+    token1: ethereumTokens.usdc,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 40,
     lpAddress: '0x539aa397a61C8933f0E813DF9802A5d4dA653AD4',
     token0: ethereumTokens.pyusd,
@@ -278,13 +285,6 @@ export const farmsV3 = defineFarmV3Configs([
     token0: ethereumTokens.usdc,
     token1: ethereumTokens.stg,
     feeAmount: FeeAmount.MEDIUM,
-  },
-  {
-    pid: 41,
-    lpAddress: '0x1427009d457e06e1266648B8EAa88B7b2117E26c',
-    token0: ethereumTokens.rochi,
-    token1: ethereumTokens.usdc,
-    feeAmount: FeeAmount.HIGH,
   },
 ])
 
