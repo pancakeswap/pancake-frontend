@@ -29,13 +29,13 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title,
         </Text>
         <Flex>
           <Text fontSize="14px">{t("Swapping thru:")}</Text>
-          {isBonus ? (
-            <Text ml="4px" fontSize="14px">
-              {t("Bonus Route")}
-            </Text>
-          ) : isMM ? (
+          {isMM ? (
             <Text ml="4px" fontSize="14px">
               {t("Pancakeswap MM")}
+            </Text>
+          ) : isBonus ? (
+            <Text ml="4px" fontSize="14px">
+              {t("Bonus Route")}
             </Text>
           ) : (
             <>
