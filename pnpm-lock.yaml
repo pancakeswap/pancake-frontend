@@ -1501,21 +1501,12 @@ importers:
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../localization
-      '@pancakeswap/pools':
-        specifier: workspace:*
-        version: link:../pools
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
-      '@pancakeswap/token-lists':
-        specifier: workspace:*
-        version: link:../token-lists
-      '@pancakeswap/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
