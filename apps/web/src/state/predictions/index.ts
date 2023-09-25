@@ -171,7 +171,7 @@ export const fetchNodeHistory = createAsyncThunk<
   const { bufferSeconds } = getState()
 
   // Turn the data from the node into a Bet object that comes from the graph
-  const bets: Bet[] = roundData.reduce((accum: any | PredictionsRoundsResponse, round: PredictionsRoundsResponse) => {
+  const bets: Bet[] = roundData.reduce((accum: any, round: PredictionsRoundsResponse) => {
     const ledger = userRounds[Number(round.epoch)]
     const ledgerAmount = BigInt(ledger.amount)
     const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
