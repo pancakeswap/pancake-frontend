@@ -1,4 +1,5 @@
-import { ChainId, WETH9, WBNB } from '@pancakeswap/sdk'
+import { WETH9, WBNB } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { USDT, USDC } from './common'
 
 export const opBnbTestnetTokens = {

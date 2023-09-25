@@ -1,4 +1,5 @@
-import { ChainId, WETH9 } from '@pancakeswap/sdk'
+import { WETH9 } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { USDC } from './common'
 
 export const scrollSepoliaTokens = {

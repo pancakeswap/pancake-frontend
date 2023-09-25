@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign, no-await-in-loop */
 import { masterChefV3Addresses, FarmV3SupportedChainId } from '@pancakeswap/farms'
-import { ChainId, ERC20Token } from '@pancakeswap/sdk'
+import { ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
 import { gql, GraphQLClient } from 'graphql-request'

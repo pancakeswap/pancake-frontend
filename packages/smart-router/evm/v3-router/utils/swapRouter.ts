@@ -1,13 +1,6 @@
 import { encodeFunctionData, Hex, Address } from 'viem'
-import {
-  Currency,
-  CurrencyAmount,
-  Percent,
-  TradeType,
-  validateAndParseAddress,
-  WNATIVE,
-  ChainId,
-} from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { FeeOptions, MethodParameters, Payments, PermitOptions, Position, SelfPermit, toHex } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
 

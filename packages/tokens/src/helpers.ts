@@ -1,4 +1,5 @@
-import { ChainId, Currency, Native, Token, WNATIVE } from '@pancakeswap/sdk'
+import { Currency, Native, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { enumValues } from '@pancakeswap/utils/enumValues'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 

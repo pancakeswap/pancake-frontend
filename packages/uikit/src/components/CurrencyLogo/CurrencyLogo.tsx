@@ -1,4 +1,5 @@
-import { ChainId, Currency } from "@pancakeswap/sdk";
+import { Currency } from "@pancakeswap/sdk";
+import { ChainId } from "@pancakeswap/chains";
 import { useMemo } from "react";
 import { styled } from "styled-components";
 import { useHttpLocations } from "@pancakeswap/hooks";

@@ -19,6 +19,7 @@
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
+    "@pancakeswap/chains": "workspace:*",
     "bignumber.js": "^9.0.0",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",

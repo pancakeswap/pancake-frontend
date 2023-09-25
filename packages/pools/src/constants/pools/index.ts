@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import { pools as ethPools, livePools as ethLivePools } from './1'
 import { pools as bscPools, livePools as bscLivePools } from './56'
