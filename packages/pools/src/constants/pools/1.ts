@@ -10,7 +10,7 @@ export const livePools: SerializedPool[] = [
     earningToken: ethereumTokens.roci,
     contractAddress: '0x50e0D135154712c0514446b25B5773BEe32709Fa',
     poolCategory: PoolCategory.CORE,
-    tokenPerSecond: '0.235300000',
+    tokenPerSecond: '0.2353',
   },
   {
     sousId: 9,
