@@ -31,7 +31,7 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.ZKSYNC_TESTNET]: 'zkSyncTestnet',
   [ChainId.LINEA]: 'linea',
   [ChainId.LINEA_TESTNET]: 'lineaTestnet',
-  [ChainId.OPBNB]: 'opBnb',
+  [ChainId.OPBNB]: 'opBNB',
   [ChainId.OPBNB_TESTNET]: 'opBnbTestnet',
   [ChainId.BASE]: 'base',
   [ChainId.BASE_TESTNET]: 'baseTestnet',
