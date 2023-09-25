@@ -281,7 +281,7 @@ export const farmsV3 = defineFarmV3Configs([
   },
   {
     pid: 41,
-    lpAddress: '0xF51092Fe93B4E9282f42c459F05D93D2D079549e',
+    lpAddress: '0x1427009d457e06e1266648B8EAa88B7b2117E26c',
     token0: ethereumTokens.usdc,
     token1: ethereumTokens.rochi,
     feeAmount: FeeAmount.HIGH,
