@@ -8,6 +8,9 @@ import { useMemo } from 'react'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import BigNumber from 'bignumber.js'
 import { VaultKey } from '@pancakeswap/pools'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
+import toString from 'lodash/toString'
+
 import { FixedStakingPool, StakedPosition } from '../type'
 
 export function useCurrentDay(): number {
@@ -50,9 +53,15 @@ export function useIfUserLocked() {
 
   if (!Array.isArray(data)) return false
 
-  const [, , , , , , , locked] = data
+  const [userShares, , , , , lockEndTime, , locked] = data
 
-  return locked
+  const vaultPosition = getVaultPosition({
+    userShares: new BigNumber(userShares as unknown as BigNumber.Value),
+    locked,
+    lockEndTime: toString(lockEndTime),
+  })
+
+  return VaultPosition.Locked === vaultPosition
 }
 export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[] {
   const fixedStakingContract = useFixedStakingContract()
