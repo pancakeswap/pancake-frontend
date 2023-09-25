@@ -8,6 +8,7 @@ import {
   useProtocolDataSWR,
   useProtocolTransactionsSWR,
 } from 'state/info/hooks'
+import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
@@ -56,7 +57,12 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
       .filter((token) => token.name !== 'unknown')
   }, [allTokens])
 
-  const { poolsData } = usePoolsData()
+  const { poolsData: rawPoolsData } = usePoolsData()
+  // top 10 pair need create at least 4 days
+  const poolsData = useMemo(
+    () => rawPoolsData.filter((data) => dayjs().diff(dayjs.unix(data.timestamp), 'day') > 4),
+    [rawPoolsData],
+  )
 
   const somePoolsAreLoading = useMemo(() => {
     return poolsData.some((pool) => !pool?.token0Price)
