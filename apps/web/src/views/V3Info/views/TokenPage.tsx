@@ -24,7 +24,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useState } from 'react'
-import { getBlockExploreLink } from 'utils'
+import { getBlockExploreLink, isAddress } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -184,7 +184,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     <Text color="primary">{t('Tokens')}</Text>
                   </NextLinkFromReactRouter>
                   <Flex>
-                    <Text mr="8px">{subgraphTokenSymbol[address.toLowerCase()] ?? tokenData.symbol}</Text>
+                    <Text mr="8px">{subgraphTokenSymbol[isAddress(address) || undefined] ?? tokenData.symbol}</Text>
                     <Text>{`(${truncateHash(address)})`}</Text>
                   </Flex>
                 </Breadcrumbs>
@@ -216,10 +216,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       fontSize={isXs || isSm ? '24px' : '40px'}
                       id="info-token-name-title"
                     >
-                      {(address && subgraphTokenName[address]) || tokenData.name}
+                      {(address && subgraphTokenName[isAddress(address) || undefined]) || tokenData.name}
                     </Text>
                     <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                      ({subgraphTokenSymbol[address] ?? tokenData.symbol})
+                      ({subgraphTokenSymbol[isAddress(address) || undefined] ?? tokenData.symbol})
                     </Text>
                   </Flex>
                   <Flex mt="8px" ml="46px" alignItems="center">

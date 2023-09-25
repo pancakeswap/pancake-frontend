@@ -44,7 +44,7 @@ import {
   useTokenTransactionsSWR,
 } from 'state/info/hooks'
 import { styled } from 'styled-components'
-import { getBlockExploreLink } from 'utils'
+import { getBlockExploreLink, isAddress } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
@@ -53,7 +53,6 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
-import { getAddress } from 'viem'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -176,10 +175,14 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     fontSize={isXs || isSm ? '24px' : '40px'}
                     id="info-token-name-title"
                   >
-                    {(tokenData.address && subgraphTokenName[getAddress(tokenData.address)]) || tokenData.name}
+                    {(tokenData.address && subgraphTokenName[isAddress(tokenData.address) || undefined]) ||
+                      tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                    ({(tokenData.address && subgraphTokenSymbol[getAddress(tokenData.address)]) ?? tokenData.symbol})
+                    (
+                    {(tokenData.address && subgraphTokenSymbol[isAddress(tokenData.address) || undefined]) ??
+                      tokenData.symbol}
+                    )
                   </Text>
                 </Flex>
                 <Flex mt="8px" ml="46px" alignItems="center">

@@ -18,7 +18,7 @@ import Percent from 'views/Info/components/Percent'
 import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { getAddress } from 'viem'
+import { isAddress } from 'utils'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 /**
@@ -115,9 +115,14 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
-              <Text>{(tokenData.address && subgraphTokenName[getAddress(tokenData.address)]) || tokenData.name}</Text>
+              <Text>
+                {(tokenData.address && subgraphTokenName[isAddress(tokenData.address) || undefined]) || tokenData.name}
+              </Text>
               <Text ml="8px">
-                ({(tokenData.address && subgraphTokenSymbol[getAddress(tokenData.address)]) || tokenData.symbol})
+                (
+                {(tokenData.address && subgraphTokenSymbol[isAddress(tokenData.address) || undefined]) ||
+                  tokenData.symbol}
+                )
               </Text>
             </Flex>
           )}

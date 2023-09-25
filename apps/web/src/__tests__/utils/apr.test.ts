@@ -12,7 +12,7 @@ vi.mock('../../config/constants/lpAprs/56.json', async () => {
     default: {
       // @ts-ignore
       ...actual.default,
-      '0x0ed7e52944161450477ee417de9cd3a859b14fd0': 10.5,
+      '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0': 10.5,
     },
   }
 })
@@ -61,10 +61,10 @@ describe('getFarmApr', () => {
       BIG_TEN,
       new BigNumber(1),
       new BigNumber(100000),
-      '0x0ed7e52944161450477ee417de9cd3a859b14fd0',
+      '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0',
       40,
     )
     expect(cakeRewardsApr).toEqual(4204800)
-    expect(lpRewardsApr).toEqual(lpAprs['0x0ed7e52944161450477ee417de9cd3a859b14fd0'])
+    expect(lpRewardsApr).toEqual(lpAprs['0x0eD7e52944161450477ee417DE9Cd3a859b14fD0'])
   })
 })

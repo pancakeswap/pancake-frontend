@@ -5,7 +5,7 @@ import map from 'lodash/map'
 import slice from 'lodash/slice'
 import omitBy from 'lodash/omitBy'
 import { describe, it } from 'vitest'
-import { publicClient } from '../../utils/wagmi'
+import { publicClient } from 'utils/wagmi'
 
 const whitelist = ['deprecated_tusd', 'deprecated_rpg', 'deprecated_mix']
 

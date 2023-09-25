@@ -1,3 +1,4 @@
+/* eslint-disable address/addr-type */
 import { Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { getBlockExploreLink, isAddress, calculateGasMargin } from 'utils'

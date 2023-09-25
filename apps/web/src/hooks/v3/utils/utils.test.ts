@@ -5,8 +5,8 @@ import { tryParsePrice } from './index'
 describe('hooks', () => {
   describe('#tryParsePrice', () => {
     it('should return undefined if amount is not a number', () => {
-      const baseToken = new Token(1, '0x6b175474e89094c44da98b954eedeac495271d0f', 6, 'ETH')
-      const quoteToken = new Token(1, '0x1b175474e89094c44da98b954eedeac495271d0f', 6, 'BUSD')
+      const baseToken = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 6, 'ETH')
+      const quoteToken = new Token(1, '0x1b175474E89094C44DA98B954EeDEAC495271d0f', 6, 'BUSD')
 
       expect(tryParsePrice(undefined, undefined, undefined)).toBeUndefined()
       expect(tryParsePrice(baseToken, quoteToken)).toBeUndefined()
@@ -17,8 +17,8 @@ describe('hooks', () => {
     })
 
     it('should return a price when decimals are the same', () => {
-      const baseToken = new Token(1, '0x6b175474e89094c44da98b954eedeac495271d0f', 6, 'ETH')
-      const quoteToken = new Token(1, '0x1b175474e89094c44da98b954eedeac495271d0f', 6, 'BUSD')
+      const baseToken = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 6, 'ETH')
+      const quoteToken = new Token(1, '0x1b175474E89094C44DA98B954EeDEAC495271d0f', 6, 'BUSD')
 
       expect(tryParsePrice(baseToken, quoteToken, '20')?.toSignificant(6)).toEqual('20')
       expect(tryParsePrice(baseToken, quoteToken, '20.05')?.toSignificant(6)).toEqual('20.05')
@@ -38,8 +38,8 @@ describe('hooks', () => {
     })
 
     it('should return a price when decimals are different', () => {
-      const baseToken = new Token(1, '0x6b175474e89094c44da98b954eedeac495271d0f', 2, 'ETH')
-      const quoteToken = new Token(1, '0x1b175474e89094c44da98b954eedeac495271d0f', 4, 'BUSD')
+      const baseToken = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 2, 'ETH')
+      const quoteToken = new Token(1, '0x1b175474E89094C44DA98B954EeDEAC495271d0f', 4, 'BUSD')
 
       expect(tryParsePrice(baseToken, quoteToken, '20')?.toSignificant(6)).toEqual('20')
       expect(tryParsePrice(baseToken, quoteToken, '20.05')?.toSignificant(6)).toEqual('20.05')

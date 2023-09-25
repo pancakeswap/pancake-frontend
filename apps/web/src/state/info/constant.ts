@@ -18,6 +18,7 @@ import {
   ETH_TOKEN_WHITELIST,
 } from 'config/constants/info'
 import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync, linea, base } from 'wagmi/chains'
+import mapValues from 'lodash/mapValues'
 
 export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB' | 'LINEA' | 'BASE'
 
@@ -109,25 +110,31 @@ export const multiChainScan: Record<MultiChainName, string> = {
   BASE: base.blockExplorers.default.name,
 }
 
-export const multiChainTokenBlackList: Record<MultiChainName, string[]> = {
-  BSC: TOKEN_BLACKLIST,
-  ETH: ETH_TOKEN_BLACKLIST,
-  POLYGON_ZKEVM: ['0x'],
-  ZKSYNC: ['0x'],
-  ARB: ['0x'],
-  LINEA: ['0x'],
-  BASE: ['0x'],
-}
+export const multiChainTokenBlackList: Record<MultiChainName, string[]> = mapValues(
+  {
+    BSC: TOKEN_BLACKLIST,
+    ETH: ETH_TOKEN_BLACKLIST,
+    POLYGON_ZKEVM: ['0x'],
+    ZKSYNC: ['0x'],
+    ARB: ['0x'],
+    LINEA: ['0x'],
+    BASE: ['0x'],
+  },
+  (val) => val.map((address) => address.toLowerCase()),
+)
 
-export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = {
-  BSC: BSC_TOKEN_WHITELIST,
-  ETH: ETH_TOKEN_WHITELIST,
-  POLYGON_ZKEVM: [],
-  ZKSYNC: [],
-  ARB: [],
-  LINEA: [],
-  BASE: [],
-}
+export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = mapValues(
+  {
+    BSC: BSC_TOKEN_WHITELIST,
+    ETH: ETH_TOKEN_WHITELIST,
+    POLYGON_ZKEVM: [],
+    ZKSYNC: [],
+    ARB: [],
+    LINEA: [],
+    BASE: [],
+  },
+  (val) => val.map((address) => address.toLowerCase()),
+)
 
 export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNameExtend): GraphQLClient => {
   const isStableSwap = checkIsStableSwap()
