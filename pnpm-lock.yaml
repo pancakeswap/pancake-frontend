@@ -125,7 +125,7 @@ importers:
         version: 2.29.3
       graphql-request:
         specifier: ^5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.0)
+        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
       itty-router:
         specifier: ^2.6.1
         version: 2.6.1
@@ -205,7 +205,7 @@ importers:
         version: link:../../packages/worker-utils
       graphql-request:
         specifier: ^5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.0)
+        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
       itty-router:
         specifier: ^2.6.1
         version: 2.6.1
@@ -674,11 +674,11 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       graphql:
-        specifier: ^16.6.0
-        version: 16.6.0
+        specifier: ^16.8.1
+        version: 16.8.1
       graphql-request:
         specifier: ^5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.6.0)
+        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
       jotai:
         specifier: ^2.2.2
         version: 2.2.2(react@18.2.0)
@@ -1279,11 +1279,11 @@ importers:
         specifier: ^4.3.4
         version: 4.3.4(supports-color@8.1.1)
       graphql:
-        specifier: ^16.6.0
-        version: 16.6.0
+        specifier: ^16.8.1
+        version: 16.8.1
       graphql-request:
         specifier: ^5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.6.0)
+        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1980,7 +1980,7 @@ importers:
         version: 5.7.2
       graphql-request:
         specifier: ^5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.0)
+        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -6350,20 +6350,12 @@ packages:
       - encoding
     dev: false
 
-  /@graphql-typed-document-node/core@3.1.1(graphql@16.6.0):
+  /@graphql-typed-document-node/core@3.1.1(graphql@16.8.1):
     resolution: {integrity: sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
-      graphql: 16.6.0
-    dev: false
-
-  /@graphql-typed-document-node/core@3.1.1(graphql@16.8.0):
-    resolution: {integrity: sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      graphql: 16.8.0
+      graphql: 16.8.1
 
   /@hapi/hoek@9.2.1:
     resolution: {integrity: sha512-gfta+H8aziZsm8pZa0vj04KO6biEiisppNgA1kbJvFrrWu9Vm7eaUEy76DIxsuTaWvti5fkJVhllWc6ZTE+Mdw==}
@@ -17961,30 +17953,16 @@ packages:
       - encoding
     dev: false
 
-  /graphql-request@5.0.0(encoding@0.1.13)(graphql@16.6.0):
+  /graphql-request@5.0.0(encoding@0.1.13)(graphql@16.8.1):
     resolution: {integrity: sha512-SpVEnIo2J5k2+Zf76cUkdvIRaq5FMZvGQYnA4lUWYbc99m+fHh4CZYRRO/Ff4tCLQ613fzCm3SiDT64ubW5Gyw==}
     peerDependencies:
       graphql: 14 - 16
     dependencies:
-      '@graphql-typed-document-node/core': 3.1.1(graphql@16.6.0)
+      '@graphql-typed-document-node/core': 3.1.1(graphql@16.8.1)
       cross-fetch: 3.1.5(encoding@0.1.13)
       extract-files: 9.0.0
       form-data: 3.0.1
-      graphql: 16.6.0
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
-  /graphql-request@5.0.0(encoding@0.1.13)(graphql@16.8.0):
-    resolution: {integrity: sha512-SpVEnIo2J5k2+Zf76cUkdvIRaq5FMZvGQYnA4lUWYbc99m+fHh4CZYRRO/Ff4tCLQ613fzCm3SiDT64ubW5Gyw==}
-    peerDependencies:
-      graphql: 14 - 16
-    dependencies:
-      '@graphql-typed-document-node/core': 3.1.1(graphql@16.8.0)
-      cross-fetch: 3.1.5(encoding@0.1.13)
-      extract-files: 9.0.0
-      form-data: 3.0.1
-      graphql: 16.8.0
+      graphql: 16.8.1
     transitivePeerDependencies:
       - encoding
 
@@ -17993,13 +17971,8 @@ packages:
     engines: {node: '>= 10.x'}
     dev: false
 
-  /graphql@16.6.0:
-    resolution: {integrity: sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==}
-    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
-    dev: false
-
-  /graphql@16.8.0:
-    resolution: {integrity: sha512-0oKGaR+y3qcS5mCu1vb7KG+a89vjn06C7Ihq/dDl3jA+A8B3TKomvi3CiEcVLJQGalbu8F52LxkOym7U5sSfbg==}
+  /graphql@16.8.1:
+    resolution: {integrity: sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
   /gunzip-maybe@1.4.2:

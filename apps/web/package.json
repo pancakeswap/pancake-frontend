@@ -71,7 +71,7 @@
     "easymde": "^2.16.1",
     "ethers": "^5.7.0",
     "fast-json-stable-stringify": "^2.1.0",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.1",
     "graphql-request": "^5.0.0",
     "jotai": "^2.2.2",
     "js-cookie": "^3.0.1",
