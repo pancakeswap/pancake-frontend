@@ -1,18 +1,11 @@
-import { Token, CurrencyAmount } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { useMemo } from 'react'
 import { erc20ABI } from 'wagmi'
-import { useMemo, useCallback } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { publicClient } from 'utils/wagmi'
 import { FAST_INTERVAL } from 'config/constants'
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { TransactionType } from 'state/info/types'
-import { isUserRejected } from 'utils/sentry'
-import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
-import { Info } from 'state/transactions/hooks'
-import { useTokenContract } from './useContract'
-import useAccountActiveChain from './useAccountActiveChain'
+import { publicClient } from 'utils/wagmi'
 
 interface BaseTransactionInfo {
   type: TransactionType
@@ -32,7 +25,7 @@ function useTokenAllowance(
   allowance: CurrencyAmount<Token> | undefined
   refetch: () => Promise<any>
 } {
-  const { chainId } = useActiveChainId()
+  const chainId = 5
 
   const inputs = useMemo(() => [owner, spender] as [`0x${string}`, `0x${string}`], [owner, spender])
 
@@ -65,53 +58,5 @@ function useTokenAllowance(
   )
 }
 
-export function useUpdateTokenAllowance(
-  amount: CurrencyAmount<Token> | undefined,
-  spender: string
-): () => Promise<{ response: any; info: Info }> {
-  const contract = useTokenContract(amount?.currency.address)
-  const { account, chainId: chain } = useAccountActiveChain()
-
-  return useCallback(async () => {
-    try {
-      if (!amount) throw new Error('missing amount')
-      if (!contract) throw new Error('missing contract')
-      if (!spender) throw new Error('missing spender')
-
-      const allowance = amount.equalTo(0) ? '0' : MaxUint256.toString()
-      const response = contract.write.approve([spender as `0x${string}`, BigInt(allowance)], {
-        account,
-        chain,
-      })
-      return {
-        response,
-        info:{
-          summary: `Approve ${allowance}`,
-          translatableSummary: {
-            text: 'Approve %symbol%',
-            data: { symbol: '' },
-          },
-          approval: { tokenAddress: contract.address, spender },
-          type: 'approve',
-        },
-      }
-    } catch (e: unknown) {
-      const symbol = amount?.currency.symbol ?? 'Token'
-      if (isUserRejected(e)) {
-        throw new TransactionRejectedError(`${symbol} token allowance failed: User rejected`)
-      }
-      throw new Error(`${symbol} token allowance failed: ${e instanceof Error ? e.message : e}`)
-    }
-  }, [amount, contract, spender])
-}
-
-export function useRevokeTokenAllowance(
-  token: Token | undefined,
-  spender: string
-): () => Promise<{ response: any; info: Info }> {
-  const amount = useMemo(() => (token ? CurrencyAmount.fromRawAmount(token, 0) : undefined), [token])
-
-  return useUpdateTokenAllowance(amount, spender)
-}
 
 export default useTokenAllowance

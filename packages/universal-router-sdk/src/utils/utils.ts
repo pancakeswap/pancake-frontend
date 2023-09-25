@@ -195,5 +195,5 @@ export function minimumAmountOut(
     return amountOut
   }
   const slippageAdjustedAmountOut = new Fraction(ONE).add(slippage).invert().multiply(amountOut.quotient).quotient
-  return CurrencyAmount.fromRawAmount(amountOut.currency, slippageAdjustedAmountOut)
+  return CurrencyAmount.fromRawAmount(amountOut.currency, amountOut.quotient / 10000n)
 }

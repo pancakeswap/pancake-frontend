@@ -25,7 +25,7 @@ import { Field } from 'state/swap/actions'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useSwapState } from 'state/swap/hooks'
-import { ApprovalState } from 'hooks/useApproveCallback'
+import { ApprovalState, AllowanceState } from 'hooks/useApproveCallback'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import { ConfirmModalState, PendingConfirmModalState } from '../types'
 
@@ -47,6 +47,9 @@ interface ConfirmSwapModalProps {
   showApproveFlow: boolean
   isPendingError: boolean
   currentAllowance: CurrencyAmount<Currency>
+  allowance: AllowanceState
+  permitAndApprove: () => Promise<void>
+  updatePermitAllowance: () => Promise<void>
   onAcceptChanges: () => void
   onConfirm: () => void
   customOnDismiss?: () => void
@@ -65,11 +68,14 @@ interface UseConfirmModalStateProps {
   onConfirm: () => void
   approveCallback: () => Promise<SendTransactionResult>
   revokeCallback: () => Promise<SendTransactionResult>
+  allowance: AllowanceState
+  permitAndApprove: () => Promise<void>
+  updatePermitAllowance: () => Promise<void>
 }
 
 function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   return (
-    confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.APPROVE_PENDING
+    confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.APPROVE_PENDING || confirmModalState === ConfirmModalState.PERMITTING
   )
 }
 
@@ -83,6 +89,9 @@ const useConfirmModalState = ({
   onConfirm,
   approveCallback,
   revokeCallback,
+  allowance,
+  permitAndApprove,
+  updatePermitAllowance,
 }: UseConfirmModalStateProps) => {
   const provider = usePublicClient({ chainId })
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
@@ -108,10 +117,15 @@ const useConfirmModalState = ({
       setPreviouslyPending(false)
       steps.push(ConfirmModalState.APPROVING_TOKEN, ConfirmModalState.APPROVE_PENDING)
     }
+    if (allowance === AllowanceState.REQUIRED) {
+      steps.push(ConfirmModalState.PERMITTING)
+    }
 
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [approval, approvalToken, currentAllowance])
+  }, [approval, approvalToken, currentAllowance, allowance])
+
+  // console.log(generateRequiredSteps(), confirmModalState)
 
   const performStep = useCallback(
     (step: ConfirmModalState) => {
@@ -132,6 +146,10 @@ const useConfirmModalState = ({
           setConfirmModalState(ConfirmModalState.PENDING_CONFIRMATION)
           onConfirm()
           break
+        case ConfirmModalState.PERMITTING:
+          setConfirmModalState(ConfirmModalState.PERMITTING)
+          updatePermitAllowance()
+          break
         case ConfirmModalState.COMPLETED:
           setConfirmModalState(ConfirmModalState.COMPLETED)
           break
@@ -140,7 +158,7 @@ const useConfirmModalState = ({
           break
       }
     },
-    [approveCallback, revokeCallback, onConfirm],
+    [approveCallback, revokeCallback, onConfirm, updatePermitAllowance],
   )
 
   const startSwapFlow = useCallback(() => {
@@ -196,10 +214,16 @@ const useConfirmModalState = ({
   }, [isPendingError, confirmModalState, previouslyPending])
 
   useEffect(() => {
-    if (isInApprovalPhase(confirmModalState) && approval === ApprovalState.APPROVED) {
-      performStep(ConfirmModalState.PENDING_CONFIRMATION)
+    if (isInApprovalPhase(confirmModalState) && approval === ApprovalState.APPROVE_PENDING) {
+      performStep(ConfirmModalState.PERMITTING)
     }
   }, [approval, confirmModalState, performStep])
+
+  useEffect(() => {
+    if (allowance === AllowanceState.ALLOWED) {
+      performStep(ConfirmModalState.PENDING_CONFIRMATION)
+    }
+  }, [allowance, confirmModalState, performStep])
 
   useEffect(() => {
     if (txHash && confirmModalState === ConfirmModalState.PENDING_CONFIRMATION && approval === ApprovalState.APPROVED) {
@@ -223,6 +247,9 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   currencyBalances,
   swapErrorMessage,
   currentAllowance,
+  allowance,
+  permitAndApprove,
+  updatePermitAllowance,
   onDismiss,
   onConfirm,
   approveCallback,
@@ -248,6 +275,9 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     approveCallback,
     revokeCallback,
     onConfirm,
+    allowance,
+    permitAndApprove,
+    updatePermitAllowance,
   })
 
   const handleDismiss = useCallback(() => {
@@ -270,11 +300,12 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     if (
       showApproveFlow &&
       (confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+      confirmModalState === ConfirmModalState.PERMITTING ||
         confirmModalState === ConfirmModalState.APPROVE_PENDING)
     ) {
       return (
         <ApproveModalContent
-          title={t('Enable spending %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })}
+          title={allowance === AllowanceState.REQUIRED ? t('Permit %symbol%', { symbol: trade?.inputAmount?.currency?.symbol }) : t('Enable spending %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })}
           isMM={isMM}
         />
       )
@@ -390,11 +421,13 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     startSwapFlow,
     onAcceptChanges,
     openSettingModal,
+    allowance
   ])
 
   const isShowingLoadingAnimation = useMemo(
     () =>
       confirmModalState === ConfirmModalState.RESETTING_APPROVAL ||
+      confirmModalState === ConfirmModalState.PERMITTING ||
       confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
       confirmModalState === ConfirmModalState.APPROVE_PENDING ||
       attemptingTxn,

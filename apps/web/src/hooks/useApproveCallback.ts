@@ -9,10 +9,20 @@ import { SendTransactionResult } from 'wagmi/actions'
 import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { useInterval } from '@pancakeswap/hooks'
 import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 import { useTokenContract } from './useContract'
 import useTokenAllowance from './useTokenAllowance'
+import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from './usePermitAllowance'
+import { USDC_GOERLI } from '@pancakeswap/tokens'
+import { PERMIT2_ADDRESS } from '@uniswap/permit2-sdk'
+
+export enum AllowanceState {
+  LOADING,
+  REQUIRED,
+  ALLOWED,
+}
 
 export enum ApprovalState {
   UNKNOWN,
@@ -20,6 +30,7 @@ export enum ApprovalState {
   PENDING,
   APPROVED,
 }
+const AVERAGE_L1_BLOCK_TIME = 12000
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
 export function useApproveCallback(
@@ -33,9 +44,13 @@ export function useApproveCallback(
   },
 ): {
   approvalState: ApprovalState
+  allowanceState: AllowanceState
   approveCallback: () => Promise<SendTransactionResult>
   revokeCallback: () => Promise<SendTransactionResult>
+  permitAndApprove: () => Promise<void>
+  updatePermitAllowance: () => Promise<void>
   currentAllowance: CurrencyAmount<Currency> | undefined
+  permitSignature: string | undefined
   isPendingError: boolean
 } {
   const { addToTransaction = true, targetAmount } = options
@@ -43,20 +58,24 @@ export function useApproveCallback(
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
-  const { allowance: currentAllowance, refetch } = useTokenAllowance(token, account ?? undefined, spender)
-  const pendingApproval = useHasPendingApproval(token?.address, spender)
+  const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : USDC_GOERLI
+  const amount = amountToApprove || 0
+  const { allowance: currentAllowance, refetch } = useTokenAllowance(token, account ?? undefined, PERMIT2_ADDRESS)
+  const pendingApproval = useHasPendingApproval(token?.address, PERMIT2_ADDRESS)
   const [pending, setPending] = useState<boolean>(pendingApproval)
   const [isPendingError, setIsPendingError] = useState<boolean>(false)
+  const [signature, setSignature] = useState<PermitSignature>()
 
+  const isApproved = useMemo(() => {
+    if (!amount || !currentAllowance) return false
+    return currentAllowance.greaterThan(amount) || currentAllowance.equalTo(amount)
+  }, [amount, currentAllowance])
+
+
+  // console.log(approvalState)
   useEffect(() => {
-    if (pendingApproval) {
-      setPending(true)
-    } else if (pending) {
-      refetch().then(() => {
-        setPending(false)
-      })
-    }
+   const timeout = setInterval(() => refetch().then(() => setPending(false)), 5000)
+   return () => clearInterval(timeout)
   }, [pendingApproval, pending, refetch])
 
   // check the current approval status
@@ -76,6 +95,34 @@ export function useApproveCallback(
 
   const tokenContract = useTokenContract(token?.address)
   const addTransaction = useTransactionAdder()
+
+  const [now, setNow] = useState(Date.now() + AVERAGE_L1_BLOCK_TIME)
+  useInterval(
+    useCallback(() => setNow((Date.now() + AVERAGE_L1_BLOCK_TIME) / 1000), []),
+    AVERAGE_L1_BLOCK_TIME
+  )
+
+  const shouldRequestApproval = !(isApproved || ApprovalState.NOT_APPROVED)
+  const { permitAllowance, expiration: permitExpiration, nonce } = usePermitAllowance(token, account ?? '0x13E7f71a3E8847399547CE127B8dE420B282E4E4', spender)
+  const updatePermitAllowance = useUpdatePermitAllowance(token, spender, nonce, setSignature)
+
+  const isSigned = useMemo(() => {
+    if (!amount || !signature) return false
+    return signature.details.token === token?.address && signature.spender === spender && signature.sigDeadline >= now
+  }, [amount, now, signature, spender, token?.address])
+
+
+  const isPermitted = useMemo(() => {
+    if (!amount || !permitAllowance || !permitExpiration) return false
+    return (permitAllowance.greaterThan(amount) || permitAllowance.equalTo(amount)) && permitExpiration >= now
+  }, [amount, now, permitAllowance, permitExpiration])
+
+  const allowanceState: AllowanceState = useMemo(() => {
+    if (!currentAllowance || !permitAllowance) return AllowanceState.LOADING
+    if (!(isPermitted || isSigned)) return AllowanceState.REQUIRED
+    return AllowanceState.ALLOWED
+  }, [currentAllowance, permitAllowance, isPermitted, isSigned])
+
 
   const approve = useCallback(
     async (overrideAmountApprove?: bigint): Promise<SendTransactionResult> => {
@@ -115,7 +162,7 @@ export function useApproveCallback(
       let useExact = false
 
       const estimatedGas = await tokenContract.estimateGas
-        .approve([spender as Address, MaxUint256], {
+        .approve([PERMIT2_ADDRESS as Address, MaxUint256], {
           account: tokenContract.account,
         })
         .catch(() => {
@@ -123,7 +170,7 @@ export function useApproveCallback(
           useExact = true
           return tokenContract.estimateGas
             .approve(
-              [spender as Address, overrideAmountApprove ?? amountToApprove?.quotient ?? targetAmount ?? MaxUint256],
+              [PERMIT2_ADDRESS as Address, overrideAmountApprove ?? amountToApprove?.quotient ?? targetAmount ?? MaxUint256],
               {
                 account: tokenContract.account,
               },
@@ -142,7 +189,7 @@ export function useApproveCallback(
         tokenContract,
         'approve' as const,
         [
-          spender as Address,
+          PERMIT2_ADDRESS as Address,
           overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256),
         ],
         {
@@ -195,7 +242,17 @@ export function useApproveCallback(
     return approve(0n)
   }, [approve])
 
-  return { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError }
+  const approveAndPermit = useCallback(async () => {
+    if (shouldRequestApproval) {
+      await approveCallback()
+    }
+    await updatePermitAllowance()
+    
+  }, [shouldRequestApproval, updatePermitAllowance, approveCallback])
+
+
+
+  return { approvalState, allowanceState, approveCallback, revokeCallback, currentAllowance, isPendingError, updatePermitAllowance, approveAndPermit, permitSignature: !isPermitted && isSigned ? signature : undefined, }
 }
 
 export function useApproveCallbackFromAmount({

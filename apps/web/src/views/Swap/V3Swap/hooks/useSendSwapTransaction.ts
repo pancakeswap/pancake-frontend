@@ -53,7 +53,7 @@ export default function useSendSwapTransaction(
   const addTransaction = useTransactionAdder()
   const { sendTransactionAsync } = useSendTransaction()
   const publicClient = viemClients[chainId as ChainId]
-  const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
+  const allowedSlippage = 9900
   const { recipient } = useSwapState()
   const recipientAddress = recipient === null ? account : recipient
 
@@ -126,6 +126,7 @@ export default function useSendSwapTransaction(
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
             const pct = basisPointsToPercent(allowedSlippage)
+            console.log('pct', pct)
             const inputAmount =
               trade.tradeType === TradeType.EXACT_INPUT
                 ? formatAmount(trade.inputAmount, 3)

@@ -60,6 +60,7 @@ export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowPr
             )}
             <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} width={stepWidth} />
             <Step active={confirmModalState === ConfirmModalState.APPROVE_PENDING} width={stepWidth} />
+            <Step active={confirmModalState === ConfirmModalState.PERMITTING} width={stepWidth} />
             <Step active={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION} width={stepWidth} />
           </StepsContainer>
           {confirmModalState === ConfirmModalState.RESETTING_APPROVAL && (

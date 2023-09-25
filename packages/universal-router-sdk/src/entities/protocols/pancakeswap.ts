@@ -25,7 +25,9 @@ import { NativeCurrency } from '@pancakeswap/sdk'
 // also translates trade objects from previous (v2, v3) SDKs
 export class PanckeSwapTrade implements Command {
   readonly tradeType: RouterTradeType = RouterTradeType.PancakeSwapTrade
+
   readonly type: TradeType
+
   constructor(public trade: AnyTradeType, public options: PancakeSwapOptions) {
     this.type = (this.trade as SmartRouterTrade<TradeType>).tradeType
   }
@@ -95,7 +97,7 @@ export class PanckeSwapTrade implements Command {
     if (routerMustCustody) {
       // If there is a fee, that percentage is sent to the fee recipient
       // In the case where ETH is the output currency, the fee is taken in WETH (for gas reasons)
-      if (!!this.options.fee) {
+      if (this.options.fee) {
         const feeBips = encodeFeeBips(this.options.fee.fee)
         planner.addCommand(CommandType.PAY_PORTION, [
           sampleTrade.outputAmount.currency.wrapped.address,
@@ -106,7 +108,7 @@ export class PanckeSwapTrade implements Command {
         // If the trade is exact output, and a fee was taken, we must adjust the amount out to be the amount after the fee
         // Otherwise we continue as expected with the trade's normal expected output
         if (this.type === TradeType.EXACT_OUTPUT) {
-          minAmountOut = minAmountOut.subtract(minAmountOut.multiply(feeBips).divide(10000))
+          minAmountOut = minAmountOut.subtract(minAmountOut.multiply(feeBips).divide(100000))
         }
       }
 
@@ -140,20 +142,23 @@ function addV2Swap(
   payerIsUser: boolean,
   performAggregatedSlippageCheck: boolean
 ): void {
+
+
   const amountIn = maximumAmountIn(trade, options.slippageTolerance).quotient.toString()
-  const amountOut = minimumAmountOut(trade, options.slippageTolerance, trade.outputAmount).quotient.toString()
+  const amountOut = minimumAmountOut(trade, options.slippageTolerance).quotient.toString()
   // V2 trade should have only one route
+  // console.log(amountOut, amountOut, 'bhbhbhbhbhbhhbhbhbvhbhb')
   const route = trade.routes[0]
   const path = route.path.map((token) => token.wrapped.address)
   const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
 
-  //same as encodeV2Swap only we dont return calldatas instead we push to the command planner
+  // same as encodeV2Swap only we dont return calldatas instead we push to the command planner
   if (trade.tradeType == TradeType.EXACT_INPUT) {
     planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [
       // if native, we have to unwrap so keep in the router for now
       recipient,
       amountIn,
-      performAggregatedSlippageCheck ? 0n : amountOut,
+      amountOut,
       path,
       payerIsUser,
     ])
@@ -171,8 +176,11 @@ async function addV3Swap(
   payerIsUser: boolean,
   performAggregatedSlippageCheck: boolean
 ): Promise<void> {
+
   for (const route of trade.routes) {
     const { inputAmount, outputAmount } = route
+  // console.log(amountOut, amountOut, 'bhbhbhbhbhbhhbhbhbvhbhb')
+
 
     // we need to generaate v3 path as a hash string. we can still use encodeMixedRoute
     // as a v3 swap is essentially a for of mixedRoute
@@ -180,8 +188,10 @@ async function addV3Swap(
       { ...route, input: inputAmount.currency, output: outputAmount.currency },
       trade.tradeType === TradeType.EXACT_OUTPUT
     )
-    const amountIn = maximumAmountIn(trade, options.slippageTolerance, inputAmount).quotient.toString()
-    const amountOut = minimumAmountOut(trade, options.slippageTolerance, outputAmount).quotient.toString()
+    const amountIn = maximumAmountIn(trade, options.slippageTolerance).quotient.toString()
+    const amountOut = minimumAmountOut(trade, options.slippageTolerance).quotient.toString()
+
+
 
     const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
 
@@ -191,7 +201,7 @@ async function addV3Swap(
       const exactInputSingleParams = [
         recipient,
         amountIn,
-        performAggregatedSlippageCheck ? 0n : amountOut,
+        amountOut,
         path,
         payerIsUser,
       ]
@@ -213,11 +223,16 @@ async function addMixedSwap(
   performAggregatedSlippageCheck: boolean
 ): Promise<void> {
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
+  
 
   for (const route of trade.routes) {
     const { inputAmount, outputAmount, pools } = route
-    const amountIn: bigint = maximumAmountIn(trade, options.slippageTolerance, inputAmount).quotient
-    const amountOut: bigint = minimumAmountOut(trade, options.slippageTolerance, outputAmount).quotient
+    const amountIn: bigint = maximumAmountIn(trade, options.slippageTolerance).quotient
+    const amountOut: bigint = minimumAmountOut(trade, options.slippageTolerance).quotient
+  console.log(amountOut, amountOut, 'mimimimimimimimiimiimimi')
+
+
+    // console.log(amountIn, amountOut)
 
     // flag for whether the trade is single hop or not
     const singleHop = pools.length === 1

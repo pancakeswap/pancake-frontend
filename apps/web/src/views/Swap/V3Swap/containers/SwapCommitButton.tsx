@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
 import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { CurrencyAmount, Fraction, ONE, Percent } from '@pancakeswap/swap-sdk-core'
 import {
   AutoColumn,
   Box,
@@ -19,6 +20,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { AutoRow } from 'components/Layout/Row'
 import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import { UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import {
   ALLOWED_PRICE_IMPACT_HIGH,
   BIG_INT_ZERO,
@@ -26,7 +28,7 @@ import {
 } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback, AllowanceState } from 'hooks/useApproveCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
@@ -37,13 +39,11 @@ import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
-
-import { CurrencyAmount, Fraction, ONE, Percent } from '@pancakeswap/swap-sdk-core'
-import { AllowanceState } from 'hooks/usePermit2Allowance'
 import { useAccount } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
+import { PERMIT2_ADDRESS } from '@uniswap/permit2-sdk'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -101,21 +101,18 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     [Field.OUTPUT]: relevantTokenBalances[1],
   }
   // check whether the user has approved the router on the input token
-  const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
+  const { approvalState, allowanceState, approveCallback, revokeCallback, updatePermitAllowance, permitAndApprove, permitSignature, currentAllowance, isPendingError } = useApproveCallback(
     amountToApprove,
-    routerAddress,
+    UNIVERSAL_ROUTER_ADDRESS(5),
   )
-  const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
-  // const maximumAmountIn = useMaxAmountIn(trade,  slippageAdjustedAmounts)
-  const allowance = { state: AllowanceState.ALLOWED, permitSignature: undefined }
-
   const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
+  const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
 
   // the callback to execute the swap
   const deadline = useTransactionDeadline()
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade, permitSignature: allowance.state === AllowanceState.ALLOWED ? allowance.permitSignature : undefined,  deadline } as any)
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade, permitSignature: allowanceState === AllowanceState.ALLOWED ? permitSignature : undefined,  deadline } as any)
 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: SmartRouterTrade<TradeType> | undefined
@@ -186,9 +183,12 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     !swapInputError &&
     (approvalState === ApprovalState.NOT_APPROVED ||
       approvalState === ApprovalState.PENDING ||
+      allowanceState === AllowanceState.REQUIRED ||
+      allowanceState === AllowanceState.LOADING ||
       (approvalSubmitted && approvalState === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
 
+    console.log(showApproveFlow)
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
@@ -212,6 +212,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       swapErrorMessage={swapErrorMessage}
       currentAllowance={currentAllowance}
       onConfirm={handleSwap}
+      allowance={allowanceState}
+      permitAndApprove={permitAndApprove}
+      updatePermitAllowance={updatePermitAllowance}
       approveCallback={approveCallback}
       revokeCallback={revokeCallback}
       onAcceptChanges={handleAcceptChanges}

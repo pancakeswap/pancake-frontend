@@ -14,6 +14,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
+import { useSlippageAdjustedAmounts } from './useSlippageAdjustedAmounts'
 
 export enum SwapCallbackState {
   INVALID,

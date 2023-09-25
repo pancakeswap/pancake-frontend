@@ -46,27 +46,17 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    let swapRouterAddress
+  
+    const methodParamaters = PancakeUniSwapRouter.swapERC20CallParameters(trade, {
+      fee: feeOptions,
+      recipient,
+      permit: permitSignature,
+      slippageTolerance: new Percent(95, 100),
+      deadlineOrPreviousBlockhash: deadline?.toString(),
+    })
+    const swapRouterAddress =  UNIVERSAL_ROUTER_ADDRESS(chainId)
 
-    let methodParamaters: { value: string; calldata: string } = null
-    if (trade.outputAmount.currency.isNative || (!trade.outputAmount.currency.isNative && !trade.inputAmount.currency.isNative)) {
-      methodParamaters = SwapRouter.swapCallParameters(trade, {
-        fee: feeOptions,
-        recipient,
-        slippageTolerance: allowedSlippage,
-        deadlineOrPreviousBlockhash: deadline?.toString(),
-      })
-      swapRouterAddress = chainId ? SMART_ROUTER_ADDRESSES[chainId] : undefined
-    } else {
-      methodParamaters = PancakeUniSwapRouter.swapERC20CallParameters(trade, {
-        fee: feeOptions,
-        recipient,
-        permit: permitSignature,
-        slippageTolerance: allowedSlippage,
-        deadlineOrPreviousBlockhash: deadline?.toString(),
-      })
-      swapRouterAddress = chainId ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined
-    }
+    console.log(methodParamaters)
     if (!swapRouterAddress) return []
     return [
       {
