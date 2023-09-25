@@ -11,14 +11,75 @@ import {
   Flex,
   Button,
 } from '@pancakeswap/uikit'
-import { Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
+import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 
 import { FixedStakingPool } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
-import { useIfUserLocked } from '../hooks/useStakedPools'
+import { useCurrentDay, useIfUserLocked } from '../hooks/useStakedPools'
+import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
+
+function FixedStakingRoiCard({
+  stakeAmount,
+  lockAPR,
+  boostAPR,
+  unlockAPR,
+  isBoost,
+  lockPeriod,
+  lastDayAction,
+  poolEndDay,
+}: {
+  stakeAmount: CurrencyAmount<Token>
+  lockAPR: Percent
+  boostAPR: Percent
+  unlockAPR: Percent
+  poolEndDay: number
+  lastDayAction?: number
+  lockPeriod?: number
+  isBoost?: boolean
+}) {
+  const apr = useMemo(() => (isBoost ? boostAPR : lockAPR), [boostAPR, isBoost, lockAPR])
+
+  const safeAlreadyStakedAmount = useMemo(
+    () => CurrencyAmount.fromRawAmount(stakeAmount.currency, '0'),
+    [stakeAmount.currency],
+  )
+
+  const currentDay = useCurrentDay()
+
+  const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
+    amountDeposit: stakeAmount.add(safeAlreadyStakedAmount),
+    lastDayAction: safeAlreadyStakedAmount.greaterThan(0) && stakeAmount.equalTo(0) ? lastDayAction : currentDay,
+    lockPeriod: lockPeriod || 0,
+    apr,
+    poolEndDay,
+    unlockAPR,
+  })
+
+  const formattedUsdProjectedReturnAmount = useStablecoinPriceAmount(
+    projectedReturnAmount.currency,
+    toNumber(projectedReturnAmount?.toSignificant(2)),
+  )
+
+  return (
+    <RoiCard
+      earningTokenSymbol={projectedReturnAmount.currency.symbol}
+      calculatorState={{
+        data: {
+          roiUSD: formattedUsdProjectedReturnAmount || 0,
+          roiTokens: projectedReturnAmount ? toNumber(projectedReturnAmount?.toSignificant(2)) : 0,
+          roiPercentage: boostAPR ? toNumber(boostAPR?.toSignificant(2)) : 0,
+        },
+        controls: {
+          mode: CalculatorMode.ROI_BASED_ON_PRINCIPAL,
+        },
+      }}
+    />
+  )
+}
 
 export function FixedStakingCalculator({
   stakingToken,
@@ -71,8 +132,6 @@ export function FixedStakingCalculator({
           body={({
             setLockPeriod,
             stakeCurrencyAmount,
-            projectedReturnAmount,
-            formattedUsdProjectedReturnAmount,
             lockPeriod,
             boostAPR,
             lockAPR,
@@ -101,18 +160,16 @@ export function FixedStakingCalculator({
                   </Button>
                 ))}
               </Flex>
-              <RoiCard
-                earningTokenSymbol={stakingToken.symbol}
-                calculatorState={{
-                  data: {
-                    roiUSD: formattedUsdProjectedReturnAmount || 0,
-                    roiTokens: projectedReturnAmount ? toNumber(projectedReturnAmount?.toSignificant(2)) : 0,
-                    roiPercentage: boostAPR ? toNumber(boostAPR?.toSignificant(2)) : 0,
-                  },
-                  controls: {
-                    mode: CalculatorMode.ROI_BASED_ON_PRINCIPAL,
-                  },
-                }}
+
+              <FixedStakingRoiCard
+                lastDayAction={lastDayAction}
+                isBoost={locked || isBoost}
+                poolEndDay={poolEndDay}
+                stakeAmount={stakeCurrencyAmount}
+                lockAPR={lockAPR}
+                boostAPR={boostAPR}
+                unlockAPR={unlockAPR}
+                lockPeriod={lockPeriod}
               />
 
               <Box mb="16px" mt="16px">

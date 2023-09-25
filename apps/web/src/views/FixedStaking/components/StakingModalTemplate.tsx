@@ -35,13 +35,11 @@ interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
   stakeCurrencyAmount: CurrencyAmount<Token>
   alreadyStakedAmount: CurrencyAmount<Token>
-  projectedReturnAmount: CurrencyAmount<Token>
   lockPeriod: number
   isStaked: boolean
   boostAPR: Percent
   lockAPR: Percent
   unlockAPR: Percent
-  formattedUsdProjectedReturnAmount: number
   poolEndDay: number
   isBoost: boolean
   lastDayAction: number
@@ -225,44 +223,29 @@ export function StakingModalTemplate({
 
   const { boostAPR, lockAPR, unlockAPR } = useFixedStakeAPR(aprParams)
 
-  const apr = isBoost ? boostAPR : lockAPR
-
-  const projectedReturnAmount = stakeCurrencyAmount
-    ?.multiply(lockPeriod)
-    ?.multiply(apr.multiply(lockPeriod).divide(365))
-
-  const formattedUsdProjectedReturnAmount = useStablecoinPriceAmount(
-    stakingToken,
-    toNumber(projectedReturnAmount?.toSignificant(2)),
-  )
-
   const params = useMemo(
     () => ({
       alreadyStakedAmount: depositedAmount,
       stakeCurrencyAmount,
       setLockPeriod,
-      projectedReturnAmount,
       lockPeriod,
       isStaked,
       boostAPR,
       lockAPR,
       unlockAPR,
       isBoost,
-      formattedUsdProjectedReturnAmount,
       poolEndDay: selectedPool?.endDay || 0,
       lastDayAction: selectedStakedPosition ? selectedStakedPosition.userInfo.lastDayAction : 0,
     }),
     [
       depositedAmount,
       stakeCurrencyAmount,
-      projectedReturnAmount,
       lockPeriod,
       isStaked,
       boostAPR,
       lockAPR,
       unlockAPR,
       isBoost,
-      formattedUsdProjectedReturnAmount,
       selectedPool?.endDay,
       selectedStakedPosition,
     ],
