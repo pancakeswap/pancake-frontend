@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant'
 import { ethers } from 'ethers'
-import { PermitSingle } from '@uniswap/permit2-sdk'
+import { PermitSingle } from '@pancakeswap/permit2-sdk'
 import { CommandType, RoutePlanner } from './routerCommands'
 import { OPENSEA_CONDUIT_SPENDER_ID, ROUTER_AS_RECIPIENT, SUDOSWAP_SPENDER_ID } from './constants'
 

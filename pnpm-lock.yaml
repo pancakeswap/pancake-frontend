@@ -571,6 +571,9 @@ importers:
       '@pancakeswap/multicall':
         specifier: workspace:*
         version: link:../../packages/multicall
+      '@pancakeswap/permit2-sdk':
+        specifier: workspace:*
+        version: link:../../packages/permit2-sdk
       '@pancakeswap/pools':
         specifier: workspace:*
         version: link:../../packages/pools
@@ -622,9 +625,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^4.28.0
         version: 4.28.0(react-dom@18.2.0)(react@18.2.0)
-      '@uniswap/permit2-sdk':
-        specifier: ^1.2.0
-        version: 1.2.0
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
         version: 2.3.0(@types/node@13.13.52)(next@13.4.2)(webpack@5.88.2)
@@ -928,7 +928,7 @@ importers:
         version: 18.2.1
       next:
         specifier: 13.4.2
-        version: 13.4.2(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -1189,7 +1189,47 @@ importers:
     devDependencies:
       next:
         specifier: 13.4.2
-        version: 13.4.2(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
+
+  packages/permit2-sdk:
+    dependencies:
+      '@ethersproject/abstract-signer':
+        specifier: ^5.7.0
+        version: 5.7.0
+      '@ethersproject/bignumber':
+        specifier: ^5.7.0
+        version: 5.7.0
+      '@ethersproject/contracts':
+        specifier: ^5.7.0
+        version: 5.7.0
+      '@ethersproject/hash':
+        specifier: ^5.7.0
+        version: 5.7.0
+      '@ethersproject/providers':
+        specifier: ^5.0.0
+        version: 5.7.2
+      ethers:
+        specifier: ^5.3.1
+        version: 5.7.2
+      tiny-invariant:
+        specifier: ^1.3.1
+        version: 1.3.1
+      tslib:
+        specifier: ^2.6.2
+        version: 2.6.2
+    devDependencies:
+      '@types/jest':
+        specifier: ^24.0.25
+        version: 24.9.1
+      prettier:
+        specifier: ^2.4.1
+        version: 2.8.3
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.29)(typescript@5.1.3)
+      vitest:
+        specifier: ^0.30.1
+        version: 0.30.1
 
   packages/pools:
     dependencies:
@@ -1745,6 +1785,9 @@ importers:
       '@ethersproject/abi':
         specifier: ^5.7.0
         version: 5.7.0
+      '@pancakeswap/permit2-sdk':
+        specifier: workspace:*
+        version: link:../permit2-sdk
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -1757,9 +1800,6 @@ importers:
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
-      '@uniswap/permit2-sdk':
-        specifier: ^1.2.0
-        version: 1.2.0
       '@uniswap/universal-router':
         specifier: 1.4.3
         version: 1.4.3
@@ -12893,16 +12933,6 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@uniswap/permit2-sdk@1.2.0:
-    resolution: {integrity: sha512-Ietv3FxN7+RCXcPSED/i/8b0a2GUZrMdyX05k3FsSztvYKyPFAMS/hBXojF0NZqYB1bHecqYc7Ej+7tV/rdYXg==}
-    dependencies:
-      ethers: 5.7.2
-      tiny-invariant: 1.3.1
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
-
   /@uniswap/universal-router@1.4.3:
     resolution: {integrity: sha512-SZmYfhYZtsuxrTMCitcA39iJuG9sbe2nvm9iQfd70WjMpbB0+GuEs5OqSHc5tB/ujrVKzPJ1LOoNNGOs0xPEeA==}
     engines: {node: '>=14'}
@@ -13255,7 +13285,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.21.0(@babel/core@7.21.4)
       '@babel/plugin-transform-react-jsx-source': 7.19.6(@babel/core@7.21.4)
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@13.13.52)
+      vite: 4.4.9(@types/node@18.0.4)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -13282,7 +13312,7 @@ packages:
       '@vitest/utils': 0.30.1
       concordance: 5.0.4
       p-limit: 4.0.0
-      pathe: 1.1.0
+      pathe: 1.1.1
     dev: true
 
   /@vitest/runner@0.34.4:
@@ -25245,7 +25275,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
-    dev: true
 
   /next@13.4.2(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-aNFqLs3a3nTGvLWlO9SUhCuMUHVPSFQC0+tDNGAsDXqx+WJDFSbvc233gOJ5H19SBc7nw36A9LwQepOJ2u/8Kg==}
@@ -28493,10 +28522,6 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
-  /std-env@3.3.2:
-    resolution: {integrity: sha512-uUZI65yrV2Qva5gqE0+A7uVAvO40iPo6jGhs7s8keRfHCmtg+uB2X6EiLGCI9IgL1J17xGhvoOqSz79lzICPTA==}
-    dev: true
-
   /std-env@3.4.3:
     resolution: {integrity: sha512-f9aPhy8fYBuMN+sNfakZV18U39PbalgjXG3lLB9WkaYTxijru61wb57V9wxxNthXM5Sd88ETBWi29qLAsHO52Q==}
     dev: true
@@ -28827,7 +28852,6 @@ packages:
       '@babel/core': 7.21.4
       client-only: 0.0.1
       react: 18.2.0
-    dev: true
 
   /styled-jsx@5.1.1(@babel/core@7.22.17)(react@18.2.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
@@ -30786,13 +30810,14 @@ packages:
     dependencies:
       cac: 6.7.14
       debug: 4.3.4(supports-color@8.1.1)
-      mlly: 1.2.0
-      pathe: 1.1.0
+      mlly: 1.4.2
+      pathe: 1.1.1
       picocolors: 1.0.0
-      vite: 4.3.1(@types/node@18.16.2)
+      vite: 4.4.9(@types/node@18.16.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
+      - lightningcss
       - sass
       - stylus
       - sugarss
@@ -30867,7 +30892,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       globrex: 0.1.2
       tsconfck: 2.0.2(typescript@5.1.3)
-      vite: 4.4.9(@types/node@13.13.52)
+      vite: 4.4.9(@types/node@18.0.4)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -31156,7 +31181,7 @@ packages:
       webdriverio:
         optional: true
     dependencies:
-      '@types/chai': 4.3.4
+      '@types/chai': 4.3.6
       '@types/chai-subset': 1.3.3
       '@types/node': 18.16.2
       '@vitest/expect': 0.30.1
@@ -31164,26 +31189,27 @@ packages:
       '@vitest/snapshot': 0.30.1
       '@vitest/spy': 0.30.1
       '@vitest/utils': 0.30.1
-      acorn: 8.8.2
+      acorn: 8.10.0
       acorn-walk: 8.2.0
       cac: 6.7.14
       chai: 4.3.7
       concordance: 5.0.4
       debug: 4.3.4(supports-color@8.1.1)
       local-pkg: 0.4.3
-      magic-string: 0.30.0
-      pathe: 1.1.0
+      magic-string: 0.30.3
+      pathe: 1.1.1
       picocolors: 1.0.0
       source-map: 0.6.1
-      std-env: 3.3.2
+      std-env: 3.4.3
       strip-literal: 1.0.1
       tinybench: 2.5.0
       tinypool: 0.4.0
-      vite: 4.3.1(@types/node@18.16.2)
+      vite: 4.4.9(@types/node@18.16.2)
       vite-node: 0.30.1(@types/node@18.16.2)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
+      - lightningcss
       - sass
       - stylus
       - sugarss

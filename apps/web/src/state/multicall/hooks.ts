@@ -343,13 +343,16 @@ export function useSingleCallResult<TAbi extends Abi | readonly unknown[], TFunc
   args,
   options,
 }: SingleCallParameters<TAbi, TFunctionName>): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
+  // for (let i = 0; i < args.length; i++) {
+  //   if (args[i] === undefined) return 
+  // }
   const calls = useMemo<Call[]>(() => {
     return contract && contract.abi && contract.address
       ? [
           {
-            address: contract.address,
+            address: contract?.address,
             callData: encodeFunctionData({
-              abi: contract.abi,
+              abi: contract?.abi,
               args,
               functionName,
             } as unknown as EncodeFunctionDataParameters),

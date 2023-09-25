@@ -1,0 +1,7 @@
+{
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "solidity.compileUsingRemoteVersion": "v0.8.17",
+  "solidity.formatter": "forge",
+  "editor.formatOnSave": true
+}

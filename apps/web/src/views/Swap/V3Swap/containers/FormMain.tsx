@@ -106,7 +106,6 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   const inputLoading = typedValue ? !isTypingInput && tradeLoading : false
   const outputLoading = typedValue ? isTypingInput && tradeLoading : false
 
-  console.log(inputValue, outputValue, 'haahaaahhhahhaahahahaahahhahahaahhaah')
   return (
     <FormContainer>
       <CurrencyInputPanel

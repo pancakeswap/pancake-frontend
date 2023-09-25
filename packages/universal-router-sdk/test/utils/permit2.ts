@@ -1,5 +1,5 @@
 import { ethers, Wallet } from 'ethers'
-import { AllowanceTransfer, PermitSingle } from '@uniswap/permit2-sdk'
+import { AllowanceTransfer, PermitSingle } from '@pancakeswap/permit2-sdk'
 import { Permit2Permit } from '../../src/utils/inputTokens'
 import { PERMIT2_ADDRESS, ROUTER_ADDRESS } from './addresses'
 import { MAX_UINT160 } from '../../src/utils/constants'

@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
-import { AllowanceTransfer, MaxAllowanceTransferAmount, PERMIT2_ADDRESS, PermitSingle } from '@uniswap/permit2-sdk'
+import { AllowanceTransfer, MaxAllowanceTransferAmount, PERMIT2_ADDRESS, PermitSingle } from '@pancakeswap/permit2-sdk'
 import { useContract } from 'hooks/useContract'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSingleCallResult } from 'state/multicall/hooks'
@@ -20,12 +20,12 @@ const PERMIT_SIG_EXPIRATION = 1800000 // 30 min
 function toDeadline(expiration: number): number {
   return Math.floor((Date.now() + expiration) / 1000)
 }
-
+const DUMMY = '0x0000000000000000000000000000000000000000'
 export function usePermitAllowance(token?: Token, owner?: string, spender?: string) {
   const contract = useContract(PERMIT2_ADDRESS, PERMIT2_ABI as any)
 
   // hardcoding for now will remove in next cpmmot
-  const inputs = useMemo(() => ['0x13E7f71a3E8847399547CE127B8dE420B282E4E4', '0x07865c6E87B9F70255377e024ace6630C1Eaa37F', '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD'], [owner, spender, token?.address])
+  const inputs = useMemo(() => [owner ?? DUMMY, token?.address ?? DUMMY, spender ?? DUMMY], [owner, spender, token?.address])
 
   // If there is no allowance yet, re-check next observed block.
   // This guarantees that the permitAllowance is synced upon submission and updated upon being synced.

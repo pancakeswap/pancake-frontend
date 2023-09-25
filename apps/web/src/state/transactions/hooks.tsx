@@ -204,6 +204,27 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
   )
 }
 
+// // returns whether a token has a pending approval transaction
+// export function useHasPendingRevocation(tokenAddress: string | undefined, spender: string | undefined): boolean {
+//   const allTransactions = useAllActiveChainTransactions()
+//   return useMemo(
+//     () =>
+//       typeof tokenAddress === 'string' &&
+//       typeof spender === 'string' &&
+//       Object.keys(allTransactions).some((hash) => {
+//         const tx = allTransactions[hash]
+//         if (!tx) return false
+//         if (tx.receipt) {
+//           return false
+//         }
+//         const { approval } = tx.receipt.
+//         if (!approval) return false
+//         return approval.spender === spender && approval.tokenAddress === tokenAddress && isTransactionRecent(tx)
+//       }),
+//     [allTransactions, spender, tokenAddress],
+//   )
+// }
+
 // we want the latest one to come first, so return negative if a is after b
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime

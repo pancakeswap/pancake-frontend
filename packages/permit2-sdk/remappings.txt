@@ -1,0 +1,3 @@
+ds-test/=lib/forge-std/lib/ds-test/src/
+forge-std/=lib/forge-std/src/
+permit2/=permit2/

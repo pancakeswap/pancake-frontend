@@ -1,21 +1,11 @@
-import { CurrencyAmount, Token } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
+import { Token, CurrencyAmount } from '@pancakeswap/sdk'
 import { erc20ABI } from 'wagmi'
+import { useMemo } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
-import { FAST_INTERVAL } from 'config/constants'
-import { TransactionType } from 'state/info/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
-
-interface BaseTransactionInfo {
-  type: TransactionType
-}
-
-export interface ApproveTransactionInfo extends BaseTransactionInfo {
-  tokenAddress: string
-  spender: string
-  amount: string
-}
+import { FAST_INTERVAL } from 'config/constants'
 
 function useTokenAllowance(
   token?: Token,
@@ -25,7 +15,7 @@ function useTokenAllowance(
   allowance: CurrencyAmount<Token> | undefined
   refetch: () => Promise<any>
 } {
-  const chainId = 5
+  const { chainId } = useActiveChainId()
 
   const inputs = useMemo(() => [owner, spender] as [`0x${string}`, `0x${string}`], [owner, spender])
 
@@ -57,6 +47,5 @@ function useTokenAllowance(
     [token, refetch, allowance],
   )
 }
-
 
 export default useTokenAllowance

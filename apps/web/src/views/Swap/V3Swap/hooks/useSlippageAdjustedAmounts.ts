@@ -5,7 +5,6 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 import { computeSlippageAdjustedAmounts } from '../utils/exchange'
 
 export function useSlippageAdjustedAmounts(trade?: SmartRouterTrade<TradeType>) {
-  const allowedSlippage = 9000
-  
+  const [allowedSlippage] = useUserSlippage()
   return useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [allowedSlippage, trade])
 }

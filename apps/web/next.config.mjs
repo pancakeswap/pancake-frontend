@@ -57,7 +57,9 @@ const config = {
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
     '@pancakeswap/widgets-internal',
-    '@pancakeswap/universal-router-sdk'
+    '@pancakeswap/universal-router-sdk',
+    '@pancakeswap/permit2-sdk'
+
   ],
   reactStrictMode: true,
   swcMinify: true,
