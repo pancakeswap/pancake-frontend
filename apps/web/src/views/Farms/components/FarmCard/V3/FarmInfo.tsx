@@ -4,7 +4,7 @@ import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo, useState } from 'react'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
@@ -22,7 +22,7 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
   isReady,
   onAddLiquidity,
 }) => {
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
   const [show, setShow] = useState(false)
 
   const inactive = farm.multiplier === '0X'

@@ -1,6 +1,6 @@
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
 import { useContext } from 'react'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { FarmsV3Context, FarmsV3PageLayout } from 'views/Farms'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import { FarmV3Card } from 'views/Farms/components/FarmCard/V3/FarmV3Card'
@@ -12,7 +12,7 @@ import { ProxyFarmCardContainer } from '.'
 const FarmsHistoryPage = () => {
   const { address: account } = useAccount()
   const { chosenFarmsMemoized } = useContext(FarmsV3Context)
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
 
   return (
     <>

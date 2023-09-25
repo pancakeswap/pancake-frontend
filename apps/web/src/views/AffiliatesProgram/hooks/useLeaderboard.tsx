@@ -1,6 +1,6 @@
 import useSWRImmutable from 'swr/immutable'
 import BigNumber from 'bignumber.js'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { MetricDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 
 export interface ListType {
@@ -16,7 +16,7 @@ interface Leaderboard {
 }
 
 const useLeaderboard = (): Leaderboard => {
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
 
   const { data, isLoading } = useSWRImmutable(
     cakePriceBusd.gt(0) && ['/affiliate-program-leaderboard', cakePriceBusd],

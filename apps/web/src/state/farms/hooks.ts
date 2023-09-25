@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -14,7 +13,6 @@ import {
   supportedChainIdV2,
 } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCakePrice } from 'hooks/useCakePrice'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
@@ -108,8 +106,4 @@ export const useFarmUser = (pid): DeserializedFarmUserData => {
 export const useLpTokenPrice = (symbol: string) => {
   const lpTokenPriceFromLpSymbol = useMemo(() => makeLpTokenPriceFromLpSymbolSelector(symbol), [symbol])
   return useSelector(lpTokenPriceFromLpSymbol)
-}
-
-export const usePriceCakeUSD = (): BigNumber => {
-  return useCakePrice()
 }

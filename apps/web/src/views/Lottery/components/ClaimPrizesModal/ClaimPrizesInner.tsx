@@ -7,7 +7,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useLotteryV2Contract } from 'hooks/useContract'
 import { useState } from 'react'
 import { useAppDispatch } from 'state'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { fetchUserLotteries } from 'state/lottery'
 import { useLottery } from 'state/lottery/hooks'
 import { useGasPrice } from 'state/user/hooks'
@@ -36,7 +36,7 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
   const lotteryContract = useLotteryV2Contract()
   const activeClaimData = roundsToClaim[activeClaimIndex]
 
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const cakeReward = activeClaimData.cakeTotal
   const dollarReward = cakeReward.times(cakePriceBusd)
   const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
