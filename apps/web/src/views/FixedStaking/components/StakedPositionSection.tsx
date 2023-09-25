@@ -205,6 +205,7 @@ export function StakedPositionSection({
         <Flex>
           <UnstakeBeforeEnededModal
             pools={pool.pools}
+            unlockTime={unlockTime}
             poolEndDay={poolEndDay}
             token={token}
             lockPeriod={lockPeriod}

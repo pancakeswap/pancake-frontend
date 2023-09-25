@@ -24,8 +24,10 @@ export function UnstakeBeforeEnededModal({
   pools,
   poolEndDay,
   lastDayAction,
+  unlockTime,
   children,
 }: {
+  unlockTime: number
   lastDayAction: number
   poolEndDay: number
   boostAPR: Percent
@@ -118,6 +120,7 @@ export function UnstakeBeforeEnededModal({
 
           <FixedStakingOverview
             isUnstakeView
+            unlockTime={unlockTime}
             lastDayAction={stakePositionUserInfo.lastDayAction}
             lockPeriod={lockPeriod}
             stakeAmount={amountDeposit}

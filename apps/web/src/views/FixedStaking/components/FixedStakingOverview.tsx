@@ -41,7 +41,9 @@ export default function FixedStakingOverview({
   alreadyStakedAmount,
   disableStrike,
   calculator,
+  unlockTime,
 }: {
+  unlockTime?: number
   disableStrike?: boolean
   isUnstakeView?: boolean
   stakeAmount: CurrencyAmount<Token>
@@ -125,7 +127,7 @@ export default function FixedStakingOverview({
           {t('Stake Period Ends')}
         </Text>
         <Text color={safeAlreadyStakedAmount.greaterThan(0) ? 'failure' : undefined} bold>
-          <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
+          <StakedLimitEndOn unlockTime={unlockTime} lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
         </Text>
       </Flex>
       <Flex alignItems="baseline" justifyContent="space-between">
