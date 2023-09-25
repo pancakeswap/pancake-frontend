@@ -479,9 +479,6 @@ importers:
       '@pancakeswap/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../../packages/swap-sdk
       '@pancakeswap/uikit':
         specifier: workspace:*
         version: link:../../packages/uikit
@@ -1223,9 +1220,6 @@ importers:
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../swap-sdk
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
@@ -1984,9 +1978,6 @@ importers:
       '@pancakeswap/farms':
         specifier: workspace:*
         version: link:../packages/farms
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../packages/swap-sdk
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.186
