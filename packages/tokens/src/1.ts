@@ -289,4 +289,12 @@ export const ethereumTokens = {
     'PayPal USD',
     'https://www.paypal.com/pyusd',
   ),
+  rochi: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xF51092Fe93B4E9282f42c459F05D93D2D079549e',
+    18,
+    'ROCI',
+    'RociFi',
+    'https://roci.fi/',
+  ),
 }

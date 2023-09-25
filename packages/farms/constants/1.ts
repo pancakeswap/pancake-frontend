@@ -279,6 +279,13 @@ export const farmsV3 = defineFarmV3Configs([
     token1: ethereumTokens.stg,
     feeAmount: FeeAmount.MEDIUM,
   },
+  {
+    pid: 41,
+    lpAddress: '0xF51092Fe93B4E9282f42c459F05D93D2D079549e',
+    token0: ethereumTokens.usdc,
+    token1: ethereumTokens.rochi,
+    feeAmount: FeeAmount.HIGH,
+  },
 ])
 
 const farms: SerializedFarmConfig[] = [
