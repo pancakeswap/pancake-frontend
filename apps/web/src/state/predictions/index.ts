@@ -256,8 +256,11 @@ export const filterLeaderboard = createAsyncThunk<
     {
       skip: 0,
       orderBy: filters.orderBy,
-      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${filters.orderBy}_gt`]: 0 },
-      block: { number_gte: START_THIRD_YEAR_BLOCK_HEIGHT },
+      where: {
+        totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED,
+        [`${filters.orderBy}_gt`]: 0,
+        block_gte: START_THIRD_YEAR_BLOCK_HEIGHT,
+      },
     },
     extra.api,
     extra.token.symbol,
@@ -292,8 +295,11 @@ export const filterNextPageLeaderboard = createAsyncThunk<
     {
       skip,
       orderBy: state.leaderboard.filters.orderBy,
-      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.leaderboard.filters.orderBy}_gt`]: 0 },
-      block: { number_gte: START_THIRD_YEAR_BLOCK_HEIGHT },
+      where: {
+        totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED,
+        [`${state.leaderboard.filters.orderBy}_gt`]: 0,
+        block_gte: START_THIRD_YEAR_BLOCK_HEIGHT,
+      },
     },
     extra.api,
     extra.token.symbol,

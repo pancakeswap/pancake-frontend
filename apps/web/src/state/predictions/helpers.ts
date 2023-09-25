@@ -184,19 +184,12 @@ export const getLedgerData = async (
 
 export const LEADERBOARD_RESULTS_PER_PAGE = 20
 
-interface OptionsBlockType {
-  hash?: number
-  number?: number
-  number_gte?: number
-}
-
 interface GetPredictionUsersOptions {
   skip?: number
   first?: number
   orderBy?: string
   orderDir?: string
   where?: WhereClause
-  block?: OptionsBlockType
 }
 
 const defaultPredictionUserOptions = {
@@ -222,17 +215,17 @@ export const getPredictionUsers = async (
   api: string,
   tokenSymbol: string,
 ): Promise<UserResponse<BetResponse>[]> => {
-  const { first, skip, where, orderBy, orderDir, block } = { ...defaultPredictionUserOptions, ...options }
+  const { first, skip, where, orderBy, orderDir } = { ...defaultPredictionUserOptions, ...options }
   const response = await request(
     api,
     gql`
-      query getUsers($first: Int!, $skip: Int!, $where: User_filter, $orderBy: User_orderBy, $orderDir: OrderDirection, $block: Block_height) {
-        users(first: $first, skip: $skip, where: $where, orderBy: $orderBy, orderDirection: $orderDir, block: $block) {
+      query getUsers($first: Int!, $skip: Int!, $where: User_filter, $orderBy: User_orderBy, $orderDir: OrderDirection) {
+        users(first: $first, skip: $skip, where: $where, orderBy: $orderBy, orderDirection: $orderDir) {
           ${getUserBaseFields(tokenSymbol)}
         }
       }
     `,
-    { first, skip, where, orderBy, orderDir, block },
+    { first, skip, where, orderBy, orderDir },
   )
   return response.users
 }
