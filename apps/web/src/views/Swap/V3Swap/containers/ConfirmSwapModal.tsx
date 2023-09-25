@@ -1,16 +1,13 @@
 import { memo, useCallback, useMemo } from 'react'
 import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+
+import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/uikit'
 import {
   ApproveModalContent,
-  Box,
-  BscScanIcon,
-  Flex,
-  InjectedModalProps,
-  Link,
   SwapPendingModalContent,
   SwapTransactionReceiptModalContent,
-} from '@pancakeswap/uikit'
+} from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'

@@ -5,6 +5,7 @@ export * from "./css/vars.css";
 export * from "./css/responsiveStyle";
 export * from "./css/breakpoints";
 export * from "./css/atoms";
+export * as SwapCSS from "./css/swap.css";
 
 // Components
 export * from "./components";
@@ -17,7 +18,6 @@ export * from "./contexts";
 // Widgets
 export * from "./widgets/Modal";
 export * from "./widgets/Menu";
-export * from "./widgets/Swap";
 export * as Liquidity from "./widgets/Liquidity";
 export * from "./widgets/Ifo";
 

@@ -1,13 +1,12 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components'
 
-import { ButtonProps, IconButton } from "../../components/Button";
-import { ArrowDownIcon, ArrowUpDownIcon } from "../../components/Svg";
-import { CurrencyInputPanel } from "./CurrencyInputPanel";
-import { CurrencyInputHeader, CurrencyInputHeaderSubTitle, CurrencyInputHeaderTitle } from "./CurrencyInputHeader";
-import { SwapPage as Page } from "./Page";
-import { SwapFooter as Footer } from "./Footer";
-import { SwapInfo as Info, SwapInfoLabel as InfoLabel } from "./SwapInfo";
-import { TradePrice } from "./TradePrice";
+import { ButtonProps, IconButton, ArrowUpDownIcon, ArrowDownIcon } from '@pancakeswap/uikit'
+import { CurrencyInputPanel } from './CurrencyInputPanel'
+import { CurrencyInputHeader, CurrencyInputHeaderSubTitle, CurrencyInputHeaderTitle } from './CurrencyInputHeader'
+import { SwapPage as Page } from './Page'
+import { SwapFooter as Footer } from './Footer'
+import { SwapInfo as Info, SwapInfoLabel as InfoLabel } from './SwapInfo'
+import { TradePrice } from './TradePrice'
 
 const SwitchIconButton = styled(IconButton)`
   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
@@ -25,14 +24,14 @@ const SwitchIconButton = styled(IconButton)`
       fill: white;
     }
   }
-`;
+`
 
 const SwitchButton = (props: ButtonProps) => (
   <SwitchIconButton variant="light" scale="sm" {...props}>
     <ArrowDownIcon className="icon-down" color="primary" />
     <ArrowUpDownIcon className="icon-up-down" color="primary" />
   </SwitchIconButton>
-);
+)
 
 export {
   SwitchButton,
@@ -45,4 +44,4 @@ export {
   Info,
   InfoLabel,
   TradePrice,
-};
+}

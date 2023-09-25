@@ -9,7 +9,6 @@ import {
   Button,
   Card,
   CardBody,
-  ConfirmationModalContent,
   ExpandableLabel,
   Flex,
   Heading,
@@ -27,6 +26,8 @@ import {
   useModal,
   ScanLink,
 } from '@pancakeswap/uikit'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
+
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'

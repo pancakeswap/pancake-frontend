@@ -1,4 +1,6 @@
-import { Swap as SwapUI, useModal } from '@pancakeswap/uikit'
+import { useModal } from '@pancakeswap/uikit'
+import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { Price, Currency } from '@pancakeswap/sdk'
 import { useUserSlippage } from '@pancakeswap/utils/user'

@@ -1903,6 +1903,9 @@ importers:
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
+      clsx:
+        specifier: ^1.2.1
+        version: 1.2.1
       d3:
         specifier: ^7.8.2
         version: 7.8.4

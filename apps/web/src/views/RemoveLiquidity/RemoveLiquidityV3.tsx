@@ -12,7 +12,6 @@ import {
   ArrowDownIcon,
   AutoColumn,
   useModal,
-  ConfirmationModalContent,
   RowBetween,
   RowFixed,
   Toggle,
@@ -20,6 +19,8 @@ import {
   Tag,
   Message,
 } from '@pancakeswap/uikit'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
+
 import { NonfungiblePositionManager, MasterChefV3 } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'

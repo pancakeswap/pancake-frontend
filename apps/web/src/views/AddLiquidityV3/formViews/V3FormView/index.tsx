@@ -8,8 +8,6 @@ import {
   Text,
   AutoRow,
   Box,
-  NumericalInput,
-  ConfirmationModalContent,
   useModal,
   Message,
   MessageText,
@@ -17,7 +15,13 @@ import {
   DynamicSection,
   Flex,
 } from '@pancakeswap/uikit'
-import { LiquidityChartRangeInput, ZOOM_LEVELS, ZoomLevels } from '@pancakeswap/widgets-internal'
+import {
+  LiquidityChartRangeInput,
+  ZOOM_LEVELS,
+  ZoomLevels,
+  ConfirmationModalContent,
+  NumericalInput,
+} from '@pancakeswap/widgets-internal'
 
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 import { tryParsePrice } from 'hooks/v3/utils'

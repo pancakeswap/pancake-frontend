@@ -1,8 +1,8 @@
 import { style } from "@vanilla-extract/css";
 import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
-import { vars } from "../../css/vars.css";
-import { responsiveStyle } from "../../css/responsiveStyle";
-import { atoms } from "../../css/atoms";
+import { atoms } from "./atoms";
+import { responsiveStyle } from "./responsiveStyle";
+import { vars } from "./vars.css";
 
 export const inputVariants = recipe({
   base: {

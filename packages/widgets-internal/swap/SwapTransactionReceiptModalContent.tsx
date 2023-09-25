@@ -1,10 +1,9 @@
-import { useTranslation } from "@pancakeswap/localization";
-import { PropsWithChildren } from "react";
-import { AutoColumn } from "../../components/Column";
-import { Text, Box, CheckmarkCircleIcon } from "../../components";
+import { useTranslation } from '@pancakeswap/localization'
+import { PropsWithChildren } from 'react'
+import { Text, Box, CheckmarkCircleIcon, AutoColumn } from '@pancakeswap/uikit'
 
 export const SwapTransactionReceiptModalContent: React.FC<PropsWithChildren> = ({ children }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <Box width="100%">
@@ -13,10 +12,10 @@ export const SwapTransactionReceiptModalContent: React.FC<PropsWithChildren> = (
       </Box>
       <AutoColumn gap="12px" justify="center">
         <Text bold textAlign="center">
-          {t("Transaction receipt")}
+          {t('Transaction receipt')}
         </Text>
         {children}
       </AutoColumn>
     </Box>
-  );
-};
+  )
+}

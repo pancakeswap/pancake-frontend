@@ -1,16 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import {
-  Button,
-  Text,
-  useModal,
-  confirmPriceImpactWithoutFee,
-  Box,
-  Message,
-  MessageText,
-  AutoColumn,
-  Dots,
-} from '@pancakeswap/uikit'
+import { Button, Text, useModal, Box, Message, MessageText, AutoColumn, Dots } from '@pancakeswap/uikit'
+import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
