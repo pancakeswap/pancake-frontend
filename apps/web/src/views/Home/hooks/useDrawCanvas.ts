@@ -16,7 +16,7 @@ export const useDrawCanvas = (
   const isElementReady = video && canvas
 
   const drawImage = useCallback(() => {
-    const context = canvas?.getContext('2d', { alpha: true })
+    const context = canvas?.getContext('2d')
     if (!canvas || !video || !context) return
     context.clearRect(0, 0, width, height)
     context.drawImage(video, 0, 0, width, height)

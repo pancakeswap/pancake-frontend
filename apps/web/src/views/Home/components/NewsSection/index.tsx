@@ -6,6 +6,7 @@ import { useRef, useCallback } from 'react'
 import useAllArticle from '../../hooks/useAllArticle'
 
 const NewsCard = styled.div`
+  vertical-align: top;
   width: 280px;
   height: 387px;
   border-radius: 24px;
