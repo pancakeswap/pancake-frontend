@@ -268,6 +268,17 @@ export function StakingModalTemplate({
     ],
   )
 
+  const prevDepositedAmount = usePrevious(depositedAmount)
+
+  useEffect(() => {
+    if (isConfirmed) {
+      // To show Confirm Modal correctly
+      if (prevDepositedAmount && !depositedAmount.equalTo(prevDepositedAmount)) {
+        setStakeAmount('')
+      }
+    }
+  }, [depositedAmount, isConfirmed, prevDepositedAmount])
+
   if (isConfirmed) {
     return (
       <Modal
