@@ -19,13 +19,7 @@ import {
 import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionsRoundsResponse } from 'utils/types'
-import {
-  FUTURE_ROUND_COUNT,
-  LEADERBOARD_MIN_ROUNDS_PLAYED,
-  PAST_ROUND_COUNT,
-  ROUNDS_PER_PAGE,
-  START_THIRD_YEAR_BLOCK_HEIGHT,
-} from './config'
+import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUNDS_PER_PAGE, START_THIRD_YEAR_BLOCK_HEIGHT } from './config'
 import {
   makeFutureRoundResponse,
   makeRoundData,
@@ -257,7 +251,6 @@ export const filterLeaderboard = createAsyncThunk<
       skip: 0,
       orderBy: filters.orderBy,
       where: {
-        totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED,
         [`${filters.orderBy}_gt`]: 0,
         block_gte: START_THIRD_YEAR_BLOCK_HEIGHT,
       },
@@ -296,7 +289,6 @@ export const filterNextPageLeaderboard = createAsyncThunk<
       skip,
       orderBy: state.leaderboard.filters.orderBy,
       where: {
-        totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED,
         [`${state.leaderboard.filters.orderBy}_gt`]: 0,
         block_gte: START_THIRD_YEAR_BLOCK_HEIGHT,
       },
