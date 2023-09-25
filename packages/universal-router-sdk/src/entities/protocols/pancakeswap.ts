@@ -179,7 +179,6 @@ async function addV3Swap(
 
   for (const route of trade.routes) {
     const { inputAmount, outputAmount } = route
-  // console.log(amountOut, amountOut, 'bhbhbhbhbhbhhbhbhbvhbhb')
 
 
     // we need to generaate v3 path as a hash string. we can still use encodeMixedRoute

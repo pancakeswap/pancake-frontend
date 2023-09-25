@@ -17,9 +17,14 @@ const CHAIN_CONFIGS: { [key: number]: ChainConfig } = {
   },
   // goerli
   [5]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+    router: '0xEBc71C88bF0E3f3De0b8f2c93dbb021ac3c776fB',
     weth: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6',
-    creationBlock: 8940568,
+    creationBlock: 9758537,
+  },
+  [97]: {
+    router: '0x4bC641488dd00729ED9dDe94AF53d859b55eDE1c',
+    weth: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
+    creationBlock: 33658520
   },
   // sepolia
   [11155111]: {
@@ -119,7 +124,7 @@ export const WETH_ADDRESS = (chainId: number): string => {
   return CHAIN_CONFIGS[chainId].weth
 }
 
-export const PERMIT2_ADDRESS = '0x000000000022D473030F116dDEE9F6B43aC78BA3'
+export const PERMIT2_ADDRESS = '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768'
 
 export const CONTRACT_BALANCE = new BigNumber(2).pow(255)
 export const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'

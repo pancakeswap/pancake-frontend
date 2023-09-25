@@ -51,12 +51,10 @@ export function useSwapCallArguments(
       fee: feeOptions,
       recipient,
       permit: permitSignature,
-      slippageTolerance: new Percent(95, 100),
+      slippageTolerance: allowedSlippage,
       deadlineOrPreviousBlockhash: deadline?.toString(),
     })
     const swapRouterAddress =  UNIVERSAL_ROUTER_ADDRESS(chainId)
-
-    console.log(methodParamaters)
     if (!swapRouterAddress) return []
     return [
       {
