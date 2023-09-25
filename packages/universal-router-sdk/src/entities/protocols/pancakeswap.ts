@@ -23,7 +23,7 @@ import { NativeCurrency } from '@pancakeswap/sdk'
 
 // Wrapper for pancakeswap router-sdk trade entity to encode swaps for Universal Router
 // also translates trade objects from previous (v2, v3) SDKs
-export class PanckeSwapTrade implements Command {
+export class PancakeSwapTrade implements Command {
   readonly tradeType: RouterTradeType = RouterTradeType.PancakeSwapTrade
 
   readonly type: TradeType
@@ -142,8 +142,6 @@ function addV2Swap(
   payerIsUser: boolean,
   performAggregatedSlippageCheck: boolean
 ): void {
-
-
   const amountIn = maximumAmountIn(trade, options.slippageTolerance).quotient.toString()
   const amountOut = minimumAmountOut(trade, options.slippageTolerance).quotient.toString()
   // V2 trade should have only one route
@@ -176,9 +174,9 @@ async function addV3Swap(
   payerIsUser: boolean,
   performAggregatedSlippageCheck: boolean
 ): Promise<void> {
-
   for (const route of trade.routes) {
     const { inputAmount, outputAmount } = route
+  // console.log(amountOut, amountOut, 'bhbhbhbhbhbhhbhbhbvhbhb')
 
 
     // we need to generaate v3 path as a hash string. we can still use encodeMixedRoute
@@ -190,20 +188,12 @@ async function addV3Swap(
     const amountIn = maximumAmountIn(trade, options.slippageTolerance).quotient.toString()
     const amountOut = minimumAmountOut(trade, options.slippageTolerance).quotient.toString()
 
-
-
     const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
 
     // similar to encodeV3Swap only we dont need to add a case for signle hop. by using ecodeMixedRoutePath
     // we can get the parthStr for all cases
     if (trade.tradeType === TradeType.EXACT_INPUT) {
-      const exactInputSingleParams = [
-        recipient,
-        amountIn,
-        amountOut,
-        path,
-        payerIsUser,
-      ]
+      const exactInputSingleParams = [recipient, amountIn, amountOut, path, payerIsUser]
       planner.addCommand(CommandType.V3_SWAP_EXACT_IN, exactInputSingleParams)
     } else {
       const exactOutputSingleParams = [recipient, amountOut, amountIn, path, payerIsUser]
@@ -222,15 +212,12 @@ async function addMixedSwap(
   performAggregatedSlippageCheck: boolean
 ): Promise<void> {
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
-  
 
   for (const route of trade.routes) {
     const { inputAmount, outputAmount, pools } = route
     const amountIn: bigint = maximumAmountIn(trade, options.slippageTolerance).quotient
     const amountOut: bigint = minimumAmountOut(trade, options.slippageTolerance).quotient
-  console.log(amountOut, amountOut, 'mimimimimimimimiimiimimi')
-
-
+ 
     // console.log(amountIn, amountOut)
 
     // flag for whether the trade is single hop or not
@@ -245,7 +232,7 @@ async function addMixedSwap(
       return r.pools.every(isV2Pool)
     }
 
-    //similar to encodeMixedRouteSwap but more simplified where we just continue
+    // similar to encodeMixedRouteSwap but more simplified where we just continue
     // as if its a regular v2 or v3 trade
     if (singleHop) {
       if (mixedRouteIsAllV3(route)) {

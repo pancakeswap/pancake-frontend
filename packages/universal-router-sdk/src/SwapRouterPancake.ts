@@ -1,16 +1,16 @@
 import { Fraction, ONE, Currency as PancakeCurrency, CurrencyAmount, Percent, TradeType, ZERO } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/dist/evm/index'
-import abi from './abis/UniversalRouter.json'
-import BigNumber from 'bignumber.js'
 import invariant from 'tiny-invariant'
+import BigNumber from 'bignumber.js'
+import { MethodParameters } from '@pancakeswap/v3-sdk'
+import { Interface } from '@ethersproject/abi'
+import abi from './abis/UniversalRouter.json'
 import { PancakeSwapOptions } from '../test/utils/pancakeswapData'
-import { PanckeSwapTrade } from './entities/protocols/pancakeswap'
+import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { maximumAmountIn } from './utils/utils'
 import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
 // import { encodeFunctionData } from 'viem'
-import { MethodParameters } from '@pancakeswap/v3-sdk'
-import { Interface } from '@ethersproject/abi'
 
 export type SwapRouterConfig = {
   sender?: string // address
@@ -32,7 +32,7 @@ export abstract class PancakeUniSwapRouter {
     // TODO: use permit if signature included in swapOptions
     const planner = new RoutePlanner()
 
-    const trade: PanckeSwapTrade = new PanckeSwapTrade(trades, options)
+    const trade: PancakeSwapTrade = new PancakeSwapTrade(trades, options)
     const tradess = !Array.isArray(trade.trade) ? [trade.trade] : trade.trade
     const sampleTrade = tradess[0]
 
