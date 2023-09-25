@@ -1,5 +1,5 @@
-import { defaultAbiCoder } from 'ethers/lib/utils'
-// import { encodePacked } from 'viem'
+import type { AbiParametersToPrimitiveTypes } from 'abitype'
+import { Hex, encodeAbiParameters, parseAbi, parseAbiParameters } from 'viem'
 
 /**
  * CommandTypes
@@ -24,7 +24,7 @@ export enum CommandType {
 
   // The commands are executed in nested if blocks to minimise gas consumption
   // The following constant defines one of the boundaries where the if blocks split commands
-  FIRST_IF_BOUNDARY = 0x08,
+  // FIRST_IF_BOUNDARY = 0x08,
 
   // Command Types where 0x08<=value<0x10, executed in the second nested-if block
   V2_SWAP_EXACT_IN = 0x08,
@@ -38,7 +38,7 @@ export enum CommandType {
 
   // The commands are executed in nested if blocks to minimise gas consumption
   // The following constant defines one of the boundaries where the if blocks split commands
-  SECOND_IF_BOUNDARY = 0x10,
+  // SECOND_IF_BOUNDARY = 0x10,
 
   // Command Types where 0x10<=value<0x18, executed in the third nested-if block
   OWNER_CHECK_721 = 0x10,
@@ -68,8 +68,8 @@ export enum CommandType {
   APPROVE_ERC20 = 0x21,
   STABLE_SWAP_EXACT_IN = 0x22,
   STABLE_SWAP_EXACT_OUT = 0x23,
-  // PANCAKE_NFT_BNB = 0x24,
-  // PANCAKE_NFT_WBNB = 0x25,
+  PANCAKE_NFT_BNB = 0x24,
+  PANCAKE_NFT_WBNB = 0x25,
 }
 
 const ALLOW_REVERT_FLAG = 0x80
@@ -89,63 +89,121 @@ const REVERTIBLE_COMMANDS = new Set<CommandType>([
   // CommandType.ELEMENT_MARKET,
 ])
 
-const PERMIT_STRUCT =
-  '((address token,uint160 amount,uint48 expiration,uint48 nonce) details,address spender,uint256 sigDeadline)'
+const ABI_STRUCT_PERMIT_DETAILS = `
+struct PermitDetails {
+  address token;
+  uint160 amount;
+  uint48 expiration;
+  uint48 nonce;
+}`
 
-const PERMIT_BATCH_STRUCT =
-  '((address token,uint160 amount,uint48 expiration,uint48 nonce)[] details,address spender,uint256 sigDeadline)'
+const ABI_STRUCT_PERMIT_SINGLE = `
+struct PermitSingle {
+  PermitDetails details;
+  address spender;
+  uint256 sigDeadline;
+}
+`
 
-const PERMIT2_TRANSFER_FROM_STRUCT = '(address from,address to,uint160 amount,address token)'
-const PERMIT2_TRANSFER_FROM_BATCH_STRUCT = PERMIT2_TRANSFER_FROM_STRUCT + '[]'
+const ABI_STRUCT_PERMIT_BATCH = `
+struct PermitBatch {
+  PermitSingle[] details;
+  address spender;
+  uint256 sigDeadline;
+}
+`
 
-const ABI_DEFINITION: { [key in CommandType]: string[] } = {
+const ABI_STRUCT_ALLOWANCE_TRANSFER_DETAILS = `
+struct AllowanceTransferDetails {
+  address from;
+  address to;
+  uint160 amount;
+  address token;
+}
+`
+
+const ABI_PARAMETER: Record<CommandType, any> = {
   // Batch Reverts
-  [CommandType.EXECUTE_SUB_PLAN]: ['bytes', 'bytes[]'],
+  [CommandType.EXECUTE_SUB_PLAN]: parseAbiParameters('bytes _commands, bytes[] _inputs'),
 
   // Permit2 Actions
-  [CommandType.PERMIT2_PERMIT]: [PERMIT_STRUCT, 'bytes'],
-  [CommandType.PERMIT2_PERMIT_BATCH]: [PERMIT_BATCH_STRUCT, 'bytes'],
-  [CommandType.PERMIT2_TRANSFER_FROM]: ['address', 'address', 'uint160'],
-  [CommandType.PERMIT2_TRANSFER_FROM_BATCH]: [PERMIT2_TRANSFER_FROM_BATCH_STRUCT],
+  [CommandType.PERMIT2_PERMIT]: parseAbiParameters([
+    'PermitSingle permitSingle, bytes data',
+    ABI_STRUCT_PERMIT_SINGLE,
+    ABI_STRUCT_PERMIT_DETAILS,
+  ]),
+  [CommandType.PERMIT2_PERMIT_BATCH]: parseAbiParameters([
+    'PermitBatch permitBatch, bytes data',
+    ABI_STRUCT_PERMIT_BATCH,
+    ABI_STRUCT_PERMIT_DETAILS,
+  ]),
+  [CommandType.PERMIT2_TRANSFER_FROM]: parseAbiParameters('address token, address recipient, uint160 amount'),
+  [CommandType.PERMIT2_TRANSFER_FROM_BATCH]: parseAbiParameters([
+    'AllowanceTransferDetails[] batchDetails',
+    ABI_STRUCT_ALLOWANCE_TRANSFER_DETAILS,
+  ]),
 
-  // Pancake Actions
-  [CommandType.V3_SWAP_EXACT_IN]: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
-  [CommandType.V3_SWAP_EXACT_OUT]: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
-  [CommandType.V2_SWAP_EXACT_IN]: ['address', 'uint256', 'uint256', 'address[]', 'bool'],
-  [CommandType.V2_SWAP_EXACT_OUT]: ['address', 'uint256', 'uint256', 'address[]', 'bool'],
+  // swap actions
+  [CommandType.V3_SWAP_EXACT_IN]: parseAbiParameters(
+    'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bool payerIsUser'
+  ),
+  [CommandType.V3_SWAP_EXACT_OUT]: parseAbiParameters(
+    'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bool payerIsUser'
+  ),
+  [CommandType.V2_SWAP_EXACT_IN]: parseAbiParameters(
+    'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bool payerIsUser'
+  ),
+  [CommandType.V2_SWAP_EXACT_OUT]: parseAbiParameters(
+    'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bool payerIsUser'
+  ),
+  [CommandType.STABLE_SWAP_EXACT_IN]: parseAbiParameters(
+    'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bytes flag, bool payerIsUser'
+  ),
+  [CommandType.STABLE_SWAP_EXACT_OUT]: parseAbiParameters(
+    'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bytes flag, bool payerIsUser'
+  ),
 
   // Token Actions and Checks
-  [CommandType.WRAP_ETH]: ['address', 'uint256'],
-  [CommandType.UNWRAP_WETH]: ['address', 'uint256'],
-  [CommandType.SWEEP]: ['address', 'address', 'uint256'],
-  [CommandType.SWEEP_ERC721]: ['address', 'address', 'uint256'],
-  [CommandType.SWEEP_ERC1155]: ['address', 'address', 'uint256', 'uint256'],
-  [CommandType.TRANSFER]: ['address', 'address', 'uint256'],
-  [CommandType.PAY_PORTION]: ['address', 'address', 'uint256'],
-  [CommandType.BALANCE_CHECK_ERC20]: ['address', 'address', 'uint256'],
-  [CommandType.OWNER_CHECK_721]: ['address', 'address', 'uint256'],
-  [CommandType.OWNER_CHECK_1155]: ['address', 'address', 'uint256', 'uint256'],
-  [CommandType.APPROVE_ERC20]: ['address', 'uint256'],
+  [CommandType.WRAP_ETH]: parseAbiParameters('address recipient, uint256 amountMin'),
+  [CommandType.UNWRAP_WETH]: parseAbiParameters('address recipient, uint256 amountMin'),
+  [CommandType.SWEEP]: parseAbiParameters('address token, address recipient, uint256 amountMin'),
+  [CommandType.SWEEP_ERC721]: parseAbiParameters('address token, address recipient, uint256 id'),
+  [CommandType.SWEEP_ERC1155]: parseAbiParameters('address token, address recipient, uint256 id, uint256 amount'),
+  [CommandType.TRANSFER]: parseAbiParameters('address token, address recipient, uint256 value'),
+  [CommandType.PAY_PORTION]: parseAbiParameters('address token, address recipient, uint256 bips'),
+  [CommandType.BALANCE_CHECK_ERC20]: parseAbiParameters('address owner, address token, uint256 minBalance'),
+  [CommandType.OWNER_CHECK_721]: parseAbiParameters('address owner, address token, uint256 id'),
+  [CommandType.OWNER_CHECK_1155]: parseAbiParameters('address owner, address token, uint256 id, uint256 minBalance'),
+  [CommandType.APPROVE_ERC20]: parseAbiParameters('address token, uint256 spender'),
 
   // NFT Markets
-  [CommandType.SEAPORT_V1_5]: ['uint256', 'bytes'],
-  [CommandType.SEAPORT_V1_4]: ['uint256', 'bytes'],
-  // [CommandType.NFTX]: ['uint256', 'bytes'],
-  [CommandType.LOOKS_RARE_V2]: ['uint256', 'bytes'],
-  [CommandType.X2Y2_721]: ['uint256', 'bytes', 'address', 'address', 'uint256'],
-  [CommandType.X2Y2_1155]: ['uint256', 'bytes', 'address', 'address', 'uint256', 'uint256'],
-  [CommandType.STABLE_SWAP_EXACT_IN]: ['address', 'uint256', 'uint256', 'address[]', 'uint256[]', 'address'],
-  [CommandType.STABLE_SWAP_EXACT_OUT]: ['address', 'uint256', 'uint256', 'address[]', 'uint256[]', 'address'],
-  // [CommandType.FOUNDATION]: ['uint256', 'bytes', 'address', 'address', 'uint256'],
-  // [CommandType.SUDOSWAP]: ['uint256', 'bytes'],
-  // [CommandType.NFT20]: ['uint256', 'bytes'],
-  // [CommandType.CRYPTOPUNKS]: ['uint256', 'address', 'uint256'],
-  // [CommandType.ELEMENT_MARKET]: ['uint256', 'bytes'],
+  [CommandType.SEAPORT_V1_5]: parseAbiParameters('uint256 value, bytes data'),
+  [CommandType.SEAPORT_V1_4]: parseAbiParameters('uint256 value, bytes data'),
+  // @fixme: contract not implemented
+  [CommandType.LOOKS_RARE_V2]: parseAbiParameters('uint256 value, bytes data'),
+  [CommandType.X2Y2_721]: parseAbiParameters('uint256 value, bytes data, address recipient, address token, uint256 id'),
+  [CommandType.X2Y2_1155]: parseAbiParameters(
+    'uint256 value, bytes data, address recipient, address token, uint256 id, uint256 amount'
+  ),
+  [CommandType.PANCAKE_NFT_WBNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
+  [CommandType.PANCAKE_NFT_BNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
+  // @notice: following marketplace not supported now
+  // [CommandType.NFTX]: parseAbiParameters('uint256 value, bytes data'),
+  // [CommandType.FOUNDATION]: parseAbiParameters(
+  //   'uint256 value, bytes data, address recipient, address token, uint256 id'
+  // ),
+  // [CommandType.SUDOSWAP]: parseAbiParameters('uint256 value, bytes data'),
+  // [CommandType.NFT20]: parseAbiParameters('uint256 value, bytes data'),
+  // [CommandType.CRYPTOPUNKS]: parseAbiParameters('uint256 punkId, address recipient, uint256 value'),
+  // [CommandType.ELEMENT_MARKET]: parseAbiParameters('uint256 value, bytes data'),
 }
 
+type ABIType = typeof ABI_PARAMETER
+type ABIParametersType<TCommandType extends CommandType> = AbiParametersToPrimitiveTypes<ABIType[TCommandType]>
 export class RoutePlanner {
-  commands: string
-  inputs: string[]
+  commands: Hex
+
+  inputs: Hex[]
 
   constructor() {
     this.commands = '0x'
@@ -156,27 +214,34 @@ export class RoutePlanner {
     this.addCommand(CommandType.EXECUTE_SUB_PLAN, [subplan.commands, subplan.inputs], true)
   }
 
-  addCommand(type: CommandType, parameters: any[], allowRevert = false): void {
-    let command = createCommand(type, parameters)
+  addCommand<TCommandType extends CommandType>(
+    type: TCommandType,
+    parameters: ABIParametersType<TCommandType>,
+    allowRevert = false
+  ): void {
+    const command = createCommand(type, parameters)
     this.inputs.push(command.encodedInput)
     if (allowRevert) {
       if (!REVERTIBLE_COMMANDS.has(command.type)) {
         throw new Error(`command type: ${command.type} cannot be allowed to revert`)
       }
-      command.type = command.type | ALLOW_REVERT_FLAG
+      command.type |= ALLOW_REVERT_FLAG
     }
 
-    this.commands = this.commands.concat(command.type.toString(16).padStart(2, '0'))
+    this.commands = this.commands.concat(command.type.toString(16).padStart(2, '0')) as Hex
   }
 }
 
 export type RouterCommand = {
   type: CommandType
-  encodedInput: string
+  encodedInput: Hex
 }
 
-export function createCommand(type: CommandType, parameters: any[]): RouterCommand {
-  // const encodedInput = encodePacked(ABI_DEFINITION[type], parameters)
-  const encodedInput = defaultAbiCoder.encode(ABI_DEFINITION[type], parameters)
+export function createCommand<TCommandType extends CommandType>(
+  type: TCommandType,
+  parameters: ABIParametersType<TCommandType>
+): RouterCommand {
+  // const params = parameters.filter((param) => param !== null)
+  const encodedInput = encodeAbiParameters(ABI_PARAMETER[type], parameters as any)
   return { type, encodedInput }
 }
