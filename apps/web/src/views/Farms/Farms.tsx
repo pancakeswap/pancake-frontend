@@ -1,7 +1,7 @@
 import { DeserializedFarm, FarmWithStakedValue, filterFarmsByQuery } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   ArrowForwardIcon,
   Box,
@@ -28,7 +28,8 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useFarms, usePollFarmsWithUserData, usePriceCakeUSD } from 'state/farms/hooks'
+import { useFarms, usePollFarmsWithUserData } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
@@ -162,7 +163,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { chainId } = useActiveChainId()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
 
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])

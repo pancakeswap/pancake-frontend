@@ -7,9 +7,11 @@ import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCak
 import { useCallback, useContext, useState, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { usePriceCakeUSD, useFarmFromPid } from 'state/farms/hooks'
+import { useFarmFromPid } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useAppDispatch } from 'state'
-import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
+import { WNATIVE, NATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { SendTransactionResult } from 'wagmi/actions'
 import BigNumber from 'bignumber.js'
 import { useIsBloctoETH } from 'views/Farms'
@@ -73,7 +75,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { account, chainId } = useAccountActiveChain()
   const native = useNativeCurrency()
   const { tokenBalance, stakedBalance, allowance } = userData
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
   const router = useRouter()
   const { lpTokenStakedAmount } = useFarmFromPid(pid)
   const { toastSuccess } = useToast()

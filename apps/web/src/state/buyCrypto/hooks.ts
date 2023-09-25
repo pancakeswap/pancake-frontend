@@ -1,22 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useAtom, useAtomValue } from 'jotai'
+import ceil from 'lodash/ceil'
+import max from 'lodash/max'
+import min from 'lodash/min'
+import toString from 'lodash/toString'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
-import { useAccount } from 'wagmi'
-import toString from 'lodash/toString'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import ceil from 'lodash/ceil'
-import min from 'lodash/min'
-import max from 'lodash/max'
-import toNumber from 'lodash/toNumber'
-import toUpper from 'lodash/toUpper'
-
-import { MOONPAY_API_KEY, MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
-import { SUPPORTED_ONRAMP_TOKENS, moonpayCurrencyChainIdentifier } from 'views/BuyCrypto/constants'
+import { useAccount } from 'wagmi'
+import { fetchLimitOfMer, fetchLimitOfMoonpay, fetchLimitOfTransak } from 'views/BuyCrypto/hooks/useProviderQuotes'
+import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -30,6 +28,9 @@ const defaultTokenByChain = {
   [ChainId.BSC]: 'BNB',
   [ChainId.ZKSYNC]: 'ETH',
   [ChainId.ARBITRUM_ONE]: 'ETH',
+  [ChainId.LINEA]: 'ETH',
+  [ChainId.POLYGON_ZKEVM]: 'ETH',
+  [ChainId.BASE]: 'ETH',
 }
 
 export function useBuyCryptoState() {
@@ -45,7 +46,7 @@ interface LimitQuote {
   quoteCurrency: CurrencyLimits
 }
 
-function getMinMaxAmountCap(quotes: LimitQuote[]): LimitQuote {
+function getMinMaxAmountCap(quotes: LimitQuote[]) {
   return quotes.reduce((bestQuote, quote) => {
     if (!bestQuote) return quote
 
@@ -64,76 +65,17 @@ function getMinMaxAmountCap(quotes: LimitQuote[]): LimitQuote {
   })
 }
 
-const fetchLimitOfMer = async (inputCurrencyId: string, outputCurrencyId: string) => {
-  try {
-    const response = await fetch(
-      `https://api.mercuryo.io/v1.6/widget/buy/rate?widget_id=${MERCURYO_WIDGET_ID}&type=buy&from=${toUpper(
-        inputCurrencyId,
-      )}&to=${toUpper(outputCurrencyId)}&amount=1`,
-    )
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch minimum buy amount')
-    }
-
-    const limitQuote = await response.json()
-
-    if (limitQuote[toUpper(inputCurrencyId)] || limitQuote[toUpper(outputCurrencyId)]) {
-      return undefined
-    }
-
-    return {
-      baseCurrency: {
-        code: inputCurrencyId.toLowerCase(),
-        maxBuyAmount: toNumber(limitQuote[toUpper(inputCurrencyId)]?.max),
-        minBuyAmount: toNumber(limitQuote[toUpper(inputCurrencyId)]?.min),
-      },
-      quoteCurrency: {
-        code: outputCurrencyId.toUpperCase(),
-        maxBuyAmount: toNumber(limitQuote[toUpper(outputCurrencyId)]?.max),
-        minBuyAmount: toNumber(limitQuote[toUpper(outputCurrencyId)]?.min),
-      },
-    }
-  } catch (error) {
-    console.error('fetchLimitOfMer: ', error)
-    return undefined
-  }
-}
-
-const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: string, chainId: number) => {
-  try {
-    const baseCurrency = `${outputCurrencyId.toLowerCase()}${moonpayCurrencyChainIdentifier[chainId]}`
-    const response = await fetch(
-      `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=${MOONPAY_API_KEY}&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
-    )
-
-    if (!response.ok) {
-      return undefined
-    }
-
-    const moonpayLimitQuote = await response.json()
-
-    if (!moonpayLimitQuote.baseCurrency || !moonpayLimitQuote.quoteCurrency) {
-      return undefined
-    }
-
-    return moonpayLimitQuote
-  } catch (error) {
-    console.error('fetchLimitOfMoonpay: ', error)
-    return undefined
-  }
-}
-
 export const fetchMinimumBuyAmount = async (
   inputCurrencyId: string,
   outputCurrencyId: string,
-  chainId: number,
+  chainId: any,
 ): Promise<LimitQuote | undefined> => {
   try {
-    const mercuryLimitQuote = await fetchLimitOfMer(inputCurrencyId, outputCurrencyId)
+    const mercuryLimitQuote = await fetchLimitOfMer(inputCurrencyId, outputCurrencyId, chainId)
     const moonpayLimitQuote = await fetchLimitOfMoonpay(inputCurrencyId, outputCurrencyId, chainId)
+    const transakLimitQuote = await fetchLimitOfTransak(inputCurrencyId, outputCurrencyId, chainId)
 
-    const quotes = [moonpayLimitQuote, mercuryLimitQuote].filter(Boolean)
+    const quotes = [moonpayLimitQuote, mercuryLimitQuote, transakLimitQuote].filter(Boolean)
 
     return quotes?.length > 0 ? getMinMaxAmountCap(quotes) : undefined
   } catch (error) {
@@ -152,7 +94,7 @@ export function useBuyCryptoErrorInfo(
   inputCurrencyId: string,
   outputCurrencyId: string,
 ): {
-  amountError: string | undefined
+  amountError: string
   inputError: string
 } {
   const { address: account } = useAccount()
@@ -209,8 +151,8 @@ export function useBuyCryptoErrorInfo(
   }
 
   return {
-    amountError,
-    inputError,
+    amountError: amountError as string,
+    inputError: inputError as string,
   }
 }
 
@@ -271,15 +213,16 @@ export function useBuyCryptoActionHandlers(): {
   }
 }
 
-const DEFAULT_FIAT_CURRENCY = 'USD'
-
 export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   account: string | undefined,
-  chainId: number,
+  chainId: any,
 ): Promise<BuyCryptoState> {
+  const DEFAULT_FIAT_CURRENCY = [ChainId.BASE, ChainId.LINEA].includes(chainId) ? 'EUR' : 'USD'
   const inputCurrency = parsedQs.inputCurrency as any
-  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency) ? inputCurrency : defaultTokenByChain[chainId]
+  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency)
+    ? inputCurrency
+    : defaultTokenByChain[chainId as any]
   const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr, chainId)
 
   return {
@@ -295,7 +238,7 @@ export async function queryParametersToBuyCryptoState(
     minBaseAmount: limitAmounts?.quoteCurrency?.minBuyAmount,
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
-    recipient: account,
+    recipient: account as string,
     userIpAddress: null,
   }
 }
@@ -336,12 +279,12 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
   useEffect(() => {
     const fetchData = async () => {
       if (!isReady || !chainId) return
-      const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
+      const parsed = await queryParametersToBuyCryptoState(query, account as string, chainId)
 
       dispatch(
         replaceBuyCryptoState({
           typedValue: parsed.minAmount
-            ? toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId))
+            ? (toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId as string)) as string)
             : '',
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,

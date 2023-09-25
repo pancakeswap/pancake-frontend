@@ -1,6 +1,6 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { AutoColumn, BscScanIcon, Link, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'

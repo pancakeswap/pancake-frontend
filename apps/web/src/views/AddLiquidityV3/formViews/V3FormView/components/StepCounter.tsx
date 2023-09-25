@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddCircleIcon, AutoColumn, AutoRow, IconButton, NumericalInput, RemoveIcon } from '@pancakeswap/uikit'
+import { AddCircleIcon, AutoColumn, AutoRow, IconButton, RemoveIcon } from '@pancakeswap/uikit'
+import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { LightGreyCard } from 'components/Card'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
@@ -8,9 +9,9 @@ import { tryParsePrice } from 'hooks/v3/utils'
 
 interface StepCounterProps {
   value: string
-  onUserInput: (value: Price<Token, Token>) => void
-  decrement: () => Price<Token, Token>
-  increment: () => Price<Token, Token>
+  onUserInput: (value: Price<Token, Token> | undefined) => void
+  decrement: () => Price<Token, Token> | undefined
+  increment: () => Price<Token, Token> | undefined
   decrementDisabled?: boolean
   incrementDisabled?: boolean
   feeAmount?: FeeAmount

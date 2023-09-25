@@ -39,7 +39,7 @@ const AccessRiskTooltips: React.FC<AccessRiskTooltipsProps> = ({
     )
   }
 
-  if (hasResult && riskLevel >= TOKEN_RISK.VERY_LOW && tokenAddress) {
+  if (hasResult && riskLevel && riskLevel >= TOKEN_RISK.VERY_LOW && tokenAddress) {
     return (
       <>
         <Text my="8px">{riskLevelDescription}</Text>

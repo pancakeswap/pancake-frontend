@@ -10,5 +10,11 @@ export * from './ether'
 export * from './fetcher'
 
 export * from '@pancakeswap/swap-sdk-core'
+export {
+  /**
+   * @deprecated use `ChainId` from `@pancakeswap/chains` instead.
+   */
+  ChainId,
+} from '@pancakeswap/chains'
 
 export * from './abis/IPancakePair'

@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
 import { createPublicClient, http, fallback, PublicClient } from 'viem'
@@ -21,8 +21,10 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
       batch: {
         multicall: {
           batchSize: cur.id === ChainId.POLYGON_ZKEVM ? 128 : 1024 * 200,
+          wait: 16,
         },
       },
+      pollingInterval: 6_000,
     }),
   }
 }, {} as Record<ChainId, PublicClient>)

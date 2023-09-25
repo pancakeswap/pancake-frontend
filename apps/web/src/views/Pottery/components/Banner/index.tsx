@@ -2,7 +2,7 @@ import { styled } from 'styled-components'
 import { useMemo } from 'react'
 import { Flex, Box, Text, Balance, SkeletonV2 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
 import { BannerTimer, LockTimer } from 'views/Pottery/components/Timer'
 import { PotteryDepositStatus } from 'state/types'
@@ -70,7 +70,7 @@ interface BannerProps {
 
 const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { publicData } = usePotteryData()
   const { getLockedApy } = useVaultApy()
 

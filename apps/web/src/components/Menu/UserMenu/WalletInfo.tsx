@@ -14,7 +14,8 @@ import {
   InfoFilledIcon,
   ScanLink,
 } from '@pancakeswap/uikit'
-import { ChainId, WNATIVE } from '@pancakeswap/sdk'
+import { WNATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { FetchStatus } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
@@ -178,6 +179,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           )}
         </Box>
       )}
+
       <Box mb="24px">
         <Flex justifyContent="space-between" alignItems="center" mb="8px">
           <Flex bg={COLORS.BNB} borderRadius="16px" pl="4px" pr="8px" py="2px">
@@ -186,7 +188,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
               BNB Smart Chain
             </Text>
           </Flex>
-          <ScanLink chainId={ChainId.BSC} href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
+          <ScanLink useBscCoinFallback href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
             {getBlockExploreName(ChainId.BSC)}
           </ScanLink>
         </Flex>

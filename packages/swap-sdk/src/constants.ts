@@ -1,25 +1,7 @@
 import { Percent } from '@pancakeswap/swap-sdk-core'
+import { ChainId } from '@pancakeswap/chains'
 import { Address, Hash } from 'viem'
 import { ERC20Token } from './entities/token'
-
-export enum ChainId {
-  ETHEREUM = 1,
-  GOERLI = 5,
-  BSC = 56,
-  BSC_TESTNET = 97,
-  ZKSYNC_TESTNET = 280,
-  ZKSYNC = 324,
-  OPBNB_TESTNET = 5611,
-  POLYGON_ZKEVM = 1101,
-  POLYGON_ZKEVM_TESTNET = 1442,
-  ARBITRUM_ONE = 42161,
-  ARBITRUM_GOERLI = 421613,
-  SCROLL_SEPOLIA = 534351,
-  LINEA = 59144,
-  LINEA_TESTNET = 59140,
-  BASE = 8453,
-  BASE_TESTNET = 84531,
-}
 
 export const ZERO_PERCENT = new Percent('0')
 export const ONE_HUNDRED_PERCENT = new Percent('1')

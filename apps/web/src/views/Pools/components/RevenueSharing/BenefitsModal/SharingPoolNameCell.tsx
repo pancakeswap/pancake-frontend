@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Flex, LogoRoundIcon, Box, Balance, Pool } from '@pancakeswap/uikit'
+import { Text, Flex, LogoRoundIcon, Box, Balance } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useVaultPoolByKey, usePoolsWithVault } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'

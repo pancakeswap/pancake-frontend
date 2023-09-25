@@ -1,4 +1,5 @@
-import { ChainId, Pair, ERC20Token } from '@pancakeswap/sdk'
+import { Pair, ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from '@pancakeswap/farms/constants'

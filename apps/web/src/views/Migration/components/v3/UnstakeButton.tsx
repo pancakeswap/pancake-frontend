@@ -16,7 +16,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useNonBscFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 

@@ -15,24 +15,31 @@ import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
 import { useSlippageAdjustedAmounts } from './useSlippageAdjustedAmounts'
+import { useWallchainSwapCallArguments } from './useWallchain'
+import type { TWallchainMasterInput } from './useWallchain'
 
 export enum SwapCallbackState {
   INVALID,
   LOADING,
   VALID,
+  REVERTED,
 }
 
 interface UseSwapCallbackReturns {
   state: SwapCallbackState
   callback?: () => Promise<SendTransactionResult>
   error?: ReactNode
+  reason?: string
 }
 interface UseSwapCallbackArgs {
   trade: SmartRouterTrade<TradeType> | undefined | null // trade to execute, required
   // allowedSlippage: Percent // in bips
   // recipientAddressOrName: string | null | undefined // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   deadline?: bigint
+  permitSignature?: any;
   feeOptions?: FeeOptions
+  onWallchainDrop: () => void
+  wallchainMasterInput?: TWallchainMasterInput
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -42,7 +49,9 @@ export function useSwapCallback({
   permitSignature,
   deadline,
   feeOptions,
-}): UseSwapCallbackReturns {
+  onWallchainDrop,
+  wallchainMasterInput,
+}: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
@@ -59,7 +68,21 @@ export function useSwapCallback({
     deadline,
     feeOptions,
   )
-  const { callback } = useSendSwapTransaction(account, chainId, trade, swapCalls)
+  const wallchainSwapCalls = useWallchainSwapCallArguments(
+    trade,
+    swapCalls,
+    account,
+    onWallchainDrop,
+    wallchainMasterInput,
+  )
+
+  const { callback } = useSendSwapTransaction(
+    account,
+    chainId,
+    trade,
+    // @ts-expect-error uncompatible types side-by-side cause wrong type assertion
+    wallchainSwapCalls,
+  )
 
   return useMemo(() => {
     if (!trade || !account || !chainId || !callback) {

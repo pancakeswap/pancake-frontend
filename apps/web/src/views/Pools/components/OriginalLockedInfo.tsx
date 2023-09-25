@@ -1,4 +1,6 @@
-import { Text, Box, Pool } from '@pancakeswap/uikit'
+import { Text, Box } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { Token } from '@pancakeswap/sdk'

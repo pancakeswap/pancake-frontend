@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
@@ -14,8 +14,8 @@ export default {
     [ChainId.BSC]: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
   },
   sousChef: {
-    [ChainId.BSC_TESTNET]: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-    [ChainId.BSC]: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
+    [ChainId.BSC_TESTNET]: '0xD3af5Fe61DBaF8f73149bfcFa9FB653ff096029A',
+    [ChainId.BSC]: '0x6Ab8463a4185b80905E05A9ff80A2d6b714B9e95',
   },
   lotteryV2: {
     [ChainId.BSC_TESTNET]: '0x5790c3534F30437641541a0FA04C992799602998',
@@ -105,7 +105,7 @@ export default {
     [ChainId.BSC_TESTNET]: '0x',
   },
   predictionsV1: {
-    [ChainId.BSC]: '0x516ffd7d1e0ca40b1879935b2de87cb20fc1124b',
+    [ChainId.BSC]: '0x516ffd7D1e0Ca40b1879935B2De87cb20Fc1124b',
     [ChainId.BSC_TESTNET]: '0x',
   },
   bunnySpecialCakeVault: {
@@ -130,7 +130,7 @@ export default {
   },
   nftMarket: {
     [ChainId.BSC]: '0x17539cCa21C7933Df5c980172d22659B8C345C5A',
-    [ChainId.BSC_TESTNET]: '0x7f9f37ddcaa33893f9beb3d8748c8d6bfbde6ab2',
+    [ChainId.BSC_TESTNET]: '0x7F9F37Ddcaa33893F9bEB3D8748c8D6BfbDE6AB2',
   },
   nftSale: {
     [ChainId.BSC]: '0x29fE7148636b7Ae0b1E53777b28dfbaA9327af8E',
@@ -252,5 +252,9 @@ export default {
     [ChainId.ETHEREUM]: '0x',
     [ChainId.BSC]: '0xCD5d1935e9bfa4905f9f007C97aB1f1763dC1607',
     [ChainId.BSC_TESTNET]: '0xd2d1DD41700d9132d3286e0FcD8D6E1D8E5052F5',
+  },
+  anniversaryAchievement: {
+    [ChainId.BSC]: '0x0a073aa17275ef839ee77BC6c589D9E661270480',
+    [ChainId.BSC_TESTNET]: '0x',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

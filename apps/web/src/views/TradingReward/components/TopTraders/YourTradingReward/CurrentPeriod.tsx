@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Box, Card, Text, Message, MessageText, LightBulbIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { GreyCard } from 'components/Card'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -41,7 +41,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { data: rank } = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId })
 
   const currentDate = Date.now() / 1000

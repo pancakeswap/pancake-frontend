@@ -19,9 +19,8 @@ import {
 import { getBlockExploreLink } from 'utils'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { Bidder } from 'config/constants/types'
-import { ChainId } from '@pancakeswap/sdk'
 import WhitelistedBiddersModal from '../WhitelistedBiddersModal'
 import { HARD_CODED_START_AUCTION_ID } from '../../constants'
 import { useV3FarmAuctionConfig } from '../../hooks/useV3FarmAuctionConfig'
@@ -139,7 +138,7 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
           {account && (
             <SubMenuItem
               as={ScanLink}
-              chainId={ChainId.BSC}
+              useBscCoinFallback
               href={getBlockExploreLink(account, 'address')}
               bold={false}
               color="text"
@@ -157,7 +156,7 @@ const AuctionLeaderboardTable: React.FC<
   React.PropsWithChildren<{ bidders: Bidder[]; noBidsText: string; auctionId: number }>
 > = ({ bidders, noBidsText, auctionId }) => {
   const [visibleBidders, setVisibleBidders] = useState(10)
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { t } = useTranslation()
 
   const { isMobile } = useMatchBreakpoints()

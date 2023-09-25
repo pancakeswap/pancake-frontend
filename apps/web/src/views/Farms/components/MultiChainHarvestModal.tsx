@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import Cookie from 'js-cookie'
-import { ChainId, Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { BigNumber } from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'

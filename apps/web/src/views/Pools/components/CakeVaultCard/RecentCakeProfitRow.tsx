@@ -1,7 +1,9 @@
-import { Flex, Pool, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedVaultUser } from 'state/types'
 import { Token } from '@pancakeswap/sdk'
@@ -12,7 +14,7 @@ const RecentCakeProfitCountdownRow = ({ pool }: { pool: Pool.DeserializedPool<To
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { pricePerFullShare, userData } = useVaultPoolByKey(pool.vaultKey)
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { hasAutoEarnings, autoCakeToDisplay } = getCakeVaultEarnings(
     account,
     userData.cakeAtLastUserAction,

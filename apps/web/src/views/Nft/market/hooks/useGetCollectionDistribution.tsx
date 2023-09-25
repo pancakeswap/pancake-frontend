@@ -6,7 +6,7 @@ import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
 import mapValues from 'lodash/mapValues'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { pancakeBunniesABI } from 'config/abi/pancakeBunnies'
 import { pancakeBunniesAddress } from '../constants'
 

@@ -75,6 +75,6 @@
     "bignumber.js": "^9.0.2",
     "ethers": "^5.3.1",
     "tiny-invariant": "^1.1.0",
-    "viem": "^1.2.9"
+    "viem": "^1.10.9"
   }
 }

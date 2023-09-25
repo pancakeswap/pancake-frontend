@@ -31,7 +31,6 @@ import { useRouter } from 'next/router'
 import { getBlockExploreLink } from 'utils'
 import { DatePicker, DatePickerPortal, TimePicker } from 'views/Voting/components/DatePicker'
 import { useAccount, useWalletClient } from 'wagmi'
-import { ChainId } from '@pancakeswap/sdk'
 import Layout from '../components/Layout'
 import VoteDetailsModal from '../components/VoteDetailsModal'
 import { ADMINS, PANCAKE_SPACE, VOTE_THRESHOLD } from '../config'
@@ -271,7 +270,7 @@ const CreateProposal = () => {
                     <Text color="textSubtle" mr="16px">
                       {t('Creator')}
                     </Text>
-                    <ScanLink chainId={ChainId.BSC} href={getBlockExploreLink(account, 'address')}>
+                    <ScanLink useBscCoinFallback href={getBlockExploreLink(account, 'address')}>
                       {truncateHash(account)}
                     </ScanLink>
                   </Flex>
@@ -280,7 +279,7 @@ const CreateProposal = () => {
                   <Text color="textSubtle" mr="16px">
                     {t('Snapshot')}
                   </Text>
-                  <ScanLink chainId={ChainId.BSC} href={getBlockExploreLink(snapshot, 'block')}>
+                  <ScanLink useBscCoinFallback href={getBlockExploreLink(snapshot, 'block')}>
                     {snapshot}
                   </ScanLink>
                 </Flex>

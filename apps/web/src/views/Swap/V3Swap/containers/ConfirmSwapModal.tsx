@@ -1,15 +1,13 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import {
-  ApproveModalContent,
   Box,
   BscScanIcon,
   Flex,
   InjectedModalProps,
   Link,
-  SwapPendingModalContent,
-  SwapTransactionReceiptModalContent,
 } from '@pancakeswap/uikit'
+import { SwapTransactionReceiptModalContent, SwapPendingModalContent, ApproveModalContent } from '@pancakeswap/widgets-internal'
 import { usePublicClient } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'

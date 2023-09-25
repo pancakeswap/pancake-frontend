@@ -1,4 +1,5 @@
-import { Flex, LinkExternal, Pool, Text, TimerIcon, useTooltip, ScanLink, AptosIcon } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Text, TimerIcon, useTooltip, ScanLink, AptosIcon } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import { memo, useMemo } from 'react'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'

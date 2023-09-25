@@ -7,7 +7,8 @@ import {
   SmartRouterTrade,
   BATCH_MULTICALL_CONFIGS,
 } from '@pancakeswap/smart-router/evm'
-import { ChainId, CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'

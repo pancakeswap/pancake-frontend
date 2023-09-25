@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading, PageHeader, Pool, Text, FlexLayout, ViewMode } from '@pancakeswap/uikit'
+import { Flex, Heading, PageHeader, Text, FlexLayout, ViewMode } from '@pancakeswap/uikit'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
+import { Pool } from '@pancakeswap/widgets-internal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { styled } from 'styled-components'
 

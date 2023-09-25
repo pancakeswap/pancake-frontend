@@ -8,18 +8,21 @@ import {
   Text,
   AutoRow,
   Box,
-  NumericalInput,
-  ConfirmationModalContent,
   useModal,
   Message,
   MessageText,
   PreTitle,
   DynamicSection,
   Flex,
+} from '@pancakeswap/uikit'
+import {
   LiquidityChartRangeInput,
   ZOOM_LEVELS,
   ZoomLevels,
-} from '@pancakeswap/uikit'
+  ConfirmationModalContent,
+  NumericalInput,
+} from '@pancakeswap/widgets-internal'
+
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 import { tryParsePrice } from 'hooks/v3/utils'
 
@@ -61,6 +64,7 @@ import LockedDeposit from './components/LockedDeposit'
 import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
 import { useV3FormAddLiquidityCallback, useV3FormState } from './form/reducer'
+import { useInitialRange } from './form/hooks/useInitialRange'
 
 const StyledInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.colors.input};
@@ -199,8 +203,8 @@ export default function V3FormView({
     if (feeAmount) {
       setActiveQuickAction(undefined)
       onBothRangeInput({
-        leftTypedValue: null,
-        rightTypedValue: null,
+        leftTypedValue: undefined,
+        rightTypedValue: undefined,
       })
     }
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
@@ -232,14 +236,18 @@ export default function V3FormView({
 
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   // check whether the user has approved the router on the tokens
-  const { approvalState: approvalA, approveCallback: approveACallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_A],
-    nftPositionManagerAddress,
-  )
-  const { approvalState: approvalB, approveCallback: approveBCallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_B],
-    nftPositionManagerAddress,
-  )
+  const {
+    approvalState: approvalA,
+    approveCallback: approveACallback,
+    revokeCallback: revokeACallback,
+    currentAllowance: currentAllowanceA,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
+  const {
+    approvalState: approvalB,
+    approveCallback: approveBCallback,
+    revokeCallback: revokeBCallback,
+    currentAllowance: currentAllowanceB,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
 
   const [allowedSlippage] = useUserSlippage() // custom from users
 
@@ -335,6 +343,9 @@ export default function V3FormView({
   // get value and prices at ticks
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
+
+  useInitialRange(baseCurrency?.wrapped, quoteCurrency?.wrapped)
+
   const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper, getSetFullRange } =
     useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
   // we need an existence check on parsed amounts for single-asset deposits
@@ -344,9 +355,9 @@ export default function V3FormView({
   const translationData = useMemo(
     () => ({
       amountA: !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : '',
-      symbolA: !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : '',
+      symbolA: !depositADisabled && currencies[Field.CURRENCY_A]?.symbol ? currencies[Field.CURRENCY_A].symbol : '',
       amountB: !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : '',
-      symbolB: !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : '',
+      symbolB: !depositBDisabled && currencies[Field.CURRENCY_B]?.symbol ? currencies[Field.CURRENCY_B].symbol : '',
     }),
     [depositADisabled, depositBDisabled, parsedAmounts, locale, currencies],
   )
@@ -364,7 +375,7 @@ export default function V3FormView({
 
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
-      minWidth={['100%', , '420px']}
+      minWidth={['100%', null, '420px']}
       title={t('Add Liquidity')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
@@ -407,16 +418,20 @@ export default function V3FormView({
     <V3SubmitButton
       addIsUnsupported={addIsUnsupported}
       addIsWarning={addIsWarning}
-      account={account}
-      isWrongNetwork={isWrongNetwork}
+      account={account ?? undefined}
+      isWrongNetwork={Boolean(isWrongNetwork)}
       approvalA={approvalA}
       approvalB={approvalB}
       isValid={isValid}
       showApprovalA={showApprovalA}
       approveACallback={approveACallback}
+      currentAllowanceA={currentAllowanceA}
+      revokeACallback={revokeACallback}
       currencies={currencies}
-      approveBCallback={approveBCallback}
       showApprovalB={showApprovalB}
+      approveBCallback={approveBCallback}
+      currentAllowanceB={currentAllowanceB}
+      revokeBCallback={revokeBCallback}
       parsedAmounts={parsedAmounts}
       onClick={handleButtonSubmit}
       attemptingTxn={attemptingTxn}
@@ -444,12 +459,16 @@ export default function V3FormView({
           leftTypedValue: tryParsePrice(
             baseCurrency.wrapped,
             quoteCurrency.wrapped,
-            (currentPrice * zoomLevel?.initialMin ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin).toString(),
+            (
+              currentPrice * (zoomLevel?.initialMin ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin)
+            ).toString(),
           ),
           rightTypedValue: tryParsePrice(
             baseCurrency.wrapped,
             quoteCurrency.wrapped,
-            (currentPrice * zoomLevel?.initialMax ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax).toString(),
+            (
+              currentPrice * (zoomLevel?.initialMax ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax)
+            ).toString(),
           ),
         })
       }
@@ -488,7 +507,7 @@ export default function V3FormView({
                 onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
               }
               disableCurrencySelect
-              value={formattedAmounts[Field.CURRENCY_A]}
+              value={formattedAmounts[Field.CURRENCY_A] ?? '0'}
               onUserInput={onFieldAInput}
               showQuickInputButton
               showMaxButton
@@ -509,7 +528,7 @@ export default function V3FormView({
               onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
             }
             disableCurrencySelect
-            value={formattedAmounts[Field.CURRENCY_B]}
+            value={formattedAmounts[Field.CURRENCY_B] ?? '0'}
             onUserInput={onFieldBInput}
             showQuickInputButton
             showMaxButton
@@ -555,8 +574,8 @@ export default function V3FormView({
                 currencyA={baseCurrency}
                 handleRateToggle={() => {
                   if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
-                    onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert()) ?? null)
-                    onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert()) ?? null)
+                    onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert()) ?? undefined)
+                    onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert()) ?? undefined)
                     onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
                   }
 
@@ -598,7 +617,7 @@ export default function V3FormView({
                   </AutoRow>
                 )}
                 <LiquidityChartRangeInput
-                  zoomLevel={QUICK_ACTION_CONFIGS?.[feeAmount]?.[activeQuickAction]}
+                  zoomLevel={activeQuickAction ? QUICK_ACTION_CONFIGS?.[feeAmount]?.[activeQuickAction] : undefined}
                   key={baseCurrency?.wrapped?.address}
                   currencyA={baseCurrency ?? undefined}
                   currencyB={quoteCurrency ?? undefined}

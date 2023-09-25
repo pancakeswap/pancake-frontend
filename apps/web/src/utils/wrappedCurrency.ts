@@ -1,4 +1,5 @@
-import { ChainId, Currency, CurrencyAmount, Token, WNATIVE } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 export { unwrappedToken } from '@pancakeswap/tokens'
 

@@ -6,14 +6,14 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 
 interface DesktopResultProps {
   rank: RankListDetail
 }
 
 const DesktopResult: React.FC<React.PropsWithChildren<DesktopResultProps>> = ({ rank }) => {
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(rank.origin)
   const { domainName, avatar } = useDomainNameForAddress(rank.origin, !profile && !isProfileLoading)
 

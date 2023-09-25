@@ -1,7 +1,7 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { unwrappedToken } from 'utils/wrappedCurrency'
@@ -18,7 +18,7 @@ export function useV3PositionFees(
   const owner = useSingleCallResult({
     contract: tokenId ? positionManager : null,
     functionName: 'ownerOf',
-    args: [tokenId],
+    args: useMemo(() => [tokenId] as const, [tokenId]),
   }).result
 
   const latestBlockNumber = useCurrentBlock()

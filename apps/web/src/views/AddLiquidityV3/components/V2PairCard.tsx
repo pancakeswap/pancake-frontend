@@ -7,12 +7,16 @@ import { LiquidityCardRow } from 'components/LiquidityCardRow'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import currencyId from 'utils/currencyId'
 
-export function V2PairCard({ pair, account }: { pair: Pair; account: string }) {
-  const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
+export function V2PairCard({ pair, account }: { pair: null | Pair; account: string | undefined }) {
+  const userPoolBalance = useTokenBalance(account ?? undefined, pair?.liquidityToken)
 
-  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+  const totalPoolTokens = useTotalSupply(pair?.liquidityToken)
 
   const [token0Deposited, token1Deposited] = useTokensDeposited({ pair, userPoolBalance, totalPoolTokens })
+
+  if (!pair) {
+    return null
+  }
 
   const unwrappedToken0 = unwrappedToken(pair.token0)
   const unwrappedToken1 = unwrappedToken(pair.token1)

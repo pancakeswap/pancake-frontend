@@ -1,5 +1,6 @@
 import { gql } from 'graphql-request'
-import { Pair, ChainId } from '@pancakeswap/sdk'
+import { Pair } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'

@@ -1,9 +1,10 @@
 import { styled } from 'styled-components'
 import { IconButton, ArrowForwardIcon, ArrowBackIcon, ArrowLastIcon, Flex, Heading, Input } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { useCallback } from 'react'
 
 const StyledInput = styled(Input)`
-  width: 60px;
+  width: 70px;
   height: 100%;
   padding: 4px 16px;
 `
@@ -42,11 +43,14 @@ const RoundSwitcher: React.FC<React.PropsWithChildren<RoundSwitcherProps>> = ({
   const { t } = useTranslation()
   const selectedRoundIdAsInt = parseInt(selectedRoundId, 10)
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.validity.valid) {
-      handleInputChange(e)
-    }
-  }
+  const handleOnChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.currentTarget.validity.valid) {
+        handleInputChange(e)
+      }
+    },
+    [handleInputChange],
+  )
 
   return (
     <Flex alignItems="center" justifyContent="space-between">

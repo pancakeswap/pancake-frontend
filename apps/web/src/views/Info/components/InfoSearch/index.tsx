@@ -21,6 +21,7 @@ import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import SaveIcon from 'views/Info/components/SaveIcon'
+import { isAddress } from 'utils'
 
 const Container = styled.div`
   position: relative;
@@ -323,8 +324,10 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${subgraphTokenName[token.address] ?? token.name} (${
-                          subgraphTokenSymbol[token.address] ?? token.symbol
+                        <Text>{`${
+                          (token.address && subgraphTokenName[isAddress(token.address) || undefined]) || token.name
+                        } (${
+                          (token.address && subgraphTokenSymbol[isAddress(token.address) || undefined]) || token.symbol
                         })`}</Text>
                       </Text>
                       <SaveIcon

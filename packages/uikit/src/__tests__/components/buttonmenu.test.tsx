@@ -97,6 +97,7 @@ it("renders correctly", () => {
 
     <div
         class="c0"
+        variant="primary"
       >
         <button
           class="c1"

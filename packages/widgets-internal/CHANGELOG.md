@@ -1,5 +1,27 @@
 # @pancakeswap/widgets-internal
 
+## 0.0.4
+
+### Patch Changes
+
+- 5e3efdfe9: Resolved props from styled-component and DOM
+- Updated dependencies [5e3efdfe9]
+  - @pancakeswap/uikit@0.63.6
+
+## 0.0.3
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/sdk@5.4.2
+  - @pancakeswap/v3-sdk@3.4.3
+  - @pancakeswap/farms@1.0.16
+  - @pancakeswap/uikit@0.63.5
+  - @pancakeswap/utils@5.0.5
+  - @pancakeswap/tokens@0.4.3
+  - @pancakeswap/localization@5.0.5
+
 ## 0.0.2
 
 ### Patch Changes

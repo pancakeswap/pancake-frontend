@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useSidNameForAddress } from 'hooks/useSid'
 import { useUnsNameForAddress } from 'hooks/useUns'
 import { useMemo } from 'react'

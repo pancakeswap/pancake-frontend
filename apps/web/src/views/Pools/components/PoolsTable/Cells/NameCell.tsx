@@ -1,4 +1,5 @@
-import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Skeleton, Pool } from '@pancakeswap/uikit'
+import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Skeleton } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'

@@ -1,5 +1,12 @@
 # @pancakeswap/utils
 
+## 5.0.5
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+  - @pancakeswap/localization@5.0.5
+
 ## 5.0.4
 
 ### Patch Changes

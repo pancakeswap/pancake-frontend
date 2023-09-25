@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import SwapWarningTokensConfig from 'config/constants/swapWarningTokens'
 import SafemoonWarning from './SafemoonWarning'
 import ItamWarning from './ItamWarning'
@@ -11,8 +11,9 @@ import GalaWarning from './GalaWarning'
 import ABNBWarning from './ABNBWarning'
 import XCADWarning from './XCADWarning'
 import METISWarning from './METISWarning'
+import LUSDWarning from './LUSDWarning'
 
-const { safemoon, bondly, itam, ccar, bttold, pokemoney, free, gala, abnbc, xcad, metis } =
+const { safemoon, bondly, itam, ccar, bttold, pokemoney, free, gala, abnbc, xcad, metis, lusd } =
   SwapWarningTokensConfig[ChainId.BSC]
 
 const BSC_WARNING_LIST = {
@@ -59,6 +60,10 @@ const BSC_WARNING_LIST = {
   [metis.address]: {
     symbol: metis.symbol,
     component: <METISWarning />,
+  },
+  [lusd.address]: {
+    symbol: lusd.symbol,
+    component: <LUSDWarning />,
   },
 }
 

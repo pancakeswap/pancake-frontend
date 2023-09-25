@@ -1,4 +1,5 @@
-import { ChainId, WETH9, ERC20Token } from '@pancakeswap/sdk'
+import { WETH9, ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import { CAKE, USDC, USDT, WBTC_ETH } from './common'
 
@@ -271,5 +272,29 @@ export const ethereumTokens = {
     'CYBER',
     'CyberConnect',
     'https://cyberconnect.me/',
+  ),
+  woo: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x4691937a7508860F876c9c0a2a617E7d9E945D4B',
+    18,
+    'WOO',
+    'Wootrade Network',
+    'https://woo.network',
+  ),
+  pyusd: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x6c3ea9036406852006290770BEdFcAbA0e23A0e8',
+    6,
+    'PYUSD',
+    'PayPal USD',
+    'https://www.paypal.com/pyusd',
+  ),
+  roci: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xF51092Fe93B4E9282f42c459F05D93D2D079549e',
+    18,
+    'ROCI',
+    'RociFi',
+    'https://roci.fi/',
   ),
 }

@@ -11,6 +11,7 @@ import {
   useTooltip,
   FarmMultiplierInfo,
 } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/chains'
 
 export interface ExpandableSectionProps {
   scanAddress?: { link: string; chainId?: number; icon?: ReactElement }
@@ -128,7 +129,13 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       )}
       {scanAddress && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <StyledScanLink icon={scanAddress.icon} chainId={scanAddress.chainId} href={scanAddress.link}>
+          <StyledScanLink
+            icon={scanAddress.icon}
+            useBscCoinFallback={
+              scanAddress.chainId ? [ChainId.BSC, ChainId.BSC_TESTNET].includes(scanAddress.chainId) : false
+            }
+            href={scanAddress.link}
+          >
             {t('View Contract')}
           </StyledScanLink>
         </Flex>

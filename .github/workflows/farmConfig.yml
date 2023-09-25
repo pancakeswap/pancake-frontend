@@ -9,6 +9,7 @@ on:
       - '!packages/tokens/src/common.ts'
       - '!packages/tokens/src/helpers.ts'
       - '!packages/tokens/src/index.ts'
+  workflow_dispatch:
 
 jobs:
   publish:

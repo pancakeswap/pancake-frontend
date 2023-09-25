@@ -60,9 +60,13 @@ export interface LP2ChildrenProps {
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
   approveACallback: () => Promise<SendTransactionResult>
+  revokeACallback: () => Promise<SendTransactionResult>
+  currentAllowanceA: CurrencyAmount<Currency> | undefined
   approvalA: ApprovalState
   showFieldBApproval: boolean
   approveBCallback: () => Promise<SendTransactionResult>
+  revokeBCallback: () => Promise<SendTransactionResult>
+  currentAllowanceB: CurrencyAmount<Currency> | undefined
   approvalB: ApprovalState
   onAdd: () => Promise<void>
   onPresentAddLiquidityModal: () => void
@@ -154,14 +158,18 @@ export default function AddLiquidity({
   )
 
   // check whether the user has approved the router on the tokens
-  const { approvalState: approvalA, approveCallback: approveACallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_A],
-    V2_ROUTER_ADDRESS[chainId],
-  )
-  const { approvalState: approvalB, approveCallback: approveBCallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_B],
-    V2_ROUTER_ADDRESS[chainId],
-  )
+  const {
+    approvalState: approvalA,
+    approveCallback: approveACallback,
+    revokeCallback: revokeACallback,
+    currentAllowance: currentAllowanceA,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_A], V2_ROUTER_ADDRESS[chainId])
+  const {
+    approvalState: approvalB,
+    approveCallback: approveBCallback,
+    revokeCallback: revokeBCallback,
+    currentAllowance: currentAllowanceB,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_B], V2_ROUTER_ADDRESS[chainId])
 
   const addTransaction = useTransactionAdder()
 
@@ -351,9 +359,13 @@ export default function AddLiquidity({
     showFieldAApproval,
     approveACallback,
     approvalA,
+    revokeACallback,
+    currentAllowanceA,
     showFieldBApproval,
     approveBCallback,
     approvalB,
+    revokeBCallback,
+    currentAllowanceB,
     onAdd,
     onPresentAddLiquidityModal,
     buttonDisabled,

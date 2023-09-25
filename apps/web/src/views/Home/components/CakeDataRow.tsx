@@ -1,13 +1,13 @@
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Balance, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { formatBigInt, formatLocalisedCompactNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { cakeVaultV2ABI } from '@pancakeswap/pools'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useEffect, useState } from 'react'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { styled } from 'styled-components'
 import useSWR from 'swr'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
@@ -119,7 +119,7 @@ const CakeDataRow = () => {
       refreshInterval: SLOW_INTERVAL,
     },
   )
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const mcap = cakePriceBusd.times(circulatingSupply)
   const mcapString = formatLocalisedCompactNumber(mcap.toNumber())
 

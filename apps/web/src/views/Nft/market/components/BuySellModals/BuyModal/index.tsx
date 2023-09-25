@@ -1,7 +1,7 @@
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { formatEther, parseUnits } from 'viem'
 import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { bscTokens } from '@pancakeswap/tokens'
 import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -35,7 +35,7 @@ interface BuyModalProps extends InjectedModalProps {
 }
 
 // NFT WBNB in testnet contract is different
-const TESTNET_WBNB_NFT_ADDRESS = '0x094616f0bdfb0b526bd735bf66eca0ad254ca81f'
+const TESTNET_WBNB_NFT_ADDRESS = '0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F'
 
 const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, onDismiss }) => {
   const [stage, setStage] = useState(BuyingStage.REVIEW)

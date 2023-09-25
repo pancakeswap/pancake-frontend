@@ -5,7 +5,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FC, useContext, useMemo } from 'react'
-import { multiChainPaths } from 'state/info/constant'
+import { multiChainPaths, ChainLinkSupportChains } from 'state/info/constant'
 import { styled, css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { unwrappedToken } from 'utils/wrappedCurrency'
@@ -222,7 +222,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink chainId={chainId} href={bsc}>
+              <StyledScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={bsc}>
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>
@@ -345,7 +345,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink chainId={chainId} href={bsc}>
+              <StyledScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={bsc}>
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>

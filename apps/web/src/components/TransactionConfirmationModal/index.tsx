@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { styled } from 'styled-components'
 import {
   Button,
   Text,
   ArrowUpIcon,
   Link,
-  ConfirmationPendingContent,
   Modal,
   InjectedModalProps,
   ModalProps,
@@ -14,11 +14,12 @@ import {
   AutoColumn,
   ColumnCenter,
 } from '@pancakeswap/uikit'
+import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { getBlockExploreLink, getBlockExploreName } from '../../utils'
+import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import AddToWalletButton, { AddToWalletTextOptions } from '../AddToWallet/AddToWalletButton'
 
 const Wrapper = styled.div`

@@ -22,6 +22,9 @@ import {
   EthChainIcon,
   ZkEVMIcon,
   ZkSyncIcon,
+  LineaIcon,
+  BaseIcon,
+  ArbitrumIcon,
 } from '@pancakeswap/uikit'
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -241,6 +244,30 @@ const ZkSyncTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   )
 }
 
+const ArbTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag style={{ background: '#2D374B' }} startIcon={<ArbitrumIcon width="18px" mr="4px" />} {...props}>
+      ARB
+    </Tag>
+  )
+}
+
+const BaseTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag style={{ background: '#0052FF' }} startIcon={<BaseIcon width="18px" mr="4px" />} {...props}>
+      Base
+    </Tag>
+  )
+}
+
+const LineaTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag style={{ background: '#121212' }} startIcon={<LineaIcon width="18px" mr="4px" />} {...props}>
+      Linea
+    </Tag>
+  )
+}
+
 const Tags = {
   CoreTag,
   FarmAuctionTag,
@@ -263,6 +290,9 @@ const Tags = {
   BscTag,
   ZkEVMTag,
   ZkSyncTag,
+  ArbTag,
+  BaseTag,
+  LineaTag,
 }
 
 export default Tags

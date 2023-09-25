@@ -39,7 +39,6 @@ it("renders correctly", () => {
 
     <input
         class="c0"
-        scale="md"
         type="text"
         value="input"
       />

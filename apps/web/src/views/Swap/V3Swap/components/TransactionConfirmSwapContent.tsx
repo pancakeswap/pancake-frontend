@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { ConfirmationModalContent } from '@pancakeswap/uikit'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'

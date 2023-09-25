@@ -15,11 +15,12 @@ import {
   Column,
   Input,
   LinkExternal,
-  ListLogo,
   Text,
   Toggle,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { ListLogo } from '@pancakeswap/widgets-internal'
+
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
 import Card from 'components/Card'
 import { MULTI_CHAIN_LIST_URLS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'

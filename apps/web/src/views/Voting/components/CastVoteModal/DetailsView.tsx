@@ -6,7 +6,6 @@ import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
-import { ChainId } from '@pancakeswap/sdk'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
 
 const StyledScanLink = styled(ScanLink)`
@@ -125,7 +124,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
       </VotingBoxBorder>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
         {t('Your voting power at block')}
-        <StyledScanLink chainId={ChainId.BSC} href={getBlockExploreLink(block, 'block')} ml="8px">
+        <StyledScanLink useBscCoinFallback href={getBlockExploreLink(block, 'block')} ml="8px">
           {block}
         </StyledScanLink>
       </Text>

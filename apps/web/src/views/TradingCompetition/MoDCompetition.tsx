@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { TC_MOD_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { publicClient } from 'utils/wagmi'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import {

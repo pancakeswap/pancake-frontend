@@ -1,6 +1,7 @@
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { AtomBox, AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'

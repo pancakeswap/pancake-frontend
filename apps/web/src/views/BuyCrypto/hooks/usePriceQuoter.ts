@@ -43,15 +43,15 @@ const usePriceQuotes = () => {
   )
 
   const fetchQuotes = useCallback(async () => {
-    if (!chainId) return
+    if (!chainId || !outputCurrency || !inputCurrency) return
     try {
       const providerQuotes = await fetchProviderQuotes({
-        fiatCurrency: outputCurrency.toUpperCase(),
-        cryptoCurrency: inputCurrency.toUpperCase(),
+        fiatCurrency: outputCurrency?.toUpperCase(),
+        cryptoCurrency: inputCurrency?.toUpperCase(),
         fiatAmount: Number(amount).toString(),
         network: chainId,
       })
-      const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes, ['Transak'])
+      const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes, [])
       setQuotes(sortedFilteredQuotes)
     } catch (error) {
       console.error('Error fetching price quotes:', error)

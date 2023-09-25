@@ -14,13 +14,14 @@ import {
   Skeleton,
   Box,
   useToast,
-  Pool,
 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
 
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
@@ -99,7 +100,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const [percent, setPercent] = useState(0)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime, 10), userShares)
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const usdValueStaked = new BigNumber(stakeAmount).times(cakePriceBusd)
   const formattedUsdValueStaked = cakePriceBusd.gt(0) && stakeAmount ? formatNumber(usdValueStaked.toNumber()) : ''
   const { flexibleApy } = useVaultApy()

@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { GraphQLClient } from 'graphql-request'
 import { POOL_HIDE } from '../../constants'
 import { ChartDayData, PoolChartEntry, PoolData } from '../../types'

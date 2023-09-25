@@ -12,7 +12,7 @@ import {
 } from './actions'
 
 export interface BuyCryptoState {
-  readonly typedValue: string
+  readonly typedValue: string | undefined
   readonly recipient: string | null
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined
@@ -20,10 +20,10 @@ export interface BuyCryptoState {
   readonly [Field.OUTPUT]: {
     readonly currencyId: string | undefined
   }
-  readonly minAmount: number
-  readonly minBaseAmount: number
-  readonly maxAmount: number
-  readonly maxBaseAmount: number
+  readonly minAmount: number | undefined
+  readonly minBaseAmount: number | undefined
+  readonly maxAmount: number | undefined
+  readonly maxBaseAmount: number | undefined
   readonly userIpAddress: string | null
 }
 
@@ -36,10 +36,10 @@ const initialState: BuyCryptoState = {
   [Field.OUTPUT]: {
     currencyId: '',
   },
-  minAmount: null,
-  minBaseAmount: null,
-  maxAmount: null,
-  maxBaseAmount: null,
+  minAmount: undefined,
+  minBaseAmount: undefined,
+  maxAmount: undefined,
+  maxBaseAmount: undefined,
   userIpAddress: null,
 }
 

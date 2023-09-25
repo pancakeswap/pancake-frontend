@@ -13,13 +13,15 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { usePriceCakeUSD, useFarmFromPid } from 'state/farms/hooks'
+import { useFarmFromPid } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import BigNumber from 'bignumber.js'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
-import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
+import { WNATIVE, NATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { useAccount } from 'wagmi'
 import { useIsBloctoETH } from 'views/Farms'
@@ -149,7 +151,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { tokenBalance, stakedBalance, allowance } = userData || {}
 
   const router = useRouter()
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({

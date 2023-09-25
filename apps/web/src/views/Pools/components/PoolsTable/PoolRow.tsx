@@ -1,5 +1,7 @@
 import { memo, useCallback, useMemo } from 'react'
-import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { usePool, useDeserializedPoolByVaultKey, useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'

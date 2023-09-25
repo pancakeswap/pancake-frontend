@@ -1,6 +1,6 @@
 import { getPoolsConfig, isLegacyPool, SUPPORTED_CHAIN_IDS, LegacySerializedPoolConfig } from '@pancakeswap/pools'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { transformPool, transformUserData } from 'state/pools/helpers'
 import { SerializedPool } from 'state/types'

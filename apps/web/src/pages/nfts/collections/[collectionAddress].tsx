@@ -3,6 +3,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { SWRConfig, unstable_serialize } from 'swr'
 import { getCollection } from 'state/nftMarket/helpers'
 import CollectionPageRouter from 'views/Nft/market/Collection/CollectionPageRouter'
+import SubMenu from 'views/Nft/market/components/SubMenu'
 
 const CollectionPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
@@ -11,6 +12,7 @@ const CollectionPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getSta
         fallback,
       }}
     >
+      <SubMenu />
       <CollectionPageRouter />
     </SWRConfig>
   )

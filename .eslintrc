@@ -4,9 +4,11 @@
     "browser": true,
     "jest": true
   },
-  "plugins": ["lodash"],
+  "plugins": ["lodash", "address"],
   "extends": ["@pancakeswap/eslint-config-pancake", "plugin:react/jsx-runtime"],
   "rules": {
+    "address/addr-type": ["warn", "checksum"],
+    "no-empty-function": 0,
     "no-restricted-syntax": 0,
     "import/no-unresolved": 0,
     "no-console": ["warn", { "allow": ["info", "warn", "error", "debug", "time", "timeLog", "timeEnd"] }],

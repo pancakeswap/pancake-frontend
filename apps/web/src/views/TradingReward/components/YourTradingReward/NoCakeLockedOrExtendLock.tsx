@@ -1,9 +1,11 @@
 import { useMemo } from 'react'
-import { Box, Text, Flex, Pool, SkeletonV2 } from '@pancakeswap/uikit'
+import { Box, Text, Flex, SkeletonV2 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -39,7 +41,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   thresholdLockTime,
 }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { stakingToken, stakingTokenPrice, userData: poolUserData } = pool ?? {}
   const {
     lockEndTime,
