@@ -24,6 +24,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useSwapState } from 'state/swap/hooks'
 import { ApprovalState } from 'hooks/useApproveCallback'
+import { useDebounce } from '@pancakeswap/hooks'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import { ConfirmModalState, PendingConfirmModalState } from '../types'
 
@@ -31,6 +32,7 @@ import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContaine
 import { SwapTransactionErrorContent } from '../../components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
 import { ApproveStepFlow } from './ApproveStepFlow'
+import { useWallchainStatus } from '../hooks/useWallchain'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean
@@ -74,6 +76,8 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippage()
   const { recipient } = useSwapState()
+  const [wallchainStatus] = useWallchainStatus()
+  const isBonus = useDebounce(wallchainStatus === 'found', 500)
 
   const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
 
@@ -91,7 +95,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 
     if (confirmModalState === ConfirmModalState.RESETTING_APPROVAL) {
-      return <ApproveModalContent title={t('Reset Approval on USDT')} isMM={isMM} />
+      return <ApproveModalContent title={t('Reset Approval on USDT')} isMM={isMM} isBonus={isBonus} />
     }
 
     if (
@@ -103,6 +107,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
         <ApproveModalContent
           title={t('Enable spending %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })}
           isMM={isMM}
+          isBonus={isBonus}
         />
       )
     }
@@ -199,6 +204,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     )
   }, [
     isMM,
+    isBonus,
     trade,
     txHash,
     isRFQReady,
