@@ -262,7 +262,7 @@ export default {
   },
   fixedStaking: {
     [ChainId.ETHEREUM]: '0x',
-    [ChainId.BSC]: '0xe7E38878908bC23778606F48c1071297A30C953A',
-    [ChainId.BSC_TESTNET]: '0xe7E38878908bC23778606F48c1071297A30C953A',
+    [ChainId.BSC]: '0x705fD53Ba9Ce5cae72C7bff37c790B8877a219E6',
+    [ChainId.BSC_TESTNET]: '0x',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
