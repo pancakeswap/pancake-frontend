@@ -45,6 +45,7 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
+    "@pancakeswap/tokens": "workspace:*",
     "@types/chai": "^4.2.18",
     "@types/jest": "^29.5.0",
     "@types/mocha": "^8.2.2",
