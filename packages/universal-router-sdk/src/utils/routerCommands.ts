@@ -150,5 +150,6 @@ export type RouterCommand = {
 export function createCommand(type: CommandType, parameters: any[]): RouterCommand {
   // const encodedInput = encodePacked(ABI_DEFINITION[type], parameters)
   const encodedInput = defaultAbiCoder.encode(ABI_DEFINITION[type], parameters)
+
   return { type, encodedInput }
 }

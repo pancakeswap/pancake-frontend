@@ -1,11 +1,33 @@
-import { CurrencyAmount, Ether as PancakeEther, Pair as PancakePair, Percent, TradeType, computePairAddress as computePancakePairAddress, Currency, Token, Route as RouteV2, Trade as TradeV2 } from '@pancakeswap/sdk'
+import {
+  CurrencyAmount,
+  Ether as PancakeEther,
+  Pair as PancakePair,
+  Percent,
+  TradeType,
+  computePairAddress as computePancakePairAddress,
+  Currency,
+  Token,
+  Route as RouteV2,
+  Trade as TradeV2,
+} from '@pancakeswap/sdk'
 import { Validation } from '@pancakeswap/smart-router/dist/evm/v3-router/utils/multicallExtended'
-import { FeeAmount, FeeOptions, FeeAmount as PancakeFeeAmont, Pool, Route as RouteV3, Trade as TradeV3, TICK_SPACINGS, encodeSqrtRatioX96, nearestUsableTick, TickMath } from '@pancakeswap/v3-sdk'
+import {
+  FeeAmount,
+  FeeOptions,
+  FeeAmount as PancakeFeeAmont,
+  Pool,
+  Route as RouteV3,
+  Trade as TradeV3,
+  TICK_SPACINGS,
+  encodeSqrtRatioX96,
+  nearestUsableTick,
+  TickMath,
+} from '@pancakeswap/v3-sdk'
 import IUniswapV3Pool from '../../src/abis/IUniswapV3Pool.json'
 import { ethers } from 'ethers'
 import JSBI from 'jsbi'
 import { Permit2Permit } from '../../src/utils/inputTokens'
-import { PoolType, SmartRouterTrade, V2Pool, V3Pool } from '../../src/utils/types'
+import { SmartRouterTrade, V3Pool, V2Pool, PoolType } from '@pancakeswap/smart-router/evm'
 
 export interface PancakeSwapOptions {
   slippageTolerance: Percent
@@ -60,15 +82,33 @@ export function getProvider(): ethers.providers.BaseProvider {
   return new ethers.providers.JsonRpcProvider('https://goerli.infura.io/v3/3f4ad76a6b444342bde910d098ff8a4e')
 }
 
-export async function getPancakePair(tokenA: Token, tokenB: Token): Promise<{ pair: PancakePair, reserve0: any, reserve1: any }> {
-  const pairAddress = computePancakePairAddress({ factoryAddress: '0x1097053Fd2ea711dad45caCcc45EfF7548fCB362', tokenA, tokenB })
+export async function getPancakePair(
+  tokenA: Token,
+  tokenB: Token
+): Promise<{ pair: PancakePair; reserve0: any; reserve1: any }> {
+  const pairAddress = computePancakePairAddress({
+    factoryAddress: '0x1097053Fd2ea711dad45caCcc45EfF7548fCB362',
+    tokenA,
+    tokenB,
+  })
   const contract = new ethers.Contract(pairAddress, V2_ABI, getProvider())
   const { reserve0, reserve1 } = await contract.getReserves()
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
-  return { pair: new PancakePair(CurrencyAmount.fromRawAmount(token0, reserve0), CurrencyAmount.fromRawAmount(token1, reserve1)), reserve0: reserve0, reserve1: reserve1 }
+  return {
+    pair: new PancakePair(
+      CurrencyAmount.fromRawAmount(token0, reserve0),
+      CurrencyAmount.fromRawAmount(token1, reserve1)
+    ),
+    reserve0: reserve0,
+    reserve1: reserve1,
+  }
 }
 
-export async function getPancakePool(tokenA: Token, tokenB: Token, feeAmount: PancakeFeeAmont): Promise<{ pool: Pool, liquidity: any, tick: any}> {
+export async function getPancakePool(
+  tokenA: Token,
+  tokenB: Token,
+  feeAmount: PancakeFeeAmont
+): Promise<{ pool: Pool; liquidity: any; tick: any }> {
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
   const poolAddress = Pool.getAddress(token0, token1, feeAmount)
   const contract = new ethers.Contract(poolAddress, IUniswapV3Pool.abi, getProvider())
@@ -77,23 +117,27 @@ export async function getPancakePool(tokenA: Token, tokenB: Token, feeAmount: Pa
   liquidity = JSBI.BigInt(liquidity.toString())
   sqrtPriceX96 = JSBI.BigInt(sqrtPriceX96.toString())
 
-  return { pool: new Pool(token0, token1, feeAmount, sqrtPriceX96, liquidity, tick, [
-    {
-      index: nearestUsableTick(tick, TICK_SPACINGS[feeAmount]),
-      liquidityNet: liquidity,
-      liquidityGross: liquidity,
-    },
-    {
-      index: nearestUsableTick(tick, TICK_SPACINGS[feeAmount]),
-      liquidityNet: JSBI.multiply(liquidity, JSBI.BigInt('-1')),
-      liquidityGross: liquidity,
-    },
-  ]),  liquidity, tick }
+  return {
+    pool: new Pool(token0, token1, feeAmount, sqrtPriceX96, liquidity, tick, [
+      {
+        index: nearestUsableTick(tick, TICK_SPACINGS[feeAmount]),
+        liquidityNet: liquidity,
+        liquidityGross: liquidity,
+      },
+      {
+        index: nearestUsableTick(tick, TICK_SPACINGS[feeAmount]),
+        liquidityNet: JSBI.multiply(liquidity, JSBI.BigInt('-1')),
+        liquidityGross: liquidity,
+      },
+    ]),
+    liquidity,
+    tick,
+  }
 }
 
 export function pancakeSwapOptions(options: Partial<PancakeSwapOptions>): PancakeSwapOptions {
   // If theres a fee this counts as "slippage" for the amount out, so take it into account
-let slippageTolerance = new Percent(10, 100)
+  let slippageTolerance = new Percent(10, 100)
   if (!!options.fee) slippageTolerance = slippageTolerance.add(options.fee.fee)
   return Object.assign(
     {
