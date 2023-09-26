@@ -16,7 +16,7 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { useAllOnRampTokens } from 'hooks/Tokens'
 import { ReactNode } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { fiatCurrencyMap, getNetworkDisplay } from 'views/BuyCrypto/constants'
 
 const DropDownContainer = styled.div<{ error: boolean }>`

@@ -6,7 +6,7 @@ import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModa
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { CURRENT_CAMPAIGN_TIMESTAMP, ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
