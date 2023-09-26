@@ -356,7 +356,6 @@ const CakeSection: React.FC = () => {
   const drawSequenceImage = useDrawSequenceImages(
     '/assets/cake-token-sequence',
     checkIsIOS() ? 201 : 0,
-    seqInterval,
     canvasRef,
     () => clearInterval(seqInterval),
   )

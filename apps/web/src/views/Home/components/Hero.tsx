@@ -2,13 +2,12 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useTheme from 'hooks/useTheme'
-import Image from 'next/image'
 import { useLayoutEffect, useRef } from 'react'
 import { keyframes, styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { useDrawCanvas } from '../hooks/useDrawCanvas'
-import { useIsIOS } from '../hooks/useIsIOS'
-import heroGif from '../images/hero.gif'
+import { useDrawSequenceImages } from '../hooks/useDrawSequence'
+import { useIsIOS, checkIsIOS } from '../hooks/useIsIOS'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 
 const flyingAnim = () => keyframes`
@@ -54,12 +53,19 @@ const CakeBox = styled.div`
   > canvas {
     transform: scale(0.33) translate(-50%, -50%);
     transform-origin: top left;
+    &.is-ios {
+      transform: scale(0.75) translate(-50%, -50%);
+    }
   }
+
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 500px;
     height: 500px;
     > canvas {
       transform: scale(0.45) translate(-50%, -50%);
+      &.is-ios {
+        transform: scale(1) translate(-50%, -50%);
+      }
     }
     transform-origin: center center;
   }
@@ -67,6 +73,9 @@ const CakeBox = styled.div`
     > canvas {
       transform: scale(0.6) translate(-50%, -50%);
       transform-origin: top left;
+      &.is-ios {
+        transform: scale(1) translate(-50%, -50%);
+      }
     }
     position: relative;
     width: 605px;
@@ -106,6 +115,7 @@ const StyledText = styled(Text)`
 `
 
 let canvasInterval = 0
+let seqsInterval = 0
 const fps = 60
 const width = 1080
 const height = 1080
@@ -152,8 +162,25 @@ const Hero = () => {
       rock03VideoRef.current?.play()
     }, 3000)
 
-    return () => clearInterval(canvasInterval)
+    return () => {
+      clearInterval(seqsInterval)
+      clearInterval(canvasInterval)
+    }
   }, [])
+
+  const drawSequenceImage = useDrawSequenceImages(
+    '/assets/hero-sequence',
+    checkIsIOS() ? 70 : 0,
+    canvasRef,
+    () => clearInterval(seqsInterval),
+    () => {
+      seqsInterval = window.setInterval(() => {
+        drawSequenceImage(500, 500)
+      }, 1000 / 20)
+    },
+    true,
+  )
+
   return (
     <>
       <style jsx global>
@@ -248,11 +275,15 @@ const Hero = () => {
               alt={t('Lunar bunny')}
               unoptimized
             /> */}
-            {isIOS ? (
-              <Image src={heroGif} alt="hero-gif" />
-            ) : (
-              <CakeBox>
-                <CakeCanvas width={width} height={height} ref={canvasRef} />
+
+            <CakeBox>
+              <CakeCanvas
+                className={isIOS ? 'is-ios' : undefined}
+                width={isIOS ? 500 : width}
+                height={isIOS ? 500 : height}
+                ref={canvasRef}
+              />
+              {!isIOS && (
                 <VideoWrapper>
                   <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
                     <source src="/assets/bunnyv2.webm" type="video/webm" />
@@ -274,8 +305,8 @@ const Hero = () => {
                     <source src="/assets/rock03.webm" type="video/webm" />
                   </CakeVideo>
                 </VideoWrapper>
-              </CakeBox>
-            )}
+              )}
+            </CakeBox>
           </BunnyWrapper>
           {/* <StarsWrapper>
             <CompositeImage {...starsImage} />
