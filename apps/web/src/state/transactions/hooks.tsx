@@ -213,7 +213,7 @@ export function useHasPendingRevocation(token?: Token, spender?: string) {
     // eslint-disable-next-line guard-for-in
     for (const txHash in allTransactions) {
       const tx = allTransactions[txHash]
-      if (!tx || tx.receipt || tx.type === 'approve') continue
+      if (!tx || tx.receipt || tx.type === 'approve' || !tx.approval) continue
       if (tx.approval.spender === spender && tx.approval.tokenAddress === token.address && isTransactionRecent(tx)) {
         return BigInt(tx.approval.amount)
       }
