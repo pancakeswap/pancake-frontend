@@ -20,3 +20,5 @@ export const viemClients: Record<ChainId, PublicClient> = CHAINS.reduce((prev, c
 export const getPublicClient = ({ chainId }: { chainId?: ChainId }) => {
   return viemClients[chainId!]
 }
+
+export type Provider = ({ chainId }: { chainId?: ChainId }) => PublicClient
