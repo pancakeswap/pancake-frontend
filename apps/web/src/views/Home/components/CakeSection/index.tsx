@@ -397,7 +397,7 @@ const CakeSection: React.FC = () => {
       width={isMobile ? 'calc(100% + 32px)' : '100%'}
       overflow={isMobile ? 'hidden' : 'visible'}
     >
-      <Text textAlign="center">
+      <Text textAlign="center" padding="0px 16px">
         <Text fontSize={['32px', null, null, '40px']} display="inline" fontWeight={600} lineHeight="110%">
           {t('Unlock the Full Potential of DeFi with')}
         </Text>
