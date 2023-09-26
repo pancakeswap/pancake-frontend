@@ -3,8 +3,6 @@ import { Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { useAtom, useAtomValue } from 'jotai'
 import ceil from 'lodash/ceil'
-import max from 'lodash/max'
-import min from 'lodash/min'
 import toString from 'lodash/toString'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
@@ -47,20 +45,24 @@ interface LimitQuote {
 }
 
 function getMinMaxAmountCap(quotes: LimitQuote[]) {
-  return quotes.reduce((bestQuote, quote) => {
+  return quotes.reduce((bestQuote: LimitQuote, quote: LimitQuote) => {
     if (!bestQuote) return quote
 
+    const baseCurrency = {
+      code: bestQuote.baseCurrency.code,
+      maxBuyAmount: Math.min(bestQuote.baseCurrency.maxBuyAmount || 0, quote.baseCurrency.maxBuyAmount || 0),
+      minBuyAmount: Math.max(bestQuote.baseCurrency.minBuyAmount || 0, quote.baseCurrency.minBuyAmount || 0),
+    }
+
+    const quoteCurrency = {
+      code: bestQuote.quoteCurrency.code,
+      maxBuyAmount: Math.min(bestQuote.quoteCurrency.maxBuyAmount || 0, quote.quoteCurrency.maxBuyAmount || 0),
+      minBuyAmount: Math.max(bestQuote.quoteCurrency.minBuyAmount || 0, quote.quoteCurrency.minBuyAmount || 0),
+    }
+
     return {
-      baseCurrency: {
-        code: bestQuote.baseCurrency.code,
-        maxBuyAmount: min([bestQuote.baseCurrency.maxBuyAmount, quote.baseCurrency.maxBuyAmount]),
-        minBuyAmount: max([bestQuote.baseCurrency.minBuyAmount, quote.baseCurrency.minBuyAmount]),
-      },
-      quoteCurrency: {
-        code: bestQuote.quoteCurrency.code,
-        maxBuyAmount: min([bestQuote.quoteCurrency.maxBuyAmount, quote.quoteCurrency.maxBuyAmount]),
-        minBuyAmount: max([bestQuote.quoteCurrency.minBuyAmount, quote.quoteCurrency.minBuyAmount]),
-      },
+      baseCurrency,
+      quoteCurrency,
     }
   })
 }
@@ -86,13 +88,13 @@ export const fetchMinimumBuyAmount = async (
 
 // from the current swap inputs, compute the best trade and return it.
 export function useBuyCryptoErrorInfo(
-  typedValue: string,
-  minAmount: number,
-  minBaseAmount: number,
-  maxAmount: number,
-  maxBaseAmount: number,
-  inputCurrencyId: string,
-  outputCurrencyId: string,
+  typedValue: string | undefined,
+  minAmount: number | undefined,
+  minBaseAmount: number | undefined,
+  maxAmount: number | undefined,
+  maxBaseAmount: number | undefined,
+  inputCurrencyId: string | undefined,
+  outputCurrencyId: string | undefined,
 ): {
   amountError: string
   inputError: string
@@ -102,11 +104,23 @@ export function useBuyCryptoErrorInfo(
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  let inputError: string | undefined
+  if (
+    !typedValue ||
+    !minAmount ||
+    !minBaseAmount ||
+    !maxAmount ||
+    !maxBaseAmount ||
+    !inputCurrencyId ||
+    !outputCurrencyId
+  ) {
+    return { amountError: '', inputError: '' }
+  }
+
+  let inputError = ''
+  let amountError = ''
+
   const isMinError = Number(typedValue) < minAmount
   const isMaxError = Number(typedValue) > maxAmount
-
-  let amountError: undefined | string
 
   if (isMinError) {
     amountError = t(
@@ -151,8 +165,8 @@ export function useBuyCryptoErrorInfo(
   }
 
   return {
-    amountError: amountError as string,
-    inputError: inputError as string,
+    amountError,
+    inputError,
   }
 }
 
@@ -160,7 +174,7 @@ export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
   onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
-  onUsersIp: (ip: string | null) => void
+  onUsersIp: (ip: string | undefined) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -196,7 +210,7 @@ export function useBuyCryptoActionHandlers(): {
     [],
   )
 
-  const onUsersIp = useCallback((ip: string | null) => {
+  const onUsersIp = useCallback((ip: string | undefined) => {
     dispatch(
       setUsersIpAddress({
         ip,
@@ -230,7 +244,7 @@ export async function queryParametersToBuyCryptoState(
       currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
-      currencyId: defaultCurr as string,
+      currencyId: defaultCurr,
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
@@ -238,12 +252,12 @@ export async function queryParametersToBuyCryptoState(
     minBaseAmount: limitAmounts?.quoteCurrency?.minBuyAmount,
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
-    recipient: account as string,
-    userIpAddress: null,
+    recipient: account,
+    userIpAddress: undefined,
   }
 }
 
-export function calculateDefaultAmount(minAmount: number, currencyCode: string): number {
+export function calculateDefaultAmount(minAmount: number, currencyCode: string | undefined): number {
   switch (currencyCode) {
     case 'USD':
       return 300
@@ -279,12 +293,12 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
   useEffect(() => {
     const fetchData = async () => {
       if (!isReady || !chainId) return
-      const parsed = await queryParametersToBuyCryptoState(query, account as string, chainId)
+      const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
 
       dispatch(
         replaceBuyCryptoState({
           typedValue: parsed.minAmount
-            ? (toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId as string)) as string)
+            ? toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId))
             : '',
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
@@ -292,7 +306,7 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
           maxBaseAmount: parsed.maxBaseAmount,
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
-          recipient: null,
+          recipient: undefined,
         }),
       )
     }
