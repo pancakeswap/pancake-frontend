@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { isMobile } from "react-device-detect";
-import { DefaultTheme, ThemeProvider, useTheme } from "styled-components";
+import { DefaultTheme, useTheme } from "styled-components";
 import debounce from "lodash/debounce";
 import { dark, light } from "../../theme";
 import getPortalRoot from "../../util/getPortalRoot";
@@ -206,8 +206,13 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     ],
   });
 
+  const stopPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  }, []);
+
   const tooltip = (
     <StyledTooltip
+      onClick={stopPropagation}
       data-theme={isDark ? "light" : "dark"}
       {...animationMap}
       variants={animationVariants}
