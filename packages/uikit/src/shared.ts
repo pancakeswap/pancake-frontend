@@ -1,4 +1,5 @@
-import { ChainId, ERC20Token } from "@pancakeswap/chains";
+import { ERC20Token } from "@pancakeswap/sdk";
+import { ChainId } from "@pancakeswap/chains";
 
 // For StoryBook
 export const cakeToken = new ERC20Token(
