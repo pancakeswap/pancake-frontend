@@ -6,6 +6,7 @@ import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import { subgraphTokenSymbol } from 'state/info/constant'
 
+import { isAddress } from 'utils'
 import {
   MultiChainName,
   checkIsStableSwap,
@@ -23,6 +24,7 @@ interface PoolFields {
   volumeOutUSD?: string
   token0Price: string
   token1Price: string
+  timestamp: number
   token0?: {
     id: string
     symbol: string
@@ -81,6 +83,7 @@ const POOL_AT_BLOCK = (chainName: MultiChainName, block: number | null, pools: s
     ${volumeOutUSDString}
     token0Price
     token1Price
+    timestamp
     token0 {
       id
       symbol
@@ -187,6 +190,7 @@ export const fetchAllPoolDataWithAddress = async (
 
     const liquidityToken0 = current ? current.reserve0 : 0
     const liquidityToken1 = current ? current.reserve1 : 0
+    const timestamp = current.timestamp ?? 0
 
     const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
       volumeUSD,
@@ -201,13 +205,14 @@ export const fetchAllPoolDataWithAddress = async (
           token0: {
             address: current?.token0?.id ?? '',
             name: current?.token0?.name ?? '',
-            symbol: subgraphTokenSymbol[current?.token0?.id?.toLocaleLowerCase()] ?? current?.token0?.symbol ?? '',
+            symbol: subgraphTokenSymbol[isAddress(current?.token0?.id) || undefined] ?? current?.token0?.symbol ?? '',
           },
           token1: {
             address: current?.token1?.id ?? '',
             name: current?.token1?.name ?? '',
-            symbol: subgraphTokenSymbol[current?.token1?.id?.toLocaleLowerCase()] ?? current?.token1?.symbol ?? '',
+            symbol: subgraphTokenSymbol[isAddress(current?.token0?.id) || undefined] ?? current?.token1?.symbol ?? '',
           },
+          timestamp,
           token0Price: current.token0Price,
           token1Price: current.token1Price,
           volumeUSD,

@@ -39,7 +39,7 @@ describe('transformUserResponse', () => {
     averageBNB: '0.0101753905736882928',
     block: '9316304',
     createdAt: '1626767110',
-    id: '0x54f292760e248cfe64191c7d85260f9ddaa01f2b',
+    id: '0x54F292760e248cFE64191c7d85260F9DdaA01F2B',
     netBNB: '0.057914277602874121',
     totalBNB: '0.050876952868441464',
     totalBNBBear: '0.050876952868441464',
@@ -58,7 +58,7 @@ describe('transformUserResponse', () => {
       averageBNB: 0.010175390573688292,
       block: 9316304,
       createdAt: 1626767110,
-      id: '0x54f292760e248cfe64191c7d85260f9ddaa01f2b',
+      id: '0x54F292760e248cFE64191c7d85260F9DdaA01F2B',
       netBNB: 0.05791427760287412,
       totalBNB: 0.05087695286844146,
       totalBNBBear: 0.05087695286844146,
@@ -79,7 +79,7 @@ describe('transformBetResponse', () => {
     averageBNB: '0.005',
     block: '9315031',
     createdAt: '1626763291',
-    id: '0x335d6a2c3dd0c04a21f41d30c9ee75e640a87890',
+    id: '0x335d6a2c3DD0c04a21f41d30C9ee75e640a87890',
     netBNB: '-0.0055',
     totalBNB: '0.005',
     totalBNBBear: '0.005',
@@ -129,7 +129,7 @@ describe('transformBetResponse', () => {
         averageBNB: 0.005,
         block: 9315031,
         createdAt: 1626763291,
-        id: '0x335d6a2c3dd0c04a21f41d30c9ee75e640a87890',
+        id: '0x335d6a2c3DD0c04a21f41d30C9ee75e640a87890',
         netBNB: -0.0055,
         totalBNB: 0.005,
         totalBNBBear: 0.005,
@@ -145,7 +145,7 @@ describe('transformBetResponse', () => {
     })
   })
 
-  it('returns a correctly transformed betresponse with round', () => {
+  it('returns a correctly transformed bet response with round', () => {
     const betResponseWithRound = {
       amount: '0.001030231215331515',
       block: '9318174',
@@ -233,7 +233,7 @@ describe('transformBetResponse', () => {
         averageBNB: 0.005,
         block: 9315031,
         createdAt: 1626763291,
-        id: '0x335d6a2c3dd0c04a21f41d30c9ee75e640a87890',
+        id: '0x335d6a2c3DD0c04a21f41d30C9ee75e640a87890',
         netBNB: -0.0055,
         totalBNB: 0.005,
         totalBNBBear: 0.005,

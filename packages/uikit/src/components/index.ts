@@ -59,6 +59,7 @@ export * from "./PaginationButton";
 export * from "./LangSelector";
 export * from "./ReactMarkdown";
 export * from "./DateStep";
+export * from "./SeverityErrorText";
 export * from "./ReleasedChart";
 export * from "./BunnyKnownPlaceholder";
 export * from "./DropdownMenu";

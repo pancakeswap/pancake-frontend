@@ -1,4 +1,5 @@
-import { ChainId, ERC20Token } from '@pancakeswap/sdk'
+import { ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 export const CAKE_MAINNET = new ERC20Token(
   ChainId.BSC,
@@ -270,13 +271,7 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
-  [ChainId.BASE]: new ERC20Token(
-    ChainId.BASE,
-    '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
-    6,
-    'USDbC',
-    'USD Base Coin',
-  ),
+  [ChainId.BASE]: new ERC20Token(ChainId.BASE, '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', 6, 'USDC', 'USD Coin'),
   [ChainId.OPBNB_TESTNET]: new ERC20Token(
     ChainId.OPBNB_TESTNET,
     '0x845E27B8A4ad1Fe3dc0b41b900dC8C1Bb45141C3',

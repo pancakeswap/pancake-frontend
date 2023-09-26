@@ -7,13 +7,13 @@ import {
   AutoColumn,
   Button,
   ColumnCenter,
-  ConfirmationPendingContent,
   InjectedModalProps,
   Modal,
   ModalProps,
   ScanLink,
   Text,
 } from '@pancakeswap/uikit'
+import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'

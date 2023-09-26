@@ -1,16 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, Token, Trade, TradeType } from '@pancakeswap/sdk'
-import {
-  BottomDrawer,
-  Box,
-  Button,
-  Flex,
-  Link,
-  Swap as SwapUI,
-  useMatchBreakpoints,
-  useModal,
-  AutoColumn,
-} from '@pancakeswap/uikit'
+import { BottomDrawer, Box, Button, Flex, Link, useMatchBreakpoints, useModal, AutoColumn } from '@pancakeswap/uikit'
+import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
+
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import ConnectWalletButton from 'components/ConnectWalletButton'

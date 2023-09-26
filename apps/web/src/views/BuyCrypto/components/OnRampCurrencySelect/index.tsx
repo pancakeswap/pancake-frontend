@@ -7,11 +7,11 @@ import {
   Button,
   CurrencyLogo,
   Flex,
-  NumericalInput,
   Skeleton,
   Text,
   useModal,
 } from '@pancakeswap/uikit'
+import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { useAllOnRampTokens } from 'hooks/Tokens'

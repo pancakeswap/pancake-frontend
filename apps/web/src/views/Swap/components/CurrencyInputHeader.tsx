@@ -8,12 +8,12 @@ import {
   HotIcon,
   IconButton,
   NotificationDot,
-  Swap,
   Text,
   TooltipText,
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { Swap } from '@pancakeswap/widgets-internal'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
 import { useExpertMode } from '@pancakeswap/utils/user'

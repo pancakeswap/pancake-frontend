@@ -1,3 +1,4 @@
+/* eslint-disable address/addr-type */
 import { SerializedFarm } from '@pancakeswap/farms'
 import farms1 from '@pancakeswap/farms/constants/1'
 import farms56 from '@pancakeswap/farms/constants/56'

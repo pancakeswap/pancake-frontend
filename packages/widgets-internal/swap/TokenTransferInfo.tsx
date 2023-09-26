@@ -1,13 +1,13 @@
-import { Currency } from "@pancakeswap/sdk";
-import { Text, Box, Flex, ArrowForwardIcon, CurrencyLogo } from "../../components";
+import { Currency } from '@pancakeswap/sdk'
+import { Text, Box, Flex, ArrowForwardIcon, CurrencyLogo } from '@pancakeswap/uikit'
 
 interface TokenTransferInfoProps {
-  symbolA: string;
-  symbolB: string;
-  amountA: string;
-  amountB: string;
-  currencyA: Currency;
-  currencyB: Currency;
+  symbolA: string
+  symbolB: string
+  amountA: string
+  amountB: string
+  currencyA: Currency
+  currencyB: Currency
 }
 
 const TokenTransferInfo: React.FC<TokenTransferInfoProps> = ({
@@ -32,7 +32,7 @@ const TokenTransferInfo: React.FC<TokenTransferInfoProps> = ({
         <CurrencyLogo size="20px" currency={currencyB} />
       </Flex>
     </Flex>
-  );
-};
+  )
+}
 
-export default TokenTransferInfo;
+export default TokenTransferInfo

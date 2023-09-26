@@ -1,5 +1,16 @@
 # routing-api
 
+## 0.2.10
+
+### Patch Changes
+
+- 1831356d9: refactor: Move ChainsId usage from Sdk to Chains package
+- Updated dependencies [1831356d9]
+  - @pancakeswap/sdk@5.5.0
+  - @pancakeswap/smart-router@4.8.7
+  - @pancakeswap/v3-sdk@3.4.4
+  - @pancakeswap/farms@1.0.17
+
 ## 0.2.9
 
 ### Patch Changes

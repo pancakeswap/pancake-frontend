@@ -23,7 +23,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xB8614FABf4bbA416b9dB620e12272AD63b14387E', // Auction #20
     farmName: '8PAY-BUSD',
-    tokenAddress: '0xfeea0bdd3d07eb6fe305938878c0cadbfa169042',
+    tokenAddress: '0xFeea0bDd3D07eb6FE305938878C0caDBFa169042',
     quoteToken: bscTokens.busd,
     tokenName: '8PAY',
     projectSite: 'https://8pay.network/',
@@ -262,7 +262,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     projectSite: 'https://cryptozoon.io/',
   },
   {
-    account: '0x22d56946c6cc1d4ed09f02858ddb990fcc981c55',
+    account: '0x22D56946C6cc1D4ED09f02858ddb990fCc981C55',
     farmName: 'HGET-BUSD',
     tokenAddress: '0xC7d8D35EBA58a0935ff2D5a33Df105DD9f071731',
     quoteToken: bscTokens.busd,
@@ -352,7 +352,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xeA96c1970b9E3d4258620F68Af95ddDEB5fbD68F',
     farmName: 'SALE-BNB',
-    tokenAddress: '0x97bb08ba41f033beaac315169fc566ac9e0daf52',
+    tokenAddress: '0x97BB08BA41f033bEaac315169fc566AC9E0DAF52',
     quoteToken: bscTokens.wbnb,
     tokenName: 'DxSale Network',
     projectSite: 'https://dxsale.app',
@@ -360,7 +360,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xaDB2d11817Cd16595E4454aD03F95575c3B388f2',
     farmName: 'MONI-BNB',
-    tokenAddress: '0x9573c88ae3e37508f87649f87c4dd5373c9f31e0',
+    tokenAddress: '0x9573c88aE3e37508f87649f87c4dd5373C9F31e0',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Monsta Infinite',
     projectSite: 'https://monstainfinite.com/',
@@ -368,7 +368,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xDa6e741A7f7d4d88d4210340069348704FDf21bf',
     farmName: 'PROS-BNB',
-    tokenAddress: '0xed8c8aa8299c10f067496bb66f8cc7fb338a3405',
+    tokenAddress: '0xEd8c8Aa8299C10f067496BB66f8cC7Fb338A3405',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Prosper',
     projectSite: 'https://prosper.so/',
@@ -376,7 +376,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xB651A851819638Cb120A46Db0E01Fa89006eE290',
     farmName: 'CART-BNB',
-    tokenAddress: '0x5c8c8d560048f34e5f7f8ad71f2f81a89dbd273e',
+    tokenAddress: '0x5C8C8D560048F34E5f7f8ad71f2f81a89DBd273e',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Cryptoart.ai',
     projectSite: 'https://cryptoart.ai/',
@@ -392,7 +392,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x7Db4456a73a9C94a381d244E9dfC76E83C05913E',
     farmName: 'SWAPP-BNB',
-    tokenAddress: '0x0efe961c733ff46ce34c56a73eba0c6a0e18e0f5',
+    tokenAddress: '0x0efE961C733FF46ce34C56a73eba0c6a0E18E0F5',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Swapp Protocol',
     projectSite: 'https://swapp.ee',
@@ -400,7 +400,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xB93A33f4cA46c1E1D65387313706cB8728B75703',
     farmName: 'AIRT-BNB',
-    tokenAddress: '0x016cf83732f1468150d87dcc5bdf67730b3934d3',
+    tokenAddress: '0x016CF83732f1468150D87dCC5BdF67730B3934D3',
     quoteToken: bscTokens.wbnb,
     tokenName: 'AirNFTs',
     projectSite: 'https://airnfts.com/',
@@ -408,7 +408,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x377056416332d017D2c2d140A097Ba8c2872bb60',
     farmName: 'XMS-BNB',
-    tokenAddress: '0x7859b01bbf675d67da8cd128a50d155cd881b576',
+    tokenAddress: '0x7859B01BbF675d67Da8cD128a50D155cd881B576',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Mars Ecosystem',
     projectSite: 'https://marsecosystem.com/',
@@ -432,7 +432,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xc55A7183F6D060271010A4441c106f6a81D46E34',
     farmName: 'WSPP-BNB',
-    tokenAddress: '0x46d502fac9aea7c5bc7b13c8ec9d02378c33d36f',
+    tokenAddress: '0x46D502Fac9aEA7c5bC7B13C8Ec9D02378C33D36F',
     quoteToken: bscTokens.wbnb,
     tokenName: 'WolfSafePoorPeople',
     projectSite: 'https://wolfsafepoorpeople.com',
@@ -440,7 +440,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xC1d204015268CD808B765f024e04CE01d5Bff58D',
     farmName: 'SHEESHA-BNB',
-    tokenAddress: '0x232fb065d9d24c34708eedbf03724f2e95abe768',
+    tokenAddress: '0x232FB065D9d24c34708eeDbF03724f2e95ABE768',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Sheesha Finance',
     projectSite: 'https://sheeshafinance.io',
@@ -448,7 +448,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xb2bef43cb487bFc89770e2e88C23f6a2163133EE',
     farmName: 'BSCS-BNB',
-    tokenAddress: '0xbcb24afb019be7e93ea9c43b7e22bb55d5b7f45d',
+    tokenAddress: '0xbcb24AFb019BE7E93EA9C43B7E22Bb55D5B7f45D',
     quoteToken: bscTokens.wbnb,
     tokenName: 'BSCStation',
     projectSite: 'https://bscstation.finance/',
@@ -480,7 +480,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x8b519cD36b6a3179a4C560FcE987203E33df0366',
     farmName: 'HERA-BNB',
-    tokenAddress: '0x49c7295ff86eabf5bf58c6ebc858db4805738c01',
+    tokenAddress: '0x49C7295ff86EaBf5bf58C6eBC858DB4805738c01',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Hero Arena',
     projectSite: 'https://heroarena.app/',
@@ -560,7 +560,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x20C99830967a18563D2D3eD51094aDD9FBE06e2A',
     farmName: 'SDAO-BNB',
-    tokenAddress: '0x90ed8f1dc86388f14b64ba8fb4bbd23099f18240',
+    tokenAddress: '0x90Ed8F1dc86388f14b64ba8fb4bbd23099f18240',
     quoteToken: bscTokens.wbnb,
     tokenName: 'SingularityDAO',
     projectSite: 'https://app.singularitydao.ai/',
@@ -640,7 +640,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x5Be8ed8EbCF5215A45E84B864526EfdF6F584152',
     farmName: 'BABY-BNB',
-    tokenAddress: '0x53e562b9b7e5e94b81f10e96ee70ad06df3d2657',
+    tokenAddress: '0x53E562b9B7E5E94b81f10e96Ee70Ad06df3D2657',
     quoteToken: bscTokens.wbnb,
     tokenName: 'BabySwap',
     projectSite: 'https://home.babyswap.finance/',
@@ -656,7 +656,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xF113b815e24Cc866137c4933b39fe2878ED1F2d2',
     farmName: 'RDR-BUSD',
-    tokenAddress: '0x92da433da84d58dfe2aade1943349e491cbd6820',
+    tokenAddress: '0x92dA433dA84d58DFe2aade1943349e491Cbd6820',
     quoteToken: bscTokens.busd,
     tokenName: 'Rise of Defenders',
     projectSite: 'https://risedefenders.io/',
@@ -672,7 +672,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xadF88A1eDC8F15CeA27F2674ED2BA1382F46A8A5',
     farmName: 'DOME-BNB',
-    tokenAddress: '0x475bfaa1848591ae0e6ab69600f48d828f61a80e',
+    tokenAddress: '0x475bFaa1848591ae0E6aB69600f48d828f61a80E',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Everdome',
     projectSite: 'https://everdome.io/',
@@ -688,7 +688,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x71F36803139caC2796Db65F373Fb7f3ee0bf3bF9',
     farmName: 'BLP-BUSD',
-    tokenAddress: '0xfe1d7f7a8f0bda6e415593a2e4f82c64b446d404',
+    tokenAddress: '0xfE1d7f7a8f0bdA6E415593a2e4F82c64b446d404',
     quoteToken: bscTokens.busd,
     tokenName: 'Bull Perks',
     projectSite: 'https://bullperks.com/',
@@ -696,7 +696,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x5735BB4e439474828235a5F4048eDf0240dcA7F2',
     farmName: 'YEL-BNB',
-    tokenAddress: '0xd3b71117e6c1558c1553305b44988cd944e97300',
+    tokenAddress: '0xD3b71117E6C1558c1553305b44988cd944e97300',
     quoteToken: bscTokens.wbnb,
     tokenName: 'YEL Token',
     projectSite: 'https://yel.finance/',
@@ -704,7 +704,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x638fBD99Fe8CC28535Fa05D3825a028c0a1E430d',
     farmName: 'MNFT-BUSD',
-    tokenAddress: '0x36953b5ec00a13edceceb3af258d034913d2a79d',
+    tokenAddress: '0x36953B5Ec00A13eDcEceB3aF258D034913D2A79D',
     quoteToken: bscTokens.busd,
     tokenName: 'ManuFactory',
     projectSite: 'https://manufactory.gg',

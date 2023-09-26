@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Address, getContract, WalletClient, GetContractReturnType, PublicClient } from 'viem'
 
 import { iCakeABI } from '../abis/ICake'

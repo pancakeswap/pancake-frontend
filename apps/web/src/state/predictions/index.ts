@@ -18,7 +18,8 @@ import {
 } from 'state/types'
 import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
-import { FUTURE_ROUND_COUNT, LEADERBOARD_MIN_ROUNDS_PLAYED, PAST_ROUND_COUNT, ROUNDS_PER_PAGE } from './config'
+import { PredictionsRoundsResponse } from 'utils/types'
+import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUNDS_PER_PAGE, START_THIRD_YEAR_BLOCK_HEIGHT } from './config'
 import {
   makeFutureRoundResponse,
   makeRoundData,
@@ -79,7 +80,7 @@ type PredictionInitialization = Pick<
 >
 export const fetchPredictionData = createAsyncThunk<PredictionInitialization, Address, { extra: PredictionConfig }>(
   'predictions/fetchPredictionData',
-  async (account = null, { extra }) => {
+  async (account: Address, { extra }) => {
     // Static values
     const marketData = await getPredictionData(extra.address)
     const epochs =
@@ -170,7 +171,7 @@ export const fetchNodeHistory = createAsyncThunk<
   const { bufferSeconds } = getState()
 
   // Turn the data from the node into a Bet object that comes from the graph
-  const bets: Bet[] = roundData.reduce((accum, round) => {
+  const bets: Bet[] = roundData.reduce((accum: any, round: PredictionsRoundsResponse) => {
     const ledger = userRounds[Number(round.epoch)]
     const ledgerAmount = BigInt(ledger.amount)
     const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
@@ -249,7 +250,10 @@ export const filterLeaderboard = createAsyncThunk<
     {
       skip: 0,
       orderBy: filters.orderBy,
-      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${filters.orderBy}_gt`]: 0 },
+      where: {
+        [`${filters.orderBy}_gt`]: 0,
+        block_gte: START_THIRD_YEAR_BLOCK_HEIGHT,
+      },
     },
     extra.api,
     extra.token.symbol,
@@ -284,7 +288,10 @@ export const filterNextPageLeaderboard = createAsyncThunk<
     {
       skip,
       orderBy: state.leaderboard.filters.orderBy,
-      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.leaderboard.filters.orderBy}_gt`]: 0 },
+      where: {
+        [`${state.leaderboard.filters.orderBy}_gt`]: 0,
+        block_gte: START_THIRD_YEAR_BLOCK_HEIGHT,
+      },
     },
     extra.api,
     extra.token.symbol,
@@ -379,7 +386,9 @@ export const predictionsSlice = createSlice({
     })
     builder.addCase(fetchAddressResult.rejected, (state, action) => {
       state.leaderboard.loadingState = FetchStatus.Fetched // TODO: should handle error
-      state.leaderboard.addressResults[action.payload] = null
+      if (action.payload) {
+        state.leaderboard.addressResults[action.payload] = null
+      }
     })
 
     // Leaderboard next page
@@ -413,10 +422,10 @@ export const predictionsSlice = createSlice({
       })
 
       const futureRounds: ReduxNodeRound[] = []
-      const currentRound = rounds[currentEpoch]
+      const currentRound = rounds?.[currentEpoch]
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
         futureRounds.push(
-          makeFutureRoundResponse(currentEpoch + i, Number(currentRound.startTimestamp) + intervalSeconds * i),
+          makeFutureRoundResponse(currentEpoch + i, Number(currentRound?.startTimestamp) + intervalSeconds * i),
         )
       }
 
@@ -446,7 +455,7 @@ export const predictionsSlice = createSlice({
       state.claimableStatuses = { ...state.claimableStatuses, ...claimableStatuses }
       state.hasHistoryLoaded = state.history.length === totalHistory || bets.length === 0
       state.totalHistory = totalHistory
-      state.currentHistoryPage = page
+      state.currentHistoryPage = page ?? 1
     })
   },
 })

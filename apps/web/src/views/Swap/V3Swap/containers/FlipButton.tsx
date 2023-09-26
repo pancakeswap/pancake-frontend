@@ -1,4 +1,6 @@
-import { AutoColumn, Swap as SwapUI, Button } from '@pancakeswap/uikit'
+import { AutoColumn, Button } from '@pancakeswap/uikit'
+import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
+
 import { useCallback, memo } from 'react'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { useTranslation } from '@pancakeswap/localization'

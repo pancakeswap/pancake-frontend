@@ -1,9 +1,10 @@
 import { useCallback, useMemo, memo } from 'react'
 import { Currency, Trade, TradeType } from '@pancakeswap/aptos-swap-sdk'
-import { ConfirmationModalContent } from '@pancakeswap/uikit'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/swap'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
+
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
 

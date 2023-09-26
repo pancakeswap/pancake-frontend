@@ -1,12 +1,13 @@
 import React from 'react'
 /* eslint-disable import/no-unresolved */
 import { Meta } from '@storybook/react/types-6-0'
-import { bscTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { CurrencyAmount, Price } from '@pancakeswap/sdk'
 
 import mockData from './mockData.json'
 import { LiquidityChartRangeInput } from './LiquidityChartRangeInput'
+import { cakeToken, bscToken } from '../../mockData'
+import { TickDataRaw } from './types'
 
 export default {
   title: 'Components/LiquidityChart',
@@ -21,17 +22,17 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
         // price={0.0006380911608100259}
         price={parseFloat(
           new Price({
-            baseAmount: CurrencyAmount.fromRawAmount(bscTokens.bnb, '15671741929954778'),
-            quoteAmount: CurrencyAmount.fromRawAmount(bscTokens.cake, '10000000000000'),
+            baseAmount: CurrencyAmount.fromRawAmount(bscToken, '15671741929954778'),
+            quoteAmount: CurrencyAmount.fromRawAmount(cakeToken, '10000000000000'),
           }).toSignificant(6),
         )}
-        currencyA={bscTokens.bnb}
-        currencyB={bscTokens.cake}
+        currencyA={bscToken}
+        currencyB={cakeToken}
         tickCurrent={-202763}
         liquidity={3799256509904881797n}
         feeAmount={FeeAmount.MEDIUM}
         formattedData={[]}
-        ticks={mockData}
+        ticks={mockData as unknown as TickDataRaw[]}
       />
     </div>
   )

@@ -9,7 +9,6 @@ import {
   Button,
   Card,
   CardBody,
-  ConfirmationModalContent,
   ExpandableLabel,
   Flex,
   Heading,
@@ -27,6 +26,8 @@ import {
   useModal,
   ScanLink,
 } from '@pancakeswap/uikit'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
+
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
@@ -75,6 +76,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import isPoolTickInRange from 'utils/isPoolTickInRange'
+import { ChainLinkSupportChains } from 'state/info/constant'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -1025,7 +1027,10 @@ function PositionHistoryRow({
     return (
       <Box>
         <AutoRow>
-          <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <ScanLink
+            useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+            href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
+          >
             <Flex flexDirection="column" alignItems="center">
               <Text ellipsis>{mobileDate}</Text>
               <Text fontSize="12px">{mobileTime}</Text>
@@ -1075,7 +1080,10 @@ function PositionHistoryRow({
       p="16px"
     >
       <AutoRow justifyContent="center">
-        <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+        <ScanLink
+          useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+          href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
+        >
           <Text ellipsis>{desktopDate}</Text>
         </ScanLink>
       </AutoRow>

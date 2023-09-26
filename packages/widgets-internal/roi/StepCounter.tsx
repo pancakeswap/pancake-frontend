@@ -2,8 +2,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { ReactNode, useCallback, useEffect, useState, memo } from 'react'
 import { AddCircleIcon, AutoColumn, AutoRow, IconButton, RemoveIcon } from '@pancakeswap/uikit'
-import { NumericalInput } from '@pancakeswap/uikit/widgets/Swap/NumericalInput'
 
+import { NumericalInput } from '../swap/NumericalInput'
 import { LightGreyCard } from './Card'
 
 interface StepCounterProps {

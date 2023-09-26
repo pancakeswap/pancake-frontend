@@ -26,7 +26,7 @@ import { BetResponse, UserResponse } from './responseType'
 import { BetResponseBNB } from './bnbQueries'
 import { BetResponseCAKE } from './cakeQueries'
 
-const convertBigInt = (value: string | null) => (!value ? null : BigInt(value))
+const convertBigInt = (value: string | null): null | bigint => (!value ? null : BigInt(value))
 
 export const deserializeRound = (round: ReduxNodeRound): NodeRound => ({
   ...round,
@@ -58,19 +58,19 @@ export const transformUserResponse = (tokenSymbol) =>
 
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   const { round } = bet
-  if (round.failed) {
+  if (round?.failed) {
     return Result.CANCELED
   }
 
-  if (round.epoch >= currentEpoch - 1) {
+  if (Number(round?.epoch) >= currentEpoch - 1) {
     return Result.LIVE
   }
 
-  if (bet.round.position === BetPosition.HOUSE) {
+  if (bet?.round?.position === BetPosition.HOUSE) {
     return Result.HOUSE
   }
 
-  const roundResultPosition = round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
+  const roundResultPosition = Number(round?.closePrice) > Number(round?.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
 
   return bet.position === roundResultPosition ? Result.WIN : Result.LOSE
 }
@@ -81,7 +81,7 @@ export const getFilteredBets = (bets: Bet[], filter: HistoryFilter) => {
       return bets.filter((bet) => bet.claimed === true)
     case HistoryFilter.UNCOLLECTED:
       return bets.filter((bet) => {
-        return !bet.claimed && (bet.position === bet.round.position || bet.round.failed === true)
+        return !bet.claimed && (bet.position === bet?.round?.position || bet?.round?.failed === true)
       })
     case HistoryFilter.ALL:
     default:
@@ -199,9 +199,9 @@ const defaultPredictionUserOptions = {
   orderDir: 'desc',
 }
 
-export const getHasRoundFailed = (oracleCalled: boolean, closeTimestamp: number, buffer: number) => {
-  if (!oracleCalled) {
-    const closeTimestampMs = (closeTimestamp + buffer) * 1000
+export const getHasRoundFailed = (oracleCalled: boolean, closeTimestamp: null | number, buffer: number) => {
+  if (!oracleCalled && !closeTimestamp) {
+    const closeTimestampMs = (Number(closeTimestamp) + buffer) * 1000
     if (Number.isFinite(closeTimestampMs)) {
       return Date.now() > closeTimestampMs
     }
@@ -461,7 +461,7 @@ export const fetchUserRounds = async (
   cursor = 0,
   size = ROUNDS_PER_PAGE,
   address: Address,
-): Promise<{ [key: string]: ReduxNodeLedger }> => {
+): Promise<null | { [key: string]: ReduxNodeLedger }> => {
   const contract = getPredictionsV2Contract(address)
 
   try {

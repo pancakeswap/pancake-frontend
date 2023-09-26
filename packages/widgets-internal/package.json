@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/widgets-internal",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "main": "index.ts",
   "exports": {
@@ -18,12 +18,14 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "bignumber.js": "^9.0.0",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",
     "viem": "^1.10.9",
-    "d3": "^7.8.2"
+    "d3": "^7.8.2",
+    "clsx": "^1.2.1"
   },
   "peerDependencies": {
     "next": "13.4.2",
