@@ -4,7 +4,7 @@ export const useDrawSequenceImages = (
   imagePath: string,
   imageCount: number,
   canvasRef: React.MutableRefObject<HTMLCanvasElement>,
-  interval: number,
+  intervalRef: React.MutableRefObject<number>,
   onplayEnd: () => void,
   autoPlay?: () => void,
   loop?: boolean,
@@ -21,7 +21,7 @@ export const useDrawSequenceImages = (
       if (!canvas || ImageDrawProgress.current + 1 >= imageCount) return
       const context = canvas.getContext('2d')
       if (ImageDrawProgress.current + 1 >= imageCount) {
-        clearInterval(interval)
+        clearInterval(intervalRef.current)
         onplayEnd()
       } else {
         if (images.current[ImageDrawProgress.current]) {
@@ -34,7 +34,7 @@ export const useDrawSequenceImages = (
         }
       }
     },
-    [canvasRef, imageCount, onplayEnd, loop, interval],
+    [canvasRef, imageCount, onplayEnd, loop, intervalRef],
   )
 
   useLayoutEffect(() => {

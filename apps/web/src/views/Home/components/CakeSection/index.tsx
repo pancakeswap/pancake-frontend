@@ -306,7 +306,6 @@ const CakeCanvas = styled.canvas`
   background-color: transparent;
 `
 
-let seqInterval = 0
 const width = 900
 const height = 900
 
@@ -323,6 +322,7 @@ const CakeSection: React.FC = () => {
   const played = useRef<boolean>(false)
   const cakeBoxRef = useRef<HTMLDivElement>(null)
   const internalRef = useRef(0)
+  const seqIntervalRef = useRef(0)
   const { isMobile, isTablet } = useMatchBreakpoints()
 
   useLayoutEffect(() => {
@@ -350,7 +350,7 @@ const CakeSection: React.FC = () => {
     if (checkIsIOS() || isMobile) {
       if (playing.current === false) {
         playing.current = true
-        seqInterval = window.setInterval(() => {
+        seqIntervalRef.current = window.setInterval(() => {
           drawSequenceImage(900, 900)
         }, 1000 / 32)
       }
@@ -362,8 +362,8 @@ const CakeSection: React.FC = () => {
     '/assets/cake-token-sequence',
     checkIsIOS() || isMobile ? 201 : 0,
     canvasRef,
-    seqInterval,
-    () => clearInterval(seqInterval),
+    seqIntervalRef,
+    () => clearInterval(seqIntervalRef.current),
   )
 
   const triggerCssAnimation = useCallback(() => {

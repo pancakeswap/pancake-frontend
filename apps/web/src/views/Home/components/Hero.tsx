@@ -121,7 +121,6 @@ const StyledText = styled(Text)`
   }
 `
 
-let seqsInterval = 0
 const width = 1080
 const height = 1080
 
@@ -138,6 +137,7 @@ const Hero = () => {
   const rock03VideoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const internalRef = useRef(0)
+  const seqInternalRef = useRef(0)
   const { isIOS } = useIsIOS()
   const { drawImage, isVideoPlaying } = useDrawCanvas(
     videoRef,
@@ -171,7 +171,7 @@ const Hero = () => {
       rock03VideoRef.current?.play()
     }, 3000)
     return () => {
-      clearInterval(seqsInterval)
+      clearInterval(seqInternalRef.current)
       cancelAnimationFrame(internalRef.current)
     }
   }, [])
@@ -180,12 +180,12 @@ const Hero = () => {
     '/assets/hero-sequence',
     checkIsIOS() || isMobile ? 70 : 0,
     canvasRef,
-    seqsInterval,
-    () => clearInterval(seqsInterval),
+    seqInternalRef,
+    () => clearInterval(seqInternalRef.current),
     () => {
       if (playing.current === false) {
         playing.current = true
-        seqsInterval = window.setInterval(() => {
+        seqInternalRef.current = window.setInterval(() => {
           drawSequenceImage(500, 500)
         }, 1000 / 15)
       }
