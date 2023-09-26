@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 // Cost for crossing an uninitialized tick.
 export const COST_PER_UNINIT_TICK = 0n

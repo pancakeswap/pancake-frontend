@@ -17,7 +17,7 @@ $ pnpm add @pancakeswap/multicall @pancakeswap/sdk viem
 By default the calls will be splitted into chunks based on gas limit of each call and the rpc call gas limit of the chain
 
 ```typescript
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { multicallByGasLimit, MulticallRequestWithGas } from '@pancakeswap/multicall'
 
 const calls: MulticallRequestWithGas[] = [
@@ -63,7 +63,7 @@ const { results, blockNumber } = await multicallByGasLimit(calls, {
 ### Get multicall gas limit
 
 ```typescript
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { getGasLimitOnChain } from '@pancakeswap/multicall'
 
 // Get the rpc call gas limit of the specified chain

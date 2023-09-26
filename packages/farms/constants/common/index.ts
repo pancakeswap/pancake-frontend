@@ -1,4 +1,5 @@
-import { ChainId, ERC20Token } from '@pancakeswap/sdk'
+import { ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   bscTestnetTokens,
   bscTokens,

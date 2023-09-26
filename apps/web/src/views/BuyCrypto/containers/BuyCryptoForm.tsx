@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Text, Box, Message } from '@pancakeswap/uikit'
 import {
   calculateDefaultAmount,

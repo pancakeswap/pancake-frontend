@@ -1,4 +1,5 @@
-import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, TradeType, Percent } from '@pancakeswap/sdk'
+import { CurrencyAmount, Currency, ERC20Token, Native, TradeType, Percent } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
 import { ADDRESS_ZERO } from '@pancakeswap/v3-sdk'
 import { Pool, PoolType, Route, SmartRouterTrade, StablePool, V2Pool, V3Pool } from '../types'

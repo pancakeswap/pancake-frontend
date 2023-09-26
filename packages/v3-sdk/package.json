@@ -28,6 +28,7 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/chains": "workspace:*",
     "@uniswap/v3-staker": "1.0.0",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",

@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ComputedFarmConfigV3 } from '../../src/types'
 import { FarmV3SupportedChainId } from '../../src'
 import { farmsV3 as farm1 } from '../1'

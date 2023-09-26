@@ -1,4 +1,5 @@
-import { ChainId, Currency, CurrencyAmount, Percent, BigintIsh } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, BigintIsh } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
 import { Address, ContractFunctionConfig, Abi } from 'viem'

@@ -5,7 +5,7 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { SendTransactionResult } from 'wagmi/actions'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 interface UseConfirmModalStateProps {
   txHash: string

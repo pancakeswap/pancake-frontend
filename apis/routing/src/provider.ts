@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { OnChainProvider, SubgraphProvider } from '@pancakeswap/smart-router/evm'
 import { createPublicClient, http } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'

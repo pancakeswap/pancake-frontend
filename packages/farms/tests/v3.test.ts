@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { describe, it, expect } from 'vitest'
 import { farmsV3ConfigChainMap } from '../constants/v3'

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
 
 import { OnChainProvider, SerializedLockedVaultUser, SerializedVaultUser } from '../types'

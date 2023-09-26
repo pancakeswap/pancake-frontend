@@ -1,4 +1,5 @@
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 export function isCurrenciesSameChain(...currencies: Currency[]) {
   // eslint-disable-next-line prefer-destructuring

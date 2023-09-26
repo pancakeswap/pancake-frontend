@@ -99,6 +99,9 @@ importers:
 
   apis/farms:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../../packages/chains
       '@pancakeswap/farms':
         specifier: workspace:*
         version: link:../../packages/farms
@@ -188,6 +191,9 @@ importers:
 
   apis/routing:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../../packages/chains
       '@pancakeswap/farms':
         specifier: workspace:*
         version: link:../../packages/farms
@@ -473,9 +479,6 @@ importers:
       '@pancakeswap/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../../packages/swap-sdk
       '@pancakeswap/uikit':
         specifier: workspace:*
         version: link:../../packages/uikit
@@ -1081,6 +1084,9 @@ importers:
 
   packages/farms:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -1177,6 +1183,9 @@ importers:
 
   packages/multicall:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -1208,9 +1217,9 @@ importers:
 
   packages/pools:
     dependencies:
-      '@pancakeswap/sdk':
+      '@pancakeswap/chains':
         specifier: workspace:*
-        version: link:../swap-sdk
+        version: link:../chains
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
@@ -1580,6 +1589,9 @@ importers:
       '@babel/preset-react':
         specifier: ^7.18.6
         version: 7.18.6(@babel/core@7.21.3)
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
@@ -1794,6 +1806,9 @@ importers:
 
   packages/v3-sdk:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -1957,12 +1972,12 @@ importers:
       '@pancakeswap/aptos-swap-sdk':
         specifier: workspace:*
         version: link:../packages/aptos-swap-sdk
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../packages/chains
       '@pancakeswap/farms':
         specifier: workspace:*
         version: link:../packages/farms
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../packages/swap-sdk
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.186
