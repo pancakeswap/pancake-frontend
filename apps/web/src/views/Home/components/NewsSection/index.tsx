@@ -64,6 +64,7 @@ const CardWrapper = styled.div`
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   border-radius: 24px;
+  padding-bottom: 5px;
   &::-webkit-scrollbar {
     display: none;
     -ms-overflow-style: none; /* IE and Edge */

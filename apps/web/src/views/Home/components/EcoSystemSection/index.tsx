@@ -1,8 +1,13 @@
-import { Flex, Text, Box, ChevronRightIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Text, Box, ChevronRightIcon, useMatchBreakpoints, Link, useModal } from '@pancakeswap/uikit'
+import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { useMemo } from 'react'
+import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import Image, { StaticImageData } from 'next/image'
 import tradeBunny from '../../images/trade-bunny.png'
 import earnNftBunny from '../../images/earn-bunny.png'
@@ -160,7 +165,22 @@ export const Title = styled.div`
 `
 
 const useTradeBlockData = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { code },
+  } = useTranslation()
+  const { isDark } = useTheme()
+  const { chainId } = useActiveChainId()
+  const { push } = useRouter()
+  const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
+  const [onUSCitizenModalPresent] = useModal(
+    <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
+    false,
+    false,
+    'usCitizenConfirmModal',
+  )
+  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.PERPETUALS)
+
   return useMemo(() => {
     return [
       {
@@ -169,6 +189,7 @@ const useTradeBlockData = () => {
         ctaTitle: t('Trade Now'),
         image: tradeSwap,
         defaultImage: tradeSwapPurple,
+        path: '/swap',
       },
       {
         title: t('Liquidity'),
@@ -176,6 +197,7 @@ const useTradeBlockData = () => {
         ctaTitle: t('Add Now'),
         image: tradeLiquidity,
         defaultImage: tradeLiquidityPurple,
+        path: '/liquidity',
       },
       {
         title: t('Bridge'),
@@ -183,6 +205,7 @@ const useTradeBlockData = () => {
         ctaTitle: t('Bridge Now'),
         image: tradeBridge,
         defaultImage: tradeBridgePurple,
+        path: 'https://bridge.pancakeswap.finance/',
       },
       {
         title: t('Perpetual'),
@@ -190,6 +213,13 @@ const useTradeBlockData = () => {
         ctaTitle: t('Trade Now'),
         image: tradePerpetual,
         defaultImage: tradePerpetualPurple,
+        onClick: () => {
+          if (!userNotUsCitizenAcknowledgement) {
+            onUSCitizenModalPresent()
+          } else {
+            push(perpetualUrl)
+          }
+        },
       },
       {
         title: t('Buy Crypto'),
@@ -197,9 +227,10 @@ const useTradeBlockData = () => {
         ctaTitle: t('Buy Now'),
         image: tradeBuy,
         defaultImage: tradeBuyPurple,
+        path: '/buy-crypto',
       },
     ]
-  }, [t])
+  }, [t, push, perpetualUrl, onUSCitizenModalPresent, userNotUsCitizenAcknowledgement])
 }
 
 const useEarnBlockData = () => {
@@ -212,6 +243,7 @@ const useEarnBlockData = () => {
         ctaTitle: t('Stake Now'),
         image: earnFarm,
         defaultImage: earnFarmPurple,
+        path: '/farms',
       },
       {
         title: t('Pools'),
@@ -219,6 +251,7 @@ const useEarnBlockData = () => {
         ctaTitle: t('Stake Now'),
         image: earnPools,
         defaultImage: earnPoolsPurple,
+        path: '/pools',
       },
       {
         title: t('Liquid Staking'),
@@ -226,6 +259,7 @@ const useEarnBlockData = () => {
         ctaTitle: t('Add Now'),
         image: earnLiquidStaking,
         defaultImage: earnLiquidStakingPurple,
+        path: '/liquid-staking',
       },
       {
         title: t('Coming Soon'),
@@ -248,6 +282,7 @@ const useNftGameBlockData = () => {
         ctaTitle: t('Try Now'),
         image: gamePrediction,
         defaultImage: gamePredictionPurple,
+        path: '/prediction',
       },
       {
         title: t('Pancake Protectors'),
@@ -255,6 +290,7 @@ const useNftGameBlockData = () => {
         ctaTitle: t('Play Now'),
         image: gamePancakeProtectors,
         defaultImage: gamePancakeProtectorsPurple,
+        path: 'https://protectors.pancakeswap.finance/',
       },
       {
         title: t('Lottery'),
@@ -262,6 +298,7 @@ const useNftGameBlockData = () => {
         ctaTitle: t('Try Now'),
         image: gameLottery,
         defaultImage: gameLotteryPurple,
+        path: '/lottery',
       },
       {
         title: t('Pottery'),
@@ -269,6 +306,7 @@ const useNftGameBlockData = () => {
         ctaTitle: t('Try Now'),
         image: gamePottery,
         defaultImage: gamePotteryPurple,
+        path: '/pottery',
       },
       {
         title: t('NFT Marketplace'),
@@ -276,6 +314,7 @@ const useNftGameBlockData = () => {
         ctaTitle: t('Trade Now'),
         image: nftMarketplace,
         defaultImage: nftMarketplacePurple,
+        path: '/nfts',
       },
     ]
   }, [t])
@@ -289,10 +328,13 @@ const FeatureBox: React.FC<{
   width: number
   ctaTitle: string
   className?: string
-}> = ({ title, description, image, defaultImage, ctaTitle, width, className }) => {
+  path?: string
+  onClick?: () => void
+}> = ({ title, description, image, defaultImage, ctaTitle, width, className, path, onClick }) => {
   const { theme } = useTheme()
+  const { push } = useRouter()
   return (
-    <ItemWrapper className={className} $flexBasis={width}>
+    <ItemWrapper className={className} $flexBasis={width} onClick={onClick ? () => onClick() : () => push(path)}>
       <ImageBox>
         <Image className="default" src={defaultImage} width={108} height={108} alt={title} />
         <Image className="hover" src={image} width={108} height={108} alt={title} />
@@ -374,6 +416,8 @@ const EcoSystemSection: React.FC = () => {
                   image={item.image}
                   width={100 / tradeBlockData.length}
                   ctaTitle={item.ctaTitle}
+                  path={item.path}
+                  onClick={item.onClick}
                 />
               ))}
             </FeatureBoxesWrapper>
@@ -407,6 +451,7 @@ const EcoSystemSection: React.FC = () => {
                   defaultImage={item.defaultImage}
                   width={100 / tradeBlockData.length}
                   ctaTitle={item.ctaTitle}
+                  path={item.path}
                 />
               ))}
             </FeatureBoxesWrapper>
@@ -440,6 +485,7 @@ const EcoSystemSection: React.FC = () => {
                   image={item.image}
                   width={100 / tradeBlockData.length}
                   ctaTitle={item.ctaTitle}
+                  path={item.path}
                 />
               ))}
             </FeatureBoxesWrapper>
