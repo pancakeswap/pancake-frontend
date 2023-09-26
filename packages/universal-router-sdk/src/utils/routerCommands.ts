@@ -153,10 +153,10 @@ export const ABI_PARAMETER: Record<CommandType, any> = {
     'address recipient, uint256 amountOut, uint256 amountInMax, address[] path, bool payerIsUser'
   ),
   [CommandType.STABLE_SWAP_EXACT_IN]: parseAbiParameters(
-    'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bytes flag, bool payerIsUser'
+    'address recipient, uint256 amountIn, uint256 amountOutMin, address[] path, uint256[] flag, bool payerIsUser'
   ),
   [CommandType.STABLE_SWAP_EXACT_OUT]: parseAbiParameters(
-    'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bytes flag, bool payerIsUser'
+    'address recipient, uint256 amountOut, uint256 amountInMax, address[] path, uint256[] flag, bool payerIsUser'
   ),
 
   // Token Actions and Checks
