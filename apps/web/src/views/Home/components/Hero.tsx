@@ -176,7 +176,7 @@ const Hero = () => {
     () => {
       seqsInterval = window.setInterval(() => {
         drawSequenceImage(500, 500)
-      }, 1000 / 20)
+      }, 1000 / 15)
     },
     true,
   )
