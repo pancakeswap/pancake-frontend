@@ -348,7 +348,7 @@ const CakeSection: React.FC = () => {
     if (checkIsIOS()) {
       seqInterval = window.setInterval(() => {
         drawSequenceImage(900, 900)
-      }, 1000 / 23)
+      }, 1000 / 10)
       triggerCssAnimation()
     } else videoRef.current?.play()
   })
@@ -357,6 +357,7 @@ const CakeSection: React.FC = () => {
     '/assets/cake-token-sequence',
     checkIsIOS() ? 201 : 0,
     canvasRef,
+    seqInterval,
     () => clearInterval(seqInterval),
   )
 

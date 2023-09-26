@@ -1,27 +1,26 @@
-import { useLayoutEffect, useState, useCallback, useRef } from 'react'
+import { useLayoutEffect, useCallback, useRef } from 'react'
 
 export const useDrawSequenceImages = (
   imagePath: string,
   imageCount: number,
   canvasRef: React.MutableRefObject<HTMLCanvasElement>,
+  interval: number,
   onplayEnd: () => void,
   autoPlay?: () => void,
   loop?: boolean,
 ) => {
   const ImageLoadedCount = useRef(0)
   const images = useRef<HTMLImageElement[]>([])
-  const canvas = canvasRef?.current
   const ImageDrawProgress = useRef(0)
 
   const drawSequenceImage = useCallback(
     (width: number, height: number) => {
+      const canvas = canvasRef.current
+
       if (!canvas || ImageDrawProgress.current + 1 >= imageCount) return
-      if (ImageDrawProgress.current === 0) {
-        canvas.width = width
-        canvas.height = height
-      }
       const context = canvas.getContext('2d')
       if (ImageDrawProgress.current + 1 >= imageCount) {
+        clearInterval(interval)
         onplayEnd()
       } else {
         if (images.current[ImageDrawProgress.current]) {
@@ -34,7 +33,7 @@ export const useDrawSequenceImages = (
         }
       }
     },
-    [canvas, imageCount, onplayEnd, loop],
+    [canvasRef, imageCount, onplayEnd, loop, interval],
   )
 
   useLayoutEffect(() => {
@@ -44,7 +43,7 @@ export const useDrawSequenceImages = (
       image.onload = () => {
         ImageLoadedCount.current++
         images.current[i] = image
-        if (ImageLoadedCount.current === imageCount && autoPlay) {
+        if (ImageLoadedCount.current + 2 === imageCount && autoPlay) {
           autoPlay()
         }
       }

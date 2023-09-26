@@ -172,6 +172,7 @@ const Hero = () => {
     '/assets/hero-sequence',
     checkIsIOS() ? 70 : 0,
     canvasRef,
+    seqsInterval,
     () => clearInterval(seqsInterval),
     () => {
       seqsInterval = window.setInterval(() => {
