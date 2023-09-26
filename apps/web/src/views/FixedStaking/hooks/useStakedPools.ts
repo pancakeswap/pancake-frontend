@@ -9,7 +9,7 @@ import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import BigNumber from 'bignumber.js'
 import { VaultKey } from '@pancakeswap/pools'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'
-import toString from 'lodash/toString'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 
 import { FixedStakingPool, StakedPosition } from '../type'
 
@@ -51,17 +51,26 @@ export function useIfUserLocked() {
     enabled: !!account,
   })
 
-  if (!Array.isArray(data)) return false
+  return useMemo(() => {
+    if (!Array.isArray(data))
+      return {
+        locked: false,
+        amount: getBalanceAmount(0),
+      }
 
-  const [userShares, , , , , lockEndTime, , locked] = data
+    const [userShares, , , , , lockEndTime, , locked, lockedAmount] = data
 
-  const vaultPosition = getVaultPosition({
-    userShares: new BigNumber(userShares as unknown as BigNumber.Value),
-    locked,
-    lockEndTime: lockEndTime.toString(),
-  })
+    const vaultPosition = getVaultPosition({
+      userShares: new BigNumber(userShares as unknown as BigNumber.Value),
+      locked,
+      lockEndTime: lockEndTime.toString(),
+    })
 
-  return VaultPosition.Locked === vaultPosition
+    return {
+      locked: VaultPosition.Locked === vaultPosition,
+      amount: getBalanceAmount(new BigNumber(lockedAmount as unknown as BigNumber.Value)),
+    }
+  }, [data])
 }
 export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[] {
   const fixedStakingContract = useFixedStakingContract()

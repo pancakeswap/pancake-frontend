@@ -96,7 +96,7 @@ export function FixedStakingCalculator({
 }) {
   const stakedPeriods = useMemo(() => pools.map((p) => p.lockPeriod), [pools])
 
-  const locked = useIfUserLocked()
+  const { locked } = useIfUserLocked()
 
   const { t } = useTranslation()
   const stakeModal = useModalV2()

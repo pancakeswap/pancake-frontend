@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast, Link } from '@pancakeswap/uikit'
-import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
+import { getFullDisplayBalance, getDecimalAmount, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -101,10 +101,13 @@ export function StakingModalTemplate({
 
   const selectedPool = useMemo(() => pools.find((p) => p.lockPeriod === lockPeriod), [lockPeriod, pools])
 
-  const locked = useIfUserLocked()
+  const { locked, amount: lockedCakeAmount } = useIfUserLocked()
 
-  const isBoost = Boolean(selectedPool?.boostDayPercent > 0 && locked)
+  const minBoostAmount = getBalanceAmount(
+    new BigNumber(selectedPool ? selectedPool.minBoostAmount : ('0' as unknown as BigNumber.Value)),
+  )
 
+  const isBoost = Boolean(selectedPool?.boostDayPercent > 0 && locked && lockedCakeAmount.gte(minBoostAmount))
   const [percent, setPercent] = useState(0)
   const { balance: stakingTokenBalance } = useTokenBalance(stakingToken?.address)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -138,7 +141,7 @@ export function StakingModalTemplate({
       amount: maxStakeAmount.toSignificant(2),
       symbol: stakingToken.symbol,
     })
-  } else if (stakeCurrencyAmount.greaterThan(0) && totalStakedAmount.lessThan(minStakeAmount)) {
+  } else if (stakeCurrencyAmount.lessThan(minStakeAmount)) {
     error = t('Minimum %amount% %symbol%', {
       amount: minStakeAmount.toSignificant(2),
       symbol: stakingToken.symbol,
