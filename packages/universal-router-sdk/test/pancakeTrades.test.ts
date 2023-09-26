@@ -19,8 +19,6 @@ import {
   pancakeSwapOptions,
 } from './utils/pancakeswapData'
 import { generatePermitSignature, makePermit, toInputPermit } from './utils/permit2'
-import chai from 'chai'
-import jest from 'jest'
 
 // import ERC20ABI from '../abis/ERC20.json'
 
