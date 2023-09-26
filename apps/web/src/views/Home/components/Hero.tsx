@@ -168,16 +168,19 @@ const Hero = () => {
     }
   }, [])
 
-  const drawSequenceImage = useDrawSequenceImages(
+  const { drawSequenceImage, playing } = useDrawSequenceImages(
     '/assets/hero-sequence',
-    checkIsIOS() ? 70 : 0,
+    checkIsIOS() || isMobile ? 70 : 0,
     canvasRef,
     seqsInterval,
     () => clearInterval(seqsInterval),
     () => {
-      seqsInterval = window.setInterval(() => {
-        drawSequenceImage(500, 500)
-      }, 1000 / 15)
+      if (playing.current === false) {
+        playing.current = true
+        seqsInterval = window.setInterval(() => {
+          drawSequenceImage(500, 500)
+        }, 1000 / 15)
+      }
     },
     true,
   )

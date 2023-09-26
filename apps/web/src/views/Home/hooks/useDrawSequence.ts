@@ -12,11 +12,15 @@ export const useDrawSequenceImages = (
   const ImageLoadedCount = useRef(0)
   const images = useRef<HTMLImageElement[]>([])
   const ImageDrawProgress = useRef(0)
-  const canvas = canvasRef.current
+
+  const playing = useRef(false)
 
   const drawSequenceImage = useCallback(
     (width: number, height: number) => {
+      const canvas = canvasRef.current
+      console.log(canvas, 'canvas????')
       if (!canvas || ImageDrawProgress.current + 1 >= imageCount) return
+
       const context = canvas.getContext('2d')
       if (ImageDrawProgress.current + 1 >= imageCount) {
         clearInterval(interval)
@@ -32,7 +36,7 @@ export const useDrawSequenceImages = (
         }
       }
     },
-    [canvas, imageCount, onplayEnd, loop, interval],
+    [canvasRef, imageCount, onplayEnd, loop, interval],
   )
 
   useLayoutEffect(() => {
@@ -42,12 +46,14 @@ export const useDrawSequenceImages = (
       image.onload = () => {
         ImageLoadedCount.current++
         images.current[i] = image
-        if (ImageLoadedCount.current + 2 === imageCount && autoPlay) {
-          if (canvas) autoPlay()
+        if (ImageLoadedCount.current + 3 >= imageCount && autoPlay) {
+          if (playing.current === false) {
+            autoPlay()
+          }
         }
       }
     }
-  }, [imageCount, imagePath, autoPlay, canvas])
+  }, [imageCount, imagePath, autoPlay, playing])
 
-  return drawSequenceImage
+  return { drawSequenceImage, playing }
 }

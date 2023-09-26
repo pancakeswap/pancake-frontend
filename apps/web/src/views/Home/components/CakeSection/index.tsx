@@ -322,10 +322,11 @@ const CakeSection: React.FC = () => {
   const rightRef = useRef<HTMLDivElement>(null)
   const played = useRef<boolean>(false)
   const cakeBoxRef = useRef<HTMLDivElement>(null)
+  const { isMobile, isTablet } = useMatchBreakpoints()
   // const { isIOS } = useIsIOS()
 
   useLayoutEffect(() => {
-    if (checkIsIOS()) return
+    if (checkIsIOS() || isMobile) return
     const video = document.createElement('video')
     video.autoplay = true
     video.playsInline = true
@@ -343,17 +344,20 @@ const CakeSection: React.FC = () => {
   })
 
   useObserverOnce(cakeBoxRef, () => {
-    if (checkIsIOS()) {
-      seqInterval = window.setInterval(() => {
-        drawSequenceImage(900, 900)
-      }, 1000 / 23)
+    if (checkIsIOS() || isMobile) {
+      if (playing.current === false) {
+        playing.current = true
+        seqInterval = window.setInterval(() => {
+          drawSequenceImage(900, 900)
+        }, 1000 / 32)
+      }
       triggerCssAnimation()
     } else videoRef.current?.play()
   })
 
-  const drawSequenceImage = useDrawSequenceImages(
+  const { drawSequenceImage, playing } = useDrawSequenceImages(
     '/assets/cake-token-sequence',
-    checkIsIOS() ? 201 : 0,
+    checkIsIOS() || isMobile ? 201 : 0,
     canvasRef,
     seqInterval,
     () => clearInterval(seqInterval),
@@ -378,7 +382,6 @@ const CakeSection: React.FC = () => {
     }
   }, [])
 
-  const { isMobile, isTablet } = useMatchBreakpoints()
   useLayoutEffect(() => {
     triggerAnimation()
     return () => clearInterval(canvasInterval)
