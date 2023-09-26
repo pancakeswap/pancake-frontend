@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 
-function iOS() {
+export function checkIsIOS() {
   return (
     ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
     // iPad on iOS 13 detection
@@ -11,7 +11,7 @@ function iOS() {
 export const useIsIOS = () => {
   const [isIOS, setIsIOS] = useState(false)
   useLayoutEffect(() => {
-    if (iOS()) {
+    if (checkIsIOS()) {
       setIsIOS(true)
     }
   }, [])
