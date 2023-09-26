@@ -387,7 +387,10 @@ const CakeSection: React.FC = () => {
 
   useLayoutEffect(() => {
     triggerAnimation()
-    return () => cancelAnimationFrame(internalRef.current)
+    return () => {
+      cancelAnimationFrame(internalRef.current)
+      clearInterval(seqIntervalRef.current)
+    }
   }, [drawImage, triggerAnimation])
 
   return (
