@@ -313,8 +313,6 @@ const CakeVideo = styled.video`
   opacity: 0;
   visibility: hidden;
   position: absolute;
-  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-  filter: grayscale(100%);
 `
 const CakeCanvas = styled.canvas`
   position: absolute;
@@ -345,6 +343,18 @@ const CakeSection: React.FC = () => {
   const played = useRef<boolean>(false)
   const cakeBoxRef = useRef<HTMLDivElement>(null)
   const { isIOS } = useIsIOS()
+
+  useLayoutEffect(() => {
+    const video = document.createElement('video')
+
+    video.autoplay = true
+    video.playsInline = true
+    video.width = width
+    video.src = '/assets/cake-alpha.webm'
+    video.muted = true
+    videoRef.current = video
+  }, [isIOS])
+
   const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
     canvasInterval = window.setInterval(() => {
       drawImage?.()
@@ -353,6 +363,7 @@ const CakeSection: React.FC = () => {
   })
   useObserver(cakeBoxRef, () => {
     if (isIOS && cakeBoxRef.current) cakeBoxRef.current.classList.add('is-ios')
+    videoRef.current?.play()
   })
 
   const triggerCssAnimation = useCallback(() => {
@@ -455,9 +466,9 @@ const CakeSection: React.FC = () => {
             ) : (
               <>
                 <CakeCanvas width={width} height={height} ref={canvasRef} />
-                <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
+                {/* <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
                   <source src="/assets/cake-alpha.webm" type="video/webm" />
-                </CakeVideo>
+                </CakeVideo> */}
               </>
             )}{' '}
           </CakeBox>

@@ -14,6 +14,7 @@ export const useDrawCanvas = (
   const video = videoRef?.current
   const canvas = canvasRef?.current
   const isElementReady = video && canvas
+  console.log(video, 'video')
 
   const drawImage = useCallback(() => {
     const context = canvas?.getContext('2d')
