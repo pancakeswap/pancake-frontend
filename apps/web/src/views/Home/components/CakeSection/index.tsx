@@ -345,8 +345,8 @@ const CakeSection: React.FC = () => {
   const { isIOS } = useIsIOS()
 
   useLayoutEffect(() => {
+    if (isIOS) return
     const video = document.createElement('video')
-
     video.autoplay = true
     video.playsInline = true
     video.width = width
