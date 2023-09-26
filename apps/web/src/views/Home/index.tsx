@@ -31,7 +31,7 @@ const StyledHeroSection = styled(PageSection)`
 
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
-  const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
+  const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px', padding: '0px 16px' }
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   useAnniversaryEffect()
@@ -84,7 +84,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         <Hero />
       </StyledHeroSection>
       <PageSection
-        innerProps={{ style: { margin: '0', width: '100%', padding: '0px 8px' } }}
+        innerProps={{ style: { margin: '0', width: '100%' } }}
         containerProps={{
           id: 'home-2',
         }}

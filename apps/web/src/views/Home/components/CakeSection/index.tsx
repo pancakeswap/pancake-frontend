@@ -323,7 +323,6 @@ const CakeSection: React.FC = () => {
   const played = useRef<boolean>(false)
   const cakeBoxRef = useRef<HTMLDivElement>(null)
   const { isMobile, isTablet } = useMatchBreakpoints()
-  // const { isIOS } = useIsIOS()
 
   useLayoutEffect(() => {
     if (checkIsIOS() || isMobile) return
@@ -394,8 +393,8 @@ const CakeSection: React.FC = () => {
     <Flex
       flexDirection="column"
       style={{ gap: 32 }}
-      marginLeft={isMobile ? '0' : '0px'}
-      width="100%"
+      marginLeft={isMobile ? '-16px' : '0px'}
+      width={isMobile ? 'calc(100% + 32px)' : '100%'}
       overflow={isMobile ? 'hidden' : 'visible'}
     >
       <Text textAlign="center">
@@ -420,6 +419,7 @@ const CakeSection: React.FC = () => {
           color={theme.isDark ? '#B8ADD2' : '#7A6EAA'}
           textAlign="center"
           lineHeight="110%"
+          padding="0px 16px"
         >
           {t(
             'Experience the power of community ownership, global governance, and explore infinite use cases within the PancakeSwap ecosystem',
