@@ -1,5 +1,4 @@
 import { useInterval } from '@pancakeswap/hooks'
-import { PERMIT2_ADDRESS } from '@pancakeswap/permit2-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
 import { useCallback, useMemo, useState } from 'react'
@@ -39,17 +38,21 @@ export type Allowance =
 
 const AVERAGE_L1_BLOCK_TIME = 12000
 
-export default function usePermit2Allowance(amount?: CurrencyAmount<Token>, spender?: string): Allowance {
+export default function usePermit2Allowance(
+  approvalAddress: string,
+  amount?: CurrencyAmount<Token>,
+  spender?: string,
+): Allowance {
   const { address: account } = useAccount()
   const token = amount?.currency
 
-  const { allowance: tokenAllowance } = useTokenAllowance(token ?? undefined, account ?? undefined, PERMIT2_ADDRESS)
-  const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, PERMIT2_ADDRESS)
+  const { allowance: tokenAllowance } = useTokenAllowance(token ?? undefined, account ?? undefined, approvalAddress)
+  const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, approvalAddress)
 
   const isApproved = approvalState === ApprovalState.APPROVED
   const isApprovalLoading = approvalState === ApprovalState.PENDING
-  const isApprovalPending = useHasPendingApproval(token?.address, PERMIT2_ADDRESS)
-  const isRevocationPending = useHasPendingRevocation(token, PERMIT2_ADDRESS)
+  const isApprovalPending = useHasPendingApproval(token?.address, approvalAddress)
+  const isRevocationPending = useHasPendingRevocation(token, approvalAddress)
 
   // Signature and PermitAllowance will expire, so they should be rechecked at an interval.
   // Calculate now such that the signature will still be valid for the submitting block.

@@ -105,9 +105,10 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   }
 
   // check whether the user has approved the router on the input token
-  const { approvalState, currentAllowance } = useApproveCallback(amountToApprove, PERMIT2_ADDRESS)
+  const { approvalState, currentAllowance } = useApproveCallback(amountToApprove, routerAddress)
 
   const allowance = usePermit2Allowance(
+    routerAddress,
     amountToApprove as any,
     isChainSupported(chainId) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
   )

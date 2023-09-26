@@ -74,7 +74,7 @@ export function useSwapCallback({
     wallchainMasterInput,
   )
 
-  const { callback } = useSendSwapTransaction(account, chainId, trade, swapCalls)
+  const { callback } = useSendSwapTransaction(account, chainId, trade, wallchainSwapCalls)
 
   return useMemo(() => {
     if (!trade || !account || !chainId || !callback) {
