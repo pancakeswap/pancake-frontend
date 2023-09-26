@@ -1,14 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { AllowanceTransfer, MaxAllowanceTransferAmount, PERMIT2_ADDRESS, PermitSingle } from '@pancakeswap/permit2-sdk'
+import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { SLOW_INTERVAL } from 'config/constants'
 import { useCallback, useMemo } from 'react'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { publicClient } from 'utils/wagmi'
 import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
 import { useQuery, useSignTypedData } from 'wagmi'
-import { FAST_INTERVAL } from 'config/constants'
-
+import { zeroAddress } from 'viem'
 import PERMIT2_ABI from '../config/abi/permit2.json'
 import useAccountActiveChain from './useAccountActiveChain'
 import { useActiveChainId } from './useActiveChainId'
@@ -19,13 +19,11 @@ const PERMIT_SIG_EXPIRATION = 1800000 // 30 min
 function toDeadline(expiration: number): number {
   return Math.floor((Date.now() + expiration) / 1000)
 }
-const DUMMY = '0x0000000000000000000000000000000000000000'
-
 export function usePermitAllowance(token?: Token, owner?: string, spender?: string) {
   const { chainId } = useActiveChainId()
 
   const inputs = useMemo(
-    () => [owner ?? DUMMY, token?.address ?? DUMMY, spender ?? DUMMY],
+    () => [owner ?? zeroAddress, token?.address ?? zeroAddress, spender ?? zeroAddress],
     [owner, spender, token?.address],
   )
 
@@ -39,13 +37,12 @@ export function usePermitAllowance(token?: Token, owner?: string, spender?: stri
         args: inputs,
       }),
     {
-      refetchInterval: FAST_INTERVAL,
+      refetchInterval: SLOW_INTERVAL,
       retry: true,
       refetchOnWindowFocus: false,
       enabled: Boolean(spender && owner),
     },
   )
-  console.log(allowance)
   return useMemo(
     () => ({
       permitAllowance:
@@ -85,7 +82,7 @@ export function useUpdatePermitAllowance(
 
       if (nonce === undefined) throw new Error('missing nonce')
 
-      const permit: any = {
+      const permit: Permit = {
         details: {
           token: token.address,
           amount: MaxAllowanceTransferAmount.toString(),

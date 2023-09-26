@@ -7,6 +7,7 @@ import { UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 
 import { PERMIT2_ADDRESS } from '@pancakeswap/permit2-sdk'
 import { GreyCard } from 'components/Card'
@@ -22,6 +23,7 @@ import {
 } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import usePermit2Allowance, { AllowanceState } from 'hooks/usePermit2Allowance'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
@@ -31,9 +33,7 @@ import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isChainSupported } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
@@ -65,8 +65,8 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   tradeLoading,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
-  const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const [isExpertMode] = useExpertMode()
   const {
     typedValue,
@@ -86,7 +86,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
   const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
-
   const deadline = useTransactionDeadline()
   const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(trade, deadline)
   const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
@@ -184,7 +183,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       })
       .catch((error) => {
         setWallchainSecondaryStatus('not-found')
-        console.log(error)
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
@@ -213,7 +211,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       (approvalSubmitted && approvalState === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
 
-  console.log(showApproveFlow)
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
@@ -224,19 +221,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     />,
   )
 
-  const { confirmModalState, pendingModalSteps, startSwapFlow, resetSwapFlow } = useConfirmModalState({
-    txHash,
-    chainId,
-    approval: approvalState,
-    approvalToken: trade?.inputAmount?.currency,
-    isPendingError,
-    isExpertMode,
-    currentAllowance,
-    approveCallback,
-    revokeCallback,
-    onConfirm: handleSwap,
-  })
-
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
       trade={trade}
@@ -246,9 +230,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       originalTrade={tradeToConfirm}
       showApproveFlow={showApproveFlow}
       currencyBalances={currencyBalances}
-      confirmModalState={confirmModalState}
-      pendingModalSteps={pendingModalSteps}
-      startSwapFlow={startSwapFlow}
       swapErrorMessage={swapErrorMessage}
       currentAllowance={currentAllowance}
       onConfirm={handleSwap}
@@ -270,13 +251,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       swapErrorMessage: undefined,
       txHash: undefined,
     })
-    resetSwapFlow()
-    if (isExpertMode) {
-      startSwapFlow()
-    }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [trade, onPresentConfirmModal, isExpertMode, startSwapFlow, resetSwapFlow])
+  }, [trade, onPresentConfirmModal])
 
   // useEffect
   useEffect(() => {
@@ -368,18 +345,16 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         id="swap-button"
         width="100%"
         variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
-        disabled={
-          !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || statusWallchain === 'pending'
-        }
-        onClick={onSwapHandler}
+        disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
+        onClick={() => onSwapHandler()}
       >
         {swapInputError ||
           (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||
           (priceImpactSeverity > 3 && !isExpertMode
             ? t('Price Impact Too High')
             : priceImpactSeverity > 2
-              ? t('Swap Anyway')
-              : t('Swap'))}
+            ? t('Swap Anyway')
+            : t('Swap'))}
       </CommitButton>
     </Box>
   )

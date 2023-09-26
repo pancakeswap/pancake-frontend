@@ -11,8 +11,7 @@ export function permit2Domain(
 } {
   return {
     name: PERMIT2_DOMAIN_NAME,
-    version: '1.0.0',
-    chainId: chainId.toString(),
+    chainId,
     verifyingContract: permit2Address,
   }
 }

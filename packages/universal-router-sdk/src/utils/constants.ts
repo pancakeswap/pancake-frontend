@@ -1,103 +1,58 @@
-type ChainConfig = {
-  router: string
-  creationBlock: number
-  weth: string
-}
+import { ChainId } from '@pancakeswap/chains'
+import { ChainConfig } from './types'
 
 const WETH_NOT_SUPPORTED_ON_CHAIN = '0x0000000000000000000000000000000000000000'
 
 const CHAIN_CONFIGS: { [key: number]: ChainConfig } = {
   // mainnet
-  [1]: {
+  [ChainId.ETHEREUM]: {
     router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
     weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
     creationBlock: 17143817,
   },
   // goerli
-  [5]: {
+  [ChainId.GOERLI]: {
     router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6',
+    weth: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
     creationBlock: 9758537,
   },
-  [97]: {
+  // binance smart chain
+  [ChainId.BSC]: {
+    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+    weth: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+    creationBlock: 27915533,
+  },
+  [ChainId.BSC_TESTNET]: {
     router: '0x4bC641488dd00729ED9dDe94AF53d859b55eDE1c',
     weth: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
-    creationBlock: 33658520
+    creationBlock: 33658520,
   },
   // sepolia
-  [11155111]: {
+  [ChainId.SCROLL_SEPOLIA]: {
     router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
     weth: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
     creationBlock: 3543575,
   },
-  // polygon
-  [137]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-    creationBlock: 42294741,
-  },
-  //polygon mumbai
-  [80001]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
-    creationBlock: 35176052,
-  },
-  //optimism
-  [10]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: '0x4200000000000000000000000000000000000006',
-    creationBlock: 96333990,
-  },
-  // optimism goerli
-  [420]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: '0x4200000000000000000000000000000000000006',
-    creationBlock: 8887728,
-  },
   // arbitrum
-  [42161]: {
+  [ChainId.ARBITRUM_ONE]: {
     router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
     weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
     creationBlock: 87206402,
   },
   // arbitrum goerli
-  [421613]: {
+  [ChainId.ARBITRUM_GOERLI]: {
     router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
     weth: '0xe39Ab88f8A4777030A534146A9Ca3B52bd5D43A3',
     creationBlock: 18815277,
   },
-  // celo
-  [42220]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: WETH_NOT_SUPPORTED_ON_CHAIN,
-    creationBlock: 19106929,
-  },
-  // celo alfajores
-  [44787]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: WETH_NOT_SUPPORTED_ON_CHAIN,
-    creationBlock: 17566658,
-  },
-  // binance smart chain
-  [56]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-    creationBlock: 27915533,
-  },
-  // avalanche
-  [43114]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
-    weth: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
-    creationBlock: 31583684,
-  },
   // base goerli
-  [84531]: {
-    router: '0xd0872d928672ae2ff74bdb2f5130ac12229cafaf',
+  [ChainId.BASE_TESTNET]: {
+    router: '0xD0872D928672ae2fF74Bdb2F5130Ac12229CAfAF',
     weth: '0x4200000000000000000000000000000000000006',
     creationBlock: 6915289,
   },
   // base mainnet
-  [8453]: {
+  [ChainId.BASE]: {
     router: '0x198EF79F1F515F02dFE9e3115eD9fC07183f02fC',
     weth: '0x4200000000000000000000000000000000000006',
     creationBlock: 1452376,
@@ -107,11 +62,6 @@ const CHAIN_CONFIGS: { [key: number]: ChainConfig } = {
 export const UNIVERSAL_ROUTER_ADDRESS = (chainId: number): string => {
   if (!(chainId in CHAIN_CONFIGS)) throw new Error(`Universal Router not deployed on chain ${chainId}`)
   return CHAIN_CONFIGS[chainId].router
-}
-
-export const UNIVERSAL_ROUTER_CREATION_BLOCK = (chainId: number): number => {
-  if (!(chainId in CHAIN_CONFIGS)) throw new Error(`Universal Router not deployed on chain ${chainId}`)
-  return CHAIN_CONFIGS[chainId].creationBlock
 }
 
 export const WETH_ADDRESS = (chainId: number): string => {
@@ -124,11 +74,11 @@ export const WETH_ADDRESS = (chainId: number): string => {
 
 export const PERMIT2_ADDRESS = '0x000000000022D473030F116dDEE9F6B43aC78BA3'
 
-export const CONTRACT_BALANCE = 2n ** 255n;
+export const CONTRACT_BALANCE = 2n ** 255n
 export const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
-export const MAX_UINT256 = (2n ** 256n) - 1n;
-export const MAX_UINT160 = (2n ** 256n) - 1n;
+export const MAX_UINT256 = 2n ** 256n - 1n
+export const MAX_UINT160 = 2n ** 256n - 1n
 
 export const SENDER_AS_RECIPIENT = '0x0000000000000000000000000000000000000001'
 export const ROUTER_AS_RECIPIENT = '0x0000000000000000000000000000000000000002'

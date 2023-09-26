@@ -1,5 +1,5 @@
-import type { AbiParametersToPrimitiveTypes } from 'abitype'
-import { Hex, encodeAbiParameters, parseAbi, parseAbiParameters } from 'viem'
+import { Hex, encodeAbiParameters, parseAbiParameters } from 'viem'
+import { ABIParametersType } from './types'
 
 /**
  * CommandTypes
@@ -15,11 +15,6 @@ export enum CommandType {
   TRANSFER = 0x05,
   PAY_PORTION = 0x06,
 
-  // The commands are executed in nested if blocks to minimise gas consumption
-  // The following constant defines one of the boundaries where the if blocks split commands
-  // FIRST_IF_BOUNDARY = 0x08,
-
-  // Command Types where 0x08<=value<0x10, executed in the second nested-if block
   V2_SWAP_EXACT_IN = 0x08,
   V2_SWAP_EXACT_OUT = 0x09,
   PERMIT2_PERMIT = 0x0a,
@@ -28,39 +23,27 @@ export enum CommandType {
   PERMIT2_TRANSFER_FROM_BATCH = 0x0d,
   BALANCE_CHECK_ERC20 = 0x0e,
 
-  // The commands are executed in nested if blocks to minimise gas consumption
-  // The following constant defines one of the boundaries where the if blocks split commands
-  // SECOND_IF_BOUNDARY = 0x10,
+  // NFT-related command types
+  SEAPORT_V1_5 = 0x10,
+  LOOKS_RARE_V2 = 0x11,
+  NFTX = 0x12,
+  CRYPTOPUNKS = 0x13,
+  // 0x14
+  OWNER_CHECK_721 = 0x15,
+  OWNER_CHECK_1155 = 0x16,
+  SWEEP_ERC721 = 0x17,
 
+  X2Y2_721 = 0x18,
   SUDOSWAP = 0x19,
   NFT20 = 0x1a,
+  X2Y2_1155 = 0x1b,
   FOUNDATION = 0x1c,
   SWEEP_ERC1155 = 0x1d,
   ELEMENT_MARKET = 0x1e,
 
-  // The commands are executed in nested if blocks to minimise gas consumption
-  // The following constant defines one of the boundaries where the if blocks split commands
-  THIRD_IF_BOUNDARY = 0x18,
-
-  // Command Types where 0x18<=value<=0x1f, executed in the final nested-if block
-  SEAPORT_V1_5 = 0x18,
-  SEAPORT_V1_4 = 0x19,
-  LOOKS_RARE_V2 = 0x1a,
-  X2Y2_721 = 0x1b,
-  X2Y2_1155 = 0x1c,
-  // COMMAND_PLACEHOLDER for 0x1d-0x1f (all unused)
-
-  // The commands are executed in nested if blocks to minimise gas consumption
-  // The following constant defines one of the boundaries where the if blocks split commands
-  FOURTH_IF_BOUNDARY = 0x20,
-
-  // Command Types where 0x20<=value
-  EXECUTE_SUB_PLAN = 0x20,
-  APPROVE_ERC20 = 0x21,
-  STABLE_SWAP_EXACT_IN = 0x22,
-  STABLE_SWAP_EXACT_OUT = 0x23,
-  PANCAKE_NFT_BNB = 0x24,
-  PANCAKE_NFT_WBNB = 0x25,
+  SEAPORT_V1_4 = 0x20,
+  EXECUTE_SUB_PLAN = 0x21,
+  APPROVE_ERC20 = 0x22,
 }
 
 const ALLOW_REVERT_FLAG = 0x80
@@ -113,7 +96,7 @@ struct AllowanceTransferDetails {
 }
 `.replaceAll('\n', '')
 
-const ABI_PARAMETER: Record<CommandType, any> = {
+export const ABI_PARAMETER: Record<CommandType, any> = {
   // Batch Reverts
   [CommandType.EXECUTE_SUB_PLAN]: parseAbiParameters('bytes _commands, bytes[] _inputs'),
 
@@ -143,17 +126,17 @@ const ABI_PARAMETER: Record<CommandType, any> = {
     'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bool payerIsUser'
   ),
   [CommandType.V2_SWAP_EXACT_IN]: parseAbiParameters(
-    'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bool payerIsUser'
+    'address recipient, uint256 amountIn, uint256 amountOutMin, address[] path, bool payerIsUser'
   ),
   [CommandType.V2_SWAP_EXACT_OUT]: parseAbiParameters(
-    'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bool payerIsUser'
+    'address recipient, uint256 amountOut, uint256 amountInMax, address[] path, bool payerIsUser'
   ),
-  [CommandType.STABLE_SWAP_EXACT_IN]: parseAbiParameters(
-    'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bytes flag, bool payerIsUser'
-  ),
-  [CommandType.STABLE_SWAP_EXACT_OUT]: parseAbiParameters(
-    'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bytes flag, bool payerIsUser'
-  ),
+  // [CommandType.STABLE_SWAP_EXACT_IN]: parseAbiParameters(
+  //   'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bytes flag, bool payerIsUser'
+  // ),
+  // [CommandType.STABLE_SWAP_EXACT_OUT]: parseAbiParameters(
+  //   'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bytes flag, bool payerIsUser'
+  // ),
 
   // Token Actions and Checks
   [CommandType.WRAP_ETH]: parseAbiParameters('address recipient, uint256 amountMin'),
@@ -177,8 +160,8 @@ const ABI_PARAMETER: Record<CommandType, any> = {
   [CommandType.X2Y2_1155]: parseAbiParameters(
     'uint256 value, bytes data, address recipient, address token, uint256 id, uint256 amount'
   ),
-  [CommandType.PANCAKE_NFT_WBNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
-  [CommandType.PANCAKE_NFT_BNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
+  // [CommandType.PANCAKE_NFT_WBNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
+  // [CommandType.PANCAKE_NFT_BNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
   // @notice: following marketplace not supported now
   // [CommandType.NFTX]: parseAbiParameters('uint256 value, bytes data'),
   // [CommandType.FOUNDATION]: parseAbiParameters(
@@ -190,8 +173,6 @@ const ABI_PARAMETER: Record<CommandType, any> = {
   // [CommandType.ELEMENT_MARKET]: parseAbiParameters('uint256 value, bytes data'),
 }
 
-type ABIType = typeof ABI_PARAMETER
-type ABIParametersType<TCommandType extends CommandType> = AbiParametersToPrimitiveTypes<ABIType[TCommandType]>
 export class RoutePlanner {
   commands: Hex
 
@@ -233,6 +214,7 @@ export function createCommand<TCommandType extends CommandType>(
   type: TCommandType,
   parameters: ABIParametersType<TCommandType>
 ): RouterCommand {
+  console.log(type)
   // const params = parameters.filter((param) => param !== null)
   const encodedInput = encodeAbiParameters(ABI_PARAMETER[type], parameters as any)
   return { type, encodedInput }

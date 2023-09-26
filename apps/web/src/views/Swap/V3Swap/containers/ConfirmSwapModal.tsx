@@ -30,8 +30,8 @@ import { ConfirmModalState, PendingConfirmModalState } from '../types'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from '../../components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
-import { ApproveStepFlow } from './ApproveStepFlow'
 import { useWallchainStatus } from '../hooks/useWallchain'
+import { ApproveStepFlow } from './ApproveStepFlow'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean
@@ -100,7 +100,7 @@ const useConfirmModalState = ({
     }
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [allowance, approvalToken.chainId, approvalToken.wrapped.address, currentAllowance])
+  }, [allowance, approvalToken?.chainId, approvalToken?.wrapped.address, currentAllowance])
 
   const performStep = useCallback(
     async (step: ConfirmModalState) => {
@@ -210,9 +210,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   isMM,
   trade,
   txHash,
-  confirmModalState,
-  startSwapFlow,
-  pendingModalSteps,
+  approval,
   isRFQReady,
   attemptingTxn,
   originalTrade,
@@ -253,7 +251,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     onDismiss?.()
   }, [customOnDismiss, onDismiss])
 
-  const topModal = useMemo(() => {
+  const topModal = useCallback(() => {
     const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
     const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
     const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
@@ -374,7 +372,6 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     )
   }, [
     isMM,
-    isBonus,
     trade,
     txHash,
     isRFQReady,
@@ -393,7 +390,6 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     startSwapFlow,
     onAcceptChanges,
     openSettingModal,
-    allowance,
     permitAllowance,
     approval,
     isBonus,
@@ -420,7 +416,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
       bodyTop={isShowingLoadingAnimation ? '-15px' : '0'}
       handleDismiss={handleDismiss}
     >
-      <Box>{topModal}</Box>
+      <Box>{topModal()}</Box>
       {isShowingLoadingAnimation && !swapErrorMessage && (
         <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
       )}
