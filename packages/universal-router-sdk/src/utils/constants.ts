@@ -12,7 +12,7 @@ const CHAIN_CONFIGS: { [key: number]: ChainConfig } = {
   },
   // goerli
   [ChainId.GOERLI]: {
-    router: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+    router: '0xB0A8a4A46786EAd7D60E236e69257Ba27355A3Ae',
     weth: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
     creationBlock: 9758537,
   },
@@ -72,7 +72,7 @@ export const WETH_ADDRESS = (chainId: number): string => {
   return CHAIN_CONFIGS[chainId].weth
 }
 
-export const PERMIT2_ADDRESS = '0x000000000022D473030F116dDEE9F6B43aC78BA3'
+export const PERMIT2_ADDRESS = '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768'
 
 export const CONTRACT_BALANCE = 2n ** 255n
 export const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
