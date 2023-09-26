@@ -126,7 +126,7 @@ export function BuyCryptoForm({
             showCommonBases={false}
             topElement={<Text color="textSubtle">{t('I want to spend')}</Text>}
             error={Boolean(error)}
-            value={typedValue}
+            value={typedValue ?? ''}
             onUserInput={handleTypeOutput}
             bottomElement={
               <Text pt="6px" pb="12px" fontSize="12px" color={theme.colors.failure}>
@@ -143,6 +143,7 @@ export function BuyCryptoForm({
             topElement={<Text color="textSubtle">{t('I want to buy')}</Text>}
             currencyLoading={!inputCurrency}
             bottomElement={<></>}
+            value=""
           />
         </Box>
         {[ChainId.BASE, ChainId.LINEA, ChainId.BSC, ChainId.ARBITRUM_ONE].includes(chainId) ? (

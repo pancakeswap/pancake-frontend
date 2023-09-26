@@ -86,7 +86,7 @@ const ButtonAsset = ({
 interface CurrencySelectProps extends CurrencySearchModalProps, BoxProps {
   id: 'onramp-input' | 'onramp-output'
   currencyLoading: boolean
-  value?: string | undefined
+  value: string
   onUserInput?: (value: string) => void
   disableCurrencySelect?: boolean
   error?: boolean
@@ -135,8 +135,8 @@ export const CurrencySelect = ({
       <Flex justifyContent="space-between" py="4px" width="100%" alignItems="center">
         {topElement}
       </Flex>
-      <DropDownContainer error={error}>
-        {id === 'onramp-input' ? (
+      <DropDownContainer error={error as any}>
+        {id === 'onramp-input' && onUserInput ? (
           <NumericalInput
             error={error}
             disabled={!selectedCurrency}
