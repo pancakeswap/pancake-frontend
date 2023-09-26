@@ -118,7 +118,7 @@ export class PancakeSwapTrade implements Command {
         // If the trade is exact output, and a fee was taken, we must adjust the amount out to be the amount after the fee
         // Otherwise we continue as expected with the trade's normal expected output
         if (this.type === TradeType.EXACT_OUTPUT) {
-          minAmountOut = minAmountOut.subtract(minAmountOut.multiply(feeBips)
+          minAmountOut = minAmountOut.subtract(minAmountOut.multiply(feeBips))
       }
 
       // The remaining tokens that need to be sent to the user after the fee is taken will be caught
@@ -140,7 +140,7 @@ export class PancakeSwapTrade implements Command {
       planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, 0])
     }
   }
-}
+}}
 
 // encode a v2 swap
 function addV2Swap(
