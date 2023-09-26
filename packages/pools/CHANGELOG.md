@@ -1,5 +1,13 @@
 # @pancakeswap/pools
 
+## 4.0.12
+
+### Patch Changes
+
+- 1831356d9: refactor: Move ChainsId usage from Sdk to Chains package
+- Updated dependencies [1831356d9]
+  - @pancakeswap/tokens@0.4.4
+
 ## 4.0.11
 
 ### Patch Changes

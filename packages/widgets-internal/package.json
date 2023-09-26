@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/widgets-internal",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "main": "index.ts",
   "exports": {
@@ -20,7 +20,6 @@
     "@pancakeswap/pools": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
-    "@pancakeswap/chains": "workspace:*",
     "bignumber.js": "^9.0.0",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",

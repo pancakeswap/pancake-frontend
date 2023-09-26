@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 5.5.0
+
+### Minor Changes
+
+- 1831356d9: refactor: Move ChainsId usage from Sdk to Chains package
+
 ## 5.4.2
 
 ### Patch Changes

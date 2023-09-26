@@ -1,5 +1,16 @@
 # @pancakeswap/smart-router
 
+## 4.8.7
+
+### Patch Changes
+
+- 1831356d9: refactor: Move ChainsId usage from Sdk to Chains package
+- Updated dependencies [1831356d9]
+  - @pancakeswap/sdk@5.5.0
+  - @pancakeswap/multicall@3.1.2
+  - @pancakeswap/tokens@0.4.4
+  - @pancakeswap/v3-sdk@3.4.4
+
 ## 4.8.6
 
 ### Patch Changes
