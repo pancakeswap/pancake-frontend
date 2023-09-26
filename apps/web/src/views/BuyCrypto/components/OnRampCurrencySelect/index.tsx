@@ -135,16 +135,18 @@ export const CurrencySelect = ({
       <Flex justifyContent="space-between" py="4px" width="100%" alignItems="center">
         {topElement}
       </Flex>
-      <DropDownContainer error={error as any}>
+      <DropDownContainer error={error}>
         {id === 'onramp-input' ? (
           <NumericalInput
             error={error}
             disabled={!selectedCurrency}
             loading={!selectedCurrency}
             className="token-amount-input"
-            value={value as string}
+            value={value}
             onBlur={onInputBlur}
-            onUserInput={onUserInput as any}
+            onUserInput={(val) => {
+              onUserInput(val)
+            }}
             align="left"
           />
         ) : (
