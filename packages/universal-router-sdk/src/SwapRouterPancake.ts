@@ -1,4 +1,13 @@
-import { Fraction, ONE, Currency as PancakeCurrency, CurrencyAmount, Percent, TradeType, ZERO, BigintIsh } from '@pancakeswap/sdk'
+import {
+  Fraction,
+  ONE,
+  Currency as PancakeCurrency,
+  CurrencyAmount,
+  Percent,
+  TradeType,
+  ZERO,
+  BigintIsh,
+} from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/dist/evm/index'
 import invariant from 'tiny-invariant'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
@@ -8,7 +17,7 @@ import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { maximumAmountIn } from './utils/utils'
 import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
-import { encodeFunctionData } from 'viem'
+import { Hex, encodeFunctionData, toHex } from 'viem'
 
 export type SwapRouterConfig = {
   sender?: string // address
@@ -39,9 +48,9 @@ export abstract class PancakeUniSwapRouter {
       encodePermit(planner, options.inputTokenPermit)
     }
 
-    const nativeCurrencyValue: `0x${string}` = inputCurrency.isNative
-      ? maximumAmountIn(sampleTrade, options.slippageTolerance, sampleTrade.inputAmount).quotient.toString()
-      : '0'
+    const nativeCurrencyValue = inputCurrency.isNative
+      ? toHex(maximumAmountIn(sampleTrade, options.slippageTolerance, sampleTrade.inputAmount).quotient.toString())
+      : toHex(0)
 
     trade.encode(planner, { allowRevert: false })
     return PancakeUniSwapRouter.encodePlan(planner, nativeCurrencyValue, {
@@ -93,7 +102,7 @@ export abstract class PancakeUniSwapRouter {
    */
   private static encodePlan(
     planner: RoutePlanner,
-    nativeCurrencyValue: `0x${string}`,
+    nativeCurrencyValue: Hex,
     config: SwapRouterConfig = {}
   ): MethodParameters {
     const { commands, inputs } = planner
@@ -102,6 +111,6 @@ export abstract class PancakeUniSwapRouter {
     // const functionSignature = !!config.deadline ? 'execute(bytes,bytes[],uint256)' : 'execute(bytes,bytes[])'
     const parameters = !!config.deadline ? [commands, inputs, Number(config.deadline)] : [commands, inputs]
     const calldata = encodeFunctionData({ abi, args: parameters, functionName: 'execute' })
-    return { calldata: calldata as `0x${string}`, value: nativeCurrencyValue.toString() }
+    return { calldata, value: nativeCurrencyValue }
   }
 }
