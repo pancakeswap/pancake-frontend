@@ -78,56 +78,22 @@ export function useUpdatePermitAllowance(
       const permit: Permit = {
         details: {
           token: token.address,
-          amount: MaxAllowanceTransferAmount,
-          expiration: toDeadline(PERMIT_EXPIRATION),
-          nonce,
+          amount: MaxAllowanceTransferAmount.toString(),
+          expiration: toDeadline(PERMIT_EXPIRATION).toString(),
+          nonce: nonce.toString(),
         },
         spender,
-        sigDeadline: toDeadline(PERMIT_SIG_EXPIRATION),
+        sigDeadline: toDeadline(PERMIT_SIG_EXPIRATION).toString(),
       }
 
- 
-
-      const { values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS, chainId)
-      const domain = {
-        name: 'Permit2',
-        version: '1',
-        chainId,
-        verifyingContract: '0x000000000022D473030F116dDEE9F6B43aC78BA3' as `0x${string}`,
-      }
-      const type = {
- 
-        PermitDetails: [
-          { name: 'token', type: 'address' },
-          { name: 'amount', type: 'uint160' },
-          { name: 'expiration', type: 'uint48' },
-          { name: 'nonce', type: 'uint48' },
-        ],
-        PermitSingle: [
-          
-          { name: 'details', type: 'PermitDetails' },
-          { name: 'spender', type: 'address' },
-          { name: 'sigDeadline', type: 'uint256' },
-        ],
-      }
-      const message = {
-        details: {
-          token: values.details.token,
-          amount: values.details.amount.toString(),
-          expiration: values.details.expiration.toString(),
-          nonce: values.details.nonce.toString()
-        },
-        spender: values.spender,
-        sigDeadline: values.sigDeadline.toString()
-      }
+      const { domain, types, values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS, chainId)
   
-     
       const signature = await signTypedDataAsync({
         account,
         domain,
         primaryType: 'PermitSingle',
-        types: type,
-        message
+        types,
+        message: values
       })
     
       onPermitSignature?.({ ...permit, signature })
