@@ -66,15 +66,16 @@
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",
+    "@pancakeswap/permit2-sdk": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
-    "@pancakeswap/permit2-sdk": "workspace:*",
     "@uniswap/universal-router": "1.4.3",
     "abitype": "^0.9.8",
     "bignumber.js": "^9.0.2",
     "ethers": "^5.3.1",
+    "jsbi": "^4.3.0",
     "tiny-invariant": "^1.1.0",
     "viem": "^1.12.2"
   }
