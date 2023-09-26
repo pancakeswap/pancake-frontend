@@ -28,7 +28,6 @@
     "lint": "eslint src test",
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest --globals --run",
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test:all": "yarn test:hardhat",
