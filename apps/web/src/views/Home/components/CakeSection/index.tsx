@@ -336,11 +336,14 @@ const CakeSection: React.FC = () => {
     videoRef.current = video
   }, [])
 
-  const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
-    canvasInterval = window.setInterval(() => {
-      drawImage?.()
-    }, 1000 / fps)
-    triggerCssAnimation()
+  const { drawImage, isVideoPlaying } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
+    if (isVideoPlaying.current === false) {
+      isVideoPlaying.current = true
+      canvasInterval = window.setInterval(() => {
+        drawImage?.()
+      }, 1000 / fps)
+      triggerCssAnimation()
+    }
   })
 
   useObserverOnce(cakeBoxRef, () => {

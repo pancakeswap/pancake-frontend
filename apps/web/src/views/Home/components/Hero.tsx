@@ -133,7 +133,7 @@ const Hero = () => {
   const rock03VideoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { isIOS } = useIsIOS()
-  const { drawImage } = useDrawCanvas(
+  const { drawImage, isVideoPlaying } = useDrawCanvas(
     videoRef,
     canvasRef,
     width,
@@ -141,9 +141,12 @@ const Hero = () => {
     fps,
     canvasInterval,
     () => {
-      canvasInterval = window.setInterval(() => {
-        drawImage?.()
-      }, 1000 / fps)
+      if (isVideoPlaying.current === false) {
+        isVideoPlaying.current = true
+        canvasInterval = window.setInterval(() => {
+          drawImage?.()
+        }, 1000 / fps)
+      }
     },
     () => {
       if (videoRef.current) {

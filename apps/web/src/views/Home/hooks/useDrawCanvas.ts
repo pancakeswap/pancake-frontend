@@ -1,8 +1,9 @@
-import { useCallback, useLayoutEffect } from 'react'
+import { useCallback, useLayoutEffect, useRef } from 'react'
 
 export const useDrawCanvas = (
   videoRef: React.MutableRefObject<HTMLVideoElement>,
   canvasRef: React.MutableRefObject<HTMLCanvasElement>,
+
   width: number,
   height: number,
   fps: number,
@@ -14,6 +15,7 @@ export const useDrawCanvas = (
   const video = videoRef?.current
   const canvas = canvasRef?.current
   const isElementReady = video && canvas
+  const isVideoPlaying = useRef(false)
 
   const drawImage = useCallback(() => {
     const context = canvas?.getContext('2d')
@@ -31,10 +33,12 @@ export const useDrawCanvas = (
     if (isElementReady) {
       video.onpause = () => {
         clearInterval(canvasInterval)
+        isVideoPlaying.current = false
       }
       video.onended = () => {
         clearInterval(canvasInterval)
         onVideoVideoEnd?.()
+        isVideoPlaying.current = false
       }
       video.onplay = () => {
         onVideoStartCallback?.()
@@ -42,5 +46,5 @@ export const useDrawCanvas = (
     }
   }, [isElementReady, canvasInterval, onVideoStartCallback, onVideoVideoEnd, video])
 
-  return { drawImage: isElementReady ? drawImage : null }
+  return { drawImage: isElementReady ? drawImage : null, isVideoPlaying }
 }
