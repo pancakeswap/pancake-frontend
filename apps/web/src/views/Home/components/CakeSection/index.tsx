@@ -301,7 +301,7 @@ const CakeCanvas = styled.canvas`
   left: 50%;
   transform: translate(-50%, -50%) scale(0.65);
   ${({ theme }) => theme.mediaQueries.lg} {
-    transform: translate(-50%, -55%) scale(0.75);
+    transform: translate(-50%, -52%) scale(0.75);
   }
   background-color: transparent;
 `
