@@ -150,7 +150,7 @@ export function useApproveCallback(
                 text: 'Approve %symbol%',
                 data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
               },
-              approval: { tokenAddress: token?.address, spender, amount: finalAmount },
+              approval: { tokenAddress: token?.address, spender, amount: finalAmount.toString() },
               type: 'approve',
             })
           }

@@ -15,7 +15,7 @@ const now = () => Date.now()
 
 export interface TransactionDetails {
   hash: string
-  approval?: { tokenAddress: string; spender: string; amount: string }
+  approval?: { tokenAddress: string; spender: string }
   type?: TransactionType
   summary?: string
   translatableSummary?: { text: string; data?: Record<string, string | number> }
