@@ -306,9 +306,7 @@ const CakeCanvas = styled.canvas`
   background-color: transparent;
 `
 
-let canvasInterval = 0
 let seqInterval = 0
-const fps = 60
 const width = 900
 const height = 900
 
@@ -324,6 +322,7 @@ const CakeSection: React.FC = () => {
   const rightRef = useRef<HTMLDivElement>(null)
   const played = useRef<boolean>(false)
   const cakeBoxRef = useRef<HTMLDivElement>(null)
+  const internalRef = useRef(0)
   const { isMobile, isTablet } = useMatchBreakpoints()
 
   useLayoutEffect(() => {
@@ -337,10 +336,10 @@ const CakeSection: React.FC = () => {
     videoRef.current = video
   }, [isMobile])
 
-  const { drawImage, isVideoPlaying } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
+  const { drawImage, isVideoPlaying } = useDrawCanvas(videoRef, canvasRef, internalRef, width, height, () => {
     if (isVideoPlaying.current === false) {
       isVideoPlaying.current = true
-      canvasInterval = window.requestAnimationFrame(() => {
+      internalRef.current = window.requestAnimationFrame(() => {
         drawImage?.()
       })
       triggerCssAnimation()
@@ -388,7 +387,7 @@ const CakeSection: React.FC = () => {
 
   useLayoutEffect(() => {
     triggerAnimation()
-    return () => cancelAnimationFrame(canvasInterval)
+    return () => cancelAnimationFrame(internalRef.current)
   }, [drawImage, triggerAnimation])
 
   return (

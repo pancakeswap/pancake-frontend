@@ -3,11 +3,9 @@ import { useCallback, useLayoutEffect, useRef } from 'react'
 export const useDrawCanvas = (
   videoRef: React.MutableRefObject<HTMLVideoElement>,
   canvasRef: React.MutableRefObject<HTMLCanvasElement>,
-
+  intervalRef: React.MutableRefObject<number>,
   width: number,
   height: number,
-  fps: number,
-  canvasInterval: number,
   onVideoStartCallback?: () => void,
   onVideoVideoEnd?: () => void,
   additionalVideoRefs?: React.MutableRefObject<HTMLVideoElement>[],
@@ -18,8 +16,6 @@ export const useDrawCanvas = (
   const isVideoPlaying = useRef(false)
 
   const drawImage = useCallback(() => {
-    // eslint-disable-next-line no-param-reassign
-    canvasInterval = 0
     isVideoPlaying.current = false
     const context = canvas?.getContext('2d')
     if (!canvas || !video || !context) return
@@ -31,16 +27,16 @@ export const useDrawCanvas = (
       context.drawImage(additionalVideo, 0, 0, width, height)
     })
     onVideoStartCallback?.()
-  }, [canvas, video, height, width, additionalVideoRefs])
+  }, [canvas, video, height, width, additionalVideoRefs, onVideoStartCallback])
 
   useLayoutEffect(() => {
     if (isElementReady) {
       video.onpause = () => {
-        cancelAnimationFrame(canvasInterval)
+        cancelAnimationFrame(intervalRef.current)
         isVideoPlaying.current = false
       }
       video.onended = () => {
-        cancelAnimationFrame(canvasInterval)
+        cancelAnimationFrame(intervalRef.current)
         onVideoVideoEnd?.()
         isVideoPlaying.current = false
       }
@@ -48,7 +44,7 @@ export const useDrawCanvas = (
         onVideoStartCallback?.()
       }
     }
-  }, [isElementReady, canvasInterval, onVideoStartCallback, onVideoVideoEnd, video])
+  }, [isElementReady, intervalRef, onVideoStartCallback, onVideoVideoEnd, video])
 
   return { drawImage: isElementReady ? drawImage : null, isVideoPlaying }
 }

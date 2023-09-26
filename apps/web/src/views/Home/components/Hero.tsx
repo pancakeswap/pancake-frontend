@@ -77,10 +77,11 @@ const CakeBox = styled.div`
         transform: scale(1) translate(-50%, -50%);
       }
     }
-      ${({ theme }) => theme.mediaQueries.lg} {
-    > canvas {
-      &.is-ios {
-        transform: scale(1.45) translate(-49%, -53%);
+    ${({ theme }) => theme.mediaQueries.lg} {
+      > canvas {
+        &.is-ios {
+          transform: scale(1.45) translate(-50%, -52%);
+        }
       }
     }
     position: relative;
@@ -120,9 +121,7 @@ const StyledText = styled(Text)`
   }
 `
 
-let canvasInterval = 0
 let seqsInterval = 0
-const fps = 60
 const width = 1080
 const height = 1080
 
@@ -138,46 +137,18 @@ const Hero = () => {
   const rock02VideoRef = useRef<HTMLVideoElement>(null)
   const rock03VideoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const internalRef = useRef(0)
   const { isIOS } = useIsIOS()
-  // const videoResources = useMemo(() => {
-  //   return [
-  //     {
-  //       src: '/assets/bunnyv2.webm',
-  //       ref: videoRef,
-  //     },
-  //     {
-  //       src: '/assets/star.webm',
-  //       ref: starVideoRef,
-  //     },
-  //     {
-  //       src: '/assets/hero-cake.webm',
-  //       ref: cakeVideoRef,
-  //     },
-  //     {
-  //       src: '/assets/rock01.webm',
-  //       ref: rock01VideoRef,
-  //     },
-  //     {
-  //       src: '/assets/rock02.webm',
-  //       ref: rock02VideoRef,
-  //     },
-  //     {
-  //       src: '/assets/rock03.webm',
-  //       ref: rock03VideoRef,
-  //     },
-  //   ]
-  // }, [])
   const { drawImage, isVideoPlaying } = useDrawCanvas(
     videoRef,
     canvasRef,
+    internalRef,
     width,
     height,
-    fps,
-    canvasInterval,
     () => {
       if (isVideoPlaying.current === false) {
         isVideoPlaying.current = true
-        canvasInterval = window.requestAnimationFrame(() => {
+        internalRef.current = window.requestAnimationFrame(() => {
           drawImage?.()
         })
       }
@@ -191,22 +162,6 @@ const Hero = () => {
     [starVideoRef, cakeVideoRef, rock01VideoRef, rock02VideoRef, rock03VideoRef],
   )
 
-  // useLayoutEffect(() => {
-  //   if (checkIsIOS() || isMobile) return
-  //   videoResources.forEach(({ src, ref }, index) => {
-  //     const video = document.createElement('video')
-  //     if (index !== 0) video.loop = true
-  //     video.autoplay = true
-  //     video.playsInline = true
-  //     video.width = width
-  //     video.src = src
-  //     video.muted = true
-  //     video.preload = 'auto'
-  //     // eslint-disable-next-line no-param-reassign
-  //     ref.current = video
-  //   })
-  // }, [isMobile, videoResources])
-
   useLayoutEffect(() => {
     starVideoRef.current?.play()
     cakeVideoRef.current?.play()
@@ -217,7 +172,7 @@ const Hero = () => {
     }, 3000)
     return () => {
       clearInterval(seqsInterval)
-      // cancelAnimationFrame(canvasInterval)
+      cancelAnimationFrame(internalRef.current)
     }
   }, [])
 
