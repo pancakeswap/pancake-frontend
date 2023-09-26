@@ -77,6 +77,12 @@ const CakeBox = styled.div`
         transform: scale(1) translate(-50%, -50%);
       }
     }
+      ${({ theme }) => theme.mediaQueries.lg} {
+    > canvas {
+      &.is-ios {
+        transform: scale(1.45) translate(-50%, -53%);
+      }
+    }
     position: relative;
     width: 605px;
     height: 736px;
