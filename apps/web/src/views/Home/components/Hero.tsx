@@ -80,7 +80,7 @@ const CakeBox = styled.div`
       ${({ theme }) => theme.mediaQueries.lg} {
     > canvas {
       &.is-ios {
-        transform: scale(1.45) translate(-50%, -53%);
+        transform: scale(1.45) translate(-49%, -53%);
       }
     }
     position: relative;
