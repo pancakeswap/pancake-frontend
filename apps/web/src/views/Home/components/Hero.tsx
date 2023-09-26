@@ -329,12 +329,12 @@ const Hero = () => {
 
             <CakeBox>
               <CakeCanvas
-                className={isIOS ? 'is-ios' : undefined}
-                width={isIOS ? 500 : width}
-                height={isIOS ? 500 : height}
+                className={isIOS || isMobile ? 'is-ios' : undefined}
+                width={isIOS || isMobile ? 500 : width}
+                height={isIOS || isMobile ? 500 : height}
                 ref={canvasRef}
               />
-              {!isIOS && (
+              {!(isIOS || isMobile) && (
                 <VideoWrapper>
                   <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
                     <source src="/assets/bunnyv2.webm" type="video/webm" />
