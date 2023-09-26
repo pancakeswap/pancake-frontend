@@ -95,7 +95,7 @@ struct PermitDetails {
   uint160 amount;
   uint48 expiration;
   uint48 nonce;
-}`
+}`.replaceAll('\n', '')
 
 const ABI_STRUCT_PERMIT_SINGLE = `
 struct PermitSingle {
@@ -103,7 +103,7 @@ struct PermitSingle {
   address spender;
   uint256 sigDeadline;
 }
-`
+`.replaceAll('\n', '')
 
 const ABI_STRUCT_PERMIT_BATCH = `
 struct PermitBatch {
@@ -111,7 +111,7 @@ struct PermitBatch {
   address spender;
   uint256 sigDeadline;
 }
-`
+`.replaceAll('\n', '')
 
 const ABI_STRUCT_ALLOWANCE_TRANSFER_DETAILS = `
 struct AllowanceTransferDetails {
@@ -120,7 +120,7 @@ struct AllowanceTransferDetails {
   uint160 amount;
   address token;
 }
-`
+`.replaceAll('\n', '')
 
 const ABI_PARAMETER: Record<CommandType, any> = {
   // Batch Reverts
@@ -135,6 +135,7 @@ const ABI_PARAMETER: Record<CommandType, any> = {
   [CommandType.PERMIT2_PERMIT_BATCH]: parseAbiParameters([
     'PermitBatch permitBatch, bytes data',
     ABI_STRUCT_PERMIT_BATCH,
+    ABI_STRUCT_PERMIT_SINGLE,
     ABI_STRUCT_PERMIT_DETAILS,
   ]),
   [CommandType.PERMIT2_TRANSFER_FROM]: parseAbiParameters('address token, address recipient, uint160 amount'),
