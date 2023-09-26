@@ -9,7 +9,6 @@ import {
   Flex,
   Box,
   Card,
-  CurrencyLogo,
   Row,
   RowBetween,
   RowFixed,
@@ -22,6 +21,8 @@ import {
   Tag,
   TagProps,
 } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '../components/CurrencyLogo'
+
 import { StyledInput } from './StyledInput'
 import { toSignificant } from './utils'
 

@@ -3,18 +3,8 @@ import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { memo, useCallback } from 'react'
 import { styled } from 'styled-components'
 
-import {
-  BalanceInput,
-  Text,
-  Flex,
-  Button,
-  Box,
-  QuestionHelper,
-  RowBetween,
-  CurrencyLogo,
-  Card,
-  CardBody,
-} from '@pancakeswap/uikit'
+import { BalanceInput, Text, Flex, Button, Box, QuestionHelper, RowBetween, Card, CardBody } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '../components/CurrencyLogo'
 
 type Props = UsdAmountInputProps & TokenAmountsDisplayProps
 

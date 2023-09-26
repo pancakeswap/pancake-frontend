@@ -1,5 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
-import { Text, Box, Flex, ArrowForwardIcon, CurrencyLogo } from '@pancakeswap/uikit'
+import { Text, Box, Flex, ArrowForwardIcon } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '../components/CurrencyLogo'
 
 interface TokenTransferInfoProps {
   symbolA: string

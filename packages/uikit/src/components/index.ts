@@ -63,8 +63,6 @@ export * from "./SeverityErrorText";
 export * from "./ReleasedChart";
 export * from "./BunnyKnownPlaceholder";
 export * from "./DropdownMenu";
-export * from "./CurrencyInput";
-export * from "./CurrencyLogo";
 export * from "./DynamicSection";
 export * from "./Chart";
 
