@@ -23,8 +23,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
-    "test": "vitest --globals --run"
+    "dev": "tsup --watch"
   },
   "keywords": [
     "pancakeswap",
