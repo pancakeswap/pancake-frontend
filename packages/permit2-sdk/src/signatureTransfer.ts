@@ -75,7 +75,7 @@ const PERMIT_BATCH_TRANSFER_FROM_TYPES = {
   TokenPermissions: TOKEN_PERMISSIONS,
 }
 
-function permitTransferFromWithWitnessType(witness: Witness): Record<string, TypedDataField[]> {
+function permitTransferFromWithWitnessType(witness: Witness) {
   return {
     PermitWitnessTransferFrom: [
       { name: 'permitted', type: 'TokenPermissions' },
@@ -89,7 +89,7 @@ function permitTransferFromWithWitnessType(witness: Witness): Record<string, Typ
   }
 }
 
-function permitBatchTransferFromWithWitnessType(witness: Witness): Record<string, TypedDataField[]> {
+function permitBatchTransferFromWithWitnessType(witness: Witness) {
   return {
     PermitBatchWitnessTransferFrom: [
       { name: 'permitted', type: 'TokenPermissions[]' },

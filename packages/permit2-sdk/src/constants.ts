@@ -1,4 +1,4 @@
-export const PERMIT2_ADDRESS = '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768'
+export const PERMIT2_ADDRESS = '0x000000000022D473030F116dDEE9F6B43aC78BA3'
 
 export const MaxUint48 = BigInt('0xffffffffffff');
 export const MaxUint160 = BigInt('0xffffffffffffffffffffffffffffffffffffffff');

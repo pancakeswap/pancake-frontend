@@ -94,7 +94,8 @@ export function useCallWithGasPrice() {
         functionName: methodName,
         args: methodArgs,
         gasPrice,
-        gas: calculateGasMargin(gas),
+        // for some reason gas price is insamely high when using maxuint approval, so commenting out for now
+        // gas: calculateGasMargin(gas),
         value: 0n,
         ...overrides_,
       } as unknown as WriteContractParameters)

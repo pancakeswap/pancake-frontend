@@ -1,41 +1,34 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import {
   AllowanceTransfer,
   MaxAllowanceTransferAmount,
   PERMIT2_ADDRESS,
-  PermitSingle,
-  AllowanceProvider,
-  Permit2Abi,
+  PermitSingle
 } from '@pancakeswap/permit2-sdk'
-import { useContract } from 'hooks/useContract'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useSingleCallResult } from 'state/multicall/hooks'
+import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { FAST_INTERVAL } from 'config/constants'
+import { useCallback, useMemo } from 'react'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { publicClient } from 'utils/wagmi'
 import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
 import { useQuery, useSignTypedData } from 'wagmi'
 import PERMIT2_ABI from '../config/abi/permit2.json'
 import useAccountActiveChain from './useAccountActiveChain'
-import { _TypedDataEncoder } from 'ethers/lib/utils'
-import { publicClient } from 'utils/wagmi'
-import { FAST_INTERVAL } from 'config/constants'
 import { useActiveChainId } from './useActiveChainId'
-// import { domain } from '@snapshot-labs/snapshot.js/dist/sign'
-
 const PERMIT_EXPIRATION = 2592000000 // 30 day
 const PERMIT_SIG_EXPIRATION = 1800000 // 30 min
 
 function toDeadline(expiration: number): number {
   return Math.floor((Date.now() + expiration) / 1000)
 }
-const DUMMY = '0x0000000000000000000000000000000000000000'
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export function usePermitAllowance(token?: Token, owner?: string, spender?: string) {
   const { chainId } = useActiveChainId()
 
   const inputs = useMemo(
-    () => [owner ?? DUMMY, token?.address ?? DUMMY, spender ?? DUMMY],
+    () => [owner ?? ZERO_ADDRESS, token?.address ?? ZERO_ADDRESS, spender ?? ZERO_ADDRESS],
     [owner, spender, token?.address],
   )
 
@@ -55,7 +48,6 @@ export function usePermitAllowance(token?: Token, owner?: string, spender?: stri
       enabled: Boolean(spender && owner),
     },
   )
-  console.log(allowance)
   return useMemo(
     () => ({
       permitAllowance:
@@ -68,7 +60,7 @@ export function usePermitAllowance(token?: Token, owner?: string, spender?: stri
 }
 
 interface Permit extends PermitSingle {
-  sigDeadline: number
+  sigDeadline: string
 }
 
 export interface PermitSignature extends Permit {
@@ -113,7 +105,6 @@ export function useUpdatePermitAllowance(
         types,
         message: values,
       })
-
       onPermitSignature?.({ ...permit, signature })
       return
     } catch (error: unknown) {

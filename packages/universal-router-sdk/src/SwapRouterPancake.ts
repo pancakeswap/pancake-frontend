@@ -35,7 +35,7 @@ export abstract class PancakeUniSwapRouter {
     const inputCurrency = sampleTrade.inputAmount.currency
     invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 
-    if (options.inputTokenPermit) {
+    if (options.inputTokenPermit?.details) {
       encodePermit(planner, options.inputTokenPermit)
     }
 

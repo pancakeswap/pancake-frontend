@@ -33,8 +33,8 @@ export function useApproveCallback(
   },
 ): {
   approvalState: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  approveCallback: () => void
+  revokeCallback: () => void
   currentAllowance: CurrencyAmount<Currency> | undefined
   isPendingError: boolean
 } {
@@ -191,11 +191,11 @@ export function useApproveCallback(
   )
 
   const approveCallback = useCallback(() => {
-    return approve()
+    approve()
   }, [approve])
 
   const revokeCallback = useCallback(() => {
-    return approve(0n)
+    approve(0n)
   }, [approve])
 
   return { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError }

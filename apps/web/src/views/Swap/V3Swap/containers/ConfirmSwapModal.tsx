@@ -52,8 +52,8 @@ interface ConfirmSwapModalProps {
   onConfirm: () => void
   customOnDismiss?: () => void
   openSettingModal?: () => void
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  approveCallback: () => Promise<void>
+  revokeCallback: () => Promise<void>
 }
 
 interface UseConfirmModalStateProps {

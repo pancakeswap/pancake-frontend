@@ -49,6 +49,7 @@ import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalSta
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
 import { useWallchainApi } from '../hooks/useWallchain'
+import { PERMIT2_ADDRESS } from '@pancakeswap/permit2-sdk'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -99,10 +100,12 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const deadline = useTransactionDeadline()
   const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(trade, deadline)
   const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
+  
   const routerAddress =
     statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
       ? approvalAddressForWallchain
-      : SMART_ROUTER_ADDRESSES[trade?.inputAmount?.currency?.chainId]
+      : PERMIT2_ADDRESS
+
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -115,7 +118,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // check whether the user has approved the router on the input token
   const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
     amountToApprove,
-    SMART_ROUTER_ADDRESSES[5],
+    PERMIT2_ADDRESS,
   )
   
   const allowance = usePermit2Allowance(

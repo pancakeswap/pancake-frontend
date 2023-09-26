@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Percent, TradeType } from '@pancakeswap/sdk'
-import { SMART_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 import { isAddress } from 'utils'
 
-import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { PancakeUniSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { Address, Hex } from 'viem'
 
 interface SwapCall {
@@ -50,7 +50,7 @@ export function useSwapCallArguments(
     const methodParamaters = PancakeUniSwapRouter.swapERC20CallParameters(trade, {
       fee: feeOptions,
       recipient,
-      permit: permitSignature,
+      inputTokenPermit: permitSignature,
       slippageTolerance: allowedSlippage,
       deadlineOrPreviousBlockhash: deadline?.toString(),
     })
@@ -66,12 +66,10 @@ export function useSwapCallArguments(
   }, [
     account,
     allowedSlippage,
-    // argentWalletContract,
     chainId,
     deadline,
     feeOptions,
     recipient,
-    // signatureData,
     permitSignature,
     trade,
   ])
