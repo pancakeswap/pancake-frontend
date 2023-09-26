@@ -1229,6 +1229,9 @@ importers:
       '@ethersproject/providers':
         specifier: ^5.0.0
         version: 5.5.0
+      '@pancakeswap/sdk':
+        specifier: workspace:*
+        version: link:../swap-sdk
       ethers:
         specifier: ^5.3.1
         version: 5.7.2
@@ -1238,6 +1241,9 @@ importers:
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
+      viem:
+        specifier: 1.10.9
+        version: 1.10.9(typescript@5.1.3)
     devDependencies:
       '@types/jest':
         specifier: ^24.0.25
@@ -30742,6 +30748,30 @@ packages:
       unist-util-stringify-position: 2.0.3
       vfile-message: 2.0.4
     dev: true
+
+  /viem@1.10.9(typescript@5.1.3):
+    resolution: {integrity: sha512-fhQxnMBFwGbyE/VOfcvcavxAPyqIHSgOB793gQcMPH1B9ahQvjMe3C3icqypC01ACaqpDPgYWGfvF/ExTeIPuA==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@adraffy/ens-normalize': 1.9.4
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@scure/bip32': 1.3.2
+      '@scure/bip39': 1.2.1
+      '@types/ws': 8.5.5
+      abitype: 0.9.8(typescript@5.1.3)(zod@3.21.4)
+      isomorphic-ws: 5.0.0(ws@8.13.0)
+      typescript: 5.1.3
+      ws: 8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+    dev: false
 
   /viem@1.12.2(typescript@5.1.3)(zod@3.21.4):
     resolution: {integrity: sha512-aCaUCyg72ES+jK4s6tVYOMnOt4if71RwzgiUAUpAuaCgvHFfh9DCnwuEfwkxEZLE2vafOsirgJ3fcn7nsDVQoQ==}

@@ -1,44 +1,52 @@
 import invariant from 'tiny-invariant'
-import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
-import { BigNumberish } from '@ethersproject/bignumber'
-import { _TypedDataEncoder } from '@ethersproject/hash'
 import { permit2Domain } from './domain'
 import { MaxSigDeadline, MaxUnorderedNonce, MaxSignatureTransferAmount } from './constants'
+import { BigintIsh } from '@pancakeswap/sdk'
 
 export interface Witness {
   witness: any
   witnessTypeName: string
-  witnessType: Record<string, TypedDataField[]>
+  witnessType: any
 }
 
 export interface TokenPermissions {
   token: string
-  amount: BigNumberish
+  amount: BigintIsh
 }
 
 export interface PermitTransferFrom {
   permitted: TokenPermissions
   spender: string
-  nonce: BigNumberish
-  deadline: BigNumberish
+  nonce: BigintIsh
+  deadline: BigintIsh
 }
 
 export interface PermitBatchTransferFrom {
   permitted: TokenPermissions[]
   spender: string
-  nonce: BigNumberish
-  deadline: BigNumberish
+  nonce: BigintIsh
+  deadline: BigintIsh
 }
 
 export type PermitTransferFromData = {
-  domain: TypedDataDomain
-  types: Record<string, TypedDataField[]>
+  domain: {
+    name: string,
+    version: string,
+    chainId: string,
+    verifyingContract: string,
+  }
+  types: any
   values: PermitTransferFrom
 }
 
 export type PermitBatchTransferFromData = {
-  domain: TypedDataDomain
-  types: Record<string, TypedDataField[]>
+  domain: {
+    name: string,
+    version: string,
+    chainId: string,
+    verifyingContract: string,
+  }
+  types: any
   values: PermitBatchTransferFrom
 }
 
@@ -113,8 +121,8 @@ export abstract class SignatureTransfer {
     chainId: number,
     witness?: Witness
   ): PermitTransferFromData | PermitBatchTransferFromData {
-    invariant(MaxSigDeadline.gte(permit.deadline), 'SIG_DEADLINE_OUT_OF_RANGE')
-    invariant(MaxUnorderedNonce.gte(permit.nonce), 'NONCE_OUT_OF_RANGE')
+    invariant(MaxSigDeadline >= BigInt(permit.deadline), 'SIG_DEADLINE_OUT_OF_RANGE')
+    invariant(MaxUnorderedNonce >= BigInt(permit.nonce), 'NONCE_OUT_OF_RANGE')
 
     const domain = permit2Domain(permit2Address, chainId)
     if (isPermitTransferFrom(permit)) {
@@ -137,18 +145,9 @@ export abstract class SignatureTransfer {
       }
     }
   }
-
-  public static hash(
-    permit: PermitTransferFrom | PermitBatchTransferFrom,
-    permit2Address: string,
-    chainId: number,
-    witness?: Witness
-  ): string {
-    const { domain, types, values } = SignatureTransfer.getPermitData(permit, permit2Address, chainId, witness)
-    return _TypedDataEncoder.hash(domain, types, values)
-  }
 }
 
+
 function validateTokenPermissions(permissions: TokenPermissions) {
-  invariant(MaxSignatureTransferAmount.gte(permissions.amount), 'AMOUNT_OUT_OF_RANGE')
+  invariant(MaxSignatureTransferAmount >= BigInt(permissions.amount), 'AMOUNT_OUT_OF_RANGE')
 }

@@ -1,20 +1,23 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import { MaxUint48, MaxUint160, MaxUint256, InstantExpiration } from './constants'
 
 describe('Constants', () => {
   it('MaxUint256', () => {
-    expect(MaxUint256).toEqual(BigNumber.from(2).pow(256).sub(1))
-  })
+    const expected = BigInt(2) ** BigInt(256) - BigInt(1);
+    expect(MaxUint256).toEqual(expected);
+  });
 
   it('MaxUint160', () => {
-    expect(MaxUint160).toEqual(BigNumber.from(2).pow(160).sub(1))
-  })
+    const expected = BigInt(2) ** BigInt(160) - BigInt(1);
+    expect(MaxUint160).toEqual(expected);
+  });
 
   it('MaxUint48', () => {
-    expect(MaxUint48).toEqual(BigNumber.from(2).pow(48).sub(1))
-  })
+    const expected = BigInt(2) ** BigInt(48) - BigInt(1);
+    expect(MaxUint48).toEqual(expected);
+  });
 
   it('InstantExpiration', () => {
-    expect(InstantExpiration).toEqual(BigNumber.from(0))
-  })
-})
+    const expected = BigInt(0);
+    expect(InstantExpiration).toEqual(expected);
+  });
+});
