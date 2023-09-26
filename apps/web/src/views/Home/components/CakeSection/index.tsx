@@ -1,14 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import Image from 'next/image'
-import React, { memo, useLayoutEffect, useRef, useCallback } from 'react'
-import { css, styled, keyframes } from 'styled-components'
+import React, { memo, useCallback, useLayoutEffect, useRef } from 'react'
+import { css, styled } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
 import { useDrawSequenceImages } from '../../hooks/useDrawSequence'
-import { useIsIOS, checkIsIOS } from '../../hooks/useIsIOS'
-import cakeImage from '../../images/cake.png'
-import { useObserver } from '../../hooks/useObserver'
+import { checkIsIOS } from '../../hooks/useIsIOS'
+import { useObserverOnce } from '../../hooks/useObserver'
 
 import {
   CakePartnerTag,
@@ -344,11 +342,11 @@ const CakeSection: React.FC = () => {
     triggerCssAnimation()
   })
 
-  useObserver(cakeBoxRef, () => {
+  useObserverOnce(cakeBoxRef, () => {
     if (checkIsIOS()) {
       seqInterval = window.setInterval(() => {
         drawSequenceImage(900, 900)
-      }, 1000 / 10)
+      }, 1000 / 15)
       triggerCssAnimation()
     } else videoRef.current?.play()
   })

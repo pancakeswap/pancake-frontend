@@ -16,7 +16,6 @@ export const useDrawSequenceImages = (
   const drawSequenceImage = useCallback(
     (width: number, height: number) => {
       const canvas = canvasRef.current
-
       if (!canvas || ImageDrawProgress.current + 1 >= imageCount) return
       const context = canvas.getContext('2d')
       if (ImageDrawProgress.current + 1 >= imageCount) {
