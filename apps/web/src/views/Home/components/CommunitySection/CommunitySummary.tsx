@@ -5,7 +5,7 @@ import { styled, css } from 'styled-components'
 
 export const sharedCss = css`
   @media screen and (max-width: 396px) {
-    width: calc(100vw - 50px);
+    width: calc(100vw - 70px);
   }
   @media screen and (max-width: 762px) and (min-width: 700px) {
     width: calc(50vw - 50px);
