@@ -2,9 +2,11 @@ import { useCallback, useState } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Field } from 'state/buyCrypto/actions'
 import { useBuyCryptoState } from 'state/buyCrypto/hooks'
+import { ChainId } from '@pancakeswap/chains'
 import { fetchProviderQuotes } from './useProviderQuotes'
 import { fetchProviderAvailabilities } from './useProviderAvailability'
 import { ProviderQuote } from '../types'
+import { ONRAMP_PROVIDERS } from '../constants'
 
 const usePriceQuotes = () => {
   const [quotes, setQuotes] = useState<ProviderQuote[]>([])
@@ -33,13 +35,15 @@ const usePriceQuotes = () => {
           sortedFilteredQuotes.sort((a, b) => b.quote - a.quote)
         }
 
-        return sortedFilteredQuotes
+        return sortedFilteredQuotes.filter((quote: ProviderQuote) =>
+          chainId === ChainId.BSC ? quote.provider !== ONRAMP_PROVIDERS.MoonPay : quote.provider,
+        )
       } catch (error) {
         console.error('Error fetching price quotes:', error)
         return []
       }
     },
-    [userIp],
+    [userIp, chainId],
   )
 
   const fetchQuotes = useCallback(async () => {
