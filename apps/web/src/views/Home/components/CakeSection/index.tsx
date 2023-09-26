@@ -394,11 +394,11 @@ const CakeSection: React.FC = () => {
     <Flex
       flexDirection="column"
       style={{ gap: 32 }}
-      marginLeft={isMobile ? '-8px' : '0px'}
-      width={isMobile ? 'calc(100% + 16px)' : '100%'}
+      marginLeft={isMobile ? '0' : '0px'}
+      width="100%"
       overflow={isMobile ? 'hidden' : 'visible'}
     >
-      <Text textAlign="center" marginLeft={isMobile ? '8px' : undefined}>
+      <Text textAlign="center">
         <Text fontSize={['32px', null, null, '40px']} display="inline" fontWeight={600} lineHeight="110%">
           {t('Unlock the Full Potential of DeFi with')}
         </Text>
@@ -420,14 +420,13 @@ const CakeSection: React.FC = () => {
           color={theme.isDark ? '#B8ADD2' : '#7A6EAA'}
           textAlign="center"
           lineHeight="110%"
-          marginLeft={isMobile ? '8px' : undefined}
         >
           {t(
             'Experience the power of community ownership, global governance, and explore infinite use cases within the PancakeSwap ecosystem',
           )}
         </Text>
       </Flex>
-      <Flex justifyContent="center" style={{ gap: 14 }} marginLeft={isMobile ? '8px' : undefined}>
+      <Flex justifyContent="center" style={{ gap: 14 }}>
         <Link href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56">
           <Button variant="primary">{t('Buy CAKE')}</Button>
         </Link>
