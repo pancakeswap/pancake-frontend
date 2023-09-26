@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.63.7
+
+### Patch Changes
+
+- 1831356d9: refactor: Move ChainsId usage from Sdk to Chains package
+- Updated dependencies [1831356d9]
+  - @pancakeswap/sdk@5.5.0
+  - @pancakeswap/v3-sdk@3.4.4
+  - @pancakeswap/farms@1.0.17
+
 ## 0.63.6
 
 ### Patch Changes
