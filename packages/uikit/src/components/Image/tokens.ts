@@ -221,7 +221,7 @@ const tokens = {
   swgb: {
     symbol: "SWGb",
     address: {
-      56: "0xe40255c5d7fa7ceec5120408c78c787cecb4cfdb",
+      56: "0xE40255C5d7fa7ceEc5120408C78C787CECB4cfdb",
       97: "",
     },
     decimals: 18,
@@ -293,7 +293,7 @@ const tokens = {
   ust: {
     symbol: "UST",
     address: {
-      56: "0x23396cf899ca06c4472205fc903bdb4de249d6fc",
+      56: "0x23396cF899Ca06c4472205fC903bDB4de249D6fC",
       97: "",
     },
     decimals: 18,
