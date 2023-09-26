@@ -55,7 +55,7 @@ export function useIfUserLocked() {
     if (!Array.isArray(data))
       return {
         locked: false,
-        amount: getBalanceAmount(0),
+        amount: getBalanceAmount(new BigNumber(0)),
       }
 
     const [userShares, , , , , lockEndTime, , locked, lockedAmount] = data
