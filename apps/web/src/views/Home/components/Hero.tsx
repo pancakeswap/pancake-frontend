@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useTheme from 'hooks/useTheme'
-import { useLayoutEffect, useRef, useMemo } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { keyframes, styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { useDrawCanvas } from '../hooks/useDrawCanvas'
@@ -133,34 +133,34 @@ const Hero = () => {
   const rock03VideoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { isIOS } = useIsIOS()
-  const videoResources = useMemo(() => {
-    return [
-      {
-        src: '/assets/bunnyv2.webm',
-        ref: videoRef,
-      },
-      {
-        src: '/assets/star.webm',
-        ref: starVideoRef,
-      },
-      {
-        src: '/assets/hero-cake.webm',
-        ref: cakeVideoRef,
-      },
-      {
-        src: '/assets/rock01.webm',
-        ref: rock01VideoRef,
-      },
-      {
-        src: '/assets/rock02.webm',
-        ref: rock02VideoRef,
-      },
-      {
-        src: '/assets/rock03.webm',
-        ref: rock03VideoRef,
-      },
-    ]
-  }, [])
+  // const videoResources = useMemo(() => {
+  //   return [
+  //     {
+  //       src: '/assets/bunnyv2.webm',
+  //       ref: videoRef,
+  //     },
+  //     {
+  //       src: '/assets/star.webm',
+  //       ref: starVideoRef,
+  //     },
+  //     {
+  //       src: '/assets/hero-cake.webm',
+  //       ref: cakeVideoRef,
+  //     },
+  //     {
+  //       src: '/assets/rock01.webm',
+  //       ref: rock01VideoRef,
+  //     },
+  //     {
+  //       src: '/assets/rock02.webm',
+  //       ref: rock02VideoRef,
+  //     },
+  //     {
+  //       src: '/assets/rock03.webm',
+  //       ref: rock03VideoRef,
+  //     },
+  //   ]
+  // }, [])
   const { drawImage, isVideoPlaying } = useDrawCanvas(
     videoRef,
     canvasRef,
@@ -185,24 +185,23 @@ const Hero = () => {
     [starVideoRef, cakeVideoRef, rock01VideoRef, rock02VideoRef, rock03VideoRef],
   )
 
-  useLayoutEffect(() => {
-    if (checkIsIOS() || isMobile) return
-    videoResources.forEach(({ src, ref }, index) => {
-      const video = document.createElement('video')
-      if (index !== 0) video.loop = true
-      video.autoplay = true
-      video.playsInline = true
-      video.width = width
-      video.src = src
-      video.muted = true
-      video.preload = 'auto'
-      // eslint-disable-next-line no-param-reassign
-      ref.current = video
-    })
-  }, [isMobile, videoResources])
+  // useLayoutEffect(() => {
+  //   if (checkIsIOS() || isMobile) return
+  //   videoResources.forEach(({ src, ref }, index) => {
+  //     const video = document.createElement('video')
+  //     if (index !== 0) video.loop = true
+  //     video.autoplay = true
+  //     video.playsInline = true
+  //     video.width = width
+  //     video.src = src
+  //     video.muted = true
+  //     video.preload = 'auto'
+  //     // eslint-disable-next-line no-param-reassign
+  //     ref.current = video
+  //   })
+  // }, [isMobile, videoResources])
 
   useLayoutEffect(() => {
-    videoRef.current?.play()
     starVideoRef.current?.play()
     cakeVideoRef.current?.play()
     rock01VideoRef.current?.play()
@@ -337,10 +336,10 @@ const Hero = () => {
               />
               {!isIOS && (
                 <VideoWrapper>
-                  {/* <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
+                  <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
                     <source src="/assets/bunnyv2.webm" type="video/webm" />
-                  </CakeVideo> */}
-                  {/* <CakeVideo ref={starVideoRef} width={width} autoPlay loop muted playsInline>
+                  </CakeVideo>
+                  <CakeVideo ref={starVideoRef} width={width} autoPlay loop muted playsInline>
                     <source src="/assets/star.webm" type="video/webm" />
                   </CakeVideo>
                   <CakeVideo ref={cakeVideoRef} width={width} autoPlay loop muted playsInline>
@@ -354,7 +353,7 @@ const Hero = () => {
                   </CakeVideo>
                   <CakeVideo ref={rock03VideoRef} width={width} autoPlay loop muted playsInline>
                     <source src="/assets/rock03.webm" type="video/webm" />
-                  </CakeVideo> */}
+                  </CakeVideo>
                 </VideoWrapper>
               )}
             </CakeBox>
