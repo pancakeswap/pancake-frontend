@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, PageSection, Text } from '@pancakeswap/uikit'
+import { Box, Flex, PageSection, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useAnniversaryEffect } from 'hooks/useAnniversaryEffect'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
@@ -33,9 +33,10 @@ const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   useAnniversaryEffect()
   return (
-    <Box style={{ width: 'calc(100vw - 8px)', overflow: 'hidden', boxSizing: 'border-box' }}>
+    <Box style={{ width: isMobile ? '100vw' : 'calc(100vw - 8px)', overflow: 'hidden', boxSizing: 'border-box' }}>
       <style jsx global>
         {`
           #home-1 .page-bg {
