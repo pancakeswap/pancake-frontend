@@ -18,6 +18,9 @@ export const useDrawCanvas = (
   const isVideoPlaying = useRef(false)
 
   const drawImage = useCallback(() => {
+    // eslint-disable-next-line no-param-reassign
+    canvasInterval = 0
+    isVideoPlaying.current = false
     const context = canvas?.getContext('2d')
     if (!canvas || !video || !context) return
     context.clearRect(0, 0, width, height)
@@ -27,16 +30,17 @@ export const useDrawCanvas = (
       if (!additionalVideo) return
       context.drawImage(additionalVideo, 0, 0, width, height)
     })
+    onVideoStartCallback?.()
   }, [canvas, video, height, width, additionalVideoRefs])
 
   useLayoutEffect(() => {
     if (isElementReady) {
       video.onpause = () => {
-        clearInterval(canvasInterval)
+        cancelAnimationFrame(canvasInterval)
         isVideoPlaying.current = false
       }
       video.onended = () => {
-        clearInterval(canvasInterval)
+        cancelAnimationFrame(canvasInterval)
         onVideoVideoEnd?.()
         isVideoPlaying.current = false
       }

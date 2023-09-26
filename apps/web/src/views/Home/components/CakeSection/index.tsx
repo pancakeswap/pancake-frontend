@@ -334,14 +334,14 @@ const CakeSection: React.FC = () => {
     video.src = '/assets/cake-alpha.webm'
     video.muted = true
     videoRef.current = video
-  }, [])
+  }, [isMobile])
 
   const { drawImage, isVideoPlaying } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
     if (isVideoPlaying.current === false) {
       isVideoPlaying.current = true
-      canvasInterval = window.setInterval(() => {
+      canvasInterval = window.requestAnimationFrame(() => {
         drawImage?.()
-      }, 1000 / fps)
+      })
       triggerCssAnimation()
     }
   })
@@ -387,7 +387,7 @@ const CakeSection: React.FC = () => {
 
   useLayoutEffect(() => {
     triggerAnimation()
-    return () => clearInterval(canvasInterval)
+    return () => cancelAnimationFrame(canvasInterval)
   }, [drawImage, triggerAnimation])
 
   return (
