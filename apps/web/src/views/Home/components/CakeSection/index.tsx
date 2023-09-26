@@ -346,7 +346,7 @@ const CakeSection: React.FC = () => {
     if (checkIsIOS()) {
       seqInterval = window.setInterval(() => {
         drawSequenceImage(900, 900)
-      }, 1000 / 15)
+      }, 1000 / 23)
       triggerCssAnimation()
     } else videoRef.current?.play()
   })

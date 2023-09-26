@@ -1,7 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 
 export function checkIsIOS() {
-  return true
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
   return (
     ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
