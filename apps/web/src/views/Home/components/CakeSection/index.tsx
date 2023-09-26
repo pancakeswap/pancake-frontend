@@ -114,10 +114,11 @@ export const CakeSectionLeftBox = styled.div`
   flex-direction: column;
   z-index: 1;
   max-width: 100%;
-  padding: 24px 36px;
+  padding: 16px 24px;
   ${({ theme }) => theme.mediaQueries.lg} {
     max-width: 33%;
     overflow: visible;
+    padding: 24px 36px;
   }
 `
 export const CakeSectionRightBox = styled.div`
@@ -129,9 +130,10 @@ export const CakeSectionRightBox = styled.div`
   flex-direction: column;
   justify-content: start;
   max-width: 100%;
-  padding: 24px 36px;
+  padding: 16px 24px;
   ${({ theme }) => theme.mediaQueries.lg} {
     max-width: 33%;
+    padding: 24px 36px;
   }
 `
 
@@ -141,7 +143,7 @@ const CakeLeftLine = styled.div`
   height: 128px;
   width: 1px;
   left: 50%;
-  top: 283px;
+  top: 275px;
   background: ${({ theme }) => theme.colors.secondary};
   transition: transform ${LINE_TRANSITION_TIMES}s ease-in-out;
   transform: scaleY(0);
