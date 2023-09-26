@@ -8,7 +8,7 @@ import {
   ZERO,
   BigintIsh,
 } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/dist/evm/index'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import invariant from 'tiny-invariant'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import abi from './abis/UniversalRouter.json'

@@ -1,9 +1,9 @@
-import { CurrencyAmount as PancakeCurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { CurrencyAmount as PancakeCurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { PoolType, RouteType } from '@pancakeswap/smart-router/evm'
 import { Wallet, utils } from 'ethers'
 import { PublicClient, WalletClient } from 'viem'
 import { PancakeUniSwapRouter } from '../src/SwapRouterPancake'
-import { PoolType, RouteType } from '../src/utils/types'
 import { FORGE_PERMIT2_ADDRESS, FORGE_ROUTER_ADDRESS } from './utils/addresses'
 import { getBalancesEthers, getViemClient } from './utils/client'
 import {
@@ -51,7 +51,7 @@ describe('PancakeSwap', () => {
         TradeType.EXACT_INPUT
       )
       const pcsopts = pancakeSwapOptions({})
-      const { value, calldata } = await PancakeUniSwapRouter.swapERC20CallParameters(v2PancakeTrade as any, pcsopts)
+      const { value, calldata } = PancakeUniSwapRouter.swapERC20CallParameters(v2PancakeTrade, pcsopts)
 
       const tx = {
         to: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',

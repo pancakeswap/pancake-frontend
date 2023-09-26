@@ -1,12 +1,11 @@
 import { Currency, CurrencyAmount, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/dist/evm/index'
 import { Pair } from '@pancakeswap/sdk'
-import { BaseRoute } from '@pancakeswap/smart-router/dist/evm/index'
+import { SmartRouterTrade, BaseRoute, RouteType, StablePool } from '@pancakeswap/smart-router/evm'
 import { PancakeSwapOptions } from '../../../test/utils/pancakeswapData'
 import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'
-import { AnyTradeType, RouteType, StablePool } from '../../utils/types'
+import { AnyTradeType } from '../../utils/types'
 import { Command, RouterTradeType, TradeConfig } from '../Command'
 
 import {
@@ -119,28 +118,29 @@ export class PancakeSwapTrade implements Command {
         // Otherwise we continue as expected with the trade's normal expected output
         if (this.type === TradeType.EXACT_OUTPUT) {
           minAmountOut = minAmountOut.subtract(minAmountOut.multiply(feeBips))
+        }
+
+        // The remaining tokens that need to be sent to the user after the fee is taken will be caught
+        // by this if-else clause.
+        if (outputIsNative) {
+          planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, minAmountOut])
+        } else {
+          planner.addCommand(CommandType.SWEEP, [
+            sampleTrade.outputAmount.currency.wrapped.address,
+            this.options.recipient,
+            minAmountOut,
+          ])
+        }
       }
 
-      // The remaining tokens that need to be sent to the user after the fee is taken will be caught
-      // by this if-else clause.
-      if (outputIsNative) {
-        planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, minAmountOut])
-      } else {
-        planner.addCommand(CommandType.SWEEP, [
-          sampleTrade.outputAmount.currency.wrapped.address,
-          this.options.recipient,
-          minAmountOut,
-        ])
+      if (inputIsNative && this.type === TradeType.EXACT_OUTPUT) {
+        // for exactOutput swaps that take native currency as input
+        // we need to send back the change to the user
+        planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, 0])
       }
-    }
-
-    if (inputIsNative && this.type === TradeType.EXACT_OUTPUT) {
-      // for exactOutput swaps that take native currency as input
-      // we need to send back the change to the user
-      planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, 0])
     }
   }
-}}
+}
 
 // encode a v2 swap
 function addV2Swap(
@@ -185,8 +185,7 @@ async function addV3Swap(
 ): Promise<void> {
   for (const route of trade.routes) {
     const { inputAmount, outputAmount } = route
-  // console.log(amountOut, amountOut, 'bhbhbhbhbhbhhbhbhbvhbhb')
-
+    // console.log(amountOut, amountOut, 'bhbhbhbhbhbhhbhbhbvhbhb')
 
     // we need to generaate v3 path as a hash string. we can still use encodeMixedRoute
     // as a v3 swap is essentially a for of mixedRoute
@@ -226,7 +225,7 @@ async function addMixedSwap(
     const { inputAmount, outputAmount, pools } = route
     const amountIn: bigint = maximumAmountIn(trade, options.slippageTolerance).quotient
     const amountOut: bigint = minimumAmountOut(trade, options.slippageTolerance).quotient
- 
+
     // console.log(amountIn, amountOut)
 
     // flag for whether the trade is single hop or not
@@ -253,8 +252,8 @@ async function addMixedSwap(
       } else if (mixedRouteIsAllV2(route)) {
         return addV2Swap(planner, trade, options, routerMustCustody, payerIsUser, performAggregatedSlippageCheck)
       } else if (mixedRouteIsAllStable(route)) {
-          return addStableSwap(planner, trade, options, routerMustCustody, payerIsUser, performAggregatedSlippageCheck)
-        } else {
+        return addStableSwap(planner, trade, options, routerMustCustody, payerIsUser, performAggregatedSlippageCheck)
+      } else {
         throw new Error('Unsupported route to encode')
       }
     } else {
@@ -339,17 +338,10 @@ async function addStableSwap(
   const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
 
   if (trade.tradeType === TradeType.EXACT_INPUT) {
-    const exactInputParams = [
-      path,
-      flags,
-      amountIn,
-      performAggregatedSlippageCheck ? 0n : amountOut,
-      recipient,
-    ]
+    const exactInputParams = [path, flags, amountIn, performAggregatedSlippageCheck ? 0n : amountOut, recipient]
     planner.addCommand(CommandType.STABLE_SWAP_EXACT_IN, exactInputParams)
   }
   const exactOutputParams = [path, flags, amountOut, amountIn, recipient]
 
   return planner.addCommand(CommandType.STABLE_SWAP_EXACT_OUT, exactOutputParams)
-
 }
