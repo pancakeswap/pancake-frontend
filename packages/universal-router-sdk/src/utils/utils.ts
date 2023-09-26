@@ -1,11 +1,11 @@
 import { BigintIsh, Currency, CurrencyAmount, Fraction, ONE, Percent, Token, TradeType, sqrt } from '@pancakeswap/sdk'
-import { BigNumber } from 'bignumber.js'
+import { V2_FEE_PATH_PLACEHOLDER } from '@pancakeswap/smart-router/evm'
 import { BaseRoute, Pool, PoolType, Route, RouteType, SmartRouterTrade, StablePool, V2Pool, V3Pool } from './types'
 import { Hex, encodePacked } from 'viem'
-import { V2_FEE_PATH_PLACEHOLDER } from '@pancakeswap/smart-router/evm'
 
-export function hexToDecimalString(hex: any) {
-  return new BigNumber(hex).toString()
+export function hexToDecimalString(hex: string): string {
+  const decimalBigInt = BigInt(`0x${hex}`);
+  return decimalBigInt.toString();
 }
 
 export function encodeSqrtRatioX96(amount1: BigintIsh, amount0: BigintIsh): bigint {

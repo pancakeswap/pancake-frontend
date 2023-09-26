@@ -1,5 +1,3 @@
-import { BigNumber } from 'bignumber.js'
-
 type ChainConfig = {
   router: string
   creationBlock: number
@@ -126,11 +124,11 @@ export const WETH_ADDRESS = (chainId: number): string => {
 
 export const PERMIT2_ADDRESS = '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768'
 
-export const CONTRACT_BALANCE = new BigNumber(2).pow(255)
+export const CONTRACT_BALANCE = 2n ** 255n;
 export const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
-export const MAX_UINT256 = new BigNumber(2).pow(256).minus(1)
-export const MAX_UINT160 = new BigNumber(2).pow(160).minus(1)
+export const MAX_UINT256 = (2n ** 256n) - 1n;
+export const MAX_UINT160 = (2n ** 256n) - 1n;
 
 export const SENDER_AS_RECIPIENT = '0x0000000000000000000000000000000000000001'
 export const ROUTER_AS_RECIPIENT = '0x0000000000000000000000000000000000000002'

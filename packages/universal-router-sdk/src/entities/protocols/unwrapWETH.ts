@@ -4,14 +4,16 @@ import { RoutePlanner, CommandType } from '../../utils/routerCommands'
 import { encodeInputTokenOptions, Permit2Permit } from '../../utils/inputTokens'
 import { Command, RouterTradeType, TradeConfig } from '../Command'
 import { ROUTER_AS_RECIPIENT, WETH_ADDRESS } from '../../utils/constants'
+import { BigintIsh } from '@pancakeswap/sdk'
+
 
 export class UnwrapWETH implements Command {
   readonly tradeType: RouterTradeType = RouterTradeType.UnwrapWETH
   readonly permit2Data: Permit2Permit
   readonly wethAddress: string
-  readonly amount: BigNumberish
+  readonly amount: BigintIsh
 
-  constructor(amount: BigNumberish, chainId: number, permit2?: Permit2Permit) {
+  constructor(amount: BigintIsh, chainId: number, permit2?: Permit2Permit) {
     this.wethAddress = WETH_ADDRESS(chainId)
     this.amount = amount
 

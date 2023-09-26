@@ -12,5 +12,5 @@ export function getNativeCurrencyValue(currencyValues: CurrencyAmount<Currency>[
       }, zero)
     }
   }
-  return CurrencyAmount.fromRawAmount(Ether.onChain(1), 0)
+  return CurrencyAmount.fromRawAmount(Ether.onChain(5), 0)
 }

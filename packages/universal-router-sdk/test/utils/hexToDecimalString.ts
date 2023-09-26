@@ -1,5 +1,4 @@
-import { BigNumber } from 'bignumber.js'
-
-export function hexToDecimalString(hex: any) {
-  return new BigNumber(hex).toString()
+export function hexToDecimalString(hex: string): string {
+  const decimalBigInt = BigInt(`0x${hex}`);
+  return decimalBigInt.toString();
 }
