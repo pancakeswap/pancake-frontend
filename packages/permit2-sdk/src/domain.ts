@@ -1,18 +1,26 @@
-import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
-
 const PERMIT2_DOMAIN_NAME = 'Permit2'
 
-export function permit2Domain(permit2Address: string, chainId: number): TypedDataDomain {
+export function permit2Domain(permit2Address: string, chainId: number): {
+  name: string,
+  version: string,
+  chainId: string,
+  verifyingContract: string,
+} {
   return {
     name: PERMIT2_DOMAIN_NAME,
     version: '1.0.0',
-    chainId,
+    chainId: chainId.toString(),
     verifyingContract: permit2Address,
   }
 }
 
 export type PermitData = {
-  domain: TypedDataDomain
-  types: Record<string, TypedDataField[]>
+  domain: {
+    name: string,
+    version: string,
+    chainId: string,
+    verifyingContract: string,
+  }
+  types: any
   values: any
 }
