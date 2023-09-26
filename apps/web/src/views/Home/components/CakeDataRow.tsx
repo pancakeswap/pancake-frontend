@@ -2,7 +2,7 @@ import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
 import { bscTokens } from '@pancakeswap/tokens'
-import { Balance, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { Balance, Flex, Heading, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { formatBigInt, formatLocalisedCompactNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { cakeVaultV2ABI } from '@pancakeswap/pools'
 import { SLOW_INTERVAL } from 'config/constants'
@@ -73,6 +73,7 @@ const CakeDataRow = () => {
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const emissionsPerBlock = useCakeEmissionPerBlock(loadData)
+  const { isMobile } = useMatchBreakpoints()
 
   const {
     data: { cakeSupply, burnedBalance, circulatingSupply } = {
@@ -115,7 +116,7 @@ const CakeDataRow = () => {
   )
   const cakePriceBusd = useCakePrice()
   const mcap = cakePriceBusd.times(circulatingSupply)
-  const mcapString = formatLocalisedCompactNumber(mcap.toNumber())
+  const mcapString = formatLocalisedCompactNumber(mcap.toNumber(), isMobile)
 
   useEffect(() => {
     if (isIntersecting) {
@@ -124,9 +125,9 @@ const CakeDataRow = () => {
   }, [isIntersecting])
 
   return (
-    <StyledWrapper>
+    <StyledWrapper mb={isMobile ? '30px' : '50px'}>
       <StyledColumn>
-        <Text color="text" bold>
+        <Text color="text" bold fontSize={isMobile ? '14px' : undefined}>
           {t('Circulating Supply')}
         </Text>
         {circulatingSupply ? (
@@ -137,7 +138,9 @@ const CakeDataRow = () => {
         {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       <StyledColumn noMobileBorder>
-        <Text bold>{t('Total supply')}</Text>
+        <Text bold fontSize={isMobile ? '14px' : undefined}>
+          {t('Total supply')}
+        </Text>
         {cakeSupply ? (
           <Balance color="secondary" decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
         ) : (
@@ -154,7 +157,9 @@ const CakeDataRow = () => {
         <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={750000000} />
       </StyledColumn> */}
       <StyledColumn>
-        <Text bold>{t('Market cap')}</Text>
+        <Text bold fontSize={isMobile ? '14px' : undefined}>
+          {t('Market cap')}
+        </Text>
         {mcap?.gt(0) && mcapString ? (
           <Heading color="secondary" scale="lg">
             {t('$%marketCap%', { marketCap: mcapString })}
@@ -165,7 +170,9 @@ const CakeDataRow = () => {
         {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       <StyledColumn>
-        <Text bold>{t('Token Burn')}</Text>
+        <Text bold fontSize={isMobile ? '14px' : undefined}>
+          {t('Token Burn')}
+        </Text>
         {burnedBalance ? (
           <Balance color="secondary" decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
         ) : (
