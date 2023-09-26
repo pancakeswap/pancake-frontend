@@ -1223,27 +1223,9 @@ importers:
 
   packages/permit2-sdk:
     dependencies:
-      '@ethersproject/abstract-signer':
-        specifier: ^5.7.0
-        version: 5.7.0
-      '@ethersproject/bignumber':
-        specifier: ^5.7.0
-        version: 5.7.0
-      '@ethersproject/contracts':
-        specifier: ^5.7.0
-        version: 5.7.0
-      '@ethersproject/hash':
-        specifier: ^5.7.0
-        version: 5.7.0
-      '@ethersproject/providers':
-        specifier: ^5.0.0
-        version: 5.7.2
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
-      ethers:
-        specifier: ^5.3.1
-        version: 5.7.2
       tiny-invariant:
         specifier: ^1.3.1
         version: 1.3.1
@@ -1252,7 +1234,7 @@ importers:
         version: 2.6.2
       viem:
         specifier: 1.10.9
-        version: 1.10.9(typescript@5.1.3)(zod@3.21.4)
+        version: 1.10.9
     devDependencies:
       '@types/jest':
         specifier: ^24.0.25
@@ -1262,7 +1244,7 @@ importers:
         version: 2.8.3
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.29)(typescript@5.1.3)
+        version: 6.7.0
       vitest:
         specifier: ^0.30.1
         version: 0.30.1
@@ -14551,6 +14533,18 @@ packages:
       typescript: 5.1.3
       zod: 3.21.4
 
+  /abitype@0.9.8:
+    resolution: {integrity: sha512-puLifILdm+8sjyss4S+fsUN09obiT1g2YW6CtcQF+QDzxR0euzgEB29MZujC6zMk2a6SVmtttq1fc6+YFA7WYQ==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.19.1
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      zod:
+        optional: true
+    dev: false
+
   /abitype@0.9.8(typescript@4.3.3):
     resolution: {integrity: sha512-puLifILdm+8sjyss4S+fsUN09obiT1g2YW6CtcQF+QDzxR0euzgEB29MZujC6zMk2a6SVmtttq1fc6+YFA7WYQ==}
     peerDependencies:
@@ -26231,6 +26225,22 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /postcss-load-config@3.1.4:
+    resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
+    engines: {node: '>= 10'}
+    peerDependencies:
+      postcss: '>=8.0.9'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      postcss:
+        optional: true
+      ts-node:
+        optional: true
+    dependencies:
+      lilconfig: 2.0.6
+      yaml: 1.10.2
+    dev: true
+
   /postcss-load-config@3.1.4(postcss@8.4.29)(ts-node@10.0.0):
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
     engines: {node: '>= 10'}
@@ -30050,6 +30060,41 @@ packages:
     resolution: {integrity: sha512-Tyrf5mxF8Ofs1tNoxA13lFeZ2Zrbd6cKbuH3V+MQ5sb6DtBj5FjrXVsRWT8YvNAQTqNoz66dz1WsbigI22aEnw==}
     dev: true
 
+  /tsup@6.7.0:
+    resolution: {integrity: sha512-L3o8hGkaHnu5TdJns+mCqFsDBo83bJ44rlK7e6VdanIvpea4ArPcU3swWGsLVbXak1PqQx/V+SSmFPujBK+zEQ==}
+    engines: {node: '>=14.18'}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      bundle-require: 4.0.1(esbuild@0.17.19)
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4
+      esbuild: 0.17.19
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss-load-config: 3.1.4
+      resolve-from: 5.0.0
+      rollup: 3.29.1
+      source-map: 0.8.0-beta.0
+      sucrase: 3.24.0
+      tree-kill: 1.2.2
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
+
   /tsup@6.7.0(@swc/core@1.2.218)(postcss@8.4.29)(typescript@5.1.3):
     resolution: {integrity: sha512-L3o8hGkaHnu5TdJns+mCqFsDBo83bJ44rlK7e6VdanIvpea4ArPcU3swWGsLVbXak1PqQx/V+SSmFPujBK+zEQ==}
     engines: {node: '>=14.18'}
@@ -30880,6 +30925,29 @@ packages:
       unist-util-stringify-position: 2.0.3
       vfile-message: 2.0.4
     dev: true
+
+  /viem@1.10.9:
+    resolution: {integrity: sha512-fhQxnMBFwGbyE/VOfcvcavxAPyqIHSgOB793gQcMPH1B9ahQvjMe3C3icqypC01ACaqpDPgYWGfvF/ExTeIPuA==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@adraffy/ens-normalize': 1.9.4
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@scure/bip32': 1.3.2
+      '@scure/bip39': 1.2.1
+      '@types/ws': 8.5.5
+      abitype: 0.9.8
+      isomorphic-ws: 5.0.0(ws@8.13.0)
+      ws: 8.13.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+    dev: false
 
   /viem@1.10.9(typescript@5.1.3)(zod@3.21.4):
     resolution: {integrity: sha512-fhQxnMBFwGbyE/VOfcvcavxAPyqIHSgOB793gQcMPH1B9ahQvjMe3C3icqypC01ACaqpDPgYWGfvF/ExTeIPuA==}

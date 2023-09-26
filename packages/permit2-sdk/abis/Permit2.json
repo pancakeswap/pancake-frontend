@@ -127,11 +127,11 @@
       },
       {
         "indexed": true,
-  "internalType": "address",
-"name": "token",
-"type": "address"
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
       },
-{
+      {
         "indexed": true,
         "internalType": "address",
         "name": "spender",
@@ -291,18 +291,18 @@
       {
         "internalType": "uint256",
         "name": "mask",
-  "type": "uint256"
-}
+        "type": "uint256"
+      }
     ],
-"name": "invalidateUnorderedNonces",
+    "name": "invalidateUnorderedNonces",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-},
+  },
   {
     "inputs": [
-  {
-"components": [
+      {
+        "components": [
           {
             "internalType": "address",
             "name": "token",
@@ -320,7 +320,7 @@
       }
     ],
     "name": "lockdown",
-"outputs": [],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -356,7 +356,7 @@
         "type": "address"
       },
       {
-"components": [
+        "components": [
           {
             "components": [
               {
@@ -372,7 +372,7 @@
               {
                 "internalType": "uint48",
                 "name": "expiration",
-"type": "uint48"
+                "type": "uint48"
               },
               {
                 "internalType": "uint48",
@@ -585,33 +585,33 @@
       {
         "internalType": "address",
         "name": "to",
-"type": "address"
+        "type": "address"
       },
-{
-"internalType": "uint256",
-"name": "requestedAmount",
-"type": "uint256"
-},
-{
+      {
+        "internalType": "uint256",
+        "name": "requestedAmount",
+        "type": "uint256"
+      },
+      {
         "internalType": "bytes",
         "name": "signature",
-"type": "bytes"
-}
-],
-"name": "permitTransferFrom",
-"outputs": [],
+        "type": "bytes"
+      }
+    ],
+    "name": "permitTransferFrom",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-"inputs": [
-  {
-"components": [
+    "inputs": [
+      {
+        "components": [
           {
             "components": [
               {
                 "internalType": "address",
-"name": "token",
+                "name": "token",
                 "type": "address"
               },
               {
@@ -624,7 +624,7 @@
             "name": "permitted",
             "type": "tuple"
           },
-{
+          {
             "internalType": "uint256",
             "name": "nonce",
             "type": "uint256"
@@ -636,14 +636,14 @@
           }
         ],
         "internalType": "struct ISignatureTransfer.PermitTransferFrom",
-"name": "permit",
+        "name": "permit",
         "type": "tuple"
       },
       {
         "internalType": "address",
         "name": "owner",
         "type": "address"
-},
+      },
       {
         "internalType": "address",
         "name": "to",
@@ -657,7 +657,7 @@
       {
         "internalType": "bytes32",
         "name": "witness",
-"type": "bytes32"
+        "type": "bytes32"
       },
       {
         "internalType": "string",

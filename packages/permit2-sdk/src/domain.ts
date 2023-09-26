@@ -1,14 +1,8 @@
+import { TypedDataDomain, TypedDataField } from './utils/types'
+
 const PERMIT2_DOMAIN_NAME = 'Permit2'
 
-export function permit2Domain(
-  permit2Address: string,
-  chainId: number
-): {
-  name: string
-  version: string
-  chainId: string
-  verifyingContract: string
-} {
+export function permit2Domain(permit2Address: string, chainId: number): TypedDataDomain {
   return {
     name: PERMIT2_DOMAIN_NAME,
     chainId,
@@ -17,12 +11,7 @@ export function permit2Domain(
 }
 
 export type PermitData = {
-  domain: {
-    name: string
-    version: string
-    chainId: string
-    verifyingContract: string
-  }
-  types: any
+  domain: TypedDataDomain
+  types: Record<string, TypedDataField[]>
   values: any
 }

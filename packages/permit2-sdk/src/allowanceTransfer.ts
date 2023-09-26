@@ -2,6 +2,7 @@ import invariant from 'tiny-invariant'
 import { BigintIsh } from '@pancakeswap/sdk'
 import { MaxSigDeadline, MaxOrderedNonce, MaxAllowanceTransferAmount, MaxAllowanceExpiration } from './constants'
 import { permit2Domain } from './domain'
+import { TypedDataDomain, TypedDataField } from './utils/types'
 
 export interface PermitDetails {
   token: string
@@ -23,24 +24,14 @@ export interface PermitBatch {
 }
 
 export type PermitSingleData = {
-  domain: {
-    name: string,
-    version: string,
-    chainId: string,
-    verifyingContract: string,
-  }
-  types: any
+  domain: TypedDataDomain
+  types: Record<string, TypedDataField[]>
   values: PermitSingle
 }
 
 export type PermitBatchData = {
-  domain:  {
-    name: string,
-    version: string,
-    chainId: string,
-    verifyingContract: string,
-  }
-  types: any
+  domain: TypedDataDomain
+  types: Record<string, TypedDataField[]>
   values: PermitBatch
 }
 
@@ -77,6 +68,7 @@ export abstract class AllowanceTransfer {
   /**
    * Cannot be constructed.
    */
+  // eslint-disable-next-line no-useless-constructor
   private constructor() {}
 
   // return the data to be sent in a eth_signTypedData RPC call
@@ -96,13 +88,12 @@ export abstract class AllowanceTransfer {
         types: PERMIT_TYPES,
         values: permit,
       }
-    } else {
-      permit.details.forEach(validatePermitDetails)
-      return {
-        domain,
-        types: PERMIT_BATCH_TYPES,
-        values: permit,
-      }
+    }
+    permit.details.forEach(validatePermitDetails)
+    return {
+      domain,
+      types: PERMIT_BATCH_TYPES,
+      values: permit,
     }
   }
 }

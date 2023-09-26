@@ -1,12 +1,13 @@
 import invariant from 'tiny-invariant'
+import { BigintIsh } from '@pancakeswap/sdk'
 import { permit2Domain } from './domain'
 import { MaxSigDeadline, MaxUnorderedNonce, MaxSignatureTransferAmount } from './constants'
-import { BigintIsh } from '@pancakeswap/sdk'
+import { TypedDataDomain, TypedDataField } from './utils/types'
 
 export interface Witness {
   witness: any
   witnessTypeName: string
-  witnessType: any
+  witnessType: Record<string, TypedDataField[]>
 }
 
 export interface TokenPermissions {
@@ -29,24 +30,14 @@ export interface PermitBatchTransferFrom {
 }
 
 export type PermitTransferFromData = {
-  domain: {
-    name: string,
-    version: string,
-    chainId: string,
-    verifyingContract: string,
-  }
-  types: any
+  domain: TypedDataDomain
+  types: Record<string, TypedDataField[]>
   values: PermitTransferFrom
 }
 
 export type PermitBatchTransferFromData = {
-  domain: {
-    name: string,
-    version: string,
-    chainId: string,
-    verifyingContract: string,
-  }
-  types: any
+  domain: TypedDataDomain
+  types: Record<string, TypedDataField[]>
   values: PermitBatchTransferFrom
 }
 
@@ -75,7 +66,7 @@ const PERMIT_BATCH_TRANSFER_FROM_TYPES = {
   TokenPermissions: TOKEN_PERMISSIONS,
 }
 
-function permitTransferFromWithWitnessType(witness: Witness) {
+function permitTransferFromWithWitnessType(witness: Witness): Record<string, TypedDataField[]> {
   return {
     PermitWitnessTransferFrom: [
       { name: 'permitted', type: 'TokenPermissions' },
@@ -89,7 +80,7 @@ function permitTransferFromWithWitnessType(witness: Witness) {
   }
 }
 
-function permitBatchTransferFromWithWitnessType(witness: Witness) {
+function permitBatchTransferFromWithWitnessType(witness: Witness): Record<string, TypedDataField[]> {
   return {
     PermitBatchWitnessTransferFrom: [
       { name: 'permitted', type: 'TokenPermissions[]' },
@@ -111,6 +102,7 @@ export abstract class SignatureTransfer {
   /**
    * Cannot be constructed.
    */
+  // eslint-disable-next-line no-useless-constructor
   private constructor() {}
 
   // return the data to be sent in a eth_signTypedData RPC call
@@ -134,19 +126,17 @@ export abstract class SignatureTransfer {
         types,
         values,
       }
-    } else {
-      permit.permitted.forEach(validateTokenPermissions)
-      const types = witness ? permitBatchTransferFromWithWitnessType(witness) : PERMIT_BATCH_TRANSFER_FROM_TYPES
-      const values = witness ? Object.assign(permit, { witness: witness.witness }) : permit
-      return {
-        domain,
-        types,
-        values,
-      }
+    }
+    permit.permitted.forEach(validateTokenPermissions)
+    const types = witness ? permitBatchTransferFromWithWitnessType(witness) : PERMIT_BATCH_TRANSFER_FROM_TYPES
+    const values = witness ? Object.assign(permit, { witness: witness.witness }) : permit
+    return {
+      domain,
+      types,
+      values,
     }
   }
 }
-
 
 function validateTokenPermissions(permissions: TokenPermissions) {
   invariant(MaxSignatureTransferAmount >= BigInt(permissions.amount), 'AMOUNT_OUT_OF_RANGE')
