@@ -187,8 +187,9 @@ const Hero = () => {
 
   useLayoutEffect(() => {
     if (checkIsIOS() || isMobile) return
-    videoResources.forEach(({ src, ref }) => {
+    videoResources.forEach(({ src, ref }, index) => {
       const video = document.createElement('video')
+      if (index !== 0) video.loop = true
       video.autoplay = true
       video.playsInline = true
       video.width = width
