@@ -58,7 +58,7 @@ export function useIfUserLocked() {
   const vaultPosition = getVaultPosition({
     userShares: new BigNumber(userShares as unknown as BigNumber.Value),
     locked,
-    lockEndTime: toString(lockEndTime),
+    lockEndTime: lockEndTime.toString(),
   })
 
   return VaultPosition.Locked === vaultPosition
