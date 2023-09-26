@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AllowanceTransfer, MaxAllowanceTransferAmount, PERMIT2_ADDRESS, PermitSingle } from '@pancakeswap/permit2-sdk'
+import { AllowanceTransfer, generatePermitTypedData, PERMIT2_ADDRESS, PermitSingle } from '@pancakeswap/permit2-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useCallback, useMemo } from 'react'
@@ -13,12 +13,6 @@ import PERMIT2_ABI from '../config/abi/permit2.json'
 import useAccountActiveChain from './useAccountActiveChain'
 import { useActiveChainId } from './useActiveChainId'
 
-const PERMIT_EXPIRATION = 2592000000 // 30 day
-const PERMIT_SIG_EXPIRATION = 1800000 // 30 min
-
-function toDeadline(expiration: number): number {
-  return Math.floor((Date.now() + expiration) / 1000)
-}
 export function usePermitAllowance(token?: Token, owner?: string, spender?: string) {
   const { chainId } = useActiveChainId()
 
@@ -73,6 +67,7 @@ export function useUpdatePermitAllowance(
   const { account, chainId } = useAccountActiveChain()
   const { signTypedDataAsync } = useSignTypedData()
   const { t } = useTranslation()
+
   return useCallback(async () => {
     try {
       if (!chainId) throw new Error('missing chainId')
@@ -82,17 +77,7 @@ export function useUpdatePermitAllowance(
 
       if (nonce === undefined) throw new Error('missing nonce')
 
-      const permit: Permit = {
-        details: {
-          token: token.address,
-          amount: MaxAllowanceTransferAmount.toString(),
-          expiration: toDeadline(PERMIT_EXPIRATION).toString(),
-          nonce: nonce.toString(),
-        },
-        spender,
-        sigDeadline: toDeadline(PERMIT_SIG_EXPIRATION).toString(),
-      }
-
+      const permit: Permit = generatePermitTypedData(token, nonce, spender)
       const { domain, types, values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS, chainId)
 
       const signature = await signTypedDataAsync({
@@ -102,8 +87,8 @@ export function useUpdatePermitAllowance(
         types,
         message: values,
       })
-
       onPermitSignature?.({ ...permit, signature })
+
       return
     } catch (error: unknown) {
       if (isUserRejected(error)) {

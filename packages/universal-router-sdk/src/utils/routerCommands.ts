@@ -214,7 +214,6 @@ export function createCommand<TCommandType extends CommandType>(
   type: TCommandType,
   parameters: ABIParametersType<TCommandType>
 ): RouterCommand {
-  console.log(type)
   // const params = parameters.filter((param) => param !== null)
   const encodedInput = encodeAbiParameters(ABI_PARAMETER[type], parameters as any)
   return { type, encodedInput }

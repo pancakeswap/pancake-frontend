@@ -20,7 +20,7 @@ const now = () => Date.now()
 
 export interface TransactionDetails {
   hash: Hash
-  approval?: { tokenAddress: string; spender: string }
+  approval?: { tokenAddress: string; spender: string; amount?: string }
   type?: TransactionType
   order?: Order
   summary?: string

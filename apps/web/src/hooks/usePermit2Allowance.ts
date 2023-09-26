@@ -3,7 +3,7 @@ import { PERMIT2_ADDRESS } from '@pancakeswap/permit2-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
 import { useCallback, useMemo, useState } from 'react'
-import { useHasPendingApproval } from 'state/transactions/hooks'
+import { useHasPendingApproval, useHasPendingRevocation } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
 import { ApprovalState, useApproveCallback } from './useApproveCallback'
 import useTokenAllowance from './useTokenAllowance'
@@ -15,7 +15,7 @@ export enum AllowanceState {
 }
 
 export interface AllowanceRequired {
-  isRevocationPending?: boolean
+  isRevocationPending: boolean
   state: AllowanceState.REQUIRED
   token: Token
   isApprovalLoading: boolean
@@ -45,9 +45,11 @@ export default function usePermit2Allowance(amount?: CurrencyAmount<Token>, spen
 
   const { allowance: tokenAllowance } = useTokenAllowance(token ?? undefined, account ?? undefined, PERMIT2_ADDRESS)
   const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, PERMIT2_ADDRESS)
+
   const isApproved = approvalState === ApprovalState.APPROVED
   const isApprovalLoading = approvalState === ApprovalState.PENDING
   const isApprovalPending = useHasPendingApproval(token?.address, PERMIT2_ADDRESS)
+  const isRevocationPending = useHasPendingRevocation(token, PERMIT2_ADDRESS)
 
   // Signature and PermitAllowance will expire, so they should be rechecked at an interval.
   // Calculate now such that the signature will still be valid for the submitting block.
@@ -92,6 +94,7 @@ export default function usePermit2Allowance(amount?: CurrencyAmount<Token>, spen
           state: AllowanceState.REQUIRED,
           isApprovalLoading: false,
           isApprovalPending,
+          isRevocationPending,
           approveAndPermit,
           approve: approveCallback,
           permit: updatePermitAllowance,
@@ -107,6 +110,7 @@ export default function usePermit2Allowance(amount?: CurrencyAmount<Token>, spen
           state: AllowanceState.REQUIRED,
           isApprovalLoading,
           isApprovalPending,
+          isRevocationPending,
           approveAndPermit,
           approve: approveCallback,
           permit: updatePermitAllowance,
@@ -139,5 +143,6 @@ export default function usePermit2Allowance(amount?: CurrencyAmount<Token>, spen
     signature,
     token,
     tokenAllowance,
+    isRevocationPending,
   ])
 }

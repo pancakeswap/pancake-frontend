@@ -9,12 +9,13 @@ import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettin
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
+import { Allowance } from 'hooks/usePermit2Allowance'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
-import { SendTransactionResult } from 'wagmi/actions'
+import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
 import { ConfirmSwapModal } from '../../V3Swap/containers/ConfirmSwapModal'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
@@ -30,8 +31,7 @@ interface SwapCommitButtonPropsType {
   onWrap: () => Promise<void>
   wrapType: WrapType
   approval: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  allowance: Allowance
   approvalSubmitted: boolean
   currencies: {
     INPUT?: Currency
@@ -59,8 +59,7 @@ export function MMSwapCommitButton({
   onWrap,
   wrapType,
   approval,
-  approveCallback,
-  revokeCallback,
+  allowance,
   approvalSubmitted,
   rfqTrade,
   swapInputError,
@@ -76,7 +75,6 @@ export function MMSwapCommitButton({
 
   const { t } = useTranslation()
   // the callback to execute the swap
-
   // @ts-ignore
   const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq, recipient)
 
@@ -150,6 +148,23 @@ export function MMSwapCommitButton({
     />,
   )
 
+  const {
+    confirmModalState,
+    pendingModalSteps,
+    startSwapFlow,
+    onCancel: resetSwapFlow,
+  } = useConfirmModalState({
+    txHash,
+    chainId,
+    approval,
+    approvalToken: rfqTrade?.trade?.inputAmount.currency,
+    isPendingError,
+    isExpertMode,
+    currentAllowance,
+    allowance,
+    onConfirm: handleSwap,
+  })
+
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
       isMM
@@ -157,6 +172,10 @@ export function MMSwapCommitButton({
       txHash={txHash}
       approval={approval}
       attemptingTxn={attemptingTxn}
+      confirmModalState={confirmModalState}
+      pendingModalSteps={pendingModalSteps}
+      startSwapFlow={startSwapFlow}
+      allowance={allowance}
       originalTrade={tradeToConfirm}
       showApproveFlow={showApproveFlow}
       currencyBalances={currencyBalances}
@@ -180,13 +199,13 @@ export function MMSwapCommitButton({
       swapErrorMessage: undefined,
       txHash: undefined,
     })
-    // resetSwapFlow()
-    // if (isExpertMode) {
-    //   startSwapFlow()
-    // }
+    resetSwapFlow()
+    if (isExpertMode) {
+      startSwapFlow()
+    }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [rfqTrade, onPresentConfirmModal, isExpertMode])
+  }, [rfqTrade, onPresentConfirmModal, isExpertMode, startSwapFlow, resetSwapFlow])
 
   // useEffect
   useEffect(() => {

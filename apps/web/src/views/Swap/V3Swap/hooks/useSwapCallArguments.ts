@@ -53,7 +53,6 @@ export function useSwapCallArguments(
       slippageTolerance: allowedSlippage,
       deadlineOrPreviousBlockhash: deadline?.toString(),
     })
-    console.log(methodParamaters.calldata)
     const swapRouterAddress = UNIVERSAL_ROUTER_ADDRESS(chainId)
     if (!swapRouterAddress) return []
     return [

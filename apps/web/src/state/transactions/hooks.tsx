@@ -15,6 +15,7 @@ import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Hash } from 'viem'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { TransactionDetails } from './reducer'
 import {
   addTransaction,
@@ -30,7 +31,7 @@ export function useTransactionAdder(): (
   customData?: {
     summary?: string
     translatableSummary?: { text: string; data?: Record<string, string | number> }
-    approval?: { tokenAddress: string; spender: string }
+    approval?: { tokenAddress: string; spender: string; amount: string }
     claim?: { recipient: string }
     type?: TransactionType
     order?: Order
@@ -201,6 +202,25 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
       }),
     [allTransactions, spender, tokenAddress],
   )
+}
+
+export function useHasPendingRevocation(token?: Token, spender?: string) {
+  const allTransactions = useAllActiveChainTransactions()
+  const pendingApprovals = useMemo(() => {
+    if (typeof token?.address !== 'string' || typeof spender !== 'string') {
+      return undefined
+    }
+    // eslint-disable-next-line guard-for-in
+    for (const txHash in allTransactions) {
+      const tx = allTransactions[txHash]
+      if (!tx || tx.receipt || tx.type === 'approve') continue
+      if (tx.approval.spender === spender && tx.approval.tokenAddress === token.address && isTransactionRecent(tx)) {
+        return BigInt(tx.approval.amount)
+      }
+    }
+    return undefined
+  }, [allTransactions, spender, token?.address])
+  return pendingApprovals === 0n ?? false
 }
 
 // we want the latest one to come first, so return negative if a is after b
