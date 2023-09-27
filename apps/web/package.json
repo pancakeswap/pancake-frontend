@@ -57,14 +57,7 @@
     "@snapshot-labs/snapshot.js": "^0.4.40",
     "@tanstack/react-query": "^4.28.0",
     "@vanilla-extract/next-plugin": "^2.3.0",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "@wallchain/sdk": "^0.6.8",
-=======
-    "@tanstack/react-query": "^4.28.0",
->>>>>>> 3f47c0b81 (chore: update package json part2)
-=======
->>>>>>> d49f491f2 (chore: update package json)
     "ajv": "^6.12.3",
     "bignumber.js": "^9.0.0",
     "bottleneck": "^2.19.5",

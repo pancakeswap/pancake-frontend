@@ -99,26 +99,10 @@ importers:
 
   apis/farms:
     dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../../packages/chains
       '@pancakeswap/farms':
-=======
-      "@pancakeswap/farms":
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-      '@pancakeswap/farms':
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
-      "@pancakeswap/farms":
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-      '@pancakeswap/farms':
->>>>>>> 71aef1092 (chore: update lock file)
         specifier: workspace:*
         version: link:../../packages/farms
       '@pancakeswap/sdk':
@@ -207,26 +191,10 @@ importers:
 
   apis/routing:
     dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../../packages/chains
       '@pancakeswap/farms':
-=======
-      "@pancakeswap/farms":
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-      '@pancakeswap/farms':
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
-      "@pancakeswap/farms":
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-      '@pancakeswap/farms':
->>>>>>> 71aef1092 (chore: update lock file)
         specifier: workspace:*
         version: link:../../packages/farms
       '@pancakeswap/sdk':
@@ -511,34 +479,6 @@ importers:
       '@pancakeswap/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-      "@pancakeswap/sdk":
-=======
-      '@pancakeswap/sdk':
->>>>>>> 9dd1ba963 (chore: update package json)
-        specifier: workspace:*
-        version: link:../../packages/swap-sdk
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-      "@pancakeswap/sdk":
-        specifier: workspace:*
-        version: link:../../packages/swap-sdk
-<<<<<<< HEAD
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../../packages/swap-sdk
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 71aef1092 (chore: update lock file)
-=======
->>>>>>> 2436c49e4 (chore: update lock file)
       '@pancakeswap/uikit':
         specifier: workspace:*
         version: link:../../packages/uikit
@@ -694,32 +634,9 @@ importers:
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
         version: 2.3.0(@types/node@13.13.52)(next@13.4.2)(webpack@5.88.2)
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@wallchain/sdk':
         specifier: ^0.6.8
         version: 0.6.8
-=======
-=======
-        version: 2.3.0(@types/node@13.13.52)(next@13.4.2)(webpack@5.74.0)
-<<<<<<< HEAD
-=======
-      "@vanilla-extract/next-plugin":
-=======
-      '@vanilla-extract/next-plugin':
->>>>>>> 4a10853b2 (chore: update lock file)
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@13.13.52)(next@13.4.2)(webpack@5.74.0)
->>>>>>> 2adcd539d (chore: apply the purple effect)
->>>>>>> 62ed3ed2c (chore: apply the purple effect)
-<<<<<<< HEAD
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-=======
->>>>>>> 9e7b94185 (chore: update lock file)
->>>>>>> 2436c49e4 (chore: update lock file)
-=======
->>>>>>> 0efacc661 (chore: update lock)
       ajv:
         specifier: ^6.12.3
         version: 6.12.6
@@ -1170,26 +1087,10 @@ importers:
 
   packages/farms:
     dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
       '@pancakeswap/sdk':
-=======
-      "@pancakeswap/sdk":
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-      '@pancakeswap/sdk':
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
-      "@pancakeswap/sdk":
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-      '@pancakeswap/sdk':
->>>>>>> 71aef1092 (chore: update lock file)
         specifier: workspace:*
         version: link:../swap-sdk
       '@pancakeswap/swap-sdk-core':
@@ -1319,38 +1220,10 @@ importers:
 
   packages/pools:
     dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
       '@pancakeswap/token-lists':
-=======
-      "@pancakeswap/sdk":
-        specifier: workspace:*
-        version: link:../swap-sdk
-      "@pancakeswap/token-lists":
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../swap-sdk
-      '@pancakeswap/token-lists':
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
-      "@pancakeswap/sdk":
-        specifier: workspace:*
-        version: link:../swap-sdk
-      "@pancakeswap/token-lists":
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../swap-sdk
-      '@pancakeswap/token-lists':
->>>>>>> 71aef1092 (chore: update lock file)
         specifier: workspace:*
         version: link:../token-lists
       '@pancakeswap/tokens':
@@ -1719,20 +1592,9 @@ importers:
       '@babel/preset-react':
         specifier: ^7.18.6
         version: 7.18.6(@babel/core@7.21.3)
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
-=======
-<<<<<<< HEAD
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-<<<<<<< HEAD
->>>>>>> 71aef1092 (chore: update lock file)
-=======
->>>>>>> 2436c49e4 (chore: update lock file)
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
@@ -1947,26 +1809,10 @@ importers:
 
   packages/v3-sdk:
     dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
       '@pancakeswap/sdk':
-=======
-      "@pancakeswap/sdk":
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-      '@pancakeswap/sdk':
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
-      "@pancakeswap/sdk":
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-      '@pancakeswap/sdk':
->>>>>>> 71aef1092 (chore: update lock file)
         specifier: workspace:*
         version: link:../swap-sdk
       '@pancakeswap/swap-sdk-core':
@@ -2129,10 +1975,6 @@ importers:
       '@pancakeswap/aptos-swap-sdk':
         specifier: workspace:*
         version: link:../packages/aptos-swap-sdk
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../packages/chains
@@ -2140,38 +1982,6 @@ importers:
         specifier: workspace:*
         version: link:../packages/farms
       '@types/lodash':
-=======
-      "@pancakeswap/farms":
-=======
-      '@pancakeswap/farms':
->>>>>>> 9dd1ba963 (chore: update package json)
-        specifier: workspace:*
-        version: link:../packages/farms
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../packages/swap-sdk
-<<<<<<< HEAD
-      "@types/lodash":
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-      '@types/lodash':
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
-      "@pancakeswap/farms":
-=======
-      '@pancakeswap/farms':
->>>>>>> 71aef1092 (chore: update lock file)
-        specifier: workspace:*
-        version: link:../packages/farms
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../packages/swap-sdk
-<<<<<<< HEAD
-      "@types/lodash":
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-      '@types/lodash':
->>>>>>> 71aef1092 (chore: update lock file)
         specifier: ^4.14.168
         version: 4.14.186
       bignumber.js:
@@ -6552,19 +6362,7 @@ packages:
       - encoding
     dev: false
 
-<<<<<<< HEAD
   /@graphql-typed-document-node/core@3.1.1(graphql@16.8.1):
-=======
-  /@graphql-typed-document-node/core@3.1.1(graphql@16.6.0):
-    resolution: {integrity: sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      graphql: 16.6.0
-    dev: false
-
-  /@graphql-typed-document-node/core@3.1.1(graphql@16.8.0):
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
     resolution: {integrity: sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -8595,32 +8393,7 @@ packages:
       rollup: 2.78.0
       stacktrace-parser: 0.1.10
       tslib: 1.14.1
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       webpack: 5.88.2(esbuild@0.14.34)
-=======
-=======
->>>>>>> 2436c49e4 (chore: update lock file)
-<<<<<<< HEAD
-      webpack: 5.88.2(esbuild@0.17.19)
-=======
-<<<<<<< HEAD
-      webpack: 5.74.0(esbuild@0.17.19)
-=======
-      webpack: 5.74.0(esbuild@0.17.12)
->>>>>>> 4a10853b2 (chore: update lock file)
->>>>>>> e2cc253e2 (chore: update lock file)
-<<<<<<< HEAD
->>>>>>> 71aef1092 (chore: update lock file)
-=======
-=======
-      webpack: 5.74.0(esbuild@0.17.19)
->>>>>>> 9e7b94185 (chore: update lock file)
->>>>>>> 2436c49e4 (chore: update lock file)
-=======
-      webpack: 5.88.2(esbuild@0.17.19)
->>>>>>> 0efacc661 (chore: update lock)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -11823,32 +11596,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@8.1.1)
       loader-utils: 2.0.2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       webpack: 5.88.2(esbuild@0.14.34)
-=======
-=======
->>>>>>> 2436c49e4 (chore: update lock file)
-<<<<<<< HEAD
-      webpack: 5.88.2(esbuild@0.17.19)
-=======
-<<<<<<< HEAD
-      webpack: 5.74.0(esbuild@0.17.19)
-=======
-      webpack: 5.74.0(esbuild@0.17.12)
->>>>>>> 4a10853b2 (chore: update lock file)
->>>>>>> e2cc253e2 (chore: update lock file)
-<<<<<<< HEAD
->>>>>>> 71aef1092 (chore: update lock file)
-=======
-=======
-      webpack: 5.74.0(esbuild@0.17.19)
->>>>>>> 9e7b94185 (chore: update lock file)
->>>>>>> 2436c49e4 (chore: update lock file)
-=======
-      webpack: 5.88.2(esbuild@0.17.19)
->>>>>>> 0efacc661 (chore: update lock)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -11868,32 +11616,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@8.1.1)
       loader-utils: 2.0.2
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       webpack: 5.88.2(esbuild@0.14.34)
-=======
-=======
->>>>>>> 2436c49e4 (chore: update lock file)
-<<<<<<< HEAD
-      webpack: 5.88.2(esbuild@0.17.19)
-=======
-<<<<<<< HEAD
-      webpack: 5.74.0(esbuild@0.17.19)
-=======
-      webpack: 5.74.0(esbuild@0.17.12)
->>>>>>> 4a10853b2 (chore: update lock file)
->>>>>>> e2cc253e2 (chore: update lock file)
-<<<<<<< HEAD
->>>>>>> 71aef1092 (chore: update lock file)
-=======
-=======
-      webpack: 5.74.0(esbuild@0.17.19)
->>>>>>> 9e7b94185 (chore: update lock file)
->>>>>>> 2436c49e4 (chore: update lock file)
-=======
-      webpack: 5.88.2(esbuild@0.17.19)
->>>>>>> 0efacc661 (chore: update lock)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -15742,33 +15465,8 @@ packages:
     dev: true
 
   /define-lazy-prop@2.0.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==}
     engines: {node: '>=8'}
-=======
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==,
-      }
-    engines: { node: ">=8" }
-<<<<<<< HEAD
-=======
-    resolution: {integrity: sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==}
-    engines: {node: '>=8'}
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==}
-    engines: {node: '>=8'}
->>>>>>> 71aef1092 (chore: update lock file)
-    dev: true
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
 
   /define-properties@1.2.0:
     resolution: {integrity: sha512-xvqAVKGfT1+UAvPwKTVw/njhdQ8ZhXK4lI0bCIuCMrp2up9nPnaDftrLtmpTazqd1o+UY4zgzU+avtMbDP+ldA==}
@@ -16594,33 +16292,9 @@ packages:
     optional: true
 
   /esbuild@0.14.34:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-QIWdPT/gFF6hCaf4m7kP0cJ+JIuFkdHibI7vVFvu3eJS1HpVmYHWDulyN5WXwbRA0SX/7ZDaJ/1DH8SdY9xOJg==}
     engines: {node: '>=12'}
     hasBin: true
-=======
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-QIWdPT/gFF6hCaf4m7kP0cJ+JIuFkdHibI7vVFvu3eJS1HpVmYHWDulyN5WXwbRA0SX/7ZDaJ/1DH8SdY9xOJg==,
-      }
-    engines: { node: ">=12" }
-<<<<<<< HEAD
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-    resolution: {integrity: sha512-QIWdPT/gFF6hCaf4m7kP0cJ+JIuFkdHibI7vVFvu3eJS1HpVmYHWDulyN5WXwbRA0SX/7ZDaJ/1DH8SdY9xOJg==}
-    engines: {node: '>=12'}
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-QIWdPT/gFF6hCaf4m7kP0cJ+JIuFkdHibI7vVFvu3eJS1HpVmYHWDulyN5WXwbRA0SX/7ZDaJ/1DH8SdY9xOJg==}
-    engines: {node: '>=12'}
->>>>>>> 71aef1092 (chore: update lock file)
     requiresBuild: true
     optionalDependencies:
       esbuild-android-64: 0.14.34
@@ -18291,33 +17965,12 @@ packages:
       - encoding
     dev: false
 
-<<<<<<< HEAD
   /graphql-request@5.0.0(encoding@0.1.13)(graphql@16.8.1):
     resolution: {integrity: sha512-SpVEnIo2J5k2+Zf76cUkdvIRaq5FMZvGQYnA4lUWYbc99m+fHh4CZYRRO/Ff4tCLQ613fzCm3SiDT64ubW5Gyw==}
     peerDependencies:
       graphql: 14 - 16
     dependencies:
       '@graphql-typed-document-node/core': 3.1.1(graphql@16.8.1)
-=======
-  /graphql-request@5.0.0(encoding@0.1.13)(graphql@16.6.0):
-    resolution: {integrity: sha512-SpVEnIo2J5k2+Zf76cUkdvIRaq5FMZvGQYnA4lUWYbc99m+fHh4CZYRRO/Ff4tCLQ613fzCm3SiDT64ubW5Gyw==}
-    peerDependencies:
-      graphql: 14 - 16
-    dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      "@graphql-typed-document-node/core": 3.1.1(graphql@16.6.0)
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-      '@graphql-typed-document-node/core': 3.1.1(graphql@16.6.0)
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
-      "@graphql-typed-document-node/core": 3.1.1(graphql@16.6.0)
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-      '@graphql-typed-document-node/core': 3.1.1(graphql@16.6.0)
->>>>>>> 71aef1092 (chore: update lock file)
       cross-fetch: 3.1.5(encoding@0.1.13)
       extract-files: 9.0.0
       form-data: 3.0.1
@@ -18330,18 +17983,8 @@ packages:
     engines: {node: '>= 10.x'}
     dev: false
 
-<<<<<<< HEAD
   /graphql@16.8.1:
     resolution: {integrity: sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==}
-=======
-  /graphql@16.6.0:
-    resolution: {integrity: sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==}
-    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
-    dev: false
-
-  /graphql@16.8.0:
-    resolution: {integrity: sha512-0oKGaR+y3qcS5mCu1vb7KG+a89vjn06C7Ihq/dDl3jA+A8B3TKomvi3CiEcVLJQGalbu8F52LxkOym7U5sSfbg==}
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
   /gunzip-maybe@1.4.2:
@@ -18807,39 +18450,7 @@ packages:
   /is-docker@2.2.1:
     resolution: {integrity: sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==}
     engines: {node: '>=8'}
-<<<<<<< HEAD
     hasBin: true
-=======
-    dev: true
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 62ed3ed2c (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==,
-      }
-    engines: { node: ">=8" }
-<<<<<<< HEAD
-=======
-    resolution: {integrity: sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==}
-    engines: {node: '>=8'}
->>>>>>> b75132f07 (chore: update package json)
-=======
->>>>>>> 62ed3ed2c (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==}
-    engines: {node: '>=8'}
->>>>>>> e2cc253e2 (chore: update lock file)
-
-  /is-docker@3.0.0:
-    resolution: {integrity: sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dev: false
->>>>>>> e4e09ec5c (chore: update section 1 and 2)
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
->>>>>>> 0efacc661 (chore: update lock)
 
   /is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
@@ -19055,22 +18666,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       is-docker: 2.2.1
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-    dev: true
-=======
-
-  /is-yarn-global@0.4.1:
-    resolution: {integrity: sha512-/kppl+R+LO5VmhYSEWARUFjodS25D68gvj8W7z0I7OWhUla5xWu8KL6CtB2V0R6yqhnRgbcaREMr4EEM6htLPQ==}
-    engines: {node: '>=12'}
-    dev: false
->>>>>>> e4e09ec5c (chore: update section 1 and 2)
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-    dev: true
->>>>>>> 0efacc661 (chore: update lock)
 
   /is@0.2.7:
     resolution: {integrity: sha512-ajQCouIvkcSnl2iRdK70Jug9mohIHVX9uKpoWnl115ov0R5mzBvRrXxrnHbsA+8AdwCwc/sfw7HXmd4I5EJBdQ==}
@@ -21337,33 +20932,9 @@ packages:
       mime-db: 1.52.0
 
   /mime@1.6.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
     engines: {node: '>=4'}
     hasBin: true
-=======
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==,
-      }
-    engines: { node: ">=4" }
-<<<<<<< HEAD
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-    resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
-    engines: {node: '>=4'}
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
-    engines: {node: '>=4'}
->>>>>>> 71aef1092 (chore: update lock file)
     dev: true
 
   /mime@2.6.0:
@@ -21372,33 +20943,9 @@ packages:
     dev: true
 
   /mime@3.0.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
     engines: {node: '>=10.0.0'}
     hasBin: true
-=======
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==,
-      }
-    engines: { node: ">=10.0.0" }
-<<<<<<< HEAD
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-    resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
-    engines: {node: '>=10.0.0'}
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
-    engines: {node: '>=10.0.0'}
->>>>>>> 71aef1092 (chore: update lock file)
     dev: true
 
   /mimic-fn@2.1.0:
@@ -21716,29 +21263,8 @@ packages:
     resolution: {integrity: sha512-GY154q1yPPdHX4ArXHE8Z1Mm9BxZcJetzEqfwQg/ongo91qIJDHJEio3zboHIKGEvBLrhVqKwlRuDqwa7+xECQ==}
 
   /mustache@4.2.0:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
     hasBin: true
-=======
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==,
-      }
-<<<<<<< HEAD
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-    resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
->>>>>>> 71aef1092 (chore: update lock file)
     dev: true
 
   /mz@2.7.0:
@@ -23981,29 +23507,8 @@ packages:
     resolution: {integrity: sha512-ndEIpszUHiG4HtDsQLeIuMvRsDnn8c8rYStabochtUeCvfuvNptb5TUbVD68LRAILPX7p9nqQGh4xJgn3EHS/g==}
 
   /rollup-plugin-inject@3.0.2:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-ptg9PQwzs3orn4jkgXJ74bfs5vYz1NCZlSQMBUA0wKcGp5i5pA1AO3fOUEte8enhGUC+iapTCzEWw2jEFFUO/w==}
     deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-inject.
-=======
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-ptg9PQwzs3orn4jkgXJ74bfs5vYz1NCZlSQMBUA0wKcGp5i5pA1AO3fOUEte8enhGUC+iapTCzEWw2jEFFUO/w==,
-      }
-<<<<<<< HEAD
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-    resolution: {integrity: sha512-ptg9PQwzs3orn4jkgXJ74bfs5vYz1NCZlSQMBUA0wKcGp5i5pA1AO3fOUEte8enhGUC+iapTCzEWw2jEFFUO/w==}
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-ptg9PQwzs3orn4jkgXJ74bfs5vYz1NCZlSQMBUA0wKcGp5i5pA1AO3fOUEte8enhGUC+iapTCzEWw2jEFFUO/w==}
->>>>>>> 71aef1092 (chore: update lock file)
     dependencies:
       estree-walker: 0.6.1
       magic-string: 0.25.9
@@ -24559,33 +24064,8 @@ packages:
     engines: {node: '>=0.10.0'}
 
   /source-map@0.7.4:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
     engines: {node: '>= 8'}
-=======
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==,
-      }
-    engines: { node: ">= 8" }
-<<<<<<< HEAD
-=======
-    resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
-    engines: {node: '>= 8'}
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
-    engines: {node: '>= 8'}
->>>>>>> 71aef1092 (chore: update lock file)
-    dev: true
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
 
   /source-map@0.8.0-beta.0:
     resolution: {integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA==}
@@ -24595,29 +24075,8 @@ packages:
     dev: true
 
   /sourcemap-codec@1.4.8:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
     deprecated: Please use @jridgewell/sourcemap-codec instead
-=======
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==,
-      }
-<<<<<<< HEAD
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-    resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-    resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
->>>>>>> 71aef1092 (chore: update lock file)
     dev: true
 
   /space-separated-tokens@1.1.5:
@@ -25430,9 +24889,6 @@ packages:
       supports-hyperlinks: 2.3.0
     dev: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   /terser-webpack-plugin@5.3.9(esbuild@0.14.34)(webpack@5.88.2):
     resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
     engines: {node: '>= 10.13.0'}
@@ -25457,14 +24913,6 @@ packages:
       terser: 5.19.4
       webpack: 5.88.2(esbuild@0.14.34)
 
-=======
-<<<<<<< HEAD
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-<<<<<<< HEAD
->>>>>>> 2436c49e4 (chore: update lock file)
-=======
->>>>>>> 0efacc661 (chore: update lock)
   /terser-webpack-plugin@5.3.9(esbuild@0.17.19)(webpack@5.88.2):
     resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
     engines: {node: '>= 10.13.0'}
@@ -25488,67 +24936,8 @@ packages:
       serialize-javascript: 6.0.1
       terser: 5.19.4
       webpack: 5.88.2(esbuild@0.17.19)
-<<<<<<< HEAD
-<<<<<<< HEAD
-    dev: true
-=======
-=======
-      schema-utils: 3.1.1
-      serialize-javascript: 6.0.0
-      terser: 5.15.1
-      webpack: 5.74.0(esbuild@0.17.19)
-<<<<<<< HEAD
-=======
-      webpack: 5.74.0(esbuild@0.17.12)
-<<<<<<< HEAD
     dev: true
 
-  /terser-webpack-plugin@5.3.6(webpack@5.74.0):
-    resolution:
-      {
-        integrity: sha512-kfLFk+PoLUQIbLmB1+PZDMRSZS99Mp+/MHqDNmMA6tOItzRt+Npe3E+fsMs5mfcM0wCtrrdU387UnV+vnSffXQ==,
-      }
-    engines: { node: ">= 10.13.0" }
-    peerDependencies:
-      "@swc/core": "*"
-      esbuild: "*"
-      uglify-js: "*"
-      webpack: ^5.1.0
-    peerDependenciesMeta:
-      "@swc/core":
-        optional: true
-      esbuild:
-        optional: true
-      uglify-js:
-        optional: true
-    dependencies:
-      "@jridgewell/trace-mapping": 0.3.17
-      jest-worker: 27.5.1
-      schema-utils: 3.1.1
-      serialize-javascript: 6.0.0
-      terser: 5.15.1
-      webpack: 5.74.0
->>>>>>> 2adcd539d (chore: apply the purple effect)
-<<<<<<< HEAD
->>>>>>> 62ed3ed2c (chore: apply the purple effect)
-<<<<<<< HEAD
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-=======
-=======
->>>>>>> 4a10853b2 (chore: update lock file)
->>>>>>> e2cc253e2 (chore: update lock file)
-<<<<<<< HEAD
->>>>>>> 71aef1092 (chore: update lock file)
-=======
-=======
->>>>>>> 9e7b94185 (chore: update lock file)
->>>>>>> 2436c49e4 (chore: update lock file)
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 0efacc661 (chore: update lock)
   /terser@5.19.4:
     resolution: {integrity: sha512-6p1DjHeuluwxDXcuT9VR8p64klWJKo1ILiy19s6C9+0Bh2+NWTX6nD9EPppiER4ICkHDVB1RkVpin/YW2nQn/g==}
     engines: {node: '>=10'}
@@ -27317,10 +26706,6 @@ packages:
     resolution: {integrity: sha512-5tyDlKLqPfMqjT3Q9TAqf2YqjwmnUleZwzJi1A5qXnlBCdj2AtOJ6wAWdglTIDOPgOiOrXeBeFcsQ8+aGQ6QbA==}
     dev: true
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   /webpack@5.88.2(esbuild@0.14.34):
     resolution: {integrity: sha512-JmcgNZ1iKj+aiR0OvTYtWQqJwq37Pf683dY9bVORwVbUrDhLhdn/PlO2sHsFHPkj7sHNQF3JwaAkp49V+Sq1tQ==}
     engines: {node: '>=10.13.0'}
@@ -27360,17 +26745,6 @@ packages:
       - esbuild
       - uglify-js
 
-=======
-<<<<<<< HEAD
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-<<<<<<< HEAD
->>>>>>> 71aef1092 (chore: update lock file)
-=======
-<<<<<<< HEAD
->>>>>>> 2436c49e4 (chore: update lock file)
-=======
->>>>>>> 0efacc661 (chore: update lock)
   /webpack@5.88.2(esbuild@0.17.19):
     resolution: {integrity: sha512-JmcgNZ1iKj+aiR0OvTYtWQqJwq37Pf683dY9bVORwVbUrDhLhdn/PlO2sHsFHPkj7sHNQF3JwaAkp49V+Sq1tQ==}
     engines: {node: '>=10.13.0'}
@@ -27409,6 +26783,7 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
+    dev: true
 
   /well-known-symbols@2.0.0:
     resolution: {integrity: sha512-ZMjC3ho+KXo0BfJb7JgtQ5IBuvnShdlACNkKkdsqBmYw3bPAaJfPeYUo6tLUaT5tG/Gkh7xkpBhKRQ9e7pyg9Q==}
@@ -27817,27 +27192,6 @@ packages:
   /y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
-<<<<<<< HEAD
-=======
-    dev: true
-<<<<<<< HEAD
-=======
-    resolution:
-      {
-        integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==,
-      }
-    engines: { node: ">=10" }
->>>>>>> 2adcd539d (chore: apply the purple effect)
-<<<<<<< HEAD
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-=======
-    resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
-    engines: {node: '>=10'}
->>>>>>> 4a10853b2 (chore: update lock file)
->>>>>>> 71aef1092 (chore: update lock file)
-=======
->>>>>>> 2436c49e4 (chore: update lock file)
 
   /yallist@2.1.2:
     resolution: {integrity: sha512-ncTzHV7NvsQZkYe1DW7cbDLm0YpzHmZF5r/iyP3ZnQtMiJ+pjzisCiMNI+Sj+xQF5pXhSHxSB3uDbsBTzY/c2A==}
@@ -27869,42 +27223,6 @@ packages:
   /yargs-parser@21.1.1:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
     engines: {node: '>=12'}
-<<<<<<< HEAD
-=======
-    dev: true
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 62ed3ed2c (chore: apply the purple effect)
-    resolution:
-      {
-        integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==,
-      }
-    engines: { node: ">=12" }
-<<<<<<< HEAD
->>>>>>> e4e09ec5c (chore: update section 1 and 2)
-<<<<<<< HEAD
->>>>>>> 54783e5f2 (chore: update section 1 and 2)
-=======
-=======
-    resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
-    engines: {node: '>=12'}
->>>>>>> b75132f07 (chore: update package json)
-<<<<<<< HEAD
->>>>>>> 9dd1ba963 (chore: update package json)
-=======
-=======
->>>>>>> 62ed3ed2c (chore: apply the purple effect)
-<<<<<<< HEAD
->>>>>>> a8365dc51 (chore: apply the purple effect)
-=======
-=======
-    resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
-    engines: {node: '>=12'}
->>>>>>> e2cc253e2 (chore: update lock file)
->>>>>>> 71aef1092 (chore: update lock file)
-=======
->>>>>>> 0efacc661 (chore: update lock)
 
   /yargs@15.4.1:
     resolution: {integrity: sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==}
