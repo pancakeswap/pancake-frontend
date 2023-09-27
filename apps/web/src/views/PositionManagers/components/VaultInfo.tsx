@@ -1,12 +1,12 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { BaseAssets, ManagerFee } from '@pancakeswap/position-managers'
+import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
+import { Box, Flex, IconButton, RowBetween, SwapVertIcon, Text } from '@pancakeswap/uikit'
+import { formatAmount, formatPercent, formatPrice } from '@pancakeswap/utils/formatFractions'
+import { Precision, formatTimestamp } from '@pancakeswap/utils/formatTimestamp'
+import { memo, useMemo } from 'react'
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
-import { memo, useMemo } from 'react'
-import { Box, Flex, RowBetween, Text, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
-import { BaseAssets, ManagerFee } from '@pancakeswap/position-managers'
-import { Currency, Price } from '@pancakeswap/sdk'
-import { useTranslation } from '@pancakeswap/localization'
-import { formatTimestamp, Precision } from '@pancakeswap/utils/formatTimestamp'
-import { formatPercent, formatPrice } from '@pancakeswap/utils/formatFractions'
 
 import { usePositionPrices } from 'hooks/usePositionPrices'
 
@@ -46,16 +46,28 @@ export interface VaultInfoProps extends SpaceProps {
   price?: Price<Currency, Currency>
 
   managerFee?: ManagerFee
+  poolToken0Amount?: bigint
+  poolToken1Amount?: bigint
+  token0PriceUSD?: number
+  token1PriceUSD?: number
 }
 
-export const VaultInfo = memo(function VaultInfo({ currencyA, currencyB, managerFee, ...props }: VaultInfoProps) {
+export const VaultInfo = memo(function VaultInfo({
+  currencyA,
+  currencyB,
+  managerFee,
+  poolToken0Amount,
+  poolToken1Amount,
+  token0PriceUSD,
+  token1PriceUSD,
+  ...props
+}: VaultInfoProps) {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
 
   // TODO: mock
-  const totalStakedInUsd = 12345679
   const lastUpdatedAt = Date.now()
   const { baseCurrency, quoteCurrency, priceLower, priceUpper, priceCurrent, invert, inverted } = usePositionPrices({
     baseCurrency: currencyA,
@@ -78,6 +90,7 @@ export const VaultInfo = memo(function VaultInfo({ currencyA, currencyB, manager
     () => managerFee?.type !== undefined && getReadableManagerFeeType(t, managerFee.type),
     [t, managerFee?.type],
   )
+
   const managerFeeDisplay = managerFee ? (
     <>
       <RowBetween mt="8px" alignItems="flex-start">
@@ -97,17 +110,27 @@ export const VaultInfo = memo(function VaultInfo({ currencyA, currencyB, manager
     </SmallIconButton>
   )
 
+  const pool0Amount = poolToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, poolToken0Amount) : undefined
+  const pool1Amount = poolToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, poolToken1Amount) : undefined
+
+  const totalStakedInUsd = useMemo(() => {
+    return (
+      Number(formatAmount(pool0Amount)) * (token0PriceUSD ?? 0) +
+      Number(formatAmount(pool1Amount)) * (token1PriceUSD ?? 0)
+    )
+  }, [pool0Amount, pool1Amount, token0PriceUSD, token1PriceUSD])
+
   return (
     <Box {...props}>
       <RowBetween>
         <InfoText>{t('Total staked')}:</InfoText>
-        <InfoText>${totalStakedInUsd}</InfoText>
+        <InfoText>${totalStakedInUsd.toFixed(2)}</InfoText>
       </RowBetween>
       <RowBetween mt="8px">
         <InfoText>{t('Last adjusted on')}:</InfoText>
         <InfoText>{lastUpdatedAtDisplay}</InfoText>
       </RowBetween>
-      <RowBetween mt="8px" alignItems="flex-start">
+      {/* <RowBetween mt="8px" alignItems="flex-start">
         <InfoText>{t('Price range')}:</InfoText>
         <Flex flexDirection="column" alignItems="flex-end">
           <InfoText>
@@ -126,7 +149,7 @@ export const VaultInfo = memo(function VaultInfo({ currencyA, currencyB, manager
             {invertButton}
           </Flex>
         </Flex>
-      </RowBetween>
+            </RowBetween> */}
       <RowBetween mt="8px" alignItems="flex-start">
         <InfoText>{t('Current price')}:</InfoText>
         <Flex flexDirection="row" alignItems="center">

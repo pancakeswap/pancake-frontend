@@ -1,5 +1,5 @@
-import { memo, useMemo, useState } from 'react'
-import { ModalV2, RowBetween, Text, Flex, Button, CurrencyLogo, Box } from '@pancakeswap/uikit'
+import { memo, useMemo, useState, useCallback } from 'react'
+import { ModalV2, RowBetween, Text, Flex, Button, CurrencyLogo, Box, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -7,6 +7,9 @@ import { BaseAssets } from '@pancakeswap/position-managers'
 import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { SpaceProps } from 'styled-system'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { usePositionManagerWrapperContract } from 'hooks/useContract'
+import { ToastDescriptionWithTx } from 'components/Toast'
 
 import { StyledModal } from './StyledModal'
 import { FeeTag } from './Tags'
@@ -20,6 +23,11 @@ interface Props {
   feeTier: FeeAmount
   currencyA: Currency
   currencyB: Currency
+  staked0Amount?: CurrencyAmount<Currency>
+  staked1Amount?: CurrencyAmount<Currency>
+  token0PriceUSD?: number
+  token1PriceUSD?: number
+  contractAddress: `0x${string}`
 
   // TODO: return data
   onRemove?: (params: {
@@ -36,12 +44,40 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   onDismiss,
   currencyA,
   currencyB,
+  staked0Amount,
+  staked1Amount,
+  token0PriceUSD,
+  token1PriceUSD,
   feeTier,
+  contractAddress,
 }: // onRemove,
 Props) {
   const { t } = useTranslation()
   const [percent, setPercent] = useState(0)
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
+  const wrapperContract = usePositionManagerWrapperContract(contractAddress)
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { toastSuccess } = useToast()
+  const amountA = useMemo(() => {
+    return staked0Amount?.multiply(percent)?.divide(100)
+  }, [staked0Amount, percent])
+  const amountB = useMemo(() => {
+    return staked1Amount?.multiply(percent)?.divide(100)
+  }, [staked1Amount, percent])
+
+  const withdrawThenBurn = useCallback(async () => {
+    const receipt = await fetchWithCatchTxError(() =>
+      wrapperContract.write.withdrawThenBurn([amountA?.numerator / amountA?.denominator, '0x'], {}),
+    )
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Removed')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
+      )
+    }
+  }, [amountA, wrapperContract, t, toastSuccess, fetchWithCatchTxError])
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
@@ -59,11 +95,11 @@ Props) {
           </Flex>
         </RowBetween>
         <InnerCard>
-          <CurrencyAmountDisplay currency={currencyA} />
-          <CurrencyAmountDisplay currency={currencyB} mt="8px" />
+          <CurrencyAmountDisplay currency={currencyA} amount={amountA} priceUSD={token0PriceUSD} />
+          <CurrencyAmountDisplay currency={currencyB} mt="8px" amount={amountB} priceUSD={token1PriceUSD} />
         </InnerCard>
         <PercentSlider percent={percent} onChange={setPercent} mt="1em" />
-        <RemoveLiquidityButton mt="1.5em" />
+        <RemoveLiquidityButton mt="1.5em" onClick={withdrawThenBurn} />
       </StyledModal>
     </ModalV2>
   )
@@ -72,17 +108,20 @@ Props) {
 interface CurrencyAmountDisplayProps extends AtomBoxProps {
   amount?: CurrencyAmount<Currency>
   currency: Currency
+  priceUSD?: number
 }
 
 const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
   amount,
   currency,
+  priceUSD,
   ...rest
 }: CurrencyAmountDisplayProps) {
   const currencyDisplay = amount?.currency || currency
   const amountDisplay = useMemo(() => formatAmount(amount) || '0', [amount])
-  // TODO: mock
-  const amountInUsd = 214.23
+  const amountInUsd = useMemo(() => {
+    return Number(formatAmount(amount)) * (priceUSD ?? 0)
+  }, [amount, priceUSD])
 
   return (
     <RowBetween {...rest}>
@@ -97,7 +136,7 @@ const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
           {amountDisplay}
         </Text>
         <Text color="text" fontSize="0.875em" ml="0.5em">
-          (~${amountInUsd})
+          (~${amountInUsd.toFixed(2)})
         </Text>
       </Flex>
     </RowBetween>
@@ -115,9 +154,9 @@ export const RemoveLiquidityButton = memo(function RemoveLiquidityButton({
   const { t } = useTranslation()
   return (
     <Box {...rest}>
-      <Button variant="primary" width="100%">
+      {/* <Button variant="primary" width="100%">
         {t('Approve')}
-      </Button>
+      </Button> */}
       <Button mt="0.5em" variant="primary" width="100%" onClick={onClick}>
         {t('Confirm')}
       </Button>

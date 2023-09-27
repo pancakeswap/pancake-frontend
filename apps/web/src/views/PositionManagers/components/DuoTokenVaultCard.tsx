@@ -44,6 +44,8 @@ interface Props {
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
   contractAddress: `0x${string}`
+  poolToken0Amount?: bigint
+  poolToken1Amount?: bigint
   stakedToken0Amount?: bigint
   stakedToken1Amount?: bigint
   token0PriceUSD?: number
@@ -67,6 +69,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   contractAddress,
   stakedToken0Amount,
   stakedToken1Amount,
+  poolToken0Amount,
+  poolToken1Amount,
   token0PriceUSD,
   token1PriceUSD,
 }: PropsWithChildren<Props>) {
@@ -107,7 +111,15 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           token1PriceUSD={token1PriceUSD}
         />
         <ExpandableSection mt="1.5em">
-          <VaultInfo currencyA={currencyA} currencyB={currencyB} managerFee={managerFee} />
+          <VaultInfo
+            currencyA={currencyA}
+            currencyB={currencyB}
+            managerFee={managerFee}
+            poolToken0Amount={poolToken0Amount}
+            poolToken1Amount={poolToken1Amount}
+            token0PriceUSD={token0PriceUSD}
+            token1PriceUSD={token1PriceUSD}
+          />
           <VaultLinks currencyA={currencyA} currencyB={currencyB} managerId={manager.id} vaultId={id} mt="0.5em" />
         </ExpandableSection>
       </CardBody>

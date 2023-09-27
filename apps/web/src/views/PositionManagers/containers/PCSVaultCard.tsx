@@ -86,6 +86,8 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       stakedToken1Amount={info?.userToken1Amounts}
       token0PriceUSD={tokensPriceUSD?.token0}
       token1PriceUSD={tokensPriceUSD?.token1}
+      poolToken0Amount={info?.poolToken0Amounts}
+      poolToken1Amount={info?.poolToken1Amounts}
     >
       {id}
     </DuoTokenVaultCard>

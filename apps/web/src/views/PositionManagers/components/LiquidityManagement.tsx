@@ -102,6 +102,11 @@ Props) {
         feeTier={feeTier}
         currencyA={currencyA}
         currencyB={currencyB}
+        staked0Amount={staked0Amount}
+        staked1Amount={staked1Amount}
+        token0PriceUSD={token0PriceUSD}
+        token1PriceUSD={token1PriceUSD}
+        contractAddress={contractAddress}
       />
     </>
   )
