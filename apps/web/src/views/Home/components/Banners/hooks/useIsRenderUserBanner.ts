@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import {} from 'state/farms/hooks'

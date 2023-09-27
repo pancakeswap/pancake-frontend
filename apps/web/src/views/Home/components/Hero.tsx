@@ -11,18 +11,6 @@ import { useDrawSequenceImages } from '../hooks/useDrawSequence'
 import { checkIsIOS, useIsIOS } from '../hooks/useIsIOS'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 
-const flyingAnim = () => keyframes`
-  from {
-    transform: translate(0,  0px);
-  }
-  50% {
-    transform: translate(-5px, -5px);
-  }
-  to {
-    transform: translate(0, 0px);
-  }
-`
-
 const BgWrapper = styled.div`
   z-index: -1;
   overflow: hidden;
