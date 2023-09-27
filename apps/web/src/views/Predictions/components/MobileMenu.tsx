@@ -41,6 +41,17 @@ const StyledMobileMenu = styled.div`
   }
 `
 
+const BunnyContainer = styled.div`
+  position: relative;
+  left: -42%;
+  top: -15px;
+  margin-top: -125px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: -155px;
+  }
+`
+
 const getActiveIndex = (isHistoryOpen: boolean, isChartOpen: boolean) => {
   if (isHistoryOpen) {
     return 2
@@ -88,13 +99,14 @@ const MobileMenu = () => {
         </IconButton>
       </ButtonNav>
       <TabNav>
-        <Image
-          style={{ marginTop: isMobile ? '-85px' : '-155px' }}
-          width={isMobile ? 94 : 164}
-          height={isMobile ? 85 : 155}
-          src="/images/predictions/birthday/mobile-bunny.png"
-          alt="mobile-bunny"
-        />
+        <BunnyContainer>
+          <Image
+            width={isMobile ? 134 : 164}
+            height={isMobile ? 125 : 155}
+            src="/images/predictions/birthday/mobile-bunny.png"
+            alt="mobile-bunny"
+          />
+        </BunnyContainer>
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle" onItemClick={handleItemClick}>
           <ButtonMenuItem>
             <Cards color="currentColor" />

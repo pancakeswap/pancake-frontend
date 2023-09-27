@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import Link from 'next/link'
-import { Flex, HelpIcon, Button, PrizeIcon } from '@pancakeswap/uikit'
+import { Flex, HelpIcon, Button, PrizeIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useGetPredictionsStatus } from 'state/predictions/hooks'
 import { PredictionStatus } from 'state/types'
 import Image from 'next/image'
@@ -8,8 +8,10 @@ import FlexRow from './FlexRow'
 import { PricePairLabel, TimerLabel } from './Label'
 import PrevNextNav from './PrevNextNav'
 import HistoryButton from './HistoryButton'
+import { JupiterPredictors } from './JupiterPredictors'
 
 const SetCol = styled.div`
+  position: relative;
   flex: none;
   width: auto;
 
@@ -71,15 +73,15 @@ const BirthdayBunny = styled(Image)`
   }
 
   @media only screen and (min-height: 600px) {
-    top: 30px;
+    top: 70px;
   }
 
   @media only screen and (min-height: 1000px) {
-    top: 100px;
+    top: 140px;
   }
 
   @media only screen and (min-height: 1100px) {
-    top: 170px;
+    top: 200px;
   }
 
   @media only screen and (min-height: 1300px) {
@@ -89,10 +91,12 @@ const BirthdayBunny = styled(Image)`
 
 const Menu = () => {
   const status = useGetPredictionsStatus()
+  const { isDesktop } = useMatchBreakpoints()
 
   return (
     <FlexRow alignItems="center" p="16px" width="100%">
       <SetCol>
+        {isDesktop && <JupiterPredictors />}
         <PricePairLabel />
       </SetCol>
       {status === PredictionStatus.LIVE && (
