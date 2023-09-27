@@ -112,7 +112,8 @@ export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[
 
         const days = currentDay - lastDayAction
 
-        if (days > poolLockPeriodUnit) {
+        // logic copied from Smart Contract
+        if (days <= poolLockPeriodUnit * 2) {
           withdrawalFee = withdrawalCut1
         } else if (days <= poolLockPeriodUnit * 3) {
           withdrawalFee = withdrawalCut2
@@ -130,7 +131,7 @@ export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[
         }
       })
       .filter(Boolean)
-  }, [poolIndexes, results, tokens])
+  }, [currentDay, poolIndexes, results, tokens])
 }
 
 export function useStakedPools(): FixedStakingPool[] {

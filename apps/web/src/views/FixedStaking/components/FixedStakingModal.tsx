@@ -156,12 +156,7 @@ export function FixedStakingModal({
                   unlockAPR={unlockAPR}
                   lockPeriod={lockPeriod}
                   calculator={
-                    <FixedStakingCalculator
-                      isBoost={isBoost}
-                      stakingToken={stakingToken}
-                      pools={pools}
-                      initialLockPeriod={lockPeriod}
-                    />
+                    <FixedStakingCalculator stakingToken={stakingToken} pools={pools} initialLockPeriod={lockPeriod} />
                   }
                 />
               </Box>
