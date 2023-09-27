@@ -1,8 +1,5 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { memo } from 'react'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import UserInfoBanner from '../UserBanner'
 import * as S from './Styled'
 

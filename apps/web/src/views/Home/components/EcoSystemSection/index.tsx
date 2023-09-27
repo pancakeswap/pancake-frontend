@@ -1,4 +1,4 @@
-import { Flex, Text, Box, ChevronRightIcon, useMatchBreakpoints, Link, useModal } from '@pancakeswap/uikit'
+import { Flex, Text, Box, ChevronRightIcon, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'

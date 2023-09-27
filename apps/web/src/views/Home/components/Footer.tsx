@@ -1,16 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import Container from 'components/Layout/Container'
-import { styled, keyframes } from 'styled-components'
-import { useAccount } from 'wagmi'
 import Image from 'next/image'
-import CompositeImage from './CompositeImage'
-import SunburstSvg from './SunburstSvg'
-import ctaPancake from '../images/cta-pancake.png'
+import { keyframes, styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 import ctaPancakeBig from '../images/cta-pancake-big.png'
-import ctaRock from '../images/cta-rock.png'
+import ctaPancake from '../images/cta-pancake.png'
 import ctaRock2 from '../images/cta-rock-2.png'
+import ctaRock from '../images/cta-rock.png'
+import SunburstSvg from './SunburstSvg'
 
 const floatingAnim = (x: string, y: string) => keyframes`
   from {
