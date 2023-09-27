@@ -117,7 +117,7 @@ struct AllowanceTransferDetails {
 }
 `.replaceAll('\n', '')
 
-export const ABI_PARAMETER: Record<CommandType, any> = {
+export const ABI_PARAMETER = {
   // Batch Reverts
   [CommandType.EXECUTE_SUB_PLAN]: parseAbiParameters('bytes _commands, bytes[] _inputs'),
 
@@ -194,6 +194,8 @@ export const ABI_PARAMETER: Record<CommandType, any> = {
   // [CommandType.ELEMENT_MARKET]: parseAbiParameters('uint256 value, bytes data'),
 }
 
+export type CommandUsed = keyof typeof ABI_PARAMETER
+
 export class RoutePlanner {
   commands: Hex
 
@@ -208,7 +210,7 @@ export class RoutePlanner {
     this.addCommand(CommandType.EXECUTE_SUB_PLAN, [subplan.commands, subplan.inputs], true)
   }
 
-  addCommand<TCommandType extends CommandType>(
+  addCommand<TCommandType extends CommandUsed>(
     type: TCommandType,
     parameters: ABIParametersType<TCommandType>,
     allowRevert = false
@@ -227,11 +229,11 @@ export class RoutePlanner {
 }
 
 export type RouterCommand = {
-  type: CommandType
+  type: CommandUsed
   encodedInput: Hex
 }
 
-export function createCommand<TCommandType extends CommandType>(
+export function createCommand<TCommandType extends CommandUsed>(
   type: TCommandType,
   parameters: ABIParametersType<TCommandType>
 ): RouterCommand {
