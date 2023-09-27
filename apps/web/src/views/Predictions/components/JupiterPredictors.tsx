@@ -5,10 +5,16 @@ import { useTranslation } from '@pancakeswap/localization'
 
 const JupiterPredictorsContainer = styled(Box)`
   position: relative;
-  width: 406px;
+  width: calc(100% - 32px);
   background-color: #7645d9;
   padding: 16px;
   border-radius: 16px;
+  margin: 16px 0 0 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 406px;
+    margin: 0 0 0 16px;
+  }
 `
 
 const OutlineText = styled(Text)`
@@ -19,10 +25,15 @@ const OutlineText = styled(Text)`
   -webkit-background-clip: text;
   -webkit-text-stroke: 4px transparent;
   text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(14, 14, 44, 0.1);
+  font-size: 14px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 17px;
+  }
 `
 
 const StyledLearnMoreButton = styled(Button)`
-  width: fit-content;
+  width: 150px;
   color: #533295;
   background: linear-gradient(180deg, #ffd800 0%, #fdab32 100%);
   align-self: center;
@@ -33,7 +44,7 @@ const YellowText = styled(Text)`
   position: relative;
   font-style: normal;
   font-weight: 800;
-  font-size: 28px;
+  font-size: 24px;
   line-height: 98%;
   letter-spacing: 0.01em;
   font-feature-settings: 'liga' off;
@@ -41,7 +52,6 @@ const YellowText = styled(Text)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-align: center;
   &::after {
     letter-spacing: 0.01em;
     background: linear-gradient(166deg, #ffb237 -5.1%, #ffeb37 66.78%);
@@ -55,6 +65,10 @@ const YellowText = styled(Text)`
     left: 0;
     top: 0;
     z-index: -1;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    font-size: 28px;
   }
 `
 
@@ -77,9 +91,7 @@ export const JupiterPredictors = () => {
           {t('Learn More')}
         </StyledLearnMoreButton>
       </Flex>
-      <OutlineText fontSize={['17px']} mt="6px">
-        {t('Predict, Win, and Share $10,000 rewards!')}
-      </OutlineText>
+      <OutlineText mt="6px">{t('Predict, Win, and Share $10,000 rewards!')}</OutlineText>
     </JupiterPredictorsContainer>
   )
 }
