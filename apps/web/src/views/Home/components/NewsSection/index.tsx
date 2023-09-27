@@ -55,6 +55,7 @@ const DescriptionBox = styled.div`
   font-weight: 400;
   line-height: 120%;
   margin-top: 16px;
+  max-height: 56px;
 `
 
 const CardWrapper = styled.div`
@@ -145,7 +146,7 @@ export const NewsSection: React.FC = () => {
                       })}
                     </Text>
                   </Flex>
-                  <Text bold mt="20px" lineHeight="120%" style={{ whiteSpace: 'pre-wrap' }}>
+                  <Text bold mt="16px" lineHeight="120%" minHeight="66px" style={{ whiteSpace: 'pre-wrap' }}>
                     {d.title}
                   </Text>
                   <DescriptionBox>{d.description}</DescriptionBox>
