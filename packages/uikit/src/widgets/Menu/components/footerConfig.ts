@@ -36,7 +36,6 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       {
         label: t("Merchandise"),
         href: "https://merch.pancakeswap.finance/",
-        // isHighlighted: true,
       },
     ],
   },
@@ -55,18 +54,6 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
         label: t("NFT Marketplace"),
         href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/nft-market-applications",
       },
-      // {
-      //   label: t("Multichain Deployment"),
-      //   href: "https://docs.pancakeswap.finance/multichain",
-      // },
-      // {
-      //   label: t("Etherum Expansion"),
-      //   href: "/swap",
-      // },
-      // {
-      //   label: t("Aptos Development"),
-      //   href: "/swap",
-      // },
     ],
   },
   {
@@ -84,10 +71,6 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
         label: t("Bug Bounty"),
         href: "https://docs.pancakeswap.finance/developers/bug-bounty",
       },
-      // {
-      //   label: t("Audits"),
-      //   href: "https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited",
-      // },
     ],
   },
   {
@@ -97,10 +80,6 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
         label: t("Contact"),
         href: "https://docs.pancakeswap.finance/contact-us/customer-support",
       },
-      // {
-      //   label: t("Customer Support"),
-      //   href: "https://docs.pancakeswap.finance/contact-us/customer-support",
-      // },
       {
         label: t("Troubleshooting"),
         href: "https://docs.pancakeswap.finance/readme/help/troubleshooting",

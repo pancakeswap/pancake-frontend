@@ -1,14 +1,14 @@
-import { styled } from 'styled-components'
-import { useMemo, cloneElement } from 'react'
 import {
-  TwitterIcon,
-  TelegramIcon,
   DiscordIcon,
   InstagramIcon,
-  RedditIcon,
-  YoutubeIcon,
   Link,
+  RedditIcon,
+  TelegramIcon,
+  TwitterIcon,
+  YoutubeIcon,
 } from '@pancakeswap/uikit'
+import { cloneElement } from 'react'
+import { styled } from 'styled-components'
 
 const CommunityWrapper = styled.div`
   display: flex;
@@ -40,21 +40,16 @@ const CommunityTag = styled.div`
     height: 48px;
   }
 `
-const useCommunityData = () => {
-  return useMemo(() => {
-    return [
-      { icon: <TwitterIcon />, href: 'https://twitter.com/pancakeswap', alt: 'TwitterIcon' },
-      { icon: <TelegramIcon />, href: 'https://t.me/pancakeswap', alt: 'TelegramIcon' },
-      { icon: <DiscordIcon />, href: 'https://discord.gg/pancakeswap', alt: 'DiscordIcon' },
-      { icon: <InstagramIcon />, href: 'https://www.instagram.com/pancakeswap_official/', alt: 'InstagramIcon' },
-      { icon: <RedditIcon />, href: 'https://www.reddit.com/r/pancakeswap/', alt: 'RedditIcon' },
-      { icon: <YoutubeIcon />, href: 'https://www.youtube.com/@pancakeswap_official', alt: 'YoutubeIcon' },
-    ]
-  }, [])
-}
+const communityData = [
+  { icon: <TwitterIcon />, href: 'https://twitter.com/pancakeswap', alt: 'TwitterIcon' },
+  { icon: <TelegramIcon />, href: 'https://t.me/pancakeswap', alt: 'TelegramIcon' },
+  { icon: <DiscordIcon />, href: 'https://discord.gg/pancakeswap', alt: 'DiscordIcon' },
+  { icon: <InstagramIcon />, href: 'https://www.instagram.com/pancakeswap_official/', alt: 'InstagramIcon' },
+  { icon: <RedditIcon />, href: 'https://www.reddit.com/r/pancakeswap/', alt: 'RedditIcon' },
+  { icon: <YoutubeIcon />, href: 'https://www.youtube.com/@pancakeswap_official', alt: 'YoutubeIcon' },
+]
 
 export const CommunityTags: React.FC = () => {
-  const communityData = useCommunityData()
   return (
     <CommunityWrapper>
       {communityData.map((item) => (

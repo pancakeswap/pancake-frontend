@@ -135,7 +135,6 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       <StyledColumn noMobileBorder>
         <Text bold fontSize={isMobile ? '14px' : undefined}>
@@ -149,13 +148,7 @@ const CakeDataRow = () => {
             <Skeleton height={24} width={126} my="4px" />
           </>
         )}
-        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
-      {/* <StyledColumn noMobileBorder style={{ gridArea: 'c' }}>
-        <Text color="textSubtle">{t('Max Supply')}</Text>
-
-        <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={750000000} />
-      </StyledColumn> */}
       <StyledColumn>
         <Text bold fontSize={isMobile ? '14px' : undefined}>
           {t('Market cap')}
@@ -167,7 +160,6 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       <StyledColumn>
         <Text bold fontSize={isMobile ? '14px' : undefined}>
@@ -178,7 +170,6 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
       <StyledColumn>
         <Text bold>{t('Current emissions')}</Text>
@@ -190,7 +181,6 @@ const CakeDataRow = () => {
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        {/* <Text color="textSubtle">{t('Unit')}</Text> */}
       </StyledColumn>
     </StyledWrapper>
   )
