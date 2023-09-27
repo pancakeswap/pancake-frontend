@@ -96,13 +96,16 @@ const StyledText = styled(Text)`
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
   }
+  @media screen and (max-width: 762px) and (min-width: 700px) {
+    width: 66px;
+  }
 `
 
 export const TwitterCards: React.FC = () => {
   const { t } = useTranslation()
   const tweets = useTweetsData()
   const { theme } = useTheme()
-  const { isXs, isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   return (
     <Wrapper>
       <Text bold mb="24px">
