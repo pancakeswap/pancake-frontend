@@ -119,21 +119,6 @@ const config: (
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
-    // {
-    //   label: t('Win'),
-    //   href: '/prediction',
-    //   icon: TrophyIcon,
-    //   fillIcon: TrophyFillIcon,
-    //   supportChainIds: SUPPORT_ONLY_BSC,
-    //   items: [
-    //     {
-    //       label: t('Trading Competition'),
-    //       href: '/competition',
-    //       image: '/images/decorations/tc.png',
-    //       hideSubNav: true,
-    //     },
-    //   ],
-    // },
     {
       label: t('Game'),
       icon: PancakeProtectorIcon,
