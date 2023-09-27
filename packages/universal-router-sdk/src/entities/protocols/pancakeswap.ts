@@ -1,9 +1,9 @@
-import { Currency, CurrencyAmount, Pair, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
+import { Pair, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import { BaseRoute, RouteType, SmartRouter, SmartRouterTrade, StablePool } from '@pancakeswap/smart-router/evm'
 import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'
-import { AnyTradeType, PancakeSwapOptions } from '../../utils/types'
+import { ABIParametersType, AnyTradeType, PancakeSwapOptions } from '../../utils/types'
 import { Command, RouterTradeType, TradeConfig } from '../Command'
 
 // Wrapper for pancakeswap router-sdk trade entity to encode swaps for Universal Router
@@ -28,11 +28,13 @@ export class PancakeSwapTrade implements Command {
       // TODO: optimize if only one v2 pool we can directly send this to the pool
       planner.addCommand(CommandType.WRAP_ETH, [
         ROUTER_AS_RECIPIENT,
-        SmartRouter.maximumAmountIn(
-          sampleTrade,
-          this.options.slippageTolerance,
-          sampleTrade.inputAmount
-        ).quotient.toString(),
+        BigInt(
+          SmartRouter.maximumAmountIn(
+            sampleTrade,
+            this.options.slippageTolerance,
+            sampleTrade.inputAmount
+          ).quotient.toString()
+        ),
       ])
       // since WETH is now owned by the router, the router pays for inputs
       payerIsUser = false
@@ -96,7 +98,7 @@ export class PancakeSwapTrade implements Command {
       // If there is a fee, that percentage is sent to the fee recipient
       // In the case where ETH is the output currency, the fee is taken in WETH (for gas reasons)
       if (this.options.fee) {
-        const feeBips = encodeFeeBips(this.options.fee.fee)
+        const feeBips = BigInt(encodeFeeBips(this.options.fee.fee))
         planner.addCommand(CommandType.PAY_PORTION, [
           sampleTrade.outputAmount.currency.wrapped.address,
           this.options.fee.recipient,
@@ -112,12 +114,15 @@ export class PancakeSwapTrade implements Command {
         // The remaining tokens that need to be sent to the user after the fee is taken will be caught
         // by this if-else clause.
         if (outputIsNative) {
-          planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, minAmountOut.quotient.toString()])
+          planner.addCommand(CommandType.UNWRAP_WETH, [
+            this.options.recipient,
+            BigInt(minAmountOut.quotient.toString()),
+          ])
         } else {
           planner.addCommand(CommandType.SWEEP, [
             sampleTrade.outputAmount.currency.wrapped.address,
             this.options.recipient,
-            minAmountOut.quotient.toString(),
+            BigInt(minAmountOut.quotient.toString()),
           ])
         }
       }
@@ -140,8 +145,8 @@ function addV2Swap(
   payerIsUser: boolean,
   performAggregatedSlippageCheck: boolean
 ): void {
-  const amountIn = SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient.toString()
-  const amountOut = SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient.toString()
+  const amountIn = BigInt(SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient.toString())
+  const amountOut = BigInt(SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient.toString())
 
   // V2 trade should have only one route
   const route = trade.routes[0]
@@ -159,7 +164,7 @@ function addV2Swap(
       payerIsUser,
     ])
   } else if (trade.tradeType == TradeType.EXACT_OUTPUT) {
-    planner.addCommand(CommandType.V2_SWAP_EXACT_OUT, [path, amountOut, amountIn, path, payerIsUser])
+    planner.addCommand(CommandType.V2_SWAP_EXACT_OUT, [recipient, amountOut, amountIn, path, payerIsUser])
   }
 }
 
@@ -181,15 +186,15 @@ async function addV3Swap(
       { ...route, input: inputAmount.currency, output: outputAmount.currency },
       trade.tradeType === TradeType.EXACT_OUTPUT
     )
-    const amountIn = SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient.toString()
-    const amountOut = SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient.toString()
+    const amountIn = BigInt(SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient.toString())
+    const amountOut = BigInt(SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient.toString())
 
     const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
 
     // similar to encodeV3Swap only we dont need to add a case for signle hop. by using ecodeMixedRoutePath
     // we can get the parthStr for all cases
     if (trade.tradeType === TradeType.EXACT_INPUT) {
-      const exactInputSingleParams = [
+      const exactInputSingleParams: ABIParametersType<CommandType.V3_SWAP_EXACT_IN> = [
         recipient,
         amountIn,
         performAggregatedSlippageCheck ? 0n : amountOut,
@@ -198,8 +203,14 @@ async function addV3Swap(
       ]
       planner.addCommand(CommandType.V3_SWAP_EXACT_IN, exactInputSingleParams)
     } else {
-      const exactOutputSingleParams = [recipient, amountOut, amountIn, path, payerIsUser]
-      planner.addCommand(CommandType.V3_SWAP_EXACT_IN, exactOutputSingleParams)
+      const exactOutputSingleParams: ABIParametersType<CommandType.V3_SWAP_EXACT_OUT> = [
+        recipient,
+        amountOut,
+        amountIn,
+        path,
+        payerIsUser,
+      ]
+      planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, exactOutputSingleParams)
     }
   }
 }
@@ -280,7 +291,8 @@ async function addMixedSwap(
           },
           options,
           routerMustCustody,
-          performAggregatedSlippageCheck
+          performAggregatedSlippageCheck,
+          payerIsUser
         )
       }
     } else {
@@ -352,14 +364,22 @@ async function addMixedSwap(
           const flags = newRoute.pools.map((pool) => BigInt((pool as StablePool).balances.length))
           if (isExactIn) {
             planner.addCommand(CommandType.STABLE_SWAP_EXACT_IN, [
-              path, // path
-              flags, // stable pool types
-              inAmount, // amountIn
-              outAmount, // amountOutMin
-              recipientAddress, // to
+              recipientAddress,
+              inAmount,
+              outAmount,
+              path,
+              flags,
+              payerIsUser && i === 0,
             ])
           } else {
-            planner.addCommand(CommandType.STABLE_SWAP_EXACT_OUT, [path, flags, outAmount, inAmount, recipientAddress])
+            planner.addCommand(CommandType.STABLE_SWAP_EXACT_OUT, [
+              recipientAddress,
+              outAmount,
+              inAmount,
+              path,
+              flags,
+              payerIsUser && i === 0,
+            ])
           }
         } else {
           throw new Error('Unsupported route')
@@ -374,7 +394,9 @@ async function addStableSwap(
   trade: SmartRouterTrade<TradeType>,
   options: PancakeSwapOptions,
   routerMustCustody: boolean,
-  performAggregatedSlippageCheck: boolean
+  performAggregatedSlippageCheck: boolean,
+  // @notice: stable swap inputToken will never be nativeToken
+  payerIsUser = false
 ): Promise<void> {
   const amountIn: bigint = SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient
   const amountOut: bigint = SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient
@@ -390,10 +412,25 @@ async function addStableSwap(
   const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
 
   if (trade.tradeType === TradeType.EXACT_INPUT) {
-    const exactInputParams = [path, flags, amountIn, performAggregatedSlippageCheck ? 0n : amountOut, recipient]
+    const exactInputParams: ABIParametersType<CommandType.STABLE_SWAP_EXACT_IN> = [
+      recipient,
+      amountIn,
+      performAggregatedSlippageCheck ? 0n : amountOut,
+      path,
+      flags,
+      payerIsUser,
+    ]
     planner.addCommand(CommandType.STABLE_SWAP_EXACT_IN, exactInputParams)
   }
-  const exactOutputParams = [path, flags, amountOut, amountIn, recipient]
 
-  return planner.addCommand(CommandType.STABLE_SWAP_EXACT_OUT, exactOutputParams)
+  const exactOutputParams: ABIParametersType<CommandType.STABLE_SWAP_EXACT_IN> = [
+    recipient,
+    amountIn,
+    amountOut,
+    path,
+    flags,
+    payerIsUser,
+  ]
+
+  planner.addCommand(CommandType.STABLE_SWAP_EXACT_OUT, exactOutputParams)
 }
