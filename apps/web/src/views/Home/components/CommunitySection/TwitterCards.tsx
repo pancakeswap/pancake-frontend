@@ -72,25 +72,13 @@ export const useTweetsData = () => {
   return useMemo(() => {
     return [
       {
-        tweet: `👋 Say hello to a convenient on-ramp experience! 📈
-🥞 At PancakeSwap, we've got you covered!  Purchase cryptocurrencies directly from our platform using your preferred fiat currency. 🎉`,
-        link: 'https://twitter.com/PancakeSwap/status/1682993409273876480?s=20',
-        date: 'July 23',
-        like: '365',
-        impression: '49.7k',
+        tweet: `🎂 3 years ago, we planted the seed on the BNB Chain, and today, it has grown into Everyone's Favorite DEX across eight blockchains.`,
+        link: 'https://x.com/PancakeSwap/status/1705190230394032541?s=20',
+        date: 'Sep 22',
+        like: '249',
+        impression: '19.7k',
       },
     ]
-  }, [])
-}
-
-export const useLatestBlogData = () => {
-  return useMemo(() => {
-    return {
-      title: 'Step by Step Guide to Use Arbitrum PancakeSwap v3',
-      imageSrc: 'https://sgp1.digitaloceanspaces.com/strapi.space/b477fb73428ef9accc2b312873e9140c.jpg',
-      link: 'https://blog.pancakeswap.finance/articles/step-by-step-guide-to-use-arbitrum-one-pancake-swap-v3',
-      date: 'Aug 10, 2023',
-    }
   }, [])
 }
 
