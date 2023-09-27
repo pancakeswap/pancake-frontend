@@ -193,7 +193,6 @@ async function addV3Swap(
         recipient,
         amountIn,
         performAggregatedSlippageCheck ? 0n : amountOut,
-        ,
         path,
         payerIsUser,
       ]
@@ -284,7 +283,6 @@ async function addMixedSwap(
           performAggregatedSlippageCheck
         )
       }
-      throw new Error('Unsupported route to encode')
     } else {
       const sections = SmartRouter.partitionMixedRouteByProtocol(route)
 

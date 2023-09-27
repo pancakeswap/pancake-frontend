@@ -19,7 +19,6 @@ export interface AllowanceRequired {
   token: Token
   isApprovalLoading: boolean
   isApprovalPending: boolean
-  approveAndPermit: () => Promise<void>
   approve: any
   permit: () => Promise<void>
   revoke: any
@@ -46,7 +45,7 @@ export default function usePermit2Allowance(
   const { address: account } = useAccount()
   const token = amount?.currency
 
-  const { allowance: tokenAllowance } = useTokenAllowance(token ?? undefined, account ?? undefined, approvalAddress)
+  const { allowance: tokenAllowance } = useTokenAllowance(token, account, approvalAddress)
   const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, approvalAddress)
 
   const isApproved = approvalState === ApprovalState.APPROVED
@@ -70,21 +69,14 @@ export default function usePermit2Allowance(
   }, [amount, now, signature, spender, token?.address])
 
   const { permitAllowance, expiration: permitExpiration, nonce } = usePermitAllowance(token, account, spender)
-  const updatePermitAllowance = useUpdatePermitAllowance(token ?? undefined, spender, nonce, setSignature)
+  const updatePermitAllowance = useUpdatePermitAllowance(token, spender, nonce, setSignature)
 
   const isPermitted = useMemo(() => {
     if (!amount || !permitAllowance || !permitExpiration) return false
     return (permitAllowance.greaterThan(amount) || permitAllowance.equalTo(amount)) && permitExpiration >= now
   }, [amount, now, permitAllowance, permitExpiration])
 
-  const shouldRequestApproval = !(isApproved || isApprovalLoading)
   const shouldRequestSignature = !(isPermitted || isSigned)
-  const approveAndPermit = useCallback(async () => {
-    if (shouldRequestApproval) {
-      await approveCallback()
-    }
-    if (shouldRequestSignature) await updatePermitAllowance()
-  }, [shouldRequestApproval, updatePermitAllowance, approveCallback, shouldRequestSignature])
 
   return useMemo(() => {
     if (token) {
@@ -98,7 +90,6 @@ export default function usePermit2Allowance(
           isApprovalLoading: false,
           isApprovalPending,
           isRevocationPending,
-          approveAndPermit,
           approve: approveCallback,
           permit: updatePermitAllowance,
           revoke: revokeCallback,
@@ -114,7 +105,6 @@ export default function usePermit2Allowance(
           isApprovalLoading,
           isApprovalPending,
           isRevocationPending,
-          approveAndPermit,
           approve: approveCallback,
           permit: updatePermitAllowance,
           revoke: revokeCallback,
@@ -133,7 +123,6 @@ export default function usePermit2Allowance(
     }
   }, [
     approveCallback,
-    approveAndPermit,
     isApprovalLoading,
     isApprovalPending,
     isApproved,
