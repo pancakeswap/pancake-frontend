@@ -179,8 +179,14 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
   contractAddress,
 }: AddLiquidityButtonProps) {
   const { t } = useTranslation()
-  const [approvalStateToken0, approveCallbackToken0] = useApproveCallback(amountA, contractAddress)
-  const [approvalStateToken1, approveCallbackToken1] = useApproveCallback(amountB, contractAddress)
+  const { approvalState: approvalStateToken0, approveCallback: approveCallbackToken0 } = useApproveCallback(
+    amountA,
+    contractAddress,
+  )
+  const { approvalState: approvalStateToken1, approveCallback: approveCallbackToken1 } = useApproveCallback(
+    amountB,
+    contractAddress,
+  )
   const posisitonManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
