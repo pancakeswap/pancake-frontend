@@ -121,6 +121,9 @@ const Wrapper = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.sm} {
     height: 560px;
   }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: 400px;
+  }
 `
 
 const Footer = () => {
