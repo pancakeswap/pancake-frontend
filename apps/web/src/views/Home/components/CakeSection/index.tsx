@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import React, { memo, useCallback, useLayoutEffect, useRef } from 'react'
 import { css, styled } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
@@ -289,12 +290,6 @@ const CakeBox = styled.div`
     height: 360px;
   }
 `
-
-// const CakeVideo = styled.video`
-//   opacity: 0;
-//   visibility: hidden;
-//   position: absolute;
-// `
 const CakeCanvas = styled.canvas`
   position: absolute;
   top: 50%;
@@ -331,7 +326,7 @@ const CakeSection: React.FC = () => {
     video.autoplay = true
     video.playsInline = true
     video.width = width
-    video.src = '/assets/cake-alpha.webm'
+    video.src = `${ASSET_CDN}/web/landing/cake-alpha.webm`
     video.muted = true
     videoRef.current = video
   }, [isMobile])
@@ -359,7 +354,7 @@ const CakeSection: React.FC = () => {
   })
 
   const { drawSequenceImage, playing } = useDrawSequenceImages(
-    '/assets/cake-token-sequence',
+    `${ASSET_CDN}/web/landing/cake-token-sequence`,
     checkIsIOS() || isMobile ? 201 : 0,
     canvasRef,
     seqIntervalRef,
@@ -439,14 +434,12 @@ const CakeSection: React.FC = () => {
             {t('Learn')}
           </Button>
         </Link>
-        {/* <Button onClick={() => setIsShow(!isShow)}>{t('Demo')}</Button> */}
       </Flex>
       <CakeSectionMainBox>
         <CakeLeftLine ref={leftLineRef} className={played?.current ? 'show' : ''} />
         <CakeSectionLeftBox>
           <CakeLeftBorderBox ref={leftRef} className={played?.current ? 'show' : ''}>
             <CakeLeftBorder />
-
             <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
               {t('Ecosystem')}
             </Text>
@@ -462,11 +455,7 @@ const CakeSection: React.FC = () => {
         <CakeSectionCenterBox>
           <CakeBox ref={cakeBoxRef}>
             <CakeCanvas width={width} height={height} ref={canvasRef} />
-            {/* <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
-                  <source src="/assets/cake-alpha.webm" type="video/webm" />
-                </CakeVideo> */}
           </CakeBox>
-          {/* <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" /> */}
         </CakeSectionCenterBox>
         <CakeSectionRightBox>
           <CakeRightBorderBox ref={rightRef} className={played?.current ? 'show' : ''}>
