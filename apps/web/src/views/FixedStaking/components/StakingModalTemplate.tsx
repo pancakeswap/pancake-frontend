@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast, Link } from '@pancakeswap/uikit'
-import { getFullDisplayBalance, getDecimalAmount, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -25,7 +25,7 @@ import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { StakeConfirmModal } from './StakeConfirmModal'
 import { ModalTitle } from './ModalTitle'
-import { useIfUserLocked } from '../hooks/useStakedPools'
+import useIsBoost from '../hooks/useIsBoost'
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
@@ -101,13 +101,11 @@ export function StakingModalTemplate({
 
   const selectedPool = useMemo(() => pools.find((p) => p.lockPeriod === lockPeriod), [lockPeriod, pools])
 
-  const { locked, amount: lockedCakeAmount } = useIfUserLocked()
+  const isBoost = useIsBoost({
+    minBoostAmount: selectedPool?.minBoostAmount,
+    boostDayPercent: selectedPool?.boostDayPercent,
+  })
 
-  const minBoostAmount = getBalanceAmount(
-    new BigNumber(selectedPool ? selectedPool.minBoostAmount : ('0' as unknown as BigNumber.Value)),
-  )
-
-  const isBoost = Boolean(selectedPool?.boostDayPercent > 0 && locked && lockedCakeAmount.gte(minBoostAmount))
   const [percent, setPercent] = useState(0)
   const { balance: stakingTokenBalance } = useTokenBalance(stakingToken?.address)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()

@@ -19,7 +19,7 @@ import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { FixedStakingPool } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
-import { useCurrentDay, useIfUserLocked } from '../hooks/useStakedPools'
+import { useCurrentDay } from '../hooks/useStakedPools'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 
 function FixedStakingRoiCard({
@@ -71,7 +71,7 @@ function FixedStakingRoiCard({
         data: {
           roiUSD: formattedUsdProjectedReturnAmount || 0,
           roiTokens: projectedReturnAmount ? toNumber(projectedReturnAmount?.toSignificant(2)) : 0,
-          roiPercentage: boostAPR ? toNumber(boostAPR?.toSignificant(2)) : 0,
+          roiPercentage: apr ? toNumber(apr?.toSignificant(2)) : 0,
         },
         controls: {
           mode: CalculatorMode.ROI_BASED_ON_PRINCIPAL,
@@ -86,17 +86,13 @@ export function FixedStakingCalculator({
   pools,
   initialLockPeriod,
   hideBackButton,
-  isBoost,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
   initialLockPeriod: number
   hideBackButton?: boolean
-  isBoost?: boolean
 }) {
   const stakedPeriods = useMemo(() => pools.map((p) => p.lockPeriod), [pools])
-
-  const { locked } = useIfUserLocked()
 
   const { t } = useTranslation()
   const stakeModal = useModalV2()
@@ -138,6 +134,7 @@ export function FixedStakingCalculator({
             unlockAPR,
             poolEndDay,
             lastDayAction,
+            isBoost,
           }) => (
             <>
               <PreTitle textTransform="uppercase" bold mb="8px">
@@ -163,11 +160,11 @@ export function FixedStakingCalculator({
 
               <FixedStakingRoiCard
                 lastDayAction={lastDayAction}
-                isBoost={locked || isBoost}
                 poolEndDay={poolEndDay}
                 stakeAmount={stakeCurrencyAmount}
                 lockAPR={lockAPR}
                 boostAPR={boostAPR}
+                isBoost={isBoost}
                 unlockAPR={unlockAPR}
                 lockPeriod={lockPeriod}
               />
@@ -178,11 +175,11 @@ export function FixedStakingCalculator({
                 </PreTitle>
                 <FixedStakingOverview
                   lastDayAction={lastDayAction}
-                  isBoost={locked || isBoost}
                   poolEndDay={poolEndDay}
                   stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
+                  isBoost={isBoost}
                   unlockAPR={unlockAPR}
                   lockPeriod={lockPeriod}
                 />
