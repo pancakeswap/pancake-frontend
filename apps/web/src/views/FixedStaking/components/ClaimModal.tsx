@@ -27,7 +27,9 @@ export function ClaimModal({
   boostAPR,
   unlockAPR,
   poolEndDay,
+  isBoost,
 }: {
+  isBoost: boolean
   poolEndDay: number
   token: Token
   lockPeriod: number
@@ -52,11 +54,13 @@ export function ClaimModal({
   )
   const currentDay = useCurrentDay()
 
+  const apr = useMemo(() => (isBoost ? boostAPR : lockAPR), [boostAPR, isBoost, lockAPR])
+
   const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
     amountDeposit,
     lastDayAction: currentDay,
     lockPeriod,
-    apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
+    apr,
     poolEndDay,
     unlockAPR,
   })
@@ -76,13 +80,11 @@ export function ClaimModal({
 
   const unlockTimeFormat = formatTime(unlockTime * 1_000)
 
-  const apr = stakePositionUserInfo.boost ? boostAPR : lockAPR
-
   return (
     <>
       {children(claimModal.onOpen)}
       <HarvestModal
-        isBoost={stakePositionUserInfo.boost}
+        isBoost={isBoost}
         isConfirmed={isConfirmed}
         poolEndDay={poolEndDay}
         onBack={claimModal.onOpen}
