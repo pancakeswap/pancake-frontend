@@ -1,18 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  BarChartIcon,
+  FavoriteBorderIcon,
   Flex,
   Link,
   LogoIcon,
   OpenNewIcon,
   Text,
   VerifiedIcon,
-  FavoriteBorderIcon,
-  BarChartIcon,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
+import { useLatestArticle } from '../../hooks/useAllArticle'
 
 export const BlogImage = styled.div`
   width: 100%;
@@ -159,24 +160,28 @@ export const TwitterCards: React.FC = () => {
 
 export const BlogCard: React.FC = () => {
   const { t } = useTranslation()
-  const { imageSrc, title, date, link } = useLatestBlogData()
+  const { articlesData } = useLatestArticle()
   const { theme } = useTheme()
   return (
     <Wrapper
       onClick={() => {
-        window.open(link, '_blank', 'noopener noreferrer')
+        window.open(
+          `https://blog.pancakeswap.finance/articles/${articlesData?.data?.[0]?.slug ?? ''}`,
+          '_blank',
+          'noopener noreferrer',
+        )
       }}
       style={{ cursor: 'pointer' }}
     >
       <Text bold mb="24px">
         {t('Latest Blog Post')}
       </Text>
-      <BlogImage style={{ backgroundImage: `url(${imageSrc})` }} />
+      <BlogImage style={{ backgroundImage: `url(${articlesData?.data?.[0]?.imgUrl ?? ''})` }} />
       <Text mt="8px" fontSize={14} color={theme.colors.textSubtle} textAlign="left">
-        {date}
+        {articlesData?.data?.[0]?.createAt ?? ''}
       </Text>
       <Text mt="10px" fontSize={14} bold>
-        {title}
+        {articlesData?.data?.[0]?.title ?? ''}
       </Text>
     </Wrapper>
   )

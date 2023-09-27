@@ -3,7 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon, Flex, Text } from '@pancakeswap/uiki
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { useRef, useCallback } from 'react'
-import useAllArticle from '../../hooks/useAllArticle'
+import { useAllNewsArticle } from '../../hooks/useAllArticle'
 
 const NewsCard = styled.div`
   vertical-align: top;
@@ -90,13 +90,7 @@ export const NewsSection: React.FC = () => {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const scrollWrapper = useRef<HTMLDivElement>(null)
-  const { articlesData, isFetching } = useAllArticle({
-    query: '',
-    sortBy: 'createAt:desc',
-    selectedCategories: 'News',
-    languageOption: 'en',
-    currentPage: 0,
-  })
+  const { articlesData, isFetching } = useAllNewsArticle()
   const onButtonClick = useCallback((scrollTo: 'next' | 'pre') => {
     const scrollTarget = scrollWrapper.current
     if (!scrollTarget) return
