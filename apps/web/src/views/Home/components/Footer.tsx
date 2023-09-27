@@ -12,13 +12,13 @@ import SunburstSvg from './SunburstSvg'
 
 const floatingAnim = (x: string, y: string) => keyframes`
   from {
-    transform: translate(0,  0px);
+    transform: translateX(0px) translateY(0px);
   }
   50% {
-    transform: translate(${x}, ${y});
+    transform: translate(${x}) translateY(${y});
   }
   to {
-    transform: translate(0, 0px);
+    transform: translateX(0px) translateY(0px);
   }
 `
 
@@ -30,6 +30,9 @@ const ImageWrapper = styled.div`
   width: 100%;
   height: 100%;
   z-index: 1;
+  > * {
+    will-change: transform;
+  }
   .pancake {
     position: absolute;
     width: 120px;
