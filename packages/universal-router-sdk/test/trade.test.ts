@@ -11,7 +11,8 @@ import {
 } from '@pancakeswap/sdk'
 import { hexToString, parseEther } from 'viem'
 import { fixtureAddresses } from './fixtures/address'
-import { PancakeUniSwapRouter, PancakeSwapOptions, PancakeSwapTrade } from '../src'
+import { PancakeUniSwapRouter, PancakeSwapTrade } from '../src'
+import { PancakeSwapOptions } from '../src/utils/types'
 
 describe('PancakeSwap Universal Router Trade', () => {
   const chainId = ChainId.ETHEREUM
