@@ -35,7 +35,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
   ...props
 }) => {
   const isMounted = useIsMounted();
-  const { isXl, isXxl } = useMatchBreakpoints();
+  const { isXl } = useMatchBreakpoints();
   return (
     <StyledFooter
       data-theme="dark"

@@ -19,7 +19,7 @@ function addObserverOnce(el: HTMLElement, callback: () => void) {
 
 function addObserver(el: HTMLElement, callback: () => void, leaveCallBack: () => void) {
   // We are creating a new IntersectionObserver instance
-  const ob = new IntersectionObserver((entries, observer) => {
+  const ob = new IntersectionObserver((entries) => {
     // This takes a callback function that receives two arguments: the elements list and the observer instance.
     entries.forEach((entry) => {
       // `entry.isIntersecting` will be true if the element is visible
