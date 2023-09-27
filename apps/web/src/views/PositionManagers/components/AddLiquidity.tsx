@@ -118,8 +118,8 @@ export const AddLiquidity = memo(function AddLiquidity({
     [valueB, currencyB],
   )
   // TODO: mock
-  const share = new Percent(158, 10000)
-  const apr = new Percent(4366, 10000)
+  // const share = new Percent(158, 10000)
+  // const apr = new Percent(4366, 10000)
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
@@ -138,22 +138,24 @@ export const AddLiquidity = memo(function AddLiquidity({
         </RowBetween>
         {allowDepositToken0 && (
           <Flex mt="1em">
-            <StyledCurrencyInput currency={currencyA} value={valueA} onChange={onCurrencyAChange} />
+            <StyledCurrencyInput currency={currencyA} balance={amountA} value={valueA} onChange={onCurrencyAChange} />
           </Flex>
         )}
         {allowDepositToken1 && (
           <Flex mt="1em">
-            <StyledCurrencyInput currency={currencyB} value={valueB} onChange={onCurrencyBChange} />
+            <StyledCurrencyInput currency={currencyB} balance={amountA} value={valueB} onChange={onCurrencyBChange} />
           </Flex>
         )}
         <Flex mt="1.5em" flexDirection="column">
           <RowBetween>
             <Text color="text">{t('Your share in the vault')}:</Text>
-            <Text color="text">{formatPercent(share)}%</Text>
+            <Text color="text">-%</Text>
+            {/* <Text color="text">{formatPercent(share)}%</Text> */}
           </RowBetween>
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>
-            <Text color="text">{formatPercent(apr)}%</Text>
+            <Text color="text">-%</Text>
+            {/* <Text color="text">{formatPercent(apr)}%</Text> */}
           </RowBetween>
         </Flex>
         <Flex mt="1.5em" flexDirection="column">

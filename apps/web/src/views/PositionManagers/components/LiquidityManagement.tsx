@@ -14,9 +14,10 @@ import { RemoveLiquidity } from './RemoveLiquidity'
 interface Props {
   currencyA: Currency
   currencyB: Currency
+  staked0Amount?: CurrencyAmount<Currency>
+  staked1Amount?: CurrencyAmount<Currency>
   vaultName: string
   feeTier: FeeAmount
-  assets?: BaseAssets
   price?: Price<Currency, Currency>
   ratio: number
   allowDepositToken0: boolean
@@ -35,19 +36,20 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   currencyB,
   vaultName,
   feeTier,
-  assets,
   price,
   ratio,
   allowDepositToken0,
   allowDepositToken1,
   contractAddress,
+  staked0Amount,
+  staked1Amount,
 }: // onAddLiquidity,
 // onRemoveLiquidity,
 Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
   const [removeLiquidityModalOpen, setRemoveLiquidityModalOpen] = useState(false)
-  const hasStaked = useMemo(() => Boolean(assets?.position && price) || assets?.amounts?.length > 0, [assets, price])
+  const hasStaked = useMemo(() => Boolean(staked0Amount) || Boolean(staked1Amount), [staked0Amount, staked1Amount])
 
   const showAddLiquidityModal = useCallback(() => setAddLiquidityModalOpen(true), [])
   const hideAddLiquidityModal = useCallback(() => setAddLiquidityModalOpen(false), [])
@@ -62,7 +64,8 @@ Props) {
           <StakedAssets
             currencyA={currencyA}
             currencyB={currencyB}
-            assets={assets}
+            staked0Amount={staked0Amount}
+            staked1Amount={staked1Amount}
             price={price}
             onAdd={showAddLiquidityModal}
             onRemove={showRemoveLiquidityModal}
@@ -90,7 +93,6 @@ Props) {
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}
         onDismiss={hideRemoveLiquidityModal}
-        assets={assets}
         vaultName={vaultName}
         feeTier={feeTier}
         currencyA={currencyA}

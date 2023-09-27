@@ -20,7 +20,8 @@ const ActionButton = styled(Button)`
 interface StakedAssetsProps {
   currencyA: Currency
   currencyB: Currency
-  assets: BaseAssets
+  staked0Amount?: CurrencyAmount<Currency>
+  staked1Amount?: CurrencyAmount<Currency>
   price?: Price<Currency, Currency>
   onAdd?: () => void
   onRemove?: () => void
@@ -29,10 +30,10 @@ interface StakedAssetsProps {
 export const StakedAssets = memo(function StakedAssets({
   currencyA,
   currencyB,
-  // assets,
-  // price,
   onAdd,
   onRemove,
+  staked0Amount,
+  staked1Amount,
 }: StakedAssetsProps) {
   const { t } = useTranslation()
 
@@ -63,8 +64,8 @@ export const StakedAssets = memo(function StakedAssets({
         </Flex>
       </RowBetween>
       <Flex flexDirection="column" mt="1em">
-        <CurrencyAmountDisplay currency={currencyA} />
-        <CurrencyAmountDisplay mt="8px" currency={currencyB} />
+        <CurrencyAmountDisplay amount={staked0Amount} currency={currencyA} />
+        <CurrencyAmountDisplay amount={staked1Amount} mt="8px" currency={currencyB} />
       </Flex>
     </>
   )

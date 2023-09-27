@@ -16,8 +16,6 @@ import { PercentSlider } from './PercentSlider'
 interface Props {
   isOpen?: boolean
   onDismiss?: () => void
-
-  assets: BaseAssets
   vaultName: string
   feeTier: FeeAmount
   currencyA: Currency

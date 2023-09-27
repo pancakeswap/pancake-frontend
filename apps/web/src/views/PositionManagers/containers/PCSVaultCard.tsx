@@ -5,6 +5,7 @@ import { memo, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { DuoTokenVaultCard } from '../components'
 import { usePCSVault } from '../hooks'
+import { useAdapterTokensAmounts, useUserAmounts, usePositionInfo } from '../hooks/useAdapterInfo'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
@@ -54,6 +55,9 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       enabled: !!adapterContract,
     },
   ).data
+
+  const info = usePositionInfo(address, adapterAddress)
+
   return (
     <DuoTokenVaultCard
       id={id}
@@ -69,6 +73,8 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       allowDepositToken0={allowDepositToken0}
       allowDepositToken1={allowDepositToken1}
       contractAddress={address}
+      stakedToken0Amount={info?.userToken0Amounts}
+      stakedToken1Amount={info?.userToken1Amounts}
     >
       {id}
     </DuoTokenVaultCard>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { MANAGER, ManagerFee, Strategy } from '@pancakeswap/position-managers'
 import { Card, CardBody } from '@pancakeswap/uikit'
-import { Currency, Percent, Price } from '@pancakeswap/sdk'
+import { Currency, Percent, Price, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { ReactNode, memo, PropsWithChildren, useMemo } from 'react'
 import styled from 'styled-components'
@@ -38,13 +38,14 @@ interface Props {
     name: string
   }
   managerFee: ManagerFee
-
   autoFarm?: boolean
   autoCompound?: boolean
   info?: ReactNode
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
   contractAddress: `0x${string}`
+  stakedToken0Amount?: bigint
+  stakedToken1Amount?: bigint
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -62,6 +63,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   allowDepositToken0 = true,
   allowDepositToken1 = true,
   contractAddress,
+  stakedToken0Amount,
+  stakedToken1Amount,
 }: PropsWithChildren<Props>) {
   // TODO: mock
 
@@ -69,18 +72,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   const mockCmpApr = new Percent(1122, 10000)
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
   const vaultName = useMemo(() => getVaultName(id, name), [name, id])
-  const assets = useMemo(
-    () => ({
-      position: {
-        positionId: '1',
-        liquidity: 100000n,
-        tickUpper: 45000,
-        tickLower: 44500,
-      },
-    }),
-    [],
-  )
-
+  const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
+  const staked1Amount = stakedToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, stakedToken1Amount) : undefined
   return (
     <StyledCard>
       <CardTitle
@@ -100,11 +93,12 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           price={price}
           vaultName={vaultName}
           feeTier={feeTier}
-          assets={undefined}
           ratio={ratio}
           allowDepositToken0={allowDepositToken0}
           allowDepositToken1={allowDepositToken1}
           contractAddress={contractAddress}
+          staked0Amount={staked0Amount}
+          staked1Amount={staked1Amount}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo currencyA={currencyA} currencyB={currencyB} managerFee={managerFee} />
