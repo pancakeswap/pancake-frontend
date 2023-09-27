@@ -366,7 +366,7 @@ const EcoSystemSection: React.FC = () => {
   const { isMobile, isMd } = useMatchBreakpoints()
 
   return (
-    <Flex justifyContent="center" alignItems="center" flexDirection="column">
+    <Flex justifyContent="center" alignItems="center" flexDirection="column" pt={isMobile ? '24px' : '60px'}>
       <GradientLogo height="48px" width="48px" mb="24px" />
       <Text textAlign="center" p="0px 20px">
         <Text
