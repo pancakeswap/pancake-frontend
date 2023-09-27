@@ -178,7 +178,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 if (props.type === 'v3') {
                   return (
                     <td key={key}>
-                      <CellInner onClick={(e) => e.stopPropagation()}>
+                      <CellInner>
                         <CellLayout label={t('APR')}>
                           <FarmV3ApyButton farm={props.details} />
                         </CellLayout>
