@@ -18,7 +18,7 @@ import { Field } from '../state/swap/actions'
 
 // converts a basis points value to a sdk percent
 export function basisPointsToPercent(num: number): Percent {
-  return new Percent(num, 100)
+  return new Percent(BigInt(num), BIPS_BASE)
 }
 
 export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippage: number): [bigint, bigint] {

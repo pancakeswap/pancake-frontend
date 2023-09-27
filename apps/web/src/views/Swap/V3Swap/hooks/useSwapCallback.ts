@@ -74,7 +74,13 @@ export function useSwapCallback({
     wallchainMasterInput,
   )
 
-  const { callback } = useSendSwapTransaction(account, chainId, trade, swapCalls)
+  const { callback } = useSendSwapTransaction(
+    account,
+    chainId,
+    trade,
+    // @ts-expect-error uncompatible types side-by-side cause wrong type assertion
+    wallchainSwapCalls,
+  )
 
   return useMemo(() => {
     if (!trade || !account || !chainId || !callback) {

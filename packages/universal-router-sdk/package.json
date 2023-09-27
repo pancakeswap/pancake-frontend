@@ -28,7 +28,6 @@
     "lint": "eslint src test",
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest --globals --run",
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test:all": "yarn test:hardhat",
@@ -65,7 +64,7 @@
     "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.7.0",
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/permit2-sdk": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
@@ -74,7 +73,6 @@
     "@uniswap/universal-router": "1.4.3",
     "abitype": "^0.9.8",
     "bignumber.js": "^9.0.2",
-    "ethers": "^5.3.1",
     "jsbi": "^4.3.0",
     "tiny-invariant": "^1.1.0",
     "viem": "^1.12.2"

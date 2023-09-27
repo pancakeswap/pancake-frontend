@@ -6,7 +6,7 @@ export function expandTo18DecimalsBN(n: number): BigNumber {
   return new BigNumber(new BigNumber(n).times(new BigNumber(10).pow(18)).toFixed())
 }
 export function expandTo18Decimals(n: number): bigint {
-  return BigInt(BigInt(n) * (10n ** 18n));
+  return BigInt(BigInt(n) * 10n ** 18n)
 }
 
 export function encodeFeeBips(fee: PancakePercent): string {

@@ -1,5 +1,4 @@
 import { defineConfig } from 'tsup'
-import { exec } from 'child_process'
 
 export default defineConfig((options) => ({
   entry: {

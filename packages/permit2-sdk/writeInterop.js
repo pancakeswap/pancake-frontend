@@ -1,7 +1,7 @@
-const fs = require('fs')
-const { AllowanceTransfer, SignatureTransfer } = require('./dist')
+import { writeFileSync } from 'fs'
+import { AllowanceTransfer, SignatureTransfer } from './dist'
 
-const PERMIT2_ADDRESS = '0xf0ffb02791362602acf0edce574e74dd9bd3120e'
+const PERMIT2_ADDRESS = '0xF0fFB02791362602ACf0edce574E74DD9bd3120E'
 const TOKEN_ADDRESS = '0xb9728f6DE23E1Beeb7Bab38cbf0e60C0A48136eC'
 const SPENDER_ADDRESS = '0x0000000000000000000000000000000000000001'
 const EXPIRATION = '10000000000000'
@@ -91,4 +91,4 @@ const interop = {
   ),
 }
 
-fs.writeFileSync('./test/interop.json', JSON.stringify(interop))
+writeFileSync('./test/interop.json', JSON.stringify(interop))

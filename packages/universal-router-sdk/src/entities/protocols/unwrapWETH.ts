@@ -1,23 +1,24 @@
-import invariant from 'tiny-invariant'
-import { BigNumberish } from 'ethers'
-import { RoutePlanner, CommandType } from '../../utils/routerCommands'
-import { encodeInputTokenOptions, Permit2Permit } from '../../utils/inputTokens'
-import { Command, RouterTradeType, TradeConfig } from '../Command'
-import { ROUTER_AS_RECIPIENT, WETH_ADDRESS } from '../../utils/constants'
 import { BigintIsh } from '@pancakeswap/sdk'
-
+import invariant from 'tiny-invariant'
+import { ROUTER_AS_RECIPIENT, WETH_ADDRESS } from '../../utils/constants'
+import { Permit2Permit, encodeInputTokenOptions } from '../../utils/inputTokens'
+import { CommandType, RoutePlanner } from '../../utils/routerCommands'
+import { Command, RouterTradeType, TradeConfig } from '../Command'
 
 export class UnwrapWETH implements Command {
   readonly tradeType: RouterTradeType = RouterTradeType.UnwrapWETH
-  readonly permit2Data: Permit2Permit
+
+  readonly permit2Data: Permit2Permit | undefined
+
   readonly wethAddress: string
+
   readonly amount: BigintIsh
 
   constructor(amount: BigintIsh, chainId: number, permit2?: Permit2Permit) {
     this.wethAddress = WETH_ADDRESS(chainId)
     this.amount = amount
 
-    if (!!permit2) {
+    if (permit2) {
       invariant(
         permit2.details.token.toLowerCase() === this.wethAddress.toLowerCase(),
         `must be permitting WETH address: ${this.wethAddress}`
