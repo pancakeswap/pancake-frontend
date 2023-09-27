@@ -12,6 +12,7 @@ import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
+import WithdrawalMessage from './WithdrawalMessage'
 
 export function FixedRestakingModal({
   stakingToken,
@@ -73,6 +74,8 @@ export function FixedRestakingModal({
             lastDayAction,
           }) => (
             <>
+              <WithdrawalMessage lockPeriod={lockPeriod} />
+
               <Box mb="16px" mt="16px">
                 <PreTitle textTransform="uppercase" bold mb="8px">
                   {t('Overview')}

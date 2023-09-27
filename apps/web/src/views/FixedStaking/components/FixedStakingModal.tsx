@@ -3,14 +3,12 @@ import {
   ModalV2,
   useModalV2,
   Flex,
-  Text,
   Box,
   PreTitle,
   MessageText,
   Message,
   InfoFilledIcon,
   Button,
-  Link,
 } from '@pancakeswap/uikit'
 import { ReactNode, useMemo } from 'react'
 import Divider from 'components/Divider'
@@ -24,6 +22,7 @@ import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
 import { useCurrentDay } from '../hooks/useStakedPools'
+import WithdrawalMessage from './WithdrawalMessage'
 
 export function FixedStakingModal({
   stakingToken,
@@ -128,21 +127,7 @@ export function FixedStakingModal({
                       color="textSubtle"
                       mr="4px"
                     />
-                    <Text fontSize="14px" color="textSubtle">
-                      {t(
-                        'Funds will not be available for withdrawal for the first 10 days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ',
-                      )}
-                      <Link
-                        style={{
-                          display: 'inline',
-                          fontSize: '14px',
-                        }}
-                        href="/"
-                        target="_blank"
-                      >
-                        Click here for more information
-                      </Link>
-                    </Text>
+                    <WithdrawalMessage lockPeriod={lockPeriod} />
                   </Flex>
                   {isStaked ? (
                     <Message variant="warning" my="8px">
