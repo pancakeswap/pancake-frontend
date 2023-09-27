@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Flex, HelpIcon, Button, PrizeIcon } from '@pancakeswap/uikit'
 import { useGetPredictionsStatus } from 'state/predictions/hooks'
 import { PredictionStatus } from 'state/types'
+import Image from 'next/image'
 import FlexRow from './FlexRow'
 import { PricePairLabel, TimerLabel } from './Label'
 import PrevNextNav from './PrevNextNav'
@@ -58,6 +59,34 @@ const ButtonWrapper = styled.div`
   }
 `
 
+const BirthdayBunny = styled(Image)`
+  display: none;
+  position: absolute;
+  top: 0px;
+  right: 20%;
+  z-index: 0;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: block;
+  }
+
+  @media only screen and (min-height: 600px) {
+    top: 30px;
+  }
+
+  @media only screen and (min-height: 1000px) {
+    top: 100px;
+  }
+
+  @media only screen and (min-height: 1100px) {
+    top: 170px;
+  }
+
+  @media only screen and (min-height: 1300px) {
+    top: 250px;
+  }
+`
+
 const Menu = () => {
   const status = useGetPredictionsStatus()
 
@@ -71,6 +100,12 @@ const Menu = () => {
           <FlexRow justifyContent="center">
             <PrevNextNav />
           </FlexRow>
+          <BirthdayBunny
+            width={349}
+            height={282}
+            src="/images/predictions/birthday/desktop-bunny.png"
+            alt="desktop-bunny"
+          />
           <SetCol>
             <Flex alignItems="center" justifyContent="flex-end">
               <TimerLabelWrapper>
