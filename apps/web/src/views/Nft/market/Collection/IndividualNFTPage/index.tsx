@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 import PageLoader from 'components/Loader/PageLoader'
-import { getAddress } from 'viem'
 import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../../constants'
 import IndividualPancakeBunnyPage from './PancakeBunnyPage'
@@ -20,7 +19,12 @@ const IndividualNFTPageRouter = () => {
     return <IndividualPancakeBunnyPage bunnyId={String(tokenId)} />
   }
 
-  return <IndividualNFTPage collectionAddress={getAddress(collectionAddress as string)} tokenId={String(tokenId)} />
+  return (
+    <IndividualNFTPage
+      collectionAddress={isAddress(collectionAddress as string) || undefined}
+      tokenId={String(tokenId)}
+    />
+  )
 }
 
 export default IndividualNFTPageRouter

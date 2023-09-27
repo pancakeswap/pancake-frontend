@@ -10,7 +10,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { pancakeBunniesABI } from 'config/abi/pancakeBunnies'
 import { pancakeBunniesAddress } from '../constants'
 
-const useGetCollectionDistribution = (collectionAddress: string) => {
+const useGetCollectionDistribution = (collectionAddress: string | undefined) => {
   const { data, status } = useSWRImmutable(
     collectionAddress ? ['distribution', collectionAddress] : null,
     async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress)).data,
@@ -33,7 +33,7 @@ export const useGetCollectionDistributionPB = () => {
   useEffect(() => {
     const fetchTokens = async () => {
       setState((prevState) => ({ ...prevState, isFetching: true }))
-      let apiResponse: ApiResponseCollectionTokens
+      let apiResponse: ApiResponseCollectionTokens | null | undefined = null
       try {
         apiResponse = await getNftsFromCollectionApi(pancakeBunniesAddress)
         if (!apiResponse) {

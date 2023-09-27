@@ -1,5 +1,4 @@
-import { getAddress } from 'viem'
-import { Address } from 'wagmi'
+import { isAddress } from 'utils'
 
 export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -7,14 +6,6 @@ export function notEmpty<TValue>(value: TValue | null | undefined): value is TVa
 
 export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
-}
-
-export function isAddress(value: any): Address | false {
-  try {
-    return getAddress(value)
-  } catch {
-    return false
-  }
 }
 
 export function shortenAddress(address: string, chars = 4): string {

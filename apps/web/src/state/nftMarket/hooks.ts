@@ -23,7 +23,7 @@ export const useGetCollections = (): { data: ApiCollections; status: TFetchStatu
   return { data: collections, status }
 }
 
-export const useGetCollection = (collectionAddress: string): Collection | undefined => {
+export const useGetCollection = (collectionAddress: string | undefined): Collection | undefined => {
   const checksummedCollectionAddress = isAddress(collectionAddress) || ''
   const { data } = useSWR(
     checksummedCollectionAddress ? ['nftMarket', 'collections', checksummedCollectionAddress.toLowerCase()] : null,
@@ -67,7 +67,7 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
           .flat()
           .map((result, index) => [
             nftsInWallet[index].tokenId,
-            profileAddress.toLowerCase() === result.result.toLowerCase(),
+            profileAddress.toLowerCase() === result?.result?.toLowerCase(),
           ]),
       )
     : null
