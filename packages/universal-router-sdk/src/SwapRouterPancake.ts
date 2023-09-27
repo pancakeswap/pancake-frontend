@@ -34,8 +34,14 @@ export abstract class PancakeUniSwapRouter {
     }
 
     const nativeCurrencyValue = inputCurrency.isNative
-      ? SmartRouter.maximumAmountIn(sampleTrade, options.slippageTolerance, sampleTrade.inputAmount).quotient.toString()
-      : '0'
+      ? toHex(
+          SmartRouter.maximumAmountIn(
+            sampleTrade,
+            options.slippageTolerance,
+            sampleTrade.inputAmount
+          ).quotient.toString()
+        )
+      : toHex('0')
 
     trade.encode(planner, { allowRevert: false })
     return PancakeUniSwapRouter.encodePlan(planner, nativeCurrencyValue as `0x${string}`, {
