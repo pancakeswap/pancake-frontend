@@ -139,31 +139,6 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
       </PageSection>
-      {/* <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
-        background={theme.colors.background}
-        containerProps={{
-          id: 'home-4',
-        }}
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <OuterWedgeWrapper>
-          <InnerWedgeWrapper top>
-            <WedgeTopLeft />
-          </InnerWedgeWrapper>
-        </OuterWedgeWrapper>
-        <SalesSection {...swapSectionData(t)} />
-      </PageSection> */}
-      {/* <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
-        background={theme.colors.gradientCardHeader}
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <SalesSection {...earnSectionData(t)} />
-        <FarmsPoolsRow />
-      </PageSection> */}
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
         containerProps={{

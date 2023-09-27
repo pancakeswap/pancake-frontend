@@ -100,12 +100,12 @@ const BgWrapper = styled.div`
 `
 
 const StyledSunburst = styled(SunburstSvg)`
-  height: 350%;
-  width: 350%;
-
+  height: 100%;
+  width: 100%;
+  transform: scale3d(3.5, 3.5, 1);
+  transform-origin: center center;
   ${({ theme }) => theme.mediaQueries.xl} {
-    height: 400%;
-    width: 400%;
+    transform: scale3d(4, 4, 1);
   }
 `
 
@@ -117,6 +117,10 @@ const Wrapper = styled(Flex)`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  height: 480px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 560px;
+  }
 `
 
 const Footer = () => {
@@ -125,7 +129,7 @@ const Footer = () => {
   const { isMobile } = useMatchBreakpoints()
 
   return (
-    <Box p="48px">
+    <Box>
       <BgWrapper>
         <Flex position="relative" zIndex={2} alignItems="center" justifyContent="center" width="100%" height="100%">
           <StyledSunburst />
