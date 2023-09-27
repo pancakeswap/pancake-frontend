@@ -97,6 +97,7 @@ const BgWrapper = styled.div`
   height: 100%;
   top: 0px;
   left: 0px;
+  z-index: 1;
 `
 
 const StyledSunburst = styled(SunburstSvg)`
@@ -111,7 +112,7 @@ const StyledSunburst = styled(SunburstSvg)`
 
 const Wrapper = styled(Flex)`
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   position: relative;
   flex-direction: column;
   align-items: center;
