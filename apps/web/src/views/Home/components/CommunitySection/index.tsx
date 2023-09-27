@@ -65,50 +65,6 @@ const BgWrapper = styled.div`
   left: 0px;
 `
 
-const BottomLeftImgWrapper = styled(Flex)`
-  position: absolute;
-  left: 0;
-  bottom: -64px;
-  max-width: 192px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    max-width: 100%;
-  }
-`
-
-const TopRightImgWrapper = styled(Flex)`
-  position: absolute;
-  right: 0;
-  top: -64px;
-
-  max-width: 192px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    max-width: 100%;
-  }
-`
-
-// const bottomLeftImage = {
-//   path: '/images/home/socials/',
-//   attributes: [
-//     { src: '1', alt: 'CAKE card' },
-//     { src: '2', alt: 'Green CAKE card with up arrow' },
-//     { src: '3', alt: 'Red Cake card with down arrow' },
-//     { src: '4', alt: 'CAKE card' },
-//   ],
-// }
-
-// const topRightImage = {
-//   path: '/images/home/community-items/',
-//   attributes: [
-//     { src: '5', alt: 'Lottery ball number 9' },
-//     { src: '1', alt: 'Lottery ball number 2' },
-//     { src: '2', alt: 'Lottery ball number 4' },
-//     { src: '3', alt: 'Lottery ball number 6' },
-//     { src: '4', alt: 'Lottery ball number 7' },
-//   ],
-// }
-
 const CommunitySection = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -117,12 +73,6 @@ const CommunitySection = () => {
   return (
     <>
       <BgWrapper>
-        {/* <BottomLeftImgWrapper>
-          <CompositeImage {...bottomLeftImage} />
-        </BottomLeftImgWrapper>
-        <TopRightImgWrapper>
-          <CompositeImage {...topRightImage} />
-        </TopRightImgWrapper> */}
         <RightBottomBox />
         <LeftBottomBox />
       </BgWrapper>

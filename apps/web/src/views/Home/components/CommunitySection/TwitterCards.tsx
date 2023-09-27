@@ -93,18 +93,27 @@ export const useLatestBlogData = () => {
   }, [])
 }
 
-const mobileStyle: React.CSSProperties = {
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  width: 33,
-  overflow: 'hidden',
-}
+const StyledText = styled(Text)`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 23px;
+  overflow: hidden;
+  @media screen and (max-width: 420px) and (min-width: 320px) {
+    width: 50px;
+  }
+  @media screen and (max-width: 576px) and (min-width: 421px) {
+    width: 76px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: auto;
+  }
+`
 
 export const TwitterCards: React.FC = () => {
   const { t } = useTranslation()
   const tweets = useTweetsData()
   const { theme } = useTheme()
-  const { isMobile, isXs } = useMatchBreakpoints()
+  const { isXs, isMobile } = useMatchBreakpoints()
   return (
     <Wrapper>
       <Text bold mb="24px">
@@ -120,9 +129,9 @@ export const TwitterCards: React.FC = () => {
         <VerifiedIcon ml="3px" mt="9px" color={theme.colors.secondary} />
       </Flex>
       <Flex style={{ gap: 0 }} alignItems="center" justifyContent="center">
-        <Text fontSize={14} color={theme.colors.textSubtle} style={isMobile ? mobileStyle : undefined}>
+        <StyledText fontSize={14} color={theme.colors.textSubtle}>
           @PancakeSwap
-        </Text>
+        </StyledText>
         <Divider />
         <Text fontSize={14} color={theme.colors.textSubtle}>
           {tweets[0].date}
