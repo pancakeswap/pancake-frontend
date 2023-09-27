@@ -62,7 +62,7 @@ export const useAdapterTokensAmounts = (adapterAddress: Address) => {
 export const useUserAmounts = (wrapperAddress: Address) => {
   const { account } = useActiveWeb3React()
   const contract = usePositionManagerWrapperContract(wrapperAddress)
-  const { data } = useQuery(['useUserAmounts', wrapperAddress], () => contract.read.userInfo([account]), {
+  const { data } = useQuery(['useUserAmounts', wrapperAddress, account], () => contract.read.userInfo([account]), {
     enabled: !!wrapperAddress && !!account,
   })
   return data

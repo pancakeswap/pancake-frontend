@@ -21,5 +21,6 @@ export const vaults: VaultConfig[] = [
     manager: MANAGER.ICHI,
     allowDepositToken0: true,
     allowDepositToken1: false,
+    priceFromV3FarmPid: 3,
   },
 ]

@@ -107,6 +107,7 @@ export interface DuoTokenVault {
   managerFee: ManagerFee
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
+  priceFromV3FarmPid: number
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

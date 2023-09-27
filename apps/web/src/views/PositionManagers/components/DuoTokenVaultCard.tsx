@@ -46,6 +46,8 @@ interface Props {
   contractAddress: `0x${string}`
   stakedToken0Amount?: bigint
   stakedToken1Amount?: bigint
+  token0PriceUSD?: number
+  token1PriceUSD?: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -65,6 +67,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   contractAddress,
   stakedToken0Amount,
   stakedToken1Amount,
+  token0PriceUSD,
+  token1PriceUSD,
 }: PropsWithChildren<Props>) {
   // TODO: mock
 
@@ -99,6 +103,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           contractAddress={contractAddress}
           staked0Amount={staked0Amount}
           staked1Amount={staked1Amount}
+          token0PriceUSD={token0PriceUSD}
+          token1PriceUSD={token1PriceUSD}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo currencyA={currencyA} currencyB={currencyB} managerFee={managerFee} />

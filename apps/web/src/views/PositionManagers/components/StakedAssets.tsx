@@ -1,7 +1,6 @@
 import { memo, useMemo } from 'react'
 import { Button, Text, RowBetween, Row, Flex, MinusIcon, AddIcon, CurrencyLogo } from '@pancakeswap/uikit'
 import type { AtomBoxProps } from '@pancakeswap/uikit'
-import { BaseAssets } from '@pancakeswap/position-managers'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
@@ -22,6 +21,8 @@ interface StakedAssetsProps {
   currencyB: Currency
   staked0Amount?: CurrencyAmount<Currency>
   staked1Amount?: CurrencyAmount<Currency>
+  token0PriceUSD?: number
+  token1PriceUSD?: number
   price?: Price<Currency, Currency>
   onAdd?: () => void
   onRemove?: () => void
@@ -34,11 +35,18 @@ export const StakedAssets = memo(function StakedAssets({
   onRemove,
   staked0Amount,
   staked1Amount,
+  token0PriceUSD,
+  token1PriceUSD,
 }: StakedAssetsProps) {
   const { t } = useTranslation()
 
   // TODO: mock
-  const totalAssetsInUsd = '909.67'
+  const totalAssetsInUsd = useMemo(() => {
+    return (
+      Number(formatAmount(staked0Amount)) * (token0PriceUSD ?? 0) +
+      Number(formatAmount(staked1Amount)) * (token1PriceUSD ?? 0)
+    )
+  }, [staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD])
 
   return (
     <>
@@ -51,7 +59,7 @@ export const StakedAssets = memo(function StakedAssets({
             </Title>
           </Row>
           <Text color="text" fontSize="1.5em" bold>
-            ~${totalAssetsInUsd}
+            ~${totalAssetsInUsd.toFixed(2)}
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end">
@@ -64,8 +72,8 @@ export const StakedAssets = memo(function StakedAssets({
         </Flex>
       </RowBetween>
       <Flex flexDirection="column" mt="1em">
-        <CurrencyAmountDisplay amount={staked0Amount} currency={currencyA} />
-        <CurrencyAmountDisplay amount={staked1Amount} mt="8px" currency={currencyB} />
+        <CurrencyAmountDisplay amount={staked0Amount} currency={currencyA} priceUSD={token0PriceUSD} />
+        <CurrencyAmountDisplay amount={staked1Amount} mt="8px" currency={currencyB} priceUSD={token1PriceUSD} />
       </Flex>
     </>
   )
@@ -74,17 +82,21 @@ export const StakedAssets = memo(function StakedAssets({
 interface CurrencyAmountDisplayProps extends AtomBoxProps {
   amount?: CurrencyAmount<Currency>
   currency: Currency
+  priceUSD?: number
 }
 
 export const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
   amount,
   currency,
+  priceUSD,
   ...rest
 }: CurrencyAmountDisplayProps) {
   const currencyDisplay = amount?.currency || currency
   const amountDisplay = useMemo(() => formatAmount(amount) || '0', [amount])
   // TODO: mock
-  const amountInUsd = 534.46
+  const amountInUsd = useMemo(() => {
+    return Number(formatAmount(amount)) * (priceUSD ?? 0)
+  }, [amount, priceUSD])
 
   return (
     <RowBetween {...rest}>
@@ -97,7 +109,7 @@ export const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
       <Flex flexDirection="column" alignItems="flex-end">
         <Text color="text">{amountDisplay}</Text>
         <Text color="textSubtle" fontSize="0.75em">
-          (~${amountInUsd})
+          (~${amountInUsd.toFixed(2)})
         </Text>
       </Flex>
     </RowBetween>

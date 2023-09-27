@@ -3,9 +3,10 @@ import { usePositionManagerAdepterContract, usePositionManagerWrapperContract } 
 import { memo, useMemo } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
+import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { DuoTokenVaultCard } from '../components'
 import { usePCSVault } from '../hooks'
-import { useAdapterTokensAmounts, useUserAmounts, usePositionInfo } from '../hooks/useAdapterInfo'
+import { usePositionInfo } from '../hooks/useAdapterInfo'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
@@ -26,6 +27,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     address,
     allowDepositToken0,
     allowDepositToken1,
+    priceFromV3FarmPid,
   } = vault
   const managerInfo = useMemo(
     () => ({
@@ -58,6 +60,13 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
 
   const info = usePositionInfo(address, adapterAddress)
 
+  const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster()
+  const tokensPriceUSD = useMemo(() => {
+    const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
+    if (!farm) return undefined
+    return { token0: Number(farm.tokenPriceBusd), token1: Number(farm.quoteTokenPriceBusd) }
+  }, [farmsV3, priceFromV3FarmPid])
+
   return (
     <DuoTokenVaultCard
       id={id}
@@ -75,6 +84,8 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       contractAddress={address}
       stakedToken0Amount={info?.userToken0Amounts}
       stakedToken1Amount={info?.userToken1Amounts}
+      token0PriceUSD={tokensPriceUSD?.token0}
+      token1PriceUSD={tokensPriceUSD?.token1}
     >
       {id}
     </DuoTokenVaultCard>

@@ -23,7 +23,8 @@ interface Props {
   allowDepositToken0: boolean
   allowDepositToken1: boolean
   contractAddress: `0x${string}`
-
+  token0PriceUSD?: number
+  token1PriceUSD?: number
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
 
@@ -43,6 +44,8 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   contractAddress,
   staked0Amount,
   staked1Amount,
+  token0PriceUSD,
+  token1PriceUSD,
 }: // onAddLiquidity,
 // onRemoveLiquidity,
 Props) {
@@ -69,6 +72,8 @@ Props) {
             price={price}
             onAdd={showAddLiquidityModal}
             onRemove={showRemoveLiquidityModal}
+            token0PriceUSD={token0PriceUSD}
+            token1PriceUSD={token1PriceUSD}
           />
         </InnerCard>
       ) : (
