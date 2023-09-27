@@ -34,7 +34,7 @@ function addObserver(el: HTMLElement, callback: () => void, leaveCallBack: () =>
   ob.observe(el)
 }
 
-export const useObserverOnce = (element: React.MutableRefObject<HTMLElement>, callback: () => void) => {
+export const useObserverOnce = (element: React.RefObject<HTMLDivElement>, callback: () => void) => {
   useLayoutEffect(() => {
     if (element.current) addObserverOnce(element.current, callback)
   }, [element, callback])

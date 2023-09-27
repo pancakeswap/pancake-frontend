@@ -334,7 +334,11 @@ const FeatureBox: React.FC<{
   const { theme } = useTheme()
   const { push } = useRouter()
   return (
-    <ItemWrapper className={className} $flexBasis={width} onClick={onClick ? () => onClick() : () => push(path)}>
+    <ItemWrapper
+      className={className}
+      $flexBasis={width}
+      onClick={onClick ? () => onClick() : () => path && push(path)}
+    >
       <ImageBox>
         <Image className="default" src={defaultImage} width={108} height={108} alt={title} />
         <Image className="hover" src={image} width={108} height={108} alt={title} />

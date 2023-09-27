@@ -1,14 +1,14 @@
 import { useCallback, useLayoutEffect, useRef } from 'react'
 
 export const useDrawCanvas = (
-  videoRef: React.MutableRefObject<HTMLVideoElement>,
-  canvasRef: React.MutableRefObject<HTMLCanvasElement>,
+  videoRef: React.MutableRefObject<HTMLVideoElement | undefined> | React.RefObject<HTMLVideoElement>,
+  canvasRef: React.RefObject<HTMLCanvasElement>,
   intervalRef: React.MutableRefObject<number>,
   width: number,
   height: number,
   onVideoStartCallback?: () => void,
   onVideoVideoEnd?: () => void,
-  additionalVideoRefs?: React.MutableRefObject<HTMLVideoElement>[],
+  additionalVideoRefs?: React.RefObject<HTMLVideoElement>[],
 ) => {
   const video = videoRef?.current
   const canvas = canvasRef?.current

@@ -52,7 +52,7 @@ const HarvestCard = () => {
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numTotalToCollect = farmsWithStakedBalance.length
   const numFarmsToCollect = farmsWithStakedBalance.filter(
-    (value) => ('pid' in value && value.pid !== 0) || ('sendTx' in value && value.sendTx !== null),
+    (value) => (value && 'pid' in value && value.pid !== 0) || (value && 'sendTx' in value && value.sendTx !== null),
   ).length
   const hasCakePoolToCollect = numTotalToCollect - numFarmsToCollect > 0
 
@@ -61,8 +61,8 @@ const HarvestCard = () => {
   const { onHarvestAll } = useFarmsV3BatchHarvest()
 
   const harvestAllFarms = useCallback(async () => {
-    const v2Farms = farmsWithStakedBalance.filter((value) => 'pid' in value) as FarmWithBalance[]
-    const v3Farms = farmsWithStakedBalance.filter((value) => 'sendTx' in value) as {
+    const v2Farms = farmsWithStakedBalance.filter((value) => value && 'pid' in value) as FarmWithBalance[]
+    const v3Farms = farmsWithStakedBalance.filter((value) => value && 'sendTx' in value) as {
       sendTx: {
         to: string
         tokenId: string

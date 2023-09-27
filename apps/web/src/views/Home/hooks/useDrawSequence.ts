@@ -3,7 +3,7 @@ import { useLayoutEffect, useCallback, useRef } from 'react'
 export const useDrawSequenceImages = (
   imagePath: string,
   imageCount: number,
-  canvasRef: React.MutableRefObject<HTMLCanvasElement>,
+  canvasRef: React.RefObject<HTMLCanvasElement>,
   intervalRef: React.MutableRefObject<number>,
   onplayEnd: () => void,
   autoPlay?: () => void,
@@ -25,8 +25,8 @@ export const useDrawSequenceImages = (
         onplayEnd()
       } else {
         if (images.current[ImageDrawProgress.current]) {
-          context.clearRect(0, 0, width, height)
-          context.drawImage(images.current[ImageDrawProgress.current], 0, 0, width, height)
+          context?.clearRect(0, 0, width, height)
+          context?.drawImage(images.current[ImageDrawProgress.current], 0, 0, width, height)
         }
         ImageDrawProgress.current++
         if (loop && ImageDrawProgress.current + 1 >= imageCount) {

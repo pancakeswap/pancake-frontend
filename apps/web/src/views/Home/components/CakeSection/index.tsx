@@ -309,7 +309,7 @@ const CakeSection: React.FC = () => {
   const { t } = useTranslation()
   const ecosystemTagData = useEcosystemTagData()
   const partnerData = usePartnerData()
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoRef = useRef<HTMLVideoElement>()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const leftRef = useRef<HTMLDivElement>(null)
   const leftLineRef = useRef<HTMLDivElement>(null)

@@ -178,7 +178,7 @@ export const CakePartnerWrapper = styled.div<{ $bgWidth: number }>`
 
 export const CakeSectionTag: React.FC<{ icon: React.ReactElement; text: string }> = ({ icon, text }) => {
   const { theme } = useTheme()
-  const textRef = useRef<HTMLDivElement>()
+  const textRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
     if (textRef?.current) {
       setBgWidth(textRef.current.offsetWidth)
@@ -201,7 +201,7 @@ export const CakePartnerTag: React.FC<{
   text: string
 }> = ({ icon, width, text }) => {
   const { theme } = useTheme()
-  const textRef = useRef<HTMLDivElement>()
+  const textRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
     if (textRef?.current) {
       setBgWidth(textRef.current.offsetWidth)

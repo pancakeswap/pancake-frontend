@@ -52,9 +52,9 @@ const UserDetail = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
-  const { domainName, isLoading: isDomainNameLoading, avatar } = useDomainNameForAddress(account)
+  const { domainName, isLoading: isDomainNameLoading, avatar } = useDomainNameForAddress(account ?? '')
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
-    profile?.username,
+    profile?.username ?? '',
   )
 
   const toggleUsernameVisibility = () => {
