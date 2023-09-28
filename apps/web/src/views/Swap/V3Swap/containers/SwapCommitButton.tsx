@@ -92,7 +92,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
 
   const routerAddress =
-    statusWallchain === 'found' || wallchainSecondaryStatus === 'found' ? approvalAddressForWallchain : PERMIT2_ADDRESS
+    statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
+      ? approvalAddressForWallchain
+      : PERMIT2_ADDRESS(chainId)
 
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [

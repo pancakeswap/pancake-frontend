@@ -26,7 +26,7 @@ export function usePermitAllowance(token?: Token, owner?: string, spender?: stri
     () =>
       publicClient({ chainId }).readContract({
         abi: PERMIT2_ABI,
-        address: PERMIT2_ADDRESS,
+        address: PERMIT2_ADDRESS(chainId),
         functionName: 'allowance',
         args: inputs,
       }),
@@ -78,7 +78,7 @@ export function useUpdatePermitAllowance(
       if (nonce === undefined) throw new Error('missing nonce')
 
       const permit: Permit = generatePermitTypedData(token, nonce, spender)
-      const { domain, types, values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS, chainId)
+      const { domain, types, values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS(chainId), chainId)
 
       const signature = await signTypedDataAsync({
         account,

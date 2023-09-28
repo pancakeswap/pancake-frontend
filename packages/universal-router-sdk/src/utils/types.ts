@@ -20,6 +20,7 @@ export type ChainConfig = {
   router: Address
   creationBlock: number
   weth: Address
+  permit2Address: Address
 }
 
 export type ABIType = typeof ABI_PARAMETER

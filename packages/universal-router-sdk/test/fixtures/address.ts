@@ -72,7 +72,7 @@ export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => 
   const v3Pools = {}
 
   const UNIVERSAL_ROUTER = UNIVERSAL_ROUTER_ADDRESS(chainId)
-  const PERMIT2 = PERMIT2_ADDRESS
+  const PERMIT2 = PERMIT2_ADDRESS(chainId)
 
   return {
     ...tokens,
