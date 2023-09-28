@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { CurrencyAmount, ERC20Token, Pair, Percent, computePairAddress, pancakePairV2ABI } from '@pancakeswap/sdk'
-import { PoolType, SmartRouter, StablePool, V3Pool } from '@pancakeswap/smart-router/evm'
+import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import {
   DEPLOYER_ADDRESSES,
   FeeAmount,
@@ -85,6 +85,15 @@ export const convertPoolToV3Pool = (pool: Pool): V3Pool => {
     token1ProtocolFee: new Percent(0, 100),
   }
 }
+export const convertPairToV2Pool = (pair: Pair): V2Pool => ({
+  type: PoolType.V2,
+  reserve0: pair.reserve0,
+  reserve1: pair.reserve1,
+})
+
+export const convertV3PoolToSDKPool = ({ token0, token1, fee, sqrtRatioX96, liquidity, tick, ticks }: V3Pool) =>
+  new Pool(token0.wrapped, token1.wrapped, fee, sqrtRatioX96, liquidity, tick, ticks)
+export const convertV2PoolToSDKPool = ({ reserve1, reserve0 }: V2Pool) => new Pair(reserve0.wrapped, reserve1.wrapped)
 
 const fixturePool = ({
   tokenA,

@@ -1,6 +1,19 @@
-import { Currency, CurrencyAmount, ERC20Token, Pair, Trade, TradeType, Trade as V2Trade } from '@pancakeswap/sdk'
-import { PoolType, RouteType, SmartRouterTrade, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
-import { Trade as V3Trade } from '@pancakeswap/v3-sdk'
+import { Currency, CurrencyAmount, ERC20Token, Pair, Token, Trade, TradeType, Trade as V2Trade } from '@pancakeswap/sdk'
+import {
+  PoolType,
+  RouteType,
+  SmartRouterTrade,
+  StablePool,
+  StableSwap,
+  V2Pool,
+  V3Pool,
+} from '@pancakeswap/smart-router/evm'
+import { Pool, Trade as V3Trade } from '@pancakeswap/v3-sdk'
+import { convertPairToV2Pool, convertPoolToV3Pool, convertV2PoolToSDKPool } from '../fixtures/address'
+
+function isStablePool(pool: V2Pool | V3Pool | StablePool): pool is StablePool {
+  return pool.type === PoolType.STABLE && pool.balances.length >= 2
+}
 
 export const buildV2Trade = (
   v2Trade: V2Trade<Currency, Currency, TradeType>,
@@ -79,5 +92,70 @@ export const buildV3Trade = (
     ],
     gasEstimate: 0n,
     gasEstimateInUSD: CurrencyAmount.fromRawAmount(trade.route.input, 0),
+  }
+}
+
+export const buildMixedRouteTrade = async <
+  TInput extends Currency,
+  TOutput extends Currency,
+  TTradeType extends TradeType
+>(
+  tokenIn: TInput,
+  amount: CurrencyAmount<TTradeType extends TradeType.EXACT_INPUT ? TInput : TOutput>,
+  tradeType: TTradeType,
+  pools: Array<Pair | Pool | StablePool>
+): Promise<SmartRouterTrade<TradeType>> => {
+  const path: Currency[] = [tokenIn.wrapped]
+  const outputPools = pools.map((pool) => {
+    if (pool instanceof Pair) return convertPairToV2Pool(pool)
+    if (pool instanceof Pool) return convertPoolToV3Pool(pool)
+
+    return pool
+  })
+
+  const amounts: CurrencyAmount<Token>[] = []
+
+  amounts.push(amount.wrapped)
+
+  for (const pool of pools) {
+    let outputAmount: CurrencyAmount<Token>
+    if (pool instanceof Pair || pool instanceof Pool) {
+      ;[outputAmount] = await pool.getOutputAmount(amounts[amounts.length - 1])
+      path.push(outputAmount.currency)
+      amounts.push(outputAmount)
+    } else if (isStablePool(pool)) {
+      const { amplifier, balances, fee } = pool
+      outputAmount = StableSwap.getSwapOutput({
+        amplifier,
+        amount,
+        balances,
+        fee,
+        outputCurrency: balances[1].currency,
+      }).wrapped
+      path.push(outputAmount.currency)
+      amounts.push(outputAmount)
+    }
+  }
+
+  // mixed Router support exactIn only
+  const inputAmount = amount
+  const outputAmount = amounts[amounts.length - 1]
+
+  return {
+    tradeType,
+    inputAmount: amount,
+    outputAmount: amount,
+    routes: [
+      {
+        type: RouteType.MIXED,
+        path,
+        pools: outputPools,
+        inputAmount,
+        outputAmount,
+        percent: 100,
+      },
+    ],
+    gasEstimate: 0n,
+    gasEstimateInUSD: CurrencyAmount.fromRawAmount(tokenIn, 0),
   }
 }

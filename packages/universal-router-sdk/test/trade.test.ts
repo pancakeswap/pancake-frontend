@@ -16,7 +16,7 @@ import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures
 import { getPublicClient, getWalletClient } from './fixtures/clients'
 import { PancakeUinversalSwapRouter } from '../src'
 import { PancakeSwapOptions } from '../src/utils/types'
-import { buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
+import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
 import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
 import { Permit2Permit } from '../src/utils/inputTokens'
 
@@ -547,7 +547,79 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(calldata).toMatchSnapshot()
     })
   })
-  describe.skip('mixed v2 & v3', () => {})
+  describe('mixed', () => {
+    it('should encodes a mixed exactInput ETH-v3->USDC-v2->USDT swap', async () => {
+      const amountIn = parseEther('1')
+
+      const trade = await buildMixedRouteTrade(
+        ETHER,
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
+        [WETH_USDC_V3_MEDIUM, USDC_USDT_V2]
+      )
+
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encodes a mixed exactInput ETH-v2->USDC-v3->USDT swap', async () => {
+      const amountIn = parseEther('1')
+
+      const trade = await buildMixedRouteTrade(
+        ETHER,
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
+        [WETH_USDC_V2, USDC_USDT_V3_LOW]
+      )
+
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encodes a mixed exactInput ETH-v2->USDC-v2->USDT swap', async () => {
+      const amountIn = parseEther('1')
+
+      const trade = await buildMixedRouteTrade(
+        ETHER,
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
+        [WETH_USDC_V2, USDC_USDT_V2]
+      )
+
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encodes a mixed exactInput USDT-v2->USDC-v3->ETH swap', async () => {
+      const amountIn = parseUnits('1000', 6)
+
+      const trade = await buildMixedRouteTrade(
+        USDT,
+        CurrencyAmount.fromRawAmount(USDT, amountIn),
+        TradeType.EXACT_INPUT,
+        [USDC_USDT_V2, WETH_USDC_V3_MEDIUM]
+      )
+
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+  })
   describe.skip('multi-route', () => {})
 })
 
@@ -557,15 +629,97 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
 
   let wallet: WalletClient
 
+  let ETHER: Ether
   let USDC: ERC20Token
   let USDT: ERC20Token
   let BUSD: ERC20Token
+  let WETH_USDC_V2: Pair
+  let WETH_USDC_V3_MEDIUM: Pool
   let UNIVERSAL_ROUTER: Address
   let PERMIT2: Address
 
   beforeEach(async () => {
-    ;({ UNIVERSAL_ROUTER, PERMIT2, USDC, USDT, BUSD } = await fixtureAddresses(chainId, liquidity))
+    ;({ UNIVERSAL_ROUTER, PERMIT2, USDC, USDT, BUSD, ETHER, WETH_USDC_V2, WETH_USDC_V3_MEDIUM } =
+      await fixtureAddresses(chainId, liquidity))
     wallet = getWalletClient({ chainId })
+  })
+
+  describe('mixed', () => {
+    it('should encodes a mixed exactInput USDT-stable->USDC-v3->ETH swap', async () => {
+      const amountIn = parseUnits('1000', 6)
+
+      const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+
+      const trade = await buildMixedRouteTrade(
+        USDT,
+        CurrencyAmount.fromRawAmount(USDT, amountIn),
+        TradeType.EXACT_INPUT,
+        [stablePool, WETH_USDC_V3_MEDIUM]
+      )
+
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encodes a mixed exactInput USDT-stable->USDC-v2->ETH swap', async () => {
+      const amountIn = parseUnits('1000', 6)
+
+      const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+
+      const trade = await buildMixedRouteTrade(
+        USDT,
+        CurrencyAmount.fromRawAmount(USDT, amountIn),
+        TradeType.EXACT_INPUT,
+        [stablePool, WETH_USDC_V2]
+      )
+
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encodes a mixed exactInput ETH-v2->USDC-stable->USDT swap', async () => {
+      const amountIn = parseEther('1')
+
+      const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+
+      const trade = await buildMixedRouteTrade(
+        ETHER,
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
+        [WETH_USDC_V2, stablePool]
+      )
+
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encodes a mixed exactInput ETH-v3->USDC-stable->USDT swap', async () => {
+      const amountIn = parseEther('1')
+
+      const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+
+      const trade = await buildMixedRouteTrade(
+        ETHER,
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
+        [WETH_USDC_V3_MEDIUM, stablePool]
+      )
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
   })
 
   it('should encode a single exactInput USDT->USDC swap', async () => {
