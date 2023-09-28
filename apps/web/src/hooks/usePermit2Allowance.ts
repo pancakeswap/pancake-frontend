@@ -29,7 +29,7 @@ export interface AllowanceRequired {
 }
 
 export type Allowance =
-  | { state: AllowanceState.LOADING, setSignature: Dispatch<SetStateAction<PermitSignature>>  }
+  | { state: AllowanceState.LOADING; setSignature: Dispatch<SetStateAction<PermitSignature>> }
   | {
       state: AllowanceState.ALLOWED
       permitSignature?: PermitSignature
@@ -98,7 +98,7 @@ export default function usePermit2Allowance(
           needsSetupApproval: !isApproved,
           needsPermitSignature: shouldRequestSignature,
           allowedAmount: tokenAllowance,
-          setSignature
+          setSignature,
         }
       }
       if (!isApproved) {
@@ -114,7 +114,7 @@ export default function usePermit2Allowance(
           needsSetupApproval: true,
           needsPermitSignature: shouldRequestSignature,
           allowedAmount: tokenAllowance,
-          setSignature
+          setSignature,
         }
       }
     }
@@ -124,7 +124,7 @@ export default function usePermit2Allowance(
       permitSignature: !isPermitted && isSigned ? signature : undefined,
       needsSetupApproval: false,
       needsPermitSignature: false,
-      setSignature
+      setSignature,
     }
   }, [
     approveCallback,

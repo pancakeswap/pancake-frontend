@@ -83,4 +83,3 @@ export const SUDOSWAP_SPENDER_ID = 1
 
 export const SIGNATURE_LENGTH = 65
 export const EIP_2098_SIGNATURE_LENGTH = 64
-
