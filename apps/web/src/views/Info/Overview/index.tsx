@@ -62,10 +62,15 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   const poolsData = useMemo(
     () =>
       rawPoolsData.reduce((acc, data) => {
+        if (acc.length > 10) {
+          acc.push(data)
+          return acc
+        }
+
         const maySpam = dayjs().diff(dayjs.unix(data.timestamp), 'day') < 4
 
         // top 10 should not show may spam tokens,
-        if (maySpam && acc.length < 10) return acc
+        if (maySpam) return acc
 
         // after top 10 will not filtered
         acc.push(data)
