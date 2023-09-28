@@ -60,7 +60,17 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   const { poolsData: rawPoolsData } = usePoolsData()
   // top 10 pair need create at least 4 days
   const poolsData = useMemo(
-    () => rawPoolsData.filter((data) => dayjs().diff(dayjs.unix(data.timestamp), 'day') > 4),
+    () =>
+      rawPoolsData.reduce((acc, data) => {
+        const maySpam = dayjs().diff(dayjs.unix(data.timestamp), 'day') < 4
+
+        // top 10 should not show may spam tokens,
+        if (maySpam && acc.length < 10) return acc
+
+        // after top 10 will not filtered
+        acc.push(data)
+        return acc
+      }, [] as typeof rawPoolsData),
     [rawPoolsData],
   )
 
