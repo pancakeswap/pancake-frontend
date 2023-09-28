@@ -5,6 +5,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useAccount } from 'wagmi'
 import { CardSection } from './CardSection'
 import { AddLiquidity } from './AddLiquidity'
 import { InnerCard } from './InnerCard'
@@ -55,7 +57,7 @@ Props) {
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
   const [removeLiquidityModalOpen, setRemoveLiquidityModalOpen] = useState(false)
   const hasStaked = useMemo(() => Boolean(staked0Amount) || Boolean(staked1Amount), [staked0Amount, staked1Amount])
-
+  const { address: account } = useAccount()
   const showAddLiquidityModal = useCallback(() => setAddLiquidityModalOpen(true), [])
   const hideAddLiquidityModal = useCallback(() => setAddLiquidityModalOpen(false), [])
 
@@ -78,6 +80,8 @@ Props) {
             token1PriceUSD={token1PriceUSD}
           />
         </InnerCard>
+      ) : !account ? (
+        <ConnectWalletButton mt="24px" width="100%" />
       ) : (
         <CardSection title={t('Start earning')}>
           <Button variant="primary" width="100%" onClick={showAddLiquidityModal}>
