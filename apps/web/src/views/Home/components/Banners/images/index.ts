@@ -82,6 +82,9 @@ import baseBunny from './base-bunny.png'
 import baseTree from './base-tree.png'
 import baseMoon from './base-moon.png'
 import mercuryoLogo from './mercuryo-logo.png'
+import opbnbBg from './opbnb-bg.png'
+import opbnbBgMobile from './opbnb-bg-mobile.png'
+import opbnbBunny from './opbnb-bunny.png'
 
 export {
   lotteryImage,
@@ -167,4 +170,7 @@ export {
   baseMoon,
   baseTree,
   mercuryoLogo,
+  opbnbBg,
+  opbnbBgMobile,
+  opbnbBunny,
 }

@@ -12,6 +12,7 @@ import { PolygonZkEvmBanner } from '../PolygonZkEvmBanner'
 import TradingRewardBanner from '../TradingRewardBanner'
 import UserBanner from '../UserBanner'
 import { ZksyncBanner } from '../ZksyncBanner'
+import { OpBnbBanner } from '../OpBnbBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
@@ -45,6 +46,7 @@ export const useMultipleBannerConfig = () => {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
+      { shouldRender: true, banner: <OpBnbBanner /> },
       { shouldRender: true, banner: <BaseBanner /> },
       {
         shouldRender: isRenderIFOBanner,
