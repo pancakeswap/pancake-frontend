@@ -81,6 +81,8 @@ export const useConfirmModalState = ({
             onConfirm()
           } catch (e) {
             onCancel()
+            // if trade fails reset signature incase problem is with permit
+            allowance.setSignature(undefined)
           }
           break
         default:

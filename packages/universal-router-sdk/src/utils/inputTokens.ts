@@ -1,5 +1,4 @@
 import { PermitSingle } from '@pancakeswap/permit2-sdk'
-import { Buffer } from 'buffer'
 import invariant from 'tiny-invariant'
 import { OPENSEA_CONDUIT_SPENDER_ID, ROUTER_AS_RECIPIENT, SUDOSWAP_SPENDER_ID } from './constants'
 import { CommandType, RoutePlanner } from './routerCommands'
@@ -25,9 +24,6 @@ export type InputTokenOptions = {
   permit2TransferFrom?: Permit2TransferFrom
 }
 
-const SIGNATURE_LENGTH = 65
-const EIP_2098_SIGNATURE_LENGTH = 64
-
 const hexToBytes = (hex: string): number[] => {
   const cleanHex = hex.startsWith('0x') ? hex.slice(2) : hex
   const bytes = []
@@ -37,19 +33,7 @@ const hexToBytes = (hex: string): number[] => {
   return bytes
 }
 export function encodePermit(planner: RoutePlanner, permit2: Permit2Permit): void {
-  let { signature } = permit2
-  const { length } = hexToBytes(permit2.signature)
-
-  if (length === SIGNATURE_LENGTH || length === EIP_2098_SIGNATURE_LENGTH) {
-    const r = Buffer.from(permit2.signature.slice(0, 32))
-    const s = Buffer.from(permit2.signature.slice(32, 64))
-    let v = permit2.signature[64]
-    const _vs = Buffer.from(permit2.signature.slice(64, permit2.signature.length - 2))
-    v = v === '0' ? '1b' : '1c'
-    signature = Buffer.concat([r, s, _vs]).toString() + v
-  }
-
-  planner.addCommand(CommandType.PERMIT2_PERMIT, [permit2, signature])
+  planner.addCommand(CommandType.PERMIT2_PERMIT, [permit2, permit2.signature as `0x${string}`])
 }
 
 // Handles the encoding of commands needed to gather input tokens for a trade
