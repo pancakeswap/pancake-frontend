@@ -1,5 +1,5 @@
-import { Currency, CurrencyAmount, ERC20Token, Pair, TradeType, Trade as V2Trade } from '@pancakeswap/sdk'
-import { PoolType, RouteType, SmartRouterTrade, V2Pool } from '@pancakeswap/smart-router/evm'
+import { Currency, CurrencyAmount, ERC20Token, Pair, Trade, TradeType, Trade as V2Trade } from '@pancakeswap/sdk'
+import { PoolType, RouteType, SmartRouterTrade, StablePool, V2Pool } from '@pancakeswap/smart-router/evm'
 import { Trade as V3Trade } from '@pancakeswap/v3-sdk'
 
 export const buildV2Trade = (
@@ -22,5 +22,39 @@ export const buildV2Trade = (
     ],
     gasEstimate: 0n,
     gasEstimateInUSD: CurrencyAmount.fromRawAmount(v2Trade.route.input, 0),
+  }
+}
+
+export const buildStableTrade = (
+  input: Currency,
+  amountIn: CurrencyAmount<Currency>,
+  stablePools: StablePool[]
+): SmartRouterTrade<TradeType> => {
+  // @notice: just set same amountOut as amountIn, for easy fixture
+  const amountOut = amountIn
+
+  const path: Currency[] = [input.wrapped]
+
+  for (const pool of stablePools) {
+    const { balances } = pool
+    path.push(balances[0].currency.equals(input) ? balances[1].currency : balances[0].currency)
+  }
+
+  return {
+    tradeType: TradeType.EXACT_INPUT,
+    inputAmount: amountIn,
+    outputAmount: amountOut,
+    routes: [
+      {
+        type: RouteType.STABLE,
+        path,
+        inputAmount: amountIn,
+        outputAmount: amountOut,
+        percent: 100,
+        pools: stablePools,
+      },
+    ],
+    gasEstimate: 0n,
+    gasEstimateInUSD: CurrencyAmount.fromRawAmount(input, 0),
   }
 }

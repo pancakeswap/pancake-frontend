@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import {
-  bsc as bsc_,
+  bsc,
   bscTestnet,
   goerli,
   mainnet,
@@ -35,21 +35,6 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.BASE_TESTNET]: 'baseTestnet',
   [ChainId.SCROLL_SEPOLIA]: 'scrollSepolia',
 } as const satisfies Record<ChainId, string>
-
-const bsc = {
-  ...bsc_,
-  rpcUrls: {
-    ...bsc_.rpcUrls,
-    public: {
-      ...bsc_.rpcUrls.public,
-      http: ['https://bsc-dataseed.binance.org/'],
-    },
-    default: {
-      ...bsc_.rpcUrls.default,
-      http: ['https://bsc-dataseed.binance.org/'],
-    },
-  },
-} satisfies Chain
 
 const scrollSepolia = {
   ...scrollSepolia_,
