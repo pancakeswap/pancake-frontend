@@ -38,7 +38,7 @@ export const SERVER_NODES = {
   ],
   [ChainId.GOERLI]: [
     getNodeRealUrlV2(ChainId.GOERLI, process.env.SERVER_NODE_REAL_API_GOERLI),
-    'https://eth-goerli.public.blastapi.io',
+    'https://goerli.infura.io/v3/28b4ddb00ce5496394ed6259bf810b99',
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: ARBITRUM_NODES,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,

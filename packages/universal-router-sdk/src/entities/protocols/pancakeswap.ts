@@ -1,5 +1,5 @@
 import { Pair, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
-import { BaseRoute, RouteType, SmartRouter, SmartRouterTrade, StablePool } from '@pancakeswap/smart-router/evm'
+import { BaseRoute, RouteType, SmartRouter, SmartRouterTrade, StablePool, SwapRouter } from '@pancakeswap/smart-router/evm'
 import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'
@@ -66,7 +66,7 @@ export class PancakeSwapTrade implements Command {
           payerIsUser,
           performAggregatedSlippageCheck
         )
-      } else if (trade.routes.every((r) => r.type === RouteType.V3)) {
+      } else if (trade.routes.every((r) => r.type === RouteType.MIXED)) {
         addMixedSwap(
           planner,
           trade as SmartRouterTrade<TradeType>,
@@ -127,10 +127,10 @@ export class PancakeSwapTrade implements Command {
         }
       }
 
-      if (inputIsNative && this.type === TradeType.EXACT_OUTPUT) {
+      if (inputIsNative && this.type === TradeType.EXACT_OUTPUT || SwapRouter.riskOfPartialFill(trades)) {
         // for exactOutput swaps that take native currency as input
         // we need to send back the change to the user
-        planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, 0])
+        planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, 0n])
       }
     }
   }

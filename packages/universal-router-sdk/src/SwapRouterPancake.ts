@@ -39,7 +39,7 @@ export abstract class PancakeUniSwapRouter {
             sampleTrade,
             options.slippageTolerance,
             sampleTrade.inputAmount
-          ).quotient.toString()
+          ).quotient
         )
       : toHex('0')
 
