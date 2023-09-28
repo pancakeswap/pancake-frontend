@@ -106,8 +106,6 @@ export function StakingModalTemplate({
     boostDayPercent: selectedPool?.boostDayPercent,
   })
 
-  console.log('isBoost:', isBoost)
-
   const [percent, setPercent] = useState(0)
   const { balance: stakingTokenBalance } = useTokenBalance(stakingToken?.address)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()

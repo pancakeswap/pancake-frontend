@@ -1,15 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  ModalV2,
-  useModalV2,
-  Flex,
-  Box,
-  PreTitle,
-  MessageText,
-  Message,
-  InfoFilledIcon,
-  Button,
-} from '@pancakeswap/uikit'
+import { ModalV2, useModalV2, Flex, Box, PreTitle, MessageText, Message, Button } from '@pancakeswap/uikit'
 import { ReactNode, useMemo } from 'react'
 import Divider from 'components/Divider'
 import { Token } from '@pancakeswap/sdk'
