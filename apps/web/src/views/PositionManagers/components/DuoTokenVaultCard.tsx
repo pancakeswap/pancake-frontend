@@ -50,6 +50,7 @@ interface Props {
   stakedToken1Amount?: bigint
   token0PriceUSD?: number
   token1PriceUSD?: number
+  refetch?: () => void
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -73,6 +74,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   poolToken1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  refetch,
 }: PropsWithChildren<Props>) {
   // TODO: mock
 
@@ -109,6 +111,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           staked1Amount={staked1Amount}
           token0PriceUSD={token0PriceUSD}
           token1PriceUSD={token1PriceUSD}
+          refetch={refetch}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

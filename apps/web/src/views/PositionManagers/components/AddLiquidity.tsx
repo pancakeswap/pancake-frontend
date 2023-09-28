@@ -16,7 +16,6 @@ import { FeeTag } from './Tags'
 interface Props {
   isOpen?: boolean
   onDismiss?: () => void
-
   vaultName: string
   feeTier: FeeAmount
   currencyA: Currency
@@ -27,6 +26,7 @@ interface Props {
   onAmountChange?: (info: { value: string; currency: Currency; otherAmount: CurrencyAmount<Currency> }) => {
     otherAmount: CurrencyAmount<Currency>
   }
+  refetch?: () => void
   contractAddress: `0x${string}`
   // TODO: return data
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
@@ -48,6 +48,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   allowDepositToken0,
   contractAddress,
   ratio,
+  refetch,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -160,6 +161,10 @@ export const AddLiquidity = memo(function AddLiquidity({
             amountA={allowDepositToken0 ? amountA : null}
             amountB={allowDepositToken1 ? amountB : null}
             contractAddress={contractAddress}
+            onDone={() => {
+              onDismiss?.()
+              refetch?.()
+            }}
           />
         </Flex>
       </StyledModal>
@@ -171,12 +176,14 @@ interface AddLiquidityButtonProps {
   amountA: CurrencyAmount<Currency>
   amountB: CurrencyAmount<Currency>
   contractAddress: `0x${string}`
+  onDone?: () => void
 }
 
 export const AddLiquidityButton = memo(function AddLiquidityButton({
   amountA,
   amountB,
   contractAddress,
+  onDone,
 }: AddLiquidityButtonProps) {
   const { t } = useTranslation()
   const { approvalState: approvalStateToken0, approveCallback: approveCallbackToken0 } = useApproveCallback(
@@ -199,6 +206,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
       ),
     )
     if (receipt?.status) {
+      onDone?.()
       toastSuccess(
         `${t('Staked')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -206,7 +214,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
         </ToastDescriptionWithTx>,
       )
     }
-  }, [amountA, amountB, posisitonManagerWrapperContract, t, toastSuccess, fetchWithCatchTxError])
+  }, [amountA, amountB, posisitonManagerWrapperContract, t, toastSuccess, fetchWithCatchTxError, onDone])
   return (
     <>
       {amountA && approvalStateToken0 === ApprovalState.NOT_APPROVED && (
@@ -230,6 +238,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
         onClick={() => {
           mintThenDeposit()
         }}
+        isLoading={pendingTx}
         disabled={
           (amountA && approvalStateToken0 !== ApprovalState.APPROVED) ||
           (amountB && approvalStateToken1 !== ApprovalState.APPROVED)

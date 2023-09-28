@@ -28,7 +28,7 @@ interface Props {
   token0PriceUSD?: number
   token1PriceUSD?: number
   contractAddress: `0x${string}`
-
+  refetch?: () => void
   // TODO: return data
   onRemove?: (params: {
     amountA: CurrencyAmount<Currency>
@@ -50,6 +50,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   token1PriceUSD,
   feeTier,
   contractAddress,
+  refetch,
 }: // onRemove,
 Props) {
   const { t } = useTranslation()
@@ -67,9 +68,11 @@ Props) {
 
   const withdrawThenBurn = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() =>
-      wrapperContract.write.withdrawThenBurn([amountA?.numerator / amountA?.denominator, '0x'], {}),
+      wrapperContract.write.withdrawThenBurn([amountA?.quotient, '0x'], {}),
     )
     if (receipt?.status) {
+      refetch?.()
+      onDismiss?.()
       toastSuccess(
         `${t('Removed')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -77,7 +80,7 @@ Props) {
         </ToastDescriptionWithTx>,
       )
     }
-  }, [amountA, wrapperContract, t, toastSuccess, fetchWithCatchTxError])
+  }, [amountA, wrapperContract, t, toastSuccess, fetchWithCatchTxError, refetch, onDismiss])
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
@@ -99,7 +102,7 @@ Props) {
           <CurrencyAmountDisplay currency={currencyB} mt="8px" amount={amountB} priceUSD={token1PriceUSD} />
         </InnerCard>
         <PercentSlider percent={percent} onChange={setPercent} mt="1em" />
-        <RemoveLiquidityButton mt="1.5em" onClick={withdrawThenBurn} />
+        <RemoveLiquidityButton mt="1.5em" onClick={withdrawThenBurn} isLoading={pendingTx} />
       </StyledModal>
     </ModalV2>
   )
@@ -145,19 +148,18 @@ const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
 
 interface RemoveLiquidityButtonProps extends SpaceProps {
   onClick?: () => void
+  isLoading?: boolean
 }
 
 export const RemoveLiquidityButton = memo(function RemoveLiquidityButton({
   onClick,
+  isLoading,
   ...rest
 }: RemoveLiquidityButtonProps) {
   const { t } = useTranslation()
   return (
     <Box {...rest}>
-      {/* <Button variant="primary" width="100%">
-        {t('Approve')}
-      </Button> */}
-      <Button mt="0.5em" variant="primary" width="100%" onClick={onClick}>
+      <Button isLoading={isLoading} mt="0.5em" variant="primary" width="100%" onClick={onClick}>
         {t('Confirm')}
       </Button>
     </Box>

@@ -25,6 +25,7 @@ interface Props {
   contractAddress: `0x${string}`
   token0PriceUSD?: number
   token1PriceUSD?: number
+  refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
 
@@ -46,6 +47,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   staked1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  refetch,
 }: // onAddLiquidity,
 // onRemoveLiquidity,
 Props) {
@@ -94,6 +96,7 @@ Props) {
         allowDepositToken0={allowDepositToken0}
         allowDepositToken1={allowDepositToken1}
         contractAddress={contractAddress}
+        refetch={refetch}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}
@@ -107,6 +110,7 @@ Props) {
         token0PriceUSD={token0PriceUSD}
         token1PriceUSD={token1PriceUSD}
         contractAddress={contractAddress}
+        refetch={refetch}
       />
     </>
   )

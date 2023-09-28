@@ -49,34 +49,48 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
 
 export const useAdapterTokensAmounts = (adapterAddress: Address) => {
   const chainId = useActiveChainId()
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     ['AdapterTokensAmounts', adapterAddress],
     () => getAdapterTokensAmounts({ address: adapterAddress, chainId }),
     {
       enabled: !!adapterAddress,
+      refetchInterval: 3000,
+      staleTime: 3000,
+      cacheTime: 3000,
     },
   )
-  return data
+  return { data, refetch }
 }
 
 export const useUserAmounts = (wrapperAddress: Address) => {
   const { account } = useActiveWeb3React()
   const contract = usePositionManagerWrapperContract(wrapperAddress)
-  const { data } = useQuery(['useUserAmounts', wrapperAddress, account], () => contract.read.userInfo([account]), {
-    enabled: !!wrapperAddress && !!account,
-  })
-  return data
+  const { data, refetch } = useQuery(
+    ['useUserAmounts', wrapperAddress, account],
+    () => contract.read.userInfo([account]),
+    {
+      enabled: !!wrapperAddress && !!account,
+      refetchInterval: 3000,
+      staleTime: 3000,
+      cacheTime: 3000,
+    },
+  )
+  return { data, refetch }
 }
 
 export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address) => {
-  const userAmounts = useUserAmounts(wrapperAddress)
-  const poolAmounts = useAdapterTokensAmounts(adapterAddress)
+  const { data: userAmounts, refetch: refetchUserAmounts } = useUserAmounts(wrapperAddress)
+  const { data: poolAmounts, refetch: refetchPoolAmounts } = useAdapterTokensAmounts(adapterAddress)
   if (userAmounts && poolAmounts)
     return {
       poolToken0Amounts: poolAmounts.token0Amounts,
       poolToken1Amounts: poolAmounts.token1Amounts,
       userToken0Amounts: (userAmounts[0] * poolAmounts.token0PerShare) / poolAmounts.PRECISION,
       userToken1Amounts: (userAmounts[1] * poolAmounts.token1PerShare) / poolAmounts.PRECISION,
+      refetchPositionInfo: () => {
+        refetchUserAmounts()
+        refetchPoolAmounts()
+      },
     }
   return null
 }
