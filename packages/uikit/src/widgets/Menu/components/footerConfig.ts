@@ -3,61 +3,56 @@ import { FooterLinkType } from "../../../components/Footer/types";
 
 export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
   {
-    label: t("About"),
+    label: t("Ecosystem"),
     items: [
       {
-        label: t("Contact"),
-        href: "https://docs.pancakeswap.finance/contact-us",
-        isHighlighted: true,
+        label: t("Trade"),
+        href: "/swap",
       },
       {
-        label: t("Brand"),
-        href: "https://docs.pancakeswap.finance/brand",
+        label: t("Earn"),
+        href: "/farms",
       },
       {
-        label: t("Blog"),
-        href: "https://blog.pancakeswap.finance/",
+        label: t("Game"),
+        href: "/prediction",
       },
       {
-        label: t("Community"),
-        href: "https://docs.pancakeswap.finance/contact-us/telegram",
+        label: t("NFT"),
+        href: "/nfts",
+      },
+      {
+        label: t("Tokenomics"),
+        href: "https://docs.pancakeswap.finance/governance-and-tokenomics/cake-tokenomics",
       },
       {
         label: t("Litepaper"),
-        href: "https://v2litepaper.pancakeswap.finance/",
+        href: "https://assets.pancakeswap.finance/litepaper/v2litepaper.pdf",
       },
       {
         label: t("CAKE Emission Projection"),
         href: "https://analytics.pancakeswap.finance/",
       },
       {
-        label: t("Terms Of Service"),
-        href: "https://pancakeswap.finance/terms-of-service",
-      },
-      {
-        label: "—",
-      },
-      {
         label: t("Merchandise"),
         href: "https://merch.pancakeswap.finance/",
-        isHighlighted: true,
       },
     ],
   },
   {
-    label: t("Help"),
+    label: "Business",
     items: [
       {
-        label: t("Customer Support"),
-        href: "https://docs.pancakeswap.finance/contact-us/customer-support",
+        label: t("Farms and Syrup Pools"),
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/syrup-pools-and-farms",
       },
       {
-        label: t("Troubleshooting"),
-        href: "https://docs.pancakeswap.finance/help/troubleshooting",
+        label: t("IFO"),
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/initial-farm-offerings-ifos",
       },
       {
-        label: t("Guides"),
-        href: "https://docs.pancakeswap.finance/get-started",
+        label: t("NFT Marketplace"),
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/nft-market-applications",
       },
     ],
   },
@@ -65,24 +60,54 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
     label: t("Developers"),
     items: [
       {
-        label: "Github",
+        label: t("Contributing"),
+        href: "https://docs.pancakeswap.finance/developers/contributing",
+      },
+      {
+        label: t("Github"),
         href: "https://github.com/pancakeswap",
       },
       {
-        label: t("Documentation"),
-        href: "https://docs.pancakeswap.finance",
-      },
-      {
         label: t("Bug Bounty"),
-        href: "https://docs.pancakeswap.finance/code/bug-bounty",
+        href: "https://docs.pancakeswap.finance/developers/bug-bounty",
+      },
+    ],
+  },
+  {
+    label: t("Support"),
+    items: [
+      {
+        label: t("Contact"),
+        href: "https://docs.pancakeswap.finance/contact-us/customer-support",
       },
       {
-        label: t("Audits"),
-        href: "https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited",
+        label: t("Troubleshooting"),
+        href: "https://docs.pancakeswap.finance/readme/help/troubleshooting",
+      },
+      {
+        label: t("Documentation"),
+        href: "https://docs.pancakeswap.finance/",
+      },
+    ],
+  },
+  {
+    label: t("About"),
+    items: [
+      {
+        label: t("Terms Of Service"),
+        href: "https://pancakeswap.finance/terms-of-service",
+      },
+      {
+        label: t("Blog"),
+        href: "https://blog.pancakeswap.finance/",
+      },
+      {
+        label: t("Brand Assets"),
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/brand",
       },
       {
         label: t("Careers"),
-        href: "https://docs.pancakeswap.finance/hiring/become-a-chef",
+        href: "https://docs.pancakeswap.finance/team/become-a-chef",
       },
     ],
   },

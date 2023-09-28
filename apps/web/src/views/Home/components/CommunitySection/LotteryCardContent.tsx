@@ -29,7 +29,7 @@ const LotteryCardContent = () => {
   })
   const { data: currentLottery } = useSWRImmutable(
     currentLotteryId ? ['currentLottery'] : null,
-    async () => fetchLottery(currentLotteryId.toString()),
+    async () => fetchLottery(currentLotteryId?.toString() ?? ''),
     {
       refreshInterval: SLOW_INTERVAL,
     },
