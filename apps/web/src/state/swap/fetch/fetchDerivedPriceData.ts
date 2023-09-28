@@ -55,6 +55,10 @@ const SWAP_INFO_BY_CHAIN = {
     v2: INFO_CLIENT_WITH_CHAIN[ChainId.LINEA_TESTNET],
     v3: V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET],
   },
+  [ChainId.OPBNB]: {
+    v2: INFO_CLIENT_WITH_CHAIN[ChainId.OPBNB],
+    v3: V3_SUBGRAPH_URLS[ChainId.OPBNB],
+  },
   [ChainId.OPBNB_TESTNET]: {},
   [ChainId.BASE]: {
     v3: V3_SUBGRAPH_URLS[ChainId.BASE],
@@ -176,7 +180,7 @@ const fetchDerivedPriceData = async (
   const interval = getInterval(timeWindow)
   const endTimestamp = getUnixTime(new Date())
   const startTimestamp = getUnixTime(startOfHour(sub(endTimestamp * 1000, { days: getSkipDaysToStart(timeWindow) })))
-  const timestamps = []
+  const timestamps: number[] = []
   let time = startTimestamp
   if (!SWAP_INFO_BY_CHAIN[chainId][protocol0] || !SWAP_INFO_BY_CHAIN[chainId][protocol1]) {
     return null

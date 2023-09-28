@@ -29,6 +29,7 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.ZKSYNC_TESTNET]: 0.1,
   [ChainId.LINEA]: 0.1,
   [ChainId.LINEA_TESTNET]: 0.1,
+  [ChainId.OPBNB]: 0.1,
   [ChainId.OPBNB_TESTNET]: 0.1,
   [ChainId.BASE]: 0.1,
   [ChainId.BASE_TESTNET]: 0.1,

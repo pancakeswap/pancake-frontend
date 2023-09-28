@@ -11,6 +11,7 @@ const mapping: { [key: number]: string } = {
   [ChainId.ZKSYNC]: "zksync",
   [ChainId.BASE]: "base",
   [ChainId.LINEA]: "linea",
+  [ChainId.OPBNB]: "opbnb",
 };
 
 export const getTokenLogoURL = memoize(
