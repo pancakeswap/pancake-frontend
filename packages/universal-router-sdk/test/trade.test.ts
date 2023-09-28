@@ -9,14 +9,14 @@ import {
   TradeType,
   Percent,
 } from '@pancakeswap/sdk'
-import { FeeOptions } from '@pancakeswap/v3-sdk'
-import { PoolType, V2Pool } from '@pancakeswap/smart-router/evm'
+import { FeeOptions, Trade as V3Trade, Route as V3Route, Pool } from '@pancakeswap/v3-sdk'
+import { PoolType, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { hexToString, parseEther, parseUnits, Address, WalletClient, zeroAddress } from 'viem'
-import { fixtureAddresses, getStablePool } from './fixtures/address'
+import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
 import { getPublicClient, getWalletClient } from './fixtures/clients'
 import { PancakeUinversalSwapRouter } from '../src'
 import { PancakeSwapOptions } from '../src/utils/types'
-import { buildStableTrade, buildV2Trade } from './utils/buildTrade'
+import { buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
 import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
 import { Permit2Permit } from '../src/utils/inputTokens'
 
@@ -42,14 +42,24 @@ describe('PancakeSwap Universal Router Trade', () => {
   let WETH: ERC20Token
   let WETH_USDC_V2: Pair
   let USDC_USDT_V2: Pair
+  let WETH_USDC_V3_MEDIUM: Pool
+  let USDC_USDT_V3_LOW: Pool
   let UNIVERSAL_ROUTER: Address
   let PERMIT2: Address
 
   beforeEach(async () => {
-    ;({ UNIVERSAL_ROUTER, PERMIT2, ETHER, USDC, USDT, WETH, WETH_USDC_V2, USDC_USDT_V2 } = await fixtureAddresses(
-      chainId,
-      liquidity
-    ))
+    ;({
+      UNIVERSAL_ROUTER,
+      PERMIT2,
+      ETHER,
+      USDC,
+      USDT,
+      WETH,
+      WETH_USDC_V2,
+      USDC_USDT_V2,
+      USDC_USDT_V3_LOW,
+      WETH_USDC_V3_MEDIUM,
+    } = await fixtureAddresses(chainId, liquidity))
     wallet = getWalletClient({ chainId })
   })
 
@@ -343,7 +353,200 @@ describe('PancakeSwap Universal Router Trade', () => {
     })
   })
 
-  describe.skip('v3', () => {})
+  describe('v3', () => {
+    it('should encode a single exactInput ETH-USDC swap', async () => {
+      const amountIn = parseEther('1')
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
+
+      const trade = buildV3Trade(v3Trade, [v3Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a single exactInput ETH-USDC swap, with a fee', async () => {
+      const amountIn = parseEther('1')
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
+
+      const trade = buildV3Trade(v3Trade, [v3Pool])
+
+      const feeOptions: FeeOptions = {
+        fee: new Percent(5, 100),
+        recipient: zeroAddress,
+      }
+      const options = swapOptions({
+        fee: feeOptions,
+      })
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a single exactInput USDC->ETH swap', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(USDC, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
+
+      const trade = buildV3Trade(v3Trade, [v3Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a single exactInput USDC->ETH swap, with a fee', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(USDC, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
+      const trade = buildV3Trade(v3Trade, [v3Pool])
+
+      const feeOptions: FeeOptions = {
+        fee: new Percent(5, 100),
+        recipient: zeroAddress,
+      }
+      const options = swapOptions({
+        fee: feeOptions,
+      })
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a single exactInput USDC->ETH swap, with permit2', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(USDC, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
+
+      const trade = buildV3Trade(v3Trade, [v3Pool])
+
+      const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
+      const signature = await signPermit(permit, wallet, PERMIT2)
+      const permit2Permit: Permit2Permit = {
+        ...permit,
+        signature,
+      }
+      const options = swapOptions({
+        inputTokenPermit: permit2Permit,
+      })
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a exactInput ETH->USDC->USDT swap', async () => {
+      const amountIn = parseEther('1')
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM, USDC_USDT_V3_LOW], ETHER, USDT),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v3Pool: V3Pool[] = [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM), convertPoolToV3Pool(USDC_USDT_V3_LOW)]
+
+      const trade = buildV3Trade(v3Trade, v3Pool)
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a single exactOutput ETH->USDC swap', async () => {
+      const amountOut = parseUnits('1000', 6)
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(USDC, amountOut),
+        TradeType.EXACT_OUTPUT
+      )
+      const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
+
+      const trade = buildV3Trade(v3Trade, [v3Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).not.toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a single exactOutput USDC->ETH swap', async () => {
+      const amountOut = parseEther('1')
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(ETHER, amountOut),
+        TradeType.EXACT_OUTPUT
+      )
+      const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
+
+      const trade = buildV3Trade(v3Trade, [v3Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a exactOutput ETH->USDC->USDT swap', async () => {
+      const amountOut = parseUnits('1000', 6)
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM, USDC_USDT_V3_LOW], ETHER, USDT),
+        CurrencyAmount.fromRawAmount(USDT, amountOut),
+        TradeType.EXACT_OUTPUT
+      )
+      const v3Pool: V3Pool[] = [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM), convertPoolToV3Pool(USDC_USDT_V3_LOW)]
+
+      const trade = buildV3Trade(v3Trade, v3Pool)
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).not.toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+    it('should encode a exactOutput USDT->USDC->ETH swap', async () => {
+      const amountOut = parseEther('1')
+      const v3Trade = await V3Trade.fromRoute(
+        new V3Route([USDC_USDT_V3_LOW, WETH_USDC_V3_MEDIUM], USDT, ETHER),
+        CurrencyAmount.fromRawAmount(ETHER, amountOut),
+        TradeType.EXACT_OUTPUT
+      )
+      const v3Pool: V3Pool[] = [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM), convertPoolToV3Pool(USDC_USDT_V3_LOW)]
+
+      const trade = buildV3Trade(v3Trade, v3Pool)
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+  })
   describe.skip('mixed v2 & v3', () => {})
   describe.skip('multi-route', () => {})
 })
