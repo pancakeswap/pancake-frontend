@@ -16,7 +16,7 @@ export type PancakeSwapOptions = Omit<SwapOptions, 'inputTokenPermit'> & {
 }
 
 export type ChainConfig = {
-  router: string
+  router: `0x${string}`
   creationBlock: number
   weth: string
 }

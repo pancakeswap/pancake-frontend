@@ -59,7 +59,7 @@ const CHAIN_CONFIGS: { [key: number]: ChainConfig } = {
   },
 }
 
-export const UNIVERSAL_ROUTER_ADDRESS = (chainId: number): string => {
+export const UNIVERSAL_ROUTER_ADDRESS = (chainId: number): `0x${string}` => {
   if (!(chainId in CHAIN_CONFIGS)) throw new Error(`Universal Router not deployed on chain ${chainId}`)
   return CHAIN_CONFIGS[chainId].router
 }
@@ -72,7 +72,7 @@ export const WETH_ADDRESS = (chainId: number): string => {
   return CHAIN_CONFIGS[chainId].weth
 }
 
-export const PERMIT2_ADDRESS = '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768'
+export const PERMIT2_ADDRESS = '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768' as const
 
 export const SENDER_AS_RECIPIENT = '0x0000000000000000000000000000000000000001'
 export const ROUTER_AS_RECIPIENT = '0x0000000000000000000000000000000000000002'

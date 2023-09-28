@@ -1,6 +1,6 @@
 import { ERC20Token, Ether } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { CAKE as _CAKE, USDT as _USDT, USDC as _USDC } from '@pancakeswap/tokens/src/common'
+import { CAKE as _CAKE, USDT as _USDT, USDC as _USDC } from '@pancakeswap/tokens'
 import { zeroAddress } from 'viem'
 
 export { WETH9 } from '@pancakeswap/sdk'

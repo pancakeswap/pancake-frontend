@@ -3,6 +3,7 @@ import { CurrencyAmount, ERC20Token, Pair, computePairAddress, pancakePairV2ABI 
 import { CAKE, ETHER, USDC, USDT, WETH9 } from './constants/tokens'
 import { V2_FACTORY_ADDRESSES } from './constants/addresses'
 import { Provider, getPublicClient } from './clients'
+import { PERMIT2_ADDRESS, UNIVERSAL_ROUTER_ADDRESS } from '../../src'
 
 const fixtureTokensAddresses = (chainId: ChainId) => {
   return {
@@ -14,7 +15,7 @@ const fixtureTokensAddresses = (chainId: ChainId) => {
   }
 }
 
-const getPair = (tokenA: ERC20Token, tokenB: ERC20Token) => {
+const getPair = (tokenA: ERC20Token, tokenB: ERC20Token, liquidity?: bigint) => {
   return async (getClient: Provider) => {
     // eslint-disable-next-line no-console
     console.assert(tokenA.chainId === tokenB.chainId, 'Invalid token pair')
@@ -22,30 +23,44 @@ const getPair = (tokenA: ERC20Token, tokenB: ERC20Token) => {
     const client = getClient({ chainId })
     const pairAddress = computePairAddress({ factoryAddress: V2_FACTORY_ADDRESSES[chainId], tokenA, tokenB })
 
-    const [reserve0, reserve1] = await client.readContract({
-      abi: pancakePairV2ABI,
-      address: pairAddress,
-      functionName: 'getReserves',
-    })
+    let reserve0: bigint
+    let reserve1: bigint
+    // @notice: to match off-chain testing ,we can use fixed liquid to match snapshots
+    if (liquidity) {
+      reserve0 = liquidity
+      reserve1 = liquidity
+    } else {
+      ;[reserve0, reserve1] = await client.readContract({
+        abi: pancakePairV2ABI,
+        address: pairAddress,
+        functionName: 'getReserves',
+      })
+    }
     const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
 
     return new Pair(CurrencyAmount.fromRawAmount(token0, reserve0), CurrencyAmount.fromRawAmount(token1, reserve1))
   }
 }
 
-export const fixtureAddresses = async (chainId: ChainId) => {
+export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => {
   const tokens = fixtureTokensAddresses(chainId)
-  const { ETHER, USDC, USDT, WETH } = tokens
+  const { ETHER, USDC, USDT, WETH, CAKE } = tokens
 
   const v2Pairs = {
-    WETH_USDC_V2: await getPair(WETH, USDC)(getPublicClient),
+    WETH_USDC_V2: await getPair(WETH, USDC, liquidity)(getPublicClient),
+    USDC_USDT_V2: await getPair(USDT, USDC, liquidity)(getPublicClient),
   }
 
   const v3Pools = {}
+
+  const UNIVERSAL_ROUTER = UNIVERSAL_ROUTER_ADDRESS(chainId)
+  const PERMIT2 = PERMIT2_ADDRESS
 
   return {
     ...tokens,
     ...v2Pairs,
     ...v3Pools,
+    UNIVERSAL_ROUTER,
+    PERMIT2,
   }
 }
