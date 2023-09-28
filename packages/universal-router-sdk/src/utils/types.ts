@@ -1,13 +1,14 @@
 import { BigintIsh, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade, SwapOptions } from '@pancakeswap/smart-router/evm'
+import { Address } from 'viem'
 import type { AbiParametersToPrimitiveTypes } from 'abitype'
 import { Permit2Permit } from './inputTokens'
-import { ABI_PARAMETER, CommandType } from './routerCommands'
+import { ABI_PARAMETER, CommandUsed } from './routerCommands'
 
 export type AnyTradeType = SmartRouterTrade<TradeType> | SmartRouterTrade<TradeType>[]
 
 export type SwapRouterConfig = {
-  sender?: string // address
+  sender?: Address // address
   deadline?: BigintIsh | undefined
 }
 
@@ -16,10 +17,10 @@ export type PancakeSwapOptions = Omit<SwapOptions, 'inputTokenPermit'> & {
 }
 
 export type ChainConfig = {
-  router: `0x${string}`
+  router: Address
   creationBlock: number
-  weth: string
+  weth: Address
 }
 
 export type ABIType = typeof ABI_PARAMETER
-export type ABIParametersType<TCommandType extends CommandType> = AbiParametersToPrimitiveTypes<ABIType[TCommandType]>
+export type ABIParametersType<TCommandType extends CommandUsed> = AbiParametersToPrimitiveTypes<ABIType[TCommandType]>
