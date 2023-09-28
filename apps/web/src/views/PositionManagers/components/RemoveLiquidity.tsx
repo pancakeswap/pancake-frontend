@@ -68,7 +68,7 @@ Props) {
 
   const withdrawThenBurn = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() =>
-      wrapperContract.write.withdrawThenBurn([amountA?.quotient, '0x'], {}),
+      wrapperContract.write.withdrawThenBurn([amountA?.quotient + amountB.quotient, '0x'], {}),
     )
     if (receipt?.status) {
       refetch?.()
@@ -80,7 +80,7 @@ Props) {
         </ToastDescriptionWithTx>,
       )
     }
-  }, [amountA, wrapperContract, t, toastSuccess, fetchWithCatchTxError, refetch, onDismiss])
+  }, [amountA, wrapperContract, t, toastSuccess, fetchWithCatchTxError, refetch, onDismiss, amountB])
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
