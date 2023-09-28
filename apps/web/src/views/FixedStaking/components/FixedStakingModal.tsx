@@ -117,18 +117,7 @@ export function FixedStakingModal({
                       </Button>
                     ))}
                   </Flex>
-                  <Flex mt="8px">
-                    <InfoFilledIcon
-                      style={{
-                        alignSelf: 'baseline',
-                        marginTop: '4px',
-                        marginRight: '8px',
-                      }}
-                      color="textSubtle"
-                      mr="4px"
-                    />
-                    <WithdrawalMessage lockPeriod={lockPeriod} />
-                  </Flex>
+                  <WithdrawalMessage lockPeriod={lockPeriod} />
                   {isStaked ? (
                     <Message variant="warning" my="8px">
                       <MessageText>

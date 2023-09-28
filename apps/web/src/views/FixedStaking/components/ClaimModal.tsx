@@ -7,13 +7,14 @@ import { formatTime } from 'utils/formatTime'
 
 import { UnstakeEndedModal } from './UnstakeModal'
 import { HarvestModal } from './HarvestModal'
-import { PoolGroup, StakePositionUserInfo } from '../type'
+import { PoolGroup, StakePositionUserInfo, StakedPosition } from '../type'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { ModalTitle } from './ModalTitle'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
 import { useCurrentDay } from '../hooks/useStakedPools'
+import useIsBoost from '../hooks/useIsBoost'
 
 export function ClaimModal({
   token,
@@ -27,9 +28,9 @@ export function ClaimModal({
   boostAPR,
   unlockAPR,
   poolEndDay,
-  isBoost,
+  stakePosition,
 }: {
-  isBoost: boolean
+  stakePosition: StakedPosition
   poolEndDay: number
   token: Token
   lockPeriod: number
@@ -54,13 +55,21 @@ export function ClaimModal({
   )
   const currentDay = useCurrentDay()
 
-  const apr = useMemo(() => (isBoost ? boostAPR : lockAPR), [boostAPR, isBoost, lockAPR])
+  const apr = useMemo(
+    () => (stakePositionUserInfo.boost ? boostAPR : lockAPR),
+    [boostAPR, lockAPR, stakePositionUserInfo.boost],
+  )
+
+  const isBoost = useIsBoost({
+    minBoostAmount: stakePosition.pool.minBoostAmount,
+    boostDayPercent: stakePosition.pool.boostDayPercent,
+  })
 
   const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
     amountDeposit,
     lastDayAction: currentDay,
     lockPeriod,
-    apr,
+    apr: isBoost ? boostAPR : lockAPR,
     poolEndDay,
     unlockAPR,
   })

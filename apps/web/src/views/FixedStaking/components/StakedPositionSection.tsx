@@ -16,7 +16,6 @@ import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { useCurrentDay } from '../hooks/useStakedPools'
-import useIsBoost from '../hooks/useIsBoost'
 
 const FlexLeft = styled(Flex)`
   width: 100%;
@@ -167,12 +166,7 @@ export function StakedPositionSection({
 
   const stakedPositions = useMemo(() => [stakePosition], [stakePosition])
 
-  const isBoost = useIsBoost({
-    minBoostAmount: stakePosition.pool.minBoostAmount,
-    boostDayPercent: stakePosition.pool.boostDayPercent,
-  })
-
-  const apr = isBoost ? boostAPR : lockAPR
+  const apr = stakePosition.userInfo.boost ? boostAPR : lockAPR
 
   const currentDay = useCurrentDay()
 
@@ -187,9 +181,9 @@ export function StakedPositionSection({
         projectedReturnAmount={projectedReturnAmount}
       />
       <ClaimModal
-        isBoost={isBoost}
         poolEndDay={poolEndDay}
         stakedPeriods={stakedPeriods}
+        stakePosition={stakePosition}
         pool={pool}
         lockAPR={lockAPR}
         boostAPR={boostAPR}
