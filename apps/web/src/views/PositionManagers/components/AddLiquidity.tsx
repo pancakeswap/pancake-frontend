@@ -161,6 +161,7 @@ export const AddLiquidity = memo(function AddLiquidity({
             amountA={allowDepositToken0 ? amountA : null}
             amountB={allowDepositToken1 ? amountB : null}
             contractAddress={contractAddress}
+            disabled={amountA.equalTo('0') || amountB.equalTo('0')}
             onDone={() => {
               onDismiss?.()
               refetch?.()
@@ -176,6 +177,7 @@ interface AddLiquidityButtonProps {
   amountA: CurrencyAmount<Currency>
   amountB: CurrencyAmount<Currency>
   contractAddress: `0x${string}`
+  disabled?: boolean
   onDone?: () => void
 }
 
@@ -183,6 +185,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
   amountA,
   amountB,
   contractAddress,
+  disabled,
   onDone,
 }: AddLiquidityButtonProps) {
   const { t } = useTranslation()
@@ -241,7 +244,8 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
         isLoading={pendingTx}
         disabled={
           (amountA && approvalStateToken0 !== ApprovalState.APPROVED) ||
-          (amountB && approvalStateToken1 !== ApprovalState.APPROVED)
+          (amountB && approvalStateToken1 !== ApprovalState.APPROVED) ||
+          disabled
         }
       >
         {t('Confirm')}

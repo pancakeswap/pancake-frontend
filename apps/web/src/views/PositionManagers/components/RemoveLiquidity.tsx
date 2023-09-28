@@ -102,7 +102,7 @@ Props) {
           <CurrencyAmountDisplay currency={currencyB} mt="8px" amount={amountB} priceUSD={token1PriceUSD} />
         </InnerCard>
         <PercentSlider percent={percent} onChange={setPercent} mt="1em" />
-        <RemoveLiquidityButton mt="1.5em" onClick={withdrawThenBurn} isLoading={pendingTx} />
+        <RemoveLiquidityButton mt="1.5em" onClick={withdrawThenBurn} isLoading={pendingTx} disabled={percent <= 0} />
       </StyledModal>
     </ModalV2>
   )
@@ -149,17 +149,19 @@ const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
 interface RemoveLiquidityButtonProps extends SpaceProps {
   onClick?: () => void
   isLoading?: boolean
+  disabled?: boolean
 }
 
 export const RemoveLiquidityButton = memo(function RemoveLiquidityButton({
   onClick,
   isLoading,
+  disabled,
   ...rest
 }: RemoveLiquidityButtonProps) {
   const { t } = useTranslation()
   return (
     <Box {...rest}>
-      <Button isLoading={isLoading} mt="0.5em" variant="primary" width="100%" onClick={onClick}>
+      <Button isLoading={isLoading} mt="0.5em" variant="primary" width="100%" onClick={onClick} disabled={disabled}>
         {t('Confirm')}
       </Button>
     </Box>

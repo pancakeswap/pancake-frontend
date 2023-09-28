@@ -1,4 +1,4 @@
-import { Native, ChainId, Percent } from '@pancakeswap/sdk'
+import { Native, Percent } from '@pancakeswap/sdk'
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 
