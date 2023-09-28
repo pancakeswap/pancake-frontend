@@ -136,12 +136,12 @@ export const AddLiquidity = memo(function AddLiquidity({
         </RowBetween>
         {allowDepositToken0 && (
           <Flex mt="1em">
-            <StyledCurrencyInput currency={currencyA} balance={amountA} value={valueA} onChange={onCurrencyAChange} />
+            <StyledCurrencyInput currency={currencyA} value={valueA} onChange={onCurrencyAChange} />
           </Flex>
         )}
         {allowDepositToken1 && (
           <Flex mt="1em">
-            <StyledCurrencyInput currency={currencyB} balance={amountA} value={valueB} onChange={onCurrencyBChange} />
+            <StyledCurrencyInput currency={currencyB} value={valueB} onChange={onCurrencyBChange} />
           </Flex>
         )}
         <Flex mt="1.5em" flexDirection="column">
