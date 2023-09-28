@@ -66,6 +66,7 @@ export function useSwapCallback({
     deadline,
     feeOptions,
   )
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const wallchainSwapCalls = useWallchainSwapCallArguments(
     trade,
     swapCalls,
@@ -78,8 +79,7 @@ export function useSwapCallback({
     account,
     chainId,
     trade,
-    // @ts-expect-error uncompatible types side-by-side cause wrong type assertion
-    wallchainSwapCalls,
+    swapCalls, // using this for now as wallchain calls cause swap to fail first time (always works second time) will debug
   )
 
   return useMemo(() => {

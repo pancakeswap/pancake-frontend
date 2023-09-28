@@ -14,7 +14,7 @@ const CHAIN_CONFIGS: { [key: number]: ChainConfig } = {
   },
   // goerli
   [ChainId.GOERLI]: {
-    router: '0xB0A8a4A46786EAd7D60E236e69257Ba27355A3Ae',
+    router: '0xC46abF8B66Df4B9Eb0cC0cf6eba24226AC6E6285',
     weth: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
     creationBlock: 9758537,
     permit2Address: '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768',
@@ -27,7 +27,7 @@ const CHAIN_CONFIGS: { [key: number]: ChainConfig } = {
     permit2Address: '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768',
   },
   [ChainId.BSC_TESTNET]: {
-    router: '0x4bC641488dd00729ED9dDe94AF53d859b55eDE1c',
+    router: '0x9A082015c919AD0E47861e5Db9A1c7070E81A2C7',
     weth: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
     creationBlock: 33658520,
     permit2Address: '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768',
@@ -134,3 +134,6 @@ export const ROUTER_AS_RECIPIENT = '0x0000000000000000000000000000000000000002'
 
 export const OPENSEA_CONDUIT_SPENDER_ID = 0
 export const SUDOSWAP_SPENDER_ID = 1
+
+export const SIGNATURE_LENGTH = 65
+export const EIP_2098_SIGNATURE_LENGTH = 64
