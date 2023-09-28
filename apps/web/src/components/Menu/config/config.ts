@@ -13,6 +13,7 @@ import {
   SwapIcon,
 } from '@pancakeswap/uikit'
 import {
+  FIXED_STAKING_SUPPORTED_CHAINS,
   LIQUID_STAKING_SUPPORTED_CHAINS,
   SUPPORT_BUY_CRYPTO,
   SUPPORT_FARMS,
@@ -120,7 +121,7 @@ const config: (
         {
           label: t('Fixed Staking'),
           href: '/fixed-staking',
-          supportChainIds: POOL_SUPPORTED_CHAINS,
+          supportChainIds: FIXED_STAKING_SUPPORTED_CHAINS,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
