@@ -210,11 +210,11 @@ export class RoutePlanner {
     this.addCommand(CommandType.EXECUTE_SUB_PLAN, [subplan.commands, subplan.inputs], true)
   }
 
-  addCommand = <TCommandType extends CommandUsed>(
+  addCommand<TCommandType extends CommandUsed>(
     type: TCommandType,
     parameters: ABIParametersType<TCommandType>,
     allowRevert = false
-  ): void => {
+  ): void {
     const command = createCommand(type, parameters)
     this.inputs.push(command.encodedInput)
     if (allowRevert) {

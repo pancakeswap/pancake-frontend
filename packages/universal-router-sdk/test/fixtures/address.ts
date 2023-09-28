@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { CurrencyAmount, ERC20Token, Pair, computePairAddress, pancakePairV2ABI } from '@pancakeswap/sdk'
-import { CAKE, ETHER, USDC, USDT, WETH9 } from './constants/tokens'
+import { SmartRouter, StablePool } from '@pancakeswap/smart-router/evm'
+import { CAKE, ETHER, USDC, USDT, WETH9, BUSD } from './constants/tokens'
 import { V2_FACTORY_ADDRESSES } from './constants/addresses'
 import { Provider, getPublicClient } from './clients'
 import { PERMIT2_ADDRESS, UNIVERSAL_ROUTER_ADDRESS } from '../../src'
@@ -12,7 +13,24 @@ const fixtureTokensAddresses = (chainId: ChainId) => {
     USDT: USDT[chainId],
     CAKE: CAKE[chainId],
     WETH: WETH9[chainId],
+    BUSD: BUSD[chainId],
   }
+}
+
+export const getStablePool = async (
+  tokenA: ERC20Token,
+  tokenB: ERC20Token,
+  provider: Provider
+): Promise<StablePool> => {
+  const pools = await SmartRouter.getStableCandidatePools({
+    currencyA: tokenA,
+    currencyB: tokenB,
+    onChainProvider: provider,
+  })
+
+  if (!pools.length) throw new ReferenceError(`No Stable Pool found with token ${tokenA.symbol}/${tokenB.symbol}`)
+
+  return pools[0]
 }
 
 const getPair = (tokenA: ERC20Token, tokenB: ERC20Token, liquidity?: bigint) => {

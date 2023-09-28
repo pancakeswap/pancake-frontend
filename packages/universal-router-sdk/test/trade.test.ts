@@ -12,11 +12,11 @@ import {
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { PoolType, V2Pool } from '@pancakeswap/smart-router/evm'
 import { hexToString, parseEther, parseUnits, Address, WalletClient, zeroAddress } from 'viem'
-import { fixtureAddresses } from './fixtures/address'
-import { getWalletClient } from './fixtures/clients'
+import { fixtureAddresses, getStablePool } from './fixtures/address'
+import { getPublicClient, getWalletClient } from './fixtures/clients'
 import { PancakeUniSwapRouter } from '../src'
 import { PancakeSwapOptions } from '../src/utils/types'
-import { buildV2Trade } from './utils/buildTrade'
+import { buildStableTrade, buildV2Trade } from './utils/buildTrade'
 import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
 import { Permit2Permit } from '../src/utils/inputTokens'
 
@@ -343,9 +343,90 @@ describe('PancakeSwap Universal Router Trade', () => {
     })
   })
 
-  describe.skip('v2 StableSwap', () => {})
   describe.skip('v3', () => {})
-  describe.skip('v3 StableSwap', () => {})
   describe.skip('mixed v2 & v3', () => {})
   describe.skip('multi-route', () => {})
+})
+
+describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', () => {
+  const chainId = ChainId.BSC
+  const liquidity = parseEther('1000')
+
+  let wallet: WalletClient
+
+  let USDC: ERC20Token
+  let USDT: ERC20Token
+  let BUSD: ERC20Token
+  let UNIVERSAL_ROUTER: Address
+  let PERMIT2: Address
+
+  beforeEach(async () => {
+    ;({ UNIVERSAL_ROUTER, PERMIT2, USDC, USDT, BUSD } = await fixtureAddresses(chainId, liquidity))
+    wallet = getWalletClient({ chainId })
+  })
+
+  it('should encode a single exactInput USDT->USDC swap', async () => {
+    const amountIn = parseUnits('1000', 6)
+
+    const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+    const trade = buildStableTrade(USDT, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
+
+    const options = swapOptions({})
+
+    const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+    expect(hexToString(value)).toEqual('0')
+    expect(calldata).toMatchSnapshot()
+  })
+  it('should encode a single exactInput USDT->USDC swap, with fee', async () => {
+    const amountIn = parseUnits('1000', 6)
+
+    const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+    const trade = buildStableTrade(USDT, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
+
+    const feeOptions: FeeOptions = {
+      recipient: zeroAddress,
+      fee: new Percent(5, 100),
+    }
+    const options = swapOptions({ fee: feeOptions })
+
+    const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+    expect(hexToString(value)).toEqual('0')
+    expect(calldata).toMatchSnapshot()
+  })
+  it('should encode a single exactInput USDT->USDC swap, with permit2', async () => {
+    const amountIn = parseUnits('1000', 6)
+
+    const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+    const trade = buildStableTrade(USDT, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
+
+    const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
+    const signature = await signPermit(permit, wallet, PERMIT2)
+    const permit2Permit: Permit2Permit = {
+      ...permit,
+      signature,
+    }
+    const options = swapOptions({
+      inputTokenPermit: permit2Permit,
+    })
+
+    const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+    expect(hexToString(value)).toEqual('0')
+    expect(calldata).toMatchSnapshot()
+  })
+  it('should encode a exactInput USDT->USDC->BUSD swap', async () => {
+    const amountIn = parseUnits('1000', 6)
+
+    const USDT_USDC_POOL = await getStablePool(USDT, USDC, getPublicClient)
+    const USDC_BUSD_POOL = await getStablePool(USDC, BUSD, getPublicClient)
+
+    const trade = buildStableTrade(USDT, CurrencyAmount.fromRawAmount(USDT, amountIn), [USDT_USDC_POOL, USDC_BUSD_POOL])
+
+    const options = swapOptions({})
+    const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+    expect(hexToString(value)).toEqual('0')
+    expect(calldata).toMatchSnapshot()
+  })
 })
