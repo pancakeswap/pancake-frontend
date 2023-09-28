@@ -185,6 +185,11 @@ const config: (
         {
           label: t('Saturn Syndicate'),
           href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-6-saturn-syndicate-perpetual-trading-galore',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('Uranus Memories'),
+          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-uranus-memories-share-your-favorite-memory-and-product-on-pancake-swap',
           status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
