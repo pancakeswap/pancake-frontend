@@ -26,10 +26,7 @@ const ZKSYNC_URLS = [PANCAKE_ZKSYNC_DEFAULT, 'https://tokens.coingecko.com/zksyn
 const OP_SUPER_CHAIN_URL =
   'https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json'
 const BASE_URLS = [PANCAKE_BASE_DEFAULT, OP_SUPER_CHAIN_URL, 'https://tokens.coingecko.com/base/all.json']
-const OPBNB_URLS = [
-  PANCAKE_OPBNB_DEFAULT,
-  'https://raw.githubusercontent.com/bnb-chain/opbnb-bridge-tokens/main/opbnb.tokenlist.json',
-]
+const OPBNB_URLS = [PANCAKE_OPBNB_DEFAULT]
 
 // List of official tokens list
 export const OFFICIAL_LISTS = [PANCAKE_EXTENDED, PANCAKE_ETH_DEFAULT]
