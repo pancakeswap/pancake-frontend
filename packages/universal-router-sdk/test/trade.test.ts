@@ -9,27 +9,343 @@ import {
   TradeType,
   Percent,
 } from '@pancakeswap/sdk'
-import { hexToString, parseEther } from 'viem'
+import { FeeOptions } from '@pancakeswap/v3-sdk'
+import { PoolType, V2Pool } from '@pancakeswap/smart-router/evm'
+import { hexToString, parseEther, parseUnits, Address, WalletClient, zeroAddress } from 'viem'
 import { fixtureAddresses } from './fixtures/address'
-import { PancakeUniSwapRouter, PancakeSwapTrade } from '../src'
+import { getWalletClient } from './fixtures/clients'
+import { PancakeUniSwapRouter } from '../src'
 import { PancakeSwapOptions } from '../src/utils/types'
+import { buildV2Trade } from './utils/buildTrade'
+import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
+import { Permit2Permit } from '../src/utils/inputTokens'
+
+const swapOptions = (options: Partial<PancakeSwapOptions>): PancakeSwapOptions => {
+  let slippageTolerance = new Percent(5, 100)
+  if (options.fee) slippageTolerance = slippageTolerance.add(options.fee.fee)
+  return {
+    slippageTolerance,
+    recipient: zeroAddress,
+    ...options,
+  }
+}
 
 describe('PancakeSwap Universal Router Trade', () => {
   const chainId = ChainId.ETHEREUM
+  const liquidity = parseEther('1000')
+
+  let wallet: WalletClient
+
   let ETHER: Ether
   let USDC: ERC20Token
   let USDT: ERC20Token
   let WETH: ERC20Token
   let WETH_USDC_V2: Pair
+  let USDC_USDT_V2: Pair
+  let UNIVERSAL_ROUTER: Address
+  let PERMIT2: Address
 
-  beforeAll(async () => {
-    ;({ ETHER, USDC, USDT, WETH, WETH_USDC_V2 } = await fixtureAddresses(chainId))
+  beforeEach(async () => {
+    ;({ UNIVERSAL_ROUTER, PERMIT2, ETHER, USDC, USDT, WETH, WETH_USDC_V2, USDC_USDT_V2 } = await fixtureAddresses(
+      chainId,
+      liquidity
+    ))
+    wallet = getWalletClient({ chainId })
   })
 
   describe('v2', () => {
-    it('should encode a single exactIn ETH -> USDC Swap', async () => {})
+    it('should encode a single exactInput ETH->USDC Swap', async () => {
+      const amountIn = parseEther('1')
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pool: V2Pool = {
+        type: PoolType.V2,
+        reserve0: WETH_USDC_V2.reserve0,
+        reserve1: WETH_USDC_V2.reserve1,
+      }
+      const trade = buildV2Trade(v2Trade, [v2Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode a single exactInput ETH->USDC Swap, with USDC fee', async () => {
+      const amountIn = parseEther('1')
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pool: V2Pool = {
+        type: PoolType.V2,
+        reserve0: WETH_USDC_V2.reserve0,
+        reserve1: WETH_USDC_V2.reserve1,
+      }
+      const trade = buildV2Trade(v2Trade, [v2Pool])
+      const feeOptions = {
+        recipient: zeroAddress,
+        fee: new Percent(5, 100),
+      }
+      const options = swapOptions({
+        fee: feeOptions,
+      })
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode a exactInput ETH->USDC->USDT Swap', async () => {
+      const amountIn = parseEther('1')
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2, USDC_USDT_V2], ETHER, USDT),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pools: V2Pool[] = [
+        {
+          type: PoolType.V2,
+          reserve0: WETH_USDC_V2.reserve0,
+          reserve1: WETH_USDC_V2.reserve1,
+        },
+        {
+          type: PoolType.V2,
+          reserve0: USDC_USDT_V2.reserve0,
+          reserve1: USDC_USDT_V2.reserve1,
+        },
+      ]
+      const trade = buildV2Trade(v2Trade, v2Pools)
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode a exactInput ETH->USDC->USDT Swap, with USDT fee', async () => {
+      const amountIn = parseEther('1')
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2, USDC_USDT_V2], ETHER, USDT),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pools: V2Pool[] = [
+        {
+          type: PoolType.V2,
+          reserve0: WETH_USDC_V2.reserve0,
+          reserve1: WETH_USDC_V2.reserve1,
+        },
+        {
+          type: PoolType.V2,
+          reserve0: USDC_USDT_V2.reserve0,
+          reserve1: USDC_USDT_V2.reserve1,
+        },
+      ]
+      const trade = buildV2Trade(v2Trade, v2Pools)
+      const feeOptions: FeeOptions = {
+        recipient: zeroAddress,
+        fee: new Percent(5, 100),
+      }
+      const options = swapOptions({ fee: feeOptions })
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual(amountIn.toString())
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode a single exactInput USDC->ETH Swap', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(USDC, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pool: V2Pool = {
+        type: PoolType.V2,
+        reserve0: WETH_USDC_V2.reserve0,
+        reserve1: WETH_USDC_V2.reserve1,
+      }
+      const trade = buildV2Trade(v2Trade, [v2Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode a single exactInput USDC->ETH Swap, with WETH fee', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(USDC, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pool: V2Pool = {
+        type: PoolType.V2,
+        reserve0: WETH_USDC_V2.reserve0,
+        reserve1: WETH_USDC_V2.reserve1,
+      }
+      const trade = buildV2Trade(v2Trade, [v2Pool])
+      const feeOptions = {
+        recipient: zeroAddress,
+        fee: new Percent(5, 100),
+      }
+      const options = swapOptions({
+        fee: feeOptions,
+      })
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode a single exactInput USDC->ETH swap, with permit2', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(USDC, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pool: V2Pool = {
+        type: PoolType.V2,
+        reserve0: WETH_USDC_V2.reserve0,
+        reserve1: WETH_USDC_V2.reserve1,
+      }
+      const trade = buildV2Trade(v2Trade, [v2Pool])
+
+      const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
+      const signature = await signPermit(permit, wallet, PERMIT2)
+      const permit2Permit: Permit2Permit = {
+        ...permit,
+        signature,
+      }
+
+      const options = swapOptions({
+        inputTokenPermit: permit2Permit,
+      })
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode a single exactInput USDC->ETH swap, with EIP-2098 permit', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(USDC, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pool: V2Pool = {
+        type: PoolType.V2,
+        reserve0: WETH_USDC_V2.reserve0,
+        reserve1: WETH_USDC_V2.reserve1,
+      }
+      const trade = buildV2Trade(v2Trade, [v2Pool])
+
+      const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
+      const signature = await signEIP2098Permit(permit, wallet, PERMIT2)
+      const permit2Permit: Permit2Permit = {
+        ...permit,
+        signature,
+      }
+
+      const options = swapOptions({
+        inputTokenPermit: permit2Permit,
+      })
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode exactInput USDT->USDC->ETH swap', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v2Trade = new V2Trade(
+        new V2Route([USDC_USDT_V2, WETH_USDC_V2], USDT, ETHER),
+        CurrencyAmount.fromRawAmount(USDT, amountIn),
+        TradeType.EXACT_INPUT
+      )
+      const v2Pools: V2Pool[] = [
+        {
+          type: PoolType.V2,
+          reserve0: USDC_USDT_V2.reserve0,
+          reserve1: USDC_USDT_V2.reserve1,
+        },
+        {
+          type: PoolType.V2,
+          reserve0: WETH_USDC_V2.reserve0,
+          reserve1: WETH_USDC_V2.reserve1,
+        },
+      ]
+      const trade = buildV2Trade(v2Trade, v2Pools)
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode exactOutput ETH-USDC swap', async () => {
+      const amountOut = parseEther('1')
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(USDC, amountOut),
+        TradeType.EXACT_OUTPUT
+      )
+      const v2Pool: V2Pool = {
+        type: PoolType.V2,
+        reserve0: WETH_USDC_V2.reserve0,
+        reserve1: WETH_USDC_V2.reserve1,
+      }
+      const trade = buildV2Trade(v2Trade, [v2Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).not.toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
+
+    it('should encode exactOutput USDC-ETH swap', async () => {
+      const amountOut = parseEther('1')
+      const v2Trade = new V2Trade(
+        new V2Route([WETH_USDC_V2], USDC, ETHER),
+        CurrencyAmount.fromRawAmount(ETHER, amountOut),
+        TradeType.EXACT_OUTPUT
+      )
+      const v2Pool: V2Pool = {
+        type: PoolType.V2,
+        reserve0: WETH_USDC_V2.reserve0,
+        reserve1: WETH_USDC_V2.reserve1,
+      }
+      const trade = buildV2Trade(v2Trade, [v2Pool])
+      const options = swapOptions({})
+
+      const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(hexToString(value)).toEqual('0')
+      expect(calldata).toMatchSnapshot()
+    })
   })
-  describe('v3', () => {})
-  describe('mixed v2 & v3', () => {})
-  describe('multi-route', () => {})
+
+  describe.skip('v2 StableSwap', () => {})
+  describe.skip('v3', () => {})
+  describe.skip('v3 StableSwap', () => {})
+  describe.skip('mixed v2 & v3', () => {})
+  describe.skip('multi-route', () => {})
 })
