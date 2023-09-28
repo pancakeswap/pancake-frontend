@@ -128,7 +128,6 @@ export const opbnb = {
       blockCreated: 512881,
     },
   },
-  testnet: true,
 } as const satisfies Chain
 
 export const linea = {
