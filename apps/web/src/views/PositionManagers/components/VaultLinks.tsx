@@ -53,14 +53,10 @@ export const VaultLinks = memo(function VaultLinks({
   )
 
   const managerLink = managerContractAddress ? (
-    <StyledScanLink chainId={chainId} href={managerContractAddress}>
-      {t('View Manager')}
-    </StyledScanLink>
+    <StyledScanLink href={managerContractAddress}>{t('View Manager')}</StyledScanLink>
   ) : null
   const vaultLink = vaultContractAddress ? (
-    <StyledScanLink chainId={chainId} href={vaultContractAddress}>
-      {t('View Vault Contract')}
-    </StyledScanLink>
+    <StyledScanLink href={vaultContractAddress}>{t('View Vault Contract')}</StyledScanLink>
   ) : null
 
   return (
