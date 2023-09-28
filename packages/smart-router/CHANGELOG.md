@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.8.8
+
+### Patch Changes
+
+- 1577caa6f: Add default import path for evm
+
 ## 4.8.7
 
 ### Patch Changes
