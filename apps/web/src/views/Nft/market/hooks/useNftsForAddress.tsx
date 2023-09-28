@@ -7,7 +7,8 @@ import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
 import useSWR from 'swr'
 import { FetchStatus } from 'config/constants/types'
 import { usePreviousValue } from '@pancakeswap/hooks'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
+import { isAddress } from 'viem'
 
 export const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
   const { data: collections } = useGetCollections()
@@ -36,7 +37,7 @@ export const useCollectionsNftsForAddress = (
     if (hasProfileNft) {
       return {
         tokenId: profileNftTokenId,
-        collectionAddress: isAddress(profileNftCollectionAddress) || undefined,
+        collectionAddress: safeGetAddress(profileNftCollectionAddress),
         nftLocation: NftLocation.PROFILE,
       }
     }
@@ -46,8 +47,7 @@ export const useCollectionsNftsForAddress = (
   // @ts-ignore
   const { status, data, mutate, resetLaggy } = useSWR(
     !isProfileFetching && !isEmpty(collections) && isAddress(account) ? [account, 'userNfts'] : null,
-    async () =>
-      getCompleteAccountNftData(isAddress(account) || undefined, collections, profileNftWithCollectionAddress),
+    async () => getCompleteAccountNftData(safeGetAddress(account), collections, profileNftWithCollectionAddress),
     {
       keepPreviousData: true,
     },

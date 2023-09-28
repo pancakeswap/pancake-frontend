@@ -6,8 +6,8 @@ import memoize from 'lodash/memoize'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { chains } from './wagmi'
 
-// returns the checksummed address if the address is valid, otherwise returns false
-export const isAddress = memoize((value: any): `0x${string}` | false => {
+// returns the checksummed address if the address is valid, otherwise returns undefined
+export const safeGetAddress = memoize((value: any): `0x${string}` | undefined => {
   try {
     let value_ = value
     if (typeof value === 'string' && !value.startsWith('0x')) {
@@ -15,7 +15,7 @@ export const isAddress = memoize((value: any): `0x${string}` | false => {
     }
     return getAddress(value_)
   } catch {
-    return false
+    return undefined
   }
 })
 

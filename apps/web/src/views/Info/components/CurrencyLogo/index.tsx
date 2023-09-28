@@ -3,7 +3,7 @@ import { TokenLogo } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { multiChainId, MultiChainName } from 'state/info/constant'
 import { styled } from 'styled-components'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { Address } from 'viem'
 import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
 
@@ -29,9 +29,9 @@ export const CurrencyLogo: React.FC<
   }, [address, chainName])
 
   const imagePath = chainName === 'BSC' ? '' : `${chainName?.toLowerCase()}/`
-  const checkedSumAddress = isAddress(address)
-  const srcFromPCS = checkedSumAddress
-    ? `https://tokens.pancakeswap.finance/images/${imagePath}${checkedSumAddress}.png`
+  const checkedsummedAddress = safeGetAddress(address)
+  const srcFromPCS = checkedsummedAddress
+    ? `https://tokens.pancakeswap.finance/images/${imagePath}${checkedsummedAddress}.png`
     : ''
   return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" useFilledIcon {...rest} />
 }

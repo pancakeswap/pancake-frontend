@@ -9,9 +9,10 @@ import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
 import { useAudioPlay } from '@pancakeswap/utils/user'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { whiteListedFiatCurrenciesMap } from 'views/BuyCrypto/constants'
+import { isAddress } from 'viem'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
@@ -43,7 +44,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
   const activeTokens = useAllTokens()
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
-    const filterToken = createFilterToken(search, (address) => Boolean(isAddress(address)))
+    const filterToken = createFilterToken(search, (address) => isAddress(address))
     const exactMatches: WrappedTokenInfo[] = []
     const rest: WrappedTokenInfo[] = []
     const addressSet: { [address: string]: true } = {}
@@ -61,7 +62,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
         ) {
           const wrapped: WrappedTokenInfo = new WrappedTokenInfo({
             ...tokenInfo,
-            address: isAddress(tokenInfo.address) || tokenInfo.address,
+            address: safeGetAddress(tokenInfo.address) || tokenInfo.address,
           })
           addressSet[wrapped.address] = true
           if (
@@ -121,7 +122,7 @@ function CurrencySearch({
   }, [debouncedQuery, native, tokensToShow, mode])
 
   const filteredTokens: Token[] = useMemo(() => {
-    const filterToken = createFilterToken(debouncedQuery, (address) => Boolean(isAddress(address)))
+    const filterToken = createFilterToken(debouncedQuery, (address) => isAddress(address))
     return Object.values(tokensToShow || allTokens).filter(filterToken)
   }, [tokensToShow, allTokens, debouncedQuery])
 
@@ -158,7 +159,7 @@ function CurrencySearch({
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
-    const checksummedInput = isAddress(input)
+    const checksummedInput = safeGetAddress(input)
     setSearchQuery(checksummedInput || input)
     fixedList.current?.scrollTo(0)
   }, [])

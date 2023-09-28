@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useGasPrice } from 'state/user/hooks'
 import { Hash, hexToBigInt } from 'viem'
-import { calculateGasMargin, isAddress } from 'utils'
+import { calculateGasMargin, safeGetAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
@@ -139,7 +139,7 @@ export function useSwapCallback(
             } ${outputAmount} ${outputSymbol}`
 
             const recipientAddressText =
-              recipientAddress && isAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
+              recipientAddress && safeGetAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
 
             const withRecipient = recipient === account ? base : `${base} to ${recipientAddressText}`
 

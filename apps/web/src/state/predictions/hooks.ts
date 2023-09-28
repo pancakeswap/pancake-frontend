@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import useSelector from 'contexts/LocalRedux/useSelector'
 import { TFetchStatus } from 'config/constants/types'
@@ -127,7 +127,7 @@ export const useGetOrFetchLeaderboardAddressResult = (account: string): Predicti
   const dispatch = useLocalDispatch()
 
   useEffect(() => {
-    const address = isAddress(account)
+    const address = safeGetAddress(account)
 
     // If address result is null it means we already tried fetching the results and none came back
     if (!addressResult && addressResult !== null && address) {

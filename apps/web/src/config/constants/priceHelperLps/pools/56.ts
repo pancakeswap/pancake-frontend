@@ -1,4 +1,4 @@
-import { isAddress } from 'utils'
+import { getAddress } from 'viem'
 import { SerializedFarmConfig } from '../../types'
 
 const priceHelperLps: SerializedFarmConfig[] = [
@@ -13,7 +13,7 @@ const priceHelperLps: SerializedFarmConfig[] = [
   ...p,
   token: p.token.serialize,
   quoteToken: p.quoteToken.serialize,
-  lpAddress: isAddress(p.lpAddress),
+  lpAddress: getAddress(p.lpAddress),
 }))
 
 export default priceHelperLps

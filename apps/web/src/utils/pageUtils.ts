@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { isAddress } from './index'
+import { isAddress } from 'viem'
 
 export const getTokenStaticPaths = (): GetStaticPaths => {
   return () => {

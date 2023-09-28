@@ -7,7 +7,7 @@ import { NftLocation, NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import useSWR from 'swr'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 
 const useNftOwn = (collectionAddress: Address | undefined, tokenId: string, marketData?: TokenMarketData) => {
   const { address: account } = useAccount()
@@ -29,7 +29,7 @@ const useNftOwn = (collectionAddress: Address | undefined, tokenId: string, mark
       const nftIsOnSale = marketData ? marketData?.currentSeller !== NOT_ON_SALE_SELLER : false
       if (nftIsOnSale) {
         return {
-          isOwn: isAddress(marketData?.currentSeller) === isAddress(account),
+          isOwn: safeGetAddress(marketData?.currentSeller) === safeGetAddress(account),
           nftIsProfilePic,
           location: NftLocation.FORSALE,
         }
@@ -42,7 +42,7 @@ const useNftOwn = (collectionAddress: Address | undefined, tokenId: string, mark
         }
       }
       return {
-        isOwn: isAddress(tokenOwner) === isAddress(account),
+        isOwn: safeGetAddress(tokenOwner) === safeGetAddress(account),
         nftIsProfilePic,
         location: NftLocation.WALLET,
       }

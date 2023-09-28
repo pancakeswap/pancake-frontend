@@ -1,7 +1,8 @@
 import memoize from 'lodash/memoize'
 import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
+import { isAddress } from 'viem'
 
 const mapping = {
   [ChainId.BSC]: 'smartchain',
@@ -15,19 +16,21 @@ const mapping = {
 const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && mapping[token.chainId] && isAddress(token.address)) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[token.chainId]}/assets/${isAddress(
+      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[token.chainId]}/assets/${safeGetAddress(
         token.address,
       )}/logo.png`
     }
     return null
   },
-  (t) => `${t.chainId}#${t.address}`,
+  (t) => `${t?.chainId}#${t?.address}`,
 )
 
 export const getTokenLogoURLByAddress = memoize(
   (address?: string, chainId?: number) => {
     if (address && chainId && mapping[chainId] && isAddress(address)) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[chainId]}/assets/${isAddress(address)}/logo.png`
+      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[chainId]}/assets/${safeGetAddress(
+        address,
+      )}/logo.png`
     }
     return null
   },

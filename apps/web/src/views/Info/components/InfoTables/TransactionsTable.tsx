@@ -9,7 +9,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
 import { styled } from 'styled-components'
-import { getBlockExploreLink, isAddress } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { multiChainId, subgraphTokenSymbol, ChainLinkSupportChains } from 'state/info/constant'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -102,10 +102,8 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
   const { domainName } = useDomainNameForAddress(transaction.sender)
-  const token0Symbol =
-    subgraphTokenSymbol[isAddress(transaction.token0Address) || undefined] ?? transaction.token0Symbol
-  const token1Symbol =
-    subgraphTokenSymbol[isAddress(transaction.token1Address) || undefined] ?? transaction.token1Symbol
+  const token0Symbol = subgraphTokenSymbol[safeGetAddress(transaction.token0Address)] ?? transaction.token0Symbol
+  const token1Symbol = subgraphTokenSymbol[safeGetAddress(transaction.token1Address)] ?? transaction.token1Symbol
   const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
 
