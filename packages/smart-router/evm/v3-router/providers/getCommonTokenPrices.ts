@@ -162,12 +162,12 @@ export const getCommonTokenPricesByWalletApi = createCommonTokenPriceProvider<By
 
 export const getCommonTokenPrices = withFallback([
   {
-    asyncFn: ({ currencyA, currencyB }: ParamsWithFallback) =>
-      getCommonTokenPricesByWalletApi({ currencyA, currencyB }),
+    asyncFn: ({ currencyA, currencyB }: ParamsWithFallback) => getCommonTokenPricesByLlma({ currencyA, currencyB }),
     timeout: 3000,
   },
   {
-    asyncFn: ({ currencyA, currencyB }: ParamsWithFallback) => getCommonTokenPricesByLlma({ currencyA, currencyB }),
+    asyncFn: ({ currencyA, currencyB }: ParamsWithFallback) =>
+      getCommonTokenPricesByWalletApi({ currencyA, currencyB }),
     timeout: 3000,
   },
   {
