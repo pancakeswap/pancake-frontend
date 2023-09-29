@@ -1316,7 +1316,7 @@ export const bscTokens = {
   trxv2: new ERC20Token(
     ChainId.BSC,
     '0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3',
-    18,
+    6,
     'TRX',
     'TRON Token v2',
     'https://tron.network/',
