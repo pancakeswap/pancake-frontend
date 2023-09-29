@@ -255,13 +255,15 @@ export function StakingModalTemplate({
   const prevDepositedAmount = usePrevious(depositedAmount)
 
   useEffect(() => {
-    if (isConfirmed) {
-      // To show Confirm Modal correctly
-      if (prevDepositedAmount && !depositedAmount.equalTo(prevDepositedAmount)) {
-        setStakeAmount('')
-      }
+    // TODO: WHen user stake, we need to show Staked Amount in Confirm Modal
+    // Currently, because of the delay in getting latest desposited amount
+    // To show latest FE, it needs to programmatically add Staked Amount + depostied Amount when SC data has not been synced
+    // and reset Staked Amount when the SC data is synced
+    // To show Confirm Modal correctly
+    if (prevDepositedAmount && !depositedAmount.equalTo(prevDepositedAmount)) {
+      setStakeAmount('')
     }
-  }, [depositedAmount, isConfirmed, prevDepositedAmount])
+  }, [depositedAmount, prevDepositedAmount])
 
   if (isConfirmed) {
     return (

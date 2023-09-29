@@ -119,8 +119,8 @@ const config: (
           supportChainIds: LIQUID_STAKING_SUPPORTED_CHAINS,
         },
         {
-          label: t('Fixed Staking'),
-          href: '/fixed-staking',
+          label: t('Simple Staking'),
+          href: '/simple-staking',
           supportChainIds: FIXED_STAKING_SUPPORTED_CHAINS,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
