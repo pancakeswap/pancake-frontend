@@ -45,6 +45,8 @@ const v3TopFixedLps: FarmConfigV3[] = [
 
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedLps,
+  // new lps should follow after the top fixed lps
+  // latest first
   {
     pid: 95,
     lpAddress: '0x832EeBF89F99aACcf6640fe6b5E838066c630Fbe',
@@ -66,7 +68,6 @@ export const farmsV3 = defineFarmV3Configs([
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
   },
-  // latest first
   {
     pid: 92,
     lpAddress: '0x77d5b2560e4B84b3fC58875Cb0133F39560e8AE3',
