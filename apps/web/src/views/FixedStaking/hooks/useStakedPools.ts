@@ -12,6 +12,7 @@ import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 
 import { FixedStakingPool, StakedPosition } from '../type'
+import { DISABLED_POOLS } from '../constant'
 
 export function useCurrentDay(): number {
   const fixedStakingContract = useFixedStakingContract()
@@ -161,50 +162,60 @@ export function useStakedPools(): FixedStakingPool[] {
     ),
   })
 
-  if (!fixedStakePools?.length) return []
+  return useMemo(() => {
+    if (!fixedStakePools?.length) return []
 
-  return fixedStakePools
-    .map(({ result: fixedStakePool }, index) => {
-      if (!fixedStakePool) return null
+    return fixedStakePools
+      .map(({ result: fixedStakePool }, index) => {
+        if (!fixedStakePool) return null
 
-      /*
-        struct Pool {
-          IERC20Upgradeable token;
-          uint32 endDay;
-          uint32 lockDayPercent;
-          uint32 boostDayPercent;
-          uint32 unlockDayPercent;
-          uint32 lockPeriod; // Multiples of 3
-          uint32 withdrawalCut1;
-          uint32 withdrawalCut2;
-          bool depositEnabled;
-          uint128 maxDeposit;
-          uint128 minDeposit;
-          uint128 totalDeposited;
-          uint128 maxPoolAmount;
-          uint128 minBoostAmount;
+        const token = tokens[getAddress(fixedStakePool[0])]
+
+        const disabled = DISABLED_POOLS[chainId]?.includes(token.address)
+
+        if (disabled) {
+          return null
         }
-      */
 
-      return {
-        poolIndex: index,
-        token: tokens[getAddress(fixedStakePool[0])],
-        endDay: fixedStakePool[1],
-        lockDayPercent: fixedStakePool[2],
-        boostDayPercent: fixedStakePool[3],
-        unlockDayPercent: fixedStakePool[4],
-        lockPeriod: fixedStakePool[5],
-        withdrawalCut1: fixedStakePool[6],
-        withdrawalCut2: fixedStakePool[7],
-        // set widthdrawalFee as withdrawalCut2 to display pools' fee with unconnected account
-        withdrawalFee: fixedStakePool[7],
-        depositEnabled: fixedStakePool[8],
-        maxDeposit: fixedStakePool[9],
-        minDeposit: fixedStakePool[10],
-        totalDeposited: new BigNumber(fixedStakePool[11]),
-        maxPoolAmount: fixedStakePool[12],
-        minBoostAmount: fixedStakePool[13],
-      }
-    })
-    .filter(Boolean)
+        /*
+          struct Pool {
+            IERC20Upgradeable token;
+            uint32 endDay;
+            uint32 lockDayPercent;
+            uint32 boostDayPercent;
+            uint32 unlockDayPercent;
+            uint32 lockPeriod; // Multiples of 3
+            uint32 withdrawalCut1;
+            uint32 withdrawalCut2;
+            bool depositEnabled;
+            uint128 maxDeposit;
+            uint128 minDeposit;
+            uint128 totalDeposited;
+            uint128 maxPoolAmount;
+            uint128 minBoostAmount;
+          }
+        */
+
+        return {
+          poolIndex: index,
+          token,
+          endDay: fixedStakePool[1],
+          lockDayPercent: fixedStakePool[2],
+          boostDayPercent: fixedStakePool[3],
+          unlockDayPercent: fixedStakePool[4],
+          lockPeriod: fixedStakePool[5],
+          withdrawalCut1: fixedStakePool[6],
+          withdrawalCut2: fixedStakePool[7],
+          // set widthdrawalFee as withdrawalCut2 to display pools' fee with unconnected account
+          withdrawalFee: fixedStakePool[7],
+          depositEnabled: fixedStakePool[8],
+          maxDeposit: fixedStakePool[9],
+          minDeposit: fixedStakePool[10],
+          totalDeposited: new BigNumber(fixedStakePool[11]),
+          maxPoolAmount: fixedStakePool[12],
+          minBoostAmount: fixedStakePool[13],
+        }
+      })
+      .filter(Boolean)
+  }, [chainId, fixedStakePools, tokens])
 }
