@@ -28,7 +28,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
             </Heading>
             {new BigNumber(first(pool.pools)?.boostDayPercent).gt(0) ? (
               <Tag outline variant="success" startIcon={<StarCircle width="18px" color="success" />}>
-                vCAKE Boost
+                {t('Locked Cake Boost')}
               </Tag>
             ) : null}
           </Box>

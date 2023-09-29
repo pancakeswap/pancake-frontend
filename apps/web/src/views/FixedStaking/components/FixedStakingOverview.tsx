@@ -118,7 +118,7 @@ export default function FixedStakingOverview({
       {boostAPR && lockAPR ? (
         <Flex alignItems="center" justifyContent="space-between">
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-            {t('vCAKE Boost')}
+            {t('Locked Cake Boost')}
           </Text>
           <Text bold>{boostAPR.divide(lockAPR).divide(100).toSignificant(2)}x</Text>
         </Flex>
