@@ -10,7 +10,7 @@ const getLiquidityUrlPathParts = ({
   feeAmount,
   chainId,
 }: {
-  quoteTokenAddress: string
+  quoteTokenAddress?: string
   tokenAddress: string
   feeAmount?: FeeAmount
   chainId: number

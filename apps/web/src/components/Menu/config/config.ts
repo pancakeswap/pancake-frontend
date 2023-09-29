@@ -13,6 +13,7 @@ import {
   SwapIcon,
 } from '@pancakeswap/uikit'
 import {
+  FIXED_STAKING_SUPPORTED_CHAINS,
   LIQUID_STAKING_SUPPORTED_CHAINS,
   SUPPORT_BUY_CRYPTO,
   SUPPORT_FARMS,
@@ -116,6 +117,11 @@ const config: (
           label: t('Liquid Staking'),
           href: '/liquid-staking',
           supportChainIds: LIQUID_STAKING_SUPPORTED_CHAINS,
+        },
+        {
+          label: t('Simple Staking'),
+          href: '/simple-staking',
+          supportChainIds: FIXED_STAKING_SUPPORTED_CHAINS,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

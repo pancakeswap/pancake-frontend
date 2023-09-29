@@ -1,22 +1,19 @@
 import BigNumber from 'bignumber.js'
-import { ReactElement } from 'react'
+import { ReactElement, ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { Flex, Heading, Button, Text, Skeleton, Balance, useModal } from '@pancakeswap/uikit'
-
 import { CollectModalProps } from './CollectModal'
 import { HarvestAction as TableHarvestAction } from './PoolsTable/HarvestAction'
 import { HarvestActionsProps } from './types'
 
-const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = ({
-  earnings,
-  isLoading,
-  onPresentCollect,
-  earningTokenPrice,
-  earningTokenBalance,
-  earningTokenDollarBalance,
-}) => {
-  const { t } = useTranslation()
+export const BalanceWithActions: React.FC<
+  React.PropsWithChildren<
+    Omit<HarvestActionsProps, 'onPresentCollect'> & {
+      actions: ReactNode
+    }
+  >
+> = ({ earnings, isLoading, earningTokenPrice, earningTokenBalance, earningTokenDollarBalance, actions }) => {
   const hasEarnings = earnings.toNumber() > 0
 
   return (
@@ -52,10 +49,35 @@ const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = (
           </>
         )}
       </Flex>
-      <Button disabled={!hasEarnings} onClick={onPresentCollect}>
-        {t('Harvest')}
-      </Button>
+      {actions}
     </Flex>
+  )
+}
+
+export const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = ({
+  earnings,
+  isLoading,
+  onPresentCollect,
+  earningTokenPrice,
+  earningTokenBalance,
+  earningTokenDollarBalance,
+}) => {
+  const { t } = useTranslation()
+  const hasEarnings = earnings.toNumber() > 0
+
+  return (
+    <BalanceWithActions
+      earnings={earnings}
+      isLoading={isLoading}
+      earningTokenPrice={earningTokenPrice}
+      earningTokenBalance={earningTokenBalance}
+      earningTokenDollarBalance={earningTokenDollarBalance}
+      actions={
+        <Button disabled={!hasEarnings} onClick={onPresentCollect}>
+          {t('Harvest')}
+        </Button>
+      }
+    />
   )
 }
 

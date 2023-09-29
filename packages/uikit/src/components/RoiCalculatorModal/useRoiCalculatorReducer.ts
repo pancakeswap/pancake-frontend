@@ -32,22 +32,26 @@ export enum CalculatorMode {
   PRINCIPAL_BASED_ON_ROI, // User edits ROI value and sees what principal they need to invest to reach it
 }
 
+export interface RoiCalculatorControlState {
+  compounding: boolean; // Compounding checkbox state
+  compoundingFrequency: number; // Compounding frequency in number of compounds per day
+  activeCompoundingIndex: number; // index of active compounding button in ButtonMenu
+  stakingDuration: number; // index of active staking duration button in ButtonMenu
+  mode: CalculatorMode;
+  editingCurrency: EditingCurrency;
+}
+
+export interface RoiCalculatorDataState {
+  principalAsToken: string; // Used as value for Inputs
+  principalAsUSD: string; // Used as value for Inputs
+  roiUSD: number;
+  roiTokens: number;
+  roiPercentage: number; // ROI expressed in percentage relative to principal
+}
+
 export interface RoiCalculatorReducerState {
-  controls: {
-    compounding: boolean; // Compounding checkbox state
-    compoundingFrequency: number; // Compounding frequency in number of compounds per day
-    activeCompoundingIndex: number; // index of active compounding button in ButtonMenu
-    stakingDuration: number; // index of active staking duration button in ButtonMenu
-    mode: CalculatorMode;
-    editingCurrency: EditingCurrency;
-  };
-  data: {
-    principalAsToken: string; // Used as value for Inputs
-    principalAsUSD: string; // Used as value for Inputs
-    roiUSD: number;
-    roiTokens: number;
-    roiPercentage: number; // ROI expressed in percentage relative to principal
-  };
+  controls: RoiCalculatorControlState;
+  data: RoiCalculatorDataState;
 }
 
 const defaultState: RoiCalculatorReducerState = {
