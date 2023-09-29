@@ -61,7 +61,7 @@ const usePendingSwapTitle = ({ trade }: { trade: SmartRouterTrade<TradeType> }) 
       [ConfirmModalState.APPROVING_TOKEN]: t('Approve %symbol%', { symbol: trade?.inputAmount?.currency?.symbol }),
       [ConfirmModalState.PERMITTING]: t('Permit %symbol%', { symbol: trade?.inputAmount?.currency?.symbol }),
     }
-  }, [trade?.inputAmount?.currency?.symbol, t]) // Assuming 'trade' is used within your component and needs to trigger a re-calculation when it changes
+  }, [trade?.inputAmount?.currency?.symbol, t])
 }
 
 export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(function ConfirmSwapModalComp({
