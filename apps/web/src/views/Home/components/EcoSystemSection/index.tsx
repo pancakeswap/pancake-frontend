@@ -261,13 +261,6 @@ const useEarnBlockData = () => {
         defaultImage: earnLiquidStakingPurple,
         path: '/liquid-staking',
       },
-      // {
-      //   title: t('Coming Soon'),
-      //   description: t('Fixed staking'),
-      //   ctaTitle: t('Learn More'),
-      //   image: earnFixedStaking,
-      //   defaultImage: earnFixedStakingPurple,
-      // },
     ]
   }, [t])
 }
