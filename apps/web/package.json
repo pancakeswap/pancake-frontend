@@ -102,7 +102,7 @@
     "split-grid": "^1.0.11",
     "styled-components": "^6.0.7",
     "styled-system": "^5.1.5",
-    "swiper": "^10.2.0",
+    "swiper": "^10.3.1",
     "swr": "^2.1.5",
     "tiny-invariant": "^1.1.0",
     "typescript": "^5.1.3",
