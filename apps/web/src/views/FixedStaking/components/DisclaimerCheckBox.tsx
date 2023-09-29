@@ -14,16 +14,17 @@ export function DisclaimerCheckBox({
         <Checkbox scale="sm" checked={check} onChange={() => setCheck((prev) => !prev)} />
       </div>
       <Text fontSize="14px" ml="8px">
-        Disclaimer here if needed e.g. Binance Earn is the custodial solution for this product.{' '}
+        By checking this box, I understand that my funds will be custodied by Binance Earn. <br />
+        For more information please read{' '}
         <Link
           style={{
             display: 'inline',
             fontSize: '14px',
           }}
-          href="https://docs.pancakeswap.finance/products/simple-staking"
+          href="https://docs.pancakeswap.finance/products/simple-staking/terms-and-conditions"
           target="_blank"
         >
-          Link of service agreement if needed.
+          the Terms & Conditions.
         </Link>
       </Text>
     </Flex>
