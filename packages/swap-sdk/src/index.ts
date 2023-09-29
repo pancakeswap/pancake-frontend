@@ -1,6 +1,9 @@
 export * from './constants'
 export * from './trade'
 
+// @deprecated
+export { ChainId } from '@pancakeswap/chains'
+
 export * from './entities'
 export * from './router'
 
