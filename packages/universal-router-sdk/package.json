@@ -31,7 +31,6 @@
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "vitest --run",
-    "test:hardhat": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' hardhat test",
     "install:ur": "cd node_modules/@uniswap/universal-router && forge install",
     "prettier:fix": "prettier --write '**/*.ts' && prettier --write '**/*.json'",
     "lint:fix": "yarn prettier:fix && yarn forge:fix",

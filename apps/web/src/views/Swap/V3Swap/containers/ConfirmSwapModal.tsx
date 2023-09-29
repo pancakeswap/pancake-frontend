@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
@@ -11,7 +12,6 @@ import {
   SwapTransactionReceiptModalContent,
 } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
-import { ChainId } from '@pancakeswap/chains'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 
@@ -20,7 +20,7 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
-import { Allowance, AllowanceState } from 'hooks/usePermit2Allowance'
+import { Allowance } from 'hooks/usePermit2Allowance'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { ConfirmModalState, PendingConfirmModalState } from '../types'
@@ -41,6 +41,7 @@ interface ConfirmSwapModalProps {
   txHash?: string
   approval: ApprovalState
   allowance?: Allowance
+  isPendingError: boolean
   swapErrorMessage?: string
   showApproveFlow: boolean
   currentAllowance?: CurrencyAmount<Currency>
@@ -51,20 +52,29 @@ interface ConfirmSwapModalProps {
   customOnDismiss?: () => void
   openSettingModal?: () => void
 }
+const usePendingSwapTitle = ({ trade }: { trade: SmartRouterTrade<TradeType> }) => {
+  const { t } = useTranslation()
+  return useMemo(() => {
+    return {
+      [ConfirmModalState.PENDING_CONFIRMATION]: t('Confirm Swap'),
+      [ConfirmModalState.RESETTING_APPROVAL]: t('Reset approval on USDT.'),
+      [ConfirmModalState.APPROVING_TOKEN]: t('Approve %symbol%', { symbol: trade?.inputAmount?.currency?.symbol }),
+      [ConfirmModalState.PERMITTING]: t('Permit %symbol%', { symbol: trade?.inputAmount?.currency?.symbol }),
+    }
+  }, [trade?.inputAmount?.currency?.symbol, t]) // Assuming 'trade' is used within your component and needs to trigger a re-calculation when it changes
+}
 
 export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(function ConfirmSwapModalComp({
   isMM,
   trade,
   txHash,
-  approval,
-  allowance,
   isRFQReady,
   attemptingTxn,
   originalTrade,
-  showApproveFlow,
   currencyBalances,
   swapErrorMessage,
   confirmModalState,
+  isPendingError,
   startSwapFlow,
   pendingModalSteps,
   onDismiss,
@@ -88,60 +98,42 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     onDismiss?.()
   }, [customOnDismiss, onDismiss])
 
+  const stepContents = usePendingSwapTitle({
+    trade,
+  })
+
   const topModal = useCallback(() => {
     const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
     const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
     const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
     const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 
-    if (confirmModalState === ConfirmModalState.RESETTING_APPROVAL) {
-      return <ApproveModalContent title={t('Reset approval on USDT.')} isMM={isMM} isBonus={isBonus} />
-    }
-
     if (
-      showApproveFlow &&
-      (confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.PERMITTING)
+      !isPendingError &&
+      (confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+        confirmModalState === ConfirmModalState.PERMITTING ||
+        confirmModalState === ConfirmModalState.RESETTING_APPROVAL ||
+        (attemptingTxn && confirmModalState === ConfirmModalState.PENDING_CONFIRMATION))
     ) {
       return (
         <ApproveModalContent
-          title={
-            approval === ApprovalState.NOT_APPROVED || approval === ApprovalState.PENDING
-              ? t('Approve %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })
-              : allowance.state === AllowanceState.REQUIRED
-              ? t('Permit %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })
-              : t('Enable spending %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })
-          }
+          title={stepContents}
           isMM={isMM}
           isBonus={isBonus}
-        />
-      )
-    }
-
-    if (swapErrorMessage) {
-      return (
-        <Flex width="100%" alignItems="center" height="calc(430px - 73px - 120px)">
-          <SwapTransactionErrorContent
-            message={swapErrorMessage}
-            onDismiss={handleDismiss}
-            openSettingModal={openSettingModal}
-          />
-        </Flex>
-      )
-    }
-
-    if (attemptingTxn) {
-      return (
-        <SwapPendingModalContent
-          title={t('Confirm Swap')}
           currencyA={currencyA}
           currencyB={currencyB}
           amountA={amountA}
           amountB={amountB}
+          confirmModalState={confirmModalState}
+          pendingModalSteps={pendingModalSteps}
+          attemptingTransaction={attemptingTxn}
+          txHash={txHash}
+          addToWalletButtonContent={<></>}
         />
       )
     }
 
-    if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
+    if (!attemptingTxn && confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
       return (
         <SwapPendingModalContent
           showIcon
@@ -215,21 +207,18 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     originalTrade,
     attemptingTxn,
     currencyBalances,
-    showApproveFlow,
-    swapErrorMessage,
     token,
     chainId,
     recipient,
     allowedSlippage,
     confirmModalState,
     t,
-    handleDismiss,
     startSwapFlow,
     onAcceptChanges,
-    openSettingModal,
-    approval,
     isBonus,
-    allowance,
+    pendingModalSteps,
+    stepContents,
+    isPendingError,
   ])
 
   const isShowingLoadingAnimation = useMemo(
@@ -253,7 +242,19 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
       bodyTop={isShowingLoadingAnimation ? '-15px' : '0'}
       handleDismiss={handleDismiss}
     >
-      <Box>{topModal()}</Box>
+      <Box>
+        {swapErrorMessage ? (
+          <Flex width="100%" alignItems="center" height="calc(430px - 73px - 120px)">
+            <SwapTransactionErrorContent
+              message={swapErrorMessage}
+              onDismiss={handleDismiss}
+              openSettingModal={openSettingModal}
+            />
+          </Flex>
+        ) : (
+          topModal()
+        )}
+      </Box>
       {isShowingLoadingAnimation && !swapErrorMessage && (
         <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
       )}

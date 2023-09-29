@@ -105,7 +105,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   }
 
   // check whether the user has approved the router on the input token
-  const { approvalState, currentAllowance } = useApproveCallback(amountToApprove, routerAddress)
+  const { approvalState, currentAllowance, isPendingError } = useApproveCallback(amountToApprove, routerAddress)
 
   const allowance = usePermit2Allowance(
     routerAddress,
@@ -252,6 +252,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       swapErrorMessage={swapErrorMessage}
       confirmModalState={confirmModalState}
       pendingModalSteps={pendingModalSteps}
+      isPendingError={isPendingError}
       startSwapFlow={startSwapFlow}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
