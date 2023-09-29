@@ -58,7 +58,7 @@ const slideOutAnimation = css`
   animation: ${slideOut} 400ms ease-in-out;
 `
 
-const StepTitleAnimationContainer = styled(Column)<{ disableEntranceAnimation?: boolean }>`
+export const StepTitleAnimationContainer = styled(Column)<{ disableEntranceAnimation?: boolean }>`
   align-items: center;
   transition: display 400ms ease-in-out;
   ${({ disableEntranceAnimation }) =>
@@ -99,23 +99,27 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
 
   return (
     <Box width="100%">
-      <Box mb="16px">
-        <ColumnCenter>
-          <Spinner />
-        </ColumnCenter>
-      </Box>
-      <AutoColumn gap="12px" justify="center">
-        {pendingModalSteps.map((step: PendingConfirmModalState) => {
-          // We only render one step at a time, but looping through the array allows us to keep
-          // the exiting step in the DOM during its animation.
-          return (
-            Boolean(step === confirmModalState) && (
-              <StepTitleAnimationContainer
-                // disableEntranceAnimation={pendingModalSteps[0] === confirmModalState}
-                gap="md"
-                key={step}
-                ref={step === confirmModalState ? currentStepContainerRef : undefined}
-              >
+      {pendingModalSteps.map((step: PendingConfirmModalState) => {
+        // We only render one step at a time, but looping through the array allows us to keep
+        // the exiting step in the DOM during its animation.
+        return (
+          Boolean(step === confirmModalState) && (
+            <StepTitleAnimationContainer
+              // disableEntranceAnimation={pendingModalSteps[0] === confirmModalState}
+              gap="md"
+              key={step}
+              ref={
+                step === confirmModalState
+                  ? currentStepContainerRef
+                  : undefined || confirmModalState === ConfirmModalState.REVIEWING
+              }
+            >
+              <Box mb="16px">
+                <ColumnCenter>
+                  <Spinner />
+                </ColumnCenter>
+              </Box>
+              <AutoColumn gap="12px" justify="center">
                 <Text bold textAlign="center">
                   {title[step]}
                 </Text>
@@ -154,11 +158,11 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
                     </>
                   </Flex>
                 )}
-              </StepTitleAnimationContainer>
-            )
+              </AutoColumn>
+            </StepTitleAnimationContainer>
           )
-        })}
-      </AutoColumn>
+        )
+      })}
     </Box>
   )
 }
