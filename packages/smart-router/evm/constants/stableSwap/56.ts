@@ -8,7 +8,7 @@ export const pools: StableSwapPool[] = [
     lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
     token: bscTokens.hay,
     quoteToken: bscTokens.busd,
-    stableSwapAddress: '0x49079d07ef47449af808a4f36c2a8dec975594ec',
+    stableSwapAddress: '0x49079D07ef47449aF808A4f36c2a8dEC975594eC',
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,

@@ -25,7 +25,7 @@ export const livePools: SerializedPool[] = [
     sousId: 2,
     stakingToken: bscTestnetTokens.mockA,
     earningToken: bscTestnetTokens.mockB,
-    contractAddress: '0x31a069925fb770202b302c7911af1acbe0395420',
+    contractAddress: '0x31a069925fB770202b302C7911AF1ACBe0395420',
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.01',
   },

@@ -2,6 +2,7 @@ import noop from "lodash/noop";
 import React, { useState } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";
+import { Language } from "@pancakeswap/localization";
 import Box from "../../components/Box/Box";
 import Flex from "../../components/Box/Flex";
 import Button from "../../components/Button/Button";
@@ -16,7 +17,7 @@ import { Modal, ModalProps, useModal } from "../Modal";
 import UserMenu from "./components/UserMenu";
 import { Variant, variants } from "./components/UserMenu/types";
 import Menu from "./Menu";
-import { Language, NavProps } from "./types";
+import { NavProps } from "./types";
 import BottomDrawer from "../../components/BottomDrawer/BottomDrawer";
 import { SubMenuItemsType } from "../../components";
 import { links, userMenulinks } from "./testConfig";
@@ -78,7 +79,7 @@ const defaultProps = {
   linkComponent: ({ href, ...props }) => {
     return <Link to={href} {...props} />;
   },
-  account: "0xbdda50183d817c3289f895a4472eb475967dc980",
+  account: "0xBdDa50183d817c3289f895a4472EB475967Dc980",
   login: noop,
   logout: noop,
   isDark: false,
@@ -94,7 +95,7 @@ const defaultProps = {
   rightSide: (
     <>
       <GlobalMenuComponent />
-      <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />
+      <UserMenuComponent account="0xBdDa50183d817c3289f895a4472EB475967Dc980" />
     </>
   ),
   activeItem: "/swap",
