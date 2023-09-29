@@ -30,7 +30,7 @@
     "dev": "tsup --watch",
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "test:all": "yarn test:hardhat",
+    "test": "vitest --run",
     "test:hardhat": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' hardhat test",
     "install:ur": "cd node_modules/@uniswap/universal-router && forge install",
     "prettier:fix": "prettier --write '**/*.ts' && prettier --write '**/*.json'",
