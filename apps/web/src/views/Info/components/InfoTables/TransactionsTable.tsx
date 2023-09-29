@@ -150,7 +150,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
 
 const TransactionTable: React.FC<
   React.PropsWithChildren<{
-    transactions: Transaction[]
+    transactions: Transaction[] | undefined
   }>
 > = ({ transactions }) => {
   const [sortField, setSortField] = useState(SORT_FIELD.timestamp)
@@ -200,7 +200,7 @@ const TransactionTable: React.FC<
   }, [transactions, txFilter])
 
   const handleFilter = useCallback(
-    (newFilter: TransactionType) => {
+    (newFilter: TransactionType | undefined) => {
       if (newFilter !== txFilter) {
         setTxFilter(newFilter)
         setPage(1)

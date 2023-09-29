@@ -8,6 +8,7 @@ import {
   useProtocolDataSWR,
   useProtocolTransactionsSWR,
 } from 'state/info/hooks'
+import { TokenData } from 'state/info/types'
 import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
@@ -54,7 +55,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)
       .map((token) => token.data)
-      .filter((token) => token.name !== 'unknown')
+      .filter<TokenData>((token): token is TokenData => token?.name !== 'unknown')
   }, [allTokens])
 
   const { poolsData: rawPoolsData } = usePoolsData()
