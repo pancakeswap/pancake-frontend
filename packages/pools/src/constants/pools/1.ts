@@ -8,7 +8,7 @@ export const livePools: SerializedPool[] = [
     sousId: 10,
     stakingToken: ethereumTokens.cake,
     earningToken: ethereumTokens.ethx,
-    contractAddress: ' 0x8BB4C975Ff3c250e0ceEA271728547f3802B36Fd',
+    contractAddress: '0x8BB4C975Ff3c250e0ceEA271728547f3802B36Fd',
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.0034205',
   },
