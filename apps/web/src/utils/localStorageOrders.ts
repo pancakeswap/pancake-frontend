@@ -1,7 +1,7 @@
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { get, set, clear } from 'local-storage'
 import orderBy from 'lodash/orderBy'
-import { safeGetAddress } from 'utils/index'
+import { getAddress } from 'viem'
 
 export const LS_ORDERS = 'gorders_'
 
@@ -71,67 +71,61 @@ export function removeOrder(chainId: number, account: string, order: Order, pend
 
 export function confirmOrderCancellation(chainId: number, account: string, cancellationHash: string, success = true) {
   const cancelHash = cancellationHash.toLowerCase()
-  const checksummedAccount = safeGetAddress(account)
-  if (checksummedAccount) {
-    const pendingKey = lsKey(`${LS_ORDERS}pending_`, checksummedAccount, chainId)
-    const pendingOrders = get<Order[]>(pendingKey)
-    const confirmedOrder = pendingOrders.find((order) => order.cancelledTxHash?.toLowerCase() === cancelHash)
+  const pendingKey = lsKey(`${LS_ORDERS}pending_`, getAddress(account), chainId)
+  const pendingOrders = get<Order[]>(pendingKey)
+  const confirmedOrder = pendingOrders.find((order) => order.cancelledTxHash?.toLowerCase() === cancelHash)
 
-    if (confirmedOrder) removeOrder(chainId, account, confirmedOrder, true)
+  if (confirmedOrder) removeOrder(chainId, account, confirmedOrder, true)
 
-    if (success && confirmedOrder) {
-      const ordersKey = lsKey(LS_ORDERS, account, chainId)
-      const orders = get<Order[]>(ordersKey)
-      if (orders) {
-        const ordersToSave = removeOrder(chainId, account, confirmedOrder)
-        ordersToSave.push({
+  if (success && confirmedOrder) {
+    const ordersKey = lsKey(LS_ORDERS, account, chainId)
+    const orders = get<Order[]>(ordersKey)
+    if (orders) {
+      const ordersToSave = removeOrder(chainId, account, confirmedOrder)
+      ordersToSave.push({
+        ...confirmedOrder,
+        cancelledTxHash: cancelHash,
+      })
+      set(ordersKey, ordersToSave)
+    } else {
+      set(ordersKey, [
+        {
           ...confirmedOrder,
           cancelledTxHash: cancelHash,
-        })
-        set(ordersKey, ordersToSave)
-      } else {
-        set(ordersKey, [
-          {
-            ...confirmedOrder,
-            cancelledTxHash: cancelHash,
-          },
-        ])
-      }
+        },
+      ])
     }
   }
 }
 
 export function confirmOrderSubmission(chainId: number, account: string, submissionHash: string, success = true) {
   const creationHash = submissionHash.toLowerCase()
-  const checksummedAccount = safeGetAddress(account)
-  if (checksummedAccount) {
-    const pendingKey = lsKey(`${LS_ORDERS}pending_`, checksummedAccount, chainId)
-    const pendingOrders = get<Order[]>(pendingKey)
-    const confirmedOrder = pendingOrders.find((order) => order.createdTxHash?.toLowerCase() === creationHash)
+  const pendingKey = lsKey(`${LS_ORDERS}pending_`, getAddress(account), chainId)
+  const pendingOrders = get<Order[]>(pendingKey)
+  const confirmedOrder = pendingOrders.find((order) => order.createdTxHash?.toLowerCase() === creationHash)
 
-    if (confirmedOrder) removeOrder(chainId, account, confirmedOrder, true)
+  if (confirmedOrder) removeOrder(chainId, account, confirmedOrder, true)
 
-    if (success && confirmedOrder) {
-      const ordersKey = lsKey(LS_ORDERS, account, chainId)
-      const orders = get<Order[]>(ordersKey)
-      if (orders) {
-        const ordersToSave = removeOrder(chainId, account, {
+  if (success && confirmedOrder) {
+    const ordersKey = lsKey(LS_ORDERS, account, chainId)
+    const orders = get<Order[]>(ordersKey)
+    if (orders) {
+      const ordersToSave = removeOrder(chainId, account, {
+        ...confirmedOrder,
+        createdTxHash: creationHash,
+      })
+      ordersToSave.push({
+        ...confirmedOrder,
+        createdTxHash: creationHash,
+      })
+      set(ordersKey, ordersToSave)
+    } else {
+      set(ordersKey, [
+        {
           ...confirmedOrder,
           createdTxHash: creationHash,
-        })
-        ordersToSave.push({
-          ...confirmedOrder,
-          createdTxHash: creationHash,
-        })
-        set(ordersKey, ordersToSave)
-      } else {
-        set(ordersKey, [
-          {
-            ...confirmedOrder,
-            createdTxHash: creationHash,
-          },
-        ])
-      }
+        },
+      ])
     }
   }
 }
