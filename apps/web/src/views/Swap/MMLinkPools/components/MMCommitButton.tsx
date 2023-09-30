@@ -185,6 +185,7 @@ export function MMSwapCommitButton({
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
+      isPendingError={false}
     />,
     true,
     true,

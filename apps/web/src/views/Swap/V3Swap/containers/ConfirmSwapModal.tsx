@@ -129,7 +129,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           attemptingTransaction={attemptingTxn}
           txHash={txHash}
           addToWalletButtonContent={<></>}
-          // isInApprovalPhase={isA}
+          isInApprovalPhase={isA}
         />
       )
     }
@@ -163,13 +163,13 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
 
     if (confirmModalState === ConfirmModalState.REVIEWING && txHash) {
       return (
-        <SwapTransactionReceiptModalContent>
-          {chainId && (
-            <Link external small href={getBlockExploreLink(txHash, 'transaction', chainId)}>
-              {t('View on %site%', { site: getBlockExploreName(chainId) })}: {truncateHash(txHash, 8, 0)}
-              {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />}
-            </Link>
-          )}
+        <SwapTransactionReceiptModalContent
+          getBlockExploreLink={getBlockExploreLink}
+          getBlockExploreName={getBlockExploreName}
+          truncateHash={truncateHash}
+          txHash={txHash}
+          chainId={chainId}
+        >
           <AddToWalletButton
             mt="39px"
             height="auto"
