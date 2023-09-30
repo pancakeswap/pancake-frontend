@@ -1,6 +1,7 @@
-import { ReactNode } from 'react'
 import { Currency } from '@pancakeswap/sdk'
-import { Spinner, Text, Box, ArrowUpIcon, ColumnCenter, AutoColumn } from '@pancakeswap/uikit'
+import { ArrowUpIcon, AutoColumn, Box, ColumnCenter, Spinner, Text } from '@pancakeswap/uikit'
+import { ReactNode } from 'react'
+import { FadePresence } from './Logos'
 import TokenTransferInfo from './TokenTransferInfo'
 
 interface SwapPendingModalContentProps {
@@ -28,9 +29,11 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
   return (
     <Box width="100%">
       {showIcon ? (
-        <Box margin="auto auto 36px auto" width="fit-content">
-          <ArrowUpIcon color="success" width={80} height={80} />
-        </Box>
+        <FadePresence $scale>
+          <Box margin="auto auto 22px auto" width="fit-content">
+            <ArrowUpIcon color="success" width={80} height={80} />
+          </Box>
+        </FadePresence>
       ) : (
         <Box mb="16px">
           <ColumnCenter>

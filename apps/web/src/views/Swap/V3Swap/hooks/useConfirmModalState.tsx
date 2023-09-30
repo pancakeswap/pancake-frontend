@@ -20,7 +20,7 @@ interface UseConfirmModalStateProps {
   isExpertMode: boolean
 }
 
-function isInApprovalPhase(confirmModalState: ConfirmModalState) {
+export function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   return confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.PERMITTING
 }
 export const useConfirmModalState = ({

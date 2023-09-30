@@ -40,7 +40,7 @@ import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapI
 import { useWallchainApi } from '../hooks/useWallchain'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
-import { useConfirmModalState } from '../hooks/useConfirmModalState'
+import { isInApprovalPhase, useConfirmModalState } from '../hooks/useConfirmModalState'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -259,6 +259,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
+      isInApprovalPhase={isInApprovalPhase}
     />,
     true,
     true,

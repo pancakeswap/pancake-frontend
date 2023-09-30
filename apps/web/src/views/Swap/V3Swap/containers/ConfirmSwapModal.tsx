@@ -129,6 +129,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           attemptingTransaction={attemptingTxn}
           txHash={txHash}
           addToWalletButtonContent={<></>}
+          // isInApprovalPhase={isA}
         />
       )
     }
