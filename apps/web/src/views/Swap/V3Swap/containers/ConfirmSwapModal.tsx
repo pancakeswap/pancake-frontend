@@ -30,6 +30,7 @@ import { SwapTransactionErrorContent } from '../../components/SwapTransactionErr
 import { TransactionConfirmSwapContent } from '../components'
 import { useWallchainStatus } from '../hooks/useWallchain'
 import { ApproveStepFlow } from './ApproveStepFlow'
+import { isInApprovalPhase } from '../hooks/useConfirmModalState'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean
@@ -129,7 +130,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           attemptingTransaction={attemptingTxn}
           txHash={txHash}
           addToWalletButtonContent={<></>}
-          isInApprovalPhase={isA}
+          isInApprovalPhase={isInApprovalPhase}
         />
       )
     }
