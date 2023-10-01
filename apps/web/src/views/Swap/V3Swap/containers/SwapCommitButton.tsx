@@ -259,7 +259,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
-      isInApprovalPhase={isInApprovalPhase}
     />,
     true,
     true,
