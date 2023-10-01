@@ -7,8 +7,8 @@ const zQuery = zObject({
 })
 
 const userExist = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (!process.env.AFFILIATE_PROGRAM_API_URL && !req.query) {
-    return res.status(400).json({ message: 'API URL Empty' })
+  if (!process.env.AFFILIATE_PROGRAM_API_URL || !req.query) {
+    return res.status(400).json({ message: 'API URL Empty / Method wrong / Cookie not exist' })
   }
 
   const queryString = qs.stringify(req.query)
