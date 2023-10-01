@@ -38,7 +38,6 @@ interface ApproveModalContentProps {
   pendingModalSteps: PendingConfirmModalState[]
   attemptingTransaction: boolean
   txHash: string
-  isInApprovalPhase(confirmModalState: ConfirmModalState): boolean
 }
 
 enum AnimationType {
