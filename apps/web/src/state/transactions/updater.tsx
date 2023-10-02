@@ -8,9 +8,14 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
 import { FAST_INTERVAL } from 'config/constants'
 import useSWRImmutable from 'swr/immutable'
-import { TransactionNotFoundError } from 'viem'
+import {
+  BlockNotFoundError,
+  TransactionNotFoundError,
+  TransactionReceiptNotFoundError,
+  WaitForTransactionReceiptTimeoutError,
+} from 'viem'
 import { retry, RetryableError } from 'state/multicall/retry'
-import { useAppDispatch } from '../index'
+import { useAppDispatch } from 'state'
 import {
   finalizeTransaction,
   FarmTransactionStatus,
@@ -49,7 +54,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       (transaction) => {
         const getTransaction = async () => {
           try {
-            const receipt: any = await provider.waitForTransactionReceipt({ hash: transaction.hash })
+            const receipt: any = await provider.waitForTransactionReceipt({ hash: transaction.hash, timeout: 60_000 })
 
             dispatch(
               finalizeTransaction({
@@ -78,6 +83,12 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {
               throw new RetryableError(`Transaction not found: ${transaction.hash}`)
+            } else if (error instanceof TransactionReceiptNotFoundError) {
+              throw new RetryableError(`Transaction receipt not found: ${transaction.hash}`)
+            } else if (error instanceof BlockNotFoundError) {
+              throw new RetryableError(`Block not found for transaction: ${transaction.hash}`)
+            } else if (error instanceof WaitForTransactionReceiptTimeoutError) {
+              throw new RetryableError(`Timeout reached when fetching transaction receipt: ${transaction.hash}`)
             }
           }
           merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
