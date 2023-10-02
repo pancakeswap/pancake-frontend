@@ -16,6 +16,8 @@ import { OpBnbBanner } from '../OpBnbBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
+import GalaxePedictBanner from '../GalaxePedictBanner'
+import GalaxeSyndicateBanner from '../GalaxeSyndicateBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -57,6 +59,9 @@ export const useMultipleBannerConfig = () => {
     const SHUFFLE_BANNERS: IBannerConfig[] = [
       { shouldRender: true, banner: <LineaBanner /> },
       { shouldRender: true, banner: <ArbitrumOneBanner /> },
+      { shouldRender: true, banner: <GalaxePedictBanner /> },
+      { shouldRender: true, banner: <GalaxeSyndicateBanner /> },
+
       { shouldRender: true, banner: <ZksyncBanner /> },
       { shouldRender: true, banner: <PolygonZkEvmBanner /> },
       { shouldRender: true, banner: <GalxeTraverseBanner /> },
