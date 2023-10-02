@@ -1,5 +1,6 @@
 import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
+import { SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS } from '@pancakeswap/position-managers'
 import {
   NftIcon,
   NftFillIcon,
@@ -113,6 +114,11 @@ const config: (
           label: t('Pools'),
           href: '/pools',
           supportChainIds: POOL_SUPPORTED_CHAINS,
+        },
+        {
+          label: t('Position Manager'),
+          href: '/position-managers',
+          supportChainIds: POSITION_MANAGERS_SUPPORTED_CHAINS,
         },
         {
           label: t('Liquid Staking'),
