@@ -1,12 +1,47 @@
 import { Currency } from '@pancakeswap/swap-sdk-core'
-import { Box, CurrencyLogo, Svg, Spinner as Sp, SpinnerProps } from '@pancakeswap/uikit'
+import { Box, CurrencyLogo, Spinner as Sp, SpinnerProps, Svg } from '@pancakeswap/uikit'
 import { useRef } from 'react'
-import { css, keyframes, styled, useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
+import { AnimationType, FadeWrapper, RotationStyle, StyledSVG } from './styles'
 import { useUnmountingAnimation } from './useUnmountingAnimation'
 
-enum AnimationType {
-  EXITING = 'exiting',
-}
+const LoadingIndicator = styled(LoaderV3)`
+  stroke: grey;
+  fill: grey;
+  width: calc(80px + 16px);
+  height: calc(80px + 16px);
+  top: -7px;
+  left: -7px;
+  position: absolute;
+  z-index: -100;
+`
+
+const CurrencyLoaderContainer = styled(FadePresence)<{ asBadge: boolean }>`
+  z-index: 2;
+  border-radius: 50%;
+  position: absolute;
+  transition: all 250ms ease-in-out;
+  height: ${({ asBadge }) => (asBadge ? '25px' : '80px')};
+  width: ${({ asBadge }) => (asBadge ? '25px' : '80px')};
+  bottom: ${({ asBadge }) => (asBadge ? '-4px' : 0)};
+  right: ${({ asBadge }) => (asBadge ? '-4px' : 0)};
+  outline: ${({ theme, asBadge }) => (asBadge ? `2px solid ${theme.background}` : '')};
+`
+
+const RaisedCurrencyLogo = styled(CurrencyLogo)`
+  z-index: 1;
+`
+const AllowanceIconCircle = styled(FadePresence)<{ width: number; height: number; showSpinner: boolean }>`
+  display: flex;
+  position: relative;
+  height: ${({ height }) => `${height}px`};
+  width: ${({ width }) => `${width}px`};
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ showSpinner, theme }) => (showSpinner ? 'transparent' : theme.colors.primary)};
+  z-index: 5;
+`
 const PermitIcon = () => {
   return (
     <Svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,33 +52,6 @@ const PermitIcon = () => {
     </Svg>
   )
 }
-
-const rotateAnimation = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`
-
-const RotationStyle = css`
-  animation: 2s ${rotateAnimation} linear infinite;
-`
-
-export const StyledSVG = styled.svg<{ size: string; stroke?: string; fill?: string }>`
-  height: ${({ size }) => size};
-  width: ${({ size }) => size};
-  path {
-    stroke: ${({ stroke }) => stroke};
-    background: grey;
-    fill: ${({ fill }) => fill};
-  }
-`
-
-export const StyledRotatingSVG = styled(StyledSVG)`
-  ${RotationStyle}
-`
 
 export function LoaderV3({ size = '4px', ...rest }: { size?: string; [k: string]: any }) {
   const theme = useTheme()
@@ -70,53 +78,8 @@ export function LoaderV3({ size = '4px', ...rest }: { size?: string; [k: string]
   )
 }
 
-export const LogoContainer = styled.div`
-  height: 48px;
-  width: 48px;
-  position: relative;
-  display: flex;
-  border-radius: 50%;
-  overflow: visible;
-`
-
-const fadeIn = keyframes`
-  from { opacity: 0;}
-  to { opacity: 1;}
-`
-const fadeAndScaleIn = keyframes`
-  from { opacity: 0; transform: scale(0); }
-  to { opacity: 1; transform: scale(1); }
-`
-const fadeInAnimation = css`
-  animation: ${fadeIn} 250ms ease-in-out;
-`
-const fadeAndScaleInAnimation = css`
-  animation: ${fadeAndScaleIn} 250ms ease-in-out;
-`
-
-const fadeOut = keyframes`
-  from { opacity: 1; }
-  to { opacity: 0;  }
-`
-const fadeAndScaleOut = keyframes`
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0); }
-`
-const fadeOutAnimation = css`
-  animation: ${fadeOut} 250ms ease-in-out;
-`
-const fadeAndScaleOutAnimation = css`
-  animation: ${fadeAndScaleOut} 250ms ease-in-out;
-`
-
-const FadeWrapper = styled.div<{ $scale: boolean }>`
-  transition: display 400ms ease-in-out;
-    transform 250ms ease-in-out;
-  ${({ $scale }) => ($scale ? fadeAndScaleInAnimation : fadeInAnimation)}
-
-  &.${AnimationType.EXITING} {
-    ${({ $scale }) => ($scale ? fadeAndScaleOutAnimation : fadeOutAnimation)}
-  }
+export const StyledRotatingSVG = styled(StyledSVG)`
+  ${RotationStyle}
 `
 
 export function FadePresence({
@@ -147,23 +110,6 @@ export const Spinner: React.FC<React.PropsWithChildren<SpinnerProps>> = () => {
     </FadePresence>
   )
 }
-const CurrencyLoaderContainer = styled(FadePresence)<{ asBadge: boolean }>`
-  z-index: 2;
-  // margin-top: 44px;
-  // margin-bottom: 12px;
-  border-radius: 50%;
-  position: absolute;
-  transition: all 250ms ease-in-out;
-  height: ${({ asBadge }) => (asBadge ? '25px' : '80px')};
-  width: ${({ asBadge }) => (asBadge ? '25px' : '80px')};
-  bottom: ${({ asBadge }) => (asBadge ? '-4px' : 0)};
-  right: ${({ asBadge }) => (asBadge ? '-4px' : 0)};
-  outline: ${({ theme, asBadge }) => (asBadge ? `2px solid ${theme.background}` : '')};
-`
-
-const RaisedCurrencyLogo = styled(CurrencyLogo)`
-  z-index: 1;
-`
 
 export function CurrencyLoader({ currency, asBadge = false }: { currency?: Currency; asBadge?: boolean }) {
   return (
@@ -172,18 +118,6 @@ export function CurrencyLoader({ currency, asBadge = false }: { currency?: Curre
     </CurrencyLoaderContainer>
   )
 }
-
-const PinkCircle = styled(FadePresence)<{ width: number; height: number; showSpinner: boolean }>`
-  display: flex;
-  position: relative;
-  height: ${({ height }) => `${height}px`};
-  width: ${({ width }) => `${width}px`};
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ showSpinner, theme }) => (showSpinner ? 'transparent' : theme.colors.primary)};
-  z-index: 5;
-`
 
 export const PaperIcon = ({
   size = 80,
@@ -197,7 +131,7 @@ export const PaperIcon = ({
   showSpinner: boolean
 }) => {
   return (
-    <PinkCircle width={size} height={size} showSpinner={showSpinner} $scale>
+    <AllowanceIconCircle width={size} height={size} showSpinner={showSpinner} $scale>
       {!showSpinner ? (
         <>
           <LoadingIndicatorOverlay />
@@ -209,20 +143,9 @@ export const PaperIcon = ({
           <Spinner />
         </Box>
       )}
-    </PinkCircle>
+    </AllowanceIconCircle>
   )
 }
-
-const LoadingIndicator = styled(LoaderV3)`
-  stroke: grey;
-  fill: grey;
-  width: calc(80px + 16px);
-  height: calc(80px + 16px);
-  top: -7px;
-  left: -7px;
-  position: absolute;
-  z-index: -100;
-`
 
 export function LoadingIndicatorOverlay() {
   return (

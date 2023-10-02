@@ -2,9 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Column, ColumnCenter, Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { ReactNode, useMemo, useRef } from 'react'
-import styled, { css, keyframes } from 'styled-components'
+import styled, { css } from 'styled-components'
 import { PaperIcon } from './Logos'
 import TokenTransferInfo from './TokenTransferInfo'
+import { AnimationType, slideInAnimation, slideOutAnimation } from './styles'
 import { useUnmountingAnimation } from './useUnmountingAnimation'
 
 enum ConfirmModalState {
@@ -39,25 +40,6 @@ interface ApproveModalContentProps {
   attemptingTransaction: boolean
   txHash: string
 }
-
-enum AnimationType {
-  EXITING = 'exiting',
-}
-
-const slideIn = keyframes`
-  from { opacity: 0; transform: translateX(20px) }
-  to { opacity: 1; transform: translateX(0px) }
-`
-const slideInAnimation = css`
-  animation: ${slideIn} 300ms ease-in-out;
-`
-const slideOut = keyframes`
-  from { opacity: 1; transform: translateX(0px) }
-  to { opacity: 0; transform: translateX(-40px) }
-`
-const slideOutAnimation = css`
-  animation: ${slideOut} 300ms ease-in-out;
-`
 
 export const StepTitleAnimationContainer = styled(Column)<{ disableEntranceAnimation?: boolean }>`
   align-items: center;
