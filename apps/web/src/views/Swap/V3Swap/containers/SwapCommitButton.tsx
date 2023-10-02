@@ -37,10 +37,10 @@ import { warningSeverity } from 'utils/exchange'
 import { isChainSupported } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
+import { useConfirmModalState } from '../hooks/useConfirmModalState'
 import { useWallchainApi } from '../hooks/useWallchain'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
-import { isInApprovalPhase, useConfirmModalState } from '../hooks/useConfirmModalState'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 

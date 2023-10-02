@@ -31,7 +31,7 @@ export function useUnmountingAnimation(
   skip = false,
 ) {
   useEffect(() => {
-    const current = node.current
+    const { current } = node
 
     // Gather all elements to animate, defaulting to the current node if none are specified.
     const animated = animatedElements?.map((element) => element.current) ?? [current]
@@ -42,6 +42,7 @@ export function useUnmountingAnimation(
     if (!(parent && removeChild) || skip) return
 
     // Override the parent's removeChild function to add our animation logic
+    // eslint-disable-next-line func-names
     parent.removeChild = function <T extends Node>(child: T) {
       // If the current child is the one being removed and it's supposed to animate
       if ((child as Node) === current && animated) {

@@ -1,9 +1,8 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/uikit'
+import { Box, Flex, InjectedModalProps } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import {
@@ -30,7 +29,6 @@ import { SwapTransactionErrorContent } from '../../components/SwapTransactionErr
 import { TransactionConfirmSwapContent } from '../components'
 import { useWallchainStatus } from '../hooks/useWallchain'
 import { ApproveStepFlow } from './ApproveStepFlow'
-import { isInApprovalPhase } from '../hooks/useConfirmModalState'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean

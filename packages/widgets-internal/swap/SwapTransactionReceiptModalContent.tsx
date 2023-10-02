@@ -2,7 +2,6 @@ import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, BscScanIcon, CheckmarkCircleIcon, Link, Text } from '@pancakeswap/uikit'
 import { ReactNode } from 'react'
-import { Address } from 'viem'
 import { StepTitleAnimationContainer } from './ApproveModalContent'
 import { FadePresence } from './Logos'
 

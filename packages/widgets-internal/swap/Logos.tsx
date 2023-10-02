@@ -45,7 +45,7 @@ export const StyledRotatingSVG = styled(StyledSVG)`
   ${RotationStyle}
 `
 
-export function LoaderV3({ size = '4px', color, ...rest }: { size?: string; color?: string; [k: string]: any }) {
+export function LoaderV3({ size = '4px', ...rest }: { size?: string; [k: string]: any }) {
   const theme = useTheme()
   return (
     <StyledRotatingSVG
@@ -138,7 +138,7 @@ export function FadePresence({
   )
 }
 
-export const Spinner: React.FC<React.PropsWithChildren<SpinnerProps>> = ({ size = 128 }) => {
+export const Spinner: React.FC<React.PropsWithChildren<SpinnerProps>> = () => {
   const ref = useRef<HTMLDivElement>(null)
   useUnmountingAnimation(ref, () => AnimationType.EXITING)
   return (
