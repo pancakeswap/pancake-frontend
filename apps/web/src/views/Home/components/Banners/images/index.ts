@@ -85,7 +85,7 @@ import mercuryoLogo from './mercuryo-logo.png'
 import opbnbBg from './opbnb-bg.png'
 import opbnbBgMobile from './opbnb-bg-mobile.png'
 import opbnbBunny from './opbnb-bunny.png'
-import galxeBirthdayCampaignBg from './GalaxeBirthdayCampaignBg.png'
+import galxeBirthdayCampaignBg from './galxeBirthdayCampaignBg.png'
 import galxeBirthdayCampaignPedictMobile from './galxeMobileBunny1.png'
 import galxeBirthdayCampaignPerpMobile from './galxeMobileBunnny2.png'
 
