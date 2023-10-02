@@ -85,15 +85,14 @@ import mercuryoLogo from './mercuryo-logo.png'
 import opbnbBg from './opbnb-bg.png'
 import opbnbBgMobile from './opbnb-bg-mobile.png'
 import opbnbBunny from './opbnb-bunny.png'
-import galaxeBirthdayCampaignBunnyLogo from './GalaxeBirthdayCampaignBunnyLogo.png'
-import galaxeBirthdayCampaignBg from './GalaxeBirthdayCampaignBg.png'
-import galaxeBirthdayCampaignPedictMobile from './galaxeMobileBunny1.png'
-import galaxeBirthdayCampaignPerpMobile from './galaxeMobileBunnny2.png'
+import galxeBirthdayCampaignBg from './GalaxeBirthdayCampaignBg.png'
+import galxeBirthdayCampaignPedictMobile from './galxeMobileBunny1.png'
+import galxeBirthdayCampaignPerpMobile from './galxeMobileBunnny2.png'
 
 export {
-  galaxeBirthdayCampaignBg,
-  galaxeBirthdayCampaignPedictMobile,
-  galaxeBirthdayCampaignPerpMobile,
+  galxeBirthdayCampaignBg,
+  galxeBirthdayCampaignPedictMobile,
+  galxeBirthdayCampaignPerpMobile,
   lotteryImage,
   IFOImage,
   competitionImage,
@@ -109,8 +108,6 @@ export {
   AptosXPancakeSwap,
   trustwalletBg,
   trustwalletBunny,
-  galaxeBirthdayCampaignHeading,
-  galaxeBirthdayCampaignBunnyLogo,
   v3AirdropBunny,
   v3Board,
   v3BgCoinUp,

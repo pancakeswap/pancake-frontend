@@ -5,7 +5,7 @@ import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 import * as S from './Styled'
-import { galaxeBirthdayCampaignBg, galaxeBirthdayCampaignPedictMobile } from './images'
+import { galxeBirthdayCampaignBg, galxeBirthdayCampaignPedictMobile } from './images'
 
 const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
 
@@ -158,14 +158,9 @@ const GalxePredictBanner = () => {
         <RightWrapper>
           <BgWrapper>
             {!isMobile ? (
-              <Image src={galaxeBirthdayCampaignBg} height={192} alt="liquidStakingBunny" placeholder="blur" />
+              <Image src={galxeBirthdayCampaignBg} height={192} alt="liquidStakingBunny" placeholder="blur" />
             ) : (
-              <Image
-                src={galaxeBirthdayCampaignPedictMobile}
-                height={192}
-                alt="liquidStakingBunny"
-                placeholder="blur"
-              />
+              <Image src={galxeBirthdayCampaignPedictMobile} height={192} alt="liquidStakingBunny" placeholder="blur" />
             )}
           </BgWrapper>
         </RightWrapper>
