@@ -99,14 +99,16 @@ const MobileMenu = () => {
         </IconButton>
       </ButtonNav>
       <TabNav>
-        <BunnyContainer>
-          <Image
-            width={isMobile ? 134 : 164}
-            height={isMobile ? 125 : 155}
-            src="/images/predictions/birthday/mobile-bunny.png"
-            alt="mobile-bunny"
-          />
-        </BunnyContainer>
+        {activeIndex === 0 && (
+          <BunnyContainer>
+            <Image
+              width={isMobile ? 134 : 164}
+              height={isMobile ? 125 : 155}
+              src="/images/predictions/birthday/mobile-bunny.png"
+              alt="mobile-bunny"
+            />
+          </BunnyContainer>
+        )}
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle" onItemClick={handleItemClick}>
           <ButtonMenuItem>
             <Cards color="currentColor" />
