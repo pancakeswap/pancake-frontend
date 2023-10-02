@@ -4,6 +4,7 @@ import { BaseAssets } from '@pancakeswap/position-managers'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { useCurrencyBalances } from 'state/wallet/hooks'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useAccount } from 'wagmi'
@@ -64,6 +65,15 @@ Props) {
   const showRemoveLiquidityModal = useCallback(() => setRemoveLiquidityModalOpen(true), [])
   const hideRemoveLiquidityModal = useCallback(() => setRemoveLiquidityModalOpen(false), [])
 
+  const relevantTokenBalances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => [currencyA ?? undefined, currencyB ?? undefined], [currencyA, currencyB]),
+  )
+  const userCurrencyBalances = {
+    token0Balance: relevantTokenBalances[0],
+    token1Balance: relevantTokenBalances[1],
+  }
+
   return (
     <>
       {hasStaked ? (
@@ -100,6 +110,7 @@ Props) {
         allowDepositToken0={allowDepositToken0}
         allowDepositToken1={allowDepositToken1}
         contractAddress={contractAddress}
+        userCurrencyBalances={userCurrencyBalances}
         refetch={refetch}
       />
       <RemoveLiquidity

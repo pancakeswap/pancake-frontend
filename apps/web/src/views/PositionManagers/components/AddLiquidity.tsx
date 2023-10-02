@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { styled } from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, CurrencyInput, Flex, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -8,8 +9,6 @@ import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import { memo, useCallback, useMemo, useState } from 'react'
-import styled from 'styled-components'
-
 import { StyledModal } from './StyledModal'
 import { FeeTag } from './Tags'
 
@@ -28,6 +27,10 @@ interface Props {
   }
   refetch?: () => void
   contractAddress: `0x${string}`
+  userCurrencyBalances: {
+    token0Balance: CurrencyAmount<Currency>
+    token1Balance: CurrencyAmount<Currency>
+  }
   // TODO: return data
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
 }
@@ -37,18 +40,19 @@ const StyledCurrencyInput = styled(CurrencyInput)`
 `
 
 export const AddLiquidity = memo(function AddLiquidity({
+  ratio,
   isOpen,
   vaultName,
-  onDismiss,
   currencyA,
   currencyB,
   feeTier,
-  onAmountChange,
   allowDepositToken1,
   allowDepositToken0,
   contractAddress,
-  ratio,
+  userCurrencyBalances,
   refetch,
+  onDismiss,
+  onAmountChange,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -119,6 +123,11 @@ export const AddLiquidity = memo(function AddLiquidity({
   // const share = new Percent(158, 10000)
   // const apr = new Percent(4366, 10000)
 
+  const displayBalanceText = useCallback(
+    (balanceAmount: CurrencyAmount<Currency>) => `Balances: ${balanceAmount?.toSignificant(6)}`,
+    [],
+  )
+
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={t('Add Liquidity')}>
@@ -136,12 +145,24 @@ export const AddLiquidity = memo(function AddLiquidity({
         </RowBetween>
         {allowDepositToken0 && (
           <Flex mt="1em">
-            <StyledCurrencyInput currency={currencyA} value={valueA} onChange={onCurrencyAChange} />
+            <StyledCurrencyInput
+              value={valueA}
+              currency={currencyA}
+              balance={userCurrencyBalances.token0Balance}
+              balanceText={displayBalanceText(userCurrencyBalances.token0Balance)}
+              onChange={onCurrencyAChange}
+            />
           </Flex>
         )}
         {allowDepositToken1 && (
           <Flex mt="1em">
-            <StyledCurrencyInput currency={currencyB} value={valueB} onChange={onCurrencyBChange} />
+            <StyledCurrencyInput
+              value={valueB}
+              currency={currencyB}
+              balance={userCurrencyBalances.token1Balance}
+              balanceText={displayBalanceText(userCurrencyBalances.token1Balance)}
+              onChange={onCurrencyBChange}
+            />
           </Flex>
         )}
         <Flex mt="1.5em" flexDirection="column">
@@ -197,13 +218,13 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
     amountB,
     contractAddress,
   )
-  const posisitonManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
+  const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
 
   const mintThenDeposit = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() =>
-      posisitonManagerWrapperContract.write.mintThenDeposit(
+      positionManagerWrapperContract.write.mintThenDeposit(
         [amountA?.numerator ?? 0n, amountB?.numerator ?? 0n, '0x'],
         {},
       ),
@@ -217,7 +238,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
         </ToastDescriptionWithTx>,
       )
     }
-  }, [amountA, amountB, posisitonManagerWrapperContract, t, toastSuccess, fetchWithCatchTxError, onDone])
+  }, [amountA, amountB, positionManagerWrapperContract, t, toastSuccess, fetchWithCatchTxError, onDone])
   return (
     <>
       {amountA && approvalStateToken0 === ApprovalState.NOT_APPROVED && (
