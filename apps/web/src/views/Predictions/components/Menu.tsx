@@ -95,8 +95,8 @@ const Menu = () => {
 
   return (
     <FlexRow alignItems="center" p="16px" width="100%">
+      {isDesktop && <JupiterPredictors />}
       <SetCol>
-        {isDesktop && <JupiterPredictors />}
         <PricePairLabel />
       </SetCol>
       {status === PredictionStatus.LIVE && (
