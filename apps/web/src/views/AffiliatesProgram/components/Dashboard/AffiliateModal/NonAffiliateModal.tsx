@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ModalV2, Modal, Flex, Text, Checkbox, Button, Link } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useAtom } from 'jotai'
@@ -22,20 +22,16 @@ const NonAffiliateModal = () => {
     setIsOpen(!isAffiliateExist && !isFetching && address && showModal)
   }, [address, isFetching, isAffiliateExist, showModal])
 
-  const handleCheckbox = () => setIsChecked(!isChecked)
+  const handleCheckbox = useCallback(() => setIsChecked((prevState) => !prevState), [])
 
-  const handleCloseButton = () => {
+  const handleCloseButton = useCallback(() => {
     setIsOpen(false)
     setShowModal(false)
-  }
+  }, [setShowModal])
 
   return (
-    <ModalV2 isOpen={isOpen}>
-      <Modal
-        title={t('Affiliate Program Update')}
-        maxWidth={['100%', '100%', '100%', '480px']}
-        onDismiss={() => handleCloseButton()}
-      >
+    <ModalV2 isOpen={isOpen} closeOnOverlayClick={false}>
+      <Modal title={t('Affiliate Program Update')} maxWidth={['100%', '100%', '100%', '480px']} hideCloseButton>
         <Flex flexDirection="column">
           <Text mb="24px">
             <Text as="span">
