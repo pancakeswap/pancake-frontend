@@ -135,7 +135,7 @@ const GalxePredictBanner = () => {
               color="white"
               px="8px"
             >
-              {t('|')}
+              |
             </Text>
             <Link
               style={{ textDecoration: 'none' }}
