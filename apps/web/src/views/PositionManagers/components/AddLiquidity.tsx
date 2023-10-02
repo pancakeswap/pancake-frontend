@@ -1,11 +1,17 @@
 import { memo, useMemo, useState, useCallback } from 'react'
-import { ModalV2, RowBetween, Text, Flex, CurrencyInput, Button } from '@pancakeswap/uikit'
+import { ModalV2, RowBetween, Text, Flex, CurrencyInput, Button, useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { formatPercent } from '@pancakeswap/utils/formatFractions'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import styled from 'styled-components'
+import { useApproveCallback, ApprovalState } from 'hooks/useApproveCallback'
+import { usePositionManagerAdepterContract, usePositionManagerWrapperContract } from 'hooks/useContract'
+import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 
 import { StyledModal } from './StyledModal'
 import { FeeTag } from './Tags'
@@ -18,11 +24,13 @@ interface Props {
   feeTier: FeeAmount
   currencyA: Currency
   currencyB: Currency
-
+  ratio: number
+  allowDepositToken0: boolean
+  allowDepositToken1: boolean
   onAmountChange?: (info: { value: string; currency: Currency; otherAmount: CurrencyAmount<Currency> }) => {
     otherAmount: CurrencyAmount<Currency>
   }
-
+  contractAddress: `0x${string}`
   // TODO: return data
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
 }
@@ -39,6 +47,10 @@ export const AddLiquidity = memo(function AddLiquidity({
   currencyB,
   feeTier,
   onAmountChange,
+  allowDepositToken1,
+  allowDepositToken0,
+  contractAddress,
+  ratio,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -53,6 +65,7 @@ export const AddLiquidity = memo(function AddLiquidity({
       otherCurrency,
       setValue,
       setOtherValue,
+      isToken0,
     }: {
       value: string
       currency: Currency
@@ -60,18 +73,12 @@ export const AddLiquidity = memo(function AddLiquidity({
       otherCurrency: Currency
       setValue: (value: string) => void
       setOtherValue: (value: string) => void
+      isToken0: boolean
     }) => {
       setValue(value)
-      const otherAmount = tryParseAmount(otherValue, otherCurrency)
-      if (!otherAmount) {
-        return
-      }
-      const result = onAmountChange?.({ value, currency, otherAmount })
-      if (result) {
-        setOtherValue(result.otherAmount.toExact())
-      }
+      setOtherValue((Number(value) * (isToken0 ? ratio : 1 / ratio)).toString())
     },
-    [onAmountChange],
+    [ratio],
   )
 
   const onCurrencyAChange = useCallback(
@@ -83,6 +90,7 @@ export const AddLiquidity = memo(function AddLiquidity({
         otherCurrency: currencyB,
         setValue: setValueA,
         setOtherValue: setValueB,
+        isToken0: true,
       }),
     [currencyA, currencyB, valueB, onInputChange],
   )
@@ -96,6 +104,7 @@ export const AddLiquidity = memo(function AddLiquidity({
         otherCurrency: currencyA,
         setValue: setValueB,
         setOtherValue: setValueA,
+        isToken0: false,
       }),
     [currencyA, currencyB, valueA, onInputChange],
   )
@@ -108,7 +117,6 @@ export const AddLiquidity = memo(function AddLiquidity({
     () => tryParseAmount(valueB, currencyB) || CurrencyAmount.fromRawAmount(currencyB, '0'),
     [valueB, currencyB],
   )
-
   // TODO: mock
   const share = new Percent(158, 10000)
   const apr = new Percent(4366, 10000)
@@ -128,12 +136,16 @@ export const AddLiquidity = memo(function AddLiquidity({
             <FeeTag feeAmount={feeTier} ml="0.25em" />
           </Flex>
         </RowBetween>
-        <Flex mt="1em">
-          <StyledCurrencyInput currency={currencyA} value={valueA} onChange={onCurrencyAChange} />
-        </Flex>
-        <Flex mt="1em">
-          <StyledCurrencyInput currency={currencyB} value={valueB} onChange={onCurrencyBChange} />
-        </Flex>
+        {allowDepositToken0 && (
+          <Flex mt="1em">
+            <StyledCurrencyInput currency={currencyA} value={valueA} onChange={onCurrencyAChange} />
+          </Flex>
+        )}
+        {allowDepositToken1 && (
+          <Flex mt="1em">
+            <StyledCurrencyInput currency={currencyB} value={valueB} onChange={onCurrencyBChange} />
+          </Flex>
+        )}
         <Flex mt="1.5em" flexDirection="column">
           <RowBetween>
             <Text color="text">{t('Your share in the vault')}:</Text>
@@ -145,7 +157,11 @@ export const AddLiquidity = memo(function AddLiquidity({
           </RowBetween>
         </Flex>
         <Flex mt="1.5em" flexDirection="column">
-          <AddLiquidityButton amountA={amountA} amountB={amountB} />
+          <AddLiquidityButton
+            amountA={allowDepositToken0 ? amountA : null}
+            amountB={allowDepositToken1 ? amountB : null}
+            contractAddress={contractAddress}
+          />
         </Flex>
       </StyledModal>
     </ModalV2>
@@ -155,28 +171,65 @@ export const AddLiquidity = memo(function AddLiquidity({
 interface AddLiquidityButtonProps {
   amountA: CurrencyAmount<Currency>
   amountB: CurrencyAmount<Currency>
-  onClick?: () => void
+  contractAddress: `0x${string}`
 }
 
 export const AddLiquidityButton = memo(function AddLiquidityButton({
   amountA,
   amountB,
-  onClick,
+  contractAddress,
 }: AddLiquidityButtonProps) {
   const { t } = useTranslation()
+  const [approvalStateToken0, approveCallbackToken0] = useApproveCallback(amountA, contractAddress)
+  const [approvalStateToken1, approveCallbackToken1] = useApproveCallback(amountB, contractAddress)
+  const posisitonManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { toastSuccess } = useToast()
+
+  const mintThenDeposit = useCallback(async () => {
+    const receipt = await fetchWithCatchTxError(() =>
+      posisitonManagerWrapperContract.write.mintThenDeposit(
+        [amountA?.numerator ?? 0n, amountB?.numerator ?? 0n, '0x'],
+        {},
+      ),
+    )
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Staked')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
+      )
+    }
+  }, [amountA, amountB, posisitonManagerWrapperContract, t, toastSuccess, fetchWithCatchTxError])
   return (
     <>
-      <Button variant="primary" width="100%">
-        {t('Approve %symbol%', {
-          symbol: amountA.currency.symbol,
-        })}
-      </Button>
-      <Button variant="primary" width="100%" mt="0.5em">
-        {t('Approve %symbol%', {
-          symbol: amountB.currency.symbol,
-        })}
-      </Button>
-      <Button mt="0.5em" variant="primary" width="100%" onClick={onClick}>
+      {amountA && approvalStateToken0 === ApprovalState.NOT_APPROVED && (
+        <Button variant="primary" width="100%" onClick={approveCallbackToken0}>
+          {t('Approve %symbol%', {
+            symbol: amountA.currency.symbol,
+          })}
+        </Button>
+      )}
+      {amountB && approvalStateToken1 === ApprovalState.NOT_APPROVED && (
+        <Button variant="primary" width="100%" mt="0.5em" onClick={approveCallbackToken1}>
+          {t('Approve %symbol%', {
+            symbol: amountB.currency.symbol,
+          })}
+        </Button>
+      )}
+      <Button
+        mt="0.5em"
+        variant="primary"
+        width="100%"
+        onClick={() => {
+          mintThenDeposit()
+        }}
+        disabled={
+          (amountA && approvalStateToken0 !== ApprovalState.APPROVED) ||
+          (amountB && approvalStateToken1 !== ApprovalState.APPROVED)
+        }
+      >
         {t('Confirm')}
       </Button>
     </>

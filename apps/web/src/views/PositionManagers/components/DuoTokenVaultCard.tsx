@@ -31,7 +31,7 @@ interface Props {
   name: string
   id: string | number
   feeTier: FeeAmount
-
+  ratio: number
   strategy: Strategy
   manager: {
     id: MANAGER
@@ -42,6 +42,9 @@ interface Props {
   autoFarm?: boolean
   autoCompound?: boolean
   info?: ReactNode
+  allowDepositToken0?: boolean
+  allowDepositToken1?: boolean
+  contractAddress: `0x${string}`
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -55,8 +58,13 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   manager,
   managerFee,
   strategy,
+  ratio,
+  allowDepositToken0 = true,
+  allowDepositToken1 = true,
+  contractAddress,
 }: PropsWithChildren<Props>) {
   // TODO: mock
+
   const mockApr = new Percent(2233, 10000)
   const mockCmpApr = new Percent(1122, 10000)
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
@@ -92,7 +100,11 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           price={price}
           vaultName={vaultName}
           feeTier={feeTier}
-          assets={assets}
+          assets={undefined}
+          ratio={ratio}
+          allowDepositToken0={allowDepositToken0}
+          allowDepositToken1={allowDepositToken1}
+          contractAddress={contractAddress}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo currencyA={currencyA} currencyB={currencyB} managerFee={managerFee} />

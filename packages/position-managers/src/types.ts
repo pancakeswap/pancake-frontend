@@ -12,6 +12,7 @@ export enum OnChainActionType {
 
 export enum Strategy {
   TYPICAL_WIDE,
+  SUPER_ONE_SIDED,
 }
 
 export interface OnChainActionResponse {
@@ -101,10 +102,11 @@ export interface DuoTokenVault {
   currencyA: Currency
   currencyB: Currency
   feeTier: FeeAmount
-
   manager: PositionManager
   strategy: Strategy
   managerFee: ManagerFee
+  allowDepositToken0?: boolean
+  allowDepositToken1?: boolean
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

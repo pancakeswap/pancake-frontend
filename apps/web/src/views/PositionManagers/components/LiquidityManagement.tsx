@@ -16,9 +16,12 @@ interface Props {
   currencyB: Currency
   vaultName: string
   feeTier: FeeAmount
-
   assets?: BaseAssets
   price?: Price<Currency, Currency>
+  ratio: number
+  allowDepositToken0: boolean
+  allowDepositToken1: boolean
+  contractAddress: `0x${string}`
 
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
@@ -34,6 +37,10 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   feeTier,
   assets,
   price,
+  ratio,
+  allowDepositToken0,
+  allowDepositToken1,
+  contractAddress,
 }: // onAddLiquidity,
 // onRemoveLiquidity,
 Props) {
@@ -75,6 +82,10 @@ Props) {
         onDismiss={hideAddLiquidityModal}
         currencyA={currencyA}
         currencyB={currencyB}
+        ratio={ratio}
+        allowDepositToken0={allowDepositToken0}
+        allowDepositToken1={allowDepositToken1}
+        contractAddress={contractAddress}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

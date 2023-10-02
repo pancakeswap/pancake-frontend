@@ -36,6 +36,8 @@ import {
   getRevenueSharingPoolAddress,
   getAnniversaryAchievementAddress,
   getFixedStakingAddress,
+  getPositionManagerWrapperAddress,
+  getPositionManagerAdapterAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -61,6 +63,8 @@ import { affiliateProgramABI } from 'config/abi/affiliateProgram'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
 import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
+import { positionManagerAdapterABI } from 'config/abi/positionManagerAdapter'
+import { positionManagerWrapperABI } from 'config/abi/positionManagerWrapper'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
@@ -245,6 +249,24 @@ export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
 
 export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: number) => {
   return getContract({ abi: bCakeFarmBoosterV3ABI, address: getBCakeFarmBoosterV3Address(chainId), signer, chainId })
+}
+
+export const getPositionManagerWrapperContract = (signer?: WalletClient, chainId?: number, address?: `0x${string}`) => {
+  return getContract({
+    abi: positionManagerWrapperABI,
+    address: address ?? getPositionManagerWrapperAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getPositionManagerAdapterContract = (signer?: WalletClient, chainId?: number, address?: `0x${string}`) => {
+  return getContract({
+    abi: positionManagerAdapterABI,
+    address: address ?? getPositionManagerAdapterAddress(chainId),
+    signer,
+    chainId,
+  })
 }
 
 export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {

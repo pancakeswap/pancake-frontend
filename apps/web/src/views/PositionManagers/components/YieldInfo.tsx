@@ -41,10 +41,11 @@ export const YieldInfo = memo(function YieldInfo({ apr, boostedApr, withCakeRewa
       <RowBetween>
         <Text>{t('APR')}:</Text>
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-          <AprText color="success" bold underline>
+          {/* <AprText color="success" bold underline>
             {formatPercent(aprToHighlight)}%
-          </AprText>
-          {aprToCompare}
+            -
+          </AprText> */}
+          {/* {aprToCompare} */}-
           <IconButton variant="text" scale="sm" onClick={onAprClick}>
             <CalculateIcon color="textSubtle" ml="0.25em" width="1.5em" />
           </IconButton>
