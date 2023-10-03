@@ -6,6 +6,7 @@ import { memo } from 'react'
 import { styled } from 'styled-components'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
+import { useViewport } from 'hooks/useViewport'
 import * as S from './Styled'
 import { galxeSyndicateBg, galxeBirthdayCampaignPerpMobile } from './images'
 
@@ -91,6 +92,7 @@ const GalaxeSyndicateBanner = () => {
   } = useTranslation()
   const { chainId } = useActiveChainId()
   const { isMobile } = useMatchBreakpoints()
+  const { width } = useViewport()
   const url = getPerpetualUrl({ chainId, languageCode: code, isDark: false })
   return (
     <S.Wrapper
@@ -99,7 +101,7 @@ const GalaxeSyndicateBanner = () => {
       }}
     >
       <S.Inner>
-        <S.LeftWrapper position="relative" style={{ zIndex: 2, justifyContent: isMobile ? 'flex-start' : 'center' }}>
+        <S.LeftWrapper position="relative" style={{ zIndex: 2, justifyContent: 'center' }}>
           <Flex alignItems="center" style={{ gap: isMobile ? 4 : 12 }} mb="8px">
             <Image
               src={pancakeSwapLogo}
@@ -164,7 +166,7 @@ const GalaxeSyndicateBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           <BgWrapper>
-            {!isMobile ? (
+            {width >= 860 ? (
               <Image src={galxeSyndicateBg} width={705} height={222} alt="liquidStakingBunny" placeholder="blur" />
             ) : (
               <Image

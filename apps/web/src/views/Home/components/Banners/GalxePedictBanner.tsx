@@ -4,6 +4,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled } from 'styled-components'
+import { useViewport } from 'hooks/useViewport'
 import * as S from './Styled'
 import { galxePredictorsBg, galxeBirthdayCampaignPedictMobile } from './images'
 
@@ -85,6 +86,7 @@ const StyledSubheading = styled.div`
 const GalxePredictBanner = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
+  const { width } = useViewport()
 
   return (
     <S.Wrapper
@@ -93,7 +95,7 @@ const GalxePredictBanner = () => {
       }}
     >
       <S.Inner>
-        <S.LeftWrapper position="relative" style={{ zIndex: 2, justifyContent: isMobile ? 'flex-start' : 'center' }}>
+        <S.LeftWrapper position="relative" style={{ zIndex: 2, justifyContent: 'center' }}>
           <Flex alignItems="center" style={{ gap: isMobile ? 4 : 12 }} mb="8px">
             <Image
               src={pancakeSwapLogo}
@@ -105,7 +107,7 @@ const GalxePredictBanner = () => {
           </Flex>
           <Box maxWidth="780px" marginTop="12px">
             {!isMobile ? (
-              <StyledSubheading data-text={t('Jupiter Predictors:')}>{t('Jupiter Predictors:')}</StyledSubheading>
+              <StyledSubheading data-text={t('Jupiter Predictors')}>{t('Jupiter Predictors')}</StyledSubheading>
             ) : null}
             <StyledSubheading
               data-text={isMobile ? t('Jupiter Predictors:') : t('Predict, win and share $10,000 rewards')}
@@ -156,7 +158,7 @@ const GalxePredictBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           <BgWrapper>
-            {!isMobile ? (
+            {width >= 860 ? (
               <Image src={galxePredictorsBg} width={530} height={192} alt="liquidStakingBunny" placeholder="blur" />
             ) : (
               <Image
