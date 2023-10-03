@@ -15,12 +15,7 @@ import {
   WaitForTransactionReceiptTimeoutError,
 } from 'viem'
 import { retry, RetryableError } from 'state/multicall/retry'
-// import { useWalletConnectPushClient } from 'contexts/PushClientContext'
-import { BuilderNames } from 'views/Notifications/types'
-import useSendPushNotification from 'views/Notifications/components/hooks/sendPushNotification'
-import { supportedNotifyTxTypes } from 'views/Notifications/constants'
-import { useAppDispatch } from '../index'
-// import { useAppDispatch } from 'state'
+import { useAppDispatch } from 'state'
 import {
   finalizeTransaction,
   FarmTransactionStatus,
