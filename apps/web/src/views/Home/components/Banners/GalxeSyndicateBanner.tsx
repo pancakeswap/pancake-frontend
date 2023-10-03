@@ -8,10 +8,10 @@ import { styled } from 'styled-components'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import * as S from './Styled'
 import {
-  galxeBirthdayCampaignPerpMobile,
+  galxeBirthdayCampaignPedictMobile,
   galxePancakeBannerLogo,
-  galxePredictorsBunny,
-  galxeSyndicateBackground,
+  galxePredictorsBackground,
+  galxeSyndicateBunny,
 } from './images'
 
 const RightWrapper = styled.div`
@@ -28,7 +28,7 @@ const RightWrapper = styled.div`
     right: 12px;
     z-index: 2;
     ${({ theme }) => theme.mediaQueries.sm} {
-      right: 320px;
+      right: 220px;
       bottom: 3px;
     }
   }
@@ -81,7 +81,7 @@ const StyledSubheading = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 24px;
+    font-size: 22px;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     background: linear-gradient(166.02deg, #ffb237 -5.1%, #ffeb37 75.24%);
@@ -167,15 +167,26 @@ const GalaxeSyndicateBanner = () => {
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
-          {width >= 850 ? (
-            <Image src={galxePredictorsBunny} alt="liquidStakingBunny" width={181} height={222} placeholder="blur" />
+          {width >= 795 ? (
+            <Image src={galxeSyndicateBunny} alt="liquidStakingBunny" width={191} height={222} placeholder="blur" />
           ) : null}
-
           <BgWrapper>
-            {width >= 635 ? (
-              <Image src={galxeSyndicateBackground} height={192} alt="liquidStakingBunny" placeholder="blur" />
+            {width >= 795 ? (
+              <Image
+                src={galxePredictorsBackground}
+                width={735}
+                height={192}
+                alt="liquidStakingBunny"
+                placeholder="blur"
+              />
             ) : (
-              <Image src={galxeBirthdayCampaignPerpMobile} width={159} height={181} placeholder="blur" />
+              <Image
+                src={galxeBirthdayCampaignPedictMobile}
+                width={159}
+                height={191}
+                alt="liquidStakingBunny"
+                placeholder="blur"
+              />
             )}
           </BgWrapper>
         </RightWrapper>

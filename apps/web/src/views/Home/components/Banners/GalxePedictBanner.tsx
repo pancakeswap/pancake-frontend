@@ -6,10 +6,10 @@ import { memo } from 'react'
 import { styled } from 'styled-components'
 import * as S from './Styled'
 import {
-  galxeBirthdayCampaignPedictMobile,
+  galxeBirthdayCampaignPerpMobile,
   galxePancakeBannerLogo,
-  galxePredictorsBackground,
-  galxeSyndicateBunny,
+  galxePredictorsBunny,
+  galxeSyndicateBackground,
 } from './images'
 
 const RightWrapper = styled.div`
@@ -26,7 +26,7 @@ const RightWrapper = styled.div`
     right: 12px;
     z-index: 2;
     ${({ theme }) => theme.mediaQueries.sm} {
-      right: 220px;
+      right: 320px;
       bottom: 3px;
     }
   }
@@ -160,26 +160,15 @@ const GalxePredictBanner = () => {
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
-          {width >= 795 ? (
-            <Image src={galxeSyndicateBunny} alt="liquidStakingBunny" width={191} height={222} placeholder="blur" />
+          {width >= 850 ? (
+            <Image src={galxePredictorsBunny} alt="liquidStakingBunny" width={181} height={222} placeholder="blur" />
           ) : null}
+
           <BgWrapper>
-            {width >= 795 ? (
-              <Image
-                src={galxePredictorsBackground}
-                width={735}
-                height={192}
-                alt="liquidStakingBunny"
-                placeholder="blur"
-              />
+            {width >= 635 ? (
+              <Image src={galxeSyndicateBackground} height={192} alt="liquidStakingBunny" placeholder="blur" />
             ) : (
-              <Image
-                src={galxeBirthdayCampaignPedictMobile}
-                width={159}
-                height={191}
-                alt="liquidStakingBunny"
-                placeholder="blur"
-              />
+              <Image src={galxeBirthdayCampaignPerpMobile} width={159} height={181} placeholder="blur" />
             )}
           </BgWrapper>
         </RightWrapper>
