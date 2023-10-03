@@ -141,14 +141,17 @@ export const AddLiquidity = memo(function AddLiquidity({
 
   const disabled = useMemo(() => {
     const balanceAmountMoreThenValueA =
+      allowDepositToken0 &&
       amountA.greaterThan('0') &&
       Number(userCurrencyBalances?.token0Balance?.toSignificant()) < Number(amountA?.toSignificant())
+
     const balanceAmountMoreThenValueB =
+      allowDepositToken1 &&
       amountB.greaterThan('0') &&
       Number(userCurrencyBalances?.token1Balance?.toSignificant()) < Number(amountB?.toSignificant())
 
     return amountA.equalTo('0') || amountB.equalTo('0') || balanceAmountMoreThenValueA || balanceAmountMoreThenValueB
-  }, [amountA, amountB, userCurrencyBalances])
+  }, [allowDepositToken0, allowDepositToken1, amountA, amountB, userCurrencyBalances])
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
