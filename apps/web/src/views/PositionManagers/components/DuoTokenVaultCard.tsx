@@ -41,6 +41,7 @@ interface Props {
   autoFarm?: boolean
   autoCompound?: boolean
   info?: ReactNode
+  isSingleToken: boolean
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
   contractAddress: `0x${string}`
@@ -65,6 +66,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   managerFee,
   strategy,
   ratio,
+  isSingleToken,
   allowDepositToken0 = true,
   allowDepositToken1 = true,
   contractAddress,
@@ -93,6 +95,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         feeTier={feeTier}
         autoFarm={autoFarm}
         autoCompound={autoCompound}
+        isSingleToken={isSingleToken}
       />
       <CardBody>
         <YieldInfo boostedApr={mockApr} apr={mockCmpApr} autoCompound={autoCompound} />
@@ -105,6 +108,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           vaultName={vaultName}
           feeTier={feeTier}
           ratio={ratio}
+          isSingleToken={isSingleToken}
           allowDepositToken0={allowDepositToken0}
           allowDepositToken1={allowDepositToken1}
           contractAddress={contractAddress}

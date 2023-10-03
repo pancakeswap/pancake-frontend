@@ -105,6 +105,7 @@ export interface DuoTokenVault {
   manager: PositionManager
   strategy: Strategy
   managerFee: ManagerFee
+  isSingleToken: boolean
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
   priceFromV3FarmPid: number

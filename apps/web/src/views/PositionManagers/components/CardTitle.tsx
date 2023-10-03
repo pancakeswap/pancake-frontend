@@ -5,13 +5,14 @@ import { Flex, Text } from '@pancakeswap/uikit'
 
 import { CardHeader } from './CardLayout'
 import { TokenPairLogos } from './TokenPairLogos'
-import { FeeTag, FarmTag } from './Tags'
+import { FeeTag, FarmTag, SingleTokenTag } from './Tags'
 
 interface Props {
   currencyA: Currency
   currencyB: Currency
   vaultName: string
   feeTier: FeeAmount
+  isSingleToken: boolean
 
   autoFarm?: boolean
   autoCompound?: boolean
@@ -22,6 +23,7 @@ export const CardTitle = memo(function CardTitle({
   currencyB,
   vaultName,
   feeTier,
+  isSingleToken,
   autoFarm,
   autoCompound,
 }: Props) {
@@ -42,6 +44,7 @@ export const CardTitle = memo(function CardTitle({
         <Flex flexDirection="row" justifyContent="flex-end" mt="0.25em">
           <FeeTag feeAmount={feeTier} />
           {autoFarm && <FarmTag ml="0.5em" />}
+          {isSingleToken && <SingleTokenTag ml="0.5em" />}
         </Flex>
       </Flex>
     </CardHeader>

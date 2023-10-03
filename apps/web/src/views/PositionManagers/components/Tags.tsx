@@ -14,4 +14,13 @@ export const FarmTag = memo(function FarmTag(props: TagProps) {
   )
 })
 
+export const SingleTokenTag = memo(function SingleTokenTag(props: TagProps) {
+  const { t } = useTranslation()
+  return (
+    <Tag variant="success" outline {...props}>
+      {t('Single Token')}
+    </Tag>
+  )
+})
+
 export { V3FeeTag as FeeTag, CompoundingPoolTag as AutoCompoundTag }

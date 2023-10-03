@@ -25,6 +25,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     manager,
     managerFee,
     address,
+    isSingleToken,
     allowDepositToken0,
     allowDepositToken1,
     priceFromV3FarmPid,
@@ -79,6 +80,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       manager={managerInfo}
       managerFee={managerFee}
       ratio={tokenRatio ?? 1}
+      isSingleToken={isSingleToken}
       allowDepositToken0={allowDepositToken0}
       allowDepositToken1={allowDepositToken1}
       contractAddress={address}

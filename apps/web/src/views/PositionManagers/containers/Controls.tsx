@@ -4,7 +4,7 @@ import {
   ControlsContainer,
   ControlGroup,
   LiveSwitch,
-  ViewSwitch,
+  // ViewSwitch,
   StakeOnlyToggle,
   BoosterToggle,
   SortFilter,
@@ -17,7 +17,7 @@ export function Controls() {
   const controls = isDesktop ? (
     <ControlsContainer>
       <ControlGroup>
-        <ViewSwitch />
+        {/* <ViewSwitch /> */}
         <StakeOnlyToggle />
         <BoosterToggle />
         <LiveSwitch />
@@ -30,7 +30,7 @@ export function Controls() {
   ) : (
     <ControlsContainer justifyContent="flex-start" flexDirection="column">
       <ControlGroup>
-        <ViewSwitch />
+        {/* <ViewSwitch /> */}
         <StakeOnlyToggle />
         <BoosterToggle />
       </ControlGroup>

@@ -27,6 +27,7 @@ interface Props {
   currencyA: Currency
   currencyB: Currency
   ratio: number
+  isSingleToken: boolean
   allowDepositToken0: boolean
   allowDepositToken1: boolean
   onAmountChange?: (info: { value: string; currency: Currency; otherAmount: CurrencyAmount<Currency> }) => {
@@ -54,6 +55,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   currencyA,
   currencyB,
   feeTier,
+  isSingleToken,
   allowDepositToken1,
   allowDepositToken0,
   contractAddress,
@@ -139,22 +141,18 @@ export const AddLiquidity = memo(function AddLiquidity({
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={t('Add Liquidity')}>
-        <Flex flexDirection="column">
-          <RowBetween>
-            <Text color="textSubtle">{t('Adding')}:</Text>
-            <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-              <Text color="text" bold>
-                {tokenPairName}
-              </Text>
-              <Text color="text" ml="0.25em">
-                {vaultName}
-              </Text>
-            </Flex>
-          </RowBetween>
-          <Flex ml="auto">
+        <RowBetween>
+          <Text color="textSubtle">{t('Adding')}:</Text>
+          <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
+            <Text color="text" bold>
+              {tokenPairName}
+            </Text>
+            <Text color="text" ml="0.25em">
+              {vaultName}
+            </Text>
             <FeeTag feeAmount={feeTier} ml="0.25em" />
           </Flex>
-        </Flex>
+        </RowBetween>
         {allowDepositToken0 && (
           <Flex mt="1em">
             <StyledCurrencyInput
@@ -189,7 +187,7 @@ export const AddLiquidity = memo(function AddLiquidity({
             {/* <Text color="text">{formatPercent(apr)}%</Text> */}
           </RowBetween>
         </Flex>
-        <SingleTokenWarning />
+        {isSingleToken && <SingleTokenWarning />}
         <DYORWarning manager={manager} />
         <Flex mt="1.5em" flexDirection="column">
           <AddLiquidityButton

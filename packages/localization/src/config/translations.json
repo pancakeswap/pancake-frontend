@@ -2809,5 +2809,6 @@
   "You are providing liquidity via a 3rd party liquidity manager": "You are providing liquidity via a 3rd party liquidity manager",
   "which is responsible for managing the underlying assets.": "which is responsible for managing the underlying assets.",
   "Please always DYOR before depositing your assets.": "Please always DYOR before depositing your assets.",
-  "Single token deposits only. The final position may consist with both tokens. Learn more about the strategy": "Single token deposits only. The final position may consist with both tokens. Learn more about the strategy"
+  "Single token deposits only. The final position may consist with both tokens. Learn more about the strategy": "Single token deposits only. The final position may consist with both tokens. Learn more about the strategy",
+  "Single Token": "Single Token"
 }
