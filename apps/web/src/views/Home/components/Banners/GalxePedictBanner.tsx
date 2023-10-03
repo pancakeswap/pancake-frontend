@@ -31,7 +31,7 @@ const RightWrapper = styled.div`
 
 const BgWrapper = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: -10px;
   right: 0px;
   overflow: hidden;
   border-radius: 32px;

@@ -104,9 +104,9 @@ const GalaxeSyndicateBanner = () => {
               unoptimized
             />
           </Flex>
-          <Box maxWidth="780px" marginTop="12px">
+          <Box maxWidth="780px" marginTop="8px">
             {isDesktop ? (
-              <StyledSubheading data-text={t('Jupiter Syndicate')}>
+              <StyledSubheading data-text={t('Trade perpetuals and share $10,000 rewards')}>
                 {t('Trade perpetuals and share $10,000 rewards')}
               </StyledSubheading>
             ) : null}

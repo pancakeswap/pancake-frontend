@@ -48,6 +48,8 @@ export const useMultipleBannerConfig = () => {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
+      { shouldRender: true, banner: <GalxePedictBanner /> },
+      { shouldRender: true, banner: <GalxeSyndicateBanner /> },
       { shouldRender: true, banner: <OpBnbBanner /> },
       { shouldRender: true, banner: <BaseBanner /> },
       {
@@ -59,9 +61,6 @@ export const useMultipleBannerConfig = () => {
     const SHUFFLE_BANNERS: IBannerConfig[] = [
       { shouldRender: true, banner: <LineaBanner /> },
       { shouldRender: true, banner: <ArbitrumOneBanner /> },
-      { shouldRender: true, banner: <GalxePedictBanner /> },
-      { shouldRender: true, banner: <GalxeSyndicateBanner /> },
-
       { shouldRender: true, banner: <ZksyncBanner /> },
       { shouldRender: true, banner: <PolygonZkEvmBanner /> },
       { shouldRender: true, banner: <GalxeTraverseBanner /> },
