@@ -7,6 +7,11 @@ import { usePushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { useSignMessage } from 'wagmi'
+import {
+  useInitWeb3InboxClient,
+  useManageSubscription,
+  useW3iAccount,
+} from "@web3inbox/widget-react";
 import useSendPushNotification from '../components/hooks/sendPushNotification'
 import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
 import { DEFAULT_APP_METADATA, Events } from '../constants'
@@ -55,6 +60,12 @@ const OnBoardingView = ({ setIsRightView, onBoardingStep }: IOnBoardingProps) =>
   const { signMessageAsync } = useSignMessage()
   const [loading, setloading] = useState<boolean>(false)
   const { pushClientProxy: pushClient, refreshNotifications, pushRegisterMessage, isOnBoarded } = usePushClient()
+  const {
+    account,
+    setAccount,
+    register: registerIdentity,
+    identityKey,
+  } = useW3iAccount();
 
   const toast = useToast()
   const { eip155Account } = useFormattedEip155Account()
@@ -62,6 +73,26 @@ const OnBoardingView = ({ setIsRightView, onBoardingStep }: IOnBoardingProps) =>
     useSendPushNotification()
 
   const { t } = useTranslation()
+
+  const signMessage = useCallback(
+    async (message: string) => {
+      const res = await signMessageAsync({
+        message,
+      });
+
+      return res as string;
+    },
+    [signMessageAsync]
+  );
+
+  const handleRegistration = useCallback(async () => {
+    if (!account) return;
+    try {
+      await registerIdentity(signMessage);
+    } catch (registerIdentityError) {
+      console.error({ registerIdentityError });
+    }
+  }, [signMessage, registerIdentity, account]);
 
   const handleOnboarding = useCallback(() => {
     setloading(true)
@@ -111,8 +142,8 @@ const OnBoardingView = ({ setIsRightView, onBoardingStep }: IOnBoardingProps) =>
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      if (isOnBoarded) requestNotificationPermission().then(async () => handleSubscribe())
-      else handleOnboarding()
+      if (identityKey) handleRegistration()
+      else console.log('yerp')
     },
     [handleOnboarding, handleSubscribe, isOnBoarded, requestNotificationPermission],
   )

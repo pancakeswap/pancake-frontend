@@ -4,11 +4,17 @@ import { usePushClient } from 'contexts/PushClientContext'
 import { useCallback, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
+import {
+  useInitWeb3InboxClient,
+  useManageSubscription,
+  useW3iAccount,
+} from "@web3inbox/widget-react";
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
 import SettingsModal from './containers/NotificationView'
 import { ModalHeader, ModalTitle, ViewContainer } from './styles'
 import ProgressStepBar from './components/ProgressBar/ProgressBar'
+import { DEFAULT_PROJECT_ID } from './constants'
 
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -72,16 +78,33 @@ const Notifications = () => {
   const [isNotificationView, setIsNotificationView] = useState<boolean>(false)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { eip155Account } = useFormattedEip155Account()
+  const isW3iInitialized = useInitWeb3InboxClient({
+    projectId: DEFAULT_PROJECT_ID,
+    domain: "gm.walletconnect.com",
+  });
   const {
-    activeSubscriptions,
-    pushClientProxy: pushClient,
+    account,
+    setAccount,
+    register: registerIdentity,
+    identityKey,
+  } = useW3iAccount();
+  const {
+    subscribe,
+    unsubscribe,
     isSubscribed,
-    refreshNotifications,
-    pushRegisterMessage,
-  } = usePushClient()
+    isSubscribing,
+    isUnsubscribing,
+  } = useManageSubscription(account);
+  // const {
+  //   activeSubscriptions,
+  //   pushClientProxy: pushClient,
+  //   isSubscribed,
+  //   refreshNotifications,
+  //   pushRegisterMessage,
+  // } = usePushClient()
 
-  const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
-  const onBoardingStep: 'identity' | 'sync' = pushRegisterMessage?.includes('did:key') ? 'identity' : 'sync'
+  // const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
+  // const onBoardingStep: 'identity' | 'sync' = pushRegisterMessage?.includes('did:key') ? 'identity' : 'sync'
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -112,20 +135,21 @@ const Notifications = () => {
             isNotificationView={isNotificationView}
           />
           {isNotificationView && eip155Account ? (
-            <ViewContainer isRightView={isRightView}>
-              <SettingsModal
-                currentSubscription={currentSubscription}
-                activeSubscriptions={activeSubscriptions}
-                pushClient={pushClient}
-              />
-              <NotificationSettingsMain
-                currentSubscription={currentSubscription}
-                pushClient={pushClient}
-                refreshNotifications={refreshNotifications}
-              />
-            </ViewContainer>
+            // <ViewContainer isRightView={isRightView}>
+            //   <SettingsModal
+            //     currentSubscription={currentSubscription}
+            //     activeSubscriptions={activeSubscriptions}
+            //     pushClient={pushClient}
+            //   />
+            //   <NotificationSettingsMain
+            //     currentSubscription={currentSubscription}
+            //     pushClient={pushClient}
+            //     refreshNotifications={refreshNotifications}
+            //   />
+            // </ViewContainer>
+            <></>
           ) : (
-            <OnBoardingView setIsRightView={setIsRightView} onBoardingStep={onBoardingStep} />
+            <OnBoardingView setIsRightView={setIsRightView} onBoardingStep={'identity'} />
           )}
         </Box>
       )}
