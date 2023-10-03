@@ -140,6 +140,15 @@ export const AddLiquidity = memo(function AddLiquidity({
     [],
   )
 
+  const disabled = useMemo(() => {
+    const balanceAmountMoreThenValueA =
+      Number(userCurrencyBalances?.token0Balance?.toSignificant()) < Number(amountA?.toSignificant())
+    const balanceAmountMoreThenValueB =
+      Number(userCurrencyBalances?.token1Balance?.toSignificant()) < Number(amountB?.toSignificant())
+
+    return amountA.equalTo('0') || amountB.equalTo('0') || balanceAmountMoreThenValueA || balanceAmountMoreThenValueB
+  }, [amountA, amountB, userCurrencyBalances])
+
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={t('Add Liquidity')}>
@@ -195,7 +204,7 @@ export const AddLiquidity = memo(function AddLiquidity({
             amountA={allowDepositToken0 ? amountA : null}
             amountB={allowDepositToken1 ? amountB : null}
             contractAddress={contractAddress}
-            disabled={amountA.equalTo('0') || amountB.equalTo('0')}
+            disabled={disabled}
             onDone={() => {
               onDismiss?.()
               refetch?.()
@@ -276,7 +285,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
         <Button
           width="100%"
           variant="primary"
-          disabled={approvalStateToken0 === ApprovalState.PENDING}
+          disabled={disabled || approvalStateToken0 === ApprovalState.PENDING}
           onClick={approveCallbackToken0}
         >
           {t('Approve %symbol%', { symbol: amountA.currency.symbol })}
@@ -287,7 +296,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
           mt="0.5em"
           width="100%"
           variant="primary"
-          disabled={approvalStateToken1 === ApprovalState.PENDING}
+          disabled={disabled || approvalStateToken1 === ApprovalState.PENDING}
           onClick={approveCallbackToken1}
         >
           {t('Approve %symbol%', { symbol: amountB.currency.symbol })}
