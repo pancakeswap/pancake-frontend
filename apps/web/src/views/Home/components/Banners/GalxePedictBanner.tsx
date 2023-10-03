@@ -38,7 +38,7 @@ const BgWrapper = styled.div`
     bottom: auto;
     height: 100%;
     right: 0px;
-    top: -2px;
+    top: 0px;
   }
 `
 
