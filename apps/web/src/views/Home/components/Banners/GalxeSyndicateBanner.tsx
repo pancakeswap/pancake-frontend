@@ -120,7 +120,7 @@ const GalaxeSyndicateBanner = () => {
             <Link
               style={{ textDecoration: 'none' }}
               external
-              href="(https://perp.pancakeswap.finance/en/futures/v2/BTCUSD?theme=light"
+              href="https://perp.pancakeswap.finance/en/futures/v2/BTCUSD?theme=light"
             >
               <Text
                 textTransform={isMobile ? 'uppercase' : 'capitalize'}
