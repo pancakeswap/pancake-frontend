@@ -64,11 +64,11 @@ export const VaultInfo = memo(function VaultInfo({
 }: VaultInfoProps) {
   const {
     t,
-    currentLanguage: { locale },
+    // currentLanguage: { locale },
   } = useTranslation()
 
   // TODO: mock
-  const lastUpdatedAt = Date.now()
+  // const lastUpdatedAt = Date.now()
   const { priceLower, priceUpper, invert, inverted } = usePositionPrices({
     baseCurrency: currencyA,
     quoteCurrency: currencyB,
@@ -77,10 +77,10 @@ export const VaultInfo = memo(function VaultInfo({
     tickCurrent: 44500,
   })
 
-  const lastUpdatedAtDisplay = useMemo(
-    () => formatTimestamp(lastUpdatedAt, { locale, precision: Precision.DATE }),
-    [lastUpdatedAt, locale],
-  )
+  // const lastUpdatedAtDisplay = useMemo(
+  //   () => formatTimestamp(lastUpdatedAt, { locale, precision: Precision.DATE }),
+  //   [lastUpdatedAt, locale],
+  // )
 
   const min = useMemo(() => formatPrice(priceLower), [priceLower])
   const max = useMemo(() => formatPrice(priceUpper), [priceUpper])
@@ -126,10 +126,10 @@ export const VaultInfo = memo(function VaultInfo({
         <InfoText>{t('Total staked')}:</InfoText>
         <InfoText>${totalStakedInUsd.toFixed(2)}</InfoText>
       </RowBetween>
-      <RowBetween mt="8px">
+      {/* <RowBetween mt="8px">
         <InfoText>{t('Last adjusted on')}:</InfoText>
         <InfoText>{lastUpdatedAtDisplay}</InfoText>
-      </RowBetween>
+      </RowBetween> */}
       {/* <RowBetween mt="8px" alignItems="flex-start">
         <InfoText>{t('Price range')}:</InfoText>
         <Flex flexDirection="column" alignItems="flex-end">

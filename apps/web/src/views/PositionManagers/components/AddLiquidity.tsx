@@ -132,7 +132,6 @@ export const AddLiquidity = memo(function AddLiquidity({
     [valueB, currencyB],
   )
   // TODO: mock
-  // const share = new Percent(158, 10000)
   // const apr = new Percent(4366, 10000)
 
   const displayBalanceText = useCallback(
