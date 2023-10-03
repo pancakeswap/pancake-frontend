@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import chunk from 'lodash/chunk'
 import BigNumber from 'bignumber.js'
 import { gql, GraphQLClient } from 'graphql-request'
@@ -27,6 +27,8 @@ const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
   [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest',
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-arb',
+  [ChainId.LINEA]: 'https://graph-query.linea.build/subgraphs/name/pancakeswap/exchange-v3-linea',
+  [ChainId.BASE]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest',
 }
 
 const INFO_CLIENT_WITH_CHAIN = {

@@ -2,7 +2,7 @@ import { Box, Flex, Logo, ThemeSwitcher, DropdownMenuItemType, DropdownMenu } fr
 import { useRouter } from 'next/router'
 import { useTheme as useNextTheme } from 'next-themes'
 import NextLink from 'next/link'
-import styled, { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 
 const StyledMenuItem = styled('div')<{ $isActive?: boolean }>`
   position: relative;

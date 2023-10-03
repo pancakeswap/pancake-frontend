@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { ChevronRightIcon, Button as UIKitButton, AutoRenewIcon, ChevronDownIcon, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -31,13 +31,13 @@ const StyledApproveConfirmButtonRow = styled.div`
   }
 `
 
-const Button = styled(UIKitButton)<{ useMinWidth: boolean }>`
+const Button = styled(UIKitButton)<{ useMinWidth?: boolean }>`
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.md} {
     ${({ useMinWidth }) =>
       useMinWidth &&
-      `  
+      `
     min-width: 160px;
   `}
   }

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, Heading, PocketWatchIcon, Text, Skeleton, TimerIcon, useTooltip } from '@pancakeswap/uikit'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { PublicIfoData } from 'views/Ifos/types'

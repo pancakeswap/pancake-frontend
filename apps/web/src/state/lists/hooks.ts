@@ -1,5 +1,6 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { TokenAddressMap as TTokenAddressMap, WrappedTokenInfo, TokenList, TokenInfo } from '@pancakeswap/token-lists'
+import { enumValues } from '@pancakeswap/utils/enumValues'
 import { ListsState } from '@pancakeswap/token-lists/react'
 import {
   DEFAULT_LIST_OF_LISTS,
@@ -205,19 +206,11 @@ export function useAllLists(): {
 }
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
-  return {
-    [ChainId.ETHEREUM]: { ...map1[ChainId.ETHEREUM], ...map2[ChainId.ETHEREUM] },
-    [ChainId.GOERLI]: { ...map1[ChainId.GOERLI], ...map2[ChainId.GOERLI] },
-    [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[ChainId.BSC] },
-    [ChainId.BSC_TESTNET]: { ...map1[ChainId.BSC_TESTNET], ...map2[ChainId.BSC_TESTNET] },
-    [ChainId.ARBITRUM_ONE]: { ...map1[ChainId.ARBITRUM_ONE], ...map2[ChainId.ARBITRUM_ONE] },
-    [ChainId.ARBITRUM_GOERLI]: { ...map1[ChainId.ARBITRUM_GOERLI], ...map2[ChainId.ARBITRUM_GOERLI] },
-    [ChainId.POLYGON_ZKEVM]: { ...map1[ChainId.POLYGON_ZKEVM], ...map2[ChainId.POLYGON_ZKEVM] },
-    [ChainId.POLYGON_ZKEVM_TESTNET]: { ...map1[ChainId.POLYGON_ZKEVM_TESTNET], ...map2[ChainId.POLYGON_ZKEVM_TESTNET] },
-    [ChainId.ZKSYNC]: { ...map1[ChainId.ZKSYNC], ...map2[ChainId.ZKSYNC] },
-    [ChainId.ZKSYNC_TESTNET]: { ...map1[ChainId.ZKSYNC_TESTNET], ...map2[ChainId.ZKSYNC_TESTNET] },
-    [ChainId.LINEA_TESTNET]: { ...map1[ChainId.LINEA_TESTNET], ...map2[ChainId.LINEA_TESTNET] },
+  const combinedMap: TokenAddressMap = {} as TokenAddressMap
+  for (const chainId of enumValues(ChainId)) {
+    combinedMap[chainId as number] = { ...map1[chainId], ...map2[chainId] }
   }
+  return combinedMap
 }
 
 // filter out unsupported lists

@@ -23,24 +23,12 @@ it("renders correctly", () => {
     }
 
     .c1 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-box-pack: end;
-      -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
       justify-content: flex-end;
     }
 
     .c3 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
     }
 
@@ -56,18 +44,6 @@ it("renders correctly", () => {
       padding: 0 16px;
       width: 100%;
       border: 1px solid var(--colors-inputSecondary);
-    }
-
-    .c4::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c4::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c4:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
     }
 
     .c4::placeholder {
@@ -103,19 +79,7 @@ it("renders correctly", () => {
       border: none;
     }
 
-    .c5::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5::placeholder {
+    .c5 ::placeholder {
       color: var(--colors-textSubtle);
     }
 
@@ -131,7 +95,6 @@ it("renders correctly", () => {
         >
           <div
             class="c2"
-            width="100%"
           >
             <div
               class="c3"
@@ -142,14 +105,11 @@ it("renders correctly", () => {
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
                 placeholder="0.0"
-                scale="md"
                 value="14"
               />
             </div>
             <div
               class="c6"
-              color="textSubtle"
-              font-size="12px"
             >
               15 USD
             </div>
@@ -186,24 +146,12 @@ it("renders correctly with unit prop", () => {
     }
 
     .c1 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-box-pack: end;
-      -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
       justify-content: flex-end;
     }
 
     .c3 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
     }
 
@@ -219,18 +167,6 @@ it("renders correctly with unit prop", () => {
       padding: 0 16px;
       width: 100%;
       border: 1px solid var(--colors-inputSecondary);
-    }
-
-    .c4::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c4::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c4:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
     }
 
     .c4::placeholder {
@@ -273,19 +209,7 @@ it("renders correctly with unit prop", () => {
       border: none;
     }
 
-    .c5::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5::placeholder {
+    .c5 ::placeholder {
       color: var(--colors-textSubtle);
     }
 
@@ -301,7 +225,6 @@ it("renders correctly with unit prop", () => {
         >
           <div
             class="c2"
-            width="100%"
           >
             <div
               class="c3"
@@ -312,21 +235,16 @@ it("renders correctly with unit prop", () => {
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
                 placeholder="0.0"
-                scale="md"
                 value="14"
               />
               <div
                 class="c6 c7"
-                color="text"
-                font-size="16px"
               >
                 CAKE
               </div>
             </div>
             <div
               class="c8"
-              color="textSubtle"
-              font-size="12px"
             >
               15 USD
             </div>
@@ -350,13 +268,9 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c13 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
       align-self: center;
       fill: var(--colors-textSubtle);
       color: var(--colors-textSubtle);
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
       flex-shrink: 0;
     }
 
@@ -377,33 +291,20 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
 
     .c10 {
       position: relative;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
       border: 0;
       border-radius: 16px;
-      box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+      box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
       cursor: pointer;
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
       display: inline-flex;
       font-family: inherit;
       font-size: 16px;
       font-weight: 600;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      -ms-flex-pack: center;
       justify-content: center;
-      -webkit-letter-spacing: 0.03em;
-      -moz-letter-spacing: 0.03em;
-      -ms-letter-spacing: 0.03em;
       letter-spacing: 0.03em;
       line-height: 1;
       opacity: 1;
       outline: 0;
-      -webkit-transition: background-color 0.2s,opacity 0.2s;
       transition: background-color 0.2s,opacity 0.2s;
       height: 32px;
       padding: 0 16px;
@@ -419,8 +320,6 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
 
     .c10:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
-      -webkit-transform: translateY(1px);
-      -ms-transform: translateY(1px);
       transform: translateY(1px);
       box-shadow: none;
     }
@@ -448,24 +347,12 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
     }
 
     .c1 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-box-pack: end;
-      -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
       justify-content: flex-end;
     }
 
     .c3 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
     }
 
@@ -481,18 +368,6 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       padding: 0 16px;
       width: 100%;
       border: 1px solid var(--colors-inputSecondary);
-    }
-
-    .c4::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c4::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c4:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
     }
 
     .c4::placeholder {
@@ -539,19 +414,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       border: none;
     }
 
-    .c5::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5::placeholder {
+    .c5 ::placeholder {
       color: var(--colors-textSubtle);
     }
 
@@ -559,14 +422,13 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       box-shadow: none;
     }
 
-    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+    @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
       .c13 {
-        -webkit-filter: none !important;
-        filter: none !important;
+        filter: none!important;
       }
     }
 
-    @media (hover:hover) {
+    @media (hover: hover) {
       .c10:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
         opacity: 0.65;
       }
@@ -580,7 +442,6 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
         >
           <div
             class="c2"
-            width="100%"
           >
             <div
               class="c3"
@@ -591,21 +452,16 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
                 placeholder="0.0"
-                scale="md"
                 value="14"
               />
               <div
                 class="c6 c7"
-                color="text"
-                font-size="16px"
               >
                 CAKE
               </div>
             </div>
             <div
               class="c8"
-              color="textSubtle"
-              font-size="12px"
             >
               15 USD
             </div>
@@ -616,6 +472,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
             <button
               class="c10 c11 c12"
               scale="sm"
+              variant="text"
             >
               <svg
                 class="c13"

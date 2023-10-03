@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 export const supportedChainIdV2 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM] as const
 export const supportedChainIdV3 = [
@@ -11,6 +11,8 @@ export const supportedChainIdV3 = [
   ChainId.POLYGON_ZKEVM,
   ChainId.ZKSYNC,
   ChainId.ARBITRUM_ONE,
+  ChainId.LINEA,
+  ChainId.BASE,
 ] as const
 export const bCakeSupportedChainId = [ChainId.BSC] as const
 
@@ -32,9 +34,11 @@ export const masterChefV3Addresses = {
   [ChainId.BSC_TESTNET]: '0x4c650FB471fe4e0f476fD3437C3411B1122c4e3B',
   [ChainId.ZKSYNC_TESTNET]: '0x3c6Aa61f72932aD5D7C917737367be32D5509e6f',
   [ChainId.POLYGON_ZKEVM_TESTNET]: '0xb66b07590B30d4E6E22e45Ddc83B06Bb018A7B44',
-  [ChainId.POLYGON_ZKEVM]: '0xe9c7f3196ab8c09f6616365e8873daeb207c0391',
+  [ChainId.POLYGON_ZKEVM]: '0xE9c7f3196Ab8C09F6616365E8873DaEb207C0391',
   [ChainId.ZKSYNC]: '0x4c615E78c5fCA1Ad31e4d66eb0D8688d84307463',
   [ChainId.ARBITRUM_ONE]: '0x5e09ACf80C0296740eC5d6F643005a4ef8DaA694',
+  [ChainId.LINEA]: '0x22E2f236065B780FA33EC8C4E58b99ebc8B55c57',
+  [ChainId.BASE]: '0xC6A2Db661D5a5690172d8eB0a7DEA2d3008665A3',
 } as const satisfies Record<FarmV3SupportedChainId, string>
 
 export const nonBSCVaultAddresses = {

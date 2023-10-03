@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import addresses from 'config/constants/contracts'
 import { VaultKey } from 'state/types'
 
@@ -147,4 +147,12 @@ export const getVCakeAddress = (chainId?: number) => {
 
 export const getRevenueSharingPoolAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.revenueSharingPool, chainId)
+}
+
+export const getAnniversaryAchievementAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.anniversaryAchievement, chainId)
+}
+
+export const getFixedStakingAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.fixedStaking, chainId)
 }

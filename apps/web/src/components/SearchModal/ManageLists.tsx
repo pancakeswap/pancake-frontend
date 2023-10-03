@@ -15,18 +15,19 @@ import {
   Column,
   Input,
   LinkExternal,
-  ListLogo,
   Text,
   Toggle,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { ListLogo } from '@pancakeswap/widgets-internal'
+
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
 import Card from 'components/Card'
 import { MULTI_CHAIN_LIST_URLS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists/lists'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'

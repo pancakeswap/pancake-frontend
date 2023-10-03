@@ -11,7 +11,7 @@ import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
 import { useAudioPlay } from '@pancakeswap/utils/user'
 import { isAddress } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { whiteListedFiatCurrencies } from 'views/BuyCrypto/constants'
+import { whiteListedFiatCurrenciesMap } from 'views/BuyCrypto/constants'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
@@ -127,10 +127,11 @@ function CurrencySearch({
 
   const queryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
   const filteredQueryTokens = useMemo(() => {
+    if (!chainId) return queryTokens
     return mode === 'onramp-input'
-      ? queryTokens.filter((curr) => whiteListedFiatCurrencies.includes(curr.symbol))
+      ? queryTokens.filter((curr) => whiteListedFiatCurrenciesMap[chainId].includes(curr.symbol))
       : queryTokens
-  }, [mode, queryTokens])
+  }, [mode, queryTokens, chainId])
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
@@ -200,7 +201,7 @@ function CurrencySearch({
       )
     }
 
-    return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
+    return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens || mode === 'onramp-output' ? (
       <Box mx="-24px" my="24px">
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
@@ -216,7 +217,7 @@ function CurrencySearch({
           fixedListRef={fixedList}
           showImportView={showImportView}
           setImportToken={setImportToken}
-          mode={mode}
+          mode={mode as string}
         />
       </Box>
     ) : (

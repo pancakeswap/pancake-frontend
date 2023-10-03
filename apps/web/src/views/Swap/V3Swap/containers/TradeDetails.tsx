@@ -25,8 +25,8 @@ export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: 
       <AutoColumn gap="0px">
         {lastTrade && (
           <AdvancedSwapDetails
-            pairs={lastTrade?.route.pairs}
-            path={lastTrade?.route.path}
+            pairs={[]}
+            path={lastTrade?.routes[0].path}
             slippageAdjustedAmounts={mmTrade?.slippageAdjustedAmounts}
             realizedLPFee={mmTrade?.realizedLPFee}
             inputAmount={mmTrade?.inputAmount}

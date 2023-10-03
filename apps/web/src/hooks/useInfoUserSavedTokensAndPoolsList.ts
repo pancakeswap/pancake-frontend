@@ -1,55 +1,22 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
+import { enumValues } from '@pancakeswap/utils/enumValues'
 import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
 type TokenAndPoolList = Record<ChainId, Record<'tokens' | 'pools', string[]>>
 
-const defaultTokenAndPoolList: TokenAndPoolList = {
-  [ChainId.ETHEREUM]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.BSC]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.GOERLI]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.BSC_TESTNET]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.ARBITRUM_ONE]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.ARBITRUM_GOERLI]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.POLYGON_ZKEVM]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.POLYGON_ZKEVM_TESTNET]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.ZKSYNC]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.ZKSYNC_TESTNET]: {
-    tokens: [],
-    pools: [],
-  },
-  [ChainId.LINEA_TESTNET]: {
-    tokens: [],
-    pools: [],
-  },
+const createDefaultTokenAndPoolList = () => {
+  const list = {} as TokenAndPoolList
+  for (const chainId of enumValues(ChainId)) {
+    list[chainId] = {
+      pools: [],
+      tokens: [],
+    }
+  }
+  return list
 }
+
+const defaultTokenAndPoolList = createDefaultTokenAndPoolList()
 
 const tokensAtom = atomWithStorage('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList)
 

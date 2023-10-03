@@ -1,5 +1,5 @@
 import { Card, CardBody, Flex, Heading, ProfileAvatar, NextLinkFromReactRouter } from '@pancakeswap/uikit'
-import styled, { css } from 'styled-components'
+import { styled, css } from 'styled-components'
 
 interface CollectionCardProps {
   bgSrc: string

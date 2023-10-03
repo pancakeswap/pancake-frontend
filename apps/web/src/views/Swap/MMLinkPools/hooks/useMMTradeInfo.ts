@@ -1,15 +1,14 @@
-import { ChainId, Currency, CurrencyAmount, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
-import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
+import { Currency, CurrencyAmount, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 
-import { TradeWithMM } from '../types'
-
 interface Options {
-  mmTrade?: TradeWithMM<Currency, Currency, TradeType> | null
+  mmTrade?: SmartRouterTrade<TradeType> | null
   allowedSlippage: number
   chainId: ChainId
   mmSwapInputError: string
@@ -20,7 +19,6 @@ export interface MMTradeInfo {
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
   route: {
-    pairs: Pair[]
     path: Currency[]
   }
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
@@ -29,7 +27,7 @@ export interface MMTradeInfo {
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency> | null
   inputError: string
-  trade: TradeWithMM<Currency, Currency, TradeType>
+  trade: SmartRouterTrade<TradeType>
 }
 
 export function useMMTradeInfo({ mmTrade, chainId, mmSwapInputError }: Options): MMTradeInfo | null {
@@ -40,7 +38,7 @@ export function useMMTradeInfo({ mmTrade, chainId, mmSwapInputError }: Options):
     return {
       trade: mmTrade,
       tradeType: mmTrade.tradeType,
-      route: mmTrade.route,
+      route: mmTrade.routes[0],
       inputAmount: mmTrade.inputAmount,
       outputAmount: mmTrade.outputAmount,
       slippageAdjustedAmounts: {
@@ -55,7 +53,7 @@ export function useMMTradeInfo({ mmTrade, chainId, mmSwapInputError }: Options):
       ),
       routerAddress: MM_SWAP_CONTRACT_ADDRESS[chainId],
       priceImpactWithoutFee: ZERO_PERCENT,
-      realizedLPFee: computeTradePriceBreakdown(mmTrade).realizedLPFee,
+      realizedLPFee: computeTradePriceBreakdown(mmTrade).lpFeeAmount,
       inputError: mmSwapInputError,
     }
   }, [mmTrade, chainId, mmSwapInputError])

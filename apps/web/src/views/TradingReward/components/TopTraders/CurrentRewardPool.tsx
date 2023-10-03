@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useState, useCallback } from 'react'
 import { useInterval } from '@pancakeswap/hooks'
 import { Box, Flex, Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'

@@ -1,6 +1,6 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { PublicClient, Address } from 'viem'
-import { SerializedWrappedToken } from '@pancakeswap/token-lists'
+import type { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient

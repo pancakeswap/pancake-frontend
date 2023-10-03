@@ -8,9 +8,9 @@ import { formatDistanceToNowStrict } from 'date-fns'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
-import styled from 'styled-components'
-import { getBlockExploreLink } from 'utils'
-import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
+import { styled } from 'styled-components'
+import { getBlockExploreLink, isAddress } from 'utils'
+import { multiChainId, subgraphTokenSymbol, ChainLinkSupportChains } from 'state/info/constant'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
@@ -102,15 +102,17 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
   const { domainName } = useDomainNameForAddress(transaction.sender)
-  const token0Symbol = subgraphTokenSymbol[transaction.token0Address.toLowerCase()] ?? transaction.token0Symbol
-  const token1Symbol = subgraphTokenSymbol[transaction.token1Address.toLowerCase()] ?? transaction.token1Symbol
+  const token0Symbol =
+    subgraphTokenSymbol[isAddress(transaction.token0Address) || undefined] ?? transaction.token0Symbol
+  const token1Symbol =
+    subgraphTokenSymbol[isAddress(transaction.token1Address) || undefined] ?? transaction.token1Symbol
   const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
 
   return (
     <ResponsiveGrid>
       <ScanLink
-        chainId={multiChainId[chainName]}
+        useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
         href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
       >
         <Text>
@@ -138,7 +140,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
       <ScanLink
-        chainId={multiChainId[chainName]}
+        useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
         href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
       >
         {domainName || truncateHash(transaction.sender)}

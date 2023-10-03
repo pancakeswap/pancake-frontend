@@ -1,5 +1,97 @@
 # @pancakeswap/pools
 
+## 4.0.13
+
+### Patch Changes
+
+- Updated dependencies [435a90ac2]
+  - @pancakeswap/chains@0.1.0
+  - @pancakeswap/tokens@0.5.0
+
+## 4.0.12
+
+### Patch Changes
+
+- 1831356d9: refactor: Move ChainsId usage from Sdk to Chains package
+- Updated dependencies [1831356d9]
+  - @pancakeswap/tokens@0.4.4
+
+## 4.0.11
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- 67d0780d1: Add wstETH pool
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/sdk@5.4.2
+  - @pancakeswap/tokens@0.4.3
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.10
+
+### Patch Changes
+
+- Updated dependencies [51b77c787]
+  - @pancakeswap/tokens@0.4.2
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.9
+
+### Patch Changes
+
+- 0641cc6ed: Add zkSync Pool
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.4.1
+
+## 4.0.8
+
+### Patch Changes
+
+- Updated dependencies [7a0c21e72]
+  - @pancakeswap/sdk@5.4.1
+  - @pancakeswap/tokens@0.4.1
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.7
+
+### Patch Changes
+
+- Updated dependencies [868f4d11f]
+  - @pancakeswap/sdk@5.4.0
+  - @pancakeswap/tokens@0.4.0
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.6
+
+### Patch Changes
+
+- 4b3b18079: Add ALP pool at Arbitrum
+
+## 4.0.5
+
+### Patch Changes
+
+- Updated dependencies [d0f9b28a9]
+  - @pancakeswap/tokens@0.3.1
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.4
+
+### Patch Changes
+
+- Updated dependencies [5e15c611e]
+  - @pancakeswap/sdk@5.3.0
+  - @pancakeswap/tokens@0.3.0
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.3
+
+### Patch Changes
+
+- 84b5d3743: Export es and commonjs module
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.2.3
+
 ## 4.0.2
 
 ### Patch Changes

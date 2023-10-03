@@ -1,4 +1,5 @@
-import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Skeleton, Pool } from '@pancakeswap/uikit'
+import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Skeleton } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
@@ -6,7 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { memo, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
@@ -15,7 +16,7 @@ interface NameCellProps {
   pool: Pool.DeserializedPool<Token>
 }
 
-const StyledCell = styled(Pool.BaseCell)`
+export const StyledCell = styled(Pool.BaseCell)`
   flex: 5;
   flex-direction: row;
   padding-left: 12px;

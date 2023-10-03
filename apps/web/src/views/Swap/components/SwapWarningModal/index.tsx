@@ -1,10 +1,10 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { ChainId } from '@pancakeswap/sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@pancakeswap/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import ETH_WARNING_LIST from './1'
 import BSC_WARNING_LIST from './56'
 import Acknowledgement from './Acknowledgement'
@@ -26,7 +26,7 @@ interface SwapWarningModalProps {
 const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>> = ({ swapCurrency, onDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const TOKEN_WARNINGS = {
     [ChainId.ETHEREUM]: ETH_WARNING_LIST,

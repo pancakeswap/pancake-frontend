@@ -11,4 +11,6 @@ declare global {
   const POLYGON_ZKEVM_NODE: string
   const ZKSYNC_NODE: string
   const ARBITRUM_ONE_NODE: string
+  const LINEA_NODE: string
+  const BASE_NODE: string
 }

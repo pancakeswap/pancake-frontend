@@ -1,18 +1,8 @@
 import { useMemo, useState, memo, useCallback } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import {
-  Button,
-  Text,
-  useModal,
-  Flex,
-  Box,
-  CopyButton,
-  Loading,
-  Skeleton,
-  Swap as SwapUI,
-  ArrowDropDownIcon,
-} from '@pancakeswap/uikit'
-import styled, { css } from 'styled-components'
+import { Button, Text, useModal, Flex, Box, CopyButton, Loading, Skeleton, ArrowDropDownIcon } from '@pancakeswap/uikit'
+import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
@@ -24,7 +14,7 @@ import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStabl
 
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useAccount } from 'wagmi'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useCurrencyBalance } from 'state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
@@ -37,21 +27,9 @@ const InputRow = styled.div<{ selected: boolean }>`
   justify-content: flex-end;
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
 `
-const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })<{ zapStyle?: ZapStyle }>`
+const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
-
-  ${({ zapStyle, theme }) =>
-    zapStyle &&
-    css`
-      padding: 8px;
-      background: ${theme.colors.background};
-      border: 1px solid ${theme.colors.cardBorder};
-      border-radius: ${zapStyle === 'zap' ? '0px' : '8px'} 8px 0px 0px;
-      height: auto;
-    `};
 `
-
-type ZapStyle = 'noZap' | 'zap'
 
 interface CurrencyInputPanelProps {
   value: string
@@ -74,7 +52,6 @@ interface CurrencyInputPanelProps {
   showCommonBases?: boolean
   commonBasesType?: string
   showSearchInput?: boolean
-  zapStyle?: ZapStyle
   beforeButton?: React.ReactNode
   disabled?: boolean
   error?: boolean | string
@@ -100,7 +77,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   currency,
   disableCurrencySelect = false,
   hideBalance = false,
-  zapStyle,
   beforeButton,
   pair = null, // used for double token logo
   otherCurrency,
@@ -175,13 +151,12 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
 
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
-  const balance = !hideBalance && !!currency && formatAmount(selectedCurrencyBalance, 6)
+  const balance = !hideBalance && !!currency ? formatAmount(selectedCurrencyBalance, 6) : undefined
   return (
     <SwapUI.CurrencyInputPanel
       id={id}
       disabled={disabled}
       error={error as boolean}
-      zapStyle={zapStyle}
       value={value}
       onInputBlur={onInputBlur}
       onUserInput={handleUserInput}
@@ -192,7 +167,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
           <Flex alignItems="center">
             {beforeButton}
             <CurrencySelectButton
-              zapStyle={zapStyle}
               className="open-currency-select-button"
               selected={!!currency}
               onClick={onCurrencySelectClick}
@@ -249,7 +223,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
           </Flex>
           {account && !hideBalanceComp && (
             <Text
-              onClick={!disabled && onMax}
+              onClick={!disabled ? onMax : undefined}
               color="textSubtle"
               fontSize="12px"
               ellipsis
@@ -257,7 +231,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
               style={{ display: 'inline', cursor: 'pointer' }}
             >
               {!hideBalance && !!currency
-                ? balance?.replace('.', '')?.length > 12
+                ? (balance?.replace('.', '')?.length || 0) > 12
                   ? balance
                   : t('Balance: %balance%', { balance: balance ?? t('Loading') })
                 : ' -'}
@@ -274,7 +248,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   <Loading width="14px" height="14px" />
                 ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
                   <Text fontSize="12px" color="textSubtle" ellipsis>
-                    {`~${formatNumber(amountInDollar)} USD`}
+                    {`~${amountInDollar ? formatNumber(amountInDollar) : 0} USD`}
                   </Text>
                 ) : (
                   <Box height="18px" />

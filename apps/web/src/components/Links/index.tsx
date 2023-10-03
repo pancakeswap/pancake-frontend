@@ -1,5 +1,5 @@
 import Link, { LinkProps } from 'next/link'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const StyledInternalLink = styled('a')`
   text-decoration: none;
@@ -7,16 +7,16 @@ const StyledInternalLink = styled('a')`
   color: ${({ theme }) => theme.colors.primary};
   font-weight: 500;
 
-  :hover {
+  &:hover {
     text-decoration: underline;
   }
 
-  :focus {
+  &:focus {
     outline: none;
     text-decoration: underline;
   }
 
-  :active {
+  &:active {
     text-decoration: none;
   }
 `

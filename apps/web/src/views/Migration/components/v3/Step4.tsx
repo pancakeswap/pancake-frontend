@@ -1,7 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Token } from '@pancakeswap/sdk'
-import { AtomBox } from '@pancakeswap/ui'
-import { AutoRow, Button, Dots, Flex, Modal, ModalV2, PreTitle, Tag, Text, useModalV2 } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
+import {
+  AtomBox,
+  AutoRow,
+  Button,
+  Dots,
+  Flex,
+  Modal,
+  ModalV2,
+  PreTitle,
+  Tag,
+  Text,
+  useModalV2,
+} from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
@@ -80,7 +92,7 @@ export function Step4() {
                     <>
                       {p.isStaked && (
                         <Tag outline variant="warning" mr="8px">
-                          Farming
+                          {t('Farming')}
                         </Tag>
                       )}
                       <RangeTag removed={removed} outOfRange={outOfRange} />

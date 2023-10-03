@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Text } from "../Text";
 import { Flex } from "../Box";
 import { LogoIcon, CircleOutlineIcon, CheckmarkCircleIcon } from "../Svg";

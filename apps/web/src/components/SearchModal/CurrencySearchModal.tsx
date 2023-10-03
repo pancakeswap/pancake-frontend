@@ -12,10 +12,10 @@ import {
   Button,
   useMatchBreakpoints,
   MODAL_SWIPE_TO_CLOSE_VELOCITY,
-  ImportList,
 } from '@pancakeswap/uikit'
+import { ImportList } from '@pancakeswap/widgets-internal'
 import { useRouter } from 'next/router'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useListState } from 'state/lists/lists'
 import { useAllLists } from 'state/lists/hooks'
 import { usePreviousValue } from '@pancakeswap/hooks'
@@ -54,7 +54,7 @@ const StyledModalBody = styled(ModalBody)`
 
 export interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | null
-  onCurrencySelect: (currency: Currency) => void
+  onCurrencySelect?: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   commonBasesType?: string
@@ -81,7 +81,7 @@ export default function CurrencySearchModal({
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
       onDismiss?.()
-      onCurrencySelect(currency)
+      onCurrencySelect?.(currency)
     },
     [onDismiss, onCurrencySelect],
   )

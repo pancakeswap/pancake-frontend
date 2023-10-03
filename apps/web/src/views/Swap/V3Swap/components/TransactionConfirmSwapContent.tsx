@@ -1,9 +1,14 @@
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
-import { ConfirmationModalContent } from '@pancakeswap/uikit'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
+import {
+  computeSlippageAdjustedAmounts as mmComputeSlippageAdjustedAmountsWithSmartRouter,
+  computeTradePriceBreakdown as mmComputeTradePriceBreakdownWithSmartRouter,
+} from 'views/Swap/MMLinkPools/utils/exchange'
+import { MMSlippageTolerance } from 'views/Swap/MMLinkPools/components/MMSlippageTolerance'
 import { SwapModalFooter } from './SwapModalFooter'
 import {
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsWithSmartRouter,
@@ -27,6 +32,8 @@ function tradeMeaningfullyDiffers(tradeA: SmartRouterTrade<TradeType>, tradeB: S
 }
 
 interface TransactionConfirmSwapContentProps {
+  isMM?: boolean
+  isRFQReady?: boolean
   trade: SmartRouterTrade<TradeType> | undefined
   originalTrade: SmartRouterTrade<TradeType> | undefined
   onAcceptChanges: () => void
@@ -41,13 +48,15 @@ interface TransactionConfirmSwapContentProps {
 
 export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentProps>(
   function TransactionConfirmSwapContentComp({
+    isMM,
     trade,
-    originalTrade,
-    onAcceptChanges,
-    allowedSlippage,
-    onConfirm,
     recipient,
+    isRFQReady,
+    originalTrade,
+    allowedSlippage,
     currencyBalances,
+    onConfirm,
+    onAcceptChanges,
   }) {
     const showAcceptChanges = useMemo(
       () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
@@ -55,14 +64,17 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
     )
 
     const slippageAdjustedAmounts = useMemo(
-      () => computeSlippageAdjustedAmountsWithSmartRouter(trade, allowedSlippage),
-      [trade, allowedSlippage],
+      () =>
+        isMM
+          ? mmComputeSlippageAdjustedAmountsWithSmartRouter(trade)
+          : computeSlippageAdjustedAmountsWithSmartRouter(trade, allowedSlippage),
+      [isMM, trade, allowedSlippage],
     )
     const { priceImpactWithoutFee, lpFeeAmount } = useMemo(
-      () => computeTradePriceBreakdownWithSmartRouter(trade),
-      [trade],
+      () =>
+        isMM ? mmComputeTradePriceBreakdownWithSmartRouter(trade) : computeTradePriceBreakdownWithSmartRouter(trade),
+      [isMM, trade],
     )
-    const executionPrice = useMemo(() => SmartRouter.getExecutionPrice(trade), [trade])
 
     const isEnoughInputBalance = useMemo(() => {
       if (trade?.tradeType !== TradeType.EXACT_OUTPUT) return null
@@ -85,9 +97,10 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
         <SwapModalHeader
           inputAmount={trade.inputAmount}
           outputAmount={trade.outputAmount}
+          currencyBalances={currencyBalances}
           tradeType={trade.tradeType}
           priceImpactWithoutFee={priceImpactWithoutFee}
-          allowedSlippage={allowedSlippage}
+          allowedSlippage={isMM ? <MMSlippageTolerance /> : allowedSlippage}
           slippageAdjustedAmounts={slippageAdjustedAmounts}
           isEnoughInputBalance={isEnoughInputBalance}
           recipient={recipient}
@@ -96,7 +109,9 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
         />
       ) : null
     }, [
+      isMM,
       priceImpactWithoutFee,
+      currencyBalances,
       allowedSlippage,
       onAcceptChanges,
       recipient,
@@ -109,27 +124,32 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
     const modalBottom = useCallback(() => {
       return trade ? (
         <SwapModalFooter
+          trade={trade}
+          isMM={isMM}
+          isRFQReady={isRFQReady}
           tradeType={trade.tradeType}
           inputAmount={trade.inputAmount}
           outputAmount={trade.outputAmount}
-          onConfirm={onConfirm}
+          currencyBalances={currencyBalances}
           lpFee={lpFeeAmount}
           priceImpact={priceImpactWithoutFee}
-          executionPrice={executionPrice}
-          slippageAdjustedAmounts={slippageAdjustedAmounts}
           disabledConfirm={showAcceptChanges}
+          slippageAdjustedAmounts={slippageAdjustedAmounts}
           isEnoughInputBalance={isEnoughInputBalance}
+          onConfirm={onConfirm}
         />
       ) : null
     }, [
-      onConfirm,
+      isMM,
+      trade,
+      isRFQReady,
+      currencyBalances,
+      lpFeeAmount,
       showAcceptChanges,
       isEnoughInputBalance,
       slippageAdjustedAmounts,
-      lpFeeAmount,
       priceImpactWithoutFee,
-      trade,
-      executionPrice,
+      onConfirm,
     ])
 
     return <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />

@@ -10,16 +10,17 @@ import {
   NextLinkFromReactRouter,
   Skeleton,
   Text,
+  useMatchBreakpoints,
   useToast,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BOOSTED_FARM_GAS_LIMIT } from 'config'
+import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback } from 'react'
-import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useGasPrice } from 'state/user/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { harvestFarm } from 'utils/calls'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
@@ -30,6 +31,12 @@ const StyledCard = styled(Card)`
   width: 100%;
   height: fit-content;
 `
+const StyledCardBody = styled(CardBody)`
+  padding: 4px 8px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 24px;
+  }
+`
 
 const masterChefAddress = getMasterChefV2Address()
 
@@ -39,12 +46,13 @@ const HarvestCard = () => {
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
 
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
+  const { isMobile } = useMatchBreakpoints()
   const gasPrice = useGasPrice()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numTotalToCollect = farmsWithStakedBalance.length
   const numFarmsToCollect = farmsWithStakedBalance.filter(
-    (value) => ('pid' in value && value.pid !== 0) || ('sendTx' in value && value.sendTx !== null),
+    (value) => (value && 'pid' in value && value.pid !== 0) || (value && 'sendTx' in value && value.sendTx !== null),
   ).length
   const hasCakePoolToCollect = numTotalToCollect - numFarmsToCollect > 0
 
@@ -53,8 +61,8 @@ const HarvestCard = () => {
   const { onHarvestAll } = useFarmsV3BatchHarvest()
 
   const harvestAllFarms = useCallback(async () => {
-    const v2Farms = farmsWithStakedBalance.filter((value) => 'pid' in value) as FarmWithBalance[]
-    const v3Farms = farmsWithStakedBalance.filter((value) => 'sendTx' in value) as {
+    const v2Farms = farmsWithStakedBalance.filter((value) => value && 'pid' in value) as FarmWithBalance[]
+    const v3Farms = farmsWithStakedBalance.filter((value) => value && 'sendTx' in value) as {
       sendTx: {
         to: string
         tokenId: string
@@ -87,7 +95,7 @@ const HarvestCard = () => {
 
   return (
     <StyledCard>
-      <CardBody>
+      <StyledCardBody>
         <Flex flexDirection={['column', null, null, 'row']} justifyContent="space-between" alignItems="center">
           <Flex flexDirection="column" alignItems={['center', null, null, 'flex-start']}>
             {preText && (
@@ -98,7 +106,7 @@ const HarvestCard = () => {
             {!earningsBusd.isNaN() ? (
               <Balance
                 decimals={earningsBusd.gt(0) ? 2 : 0}
-                fontSize="24px"
+                fontSize="20px"
                 bold
                 prefix={earningsBusd.gt(0) ? '~$' : '$'}
                 lineHeight="1.1"
@@ -107,7 +115,7 @@ const HarvestCard = () => {
             ) : (
               <Skeleton width={96} height={24} my="2px" />
             )}
-            <Text mb={['16px', null, null, '0']} color="textSubtle">
+            <Text mb={['8px', null, null, '0']} color="textSubtle">
               {toCollectText}
             </Text>
           </Flex>
@@ -128,6 +136,7 @@ const HarvestCard = () => {
               endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
               disabled={pendingTx}
               onClick={harvestAllFarms}
+              scale={isMobile ? 'sm' : 'md'}
             >
               <Text color="invertedContrast" bold>
                 {pendingTx ? t('Harvesting') : t('Harvest all')}
@@ -135,7 +144,7 @@ const HarvestCard = () => {
             </Button>
           )}
         </Flex>
-      </CardBody>
+      </StyledCardBody>
     </StyledCard>
   )
 }

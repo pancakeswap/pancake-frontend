@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
+import { useModal, useToast } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL, DEFAULT_TOKEN_DECIMAL } from 'config'
@@ -12,13 +13,15 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { usePriceCakeUSD, useFarmFromPid } from 'state/farms/hooks'
+import { useFarmFromPid } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import BigNumber from 'bignumber.js'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
-import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
+import { WNATIVE, NATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { useAccount } from 'wagmi'
 import { useIsBloctoETH } from 'views/Farms'
@@ -148,7 +151,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { tokenBalance, stakedBalance, allowance } = userData || {}
 
   const router = useRouter()
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -311,7 +314,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
 
   const [onPresentDeposit] = useModal(
-    <FarmUI.DepositModal
+    <FarmWidget.DepositModal
       account={account}
       pid={pid}
       lpTotalSupply={lpTotalSupply}
@@ -342,7 +345,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   )
 
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal
+    <FarmWidget.WithdrawModal
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       max={stakedBalance}
       onConfirm={handleUnstake}
@@ -368,30 +371,30 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   if (!account) {
     return (
-      <FarmUI.FarmTable.AccountNotConnect>
+      <FarmWidget.FarmTable.AccountNotConnect>
         <ConnectWalletButton width="100%" />
-      </FarmUI.FarmTable.AccountNotConnect>
+      </FarmWidget.FarmTable.AccountNotConnect>
     )
   }
 
   if (!isApproved && stakedBalance?.eq(0)) {
-    return <FarmUI.FarmTable.EnableStakeAction pendingTx={pendingTx || isBloctoETH} handleApprove={handleApprove} />
+    return <FarmWidget.FarmTable.EnableStakeAction pendingTx={pendingTx || isBloctoETH} handleApprove={handleApprove} />
   }
 
   if (!userDataReady) {
-    return <FarmUI.FarmTable.StakeActionDataNotReady />
+    return <FarmWidget.FarmTable.StakeActionDataNotReady />
   }
 
   if (stakedBalance?.gt(0)) {
     return (
-      <FarmUI.FarmTable.StakedActionComponent
+      <FarmWidget.FarmTable.StakedActionComponent
         lpSymbol={lpSymbol}
         disabledMinusButton={pendingFarm.length > 0}
         disabledPlusButton={isStakeReady || isBloctoETH}
         onPresentWithdraw={onPresentWithdraw}
         onPresentDeposit={onPresentDeposit}
       >
-        <FarmUI.StakedLP
+        <FarmWidget.StakedLP
           decimals={18}
           stakedBalance={stakedBalance}
           quoteTokenSymbol={
@@ -405,12 +408,12 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           pendingFarmLength={pendingFarm.length}
           onClickLoadingIcon={onClickLoadingIcon}
         />
-      </FarmUI.FarmTable.StakedActionComponent>
+      </FarmWidget.FarmTable.StakedActionComponent>
     )
   }
 
   return (
-    <FarmUI.FarmTable.StakeComponent
+    <FarmWidget.FarmTable.StakeComponent
       lpSymbol={lpSymbol}
       isStakeReady={isStakeReady}
       onPresentDeposit={onPresentDeposit}

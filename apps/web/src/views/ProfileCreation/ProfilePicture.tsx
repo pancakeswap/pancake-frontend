@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   AutoRenewIcon,
   Button,
@@ -17,7 +17,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useContext, useEffect, useState } from 'react'
 import { NftLocation } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract, getProfileContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'

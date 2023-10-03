@@ -1,12 +1,12 @@
 import BN from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { bCakeSupportedChainId } from '@pancakeswap/farms'
 import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
 import useSWR from 'swr'
 import { useContractRead } from 'wagmi'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
 import { useUserLockedCakeStatus } from '../../../../hooks/useUserLockedCakeStatus'
 
@@ -68,7 +68,7 @@ export const useUserPositionInfo = (tokenId: string) => {
 }
 
 export const useUserBoostedPoolsTokenId = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data, mutate } = useSWR(
     chainId && account && `v3/bcake/userBoostedPools/${chainId}/${account}`,

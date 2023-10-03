@@ -12,6 +12,7 @@ import LoginButton from 'views/AffiliatesProgram/components/Dashboard/LoginButto
 import CommissionInfo from 'views/AffiliatesProgram/components/Dashboard/CommissionInfo'
 import Reward from 'views/AffiliatesProgram/components/Dashboard/Reward'
 import AffiliateLinks from 'views/AffiliatesProgram/components/Dashboard/AffiliateLinks'
+import NonAffiliateModal from 'views/AffiliatesProgram/components/Dashboard/AffiliateModal/NonAffiliateModal'
 
 const Dashboard = () => {
   const { t } = useTranslation()
@@ -22,6 +23,7 @@ const Dashboard = () => {
 
   return (
     <AffiliatesProgramLayout>
+      <NonAffiliateModal />
       <Banner title={t('Dashboard')} subTitle={t('Manage your affiliate link, see how much you’ve earned')} />
       {!account ? (
         <ConnectWalletButton display="block" m="40px auto" />

@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
-import styled from 'styled-components'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { styled } from 'styled-components'
 import { Card, Text, Skeleton, CardHeader, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
@@ -72,31 +72,34 @@ const AllHistoryCard = () => {
     return () => clearInterval(timer.current)
   }, [selectedRoundId, currentLotteryId, numRoundsFetched, dispatch])
 
-  const handleInputChange = (event) => {
-    const {
-      target: { value },
-    } = event
-    if (value) {
-      setSelectedRoundId(value)
-      if (parseInt(value, 10) <= 0) {
+  const handleInputChange = useCallback(
+    (event) => {
+      const {
+        target: { value },
+      } = event
+      if (value) {
+        setSelectedRoundId(value)
+        if (parseInt(value, 10) <= 0) {
+          setSelectedRoundId('')
+        }
+        if (parseInt(value, 10) >= latestRoundId) {
+          setSelectedRoundId(latestRoundId.toString())
+        }
+      } else {
         setSelectedRoundId('')
       }
-      if (parseInt(value, 10) >= latestRoundId) {
-        setSelectedRoundId(latestRoundId.toString())
-      }
-    } else {
-      setSelectedRoundId('')
-    }
-  }
+    },
+    [latestRoundId],
+  )
 
-  const handleArrowButtonPress = (targetRound) => {
+  const handleArrowButtonPress = useCallback((targetRound) => {
     if (targetRound) {
       setSelectedRoundId(targetRound.toString())
     } else {
       // targetRound is NaN when the input is empty, the only button press that will trigger this func is 'forward one'
       setSelectedRoundId('1')
     }
-  }
+  }, [])
 
   return (
     <StyledCard>

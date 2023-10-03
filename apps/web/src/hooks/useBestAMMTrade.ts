@@ -7,7 +7,8 @@ import {
   SmartRouterTrade,
   BATCH_MULTICALL_CONFIGS,
 } from '@pancakeswap/smart-router/evm'
-import { ChainId, CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'
@@ -25,13 +26,14 @@ import {
   PoolsWithState,
   CommonPoolsParams,
 } from './useCommonPools'
+import { useMulticallGasLimit } from './useMulticallGasLimit'
 
 interface FactoryOptions {
   // use to identify hook
   key: string
   useCommonPools: (currencyA?: Currency, currencyB?: Currency, params?: CommonPoolsParams) => PoolsWithState
   getBestTrade?: typeof SmartRouter.getBestTrade
-  quoteProvider: QuoteProvider
+  useQuoteProvider: (chainId?: ChainId) => QuoteProvider
 
   // Decrease the size of batch getting quotes for better performance
   quoterOptimization?: boolean
@@ -97,7 +99,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 function bestTradeHookFactory({
   key,
   useCommonPools,
-  quoteProvider,
+  useQuoteProvider: useCustomQuoteProvider,
   quoterOptimization = true,
   getBestTrade = SmartRouter.getBestTrade,
 }: FactoryOptions) {
@@ -114,6 +116,7 @@ function bestTradeHookFactory({
     enabled = true,
     autoRevalidate,
   }: Options) {
+    const quoteProvider = useCustomQuoteProvider(currency?.chainId)
     const { gasPrice } = useFeeDataWithGasPrice()
     const currenciesUpdated = usePropsChanged(baseCurrency, currency)
 
@@ -238,18 +241,25 @@ function bestTradeHookFactory({
   }
 }
 
+function useQuoteProvider(chainId?: ChainId) {
+  const gasLimit = useMulticallGasLimit(chainId)
+  return useMemo(() => SmartRouter.createQuoteProvider({ onChainProvider: getViemClients, gasLimit }), [gasLimit])
+}
+
+function useOffChainQuoteProvider() {
+  return useMemo(() => SmartRouter.createOffChainQuoteProvider(), [])
+}
+
 export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
   key: 'useBestAMMTradeFromOffchain',
   useCommonPools: useCommonPoolsWithTicks,
-  quoteProvider: SmartRouter.createOffChainQuoteProvider(),
+  useQuoteProvider: useOffChainQuoteProvider,
 })
-
-const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients })
 
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: onChainQuoteProvider,
+  useQuoteProvider,
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
@@ -257,7 +267,7 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterApi',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: onChainQuoteProvider,
+  useQuoteProvider,
   getBestTrade: async (
     amount,
     currency,
@@ -298,13 +308,19 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
 })
 
 const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRouter.getBestTrade => {
-  return async (amount, currency, tradeType, { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei }) => {
+  return async (
+    amount,
+    currency,
+    tradeType,
+    { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei, quoteProvider },
+  ) => {
     const candidatePools = await poolProvider.getCandidatePools({
       currencyA: amount.currency,
       currencyB: currency,
       protocols: allowedPoolTypes,
     })
 
+    const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig()
     const result = await quoteWorker.getBestTrade({
       chainId: currency.chainId,
       currency: SmartRouter.Transformer.serializeCurrency(currency),
@@ -318,6 +334,7 @@ const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRoute
       maxSplits,
       poolTypes: allowedPoolTypes,
       candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+      onChainQuoterGasLimit: quoterConfig?.gasLimit?.toString(),
     })
     return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
   }
@@ -326,29 +343,37 @@ const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRoute
 export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterWorker',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: onChainQuoteProvider,
+  useQuoteProvider,
   getBestTrade: createWorkerGetBestTrade(worker),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
 
-const onChainQuoteProvider2 = SmartRouter.createQuoteProvider({
-  onChainProvider: getViemClients,
-  multicallConfigs: {
-    ...BATCH_MULTICALL_CONFIGS,
-    [ChainId.BSC]: {
-      ...BATCH_MULTICALL_CONFIGS[ChainId.BSC],
-      defaultConfig: {
-        multicallChunk: 150,
-        gasLimitOverride: 1_000_000,
-      },
-    },
-  },
-})
+function useQuoteProvider2(chainId?: ChainId) {
+  const gasLimit = useMulticallGasLimit(chainId)
+  return useMemo(
+    () =>
+      SmartRouter.createQuoteProvider({
+        onChainProvider: getViemClients,
+        gasLimit,
+        multicallConfigs: {
+          ...BATCH_MULTICALL_CONFIGS,
+          [ChainId.BSC]: {
+            ...BATCH_MULTICALL_CONFIGS[ChainId.BSC],
+            defaultConfig: {
+              gasLimitPerCall: 1_000_000,
+            },
+          },
+        },
+      }),
+    [gasLimit],
+  )
+}
+
 export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterWorker2',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: onChainQuoteProvider2,
+  useQuoteProvider: useQuoteProvider2,
   getBestTrade: createWorkerGetBestTrade(worker2),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,

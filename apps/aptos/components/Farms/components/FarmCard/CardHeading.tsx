@@ -1,9 +1,10 @@
-import styled from 'styled-components'
-import { Tag, Flex, Heading, Box, Skeleton, Farm as FarmUI, useTooltip } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
+import { Tag, Flex, Heading, Box, Skeleton, useTooltip, FarmMultiplierInfo } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/aptos-swap-sdk'
 import { TokenPairImage } from 'components/TokenImage'
 
-const { FarmAuctionTag, CoreTag } = FarmUI.Tags
+const { FarmAuctionTag, CoreTag } = FarmWidget.Tags
 
 export interface ExpandableSectionProps {
   lpLabel?: string
@@ -36,7 +37,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
 }) => {
   const isReady = multiplier !== undefined
 
-  const multiplierTooltipContent = FarmUI.FarmMultiplierInfo({
+  const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? '-',
     totalMultipliers: totalMultipliers ?? '-',
   })

@@ -8,12 +8,11 @@ import {
 } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   ArrowForwardIcon,
   Box,
   Button,
-  Farm as FarmUI,
   Flex,
   FlexLayout,
   Heading,
@@ -29,31 +28,31 @@ import {
   Toggle,
   ToggleView,
 } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useFarms, usePollFarmsWithUserData, usePriceCakeUSD } from 'state/farms/hooks'
+import { useFarms, usePollFarmsWithUserData } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
+import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
-
-const BIG_INT_ZERO = new BigNumber(0)
-const BIG_INT_ONE = new BigNumber(1)
 
 const ControlContainer = styled.div`
   display: flex;
@@ -224,7 +223,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     ]
   }, [farmsV2, farmsV3, chainId])
 
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
@@ -315,7 +314,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
         const totalLiquidityFromLp = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         // Mock 1$ tvl if the farm doesn't have lp staked
-        const totalLiquidity = totalLiquidityFromLp.eq(BIG_INT_ZERO) && mockApr ? BIG_INT_ONE : totalLiquidityFromLp
+        const totalLiquidity = totalLiquidityFromLp.eq(BIG_ZERO) && mockApr ? BIG_ONE : totalLiquidityFromLp
         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(
               chainId,
@@ -499,7 +498,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             <Flex mt="20px">
               <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
             </Flex>
-            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
+            <FarmWidget.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
             <Flex mt="20px" ml="16px">
               <FarmTypesFilter
                 v3FarmOnly={v3FarmOnly}

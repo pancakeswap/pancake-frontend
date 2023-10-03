@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Text, Button, Input, InputProps, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { parseUnits } from 'viem'
@@ -16,7 +16,9 @@ interface ModalInputProps {
   decimals?: number
 }
 
-const StyledTokenInput = styled.div<InputProps>`
+const StyledTokenInput = styled('div').withConfig({
+  shouldForwardProp: (props) => !['isWaring', 'isSuccess', 'scale'].includes(props),
+})<InputProps>`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.input};

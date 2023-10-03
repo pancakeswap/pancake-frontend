@@ -2,7 +2,7 @@ import { Flex, ArrowForwardIcon, Button, Text, useMatchBreakpoints, NextLinkFrom
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { modImage, modMobileImage, modWhiteLogo } from './images'
 import * as S from './Styled'
 

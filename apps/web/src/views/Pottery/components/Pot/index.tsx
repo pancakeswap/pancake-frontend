@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useState, useCallback, useMemo } from 'react'
 import { Flex, Box, Card, Text, useMatchBreakpoints, Balance, ButtonTabMenu } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { usePotteryData } from 'state/pottery/hook'
 import Deposit from './Deposit/index'
@@ -66,7 +66,7 @@ const BalanceStyle = styled(Balance)`
 
 const Pot: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { isMobile } = useMatchBreakpoints()
   const { publicData } = usePotteryData()
 

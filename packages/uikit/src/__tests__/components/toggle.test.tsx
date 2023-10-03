@@ -16,7 +16,6 @@ it("renders correctly", () => {
       left: 3px;
       position: absolute;
       top: 3px;
-      -webkit-transition: left 200ms ease-in;
       transition: left 200ms ease-in;
       width: 26px;
       z-index: 1;
@@ -31,34 +30,27 @@ it("renders correctly", () => {
       z-index: 3;
     }
 
-    .c1:checked + .c2 {
+    .c1:checked+.c2 {
       left: calc(100% - 30px);
     }
 
-    .c1:focus + .c2 {
+    .c1:focus+.c2 {
       box-shadow: var(--shadows-focus);
     }
 
-    .c1:hover + .c2:not(:disabled):not(:checked) {
+    .c1:hover+.c2:not(:disabled):not(:checked) {
       box-shadow: var(--shadows-focus);
     }
 
     .c0 {
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
       background-color: var(--colors-success);
       border-radius: 24px;
       box-shadow: var(--shadows-inset);
       cursor: pointer;
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
       display: inline-flex;
       height: 32px;
       position: relative;
-      -webkit-transition: background-color 200ms;
       transition: background-color 200ms;
       width: 56px;
     }
@@ -94,7 +86,6 @@ it("renders correctly scale sm", () => {
       left: 2px;
       position: absolute;
       top: 2px;
-      -webkit-transition: left 200ms ease-in;
       transition: left 200ms ease-in;
       width: 16px;
       z-index: 1;
@@ -109,34 +100,27 @@ it("renders correctly scale sm", () => {
       z-index: 3;
     }
 
-    .c1:checked + .c2 {
+    .c1:checked+.c2 {
       left: calc(100% - 18px);
     }
 
-    .c1:focus + .c2 {
+    .c1:focus+.c2 {
       box-shadow: var(--shadows-focus);
     }
 
-    .c1:hover + .c2:not(:disabled):not(:checked) {
+    .c1:hover+.c2:not(:disabled):not(:checked) {
       box-shadow: var(--shadows-focus);
     }
 
     .c0 {
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
       background-color: var(--colors-success);
       border-radius: 24px;
       box-shadow: var(--shadows-inset);
       cursor: pointer;
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
       display: inline-flex;
       height: 20px;
       position: relative;
-      -webkit-transition: background-color 200ms;
       transition: background-color 200ms;
       width: 36px;
     }

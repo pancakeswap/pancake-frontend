@@ -1,4 +1,5 @@
-import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import { wrappedCurrencyAmount } from '../../evm/utils/currency'
 import { getOutputToken } from '../utils/pair'

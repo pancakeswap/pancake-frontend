@@ -1,6 +1,7 @@
 {
   "extends": "@pancakeswap/tsconfig/base",
   "compilerOptions": {
+    "target": "es2020",
     "outDir": "./dist",
     "esModuleInterop": true,
     "resolveJsonModule": true,

@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { ChainId } from '@pancakeswap/sdk'
+import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
@@ -165,6 +165,6 @@ const LiquidStakingStakePage = () => {
   )
 }
 
-LiquidStakingStakePage.chains = [ChainId.ETHEREUM, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.GOERLI]
+LiquidStakingStakePage.chains = LIQUID_STAKING_SUPPORTED_CHAINS
 
 export default LiquidStakingStakePage

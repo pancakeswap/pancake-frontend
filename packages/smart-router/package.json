@@ -1,12 +1,15 @@
 {
   "name": "@pancakeswap/smart-router",
-  "version": "4.3.5",
+  "version": "4.9.0",
   "description": "A SDK for getting best routes from AMM",
   "repository": {
     "type": "git",
     "url": "https://github.com/pancakeswap/pancake-frontend.git",
     "directory": "packages/smart-router"
   },
+  "main": "dist/evm.js",
+  "module": "dist/evm.mjs",
+  "types": "dist/evm/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
@@ -15,29 +18,31 @@
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "async-retry": "^1.3.1",
     "debug": "^4.3.4",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.1",
     "graphql-request": "^5.0.0",
     "lodash": "^4.17.21",
     "mnemonist": "^0.38.3",
     "stats-lite": "^2.2.0",
     "tiny-invariant": "^1.1.0",
-    "viem": "^1.2.9",
+    "viem": "^1.10.9",
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@pancakeswap/sdk": "workspace:*",
-    "@pancakeswap/token-lists": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "@pancakeswap/v3-sdk": "workspace:*",
     "@types/async-retry": "^1.4.4",
     "@types/debug": "^4.1.7",
     "@types/lodash": "^4.14.178",

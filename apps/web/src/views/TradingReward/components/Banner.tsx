@@ -1,6 +1,6 @@
 import { Box, Flex, Text, Button, Link, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useTheme } from '@pancakeswap/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import Image from 'next/image'

@@ -2,12 +2,12 @@ import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { useWeb3React } from '@pancakeswap/wagmi'
 
 import { isAddress } from 'utils'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 
+import { useAccount } from 'wagmi'
 import { useSlippageAdjustedAmounts } from './useSlippageAdjustedAmounts'
 
 interface Balances {
@@ -37,7 +37,7 @@ export function useSwapInputError(
   currencyBalances: Balances,
 ): string {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { independentField, typedValue } = useSwapState()
   const inputCurrency = currencyBalances[Field.INPUT]?.currency
   const outputCurrency = currencyBalances[Field.OUTPUT]?.currency

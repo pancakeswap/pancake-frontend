@@ -5,7 +5,7 @@ import { getV2CandidatePools } from './getV2CandidatePools'
 import { getV3CandidatePools } from './getV3CandidatePools'
 import { getStableCandidatePools } from './getStableCandidatePools'
 
-interface Params {
+export type GetCandidatePoolsParams = {
   currencyA?: Currency
   currencyB?: Currency
 
@@ -24,7 +24,7 @@ export async function getCandidatePools({
   v2SubgraphProvider,
   v3SubgraphProvider,
   ...rest
-}: Params): Promise<Pool[]> {
+}: GetCandidatePoolsParams): Promise<Pool[]> {
   const { currencyA } = rest
   const chainId = currencyA?.chainId
   if (!chainId) {

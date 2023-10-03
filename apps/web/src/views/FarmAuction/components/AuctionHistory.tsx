@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import {
   Text,
   Flex,
@@ -24,7 +24,7 @@ interface AuctionHistoryProps {
 const StyledIconButton = styled(IconButton)`
   width: 32px;
 
-  :disabled {
+  &:disabled {
     background: none;
 
     svg {

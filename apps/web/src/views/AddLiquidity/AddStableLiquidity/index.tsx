@@ -9,7 +9,6 @@ import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { PairState } from 'hooks/usePairs'
-import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
@@ -60,7 +59,7 @@ export interface AddStableChildrenProps {
   approvalB: ApprovalState
   approveBCallback: () => Promise<SendTransactionResult>
   onAdd: () => Promise<void>
-  onPresentAddLiquidityModal: Handler
+  onPresentAddLiquidityModal: () => void
   buttonDisabled: boolean
   errorText: string
   setLiquidityState: Dispatch<
@@ -172,11 +171,11 @@ export default function AddStableLiquidity({
   const needWrapped = currencyA?.isNative || currencyB?.isNative
 
   // check whether the user has approved tokens for addling LPs
-  const [approvalA, approveACallback] = useApproveCallback(
+  const { approvalState: approvalA, approveCallback: approveACallback } = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
     needWrapped ? nativeHelperContract?.address : stableSwapContract?.address,
   )
-  const [approvalB, approveBCallback] = useApproveCallback(
+  const { approvalState: approvalB, approveCallback: approveBCallback } = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
     needWrapped ? nativeHelperContract?.address : stableSwapContract?.address,
   )

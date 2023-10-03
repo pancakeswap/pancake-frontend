@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Flex } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import BlogCard from 'components/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay } from 'swiper/modules'

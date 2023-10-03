@@ -1,4 +1,6 @@
-import { Pool, useToast } from '@pancakeswap/uikit'
+import { useToast } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCallback, useState, useMemo } from 'react'
@@ -14,7 +16,7 @@ import { useApprovePool } from 'views/Pools/hooks/useApprove'
 import { tokenImageChainNameMapping } from 'components/TokenImage'
 import { usePool } from 'state/pools/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-
+import ZkSyncWarning from './ZkSyncWarning'
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
 
@@ -45,7 +47,7 @@ const StakeModalContainer = ({
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const [amount, setAmount] = useState('')
 
-  const { onUnstake } = useUnstakePool(sousId, enableEmergencyWithdraw)
+  const { onUnstake } = useUnstakePool(sousId, enableEmergencyWithdraw as boolean)
   const { onStake } = useStakePool(sousId, isBnbPool)
   const dispatch = useAppDispatch()
 
@@ -140,8 +142,8 @@ const StakeModalContainer = ({
       stakingTokenAddress={stakingToken.address}
       stakingTokenBalance={stakingTokenBalance}
       apr={apr}
-      userDataStakedBalance={userData.stakedBalance}
-      userDataStakingTokenBalance={userData.stakingTokenBalance}
+      userDataStakedBalance={userData?.stakedBalance}
+      userDataStakingTokenBalance={userData?.stakingTokenBalance}
       onDismiss={onDismiss}
       pendingTx={pendingTx}
       account={account}
@@ -152,6 +154,7 @@ const StakeModalContainer = ({
       handleConfirmClick={handleConfirmClick}
       isRemovingStake={isRemovingStake}
       imageUrl={tokenImageUrl}
+      warning={<ZkSyncWarning />}
     />
   )
 }

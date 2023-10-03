@@ -1,7 +1,8 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { ChainId } from '@pancakeswap/sdk'
-import { Address, getContract, WalletClient } from 'viem'
+import { ChainId } from '@pancakeswap/chains'
+import { Address, getContract, WalletClient, GetContractReturnType, PublicClient } from 'viem'
+
 import { iCakeABI } from '../abis/ICake'
 import { ICAKE } from '../constants/contracts'
 import { OnChainProvider } from '../types'
@@ -11,7 +12,7 @@ export const getIfoCreditAddressContract = (
   chainId: ChainId,
   provider: OnChainProvider,
   walletClient?: WalletClient,
-) => {
+): GetContractReturnType<typeof iCakeABI, PublicClient, WalletClient> => {
   const address = getContractAddress(ICAKE, chainId)
   if (!address || address === '0x') {
     throw new Error(`ICAKE not supported on chain ${chainId}`)

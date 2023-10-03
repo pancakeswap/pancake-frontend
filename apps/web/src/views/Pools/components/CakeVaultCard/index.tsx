@@ -8,16 +8,17 @@ import {
   TokenPairImage,
   FlexGap,
   Skeleton,
-  Pool,
   useModal,
 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Token } from '@pancakeswap/sdk'
 import BenefitsModal from 'views/Pools/components/RevenueSharing/BenefitsModal'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'

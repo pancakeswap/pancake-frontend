@@ -3,47 +3,31 @@
 exports[`renders correctly 1`] = `
 <DocumentFragment>
   .c6 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-text);
   color: var(--colors-text);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
 .c19 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
   color: var(--colors-textSubtle);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
 .c27 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-text);
   color: var(--colors-text);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
   margin-right: 8px;
 }
 
 .c32 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
   color: var(--colors-textSubtle);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
   margin-right: 0.5rem;
 }
@@ -73,33 +57,20 @@ exports[`renders correctly 1`] = `
 
 .c31 {
   position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   border: 0;
   border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
   letter-spacing: 0.03em;
   line-height: 1;
   opacity: 1;
   outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
   transition: background-color 0.2s,opacity 0.2s;
   height: 20px;
   font-size: 12px;
@@ -116,8 +87,6 @@ exports[`renders correctly 1`] = `
 
 .c31:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
   transform: translateY(1px);
   box-shadow: none;
 }
@@ -133,33 +102,20 @@ exports[`renders correctly 1`] = `
 
 .c35 {
   position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   border: 0;
   border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
   letter-spacing: 0.03em;
   line-height: 1;
   opacity: 1;
   outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
   transition: background-color 0.2s,opacity 0.2s;
   height: 48px;
   padding: 0 24px;
@@ -177,8 +133,6 @@ exports[`renders correctly 1`] = `
 
 .c35:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
   transform: translateY(1px);
   box-shadow: none;
 }
@@ -234,90 +188,45 @@ exports[`renders correctly 1`] = `
 }
 
 .c3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
 }
 
 .c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
 .c24 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
 .c38 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
   justify-content: space-around;
 }
 
 .c44 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: start;
-  -webkit-justify-content: start;
-  -ms-flex-pack: start;
   justify-content: start;
 }
 
 .c51 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
   justify-content: flex-end;
 }
 
 .c14 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   border: 0;
   background: transparent;
   color: var(--colors-textSubtle);
   cursor: pointer;
   font-weight: 400;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   font-size: 16px;
   height: 48px;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   outline: 0;
   padding-left: 16px;
@@ -336,8 +245,6 @@ exports[`renders correctly 1`] = `
 
 .c14:active:not(:disabled) {
   opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
   transform: translateY(1px);
 }
 
@@ -394,43 +301,24 @@ exports[`renders correctly 1`] = `
 }
 
 .c26 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
 .c26 svg {
-  -webkit-transition: -webkit-transform 0.3s;
-  -webkit-transition: transform 0.3s;
   transition: transform 0.3s;
 }
 
 .c26:hover svg {
-  -webkit-transform: scale(1.2);
-  -ms-transform: scale(1.2);
   transform: scale(1.2);
 }
 
 .c34 {
-  width: -webkit-max-content;
-  width: -moz-max-content;
   width: max-content;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
   position: absolute;
-  -webkit-transform: translate(-50%,0);
-  -ms-transform: translate(-50%,0);
-  transform: translate(-50%,0);
+  transform: translate(-50%, 0);
   left: 50%;
   bottom: auto;
   background-color: var(--colors-backgroundAlt);
@@ -441,7 +329,6 @@ exports[`renders correctly 1`] = `
   z-index: 10;
   border-radius: var(--radii-small);
   opacity: 0;
-  -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   will-change: opacity;
   pointer-events: none;
@@ -456,7 +343,6 @@ exports[`renders correctly 1`] = `
   opacity: 1;
   max-height: 400px;
   overflow-y: auto;
-  -webkit-transition: max-height 0s 0s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0s,opacity 0.3s ease-in-out;
   pointer-events: auto;
 }
@@ -473,13 +359,7 @@ exports[`renders correctly 1`] = `
 
 .c10 {
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   color: var(--colors-textSubtle);
   font-size: 16px;
@@ -497,13 +377,7 @@ exports[`renders correctly 1`] = `
 
 .c15 {
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   color: var(--colors-textSubtle);
   font-size: 16px;
@@ -530,13 +404,7 @@ exports[`renders correctly 1`] = `
 
 .c18 {
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   color: var(--colors-textSubtle);
   font-size: 16px;
@@ -563,13 +431,7 @@ exports[`renders correctly 1`] = `
 
 .c48 {
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   color: var(--colors-textSubtle);
   font-size: 16px;
@@ -603,20 +465,11 @@ exports[`renders correctly 1`] = `
   width: 100%;
   display: block;
   white-space: nowrap;
-  -webkit-scroll-behavior: smooth;
-  -moz-scroll-behavior: smooth;
-  -ms-scroll-behavior: smooth;
   scroll-behavior: smooth;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
   flex-grow: 1;
   background-color: var(--colors-backgroundAlt2);
-  box-shadow: inset 0px -2px 0px -8px rgba(133,133,133,0.1);
+  box-shadow: inset 0px -2px 0px -8px rgba(133, 133, 133, 0.1);
   overflow-x: scroll;
-  -webkit-scrollbar-width: none;
-  -moz-scrollbar-width: none;
-  -ms-scrollbar-width: none;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -631,27 +484,19 @@ exports[`renders correctly 1`] = `
   width: 48px;
   height: 100%;
   top: 0px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
   will-change: opacity;
   pointer-events: none;
   opacity: 0;
-  -webkit-transition: 0.25s ease-out opacity;
   transition: 0.25s ease-out opacity;
   left: 0px;
-  background: linear-gradient(90deg,#ffffff 29.76%,rgba(255,255,255,0) 100%);
+  background: linear-gradient(90deg, #ffffff 29.76%, rgba(255, 255, 255, 0) 100%);
 }
 
 .c41.show {
   pointer-events: auto;
   opacity: 1;
-  -webkit-transition: 0.25s ease-in opacity;
   transition: 0.25s ease-in opacity;
 }
 
@@ -661,36 +506,25 @@ exports[`renders correctly 1`] = `
   width: 48px;
   height: 100%;
   top: 0px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
   will-change: opacity;
   pointer-events: none;
   opacity: 0;
-  -webkit-transition: 0.25s ease-out opacity;
   transition: 0.25s ease-out opacity;
   right: 0px;
-  background: linear-gradient(270deg,#ffffff 0%,rgba(255,255,255,0) 87.5%);
+  background: linear-gradient(270deg, #ffffff 0%, rgba(255, 255, 255, 0) 87.5%);
 }
 
 .c42.show {
   pointer-events: auto;
   opacity: 1;
-  -webkit-transition: 0.25s ease-in opacity;
   transition: 0.25s ease-in opacity;
 }
 
 .c47 {
   display: inline-block;
   vertical-align: top;
-  -webkit-scroll-snap-align: start;
-  -moz-scroll-snap-align: start;
-  -ms-scroll-snap-align: start;
   scroll-snap-align: start;
 }
 
@@ -699,9 +533,6 @@ exports[`renders correctly 1`] = `
 }
 
 .c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
 }
 
@@ -715,19 +546,13 @@ exports[`renders correctly 1`] = `
 }
 
 .c5 .eye {
-  -webkit-animation-delay: 20ms;
   animation-delay: 20ms;
 }
 
 .c5:hover .eye {
-  -webkit-transform-origin: center 60%;
-  -ms-transform-origin: center 60%;
   transform-origin: center 60%;
-  -webkit-animation-name: bEBzQK;
   animation-name: bEBzQK;
-  -webkit-animation-duration: 350ms;
   animation-duration: 350ms;
-  -webkit-animation-iteration-count: 1;
   animation-iteration-count: 1;
 }
 
@@ -739,25 +564,14 @@ exports[`renders correctly 1`] = `
 }
 
 .c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   width: 100%;
   height: 56px;
   background-color: var(--colors-backgroundAlt);
   border-bottom: 1px solid var(--colors-cardBorder);
-  -webkit-transform: translate3d(0,0,0);
-  -ms-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
   padding-left: 16px;
   padding-right: 16px;
 }
@@ -766,7 +580,6 @@ exports[`renders correctly 1`] = `
   position: fixed;
   top: 0;
   left: 0;
-  -webkit-transition: top 0.2s;
   transition: top 0.2s;
   height: 56px;
   width: 100%;
@@ -775,260 +588,194 @@ exports[`renders correctly 1`] = `
 
 .c53 {
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   max-width: 100vw;
 }
 
 .c54 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
   flex-grow: 1;
-  -webkit-transition: margin-top 0.2s,margin-left 0.2s cubic-bezier(0.4,0,0.2,1);
-  transition: margin-top 0.2s,margin-left 0.2s cubic-bezier(0.4,0,0.2,1);
-  -webkit-transform: translate3d(0,0,0);
-  -ms-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  transition: margin-top 0.2s,margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translate3d(0, 0, 0);
   max-width: 100%;
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
   .c6 {
-    -webkit-filter: none !important;
-    filter: none !important;
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
   .c19 {
-    -webkit-filter: none !important;
-    filter: none !important;
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
   .c27 {
-    -webkit-filter: none !important;
-    filter: none !important;
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
   .c32 {
-    -webkit-filter: none !important;
-    filter: none !important;
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@media (hover:hover) {
+@media (hover: hover) {
   .c31:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
     opacity: 0.65;
   }
 }
 
-@media (hover:hover) {
+@media (hover: hover) {
   .c35:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
     opacity: 0.65;
   }
 }
 
-@media (hover:hover) {
+@media (hover: hover) {
 
 }
 
-@media (hover:hover) {
+@media (hover: hover) {
 
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c43 {
     padding-left: 0px;
   }
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c44 {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
     justify-content: center;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c51 {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
     justify-content: center;
   }
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 370px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 852px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 968px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 1080px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:852px) {
+@media screen and (min-width: 968px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c50 {
     display: none;
   }
 }
 
-@media screen and (min-width:852px) {
+@media screen and (min-width: 852px) {
   .c45 {
     width: auto;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
   }
 }
 
-@media screen and (min-width:968px) {
+@media screen and (min-width: 968px) {
   .c5 .mobile-icon {
     display: none;
   }
 }
 
-@media screen and (min-width:968px) {
+@media screen and (min-width: 968px) {
   .c5 .desktop-icon {
     display: block;
   }
 }
 
 <div
-    class="c0 reset_base__1c7dnup0 sprinkles_minHeight_auto_xs__pkzlfc15c sprinkles_minHeight_100vh_md__pkzlfc16k"
+    class="c0 reset_base__14t2dq60 sprinkles_minHeight_auto_xs__15lkarx15c sprinkles_minHeight_100vh_md__15lkarx16k"
   >
     <div
       class="c1"
@@ -1109,7 +856,7 @@ exports[`renders correctly 1`] = `
             </a>
           </div>
           <div
-            class="reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_md__pkzlfc2"
+            class="reset_base__14t2dq60 sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_md__15lkarx2"
           >
             <div
               class="c7 c3"
@@ -1251,8 +998,6 @@ exports[`renders correctly 1`] = `
                       Predictions
                       <div
                         class="c16 c17"
-                        color="failure"
-                        font-size="14px"
                       >
                         LIVE
                       </div>
@@ -1321,8 +1066,6 @@ exports[`renders correctly 1`] = `
                       IFO Token Sales
                       <div
                         class="c20 c21"
-                        color="warning"
-                        font-size="14px"
                       >
                         SOON
                       </div>
@@ -1382,7 +1125,6 @@ exports[`renders correctly 1`] = `
                     >
                       <div
                         class="c23 c24"
-                        width="100%"
                       >
                         Docs & Guides
                         <svg
@@ -1406,10 +1148,9 @@ exports[`renders correctly 1`] = `
         </div>
         <div
           class="c25 c4"
-          height="100%"
         >
           <div
-            class="reset_base__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfclo sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
+            class="reset_base__14t2dq60 sprinkles_marginRight_12px_xs__15lkarxlo sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_lg__15lkarx3"
           >
             <a
               class="c26"
@@ -1419,6 +1160,7 @@ exports[`renders correctly 1`] = `
               <svg
                 class="c27"
                 color="text"
+                mr="8px"
                 viewBox="0 0 96 96"
                 width="24px"
                 xmlns="http://www.w3.org/2000/svg"
@@ -1468,8 +1210,6 @@ exports[`renders correctly 1`] = `
               </svg>
               <div
                 class="c28"
-                color="textSubtle"
-                font-size="16px"
               >
                 $0.232
               </div>
@@ -1484,10 +1224,12 @@ exports[`renders correctly 1`] = `
               <button
                 class="c31"
                 scale="xs"
+                variant="text"
               >
                 <svg
                   class="c32"
                   color="textSubtle"
+                  mr="0.5rem"
                   viewBox="0 0 24 24"
                   width="24px"
                   xmlns="http://www.w3.org/2000/svg"
@@ -1504,6 +1246,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English0
                 </button>
@@ -1511,6 +1254,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English1
                 </button>
@@ -1518,6 +1262,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English2
                 </button>
@@ -1525,6 +1270,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English3
                 </button>
@@ -1532,6 +1278,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English4
                 </button>
@@ -1539,6 +1286,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English5
                 </button>
@@ -1546,6 +1294,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English6
                 </button>
@@ -1553,6 +1302,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English7
                 </button>
@@ -1560,6 +1310,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English8
                 </button>
@@ -1567,6 +1318,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English9
                 </button>
@@ -1574,6 +1326,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English10
                 </button>
@@ -1581,6 +1334,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English11
                 </button>
@@ -1588,6 +1342,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English12
                 </button>
@@ -1595,6 +1350,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English13
                 </button>
@@ -1602,6 +1358,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English14
                 </button>
@@ -1609,6 +1366,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English15
                 </button>
@@ -1616,6 +1374,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English16
                 </button>
@@ -1623,6 +1382,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English17
                 </button>
@@ -1630,6 +1390,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English18
                 </button>
@@ -1637,6 +1398,7 @@ exports[`renders correctly 1`] = `
                   class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
+                  variant="text"
                 >
                   English19
                 </button>
@@ -1648,13 +1410,12 @@ exports[`renders correctly 1`] = `
     </div>
     <div
       class="c37 c38"
-      overflow="hidden"
     >
       <div
-        class="c39 c3 c40 reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
+        class="c39 c3 c40 reset_base__14t2dq60 sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_sm__15lkarx1"
       >
         <div
-          class="c41 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c41 reset_base__14t2dq60 sprinkles_display_block_xs__15lkarx0 sprinkles_display_none_md__15lkarx12"
         >
           <svg
             class="c6"
@@ -1669,20 +1430,8 @@ exports[`renders correctly 1`] = `
           </svg>
         </div>
         <div
-          class="c42 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
-        >
-          <svg
-            class="c6"
-            color="text"
-            viewBox="0 0 24 24"
-            width="20px"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9.29006 15.88L13.1701 12L9.29006 8.12001C8.90006 7.73001 8.90006 7.10001 9.29006 6.71001C9.68006 6.32001 10.3101 6.32001 10.7001 6.71001L15.2901 11.3C15.6801 11.69 15.6801 12.32 15.2901 12.71L10.7001 17.3C10.3101 17.69 9.68006 17.69 9.29006 17.3C8.91006 16.91 8.90006 16.27 9.29006 15.88Z"
-            />
-          </svg>
-        </div>
+          class="c42 reset_base__14t2dq60 sprinkles_display_block_xs__15lkarx0 sprinkles_display_none_md__15lkarx12"
+        />
         <div
           class="c43 c44 c45"
         >
@@ -1725,10 +1474,10 @@ exports[`renders correctly 1`] = `
         </div>
       </div>
       <div
-        class="c39 c3 c50 reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
+        class="c39 c3 c50 reset_base__14t2dq60 sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_sm__15lkarx1"
       >
         <div
-          class="c41 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c41 reset_base__14t2dq60 sprinkles_display_block_xs__15lkarx0 sprinkles_display_none_md__15lkarx12"
         >
           <svg
             class="c6"
@@ -1743,20 +1492,8 @@ exports[`renders correctly 1`] = `
           </svg>
         </div>
         <div
-          class="c42 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
-        >
-          <svg
-            class="c6"
-            color="text"
-            viewBox="0 0 24 24"
-            width="20px"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9.29006 15.88L13.1701 12L9.29006 8.12001C8.90006 7.73001 8.90006 7.10001 9.29006 6.71001C9.68006 6.32001 10.3101 6.32001 10.7001 6.71001L15.2901 11.3C15.6801 11.69 15.6801 12.32 15.2901 12.71L10.7001 17.3C10.3101 17.69 9.68006 17.69 9.29006 17.3C8.91006 16.91 8.90006 16.27 9.29006 15.88Z"
-            />
-          </svg>
-        </div>
+          class="c42 reset_base__14t2dq60 sprinkles_display_block_xs__15lkarx0 sprinkles_display_none_md__15lkarx12"
+        />
         <div
           class="c43 c51 c45"
         >
@@ -1792,98 +1529,66 @@ exports[`renders correctly 1`] = `
     </div>
   </div>
   .c7 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-text);
   color: var(--colors-text);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
 .c21 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
   color: var(--colors-textSubtle);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
-.c55 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
+.c50 {
   align-self: center;
   fill: var(--colors-text);
   color: var(--colors-text);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
   margin-right: 8px;
 }
 
-.c46 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
+.c42 {
   align-self: center;
   fill: var(--colors-textSubtle);
   color: var(--colors-textSubtle);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
   margin-right: 0.5rem;
 }
 
 .c23 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
   color: var(--colors-textSubtle);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
   margin-right: 24px;
 }
 
-.c57 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
+.c53 {
   align-self: center;
   fill: var(--colors-backgroundAlt);
   color: var(--colors-backgroundAlt);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
   margin-left: 0.5rem;
 }
 
-.c41 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
+.c37 {
   align-self: center;
   fill: var(--colors-warning);
   color: var(--colors-warning);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
-.c44 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
+.c40 {
   align-self: center;
   fill: var(--colors-backgroundAlt);
   color: var(--colors-backgroundAlt);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
-.c26 {
+.c51 {
   color: var(--colors-textSubtle);
   font-weight: 600;
   line-height: 1.5;
@@ -1906,56 +1611,43 @@ exports[`renders correctly 1`] = `
 
 .c20 {
   color: var(--colors-primary);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.5;
   margin-right: 24px;
   font-size: 16px;
 }
 
-.c27 {
-  color: var(--colors-primary);
-  font-weight: 600;
-  line-height: 1.5;
-  margin-right: 0;
-  font-size: 16px;
-}
-
-.c47 {
+.c26 {
   color: var(--colors-textSubtle);
   font-weight: 400;
   line-height: 1.5;
   font-size: 16px;
 }
 
-.c49 {
+.c27 {
+  color: var(--colors-primary);
+  font-weight: 400;
+  line-height: 1.5;
+  margin-right: 0;
+  font-size: 16px;
+}
+
+.c44 {
   position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   border: 0;
   border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
   letter-spacing: 0.03em;
   line-height: 1;
   opacity: 1;
   outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
   transition: background-color 0.2s,opacity 0.2s;
   height: 48px;
   padding: 0 24px;
@@ -1966,21 +1658,19 @@ exports[`renders correctly 1`] = `
   height: sm;
 }
 
-.c49:focus-visible {
+.c44:focus-visible {
   outline: none;
   box-shadow: var(--shadows-focus);
 }
 
-.c49:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c44:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
   transform: translateY(1px);
   box-shadow: none;
 }
 
-.c49:disabled,
-.c49.pancake-button--disabled {
+.c44:disabled,
+.c44.pancake-button--disabled {
   background-color: var(--colors-backgroundDisabled);
   border-color: var(--colors-backgroundDisabled);
   box-shadow: none;
@@ -1988,35 +1678,22 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c45 {
+.c41 {
   position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   border: 0;
   border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
   letter-spacing: 0.03em;
   line-height: 1;
   opacity: 1;
   outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
   transition: background-color 0.2s,opacity 0.2s;
   height: 48px;
   padding: 0 24px;
@@ -2025,21 +1702,19 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c45:focus-visible {
+.c41:focus-visible {
   outline: none;
   box-shadow: var(--shadows-focus);
 }
 
-.c45:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c41:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
   transform: translateY(1px);
   box-shadow: none;
 }
 
-.c45:disabled,
-.c45.pancake-button--disabled {
+.c41:disabled,
+.c41.pancake-button--disabled {
   background-color: var(--colors-backgroundDisabled);
   border-color: var(--colors-backgroundDisabled);
   box-shadow: none;
@@ -2047,35 +1722,22 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c56 {
+.c52 {
   position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   border: 0;
   border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
   letter-spacing: 0.03em;
   line-height: 1;
   opacity: 1;
   outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
   transition: background-color 0.2s,opacity 0.2s;
   height: 32px;
   padding: 0 16px;
@@ -2083,21 +1745,19 @@ exports[`renders correctly 1`] = `
   color: var(--colors-invertedContrast);
 }
 
-.c56:focus-visible {
+.c52:focus-visible {
   outline: none;
   box-shadow: var(--shadows-focus);
 }
 
-.c56:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c52:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
   transform: translateY(1px);
   box-shadow: none;
 }
 
-.c56:disabled,
-.c56.pancake-button--disabled {
+.c52:disabled,
+.c52.pancake-button--disabled {
   background-color: var(--colors-backgroundDisabled);
   border-color: var(--colors-backgroundDisabled);
   box-shadow: none;
@@ -2105,11 +1765,11 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c39 {
+.c35 {
   height: 100%;
 }
 
-.c53 {
+.c48 {
   margin-right: 20px;
 }
 
@@ -2140,243 +1800,100 @@ exports[`renders correctly 1`] = `
   margin-bottom: 0;
 }
 
-.c51 {
+.c46 {
   margin-bottom: 24px;
 }
 
-.c42 {
+.c38 {
   width: 100%;
   height: 100%;
 }
 
 .c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
 }
 
 .c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
 }
 
 .c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-order: 2;
-  -ms-flex-order: 2;
   order: 2;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
   align-items: flex-start;
 }
 
 .c18 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-order: 2;
-  -ms-flex-order: 2;
   order: 2;
 }
 
 .c28 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-order: 1;
-  -ms-flex-order: 1;
   order: 1;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
 .c30 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-order: 2;
-  -ms-flex-order: 2;
   order: 2;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
-.c52 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c47 {
   display: flex;
-  -webkit-order: 1;
-  -ms-flex-order: 1;
   order: 1;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
-.c40 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c36 {
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
 }
 
-.c43 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c39 {
   display: flex;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
   justify-content: space-around;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
-.c32 {
-  position: relative;
-  will-change: opacity;
-  opacity: 0;
-}
-
-.c32.appear {
-  -webkit-animation: fGxCd 0.3s ease-in-out forwards;
-  animation: fGxCd 0.3s ease-in-out forwards;
-}
-
-.c32.disappear {
-  -webkit-animation: jmLHfV 0.3s ease-in-out forwards;
-  animation: jmLHfV 0.3s ease-in-out forwards;
-}
-
-.c31 {
-  position: relative;
-  width: 56px;
-  height: 32px;
-  overflow: hidden;
-}
-
-.c33 {
-  min-height: 20px;
-  display: block;
-  background-color: var(--colors-backgroundDisabled);
-  border-radius: var(--radii-default);
-  width: 56px;
-  height: 32px;
-}
-
-.c34 {
-  -webkit-animation: wAFEO 2s infinite ease-out;
-  animation: wAFEO 2s infinite ease-out;
-  -webkit-transform: translate3d(0,0,0);
-  -ms-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
-}
-
-.c54 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c49 {
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
-.c54 svg {
-  -webkit-transition: -webkit-transform 0.3s;
-  -webkit-transition: transform 0.3s;
+.c49 svg {
   transition: transform 0.3s;
 }
 
-.c54:hover svg {
-  -webkit-transform: scale(1.2);
-  -ms-transform: scale(1.2);
+.c49:hover svg {
   transform: scale(1.2);
 }
 
 .c13 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+  font-weight: 600;
   align-items: center;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
 }
 
 .c13:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
 .c25 {
-  width: -webkit-max-content;
-  width: -moz-max-content;
   width: max-content;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
   position: absolute;
-  -webkit-transform: translate(-50%,0);
-  -ms-transform: translate(-50%,0);
-  transform: translate(-50%,0);
+  transform: translate(-50%, 0);
   left: 50%;
   bottom: 100%;
   background-color: var(--colors-backgroundAlt);
@@ -2387,27 +1904,17 @@ exports[`renders correctly 1`] = `
   z-index: 10;
   border-radius: var(--radii-small);
   opacity: 0;
-  -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   will-change: opacity;
   pointer-events: none;
 }
 
-.c48 {
-  width: -webkit-max-content;
-  width: -moz-max-content;
+.c43 {
   width: max-content;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
   position: absolute;
-  -webkit-transform: translate(-50%,0);
-  -ms-transform: translate(-50%,0);
-  transform: translate(-50%,0);
+  transform: translate(-50%, 0);
   left: 100%;
   bottom: 100%;
   background-color: var(--colors-backgroundAlt);
@@ -2418,7 +1925,6 @@ exports[`renders correctly 1`] = `
   z-index: 10;
   border-radius: var(--radii-small);
   opacity: 0;
-  -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   will-change: opacity;
   pointer-events: none;
@@ -2433,7 +1939,6 @@ exports[`renders correctly 1`] = `
   opacity: 1;
   max-height: 400px;
   overflow-y: auto;
-  -webkit-transition: max-height 0s 0s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0s,opacity 0.3s ease-in-out;
   pointer-events: auto;
 }
@@ -2480,13 +1985,13 @@ exports[`renders correctly 1`] = `
   color: var(--colors-text);
 }
 
-.c50 {
+.c45 {
   color: var(--colors-text);
   padding: 0 8px;
   border-radius: 8px;
 }
 
-.c38 {
+.c34 {
   background-color: var(--colors-backgroundAlt);
   border-radius: 50%;
   cursor: pointer;
@@ -2494,13 +1999,12 @@ exports[`renders correctly 1`] = `
   left: 3px;
   position: absolute;
   top: 3px;
-  -webkit-transition: left 200ms ease-in;
   transition: left 200ms ease-in;
   width: 26px;
   z-index: 1;
 }
 
-.c36 {
+.c32 {
   cursor: pointer;
   opacity: 0;
   height: 100%;
@@ -2509,277 +2013,218 @@ exports[`renders correctly 1`] = `
   z-index: 3;
 }
 
-.c36:checked + .c37 {
+.c32:checked+.c33 {
   left: calc(100% - 30px);
 }
 
-.c36:focus + .c37 {
+.c32:focus+.c33 {
   box-shadow: var(--shadows-focus);
 }
 
-.c36:hover + .c37:not(:disabled):not(:checked) {
+.c32:hover+.c33:not(:disabled):not(:checked) {
   box-shadow: var(--shadows-focus);
 }
 
-.c35 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+.c31 {
   align-items: center;
   background-color: var(--colors-textDisabled);
   border-radius: 24px;
   box-shadow: var(--shadows-inset);
   cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   height: 32px;
   position: relative;
-  -webkit-transition: background-color 200ms;
   transition: background-color 200ms;
   width: 56px;
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
   .c7 {
-    -webkit-filter: none !important;
-    filter: none !important;
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
   .c21 {
-    -webkit-filter: none !important;
-    filter: none !important;
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c55 {
-    -webkit-filter: none !important;
-    filter: none !important;
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+  .c50 {
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c46 {
-    -webkit-filter: none !important;
-    filter: none !important;
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+  .c42 {
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
   .c23 {
-    -webkit-filter: none !important;
-    filter: none !important;
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c57 {
-    -webkit-filter: none !important;
-    filter: none !important;
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+  .c53 {
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c41 {
-    -webkit-filter: none !important;
-    filter: none !important;
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+  .c37 {
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c44 {
-    -webkit-filter: none !important;
-    filter: none !important;
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+  .c40 {
+    filter: none!important;
   }
 }
 
-@media (hover:hover) {
+@media (hover: hover) {
 
 }
 
-@media (hover:hover) {
-  .c49:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+@media (hover: hover) {
+  .c44:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
     opacity: 0.65;
   }
 }
 
-@media (hover:hover) {
-  .c45:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+@media (hover: hover) {
+  .c41:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
     opacity: 0.65;
   }
 }
 
-@media (hover:hover) {
-  .c56:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+@media (hover: hover) {
+  .c52:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
     opacity: 0.65;
   }
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c0 {
     padding: 56px 40px 32px 40px;
     margin-bottom: 0px;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c3 {
     width: 1200px;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c5 {
     display: none;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c8 {
     margin-bottom: 36px;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c16 {
     display: block;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c17 {
     padding-bottom: 32px;
     margin-bottom: 32px;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c51 {
+@media screen and (min-width: 576px) {
+  .c46 {
     margin-bottom: 0;
   }
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 370px) {
   .c9 {
-    -webkit-order: 1;
-    -ms-flex-order: 1;
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .c9 {
     order: 1;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 852px) {
+  .c9 {
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 968px) {
+  .c9 {
     flex-direction: row;
   }
 }
 
-@media screen and (min-width:370px) {
-
+@media screen and (min-width: 1080px) {
+  .c9 {
+    flex-direction: row;
+  }
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c28 {
-    -webkit-order: 3;
-    -ms-flex-order: 3;
     order: 3;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
     flex-direction: row;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c30 {
-    -webkit-order: 1;
-    -ms-flex-order: 1;
     order: 1;
   }
 }
 
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c52 {
-    -webkit-order: 2;
-    -ms-flex-order: 2;
+@media screen and (min-width: 576px) {
+  .c47 {
     order: 2;
   }
 }
 
-@media screen and (min-width:852px) {
+@media screen and (min-width: 968px) {
   .c10 {
     margin-bottom: 0px;
   }
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
   .c29 {
     border-top-width: 0;
     border-bottom-width: 0;
@@ -2788,23 +2233,19 @@ exports[`renders correctly 1`] = `
   }
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 852px) {
 
 }
 
-@media screen and (min-width:852px) {
+@media screen and (min-width: 968px) {
 
 }
 
-@media screen and (min-width:968px) {
-
-}
-
-@media screen and (min-width:968px) {
+@media screen and (min-width: 968px) {
 
 }
 
@@ -2814,11 +2255,9 @@ exports[`renders correctly 1`] = `
   >
     <div
       class="c3 c4"
-      width="100%,,1200px;"
     >
       <div
         class="c5 c6"
-        display="block,,none"
       >
         <svg
           class="c7"
@@ -2854,7 +2293,6 @@ exports[`renders correctly 1`] = `
       </div>
       <div
         class="c8 c9"
-        order="2,,1"
       >
         <ul
           class="c10"
@@ -2869,9 +2307,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://docs.pancakeswap.finance/contact-us"
               rel="noreferrer noopener"
               target="_blank"
@@ -2884,9 +2320,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://blog.pancakeswap.finance/"
               rel="noreferrer noopener"
               target="_blank"
@@ -2899,9 +2333,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://docs.pancakeswap.finance/contact-us/telegram"
               rel="noreferrer noopener"
               target="_blank"
@@ -2914,9 +2346,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://docs.pancakeswap.finance/tokenomics/cake"
               rel="noreferrer noopener"
               target="_blank"
@@ -2938,9 +2368,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c15 c13"
-              color="var(--colors-warning)"
               data-theme="dark"
-              font-size="16px"
               href="https://pancakeswap.creator-spring.com/"
               rel="noreferrer noopener"
               target="_blank"
@@ -2962,9 +2390,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="Support https://docs.pancakeswap.finance/contact-us/customer-support"
               rel="noreferrer noopener"
               target="_blank"
@@ -2977,9 +2403,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://docs.pancakeswap.finance/help/troubleshooting"
               rel="noreferrer noopener"
               target="_blank"
@@ -2992,9 +2416,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://docs.pancakeswap.finance/get-started"
               rel="noreferrer noopener"
               target="_blank"
@@ -3016,9 +2438,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://github.com/pancakeswap"
               rel="noreferrer noopener"
               target="_blank"
@@ -3031,9 +2451,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://docs.pancakeswap.finance"
               rel="noreferrer noopener"
               target="_blank"
@@ -3046,9 +2464,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty"
               rel="noreferrer noopener"
               target="_blank"
@@ -3061,9 +2477,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited"
               rel="noreferrer noopener"
               target="_blank"
@@ -3076,9 +2490,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c12 c13"
-              color="text"
               data-theme="dark"
-              font-size="16px"
               href="https://docs.pancakeswap.finance/hiring/become-a-chef"
               rel="noreferrer noopener"
               target="_blank"
@@ -3089,7 +2501,6 @@ exports[`renders correctly 1`] = `
         </ul>
         <div
           class="c16"
-          display="none,,block"
         >
           <svg
             class="c7"
@@ -3127,13 +2538,10 @@ exports[`renders correctly 1`] = `
       <div
         class="c17 c18 c19"
         data-theme="dark"
-        order="2"
       >
         <a
           aria-label="Twitter"
           class="c20 c13"
-          color="primary"
-          font-size="16px"
           href="https://twitter.com/pancakeswap"
           rel="noreferrer noopener"
           target="_blank"
@@ -3157,6 +2565,7 @@ exports[`renders correctly 1`] = `
           <svg
             class="c23"
             color="textSubtle"
+            mr="24px"
             style="cursor: pointer;"
             viewBox="0 0 20 20"
             width="20px"
@@ -3172,8 +2581,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="English"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswap"
               rel="noreferrer noopener"
               target="_blank"
@@ -3183,8 +2590,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Bahasa Indonesia"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswapIndonesia"
               rel="noreferrer noopener"
               target="_blank"
@@ -3194,8 +2599,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="中文"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswap_CN"
               rel="noreferrer noopener"
               target="_blank"
@@ -3205,8 +2608,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Tiếng Việt"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/PancakeSwapVN"
               rel="noreferrer noopener"
               target="_blank"
@@ -3216,8 +2617,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Italiano"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswap_Ita"
               rel="noreferrer noopener"
               target="_blank"
@@ -3227,8 +2626,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="русский"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswap_ru"
               rel="noreferrer noopener"
               target="_blank"
@@ -3238,8 +2635,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Türkiye"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswapturkiye"
               rel="noreferrer noopener"
               target="_blank"
@@ -3249,8 +2644,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Português"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswapPortuguese"
               rel="noreferrer noopener"
               target="_blank"
@@ -3260,8 +2653,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Español"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswapES"
               rel="noreferrer noopener"
               target="_blank"
@@ -3271,8 +2662,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="日本語"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswapJP"
               rel="noreferrer noopener"
               target="_blank"
@@ -3282,8 +2671,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Français"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswapFR"
               rel="noreferrer noopener"
               target="_blank"
@@ -3293,8 +2680,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Deutsch"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswap_DE"
               rel="noreferrer noopener"
               target="_blank"
@@ -3304,8 +2689,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Filipino"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswap_PH"
               rel="noreferrer noopener"
               target="_blank"
@@ -3315,8 +2698,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="ქართული ენა"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswapGeorgia"
               rel="noreferrer noopener"
               target="_blank"
@@ -3326,8 +2707,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="हिन्दी"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/pancakeswap_INDIA"
               rel="noreferrer noopener"
               target="_blank"
@@ -3337,8 +2716,6 @@ exports[`renders correctly 1`] = `
             <a
               aria-label="Announcements"
               class="c26 c13"
-              color="textSubtle"
-              font-size="16px"
               href="https://t.me/PancakeSwapAnn"
               rel="noreferrer noopener"
               target="_blank"
@@ -3350,8 +2727,6 @@ exports[`renders correctly 1`] = `
         <a
           aria-label="Reddit"
           class="c20 c13"
-          color="primary"
-          font-size="16px"
           href="https://reddit.com/r/pancakeswap"
           rel="noreferrer noopener"
           target="_blank"
@@ -3378,8 +2753,6 @@ exports[`renders correctly 1`] = `
         <a
           aria-label="Instagram"
           class="c20 c13"
-          color="primary"
-          font-size="16px"
           href="https://instagram.com/pancakeswap_official"
           rel="noreferrer noopener"
           target="_blank"
@@ -3403,8 +2776,6 @@ exports[`renders correctly 1`] = `
         <a
           aria-label="Github"
           class="c20 c13"
-          color="primary"
-          font-size="16px"
           href="https://github.com/pancakeswap/"
           rel="noreferrer noopener"
           target="_blank"
@@ -3427,8 +2798,6 @@ exports[`renders correctly 1`] = `
         <a
           aria-label="Discord"
           class="c20 c13"
-          color="primary"
-          font-size="16px"
           href="https://discord.gg/pancakeswap"
           rel="noreferrer noopener"
           target="_blank"
@@ -3449,8 +2818,6 @@ exports[`renders correctly 1`] = `
         <a
           aria-label="Youtube"
           class="c27 c13"
-          color="primary"
-          font-size="16px"
           href="https://www.youtube.com/@pancakeswap_official"
           rel="noreferrer noopener"
           target="_blank"
@@ -3473,156 +2840,132 @@ exports[`renders correctly 1`] = `
       <div
         class="c28 c29"
         data-theme="dark"
-        order="1,,3"
       >
         <div
           class="c30"
-          order="2,,1"
         >
           <div
             class="c31"
-            height="32px"
-            width="56px"
+            scale="md"
           >
+            <input
+              class="c32"
+              scale="md"
+              type="checkbox"
+            />
             <div
-              class="c32 disappear"
-              style="position: absolute; top: 0px; left: 0px; transform: translateX(0px);"
+              class="c33 c34"
+              scale="md"
             >
               <div
-                class="c33 c34"
-                height="32px"
-                width="56px"
-              />
+                class="c35 c36"
+              >
+                <svg
+                  class="c37"
+                  color="warning"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.66 4.2L6.05 4.59C6.44 4.97 6.44 5.61 6.05 5.99L6.04 6C5.65 6.39 5.03 6.39 4.64 6L4.25 5.61C3.86 5.23 3.86 4.6 4.25 4.21L4.26 4.2C4.64 3.82 5.27 3.81 5.66 4.2Z"
+                  />
+                  <path
+                    d="M1.99 10.95H3.01C3.56 10.95 4 11.39 4 11.95V11.96C4 12.51 3.56 12.95 3 12.94H1.99C1.44 12.94 1 12.5 1 11.95V11.94C1 11.39 1.44 10.95 1.99 10.95Z"
+                  />
+                  <path
+                    d="M12 1H12.01C12.56 1 13 1.44 13 1.99V2.96C13 3.51 12.56 3.95 12 3.94H11.99C11.44 3.94 11 3.5 11 2.95V1.99C11 1.44 11.44 1 12 1Z"
+                  />
+                  <path
+                    d="M18.34 4.2C18.73 3.82 19.36 3.82 19.75 4.21C20.14 4.6 20.14 5.22 19.75 5.61L19.36 6C18.98 6.39 18.35 6.39 17.96 6L17.95 5.99C17.56 5.61 17.56 4.98 17.95 4.59L18.34 4.2Z"
+                  />
+                  <path
+                    d="M18.33 19.7L17.94 19.31C17.55 18.92 17.55 18.3 17.95 17.9C18.33 17.52 18.96 17.51 19.35 17.9L19.74 18.29C20.13 18.68 20.13 19.31 19.74 19.7C19.35 20.09 18.72 20.09 18.33 19.7Z"
+                  />
+                  <path
+                    d="M20 11.95V11.94C20 11.39 20.44 10.95 20.99 10.95H22C22.55 10.95 22.99 11.39 22.99 11.94V11.95C22.99 12.5 22.55 12.94 22 12.94H20.99C20.44 12.94 20 12.5 20 11.95Z"
+                  />
+                  <path
+                    clip-rule="evenodd"
+                    d="M6 11.95C6 8.64 8.69 5.95 12 5.95C15.31 5.95 18 8.64 18 11.95C18 15.26 15.31 17.95 12 17.95C8.69 17.95 6 15.26 6 11.95ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+                    fill-rule="evenodd"
+                  />
+                  <path
+                    d="M12 22.9H11.99C11.44 22.9 11 22.46 11 21.91V20.95C11 20.4 11.44 19.96 11.99 19.96H12C12.55 19.96 12.99 20.4 12.99 20.95V21.91C12.99 22.46 12.55 22.9 12 22.9Z"
+                  />
+                  <path
+                    d="M5.66 19.69C5.27 20.08 4.64 20.08 4.25 19.69C3.86 19.3 3.86 18.68 4.24 18.28L4.63 17.89C5.02 17.5 5.65 17.5 6.04 17.89L6.05 17.9C6.43 18.28 6.44 18.91 6.05 19.3L5.66 19.69Z"
+                  />
+                </svg>
+              </div>
             </div>
             <div
-              class="c32 appear"
-              style="transform: translateX(0px);"
+              class="c38 c39"
             >
-              <div
-                class="c35"
-                scale="md"
+              <svg
+                class="c40"
+                color="backgroundAlt"
+                viewBox="0 0 24 24"
+                width="20px"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <input
-                  class="c36"
-                  scale="md"
-                  type="checkbox"
+                <path
+                  d="M5.66 4.2L6.05 4.59C6.44 4.97 6.44 5.61 6.05 5.99L6.04 6C5.65 6.39 5.03 6.39 4.64 6L4.25 5.61C3.86 5.23 3.86 4.6 4.25 4.21L4.26 4.2C4.64 3.82 5.27 3.81 5.66 4.2Z"
                 />
-                <div
-                  class="c37 c38"
-                  scale="md"
-                >
-                  <div
-                    class="c39 c40"
-                    height="100%"
-                  >
-                    <svg
-                      class="c41"
-                      color="warning"
-                      viewBox="0 0 24 24"
-                      width="20px"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5.66 4.2L6.05 4.59C6.44 4.97 6.44 5.61 6.05 5.99L6.04 6C5.65 6.39 5.03 6.39 4.64 6L4.25 5.61C3.86 5.23 3.86 4.6 4.25 4.21L4.26 4.2C4.64 3.82 5.27 3.81 5.66 4.2Z"
-                      />
-                      <path
-                        d="M1.99 10.95H3.01C3.56 10.95 4 11.39 4 11.95V11.96C4 12.51 3.56 12.95 3 12.94H1.99C1.44 12.94 1 12.5 1 11.95V11.94C1 11.39 1.44 10.95 1.99 10.95Z"
-                      />
-                      <path
-                        d="M12 1H12.01C12.56 1 13 1.44 13 1.99V2.96C13 3.51 12.56 3.95 12 3.94H11.99C11.44 3.94 11 3.5 11 2.95V1.99C11 1.44 11.44 1 12 1Z"
-                      />
-                      <path
-                        d="M18.34 4.2C18.73 3.82 19.36 3.82 19.75 4.21C20.14 4.6 20.14 5.22 19.75 5.61L19.36 6C18.98 6.39 18.35 6.39 17.96 6L17.95 5.99C17.56 5.61 17.56 4.98 17.95 4.59L18.34 4.2Z"
-                      />
-                      <path
-                        d="M18.33 19.7L17.94 19.31C17.55 18.92 17.55 18.3 17.95 17.9C18.33 17.52 18.96 17.51 19.35 17.9L19.74 18.29C20.13 18.68 20.13 19.31 19.74 19.7C19.35 20.09 18.72 20.09 18.33 19.7Z"
-                      />
-                      <path
-                        d="M20 11.95V11.94C20 11.39 20.44 10.95 20.99 10.95H22C22.55 10.95 22.99 11.39 22.99 11.94V11.95C22.99 12.5 22.55 12.94 22 12.94H20.99C20.44 12.94 20 12.5 20 11.95Z"
-                      />
-                      <path
-                        clip-rule="evenodd"
-                        d="M6 11.95C6 8.64 8.69 5.95 12 5.95C15.31 5.95 18 8.64 18 11.95C18 15.26 15.31 17.95 12 17.95C8.69 17.95 6 15.26 6 11.95ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
-                        fill-rule="evenodd"
-                      />
-                      <path
-                        d="M12 22.9H11.99C11.44 22.9 11 22.46 11 21.91V20.95C11 20.4 11.44 19.96 11.99 19.96H12C12.55 19.96 12.99 20.4 12.99 20.95V21.91C12.99 22.46 12.55 22.9 12 22.9Z"
-                      />
-                      <path
-                        d="M5.66 19.69C5.27 20.08 4.64 20.08 4.25 19.69C3.86 19.3 3.86 18.68 4.24 18.28L4.63 17.89C5.02 17.5 5.65 17.5 6.04 17.89L6.05 17.9C6.43 18.28 6.44 18.91 6.05 19.3L5.66 19.69Z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div
-                  class="c42 c43"
-                  height="100%"
-                  width="100%"
-                >
-                  <svg
-                    class="c44"
-                    color="backgroundAlt"
-                    viewBox="0 0 24 24"
-                    width="20px"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M5.66 4.2L6.05 4.59C6.44 4.97 6.44 5.61 6.05 5.99L6.04 6C5.65 6.39 5.03 6.39 4.64 6L4.25 5.61C3.86 5.23 3.86 4.6 4.25 4.21L4.26 4.2C4.64 3.82 5.27 3.81 5.66 4.2Z"
-                    />
-                    <path
-                      d="M1.99 10.95H3.01C3.56 10.95 4 11.39 4 11.95V11.96C4 12.51 3.56 12.95 3 12.94H1.99C1.44 12.94 1 12.5 1 11.95V11.94C1 11.39 1.44 10.95 1.99 10.95Z"
-                    />
-                    <path
-                      d="M12 1H12.01C12.56 1 13 1.44 13 1.99V2.96C13 3.51 12.56 3.95 12 3.94H11.99C11.44 3.94 11 3.5 11 2.95V1.99C11 1.44 11.44 1 12 1Z"
-                    />
-                    <path
-                      d="M18.34 4.2C18.73 3.82 19.36 3.82 19.75 4.21C20.14 4.6 20.14 5.22 19.75 5.61L19.36 6C18.98 6.39 18.35 6.39 17.96 6L17.95 5.99C17.56 5.61 17.56 4.98 17.95 4.59L18.34 4.2Z"
-                    />
-                    <path
-                      d="M18.33 19.7L17.94 19.31C17.55 18.92 17.55 18.3 17.95 17.9C18.33 17.52 18.96 17.51 19.35 17.9L19.74 18.29C20.13 18.68 20.13 19.31 19.74 19.7C19.35 20.09 18.72 20.09 18.33 19.7Z"
-                    />
-                    <path
-                      d="M20 11.95V11.94C20 11.39 20.44 10.95 20.99 10.95H22C22.55 10.95 22.99 11.39 22.99 11.94V11.95C22.99 12.5 22.55 12.94 22 12.94H20.99C20.44 12.94 20 12.5 20 11.95Z"
-                    />
-                    <path
-                      clip-rule="evenodd"
-                      d="M6 11.95C6 8.64 8.69 5.95 12 5.95C15.31 5.95 18 8.64 18 11.95C18 15.26 15.31 17.95 12 17.95C8.69 17.95 6 15.26 6 11.95ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
-                      fill-rule="evenodd"
-                    />
-                    <path
-                      d="M12 22.9H11.99C11.44 22.9 11 22.46 11 21.91V20.95C11 20.4 11.44 19.96 11.99 19.96H12C12.55 19.96 12.99 20.4 12.99 20.95V21.91C12.99 22.46 12.55 22.9 12 22.9Z"
-                    />
-                    <path
-                      d="M5.66 19.69C5.27 20.08 4.64 20.08 4.25 19.69C3.86 19.3 3.86 18.68 4.24 18.28L4.63 17.89C5.02 17.5 5.65 17.5 6.04 17.89L6.05 17.9C6.43 18.28 6.44 18.91 6.05 19.3L5.66 19.69Z"
-                    />
-                  </svg>
-                  <svg
-                    class="c44"
-                    color="backgroundAlt"
-                    viewBox="0 0 24 24"
-                    width="20px"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      clip-rule="evenodd"
-                      d="M4.1534 13.6089L4.15362 13.61C4.77322 16.8113 7.42207 19.3677 10.647 19.8853L10.6502 19.8858C13.0412 20.2736 15.2625 19.6103 16.9422 18.2833C11.3549 16.2878 7.9748 10.3524 9.26266 4.48816C5.69846 5.77194 3.35817 9.51245 4.1534 13.6089ZM10.0083 2.21054C4.76622 3.2533 1.09895 8.36947 2.19006 13.9901C2.97006 18.0201 6.28006 21.2101 10.3301 21.8601C13.8512 22.4311 17.0955 21.1608 19.2662 18.8587C19.2765 18.8478 19.2866 18.837 19.2968 18.8261C19.4385 18.6745 19.5757 18.5184 19.7079 18.3581C19.7105 18.355 19.713 18.3519 19.7156 18.3487C19.8853 18.1426 20.0469 17.9295 20.2001 17.7101C20.4101 17.4001 20.2401 16.9601 19.8701 16.9201C19.5114 16.8796 19.1602 16.8209 18.817 16.7452C18.7964 16.7406 18.7758 16.736 18.7552 16.7313C18.6676 16.7114 18.5804 16.6903 18.4938 16.6681C18.4919 16.6676 18.4901 16.6672 18.4882 16.6667C13.0234 15.2647 9.72516 9.48006 11.4542 4.03417C11.4549 4.03214 11.4555 4.03012 11.4562 4.0281C11.4875 3.92954 11.5205 3.83109 11.5552 3.73278C11.5565 3.72911 11.5578 3.72543 11.5591 3.72175C11.6768 3.38921 11.8136 3.05829 11.9701 2.73005C12.1301 2.39005 11.8501 2.01005 11.4701 2.03005C11.1954 2.04379 10.924 2.06848 10.6561 2.10368C10.6517 2.10427 10.6472 2.10486 10.6428 2.10545C10.4413 2.13221 10.2418 2.16492 10.0446 2.2034C10.0325 2.20576 10.0204 2.20814 10.0083 2.21054Z"
-                      fill-rule="evenodd"
-                    />
-                  </svg>
-                </div>
-              </div>
+                <path
+                  d="M1.99 10.95H3.01C3.56 10.95 4 11.39 4 11.95V11.96C4 12.51 3.56 12.95 3 12.94H1.99C1.44 12.94 1 12.5 1 11.95V11.94C1 11.39 1.44 10.95 1.99 10.95Z"
+                />
+                <path
+                  d="M12 1H12.01C12.56 1 13 1.44 13 1.99V2.96C13 3.51 12.56 3.95 12 3.94H11.99C11.44 3.94 11 3.5 11 2.95V1.99C11 1.44 11.44 1 12 1Z"
+                />
+                <path
+                  d="M18.34 4.2C18.73 3.82 19.36 3.82 19.75 4.21C20.14 4.6 20.14 5.22 19.75 5.61L19.36 6C18.98 6.39 18.35 6.39 17.96 6L17.95 5.99C17.56 5.61 17.56 4.98 17.95 4.59L18.34 4.2Z"
+                />
+                <path
+                  d="M18.33 19.7L17.94 19.31C17.55 18.92 17.55 18.3 17.95 17.9C18.33 17.52 18.96 17.51 19.35 17.9L19.74 18.29C20.13 18.68 20.13 19.31 19.74 19.7C19.35 20.09 18.72 20.09 18.33 19.7Z"
+                />
+                <path
+                  d="M20 11.95V11.94C20 11.39 20.44 10.95 20.99 10.95H22C22.55 10.95 22.99 11.39 22.99 11.94V11.95C22.99 12.5 22.55 12.94 22 12.94H20.99C20.44 12.94 20 12.5 20 11.95Z"
+                />
+                <path
+                  clip-rule="evenodd"
+                  d="M6 11.95C6 8.64 8.69 5.95 12 5.95C15.31 5.95 18 8.64 18 11.95C18 15.26 15.31 17.95 12 17.95C8.69 17.95 6 15.26 6 11.95ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+                  fill-rule="evenodd"
+                />
+                <path
+                  d="M12 22.9H11.99C11.44 22.9 11 22.46 11 21.91V20.95C11 20.4 11.44 19.96 11.99 19.96H12C12.55 19.96 12.99 20.4 12.99 20.95V21.91C12.99 22.46 12.55 22.9 12 22.9Z"
+                />
+                <path
+                  d="M5.66 19.69C5.27 20.08 4.64 20.08 4.25 19.69C3.86 19.3 3.86 18.68 4.24 18.28L4.63 17.89C5.02 17.5 5.65 17.5 6.04 17.89L6.05 17.9C6.43 18.28 6.44 18.91 6.05 19.3L5.66 19.69Z"
+                />
+              </svg>
+              <svg
+                class="c40"
+                color="backgroundAlt"
+                viewBox="0 0 24 24"
+                width="20px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M4.1534 13.6089L4.15362 13.61C4.77322 16.8113 7.42207 19.3677 10.647 19.8853L10.6502 19.8858C13.0412 20.2736 15.2625 19.6103 16.9422 18.2833C11.3549 16.2878 7.9748 10.3524 9.26266 4.48816C5.69846 5.77194 3.35817 9.51245 4.1534 13.6089ZM10.0083 2.21054C4.76622 3.2533 1.09895 8.36947 2.19006 13.9901C2.97006 18.0201 6.28006 21.2101 10.3301 21.8601C13.8512 22.4311 17.0955 21.1608 19.2662 18.8587C19.2765 18.8478 19.2866 18.837 19.2968 18.8261C19.4385 18.6745 19.5757 18.5184 19.7079 18.3581C19.7105 18.355 19.713 18.3519 19.7156 18.3487C19.8853 18.1426 20.0469 17.9295 20.2001 17.7101C20.4101 17.4001 20.2401 16.9601 19.8701 16.9201C19.5114 16.8796 19.1602 16.8209 18.817 16.7452C18.7964 16.7406 18.7758 16.736 18.7552 16.7313C18.6676 16.7114 18.5804 16.6903 18.4938 16.6681C18.4919 16.6676 18.4901 16.6672 18.4882 16.6667C13.0234 15.2647 9.72516 9.48006 11.4542 4.03417C11.4549 4.03214 11.4555 4.03012 11.4562 4.0281C11.4875 3.92954 11.5205 3.83109 11.5552 3.73278C11.5565 3.72911 11.5578 3.72543 11.5591 3.72175C11.6768 3.38921 11.8136 3.05829 11.9701 2.73005C12.1301 2.39005 11.8501 2.01005 11.4701 2.03005C11.1954 2.04379 10.924 2.06848 10.6561 2.10368C10.6517 2.10427 10.6472 2.10486 10.6428 2.10545C10.4413 2.13221 10.2418 2.16492 10.0446 2.2034C10.0325 2.20576 10.0204 2.20814 10.0083 2.21054Z"
+                  fill-rule="evenodd"
+                />
+              </svg>
             </div>
           </div>
           <div
             class="c22"
           >
             <button
-              class="c45"
+              class="c41"
               scale="md"
+              variant="text"
             >
               <svg
-                class="c46"
+                class="c42"
                 color="textSubtle"
+                mr="0.5rem"
                 viewBox="0 0 24 24"
                 width="24px"
                 xmlns="http://www.w3.org/2000/svg"
@@ -3632,153 +2975,171 @@ exports[`renders correctly 1`] = `
                 />
               </svg>
               <div
-                class="c47"
-                color="textSubtle"
-                font-size="16px"
+                class="c26"
               >
                 EN-US
               </div>
             </button>
             <div
-              class="c24 c48"
+              class="c24 c43"
             >
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English0
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English1
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English2
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English3
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English4
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English5
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English6
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English7
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English8
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English9
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English10
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English11
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English12
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English13
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English14
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English15
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English16
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English17
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English18
               </button>
               <button
-                class="c49 c50"
+                class="c44 c45"
                 scale="md"
                 style="min-height: 32px; height: auto;"
+                variant="text"
               >
                 English19
               </button>
@@ -3786,20 +3147,20 @@ exports[`renders correctly 1`] = `
           </div>
         </div>
         <div
-          class="c51 c52"
-          order="1,,2"
+          class="c46 c47"
         >
           <div
-            class="c53"
+            class="c48"
           >
             <a
-              class="c54"
+              class="c49"
               href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
               target="_blank"
             >
               <svg
-                class="c55"
+                class="c50"
                 color="text"
+                mr="8px"
                 viewBox="0 0 96 96"
                 width="24px"
                 xmlns="http://www.w3.org/2000/svg"
@@ -3848,25 +3209,25 @@ exports[`renders correctly 1`] = `
                 </defs>
               </svg>
               <div
-                class="c26"
-                color="textSubtle"
-                font-size="16px"
+                class="c51"
               >
                 $0.232
               </div>
             </a>
           </div>
           <a
-            class="c56"
-            data-theme="light"
+            class="c52"
+            data-theme="dark"
             href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
             scale="sm"
             target="_blank"
+            variant="primary"
           >
             Buy CAKE
             <svg
-              class="c57"
+              class="c53"
               color="backgroundAlt"
+              ml="0.5rem"
               viewBox="0 0 24 24"
               width="20px"
               xmlns="http://www.w3.org/2000/svg"
@@ -3880,29 +3241,21 @@ exports[`renders correctly 1`] = `
       </div>
     </div>
   </div>
-  .c9 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
+  .c8 {
   align-self: center;
   fill: var(--colors-textSubtle);
   color: var(--colors-textSubtle);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
-.c10 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
+.c9 {
   align-self: center;
   fill: var(--colors-secondary);
   color: var(--colors-secondary);
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
 }
 
-.c19 {
+.c18 {
   color: var(--colors-failure);
   font-weight: 400;
   line-height: 1.5;
@@ -3910,7 +3263,7 @@ exports[`renders correctly 1`] = `
   font-size: 14px;
 }
 
-.c23 {
+.c22 {
   color: var(--colors-warning);
   font-weight: 400;
   line-height: 1.5;
@@ -3918,7 +3271,7 @@ exports[`renders correctly 1`] = `
   font-size: 14px;
 }
 
-.c11 {
+.c10 {
   color: var(--colors-textSubtle);
   font-weight: 400;
   line-height: 1.5;
@@ -3926,102 +3279,75 @@ exports[`renders correctly 1`] = `
   font-size: 10px;
 }
 
-.c26 {
+.c25 {
   width: 100%;
 }
 
-.c5 {
+.c4 {
   height: 100%;
 }
 
-.c27 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c26 {
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c0 {
   display: flex;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
   justify-content: space-around;
 }
 
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c5 {
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
-.c8 {
+.c7 {
   background: var(--colors-backgroundAlt);
 }
 
-.c7 {
+.c6 {
   position: relative;
   height: 22px;
   width: 21px;
 }
 
-.c7 div:first-child {
+.c6 div:first-child {
   height: 22px;
   width: 21px;
   z-index: 0;
 }
 
-.c7 div,
-.c7 svg {
+.c6 div,
+.c6 svg {
   position: absolute;
   left: 0;
   bottom: 0;
   overflow: hidden;
 }
 
-.c7 div:last-child {
+.c6 div:last-child {
   height: 0;
   z-index: 5;
-  -webkit-transition: height 0.25s ease;
   transition: height 0.25s ease;
 }
 
-.c21 {
+.c20 {
   position: relative;
   height: 22px;
   width: 21px;
 }
 
-.c21 div:first-child {
+.c20 div:first-child {
   height: 22px;
   width: 21px;
   z-index: 0;
 }
 
-.c4 {
+.c3 {
   display: block;
   border: 0;
   background: transparent;
@@ -4030,21 +3356,18 @@ exports[`renders correctly 1`] = `
   padding: 4px 12px;
 }
 
-.c4:hover {
+.c3:hover {
   border-radius: 16px;
 }
 
-.c4:hover,
-.c4:hover div {
+.c3:hover,
+.c3:hover div {
   background: var(--colors-tertiary);
 }
 
-.c12 {
+.c11 {
   display: -webkit-box;
   overflow: hidden;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -4052,7 +3375,7 @@ exports[`renders correctly 1`] = `
   -webkit-touch-callout: none;
 }
 
-.c2 {
+.c1 {
   position: fixed;
   bottom: 0px;
   width: 100%;
@@ -4063,29 +3386,20 @@ exports[`renders correctly 1`] = `
   z-index: 20;
 }
 
-html[data-useragent*="TokenPocket_iOS"] .c0 {
+html[data-useragent*="TokenPocket_iOS"] .c1 {
   padding-bottom: 45px;
 }
 
-.c17 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+.c16 {
   align-items: center;
   border: 0;
   background: transparent;
   color: var(--colors-textSubtle);
   cursor: pointer;
   font-weight: 400;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   font-size: 16px;
   height: 48px;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   outline: 0;
   padding-left: 16px;
@@ -4094,39 +3408,37 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   pointer-events: inherit;
 }
 
-.c17:is(button) {
+.c16:is(button) {
   cursor: pointer;
 }
 
-.c17:hover:not(:disabled) {
+.c16:hover:not(:disabled) {
   background-color: var(--colors-tertiary);
 }
 
-.c17:active:not(:disabled) {
+.c16:active:not(:disabled) {
   opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
   transform: translateY(1px);
 }
 
-.c15:first-child .c16 {
+.c14:first-child .c15 {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
 
-.c15:last-child .c16 {
+.c14:last-child .c15 {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
 
-.c25 {
+.c24 {
   border-color: var(--colors-cardBorder);
   border-style: solid;
   border-width: 1px 0 0;
   margin: 4px 0;
 }
 
-.c14 {
+.c13 {
   background-color: var(--colors-backgroundAlt);
   border: 1px solid var(--colors-cardBorder);
   border-radius: 16px;
@@ -4141,7 +3453,7 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   visibility: hidden;
 }
 
-.c20 {
+.c19 {
   border-radius: var(--radii-default);
   padding: 0 8px;
   border: 2px solid;
@@ -4151,7 +3463,7 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   margin-left: 8px;
 }
 
-.c24 {
+.c23 {
   border-radius: var(--radii-default);
   padding: 0 8px;
   border: 2px solid;
@@ -4161,18 +3473,13 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   margin-left: 8px;
 }
 
-.c3 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
+.c2 {
   display: inline-flex;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
   position: relative;
 }
 
-.c13 {
+.c12 {
   display: none;
   position: absolute;
   top: 0;
@@ -4185,10 +3492,7 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   background-color: var(--colors-failure);
 }
 
-.c18 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
+.c17 {
   display: inline-flex;
   position: absolute;
   top: 0;
@@ -4201,10 +3505,7 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   background-color: var(--colors-failure);
 }
 
-.c22 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
+.c21 {
   display: inline-flex;
   position: absolute;
   top: 0;
@@ -4217,209 +3518,163 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   background-color: var(--colors-warning);
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+  .c8 {
+    filter: none!important;
+  }
+}
+
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+
+}
+
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+
+}
+
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+
+}
+
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+
+}
+
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
   .c9 {
-    -webkit-filter: none !important;
-    filter: none !important;
+    filter: none!important;
   }
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@media (hover: hover) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@media (hover: hover) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c10 {
-    -webkit-filter: none !important;
-    filter: none !important;
-  }
-}
-
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@media (hover: hover) {
 
 }
 
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+@media (hover: hover) {
 
 }
 
-@media (hover:hover) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media (hover:hover) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media (hover:hover) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media (hover:hover) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 370px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 852px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 968px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 1080px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 968px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 576px) {
 
 }
 
-@media screen and (min-width:576px) {
+@media screen and (min-width: 852px) {
 
 }
 
-@media screen and (min-width:370px) {
+@media screen and (min-width: 968px) {
 
 }
 
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:852px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:576px) {
-
-}
-
-@media screen and (min-width:852px) {
-
-}
-
-@media screen and (min-width:968px) {
-
-}
-
-@media screen and (min-width:968px) {
+@media screen and (min-width: 968px) {
 
 }
 
 <div
-    class="reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+    class="reset_base__14t2dq60 sprinkles_display_block_xs__15lkarx0 sprinkles_display_none_md__15lkarx12"
   >
     <div
-      class="c0 c1 c2"
+      class="c0 c1"
     >
       <div
         class=""
@@ -4431,27 +3686,26 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
             class=""
           >
             <span
-              class="c3"
+              class="c2"
             >
               <button
-                class="c4"
+                class="c3"
                 style="opacity: 1;"
                 type="button"
               >
                 <div
-                  class="c5 c6"
-                  height="100%"
+                  class="c4 c5"
                 >
                   <div
-                    class="c7"
+                    class="c6"
                     height="22px"
                     width="21px"
                   >
                     <div
-                      class="c8"
+                      class="c7"
                     >
                       <svg
-                        class="c9"
+                        class="c8"
                         color="textSubtle"
                         viewBox="0 0 24 24"
                         width="20px"
@@ -4471,12 +3725,10 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
                       </svg>
                     </div>
                     <div
-                      class="c8"
-                      height="22px"
-                      width="21px"
+                      class="c7"
                     >
                       <svg
-                        class="c10"
+                        class="c9"
                         color="secondary"
                         viewBox="0 0 20 20"
                         width="20px"
@@ -4492,41 +3744,38 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
                     </div>
                   </div>
                   <div
-                    class="c11 c12"
-                    color="textSubtle"
-                    font-size="10px"
-                    font-weight="400"
+                    class="c10 c11"
                   >
                     Trade
                   </div>
                 </div>
               </button>
               <span
-                class="c13"
+                class="c12"
                 color="failure"
               />
             </span>
           </div>
         </div>
         <div
-          class="c14"
+          class="c13"
           style="position: absolute; left: 0px; top: 0px;"
         >
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/swap"
             >
               Exchange
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/liquidity"
             >
               Liquidity
@@ -4544,27 +3793,26 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
             class=""
           >
             <span
-              class="c3"
+              class="c2"
             >
               <button
-                class="c4"
+                class="c3"
                 style="opacity: 1;"
                 type="button"
               >
                 <div
-                  class="c5 c6"
-                  height="100%"
+                  class="c4 c5"
                 >
                   <div
-                    class="c7"
+                    class="c6"
                     height="22px"
                     width="21px"
                   >
                     <div
-                      class="c8"
+                      class="c7"
                     >
                       <svg
-                        class="c9"
+                        class="c8"
                         color="textSubtle"
                         viewBox="0 0 24 24"
                         width="20px"
@@ -4590,12 +3838,10 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
                       </svg>
                     </div>
                     <div
-                      class="c8"
-                      height="22px"
-                      width="21px"
+                      class="c7"
                     >
                       <svg
-                        class="c10"
+                        class="c9"
                         color="secondary"
                         viewBox="0 0 22 20"
                         width="20px"
@@ -4613,51 +3859,48 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
                     </div>
                   </div>
                   <div
-                    class="c11 c12"
-                    color="textSubtle"
-                    font-size="10px"
-                    font-weight="400"
+                    class="c10 c11"
                   >
                     Earn
                   </div>
                 </div>
               </button>
               <span
-                class="c13"
+                class="c12"
                 color="failure"
               />
             </span>
           </div>
         </div>
         <div
-          class="c14"
+          class="c13"
           style="position: absolute; left: 0px; top: 0px;"
         >
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/earn"
             >
               Earn
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/farms"
             >
               Yield Farms
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/pools"
             >
               Syrup pools
@@ -4675,27 +3918,26 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
             class=""
           >
             <span
-              class="c3"
+              class="c2"
             >
               <button
-                class="c4"
+                class="c3"
                 style="opacity: 1;"
                 type="button"
               >
                 <div
-                  class="c5 c6"
-                  height="100%"
+                  class="c4 c5"
                 >
                   <div
-                    class="c7"
+                    class="c6"
                     height="22px"
                     width="21px"
                   >
                     <div
-                      class="c8"
+                      class="c7"
                     >
                       <svg
-                        class="c9"
+                        class="c8"
                         color="textSubtle"
                         viewBox="0 0 19 17"
                         width="20px"
@@ -4707,12 +3949,10 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
                       </svg>
                     </div>
                     <div
-                      class="c8"
-                      height="22px"
-                      width="21px"
+                      class="c7"
                     >
                       <svg
-                        class="c10"
+                        class="c9"
                         color="secondary"
                         viewBox="0 0 18 20"
                         width="20px"
@@ -4727,58 +3967,53 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
                     </div>
                   </div>
                   <div
-                    class="c11 c12"
-                    color="textSubtle"
-                    font-size="10px"
-                    font-weight="400"
+                    class="c10 c11"
                   >
                     Win
                   </div>
                 </div>
               </button>
               <span
-                class="c18"
+                class="c17"
                 color="failure"
               />
             </span>
           </div>
         </div>
         <div
-          class="c14"
+          class="c13"
           style="position: absolute; left: 0px; top: 0px;"
         >
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
             >
               Win
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
             >
               Predictions
               <div
-                class="c19 c20"
-                color="failure"
-                font-size="14px"
+                class="c18 c19"
               >
                 LIVE
               </div>
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
             >
               Lottery
@@ -4796,27 +4031,26 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
             class=""
           >
             <span
-              class="c3"
+              class="c2"
             >
               <button
-                class="c4"
+                class="c3"
                 style="opacity: 1;"
                 type="button"
               >
                 <div
-                  class="c5 c6"
-                  height="100%"
+                  class="c4 c5"
                 >
                   <div
-                    class="c21"
+                    class="c20"
                     height="22px"
                     width="21px"
                   >
                     <div
-                      class="c8"
+                      class="c7"
                     >
                       <svg
-                        class="c9"
+                        class="c8"
                         color="textSubtle"
                         viewBox="0 0 24 24"
                         width="20px"
@@ -4829,110 +4063,104 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
                     </div>
                   </div>
                   <div
-                    class="c11 c12"
-                    color="textSubtle"
-                    font-size="10px"
-                    font-weight="400"
+                    class="c10 c11"
                   />
                 </div>
               </button>
               <span
-                class="c22"
+                class="c21"
                 color="warning"
               />
             </span>
           </div>
         </div>
         <div
-          class="c14"
+          class="c13"
           style="position: absolute; left: 0px; top: 0px;"
         >
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
             >
               Info & Analytics
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
             >
               IFO Token Sales
               <div
-                class="c23 c24"
-                color="warning"
-                font-size="14px"
+                class="c22 c23"
               >
                 SOON
               </div>
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <hr
-              class="c25"
+              class="c24"
             />
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
             >
               NFT Collectibles
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
             >
               Team Leaderboard
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <hr
-              class="c25"
+              class="c24"
             />
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
             >
               Blog
             </a>
           </div>
           <div
-            class="c15"
+            class="c14"
           >
             <a
-              class="c16 c17"
+              class="c15 c16"
               href="/"
               target="_blank"
             >
               <div
-                class="c26 c27"
-                width="100%"
+                class="c25 c26"
               >
                 Docs & Guides
                 <svg
-                  class="c9"
+                  class="c8"
                   color="textSubtle"
                   viewBox="0 0 24 24"
                   width="20px"

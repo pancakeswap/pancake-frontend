@@ -3,7 +3,7 @@ import { getNftSaleAddress } from 'utils/addressHelpers'
 import { getPancakeSquadContract } from 'utils/contractHelpers'
 import { nftSaleABI } from 'config/abi/nftSale'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 const useEventInfos = ({ refreshCounter, setCallback }) => {
   useEffect(() => {

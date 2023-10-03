@@ -1,4 +1,6 @@
-import { Pool, useToast } from '@pancakeswap/uikit'
+import { useToast } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { useCallback } from 'react'
 import { ToastDescriptionWithTx } from 'components/Toast'

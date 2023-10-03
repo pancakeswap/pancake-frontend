@@ -6,12 +6,13 @@ import { useCurrencyBalance } from 'hooks/Balances'
 import useStablePrice from 'hooks/useStablePrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox } from '@pancakeswap/ui'
-import { Button, ChevronDownIcon, CopyButton, SkeletonV2, Swap as SwapUI, Text, useModal } from '@pancakeswap/uikit'
+import { AtomBox, Button, ChevronDownIcon, CopyButton, Text, useModal } from '@pancakeswap/uikit'
+import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
+
 import { CoinRegisterButton } from 'components/CoinRegisterButton'
 import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { BridgeButton } from 'components/Swap/BridgeButton'
 import useBridgeInfo from 'components/Swap/hooks/useBridgeInfo'
 
@@ -123,9 +124,7 @@ export const CurrencyInputPanel = ({
               onClick={onPresentCurrencyModal}
               title={currency?.name}
             >
-              <SkeletonV2 isDataReady={isMounted} width="24px" height="24px" variant="circle" mr="8px">
-                <CurrencyLogo currency={currency} size="24px" />
-              </SkeletonV2>
+              {isMounted && <CurrencyLogo currency={currency} size="24px" />}
               <Text>{currency?.symbol}</Text>
               {!disableCurrencySelect && <ChevronDownIcon />}
             </Button>

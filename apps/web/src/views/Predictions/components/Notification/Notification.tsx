@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Card, CardBody, Heading, ArrowBackIcon, IconButton } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'

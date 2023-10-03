@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import styled, { keyframes, css } from "styled-components";
+import { styled, keyframes, css } from "styled-components";
 
 export const mountAnimation = keyframes`
     0% {

@@ -1,11 +1,12 @@
-import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
+import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import { toHex } from '@pancakeswap/v3-sdk'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { MM_SIGNER, NATIVE_CURRENCY_ADDRESS } from '../constants'
-import { RFQResponse, TradeWithMM } from '../types'
+import { RFQResponse } from '../types'
 import { useMMSwapContract } from '../utils/exchange'
 
 export interface SwapCall {
@@ -20,9 +21,9 @@ export interface SwapCall {
  * @param recipientAddressOrName
  */
 export function useSwapCallArguments(
-  trade: TradeWithMM<Currency, Currency, TradeType> | null, // trade to execute, required
+  trade: SmartRouterTrade<TradeType> | null | undefined, // trade to execute, required
   rfq: RFQResponse['message'],
-  recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
+  recipientAddress: string, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
   const { account, chainId } = useAccountActiveChain()
 
@@ -47,7 +48,7 @@ export function useSwapCallArguments(
 
 function swapCallParameters(
   mmSigner: string,
-  trade: TradeWithMM<Currency, Currency, TradeType>,
+  trade: SmartRouterTrade<TradeType>,
   rfq: RFQResponse['message'],
   recipient: string,
 ): SwapParameters {

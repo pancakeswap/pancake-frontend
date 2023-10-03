@@ -10,7 +10,7 @@ import {
   Text,
   BscScanIcon,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { PredictionUser } from 'state/types'
 import { useProfileForAddress } from 'state/profile/hooks'

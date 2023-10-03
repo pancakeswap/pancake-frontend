@@ -1,6 +1,6 @@
 import { ChangeEvent, useState, useEffect } from 'react'
 import { Box, BoxProps, Text, Input } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import CircleLoader from 'components/Loader/CircleLoader'
@@ -16,7 +16,7 @@ interface AddressInputSelectProps extends BoxProps {
   onAddressClick: (value: string) => void
 }
 
-const SubMenu = styled.div<{ isOpen: boolean }>`
+const SubMenu = styled.div<{ $isOpen: boolean }>`
   align-items: center;
   background: ${({ theme }) => theme.colors.input};
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
@@ -32,8 +32,8 @@ const SubMenu = styled.div<{ isOpen: boolean }>`
   width: 100%;
   z-index: 15;
 
-  ${({ isOpen }) =>
-    isOpen &&
+  ${({ $isOpen }) =>
+    $isOpen &&
     `
     height: auto;
     opacity: 1;
@@ -118,7 +118,7 @@ const AddressInputSelect: React.FC<React.PropsWithChildren<AddressInputSelectPro
           <CircleLoader />
         </Box>
       )}
-      <SubMenu isOpen={resultFound !== ResultStatus.NOT_VALID}>
+      <SubMenu $isOpen={resultFound !== ResultStatus.NOT_VALID}>
         {resultFound === ResultStatus.FOUND ? (
           <AddressLink onClick={handleClick}>{state.value}</AddressLink>
         ) : (

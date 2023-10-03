@@ -12,7 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import _isEmpty from 'lodash/isEmpty'
 import { ReactNode } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 
 const Container = styled.div`

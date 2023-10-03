@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Skeleton, useToast, useModal, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Skeleton, useToast, useModal } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -8,7 +9,7 @@ import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 
 import { useCallback } from 'react'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { SendTransactionResult } from 'wagmi/actions'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -18,7 +19,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
-const { FarmTableHarvestAction } = FarmUI.FarmTable
+const { FarmTableHarvestAction } = FarmWidget.FarmTable
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -65,7 +66,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = new BigNumber(userData?.earnings)
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
   let earnings = BIG_ZERO
   let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />

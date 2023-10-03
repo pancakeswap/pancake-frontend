@@ -18,7 +18,7 @@ import {
 } from '@pancakeswap/uikit'
 import { AnyAction, AsyncThunkAction } from '@reduxjs/toolkit'
 import { useEffect } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { Address, useAccount } from 'wagmi'

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, Text, LanguageIcon, SvgProps, Svg, TwitterIcon, Link, TelegramIcon, FlexGap } from '@pancakeswap/uikit'
 import { Ifo } from 'config/constants/types'
 import { getBlockExploreLinkDefault } from 'utils'

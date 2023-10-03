@@ -6,7 +6,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import Image from 'next/legacy/image'
 import { memo, useMemo } from 'react'
-import styled, { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import * as S from './Styled'
 

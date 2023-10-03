@@ -1,12 +1,13 @@
 import { useCallback, useMemo } from 'react'
 import Cookie from 'js-cookie'
-import { ChainId, Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { BigNumber } from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useCatchTxError from 'hooks/useCatchTxError'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { TokenPairImage } from 'components/TokenImage'
 import {
   Modal,

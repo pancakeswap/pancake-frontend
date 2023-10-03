@@ -5,7 +5,7 @@ import useTheme from 'hooks/useTheme'
 import { darken } from 'polished'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { LoadingRows } from '../Loader'
 import { RowBetween } from '../Row'
 

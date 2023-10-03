@@ -13,7 +13,7 @@ import {
 import { AppHeader } from 'components/App'
 
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 

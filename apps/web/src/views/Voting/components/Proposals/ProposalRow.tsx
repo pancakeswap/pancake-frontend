@@ -1,5 +1,5 @@
 import { ArrowForwardIcon, Box, IconButton, Flex, Text, NextLinkFromReactRouter } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Proposal } from 'state/types'
 import { isCoreProposal } from '../../helpers'
 import TimeFrame from './TimeFrame'

@@ -1,12 +1,12 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useSidNameForAddress } from 'hooks/useSid'
 import { useUnsNameForAddress } from 'hooks/useUns'
 import { useMemo } from 'react'
 import { useEnsAvatar, useEnsName, Address } from 'wagmi'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export const useDomainNameForAddress = (address: `0x${string}` | string, fetchData = true) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { sidName, isLoading: isSidLoading } = useSidNameForAddress(address as Address, fetchData)
   const { unsName, isLoading: isUnsLoading } = useUnsNameForAddress(
     address as Address,

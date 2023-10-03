@@ -8,8 +8,9 @@ import { useContract } from 'hooks/useContract'
 import toNumber from 'lodash/toNumber'
 import { Address } from 'wagmi'
 import { Field } from 'state/swap/actions'
+import { RouteType, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { MM_STABLE_TOKENS_WHITE_LIST, MM_SWAP_CONTRACT_ADDRESS, NATIVE_CURRENCY_ADDRESS } from '../constants'
-import { OrderBookRequest, TradeWithMM } from '../types'
+import { OrderBookRequest } from '../types'
 
 export function useMMSwapContract() {
   const { chainId } = useActiveChainId()
@@ -17,20 +18,13 @@ export function useMMSwapContract() {
 }
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade?: TradeWithMM<Currency, Currency, TradeType> | null): {
+export function computeTradePriceBreakdown(trade?: SmartRouterTrade<TradeType> | null): {
   priceImpactWithoutFee: Percent | undefined
-  realizedLPFee: CurrencyAmount<Currency> | undefined | null
+  lpFeeAmount: CurrencyAmount<Currency> | undefined | null
 } {
   // for each hop in our trade, take away the x*y=k price impact from 0.3% fees
   // e.g. for 3 tokens/2 hops: 1 - ((1 - .03) * (1-.03))
-  const realizedLPFee = !trade
-    ? undefined
-    : ONE_HUNDRED_PERCENT.subtract(
-        trade.route.pairs.reduce<Fraction>(
-          (currentFee: Fraction): Fraction => currentFee.multiply(ONE_HUNDRED_PERCENT),
-          ONE_HUNDRED_PERCENT,
-        ),
-      )
+  const realizedLPFee = !trade ? undefined : ONE_HUNDRED_PERCENT
 
   const stableList = MM_STABLE_TOKENS_WHITE_LIST[trade?.inputAmount?.currency?.chainId]
   const isStablePair = Boolean(
@@ -53,11 +47,11 @@ export function computeTradePriceBreakdown(trade?: TradeWithMM<Currency, Currenc
     trade &&
     (isStablePair ? trade.inputAmount.multiply(stableFeeRate) : trade.inputAmount.multiply(feeRate))
 
-  return { priceImpactWithoutFee: priceImpactWithoutFeePercent, realizedLPFee: realizedLPFeeAmount }
+  return { priceImpactWithoutFee: priceImpactWithoutFeePercent, lpFeeAmount: realizedLPFeeAmount }
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
-export function computeSlippageAdjustedAmounts(trade: TradeWithMM<Currency, Currency, TradeType> | undefined): {
+export function computeSlippageAdjustedAmounts(trade: SmartRouterTrade<TradeType> | undefined): {
   [field in Field]?: CurrencyAmount<Currency>
 } {
   return {
@@ -66,14 +60,11 @@ export function computeSlippageAdjustedAmounts(trade: TradeWithMM<Currency, Curr
   }
 }
 
-function executionPrice<TIn extends Currency, TOut extends Currency, TTradeType extends TradeType>({
-  inputAmount,
-  outputAmount,
-}: TradeWithMM<TIn, TOut, TTradeType>) {
+function executionPrice<TTradeType extends TradeType>({ inputAmount, outputAmount }: SmartRouterTrade<TTradeType>) {
   return new Price(inputAmount.currency, outputAmount.currency, inputAmount.quotient, outputAmount.quotient)
 }
 
-export function formatExecutionPrice(trade?: TradeWithMM<Currency, Currency, TradeType>, inverted?: boolean): string {
+export function formatExecutionPrice(trade?: SmartRouterTrade<TradeType>, inverted?: boolean): string {
   if (!trade) {
     return ''
   }
@@ -111,7 +102,7 @@ export const parseMMParameter = (
     networkId: chainId,
     takerSideToken: inputCurrency?.isToken
       ? inputCurrency.address
-      : isForRFQ // RFQ needs native address and order book use WETH to get quote
+      : isForRFQ // RFQ needs native address and order book use WNATIVE to get quote
       ? NATIVE_CURRENCY_ADDRESS
       : inputCurrency.wrapped.address,
     makerSideToken: outputCurrency?.isToken
@@ -137,18 +128,24 @@ export const parseMMTrade = (
   outputCurrency?: Currency,
   takerSideTokenAmount?: string,
   makerSideTokenAmount?: string,
-): TradeWithMM<Currency, Currency, TradeType> => {
+): SmartRouterTrade<TradeType> => {
   if (!inputCurrency || !outputCurrency || !takerSideTokenAmount || !makerSideTokenAmount) return null
-  const bestTradeWithMM: TradeWithMM<Currency, Currency, TradeType> = {
+  const bestTradeWithMM: SmartRouterTrade<TradeType> = {
     tradeType: isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
     inputAmount: CurrencyAmount.fromRawAmount(inputCurrency, BigInt(takerSideTokenAmount)),
     outputAmount: CurrencyAmount.fromRawAmount(outputCurrency, BigInt(makerSideTokenAmount)),
-    route: {
-      input: inputCurrency,
-      output: outputCurrency,
-      pairs: [],
-      path: [inputCurrency, outputCurrency],
-    },
+    routes: [
+      {
+        inputAmount: CurrencyAmount.fromRawAmount(inputCurrency, BigInt(takerSideTokenAmount)),
+        outputAmount: CurrencyAmount.fromRawAmount(outputCurrency, BigInt(makerSideTokenAmount)),
+        type: RouteType.MM,
+        pools: [],
+        percent: 100,
+        path: [inputCurrency, outputCurrency],
+      },
+    ],
+    gasEstimate: null,
+    gasEstimateInUSD: null,
   }
   return bestTradeWithMM
 }

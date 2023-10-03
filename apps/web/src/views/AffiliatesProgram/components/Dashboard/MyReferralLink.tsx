@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Flex, Text, Input, Box, Button, ArrowForwardIcon, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
+import { styled } from 'styled-components'
+import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
 import { keccak256, encodePacked } from 'viem'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
@@ -97,7 +97,7 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
   const { isMobile } = useMatchBreakpoints()
   const [percentage, setPercentage] = useState('0')
 
-  const youWillReceive = useMemo(() => new BigNumber(100).minus(percentage).toString(), [percentage])
+  const youWillReceive = useMemo(() => BIG_ONE_HUNDRED.minus(percentage).toString(), [percentage])
 
   const dataList = useMemo(
     () => commissionList.filter((i) => i.percentage !== '?' || (i.id === 'perpetual' && affiliate.ablePerps)),

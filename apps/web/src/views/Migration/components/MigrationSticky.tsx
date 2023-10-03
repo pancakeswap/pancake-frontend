@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'

@@ -102,7 +102,7 @@ const useApproveConfirmTransaction = ({
   const { address: account } = useAccount()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
-  const [approvalState, approve] = useApproveCallbackFromAmount({
+  const { approvalState, approveCallback } = useApproveCallbackFromAmount({
     token: onRequiresApproval ? undefined : token,
     minAmount,
     targetAmount,
@@ -114,7 +114,7 @@ const useApproveConfirmTransaction = ({
   const handleApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       dispatch({ type: 'approve_sending' })
-      return onApprove ? onApprove() : approve()
+      return onApprove ? onApprove() : approveCallback()
     })
     if (receipt?.status) {
       dispatch({ type: 'approve_receipt' })
@@ -122,7 +122,7 @@ const useApproveConfirmTransaction = ({
     } else {
       dispatch({ type: 'approve_error' })
     }
-  }, [fetchWithCatchTxError, onApprove, approve, onApproveSuccess, state])
+  }, [fetchWithCatchTxError, onApprove, approveCallback, onApproveSuccess, state])
 
   const handleConfirm = useCallback(
     async (params = {}) => {

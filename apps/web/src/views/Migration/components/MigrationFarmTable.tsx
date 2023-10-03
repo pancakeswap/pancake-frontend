@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Flex, Spinner, RowType } from '@pancakeswap/uikit'

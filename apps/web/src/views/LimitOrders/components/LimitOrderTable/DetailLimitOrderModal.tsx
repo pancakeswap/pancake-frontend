@@ -9,13 +9,13 @@ import {
   Tag,
   useMatchBreakpoints,
   BscScanIcon,
-  TransactionErrorContent,
-  ConfirmationPendingContent,
 } from '@pancakeswap/uikit'
+import { TransactionErrorContent, ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { memo, useCallback, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { FormattedOrderData } from 'views/LimitOrders/hooks/useFormattedOrderData'
 import useGelatoLimitOrdersHandlers from 'hooks/limitOrders/useGelatoLimitOrdersHandlers'
 import { Order } from '@gelatonetwork/limit-orders-lib'

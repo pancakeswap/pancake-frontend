@@ -23,7 +23,7 @@ export interface AddToWalletButtonProps {
   tokenAddress: string
   tokenSymbol: string
   tokenDecimals: number
-  tokenLogo: string
+  tokenLogo?: string
   textOptions?: AddToWalletTextOptions
   marginTextBetweenLogo?: string
 }

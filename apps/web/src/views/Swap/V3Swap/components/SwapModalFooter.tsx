@@ -1,12 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Price, Percent, TradeType } from '@pancakeswap/sdk'
-import { AutoRenewIcon, Button, QuestionHelper, Text, Link, AutoColumn } from '@pancakeswap/uikit'
+import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
+import { BackForwardIcon, Button, QuestionHelper, Text, Link, AutoColumn, Dots, Flex } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { useState, memo } from 'react'
+import { useState, memo, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
+import { CurrencyLogo } from 'components/Logo'
 import { warningSeverity } from 'utils/exchange'
+import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
+import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
@@ -25,34 +29,57 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   lpFee: realizedLPFee,
   inputAmount,
   outputAmount,
+  trade,
   tradeType,
-  executionPrice,
   slippageAdjustedAmounts,
   isEnoughInputBalance,
   onConfirm,
   swapErrorMessage,
   disabledConfirm,
+  isMM,
+  isRFQReady,
+  currencyBalances,
 }: {
+  trade: SmartRouterTrade<TradeType> | null | undefined
   tradeType: TradeType
   lpFee: CurrencyAmount<Currency>
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
   priceImpact: Percent
-  executionPrice: Price<Currency, Currency>
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   isEnoughInputBalance: boolean
-  onConfirm: () => void
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
+  isMM?: boolean
+  isRFQReady?: boolean
+  currencyBalances: {
+    INPUT?: CurrencyAmount<Currency>
+    OUTPUT?: CurrencyAmount<Currency>
+  }
+  onConfirm: () => void
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
   const severity = warningSeverity(priceImpactWithoutFee)
 
+  const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
+  const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
+  const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
+  const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
+
+  const executionPriceDisplay = useMemo(() => {
+    if (isMM) {
+      return mmFormatExecutionPrice(trade, showInverted)
+    }
+
+    const price = SmartRouter.getExecutionPrice(trade)
+    return formatExecutionPrice(price, inputAmount, outputAmount, showInverted)
+  }, [inputAmount, isMM, outputAmount, trade, showInverted])
+
   return (
     <>
       <SwapModalFooterContainer>
-        <RowBetween align="center">
+        <RowBetween align="center" mb="8px">
           <Text fontSize="14px">{t('Price')}</Text>
           <Text
             fontSize="14px"
@@ -64,14 +91,14 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               paddingLeft: '10px',
             }}
           >
-            {formatExecutionPrice(executionPrice, inputAmount, outputAmount, showInverted)}
+            {executionPriceDisplay}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-              <AutoRenewIcon width="14px" />
+              <BackForwardIcon color="primary" width="14px" />
             </StyledBalanceMaxMini>
           </Text>
         </RowBetween>
 
-        <RowBetween>
+        <RowBetween mb="8px">
           <RowFixed>
             <Text fontSize="14px">
               {tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}
@@ -95,47 +122,109 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             </Text>
           </RowFixed>
         </RowBetween>
-        <RowBetween>
+        <RowBetween mb="8px">
           <RowFixed>
             <Text fontSize="14px">{t('Price Impact')}</Text>
             <QuestionHelper
-              text={t('The difference between the market price and your price due to trade size.')}
               ml="4px"
               placement="top"
+              text={
+                isMM ? (
+                  <>
+                    <Text>
+                      <Text bold display="inline-block">
+                        {t('AMM')}
+                      </Text>
+                      {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
+                    </Text>
+                    <Text mt="10px">
+                      <Text bold display="inline-block">
+                        {t('MM')}
+                      </Text>
+                      {`: ${t('No slippage against quote from market maker')}`}
+                    </Text>
+                  </>
+                ) : (
+                  <>{t('The difference between the market price and your price due to trade size.')}</>
+                )
+              }
             />
           </RowFixed>
-          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+          {isMM ? <Text color="textSubtle">--</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
         </RowBetween>
         <RowBetween>
           <RowFixed>
             <Text fontSize="14px">{t('Trading Fee')}</Text>
             <QuestionHelper
-              text={
-                <>
-                  <Text>
-                    {t(
-                      'Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.',
-                    )}
-                  </Text>
-                  <Text mt="12px">
-                    <Link
-                      style={{ display: 'inline' }}
-                      ml="4px"
-                      external
-                      href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange"
-                    >
-                      {t('Fee Breakdown and Tokenomics')}
-                    </Link>
-                  </Text>
-                </>
-              }
               ml="4px"
               placement="top"
+              text={
+                isMM ? (
+                  <>
+                    <Text mb="12px">
+                      <Text bold display="inline-block">
+                        {t('AMM')}
+                      </Text>
+                      : {t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
+                    </Text>
+                    <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
+                    <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
+                    <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
+                    <Text mt="12px">
+                      {t('For each stableswap trade, refer to the fee table')}
+                      <Link
+                        style={{ display: 'inline' }}
+                        ml="4px"
+                        external
+                        href="https://docs.pancakeswap.finance/products/stableswap#stableswap-fees"
+                      >
+                        {t('here.')}
+                      </Link>
+                    </Text>
+                    <Text mt="10px">
+                      <Text bold display="inline-block">
+                        {t('MM')}
+                      </Text>
+                      :{' '}
+                      {t(
+                        'PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% - 0.25% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
+                      )}
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text>
+                      {t(
+                        'Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.',
+                      )}
+                    </Text>
+                    <Text mt="12px">
+                      <Link
+                        style={{ display: 'inline' }}
+                        ml="4px"
+                        external
+                        href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange"
+                      >
+                        {t('Fee Breakdown and Tokenomics')}
+                      </Link>
+                    </Text>
+                  </>
+                )
+              }
             />
           </RowFixed>
-          <Text fontSize="14px" textAlign="right">
-            {realizedLPFee ? `${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}` : '-'}
-          </Text>
+          {realizedLPFee ? (
+            <Flex>
+              <Text fontSize="14px" mr="8px">
+                {`${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}`}
+              </Text>
+              <CurrencyLogo currency={currencyBalances.INPUT?.currency ?? inputAmount.currency} size="24px" />
+            </Flex>
+          ) : (
+            <Text fontSize="14px" textAlign="right">
+              -
+            </Text>
+          )}
         </RowBetween>
       </SwapModalFooterContainer>
 
@@ -143,14 +232,18 @@ export const SwapModalFooter = memo(function SwapModalFooter({
         <Button
           variant={severity > 2 ? 'danger' : 'primary'}
           onClick={onConfirm}
-          disabled={disabledConfirm}
+          disabled={isMM ? disabledConfirm || !isRFQReady : disabledConfirm}
           mt="12px"
           id="confirm-swap-or-send"
           width="100%"
         >
-          {severity > 2 || (tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance)
-            ? t('Swap Anyway')
-            : t('Confirm Swap')}
+          {isMM && !isRFQReady ? (
+            <Dots>{t('Checking RFQ with MM')}</Dots>
+          ) : severity > 2 || (tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance) ? (
+            t('Swap Anyway')
+          ) : (
+            t('Confirm Swap')
+          )}
         </Button>
 
         {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

@@ -17,13 +17,13 @@ const nextConfig = {
     styledComponents: true,
   },
   transpilePackages: [
-    '@pancakeswap/ui',
     '@pancakeswap/uikit',
     '@pancakeswap/localization',
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
     '@pancakeswap/tokens',
     '@pancakeswap/farms',
+    '@pancakeswap/widgets-internal',
   ],
   async redirects() {
     return [

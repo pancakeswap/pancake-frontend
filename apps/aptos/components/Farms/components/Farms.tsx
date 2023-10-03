@@ -17,10 +17,10 @@ import {
   OptionProps,
   Loading,
   SearchInput,
-  Farm as FarmUI,
   ToggleView,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
 import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
@@ -303,7 +303,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
               </NoSSR>
             </Flex>
-            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
+            <FarmWidget.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
             <Flex mt="20px">
               <ToggleWrapper>
                 <Toggle

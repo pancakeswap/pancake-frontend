@@ -1,8 +1,10 @@
-import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box, Balance, Pool } from '@pancakeswap/uikit'
+import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box, Balance } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { VaultKey } from 'state/types'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { Token } from '@pancakeswap/sdk'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
@@ -28,7 +30,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
 
   const { stakingToken, stakingTokenPrice } = pool
 
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const stakedDollarValue = cakePriceBusd.gt(0)
     ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), stakingToken.decimals)
     : 0

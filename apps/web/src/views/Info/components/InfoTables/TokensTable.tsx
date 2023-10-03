@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, Fragment } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import {
   Text,
   Flex,
@@ -18,6 +18,7 @@ import Percent from 'views/Info/components/Percent'
 import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { isAddress } from 'utils'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 /**
@@ -64,7 +65,7 @@ const ResponsiveGrid = styled.div`
 
 const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.7;
   }
@@ -114,8 +115,15 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
-              <Text>{subgraphTokenName[tokenData.address] ?? tokenData.name}</Text>
-              <Text ml="8px">({subgraphTokenSymbol[tokenData.address] ?? tokenData.symbol})</Text>
+              <Text>
+                {(tokenData.address && subgraphTokenName[isAddress(tokenData.address) || undefined]) || tokenData.name}
+              </Text>
+              <Text ml="8px">
+                (
+                {(tokenData.address && subgraphTokenSymbol[isAddress(tokenData.address) || undefined]) ||
+                  tokenData.symbol}
+                )
+              </Text>
             </Flex>
           )}
         </Flex>

@@ -1,16 +1,11 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, Text, SwapLineChart } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useState, memo, useMemo } from 'react'
 import { useFetchPairPricesV3 } from 'state/swap/hooks'
-import dynamic from 'next/dynamic'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import NoChartAvailable from './NoChartAvailable'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import { getTimeWindowChange } from './utils'
-
-const SwapLineChart = dynamic(() => import('@pancakeswap/uikit/src/components/Chart/PairPriceChart'), {
-  ssr: false,
-})
 
 const BasicChart = ({
   token0Address,

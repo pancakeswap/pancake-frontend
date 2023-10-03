@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
-import { bscRpcProvider } from 'utils/providers'
+import { publicClient } from 'utils/wagmi'
+import { ChainId } from '@pancakeswap/chains'
 
 /**
  * Returns a countdown in seconds of a given block
@@ -11,7 +12,8 @@ const useBlockCountdown = (blockNumber: number) => {
 
   useEffect(() => {
     const startCountdown = async () => {
-      const currentBlock = await bscRpcProvider.getBlockNumber()
+      const bscClient = publicClient({ chainId: ChainId.BSC })
+      const currentBlock = await bscClient.getBlockNumber()
 
       if (blockNumber > currentBlock) {
         setSecondsRemaining((blockNumber - Number(currentBlock)) * BSC_BLOCK_TIME)

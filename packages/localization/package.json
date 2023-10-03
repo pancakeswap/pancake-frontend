@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/localization",
   "license": "MIT",
-  "version": "3.0.2",
+  "version": "5.0.5",
   "description": "A minimal internationalization library",
   "main": "./src/index.tsx",
   "types": "./src/index.tsx",
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
-    "@types/react": "^18.0.17",
+    "@types/react": "^18.2.21",
     "@types/lodash": "^4.14.178"
   }
 }

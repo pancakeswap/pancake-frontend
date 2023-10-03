@@ -9,33 +9,31 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@0xsquid/widget": "^1.4.85",
+    "@0xsquid/widget": "^1.6.0",
     "@material-ui/core": "^4.12.4",
     "@pancakeswap/hooks": "workspace:*",
-    "@pancakeswap/sdk": "workspace:*",
-    "@pancakeswap/ui": "workspace:*",
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "@vanilla-extract/next-plugin": "^2.1.1",
+    "@vanilla-extract/next-plugin": "^2.3.0",
     "@wagmi/core": "^0.10.11",
     "ethers": "^5.0.0",
     "next": "13.4.2",
     "next-axiom": "^0.16.0",
-    "next-themes": "^0.2.0",
+    "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^5.3.3",
+    "styled-components": "^6.0.7",
     "styled-jsx": "^5.1.2",
     "typescript": "^5.1.3",
-    "viem": "^1.2.9"
+    "viem": "^1.10.9"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.4.2",
-    "@types/node": "18.0.4",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "eslint": "^8.32.0",
+    "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
-    "@pancakeswap/next-config": "workspace:*"
+    "@types/node": "18.0.4",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.0.6",
+    "eslint": "^8.32.0"
   }
 }

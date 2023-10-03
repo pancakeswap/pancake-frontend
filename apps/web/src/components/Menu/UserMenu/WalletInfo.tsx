@@ -14,7 +14,8 @@ import {
   InfoFilledIcon,
   ScanLink,
 } from '@pancakeswap/uikit'
-import { ChainId, WNATIVE } from '@pancakeswap/sdk'
+import { WNATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { FetchStatus } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
@@ -30,6 +31,7 @@ import { useDomainNameForAddress } from 'hooks/useDomain'
 import { isMobile } from 'react-device-detect'
 import { useState } from 'react'
 import InternalLink from 'components/Links'
+import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import CakeBenefitsCard from './CakeBenefitsCard'
 
 const COLORS = {
@@ -90,6 +92,9 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
     },
   )
 
+  const showBscEntryPoint = Number(bnbBalance?.data?.value) === 0 && SUPPORT_BUY_CRYPTO.includes(chainId)
+  const showNativeEntryPoint = Number(nativeBalance?.data?.value) === 0 && SUPPORT_BUY_CRYPTO.includes(chainId)
+
   return (
     <>
       <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold" mb="8px">
@@ -99,7 +104,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
         <CopyAddress tooltipMessage={t('Copied')} account={account} />
         {domainName ? <Text color="textSubtle">{domainName}</Text> : null}
       </FlexGap>
-      {hasLowNativeBalance && (
+      {hasLowNativeBalance && SUPPORT_BUY_CRYPTO.includes(chainId) && (
         <Message variant="warning" mb="24px">
           <Box>
             <Text fontWeight="bold">
@@ -137,7 +142,25 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
             {!nativeBalance.isFetched ? (
               <Skeleton height="22px" width="60px" />
             ) : (
-              nativeBalance && <Text>{formatBigInt(nativeBalance?.data?.value ?? 0n, 6)}</Text>
+              <Flex>
+                <Text
+                  color={showNativeEntryPoint ? 'warning' : 'text'}
+                  fontWeight={showNativeEntryPoint ? 'bold' : 'normal'}
+                >
+                  {formatBigInt(nativeBalance?.data?.value ?? 0n, 6)}
+                </Text>
+                {showNativeEntryPoint ? (
+                  <TooltipText
+                    ref={buyCryptoTargetRef}
+                    onClick={() => setMobileTooltipShow(false)}
+                    display="flex"
+                    style={{ justifyContent: 'center' }}
+                  >
+                    <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
+                  </TooltipText>
+                ) : null}
+                {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
+              </Flex>
             )}
           </Flex>
           {wNativeBalance && wNativeBalance.gt(0) && (
@@ -156,6 +179,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           )}
         </Box>
       )}
+
       <Box mb="24px">
         <Flex justifyContent="space-between" alignItems="center" mb="8px">
           <Flex bg={COLORS.BNB} borderRadius="16px" pl="4px" pr="8px" py="2px">
@@ -164,7 +188,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
               BNB Smart Chain
             </Text>
           </Flex>
-          <ScanLink chainId={ChainId.BSC} href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
+          <ScanLink useBscCoinFallback href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
             {getBlockExploreName(ChainId.BSC)}
           </ScanLink>
         </Flex>
@@ -176,21 +200,21 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
             ) : (
               <Flex alignItems="center" justifyContent="center">
                 <Text
-                  fontWeight={Number(bnbBalance?.data?.value) === 0 ? 'bold' : 'normal'}
-                  color={Number(bnbBalance?.data?.value) === 0 ? 'warning' : 'normal'}
+                  fontWeight={showBscEntryPoint ? 'bold' : 'normal'}
+                  color={showBscEntryPoint ? 'warning' : 'normal'}
                 >
                   {formatBigInt(bnbBalance?.data?.value ?? 0n, 6)}
                 </Text>
-                <TooltipText
-                  ref={buyCryptoTargetRef}
-                  onClick={() => setMobileTooltipShow(false)}
-                  display="flex"
-                  style={{ justifyContent: 'center' }}
-                >
-                  {Number(bnbBalance?.data?.value) === 0 ? (
+                {showBscEntryPoint ? (
+                  <TooltipText
+                    ref={buyCryptoTargetRef}
+                    onClick={() => setMobileTooltipShow(false)}
+                    display="flex"
+                    style={{ justifyContent: 'center' }}
+                  >
                     <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
-                  ) : null}
-                </TooltipText>
+                  </TooltipText>
+                ) : null}
                 {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
               </Flex>
             )}

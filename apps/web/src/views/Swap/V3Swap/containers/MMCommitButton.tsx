@@ -39,7 +39,7 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
 
-  const [approval, approveCallback] = useApproveCallback(
+  const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
     mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
     mmTradeInfo?.routerAddress,
   )
@@ -54,22 +54,23 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {
-    if (approval === ApprovalState.PENDING) {
+    if (approvalState === ApprovalState.PENDING) {
       setApprovalSubmitted(true)
     }
-  }, [approval, approvalSubmitted])
+  }, [approvalState, approvalSubmitted])
 
   const { onUserInput } = useSwapActionHandlers()
 
   return (
     <MMSwapCommitButton
       showWrap={showWrap}
-      approval={approval}
+      approval={approvalState}
       swapIsUnsupported={swapIsUnsupported}
       account={account}
       approvalSubmitted={approvalSubmitted}
       onWrap={onWrap}
       approveCallback={approveCallback}
+      revokeCallback={revokeCallback}
       currencies={currencies}
       currencyBalances={mmOrderBookTrade?.currencyBalances}
       isExpertMode={isExpertMode}
@@ -80,6 +81,8 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
       wrapInputError={wrapInputError}
       recipient={recipient}
       onUserInput={onUserInput}
+      isPendingError={isPendingError}
+      currentAllowance={currentAllowance}
     />
   )
 }

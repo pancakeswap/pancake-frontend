@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { Text } from "../Text";
 import { ArrowBackIcon, ArrowForwardIcon } from "../Svg";
@@ -15,7 +15,7 @@ export const PageButtons = styled.div`
 export const Arrow = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   padding: 0 20px;
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 `;

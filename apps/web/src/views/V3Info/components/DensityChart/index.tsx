@@ -3,7 +3,7 @@ import { Spinner, Flex } from '@pancakeswap/uikit'
 import { FeeAmount, Pool, TickMath, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { isAddress } from 'utils'
 import { MAX_UINT128 } from '../../constants'
 import { TickProcessed } from '../../data/pool/tickData'
@@ -43,7 +43,7 @@ const ActionButton = styled.div<{ disabled?: boolean }>`
   background-color: ${({ theme, disabled }) => (disabled ? theme.colors.backgroundAlt2 : theme.colors.backgroundAlt)};
   user-select: none;
 
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.4;
   }

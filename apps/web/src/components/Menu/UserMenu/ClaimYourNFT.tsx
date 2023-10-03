@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, UserMenuItem } from '@pancakeswap/uikit'
 import { useShowOnceAirdropModal } from 'hooks/useShowOnceAirdropModal'
 

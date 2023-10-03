@@ -1,4 +1,5 @@
-import { ChainId, ERC20Token } from '@pancakeswap/sdk'
+import { ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 export const CAKE_MAINNET = new ERC20Token(
   ChainId.BSC,
@@ -179,6 +180,46 @@ export const CAKE = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  [ChainId.ARBITRUM_GOERLI]: new ERC20Token(
+    ChainId.ARBITRUM_GOERLI,
+    '0x62FF25CFD64E55673168c3656f4902bD7Aa5F0f4',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.LINEA]: new ERC20Token(
+    ChainId.LINEA,
+    '0x0D1E753a25eBda689453309112904807625bEFBe',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.BASE]: new ERC20Token(
+    ChainId.BASE,
+    '0x3055913c90Fcc1A6CE9a358911721eEb942013A1',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.BASE_TESTNET]: new ERC20Token(
+    ChainId.BASE_TESTNET,
+    '0x052a99849Ef2e13a5CB28275862991671D4b6fF5',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.LINEA_TESTNET]: new ERC20Token(
+    ChainId.LINEA_TESTNET,
+    '0x2B3C5df29F73dbF028BA82C33e0A5A6e5800F75e',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
 }
 
 export const USDC = {
@@ -215,9 +256,32 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
+  [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0x176211869cA2b568f2A7D4EE941E073a821EE1ff', 6, 'USDC', 'USD Coin'),
   [ChainId.LINEA_TESTNET]: new ERC20Token(
     ChainId.LINEA_TESTNET,
     '0xf56dc6695cF1f5c364eDEbC7Dc7077ac9B586068',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
+  [ChainId.BASE_TESTNET]: new ERC20Token(
+    ChainId.BASE_TESTNET,
+    '0x853154e2A5604E5C74a2546E2871Ad44932eB92C',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
+  [ChainId.BASE]: new ERC20Token(ChainId.BASE, '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', 6, 'USDC', 'USD Coin'),
+  [ChainId.OPBNB_TESTNET]: new ERC20Token(
+    ChainId.OPBNB_TESTNET,
+    '0x845E27B8A4ad1Fe3dc0b41b900dC8C1Bb45141C3',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
+  [ChainId.SCROLL_SEPOLIA]: new ERC20Token(
+    ChainId.SCROLL_SEPOLIA,
+    '0x02a3e7E0480B668bD46b42852C58363F93e3bA5C',
     6,
     'USDC',
     'USD Coin',
@@ -255,6 +319,21 @@ export const USDT = {
     'USDT',
     'Tether USD',
   ),
+  [ChainId.OPBNB_TESTNET]: new ERC20Token(
+    ChainId.OPBNB_TESTNET,
+    '0xCF712f20c85421d00EAa1B6F6545AaEEb4492B75',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
+  [ChainId.OPBNB]: new ERC20Token(
+    ChainId.OPBNB,
+    '0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3',
+    18,
+    'USDT',
+    'Tether USD',
+  ),
+  [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0xA219439258ca9da29E9Cc4cE5596924745e12B93', 6, 'USDT', 'Tether USD'),
 }
 
 export const WBTC_ETH = new ERC20Token(
@@ -276,5 +355,11 @@ export const STABLE_COIN = {
   [ChainId.ZKSYNC_TESTNET]: USDC[ChainId.ZKSYNC_TESTNET],
   [ChainId.POLYGON_ZKEVM]: USDT[ChainId.POLYGON_ZKEVM],
   [ChainId.POLYGON_ZKEVM_TESTNET]: USDT[ChainId.POLYGON_ZKEVM_TESTNET],
+  [ChainId.LINEA]: USDC[ChainId.LINEA],
   [ChainId.LINEA_TESTNET]: USDC[ChainId.LINEA_TESTNET],
+  [ChainId.OPBNB]: USDT[ChainId.OPBNB],
+  [ChainId.OPBNB_TESTNET]: USDT[ChainId.OPBNB_TESTNET],
+  [ChainId.BASE]: USDC[ChainId.BASE],
+  [ChainId.BASE_TESTNET]: USDC[ChainId.BASE_TESTNET],
+  [ChainId.SCROLL_SEPOLIA]: USDC[ChainId.SCROLL_SEPOLIA],
 } satisfies Record<ChainId, ERC20Token>

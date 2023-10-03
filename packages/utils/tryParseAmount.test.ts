@@ -1,4 +1,4 @@
-import { ERC20Token, ChainId } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { describe, it, expect } from 'vitest'
 import tryParseAmount from './tryParseAmount'
 
@@ -14,8 +14,8 @@ describe('utils/tryParseAmount', () => {
     expect(
       tryParseAmount(
         '100',
-        new ERC20Token(
-          ChainId.BSC,
+        new Token(
+          56,
           '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
           18,
           'CAKE',

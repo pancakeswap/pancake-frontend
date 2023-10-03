@@ -1,6 +1,6 @@
 import { Text, Card, Flex, Tag, SyncAltIcon } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { Percent, Currency } from '@pancakeswap/sdk'

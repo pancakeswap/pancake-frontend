@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Text, Flex, ProfileAvatar } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
@@ -6,7 +6,7 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 
@@ -26,7 +26,7 @@ interface MobileResultProps {
 
 const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ isMyRank, rank }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(rank.origin)
   const { domainName, avatar } = useDomainNameForAddress(rank.origin, !profile && !isProfileLoading)
 

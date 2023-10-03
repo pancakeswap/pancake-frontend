@@ -17,10 +17,11 @@ import {
 } from 'state/info/hooks'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import SaveIcon from 'views/Info/components/SaveIcon'
+import { isAddress } from 'utils'
 
 const Container = styled.div`
   position: relative;
@@ -96,14 +97,14 @@ const HoverText = styled.div`
   color: ${({ theme }) => theme.colors.secondary};
   display: block;
   margin-top: 16px;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.6;
   }
 `
 
 const HoverRowLink = styled.div`
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.6;
   }
@@ -121,7 +122,7 @@ const OptionButton = styled.div<{ enabled: boolean }>`
   align-items: center;
   background-color: ${({ theme, enabled }) => (enabled ? theme.colors.primary : 'transparent')};
   color: ${({ theme, enabled }) => (enabled ? theme.card.background : theme.colors.secondary)};
-  :hover {
+  &:hover {
     opacity: 0.6;
     cursor: pointer;
   }
@@ -323,8 +324,10 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${subgraphTokenName[token.address] ?? token.name} (${
-                          subgraphTokenSymbol[token.address] ?? token.symbol
+                        <Text>{`${
+                          (token.address && subgraphTokenName[isAddress(token.address) || undefined]) || token.name
+                        } (${
+                          (token.address && subgraphTokenSymbol[isAddress(token.address) || undefined]) || token.symbol
                         })`}</Text>
                       </Text>
                       <SaveIcon

@@ -1,5 +1,5 @@
 import { Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const Wrapper = styled(Text)<{ fontWeight: number; fontSize: string; negative: boolean }>`
   font-size: ${({ fontSize }) => fontSize};

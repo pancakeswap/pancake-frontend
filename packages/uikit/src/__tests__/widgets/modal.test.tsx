@@ -10,53 +10,36 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c9 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
+      .c10 {
       align-self: center;
       fill: var(--colors-primary);
       color: var(--colors-primary);
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
       flex-shrink: 0;
     }
 
-    .c5 {
+    .c6 {
       color: var(--colors-text);
       font-weight: 600;
       line-height: 1.5;
       font-size: 16px;
     }
 
-    .c7 {
+    .c8 {
       position: relative;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
       border: 0;
       border-radius: 16px;
-      box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+      box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
       cursor: pointer;
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
       display: inline-flex;
       font-family: inherit;
       font-size: 16px;
       font-weight: 600;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      -ms-flex-pack: center;
       justify-content: center;
-      -webkit-letter-spacing: 0.03em;
-      -moz-letter-spacing: 0.03em;
-      -ms-letter-spacing: 0.03em;
       letter-spacing: 0.03em;
       line-height: 1;
       opacity: 1;
       outline: 0;
-      -webkit-transition: background-color 0.2s,opacity 0.2s;
       transition: background-color 0.2s,opacity 0.2s;
       height: 48px;
       padding: 0 24px;
@@ -65,21 +48,19 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c7:focus-visible {
+    .c8:focus-visible {
       outline: none;
       box-shadow: var(--shadows-focus);
     }
 
-    .c7:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+    .c8:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
-      -webkit-transform: translateY(1px);
-      -ms-transform: translateY(1px);
       transform: translateY(1px);
       box-shadow: none;
     }
 
-    .c7:disabled,
-    .c7.pancake-button--disabled {
+    .c8:disabled,
+    .c8.pancake-button--disabled {
       background-color: var(--colors-backgroundDisabled);
       border-color: var(--colors-backgroundDisabled);
       box-shadow: none;
@@ -87,7 +68,7 @@ it("renders correctly", () => {
       cursor: not-allowed;
     }
 
-    .c8 {
+    .c9 {
       padding: 2px;
       width: 48px;
     }
@@ -98,50 +79,41 @@ it("renders correctly", () => {
       min-width: 320px;
     }
 
-    .c10 {
+    .c2 {
+      background: transparent;
+      padding: 12px 24px;
+    }
+
+    .c11 {
+      position: relative;
+      top: 0px;
       padding: 24px;
     }
 
     .c3 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
     }
 
-    .c6 {
+    .c7 {
       font-size: 20px;
       font-weight: 600;
       line-height: 1.1;
     }
 
-    .c2 {
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
+    .c4 {
       align-items: center;
       background: transparent;
       border-bottom: 1px solid var(--colors-cardBorder);
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
       padding: 12px 24px;
     }
 
-    .c4 {
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
+    .c5 {
       align-items: center;
-      -webkit-flex: 1;
-      -ms-flex: 1;
       flex: 1;
     }
 
-    .c11 {
-      -webkit-flex-direction: column;
-      -ms-flex-direction: column;
+    .c12 {
       flex-direction: column;
       overflow-y: auto;
       overflow-x: hidden;
@@ -151,54 +123,50 @@ it("renders correctly", () => {
     .c0 {
       overflow: hidden;
       background: var(--colors-backgroundAlt);
-      box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
+      box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1),0px 1px 1px rgba(0, 0, 0, 0.05);
       border: 1px solid var(--colors-cardBorder);
       border-radius: 32px 32px 0px 0px;
       width: 100%;
-      max-height: calc(var(--vh,1vh) * 100);
+      max-height: calc(var(--vh, 1vh) * 100);
       z-index: 100;
       position: absolute;
       bottom: 0;
-      max-width: none !important;
+      max-width: none!important;
       min-height: 300px;
     }
 
-    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-      .c9 {
-        -webkit-filter: none !important;
-        filter: none !important;
+    @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+      .c10 {
+        filter: none!important;
       }
     }
 
-    @media (hover:hover) {
-      .c7:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    @media (hover: hover) {
+      .c8:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
         opacity: 0.65;
       }
     }
 
-    @media screen and (min-width:968px) {
-      .c6 {
+    @media screen and (min-width: 968px) {
+      .c7 {
         font-size: 20px;
       }
     }
 
-    @media screen and (min-width:852px) {
-      .c2 {
+    @media screen and (min-width: 852px) {
+      .c4 {
         background: transparent;
       }
     }
 
-    @media screen and (min-width:852px) {
-      .c11 {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
+    @media screen and (min-width: 852px) {
+      .c12 {
         display: flex;
         max-height: 90vh;
       }
     }
 
-    @media screen and (min-width:852px) {
+    @media screen and (min-width: 852px) {
       .c0 {
         width: auto;
         position: auto;
@@ -214,29 +182,27 @@ it("renders correctly", () => {
       >
         <div
           class="c1"
-          overflow="hidden"
         >
           <div
-            class="c2"
+            class="c2 c3 c4"
           >
             <div
-              class="c3 c4"
+              class="c3 c5"
             >
               <h2
-                class="c5 c6"
-                color="text"
-                font-size="16px"
+                class="c6 c7"
               >
                 Title
               </h2>
             </div>
             <button
               aria-label="Close the dialog"
-              class="c7 c8"
+              class="c8 c9"
               scale="md"
+              variant="text"
             >
               <svg
-                class="c9"
+                class="c10"
                 color="primary"
                 viewBox="0 0 24 24"
                 width="20px"
@@ -250,7 +216,7 @@ it("renders correctly", () => {
             </button>
           </div>
           <div
-            class="c10 c3 c11"
+            class="c11 c3 c12"
             style="align-items: normal;"
           >
             body

@@ -1,13 +1,14 @@
-import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { isActiveV3Farm } from '@pancakeswap/farms'
 import {
+  AtomBox,
   AutoColumn,
   AutoRow,
   Box,
   Button,
   Card,
   CardBody,
-  ConfirmationModalContent,
   ExpandableLabel,
   Flex,
   Heading,
@@ -25,6 +26,8 @@ import {
   useModal,
   ScanLink,
 } from '@pancakeswap/uikit'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
+
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
@@ -36,7 +39,6 @@ import { usePool } from 'hooks/v3/usePools'
 import { NextSeo } from 'next-seo'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { AtomBox } from '@pancakeswap/ui'
 import { LightGreyCard } from 'components/Card'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
@@ -57,7 +59,7 @@ import { useRouter } from 'next/router'
 import { memo, ReactNode, useCallback, useMemo, useState } from 'react'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { calculateGasMargin, getBlockExploreLink } from 'utils'
 import currencyId from 'utils/currencyId'
@@ -74,6 +76,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import isPoolTickInRange from 'utils/isPoolTickInRange'
+import { ChainLinkSupportChains } from 'state/info/constant'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -146,7 +149,7 @@ export default function PoolPage() {
 
   const [collecting, setCollecting] = useState<boolean>(false)
   const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
-  const [receiveWETH, setReceiveWETH] = useState(false)
+  const [receiveWNATIVE, setReceiveWNATIVE] = useState(false)
 
   const { data: signer } = useWalletClient()
   const { sendTransactionAsync } = useSendTransaction()
@@ -224,11 +227,19 @@ export default function PoolPage() {
   // }, [inverted, pool, priceLower, priceUpper])
 
   // fees
-  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWETH)
+  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWNATIVE)
 
   // these currencies will match the feeValue{0,1} currencies for the purposes of fee collection
-  const currency0ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token0 : unwrappedToken(pool.token0)) : undefined
-  const currency1ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token1 : unwrappedToken(pool.token1)) : undefined
+  const currency0ForFeeCollectionPurposes = pool
+    ? receiveWNATIVE
+      ? pool.token0
+      : unwrappedToken(pool.token0)
+    : undefined
+  const currency1ForFeeCollectionPurposes = pool
+    ? receiveWNATIVE
+      ? pool.token1
+      : unwrappedToken(pool.token1)
+    : undefined
 
   const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
 
@@ -352,7 +363,7 @@ export default function PoolPage() {
   const owner = useSingleCallResult({
     contract: tokenId ? positionManager : null,
     functionName: 'ownerOf',
-    args: [tokenId],
+    args: useMemo(() => [tokenId] as const, [tokenId]),
   }).result
   const ownsNFT = owner === account || positionDetails?.operator === account
 
@@ -370,7 +381,7 @@ export default function PoolPage() {
   const nativeCurrency = useNativeCurrency()
   const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
 
-  const showCollectAsWeth = Boolean(
+  const showCollectAsWNative = Boolean(
     ownsNFT &&
       (feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0)) &&
       currency0 &&
@@ -710,17 +721,17 @@ export default function PoolPage() {
                   </Box>
                 </Flex>
               </AutoRow>
-              {showCollectAsWeth && (
+              {showCollectAsWNative && (
                 <Flex mb="8px">
                   <Flex ml="auto" alignItems="center">
                     <Text mr="8px">
                       {t('Collect as')} {nativeWrappedSymbol}
                     </Text>
                     <Toggle
-                      id="receive-as-weth"
+                      id="receive-as-wnative"
                       scale="sm"
-                      checked={receiveWETH}
-                      onChange={() => setReceiveWETH((prevState) => !prevState)}
+                      checked={receiveWNATIVE}
+                      onChange={() => setReceiveWNATIVE((prevState) => !prevState)}
                     />
                   </Flex>
                 </Flex>
@@ -1016,7 +1027,10 @@ function PositionHistoryRow({
     return (
       <Box>
         <AutoRow>
-          <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <ScanLink
+            useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+            href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
+          >
             <Flex flexDirection="column" alignItems="center">
               <Text ellipsis>{mobileDate}</Text>
               <Text fontSize="12px">{mobileTime}</Text>
@@ -1066,7 +1080,10 @@ function PositionHistoryRow({
       p="16px"
     >
       <AutoRow justifyContent="center">
-        <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+        <ScanLink
+          useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+          href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
+        >
           <Text ellipsis>{desktopDate}</Text>
         </ScanLink>
       </AutoRow>

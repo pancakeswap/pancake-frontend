@@ -1,4 +1,5 @@
-import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
+import { RowType } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
 
@@ -7,12 +8,14 @@ import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useMemo, useRef } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { V2Farm, V2StakeValueAndV3Farm } from 'views/Farms/FarmsV3'
 import { getDisplayApr } from '../getDisplayApr'
 
 import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 import Row, { RowProps } from './Row'
+
+const { V3DesktopColumnSchema, DesktopColumnSchema } = FarmWidget
 
 export interface ITableProps {
   header?: ReactNode

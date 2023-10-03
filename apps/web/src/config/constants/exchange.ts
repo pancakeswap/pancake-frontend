@@ -1,4 +1,5 @@
-import { ChainId, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
+import { Percent, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   bscTokens,
   bscTestnetTokens,
@@ -13,6 +14,12 @@ import {
   zkSyncTestnetTokens,
   lineaTestnetTokens,
   arbitrumGoerliTokens,
+  opBnbTokens,
+  opBnbTestnetTokens,
+  baseTokens,
+  baseTestnetTokens,
+  scrollSepoliaTokens,
+  lineaTokens,
 } from '@pancakeswap/tokens'
 import { ChainTokenList } from './types'
 
@@ -34,7 +41,13 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: 7_000,
   [ChainId.ZKSYNC]: 3_000,
   [ChainId.ZKSYNC_TESTNET]: 3_000,
+  [ChainId.LINEA]: 12_000,
   [ChainId.LINEA_TESTNET]: 12_000,
+  [ChainId.OPBNB]: 6_000,
+  [ChainId.OPBNB_TESTNET]: 6_000,
+  [ChainId.BASE]: 6_000,
+  [ChainId.BASE_TESTNET]: 6_000,
+  [ChainId.SCROLL_SEPOLIA]: 6_000,
 } as const satisfies Record<ChainId, number>
 
 // used for display in the default list when adding liquidity
@@ -49,7 +62,18 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: [polygonZkEvmTestnetTokens.weth, polygonZkEvmTestnetTokens.usdt],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
   [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth],
+  [ChainId.LINEA]: [lineaTokens.usdc, lineaTokens.weth],
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc, lineaTestnetTokens.weth],
+  [ChainId.OPBNB]: [opBnbTokens.wbnb, opBnbTokens.usdt],
+  [ChainId.OPBNB_TESTNET]: [
+    opBnbTestnetTokens.wbnb,
+    opBnbTestnetTokens.usdt,
+    opBnbTestnetTokens.usdc,
+    opBnbTestnetTokens.weth,
+  ],
+  [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
+  [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
+  [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -64,7 +88,13 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: [polygonZkEvmTestnetTokens.weth, polygonZkEvmTestnetTokens.usdt],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
   [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth],
+  [ChainId.LINEA]: [lineaTokens.usdc, lineaTokens.weth],
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc, lineaTestnetTokens.weth],
+  [ChainId.OPBNB_TESTNET]: [opBnbTestnetTokens.wbnb, opBnbTestnetTokens.usdt, opBnbTestnetTokens.usdc],
+  [ChainId.OPBNB]: [opBnbTokens.wbnb, opBnbTokens.usdt],
+  [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
+  [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
+  [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -86,7 +116,13 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.POLYGON_ZKEVM]: [[polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt]],
   [ChainId.ZKSYNC]: [[zksyncTokens.usdc, zksyncTokens.weth]],
   [ChainId.ZKSYNC_TESTNET]: [[zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth]],
+  [ChainId.LINEA]: [[lineaTokens.usdc, lineaTokens.weth]],
   [ChainId.LINEA_TESTNET]: [[lineaTestnetTokens.usdc, lineaTestnetTokens.weth]],
+  [ChainId.OPBNB]: [[opBnbTokens.usdt, opBnbTokens.wbnb]],
+  [ChainId.OPBNB_TESTNET]: [[opBnbTestnetTokens.usdt, opBnbTestnetTokens.wbnb]],
+  [ChainId.BASE]: [[baseTokens.usdc, baseTokens.weth]],
+  [ChainId.BASE_TESTNET]: [[baseTestnetTokens.usdc, baseTestnetTokens.weth]],
+  [ChainId.SCROLL_SEPOLIA]: [[scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth]],
 }
 
 export const BIG_INT_ZERO = 0n

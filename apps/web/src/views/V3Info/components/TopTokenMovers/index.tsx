@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Flex, NextLinkFromReactRouter, Text } from '@pancakeswap/uikit'
 import { useEffect, useMemo, useRef } from 'react'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -15,7 +15,7 @@ const CardWrapper = styled(NextLinkFromReactRouter)`
   display: inline-block;
   min-width: 190px;
   margin-left: 16px;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.6;
   }

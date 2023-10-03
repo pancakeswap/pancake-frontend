@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { AutoColumn } from "../Column";
 
 export const DynamicSection = styled(AutoColumn)<{ disabled?: boolean }>`

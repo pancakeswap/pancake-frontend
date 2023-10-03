@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Message, MessageText } from '@pancakeswap/uikit'
 import { Views } from 'views/AffiliatesProgram/components/OnBoardingModal/index'

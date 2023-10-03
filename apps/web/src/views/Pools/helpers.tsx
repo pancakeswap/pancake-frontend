@@ -5,7 +5,7 @@ import { getApy } from '@pancakeswap/utils/compoundApyHelpers'
 import { getBalanceNumber, getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import memoize from 'lodash/memoize'
 import { Token } from '@pancakeswap/sdk'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 
 // min deposit and withdraw amount
 export const MIN_LOCK_AMOUNT = new BigNumber(10000000000000)

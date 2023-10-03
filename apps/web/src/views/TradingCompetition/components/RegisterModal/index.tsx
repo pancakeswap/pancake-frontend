@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Modal, Button, NoProfileAvatarIcon, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'

@@ -11,7 +11,7 @@ import {
 } from 'state/pools'
 import { usePoolsWithVault } from 'state/pools/hooks'
 import { FetchStatus } from 'config/constants/types'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/sdk'
 import useSWR from 'swr'
 

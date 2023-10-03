@@ -1,17 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, Pair, TradeType } from '@pancakeswap/sdk'
+import { Currency, TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useQuery } from '@tanstack/react-query'
 import { MutableRefObject, useMemo, useRef } from 'react'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
 import { isAddress } from 'utils'
 
 import { useAccount } from 'wagmi'
 import { getMMOrderBook } from '../apis'
-import { MMOrderBookTrade, OrderBookRequest, OrderBookResponse, TradeWithMM } from '../types'
+import { MMOrderBookTrade, OrderBookRequest, OrderBookResponse } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 import { useMMParam } from './useMMParam'
 import { useIsMMQuotingPair } from './useIsMMQuotingPair'
@@ -23,11 +24,8 @@ const BAD_RECIPIENT_ADDRESSES: string[] = [
   '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // v2 router 02
 ]
 
-function involvesAddress(trade: TradeWithMM<Currency, Currency, TradeType>, checksummedAddress: string): boolean {
-  return (
-    trade.route.path.some((token) => token.isToken && token.address === checksummedAddress) ||
-    trade.route.pairs.some((pair) => (pair as Pair)?.liquidityToken?.address === checksummedAddress)
-  )
+function involvesAddress(trade: SmartRouterTrade<TradeType>, checksummedAddress: string): boolean {
+  return trade.routes[0].path.some((token) => token.isToken && token.address === checksummedAddress)
 }
 
 // export const useOrderBookQuote = (request: OrderBookRequest | null): OrderBookResponse => {

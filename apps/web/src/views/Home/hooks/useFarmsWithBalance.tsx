@@ -7,7 +7,7 @@ import { useFarmsLength } from 'state/farms/hooks'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useBCakeProxyContract, useCake, useMasterchef, useMasterchefV3 } from 'hooks/useContract'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -35,41 +35,44 @@ const useFarmsWithBalance = () => {
 
   const { tokenIdResults: v3PendingCakes } = useStakedPositionsByUser(stakedTokenIds)
 
-  const getFarmsWithBalances = async (farms: SerializedFarmConfig[], accountToCheck: string, contract) => {
-    const result = await publicClient({ chainId }).multicall({
-      contracts: farms.map((farm) => ({
-        abi: masterChefV2ABI,
-        address: masterChefContract.address,
-        functionName: 'pendingCake',
-        args: [farm.pid, accountToCheck],
-      })),
-    })
+  const getFarmsWithBalances = useCallback(
+    async (farms: SerializedFarmConfig[], accountToCheck: string, contract) => {
+      const result = await publicClient({ chainId }).multicall({
+        contracts: farms.map((farm) => ({
+          abi: masterChefV2ABI,
+          address: masterChefContract.address,
+          functionName: 'pendingCake',
+          args: [farm.pid, accountToCheck],
+        })),
+      })
 
-    const proxyCakeBalance =
-      contract.address !== masterChefContract.address && bCakeProxy
-        ? await cake.read.balanceOf([bCakeProxy.address])
-        : null
+      const proxyCakeBalance =
+        contract.address !== masterChefContract.address && bCakeProxy
+          ? await cake.read.balanceOf([bCakeProxy.address])
+          : null
 
-    const proxyCakeBalanceNumber = proxyCakeBalance ? getBalanceNumber(new BigNumber(proxyCakeBalance.toString())) : 0
-    const results = farms.map((farm, index) => ({
-      ...farm,
-      balance: new BigNumber((result[index].result as bigint).toString()),
-    }))
-    const farmsWithBalances: FarmWithBalance[] = results
-      .filter((balanceType) => balanceType.balance.gt(0))
-      .map((farm) => ({
+      const proxyCakeBalanceNumber = proxyCakeBalance ? getBalanceNumber(new BigNumber(proxyCakeBalance.toString())) : 0
+      const results = farms.map((farm, index) => ({
         ...farm,
-        contract,
+        balance: new BigNumber((result[index].result as bigint).toString()),
       }))
-    const totalEarned = farmsWithBalances.reduce((accum, earning) => {
-      const earningNumber = new BigNumber(earning.balance)
-      if (earningNumber.eq(0)) {
-        return accum
-      }
-      return accum + earningNumber.div(DEFAULT_TOKEN_DECIMAL).toNumber()
-    }, 0)
-    return { farmsWithBalances, totalEarned: totalEarned + proxyCakeBalanceNumber }
-  }
+      const farmsWithBalances: FarmWithBalance[] = results
+        .filter((balanceType) => balanceType.balance.gt(0))
+        .map((farm) => ({
+          ...farm,
+          contract,
+        }))
+      const totalEarned = farmsWithBalances.reduce((accum, earning) => {
+        const earningNumber = new BigNumber(earning.balance)
+        if (earningNumber.eq(0)) {
+          return accum
+        }
+        return accum + earningNumber.div(DEFAULT_TOKEN_DECIMAL).toNumber()
+      }, 0)
+      return { farmsWithBalances, totalEarned: totalEarned + proxyCakeBalanceNumber }
+    },
+    [bCakeProxy, cake?.read, chainId, masterChefContract?.address],
+  )
 
   const {
     data: { farmsWithStakedBalance, earningsSum } = {
@@ -101,19 +104,23 @@ const useFarmsWithBalance = () => {
     { refreshInterval: FAST_INTERVAL },
   )
 
-  const v3FarmsWithBalance = stakedTokenIds
-    .map((tokenId, i) => {
-      if (v3PendingCakes?.[i] > 0n) {
-        return {
-          sendTx: {
-            tokenId: tokenId.toString(),
-            to: account,
-          },
-        }
-      }
-      return null
-    })
-    .filter(Boolean)
+  const v3FarmsWithBalance = useMemo(
+    () =>
+      stakedTokenIds
+        .map((tokenId, i) => {
+          if (v3PendingCakes?.[i] > 0n) {
+            return {
+              sendTx: {
+                tokenId: tokenId.toString(),
+                to: account,
+              },
+            }
+          }
+          return null
+        })
+        .filter(Boolean),
+    [stakedTokenIds, v3PendingCakes, account],
+  )
 
   return useMemo(() => {
     return {

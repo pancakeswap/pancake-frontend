@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import {
   Box,
   Flex,
@@ -19,7 +19,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { distanceToNowStrict } from 'utils/timeHelper'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import ClaimButton from 'views/Pools/components/RevenueSharing/BenefitsModal/ClaimButton'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
@@ -33,7 +33,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
 
   const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
@@ -61,6 +61,18 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
     () => new BigNumber(userData?.lockedAmount ?? '0').lte(0),
     [userData?.lockedAmount],
   )
+
+  const currentDate = Date.now() / 1000
+  const timeRemaining = nextDistributionTimestamp - currentDate
+  const { days, hours, minutes, seconds } = getTimePeriods(timeRemaining)
+
+  const nextDistributionTime = useMemo(() => {
+    if (!days && hours && minutes && seconds) {
+      return `< 1 ${t('day')}`
+    }
+
+    return t('in %day% days', { day: days })
+  }, [days, hours, minutes, seconds, t])
 
   return (
     <Card isActive mb={['24px', '24px', '24px', '0']}>
@@ -134,7 +146,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
               }
             />
             <Text color={showExpireSoonWarning ? 'failure' : 'text'} bold>
-              {t('in %day%', { day: distanceToNowStrict(nextDistributionTimestamp * 1000) })}
+              {nextDistributionTime}
             </Text>
           </Flex>
           {showExpireSoonWarning && (
@@ -166,7 +178,11 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
               tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
             />
             <Box>
-              <Balance unit=" CAKE" bold value={availableCake} decimals={2} />
+              {availableCake > 0 && availableCake <= 0.01 ? (
+                <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
+              ) : (
+                <Balance unit=" CAKE" textAlign="right" bold value={availableCake} decimals={2} />
+              )}
               <Balance
                 ml="4px"
                 color="textSubtle"

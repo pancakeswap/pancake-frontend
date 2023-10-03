@@ -6,7 +6,7 @@ import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 import { PotteryDepositStatus } from 'state/types'
 import { Address } from 'wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { publicClient } from 'utils/wagmi'
 

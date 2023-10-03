@@ -1,4 +1,4 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
+import { vars } from "../css/vars.css";
 
 export type Breakpoints = string[];
 

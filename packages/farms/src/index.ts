@@ -1,5 +1,5 @@
 import { PublicClient, formatEther } from 'viem'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
 import {
   FarmV3SupportedChainId,

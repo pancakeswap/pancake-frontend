@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { useMemo, useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { BIG_ONE_HUNDRED } from "@pancakeswap/utils/bigNumber";
 import { useTooltip } from "../../hooks/useTooltip";
@@ -10,7 +10,7 @@ import { ExpandableLabel } from "../Button";
 import { Link, LinkExternal } from "../Link";
 import { HelpIcon } from "../Svg";
 import { Text } from "../Text";
-import { FarmMultiplierInfo } from "../../widgets/Farm/components/FarmMultiplierInfo";
+import { FarmMultiplierInfo } from "./FarmMultiplierInfo";
 
 export const Footer = styled(Flex)`
   width: 100%;

@@ -1,22 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  Button,
-  Flex,
-  Heading,
-  TooltipText,
-  useToast,
-  useTooltip,
-  useModal,
-  Balance,
-  FARMS_SMALL_AMOUNT_THRESHOLD,
-} from '@pancakeswap/uikit'
+import { Button, Flex, Heading, TooltipText, useToast, useTooltip, useModal, Balance } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { useAccount } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
@@ -49,11 +40,13 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { t } = useTranslation()
-  const cakePrice = usePriceCakeUSD()
+  const cakePrice = useCakePrice()
   const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0
-  const tooltipBalance = rawEarningsBalance.isGreaterThan(FARMS_SMALL_AMOUNT_THRESHOLD) ? displayBalance : '< 0.00001'
+  const tooltipBalance = rawEarningsBalance.isGreaterThan(FarmWidget.FARMS_SMALL_AMOUNT_THRESHOLD)
+    ? displayBalance
+    : '< 0.00001'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     `${tooltipBalance} ${t(
       `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,

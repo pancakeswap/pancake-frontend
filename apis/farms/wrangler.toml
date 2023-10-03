@@ -30,4 +30,6 @@ crons = ["0 0 * * *", "*/1 * * * *"]
 # - POLYGON_ZKEVM_NODE
 # - ZKSYNC_NODE
 # - ARBITRUM_ONE_NODE
+# - LINEA_NODE
+# - BASE_NODE
 # Run `echo <VALUE> | wrangler secret put <NAME>` for each of these

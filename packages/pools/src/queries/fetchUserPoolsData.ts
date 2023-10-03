@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
 import uniq from 'lodash/uniq'
 import fromPairs from 'lodash/fromPairs'
@@ -95,7 +95,7 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
   )
 
   // BNB pools
-  const bnbBalanceJson = new BigNumber((bnbBalance.result as bigint).toString()).toJSON()
+  const bnbBalanceJson = new BigNumber((bnbBalance.result as bigint)?.toString()).toJSON()
   const bnbBalances = fromPairs(bnbPools.map((pool) => [pool.sousId, bnbBalanceJson]))
 
   return { ...poolTokenBalances, ...bnbBalances }

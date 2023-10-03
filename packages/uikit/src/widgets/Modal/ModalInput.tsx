@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { useMemo } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { parseUnits } from "viem";
 import { formatBigInt } from "@pancakeswap/utils/formatBalance";

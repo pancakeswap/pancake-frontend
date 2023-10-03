@@ -1,6 +1,6 @@
 import { Token, CurrencyAmount, sortedInsert, InsufficientInputAmountError } from '@pancakeswap/swap-sdk-core'
+import { ChainId } from '@pancakeswap/chains'
 import { Pair } from '../src/entities'
-import { ChainId } from '../src/constants'
 
 describe('miscellaneous', () => {
   it('getLiquidityMinted:0', async () => {

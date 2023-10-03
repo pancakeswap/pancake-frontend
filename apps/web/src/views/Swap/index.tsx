@@ -35,21 +35,16 @@ export default function Swap() {
   const { t } = useTranslation()
   const [firstTime, setFirstTime] = useState(true)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const toggleChartDisplayed = () => {
-    setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
-  }
-
   useEffect(() => {
     if (firstTime && query.showTradingReward) {
       setFirstTime(false)
       setIsSwapHotTokenDisplay(true)
 
       if (!isSwapHotTokenDisplay && isChartDisplayed) {
-        toggleChartDisplayed()
+        setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
       }
     }
-  }, [firstTime, isChartDisplayed, isSwapHotTokenDisplay, query, setIsSwapHotTokenDisplay, toggleChartDisplayed])
+  }, [firstTime, isChartDisplayed, isSwapHotTokenDisplay, query, setIsSwapHotTokenDisplay, setIsChartDisplayed])
 
   // swap state & price data
   const {

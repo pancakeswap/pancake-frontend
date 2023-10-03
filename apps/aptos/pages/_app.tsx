@@ -1,4 +1,3 @@
-import '@pancakeswap/ui/css/reset.css'
 import '../css/theme.css'
 
 import BigNumber from 'bignumber.js'

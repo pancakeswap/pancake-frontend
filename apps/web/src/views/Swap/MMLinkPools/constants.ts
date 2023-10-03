@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import contract from 'config/constants/contracts'
 import { getAddress } from 'viem'
 

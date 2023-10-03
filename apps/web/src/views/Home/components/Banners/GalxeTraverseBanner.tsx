@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints, OpenNewIcon } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
-import styled, { css } from 'styled-components'
+import { styled, css } from 'styled-components'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 

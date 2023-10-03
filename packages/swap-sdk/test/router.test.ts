@@ -1,8 +1,9 @@
 import invariant from 'tiny-invariant'
 import { Percent, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { ChainId } from '@pancakeswap/chains'
 import { Router } from '../src/router'
 import { Pair, Route, Trade, Native } from '../src/entities'
-import { ChainId, WNATIVE } from '../src/constants'
+import { WNATIVE } from '../src/constants'
 
 function checkDeadline(deadline: string[] | string): void {
   expect(typeof deadline).toBe('string')

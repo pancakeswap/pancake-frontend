@@ -1,36 +1,30 @@
 import { useCallback } from 'react'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useSousChef } from 'hooks/useContract'
-import { DEFAULT_GAS_LIMIT } from 'config'
-import { useGasPrice } from 'state/user/hooks'
 
-const options = {
-  gas: DEFAULT_GAS_LIMIT,
+const options = {}
+
+const harvestPool = async (sousChefContract) => {
+  return sousChefContract.write.deposit(['0'], { ...options })
 }
 
-const harvestPool = async (sousChefContract, gasPrice) => {
-  return sousChefContract.write.deposit(['0'], { ...options, gasPrice })
-}
-
-const harvestPoolBnb = async (sousChefContract, gasPrice) => {
+const harvestPoolBnb = async (sousChefContract) => {
   return sousChefContract.write.deposit({
     ...options,
     value: BIG_ZERO.toString(),
-    gasPrice,
   })
 }
 
 const useHarvestPool = (sousId, isUsingBnb = false) => {
   const sousChefContract = useSousChef(sousId)
-  const gasPrice = useGasPrice()
 
   const handleHarvest = useCallback(async () => {
     if (isUsingBnb) {
-      return harvestPoolBnb(sousChefContract, gasPrice)
+      return harvestPoolBnb(sousChefContract)
     }
 
-    return harvestPool(sousChefContract, gasPrice)
-  }, [isUsingBnb, sousChefContract, gasPrice])
+    return harvestPool(sousChefContract)
+  }, [isUsingBnb, sousChefContract])
 
   return { onReward: handleHarvest }
 }

@@ -4,7 +4,7 @@ import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { PoolData } from 'state/info/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
@@ -49,7 +49,7 @@ const ResponsiveGrid = styled.div`
 
 const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.7;
   }

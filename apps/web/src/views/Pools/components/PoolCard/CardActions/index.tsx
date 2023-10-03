@@ -1,8 +1,10 @@
 import BigNumber from 'bignumber.js'
 
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Flex, Text, Box, Pool } from '@pancakeswap/uikit'
+import { Flex, Text, Box } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { PoolCategory } from 'config/constants/types'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
@@ -67,7 +69,7 @@ const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool
         </Box>
         {notMeetRequired || notMeetThreshold ? (
           <ProfileRequirementWarning profileRequirement={profileRequirement} />
-        ) : needsApproval && !isStaked ? (
+        ) : needsApproval && !isStaked && !pool.isFinished ? (
           <ApprovalAction pool={pool} isLoading={isLoading} />
         ) : (
           <StakeActions

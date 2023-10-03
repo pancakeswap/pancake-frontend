@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Flex, FlexProps } from "../Box";
 
 export interface FlexGapProps extends FlexProps {

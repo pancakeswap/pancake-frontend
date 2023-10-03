@@ -1,9 +1,9 @@
-import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
 import { useIsomorphicLayoutEffect } from "framer-motion";
 import debounce from "lodash/debounce";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
+import { AtomBox } from "../AtomBox";
 import MenuItem from "../MenuItem/MenuItem";
 import { ChevronLeftIcon, ChevronRightIcon, OpenNewIcon } from "../Svg";
 import StyledSubMenuItems, {
@@ -14,6 +14,7 @@ import StyledSubMenuItems, {
 } from "./styles";
 import { SubMenuItemsProps } from "./types";
 import { FlexGap } from "../Layouts";
+import NotificationDot from "../NotificationDot/NotificationDot";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
 const SUBMENU_SCROLL_DEVIATION = 3;
@@ -27,26 +28,34 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
   const scrollLayerRef = useRef<HTMLDivElement>(null);
   const chevronLeftRef = useRef<HTMLDivElement>(null);
   const chevronRightRef = useRef<HTMLDivElement>(null);
+  const [rightClassName, setRightClassName] = useState("");
+  const [leftClassName, setLeftClassName] = useState("");
+  const hasOverflowing = scrollLayerRef.current
+    ? scrollLayerRef.current.offsetHeight < scrollLayerRef.current.scrollHeight ||
+      scrollLayerRef.current.offsetWidth < scrollLayerRef.current.scrollWidth
+    : false;
   const layerController = useCallback(() => {
     if (!scrollLayerRef.current || !chevronLeftRef.current || !chevronRightRef.current) return;
     const scrollLayer = scrollLayerRef.current;
-    if (scrollLayer.scrollLeft !== 0) chevronLeftRef.current.classList.add("show");
-    else chevronLeftRef.current.classList.remove("show");
+    if (scrollLayer.scrollLeft !== 0) setLeftClassName("show");
+    else setLeftClassName("");
     if (scrollLayer.scrollLeft + scrollLayer.offsetWidth < scrollLayer.scrollWidth - SUBMENU_SCROLL_DEVIATION)
-      chevronRightRef.current.classList.add("show");
-    else chevronRightRef.current.classList.remove("show");
+      setRightClassName("show");
+    else setRightClassName("");
   }, []);
+
+  const hasLabeledItem = items.some((item) => !!item.LabelIcon);
 
   useIsomorphicLayoutEffect(() => {
     layerController();
-  }, [layerController]);
-
+  }, [layerController, items]);
   return (
     <AtomBox display={{ xs: "none", sm: "block" }} asChild>
       <SubMenuItemWrapper $isMobileOnly={isMobileOnly} {...props}>
         <AtomBox display={{ xs: "block", md: "none" }} asChild>
           <LeftMaskLayer
             ref={chevronLeftRef}
+            className={leftClassName}
             onClick={() => {
               if (!scrollLayerRef.current) return;
               scrollLayerRef.current.scrollLeft -= SUBMENU_CHEVRON_CLICK_MOVE_PX;
@@ -58,12 +67,17 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
         <AtomBox display={{ xs: "block", md: "none" }} asChild>
           <RightMaskLayer
             ref={chevronRightRef}
+            className={rightClassName}
             onClick={() => {
-              if (!scrollLayerRef.current) return;
+              if (!scrollLayerRef.current || !hasOverflowing) return;
               scrollLayerRef.current.scrollLeft += SUBMENU_CHEVRON_CLICK_MOVE_PX;
             }}
           >
-            <ChevronRightIcon />
+            {hasOverflowing && (
+              <NotificationDot show={hasLabeledItem} color="success">
+                <ChevronRightIcon width="24px" height="24px" />
+              </NotificationDot>
+            )}
           </RightMaskLayer>
         </AtomBox>
         <StyledSubMenuItems

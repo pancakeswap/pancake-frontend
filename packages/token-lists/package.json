@@ -8,27 +8,29 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "prepublishOnly": "pnpm run build",
+    "test": "vitest --run",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "ajv": "^6.12.3",
-    "lodash": "^4.17.21",
-    "@pancakeswap/swap-sdk-core": "workspace:*"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "@reduxjs/toolkit": "^1.9.1",
-    "localforage": "^1.10.0",
     "jotai": "^2.2.2",
+    "localforage": "^1.10.0",
     "react": "^18.2.0"
   },
   "devDependencies": {
     "@pancakeswap/utils": "workspace:*",
-    "@types/react": "^18.0.17",
-    "localforage": "^1.10.0",
-    "jotai": "^2.2.2",
     "@reduxjs/toolkit": "^1.9.1",
+    "@types/react": "^18.2.21",
+    "jotai": "^2.2.2",
+    "localforage": "^1.10.0",
     "react": "^18.2.0",
-    "tsup": "^6.7.0"
+    "tsup": "^6.7.0",
+    "vitest": "^0.34.4"
   },
   "exports": {
     ".": {

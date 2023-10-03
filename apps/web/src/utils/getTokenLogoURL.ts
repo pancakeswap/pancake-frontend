@@ -1,6 +1,7 @@
 import { getAddress } from 'viem'
 import memoize from 'lodash/memoize'
-import { ChainId, Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 const mapping = {
   [ChainId.BSC]: 'smartchain',
@@ -8,6 +9,7 @@ const mapping = {
   [ChainId.POLYGON_ZKEVM]: 'polygonzkevm',
   [ChainId.ZKSYNC]: 'zksync',
   [ChainId.ARBITRUM_ONE]: 'arbitrum',
+  [ChainId.LINEA]: 'linea',
 }
 
 const getTokenLogoURL = memoize(

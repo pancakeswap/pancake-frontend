@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ACCESS_RISK_API } from 'config/constants/endpoints'
 
 export interface RiskTokenInfo {
@@ -14,15 +14,33 @@ export interface RiskTokenInfo {
 }
 
 const fetchRiskApi = async (address: string, chainId: number) => {
-  const response = await fetch(`${ACCESS_RISK_API}/${chainId}/${address}`, {
+  const response = await fetch(`${ACCESS_RISK_API}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    method: 'POST',
+    body: JSON.stringify({
+      chain_id: chainId,
+      address,
+    }),
   })
 
   const result = await response.json()
-  return result
+
+  return {
+    ...result,
+    data: {
+      address,
+      chainId,
+      isError: response.status !== 200,
+      hasResult: result.data.has_result,
+      riskLevel: result.data.risk_level,
+      requestId: result.data.request_id,
+      riskLevelDescription: result.data.risk_level_description,
+      pollingInterval: result.data?.polling_interval ?? 0,
+    },
+  }
 }
 
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {

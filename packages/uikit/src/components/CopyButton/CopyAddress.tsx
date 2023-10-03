@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { CopyButton } from "./CopyButton";
 import { Box, Flex, FlexProps } from "../Box";
 

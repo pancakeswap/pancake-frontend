@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { Box, Flex, Heading, Text, Button, Link, BscScanIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'

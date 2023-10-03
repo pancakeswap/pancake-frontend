@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Trans } from '@pancakeswap/localization'
 import { Heading, Text, Flex, Box, useMatchBreakpoints, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import Image from 'next/image'

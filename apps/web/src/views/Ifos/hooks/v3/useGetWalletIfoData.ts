@@ -9,7 +9,7 @@ import { useIfoCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ifoV3ABI } from 'config/abi/ifoV3'
 
 import useIfoAllowance from '../useIfoAllowance'

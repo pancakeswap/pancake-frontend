@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, FlexGap, FlexProps, Text } from '@pancakeswap/uikit'
+import {
+  Flex,
+  FlexGap,
+  FlexProps,
+  Text,
+  baseColors,
+  darkColors,
+  lightColors,
+  additionalColors,
+} from '@pancakeswap/uikit'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import { LineChartLoader } from 'components/ChartLoaders'
 import PairPriceDisplay from 'components/PairPriceDisplay'
@@ -12,10 +21,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createChart, IChartApi, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp } from 'lightweight-charts'
 import { format } from 'date-fns'
 import { darken } from 'polished'
-import { baseColors, darkColors, lightColors, additionalColors } from '@pancakeswap/ui/tokens/colors'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useSWRConfig } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { useContractRead, useContractReads } from 'wagmi'

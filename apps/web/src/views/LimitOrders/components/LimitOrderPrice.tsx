@@ -1,6 +1,6 @@
 import React from 'react'
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Input, Flex, Text, Button, AutoRenewIcon, SyncAltIcon, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { escapeRegExp } from 'utils'

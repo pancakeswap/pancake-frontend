@@ -20,7 +20,7 @@ import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useStableSwapPath } from 'state/info/hooks'
 import { InfoDataSource } from 'state/info/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { isAddress } from 'utils'
 import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -81,7 +81,7 @@ const TableRowWrapper = styled(Flex)`
 
 const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.7;
   }

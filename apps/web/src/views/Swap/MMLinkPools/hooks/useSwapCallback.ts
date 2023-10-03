@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
+import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useMemo } from 'react'
@@ -11,7 +11,7 @@ import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { TradeWithMM } from '../types'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useMMSwapContract } from '../utils/exchange'
 
 export enum SwapCallbackState {
@@ -40,7 +40,7 @@ interface SwapCallEstimate {
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(
-  trade: TradeWithMM<Currency, Currency, TradeType>, // trade to execute, required
+  trade: SmartRouterTrade<TradeType>, // trade to execute, required
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: SwapCall[],
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {

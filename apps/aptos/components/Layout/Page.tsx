@@ -1,6 +1,6 @@
 import { Container } from '@pancakeswap/uikit'
 import { NextSeo } from 'next-seo'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const StyledPage = styled(Container)`
   min-height: calc(100vh - 64px);

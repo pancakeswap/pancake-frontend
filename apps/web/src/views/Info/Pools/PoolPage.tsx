@@ -24,7 +24,7 @@ import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPools
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { NextSeo } from 'next-seo'
 import { useMemo, useState } from 'react'
-import { checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
+import { checkIsStableSwap, multiChainId, multiChainScan, ChainLinkSupportChains } from 'state/info/constant'
 import {
   useChainIdByQuery,
   useChainNameByQuery,
@@ -34,7 +34,7 @@ import {
   usePoolTransactionsSWR,
   useStableSwapPath,
 } from 'state/info/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -58,7 +58,7 @@ const ContentLayout = styled.div`
 const TokenButton = styled(Flex)`
   padding: 8px 0px;
   margin-right: 16px;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.6;
   }
@@ -144,7 +144,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
               <ScanLink
-                chainId={multiChainId[chainName]}
+                useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
                 mr="8px"
                 href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
               >

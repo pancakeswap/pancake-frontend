@@ -1,5 +1,5 @@
 import React, { cloneElement, Children, ReactElement } from "react";
-import styled, { DefaultTheme } from "styled-components";
+import { styled, DefaultTheme } from "styled-components";
 import { space } from "styled-system";
 import { scales, variants } from "../Button/types";
 import { ButtonMenuProps } from "./types";
@@ -16,7 +16,9 @@ const getBorderColor = ({ theme, variant }: StyledButtonMenuProps) => {
   return theme.colors[variant === variants.SUBTLE ? "inputSecondary" : "disabled"];
 };
 
-const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
+const StyledButtonMenu = styled.div.withConfig({
+  shouldForwardProp: (props) => !["fullWidth"].includes(props),
+})<StyledButtonMenuProps>`
   background-color: ${getBackgroundColor};
   border-radius: 16px;
   display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};
@@ -44,7 +46,6 @@ const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
         opacity: 0.5;
 
         & > button:disabled {
-          background-color: transparent;
           color: ${variant === variants.PRIMARY ? theme.colors.primary : theme.colors.textSubtle};
         }
     `;
@@ -69,7 +70,7 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
       {Children.map(children, (child: ReactElement, index) => {
         return cloneElement(child, {
           isActive: activeIndex === index,
-          onClick: onItemClick ? () => onItemClick(index) : undefined,
+          onClick: onItemClick ? (e: React.MouseEvent<HTMLElement>) => onItemClick(index, e) : undefined,
           scale,
           variant,
           disabled,

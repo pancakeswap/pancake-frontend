@@ -1,5 +1,5 @@
 import { Flex, lightColors } from '@pancakeswap/uikit'
-import styled, { keyframes } from 'styled-components'
+import { styled, keyframes } from 'styled-components'
 
 const flyingAnim = () => keyframes`
   from {
@@ -10,7 +10,7 @@ const flyingAnim = () => keyframes`
   }
   to {
     transform: translate(0, 0px);
-  }  
+  }
 `
 
 export const StyledEventDescriptionSectionContainer = styled(Flex)`

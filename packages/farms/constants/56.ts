@@ -3,9 +3,9 @@ import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { getAddress } from 'viem'
 import { CAKE_BNB_LP_MAINNET } from './common'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
-import { SerializedFarmConfig } from '..'
+import { FarmConfigV3, SerializedFarmConfig } from '..'
 
-export const farmsV3 = defineFarmV3Configs([
+const v3TopFixedLps: FarmConfigV3[] = [
   {
     pid: 1,
     token0: bscTokens.cake,
@@ -41,7 +41,187 @@ export const farmsV3 = defineFarmV3Configs([
     lpAddress: '0x36696169C63e42cd08ce11f5deeBbCeBae652050',
     feeAmount: FeeAmount.LOW,
   },
-  // keep those farms on top
+]
+
+export const farmsV3 = defineFarmV3Configs([
+  ...v3TopFixedLps,
+  // new lps should follow after the top fixed lps
+  // latest first
+  {
+    pid: 95,
+    lpAddress: '0x832EeBF89F99aACcf6640fe6b5E838066c630Fbe',
+    token0: bscTokens.chess,
+    token1: bscTokens.usdt,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 94,
+    lpAddress: '0xcfe783e16c9a8C74F2be9BCEb2339769439061Bf',
+    token0: bscTokens.usdt,
+    token1: bscTokens.alpaca,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 93,
+    lpAddress: '0xE4e695FA53598dA586F798A9844A3b03d86f421e',
+    token0: bscTokens.btt,
+    token1: bscTokens.usdt,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 92,
+    lpAddress: '0x77d5b2560e4B84b3fC58875Cb0133F39560e8AE3',
+    token0: bscTokens.bnb,
+    token1: bscTokens.xvs,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 91,
+    lpAddress: '0xa98D8a5867D664B7A758652146fd93a7dE40eE82',
+    token0: bscTokens.usdt,
+    token1: bscTokens.trxv2,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 90,
+    lpAddress: '0x81Bef404f5C93d99ed04Ed55488c99722CDd7A50',
+    token0: bscTokens.axs,
+    token1: bscTokens.bnb,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 89,
+    lpAddress: '0xDcccC7d0B02C837d1B8D8a8D5E2683387bc2b910',
+    token0: bscTokens.usdt,
+    token1: bscTokens.wom,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 87,
+    token0: bscTokens.wbnb,
+    token1: bscTokens.rdnt,
+    lpAddress: '0xB55A0B97B7D9Ebe4208b08AB00feC0C419cc32A3',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 88,
+    token0: bscTokens.mbox,
+    token1: bscTokens.wbnb,
+    lpAddress: '0x0004222c2075E9A1291E41f1cA4C8d32141dB501',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 86,
+    token0: bscTokens.ltc,
+    token1: bscTokens.wbnb,
+    lpAddress: '0xE3cBe4Dd1BD2F7101f17D586F44bAb944091D383',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 85,
+    token0: bscTokens.wbnb,
+    token1: bscTokens.sfp,
+    lpAddress: '0x64ebB904e169cB94e9788FcB68283B4C894ED881',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 45,
+    token0: bscTokens.usdt,
+    token1: bscTokens.play,
+    lpAddress: '0x73D69D55893d6c97DCA44AF2Aa85B688C0242d7f',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 84,
+    token0: bscTokens.usdt,
+    token1: bscTokens.xcad,
+    lpAddress: '0x302e26e9bda986709B5F504D3426c2310e6383c6',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 83,
+    token0: bscTokens.usdt,
+    token1: bscTokens.mbx,
+    lpAddress: '0x66bAA9E43e64c8A85bC3c04dEBf9E7686BE5b09C',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 82,
+    token0: bscTokens.wbnb,
+    token1: bscTokens.mbx,
+    lpAddress: '0x5a1Fe6D5026CC3736Cfb7316dbCFbf63D82cC789',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 81,
+    token0: bscTokens.wncg,
+    token1: bscTokens.wbnb,
+    lpAddress: '0xd8CF0de0387A9c16acF53384c89632678D77F311',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 80,
+    token0: bscTokens.hay,
+    token1: bscTokens.usdt,
+    lpAddress: '0x12E79eb21dCc5852F9c6AC1736d977312925da33',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 79,
+    token0: bscTokens.usdt,
+    token1: bscTokens.chr,
+    lpAddress: '0x635c26c473BB0686D403247477CC648a7C6edc2e',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 78,
+    token0: bscTokens.hft,
+    token1: bscTokens.usdt,
+    lpAddress: '0x6dba30870BC46BD6d2289E1827Cc415F6Fa23E1a',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 77,
+    token0: bscTokens.arv,
+    token1: bscTokens.wbnb,
+    lpAddress: '0xbB87F33d9f43Ec3fe75502958408262e7043B2E8',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 76,
+    token0: bscTokens.usdt,
+    token1: bscTokens.high,
+    lpAddress: '0x293c665b9b98Cd51D6454C72529Fe17A1Cf1f504',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 75,
+    token0: bscTokens.raca,
+    token1: bscTokens.usdt,
+    lpAddress: '0x4f55423de1049d3CBfDC72f8A40f8A6f554f92aa',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 74,
+    token0: bscTokens.sfund,
+    token1: bscTokens.wbnb,
+    lpAddress: '0x29e13e65E8e2160dBd391bA3cee55E7dDe2A386c',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 73,
+    token0: bscTokens.usdt,
+    token1: bscTokens.lvl,
+    lpAddress: '0x77E4ba48091f23a8a54b3e2c72F17be58cC2D137',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 72,
+    token0: bscTokens.gmt,
+    token1: bscTokens.usdc,
+    lpAddress: '0x3B7761632240c4BBec6deE27E10d491De9AA669B',
+    feeAmount: FeeAmount.MEDIUM,
+  },
   {
     pid: 71,
     token0: bscTokens.cyber,
@@ -223,14 +403,6 @@ export const farmsV3 = defineFarmV3Configs([
     token1: bscTokens.axl,
     lpAddress: '0xD10612A288Bd5024Db6a47663750996d176130Fe',
     feeAmount: FeeAmount.MEDIUM,
-  },
-  {
-    pid: 45,
-    token0: bscTokens.usdt,
-    token1: bscTokens.play,
-    lpAddress: '0x73D69D55893d6c97DCA44AF2Aa85B688C0242d7f',
-    feeAmount: FeeAmount.HIGH,
-    isCommunity: true,
   },
   {
     pid: 46,
@@ -1704,7 +1876,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
     token: bscTokens.hay,
     quoteToken: bscTokens.busd,
-    stableSwapAddress: '0x49079d07ef47449af808a4f36c2a8dec975594ec',
+    stableSwapAddress: '0x49079D07ef47449aF808A4f36c2a8dEC975594eC',
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,

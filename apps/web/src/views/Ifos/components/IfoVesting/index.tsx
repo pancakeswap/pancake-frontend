@@ -1,8 +1,10 @@
 import { useMemo, useState, useCallback, useEffect } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import Trans from 'components/Trans'
-import { Box, Card, CardBody, CardHeader, Flex, Text, Image, Pool, IfoNotTokens } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, Flex, Text, Image, IfoNotTokens } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { Token } from '@pancakeswap/sdk'
 import { VestingStatus } from './types'

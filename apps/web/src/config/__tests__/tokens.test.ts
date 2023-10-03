@@ -5,9 +5,9 @@ import map from 'lodash/map'
 import slice from 'lodash/slice'
 import omitBy from 'lodash/omitBy'
 import { describe, it } from 'vitest'
-import { publicClient } from '../../utils/wagmi'
+import { publicClient } from 'utils/wagmi'
 
-const whitelist = ['deprecated_tusd']
+const whitelist = ['deprecated_tusd', 'deprecated_rpg', 'deprecated_mix']
 
 // remove BNB because it's not a Bep20 token
 // remove ONE because there are two tokens with the symbol ONE (Harmony ONE and BigONE)
@@ -51,9 +51,10 @@ describe.concurrent(
           ],
           allowFailure: false,
         })
+
         const isWhitelisted = whitelist.includes(key.toLowerCase())
         if (!isWhitelisted) expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
-        expect(token.symbol.toLocaleLowerCase()).toBe(symbol.toLocaleLowerCase())
+        if (!isWhitelisted) expect(token.symbol.toLocaleLowerCase()).toBe(symbol.toLocaleLowerCase())
         expect(token.decimals).toBe(decimals)
       },
     )

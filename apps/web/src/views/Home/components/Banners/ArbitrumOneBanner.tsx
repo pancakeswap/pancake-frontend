@@ -3,7 +3,7 @@ import { Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import * as S from './Styled'
 import { arbBg, arbBgMobile, arbBunny, arbLogo } from './images'
 

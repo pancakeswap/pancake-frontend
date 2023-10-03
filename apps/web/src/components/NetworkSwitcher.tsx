@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, NATIVE } from '@pancakeswap/sdk'
+import { NATIVE } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -42,7 +43,13 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
       </Box>
       <UserMenuDivider />
       {chains
-        .filter((chain) => !('testnet' in chain && chain.testnet) || chain.id === chainId)
+        .filter((chain) => {
+          if (chain.id === chainId) return true
+          if ('testnet' in chain && chain.testnet) {
+            return process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
+          }
+          return true
+        })
         .map((chain) => (
           <UserMenuItem
             key={chain.id}
@@ -143,7 +150,13 @@ const SHORT_SYMBOL = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: 'tZkEVM',
   [ChainId.ZKSYNC]: 'zkSync',
   [ChainId.ZKSYNC_TESTNET]: 'tZkSync',
+  [ChainId.LINEA]: 'Linea',
   [ChainId.LINEA_TESTNET]: 'tLinea',
+  [ChainId.OPBNB]: 'opBNB',
+  [ChainId.OPBNB_TESTNET]: 'tOpBNB',
+  [ChainId.BASE]: 'Base',
+  [ChainId.BASE_TESTNET]: 'tBase',
+  [ChainId.SCROLL_SEPOLIA]: 'tScroll',
 } as const satisfies Record<ChainId, string>
 
 export const NetworkSwitcher = () => {
@@ -158,7 +171,9 @@ export const NetworkSwitcher = () => {
     () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
     [isLoading, pendingChainId, chainId],
   )
-  const symbol = SHORT_SYMBOL[foundChain?.id] ?? NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
+  const symbol =
+    (foundChain?.id ? SHORT_SYMBOL[foundChain.id] ?? NATIVE[foundChain.id]?.symbol : undefined) ??
+    foundChain?.nativeCurrency?.symbol
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Unable to switch network. Please try it on your wallet'),
     { placement: 'bottom' },

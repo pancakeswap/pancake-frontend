@@ -1,7 +1,7 @@
 import { AutoColumn, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { PoolData, DensityChartEntry } from '../../types'
 import { RowFixed } from '../Row'
 

@@ -1,5 +1,5 @@
 import { ErrorIcon, Flex, Text, AutoColumn } from '@pancakeswap/uikit'
-import styled, { css } from 'styled-components'
+import { styled, css } from 'styled-components'
 
 export const Wrapper = styled(Flex)`
   position: relative;
@@ -14,7 +14,7 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   ${({ clickable }) =>
     clickable
       ? css`
-          :hover {
+          &:hover {
             cursor: pointer;
             opacity: 0.8;
           }
@@ -50,10 +50,10 @@ export const StyledBalanceMaxMini = styled.button`
   align-items: center;
   float: right;
 
-  :hover {
+  &:hover {
     background-color: ${({ theme }) => theme.colors.dropdown};
   }
-  :focus {
+  &:focus {
     background-color: ${({ theme }) => theme.colors.dropdown};
     outline: none;
   }

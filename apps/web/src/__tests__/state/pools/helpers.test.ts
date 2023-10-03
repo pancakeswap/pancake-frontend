@@ -1,6 +1,6 @@
-import { getPoolsConfig, isLegacyPool, SUPPORTED_CHAIN_IDS } from '@pancakeswap/pools'
+import { getPoolsConfig, isLegacyPool, SUPPORTED_CHAIN_IDS, LegacySerializedPoolConfig } from '@pancakeswap/pools'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { transformPool, transformUserData } from 'state/pools/helpers'
 import { SerializedPool } from 'state/types'
@@ -53,9 +53,10 @@ describe('transformPool', () => {
   const poolsConfigs = SUPPORTED_CHAIN_IDS.map((chainId) => getPoolsConfig(chainId))
   for (const poolsConfig of poolsConfigs) {
     // Transform pool object with the sous id for a label. For display purposes only.
-    const poolTable: [number, Pool.SerializedPoolConfig<SerializedWrappedToken>][] = poolsConfig.map(
-      (poolsConfigItem) => [poolsConfigItem.sousId, poolsConfigItem],
-    )
+    const poolTable: [
+      number,
+      Pool.SerializedPoolConfig<SerializedWrappedToken> | LegacySerializedPoolConfig<SerializedWrappedToken>,
+    ][] = poolsConfig?.map((poolsConfigItem) => [poolsConfigItem.sousId, poolsConfigItem]) || []
     it.each(poolTable)('transforms pool %d correctly', (sousId, config) => {
       const pool = {
         ...config,

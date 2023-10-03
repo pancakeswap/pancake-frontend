@@ -1,4 +1,5 @@
-import { ChainId, TradeType } from '@pancakeswap/sdk'
+import { TradeType } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem'
 import { z } from 'zod'
@@ -89,6 +90,7 @@ export const zRouterPostParams = z
     maxSplits: z.number().optional(),
     blockNumber: zBigNumber.optional(),
     poolTypes: zPoolTypes.optional(),
+    onChainQuoterGasLimit: zBigNumber.optional(),
   })
   .required({
     chainId: true,

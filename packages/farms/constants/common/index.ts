@@ -1,4 +1,5 @@
-import { ChainId, ERC20Token } from '@pancakeswap/sdk'
+import { ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   bscTestnetTokens,
   bscTokens,
@@ -8,6 +9,8 @@ import {
   polygonZkEvmTokens,
   zksyncTokens,
   arbitrumTokens,
+  lineaTokens,
+  baseTokens,
 } from '@pancakeswap/tokens'
 import type { CommonPrice } from '../../src/fetchFarmsV3'
 import type { FarmV3SupportedChainId } from '../../src'
@@ -29,6 +32,8 @@ export const CHAIN_ID_TO_CHAIN_NAME = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: '',
   [ChainId.ZKSYNC_TESTNET]: '',
   [ChainId.ARBITRUM_ONE]: 'arbitrum',
+  [ChainId.LINEA]: 'linea',
+  [ChainId.BASE]: 'base',
 } satisfies Record<FarmV3SupportedChainId, string>
 
 export const priceHelperTokens = {
@@ -52,6 +57,14 @@ export const priceHelperTokens = {
     chain: 'arbitrum',
     list: [arbitrumTokens.weth, arbitrumTokens.usdc, arbitrumTokens.usdt, arbitrumTokens.arb],
   },
+  [ChainId.LINEA]: {
+    chain: 'linea',
+    list: [lineaTokens.weth, lineaTokens.usdc, lineaTokens.usdt, lineaTokens.wbtc, lineaTokens.dai],
+  },
+  [ChainId.BASE]: {
+    chain: 'base',
+    list: [baseTokens.weth, baseTokens.usdbc, baseTokens.dai, baseTokens.cbETH, baseTokens.usdc],
+  },
 } satisfies Record<number, PriceHelper>
 
 // for testing purposes
@@ -74,4 +87,6 @@ export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> =
   [ChainId.ZKSYNC]: {},
   [ChainId.POLYGON_ZKEVM_TESTNET]: {},
   [ChainId.ARBITRUM_ONE]: {},
+  [ChainId.LINEA]: {},
+  [ChainId.BASE]: {},
 }

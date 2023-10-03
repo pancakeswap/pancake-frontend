@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { describe, it, expect } from 'vitest'
 import { farmsV3ConfigChainMap } from '../constants/v3'
@@ -11,6 +11,8 @@ const mainnetFarms = [
   farmsV3ConfigChainMap[ChainId.POLYGON_ZKEVM],
   farmsV3ConfigChainMap[ChainId.ZKSYNC],
   farmsV3ConfigChainMap[ChainId.ARBITRUM_ONE],
+  farmsV3ConfigChainMap[ChainId.LINEA],
+  farmsV3ConfigChainMap[ChainId.BASE],
 ]
 
 function hasDuplicates(array: any[]) {

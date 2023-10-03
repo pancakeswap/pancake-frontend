@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, Text, Heading } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useTranslation } from '@pancakeswap/localization'

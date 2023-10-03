@@ -8,11 +8,12 @@ import {
   useMatchBreakpoints,
   FlexGap,
   Balance,
-  Pool,
   useTooltip,
   TooltipText,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { Pool } from '@pancakeswap/widgets-internal'
+
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import { useVaultApy } from 'hooks/useVaultApy'

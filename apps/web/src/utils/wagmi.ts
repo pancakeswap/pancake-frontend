@@ -26,7 +26,7 @@ export const { publicClient, chains } = configureChains(
       return jsonRpcProvider({
         rpc: (chain) => {
           if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id && i === 0) {
-            return { http: 'https://cloudflare-eth.com' }
+            return { http: 'https://eth.llamarpc.com' }
           }
           return PUBLIC_NODES[chain.id]?.[i]
             ? {
@@ -40,8 +40,10 @@ export const { publicClient, chains } = configureChains(
     batch: {
       multicall: {
         batchSize: 1024 * 200,
+        wait: 16,
       },
     },
+    pollingInterval: 6_000,
   },
 )
 

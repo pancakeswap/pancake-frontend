@@ -1,10 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { ButtonMenu, ButtonMenuItem, Checkbox, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { memo, useEffect, useMemo, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import { InfoDataSource as DataSourceType } from 'state/info/types'

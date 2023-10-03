@@ -1,6 +1,6 @@
 import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Banner from 'views/TradingReward/components/TopTraders/Banner'
 import YourTradingReward from 'views/TradingReward/components/TopTraders/YourTradingReward'

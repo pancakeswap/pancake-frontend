@@ -8,12 +8,12 @@ import {
   HotIcon,
   IconButton,
   NotificationDot,
-  Swap,
   Text,
   TooltipText,
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { Swap } from '@pancakeswap/widgets-internal'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
 import { useExpertMode } from '@pancakeswap/utils/user'
@@ -25,10 +25,11 @@ import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState, memo } from 'react'
 import { isMobile } from 'react-device-detect'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import InternalLink from 'components/Links'
 import Image from 'next/image'
+import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import BuyCryptoIcon from '../../../../public/images/moneyBangs.svg'
@@ -42,8 +43,6 @@ interface Props {
   hasAmount: boolean
   onRefreshPrice: () => void
 }
-
-const SUPPORTED_BUY_CRYPTO_CHAINS = [1, 56]
 
 const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
@@ -112,7 +111,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
           <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
         </Flex>
         <Flex width="100%" justifyContent="end">
-          {SUPPORTED_BUY_CRYPTO_CHAINS.includes(chainId) ? (
+          {SUPPORT_BUY_CRYPTO.includes(chainId) ? (
             <Flex alignItems="center" justifyContent="center" px="4px" mt="5px">
               <TooltipText
                 ref={buyCryptoTargetRef}

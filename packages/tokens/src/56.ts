@@ -1,4 +1,5 @@
-import { ChainId, WBNB, ERC20Token } from '@pancakeswap/sdk'
+import { WBNB, ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import { BUSD_BSC, CAKE_MAINNET, USDT_BSC } from './common'
 
@@ -1312,6 +1313,14 @@ export const bscTokens = {
     'TRON Token',
     'https://tron.network/',
   ),
+  trxv2: new ERC20Token(
+    ChainId.BSC,
+    '0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3',
+    6,
+    'TRX',
+    'TRON Token v2',
+    'https://tron.network/',
+  ),
   win: new ERC20Token(
     ChainId.BSC,
     '0xaeF0d72a118ce24feE3cD1d43d383897D05B4e99',
@@ -1727,14 +1736,6 @@ export const bscTokens = {
     'LIGHT',
     'Lightning',
     'https://lightningprotocol.finance/',
-  ),
-  rpg: new ERC20Token(
-    ChainId.BSC,
-    '0xc2098a8938119A52B1F7661893c0153A6CB116d5',
-    18,
-    'RPG',
-    'Rangers Protocol',
-    'https://www.rangersprotocol.com/',
   ),
   mcb: new ERC20Token(
     ChainId.BSC,
@@ -2233,14 +2234,6 @@ export const bscTokens = {
     'Metis Token',
     'https://www.metis.io/',
   ),
-  MIX: new ERC20Token(
-    ChainId.BSC,
-    '0x398f7827DcCbeFe6990478876bBF3612D93baF05',
-    18,
-    'MIX',
-    'MixMarvel Token',
-    'https://www.mixmarvel.com/',
-  ),
   peak: new ERC20Token(
     ChainId.BSC,
     '0x630d98424eFe0Ea27fB1b3Ab7741907DFFEaAd78',
@@ -2697,5 +2690,53 @@ export const bscTokens = {
     'CYBER',
     'CyberConnect',
     'https://cyberconnect.me/',
+  ),
+  wncg: new ERC20Token(
+    ChainId.BSC,
+    '0x52242cbAb41e290E9E17CCC50Cc437bB60020a9d',
+    18,
+    'WNCG',
+    'WrappedNCG',
+    'https://nine-chronicles.com/',
+  ),
+  rpg: new ERC20Token(
+    ChainId.BSC,
+    '0x61dc650C10Ec3c758d251Cd2D1Ab45AF1A43e941',
+    18,
+    'RPG',
+    'Rangers Protocol',
+    'https://www.rangersprotocol.com/',
+  ),
+  deprecated_rpg: new ERC20Token(
+    ChainId.BSC,
+    '0xc2098a8938119A52B1F7661893c0153A6CB116d5',
+    18,
+    'RPGOLD',
+    'Rangers Protocol(Deprecated)',
+    'https://www.rangersprotocol.com/',
+  ),
+  MIX: new ERC20Token(
+    ChainId.BSC,
+    '0xCF1B55D79E824da0Ae0652F96C66fe33263d743f',
+    18,
+    'MIX',
+    'MixMarvel Token',
+    'https://www.mixmarvel.com/',
+  ),
+  deprecated_MIX: new ERC20Token(
+    ChainId.BSC,
+    '0x398f7827DcCbeFe6990478876bBF3612D93baF05',
+    18,
+    'MIXOLD',
+    'MixMarvel Token(Deprecated)',
+    'https://www.mixmarvel.com/',
+  ),
+  mbx: new ERC20Token(
+    ChainId.BSC,
+    '0xF95a5532D67C944dfa7EDDD2f8c358Fe0dc7FAc2',
+    18,
+    'MBX',
+    'MARBLEX on BNB',
+    'https://www.marblex.io/tc',
   ),
 }

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Modal, Text, Button, OpenNewIcon, Link } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 

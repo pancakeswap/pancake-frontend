@@ -7,7 +7,7 @@ const UsAgreement = () => {
     <AffiliatesProgramLayout>
       <Container>
         <Text as="h1">PancakeSwap Affiliate Program Agreement</Text>
-        <Text as="h3">Last modified: May 3, 2023</Text>
+        <Text as="h3">Last modified: Sep 1, 2023</Text>
         <Text as="p">
           This PancakeSwap Affiliate Program Agreement (“<strong>Agreement”</strong>) is a legal contract between you (“
           <strong>Affiliate”</strong>) and PancakeSwap that applies to your participation in the PancakeSwap Affiliate
@@ -39,7 +39,8 @@ const UsAgreement = () => {
         </Text>
         <Text as="p">
           (a) <strong>3</strong>% on trading fees paid by your Referrals on PancakeSwap V2 and PancakeSwap V3, limited
-          to swap trades on the BNB Smart Chain and Ethereum chain only; and
+          to swap trades on the BNB Smart Chain, Ethereum chain, Polygon zkEVM, zkSync Era, Arbitrum One, Linea, and
+          Base chain only; and
         </Text>
         <Text as="p">
           (b) <strong>3</strong>% on trading fees paid by your Referrals on StableSwap, limited to swap trades on the
@@ -48,17 +49,54 @@ const UsAgreement = () => {
         <Text as="p">2.2 To be eligible for commissions, the swap trades must have:</Text>
         <Text as="p">(a) a token pair that:</Text>
         <Text as="p">
-          <Text as="span">(i) Is in the “PancakeSwap Extended” official token list</Text>
-          <Link
-            m="0 4px"
-            display="inline !important"
-            href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json"
-          >
-            (https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json)
-          </Link>
+          <Text as="span">(i) Is in the following Pancake Swap token lists</Text>
+          <Text as="p">
+            BNB Smart Chain:
+            <Link href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json">
+              https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json
+            </Link>
+          </Text>
+          <Text as="p">
+            Arbitrum One:
+            <Link href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-arbitrum-default.json">
+              https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-arbitrum-default.json
+            </Link>
+          </Text>
+          <Text as="p">
+            Base:
+            <Link href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-base-default.json">
+              https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-base-default.json
+            </Link>
+          </Text>
+          <Text as="p">
+            Ethereum:
+            <Link href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-eth-default.json">
+              https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-eth-default.json
+            </Link>
+          </Text>
+          <Text as="p">
+            Linea:
+            <Link href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-linea-default.json">
+              https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-linea-default.json
+            </Link>
+          </Text>
+          <Text as="p">
+            Polygon zkEVM:
+            <Link href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-polygon-zkevm-default.json">
+              https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-polygon-zkevm-default.json
+            </Link>
+          </Text>
+          <Text as="p">
+            zkSync Era:
+            <Link href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-zksync-default.json">
+              https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-zksync-default.json
+            </Link>
+          </Text>
           <Text as="span">; and</Text>
         </Text>
-        <Text as="p">(ii) includes at least 1 major token (i.e., BNB, BTC, BUSD, ETH, USDT and/or USDC)</Text>
+        <Text as="p">
+          (ii) includes at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)
+        </Text>
         <Text as="p">
           (b) a slippage (i.e., difference between a trade&apos;s expected or requested price and the price at which the
           trade is effectively executed) of less than 10%

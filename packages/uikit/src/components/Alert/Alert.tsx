@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { DefaultTheme } from "styled-components";
+import { styled, DefaultTheme } from "styled-components";
 import CheckmarkCircleIcon from "../Svg/Icons/CheckmarkCircle";
 import ErrorIcon from "../Svg/Icons/Error";
 import BlockIcon from "../Svg/Icons/Block";

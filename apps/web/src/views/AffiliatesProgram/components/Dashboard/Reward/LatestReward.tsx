@@ -6,8 +6,8 @@ import BigNumber from 'bignumber.js'
 import { useAccount } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { encodePacked, keccak256 } from 'viem'
-import { ChainId } from '@pancakeswap/sdk'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { ChainId } from '@pancakeswap/chains'
+import { useCakePrice } from 'hooks/useCakePrice'
 import SingleLatestReward from 'views/AffiliatesProgram/components/Dashboard/Reward/SingleLatestReward'
 import { UserClaimListResponse } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 import { useAffiliateProgramContract } from 'hooks/useContract'
@@ -43,7 +43,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
   const { isUserExist } = useUserExist()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
 
   const [isAffiliateClaimLoading, setIsAffiliateClaimLoading] = useState(false)
   const [isUserClaimLoading, setIsUserClaimLoading] = useState(false)

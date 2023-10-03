@@ -10,9 +10,9 @@ import {
   AutoColumn,
   UseModalV2Props,
   CurrencyLogo,
+  AtomBox,
 } from '@pancakeswap/uikit'
 import { Currency } from '@pancakeswap/sdk'
-import { AtomBox } from '@pancakeswap/ui'
 import { useMemo, memo } from 'react'
 
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'

@@ -1,6 +1,7 @@
 import { useContext, useState, MouseEvent } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, TooltipText, useModal, useTooltip, Farm as FarmUI, RoiCalculatorModal } from '@pancakeswap/uikit'
+import { Text, TooltipText, useModal, useTooltip, RoiCalculatorModal } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 
@@ -152,7 +153,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   )
 
   return (
-    <FarmUI.FarmApyButton
+    <FarmWidget.FarmApyButton
       variant={variant}
       hideButton={hideButton}
       strikethrough={strikethrough}
@@ -168,7 +169,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       ) : (
         <>{displayApr}%</>
       )}
-    </FarmUI.FarmApyButton>
+    </FarmWidget.FarmApyButton>
   )
 }
 

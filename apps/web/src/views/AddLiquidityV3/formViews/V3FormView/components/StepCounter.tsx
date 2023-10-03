@@ -1,14 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddCircleIcon, AutoColumn, AutoRow, IconButton, NumericalInput, RemoveIcon } from '@pancakeswap/uikit'
+import { AddCircleIcon, AutoColumn, AutoRow, IconButton, RemoveIcon } from '@pancakeswap/uikit'
+import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { LightGreyCard } from 'components/Card'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { Price, Token, Currency } from '@pancakeswap/swap-sdk-core'
+import { tryParsePrice } from 'hooks/v3/utils'
 
 interface StepCounterProps {
   value: string
-  onUserInput: (value: string) => void
-  decrement: () => string
-  increment: () => string
+  onUserInput: (value: Price<Token, Token> | undefined) => void
+  decrement: () => Price<Token, Token> | undefined
+  increment: () => Price<Token, Token> | undefined
   decrementDisabled?: boolean
   incrementDisabled?: boolean
   feeAmount?: FeeAmount
@@ -16,8 +19,8 @@ interface StepCounterProps {
   width?: string
   locked?: boolean // disable input
   title: ReactNode
-  tokenA: string | undefined
-  tokenB: string | undefined
+  tokenA: Currency | undefined
+  tokenB: Currency | undefined
 }
 
 const StepCounter = ({
@@ -48,16 +51,16 @@ const StepCounter = ({
   //   setPulsing,
   // ] = useState<boolean>(false)
 
-  const handleOnFocus = () => {
+  const handleOnFocus = useCallback(() => {
     setUseLocalValue(true)
     setActive(true)
-  }
+  }, [])
 
   const handleOnBlur = useCallback(() => {
     setUseLocalValue(false)
     setActive(false)
-    onUserInput(localValue) // trigger update on parent value
-  }, [localValue, onUserInput])
+    onUserInput(tryParsePrice(tokenA?.wrapped, tokenB?.wrapped, localValue)) // trigger update on parent value
+  }, [tokenA, tokenB, localValue, onUserInput])
 
   // for button clicks
   const handleDecrement = useCallback(() => {
@@ -104,9 +107,7 @@ const StepCounter = ({
             fontSize="20px"
             align="center"
             disabled={locked}
-            onUserInput={(val) => {
-              setLocalValue(val)
-            }}
+            onUserInput={setLocalValue}
           />
 
           {!locked && (
@@ -122,7 +123,7 @@ const StepCounter = ({
             </IconButton>
           )}
         </AutoRow>
-        {t('%assetA% per %assetB%', { assetA: tokenB, assetB: tokenA })}
+        {tokenA && tokenB && t('%assetA% per %assetB%', { assetA: tokenB?.symbol, assetB: tokenA?.symbol })}
       </AutoColumn>
     </LightGreyCard>
   )

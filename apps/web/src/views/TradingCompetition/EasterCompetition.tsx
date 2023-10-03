@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { Flex, Box, useMatchBreakpoints, PageSection } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTradingCompetitionContractEaster } from 'hooks/useContract'
 import { API_PROFILE } from 'config/constants/endpoints'
 import useTheme from 'hooks/useTheme'
@@ -14,7 +14,7 @@ import {
   OVER,
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK } from './pageSectionStyles'
 import EasterStormBunny from './pngs/easter-storm.png'

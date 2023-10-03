@@ -16,7 +16,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { getLPSymbol } from 'utils/getLpSymbol'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { GreyCard } from 'components/Card'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { useUserSlippage } from '@pancakeswap/utils/user'

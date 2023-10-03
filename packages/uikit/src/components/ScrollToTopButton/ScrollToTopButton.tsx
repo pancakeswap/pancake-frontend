@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import throttle from "lodash/throttle";
 import { Button } from "../Button";

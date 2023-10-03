@@ -1,17 +1,8 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useState, useMemo } from 'react'
-import {
-  Flex,
-  Box,
-  Button,
-  Text,
-  HelpIcon,
-  useTooltip,
-  LogoRoundIcon,
-  Skeleton,
-  InputProps,
-  NumericalInput,
-} from '@pancakeswap/uikit'
+import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton, InputProps } from '@pancakeswap/uikit'
+import { NumericalInput } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'

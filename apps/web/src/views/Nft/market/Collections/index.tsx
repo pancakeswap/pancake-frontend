@@ -25,7 +25,7 @@ import orderBy from 'lodash/orderBy'
 import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
 import { ViewMode } from 'state/user/actions'
 import { Collection } from 'state/nftMarket/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { FetchStatus } from 'config/constants/types'
 import { useGetShuffledCollections } from 'state/nftMarket/hooks'
 import { useTranslation } from '@pancakeswap/localization'
@@ -67,7 +67,7 @@ export const PageButtons = styled.div`
 export const Arrow = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   padding: 0 20px;
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 `

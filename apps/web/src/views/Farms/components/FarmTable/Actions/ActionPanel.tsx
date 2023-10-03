@@ -1,22 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  FarmTableLiquidityProps,
-  FarmTableMultiplierProps,
-  Farm as FarmUI,
-  Flex,
-  Skeleton,
-  Text,
-  useMatchBreakpoints,
-  useModalV2,
-  ScanLink,
-  LinkExternal,
-} from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text, useMatchBreakpoints, useModalV2, ScanLink, LinkExternal } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FC, useContext, useMemo } from 'react'
-import { multiChainPaths } from 'state/info/constant'
-import styled, { css, keyframes } from 'styled-components'
+import { multiChainPaths, ChainLinkSupportChains } from 'state/info/constant'
+import { styled, css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
@@ -31,13 +21,13 @@ import Apr, { AprProps } from '../Apr'
 import { HarvestAction, HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
 import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
 
-const { Multiplier, Liquidity, StakedLiquidity } = FarmUI.FarmTable
-const { NoPosition } = FarmUI.FarmV3Table
+const { Multiplier, Liquidity, StakedLiquidity } = FarmWidget.FarmTable
+const { NoPosition } = FarmWidget.FarmV3Table
 
 export interface ActionPanelProps {
   apr: AprProps
-  multiplier: FarmTableMultiplierProps
-  liquidity: FarmTableLiquidityProps
+  multiplier: FarmWidget.FarmTableMultiplierProps
+  liquidity: FarmWidget.FarmTableLiquidityProps
   details: V2Farm
   userDataReady: boolean
   expanded: boolean
@@ -49,8 +39,8 @@ export interface ActionPanelV3Props {
     value: string
     pid: number
   }
-  multiplier: FarmTableMultiplierProps
-  stakedLiquidity: FarmTableLiquidityProps
+  multiplier: FarmWidget.FarmTableMultiplierProps
+  stakedLiquidity: FarmWidget.FarmTableLiquidityProps
   details: V3Farm
   userDataReady: boolean
   expanded: boolean
@@ -232,7 +222,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink chainId={chainId} href={bsc}>
+              <StyledScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={bsc}>
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>
@@ -355,7 +345,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink chainId={chainId} href={bsc}>
+              <StyledScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={bsc}>
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>

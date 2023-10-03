@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-pascal-case */
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
-import { AtomBox } from '@pancakeswap/ui'
-import { Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/chains'
+import { AtomBox, Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { PositionCardProps, withLPValues, withStableLPValues } from 'components/PositionCard'

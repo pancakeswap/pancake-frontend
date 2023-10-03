@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Placement, useTooltip } from "../../hooks";
 import { BoxProps, Flex } from "../Box";
 import { HelpIcon } from "../Svg";
@@ -11,8 +11,8 @@ interface Props extends BoxProps {
 }
 
 const QuestionWrapper = styled.div`
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     opacity: 0.7;
   }
 `;

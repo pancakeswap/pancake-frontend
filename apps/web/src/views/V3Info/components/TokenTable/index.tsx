@@ -14,7 +14,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { TOKEN_HIDE, v3InfoPath } from '../../constants'
@@ -60,7 +60,7 @@ const ResponsiveGrid = styled.div`
 
 const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.7;
   }

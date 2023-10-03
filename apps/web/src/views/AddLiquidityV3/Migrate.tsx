@@ -1,4 +1,5 @@
 import {
+  AtomBox,
   AutoColumn,
   AutoRow,
   Box,
@@ -12,6 +13,8 @@ import {
   Spinner,
   Text,
 } from '@pancakeswap/uikit'
+import { LiquidityChartRangeInput } from '@pancakeswap/widgets-internal'
+import { tryParsePrice } from 'hooks/v3/utils'
 import { GreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
@@ -25,12 +28,11 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
-import { AtomBox } from '@pancakeswap/ui'
 import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
 import { Address, useContractRead, useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
-import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
+import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
 import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useV2Pair } from 'hooks/usePairs'
@@ -59,14 +61,14 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   const { chainId } = useActiveChainId()
 
   const { data: token0Address } = useContractRead({
-    abi: pairContract.abi,
+    abi: pairContract?.abi,
     address: v2PairAddress,
     functionName: 'token0',
     chainId,
   })
 
   const { data: token1Address } = useContractRead({
-    abi: pairContract.abi,
+    abi: pairContract?.abi,
     address: v2PairAddress,
     functionName: 'token1',
     chainId,
@@ -75,7 +77,7 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   const token0 = useToken(token0Address)
   const token1 = useToken(token1Address)
 
-  const [, pair] = useV2Pair(token0, token1)
+  const [, pair] = useV2Pair(token0 ?? undefined, token1 ?? undefined)
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
   if (!token0Address || !token1Address || !pair || !totalSupply)
@@ -88,8 +90,8 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   return (
     <V2PairMigrate
       v2PairAddress={v2PairAddress}
-      token0={token0}
-      token1={token1}
+      token0={token0!}
+      token1={token1!}
       pair={pair}
       v2LPTotalSupply={totalSupply}
     />
@@ -168,6 +170,42 @@ function V2PairMigrate({
     )
   const { onLeftRangeInput, onRightRangeInput, onBothRangeInput } = useV3MintActionHandlers(noLiquidity)
 
+  const onBothRangePriceInput = useCallback(
+    (leftRangeValue: string, rightRangeValue: string) => {
+      onBothRangeInput({
+        leftTypedValue: tryParsePrice(
+          baseToken,
+          baseToken.equals(token0) ? token1 : token0 ?? undefined,
+          leftRangeValue,
+        ),
+        rightTypedValue: tryParsePrice(
+          baseToken,
+          baseToken.equals(token0) ? token1 : token0 ?? undefined,
+          rightRangeValue,
+        ),
+      })
+    },
+    [baseToken, token0, token1, onBothRangeInput],
+  )
+
+  const onLeftRangePriceInput = useCallback(
+    (leftRangeValue: string) => {
+      onLeftRangeInput(
+        tryParsePrice(baseToken, baseToken.equals(token0) ? token1 : token0 ?? undefined, leftRangeValue),
+      )
+    },
+    [baseToken, token0, token1, onLeftRangeInput],
+  )
+
+  const onRightRangePriceInput = useCallback(
+    (rightRangeValue: string) => {
+      onRightRangeInput(
+        tryParsePrice(baseToken, baseToken.equals(token0) ? token1 : token0 ?? undefined, rightRangeValue),
+      )
+    },
+    [baseToken, token0, token1, onRightRangeInput],
+  )
+
   // get spot prices + price difference
   const v2SpotPrice = useMemo(
     () => new Price(token0, token1, reserve0.quotient, reserve1.quotient),
@@ -198,7 +236,7 @@ function V2PairMigrate({
 
   useEffect(() => {
     if (feeAmount) {
-      onBothRangeInput({ leftTypedValue: '', rightTypedValue: '' })
+      onBothRangeInput({ leftTypedValue: undefined, rightTypedValue: undefined })
     }
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -210,13 +248,34 @@ function V2PairMigrate({
   const currency1 = unwrappedToken(token1)
 
   useEffect(() => {
-    if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !leftRangeTypedValue) {
-      onLeftRangeInput(minPrice)
+    if (
+      minPrice &&
+      typeof minPrice === 'string' &&
+      leftRangeTypedValue &&
+      typeof leftRangeTypedValue === 'object' &&
+      !leftRangeTypedValue.equalTo(minPrice)
+    ) {
+      onLeftRangeInput(tryParsePrice(token0, token1, minPrice))
     }
-    if (maxPrice && typeof maxPrice === 'string' && maxPrice !== rightRangeTypedValue && !rightRangeTypedValue) {
-      onRightRangeInput(maxPrice)
+    if (
+      maxPrice &&
+      typeof maxPrice === 'string' &&
+      rightRangeTypedValue &&
+      typeof rightRangeTypedValue === 'object' &&
+      !rightRangeTypedValue.equalTo(maxPrice)
+    ) {
+      onRightRangeInput(tryParsePrice(token0, token1, maxPrice))
     }
-  }, [minPrice, maxPrice, onRightRangeInput, onLeftRangeInput, leftRangeTypedValue, rightRangeTypedValue])
+  }, [
+    minPrice,
+    maxPrice,
+    onRightRangeInput,
+    onLeftRangeInput,
+    leftRangeTypedValue,
+    rightRangeTypedValue,
+    token0,
+    token1,
+  ])
 
   useEffect(() => {
     if (!isError && !isLoading && largestUsageFeeTier) {
@@ -300,16 +359,16 @@ function V2PairMigrate({
     s: `0x${string}`
     deadline: number
   } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(
+  const { approvalState, approveCallback } = useApproveCallback(
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
-    V2_ROUTER_ADDRESS[chainId],
+    chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
   )
 
   const pairContractRead = usePairContract(pair?.liquidityToken?.address)
 
   const approve = useCallback(async () => {
     // try to gather a signature for permission
-    const nonce = await pairContractRead.read.nonces([account])
+    const nonce = await pairContractRead?.read.nonces([account!])
 
     const EIP712Domain = [
       { name: 'name', type: 'string' },
@@ -334,7 +393,7 @@ function V2PairMigrate({
       owner: account,
       spender: migrator.address,
       value: pairBalance.toString(),
-      nonce: toHex(nonce),
+      nonce: toHex(nonce ?? 0),
       deadline: Number(deadline),
     }
 
@@ -434,8 +493,8 @@ function V2PairMigrate({
             fee: feeAmount,
             tickLower,
             tickUpper,
-            amount0Min: v3Amount0Min,
-            amount1Min: v3Amount1Min,
+            amount0Min: v3Amount0Min ?? 0n,
+            amount1Min: v3Amount1Min ?? 0n,
             recipient: account,
             deadline: deadlineToUse,
             refundAsETH: true, // hard-code this for now
@@ -447,7 +506,7 @@ function V2PairMigrate({
     setConfirmingMigration(true)
 
     migrator.estimateGas
-      .multicall([data], { account: migrator.account, value: 0n })
+      .multicall([data], { account: migrator.account!, value: 0n })
       .then((gasEstimate) => {
         return migrator.write
           .multicall([data], { gas: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
@@ -497,6 +556,16 @@ function V2PairMigrate({
     () => !!pendingMigrationHash && BigInt(pairBalance.toString()) === ZERO,
     [pendingMigrationHash, pairBalance],
   )
+
+  const {
+    isLoading: isChartDataLoading,
+    error: chartDataError,
+    formattedData,
+  } = useDensityChartData({
+    currencyA: baseToken ?? undefined,
+    currencyB: baseToken.equals(token0) ? token1 : token0 ?? undefined,
+    feeAmount,
+  })
 
   return (
     <CardBody>
@@ -575,8 +644,8 @@ function V2PairMigrate({
                 setBaseToken((base) => (base.equals(token0) ? token1 : token0))
                 if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
                   onBothRangeInput({
-                    leftTypedValue: (invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '',
-                    rightTypedValue: (invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '',
+                    leftTypedValue: (invertPrice ? priceLower : priceUpper?.invert()) ?? undefined,
+                    rightTypedValue: (invertPrice ? priceUpper : priceLower?.invert()) ?? undefined,
                   })
                 }
               }}
@@ -665,9 +734,12 @@ function V2PairMigrate({
             price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
             priceLower={priceLower}
             priceUpper={priceUpper}
-            onLeftRangeInput={onLeftRangeInput}
-            onRightRangeInput={onRightRangeInput}
-            onBothRangeInput={onBothRangeInput}
+            onLeftRangeInput={onLeftRangePriceInput}
+            onRightRangeInput={onRightRangePriceInput}
+            onBothRangeInput={onBothRangePriceInput}
+            formattedData={formattedData}
+            isLoading={isChartDataLoading}
+            error={chartDataError}
             interactive
           />
           <RangeSelector
@@ -735,20 +807,20 @@ function V2PairMigrate({
             {!isSuccessfullyMigrated && !isMigrationPending ? (
               <AutoColumn gap="md" style={{ flex: '1' }}>
                 <CommitButton
-                  variant={approval === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
+                  variant={approvalState === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
                   disabled={
-                    approval !== ApprovalState.NOT_APPROVED ||
+                    approvalState !== ApprovalState.NOT_APPROVED ||
                     signatureData !== null ||
                     invalidRange ||
                     confirmingMigration
                   }
                   onClick={approve}
                 >
-                  {approval === ApprovalState.PENDING ? (
+                  {approvalState === ApprovalState.PENDING ? (
                     <Dots>
                       <Trans>Enabling</Trans>
                     </Dots>
-                  ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
+                  ) : approvalState === ApprovalState.APPROVED || signatureData !== null ? (
                     <Trans>Enabled</Trans>
                   ) : (
                     <Trans>Enable</Trans>
@@ -761,7 +833,7 @@ function V2PairMigrate({
                 variant={isSuccessfullyMigrated ? 'success' : 'primary'}
                 disabled={
                   invalidRange ||
-                  (approval !== ApprovalState.APPROVED && signatureData === null) ||
+                  (approvalState !== ApprovalState.APPROVED && signatureData === null) ||
                   confirmingMigration ||
                   isMigrationPending ||
                   isSuccessfullyMigrated

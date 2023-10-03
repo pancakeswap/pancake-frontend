@@ -1,18 +1,16 @@
 import { useTheme } from '@pancakeswap/hooks'
-import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, AutoRow, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
+import { AtomBox, AutoColumn, AutoRow, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
+import { Chart } from '@pancakeswap/widgets-internal'
 import { format } from 'd3'
-// import { saturate } from 'polished'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { LightCard } from 'components/Card'
-import { Chart } from 'components/LiquidityChartRangeInput/Chart'
 import { Bound } from 'config/constants/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PoolState } from 'hooks/v3/types'
-import { tryParseTick } from 'hooks/v3/utils'
+import { tryParsePrice, tryParseTick } from 'hooks/v3/utils'
 import { getTickToPrice } from 'hooks/v3/utils/getTickToPrice'
 import { useCallback, useMemo, useState } from 'react'
 import { batch } from 'react-redux'
@@ -64,11 +62,10 @@ const poolsByFeeTier = {
 }
 
 export function Step3() {
-  // const { t } = useTranslation()
   const { theme } = useTheme()
   const { chainId } = useActiveChainId()
 
-  const [token0, token1] = MOCK_TOKENS[chainId] || MOCK_TOKENS[ChainId.BSC]
+  const [token0, token1] = chainId && MOCK_TOKENS[chainId] ? MOCK_TOKENS[chainId] : MOCK_TOKENS[ChainId.BSC]
 
   const formState = useV3FormState()
 
@@ -88,17 +85,17 @@ export function Step3() {
 
   const isSorted = token0.sortsBefore(token1)
 
-  const leftRangeTypedValue = formState.leftRangeTypedValue || '0.75'
-  const rightRangeTypedValue = formState.rightRangeTypedValue || '1.25'
+  const leftRangeTypedValue = formState.leftRangeTypedValue || tryParsePrice(token0, token1, '0.75')
+  const rightRangeTypedValue = formState.rightRangeTypedValue || tryParsePrice(token0, token1, '1.25')
 
   const ticks: {
     [key: string]: number | undefined
   } = useMemo(() => {
     return {
-      [Bound.LOWER]: tryParseTick(token0, token1, feeAmount, leftRangeTypedValue.toString()),
-      [Bound.UPPER]: tryParseTick(token0, token1, feeAmount, rightRangeTypedValue.toString()),
+      [Bound.LOWER]: tryParseTick(feeAmount, leftRangeTypedValue),
+      [Bound.UPPER]: tryParseTick(feeAmount, rightRangeTypedValue),
     }
-  }, [leftRangeTypedValue, rightRangeTypedValue, token0, token1])
+  }, [leftRangeTypedValue, rightRangeTypedValue])
 
   const pricesAtTicks = useMemo(() => {
     return {
@@ -137,19 +134,19 @@ export function Step3() {
           (!ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] || mode === 'handle' || mode === 'reset') &&
           leftRangeValue > 0
         ) {
-          onLeftRangeInput(leftRangeValue.toFixed(6))
+          onLeftRangeInput(tryParsePrice(token0, token1, leftRangeValue.toString()))
         }
 
         if ((!ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] || mode === 'reset') && rightRangeValue > 0) {
           // todo: remove this check. Upper bound for large numbers
           // sometimes fails to parse to tick.
           if (rightRangeValue < 1e35) {
-            onRightRangeInput(rightRangeValue.toFixed(6))
+            onRightRangeInput(tryParsePrice(token0, token1, rightRangeValue.toString()))
           }
         }
       })
     },
-    [isSorted, onLeftRangeInput, onRightRangeInput, ticksAtLimit],
+    [isSorted, onLeftRangeInput, onRightRangeInput, ticksAtLimit, token0, token1],
   )
 
   const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper } = useRangeHopCallbacks(

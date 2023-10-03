@@ -1,5 +1,5 @@
 import { TransitionGroup } from "react-transition-group";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Toast } from "./Toast";
 import { ToastContainerProps } from "./types";
 

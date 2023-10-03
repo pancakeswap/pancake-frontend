@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { renderWithProvider } from "../../testHelpers";
 import { Menu, menuConfig } from "../../widgets/Menu";
 import { footerLinks } from "../../components/Footer/config";
-import { SubMenuItemsType } from "../../components/SubMenuItems/types";
+import { SubMenuItemsType } from "../../components";
 
 /**
  * @see https://jestjs.io/docs/en/manual-mocks

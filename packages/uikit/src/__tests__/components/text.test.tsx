@@ -15,8 +15,6 @@ it("renders correctly", () => {
 
     <div
         class="c0"
-        color="text"
-        font-size="16px"
       >
         pancake
       </div>

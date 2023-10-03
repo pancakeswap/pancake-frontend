@@ -12,7 +12,7 @@ import {
   WaitIcon,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { Bet, PredictionStatus } from 'state/types'
 import { REWARD_RATE } from 'state/predictions/config'

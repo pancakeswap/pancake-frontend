@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { ConcaveTop, ConcaveBottom, ConvexTop, ConvexBottom } from "./svg/CurvedSvg";
 import { DividerFill, ClipFill } from "./types";
 

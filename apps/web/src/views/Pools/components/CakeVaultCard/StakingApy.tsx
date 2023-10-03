@@ -1,10 +1,12 @@
-import { Flex, Text, Skeleton, useModal, Button, CalculateIcon, FlexGap, Balance, Pool } from '@pancakeswap/uikit'
+import { Flex, Text, Skeleton, useModal, Button, CalculateIcon, FlexGap, Balance } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { memo } from 'react'
 import { VaultKey } from 'state/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Token } from '@pancakeswap/sdk'
 import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
 

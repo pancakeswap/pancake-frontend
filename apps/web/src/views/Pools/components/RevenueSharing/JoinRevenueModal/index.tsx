@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
-import styled from 'styled-components'
-import { Modal, Text, Card, Flex, Box, LinkExternal, useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
+import { Modal, Text, Card, Flex, Box, LinkExternal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import Image from 'next/image'
 import useTheme from 'hooks/useTheme'
 import { Token } from '@pancakeswap/sdk'

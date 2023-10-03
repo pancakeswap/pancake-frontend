@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { Flex, Text, InfoIcon, Message, MessageText, Pool } from '@pancakeswap/uikit'
+import { Flex, Text, InfoIcon, Message, MessageText } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import AddCakeButton from 'views/Pools/components/LockedPool/Buttons/AddCakeButton'
 import { Token } from '@pancakeswap/sdk'
@@ -58,7 +60,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
 
   const timeUntil = getTimePeriods(timeRemaining)
 
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
 
   const rewardInUSD = useRewardInUSD({
     timeRemaining,

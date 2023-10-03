@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { FetchStatus } from 'config/constants/types'
 import dayjs, { ManipulateType } from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
@@ -53,7 +53,7 @@ export const useProtocolChartData = (): ChartDayData[] | undefined => {
     () => fetchChartData(v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return chartData?.data ?? []
+  return useMemo(() => chartData?.data ?? [], [chartData])
 }
 
 export const useProtocolData = (): ProtocolData | undefined => {
@@ -77,7 +77,7 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
     () => fetchTopTransactions(v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.filter((d) => d.amountUSD > 0) ?? []
+  return useMemo(() => data?.filter((d) => d.amountUSD > 0) ?? [], [data])
 }
 
 export const useTokenPriceChartData = (
@@ -117,33 +117,37 @@ export const usePairPriceChartTokenData = (
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
   const chainName = useChainNameByQuery()
   const chainId = targetChainId || multiChainId[chainName]
-  const utcCurrentTime = dayjs()
-  const startTimestamp = utcCurrentTime
-    .subtract(1, duration ?? 'day')
-    .startOf('hour')
-    .unix()
 
   const { data } = useSWRImmutable(
     chainId &&
       address &&
       address !== 'undefined' && [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChainId ?? chainId],
-    () =>
-      fetchPairPriceChartTokenData(
+    async () => {
+      const utcCurrentTime = dayjs()
+      const startTimestamp = utcCurrentTime
+        .subtract(1, duration ?? 'day')
+        .startOf('hour')
+        .unix()
+      return fetchPairPriceChartTokenData(
         address,
         DURATION_INTERVAL[duration ?? 'day'],
         startTimestamp,
         v3Clients[targetChainId ?? chainId],
         multiChainName[targetChainId ?? chainId],
         SUBGRAPH_START_BLOCK[chainId],
-      ),
+      )
+    },
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return {
-    data: data?.data ?? [],
-    maxPrice: data?.maxPrice,
-    minPrice: data?.minPrice,
-    averagePrice: data?.averagePrice,
-  }
+  return useMemo(
+    () => ({
+      data: data?.data ?? [],
+      maxPrice: data?.maxPrice,
+      minPrice: data?.minPrice,
+      averagePrice: data?.averagePrice,
+    }),
+    [data],
+  )
 }
 
 export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[]) {
@@ -202,7 +206,7 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data ? Object.values(data?.data) : undefined
+  return useMemo(() => (data?.data ? Object.values(data?.data) : undefined), [data])
 }
 
 export const useTokenData = (address: string): TokenData | undefined => {
@@ -288,7 +292,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
     () => fetchTokenTransactions(address, v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data?.filter((d) => d.amountUSD > 0)
+  return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0), [data])
 }
 
 export async function fetchTopPools(dataClient: GraphQLClient, chainId: ChainId, blocks: Block[]) {
@@ -348,7 +352,7 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data ? Object.values(data.data) : undefined
+  return useMemo(() => (data?.data ? Object.values(data.data) : undefined), [data])
 }
 
 export const usePoolData = (address: string): PoolData | undefined => {
@@ -382,7 +386,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
     () => fetchPoolTransactions(address, v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data?.filter((d) => d.amountUSD > 0) ?? undefined
+  return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
 }
 
 export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {

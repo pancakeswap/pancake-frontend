@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import _uniqueId from 'lodash/uniqueId'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { CountdownProps } from '../../types'

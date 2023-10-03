@@ -6,8 +6,8 @@ describe('actions', () => {
       expect(parseCallKey('0x-0x')).toEqual({ address: '0x', callData: '0x' })
     })
     it('does not throw for invalid calldata', () => {
-      expect(parseCallKey('0x6b175474e89094c44da98b954eedeac495271d0f-abc')).toEqual({
-        address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+      expect(parseCallKey('0x6B175474E89094C44Da98b954EedeAC495271d0F-abc')).toEqual({
+        address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
         callData: 'abc',
       })
     })
@@ -15,14 +15,14 @@ describe('actions', () => {
       expect(() => parseCallKey('abc')).toThrow('Invalid call key: abc')
     })
     it('throws for uppercase calldata', () => {
-      expect(parseCallKey('0x6b175474e89094c44da98b954eedeac495271d0f-0xabcD')).toEqual({
-        address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+      expect(parseCallKey('0x6B175474E89094C44Da98b954EedeAC495271d0F-0xabcD')).toEqual({
+        address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
         callData: '0xabcD',
       })
     })
     it('parses pieces into address', () => {
-      expect(parseCallKey('0x6b175474e89094c44da98b954eedeac495271d0f-0xabcd')).toEqual({
-        address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+      expect(parseCallKey('0x6B175474E89094C44Da98b954EedeAC495271d0F-0xabcd')).toEqual({
+        address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
         callData: '0xabcd',
       })
     })
@@ -35,7 +35,7 @@ describe('actions', () => {
     it('throws for invalid calldata', () => {
       expect(() =>
         toCallKey({
-          address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+          address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           callData: 'abc',
@@ -45,14 +45,14 @@ describe('actions', () => {
     it('throws for uppercase hex', () => {
       expect(() =>
         toCallKey({
-          address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+          address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
           callData: '0xabcD',
         }),
       ).toThrow('Invalid hex: 0xabcD')
     })
     it('concatenates address to data', () => {
-      expect(toCallKey({ address: '0x6b175474e89094c44da98b954eedeac495271d0f', callData: '0xabcd' })).toEqual(
-        '0x6b175474e89094c44da98b954eedeac495271d0f-0xabcd',
+      expect(toCallKey({ address: '0x6B175474E89094C44Da98b954EedeAC495271d0F', callData: '0xabcd' })).toEqual(
+        '0x6B175474E89094C44Da98b954EedeAC495271d0F-0xabcd',
       )
     })
   })

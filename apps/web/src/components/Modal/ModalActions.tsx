@@ -1,5 +1,5 @@
 import { Children } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import Spacer from './Spacer'
 
 const ModalActions: React.FC<React.PropsWithChildren> = ({ children }) => {

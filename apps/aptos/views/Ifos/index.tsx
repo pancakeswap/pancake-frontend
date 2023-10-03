@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { SubMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { PageMeta } from 'components/Layout/Page'
@@ -10,22 +11,24 @@ export const IfoPageLayout = ({ children }) => {
   const router = useRouter()
   const isExact = router.route === '/ifo'
 
+  const subMenuItems = useMemo(
+    () => [
+      {
+        label: t('Latest'),
+        href: '/ifo',
+      },
+      {
+        label: t('Finished'),
+        href: '/ifo/history',
+      },
+    ],
+    [t],
+  )
+
   return (
     <IfoProvider>
       <PageMeta title={t('Initial Farm Offering')} />
-      <SubMenuItems
-        items={[
-          {
-            label: t('Latest'),
-            href: '/ifo',
-          },
-          {
-            label: t('Finished'),
-            href: '/ifo/history',
-          },
-        ]}
-        activeItem={isExact ? '/ifo' : '/ifo/history'}
-      />
+      <SubMenuItems items={subMenuItems} activeItem={isExact ? '/ifo' : '/ifo/history'} />
       <Hero />
       {children}
     </IfoProvider>

@@ -6,14 +6,14 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 
 interface DesktopResultProps {
   rank: RankListDetail
 }
 
 const DesktopResult: React.FC<React.PropsWithChildren<DesktopResultProps>> = ({ rank }) => {
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(rank.origin)
   const { domainName, avatar } = useDomainNameForAddress(rank.origin, !profile && !isProfileLoading)
 
@@ -27,7 +27,7 @@ const DesktopResult: React.FC<React.PropsWithChildren<DesktopResultProps>> = ({ 
       <Td textAlign="left">
         <Flex>
           <Text bold mr="4px" width="56px" color="secondary" style={{ alignSelf: 'center' }}>
-            {rank.rank === 0 ? '--' : `#${rank.rank}`}
+            {rank.rank === 0 ? '--' : rank.rank >= 1000 ? `>#1000` : `#${rank.rank}`}
           </Text>
           <ProfileAvatar width={42} height={42} src={profile?.nft?.image?.thumbnail ?? avatar} />
           <Text style={{ alignSelf: 'center' }} color="primary" bold ml="8px">

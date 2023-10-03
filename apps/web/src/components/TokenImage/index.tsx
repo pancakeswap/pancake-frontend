@@ -4,7 +4,8 @@ import {
   TokenImage as UIKitTokenImage,
   ImageProps,
 } from '@pancakeswap/uikit'
-import { Token, ChainId } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
   primaryToken: Token
@@ -17,6 +18,8 @@ export const tokenImageChainNameMapping = {
   [ChainId.POLYGON_ZKEVM]: 'polygon-zkevm/',
   [ChainId.ZKSYNC]: 'zksync/',
   [ChainId.ARBITRUM_ONE]: 'arbitrum/',
+  [ChainId.LINEA]: 'linea/',
+  [ChainId.BASE]: 'base/',
 }
 
 const getImageUrlFromToken = (token: Token) => {

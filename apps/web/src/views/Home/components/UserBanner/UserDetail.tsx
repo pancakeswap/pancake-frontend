@@ -11,7 +11,7 @@ import {
   ProfileAvatar,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { useTranslation } from '@pancakeswap/localization'
@@ -34,8 +34,8 @@ const Mobile = styled(Flex)`
 `
 
 const Sticker = styled(Flex)`
-  height: 92px;
-  width: 92px;
+  height: 120px;
+  width: 120px;
   background-color: ${({ theme }) => theme.colors.invertedContrast};
   border: 3px solid ${({ theme }) => theme.colors.invertedContrast};
   border-radius: ${({ theme }) => theme.radii.circle};
@@ -52,9 +52,9 @@ const UserDetail = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
-  const { domainName, isLoading: isDomainNameLoading, avatar } = useDomainNameForAddress(account)
+  const { domainName, isLoading: isDomainNameLoading, avatar } = useDomainNameForAddress(account ?? '')
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
-    profile?.username,
+    profile?.username ?? '',
   )
 
   const toggleUsernameVisibility = () => {
@@ -102,7 +102,7 @@ const UserDetail = () => {
       {isMobile && (
         <Mobile>
           {profile ? (
-            <Heading mb="18px" textAlign="center">
+            <Heading mb="8px" textAlign="center">
               {t('Hi, %userName%!', {
                 userName: usernameWithVisibility,
               })}

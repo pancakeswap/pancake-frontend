@@ -30,19 +30,8 @@ export function tryParsePrice(baseToken?: Token, quoteToken?: Token, value?: str
   )
 }
 
-export function tryParseTick(
-  baseToken?: Token,
-  quoteToken?: Token,
-  feeAmount?: FeeAmount,
-  value?: string,
-): number | undefined {
-  if (!baseToken || !quoteToken || !feeAmount || !value) {
-    return undefined
-  }
-
-  const price = tryParsePrice(baseToken, quoteToken, value)
-
-  if (!price) {
+export function tryParseTick(feeAmount?: FeeAmount, price?: Price<Token, Token> | boolean): number | undefined {
+  if (!price || !feeAmount || typeof price === 'boolean') {
     return undefined
   }
 

@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
-  ExpertModal,
   Flex,
   InjectedModalProps,
   Input,
@@ -13,6 +12,8 @@ import {
   ThemeSwitcher,
   Toggle,
 } from '@pancakeswap/uikit'
+import { ExpertModal } from '@pancakeswap/widgets-internal'
+
 import { escapeRegExp } from '@pancakeswap/utils/escapeRegExp'
 import { useTheme } from 'next-themes'
 import { useCallback, useState } from 'react'
@@ -23,7 +24,7 @@ import {
   useAudioPlay,
   useUserSingleHopOnly,
 } from '@pancakeswap/utils/user'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 export const withCustomOnDismiss =
   (Component) =>

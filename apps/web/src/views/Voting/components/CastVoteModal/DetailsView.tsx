@@ -1,22 +1,11 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import {
-  Flex,
-  Text,
-  Box,
-  HelpIcon,
-  useTooltip,
-  RocketIcon,
-  Link,
-  ScanLink,
-  NextLinkFromReactRouter,
-} from '@pancakeswap/uikit'
+import { Flex, Text, Box, HelpIcon, useTooltip, RocketIcon, ScanLink, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
-import { ChainId } from '@pancakeswap/sdk'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
 
 const StyledScanLink = styled(ScanLink)`
@@ -104,11 +93,9 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text bold m="10px 0">
             {`${t('CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
           </Text>
-          <NextLinkFromReactRouter to="/pools" prefetch={false}>
-            <Link href="/pools" color="primary">
-              {t('Go to Pools')}
-            </Link>
-          </NextLinkFromReactRouter>
+          <Link external href="/pools">
+            {t('Go to Pools')}
+          </Link>
         </Box>
       )}
     </>,
@@ -137,7 +124,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
       </VotingBoxBorder>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
         {t('Your voting power at block')}
-        <StyledScanLink chainId={ChainId.BSC} href={getBlockExploreLink(block, 'block')} ml="8px">
+        <StyledScanLink useBscCoinFallback href={getBlockExploreLink(block, 'block')} ml="8px">
           {block}
         </StyledScanLink>
       </Text>

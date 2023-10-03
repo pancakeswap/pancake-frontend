@@ -4,7 +4,7 @@ import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import { format } from 'date-fns'
 import { useTheme } from '@pancakeswap/hooks'
 import { CandleChartLoader } from 'components/ChartLoaders'
-import { baseColors, lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
+import { baseColors, lightColors, darkColors } from '@pancakeswap/uikit'
 
 const CANDLE_CHART_HEIGHT = 250
 

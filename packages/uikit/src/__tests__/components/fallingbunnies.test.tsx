@@ -15,84 +15,59 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c1 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
       align-self: center;
       fill: var(--colors-text);
       color: var(--colors-text);
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
       flex-shrink: 0;
     }
 
     .c0 {
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
       display: inline-flex;
       position: fixed;
       top: 0;
       left: 50vw;
-      -webkit-transform: translate3d(0,-100%,0);
-      -ms-transform: translate3d(0,-100%,0);
-      transform: translate3d(0,-100%,0);
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
+      transform: translate3d(0, -100%, 0);
       user-select: none;
       pointer-events: none;
       z-index: 99999;
-      -webkit-animation-name: dphWuA;
       animation-name: dphWuA;
-      -webkit-animation-duration: 10s;
       animation-duration: 10s;
-      -webkit-animation-timing-function: linear;
       animation-timing-function: linear;
-      -webkit-animation-iteration-count: infinite;
       animation-iteration-count: infinite;
-      -webkit-animation-play-state: running;
       animation-play-state: running;
     }
 
     .c0:nth-child(5n + 5) {
-      -webkit-animation-delay: 1.3s;
       animation-delay: 1.3s;
     }
 
     .c0:nth-child(3n + 2) {
-      -webkit-animation-delay: 1.5s;
       animation-delay: 1.5s;
     }
 
     .c0:nth-child(2n + 5) {
-      -webkit-animation-delay: 1.7s;
       animation-delay: 1.7s;
     }
 
     .c0:nth-child(3n + 10) {
-      -webkit-animation-delay: 2.7s;
       animation-delay: 2.7s;
     }
 
     .c0:nth-child(7n + 2) {
-      -webkit-animation-delay: 3.5s;
       animation-delay: 3.5s;
     }
 
     .c0:nth-child(4n + 5) {
-      -webkit-animation-delay: 5.5s;
       animation-delay: 5.5s;
     }
 
     .c0:nth-child(3n + 7) {
-      -webkit-animation-delay: 8s;
       animation-delay: 8s;
     }
 
-    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+    @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
       .c1 {
-        -webkit-filter: none !important;
-        filter: none !important;
+        filter: none!important;
       }
     }
 

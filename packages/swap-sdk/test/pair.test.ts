@@ -1,7 +1,8 @@
 import { Token, CurrencyAmount, Price } from '@pancakeswap/swap-sdk-core'
 import { describe, it, expect } from 'vitest'
+import { ChainId } from '@pancakeswap/chains'
 import { Pair } from '../src/entities'
-import { ChainId, WNATIVE } from '../src/constants'
+import { WNATIVE } from '../src/constants'
 
 describe('Pair', () => {
   const USDC = new Token(ChainId.BSC, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'USD Coin')

@@ -1,6 +1,5 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox } from '@pancakeswap/ui'
 import {
   ModalContainer,
   ModalCloseButton,
@@ -10,8 +9,10 @@ import {
   Flex,
   ModalActions,
   AutoColumn,
-  Pool,
+  AtomBox,
 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import LockedBenefits from 'views/Pools/components/RevenueSharing/BenefitsModal/LockedBenefits'
 import RevenueSharing from 'views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing'

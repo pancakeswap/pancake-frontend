@@ -1,5 +1,5 @@
 import { Box, BoxProps, Card, Flex, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { HeightProps } from 'styled-system'
 import { ArticleDataType } from 'utils/transformArticle'
 

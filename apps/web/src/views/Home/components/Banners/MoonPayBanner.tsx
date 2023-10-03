@@ -1,17 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Link, OpenNewIcon, Text, useMatchBreakpoints, Button, Svg } from '@pancakeswap/uikit'
+import { Flex, Link, OpenNewIcon, Text, useMatchBreakpoints, Button, Svg, SvgProps } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import * as S from './Styled'
-import { moonpayBg, moonpayBgMobile, moonpayCash, moonpayLogo } from './images'
+import { moonpayBg, moonpayBgMobile, moonpayCash, mercuryoLogo } from './images'
 import { flyingAnim } from './animations'
 
 const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
 
-const CrossSVG = () => (
-  <Svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+const CrossSVG = (props: SvgProps) => (
+  <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 15" fill="none" {...props}>
     <path
       opacity="0.6"
       d="M0.755859 0.884766L7.08335 7.49987M13.4108 14.115L7.08335 7.49987M7.08335 7.49987L13.4108 0.884766M7.08335 7.49987L0.755859 14.115"
@@ -106,6 +106,8 @@ const Header = styled.div`
   }
 `
 
+const StyledImage = styled.img``
+
 const MoonPayBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isDesktop } = useMatchBreakpoints()
@@ -118,7 +120,7 @@ const MoonPayBanner = () => {
     >
       <S.Inner>
         <S.LeftWrapper position="relative" style={{ zIndex: 2, justifyContent: isMobile ? 'flex-start' : 'center' }}>
-          <Flex alignItems="center" mb="8px" style={{ gap: isMobile ? 4 : 10 }}>
+          <Flex alignItems="center" mb="8px" style={{ gap: isMobile ? 4 : 10, overflow: 'visible' }}>
             <Image
               src={pancakeSwapLogo}
               alt="pancakeSwapLogo"
@@ -126,22 +128,22 @@ const MoonPayBanner = () => {
               height={isMobile ? 15 : 22}
               unoptimized
             />
-            <CrossSVG />
-            <Image
-              style={{ marginLeft: isMobile ? -3 : -5 }}
-              src={moonpayLogo}
+            <CrossSVG width={isMobile ? 9 : 15} />
+            <StyledImage
+              style={{ paddingTop: isMobile ? 2 : 4 }}
+              src={mercuryoLogo.src}
               alt="arbLogo"
-              width={isMobile ? 86 : 131}
-              height={isMobile ? 15 : 23}
+              width={isMobile ? 65 : 114}
+              height={isMobile ? 9 : 15}
             />
           </Flex>
-          <Header data-text={isMobile ? t('0% Fee') : t('0% Credit/Debit Cards Fee')}>
-            {isMobile ? t('0% Fee') : t('0% Credit/Debit Cards Fee')}
+          <Header data-text={isMobile ? t('0% Fee') : t('0%  Provider  Fee until Sep 12th!')}>
+            {isMobile ? t('0% Fee') : t('0%  Provider  Fee until Sep 12th!')}
           </Header>
           <Link
             style={{ textDecoration: 'none' }}
             external
-            href="https://blog.pancakeswap.finance/articles/limited-time-offer-0-fee-on-your-first-crypto-purchase-using-moon-pay"
+            href="https://blog.pancakeswap.finance/articles/0-provider-fee-on-crypto-purchases-via-mercuryo"
           >
             <Button scale={isMobile ? 'sm' : 'md'}>
               <Text

@@ -13,15 +13,16 @@ import {
   Row,
   RowBetween,
   RowFixed,
-  ListLogo,
 } from '@pancakeswap/uikit'
+import { ListLogo } from '@pancakeswap/widgets-internal'
+
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import {
   useFetchListCallback,
   acceptListUpdate,

@@ -16,6 +16,7 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { currencyId } from 'utils/currencyId'
 
+import { useAccount } from 'wagmi'
 import { FormContainer } from '../components'
 import useWarningImport from '../../hooks/useWarningImport'
 import { RiskCheck } from './RiskCheck'
@@ -32,7 +33,7 @@ interface Props {
 }
 
 export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeLoading, swapCommitButton }: Props) {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   const warningSwapHandler = useWarningImport()
   const {

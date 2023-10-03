@@ -5,10 +5,11 @@ import { ifoV2ABI } from 'config/abi/ifoV2'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 
-import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
+import { useLpTokenPrice } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 
@@ -30,7 +31,7 @@ const formatPool = (pool) => ({
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address } = ifo
-  const cakePriceUsd = usePriceCakeUSD()
+  const cakePriceUsd = useCakePrice()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
 

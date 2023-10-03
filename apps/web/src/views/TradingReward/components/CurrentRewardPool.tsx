@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Flex, Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
@@ -8,7 +8,7 @@ import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import Link from 'next/link'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
 import TextComponent from 'views/TradingReward/components/TopTraders/YourTradingReward/TextComponent'
 import TimeText from 'views/TradingReward/components/TopTraders/YourTradingReward/TimeText'
@@ -95,7 +95,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
     currentLanguage: { locale },
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { totalReward, campaignClaimTime } = incentives ?? {}
 
   const currentDate = Date.now() / 1000

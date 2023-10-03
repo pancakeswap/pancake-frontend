@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Token, Currency, ChainId } from '@pancakeswap/sdk'
+import { Token, Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   Button,
   Text,
@@ -11,11 +12,11 @@ import {
   Tag,
   Grid,
   BscScanIcon,
-  ListLogo,
   useTooltip,
   HelpIcon,
   AutoColumn,
 } from '@pancakeswap/uikit'
+import { ListLogo } from '@pancakeswap/widgets-internal'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import useSWRImmutable from 'swr/immutable'

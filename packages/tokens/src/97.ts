@@ -1,4 +1,5 @@
-import { ChainId, ERC20Token, WBNB } from '@pancakeswap/sdk'
+import { ERC20Token, WBNB } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import { BUSD_TESTNET, CAKE_TESTNET } from './common'
 

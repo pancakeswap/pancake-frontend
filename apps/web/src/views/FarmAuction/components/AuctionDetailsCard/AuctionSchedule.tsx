@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Text, Flex, Box } from '@pancakeswap/uikit'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'

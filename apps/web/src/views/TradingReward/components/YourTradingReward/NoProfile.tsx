@@ -2,7 +2,7 @@ import { Box, Text, Button, Link, Message, MessageText } from '@pancakeswap/uiki
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 
 const NoProfile = () => {

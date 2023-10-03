@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useMemo } from 'react'
 
 // TODO: refactor. We shouldn't import modules from views in higher level hooks

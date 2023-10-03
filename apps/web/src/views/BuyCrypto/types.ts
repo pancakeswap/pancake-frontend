@@ -1,11 +1,13 @@
-export type ProviderQoute = {
+import { ONRAMP_PROVIDERS } from './constants'
+
+export type ProviderQuote = {
   providerFee: number
   networkFee: number
   amount: number
   quote: number
   fiatCurrency: string
   cryptoCurrency: string
-  provider: string
+  provider: keyof typeof ONRAMP_PROVIDERS
   price?: number
   noFee?: number
 }

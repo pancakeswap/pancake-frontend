@@ -14,7 +14,7 @@ import {
 import { Ifo, PoolIds } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'

@@ -12,7 +12,7 @@ import {
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
-import styled, { keyframes } from 'styled-components'
+import { styled, keyframes } from 'styled-components'
 import * as S from './Styled'
 
 const {

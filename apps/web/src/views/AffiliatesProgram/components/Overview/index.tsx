@@ -5,14 +5,14 @@ import Benefits from 'views/AffiliatesProgram/components/Overview/Benefits'
 import RewardCalculate from 'views/AffiliatesProgram/components/Overview/RewardCalculate'
 import Question from 'views/AffiliatesProgram/components/Overview/Question'
 import OnBoardingModal from 'views/AffiliatesProgram/components/OnBoardingModal'
-import AffiliateModal from 'views/AffiliatesProgram/components/Dashboard/AffiliateModal'
+// import AffiliateModal from 'views/AffiliatesProgram/components/Dashboard/AffiliateModal'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
 const AffiliatesProgram = () => {
   return (
     <AffiliatesProgramLayout>
       <OnBoardingModal />
-      <AffiliateModal />
+      {/* <AffiliateModal /> */}
       <AffiliatesBanner />
       <HowItWork />
       <RewardCalculate />

@@ -21,14 +21,14 @@ export default function RangeSelector({
 }: {
   priceLower?: Price<Token, Token>
   priceUpper?: Price<Token, Token>
-  getDecrementLower: () => string
-  getIncrementLower: () => string
-  getDecrementUpper: () => string
-  getIncrementUpper: () => string
-  onLeftRangeInput: (typedValue: string) => void
-  onRightRangeInput: (typedValue: string) => void
-  currencyA?: Currency | null
-  currencyB?: Currency | null
+  getDecrementLower: () => Price<Token, Token> | undefined
+  getIncrementLower: () => Price<Token, Token> | undefined
+  getDecrementUpper: () => Price<Token, Token> | undefined
+  getIncrementUpper: () => Price<Token, Token> | undefined
+  onLeftRangeInput: (typedValue: Price<Token, Token> | undefined) => void
+  onRightRangeInput: (typedValue: Price<Token, Token> | undefined) => void
+  currencyA?: Currency | undefined
+  currencyB?: Currency | undefined
   feeAmount?: number
   ticksAtLimit: { [bound in Bound]?: boolean | undefined }
 }) {
@@ -53,8 +53,8 @@ export default function RangeSelector({
         feeAmount={feeAmount}
         label={leftPrice ? `${currencyB?.symbol}` : '-'}
         title={t('Min Price')}
-        tokenA={currencyA?.symbol}
-        tokenB={currencyB?.symbol}
+        tokenA={currencyA}
+        tokenB={currencyB}
       />
       <StepCounter
         value={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] ? '∞' : rightPrice?.toSignificant(5) ?? ''}
@@ -66,8 +66,8 @@ export default function RangeSelector({
         decrementDisabled={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER]}
         feeAmount={feeAmount}
         label={rightPrice ? `${currencyB?.symbol}` : '-'}
-        tokenA={currencyA?.symbol}
-        tokenB={currencyB?.symbol}
+        tokenA={currencyA}
+        tokenB={currencyB}
         title={t('Max Price')}
       />
     </FlexGap>

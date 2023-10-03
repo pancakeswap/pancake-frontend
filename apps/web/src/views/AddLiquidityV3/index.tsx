@@ -23,7 +23,7 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { atom, useAtom } from 'jotai'
 
 import { useCurrency } from 'hooks/Tokens'
@@ -130,15 +130,15 @@ export function UniversalAddLiquidity({
         // not ideal, but for now clobber the other if the currency ids are equal
         return [currencyIdNew, undefined]
       }
-      // prevent weth + eth
-      const isETHOrWETHNew =
+      // prevent wnative + native
+      const isNATIVEOrWNATIVENew =
         currencyNew?.isNative || (chainId !== undefined && currencyIdNew === WNATIVE[chainId]?.address)
-      const isETHOrWETHOther =
+      const isNATIVEOrWNATIVEOther =
         currencyIdOther !== undefined &&
         (currencyIdOther === NATIVE[chainId]?.symbol ||
           (chainId !== undefined && getAddress(currencyIdOther) === WNATIVE[chainId]?.address))
 
-      if (isETHOrWETHNew && isETHOrWETHOther) {
+      if (isNATIVEOrWNATIVENew && isNATIVEOrWNATIVEOther) {
         return [currencyIdNew, undefined]
       }
 
@@ -251,6 +251,18 @@ export function UniversalAddLiquidity({
             query: {
               ...router.query,
               currency: [currencyIdA, currencyIdB, newFeeAmount.toString()],
+            },
+          },
+          undefined,
+          { shallow: true },
+        )
+      } else {
+        router.replace(
+          {
+            pathname: router.pathname.replace('/v2', ''),
+            query: {
+              ...router.query,
+              currency: [currencyIdA, currencyIdB],
             },
           },
           undefined,

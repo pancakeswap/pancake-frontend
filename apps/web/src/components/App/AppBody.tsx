@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Card, CardProps } from '@pancakeswap/uikit'
 
 export const BodyWrapper = styled(Card)`

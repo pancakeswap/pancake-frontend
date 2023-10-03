@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { createPublicClient, http, PublicClient } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet, zkSyncTestnet, polygonZkEvm, zkSync, arbitrum } from 'viem/chains'
 
@@ -10,7 +10,91 @@ const requireCheck = [
   POLYGON_ZKEVM_NODE,
   ZKSYNC_NODE,
   ARBITRUM_ONE_NODE,
+  LINEA_NODE,
+  BASE_NODE,
 ]
+
+const base = {
+  id: 8453,
+  network: 'base',
+  name: 'Base',
+  nativeCurrency: {
+    name: 'Base',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.base.org'],
+    },
+    public: {
+      http: ['https://mainnet.base.org'],
+    },
+  },
+  blockExplorers: {
+    blockscout: {
+      name: 'Basescout',
+      url: 'https://base.blockscout.com',
+    },
+    default: {
+      name: 'Basescan',
+      url: 'https://basescan.org',
+    },
+    etherscan: {
+      name: 'Basescan',
+      url: 'https://basescan.org',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 5022,
+    },
+  },
+} as const
+
+const linea = {
+  id: 59_144,
+  name: 'Linea Mainnet',
+  network: 'linea-mainnet',
+  nativeCurrency: { name: 'Linea Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    infura: {
+      http: ['https://linea-mainnet.infura.io/v3'],
+      webSocket: ['wss://linea-mainnet.infura.io/ws/v3'],
+    },
+    default: {
+      http: ['https://rpc.linea.build'],
+      webSocket: ['wss://rpc.linea.build'],
+    },
+    public: {
+      http: ['https://rpc.linea.build'],
+      webSocket: ['wss://rpc.linea.build'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Etherscan',
+      url: 'https://lineascan.build',
+    },
+    etherscan: {
+      name: 'Etherscan',
+      url: 'https://lineascan.build',
+    },
+    blockscout: {
+      name: 'Blockscout',
+      url: 'https://explorer.linea.build',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 42,
+    },
+  },
+  testnet: false,
+} as const
+
 requireCheck.forEach((node) => {
   if (!node) {
     throw new Error('Missing env var')
@@ -23,8 +107,10 @@ const mainnetClient = createPublicClient({
   batch: {
     multicall: {
       batchSize: 1024 * 200,
+      wait: 16,
     },
   },
+  pollingInterval: 6_000,
 })
 
 export const bscClient: PublicClient = createPublicClient({
@@ -33,8 +119,10 @@ export const bscClient: PublicClient = createPublicClient({
   batch: {
     multicall: {
       batchSize: 1024 * 200,
+      wait: 16,
     },
   },
+  pollingInterval: 6_000,
 })
 
 export const bscTestnetClient: PublicClient = createPublicClient({
@@ -43,8 +131,10 @@ export const bscTestnetClient: PublicClient = createPublicClient({
   batch: {
     multicall: {
       batchSize: 1024 * 200,
+      wait: 16,
     },
   },
+  pollingInterval: 6_000,
 })
 
 const goerliClient = createPublicClient({
@@ -53,8 +143,10 @@ const goerliClient = createPublicClient({
   batch: {
     multicall: {
       batchSize: 1024 * 200,
+      wait: 16,
     },
   },
+  pollingInterval: 6_000,
 })
 
 const zksyncTestnetClient = createPublicClient({
@@ -63,8 +155,10 @@ const zksyncTestnetClient = createPublicClient({
   batch: {
     multicall: {
       batchSize: 1024 * 200,
+      wait: 16,
     },
   },
+  pollingInterval: 6_000,
 })
 
 const polygonZkEvmClient = createPublicClient({
@@ -81,8 +175,10 @@ const polygonZkEvmClient = createPublicClient({
   batch: {
     multicall: {
       batchSize: 1024 * 200,
+      wait: 16,
     },
   },
+  pollingInterval: 6_000,
 })
 
 const zksyncClient = createPublicClient({
@@ -91,8 +187,10 @@ const zksyncClient = createPublicClient({
   batch: {
     multicall: {
       batchSize: 1024 * 200,
+      wait: 16,
     },
   },
+  pollingInterval: 6_000,
 })
 
 const arbitrumOneClient = createPublicClient({
@@ -101,8 +199,34 @@ const arbitrumOneClient = createPublicClient({
   batch: {
     multicall: {
       batchSize: 1024 * 200,
+      wait: 16,
     },
   },
+  pollingInterval: 6_000,
+})
+
+const lineaClient = createPublicClient({
+  chain: linea,
+  transport: http(LINEA_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+  pollingInterval: 6_000,
+})
+
+const baseClient = createPublicClient({
+  chain: base,
+  transport: http(BASE_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+  pollingInterval: 6_000,
 })
 
 export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient => {
@@ -123,6 +247,10 @@ export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient 
       return zksyncClient
     case ChainId.ARBITRUM_ONE:
       return arbitrumOneClient
+    case ChainId.LINEA:
+      return lineaClient
+    case ChainId.BASE:
+      return baseClient
     default:
       return bscClient
   }

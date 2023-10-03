@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Card, Flex, Box, Message, MessageText } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import TabMenu, { MenuType } from 'views/AffiliatesProgram/components/Dashboard/Reward/TabMenu'

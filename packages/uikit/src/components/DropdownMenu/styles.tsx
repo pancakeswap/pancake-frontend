@@ -1,4 +1,4 @@
-import styled, { DefaultTheme } from "styled-components";
+import { styled, DefaultTheme } from "styled-components";
 import { Colors } from "../../theme";
 import { Text } from "../Text";
 import { StyledDropdownMenuItemProps } from "./types";
@@ -14,7 +14,9 @@ const getTextColor = ({
   return theme.colors.textSubtle;
 };
 
-export const DropdownMenuItem = styled.button<StyledDropdownMenuItemProps & { $isActive: boolean }>`
+export const DropdownMenuItem = styled("button").withConfig({
+  shouldForwardProp: (props) => !["confirmModalId"].includes(props),
+})<StyledDropdownMenuItemProps & { $isActive: boolean }>`
   align-items: center;
   border: 0;
   background: transparent;

@@ -1,5 +1,19 @@
 # @pancakeswap/wagmi
 
+## 2.0.2
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+
+## 2.0.1
+
+### Patch Changes
+
+- 1fdd3cc57: Bump wagmi version
+- 628e055ce: Fix blocto keep connection after disconnect
+- 299cf46b7: Upgrade blocto sdk version
+
 ## 2.0.0
 
 ### Major Changes

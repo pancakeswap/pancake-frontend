@@ -5,6 +5,7 @@ import { getCollection, getNftApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 // eslint-disable-next-line camelcase
 import { SWRConfig, unstable_serialize } from 'swr'
+import SubMenu from 'views/Nft/market/components/SubMenu'
 
 const IndividualNFTPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
@@ -13,6 +14,7 @@ const IndividualNFTPage = ({ fallback = {} }: InferGetStaticPropsType<typeof get
         fallback,
       }}
     >
+      <SubMenu />
       <IndividualNFT />
     </SWRConfig>
   )

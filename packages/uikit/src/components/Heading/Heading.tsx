@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import Text from "../Text/Text";
 import { tags, scales, HeadingProps } from "./types";
 
@@ -32,7 +32,7 @@ const Heading = styled(Text).attrs({ bold: true })<HeadingProps>`
 `;
 
 Heading.defaultProps = {
-  as: tags.H2,
+  as: tags.H2 as any,
 };
 
 export default Heading;

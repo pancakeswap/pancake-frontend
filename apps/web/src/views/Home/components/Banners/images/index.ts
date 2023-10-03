@@ -71,6 +71,20 @@ import moonpayBgMobile from './moonpay-bg-mobile.png'
 import moonpayBg from './moonpay-bg.png'
 import moonpayCash from './moonpay-cash.png'
 import moonpayLogo from './moonpay-logo.png'
+import lineaLogo from './linea-logo.png'
+import lineaBg from './linea-bg.png'
+import lineaBgMobile from './linea-bg-mobile.png'
+import lineaBunny from './linea-bunny.png'
+import lineaBunnyMobile from './linea-bunny-mobile.png'
+import baseBg from './base-bg.png'
+import baseBgMobile from './base-bg-mobile.png'
+import baseBunny from './base-bunny.png'
+import baseTree from './base-tree.png'
+import baseMoon from './base-moon.png'
+import mercuryoLogo from './mercuryo-logo.png'
+import opbnbBg from './opbnb-bg.png'
+import opbnbBgMobile from './opbnb-bg-mobile.png'
+import opbnbBunny from './opbnb-bunny.png'
 
 export {
   lotteryImage,
@@ -145,4 +159,18 @@ export {
   moonpayBg,
   moonpayCash,
   moonpayLogo,
+  lineaLogo,
+  lineaBg,
+  lineaBgMobile,
+  lineaBunny,
+  lineaBunnyMobile,
+  baseBg,
+  baseBgMobile,
+  baseBunny,
+  baseMoon,
+  baseTree,
+  mercuryoLogo,
+  opbnbBg,
+  opbnbBgMobile,
+  opbnbBunny,
 }

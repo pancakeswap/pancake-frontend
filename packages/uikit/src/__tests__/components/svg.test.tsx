@@ -10,20 +10,15 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
       align-self: center;
       fill: var(--colors-text);
       color: var(--colors-text);
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
       flex-shrink: 0;
     }
 
-    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+    @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
       .c0 {
-        -webkit-filter: none !important;
-        filter: none !important;
+        filter: none!important;
       }
     }
 

@@ -1,6 +1,7 @@
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
-import { Skeleton, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Skeleton, useToast } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -11,7 +12,7 @@ import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 
-const { FarmTableHarvestAction } = FarmUI.FarmTable
+const { FarmTableHarvestAction } = FarmWidget.FarmTable
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean

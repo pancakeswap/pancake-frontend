@@ -11,14 +11,14 @@ import {
   SubMenu,
   Skeleton,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import Image from 'next/image'
@@ -51,7 +51,7 @@ const getRankingColor = (rank: number) => {
 const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user?.origin)
   const { domainName, avatar } = useDomainNameForAddress(user?.origin, !profile && !isProfileLoading)
 

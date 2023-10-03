@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import LogoRound from "../Svg/Icons/LogoRound";
 import Text from "../Text/Text";
 import Skeleton from "../Skeleton/Skeleton";
@@ -18,7 +18,7 @@ const PriceLink = styled.a`
   svg {
     transition: transform 0.3s;
   }
-  :hover {
+  &:hover {
     svg {
       transform: scale(1.2);
     }

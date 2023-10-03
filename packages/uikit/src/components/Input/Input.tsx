@@ -1,4 +1,4 @@
-import styled, { DefaultTheme } from "styled-components";
+import { styled, DefaultTheme } from "styled-components";
 import { InputProps, scales } from "./types";
 
 interface StyledInputProps extends InputProps {
@@ -32,7 +32,9 @@ const getHeight = ({ scale = scales.MD }: StyledInputProps) => {
   }
 };
 
-const Input = styled.input<InputProps>`
+const Input = styled("input").withConfig({
+  shouldForwardProp: (props) => !["scale", "isSuccess", "isWarning"].includes(props),
+})<InputProps>`
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: 16px;
   box-shadow: ${getBoxShadow};

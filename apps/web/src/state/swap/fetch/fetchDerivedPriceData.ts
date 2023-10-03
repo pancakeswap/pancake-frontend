@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import {
   INFO_CLIENT,
   INFO_CLIENT_ETH,
@@ -50,9 +50,24 @@ const SWAP_INFO_BY_CHAIN = {
     v3: V3_SUBGRAPH_URLS[ChainId.ZKSYNC],
   },
   [ChainId.ZKSYNC_TESTNET]: {},
+  [ChainId.LINEA]: {},
   [ChainId.LINEA_TESTNET]: {
     v2: INFO_CLIENT_WITH_CHAIN[ChainId.LINEA_TESTNET],
     v3: V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET],
+  },
+  [ChainId.OPBNB]: {
+    v2: INFO_CLIENT_WITH_CHAIN[ChainId.OPBNB],
+    v3: V3_SUBGRAPH_URLS[ChainId.OPBNB],
+  },
+  [ChainId.OPBNB_TESTNET]: {},
+  [ChainId.BASE]: {
+    v3: V3_SUBGRAPH_URLS[ChainId.BASE],
+  },
+  [ChainId.BASE_TESTNET]: {
+    v3: V3_SUBGRAPH_URLS[ChainId.BASE_TESTNET],
+  },
+  [ChainId.SCROLL_SEPOLIA]: {
+    v3: V3_SUBGRAPH_URLS[ChainId.SCROLL_SEPOLIA],
   },
 } satisfies Record<ChainId, Partial<ProtocolEndpoint>>
 
@@ -165,7 +180,7 @@ const fetchDerivedPriceData = async (
   const interval = getInterval(timeWindow)
   const endTimestamp = getUnixTime(new Date())
   const startTimestamp = getUnixTime(startOfHour(sub(endTimestamp * 1000, { days: getSkipDaysToStart(timeWindow) })))
-  const timestamps = []
+  const timestamps: number[] = []
   let time = startTimestamp
   if (!SWAP_INFO_BY_CHAIN[chainId][protocol0] || !SWAP_INFO_BY_CHAIN[chainId][protocol1]) {
     return null

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useFarms, usePriceCakeUSD } from 'state/farms/hooks'
+import { useFarms } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useAppDispatch } from 'state'
 import { fetchFarmsPublicDataAsync } from 'state/farms'
 import { getFarmApr } from 'utils/apr'
@@ -17,7 +18,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const [topFarms, setTopFarms] = useState<{ lpSymbol: string; apr: number; lpRewardsApr: number; version: 2 | 3 }[]>(
     () => [null, null, null, null, null],
   )
-  const cakePriceBusd = usePriceCakeUSD()
+  const cakePriceBusd = useCakePrice()
   const { chainId } = useActiveChainId()
 
   const { status: fetchStatus, isValidating } = useSWR(

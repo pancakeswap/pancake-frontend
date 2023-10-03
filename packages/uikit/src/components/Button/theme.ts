@@ -1,5 +1,5 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
 import { scales, variants } from "./types";
+import { vars } from "../../css/vars.css";
 
 export const scaleVariants = {
   [scales.MD]: {
@@ -63,5 +63,8 @@ export const styleVariants = {
     background: vars.colors.gradientBubblegum,
     color: "textSubtle",
     boxShadow: "none",
+    ":disabled": {
+      background: vars.colors.disabled,
+    },
   },
 };

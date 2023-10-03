@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Text, Flex } from '@pancakeswap/uikit'
 
 export const ClickableColumnHeader = styled(Text)`
@@ -34,7 +34,7 @@ export const PageButtons = styled.div`
 export const Arrow = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   padding: 0 20px;
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 `

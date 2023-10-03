@@ -1,10 +1,11 @@
 import { Token } from '@pancakeswap/sdk'
-import { AutoRow, Farm as FarmUI, Flex, Heading, Skeleton, Tag, useTooltip } from '@pancakeswap/uikit'
+import { AutoRow, Flex, Heading, Skeleton, Tag, useTooltip, FarmMultiplierInfo } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { TokenPairImage } from 'components/TokenImage'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
-const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
+const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
 
 type ExpandableSectionProps = {
   lpLabel?: string
@@ -45,7 +46,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
 }) => {
   const isReady = multiplier !== undefined
 
-  const multiplierTooltipContent = FarmUI.FarmMultiplierInfo({
+  const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? '-',
     totalMultipliers: totalMultipliers ?? '-',
   })

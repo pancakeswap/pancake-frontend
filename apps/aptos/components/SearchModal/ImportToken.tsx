@@ -11,9 +11,10 @@ import {
   Tag,
   Grid,
   AutoColumn,
-  ListLogo,
   AptosIcon,
 } from '@pancakeswap/uikit'
+import { ListLogo } from '@pancakeswap/widgets-internal'
+
 import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useCombinedInactiveList } from 'state/lists/hooks'

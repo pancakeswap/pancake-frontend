@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { darken } from 'polished'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
+import { lightColors, darkColors } from '@pancakeswap/uikit'
 
 export type LineChartProps = {
   data: any[]

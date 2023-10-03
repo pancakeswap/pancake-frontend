@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import { CHAIN_QUERY_NAME } from 'config/chains'
 

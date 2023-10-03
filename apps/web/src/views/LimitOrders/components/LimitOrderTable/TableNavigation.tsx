@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, ReactElement, memo, useEffect } from 'react'
 import { Text, Flex, Box, Grid, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import NoOrdersMessage from './NoOrdersMessage'
@@ -10,7 +10,7 @@ import LoadingTable from './LoadingTable'
 const Arrow = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   padding: 0 20px;
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 `

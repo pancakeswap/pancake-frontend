@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import styled, { useTheme } from "styled-components";
+import { styled, useTheme } from "styled-components";
 import getThemeValue from "../../util/getThemeValue";
 import Modal from "./Modal";
 import { Link } from "../../components/Link";

@@ -1,5 +1,48 @@
 # @pancakeswap/sdk
 
+## 5.6.0
+
+### Minor Changes
+
+- 435a90ac2: Add support for opBNB mainnet
+
+### Patch Changes
+
+- Updated dependencies [435a90ac2]
+  - @pancakeswap/chains@0.1.0
+
+## 5.5.0
+
+### Minor Changes
+
+- 1831356d9: refactor: Move ChainsId usage from Sdk to Chains package
+
+## 5.4.2
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/chains@0.0.1
+
+## 5.4.1
+
+### Patch Changes
+
+- 7a0c21e72: fix base v2 factory address
+
+## 5.4.0
+
+### Minor Changes
+
+- 868f4d11f: Add Base support
+
+## 5.3.0
+
+### Minor Changes
+
+- 5e15c611e: Add linea support
+
 ## 5.2.1
 
 ### Patch Changes

@@ -1,12 +1,12 @@
-import { Farm as FarmUI, FarmTableFarmTokenInfoProps } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { TokenPairImage } from 'components/TokenImage'
 import { useFarmUserInfoCache } from 'state/farms/hook'
 
-const { FarmTokenInfo } = FarmUI.FarmTable
+const { FarmTokenInfo } = FarmWidget.FarmTable
 
-const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenInfoProps>> = ({
+const Farm: React.FunctionComponent<React.PropsWithChildren<FarmWidget.FarmTableFarmTokenInfoProps>> = ({
   token,
   quoteToken,
   label,

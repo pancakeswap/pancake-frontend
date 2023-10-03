@@ -1,12 +1,17 @@
-import styled from "styled-components";
+import shouldForwardProp from "@styled-system/should-forward-prop";
+import { styled } from "styled-components";
 import { Colors } from "../../theme";
 
-export const StyledIconContainer = styled.div<{ activeBackgroundColor?: keyof Colors }>`
+export const StyledIconContainer = styled.div.withConfig({ shouldForwardProp })<{
+  activeBackgroundColor?: keyof Colors;
+}>`
   background: ${({ activeBackgroundColor, theme }) =>
     activeBackgroundColor ? theme.colors[activeBackgroundColor] : "transparent"};
 `;
 
-export const StyledAnimatedIconComponent = styled.div<{
+export const StyledAnimatedIconComponent = styled("div").withConfig({
+  shouldForwardProp: (props) => !["isActive", "hasFillIcon"].includes(props),
+})<{
   isActive: boolean;
   height?: string;
   width?: string;

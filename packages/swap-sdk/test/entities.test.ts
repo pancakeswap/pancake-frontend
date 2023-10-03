@@ -1,7 +1,8 @@
 import invariant from 'tiny-invariant'
 import { TradeType, Rounding, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { ChainId } from '@pancakeswap/chains'
 import { Pair, Route, Trade } from '../src/entities'
-import { ChainId, WNATIVE as _WETH } from '../src/constants'
+import { WNATIVE as _WETH } from '../src/constants'
 
 const ADDRESSES = [
   '0x0000000000000000000000000000000000000001',

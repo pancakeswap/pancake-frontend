@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, Text, Box, Image } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import commissionList from 'views/AffiliatesProgram/utils/commisionList'

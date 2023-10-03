@@ -1,7 +1,7 @@
 import { useMemo, useContext } from 'react'
 import { Currency, CurrencyAmount, Pair, Percent } from '@pancakeswap/sdk'
 import { Text, Card, CardBody, Flex, CardProps, TooltipText, useTooltip, Link, AutoColumn } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'

@@ -1,10 +1,12 @@
-import { Currency, BigintIsh, ChainId } from '@pancakeswap/sdk'
+import { Currency, BigintIsh } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { PublicClient } from 'viem'
 import type { GraphQLClient } from 'graphql-request'
 
 import { Pool, PoolType } from './pool'
 import { RouteWithoutQuote, RouteWithQuote } from './route'
 import { GasModel } from './gasModel'
+import { BatchMulticallConfigs, ChainMap } from '../../types'
 
 interface GetPoolParams {
   currencyA?: Currency
@@ -25,9 +27,17 @@ export interface QuoterOptions {
   gasModel: GasModel
 }
 
-export interface QuoteProvider {
+export type QuoterConfig = {
+  onChainProvider: OnChainProvider
+  gasLimit?: BigintIsh
+  multicallConfigs?: ChainMap<BatchMulticallConfigs>
+}
+
+export interface QuoteProvider<C = any> {
   getRouteWithQuotesExactIn: (routes: RouteWithoutQuote[], options: QuoterOptions) => Promise<RouteWithQuote[]>
   getRouteWithQuotesExactOut: (routes: RouteWithoutQuote[], options: QuoterOptions) => Promise<RouteWithQuote[]>
+
+  getConfig?: () => C
 }
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient

@@ -1,5 +1,5 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { ChainId } from '../src/constants'
+import { ChainId } from '@pancakeswap/chains'
 
 describe('Token', () => {
   const ADDRESS_ONE = '0x0000000000000000000000000000000000000001'

@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import memoize from 'lodash/memoize'
 import {
   bsc as bsc_,
@@ -7,11 +7,14 @@ import {
   mainnet,
   zkSync,
   zkSyncTestnet,
-  polygonZkEvmTestnet as polygonZkEvmTestnet_,
-  polygonZkEvm as polygonZkEvm_,
-  lineaTestnet as lineaTestnet_,
+  polygonZkEvmTestnet,
+  polygonZkEvm,
+  lineaTestnet,
   arbitrum,
   arbitrumGoerli,
+  base,
+  baseGoerli,
+  scrollSepolia as scrollSepolia_,
   Chain,
 } from 'wagmi/chains'
 
@@ -26,7 +29,13 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: 'polygonZkEVMTestnet',
   [ChainId.ZKSYNC]: 'zkSync',
   [ChainId.ZKSYNC_TESTNET]: 'zkSyncTestnet',
+  [ChainId.LINEA]: 'linea',
   [ChainId.LINEA_TESTNET]: 'lineaTestnet',
+  [ChainId.OPBNB]: 'opBNB',
+  [ChainId.OPBNB_TESTNET]: 'opBnbTestnet',
+  [ChainId.BASE]: 'base',
+  [ChainId.BASE_TESTNET]: 'baseTestnet',
+  [ChainId.SCROLL_SEPOLIA]: 'scrollSepolia',
 } as const satisfies Record<ChainId, string>
 
 const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
@@ -56,38 +65,111 @@ const bsc = {
   },
 } satisfies Chain
 
-const polygonZkEvm = {
-  ...polygonZkEvm_,
+const scrollSepolia = {
+  ...scrollSepolia_,
   contracts: {
     multicall3: {
       address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 57746,
+      blockCreated: 9473,
     },
   },
 } as const satisfies Chain
 
-const polygonZkEvmTestnet = {
-  ...polygonZkEvmTestnet_,
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 525686,
+export const opbnbTestnet = {
+  id: ChainId.OPBNB_TESTNET,
+  name: 'opBNB Testnet',
+  network: 'opbnb-testnet',
+  nativeCurrency: bscTestnet.nativeCurrency,
+  rpcUrls: {
+    default: {
+      http: ['https://opbnb-testnet-rpc.bnbchain.org'],
+    },
+    public: {
+      http: ['https://opbnb-testnet-rpc.bnbchain.org'],
     },
   },
-} as const satisfies Chain
-
-const lineaTestnet = {
-  ...lineaTestnet_,
   blockExplorers: {
-    etherscan: {
-      name: 'LineaScan',
-      url: 'https://goerli.lineascan.build',
+    default: {
+      name: 'opBNBScan',
+      url: 'https://testnet.opbnbscan.com',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 3705108,
+    },
+  },
+  testnet: true,
+} as const satisfies Chain
+
+export const opbnb = {
+  id: ChainId.OPBNB,
+  name: 'opBNB Mainnet',
+  network: 'opbnb',
+  nativeCurrency: bsc_.nativeCurrency,
+  rpcUrls: {
+    default: {
+      http: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+    },
+    public: {
+      http: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'opBNBScan',
+      url: 'https://opbnbscan.com',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 512881,
+    },
+  },
+} as const satisfies Chain
+
+export const linea = {
+  id: ChainId.LINEA,
+  name: 'Linea Mainnet',
+  network: 'linea-mainnet',
+  nativeCurrency: { name: 'Linea Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    infura: {
+      http: ['https://linea-mainnet.infura.io/v3'],
+      webSocket: ['wss://linea-mainnet.infura.io/ws/v3'],
     },
     default: {
-      name: 'LineaScan',
-      url: 'https://goerli.lineascan.build',
+      http: ['https://rpc.linea.build'],
+      webSocket: ['wss://rpc.linea.build'],
+    },
+    public: {
+      http: ['https://rpc.linea.build'],
+      webSocket: ['wss://rpc.linea.build'],
     },
   },
+  blockExplorers: {
+    default: {
+      name: 'Etherscan',
+      url: 'https://lineascan.build',
+    },
+    etherscan: {
+      name: 'Etherscan',
+      url: 'https://lineascan.build',
+    },
+    blockscout: {
+      name: 'Blockscout',
+      url: 'https://explorer.linea.build',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 42,
+    },
+  },
+  testnet: false,
 } as const satisfies Chain
 
 /**
@@ -102,6 +184,11 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.ZKSYNC,
   ChainId.ZKSYNC_TESTNET,
   ChainId.LINEA_TESTNET,
+  ChainId.LINEA,
+  ChainId.BASE,
+  ChainId.BASE_TESTNET,
+  ChainId.OPBNB,
+  ChainId.OPBNB_TESTNET,
 ]
 
 export const CHAINS = [
@@ -109,11 +196,19 @@ export const CHAINS = [
   mainnet,
   bscTestnet,
   goerli,
-  zkSync,
-  zkSyncTestnet,
   polygonZkEvm,
   polygonZkEvmTestnet,
+  zkSync,
+  zkSyncTestnet,
+  arbitrum,
+  arbitrumGoerli,
+  linea,
   lineaTestnet,
   arbitrumGoerli,
   arbitrum,
+  base,
+  baseGoerli,
+  opbnb,
+  opbnbTestnet,
+  scrollSepolia,
 ]

@@ -1,5 +1,88 @@
 # @pancakeswap/utils
 
+## 5.0.5
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+  - @pancakeswap/localization@5.0.5
+
+## 5.0.4
+
+### Patch Changes
+
+- 51b77c787: Fix utils deps: `@pancakeswap/utils` now should not dependent on sdk and awgmi
+  - @pancakeswap/localization@5.0.4
+
+## 5.0.3
+
+### Patch Changes
+
+- Updated dependencies [dd10c9457]
+  - @pancakeswap/awgmi@0.1.15
+  - @pancakeswap/localization@5.0.3
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.4.1
+
+## 5.0.2
+
+### Patch Changes
+
+- a784ca6ed: Pancake Multicall release
+  - @pancakeswap/awgmi@0.1.14
+  - @pancakeswap/localization@5.0.2
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.4.1
+
+## 5.0.1
+
+### Patch Changes
+
+- @pancakeswap/tokens@0.4.1
+- @pancakeswap/awgmi@0.1.13
+- @pancakeswap/localization@5.0.1
+- @pancakeswap/token-lists@0.0.8
+
+## 5.0.0
+
+### Patch Changes
+
+- Updated dependencies [868f4d11f]
+  - @pancakeswap/tokens@0.4.0
+  - @pancakeswap/awgmi@0.1.12
+  - @pancakeswap/localization@5.0.0
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.1
+
+### Patch Changes
+
+- Updated dependencies [d0f9b28a9]
+  - @pancakeswap/tokens@0.3.1
+  - @pancakeswap/awgmi@0.1.11
+  - @pancakeswap/localization@4.0.1
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [5e15c611e]
+  - @pancakeswap/tokens@0.3.0
+  - @pancakeswap/awgmi@0.1.10
+  - @pancakeswap/localization@4.0.0
+  - @pancakeswap/token-lists@0.0.8
+
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies [299cf46b7]
+  - @pancakeswap/awgmi@0.1.9
+  - @pancakeswap/localization@3.0.3
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.2.3
+
 ## 3.0.2
 
 ### Patch Changes
