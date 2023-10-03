@@ -85,7 +85,7 @@ const StyledSubheading = styled.div`
 
 const GalxePredictBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <S.Wrapper
@@ -105,7 +105,7 @@ const GalxePredictBanner = () => {
             />
           </Flex>
           <Box maxWidth="780px" marginTop="12px">
-            {isDesktop ? (
+            {!isMobile ? (
               <StyledSubheading data-text={t('Jupiter Predictors')}>{t('Jupiter Predictors:')}</StyledSubheading>
             ) : null}
             <StyledSubheading

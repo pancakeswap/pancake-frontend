@@ -85,7 +85,7 @@ const StyledSubheading = styled.div`
 
 const GalaxeSyndicateBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <S.Wrapper
@@ -105,7 +105,7 @@ const GalaxeSyndicateBanner = () => {
             />
           </Flex>
           <Box maxWidth="780px" marginTop="8px">
-            {isDesktop ? (
+            {!isMobile ? (
               <StyledSubheading data-text={t('Trade perpetuals and share $10,000 rewards')}>
                 {t('Trade perpetuals and share $10,000 rewards')}
               </StyledSubheading>
