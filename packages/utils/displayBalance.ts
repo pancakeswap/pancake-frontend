@@ -1,5 +1,5 @@
-import { parseUnits } from 'viem'
 import { formatBigInt } from './formatBalance'
+import { parseUnits } from './viem/parseUnits'
 
 export const displayBalance = ({
   balance,
