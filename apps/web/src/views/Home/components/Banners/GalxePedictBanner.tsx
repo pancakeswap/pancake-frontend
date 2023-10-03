@@ -104,9 +104,6 @@ const GalxePredictBanner = () => {
             />
           </Flex>
           <Box maxWidth="780px" marginTop="12px">
-            {!isMobile ? (
-              <StyledSubheading data-text={t('Jupiter Predictors:')}>{t('Jupiter Predictors:')}</StyledSubheading>
-            ) : null}
             <StyledSubheading
               data-text={isMobile ? t('Jupiter Predictors:') : t('Predict, win and share $10,000 rewards')}
             >
