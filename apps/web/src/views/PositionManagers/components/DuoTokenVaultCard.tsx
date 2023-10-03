@@ -28,6 +28,7 @@ const StyledCard = styled(Card)`
 interface Props {
   currencyA: Currency
   currencyB: Currency
+  earningToken: Currency
   name: string
   id: string | number
   feeTier: FeeAmount
@@ -57,6 +58,7 @@ interface Props {
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   currencyA,
   currencyB,
+  earningToken,
   name,
   id,
   feeTier,
@@ -104,6 +106,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           manager={manager}
           currencyA={currencyA}
           currencyB={currencyB}
+          earningToken={earningToken}
           price={price}
           vaultName={vaultName}
           feeTier={feeTier}

@@ -12,6 +12,7 @@ import { CardSection } from './CardSection'
 import { AddLiquidity } from './AddLiquidity'
 import { InnerCard } from './InnerCard'
 import { StakedAssets } from './StakedAssets'
+import { RewardAssets } from './RewardAssets'
 import { RemoveLiquidity } from './RemoveLiquidity'
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
   }
   currencyA: Currency
   currencyB: Currency
+  earningToken: Currency
   staked0Amount?: CurrencyAmount<Currency>
   staked1Amount?: CurrencyAmount<Currency>
   vaultName: string
@@ -45,6 +47,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   manager,
   currencyA,
   currencyB,
+  earningToken,
   vaultName,
   feeTier,
   price,
@@ -58,9 +61,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   token0PriceUSD,
   token1PriceUSD,
   refetch,
-}: // onAddLiquidity,
-// onRemoveLiquidity,
-Props) {
+}: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
   const [removeLiquidityModalOpen, setRemoveLiquidityModalOpen] = useState(false)
@@ -84,19 +85,22 @@ Props) {
   return (
     <>
       {hasStaked ? (
-        <InnerCard>
-          <StakedAssets
-            currencyA={currencyA}
-            currencyB={currencyB}
-            staked0Amount={staked0Amount}
-            staked1Amount={staked1Amount}
-            price={price}
-            onAdd={showAddLiquidityModal}
-            onRemove={showRemoveLiquidityModal}
-            token0PriceUSD={token0PriceUSD}
-            token1PriceUSD={token1PriceUSD}
-          />
-        </InnerCard>
+        <>
+          <InnerCard>
+            <StakedAssets
+              currencyA={currencyA}
+              currencyB={currencyB}
+              staked0Amount={staked0Amount}
+              staked1Amount={staked1Amount}
+              price={price}
+              onAdd={showAddLiquidityModal}
+              onRemove={showRemoveLiquidityModal}
+              token0PriceUSD={token0PriceUSD}
+              token1PriceUSD={token1PriceUSD}
+            />
+          </InnerCard>
+          <RewardAssets earningToken={earningToken} />
+        </>
       ) : !account ? (
         <ConnectWalletButton mt="24px" width="100%" />
       ) : (

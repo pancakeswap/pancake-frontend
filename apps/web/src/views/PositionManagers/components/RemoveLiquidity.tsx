@@ -59,17 +59,15 @@ Props) {
   const wrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
-  const amountA = useMemo(() => {
-    return staked0Amount?.multiply(percent)?.divide(100)
-  }, [staked0Amount, percent])
-  const amountB = useMemo(() => {
-    return staked1Amount?.multiply(percent)?.divide(100)
-  }, [staked1Amount, percent])
+
+  const amountA = useMemo(() => staked0Amount?.multiply(percent)?.divide(100), [staked0Amount, percent])
+  const amountB = useMemo(() => staked1Amount?.multiply(percent)?.divide(100), [staked1Amount, percent])
 
   const withdrawThenBurn = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() =>
       wrapperContract.write.withdrawThenBurn([amountA?.quotient + amountB.quotient, '0x'], {}),
     )
+
     if (receipt?.status) {
       refetch?.()
       onDismiss?.()

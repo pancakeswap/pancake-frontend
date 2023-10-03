@@ -94,3 +94,19 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
     }
   return null
 }
+
+export const useUserPendingRewardAmounts = () => {
+  const { account } = useActiveWeb3React()
+  const contract = usePositionManagerWrapperContract()
+  const { data, refetch } = useQuery(
+    ['useUserPendingRewardAmounts', account],
+    () => contract.read.pendingReward([account]),
+    {
+      enabled: !!account,
+      refetchInterval: 3000,
+      staleTime: 3000,
+      cacheTime: 3000,
+    },
+  )
+  return { data, refetch }
+}

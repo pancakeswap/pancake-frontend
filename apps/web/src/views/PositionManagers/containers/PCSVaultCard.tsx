@@ -18,6 +18,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     id,
     currencyA,
     currencyB,
+    earningToken,
     name,
     strategy,
     feeTier,
@@ -73,6 +74,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       id={id}
       currencyA={currencyA}
       currencyB={currencyB}
+      earningToken={earningToken}
       name={name}
       strategy={strategy}
       feeTier={feeTier}

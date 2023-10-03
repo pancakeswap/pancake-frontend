@@ -101,6 +101,7 @@ export interface DuoTokenVault {
   name: string
   currencyA: Currency
   currencyB: Currency
+  earningToken: Currency
   feeTier: FeeAmount
   manager: PositionManager
   strategy: Strategy

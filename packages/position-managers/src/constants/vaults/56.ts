@@ -12,6 +12,7 @@ export const vaults: VaultConfig[] = [
     name: 'ICHI',
     currencyA: bscTokens.cake,
     currencyB: bscTokens.usdt,
+    earningToken: bscTokens.cake,
     feeTier: FeeAmount.MEDIUM,
     strategy: Strategy.SUPER_ONE_SIDED,
     managerFee: {
