@@ -48,8 +48,8 @@ export const useMultipleBannerConfig = () => {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      { shouldRender: true, banner: <GalxePedictBanner /> },
       { shouldRender: true, banner: <GalxeSyndicateBanner /> },
+      { shouldRender: true, banner: <GalxePedictBanner /> },
       { shouldRender: true, banner: <OpBnbBanner /> },
       { shouldRender: true, banner: <BaseBanner /> },
       {
