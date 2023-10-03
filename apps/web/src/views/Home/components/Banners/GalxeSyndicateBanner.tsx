@@ -110,9 +110,9 @@ const GalaxeSyndicateBanner = () => {
               </StyledSubheading>
             ) : null}
             <StyledSubheading
-              data-text={isMobile ? t('Jupiter Syndicate') : t('Daily reward for new users and to top the leaderboard')}
+              data-text={isMobile ? t('Saturn Syndicate') : t('Daily reward for new users and to top the leaderboard')}
             >
-              {isMobile ? t('Jupiter Syndicate') : t('Daily reward for new users and to top the leaderboard')}
+              {isMobile ? t('Saturn Syndicate') : t('Daily reward for new users and to top the leaderboard')}
             </StyledSubheading>
           </Box>
 
