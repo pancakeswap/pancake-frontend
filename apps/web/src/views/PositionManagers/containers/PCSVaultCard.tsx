@@ -93,6 +93,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       poolToken0Amount={info?.poolToken0Amounts}
       poolToken1Amount={info?.poolToken1Amounts}
       pendingReward={info?.pendingReward}
+      userVaultPercentage={info?.userVaultPercentage}
       refetch={info?.refetchPositionInfo}
     >
       {id}

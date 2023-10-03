@@ -40,7 +40,6 @@ export const StakedAssets = memo(function StakedAssets({
 }: StakedAssetsProps) {
   const { t } = useTranslation()
 
-  // TODO: mock
   const totalAssetsInUsd = useMemo(() => {
     return (
       Number(formatAmount(staked0Amount)) * (token0PriceUSD ?? 0) +
@@ -93,7 +92,7 @@ export const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
 }: CurrencyAmountDisplayProps) {
   const currencyDisplay = amount?.currency || currency
   const amountDisplay = useMemo(() => formatAmount(amount) || '0', [amount])
-  // TODO: mock
+
   const amountInUsd = useMemo(() => {
     return Number(formatAmount(amount)) * (priceUSD ?? 0)
   }, [amount, priceUSD])

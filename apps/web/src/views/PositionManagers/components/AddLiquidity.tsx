@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { MANAGER } from '@pancakeswap/position-managers'
-import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { Currency, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, CurrencyInput, Flex, ModalV2, RowBetween, Text, useToast, LinkExternal } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -39,6 +39,7 @@ interface Props {
     token0Balance: CurrencyAmount<Currency>
     token1Balance: CurrencyAmount<Currency>
   }
+  userVaultPercentage?: Percent
   // TODO: return data
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
 }
@@ -60,6 +61,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   allowDepositToken0,
   contractAddress,
   userCurrencyBalances,
+  userVaultPercentage,
   refetch,
   onDismiss,
   onAmountChange,
@@ -178,8 +180,7 @@ export const AddLiquidity = memo(function AddLiquidity({
         <Flex mt="1.5em" flexDirection="column">
           <RowBetween>
             <Text color="text">{t('Your share in the vault')}:</Text>
-            <Text color="text">-%</Text>
-            {/* <Text color="text">{formatPercent(share)}%</Text> */}
+            <Text color="text">{`${userVaultPercentage?.toFixed(2)}%`}</Text>
           </RowBetween>
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>

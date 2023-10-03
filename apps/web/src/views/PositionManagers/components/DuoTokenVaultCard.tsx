@@ -53,6 +53,7 @@ interface Props {
   token0PriceUSD?: number
   token1PriceUSD?: number
   pendingReward: bigint
+  userVaultPercentage?: Percent
   refetch?: () => void
 }
 
@@ -80,6 +81,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   token0PriceUSD,
   token1PriceUSD,
   pendingReward,
+  userVaultPercentage,
   refetch,
 }: PropsWithChildren<Props>) {
   // TODO: mock
@@ -123,6 +125,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           token0PriceUSD={token0PriceUSD}
           token1PriceUSD={token1PriceUSD}
           pendingReward={pendingReward}
+          userVaultPercentage={userVaultPercentage}
           refetch={refetch}
         />
         <ExpandableSection mt="1.5em">

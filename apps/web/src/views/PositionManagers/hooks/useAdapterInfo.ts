@@ -5,6 +5,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Percent } from '@pancakeswap/sdk'
 
 export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   token0Amounts: bigint
@@ -12,6 +13,7 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   token0PerShare: bigint
   token1PerShare: bigint
   PRECISION: bigint
+  totalSupply: bigint
 } | null> {
   const [totalSupplyData, tokenPerShareData, PRECISIONData] = await publicClient({ chainId }).multicall({
     contracts: [
@@ -44,7 +46,14 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   const token0Amounts = (totalSupply * tokenPerShare[0]) / PRECISION
   const token1Amounts = (totalSupply * tokenPerShare[1]) / PRECISION
 
-  return { token0Amounts, token1Amounts, token0PerShare: tokenPerShare[0], token1PerShare: tokenPerShare[1], PRECISION }
+  return {
+    token0Amounts,
+    token1Amounts,
+    token0PerShare: tokenPerShare[0],
+    token1PerShare: tokenPerShare[1],
+    PRECISION,
+    totalSupply,
+  }
 }
 
 export const useAdapterTokensAmounts = (adapterAddress: Address) => {
@@ -82,19 +91,23 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
   const { data: userAmounts, refetch: refetchUserAmounts } = useUserAmounts(wrapperAddress)
   const { data: poolAmounts, refetch: refetchPoolAmounts } = useAdapterTokensAmounts(adapterAddress)
   const { data: pendingReward, refetch: refetchPendingReward } = useUserPendingRewardAmounts()
-  if (userAmounts && poolAmounts)
+
+  if (userAmounts && poolAmounts) {
     return {
+      pendingReward,
       poolToken0Amounts: poolAmounts.token0Amounts,
       poolToken1Amounts: poolAmounts.token1Amounts,
       userToken0Amounts: (userAmounts[0] * poolAmounts.token0PerShare) / poolAmounts.PRECISION,
       userToken1Amounts: (userAmounts[0] * poolAmounts.token1PerShare) / poolAmounts.PRECISION,
-      pendingReward,
+      userVaultPercentage: new Percent(userAmounts[0], poolAmounts.totalSupply),
       refetchPositionInfo: () => {
         refetchUserAmounts()
         refetchPoolAmounts()
         refetchPendingReward()
       },
     }
+  }
+
   return null
 }
 
