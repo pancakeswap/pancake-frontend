@@ -104,6 +104,9 @@ const GalxePredictBanner = () => {
             />
           </Flex>
           <Box maxWidth="780px" marginTop="12px">
+            {!isMobile ? (
+              <StyledSubheading data-text={t('Jupiter Predictors:')}>{t('Jupiter Predictors:')}</StyledSubheading>
+            ) : null}
             <StyledSubheading
               data-text={isMobile ? t('Jupiter Predictors:') : t('Predict, win and share $10,000 rewards')}
             >
@@ -154,7 +157,7 @@ const GalxePredictBanner = () => {
         <RightWrapper>
           <BgWrapper>
             {!isMobile ? (
-              <Image src={galxePredictorsBg} height={192} alt="liquidStakingBunny" placeholder="blur" />
+              <Image src={galxePredictorsBg} width={530} height={192} alt="liquidStakingBunny" placeholder="blur" />
             ) : (
               <Image src={galxeBirthdayCampaignPedictMobile} height={192} alt="liquidStakingBunny" placeholder="blur" />
             )}
