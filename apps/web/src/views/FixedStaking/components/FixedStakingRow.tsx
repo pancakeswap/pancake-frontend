@@ -1,5 +1,4 @@
 import {
-  CurrencyLogo,
   Text,
   Flex,
   Box,
@@ -10,7 +9,7 @@ import {
   UnlockIcon,
   LockIcon,
 } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
+import { Pool, CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { StyledCell } from 'views/Pools/components/PoolsTable/Cells/NameCell'
 import { useTranslation } from '@pancakeswap/localization'
 import React from 'react'
