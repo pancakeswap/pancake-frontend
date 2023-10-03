@@ -4,6 +4,8 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled } from 'styled-components'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import * as S from './Styled'
 import { galxeSyndicateBg, galxeBirthdayCampaignPerpMobile } from './images'
 
@@ -83,9 +85,13 @@ const StyledSubheading = styled.div`
 `
 
 const GalaxeSyndicateBanner = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { code },
+  } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { isMobile } = useMatchBreakpoints()
-
+  const url = getPerpetualUrl({ chainId, languageCode: code, isDark: false })
   return (
     <S.Wrapper
       style={{
@@ -117,11 +123,7 @@ const GalaxeSyndicateBanner = () => {
           </Box>
 
           <Flex marginTop={isMobile ? '24px' : '12px'}>
-            <Link
-              style={{ textDecoration: 'none' }}
-              external
-              href="https://perp.pancakeswap.finance/en/futures/v2/BTCUSD?theme=light"
-            >
+            <Link style={{ textDecoration: 'none' }} external href={url}>
               <Text
                 textTransform={isMobile ? 'uppercase' : 'capitalize'}
                 bold
