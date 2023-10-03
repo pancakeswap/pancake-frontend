@@ -72,8 +72,10 @@ Props) {
       const withdrawAmount = new BigNumber(userInfoAmount?.[0]?.toString() ?? 0)
         .multipliedBy(percent)
         .div(100)
-        .toString()
-      return wrapperContract.write.withdrawThenBurn([BigInt(withdrawAmount), '0x'], {})
+        .toNumber()
+
+      const avoidDecimalsProblem = percent === 100 ? BigInt(withdrawAmount) : BigInt(Math.floor(withdrawAmount))
+      return wrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, '0x'], {})
     })
 
     if (receipt?.status) {
