@@ -25,13 +25,13 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({ earningToken }) => {
 
   const { data, refetch } = useUserPendingRewardAmounts()
   const earningsBalance = useMemo(
-    () => getBalanceAmount(new BigNumber(10 ** 18), earningToken.decimals).toNumber(),
-    [earningToken],
+    () => getBalanceAmount(new BigNumber(data?.toString() ?? 0), earningToken.decimals).toNumber(),
+    [data, earningToken],
   )
 
   const earningUsdValue = useMemo(
-    () => new BigNumber(data.toString()).times(earningTokenPrice.toSignificant()).toNumber(),
-    [data, earningTokenPrice],
+    () => new BigNumber(earningsBalance).times(earningTokenPrice.toSignificant()).toNumber(),
+    [earningsBalance, earningTokenPrice],
   )
 
   const isDisabled = useMemo(() => pendingTx || new BigNumber(earningsBalance).lte(0), [pendingTx, earningsBalance])
