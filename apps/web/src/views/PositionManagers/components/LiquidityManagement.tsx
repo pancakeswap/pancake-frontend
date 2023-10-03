@@ -35,6 +35,7 @@ interface Props {
   contractAddress: `0x${string}`
   token0PriceUSD?: number
   token1PriceUSD?: number
+  pendingReward: bigint
   refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
@@ -60,6 +61,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   staked1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  pendingReward,
   refetch,
 }: Props) {
   const { t } = useTranslation()
@@ -99,7 +101,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
               token1PriceUSD={token1PriceUSD}
             />
           </InnerCard>
-          <RewardAssets earningToken={earningToken} />
+          <RewardAssets pendingReward={pendingReward} earningToken={earningToken} refetch={refetch} />
         </>
       ) : !account ? (
         <ConnectWalletButton mt="24px" width="100%" />

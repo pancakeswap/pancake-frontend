@@ -81,15 +81,18 @@ export const useUserAmounts = (wrapperAddress: Address) => {
 export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address) => {
   const { data: userAmounts, refetch: refetchUserAmounts } = useUserAmounts(wrapperAddress)
   const { data: poolAmounts, refetch: refetchPoolAmounts } = useAdapterTokensAmounts(adapterAddress)
+  const { data: pendingReward, refetch: refetchPendingReward } = useUserPendingRewardAmounts()
   if (userAmounts && poolAmounts)
     return {
       poolToken0Amounts: poolAmounts.token0Amounts,
       poolToken1Amounts: poolAmounts.token1Amounts,
       userToken0Amounts: (userAmounts[0] * poolAmounts.token0PerShare) / poolAmounts.PRECISION,
       userToken1Amounts: (userAmounts[1] * poolAmounts.token1PerShare) / poolAmounts.PRECISION,
+      pendingReward,
       refetchPositionInfo: () => {
         refetchUserAmounts()
         refetchPoolAmounts()
+        refetchPendingReward()
       },
     }
   return null

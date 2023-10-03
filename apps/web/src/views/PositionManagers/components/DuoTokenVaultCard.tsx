@@ -52,6 +52,7 @@ interface Props {
   stakedToken1Amount?: bigint
   token0PriceUSD?: number
   token1PriceUSD?: number
+  pendingReward: bigint
   refetch?: () => void
 }
 
@@ -78,6 +79,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   poolToken1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  pendingReward,
   refetch,
 }: PropsWithChildren<Props>) {
   // TODO: mock
@@ -88,6 +90,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   const vaultName = useMemo(() => getVaultName(id, name), [name, id])
   const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
   const staked1Amount = stakedToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, stakedToken1Amount) : undefined
+
   return (
     <StyledCard>
       <CardTitle
@@ -119,6 +122,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           staked1Amount={staked1Amount}
           token0PriceUSD={token0PriceUSD}
           token1PriceUSD={token1PriceUSD}
+          pendingReward={pendingReward}
           refetch={refetch}
         />
         <ExpandableSection mt="1.5em">

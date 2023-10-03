@@ -8,14 +8,15 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useUserPendingRewardAmounts } from 'views/PositionManagers/hooks/useAdapterInfo'
 import { InnerCard } from './InnerCard'
 
 interface RewardAssetsProps {
   earningToken: Currency
+  pendingReward: bigint
+  refetch?: () => void
 }
 
-export const RewardAssets: React.FC<RewardAssetsProps> = ({ earningToken }) => {
+export const RewardAssets: React.FC<RewardAssetsProps> = ({ pendingReward, earningToken, refetch }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -23,10 +24,9 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({ earningToken }) => {
 
   const wrapperContract = usePositionManagerWrapperContract()
 
-  const { data, refetch } = useUserPendingRewardAmounts()
   const earningsBalance = useMemo(
-    () => getBalanceAmount(new BigNumber(data?.toString() ?? 0), earningToken.decimals).toNumber(),
-    [data, earningToken],
+    () => getBalanceAmount(new BigNumber(pendingReward?.toString() ?? 0), earningToken.decimals).toNumber(),
+    [pendingReward, earningToken],
   )
 
   const earningUsdValue = useMemo(
@@ -40,7 +40,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({ earningToken }) => {
     const receipt = await fetchWithCatchTxError(() => wrapperContract.write.deposit([BigInt(0)], {}))
 
     if (receipt?.status) {
-      refetch()
+      refetch?.()
       toastSuccess(
         `${t('Harvested')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
