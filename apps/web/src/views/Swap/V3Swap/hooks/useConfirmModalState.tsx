@@ -21,8 +21,13 @@ interface UseConfirmModalStateProps {
 }
 
 export function isInApprovalPhase(confirmModalState: ConfirmModalState) {
-  return confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.PERMITTING
+  return (
+    confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+    confirmModalState === ConfirmModalState.PERMITTING ||
+    confirmModalState === ConfirmModalState.RESETTING_APPROVAL
+  )
 }
+
 export const useConfirmModalState = ({
   chainId,
   txHash,

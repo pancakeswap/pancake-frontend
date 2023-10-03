@@ -26,6 +26,14 @@ export type PendingConfirmModalState = Extract<
   | ConfirmModalState.RESETTING_APPROVAL
 >
 
+export function isInApprovalPhase(confirmModalState: ConfirmModalState) {
+  return (
+    confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+    confirmModalState === ConfirmModalState.PERMITTING ||
+    confirmModalState === ConfirmModalState.RESETTING_APPROVAL
+  )
+}
+
 interface ApproveModalContentProps {
   title: any
   isMM: boolean
@@ -75,6 +83,7 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
   )
   const symbolA = currencyA?.symbol
   const symbolB = currencyB?.symbol
+  const isApproving = isInApprovalPhase(confirmModalState)
 
   const currentStepContainerRef = useRef<HTMLDivElement>(null)
   useUnmountingAnimation(currentStepContainerRef, () => AnimationType.EXITING)
@@ -87,7 +96,9 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
             <PaperIcon
               currency={currencyA}
               asBadge={confirmModalState === ConfirmModalState.APPROVING_TOKEN}
-              showSpinner={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION}
+              pendingConfirmation={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION}
+              isInApprovalPhase={isApproving}
+              submitted={!attemptingTransaction}
             />
           </ColumnCenter>
         </Flex>
@@ -107,7 +118,7 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
                   <Text bold textAlign="center">
                     {title[step]}
                   </Text>
-                  {!attemptingTransaction ? (
+                  {confirmModalState !== ConfirmModalState.PENDING_CONFIRMATION ? (
                     <Flex>
                       <Text fontSize="14px">{t('Swapping thru:')}</Text>
                       {isMM ? (
@@ -128,19 +139,17 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
                       )}
                     </Flex>
                   ) : (
-                    <Flex>
-                      <>
-                        <TokenTransferInfo
-                          symbolA={symbolA}
-                          symbolB={symbolB}
-                          amountA={amountA}
-                          amountB={amountB}
-                          currencyA={currencyA}
-                          currencyB={currencyB}
-                        />
-                        {addToWalletButtonContent}
-                      </>
-                    </Flex>
+                    <AutoColumn gap="12px" justify="center">
+                      <TokenTransferInfo
+                        symbolA={symbolA}
+                        symbolB={symbolB}
+                        amountA={amountA}
+                        amountB={amountB}
+                        currencyA={currencyA}
+                        currencyB={currencyB}
+                      />
+                      {addToWalletButtonContent}
+                    </AutoColumn>
                   )}
                 </StepTitleAnimationContainer>
               )
@@ -150,7 +159,6 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
       </Box>
     ),
     [
-      attemptingTransaction,
       currencyA,
       currencyB,
       amountA,
@@ -167,6 +175,8 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
       title,
       tooltip,
       tooltipVisible,
+      isApproving,
+      attemptingTransaction,
     ],
   )
 }
