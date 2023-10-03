@@ -1,16 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { ASSET_CDN } from 'config/constants/endpoints'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useViewport } from 'hooks/useViewport'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled } from 'styled-components'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
-import { useViewport } from 'hooks/useViewport'
 import * as S from './Styled'
-import { galxeSyndicateBg, galxeBirthdayCampaignPerpMobile } from './images'
-
-const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
+import {
+  galxeBirthdayCampaignPerpMobile,
+  galxePancakeBannerLogo,
+  galxePredictorsBunny,
+  galxeSyndicateBackground,
+} from './images'
 
 const RightWrapper = styled.div`
   position: absolute;
@@ -22,12 +24,12 @@ const RightWrapper = styled.div`
   > span:first-child {
     // liquidStakingBunny
     position: absolute !important;
-    bottom: 10px;
+    bottom: 3px;
     right: 12px;
     z-index: 2;
     ${({ theme }) => theme.mediaQueries.sm} {
-      right: 229px;
-      bottom: 13px;
+      right: 320px;
+      bottom: 3px;
     }
   }
 `
@@ -36,12 +38,14 @@ const BgWrapper = styled.div`
   position: absolute;
   bottom: 0;
   right: 0px;
+  overflow: hidden;
   border-radius: 32px;
+  top: -4px;
   ${({ theme }) => theme.mediaQueries.sm} {
     bottom: auto;
     height: 100%;
     right: 0px;
-    top: -32px;
+    top: -4px;
   }
 `
 
@@ -51,11 +55,11 @@ const StyledSubheading = styled.div`
   font-family: 'Kanit';
   font-style: normal;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 98%;
   letter-spacing: 0.01em;
   font-feature-settings: 'liga' off;
-  background: linear-gradient(166.02deg, #ffb237 -5.1%, #ffeb37 75.24%);
+  background: white;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -75,13 +79,14 @@ const StyledSubheading = styled.div`
     z-index: -1;
     padding-right: 100px;
   }
+
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 24px;
-    padding-left: 0px;
-    margin-bottom: 10px;
-    &::after {
-      padding-right: 0px;
-    }
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    background: linear-gradient(166.02deg, #ffb237 -5.1%, #ffeb37 75.24%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `
 
@@ -103,25 +108,22 @@ const GalaxeSyndicateBanner = () => {
       <S.Inner>
         <S.LeftWrapper position="relative" style={{ zIndex: 2, justifyContent: 'center' }}>
           <Flex alignItems="center" style={{ gap: isMobile ? 4 : 12 }} mb="8px">
-            <Image
-              src={pancakeSwapLogo}
-              alt="pancakeSwapLogo"
-              width={isMobile ? 90 : 132}
-              height={isMobile ? 13 : 20}
-              unoptimized
-            />
+            <Image src={galxePancakeBannerLogo} alt="pancakeSwapLogo" unoptimized />
           </Flex>
-          <Box maxWidth="780px" marginTop="8px">
+          <Box maxWidth="780px">
             {!isMobile ? (
-              <StyledSubheading data-text={t('Trade perpetuals and share $10,000 rewards')}>
-                {t('Trade perpetuals and share $10,000 rewards')}
+              <StyledSubheading
+                data-text={t(
+                  'Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard',
+                )}
+              >
+                {t(
+                  'Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard',
+                )}
               </StyledSubheading>
             ) : null}
-            <StyledSubheading
-              data-text={isMobile ? t('Saturn Syndicate') : t('Daily reward for new users and to top the leaderboard')}
-            >
-              {isMobile ? t('Saturn Syndicate') : t('Daily reward for new users and to top the leaderboard')}
-            </StyledSubheading>
+            {isMobile ? <StyledSubheading data-text={t('Saturn')}>{t('Saturn')}</StyledSubheading> : null}
+            {isMobile ? <StyledSubheading data-text={t('Syndicate:')}>{t('Syndicate:')}</StyledSubheading> : null}
           </Box>
 
           <Flex marginTop={isMobile ? '24px' : '12px'}>
@@ -165,17 +167,15 @@ const GalaxeSyndicateBanner = () => {
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
+          {width >= 850 ? (
+            <Image src={galxePredictorsBunny} alt="liquidStakingBunny" width={181} height={222} placeholder="blur" />
+          ) : null}
+
           <BgWrapper>
-            {width >= 860 ? (
-              <Image src={galxeSyndicateBg} width={705} height={222} alt="liquidStakingBunny" placeholder="blur" />
+            {width >= 635 ? (
+              <Image src={galxeSyndicateBackground} height={192} alt="liquidStakingBunny" placeholder="blur" />
             ) : (
-              <Image
-                src={galxeBirthdayCampaignPerpMobile}
-                width={159}
-                height={192}
-                alt="liquidStakingBunny"
-                placeholder="blur"
-              />
+              <Image src={galxeBirthdayCampaignPerpMobile} width={159} height={181} placeholder="blur" />
             )}
           </BgWrapper>
         </RightWrapper>

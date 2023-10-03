@@ -1,14 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { ASSET_CDN } from 'config/constants/endpoints'
+import { useViewport } from 'hooks/useViewport'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled } from 'styled-components'
-import { useViewport } from 'hooks/useViewport'
 import * as S from './Styled'
-import { galxePredictorsBg, galxeBirthdayCampaignPedictMobile } from './images'
-
-const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
+import {
+  galxeBirthdayCampaignPedictMobile,
+  galxePancakeBannerLogo,
+  galxePredictorsBackground,
+  galxeSyndicateBunny,
+} from './images'
 
 const RightWrapper = styled.div`
   position: absolute;
@@ -20,26 +22,30 @@ const RightWrapper = styled.div`
   > span:first-child {
     // liquidStakingBunny
     position: absolute !important;
-    bottom: 10px;
+    bottom: 3px;
     right: 12px;
     z-index: 2;
     ${({ theme }) => theme.mediaQueries.sm} {
-      right: 229px;
-      bottom: 13px;
+      right: 220px;
+      bottom: 3px;
     }
   }
 `
 
 const BgWrapper = styled.div`
   position: absolute;
-  bottom: -10px;
+  bottom: 0;
   right: 0px;
+  overflow: hidden;
   border-radius: 32px;
+  top: -2px;
   ${({ theme }) => theme.mediaQueries.sm} {
+    overflow: hidden;
+
     bottom: auto;
     height: 100%;
     right: 0px;
-    top: 0px;
+    top: -3px;
   }
 `
 
@@ -49,11 +55,11 @@ const StyledSubheading = styled.div`
   font-family: 'Kanit';
   font-style: normal;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 98%;
   letter-spacing: 0.01em;
   font-feature-settings: 'liga' off;
-  background: linear-gradient(166.02deg, #ffb237 -5.1%, #ffeb37 75.24%);
+  background: white;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -73,13 +79,14 @@ const StyledSubheading = styled.div`
     z-index: -1;
     padding-right: 100px;
   }
+
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 24px;
-    padding-left: 0px;
-    margin-bottom: 10px;
-    &::after {
-      padding-right: 0px;
-    }
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    background: linear-gradient(166.02deg, #ffb237 -5.1%, #ffeb37 75.24%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `
 
@@ -97,23 +104,19 @@ const GalxePredictBanner = () => {
       <S.Inner>
         <S.LeftWrapper position="relative" style={{ zIndex: 2, justifyContent: 'center' }}>
           <Flex alignItems="center" style={{ gap: isMobile ? 4 : 12 }} mb="8px">
-            <Image
-              src={pancakeSwapLogo}
-              alt="pancakeSwapLogo"
-              width={isMobile ? 90 : 132}
-              height={isMobile ? 13 : 20}
-              unoptimized
-            />
+            <Image src={galxePancakeBannerLogo} alt="pancakeSwapLogo" unoptimized />
           </Flex>
-          <Box maxWidth="780px" marginTop="12px">
+          <Box maxWidth="780px">
             {!isMobile ? (
-              <StyledSubheading data-text={t('Jupiter Predictors')}>{t('Jupiter Predictors')}</StyledSubheading>
+              <StyledSubheading data-text={t('Jupiter Predictors:')}>{t('Jupiter Predictors:')}</StyledSubheading>
             ) : null}
-            <StyledSubheading
-              data-text={isMobile ? t('Jupiter Predictors:') : t('Predict, win and share $10,000 rewards')}
-            >
-              {isMobile ? t('Jupiter Predictors:') : t('Predict, win and share $10,000 rewards')}
-            </StyledSubheading>
+            {!isMobile ? (
+              <StyledSubheading data-text={t('Predict, win and share $10,000 rewards')}>
+                {t('Predict, win and share $10,000 rewards')}
+              </StyledSubheading>
+            ) : null}
+            {isMobile ? <StyledSubheading data-text={t('Jupiter')}>{t('Jupiter')}</StyledSubheading> : null}
+            {isMobile ? <StyledSubheading data-text={t('Predictors:')}>{t('Predictors:')}</StyledSubheading> : null}
           </Box>
 
           <Flex marginTop={isMobile ? '24px' : '12px'}>
@@ -157,14 +160,23 @@ const GalxePredictBanner = () => {
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
+          {width >= 795 ? (
+            <Image src={galxeSyndicateBunny} alt="liquidStakingBunny" width={191} height={222} placeholder="blur" />
+          ) : null}
           <BgWrapper>
-            {width >= 860 ? (
-              <Image src={galxePredictorsBg} width={530} height={192} alt="liquidStakingBunny" placeholder="blur" />
+            {width >= 795 ? (
+              <Image
+                src={galxePredictorsBackground}
+                width={735}
+                height={192}
+                alt="liquidStakingBunny"
+                placeholder="blur"
+              />
             ) : (
               <Image
                 src={galxeBirthdayCampaignPedictMobile}
                 width={159}
-                height={192}
+                height={191}
                 alt="liquidStakingBunny"
                 placeholder="blur"
               />
