@@ -87,7 +87,7 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
       poolToken0Amounts: poolAmounts.token0Amounts,
       poolToken1Amounts: poolAmounts.token1Amounts,
       userToken0Amounts: (userAmounts[0] * poolAmounts.token0PerShare) / poolAmounts.PRECISION,
-      userToken1Amounts: (userAmounts[1] * poolAmounts.token1PerShare) / poolAmounts.PRECISION,
+      userToken1Amounts: (userAmounts[0] * poolAmounts.token1PerShare) / poolAmounts.PRECISION,
       pendingReward,
       refetchPositionInfo: () => {
         refetchUserAmounts()
