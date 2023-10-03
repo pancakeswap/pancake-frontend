@@ -141,8 +141,10 @@ export const AddLiquidity = memo(function AddLiquidity({
 
   const disabled = useMemo(() => {
     const balanceAmountMoreThenValueA =
+      amountA.greaterThan('0') &&
       Number(userCurrencyBalances?.token0Balance?.toSignificant()) < Number(amountA?.toSignificant())
     const balanceAmountMoreThenValueB =
+      amountB.greaterThan('0') &&
       Number(userCurrencyBalances?.token1Balance?.toSignificant()) < Number(amountB?.toSignificant())
 
     return amountA.equalTo('0') || amountB.equalTo('0') || balanceAmountMoreThenValueA || balanceAmountMoreThenValueB
