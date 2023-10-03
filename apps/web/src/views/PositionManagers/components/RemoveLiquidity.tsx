@@ -3,7 +3,8 @@ import { ModalV2, RowBetween, Text, Flex, Button, CurrencyLogo, Box, useToast } 
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { BaseAssets } from '@pancakeswap/position-managers'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import BigNumber from 'bignumber.js'
 import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { SpaceProps } from 'styled-system'
@@ -54,6 +55,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
 }: // onRemove,
 Props) {
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
   const [percent, setPercent] = useState(0)
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
   const wrapperContract = usePositionManagerWrapperContract(contractAddress)
@@ -64,9 +66,15 @@ Props) {
   const amountB = useMemo(() => staked1Amount?.multiply(percent)?.divide(100), [staked1Amount, percent])
 
   const withdrawThenBurn = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() =>
-      wrapperContract.write.withdrawThenBurn([amountA?.quotient + amountB.quotient, '0x'], {}),
-    )
+    const userInfoAmount = await wrapperContract.read.userInfo([account], {})
+
+    const receipt = await fetchWithCatchTxError(() => {
+      const withdrawAmount = new BigNumber(userInfoAmount?.[0]?.toString() ?? 0)
+        .multipliedBy(percent)
+        .div(100)
+        .toString()
+      return wrapperContract.write.withdrawThenBurn([BigInt(withdrawAmount), '0x'], {})
+    })
 
     if (receipt?.status) {
       refetch?.()
@@ -78,7 +86,7 @@ Props) {
         </ToastDescriptionWithTx>,
       )
     }
-  }, [amountA, wrapperContract, t, toastSuccess, fetchWithCatchTxError, refetch, onDismiss, amountB])
+  }, [wrapperContract, percent, account, fetchWithCatchTxError, refetch, onDismiss, toastSuccess, t])
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
@@ -119,10 +127,13 @@ const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
   ...rest
 }: CurrencyAmountDisplayProps) {
   const currencyDisplay = amount?.currency || currency
+  const amountInUsd = useMemo(() => new BigNumber(formatAmount(amount)).times(priceUSD ?? 0), [amount, priceUSD])
+
   const amountDisplay = useMemo(() => formatAmount(amount) || '0', [amount])
-  const amountInUsd = useMemo(() => {
-    return Number(formatAmount(amount)) * (priceUSD ?? 0)
-  }, [amount, priceUSD])
+  const amountInUsdDisplay = useMemo(() => {
+    const usdValue = amountInUsd.isNaN() ? '0' : amountInUsd?.toFixed(2)
+    return `(~$${usdValue})`
+  }, [amountInUsd])
 
   return (
     <RowBetween {...rest}>
@@ -137,7 +148,7 @@ const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
           {amountDisplay}
         </Text>
         <Text color="text" fontSize="0.875em" ml="0.5em">
-          (~${amountInUsd.toFixed(2)})
+          {amountInUsdDisplay}
         </Text>
       </Flex>
     </RowBetween>
