@@ -1,8 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Message, MessageText, Text, Flex, Box, Link } from '@pancakeswap/uikit'
+import { MANAGER, baseManagers, BaseManager } from '@pancakeswap/position-managers'
+import { useMemo } from 'react'
 
-export const DYORWarning = () => {
+interface DYORWarningProps {
+  manager: {
+    id: MANAGER
+    name: string
+  }
+}
+
+export const DYORWarning: React.FC<DYORWarningProps> = ({ manager }) => {
   const { t } = useTranslation()
+  const managerInfo: BaseManager = useMemo(() => baseManagers[manager.id], [manager])
+
+  if (!managerInfo?.doYourOwnResearchTitle && !managerInfo?.introLink) {
+    return null
+  }
 
   return (
     <Message variant="warning" mt="8px">
@@ -19,10 +33,10 @@ export const DYORWarning = () => {
               fontSize={14}
               color="warning"
               display="inline-block !important"
-              href="https://www.ichi.org/"
+              href={managerInfo.introLink}
               style={{ textDecoration: 'underline' }}
             >
-              ICHI Finance
+              {managerInfo.doYourOwnResearchTitle}
             </Link>
             <Text fontSize={14} as="span" color="warning">
               {t('which is responsible for managing the underlying assets.')}

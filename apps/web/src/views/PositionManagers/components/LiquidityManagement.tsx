@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useState } from 'react'
 import { Button } from '@pancakeswap/uikit'
-import { BaseAssets } from '@pancakeswap/position-managers'
+import { MANAGER, BaseAssets } from '@pancakeswap/position-managers'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -15,6 +15,10 @@ import { StakedAssets } from './StakedAssets'
 import { RemoveLiquidity } from './RemoveLiquidity'
 
 interface Props {
+  manager: {
+    id: MANAGER
+    name: string
+  }
   currencyA: Currency
   currencyB: Currency
   staked0Amount?: CurrencyAmount<Currency>
@@ -37,6 +41,7 @@ interface Props {
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
+  manager,
   currencyA,
   currencyB,
   vaultName,
@@ -100,6 +105,7 @@ Props) {
         </CardSection>
       )}
       <AddLiquidity
+        manager={manager}
         vaultName={vaultName}
         feeTier={feeTier}
         isOpen={addLiquidityModalOpen}

@@ -98,6 +98,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         <YieldInfo boostedApr={mockApr} apr={mockCmpApr} autoCompound={autoCompound} />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement
+          manager={manager}
           currencyA={currencyA}
           currencyB={currencyB}
           price={price}

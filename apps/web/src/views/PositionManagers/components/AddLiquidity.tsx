@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
+import { MANAGER } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, CurrencyInput, Flex, ModalV2, RowBetween, Text, useToast, LinkExternal } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -15,6 +16,10 @@ import { DYORWarning } from 'views/PositionManagers/components/DYORWarning'
 import { SingleTokenWarning } from 'views/PositionManagers/components/SingleTokenWarning'
 
 interface Props {
+  manager: {
+    id: MANAGER
+    name: string
+  }
   isOpen?: boolean
   onDismiss?: () => void
   vaultName: string
@@ -42,6 +47,7 @@ const StyledCurrencyInput = styled(CurrencyInput)`
 `
 
 export const AddLiquidity = memo(function AddLiquidity({
+  manager,
   ratio,
   isOpen,
   vaultName,
@@ -184,7 +190,7 @@ export const AddLiquidity = memo(function AddLiquidity({
           </RowBetween>
         </Flex>
         <SingleTokenWarning />
-        <DYORWarning />
+        <DYORWarning manager={manager} />
         <Flex mt="1.5em" flexDirection="column">
           <AddLiquidityButton
             amountA={allowDepositToken0 ? amountA : null}

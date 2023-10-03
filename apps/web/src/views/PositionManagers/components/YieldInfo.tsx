@@ -1,7 +1,7 @@
 import { Percent } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import { memo, useMemo } from 'react'
-import { Box, RowBetween, Text, Flex, CalculateIcon, IconButton } from '@pancakeswap/uikit'
+import { Box, RowBetween, Text, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatPercent } from '@pancakeswap/utils/formatFractions'
 import { AutoCompoundTag } from './Tags'
@@ -19,7 +19,7 @@ const AprText = styled(Text)<{ lineThrough?: boolean; underline?: boolean }>`
 
   text-decoration: ${(props) =>
     props.lineThrough || props.underline
-      ? [props.underline ? 'dashed underline' : '', props.lineThrough ? 'solid line-through' : ''].join(' ')
+      ? [props.underline ? 'dotted underline' : '', props.lineThrough ? 'solid line-through' : ''].join(' ')
       : 'none'};
 `
 
@@ -41,14 +41,10 @@ export const YieldInfo = memo(function YieldInfo({ apr, boostedApr, withCakeRewa
       <RowBetween>
         <Text>{t('APR')}:</Text>
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-          {/* <AprText color="success" bold underline>
+          <AprText color="success" bold underline>
             {formatPercent(aprToHighlight)}%
-            -
-          </AprText> */}
-          {/* {aprToCompare} */}-
-          <IconButton variant="text" scale="sm" onClick={onAprClick}>
-            <CalculateIcon color="textSubtle" ml="0.25em" width="1.5em" />
-          </IconButton>
+          </AprText>
+          {aprToCompare}
         </Flex>
       </RowBetween>
       <RowBetween>

@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BaseAssets, ManagerFee } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
-import { Box, Flex, IconButton, RowBetween, SwapVertIcon, Text } from '@pancakeswap/uikit'
+import { Box, IconButton, RowBetween, SwapVertIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount, formatPercent, formatPrice } from '@pancakeswap/utils/formatFractions'
 import { Precision, formatTimestamp } from '@pancakeswap/utils/formatTimestamp'
 import { memo, useMemo } from 'react'
@@ -69,7 +69,7 @@ export const VaultInfo = memo(function VaultInfo({
 
   // TODO: mock
   const lastUpdatedAt = Date.now()
-  const { baseCurrency, quoteCurrency, priceLower, priceUpper, priceCurrent, invert, inverted } = usePositionPrices({
+  const { priceLower, priceUpper, invert, inverted } = usePositionPrices({
     baseCurrency: currencyA,
     quoteCurrency: currencyB,
     tickLower: 44000,
@@ -81,7 +81,7 @@ export const VaultInfo = memo(function VaultInfo({
     () => formatTimestamp(lastUpdatedAt, { locale, precision: Precision.DATE }),
     [lastUpdatedAt, locale],
   )
-  const current = useMemo(() => formatPrice(priceCurrent), [priceCurrent])
+
   const min = useMemo(() => formatPrice(priceLower), [priceLower])
   const max = useMemo(() => formatPrice(priceUpper), [priceUpper])
 
@@ -149,20 +149,7 @@ export const VaultInfo = memo(function VaultInfo({
             {invertButton}
           </Flex>
         </Flex>
-            </RowBetween> */}
-      <RowBetween mt="8px" alignItems="flex-start">
-        <InfoText>{t('Current price')}:</InfoText>
-        <Flex flexDirection="row" alignItems="center">
-          <InfoText>
-            {t('%price% %quote% per %base%', {
-              price: current,
-              quote: quoteCurrency.symbol,
-              base: baseCurrency.symbol,
-            })}
-          </InfoText>
-          {invertButton}
-        </Flex>
-      </RowBetween>
+      </RowBetween> */}
       {managerFeeDisplay}
     </Box>
   )
