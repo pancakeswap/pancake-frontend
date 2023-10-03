@@ -159,7 +159,13 @@ const GalxePredictBanner = () => {
             {!isMobile ? (
               <Image src={galxePredictorsBg} width={530} height={192} alt="liquidStakingBunny" placeholder="blur" />
             ) : (
-              <Image src={galxeBirthdayCampaignPedictMobile} height={192} alt="liquidStakingBunny" placeholder="blur" />
+              <Image
+                src={galxeBirthdayCampaignPedictMobile}
+                width={159}
+                height={192}
+                alt="liquidStakingBunny"
+                placeholder="blur"
+              />
             )}
           </BgWrapper>
         </RightWrapper>

@@ -167,7 +167,13 @@ const GalaxeSyndicateBanner = () => {
             {!isMobile ? (
               <Image src={galxeSyndicateBg} width={705} height={222} alt="liquidStakingBunny" placeholder="blur" />
             ) : (
-              <Image src={galxeBirthdayCampaignPerpMobile} height={192} alt="liquidStakingBunny" placeholder="blur" />
+              <Image
+                src={galxeBirthdayCampaignPerpMobile}
+                width={159}
+                height={192}
+                alt="liquidStakingBunny"
+                placeholder="blur"
+              />
             )}
           </BgWrapper>
         </RightWrapper>
