@@ -6,7 +6,7 @@ export function getStrategyName(t: TranslateFunction, strategy: Strategy) {
     case Strategy.TYPICAL_WIDE:
       return t('Typical Wide')
     case Strategy.SUPER_ONE_SIDED:
-      return t('Super One Sided Reserve')
+      return t('Yield IQ')
     default:
       return ''
   }

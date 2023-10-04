@@ -14,25 +14,15 @@ interface Props {
   onAprClick?: () => void
 }
 
-const AprText = styled(Text)<{ lineThrough?: boolean; underline?: boolean }>`
+const AprText = styled(Text)`
   text-underline-offset: 0.125em;
-
-  text-decoration: ${(props) =>
-    props.lineThrough || props.underline
-      ? [props.underline ? 'dotted underline' : '', props.lineThrough ? 'solid line-through' : ''].join(' ')
-      : 'none'};
+  text-decoration: dotted underline;
 `
 
-export const YieldInfo = memo(function YieldInfo({ apr, boostedApr, withCakeReward, autoCompound, onAprClick }: Props) {
+export const YieldInfo = memo(function YieldInfo({ apr, boostedApr, withCakeReward, autoCompound }: Props) {
   const { t } = useTranslation()
 
   const aprToHighlight = boostedApr || apr
-  const aprToCompare =
-    boostedApr && apr ? (
-      <AprText color="text" lineThrough ml="0.25em">
-        {formatPercent(apr)}%
-      </AprText>
-    ) : null
 
   const earning = useMemo(() => (withCakeReward ? ['CAKE', t('Fees')].join(' + ') : t('Fees')), [withCakeReward, t])
 
@@ -41,10 +31,9 @@ export const YieldInfo = memo(function YieldInfo({ apr, boostedApr, withCakeRewa
       <RowBetween>
         <Text>{t('APR')}:</Text>
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-          <AprText color="success" bold underline>
+          <AprText color="success" bold>
             {formatPercent(aprToHighlight)}%
           </AprText>
-          {aprToCompare}
         </Flex>
       </RowBetween>
       <RowBetween>

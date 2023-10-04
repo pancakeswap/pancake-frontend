@@ -7,7 +7,6 @@ export interface BaseManager {
   id: MANAGER
   name: string
   introLink?: string
-  doYourOwnResearchTitle?: string
 }
 
 export const baseManagers: { [manager in MANAGER]: BaseManager } = {
@@ -17,9 +16,8 @@ export const baseManagers: { [manager in MANAGER]: BaseManager } = {
   },
   [MANAGER.ICHI]: {
     id: MANAGER.ICHI,
-    name: 'ICHI',
+    name: 'ICHI Finance',
     introLink: 'https://www.ichi.org/',
-    doYourOwnResearchTitle: 'ICHI Finance',
   },
 }
 

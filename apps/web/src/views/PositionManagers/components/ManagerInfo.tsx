@@ -33,9 +33,13 @@ export const ManagerInfo = memo(function ManagerInfo({ id, name, strategy, ...pr
       </Row>
       <Row>
         <Text color="textSubtle" fontSize="12px">
-          {t('With %strategy% strategy', {
-            strategy: strategyName,
-          })}
+          {t('With')}
+        </Text>
+        <Text color="textSubtle" fontSize="12px" m="0 4px" bold>
+          {strategyName}
+        </Text>
+        <Text color="textSubtle" fontSize="12px">
+          {t('strategy')}
         </Text>
       </Row>
     </CardSection>

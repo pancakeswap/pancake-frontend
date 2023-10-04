@@ -14,7 +14,7 @@ export const DYORWarning: React.FC<DYORWarningProps> = ({ manager }) => {
   const { t } = useTranslation()
   const managerInfo: BaseManager = useMemo(() => baseManagers[manager.id], [manager])
 
-  if (!managerInfo?.doYourOwnResearchTitle && !managerInfo?.introLink) {
+  if (!managerInfo?.name && !managerInfo?.introLink) {
     return null
   }
 
@@ -36,7 +36,7 @@ export const DYORWarning: React.FC<DYORWarningProps> = ({ manager }) => {
               href={managerInfo.introLink}
               style={{ textDecoration: 'underline' }}
             >
-              {managerInfo.doYourOwnResearchTitle}
+              {managerInfo.name}
             </Link>
             <Text fontSize={14} as="span" color="warning">
               {t('which is responsible for managing the underlying assets.')}
