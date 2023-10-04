@@ -20,7 +20,7 @@ import tradeBuy from '../../images/trade-buy-crypto.png'
 import earnFarm from '../../images/earn-farm.png'
 import earnPools from '../../images/earn-pools.png'
 import earnLiquidStaking from '../../images/earn-liquidity-staking.png'
-// import earnFixedStaking from '../../images/earn-fixed-staking.png'
+import earnFixedStaking from '../../images/earn-fixed-staking.png'
 import gamePrediction from '../../images/game-prediction.png'
 import gamePancakeProtectors from '../../images/game-pancake-protectors.png'
 import gameLottery from '../../images/game-lottery.png'
@@ -36,7 +36,7 @@ import tradeBuyPurple from '../../images/trade-buy-crypto-purple.png'
 import earnFarmPurple from '../../images/earn-farm-purple.png'
 import earnPoolsPurple from '../../images/earn-pools-purple.png'
 import earnLiquidStakingPurple from '../../images/earn-liquidity-staking-purple.png'
-// import earnFixedStakingPurple from '../../images/earn-fixed-staking-purple.png'
+import earnFixedStakingPurple from '../../images/earn-fixed-staking-purple.png'
 import gamePredictionPurple from '../../images/game-prediction-purple.png'
 import gamePancakeProtectorsPurple from '../../images/game-pancake-protectors-purple.png'
 import gameLotteryPurple from '../../images/game-lottery-purple.png'
@@ -260,6 +260,14 @@ const useEarnBlockData = () => {
         image: earnLiquidStaking,
         defaultImage: earnLiquidStakingPurple,
         path: '/liquid-staking',
+      },
+      {
+        title: t('Simple Staking'),
+        description: t('Earn rewards while retaining asset flexibility'),
+        ctaTitle: t('Stake Now'),
+        image: earnFixedStaking,
+        defaultImage: earnFixedStakingPurple,
+        path: '/simple-staking',
       },
     ]
   }, [t])
