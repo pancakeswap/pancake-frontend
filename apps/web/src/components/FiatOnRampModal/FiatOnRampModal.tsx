@@ -31,19 +31,6 @@ import {
   fetchTransakSignedUrl,
 } from 'views/BuyCrypto/hooks/useIframeUrlFetcher'
 
-function generateRandomNumberString(): string {
-  const length = 32
-  const characters = '0123456789'
-  let result = ''
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length)
-    result += characters.charAt(randomIndex)
-  }
-
-  return result
-}
-
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
   width: 100%;
@@ -174,7 +161,7 @@ export const FiatOnRampModalButton = ({
   }
   return (
     <AutoColumn gap="md">
-      <CommitButton onClick={onPresentConfirmModal} disabled={disabled} isLoading={disabled}>
+      <CommitButton onClick={onPresentConfirmModal} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
         {buttonText}
       </CommitButton>
     </AutoColumn>

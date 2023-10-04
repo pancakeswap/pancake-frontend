@@ -66,7 +66,7 @@ export const walletConnectConnector = new WalletConnectConnector({
   chains,
   options: {
     showQrModal: true,
-    projectId: 'd460b3b88b735222abe849b3d43ed8e4',
+    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
   },
 })
 
@@ -74,7 +74,7 @@ export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
   chains,
   options: {
     showQrModal: false,
-    projectId: 'd460b3b88b735222abe849b3d43ed8e4',
+    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
   },
 })
 
@@ -96,7 +96,7 @@ const bloctoConnector = new BloctoConnector({
 const ledgerConnector = new LedgerConnector({
   chains,
   options: {
-    projectId: 'd460b3b88b735222abe849b3d43ed8e4',
+    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
   },
 })
 

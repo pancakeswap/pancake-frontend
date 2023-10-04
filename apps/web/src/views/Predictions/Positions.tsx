@@ -53,7 +53,7 @@ const Positions: React.FC<React.PropsWithChildren<{ view?: PageView }>> = ({ vie
         onSwiper={setSwiper}
         spaceBetween={16}
         slidesPerView="auto"
-        onBeforeDestroy={setSwiper}
+        onBeforeDestroy={() => setSwiper(null)}
         freeMode={{ enabled: true, sticky: true, momentumRatio: 0.25, momentumVelocityRatio: 0.5 }}
         modules={[Keyboard, Mousewheel, FreeMode]}
         centeredSlides
