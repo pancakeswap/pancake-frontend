@@ -1,5 +1,11 @@
 import { useToast } from '@pancakeswap/uikit'
-import { DEFAULT_PROJECT_ID, DEFAULT_RELAY_URL, PancakeNotifications } from 'views/Notifications/constants'
+import crypto from 'crypto'
+import {
+  DEFAULT_RELAY_URL,
+  PancakeNotifications,
+  WEB_PUSH_ENCRYPTION_KEY,
+  WEB_PUSH_IV,
+} from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
 import { useAccount } from 'wagmi'
 import useRegistration from './useRegistration'
@@ -39,13 +45,23 @@ const useSendPushNotification = (): IUseSendNotification => {
         const existingSubscription = await registration.pushManager.getSubscription()
         if (existingSubscription) return
 
+        const secretKeyBuffer = Buffer.from(WEB_PUSH_ENCRYPTION_KEY, 'hex')
+        const ivBuffer = Buffer.from(WEB_PUSH_IV, 'hex')
+
         const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: publicVapidKey,
         })
+
+        const data = JSON.stringify(subscription)
+        const cipher = crypto.createCipheriv('aes-256-cbc', secretKeyBuffer, ivBuffer)
+
+        let encryptedData = cipher.update(data, 'utf8', 'hex')
+        encryptedData += cipher.final('hex')
+
         await fetch('http://localhost:8000/subscribe', {
           method: 'POST',
-          body: JSON.stringify({ subscription, user: account }),
+          body: JSON.stringify({ subscription: encryptedData, user: account }),
           headers: { 'Content-Type': 'application/json' },
         })
       } catch (error) {
@@ -61,11 +77,15 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
+      const authKeyResponse = await fetch(`http://localhost:8000/walletconnect-auth-key`)
+      const result = await authKeyResponse.json()
+      const authKey = result.secretKey
+
       await fetch(`${DEFAULT_RELAY_URL}/${'a14938037e06221040c0fa6a69a1d95f'}/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${'03533e45-782a-42fb-820d-c0984ed392d9'}`,
+          Authorization: `Bearer ${authKey}`,
         },
         body: JSON.stringify(notificationPayload),
       })

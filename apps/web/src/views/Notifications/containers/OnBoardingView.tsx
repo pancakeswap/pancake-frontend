@@ -55,12 +55,14 @@ const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, accou
   const toast = useToast()
   const { t } = useTranslation()
   const { subscribe, isSubscribing } = useManageSubscription(account)
-  const { sendPushNotification, requestNotificationPermission } = useSendPushNotification()
+  const { sendPushNotification, requestNotificationPermission, subscribeToPushNotifications } =
+    useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {
     if (!account) return
     setloading(true)
     try {
+      await subscribeToPushNotifications()
       await subscribe()
       setIsRightView(true)
       setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, []), 1000)
@@ -69,7 +71,7 @@ const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, accou
       toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
       setloading(false)
     }
-  }, [account, setloading, toast, sendPushNotification, subscribe, setIsRightView])
+  }, [account, setloading, toast, sendPushNotification, subscribe, setIsRightView, subscribeToPushNotifications])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
