@@ -1,2 +1,2 @@
-export * from './CurrencyLogo'
-export * from './DoubleCurrencyLogo'
+export * from "./CurrencyLogo";
+export * from "./DoubleCurrencyLogo";

@@ -1,25 +1,25 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { ReactNode, useCallback, useEffect, useState, memo } from 'react'
-import { AddCircleIcon, AutoColumn, AutoRow, IconButton, RemoveIcon } from '@pancakeswap/uikit'
+import { useTranslation } from "@pancakeswap/localization";
+import { FeeAmount } from "@pancakeswap/v3-sdk";
+import { ReactNode, useCallback, useEffect, useState, memo } from "react";
+import { AddCircleIcon, AutoColumn, AutoRow, IconButton, RemoveIcon } from "@pancakeswap/uikit";
 
-import { NumericalInput } from '../swap/NumericalInput'
-import { LightGreyCard } from './Card'
+import { NumericalInput } from "../swap/NumericalInput";
+import { LightGreyCard } from "./Card";
 
 interface StepCounterProps {
-  value: string
-  onUserInput: (value: string) => void
-  decrement: () => string
-  increment: () => string
-  decrementDisabled?: boolean
-  incrementDisabled?: boolean
-  feeAmount?: FeeAmount
-  label?: string
-  width?: string
-  locked?: boolean // disable input
-  title: ReactNode
-  tokenA: string | undefined
-  tokenB: string | undefined
+  value: string;
+  onUserInput: (value: string) => void;
+  decrement: () => string;
+  increment: () => string;
+  decrementDisabled?: boolean;
+  incrementDisabled?: boolean;
+  feeAmount?: FeeAmount;
+  label?: string;
+  width?: string;
+  locked?: boolean; // disable input
+  title: ReactNode;
+  tokenA: string | undefined;
+  tokenB: string | undefined;
 }
 
 export const StepCounter = memo(
@@ -36,13 +36,13 @@ export const StepCounter = memo(
     tokenA,
     tokenB,
   }: StepCounterProps) => {
-    const { t } = useTranslation()
+    const { t } = useTranslation();
     //  for focus state, styled components doesnt let you select input parent container
-    const [, setActive] = useState(false)
+    const [, setActive] = useState(false);
 
     // let user type value and only update parent value on blur
-    const [localValue, setLocalValue] = useState('')
-    const [useLocalValue, setUseLocalValue] = useState(false)
+    const [localValue, setLocalValue] = useState("");
+    const [useLocalValue, setUseLocalValue] = useState(false);
 
     // animation if parent value updates local value
     // const [
@@ -52,38 +52,38 @@ export const StepCounter = memo(
     // ] = useState<boolean>(false)
 
     const handleOnFocus = () => {
-      setUseLocalValue(true)
-      setActive(true)
-    }
+      setUseLocalValue(true);
+      setActive(true);
+    };
 
     const handleOnBlur = useCallback(() => {
-      setUseLocalValue(false)
-      setActive(false)
-      onUserInput(localValue) // trigger update on parent value
-    }, [localValue, onUserInput])
+      setUseLocalValue(false);
+      setActive(false);
+      onUserInput(localValue); // trigger update on parent value
+    }, [localValue, onUserInput]);
 
     // for button clicks
     const handleDecrement = useCallback(() => {
-      setUseLocalValue(false)
-      onUserInput(decrement())
-    }, [decrement, onUserInput])
+      setUseLocalValue(false);
+      onUserInput(decrement());
+    }, [decrement, onUserInput]);
 
     const handleIncrement = useCallback(() => {
-      setUseLocalValue(false)
-      onUserInput(increment())
-    }, [increment, onUserInput])
+      setUseLocalValue(false);
+      onUserInput(increment());
+    }, [increment, onUserInput]);
 
     useEffect(() => {
       if (localValue !== value && !useLocalValue) {
         setTimeout(() => {
-          setLocalValue(value) // reset local value to match parent
+          setLocalValue(value); // reset local value to match parent
           // setPulsing(true) // trigger animation
           // setTimeout(() => {
           //   setPulsing(false)
           // }, 1800)
-        }, 0)
+        }, 0);
       }
-    }, [localValue, useLocalValue, value])
+    }, [localValue, useLocalValue, value]);
 
     return (
       <LightGreyCard padding="0">
@@ -108,7 +108,7 @@ export const StepCounter = memo(
               align="center"
               disabled={locked}
               onUserInput={(val) => {
-                setLocalValue(val)
+                setLocalValue(val);
               }}
             />
 
@@ -125,9 +125,9 @@ export const StepCounter = memo(
               </IconButton>
             )}
           </AutoRow>
-          {tokenA && tokenB && t('%assetA% per %assetB%', { assetA: tokenB, assetB: tokenA })}
+          {tokenA && tokenB && t("%assetA% per %assetB%", { assetA: tokenB, assetB: tokenA })}
         </AutoColumn>
       </LightGreyCard>
-    )
-  },
-)
+    );
+  }
+);

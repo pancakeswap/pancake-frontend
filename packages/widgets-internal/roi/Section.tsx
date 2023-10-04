@@ -1,7 +1,7 @@
-import { PropsWithChildren, ReactNode } from 'react'
-import { SpaceProps } from 'styled-system'
+import { PropsWithChildren, ReactNode } from "react";
+import { SpaceProps } from "styled-system";
 
-import { Box, Text } from '@pancakeswap/uikit'
+import { Box, Text } from "@pancakeswap/uikit";
 
 export function Section({ title, children, ...rest }: { title?: ReactNode } & PropsWithChildren & SpaceProps) {
   return (
@@ -11,5 +11,5 @@ export function Section({ title, children, ...rest }: { title?: ReactNode } & Pr
       </Text>
       {children}
     </Box>
-  )
+  );
 }

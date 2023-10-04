@@ -1,44 +1,44 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { createElement } from 'react'
+import { useTranslation } from "@pancakeswap/localization";
+import { createElement } from "react";
 
-import { Button, Text, Flex, Heading, Balance } from '@pancakeswap/uikit'
+import { Button, Text, Flex, Heading, Balance } from "@pancakeswap/uikit";
 
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
+import { ActionContainer, ActionTitles, ActionContent } from "./styles";
 
-import { HarvestActionsProps } from '../types'
+import { HarvestActionsProps } from "../types";
 
 export const withStakeActionContainer =
   (StakeActionsComp: any, connectWalletButtonElement: any) =>
   ({ account, stakingTokenSymbol, ...props }: { account?: string; stakingTokenSymbol?: string }) => {
-    const { t } = useTranslation()
+    const { t } = useTranslation();
 
     if (!account) {
       return (
         <ActionContainer>
           <ActionTitles>
             <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-              {t('Start staking')}
+              {t("Start staking")}
             </Text>
           </ActionTitles>
-          <ActionContent>{createElement(connectWalletButtonElement, { width: '100%' })}</ActionContent>
+          <ActionContent>{createElement(connectWalletButtonElement, { width: "100%" })}</ActionContent>
         </ActionContainer>
-      )
+      );
     }
 
     return (
       <ActionContainer>
         <ActionTitles>
           <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
-            {stakingTokenSymbol}{' '}
+            {stakingTokenSymbol}{" "}
           </Text>
           <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-            {t('Staked')}
+            {t("Staked")}
           </Text>
         </ActionTitles>
         <StakeActionsComp {...props} />
       </ActionContainer>
-    )
-  }
+    );
+  };
 
 export function HarvestAction({
   earningTokenPrice,
@@ -49,20 +49,20 @@ export function HarvestAction({
   earningTokenSymbol,
   earnings,
 }: HarvestActionsProps & { account: string; earningTokenSymbol: string }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const hasEarnings = earnings.gt(0)
+  const hasEarnings = earnings.gt(0);
 
   const actionTitle = (
     <>
       <Text fontSize="12px" bold color="secondary" as="span">
-        {earningTokenSymbol}{' '}
+        {earningTokenSymbol}{" "}
       </Text>
       <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-        {t('Earned')}
+        {t("Earned")}
       </Text>
     </>
-  )
+  );
 
   if (!account) {
     return (
@@ -70,10 +70,10 @@ export function HarvestAction({
         <ActionTitles>{actionTitle}</ActionTitles>
         <ActionContent>
           <Heading>0</Heading>
-          <Button disabled>{t('Harvest')}</Button>
+          <Button disabled>{t("Harvest")}</Button>
         </ActionContent>
       </ActionContainer>
-    )
+    );
   }
 
   return (
@@ -108,9 +108,9 @@ export function HarvestAction({
           </>
         </Flex>
         <Button disabled={!hasEarnings} onClick={onPresentCollect}>
-          {t('Harvest')}
+          {t("Harvest")}
         </Button>
       </ActionContent>
     </ActionContainer>
-  )
+  );
 }

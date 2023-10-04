@@ -1,7 +1,7 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { memo } from 'react'
+import { useTranslation } from "@pancakeswap/localization";
+import { memo } from "react";
 
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from "@pancakeswap/uikit";
 import {
   RoiCardInner,
   RoiCardWrapper,
@@ -9,21 +9,21 @@ import {
   RoiDisplayContainer,
   MILLION,
   TRILLION,
-} from '@pancakeswap/uikit/components/RoiCalculatorModal/RoiCard'
+} from "@pancakeswap/uikit/components/RoiCalculatorModal/RoiCard";
 
 interface Props {
-  usdAmount?: number
-  roiPercent?: number
+  usdAmount?: number;
+  roiPercent?: number;
 }
 
 export const RoiRate = memo(function RoiRate({ usdAmount = 0, roiPercent }: Props) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <RoiCardWrapper>
       <RoiCardInner>
         <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-          {t('ROI at current rates')}
+          {t("ROI at current rates")}
         </Text>
         <Flex justifyContent="space-between" mt="4px" height="36px">
           <>
@@ -33,7 +33,7 @@ export const RoiRate = memo(function RoiRate({ usdAmount = 0, roiPercent }: Prop
                 $
               </Text>
               <RoiDollarAmount fontSize="24px" bold fadeOut={usdAmount > TRILLION} ellipsis>
-                {usdAmount.toLocaleString('en', {
+                {usdAmount.toLocaleString("en", {
                   minimumFractionDigits: usdAmount > MILLION ? 0 : 2,
                   maximumFractionDigits: usdAmount > MILLION ? 0 : 2,
                 })}
@@ -45,14 +45,14 @@ export const RoiRate = memo(function RoiRate({ usdAmount = 0, roiPercent }: Prop
                 mb="4px"
                 display="inline-block"
                 maxWidth="100%"
-                style={{ lineBreak: 'anywhere' }}
+                style={{ lineBreak: "anywhere" }}
                 ellipsis
               >
                 (
-                {roiPercent?.toLocaleString('en', {
+                {roiPercent?.toLocaleString("en", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
-                }) ?? '-'}
+                }) ?? "-"}
                 %)
               </Text>
             </RoiDisplayContainer>
@@ -60,5 +60,5 @@ export const RoiRate = memo(function RoiRate({ usdAmount = 0, roiPercent }: Prop
         </Flex>
       </RoiCardInner>
     </RoiCardWrapper>
-  )
-})
+  );
+});

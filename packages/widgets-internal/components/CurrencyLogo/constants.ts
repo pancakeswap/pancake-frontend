@@ -1,1 +1,1 @@
-export const BAD_SRCS: { [imageSrc: string]: true } = {}
+export const BAD_SRCS: { [imageSrc: string]: true } = {};
