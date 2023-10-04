@@ -7,7 +7,7 @@ import {
   UserMenuProps,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
 import useUnreadNotifications from '../hooks/useUnreadNotifications'
 
