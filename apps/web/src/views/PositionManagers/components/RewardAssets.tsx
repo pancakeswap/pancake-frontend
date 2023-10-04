@@ -23,7 +23,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({ pendingReward, earni
   const earningTokenPrice = useStablecoinPrice(earningToken ?? undefined, { enabled: !!earningToken })
 
   const wrapperContract = usePositionManagerWrapperContract()
-
+  console.log('pendingReward', Number(pendingReward.toString()) / 10 ** earningToken.decimals) // TODO: Remove
   const earningsBalance = useMemo(
     () => getBalanceAmount(new BigNumber(pendingReward?.toString() ?? 0), earningToken.decimals).toNumber(),
     [pendingReward, earningToken],

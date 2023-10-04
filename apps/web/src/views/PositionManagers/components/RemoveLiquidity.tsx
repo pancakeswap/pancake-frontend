@@ -74,7 +74,7 @@ Props) {
         .div(100)
         .toNumber()
 
-      const avoidDecimalsProblem = percent === 100 ? BigInt(withdrawAmount) : BigInt(Math.floor(withdrawAmount))
+      const avoidDecimalsProblem = percent === 100 ? BigInt(userInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
       return wrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, '0x'], {})
     })
 
