@@ -321,10 +321,10 @@ export function usePositionManagerWrapperContract(address: Address) {
   return useMemo(() => getPositionManagerWrapperContract(address, signer, chainId), [signer, chainId, address])
 }
 
-export function usePositionManagerAdepterContract(address?: Address) {
+export function usePositionManagerAdepterContract(address: Address) {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
-  return useMemo(() => getPositionManagerAdapterContract(signer, chainId, address), [signer, chainId, address])
+  return useMemo(() => getPositionManagerAdapterContract(address, signer, chainId), [signer, chainId, address])
 }
 
 export function useBCakeFarmBoosterProxyFactoryContract() {
