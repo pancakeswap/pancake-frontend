@@ -19,7 +19,6 @@ export function Controls() {
       <ControlGroup>
         {/* <ViewSwitch /> */}
         <StakeOnlyToggle />
-        <BoosterToggle />
         <LiveSwitch />
       </ControlGroup>
       <ControlGroup justifyContent="flex-end">

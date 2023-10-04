@@ -92,23 +92,19 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
   const { data: poolAmounts, refetch: refetchPoolAmounts } = useAdapterTokensAmounts(adapterAddress)
   const { data: pendingReward, refetch: refetchPendingReward } = useUserPendingRewardAmounts()
 
-  if (userAmounts && poolAmounts) {
-    return {
-      pendingReward,
-      poolToken0Amounts: poolAmounts.token0Amounts,
-      poolToken1Amounts: poolAmounts.token1Amounts,
-      userToken0Amounts: (userAmounts[0] * poolAmounts.token0PerShare) / poolAmounts.PRECISION,
-      userToken1Amounts: (userAmounts[0] * poolAmounts.token1PerShare) / poolAmounts.PRECISION,
-      userVaultPercentage: new Percent(userAmounts[0], poolAmounts.totalSupply),
-      refetchPositionInfo: () => {
-        refetchUserAmounts()
-        refetchPoolAmounts()
-        refetchPendingReward()
-      },
-    }
+  return {
+    pendingReward,
+    poolToken0Amounts: poolAmounts?.token0Amounts ?? BigInt(0),
+    poolToken1Amounts: poolAmounts?.token1Amounts ?? BigInt(0),
+    userToken0Amounts: userAmounts ? (userAmounts[0] * poolAmounts.token0PerShare) / poolAmounts.PRECISION : BigInt(0),
+    userToken1Amounts: userAmounts ? (userAmounts[0] * poolAmounts.token1PerShare) / poolAmounts.PRECISION : BigInt(0),
+    userVaultPercentage: userAmounts ? new Percent(userAmounts[0], poolAmounts.totalSupply) : new Percent(0, 100),
+    refetchPositionInfo: () => {
+      refetchUserAmounts()
+      refetchPoolAmounts()
+      refetchPendingReward()
+    },
   }
-
-  return null
 }
 
 export const useUserPendingRewardAmounts = () => {
