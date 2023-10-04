@@ -52,8 +52,8 @@ export const SERVER_NODES = {
     ...polygonZkEvmTestnet.rpcUrls.public.http,
   ],
   [ChainId.ZKSYNC]: [
-    getNodeRealUrlV2(ChainId.ZKSYNC, process.env.SERVER_NODE_REAL_API_ETH) || '',
     ...zkSync.rpcUrls.public.http,
+    getNodeRealUrlV2(ChainId.ZKSYNC, process.env.SERVER_NODE_REAL_API_ETH) || '',
   ],
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA]: linea.rpcUrls.public.http,
@@ -106,8 +106,8 @@ export const PUBLIC_NODES = {
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
   ],
   [ChainId.ZKSYNC]: [
-    getNodeRealUrlV2(ChainId.ZKSYNC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     ...zkSync.rpcUrls.public.http,
+    getNodeRealUrlV2(ChainId.ZKSYNC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
   ],
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA]: linea.rpcUrls.public.http,
