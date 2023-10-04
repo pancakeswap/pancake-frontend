@@ -21,5 +21,3 @@ function toggleHookFactory(queryName: string) {
 }
 
 export const useStakeOnly = toggleHookFactory('stakeOnly')
-
-export const useBooster = toggleHookFactory('booster')

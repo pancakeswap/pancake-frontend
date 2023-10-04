@@ -6,7 +6,6 @@ import {
   LiveSwitch,
   // ViewSwitch,
   StakeOnlyToggle,
-  BoosterToggle,
   SortFilter,
   SearchFilter,
 } from '../components'
@@ -31,7 +30,6 @@ export function Controls() {
       <ControlGroup>
         {/* <ViewSwitch /> */}
         <StakeOnlyToggle />
-        <BoosterToggle />
       </ControlGroup>
       <ControlGroup justifyContent="flex-start">
         <LiveSwitch />
