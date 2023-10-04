@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BaseAssets, ManagerFee } from '@pancakeswap/position-managers'
-import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
+import { Currency, Price } from '@pancakeswap/sdk'
 import { Box, RowBetween, Text } from '@pancakeswap/uikit'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
+import { useTotalStakedInUsd } from 'views/PositionManagers/hooks/useTotalStakedInUsd'
 
 const InfoText = styled(Text).attrs({
   fontSize: '0.875em',
@@ -48,15 +48,14 @@ export const VaultInfo = memo(function VaultInfo({
 }: VaultInfoProps) {
   const { t } = useTranslation()
 
-  const pool0Amount = poolToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, poolToken0Amount) : undefined
-  const pool1Amount = poolToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, poolToken1Amount) : undefined
-
-  const totalStakedInUsd = useMemo(() => {
-    return (
-      Number(formatAmount(pool0Amount)) * (token0PriceUSD ?? 0) +
-      Number(formatAmount(pool1Amount)) * (token1PriceUSD ?? 0)
-    )
-  }, [pool0Amount, pool1Amount, token0PriceUSD, token1PriceUSD])
+  const totalStakedInUsd = useTotalStakedInUsd({
+    currencyA,
+    currencyB,
+    poolToken0Amount,
+    poolToken1Amount,
+    token0PriceUSD,
+    token1PriceUSD,
+  })
 
   return (
     <Box {...props}>
