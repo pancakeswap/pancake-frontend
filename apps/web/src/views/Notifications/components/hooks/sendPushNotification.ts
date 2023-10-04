@@ -1,10 +1,5 @@
 import { useToast } from '@pancakeswap/uikit'
-import {
-  DEFAULT_CAST_SIGN_KEY,
-  DEFAULT_PROJECT_ID,
-  DEFAULT_RELAY_URL,
-  PancakeNotifications,
-} from 'views/Notifications/constants'
+import { DEFAULT_PROJECT_ID, DEFAULT_RELAY_URL, PancakeNotifications } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
 import { useAccount } from 'wagmi'
 import useRegistration from './useRegistration'
