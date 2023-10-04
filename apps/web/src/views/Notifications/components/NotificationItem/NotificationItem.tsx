@@ -3,7 +3,6 @@ import { Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, Row, Text } from 
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTheme } from 'styled-components'
 import {
   ContentsContainer,
   Description,
@@ -39,14 +38,12 @@ const formatStringWithNewlines = (inputString: string) => {
 }
 
 const NotificationItem = ({ title, description, id, date, image, url, removeNotification }: INotificationprops) => {
-  const [isHovered, setIsHovered] = useState(false)
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
   const [isClosing, setIsClosing] = useState<boolean>(false)
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const theme = useTheme()
   const { t } = useTranslation()
 
   const deleteNotification = useCallback(
@@ -59,8 +56,6 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
     },
     [removeNotification, id],
   )
-
-  const handleHover = useCallback(() => setIsHovered(!isHovered), [isHovered])
 
   const handleExpandClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -78,15 +73,7 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
 
   return (
     <StyledNotificationWrapper isclosing={isClosing} ref={containerRef} onClick={handleExpandClick}>
-      <ContentsContainer
-        transition={{ duration: 0.3 }}
-        style={{
-          backgroundColor: isHovered ? 'transparent' : theme.isDark ? '#372F46' : '#EDEAF4',
-          transition: 'background-color 0.15s ease',
-        }}
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
-      >
+      <ContentsContainer>
         <Box marginRight="12px" display="flex" minWidth="50px">
           <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={65} width={65} unoptimized />
         </Box>
@@ -97,12 +84,7 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
               <CloseIcon cursor="pointer" />
             </Box>
           </Flex>
-          <Description
-            ref={contentRef}
-            transition={{ duration: 0.33, ease: 'easeInOut' }}
-            initial={{ maxHeight: 32 }}
-            animate={{ maxHeight: show ? elementHeight : 32 }}
-          >
+          <Description ref={contentRef} show={show} elementHeight={elementHeight}>
             {formatedDescription}
             <StyledLink hidden={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
               {t('View Link')}

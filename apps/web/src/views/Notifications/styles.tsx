@@ -1,6 +1,5 @@
 import styled, { keyframes, css } from 'styled-components'
 import { Box, CheckmarkIcon, Flex, Text } from '@pancakeswap/uikit'
-import { motion } from 'framer-motion'
 import Link from 'next/link'
 
 // Notification View styles
@@ -126,7 +125,7 @@ export const StyledNotificationWrapper = styled.div<{ isclosing: boolean }>`
   animation: ${({ isclosing }) => (!isclosing ? opneRight : openLeft)} 0.65s;
 `
 
-export const ContentsContainer = styled(motion.div)`
+export const ContentsContainer = styled.div`
   display: flex;
   align-items: flex-start;
   padding: 15px;
@@ -134,16 +133,28 @@ export const ContentsContainer = styled(motion.div)`
   border-radius: 18px;
   overflow: hidden;
   transition: transform 0.3s;
+  background-color: ${({ theme }) => (theme.isDark ? '#372F46' : '#EDEAF4')};
 
   &:hover {
     transform: scale(1.01);
+    background-color: transparent;
   }
+
+  ${({ theme }) =>
+    theme.isDark &&
+    css`
+      background-color: #372f46;
+    `}
+
+  transition: background-color 0.15s ease;
 `
 
-export const Description = styled(motion.div)`
+export const Description = styled.div<{ show: boolean; elementHeight: number }>`
   margin-bottom: 5px 0;
   overflow: hidden;
   max-width: 100%;
+  transition: max-height 0.33s ease-in-out;
+  max-height: ${({ show, elementHeight }) => (show ? `${elementHeight}px` : '32px')};
 `
 
 export const ExpandButton = styled(Text)`

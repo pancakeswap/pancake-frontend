@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
 import { useManageSubscription } from '@web3inbox/widget-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import useRegistration from './components/hooks/useRegistration'
