@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
 import { PropsWithChildren, memo, useMemo } from 'react'
-import { FlexProps, Flex, ScanLink } from '@pancakeswap/uikit'
+import { FlexProps, Flex, ScanLink, PlayCircleOutlineIcon } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
@@ -72,7 +72,7 @@ export const VaultLinks = memo(function VaultLinks({
         {t('View Vault Contract')}
       </StyledScanLink>
       {projectVaultUrl && managerInfo && (
-        <StyledScanLink href={projectVaultUrl}>
+        <StyledScanLink href={projectVaultUrl} icon={<PlayCircleOutlineIcon />}>
           {t('View Vault on %managerName%', { managerName: managerInfo.name })}
         </StyledScanLink>
       )}
