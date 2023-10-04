@@ -122,7 +122,7 @@ const NotificationContainer = ({ notifications, sortOptionsType, removeNotificat
           if (sortOptionsType === 'Latest') return b.publishedAt - a.publishedAt
           return a.publishedAt - b.publishedAt
         })
-        .map((notification: any) => {
+        .map((notification: NotifyClientTypes.NotifyMessageRecord) => {
           return (
             <NotificationItem
               key={notification.id}
