@@ -23,8 +23,8 @@ export const useTotalStakedInUsd = ({
   const pool1Amount = poolToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, poolToken1Amount) : undefined
 
   const totalStakedInUsd = useMemo(() => {
-    const totalPoolToken0Usd = new BigNumber(pool0Amount.toSignificant()).times(token0PriceUSD ?? 0)
-    const totalPoolToken1Usd = new BigNumber(pool1Amount.toSignificant()).times(token1PriceUSD ?? 0)
+    const totalPoolToken0Usd = new BigNumber(pool0Amount?.toSignificant() ?? 0).times(token0PriceUSD ?? 0)
+    const totalPoolToken1Usd = new BigNumber(pool1Amount?.toSignificant() ?? 0).times(token1PriceUSD ?? 0)
     return totalPoolToken0Usd.plus(totalPoolToken1Usd).toNumber()
   }, [pool0Amount, pool1Amount, token0PriceUSD, token1PriceUSD])
 

@@ -14,6 +14,7 @@ import { StyledModal } from 'views/PositionManagers/components/StyledModal'
 import { FeeTag } from 'views/PositionManagers/components/Tags'
 import { DYORWarning } from 'views/PositionManagers/components/DYORWarning'
 import { SingleTokenWarning } from 'views/PositionManagers/components/SingleTokenWarning'
+import { useApr } from 'views/PositionManagers/hooks/useApr'
 
 interface Props {
   manager: {
@@ -40,6 +41,10 @@ interface Props {
     token1Balance: CurrencyAmount<Currency>
   }
   userVaultPercentage?: Percent
+  poolToken0Amount?: bigint
+  poolToken1Amount?: bigint
+  token0PriceUSD?: number
+  token1PriceUSD?: number
   // TODO: return data
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
 }
@@ -62,9 +67,12 @@ export const AddLiquidity = memo(function AddLiquidity({
   contractAddress,
   userCurrencyBalances,
   userVaultPercentage,
+  poolToken0Amount,
+  poolToken1Amount,
+  token0PriceUSD,
+  token1PriceUSD,
   refetch,
   onDismiss,
-  onAmountChange,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -128,8 +136,17 @@ export const AddLiquidity = memo(function AddLiquidity({
     () => tryParseAmount(valueB, currencyB) || CurrencyAmount.fromRawAmount(currencyB, '0'),
     [valueB, currencyB],
   )
-  // TODO: mock
-  // const apr = new Percent(4366, 10000)
+
+  const apr = useApr({
+    currencyA,
+    currencyB,
+    poolToken0Amount,
+    poolToken1Amount,
+    token0PriceUSD,
+    token1PriceUSD,
+    avgToken0Amount: 20,
+    avgToken1Amount: 10,
+  })
 
   const displayBalanceText = useCallback(
     (balanceAmount: CurrencyAmount<Currency>) => `Balances: ${balanceAmount?.toSignificant(6)}`,
@@ -194,8 +211,7 @@ export const AddLiquidity = memo(function AddLiquidity({
           </RowBetween>
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>
-            <Text color="text">-%</Text>
-            {/* <Text color="text">{formatPercent(apr)}%</Text> */}
+            <Text color="text">{`${apr}%`}</Text>
           </RowBetween>
         </Flex>
         {isSingleDepositToken && <SingleTokenWarning />}

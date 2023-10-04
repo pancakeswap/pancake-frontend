@@ -1,14 +1,11 @@
-import { Percent } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import { memo, useMemo } from 'react'
 import { Box, RowBetween, Text, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { formatPercent } from '@pancakeswap/utils/formatFractions'
 import { AutoCompoundTag } from './Tags'
 
 interface Props {
-  apr: Percent
-  boostedApr?: Percent
+  apr: string
   withCakeReward?: boolean
   autoCompound?: boolean
   onAprClick?: () => void
@@ -19,10 +16,8 @@ const AprText = styled(Text)`
   text-decoration: dotted underline;
 `
 
-export const YieldInfo = memo(function YieldInfo({ apr, boostedApr, withCakeReward, autoCompound }: Props) {
+export const YieldInfo = memo(function YieldInfo({ apr, withCakeReward, autoCompound }: Props) {
   const { t } = useTranslation()
-
-  const aprToHighlight = boostedApr || apr
 
   const earning = useMemo(() => (withCakeReward ? ['CAKE', t('Fees')].join(' + ') : t('Fees')), [withCakeReward, t])
 
@@ -32,7 +27,7 @@ export const YieldInfo = memo(function YieldInfo({ apr, boostedApr, withCakeRewa
         <Text>{t('APR')}:</Text>
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
           <AprText color="success" bold>
-            {formatPercent(aprToHighlight)}%
+            {`${apr}%`}
           </AprText>
         </Flex>
       </RowBetween>

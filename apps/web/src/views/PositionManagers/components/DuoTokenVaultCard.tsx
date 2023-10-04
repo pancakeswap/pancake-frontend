@@ -4,7 +4,7 @@ import { Currency, Percent, Price, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { ReactNode, memo, PropsWithChildren, useMemo } from 'react'
 import styled from 'styled-components'
-
+import { useApr } from 'views/PositionManagers/hooks/useApr'
 import { CardTitle } from './CardTitle'
 import { YieldInfo } from './YieldInfo'
 import { ManagerInfo } from './ManagerInfo'
@@ -93,9 +93,16 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   projectVaultUrl,
   refetch,
 }: PropsWithChildren<Props>) {
-  // TODO: mock
-  const mockApr = new Percent(2233, 10000)
-  const mockCmpApr = new Percent(1122, 10000)
+  const apr = useApr({
+    currencyA,
+    currencyB,
+    poolToken0Amount,
+    poolToken1Amount,
+    token0PriceUSD,
+    token1PriceUSD,
+    avgToken0Amount: 20,
+    avgToken1Amount: 10,
+  })
 
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
   const vaultName = useMemo(() => getVaultName(id, name), [name, id])
@@ -116,7 +123,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         isSingleDepositToken={isSingleDepositToken}
       />
       <CardBody>
-        <YieldInfo boostedApr={mockApr} apr={mockCmpApr} autoCompound={autoCompound} withCakeReward={withCakeReward} />
+        <YieldInfo apr={apr} autoCompound={autoCompound} withCakeReward={withCakeReward} />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement
           manager={manager}
@@ -137,6 +144,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           token1PriceUSD={token1PriceUSD}
           pendingReward={pendingReward}
           userVaultPercentage={userVaultPercentage}
+          poolToken0Amount={poolToken0Amount}
+          poolToken1Amount={poolToken1Amount}
           refetch={refetch}
         />
         <ExpandableSection mt="1.5em">
