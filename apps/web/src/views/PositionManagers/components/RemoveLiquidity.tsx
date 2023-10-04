@@ -79,9 +79,9 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
       refetch?.()
       onDismiss?.()
       toastSuccess(
-        `${t('Removed')}!`,
+        `${t('Unstaked')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+          {t('Your funds have been unstaked in position manager.')}
         </ToastDescriptionWithTx>,
       )
     }

@@ -257,7 +257,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
       toastSuccess(
         `${t('Staked')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+          {t('Your funds have been staked in position manager.')}
         </ToastDescriptionWithTx>,
       )
       onDone?.()
