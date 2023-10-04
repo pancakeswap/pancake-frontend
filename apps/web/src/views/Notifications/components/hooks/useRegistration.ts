@@ -33,7 +33,7 @@ const useRegistration = () => {
       toast.toastError(Events.SubscriptionRequestError.title, 'User Denied the request')
       console.error({ registerIdentityError })
     }
-  }, [signMessage, registerIdentity, account])
+  }, [signMessage, registerIdentity, account, toast])
 
   return { handleRegistration, identityKey, account, setAccount }
 }
