@@ -74,9 +74,6 @@ export const AddLiquidity = memo(function AddLiquidity({
   const onInputChange = useCallback(
     ({
       value,
-      currency,
-      otherValue,
-      otherCurrency,
       setValue,
       setOtherValue,
       isToken0,

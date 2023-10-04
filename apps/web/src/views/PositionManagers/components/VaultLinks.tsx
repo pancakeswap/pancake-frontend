@@ -39,7 +39,7 @@ const LinkSupportChains = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export const VaultLinks = memo(function VaultLinks({
   layout = 'column',
-  lpAddress,
+  // lpAddress,
   managerInfoUrl,
   strategyInfoUrl,
   projectVaultUrl,
@@ -56,7 +56,7 @@ export const VaultLinks = memo(function VaultLinks({
 
   return (
     <LinkContainer flexDirection={layout} {...props}>
-      <StyledScanLink href={`https://pancakeswap.finance/info/v3/pairs/${lpAddress}`}>{t('Pair Info')}</StyledScanLink>
+      {/* <StyledScanLink href={`https://pancakeswap.finance/info/v3/pairs/${lpAddress}`}>{t('Pair Info')}</StyledScanLink> */}
       <StyledScanLink href={managerInfoUrl}>{t('Manager Info')}</StyledScanLink>
       <StyledScanLink href={strategyInfoUrl}>{t('Strategy Info')}</StyledScanLink>
       <StyledScanLink

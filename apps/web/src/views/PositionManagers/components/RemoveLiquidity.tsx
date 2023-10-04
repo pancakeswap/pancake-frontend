@@ -30,7 +30,6 @@ interface Props {
   token1PriceUSD?: number
   contractAddress: `0x${string}`
   refetch?: () => void
-  // TODO: return data
   onRemove?: (params: {
     amountA: CurrencyAmount<Currency>
     amountB: CurrencyAmount<Currency>
@@ -40,7 +39,6 @@ interface Props {
 
 export const RemoveLiquidity = memo(function RemoveLiquidity({
   isOpen,
-  // assets,
   vaultName,
   onDismiss,
   currencyA,
@@ -52,8 +50,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   feeTier,
   contractAddress,
   refetch,
-}: // onRemove,
-Props) {
+}: Props) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [percent, setPercent] = useState(0)

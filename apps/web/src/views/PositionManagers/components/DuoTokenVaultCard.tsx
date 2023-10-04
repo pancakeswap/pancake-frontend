@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { MANAGER, ManagerFee, Strategy } from '@pancakeswap/position-managers'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import { Currency, Percent, Price, CurrencyAmount } from '@pancakeswap/sdk'
