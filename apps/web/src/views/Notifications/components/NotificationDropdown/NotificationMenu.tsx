@@ -1,7 +1,14 @@
-import { Box, Flex, ModalV2, ModalWrapper, NotificationBellIcon, UserMenuProps } from '@pancakeswap/uikit'
+import {
+  Box,
+  Flex,
+  ModalV2,
+  ModalWrapper,
+  NotificationBellIcon,
+  UserMenuProps,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
-import { useViewport } from '../hooks/useViewPort'
 
 interface InotificationBellProps {
   unread: number
@@ -29,7 +36,7 @@ const NotificationMenu: React.FC<
   const [unread, setUnread] = useState<number>(0)
 
   const ref = useRef<HTMLDivElement>(null)
-  const { width } = useViewport()
+  const { isMobile } = useMatchBreakpoints()
 
   const toggleMenu = useCallback(() => {
     if (!identityKey && isSubscribed) handleRegistration()
@@ -50,7 +57,7 @@ const NotificationMenu: React.FC<
     return () => document.removeEventListener('click', checkIfClickedOutside)
   }, [isMenuOpen, setIsMenuOpen])
 
-  if (width <= 650) {
+  if (isMobile) {
     return (
       <Flex alignItems="center" justifyContent="center" height="100%">
         <NotificationBell unread={unread} toggleMenu={toggleMenu} />
