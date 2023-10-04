@@ -25,7 +25,7 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.ARBITRUM_GOERLI]: 0.1,
   [ChainId.POLYGON_ZKEVM]: 0.01,
   [ChainId.POLYGON_ZKEVM_TESTNET]: 0,
-  [ChainId.ZKSYNC]: 0.1,
+  [ChainId.ZKSYNC]: 0.2,
   [ChainId.ZKSYNC_TESTNET]: 0.1,
   [ChainId.LINEA]: 0.1,
   [ChainId.LINEA_TESTNET]: 0.1,
