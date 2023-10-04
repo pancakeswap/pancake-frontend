@@ -49,7 +49,7 @@ const NoNotificationsView = () => {
   )
 }
 
-const SettingsModal = ({ account }: { account: string | null }) => {
+const SettingsModal = ({ account }: { account: string | undefined }) => {
   const [sortOptionsType, setSortOptionsType] = useState<string>('Latest')
   const [notificationType, setNotificationType] = useState<string>('All')
   const { messages: notifications, deleteMessage } = useMessages(account)

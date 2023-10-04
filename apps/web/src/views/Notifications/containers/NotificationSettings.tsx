@@ -35,7 +35,7 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
   )
 }
 
-const NotificationSettingsMain = ({ account }: { account: string | null }) => {
+const NotificationSettingsMain = ({ account }: { account: string | undefined }) => {
   const [loading, setloading] = useState<boolean>(false)
   const { unsubscribe, isUnsubscribing } = useManageSubscription(account)
 

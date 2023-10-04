@@ -49,12 +49,13 @@ const useSendPushNotification = (): IUseSendNotification => {
           headers: { 'Content-Type': 'application/json' },
         })
       } catch (error) {
-        throw new Error('Error:', error)
+        console.error('failed to subscribe to push notis', error)
       }
     }
   }
 
   const sendPushNotification = async (notificationType: BuilderNames, args?: string[]) => {
+    if (!eip155Account) return
     const notificationPayload: NotificationPayload = {
       accounts: [eip155Account],
       notification: PancakeNotifications[notificationType](args),
