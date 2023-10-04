@@ -9,6 +9,7 @@ import {
 } from '@pancakeswap/uikit'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
+import useUnreadNotifications from '../hooks/useUnreadNotifications'
 
 interface InotificationBellProps {
   unread: number
@@ -33,16 +34,14 @@ const NotificationMenu: React.FC<
     handleRegistration: () => Promise<void>
   }
 > = ({ children, isMenuOpen, setIsMenuOpen, identityKey, handleRegistration, isSubscribed }) => {
-  const [unread, setUnread] = useState<number>(0)
+  const { unread, setUnread } = useUnreadNotifications()
 
   const ref = useRef<HTMLDivElement>(null)
   const { isMobile } = useMatchBreakpoints()
 
   const toggleMenu = useCallback(() => {
     if (!identityKey && isSubscribed) handleRegistration()
-    if (!isMenuOpen) {
-      setUnread(0)
-    }
+    setUnread(0)
     setIsMenuOpen(!isMenuOpen)
   }, [setIsMenuOpen, isMenuOpen, setUnread, identityKey, handleRegistration, isSubscribed])
 
@@ -51,11 +50,12 @@ const NotificationMenu: React.FC<
       if (!ref.current) return
       if (!ref.current.contains(e.target as Node | null)) {
         setIsMenuOpen(false)
+        setUnread(0)
       }
     }
     document.addEventListener('click', checkIfClickedOutside)
     return () => document.removeEventListener('click', checkIfClickedOutside)
-  }, [isMenuOpen, setIsMenuOpen])
+  }, [isMenuOpen, setIsMenuOpen, setUnread])
 
   if (isMobile) {
     return (
