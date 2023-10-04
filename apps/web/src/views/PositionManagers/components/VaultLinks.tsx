@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
-import { PropsWithChildren, memo, useMemo } from 'react'
+import { PropsWithChildren, memo } from 'react'
 import { FlexProps, Flex, ScanLink } from '@pancakeswap/uikit'
-import { Currency } from '@pancakeswap/swap-sdk-core'
-import { MANAGER } from '@pancakeswap/position-managers'
+import { ChainId } from '@pancakeswap/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { getBlockExploreLink } from 'utils'
@@ -22,47 +22,45 @@ const LinkContainer = styled(Flex)`
 
 interface Props extends SpaceProps, FlexProps {
   layout?: 'row' | 'column'
-  currencyA: Currency
-  currencyB: Currency
-  vaultId?: string | number
-  positionId?: string
-  managerId?: MANAGER
+  lpAddress: string
+  managerInfoUrl: string
+  strategyInfoUrl: string
+  managerAddress: string
+  vaultAddress: string
 }
+
+const LinkSupportChains = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export const VaultLinks = memo(function VaultLinks({
   layout = 'column',
-  currencyA,
-  // currencyB,
-  // positionId,
-  vaultId,
-  managerId,
+  lpAddress,
+  managerInfoUrl,
+  strategyInfoUrl,
+  managerAddress,
+  vaultAddress,
   children,
   ...props
 }: PropsWithChildren<Props>) {
   const { t } = useTranslation()
-  const { chainId } = currencyA
-
-  // TODO: mock
-  const managerContractAddress = useMemo(
-    () => managerId !== undefined && getBlockExploreLink(managerId, 'address', chainId),
-    [managerId, chainId],
-  )
-  const vaultContractAddress = useMemo(
-    () => vaultId !== undefined && getBlockExploreLink(vaultId, 'address', chainId),
-    [vaultId, chainId],
-  )
-
-  const managerLink = managerContractAddress ? (
-    <StyledScanLink href={managerContractAddress}>{t('View Manager')}</StyledScanLink>
-  ) : null
-  const vaultLink = vaultContractAddress ? (
-    <StyledScanLink href={vaultContractAddress}>{t('View Vault Contract')}</StyledScanLink>
-  ) : null
+  const { chainId } = useActiveChainId()
 
   return (
     <LinkContainer flexDirection={layout} {...props}>
-      {managerLink}
-      {vaultLink}
+      <StyledScanLink href={`https://pancakeswap.finance/info/v3/pairs${lpAddress}`}>{t('Pair Info')}</StyledScanLink>
+      <StyledScanLink href={managerInfoUrl}>{t('Manager Info')}</StyledScanLink>
+      <StyledScanLink href={strategyInfoUrl}>{t('Strategy Info')}</StyledScanLink>
+      <StyledScanLink
+        href={getBlockExploreLink(managerAddress, 'address', chainId)}
+        useBscCoinFallback={LinkSupportChains.includes(chainId)}
+      >
+        {t('View Manager Address')}
+      </StyledScanLink>
+      <StyledScanLink
+        href={getBlockExploreLink(vaultAddress, 'address', chainId)}
+        useBscCoinFallback={LinkSupportChains.includes(chainId)}
+      >
+        {t('View Vault Contract')}
+      </StyledScanLink>
       {children}
     </LinkContainer>
   )

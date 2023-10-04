@@ -16,6 +16,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
   const { vault } = usePCSVault({ config })
   const {
     id,
+    lpAddress,
     currencyA,
     currencyB,
     earningToken,
@@ -30,6 +31,8 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     allowDepositToken0,
     allowDepositToken1,
     priceFromV3FarmPid,
+    managerInfoUrl,
+    strategyInfoUrl,
   } = vault
   const managerInfo = useMemo(
     () => ({
@@ -39,15 +42,9 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     [manager],
   )
   const wrapperContract = usePositionManagerWrapperContract(address)
-  const adapterAddress = useQuery(
-    ['adapterAddress', address],
-    async () => {
-      return wrapperContract.read.adapterAddr()
-    },
-    {
-      enabled: !!wrapperContract,
-    },
-  ).data
+  const adapterAddress = useQuery(['adapterAddress', address], async () => wrapperContract.read.adapterAddr(), {
+    enabled: !!wrapperContract,
+  }).data
   const adapterContract = usePositionManagerAdepterContract(adapterAddress)
   const tokenRatio = useQuery(
     ['adapterAddress', adapterAddress],
@@ -94,6 +91,11 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       poolToken1Amount={info?.poolToken1Amounts}
       pendingReward={info?.pendingReward}
       userVaultPercentage={info?.userVaultPercentage}
+      lpAddress={lpAddress}
+      managerAddress={address}
+      vaultAddress={adapterAddress}
+      managerInfoUrl={managerInfoUrl}
+      strategyInfoUrl={strategyInfoUrl}
       refetch={info?.refetchPositionInfo}
     >
       {id}

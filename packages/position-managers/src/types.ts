@@ -12,7 +12,7 @@ export enum OnChainActionType {
 
 export enum Strategy {
   TYPICAL_WIDE,
-  SUPER_ONE_SIDED,
+  YIELD_IQ,
 }
 
 export interface OnChainActionResponse {
@@ -99,6 +99,7 @@ export interface DuoTokenVault {
   // It can be used to sort the managed positions on fe
   id: number
   name: string
+  lpAddress: string
   currencyA: Currency
   currencyB: Currency
   earningToken: Currency
@@ -110,6 +111,8 @@ export interface DuoTokenVault {
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
   priceFromV3FarmPid: number
+  managerInfoUrl: string
+  strategyInfoUrl: string
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

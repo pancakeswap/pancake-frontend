@@ -91,19 +91,6 @@ export const VaultInfo = memo(function VaultInfo({
     [t, managerFee?.type],
   )
 
-  const managerFeeDisplay = managerFee ? (
-    <>
-      <RowBetween mt="8px" alignItems="flex-start">
-        <InfoText>{t('Manager Fee')}:</InfoText>
-        <InfoText>{feeRate}%</InfoText>
-      </RowBetween>
-      <RowBetween mt="8px" alignItems="flex-start">
-        <InfoText>{t('Manager Fee Type')}:</InfoText>
-        <InfoText>{feeType}</InfoText>
-      </RowBetween>
-    </>
-  ) : null
-
   const invertButton = (
     <SmallIconButton onClick={invert}>
       <InvertIcon inverted={inverted} />
@@ -124,7 +111,7 @@ export const VaultInfo = memo(function VaultInfo({
     <Box {...props}>
       <RowBetween>
         <InfoText>{t('Total staked')}:</InfoText>
-        <InfoText>${totalStakedInUsd.toFixed(2)}</InfoText>
+        <InfoText>{`$${totalStakedInUsd.toFixed(2)}`}</InfoText>
       </RowBetween>
       {/* <RowBetween mt="8px">
         <InfoText>{t('Last adjusted on')}:</InfoText>
@@ -150,7 +137,6 @@ export const VaultInfo = memo(function VaultInfo({
           </Flex>
         </Flex>
       </RowBetween> */}
-      {managerFeeDisplay}
     </Box>
   )
 })

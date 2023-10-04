@@ -12,7 +12,6 @@ interface VaultDetail {
 }
 
 export function usePCSVault({ config }: Params): VaultDetail {
-  const { id } = config
   const manager = useMemo(() => createPCSVaultManager({ vaultConfig: config }), [config])
 
   const vault = useMemo(() => {
