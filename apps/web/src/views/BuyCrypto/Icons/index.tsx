@@ -11,7 +11,7 @@ export const ProviderIcon: React.FC<
   const providerToLogo: { [key: string]: JSX.Element } = {
     MoonPay: <MoonPaySvg opacity={isDisabled ? '0.3' : '1'} />,
     Mercuryo: <MercuryoSvg opacity={isDisabled ? '0.3' : '1'} isDark={theme.isDark} />,
-    Transak: <Image src="/images/transak-logo.png" alt="pcs" width={100} height={100} />,
+    Transak: <Image src="/images/on-ramp-providers/transak-offical-logo.png" alt="pcs" width={100} height={100} />,
   }
   const logo = providerToLogo[provider]
   return logo
