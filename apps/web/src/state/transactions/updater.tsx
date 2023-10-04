@@ -37,7 +37,6 @@ export function shouldCheck(
 
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
-  const { sendPushNotification } = useSendPushNotification()
   const { t } = useTranslation()
 
   const dispatch = useAppDispatch()
@@ -80,9 +79,6 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             )
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
-
-            if (supportedNotifyTxTypes.includes(transaction.type))
-              sendPushNotification(BuilderNames.newLpNotification, [])
           } catch (error) {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {
@@ -104,7 +100,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         })
       },
     )
-  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, sendPushNotification])
+  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
 
   const nonBscFarmPendingTxns = useMemo(
     () =>

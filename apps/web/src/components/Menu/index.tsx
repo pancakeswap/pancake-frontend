@@ -1,21 +1,22 @@
 import { languageList, useTranslation } from '@pancakeswap/localization'
-import { footerLinks, Menu as UikitMenu, NextLinkFromReactRouter, useModal } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter, Menu as UikitMenu, footerLinks, useModal } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
+import { useInitWeb3InboxClient } from '@web3inbox/widget-react'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import useTheme from 'hooks/useTheme'
+import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Notifications from 'views/Notifications'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
-import { useMenuItems } from './hooks/useMenuItems'
 import UserMenu from './UserMenu'
+import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 
 const LinkComponent = (linkProps) => {
@@ -49,6 +50,11 @@ const Menu = (props) => {
     return footerLinks(t)
   }, [t])
 
+  const isW3iInitialized = useInitWeb3InboxClient({
+    projectId: 'a14938037e06221040c0fa6a69a1d95f',
+    domain: 'pc-custom-web.vercel.app',
+  })
+
   return (
     <>
       <UikitMenu
@@ -56,7 +62,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
-            <Notifications />
+            {isW3iInitialized ? <Notifications /> : null}
             <NetworkSwitcher />
             <UserMenu />
           </>

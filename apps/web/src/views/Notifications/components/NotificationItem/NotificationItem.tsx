@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AnimatePresence, Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, Row, Text } from '@pancakeswap/uikit'
+import { Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, Row, Text } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -78,41 +78,39 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
 
   return (
     <StyledNotificationWrapper isclosing={isClosing} ref={containerRef} onClick={handleExpandClick}>
-      <AnimatePresence>
-        <ContentsContainer
-          transition={{ duration: 0.3 }}
-          style={{
-            backgroundColor: isHovered ? 'transparent' : theme.isDark ? '#372F46' : '#EDEAF4',
-            transition: 'background-color 0.15s ease',
-          }}
-          onMouseEnter={handleHover}
-          onMouseLeave={handleHover}
-        >
-          <Box marginRight="12px" display="flex" minWidth="50px">
-            <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={65} width={65} unoptimized />
-          </Box>
-          <Flex flexDirection="column">
-            <Flex justifyContent="space-between">
-              <Text fontWeight="bold">{title}</Text>
-              <Box paddingX="5px" height="fit-content" onClick={deleteNotification}>
-                <CloseIcon cursor="pointer" />
-              </Box>
-            </Flex>
-            <Description
-              ref={contentRef}
-              transition={{ duration: 0.33, ease: 'easeInOut' }}
-              initial={{ maxHeight: 32 }}
-              animate={{ maxHeight: show ? elementHeight : 32 }}
-            >
-              {formatedDescription}
-              <StyledLink hidden={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
-                {t('View Link')}
-              </StyledLink>
-            </Description>
-            <BottomRow show={show} formattedDate={formattedDate} />
+      <ContentsContainer
+        transition={{ duration: 0.3 }}
+        style={{
+          backgroundColor: isHovered ? 'transparent' : theme.isDark ? '#372F46' : '#EDEAF4',
+          transition: 'background-color 0.15s ease',
+        }}
+        onMouseEnter={handleHover}
+        onMouseLeave={handleHover}
+      >
+        <Box marginRight="12px" display="flex" minWidth="50px">
+          <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={65} width={65} unoptimized />
+        </Box>
+        <Flex flexDirection="column">
+          <Flex justifyContent="space-between">
+            <Text fontWeight="bold">{title}</Text>
+            <Box paddingX="5px" height="fit-content" onClick={deleteNotification}>
+              <CloseIcon cursor="pointer" />
+            </Box>
           </Flex>
-        </ContentsContainer>
-      </AnimatePresence>
+          <Description
+            ref={contentRef}
+            transition={{ duration: 0.33, ease: 'easeInOut' }}
+            initial={{ maxHeight: 32 }}
+            animate={{ maxHeight: show ? elementHeight : 32 }}
+          >
+            {formatedDescription}
+            <StyledLink hidden={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
+              {t('View Link')}
+            </StyledLink>
+          </Description>
+          <BottomRow show={show} formattedDate={formattedDate} />
+        </Flex>
+      </ContentsContainer>
     </StyledNotificationWrapper>
   )
 }
@@ -142,7 +140,7 @@ const NotificationContainer = ({ notifications, sortOptionsType, removeNotificat
           if (sortOptionsType === 'Latest') return b.publishedAt - a.publishedAt
           return a.publishedAt - b.publishedAt
         })
-        .map((notification: NotifyClientTypes.NotifyMessageRecord) => {
+        .map((notification: any) => {
           return (
             <NotificationItem
               key={notification.id}

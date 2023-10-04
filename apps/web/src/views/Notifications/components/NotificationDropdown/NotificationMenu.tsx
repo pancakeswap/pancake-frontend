@@ -1,7 +1,6 @@
 import { Box, Flex, ModalV2, ModalWrapper, NotificationBellIcon, UserMenuProps } from '@pancakeswap/uikit'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
-import { usePushClient } from 'contexts/PushClientContext'
 import { useViewport } from '../hooks/useViewPort'
 
 interface InotificationBellProps {
@@ -22,16 +21,23 @@ const NotificationMenu: React.FC<
   UserMenuProps & {
     isMenuOpen: boolean
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
+    identityKey: string | null
+    isSubscribed: boolean
+    handleRegistration: () => Promise<void>
   }
-> = ({ children, isMenuOpen, setIsMenuOpen }) => {
-  const { unread, setUnread } = usePushClient()
+> = ({ children, isMenuOpen, setIsMenuOpen, identityKey, handleRegistration, isSubscribed }) => {
+  const [unread, setUnread] = useState<number>(0)
+
   const ref = useRef<HTMLDivElement>(null)
   const { width } = useViewport()
 
   const toggleMenu = useCallback(() => {
+    if (!identityKey && isSubscribed) handleRegistration()
+    if (!isMenuOpen) {
+      setUnread(0)
+    }
     setIsMenuOpen(!isMenuOpen)
-    if (!isMenuOpen) setUnread(0)
-  }, [setIsMenuOpen, isMenuOpen, setUnread])
+  }, [setIsMenuOpen, isMenuOpen, setUnread, identityKey, handleRegistration, isSubscribed])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {

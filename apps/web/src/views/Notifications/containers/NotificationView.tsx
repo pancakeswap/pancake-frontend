@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, FlexGap, OptionProps, Select, Text } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
+import { useMessages } from '@web3inbox/widget-react'
 import Image from 'next/image'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
-import { PushClient } from 'PushNotificationClient'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
 
@@ -14,12 +14,6 @@ interface INotificationFilterProps {
   onOptionChange: (option: OptionProps) => void
   description: string
   width?: string
-}
-
-interface ISettingsModalProps {
-  activeSubscriptions: NotifyClientTypes.NotifySubscription[]
-  currentSubscription: NotifyClientTypes.NotifySubscription | null
-  pushClient: PushClient
 }
 
 const NotificationFilter = ({ options, onOptionChange, width, description }: INotificationFilterProps) => {
@@ -34,24 +28,12 @@ const NotificationFilter = ({ options, onOptionChange, width, description }: INo
     </FilterContainer>
   )
 }
-const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }: ISettingsModalProps) => {
+const SettingsModal = ({ account }: { account: string | null }) => {
   const [sortOptionsType, setSortOptionsType] = useState<string>('Latest')
   const [notificationType, setNotificationType] = useState<string>('All')
-  const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
+  const { messages: notifications, deleteMessage } = useMessages(account)
 
   const { t } = useTranslation()
-
-  const updateMessages = useCallback(async () => {
-    if (currentSubscription?.topic) {
-      try {
-        const messageHistory = await pushClient.getMessageHistory({ topic: currentSubscription?.topic })
-        setNotifications(Object.values(messageHistory))
-      } catch (error) {
-        console.error(error)
-        throw new Error(JSON.stringify(error))
-      }
-    }
-  }, [setNotifications, pushClient, currentSubscription?.topic])
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
     setNotificationType(option.value)
@@ -63,9 +45,9 @@ const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }:
 
   const removeNotification = useCallback(
     async (id: number) => {
-      await pushClient.deleteNotifyMessage({ id: Number(id) }).then(() => updateMessages())
+      await deleteMessage(Number(id))
     },
-    [updateMessages, pushClient],
+    [deleteMessage],
   )
 
   const removeAllNotifications = useCallback(async () => {
@@ -102,20 +84,6 @@ const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }:
     }
     return sortNotifications(notifications)
   }, [notifications, notificationType])
-
-  useEffect(() => {
-    if (!currentSubscription?.topic) return
-    updateMessages()
-  }, [updateMessages, currentSubscription?.topic, activeSubscriptions])
-
-  useEffect(() => {
-    if (!(pushClient && currentSubscription?.topic)) {
-      return () => null
-    }
-    pushClient.emitter.on('notify_message', () => updateMessages())
-
-    return () => pushClient.emitter.off('notify_message', () => updateMessages())
-  }, [pushClient, setNotifications, currentSubscription?.topic, updateMessages])
 
   return (
     <Box paddingBottom="24px" width="100%">

@@ -14,7 +14,7 @@ interface ISettingsprops {
 }
 
 interface ISettingsContainerProps {
-  scopes: NotifyClientTypes.ScopeMap
+  scopes: NotifyClientTypes.NotifySubscription['scope']
   setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
 }
 

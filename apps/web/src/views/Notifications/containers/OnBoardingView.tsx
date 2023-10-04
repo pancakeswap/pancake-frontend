@@ -1,39 +1,33 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
-import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import { useManageSubscription } from '@web3inbox/widget-react'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { usePushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'
-import { useSignMessage } from 'wagmi'
-import {
-  useInitWeb3InboxClient,
-  useManageSubscription,
-  useW3iAccount,
-} from "@web3inbox/widget-react";
-import useSendPushNotification from '../components/hooks/sendPushNotification'
 import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
-import { DEFAULT_APP_METADATA, Events } from '../constants'
-import { BuilderNames } from '../types'
+import { Events } from '../constants'
 import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
+import useSendPushNotification from '../components/hooks/sendPushNotification'
+import { BuilderNames } from '../types'
 
 interface IOnboardingButtonProps {
   onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
   loading: boolean
   isOnBoarded: boolean
-  onBoardingStep: 'identity' | 'sync'
 }
 
 interface IOnBoardingProps {
   setIsRightView: Dispatch<SetStateAction<boolean>>
-  onBoardingStep: 'identity' | 'sync'
+  identityKey: string | null
+  handleRegistration: () => Promise<void>
+  account: string | null
 }
 
-function OnboardingButton({ onClick, loading, isOnBoarded, onBoardingStep }: IOnboardingButtonProps) {
+function OnboardingButton({ onClick, loading, isOnBoarded }: IOnboardingButtonProps) {
   const { t } = useTranslation()
   const { eip155Account } = useFormattedEip155Account()
-  const buttonText = getOnBoardingButtonText(onBoardingStep, isOnBoarded, loading, t)
+  const buttonText = getOnBoardingButtonText(isOnBoarded, loading, t)
 
   if (!eip155Account)
     return (
@@ -56,98 +50,38 @@ function OnboardingButton({ onClick, loading, isOnBoarded, onBoardingStep }: IOn
   )
 }
 
-const OnBoardingView = ({ setIsRightView, onBoardingStep }: IOnBoardingProps) => {
-  const { signMessageAsync } = useSignMessage()
+const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, account }: IOnBoardingProps) => {
   const [loading, setloading] = useState<boolean>(false)
-  const { pushClientProxy: pushClient, refreshNotifications, pushRegisterMessage, isOnBoarded } = usePushClient()
-  const {
-    account,
-    setAccount,
-    register: registerIdentity,
-    identityKey,
-  } = useW3iAccount();
-
   const toast = useToast()
-  const { eip155Account } = useFormattedEip155Account()
+  const { t } = useTranslation()
+  const { subscribe, isSubscribing } = useManageSubscription(account)
   const { sendPushNotification, subscribeToPushNotifications, requestNotificationPermission } =
     useSendPushNotification()
 
-  const { t } = useTranslation()
-
-  const signMessage = useCallback(
-    async (message: string) => {
-      const res = await signMessageAsync({
-        message,
-      });
-
-      return res as string;
-    },
-    [signMessageAsync]
-  );
-
-  const handleRegistration = useCallback(async () => {
-    if (!account) return;
-    try {
-      await registerIdentity(signMessage);
-    } catch (registerIdentityError) {
-      console.error({ registerIdentityError });
-    }
-  }, [signMessage, registerIdentity, account]);
-
-  const handleOnboarding = useCallback(() => {
-    setloading(true)
-    signMessageAsync({ message: pushRegisterMessage })
-      .then((signature) => {
-        pushClient.postMessage(formatJsonRpcRequest('notify_signature_delivered', { signature }))
-        setloading(false)
-      })
-      .catch((error) => {
-        console.error(error)
-        setloading(false)
-      })
-  }, [pushRegisterMessage, setloading, pushClient, signMessageAsync])
-
   const handleSubscribe = useCallback(async () => {
-    if (!eip155Account) return
+    if (!account) return
     setloading(true)
-
-    pushClient.emitter.on('notify_subscription', () => {
-      toast.toastSuccess('Already subscribed', 'actibating current subscription')
-      sendPushNotification(BuilderNames.OnBoardNotification, [])
-      setIsRightView(true)
-      refreshNotifications()
-    })
     try {
-      await subscribeToPushNotifications()
-      await pushClient.subscribe({
-        account: eip155Account,
-        metadata: DEFAULT_APP_METADATA,
-      })
+      // await subscribeToPushNotifications()
+      await subscribe()
+      setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, []), 1000)
       setloading(false)
     } catch (error) {
       toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
       setloading(false)
     }
-  }, [
-    eip155Account,
-    pushClient,
-    setloading,
-    toast,
-    refreshNotifications,
-    sendPushNotification,
-    subscribeToPushNotifications,
-    setIsRightView,
-  ])
+  }, [account, setloading, toast, sendPushNotification, subscribe])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      if (identityKey) handleRegistration()
-      else console.log('yerp')
+      if (!identityKey) requestNotificationPermission().then(() => handleRegistration())
+      else handleSubscribe()
     },
-    [handleOnboarding, handleSubscribe, isOnBoarded, requestNotificationPermission],
+    [handleRegistration, handleSubscribe, identityKey, requestNotificationPermission],
   )
-  const onBoardingDescription = getOnBoardingDescriptionMessage(onBoardingStep, isOnBoarded, t)
+
+  const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(identityKey), t)
 
   return (
     <Box padding="24px">
@@ -162,10 +96,9 @@ const OnBoardingView = ({ setIsRightView, onBoardingStep }: IOnBoardingProps) =>
           {onBoardingDescription}
         </Text>
         <OnboardingButton
-          loading={loading}
+          loading={loading || isSubscribing}
           onClick={handleAction}
-          isOnBoarded={isOnBoarded}
-          onBoardingStep={onBoardingStep}
+          isOnBoarded={Boolean(identityKey)}
         />
       </FlexGap>
     </Box>

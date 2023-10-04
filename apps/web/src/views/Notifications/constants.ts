@@ -22,6 +22,10 @@ export const NotificationFilterTypes: OptionProps[] = [
     label: 'Farm',
     value: 'Farms',
   },
+  {
+    label: 'Alerts',
+    value: 'alerts',
+  },
 ]
 
 export const NotificationSortTypes: OptionProps[] = [

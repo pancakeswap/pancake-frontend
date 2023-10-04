@@ -9,7 +9,6 @@ import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'ne
 import { WagmiConfig } from 'wagmi'
 import { wagmiConfig } from 'utils/wagmi'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
-import PushContextProvider from 'contexts/PushClientContext'
 
 // Create a client
 const queryClient = new QueryClient()
@@ -30,25 +29,23 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiConfig config={wagmiConfig}>
-        <PushContextProvider>
-          <Provider store={store}>
-            <NextThemeProvider>
-              <StyledUIKitProvider>
-                <LanguageProvider>
-                  <SWRConfig
-                    value={{
-                      use: [fetchStatusMiddleware],
-                    }}
-                  >
-                    <HistoryManagerProvider>
-                      <ModalProvider>{children}</ModalProvider>
-                    </HistoryManagerProvider>
-                  </SWRConfig>
-                </LanguageProvider>
-              </StyledUIKitProvider>
-            </NextThemeProvider>
-          </Provider>
-        </PushContextProvider>
+        <Provider store={store}>
+          <NextThemeProvider>
+            <StyledUIKitProvider>
+              <LanguageProvider>
+                <SWRConfig
+                  value={{
+                    use: [fetchStatusMiddleware],
+                  }}
+                >
+                  <HistoryManagerProvider>
+                    <ModalProvider>{children}</ModalProvider>
+                  </HistoryManagerProvider>
+                </SWRConfig>
+              </LanguageProvider>
+            </StyledUIKitProvider>
+          </NextThemeProvider>
+        </Provider>
       </WagmiConfig>
     </QueryClientProvider>
   )

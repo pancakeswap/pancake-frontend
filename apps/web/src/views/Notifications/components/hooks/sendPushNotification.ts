@@ -1,10 +1,5 @@
 import { useToast } from '@pancakeswap/uikit'
-import {
-  DEFAULT_CAST_SIGN_KEY,
-  DEFAULT_PROJECT_ID,
-  DEFAULT_RELAY_URL,
-  PancakeNotifications,
-} from 'views/Notifications/constants'
+import { DEFAULT_RELAY_URL, PancakeNotifications } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
 import useFormattedEip155Account from './useFormatEip155Account'
 
@@ -63,11 +58,11 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      await fetch(`${DEFAULT_RELAY_URL}/${DEFAULT_PROJECT_ID}/notify`, {
+      await fetch(`${DEFAULT_RELAY_URL}/${'a14938037e06221040c0fa6a69a1d95f'}/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${DEFAULT_CAST_SIGN_KEY}`,
+          Authorization: `Bearer ${'03533e45-782a-42fb-820d-c0984ed392d9'}`,
         },
         body: JSON.stringify(notificationPayload),
       })

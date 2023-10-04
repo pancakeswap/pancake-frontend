@@ -1,20 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, Text, useToast } from '@pancakeswap/uikit'
-import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { CommitButton } from 'components/CommitButton'
 import _isEqual from 'lodash/isEqual'
+
+import { NotifyClientTypes } from '@walletconnect/notify-client'
+import { useManageSubscription, useSubscriptionScopes } from '@web3inbox/widget-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { PushClient } from 'PushNotificationClient'
 import SettingsContainer from '../components/Settingsitem/SettingsItem'
 import { Events } from '../constants'
 import { ScrollableContainer } from '../styles'
 import { getSettingsButtonText } from '../utils/textHelpers'
-
-interface ISettingsProps {
-  currentSubscription: NotifyClientTypes.NotifySubscription
-  pushClient: PushClient
-  refreshNotifications: () => void
-}
 
 interface PushSubButtonProps {
   isUnsubscribing: boolean
@@ -40,12 +35,15 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
   )
 }
 
-const NotificationSettingsMain = ({ pushClient, currentSubscription, refreshNotifications }: ISettingsProps) => {
+const NotificationSettingsMain = ({ account }: { account: string | null }) => {
   const [loading, setloading] = useState<boolean>(false)
+  const { unsubscribe, isUnsubscribing } = useManageSubscription(account)
+
+  const { scopes: currentScopes, updateScopes } = useSubscriptionScopes(account)
   const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
 
   const toast = useToast()
-  const prevScopesRef = useRef<NotifyClientTypes.NotifySubscription['scope']>(scopes)
+  const prevScopesRef = useRef<NotifyClientTypes.NotifySubscription['scope']>(currentScopes)
   const objectsAreEqual = _isEqual(scopes, prevScopesRef.current)
 
   const getEnabledScopes = (scopesMap: NotifyClientTypes.NotifySubscription['scope']) => {
@@ -55,42 +53,31 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription, refreshNoti
     })
     return enabledScopeKeys
   }
-
   useEffect(() => {
-    if (!currentSubscription?.scope) return
-    setScopes(currentSubscription?.scope)
-    prevScopesRef.current = currentSubscription?.scope
-  }, [currentSubscription?.scope])
+    if (!currentScopes) return
+    setScopes(currentScopes)
+    prevScopesRef.current = currentScopes
+  }, [currentScopes])
 
   const handleUpdatePreferences = useCallback(async () => {
     try {
-      pushClient?.emitter.on('notify_update', () => {
-        toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
-      })
-      await pushClient.update({
-        topic: currentSubscription?.topic,
-        scope: getEnabledScopes(scopes),
-      })
-      const newScope = currentSubscription
-      prevScopesRef.current = newScope.scope
+      await updateScopes(getEnabledScopes(scopes))
+      const newScope = currentScopes
+      prevScopesRef.current = newScope
     } catch (error: any) {
       toast.toastError(Events.PreferencesError.title, Events.PreferencesError.message)
     }
-  }, [pushClient, scopes, currentSubscription, toast])
+  }, [currentScopes, toast, scopes, updateScopes])
 
   const handleUnSubscribe = useCallback(async () => {
     setloading(true)
     try {
-      pushClient.emitter.on('notify_delete', () => {
-        refreshNotifications()
-        toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
-      })
-      await pushClient.deleteSubscription({ topic: currentSubscription?.topic })
+      await unsubscribe()
     } catch (error: any) {
       toast.toastError(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }
     setloading(false)
-  }, [pushClient, currentSubscription?.topic, toast, refreshNotifications])
+  }, [unsubscribe, toast])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
@@ -107,7 +94,7 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription, refreshNoti
         <SettingsContainer scopes={scopes} setScopes={setScopes} />
         <Box paddingX="24px">
           <NotificationActionButton
-            isUnsubscribing={loading}
+            isUnsubscribing={loading || isUnsubscribing}
             handleSubscriptionAction={handleAction}
             objectsAreEqual={objectsAreEqual}
           />
