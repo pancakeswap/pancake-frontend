@@ -1,7 +1,13 @@
 import { useToast } from '@pancakeswap/uikit'
-import { DEFAULT_RELAY_URL, PancakeNotifications } from 'views/Notifications/constants'
+import {
+  DEFAULT_CAST_SIGN_KEY,
+  DEFAULT_PROJECT_ID,
+  DEFAULT_RELAY_URL,
+  PancakeNotifications,
+} from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
-import useFormattedEip155Account from './useFormatEip155Account'
+import { useAccount } from 'wagmi'
+import useRegistration from './useRegistration'
 
 interface IUseSendNotification {
   sendPushNotification: (notificationType: BuilderNames, args?: string[]) => Promise<void>
@@ -11,7 +17,8 @@ interface IUseSendNotification {
 const publicVapidKey = 'BFEZ07DxapGRLITs13MKaqFPmmbKoHgNLUDn-8aFjF4eitQypUHHsYyx39RSaYvQAxWgz18zvGOXsXw0y8_WxTY'
 
 const useSendPushNotification = (): IUseSendNotification => {
-  const { eip155Account, account } = useFormattedEip155Account()
+  const { address: account } = useAccount()
+  const { account: eip155Account } = useRegistration()
   const toast = useToast()
 
   const requestNotificationPermission = async () => {
@@ -58,11 +65,11 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      await fetch(`${DEFAULT_RELAY_URL}/${'a14938037e06221040c0fa6a69a1d95f'}/notify`, {
+      await fetch(`${DEFAULT_RELAY_URL}/${DEFAULT_PROJECT_ID}/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${'03533e45-782a-42fb-820d-c0984ed392d9'}`,
+          Authorization: `Bearer ${DEFAULT_CAST_SIGN_KEY}`,
         },
         body: JSON.stringify(notificationPayload),
       })

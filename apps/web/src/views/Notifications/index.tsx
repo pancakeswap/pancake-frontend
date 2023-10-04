@@ -4,7 +4,6 @@ import { useManageSubscription } from '@web3inbox/widget-react'
 import { useCallback, useEffect, useState } from 'react'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
 import useRegistration from './components/hooks/useRegistration'
 import NotificationSettingsMain from './containers/NotificationSettings'
 import SettingsModal from './containers/NotificationView'
@@ -29,7 +28,7 @@ const ModalBackButton: React.FC<
 
 const NotificationHeader = ({ isSettings = false, onBack, onDismiss, isNotificationView }: INotifyHeaderprops) => {
   const { t } = useTranslation()
-  const { eip155Account } = useFormattedEip155Account()
+  const { account: eip155Account } = useRegistration()
   return (
     <>
       {isNotificationView ? (
@@ -58,7 +57,6 @@ const NotificationHeader = ({ isSettings = false, onBack, onDismiss, isNotificat
 
 const Notifications = () => {
   const [isRightView, setIsRightView] = useState(true)
-  const [isNotificationView, setIsNotificationView] = useState<boolean>(false)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { account, identityKey, handleRegistration } = useRegistration()
   const { isSubscribed } = useManageSubscription(account)
@@ -72,14 +70,6 @@ const Notifications = () => {
     [setIsRightView, isRightView],
   )
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
-
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null
-    if (isSubscribed) timeoutId = setTimeout(() => setIsNotificationView(true), 1500)
-    else setIsNotificationView(false)
-
-    return () => clearTimeout(timeoutId)
-  }, [isSubscribed])
 
   return (
     <NotificationMenu
@@ -96,9 +86,9 @@ const Notifications = () => {
             onBack={toggleSettings}
             onDismiss={onDismiss}
             isSettings={!isRightView}
-            isNotificationView={isNotificationView}
+            isNotificationView={isSubscribed}
           />
-          {isNotificationView && account ? (
+          {isSubscribed && account ? (
             <ViewContainer isRightView={isRightView}>
               <SettingsModal account={account} />
               <NotificationSettingsMain account={account} />

@@ -13,6 +13,7 @@ import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import Notifications from 'views/Notifications'
+import { DEFAULT_PROJECT_ID } from 'views/Notifications/constants'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import UserMenu from './UserMenu'
@@ -51,7 +52,7 @@ const Menu = (props) => {
   }, [t])
 
   const isW3iInitialized = useInitWeb3InboxClient({
-    projectId: 'a14938037e06221040c0fa6a69a1d95f',
+    projectId: DEFAULT_PROJECT_ID,
     domain: 'pc-custom-web.vercel.app',
   })
 

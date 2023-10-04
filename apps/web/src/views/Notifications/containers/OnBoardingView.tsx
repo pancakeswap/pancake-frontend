@@ -5,11 +5,11 @@ import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'
-import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
-import { Events } from '../constants'
-import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
 import useSendPushNotification from '../components/hooks/sendPushNotification'
+import useRegistration from '../components/hooks/useRegistration'
+import { Events } from '../constants'
 import { BuilderNames } from '../types'
+import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
 
 interface IOnboardingButtonProps {
   onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
@@ -26,7 +26,7 @@ interface IOnBoardingProps {
 
 function OnboardingButton({ onClick, loading, isOnBoarded }: IOnboardingButtonProps) {
   const { t } = useTranslation()
-  const { eip155Account } = useFormattedEip155Account()
+  const { account: eip155Account } = useRegistration()
   const buttonText = getOnBoardingButtonText(isOnBoarded, loading, t)
 
   if (!eip155Account)
@@ -55,22 +55,21 @@ const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, accou
   const toast = useToast()
   const { t } = useTranslation()
   const { subscribe, isSubscribing } = useManageSubscription(account)
-  const { sendPushNotification, subscribeToPushNotifications, requestNotificationPermission } =
-    useSendPushNotification()
+  const { sendPushNotification, requestNotificationPermission } = useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {
     if (!account) return
     setloading(true)
     try {
-      // await subscribeToPushNotifications()
       await subscribe()
+      setIsRightView(true)
       setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, []), 1000)
       setloading(false)
     } catch (error) {
       toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
       setloading(false)
     }
-  }, [account, setloading, toast, sendPushNotification, subscribe])
+  }, [account, setloading, toast, sendPushNotification, subscribe, setIsRightView])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
