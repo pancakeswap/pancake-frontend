@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
-import { PropsWithChildren, memo } from 'react'
+import { PropsWithChildren, memo, useMemo } from 'react'
 import { FlexProps, Flex, ScanLink } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
+import { MANAGER, baseManagers, BaseManager } from '@pancakeswap/position-managers'
 
 import { getBlockExploreLink } from 'utils'
 
@@ -27,6 +28,11 @@ interface Props extends SpaceProps, FlexProps {
   strategyInfoUrl: string
   managerAddress: string
   vaultAddress: string
+  projectVaultUrl?: string
+  manager: {
+    id: MANAGER
+    name: string
+  }
 }
 
 const LinkSupportChains = [ChainId.BSC, ChainId.BSC_TESTNET]
@@ -36,17 +42,21 @@ export const VaultLinks = memo(function VaultLinks({
   lpAddress,
   managerInfoUrl,
   strategyInfoUrl,
+  projectVaultUrl,
   managerAddress,
   vaultAddress,
+  manager,
   children,
   ...props
 }: PropsWithChildren<Props>) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
 
+  const managerInfo: BaseManager = useMemo(() => baseManagers[manager.id], [manager])
+
   return (
     <LinkContainer flexDirection={layout} {...props}>
-      <StyledScanLink href={`https://pancakeswap.finance/info/v3/pairs${lpAddress}`}>{t('Pair Info')}</StyledScanLink>
+      <StyledScanLink href={`https://pancakeswap.finance/info/v3/pairs/${lpAddress}`}>{t('Pair Info')}</StyledScanLink>
       <StyledScanLink href={managerInfoUrl}>{t('Manager Info')}</StyledScanLink>
       <StyledScanLink href={strategyInfoUrl}>{t('Strategy Info')}</StyledScanLink>
       <StyledScanLink
@@ -61,6 +71,11 @@ export const VaultLinks = memo(function VaultLinks({
       >
         {t('View Vault Contract')}
       </StyledScanLink>
+      {projectVaultUrl && managerInfo && (
+        <StyledScanLink href={projectVaultUrl}>
+          {t('View Vault on %managerName%', { managerName: managerInfo.name })}
+        </StyledScanLink>
+      )}
       {children}
     </LinkContainer>
   )

@@ -1,7 +1,7 @@
+import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Message, MessageText, Text, Flex, Box, Link } from '@pancakeswap/uikit'
 import { MANAGER, baseManagers, BaseManager } from '@pancakeswap/position-managers'
-import { useMemo } from 'react'
 
 interface DYORWarningProps {
   manager: {

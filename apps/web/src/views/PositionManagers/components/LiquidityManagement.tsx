@@ -29,7 +29,7 @@ interface Props {
   feeTier: FeeAmount
   price?: Price<Currency, Currency>
   ratio: number
-  isSingleToken: boolean
+  isSingleDepositToken: boolean
   allowDepositToken0: boolean
   allowDepositToken1: boolean
   contractAddress: `0x${string}`
@@ -54,7 +54,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   feeTier,
   price,
   ratio,
-  isSingleToken,
+  isSingleDepositToken,
   allowDepositToken0,
   allowDepositToken1,
   contractAddress,
@@ -123,7 +123,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         currencyA={currencyA}
         currencyB={currencyB}
         ratio={ratio}
-        isSingleToken={isSingleToken}
+        isSingleDepositToken={isSingleDepositToken}
         allowDepositToken0={allowDepositToken0}
         allowDepositToken1={allowDepositToken1}
         contractAddress={contractAddress}

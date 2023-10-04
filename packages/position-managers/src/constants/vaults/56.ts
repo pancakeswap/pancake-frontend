@@ -21,11 +21,12 @@ export const vaults: VaultConfig[] = [
       rate: new Percent(1, 100),
     },
     manager: MANAGER.ICHI,
-    isSingleToken: true,
+    isSingleDepositToken: true,
     allowDepositToken0: true,
     allowDepositToken1: false,
     priceFromV3FarmPid: 3,
     managerInfoUrl: 'https://google.com/',
     strategyInfoUrl: 'https://google.com/',
+    projectVaultUrl: 'https://google.com/',
   },
 ]

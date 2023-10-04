@@ -42,7 +42,7 @@ interface Props {
   autoFarm?: boolean
   autoCompound?: boolean
   info?: ReactNode
-  isSingleToken: boolean
+  isSingleDepositToken: boolean
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
   contractAddress: `0x${string}`
@@ -59,6 +59,7 @@ interface Props {
   vaultAddress: string
   managerInfoUrl: string
   strategyInfoUrl: string
+  projectVaultUrl?: string
   refetch?: () => void
 }
 
@@ -75,7 +76,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   managerFee,
   strategy,
   ratio,
-  isSingleToken,
+  isSingleDepositToken,
   allowDepositToken0 = true,
   allowDepositToken1 = true,
   contractAddress,
@@ -92,6 +93,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   vaultAddress,
   managerInfoUrl,
   strategyInfoUrl,
+  projectVaultUrl,
   refetch,
 }: PropsWithChildren<Props>) {
   // TODO: mock
@@ -114,7 +116,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         feeTier={feeTier}
         autoFarm={autoFarm}
         autoCompound={autoCompound}
-        isSingleToken={isSingleToken}
+        isSingleDepositToken={isSingleDepositToken}
       />
       <CardBody>
         <YieldInfo boostedApr={mockApr} apr={mockCmpApr} autoCompound={autoCompound} withCakeReward={withCakeReward} />
@@ -128,7 +130,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           vaultName={vaultName}
           feeTier={feeTier}
           ratio={ratio}
-          isSingleToken={isSingleToken}
+          isSingleDepositToken={isSingleDepositToken}
           allowDepositToken0={allowDepositToken0}
           allowDepositToken1={allowDepositToken1}
           contractAddress={contractAddress}
@@ -145,18 +147,23 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
             currencyA={currencyA}
             currencyB={currencyB}
             managerFee={managerFee}
-            poolToken0Amount={poolToken0Amount}
-            poolToken1Amount={poolToken1Amount}
             token0PriceUSD={token0PriceUSD}
             token1PriceUSD={token1PriceUSD}
+            poolToken0Amount={poolToken0Amount}
+            poolToken1Amount={poolToken1Amount}
+            allowDepositToken0={allowDepositToken0}
+            allowDepositToken1={allowDepositToken1}
+            isSingleDepositToken={isSingleDepositToken}
           />
           <VaultLinks
             mt="0.5em"
+            manager={manager}
             lpAddress={lpAddress}
             vaultAddress={vaultAddress}
             managerAddress={managerAddress}
             managerInfoUrl={managerInfoUrl}
             strategyInfoUrl={strategyInfoUrl}
+            projectVaultUrl={projectVaultUrl}
           />
         </ExpandableSection>
       </CardBody>

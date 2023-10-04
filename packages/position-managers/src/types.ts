@@ -107,12 +107,13 @@ export interface DuoTokenVault {
   manager: PositionManager
   strategy: Strategy
   managerFee: ManagerFee
-  isSingleToken: boolean
+  isSingleDepositToken: boolean
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
   priceFromV3FarmPid: number
   managerInfoUrl: string
   strategyInfoUrl: string
+  projectVaultUrl?: string
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

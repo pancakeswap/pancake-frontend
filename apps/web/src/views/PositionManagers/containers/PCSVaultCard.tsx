@@ -27,12 +27,13 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     manager,
     managerFee,
     address,
-    isSingleToken,
+    isSingleDepositToken,
     allowDepositToken0,
     allowDepositToken1,
     priceFromV3FarmPid,
     managerInfoUrl,
     strategyInfoUrl,
+    projectVaultUrl,
   } = vault
   const managerInfo = useMemo(
     () => ({
@@ -79,7 +80,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       manager={managerInfo}
       managerFee={managerFee}
       ratio={tokenRatio ?? 1}
-      isSingleToken={isSingleToken}
+      isSingleDepositToken={isSingleDepositToken}
       allowDepositToken0={allowDepositToken0}
       allowDepositToken1={allowDepositToken1}
       contractAddress={address}
@@ -96,6 +97,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       vaultAddress={adapterAddress}
       managerInfoUrl={managerInfoUrl}
       strategyInfoUrl={strategyInfoUrl}
+      projectVaultUrl={projectVaultUrl}
       refetch={info?.refetchPositionInfo}
     >
       {id}

@@ -27,7 +27,7 @@ interface Props {
   currencyA: Currency
   currencyB: Currency
   ratio: number
-  isSingleToken: boolean
+  isSingleDepositToken: boolean
   allowDepositToken0: boolean
   allowDepositToken1: boolean
   onAmountChange?: (info: { value: string; currency: Currency; otherAmount: CurrencyAmount<Currency> }) => {
@@ -56,7 +56,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   currencyA,
   currencyB,
   feeTier,
-  isSingleToken,
+  isSingleDepositToken,
   allowDepositToken1,
   allowDepositToken0,
   contractAddress,
@@ -201,7 +201,7 @@ export const AddLiquidity = memo(function AddLiquidity({
             {/* <Text color="text">{formatPercent(apr)}%</Text> */}
           </RowBetween>
         </Flex>
-        {isSingleToken && <SingleTokenWarning />}
+        {isSingleDepositToken && <SingleTokenWarning />}
         <DYORWarning manager={manager} />
         <Flex mt="1.5em" flexDirection="column">
           <AddLiquidityButton

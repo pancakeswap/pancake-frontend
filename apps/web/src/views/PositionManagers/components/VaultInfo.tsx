@@ -35,6 +35,9 @@ const InvertIcon = styled(SwapVertIcon).attrs({
 export interface VaultInfoProps extends SpaceProps {
   currencyA: Currency
   currencyB: Currency
+  isSingleDepositToken: boolean
+  allowDepositToken0: boolean
+  allowDepositToken1: boolean
 
   // Total assets of the vault
   vaultAssets?: BaseAssets
@@ -60,6 +63,9 @@ export const VaultInfo = memo(function VaultInfo({
   poolToken1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  isSingleDepositToken,
+  allowDepositToken0,
+  allowDepositToken1,
   ...props
 }: VaultInfoProps) {
   const {
@@ -109,6 +115,13 @@ export const VaultInfo = memo(function VaultInfo({
 
   return (
     <Box {...props}>
+      {isSingleDepositToken && (
+        <RowBetween>
+          <InfoText>{t('Depositing Token')}:</InfoText>
+          {allowDepositToken0 && <InfoText bold>{currencyA.symbol}</InfoText>}
+          {allowDepositToken1 && <InfoText bold>{currencyB.symbol}</InfoText>}
+        </RowBetween>
+      )}
       <RowBetween>
         <InfoText>{t('Total staked')}:</InfoText>
         <InfoText>{`$${totalStakedInUsd.toFixed(2)}`}</InfoText>

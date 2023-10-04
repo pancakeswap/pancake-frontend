@@ -12,7 +12,7 @@ interface Props {
   currencyB: Currency
   vaultName: string
   feeTier: FeeAmount
-  isSingleToken: boolean
+  isSingleDepositToken: boolean
 
   autoFarm?: boolean
   autoCompound?: boolean
@@ -23,7 +23,7 @@ export const CardTitle = memo(function CardTitle({
   currencyB,
   vaultName,
   feeTier,
-  isSingleToken,
+  isSingleDepositToken,
   autoFarm,
   autoCompound,
 }: Props) {
@@ -44,7 +44,7 @@ export const CardTitle = memo(function CardTitle({
         <Flex flexDirection="row" justifyContent="flex-end" mt="0.25em">
           <FeeTag feeAmount={feeTier} />
           {autoFarm && <FarmTag ml="0.5em" />}
-          {isSingleToken && <SingleTokenTag ml="0.5em" />}
+          {isSingleDepositToken && <SingleTokenTag ml="0.5em" />}
         </Flex>
       </Flex>
     </CardHeader>
