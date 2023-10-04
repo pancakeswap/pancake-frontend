@@ -64,6 +64,7 @@ const NotificationSettingsMain = ({ account }: { account: string | undefined }) 
       await updateScopes(getEnabledScopes(scopes))
       const newScope = currentScopes
       prevScopesRef.current = newScope
+      toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
     } catch (error: any) {
       toast.toastError(Events.PreferencesError.title, Events.PreferencesError.message)
     }
@@ -73,8 +74,9 @@ const NotificationSettingsMain = ({ account }: { account: string | undefined }) 
     setloading(true)
     try {
       await unsubscribe()
+      toast.toastError(Events.Unsubscribed.title, Events.Unsubscribed.message)
     } catch (error: any) {
-      toast.toastError(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
+      toast.toastWarning(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }
     setloading(false)
   }, [unsubscribe, toast])

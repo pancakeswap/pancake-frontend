@@ -1,11 +1,14 @@
+import { useToast } from '@pancakeswap/uikit'
 import { useW3iAccount } from '@web3inbox/widget-react'
 import { useCallback, useEffect } from 'react'
+import { Events } from 'views/Notifications/constants'
 import { useAccount, useSignMessage } from 'wagmi'
 
 const useRegistration = () => {
   const { address } = useAccount()
   const { signMessageAsync } = useSignMessage()
   const { account, register: registerIdentity, identityKey, setAccount } = useW3iAccount()
+  const toast = useToast()
 
   useEffect(() => {
     if (!address) return
@@ -27,6 +30,7 @@ const useRegistration = () => {
     try {
       await registerIdentity(signMessage)
     } catch (registerIdentityError) {
+      toast.toastError(Events.SubscriptionRequestError.title, 'User Denied the request')
       console.error({ registerIdentityError })
     }
   }, [signMessage, registerIdentity, account])

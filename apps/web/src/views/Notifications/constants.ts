@@ -42,12 +42,6 @@ export const NotificationSortTypes: OptionProps[] = [
 export const DEFAULT_CAST_SIGN_KEY = process.env.NEXT_PUBLIC_CAST_SERVER_SIGN_KEY
 export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID || 'a14938037e06221040c0fa6a69a1d95f'
 export const DEFAULT_RELAY_URL = 'https://notify.walletconnect.com'
-export const DEFAULT_APP_METADATA = {
-  description: 'pancakeswap push notification demo with the web3inbox react widget',
-  icons: ['https://pancakeswap.finance/logo.png'],
-  name: 'pancakeswap-push-demo',
-  url: 'https://pc-custom-web.vercel.app',
-}
 
 export const PancakeNotifications: {
   [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(args: T[]) => pushNotification
@@ -96,6 +90,10 @@ export const Events: { [event in keyof typeof ResponseEvents]: EventInformation 
   [ResponseEvents.UnsubscribeError]: {
     title: 'Error',
     message: 'Unable to unsubscribe.',
+  },
+  [ResponseEvents.Unsubscribed]: {
+    title: 'Update',
+    message: 'You sucessfully unsubsrcibed from notifications. You can re-subscribe any time',
   },
 }
 

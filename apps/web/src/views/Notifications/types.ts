@@ -5,6 +5,7 @@ export enum ResponseEvents {
   PreferencesUpdated = 'PreferencesUpdated',
   PreferencesError = 'PreferencesError',
   UnsubscribeError = 'UnsubscribeError',
+  Unsubscribed = 'Unsubscribed',
 }
 
 export enum SubsctiptionType {
