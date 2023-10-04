@@ -54,7 +54,7 @@ const useSendPushNotification = (): IUseSendNotification => {
     }
   }
 
-  const sendPushNotification = async (notificationType: BuilderNames, args?: string[]) => {
+  const sendPushNotification = async (notificationType: BuilderNames, args: string[]) => {
     if (!eip155Account) return
     const notificationPayload: NotificationPayload = {
       accounts: [eip155Account],
@@ -65,7 +65,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${'03533e45-782a-42fb-820d-c0984ed392d9'}`,
+          Authorization: `Bearer ${'a14938037e06221040c0fa6a69a1d95f'}`,
         },
         body: JSON.stringify(notificationPayload),
       })

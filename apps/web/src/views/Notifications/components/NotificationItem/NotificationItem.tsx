@@ -86,7 +86,7 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
           </Flex>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
             {formatedDescription}
-            <StyledLink hidden={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
+            <StyledLink hidden={url && true} href={url} target="_blank" rel="noreferrer noopener">
               {t('View Link')}
             </StyledLink>
           </Description>
