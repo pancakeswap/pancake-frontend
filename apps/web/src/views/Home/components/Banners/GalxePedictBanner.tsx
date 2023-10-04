@@ -115,8 +115,8 @@ const GalxePredictBanner = () => {
                 {t('Predict, win and share $10,000 rewards')}
               </StyledSubheading>
             ) : null}
-            {isMobile ? <StyledSubheading data-text={t('Jupiter')}>{t('Jupiter')}</StyledSubheading> : null}
-            {isMobile ? <StyledSubheading data-text={t('Predictors:')}>{t('Predictors:')}</StyledSubheading> : null}
+            {isMobile ? <StyledSubheading data-text={t('Predict and')}>{t('Predict and')}</StyledSubheading> : null}
+            {isMobile ? <StyledSubheading data-text={t('Share $10,000')}>{t('Share $10,000')}</StyledSubheading> : null}
           </Box>
 
           <Flex marginTop={isMobile ? '24px' : '12px'}>

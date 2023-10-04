@@ -122,8 +122,12 @@ const GalaxeSyndicateBanner = () => {
                 )}
               </StyledSubheading>
             ) : null}
-            {isMobile ? <StyledSubheading data-text={t('Saturn')}>{t('Saturn')}</StyledSubheading> : null}
-            {isMobile ? <StyledSubheading data-text={t('Syndicate:')}>{t('Syndicate:')}</StyledSubheading> : null}
+            {isMobile ? (
+              <StyledSubheading data-text={t('Trade Perpetual')}>{t('Trade Perpetual')}</StyledSubheading>
+            ) : null}
+            {isMobile ? (
+              <StyledSubheading data-text={t('and Share $10,000')}>{t('and Share $10,000')}</StyledSubheading>
+            ) : null}
           </Box>
 
           <Flex marginTop={isMobile ? '24px' : '12px'}>
