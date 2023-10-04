@@ -263,7 +263,7 @@ const useEarnBlockData = () => {
       },
       {
         title: t('Simple Staking'),
-        description: t('Earn rewards while retaining asset flexibility'),
+        description: t('Earn rewards hassle-free with single-sided staking'),
         ctaTitle: t('Stake Now'),
         image: earnFixedStaking,
         defaultImage: earnFixedStakingPurple,
