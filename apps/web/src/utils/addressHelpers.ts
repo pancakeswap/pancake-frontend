@@ -97,10 +97,6 @@ export const getBCakeFarmBoosterV3Address = (chainId?: number) => {
   return getAddressFromMap(addresses.bCakeFarmBoosterV3, chainId)
 }
 
-export const getPositionManagerWrapperAddress = (chainId?: number) => {
-  return getAddressFromMap(addresses.positionManagerWrapper, chainId)
-}
-
 export const getPositionManagerAdapterAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.positionManagerAdapter, chainId)
 }

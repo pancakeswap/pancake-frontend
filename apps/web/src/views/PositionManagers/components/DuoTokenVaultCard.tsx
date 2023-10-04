@@ -54,7 +54,6 @@ interface Props {
   pendingReward: bigint
   userVaultPercentage?: Percent
   lpAddress: string
-  managerAddress: string
   vaultAddress: string
   managerInfoUrl: string
   strategyInfoUrl: string
@@ -88,7 +87,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   pendingReward,
   userVaultPercentage,
   lpAddress,
-  managerAddress,
   vaultAddress,
   managerInfoUrl,
   strategyInfoUrl,
@@ -96,9 +94,9 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   refetch,
 }: PropsWithChildren<Props>) {
   // TODO: mock
-
   const mockApr = new Percent(2233, 10000)
   const mockCmpApr = new Percent(1122, 10000)
+
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
   const vaultName = useMemo(() => getVaultName(id, name), [name, id])
   const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
@@ -159,7 +157,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
             manager={manager}
             lpAddress={lpAddress}
             vaultAddress={vaultAddress}
-            managerAddress={managerAddress}
+            managerAddress={contractAddress}
             managerInfoUrl={managerInfoUrl}
             strategyInfoUrl={strategyInfoUrl}
             projectVaultUrl={projectVaultUrl}

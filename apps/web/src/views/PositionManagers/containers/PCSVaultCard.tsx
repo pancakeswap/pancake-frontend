@@ -93,7 +93,6 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       pendingReward={info?.pendingReward}
       userVaultPercentage={info?.userVaultPercentage}
       lpAddress={lpAddress}
-      managerAddress={address}
       vaultAddress={adapterAddress}
       managerInfoUrl={managerInfoUrl}
       strategyInfoUrl={strategyInfoUrl}

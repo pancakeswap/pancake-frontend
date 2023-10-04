@@ -315,10 +315,10 @@ export function useBCakeFarmBoosterV3Contract() {
   return useMemo(() => getBCakeFarmBoosterV3Contract(signer ?? undefined, chainId), [signer, chainId])
 }
 
-export function usePositionManagerWrapperContract(address?: Address) {
+export function usePositionManagerWrapperContract(address: Address) {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
-  return useMemo(() => getPositionManagerWrapperContract(signer, chainId, address), [signer, chainId, address])
+  return useMemo(() => getPositionManagerWrapperContract(address, signer, chainId), [signer, chainId, address])
 }
 
 export function usePositionManagerAdepterContract(address?: Address) {

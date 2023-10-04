@@ -11,18 +11,24 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { InnerCard } from './InnerCard'
 
 interface RewardAssetsProps {
+  contractAddress: `0x${string}`
   earningToken: Currency
   pendingReward: bigint
   refetch?: () => void
 }
 
-export const RewardAssets: React.FC<RewardAssetsProps> = ({ pendingReward, earningToken, refetch }) => {
+export const RewardAssets: React.FC<RewardAssetsProps> = ({
+  contractAddress,
+  pendingReward,
+  earningToken,
+  refetch,
+}) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningTokenPrice = useStablecoinPrice(earningToken ?? undefined, { enabled: !!earningToken })
 
-  const wrapperContract = usePositionManagerWrapperContract()
+  const wrapperContract = usePositionManagerWrapperContract(contractAddress)
 
   const earningsBalance = useMemo(
     () => getBalanceAmount(new BigNumber(pendingReward?.toString() ?? 0), earningToken.decimals).toNumber(),

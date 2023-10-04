@@ -90,7 +90,7 @@ export const useUserAmounts = (wrapperAddress: Address) => {
 export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address) => {
   const { data: userAmounts, refetch: refetchUserAmounts } = useUserAmounts(wrapperAddress)
   const { data: poolAmounts, refetch: refetchPoolAmounts } = useAdapterTokensAmounts(adapterAddress)
-  const { data: pendingReward, refetch: refetchPendingReward } = useUserPendingRewardAmounts()
+  const { data: pendingReward, refetch: refetchPendingReward } = useUserPendingRewardAmounts(wrapperAddress)
 
   const poolAndUserAmountsReady = userAmounts && poolAmounts
 
@@ -115,9 +115,9 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
   }
 }
 
-export const useUserPendingRewardAmounts = () => {
+export const useUserPendingRewardAmounts = (wrapperAddress: Address) => {
   const { account } = useActiveWeb3React()
-  const contract = usePositionManagerWrapperContract()
+  const contract = usePositionManagerWrapperContract(wrapperAddress)
   const { data, refetch } = useQuery(
     ['useUserPendingRewardAmounts', account],
     () => contract.read.pendingReward([account]),

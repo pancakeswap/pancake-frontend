@@ -36,7 +36,6 @@ import {
   getRevenueSharingPoolAddress,
   getAnniversaryAchievementAddress,
   getFixedStakingAddress,
-  getPositionManagerWrapperAddress,
   getPositionManagerAdapterAddress,
 } from 'utils/addressHelpers'
 
@@ -251,10 +250,10 @@ export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: n
   return getContract({ abi: bCakeFarmBoosterV3ABI, address: getBCakeFarmBoosterV3Address(chainId), signer, chainId })
 }
 
-export const getPositionManagerWrapperContract = (signer?: WalletClient, chainId?: number, address?: `0x${string}`) => {
+export const getPositionManagerWrapperContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: positionManagerWrapperABI,
-    address: address ?? getPositionManagerWrapperAddress(chainId),
+    address,
     signer,
     chainId,
   })

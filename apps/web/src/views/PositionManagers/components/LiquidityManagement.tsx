@@ -103,7 +103,12 @@ export const LiquidityManagement = memo(function LiquidityManagement({
               token1PriceUSD={token1PriceUSD}
             />
           </InnerCard>
-          <RewardAssets pendingReward={pendingReward} earningToken={earningToken} refetch={refetch} />
+          <RewardAssets
+            contractAddress={contractAddress}
+            pendingReward={pendingReward}
+            earningToken={earningToken}
+            refetch={refetch}
+          />
         </>
       ) : !account ? (
         <ConnectWalletButton mt="24px" width="100%" />
