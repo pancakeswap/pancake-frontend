@@ -1,10 +1,12 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { useMessages } from '@web3inbox/widget-react'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import useRegistration from './useRegistration'
 
 const useUnreadNotifications = () => {
-  const [unread, setUnread] = useState<number>(0)
+  const [unread, setUnread] = useState<number>(Number(localStorage.getItem('unread')) - 1)
   const { account } = useRegistration()
   const { messages: notifications } = useMessages(account)
 
@@ -16,6 +18,10 @@ const useUnreadNotifications = () => {
       currentNotificationsRef.current = notifications
     }
   }, [notifications, setUnread])
+
+  useEffect(() => {
+    localStorage.setItem('unread', unread.toString())
+  }, [unread])
 
   return { unread, setUnread }
 }

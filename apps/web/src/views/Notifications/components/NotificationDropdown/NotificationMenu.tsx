@@ -42,6 +42,7 @@ const NotificationMenu: React.FC<
   const toggleMenu = useCallback(() => {
     if (!identityKey && isSubscribed) handleRegistration()
     setUnread(0)
+    localStorage.setItem('unread', '0')
     setIsMenuOpen(!isMenuOpen)
   }, [setIsMenuOpen, isMenuOpen, setUnread, identityKey, handleRegistration, isSubscribed])
 
@@ -50,6 +51,7 @@ const NotificationMenu: React.FC<
       if (!ref.current) return
       if (!ref.current.contains(e.target as Node | null)) {
         setIsMenuOpen(false)
+        localStorage.setItem('unread', '0')
         setUnread(0)
       }
     }
