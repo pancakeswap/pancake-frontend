@@ -6,13 +6,13 @@ import { ethereumTokens } from '@pancakeswap/tokens'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { Allowance, AllowanceRequired, AllowanceState } from 'hooks/usePermit2Allowance'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { ConfirmModalState, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
+import { AllowedAllowanceState, ConfirmModalState, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
 import usePrevious from 'views/V3Info/hooks/usePrevious'
 import { usePublicClient } from 'wagmi'
 
 interface UseConfirmModalStateProps {
-  txHash: string
-  chainId: ChainId
+  txHash: string | undefined
+  chainId: number | undefined
   approval: ApprovalState
   approvalToken: Currency
   currentAllowance: CurrencyAmount<Currency>
@@ -30,7 +30,9 @@ export function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   )
 }
 
-export const useApprovalPhaseStepTitles = ({ trade }: { trade: SmartRouterTrade<TradeType> }) => {
+export const useApprovalPhaseStepTitles: ({ trade }: { trade: SmartRouterTrade<TradeType> }) => {
+  [step in AllowedAllowanceState]: string
+} = ({ trade }: { trade: SmartRouterTrade<TradeType> }) => {
   const { t } = useTranslation()
   return useMemo(() => {
     return {

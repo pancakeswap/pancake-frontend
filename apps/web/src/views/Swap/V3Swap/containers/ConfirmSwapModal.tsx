@@ -40,7 +40,7 @@ interface ConfirmSwapModalProps {
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string
-  approval: ApprovalState
+  approval?: ApprovalState
   allowance?: Allowance
   isPendingError: boolean
   swapErrorMessage?: string
@@ -58,8 +58,6 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   isMM,
   trade,
   txHash,
-  approval,
-  allowance,
   isRFQReady,
   attemptingTxn,
   originalTrade,
@@ -109,7 +107,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           currencyA={currencyA}
           asBadge={confirmModalState === ConfirmModalState.APPROVING_TOKEN}
           currentStep={confirmModalState}
-          approvalModalSteps={pendingModalSteps}
+          approvalModalSteps={pendingModalSteps as any}
         />
       )
     }

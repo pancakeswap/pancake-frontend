@@ -18,15 +18,18 @@ export enum ConfirmModalState {
 
 export type PendingApproveModalState = Extract<
   ConfirmModalState,
-  | ConfirmModalState.APPROVING_TOKEN
-  | ConfirmModalState.PERMITTING
-  | ConfirmModalState.PENDING_CONFIRMATION
-  | ConfirmModalState.WRAPPING
-  | ConfirmModalState.RESETTING_APPROVAL
+  ConfirmModalState.APPROVING_TOKEN | ConfirmModalState.PERMITTING | ConfirmModalState.RESETTING_APPROVAL
 >
 
+type AllowedAllowanceState =
+  | ConfirmModalState.RESETTING_APPROVAL
+  | ConfirmModalState.APPROVING_TOKEN
+  | ConfirmModalState.PERMITTING
+
 interface ApproveModalContentProps {
-  title: string
+  title: {
+    [step in AllowedAllowanceState]: string
+  }
   isMM: boolean
   isBonus: boolean
   currencyA: Currency
