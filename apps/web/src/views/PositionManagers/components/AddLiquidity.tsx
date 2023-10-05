@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, CurrencyInput, Flex, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
+import { Button, CurrencyInput, Flex, ModalV2, RowBetween, Text, useToast, LinkExternal } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -229,48 +229,70 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
         {},
       ),
     )
+
     if (receipt?.status) {
-      onDone?.()
       toastSuccess(
         `${t('Staked')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
           {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
         </ToastDescriptionWithTx>,
       )
+      onDone?.()
     }
   }, [amountA, amountB, positionManagerWrapperContract, t, toastSuccess, fetchWithCatchTxError, onDone])
+
+  const showAmountButtonA = useMemo(
+    () => amountA && approvalStateToken0 === ApprovalState.NOT_APPROVED,
+    [amountA, approvalStateToken0],
+  )
+  const showAmountButtonB = useMemo(
+    () => amountB && approvalStateToken1 === ApprovalState.NOT_APPROVED,
+    [amountB, approvalStateToken1],
+  )
+  const isConfirmButtonDisabled = useMemo(
+    () =>
+      disabled ||
+      (amountA && approvalStateToken0 !== ApprovalState.APPROVED) ||
+      (amountB && approvalStateToken1 !== ApprovalState.APPROVED),
+    [amountA, amountB, disabled, approvalStateToken0, approvalStateToken1],
+  )
+
   return (
     <>
-      {amountA && approvalStateToken0 === ApprovalState.NOT_APPROVED && (
-        <Button variant="primary" width="100%" onClick={approveCallbackToken0}>
-          {t('Approve %symbol%', {
-            symbol: amountA.currency.symbol,
-          })}
+      {showAmountButtonA && (
+        <Button
+          width="100%"
+          variant="primary"
+          disabled={approvalStateToken0 === ApprovalState.PENDING}
+          onClick={approveCallbackToken0}
+        >
+          {t('Approve %symbol%', { symbol: amountA.currency.symbol })}
         </Button>
       )}
-      {amountB && approvalStateToken1 === ApprovalState.NOT_APPROVED && (
-        <Button variant="primary" width="100%" mt="0.5em" onClick={approveCallbackToken1}>
-          {t('Approve %symbol%', {
-            symbol: amountB.currency.symbol,
-          })}
+      {showAmountButtonB && (
+        <Button
+          mt="0.5em"
+          width="100%"
+          variant="primary"
+          disabled={approvalStateToken1 === ApprovalState.PENDING}
+          onClick={approveCallbackToken1}
+        >
+          {t('Approve %symbol%', { symbol: amountB.currency.symbol })}
         </Button>
       )}
       <Button
         mt="0.5em"
-        variant="primary"
         width="100%"
-        onClick={() => {
-          mintThenDeposit()
-        }}
+        variant="primary"
         isLoading={pendingTx}
-        disabled={
-          (amountA && approvalStateToken0 !== ApprovalState.APPROVED) ||
-          (amountB && approvalStateToken1 !== ApprovalState.APPROVED) ||
-          disabled
-        }
+        disabled={isConfirmButtonDisabled}
+        onClick={mintThenDeposit}
       >
         {t('Confirm')}
       </Button>
+      <LinkExternal external margin="24.5px auto 0 auto" href="https://docs.pancakeswap.finance/">
+        {t('Learn more about the strategy')}
+      </LinkExternal>
     </>
   )
 })
