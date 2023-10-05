@@ -48,8 +48,8 @@ interface Props {
   refetch?: () => void
   contractAddress: `0x${string}`
   userCurrencyBalances: {
-    token0Balance: CurrencyAmount<Currency>
-    token1Balance: CurrencyAmount<Currency>
+    token0Balance: CurrencyAmount<Currency> | undefined
+    token1Balance: CurrencyAmount<Currency> | undefined
   }
   userVaultPercentage?: Percent
   poolToken0Amount?: bigint
@@ -165,7 +165,8 @@ export const AddLiquidity = memo(function AddLiquidity({
   })
 
   const displayBalanceText = useCallback(
-    (balanceAmount: CurrencyAmount<Currency>) => `Balances: ${balanceAmount?.toSignificant(6)}`,
+    (balanceAmount: CurrencyAmount<Currency> | undefined) =>
+      balanceAmount ? `Balances: ${balanceAmount?.toSignificant(6)}` : '',
     [],
   )
 
@@ -204,7 +205,7 @@ export const AddLiquidity = memo(function AddLiquidity({
               value={valueA}
               currency={currencyA}
               balance={userCurrencyBalances.token0Balance}
-              balanceText={displayBalanceText(userCurrencyBalances.token0Balance)}
+              balanceText={displayBalanceText(userCurrencyBalances?.token0Balance)}
               onChange={onCurrencyAChange}
             />
           </Flex>
@@ -215,7 +216,7 @@ export const AddLiquidity = memo(function AddLiquidity({
               value={valueB}
               currency={currencyB}
               balance={userCurrencyBalances.token1Balance}
-              balanceText={displayBalanceText(userCurrencyBalances.token1Balance)}
+              balanceText={displayBalanceText(userCurrencyBalances?.token1Balance)}
               onChange={onCurrencyBChange}
             />
           </Flex>
@@ -234,8 +235,8 @@ export const AddLiquidity = memo(function AddLiquidity({
         <DYORWarning manager={manager} />
         <Flex mt="1.5em" flexDirection="column">
           <AddLiquidityButton
-            amountA={allowDepositToken0 ? amountA : null}
-            amountB={allowDepositToken1 ? amountB : null}
+            amountA={allowDepositToken0 ? amountA : undefined}
+            amountB={allowDepositToken1 ? amountB : undefined}
             contractAddress={contractAddress}
             disabled={disabled}
             onDone={() => {
@@ -250,8 +251,8 @@ export const AddLiquidity = memo(function AddLiquidity({
 })
 
 interface AddLiquidityButtonProps {
-  amountA: CurrencyAmount<Currency>
-  amountB: CurrencyAmount<Currency>
+  amountA: CurrencyAmount<Currency> | undefined
+  amountB: CurrencyAmount<Currency> | undefined
   contractAddress: `0x${string}`
   disabled?: boolean
   onDone?: () => void
@@ -322,7 +323,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
           disabled={disabled || approvalStateToken0 === ApprovalState.PENDING}
           onClick={approveCallbackToken0}
         >
-          {t('Approve %symbol%', { symbol: amountA.currency.symbol })}
+          {t('Approve %symbol%', { symbol: amountA?.currency?.symbol ?? '' })}
         </Button>
       )}
       {showAmountButtonB && (
@@ -333,7 +334,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
           disabled={disabled || approvalStateToken1 === ApprovalState.PENDING}
           onClick={approveCallbackToken1}
         >
-          {t('Approve %symbol%', { symbol: amountB.currency.symbol })}
+          {t('Approve %symbol%', { symbol: amountB?.currency?.symbol ?? '' })}
         </Button>
       )}
       <Button

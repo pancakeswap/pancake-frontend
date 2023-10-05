@@ -54,6 +54,8 @@ export const VaultLinks = memo(function VaultLinks({
 
   const managerInfo: BaseManager = useMemo(() => baseManagers[manager.id], [manager])
 
+  const useBscCoinFallback = useMemo(() => (chainId ? LinkSupportChains.includes(chainId) : false), [chainId])
+
   return (
     <LinkContainer flexDirection={layout} {...props}>
       {/* <StyledScanLink href={`https://pancakeswap.finance/info/v3/pairs/${lpAddress}`}>{t('Pair Info')}</StyledScanLink> */}
@@ -61,13 +63,13 @@ export const VaultLinks = memo(function VaultLinks({
       <StyledScanLink href={strategyInfoUrl}>{t('Strategy Info')}</StyledScanLink>
       <StyledScanLink
         href={getBlockExploreLink(managerAddress, 'address', chainId)}
-        useBscCoinFallback={LinkSupportChains.includes(chainId)}
+        useBscCoinFallback={useBscCoinFallback}
       >
         {t('View Manager Address')}
       </StyledScanLink>
       <StyledScanLink
         href={getBlockExploreLink(vaultAddress, 'address', chainId)}
-        useBscCoinFallback={LinkSupportChains.includes(chainId)}
+        useBscCoinFallback={useBscCoinFallback}
       >
         {t('View Vault Contract')}
       </StyledScanLink>

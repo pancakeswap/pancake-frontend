@@ -6,5 +6,5 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 export function useVaultConfigs(): VaultConfig[] {
   const { chainId } = useActiveChainId()
 
-  return useMemo(() => VAULTS_CONFIG_BY_CHAIN[chainId] || [], [chainId])
+  return useMemo(() => (chainId && VAULTS_CONFIG_BY_CHAIN[chainId]) || [], [chainId])
 }

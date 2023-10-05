@@ -129,7 +129,7 @@ const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
   ...rest
 }: CurrencyAmountDisplayProps) {
   const currencyDisplay = amount?.currency || currency
-  const amountInUsd = useMemo(() => new BigNumber(formatAmount(amount)).times(priceUSD ?? 0), [amount, priceUSD])
+  const amountInUsd = useMemo(() => new BigNumber(formatAmount(amount) ?? 0).times(priceUSD ?? 0), [amount, priceUSD])
 
   const amountDisplay = useMemo(() => formatAmount(amount) || '0', [amount])
   const amountInUsdDisplay = useMemo(() => {

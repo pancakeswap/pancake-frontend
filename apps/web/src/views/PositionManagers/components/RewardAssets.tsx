@@ -38,7 +38,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   )
 
   const earningUsdValue = useMemo(
-    () => new BigNumber(earningsBalance).times(earningTokenPrice.toSignificant()).toNumber(),
+    () => new BigNumber(earningsBalance).times(earningTokenPrice?.toSignificant() ?? 0).toNumber(),
     [earningsBalance, earningTokenPrice],
   )
 
