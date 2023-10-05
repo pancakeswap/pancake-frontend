@@ -211,8 +211,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     (approvalState === ApprovalState.NOT_APPROVED ||
       approvalState === ApprovalState.PENDING ||
       allowance.state === AllowanceState.REQUIRED ||
-      allowance.state === AllowanceState.LOADING ||
-      (approvalSubmitted && approvalState === ApprovalState.APPROVED)) &&
+      allowance.state === AllowanceState.LOADING) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
 
   // Modals

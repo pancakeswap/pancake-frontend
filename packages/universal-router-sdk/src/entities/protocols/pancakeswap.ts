@@ -134,7 +134,7 @@ export class PancakeSwapTrade implements Command {
         }
       }
 
-      if (inputIsNative && this.type === TradeType.EXACT_OUTPUT) {
+      if ((inputIsNative && this.type === TradeType.EXACT_OUTPUT) || SwapRouter.riskOfPartialFill(trades)) {
         // for exactOutput swaps that take native currency as input
         // we need to send back the change to the user
         planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, 0n])

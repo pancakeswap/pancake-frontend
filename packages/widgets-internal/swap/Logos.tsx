@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/swap-sdk-core'
-import { ArrowUpIcon, Box, CurrencyLogo, Spinner as Sp, SpinnerProps, Svg } from '@pancakeswap/uikit'
+import { Box, CurrencyLogo, Spinner as Sp, SpinnerProps, Svg } from '@pancakeswap/uikit'
 import { useRef } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { AnimationType, FadeWrapper, RotationStyle, StyledSVG } from './styles'
@@ -119,46 +119,30 @@ export function CurrencyLoader({ currency, asBadge = false }: { currency?: Curre
   )
 }
 
-export const PaperIcon = ({
+export const ApprovalPhaseIcon = ({
   size = 80,
   currency,
   asBadge,
-  isInApprovalPhase,
-  pendingConfirmation,
-  submitted,
 }: {
   size?: number
   currency: Currency
   asBadge: boolean
-  isInApprovalPhase: boolean
-  pendingConfirmation: boolean
-  submitted: boolean
 }) => {
-  let currentIcon = (
-    <FadePresence $scale>
-      <Box margin="auto auto 22px auto" width="fit-content">
-        <ArrowUpIcon color="success" width={80} height={80} />
-      </Box>
-    </FadePresence>
+  return (
+    <AllowanceIconCircle width={size} height={size} showSpinner={false} $scale>
+      <LoadingIndicatorOverlay />
+      <PermitIcon />
+      <CurrencyLoader currency={currency} asBadge={asBadge} />
+    </AllowanceIconCircle>
   )
-  if (isInApprovalPhase) {
-    currentIcon = (
-      <>
-        <LoadingIndicatorOverlay />
-        <PermitIcon />
-        <CurrencyLoader currency={currency} asBadge={asBadge} />
-      </>
-    )
-  } else if (pendingConfirmation && !submitted) {
-    currentIcon = (
+}
+
+export const PendingSwapConfirmationIcon = ({ size = 128 }: { size?: number }) => {
+  return (
+    <AllowanceIconCircle width={size} height={size * 1.197} showSpinner>
       <Box marginBottom="44px">
         <Spinner />
       </Box>
-    )
-  }
-  return (
-    <AllowanceIconCircle width={size} height={size} showSpinner={pendingConfirmation} $scale>
-      {currentIcon}
     </AllowanceIconCircle>
   )
 }

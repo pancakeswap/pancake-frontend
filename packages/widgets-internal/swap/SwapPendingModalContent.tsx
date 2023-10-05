@@ -1,8 +1,11 @@
 import { Currency } from '@pancakeswap/sdk'
-import { ArrowUpIcon, AutoColumn, Box, ColumnCenter, Spinner, Text } from '@pancakeswap/uikit'
-import { ReactNode } from 'react'
-import { FadePresence } from './Logos'
+import { ArrowUpIcon, AutoColumn, Box, ColumnCenter, Text } from '@pancakeswap/uikit'
+import { ReactNode, useRef } from 'react'
+import { ConfirmModalState, StepTitleAnimationContainer } from './ApproveModalContent'
+import { FadePresence, PendingSwapConfirmationIcon } from './Logos'
 import TokenTransferInfo from './TokenTransferInfo'
+import { AnimationType } from './styles'
+import { useUnmountingAnimation } from './useUnmountingAnimation'
 
 interface SwapPendingModalContentProps {
   title: string
@@ -11,6 +14,7 @@ interface SwapPendingModalContentProps {
   currencyB: Currency
   amountA: string
   amountB: string
+  currentStep: ConfirmModalState
   children?: ReactNode
 }
 
@@ -21,10 +25,14 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
   currencyB,
   amountA,
   amountB,
+  currentStep,
   children,
 }) => {
   const symbolA = currencyA?.symbol
   const symbolB = currencyB?.symbol
+
+  const currentStepContainerRef = useRef<HTMLDivElement>(null)
+  useUnmountingAnimation(currentStepContainerRef, () => AnimationType.EXITING)
 
   return (
     <Box width="100%">
@@ -37,23 +45,27 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
       ) : (
         <Box mb="16px">
           <ColumnCenter>
-            <Spinner />
+            <PendingSwapConfirmationIcon />
           </ColumnCenter>
         </Box>
       )}
       <AutoColumn gap="12px" justify="center">
-        <Text bold textAlign="center">
-          {title}
-        </Text>
-        <TokenTransferInfo
-          symbolA={symbolA}
-          symbolB={symbolB}
-          amountA={amountA}
-          amountB={amountB}
-          currencyA={currencyA}
-          currencyB={currencyB}
-        />
-        {children}
+        <StepTitleAnimationContainer
+          ref={currentStep === ConfirmModalState.PENDING_CONFIRMATION ? currentStepContainerRef : undefined}
+        >
+          <Text bold textAlign="center">
+            {title}
+          </Text>
+          <TokenTransferInfo
+            symbolA={symbolA}
+            symbolB={symbolB}
+            amountA={amountA}
+            amountB={amountB}
+            currencyA={currencyA}
+            currencyB={currencyB}
+          />
+          {children}
+        </StepTitleAnimationContainer>
       </AutoColumn>
     </Box>
   )
