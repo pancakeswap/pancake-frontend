@@ -1,24 +1,31 @@
 import { memo } from 'react'
-import { PageHeader, Flex, Heading } from '@pancakeswap/uikit'
+import { PageHeader, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import Image from 'next/image'
 
 export const Header = memo(function Header() {
   const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
 
   return (
     <PageHeader>
       <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
-        <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
+        <Flex
+          flex="1"
+          flexDirection="column"
+          mr={['8px', 0]}
+          alignSelf={['flex-start', 'flex-start', 'flex-start', 'center']}
+        >
           <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-            {t('Position Managers')}
+            {t('Position Manager')}
           </Heading>
           <Heading scale="md" color="text">
-            {t('Just stake some tokens to earn.')}
-          </Heading>
-          <Heading scale="md" color="text">
-            {t('High APR, low risk.')}
+            {t('Automated your PancakeSwap V3 liquidity')}
           </Heading>
         </Flex>
+        {isDesktop && (
+          <Image alt="bunny" width={205} height={205} src="/images/position-manager/position-manager-bunny.png" />
+        )}
       </Flex>
     </PageHeader>
   )

@@ -29,7 +29,7 @@ export const DYORWarning: React.FC<DYORWarningProps> = ({ manager }) => {
             <Link
               bold
               external
-              m="0 4px"
+              m="0 2px"
               fontSize={14}
               color="warning"
               display="inline-block !important"
