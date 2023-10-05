@@ -107,6 +107,7 @@ export interface DuoTokenVault {
   manager: PositionManager
   strategy: Strategy
   managerFee: ManagerFee
+  rewardPerSecond: string
   isSingleDepositToken: boolean
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean

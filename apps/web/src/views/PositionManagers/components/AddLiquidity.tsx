@@ -2,7 +2,17 @@ import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { MANAGER } from '@pancakeswap/position-managers'
 import { Currency, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, CurrencyInput, Flex, ModalV2, RowBetween, Text, useToast, LinkExternal } from '@pancakeswap/uikit'
+import {
+  Button,
+  CurrencyInput,
+  Flex,
+  ModalV2,
+  RowBetween,
+  Text,
+  useToast,
+  LinkExternal,
+  Skeleton,
+} from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'
@@ -46,7 +56,8 @@ interface Props {
   poolToken1Amount?: bigint
   token0PriceUSD?: number
   token1PriceUSD?: number
-  // TODO: return data
+  rewardPerSecond: string
+  earningToken: Currency
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
 }
 
@@ -72,6 +83,8 @@ export const AddLiquidity = memo(function AddLiquidity({
   poolToken1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  rewardPerSecond,
+  earningToken,
   refetch,
   onDismiss,
 }: Props) {
@@ -145,6 +158,8 @@ export const AddLiquidity = memo(function AddLiquidity({
     poolToken1Amount,
     token0PriceUSD,
     token1PriceUSD,
+    rewardPerSecond,
+    earningToken,
     avgToken0Amount: 1239673096733967,
     avgToken1Amount: 4644178681397,
   })
@@ -212,7 +227,7 @@ export const AddLiquidity = memo(function AddLiquidity({
           </RowBetween>
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>
-            <Text color="text">{`${apr}%`}</Text>
+            {apr ? <Text color="text">{`${apr}%`}</Text> : <Skeleton width={50} height={20} />}
           </RowBetween>
         </Flex>
         {isSingleDepositToken && <SingleTokenWarning />}

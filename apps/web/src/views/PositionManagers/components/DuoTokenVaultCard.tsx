@@ -58,6 +58,7 @@ interface Props {
   managerInfoUrl: string
   strategyInfoUrl: string
   projectVaultUrl?: string
+  rewardPerSecond: string
   refetch?: () => void
 }
 
@@ -91,6 +92,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   managerInfoUrl,
   strategyInfoUrl,
   projectVaultUrl,
+  rewardPerSecond,
   refetch,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
@@ -100,6 +102,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     poolToken1Amount,
     token0PriceUSD,
     token1PriceUSD,
+    rewardPerSecond,
+    earningToken,
     avgToken0Amount: 1239673096733967,
     avgToken1Amount: 4644178681397,
   })
@@ -146,6 +150,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           userVaultPercentage={userVaultPercentage}
           poolToken0Amount={poolToken0Amount}
           poolToken1Amount={poolToken1Amount}
+          rewardPerSecond={rewardPerSecond}
           refetch={refetch}
         />
         <ExpandableSection mt="1.5em">

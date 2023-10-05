@@ -39,6 +39,7 @@ interface Props {
   userVaultPercentage?: Percent
   poolToken0Amount?: bigint
   poolToken1Amount?: bigint
+  rewardPerSecond: string
   refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
@@ -68,6 +69,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   userVaultPercentage,
   poolToken0Amount,
   poolToken1Amount,
+  rewardPerSecond,
   refetch,
 }: Props) {
   const { t } = useTranslation()
@@ -132,6 +134,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         currencyA={currencyA}
         currencyB={currencyB}
         ratio={ratio}
+        earningToken={earningToken}
         isSingleDepositToken={isSingleDepositToken}
         allowDepositToken0={allowDepositToken0}
         allowDepositToken1={allowDepositToken1}
@@ -142,6 +145,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         poolToken1Amount={poolToken1Amount}
         token0PriceUSD={token0PriceUSD}
         token1PriceUSD={token1PriceUSD}
+        rewardPerSecond={rewardPerSecond}
         refetch={refetch}
       />
       <RemoveLiquidity

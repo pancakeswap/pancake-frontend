@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import { memo, useMemo } from 'react'
-import { Box, RowBetween, Text, Flex } from '@pancakeswap/uikit'
+import { Box, RowBetween, Text, Flex, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoCompoundTag } from './Tags'
 
@@ -26,9 +26,13 @@ export const YieldInfo = memo(function YieldInfo({ apr, withCakeReward, autoComp
       <RowBetween>
         <Text>{t('APR')}:</Text>
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-          <AprText color="success" bold>
-            {`${apr}%`}
-          </AprText>
+          {apr ? (
+            <AprText color="success" bold>
+              {`${apr}%`}
+            </AprText>
+          ) : (
+            <Skeleton width={50} height={20} />
+          )}
         </Flex>
       </RowBetween>
       <RowBetween>

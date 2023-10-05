@@ -34,6 +34,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     managerInfoUrl,
     strategyInfoUrl,
     projectVaultUrl,
+    rewardPerSecond,
   } = vault
   const managerInfo = useMemo(
     () => ({
@@ -97,6 +98,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       managerInfoUrl={managerInfoUrl}
       strategyInfoUrl={strategyInfoUrl}
       projectVaultUrl={projectVaultUrl}
+      rewardPerSecond={rewardPerSecond}
       refetch={info?.refetchPositionInfo}
     >
       {id}
