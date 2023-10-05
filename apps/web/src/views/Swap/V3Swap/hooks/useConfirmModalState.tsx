@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
