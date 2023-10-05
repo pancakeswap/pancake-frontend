@@ -368,7 +368,7 @@ export const getMasterChefV3Contract = (signer?: WalletClient, chainId?: number)
   return mcv3Address
     ? getContract({
         abi: masterChefV3ABI,
-        address: getMasterChefV3Address(chainId),
+        address: getMasterChefV3Address(chainId) ?? '0x',
         chainId,
         signer,
       })

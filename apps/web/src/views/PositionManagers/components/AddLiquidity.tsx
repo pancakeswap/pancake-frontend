@@ -5,6 +5,7 @@ import { Currency, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, CurrencyInput, Flex, ModalV2, RowBetween, Text, useToast, LinkExternal } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -249,6 +250,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
   onDone,
 }: AddLiquidityButtonProps) {
   const { t } = useTranslation()
+  const { account, chain } = useWeb3React()
   const { approvalState: approvalStateToken0, approveCallback: approveCallbackToken0 } = useApproveCallback(
     amountA,
     contractAddress,
@@ -263,10 +265,10 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
 
   const mintThenDeposit = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() =>
-      positionManagerWrapperContract.write.mintThenDeposit(
-        [amountA?.numerator ?? 0n, amountB?.numerator ?? 0n, '0x'],
-        {},
-      ),
+      positionManagerWrapperContract.write.mintThenDeposit([amountA?.numerator ?? 0n, amountB?.numerator ?? 0n, '0x'], {
+        account: account ?? '0x',
+        chain,
+      }),
     )
 
     if (receipt?.status) {
@@ -278,7 +280,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
       )
       onDone?.()
     }
-  }, [amountA, amountB, positionManagerWrapperContract, t, toastSuccess, fetchWithCatchTxError, onDone])
+  }, [amountA, amountB, positionManagerWrapperContract, account, chain, toastSuccess, t, onDone, fetchWithCatchTxError])
 
   const showAmountButtonA = useMemo(
     () => amountA && approvalStateToken0 === ApprovalState.NOT_APPROVED,

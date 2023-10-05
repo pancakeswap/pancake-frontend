@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { Button, Text, Box, Flex, Balance, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { Currency } from '@pancakeswap/sdk'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -13,7 +14,7 @@ import { InnerCard } from './InnerCard'
 interface RewardAssetsProps {
   contractAddress: `0x${string}`
   earningToken: Currency
-  pendingReward: bigint
+  pendingReward: bigint | undefined
   refetch?: () => void
 }
 
@@ -24,6 +25,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   refetch,
 }) => {
   const { t } = useTranslation()
+  const { account, chain } = useWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningTokenPrice = useStablecoinPrice(earningToken ?? undefined, { enabled: !!earningToken })
@@ -43,7 +45,12 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   const isDisabled = useMemo(() => pendingTx || new BigNumber(earningsBalance).lte(0), [pendingTx, earningsBalance])
 
   const onClickHarvest = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => wrapperContract.write.deposit([BigInt(0)], {}))
+    const receipt = await fetchWithCatchTxError(() =>
+      wrapperContract.write.deposit([BigInt(0)], {
+        account: account ?? '0x',
+        chain,
+      }),
+    )
 
     if (receipt?.status) {
       refetch?.()
@@ -54,7 +61,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
         </ToastDescriptionWithTx>,
       )
     }
-  }, [earningToken, wrapperContract, t, refetch, fetchWithCatchTxError, toastSuccess])
+  }, [earningToken, account, chain, wrapperContract, t, refetch, fetchWithCatchTxError, toastSuccess])
 
   return (
     <InnerCard>

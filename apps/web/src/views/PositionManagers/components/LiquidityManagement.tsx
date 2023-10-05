@@ -35,7 +35,7 @@ interface Props {
   contractAddress: `0x${string}`
   token0PriceUSD?: number
   token1PriceUSD?: number
-  pendingReward: bigint
+  pendingReward: bigint | undefined
   userVaultPercentage?: Percent
   poolToken0Amount?: bigint
   poolToken1Amount?: bigint

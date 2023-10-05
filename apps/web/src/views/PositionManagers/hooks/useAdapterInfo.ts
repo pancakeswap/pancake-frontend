@@ -12,7 +12,7 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   token1Amounts: bigint
   token0PerShare: bigint
   token1PerShare: bigint
-  PRECISION: bigint
+  precision: bigint
   totalSupply: bigint
 } | null> {
   const [totalSupplyData, tokenPerShareData, PRECISIONData] = await publicClient({ chainId }).multicall({
@@ -43,15 +43,16 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
     PRECISIONData.result,
   ]
 
-  const token0Amounts = (totalSupply * tokenPerShare[0]) / PRECISION
-  const token1Amounts = (totalSupply * tokenPerShare[1]) / PRECISION
+  const precision = PRECISION ?? BigInt(0)
+  const token0Amounts = (totalSupply * tokenPerShare[0]) / precision
+  const token1Amounts = (totalSupply * tokenPerShare[1]) / precision
 
   return {
     token0Amounts,
     token1Amounts,
     token0PerShare: tokenPerShare[0],
     token1PerShare: tokenPerShare[1],
-    PRECISION,
+    precision,
     totalSupply,
   }
 }
@@ -76,7 +77,7 @@ export const useUserAmounts = (wrapperAddress: Address) => {
   const contract = usePositionManagerWrapperContract(wrapperAddress)
   const { data, refetch } = useQuery(
     ['useUserAmounts', wrapperAddress, account],
-    () => contract.read.userInfo([account]),
+    () => contract.read.userInfo([account ?? '0x']),
     {
       enabled: !!wrapperAddress && !!account,
       refetchInterval: 3000,
@@ -99,10 +100,10 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
     poolToken0Amounts: poolAmounts?.token0Amounts ?? BigInt(0),
     poolToken1Amounts: poolAmounts?.token1Amounts ?? BigInt(0),
     userToken0Amounts: poolAndUserAmountsReady
-      ? (userAmounts[0] * poolAmounts?.token0PerShare) / poolAmounts.PRECISION
+      ? (userAmounts[0] * poolAmounts?.token0PerShare) / poolAmounts.precision
       : BigInt(0),
     userToken1Amounts: poolAndUserAmountsReady
-      ? (userAmounts[0] * poolAmounts?.token1PerShare) / poolAmounts.PRECISION
+      ? (userAmounts[0] * poolAmounts?.token1PerShare) / poolAmounts.precision
       : BigInt(0),
     userVaultPercentage: poolAndUserAmountsReady
       ? new Percent(userAmounts[0], poolAmounts.totalSupply)
@@ -120,7 +121,7 @@ export const useUserPendingRewardAmounts = (wrapperAddress: Address) => {
   const contract = usePositionManagerWrapperContract(wrapperAddress)
   const { data, refetch } = useQuery(
     ['useUserPendingRewardAmounts', account],
-    () => contract.read.pendingReward([account]),
+    () => contract.read.pendingReward([account ?? '0x']),
     {
       enabled: !!account,
       refetchInterval: 3000,

@@ -3,7 +3,7 @@ import { ModalV2, RowBetween, Text, Flex, Button, CurrencyLogo, Box, useToast } 
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -52,7 +52,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   refetch,
 }: Props) {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account, chain } = useWeb3React()
   const [percent, setPercent] = useState(0)
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
   const wrapperContract = usePositionManagerWrapperContract(contractAddress)
@@ -63,7 +63,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   const amountB = useMemo(() => staked1Amount?.multiply(percent)?.divide(100), [staked1Amount, percent])
 
   const withdrawThenBurn = useCallback(async () => {
-    const userInfoAmount = await wrapperContract.read.userInfo([account], {})
+    const userInfoAmount = await wrapperContract.read.userInfo([account ?? '0x'], {})
 
     const receipt = await fetchWithCatchTxError(() => {
       const withdrawAmount = new BigNumber(userInfoAmount?.[0]?.toString() ?? 0)
@@ -72,7 +72,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
         .toNumber()
 
       const avoidDecimalsProblem = percent === 100 ? BigInt(userInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
-      return wrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, '0x'], {})
+      return wrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, '0x'], { account: account ?? '0x', chain })
     })
 
     if (receipt?.status) {
@@ -85,7 +85,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
         </ToastDescriptionWithTx>,
       )
     }
-  }, [wrapperContract, percent, account, fetchWithCatchTxError, refetch, onDismiss, toastSuccess, t])
+  }, [chain, wrapperContract, percent, account, fetchWithCatchTxError, refetch, onDismiss, toastSuccess, t])
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>

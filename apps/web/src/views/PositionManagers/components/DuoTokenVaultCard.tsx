@@ -51,7 +51,7 @@ interface Props {
   stakedToken1Amount?: bigint
   token0PriceUSD?: number
   token1PriceUSD?: number
-  pendingReward: bigint
+  pendingReward: bigint | undefined
   userVaultPercentage?: Percent
   lpAddress: string
   vaultAddress: string

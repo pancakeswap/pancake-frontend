@@ -318,13 +318,19 @@ export function useBCakeFarmBoosterV3Contract() {
 export function usePositionManagerWrapperContract(address: Address) {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
-  return useMemo(() => getPositionManagerWrapperContract(address, signer, chainId), [signer, chainId, address])
+  return useMemo(
+    () => getPositionManagerWrapperContract(address, signer ?? undefined, chainId),
+    [signer, chainId, address],
+  )
 }
 
 export function usePositionManagerAdepterContract(address: Address) {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
-  return useMemo(() => getPositionManagerAdapterContract(address, signer, chainId), [signer, chainId, address])
+  return useMemo(
+    () => getPositionManagerAdapterContract(address, signer ?? undefined, chainId),
+    [signer, chainId, address],
+  )
 }
 
 export function useBCakeFarmBoosterProxyFactoryContract() {
@@ -447,5 +453,5 @@ export const useFixedStakingContract = () => {
 
   const { data: signer } = useWalletClient()
 
-  return useMemo(() => getFixedStakingContract(signer, chainId), [chainId, signer])
+  return useMemo(() => getFixedStakingContract(signer ?? undefined, chainId), [chainId, signer])
 }

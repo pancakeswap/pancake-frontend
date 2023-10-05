@@ -46,7 +46,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
   const adapterAddress = useQuery(['adapterAddress', address], async () => wrapperContract.read.adapterAddr(), {
     enabled: !!wrapperContract,
   }).data
-  const adapterContract = usePositionManagerAdepterContract(adapterAddress)
+  const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery(
     ['adapterAddress', adapterAddress],
     async () => {
@@ -58,7 +58,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     },
   ).data
 
-  const info = usePositionInfo(address, adapterAddress)
+  const info = usePositionInfo(address, adapterAddress ?? '0x')
 
   const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster()
   const tokensPriceUSD = useMemo(() => {
@@ -93,7 +93,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       pendingReward={info?.pendingReward}
       userVaultPercentage={info?.userVaultPercentage}
       lpAddress={lpAddress}
-      vaultAddress={adapterAddress}
+      vaultAddress={adapterAddress ?? '0x'}
       managerInfoUrl={managerInfoUrl}
       strategyInfoUrl={strategyInfoUrl}
       projectVaultUrl={projectVaultUrl}
