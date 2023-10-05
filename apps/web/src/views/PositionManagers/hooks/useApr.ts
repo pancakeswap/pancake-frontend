@@ -58,7 +58,7 @@ export const useApr = ({
   }, [avgToken0Amount, avgToken1Amount, currencyA, currencyB, token0PriceUSD, token1PriceUSD, totalStakedInUsd])
 
   const cakeYieldApr = useMemo(() => {
-    return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimal)
+    return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals)
       .times(YEAR_IN_SECONDS)
       .times(cakePriceBusd)
       .div(totalStakedInUsd)

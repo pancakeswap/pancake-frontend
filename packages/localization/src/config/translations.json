@@ -2831,5 +2831,6 @@
   "View Vault on %managerName%": "View Vault on %managerName%",
   "% of LP rewards": "% of LP rewards",
   "Typical Wide": "Typical Wide",
-  "Yield IQ": "Yield IQ"
+  "Yield IQ": "Yield IQ",
+  "Token amounts displayed above are estimations. The final amount of tokens received may vary.": "Token amounts displayed above are estimations. The final amount of tokens received may vary."
 }

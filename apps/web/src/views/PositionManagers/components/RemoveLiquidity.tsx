@@ -108,6 +108,9 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
         </InnerCard>
         <PercentSlider percent={percent} onChange={setPercent} mt="1em" />
         <RemoveLiquidityButton mt="1.5em" onClick={withdrawThenBurn} isLoading={pendingTx} disabled={percent <= 0} />
+        <Text mt="24px" lineHeight="1.2" fontSize="12px" textAlign="center" color="textSubtle">
+          {t('Token amounts displayed above are estimations. The final amount of tokens received may vary.')}
+        </Text>
       </StyledModal>
     </ModalV2>
   )
