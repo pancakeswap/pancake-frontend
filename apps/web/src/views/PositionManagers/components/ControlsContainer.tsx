@@ -1,5 +1,5 @@
 import { Flex } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 export const ControlsContainer = styled(Flex).attrs({
   alignItems: 'center',

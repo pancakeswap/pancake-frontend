@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { Currency } from '@pancakeswap/sdk'
 import { AutoRenewIcon, Box } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import { TokenPairImage } from 'components/TokenImage'
 

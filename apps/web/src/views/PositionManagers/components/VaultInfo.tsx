@@ -3,7 +3,7 @@ import { BaseAssets, ManagerFee } from '@pancakeswap/position-managers'
 import { Currency, Price } from '@pancakeswap/sdk'
 import { Box, RowBetween, Text } from '@pancakeswap/uikit'
 import { memo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { SpaceProps } from 'styled-system'
 import { useTotalStakedInUsd } from 'views/PositionManagers/hooks/useTotalStakedInUsd'
 

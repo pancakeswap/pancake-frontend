@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { FlexLayout, CardHeader as CardHeaderComp } from '@pancakeswap/uikit'
 
 export const CardLayout = styled(FlexLayout)`

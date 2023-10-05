@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { SpaceProps } from 'styled-system'
 import { PropsWithChildren, memo, useMemo } from 'react'
 import { FlexProps, Flex, ScanLink, PlayCircleOutlineIcon } from '@pancakeswap/uikit'

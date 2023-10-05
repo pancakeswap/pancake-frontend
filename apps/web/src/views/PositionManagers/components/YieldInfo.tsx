@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { memo, useMemo } from 'react'
 import { Box, RowBetween, Text, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'

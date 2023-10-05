@@ -1,5 +1,5 @@
 import { Flex, Text, Select, OptionProps, SearchInput } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useMemo, useCallback, ChangeEvent } from 'react'
 

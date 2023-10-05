@@ -4,7 +4,7 @@ import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const Title = styled(Text).attrs({
   bold: true,

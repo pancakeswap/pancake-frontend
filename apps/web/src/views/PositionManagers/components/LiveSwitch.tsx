@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, ButtonMenu, NotificationDot, ButtonMenuItem } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { usePositionManagerStatus, PositionManagerStatus } from '../hooks'
 
 const Wrapper = styled(Flex).attrs({

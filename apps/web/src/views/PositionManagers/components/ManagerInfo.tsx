@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { SpaceProps } from 'styled-system'
 import { memo, useMemo } from 'react'
 import { Text, Row, VerifiedIcon } from '@pancakeswap/uikit'
