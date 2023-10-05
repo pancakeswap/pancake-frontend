@@ -144,8 +144,8 @@ export const AddLiquidity = memo(function AddLiquidity({
     poolToken1Amount,
     token0PriceUSD,
     token1PriceUSD,
-    avgToken0Amount: 20,
-    avgToken1Amount: 10,
+    avgToken0Amount: 1239673096733967,
+    avgToken1Amount: 4644178681397,
   })
 
   const displayBalanceText = useCallback(

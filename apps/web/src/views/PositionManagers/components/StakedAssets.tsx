@@ -62,11 +62,11 @@ export const StakedAssets = memo(function StakedAssets({
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end">
-          <ActionButton variant="primary" scale="md" onClick={onRemove}>
-            <MinusIcon width="1.5em" />
+          <ActionButton scale="md" onClick={onRemove}>
+            <MinusIcon color="currentColor" width="1.5em" />
           </ActionButton>
-          <ActionButton variant="primary" scale="md" ml="0.5em" onClick={onAdd}>
-            <AddIcon width="1.5em" />
+          <ActionButton scale="md" ml="0.5em" onClick={onAdd}>
+            <AddIcon color="currentColor" width="1.5em" />
           </ActionButton>
         </Flex>
       </RowBetween>
