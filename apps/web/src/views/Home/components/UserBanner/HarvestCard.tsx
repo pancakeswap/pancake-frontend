@@ -10,6 +10,7 @@ import {
   NextLinkFromReactRouter,
   Skeleton,
   Text,
+  TextProps,
   useMatchBreakpoints,
   useToast,
 } from '@pancakeswap/uikit'
@@ -40,7 +41,12 @@ const StyledCardBody = styled(CardBody)`
 
 const masterChefAddress = getMasterChefV2Address()
 
-const HarvestCard = () => {
+interface HarvestCardProps extends TextProps {
+  onHarvestStart: () => void | undefined
+  onHarvestEnd: () => void | undefined
+}
+
+const HarvestCard: React.FC<React.PropsWithChildren<HarvestCardProps>> = ({ onHarvestStart, onHarvestEnd }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -61,13 +67,8 @@ const HarvestCard = () => {
   const { onHarvestAll } = useFarmsV3BatchHarvest()
 
   const harvestAllFarms = useCallback(async () => {
+    onHarvestStart?.()
     const v2Farms = farmsWithStakedBalance.filter((value) => value && 'pid' in value) as FarmWithBalance[]
-    const v3Farms = farmsWithStakedBalance.filter((value) => value && 'sendTx' in value) as {
-      sendTx: {
-        to: string
-        tokenId: string
-      }
-    }[]
     for (let i = 0; i < v2Farms.length; i++) {
       const farmWithBalance = v2Farms[i]
       // eslint-disable-next-line no-await-in-loop
@@ -90,8 +91,27 @@ const HarvestCard = () => {
       }
     }
 
-    onHarvestAll(v3Farms.map((farm) => farm.sendTx.tokenId))
-  }, [farmsWithStakedBalance, onHarvestAll, fetchWithCatchTxError, gasPrice, toastSuccess, t])
+    const v3Farms = (
+      farmsWithStakedBalance.filter((value) => value && 'sendTx' in value) as {
+        sendTx: {
+          to: string
+          tokenId: string
+        }
+      }[]
+    ).map((farm) => farm.sendTx.tokenId)
+    if (v3Farms.length > 0) {
+      onHarvestAll(v3Farms, onHarvestStart, onHarvestEnd)
+    }
+  }, [
+    farmsWithStakedBalance,
+    onHarvestAll,
+    fetchWithCatchTxError,
+    gasPrice,
+    toastSuccess,
+    t,
+    onHarvestStart,
+    onHarvestEnd,
+  ])
 
   return (
     <StyledCard>

@@ -197,7 +197,8 @@ export function useFarmsV3BatchHarvest() {
 
   const masterChefV3Address = useMasterchefV3()?.address
   const onHarvestAll = useCallback(
-    async (tokenIds: string[]) => {
+    async (tokenIds: string[], onHarvestStart?: () => void | undefined, onHarvestEnd?: () => void | undefined) => {
+      onHarvestStart?.()
       const { calldata, value } = MasterChefV3.batchHarvestCallParameters(
         tokenIds.map((tokenId) => ({ tokenId, to: account })),
       )
@@ -230,6 +231,7 @@ export function useFarmsV3BatchHarvest() {
         )
         mutate((key) => Array.isArray(key) && key[0] === 'mcv3-harvest', undefined)
       }
+      onHarvestEnd?.()
     },
     [account, fetchWithCatchTxError, masterChefV3Address, sendTransactionAsync, signer, t, toastSuccess],
   )
