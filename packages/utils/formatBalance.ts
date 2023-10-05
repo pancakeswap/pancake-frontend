@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
-import { formatUnits } from 'viem'
 import { getLanguageCodeFromLS } from '@pancakeswap/localization'
 import _trimEnd from 'lodash/trimEnd'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
+import { formatUnits } from './viem/formatUnits'
 
 /**
  * Take a formatted amount, e.g. 15 BNB and convert it to full decimal value, e.g. 15000000000000000

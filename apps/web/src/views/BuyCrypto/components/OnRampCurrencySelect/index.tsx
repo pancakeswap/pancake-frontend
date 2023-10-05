@@ -1,17 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import {
-  ArrowDropDownIcon,
-  Box,
-  BoxProps,
-  Button,
-  CurrencyLogo,
-  Flex,
-  Skeleton,
-  Text,
-  useModal,
-} from '@pancakeswap/uikit'
-import { NumericalInput } from '@pancakeswap/widgets-internal'
+import { ArrowDropDownIcon, Box, BoxProps, Button, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { NumericalInput, CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { useAllOnRampTokens } from 'hooks/Tokens'

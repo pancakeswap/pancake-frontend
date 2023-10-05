@@ -1,6 +1,6 @@
-import { ReactElement } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
+import { ReactElement } from "react";
+import { useTranslation } from "@pancakeswap/localization";
+import { styled } from "styled-components";
 import {
   Flex,
   LinkExternal,
@@ -10,43 +10,43 @@ import {
   HelpIcon,
   useTooltip,
   FarmMultiplierInfo,
-} from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/chains'
+} from "@pancakeswap/uikit";
+import { ChainId } from "@pancakeswap/chains";
 
 export interface ExpandableSectionProps {
-  scanAddress?: { link: string; chainId?: number; icon?: ReactElement }
-  infoAddress?: string
-  removed?: boolean
-  totalValueFormatted?: string
-  lpLabel: string
-  onAddLiquidity?: (() => void) | string
-  isCommunity?: boolean
-  auctionHostingEndDate?: string
-  alignLinksToRight?: boolean
-  totalValueLabel?: string
-  multiplier?: string
-  farmCakePerSecond?: string
-  totalMultipliers?: string
+  scanAddress?: { link: string; chainId?: number; icon?: ReactElement };
+  infoAddress?: string;
+  removed?: boolean;
+  totalValueFormatted?: string;
+  lpLabel: string;
+  onAddLiquidity?: (() => void) | string;
+  isCommunity?: boolean;
+  auctionHostingEndDate?: string;
+  alignLinksToRight?: boolean;
+  totalValueLabel?: string;
+  multiplier?: string;
+  farmCakePerSecond?: string;
+  totalMultipliers?: string;
 }
 
 const Wrapper = styled.div`
   margin-top: 24px;
-`
+`;
 
 const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
-`
+`;
 
 const StyledScanLink = styled(ScanLink)`
   font-weight: 400;
-`
+`;
 
 const StyledText = styled(Text)`
   &:hover {
     text-decoration: underline;
     cursor: pointer;
   }
-`
+`;
 
 export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   scanAddress,
@@ -66,37 +66,37 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
   const {
     t,
     currentLanguage: { locale },
-  } = useTranslation()
+  } = useTranslation();
 
   const multiplierTooltipContent = FarmMultiplierInfo({
-    farmCakePerSecond: farmCakePerSecond ?? '-',
-    totalMultipliers: totalMultipliers ?? '-',
-  })
+    farmCakePerSecond: farmCakePerSecond ?? "-",
+    totalMultipliers: totalMultipliers ?? "-",
+  });
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(multiplierTooltipContent, {
-    placement: 'bottom',
-  })
+    placement: "bottom",
+  });
 
   return (
     <Wrapper>
       {isCommunity && auctionHostingEndDate && (
         <Flex justifyContent="space-between">
-          <Text>{t('Auction Hosting Ends')}:</Text>
+          <Text>{t("Auction Hosting Ends")}:</Text>
           <Text>
             {new Date(auctionHostingEndDate).toLocaleString(locale, {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
+              month: "short",
+              day: "numeric",
+              year: "numeric",
             })}
           </Text>
         </Flex>
       )}
       <Flex justifyContent="space-between">
-        <Text>{totalValueLabel || t('Staked Liquidity')}:</Text>
+        <Text>{totalValueLabel || t("Staked Liquidity")}:</Text>
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
       </Flex>
       <Flex justifyContent="space-between">
-        <Text>{t('Multiplier')}:</Text>
+        <Text>{t("Multiplier")}:</Text>
         {multiplier ? (
           <Flex>
             <Text>{multiplier}</Text>
@@ -110,25 +110,25 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
         )}
       </Flex>
       {!removed && (
-        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
           {onAddLiquidity ? (
-            typeof onAddLiquidity === 'string' ? (
-              <StyledLinkExternal href={onAddLiquidity}>{t('Add %symbol%', { symbol: lpLabel })}</StyledLinkExternal>
+            typeof onAddLiquidity === "string" ? (
+              <StyledLinkExternal href={onAddLiquidity}>{t("Add %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
             ) : (
               <StyledText color="primary" onClick={onAddLiquidity}>
-                {t('Add %symbol%', { symbol: lpLabel })}
+                {t("Add %symbol%", { symbol: lpLabel })}
               </StyledText>
             )
           ) : null}
         </Flex>
       )}
       {infoAddress && (
-        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <StyledLinkExternal href={infoAddress}>{t('See Pair Info')}</StyledLinkExternal>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
+          <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>
         </Flex>
       )}
       {scanAddress && (
-        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
           <StyledScanLink
             icon={scanAddress.icon}
             useBscCoinFallback={
@@ -136,10 +136,10 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
             }
             href={scanAddress.link}
           >
-            {t('View Contract')}
+            {t("View Contract")}
           </StyledScanLink>
         </Flex>
       )}
     </Wrapper>
-  )
-}
+  );
+};

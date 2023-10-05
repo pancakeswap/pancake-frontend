@@ -1,12 +1,12 @@
-import { styled } from 'styled-components'
-import { Flex, FlexProps, Text } from '@pancakeswap/uikit'
+import { styled } from "styled-components";
+import { Flex, FlexProps, Text } from "@pancakeswap/uikit";
 
 export const BaseCell = styled(Flex)<FlexProps>`
   color: black;
   padding: 24px 8px;
   flex-direction: column;
   justify-content: flex-start;
-`
+`;
 
 export const CellContent = styled(Flex)`
   flex-direction: column;
@@ -16,4 +16,4 @@ export const CellContent = styled(Flex)`
   ${Text} {
     line-height: 1;
   }
-`
+`;

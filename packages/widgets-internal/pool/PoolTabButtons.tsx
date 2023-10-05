@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router'
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
+import { useRouter } from "next/router";
+import { styled } from "styled-components";
+import { useTranslation } from "@pancakeswap/localization";
 import {
   ToggleView,
   ViewMode,
@@ -10,7 +10,7 @@ import {
   Text,
   NotificationDot,
   NextLinkFromReactRouter,
-} from '@pancakeswap/uikit'
+} from "@pancakeswap/uikit";
 
 const ToggleWrapper = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ const ToggleWrapper = styled.div`
   ${Text} {
     margin-left: 8px;
   }
-`
+`;
 
 const ViewControls = styled.div`
   flex-wrap: wrap;
@@ -41,7 +41,7 @@ const ViewControls = styled.div`
       padding: 0;
     }
   }
-`
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,15 +51,15 @@ const Wrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 16px;
   }
-`
+`;
 
 interface PoolTableButtonsPropsType {
-  stakedOnly: boolean
-  setStakedOnly: (s: boolean) => void
-  viewMode: ViewMode
-  setViewMode: (s: ViewMode) => void
-  hasStakeInFinishedPools: boolean
-  hideViewMode?: boolean
+  stakedOnly: boolean;
+  setStakedOnly: (s: boolean) => void;
+  viewMode: ViewMode;
+  setViewMode: (s: ViewMode) => void;
+  hasStakeInFinishedPools: boolean;
+  hideViewMode?: boolean;
 }
 
 const PoolTabButtons = ({
@@ -70,37 +70,37 @@ const PoolTabButtons = ({
   setViewMode,
   hideViewMode = false,
 }: PoolTableButtonsPropsType) => {
-  const router = useRouter()
+  const router = useRouter();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const isExact = router.pathname === '/pools' || router.pathname === '/_mp/pools'
+  const isExact = router.pathname === "/pools" || router.pathname === "/_mp/pools";
 
   const viewModeToggle = hideViewMode ? null : (
     <ToggleView idPrefix="clickPool" viewMode={viewMode} onToggle={setViewMode} />
-  )
+  );
 
   const liveOrFinishedSwitch = (
     <Wrapper>
       <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
         <ButtonMenuItem as={NextLinkFromReactRouter} to="/pools" replace>
-          {t('Live')}
+          {t("Live")}
         </ButtonMenuItem>
         <NotificationDot show={hasStakeInFinishedPools}>
           <ButtonMenuItem id="finished-pools-button" as={NextLinkFromReactRouter} to="/pools/history" replace>
-            {t('Finished')}
+            {t("Finished")}
           </ButtonMenuItem>
         </NotificationDot>
       </ButtonMenu>
     </Wrapper>
-  )
+  );
 
   const stakedOnlySwitch = (
     <ToggleWrapper>
       <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
-      <Text> {t('Staked only')}</Text>
+      <Text> {t("Staked only")}</Text>
     </ToggleWrapper>
-  )
+  );
 
   return (
     <ViewControls>
@@ -108,7 +108,7 @@ const PoolTabButtons = ({
       {liveOrFinishedSwitch}
       {stakedOnlySwitch}
     </ViewControls>
-  )
-}
+  );
+};
 
-export default PoolTabButtons
+export default PoolTabButtons;

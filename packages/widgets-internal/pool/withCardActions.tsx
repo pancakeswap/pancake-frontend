@@ -1,19 +1,19 @@
-import BigNumber from 'bignumber.js'
+import BigNumber from "bignumber.js";
 
-import { styled } from 'styled-components'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, Box, TextProps } from '@pancakeswap/uikit'
-import { DeserializedPool } from './types'
+import { styled } from "styled-components";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+import { useTranslation } from "@pancakeswap/localization";
+import { Flex, Text, Box, TextProps } from "@pancakeswap/uikit";
+import { DeserializedPool } from "./types";
 
 const InlineText = styled((props: TextProps) => <Text {...props} />)`
   display: inline;
-`
+`;
 
 interface CardActionsProps<T> {
-  pool: DeserializedPool<T>
-  stakedBalance?: BigNumber
-  hideLocateAddress?: boolean
+  pool: DeserializedPool<T>;
+  stakedBalance?: BigNumber;
+  hideLocateAddress?: boolean;
 }
 
 export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
@@ -23,18 +23,18 @@ export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: a
     hideLocateAddress = false,
     ...rest
   }: {
-    pool: DeserializedPool<T>
-    account?: string
-    hideLocateAddress?: boolean
-    stakedBalance?: BigNumber
+    pool: DeserializedPool<T>;
+    account?: string;
+    hideLocateAddress?: boolean;
+    stakedBalance?: BigNumber;
   }) => {
-    const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool
+    const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;
 
-    const isBnbPool = false
-    const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
-    const isLoading = !userData
-    const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
-    const isStaked = stakedBalance?.gt(0)
+    const isBnbPool = false;
+    const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO;
+    const isLoading = !userData;
+    const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO;
+    const isStaked = stakedBalance?.gt(0);
 
     return (
       <>
@@ -63,20 +63,20 @@ export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: a
           {...rest}
         />
       </>
-    )
-  }
+    );
+  };
 }
 
 export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
   return ({ pool, stakedBalance, hideLocateAddress = false }: CardActionsProps<T>) => {
-    const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool
+    const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;
 
-    const isBnbPool = false
-    const { t } = useTranslation()
-    const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
-    const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
-    const isStaked = stakedBalance?.gt(0)
-    const isLoading = !userData
+    const isBnbPool = false;
+    const { t } = useTranslation();
+    const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO;
+    const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO;
+    const isStaked = stakedBalance?.gt(0);
+    const isLoading = !userData;
 
     return (
       <Flex flexDirection="column">
@@ -87,7 +87,7 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
                 {`${earningToken.symbol} `}
               </InlineText>
               <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                {t('Earned')}
+                {t("Earned")}
               </InlineText>
             </Box>
             <HarvestActionsComp
@@ -104,11 +104,11 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
             />
           </>
           <Box display="inline">
-            <InlineText color={isStaked ? 'secondary' : 'textSubtle'} textTransform="uppercase" bold fontSize="12px">
-              {isStaked ? stakingToken.symbol : t('Stake')}{' '}
+            <InlineText color={isStaked ? "secondary" : "textSubtle"} textTransform="uppercase" bold fontSize="12px">
+              {isStaked ? stakingToken.symbol : t("Stake")}{" "}
             </InlineText>
-            <InlineText color={isStaked ? 'textSubtle' : 'secondary'} textTransform="uppercase" bold fontSize="12px">
-              {isStaked ? t('Staked') : `${stakingToken.symbol}`}
+            <InlineText color={isStaked ? "textSubtle" : "secondary"} textTransform="uppercase" bold fontSize="12px">
+              {isStaked ? t("Staked") : `${stakingToken.symbol}`}
             </InlineText>
           </Box>
           <StakeActionsComp
@@ -122,6 +122,6 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
           />
         </Flex>
       </Flex>
-    )
-  }
+    );
+  };
 }

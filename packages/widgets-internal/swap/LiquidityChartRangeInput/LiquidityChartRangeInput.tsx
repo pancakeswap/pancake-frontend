@@ -1,24 +1,24 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Currency, Price } from '@pancakeswap/swap-sdk-core'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { styled, useTheme } from 'styled-components'
-import { useCallback, useMemo } from 'react'
-import { format } from 'd3'
-import * as Sentry from '@sentry/nextjs'
-import { saturate } from 'polished'
-import { AutoColumn, BunnyKnownPlaceholder, ChartDisableIcon, LineGraphIcon } from '@pancakeswap/uikit'
+import { useTranslation } from "@pancakeswap/localization";
+import { Currency, Price } from "@pancakeswap/swap-sdk-core";
+import { FeeAmount } from "@pancakeswap/v3-sdk";
+import { styled, useTheme } from "styled-components";
+import { useCallback, useMemo } from "react";
+import { format } from "d3";
+import * as Sentry from "@sentry/nextjs";
+import { saturate } from "polished";
+import { AutoColumn, BunnyKnownPlaceholder, ChartDisableIcon, LineGraphIcon } from "@pancakeswap/uikit";
 
-import { Bound, ChartEntry, TickDataRaw, ZOOM_LEVELS, ZoomLevels } from './types'
-import { InfoBox } from './InfoBox'
-import Loader from './Loader'
-import { Chart } from './Chart'
+import { Bound, ChartEntry, TickDataRaw, ZOOM_LEVELS, ZoomLevels } from "./types";
+import { InfoBox } from "./InfoBox";
+import Loader from "./Loader";
+import { Chart } from "./Chart";
 
 const ChartWrapper = styled.div`
   position: relative;
 
   justify-content: center;
   align-content: center;
-`
+`;
 
 export function LiquidityChartRangeInput({
   currencyA,
@@ -43,113 +43,113 @@ export function LiquidityChartRangeInput({
   zoomLevel,
   formattedData,
 }: {
-  tickCurrent?: number
-  liquidity?: bigint
-  isLoading?: boolean
-  error?: Error
-  currencyA?: Currency
-  currencyB?: Currency
-  feeAmount?: FeeAmount
-  ticks?: TickDataRaw[]
-  ticksAtLimit?: { [bound in Bound]?: boolean }
-  price?: number
-  priceLower?: Price<Currency, Currency>
-  priceUpper?: Price<Currency, Currency>
-  onLeftRangeInput?: (typedValue: string) => void
-  onRightRangeInput?: (typedValue: string) => void
-  onBothRangeInput?: (leftTypedValue: string, rightTypedValue: string) => void
-  interactive?: boolean
-  zoomLevel?: ZoomLevels
-  formattedData: ChartEntry[] | undefined
+  tickCurrent?: number;
+  liquidity?: bigint;
+  isLoading?: boolean;
+  error?: Error;
+  currencyA?: Currency;
+  currencyB?: Currency;
+  feeAmount?: FeeAmount;
+  ticks?: TickDataRaw[];
+  ticksAtLimit?: { [bound in Bound]?: boolean };
+  price?: number;
+  priceLower?: Price<Currency, Currency>;
+  priceUpper?: Price<Currency, Currency>;
+  onLeftRangeInput?: (typedValue: string) => void;
+  onRightRangeInput?: (typedValue: string) => void;
+  onBothRangeInput?: (leftTypedValue: string, rightTypedValue: string) => void;
+  interactive?: boolean;
+  zoomLevel?: ZoomLevels;
+  formattedData: ChartEntry[] | undefined;
 }) {
-  const { t } = useTranslation()
-  const theme = useTheme()
+  const { t } = useTranslation();
+  const theme = useTheme();
 
   // Get token color
-  const tokenAColor = '#7645D9'
-  const tokenBColor = '#7645D9'
+  const tokenAColor = "#7645D9";
+  const tokenBColor = "#7645D9";
 
   const isSorted = useMemo(
     () => currencyA && currencyB && currencyA?.wrapped.sortsBefore(currencyB?.wrapped),
-    [currencyA, currencyB],
-  )
+    [currencyA, currencyB]
+  );
 
   const brushDomain: [number, number] | undefined = useMemo(() => {
-    const leftPrice = isSorted ? priceLower : priceUpper?.invert()
-    const rightPrice = isSorted ? priceUpper : priceLower?.invert()
+    const leftPrice = isSorted ? priceLower : priceUpper?.invert();
+    const rightPrice = isSorted ? priceUpper : priceLower?.invert();
 
     return leftPrice && rightPrice
       ? [parseFloat(leftPrice?.toSignificant(18)), parseFloat(rightPrice?.toSignificant(18))]
-      : undefined
-  }, [isSorted, priceLower, priceUpper])
+      : undefined;
+  }, [isSorted, priceLower, priceUpper]);
 
   const onBrushDomainChangeEnded = useCallback(
     (domain: [number, number], mode: string | undefined) => {
-      const [leftPrice, rightPrice] = brushDomain || []
+      const [leftPrice, rightPrice] = brushDomain || [];
 
-      let leftRangeValue = Number(domain[0])
-      const rightRangeValue = Number(domain[1])
+      let leftRangeValue = Number(domain[0]);
+      const rightRangeValue = Number(domain[1]);
 
       if (leftRangeValue <= 0) {
-        leftRangeValue = 1 / 10 ** 6
+        leftRangeValue = 1 / 10 ** 6;
       }
 
       const updateLeft =
-        (!ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] || mode === 'handle' || mode === 'reset') &&
+        (!ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] || mode === "handle" || mode === "reset") &&
         leftRangeValue > 0 &&
-        leftRangeValue !== leftPrice
+        leftRangeValue !== leftPrice;
 
       const updateRight =
-        (!ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] || mode === 'reset') &&
+        (!ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] || mode === "reset") &&
         rightRangeValue > 0 &&
         rightRangeValue < 1e35 &&
-        rightRangeValue !== rightPrice
+        rightRangeValue !== rightPrice;
 
       if (updateLeft && updateRight) {
-        const parsedLeftRangeValue = parseFloat(leftRangeValue.toFixed(18))
-        const parsedRightRangeValue = parseFloat(rightRangeValue.toFixed(18))
+        const parsedLeftRangeValue = parseFloat(leftRangeValue.toFixed(18));
+        const parsedRightRangeValue = parseFloat(rightRangeValue.toFixed(18));
         if (parsedLeftRangeValue > 0 && parsedRightRangeValue > 0 && parsedLeftRangeValue < parsedRightRangeValue) {
-          onBothRangeInput?.(leftRangeValue.toFixed(18), rightRangeValue.toFixed(18))
+          onBothRangeInput?.(leftRangeValue.toFixed(18), rightRangeValue.toFixed(18));
         }
       } else if (updateLeft) {
-        onLeftRangeInput?.(leftRangeValue.toFixed(18))
+        onLeftRangeInput?.(leftRangeValue.toFixed(18));
       } else if (updateRight) {
-        onRightRangeInput?.(rightRangeValue.toFixed(18))
+        onRightRangeInput?.(rightRangeValue.toFixed(18));
       }
     },
-    [isSorted, onBothRangeInput, onLeftRangeInput, onRightRangeInput, ticksAtLimit, brushDomain],
-  )
+    [isSorted, onBothRangeInput, onLeftRangeInput, onRightRangeInput, ticksAtLimit, brushDomain]
+  );
 
   const brushLabelValue = useCallback(
-    (d: 'w' | 'e', x: number) => {
-      if (!price) return ''
+    (d: "w" | "e", x: number) => {
+      if (!price) return "";
 
-      if (d === 'w' && ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER]) return '0'
-      if (d === 'e' && ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER]) return '∞'
+      if (d === "w" && ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER]) return "0";
+      if (d === "e" && ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER]) return "∞";
 
-      const percent = (x < price ? -1 : 1) * ((Math.max(x, price) - Math.min(x, price)) / price) * 100
+      const percent = (x < price ? -1 : 1) * ((Math.max(x, price) - Math.min(x, price)) / price) * 100;
 
-      return price ? `${format(Math.abs(percent) > 1 ? '.2~s' : '.2~f')(percent)}%` : ''
+      return price ? `${format(Math.abs(percent) > 1 ? ".2~s" : ".2~f")(percent)}%` : "";
     },
-    [isSorted, price, ticksAtLimit],
-  )
+    [isSorted, price, ticksAtLimit]
+  );
 
   if (error) {
-    Sentry.captureMessage(error.toString(), 'log')
+    Sentry.captureMessage(error.toString(), "log");
   }
 
-  const isUninitialized = !currencyA || !currencyB || (formattedData === undefined && !isLoading)
+  const isUninitialized = !currencyA || !currencyB || (formattedData === undefined && !isLoading);
 
   return (
-    <AutoColumn gap="md" style={{ minHeight: '200px', width: '100%', marginBottom: '16px' }}>
+    <AutoColumn gap="md" style={{ minHeight: "200px", width: "100%", marginBottom: "16px" }}>
       {isUninitialized ? (
-        <InfoBox message={t('Your position will appear here.')} icon={<BunnyKnownPlaceholder />} />
+        <InfoBox message={t("Your position will appear here.")} icon={<BunnyKnownPlaceholder />} />
       ) : isLoading ? (
         <InfoBox icon={<Loader size="40px" stroke={theme.colors.text} />} />
       ) : error ? (
-        <InfoBox message={t('Liquidity data not available.')} icon={<ChartDisableIcon width="40px" />} />
+        <InfoBox message={t("Liquidity data not available.")} icon={<ChartDisableIcon width="40px" />} />
       ) : !formattedData || formattedData.length === 0 || !price ? (
-        <InfoBox message={t('There is no liquidity data.')} icon={<LineGraphIcon width="40px" />} />
+        <InfoBox message={t("There is no liquidity data.")} icon={<LineGraphIcon width="40px" />} />
       ) : (
         <ChartWrapper>
           <Chart
@@ -178,5 +178,5 @@ export function LiquidityChartRangeInput({
         </ChartWrapper>
       )}
     </AutoColumn>
-  )
+  );
 }

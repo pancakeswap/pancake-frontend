@@ -1,17 +1,17 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
-import { Spinner, Text, ColumnCenter, AutoColumn } from '@pancakeswap/uikit'
+import { useTranslation } from "@pancakeswap/localization";
+import { styled } from "styled-components";
+import { Spinner, Text, ColumnCenter, AutoColumn } from "@pancakeswap/uikit";
 
 const Wrapper = styled.div`
   width: 100%;
-`
+`;
 
 const ConfirmedIcon = styled(ColumnCenter)`
   padding: 24px 0;
-`
+`;
 
 export function ConfirmationPendingContent({ pendingText }: { pendingText?: string }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Wrapper>
       <ConfirmedIcon>
@@ -20,7 +20,7 @@ export function ConfirmationPendingContent({ pendingText }: { pendingText?: stri
       <AutoColumn gap="12px" justify="center">
         {pendingText ? (
           <>
-            <Text fontSize="20px">{t('Waiting For Confirmation')}</Text>
+            <Text fontSize="20px">{t("Waiting For Confirmation")}</Text>
             <AutoColumn gap="12px" justify="center">
               <Text bold small textAlign="center">
                 {pendingText}
@@ -29,9 +29,9 @@ export function ConfirmationPendingContent({ pendingText }: { pendingText?: stri
           </>
         ) : null}
         <Text small color="textSubtle" textAlign="center">
-          {t('Confirm this transaction in your wallet')}
+          {t("Confirm this transaction in your wallet")}
         </Text>
       </AutoColumn>
     </Wrapper>
-  )
+  );
 }

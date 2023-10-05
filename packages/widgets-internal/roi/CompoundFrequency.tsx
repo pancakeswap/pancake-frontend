@@ -1,16 +1,16 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { memo, useCallback, useMemo } from 'react'
+import { useTranslation } from "@pancakeswap/localization";
+import { memo, useCallback, useMemo } from "react";
 
-import { ButtonMenuItem, Flex, Checkbox } from '@pancakeswap/uikit'
-import { FullWidthButtonMenu } from './FullWidthButtonMenu'
+import { ButtonMenuItem, Flex, Checkbox } from "@pancakeswap/uikit";
+import { FullWidthButtonMenu } from "./FullWidthButtonMenu";
 
-export const FREQUENCIES = ['12h', '1d', '7d', '30d']
+export const FREQUENCIES = ["12h", "1d", "7d", "30d"];
 
 interface Props {
-  on?: boolean
-  onToggleCompound?: (on: boolean) => void
-  compoundIndex?: number
-  onCompoundChange?: (compoundIndex: number) => void
+  on?: boolean;
+  onToggleCompound?: (on: boolean) => void;
+  compoundIndex?: number;
+  onCompoundChange?: (compoundIndex: number) => void;
 }
 
 export const CompoundFrequency = memo(function CompoundFrequency({
@@ -23,30 +23,30 @@ export const CompoundFrequency = memo(function CompoundFrequency({
     // default
   },
 }: Props) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const frequencies = useMemo(
     () => [
       {
         key: FREQUENCIES[0],
-        text: t('12H'),
+        text: t("12H"),
       },
       {
         key: FREQUENCIES[1],
-        text: t('1D'),
+        text: t("1D"),
       },
       {
         key: FREQUENCIES[2],
-        text: t('7D'),
+        text: t("7D"),
       },
       {
         key: FREQUENCIES[3],
-        text: t('30D'),
+        text: t("30D"),
       },
     ],
-    [t],
-  )
+    [t]
+  );
 
-  const onToggle = useCallback(() => onToggleCompound(!on), [onToggleCompound, on])
+  const onToggle = useCallback(() => onToggleCompound(!on), [onToggleCompound, on]);
 
   return (
     <Flex alignItems="center">
@@ -63,5 +63,5 @@ export const CompoundFrequency = memo(function CompoundFrequency({
         </FullWidthButtonMenu>
       </Flex>
     </Flex>
-  )
-})
+  );
+});

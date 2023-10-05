@@ -1,20 +1,20 @@
-import BigNumber from 'bignumber.js'
-import { ReactElement, ReactNode } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { getFullDisplayBalance, getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { Flex, Heading, Button, Text, Skeleton, Balance, useModal } from '@pancakeswap/uikit'
-import { CollectModalProps } from './CollectModal'
-import { HarvestAction as TableHarvestAction } from './PoolsTable/HarvestAction'
-import { HarvestActionsProps } from './types'
+import BigNumber from "bignumber.js";
+import { ReactElement, ReactNode } from "react";
+import { useTranslation } from "@pancakeswap/localization";
+import { getFullDisplayBalance, getBalanceNumber, formatNumber } from "@pancakeswap/utils/formatBalance";
+import { Flex, Heading, Button, Text, Skeleton, Balance, useModal } from "@pancakeswap/uikit";
+import { CollectModalProps } from "./CollectModal";
+import { HarvestAction as TableHarvestAction } from "./PoolsTable/HarvestAction";
+import { HarvestActionsProps } from "./types";
 
 export const BalanceWithActions: React.FC<
   React.PropsWithChildren<
-    Omit<HarvestActionsProps, 'onPresentCollect'> & {
-      actions: ReactNode
+    Omit<HarvestActionsProps, "onPresentCollect"> & {
+      actions: ReactNode;
     }
   >
 > = ({ earnings, isLoading, earningTokenPrice, earningTokenBalance, earningTokenDollarBalance, actions }) => {
-  const hasEarnings = earnings.toNumber() > 0
+  const hasEarnings = earnings.toNumber() > 0;
 
   return (
     <Flex justifyContent="space-between" alignItems="center" mb="16px">
@@ -51,8 +51,8 @@ export const BalanceWithActions: React.FC<
       </Flex>
       {actions}
     </Flex>
-  )
-}
+  );
+};
 
 export const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = ({
   earnings,
@@ -62,8 +62,8 @@ export const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProp
   earningTokenBalance,
   earningTokenDollarBalance,
 }) => {
-  const { t } = useTranslation()
-  const hasEarnings = earnings.toNumber() > 0
+  const { t } = useTranslation();
+  const hasEarnings = earnings.toNumber() > 0;
 
   return (
     <BalanceWithActions
@@ -74,23 +74,23 @@ export const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProp
       earningTokenDollarBalance={earningTokenDollarBalance}
       actions={
         <Button disabled={!hasEarnings} onClick={onPresentCollect}>
-          {t('Harvest')}
+          {t("Harvest")}
         </Button>
       }
     />
-  )
-}
+  );
+};
 
 interface WithHarvestActionsProps {
-  earnings: BigNumber
-  earningTokenSymbol: string
-  sousId: number
-  isBnbPool: boolean
-  earningTokenPrice: number
-  isLoading?: boolean
-  earningTokenDecimals: number
-  earningTokenAddress?: string
-  poolAddress?: string
+  earnings: BigNumber;
+  earningTokenSymbol: string;
+  sousId: number;
+  isBnbPool: boolean;
+  earningTokenPrice: number;
+  isLoading?: boolean;
+  earningTokenDecimals: number;
+  earningTokenAddress?: string;
+  poolAddress?: string;
 }
 
 const withCollectModalFactory =
@@ -108,15 +108,15 @@ const withCollectModalFactory =
     poolAddress,
     ...props
   }: WithHarvestActionsProps) => {
-    const earningTokenBalance: number = getBalanceNumber(earnings, earningTokenDecimals)
+    const earningTokenBalance: number = getBalanceNumber(earnings, earningTokenDecimals);
 
-    const formattedBalance = formatNumber(earningTokenBalance, 5, 5)
+    const formattedBalance = formatNumber(earningTokenBalance, 5, 5);
 
-    const fullBalance = getFullDisplayBalance(earnings, earningTokenDecimals)
+    const fullBalance = getFullDisplayBalance(earnings, earningTokenDecimals);
 
     const earningTokenDollarBalance = earnings
       ? getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningTokenDecimals)
-      : 0
+      : 0;
 
     const [onPresentCollect] = useModal(
       <CollectModalComponent
@@ -128,8 +128,8 @@ const withCollectModalFactory =
         isBnbPool={isBnbPool}
         earningTokenAddress={earningTokenAddress}
         poolAddress={poolAddress}
-      />,
-    )
+      />
+    );
 
     return (
       <ActionComp
@@ -142,9 +142,9 @@ const withCollectModalFactory =
         earningTokenSymbol={earningTokenSymbol}
         {...props}
       />
-    )
-  }
+    );
+  };
 
-export const withCollectModalTableAction = withCollectModalFactory(TableHarvestAction)
+export const withCollectModalTableAction = withCollectModalFactory(TableHarvestAction);
 
-export const withCollectModalCardAction = withCollectModalFactory(HarvestActions)
+export const withCollectModalCardAction = withCollectModalFactory(HarvestActions);

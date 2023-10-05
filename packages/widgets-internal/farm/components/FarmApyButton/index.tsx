@@ -1,19 +1,19 @@
-import { useCallback } from 'react'
-import { styled } from 'styled-components'
-import { Flex, CalculateIcon, IconButton } from '@pancakeswap/uikit'
+import { useCallback } from "react";
+import { styled } from "styled-components";
+import { Flex, CalculateIcon, IconButton } from "@pancakeswap/uikit";
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
   &:hover {
     opacity: 0.5;
   }
-`
+`;
 
 interface FarmApyButtonProps {
-  hideButton?: boolean
-  strikethrough?: boolean
-  variant: 'text' | 'text-and-button'
-  handleClickButton: (event: React.MouseEvent<HTMLDivElement>) => void
+  hideButton?: boolean;
+  strikethrough?: boolean;
+  variant: "text" | "text-and-button";
+  handleClickButton: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const FarmApyButton: React.FC<React.PropsWithChildren<FarmApyButtonProps>> = ({
@@ -25,26 +25,26 @@ export const FarmApyButton: React.FC<React.PropsWithChildren<FarmApyButtonProps>
 }) => {
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (hideButton) return
-      handleClickButton(event)
+      if (hideButton) return;
+      handleClickButton(event);
     },
-    [hideButton, handleClickButton],
-  )
+    [hideButton, handleClickButton]
+  );
 
   return (
     <Flex flexDirection="column" alignItems="flex-start">
       <ApyLabelContainer
         alignItems="center"
-        style={{ textDecoration: strikethrough ? 'line-through' : 'initial' }}
+        style={{ textDecoration: strikethrough ? "line-through" : "initial" }}
         onClick={handleClick}
       >
         {children}
-        {variant === 'text-and-button' && (
-          <IconButton variant="text" scale="xs" ml="4px" style={{ height: 'auto', padding: 0 }}>
+        {variant === "text-and-button" && (
+          <IconButton variant="text" scale="xs" ml="4px" style={{ height: "auto", padding: 0 }}>
             <CalculateIcon width="18px" color="textSubtle" />
           </IconButton>
         )}
       </ApyLabelContainer>
     </Flex>
-  )
-}
+  );
+};

@@ -1,8 +1,8 @@
-import React from 'react'
-import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
-import { useTranslation } from '@pancakeswap/localization'
-import { NextLinkFromReactRouter, NotificationDot, ButtonMenu, ButtonMenuItem, Text, Flex } from '@pancakeswap/uikit'
+import React from "react";
+import { styled } from "styled-components";
+import { useRouter } from "next/router";
+import { useTranslation } from "@pancakeswap/localization";
+import { NextLinkFromReactRouter, NotificationDot, ButtonMenu, ButtonMenuItem, Text, Flex } from "@pancakeswap/uikit";
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,52 +12,52 @@ const Wrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 16px;
   }
-`
+`;
 
 interface FarmTabButtonsProps {
-  hasStakeInFinishedFarms: boolean
+  hasStakeInFinishedFarms: boolean;
 }
 
 export const FarmTabButtons: React.FC<React.PropsWithChildren<FarmTabButtonsProps>> = ({ hasStakeInFinishedFarms }) => {
-  const router = useRouter()
-  const { t } = useTranslation()
+  const router = useRouter();
+  const { t } = useTranslation();
 
-  let activeIndex
+  let activeIndex;
   switch (router.pathname) {
-    case '/farms':
-      activeIndex = 0
-      break
-    case '/farms/history':
-      activeIndex = 1
-      break
-    case '/_mp/farms/history':
-      activeIndex = 1
-      break
-    case '/farms/archived':
-      activeIndex = 2
-      break
+    case "/farms":
+      activeIndex = 0;
+      break;
+    case "/farms/history":
+      activeIndex = 1;
+      break;
+    case "/_mp/farms/history":
+      activeIndex = 1;
+      break;
+    case "/farms/archived":
+      activeIndex = 2;
+      break;
     default:
-      activeIndex = 0
-      break
+      activeIndex = 0;
+      break;
   }
 
   return (
     <Wrapper>
       <Flex width="max-content" flexDirection="column">
         <Text textTransform="uppercase" color="textSubtle" fontSize="12px" bold>
-          {t('Filter by')}
+          {t("Filter by")}
         </Text>
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
           <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms">
-            {t('Live')}
+            {t("Live")}
           </ButtonMenuItem>
           <NotificationDot show={hasStakeInFinishedFarms}>
             <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms/history" id="finished-farms-button">
-              {t('Finished')}
+              {t("Finished")}
             </ButtonMenuItem>
           </NotificationDot>
         </ButtonMenu>
       </Flex>
     </Wrapper>
-  )
-}
+  );
+};

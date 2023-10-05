@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { Button, Text, Flex, Checkbox, InjectedModalProps, Modal, Message } from '@pancakeswap/uikit'
+import { useState } from "react";
+import { useTranslation } from "@pancakeswap/localization";
+import { Button, Text, Flex, Checkbox, InjectedModalProps, Modal, Message } from "@pancakeswap/uikit";
 
 interface ExpertModalProps extends InjectedModalProps {
-  setShowConfirmExpertModal: (show: boolean) => void
-  setShowExpertModeAcknowledgement: (show: boolean) => void
-  toggleExpertMode: () => void
+  setShowConfirmExpertModal: (show: boolean) => void;
+  setShowExpertModeAcknowledgement: (show: boolean) => void;
+  toggleExpertMode: () => void;
 }
 
 export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = ({
@@ -13,26 +13,26 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
   setShowExpertModeAcknowledgement,
   toggleExpertMode,
 }) => {
-  const [isRememberChecked, setIsRememberChecked] = useState(false)
+  const [isRememberChecked, setIsRememberChecked] = useState(false);
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Modal
-      title={t('Expert Mode')}
+      title={t("Expert Mode")}
       onBack={() => setShowConfirmExpertModal(false)}
       onDismiss={() => setShowConfirmExpertModal(false)}
       headerBackground="gradientCardHeader"
-      width={['100%', '100%', '100%', '436px']}
+      width={["100%", "100%", "100%", "436px"]}
     >
       <Message variant="warning" mb="24px">
         <Text>
           {t(
-            "Expert mode turns off the 'Confirm' transaction prompt, and allows high slippage trades that often result in bad rates and lost funds.",
+            "Expert mode turns off the 'Confirm' transaction prompt, and allows high slippage trades that often result in bad rates and lost funds."
           )}
         </Text>
       </Message>
-      <Text mb="24px">{t('Only use this mode if you know what you’re doing.')}</Text>
+      <Text mb="24px">{t("Only use this mode if you know what you’re doing.")}</Text>
       <Flex alignItems="center" mb="24px">
         <Checkbox
           name="confirmed"
@@ -41,8 +41,8 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
           onChange={() => setIsRememberChecked(!isRememberChecked)}
           scale="sm"
         />
-        <Text ml="10px" color="textSubtle" style={{ userSelect: 'none' }}>
-          {t('Don’t show this again')}
+        <Text ml="10px" color="textSubtle" style={{ userSelect: "none" }}>
+          {t("Don’t show this again")}
         </Text>
       </Flex>
       <Flex flexDirection="column">
@@ -51,27 +51,27 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
           id="confirm-expert-mode"
           onClick={() => {
             // eslint-disable-next-line no-alert
-            if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === 'confirm') {
-              toggleExpertMode()
-              setShowConfirmExpertModal(false)
+            if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === "confirm") {
+              toggleExpertMode();
+              setShowConfirmExpertModal(false);
               if (isRememberChecked) {
-                setShowExpertModeAcknowledgement(false)
+                setShowExpertModeAcknowledgement(false);
               }
             }
           }}
         >
-          {t('Turn On Expert Mode')}
+          {t("Turn On Expert Mode")}
         </Button>
 
         <Button
           variant="secondary"
           onClick={() => {
-            setShowConfirmExpertModal(false)
+            setShowConfirmExpertModal(false);
           }}
         >
-          {t('Cancel')}
+          {t("Cancel")}
         </Button>
       </Flex>
     </Modal>
-  )
-}
+  );
+};

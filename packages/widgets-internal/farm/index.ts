@@ -1,11 +1,11 @@
-export * from './constants'
-export { MobileColumnSchema, DesktopColumnSchema, V3DesktopColumnSchema } from './types'
+export * from "./constants";
+export { MobileColumnSchema, DesktopColumnSchema, V3DesktopColumnSchema } from "./types";
 export type {
   FarmTableEarnedProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
   FarmTableFarmTokenInfoProps,
   FarmTableAmountProps,
-} from './types'
+} from "./types";
 
-export * from './FarmWidget'
+export * from "./FarmWidget";

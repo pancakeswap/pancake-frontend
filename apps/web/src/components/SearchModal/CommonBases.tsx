@@ -1,6 +1,7 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { Text, QuestionHelper, AutoColumn, CurrencyLogo } from '@pancakeswap/uikit'
+import { Text, QuestionHelper, AutoColumn } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useTranslation } from '@pancakeswap/localization'

@@ -1504,24 +1504,12 @@ importers:
 
   packages/uikit:
     dependencies:
-      '@pancakeswap/farms':
-        specifier: workspace:*
-        version: link:../farms
       '@pancakeswap/hooks':
         specifier: workspace:*
         version: link:../hooks
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../localization
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../swap-sdk
-      '@pancakeswap/swap-sdk-core':
-        specifier: workspace:*
-        version: link:../swap-sdk-core
-      '@pancakeswap/v3-sdk':
-        specifier: workspace:*
-        version: link:../v3-sdk
       '@popperjs/core':
         specifier: ^2.9.2
         version: 2.11.2
@@ -1607,9 +1595,6 @@ importers:
       '@rollup/plugin-url':
         specifier: ^6.0.0
         version: 6.1.0(rollup@2.78.0)
-      '@sentry/nextjs':
-        specifier: ^7.0.0
-        version: 7.52.1(encoding@0.1.13)(next@13.4.2)(react@18.2.0)(webpack@5.88.2)
       '@storybook/addon-a11y':
         specifier: ^7.0.7
         version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
@@ -1751,9 +1736,6 @@ importers:
       ts-jest:
         specifier: ^27.1.3
         version: 27.1.3(@babel/core@7.21.3)(babel-jest@29.3.1)(esbuild@0.17.19)(jest@29.3.1)(typescript@5.1.3)
-      viem:
-        specifier: ^1.10.9
-        version: 1.10.9(typescript@5.1.3)(zod@3.21.4)
       vite:
         specifier: ^4.3.1
         version: 4.3.1(@types/node@18.16.2)
@@ -1800,9 +1782,6 @@ importers:
       swr:
         specifier: ^2.1.3
         version: 2.1.5(react@18.2.0)
-      viem:
-        specifier: ^1.10.9
-        version: 1.10.9(typescript@5.1.3)(zod@3.21.4)
       vitest:
         specifier: ^0.30.1
         version: 0.30.1

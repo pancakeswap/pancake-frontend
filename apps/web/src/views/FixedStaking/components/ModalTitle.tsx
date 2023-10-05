@@ -1,4 +1,5 @@
-import { CurrencyLogo, Flex, Heading } from '@pancakeswap/uikit'
+import { Flex, Heading } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { UnlockedFixedTag } from './UnlockedFixedTag'

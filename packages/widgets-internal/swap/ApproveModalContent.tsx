@@ -1,18 +1,18 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Spinner, Text, Box, Flex, TooltipText, AutoColumn, ColumnCenter, useTooltip } from '@pancakeswap/uikit'
+import { useTranslation } from "@pancakeswap/localization";
+import { Spinner, Text, Box, Flex, TooltipText, AutoColumn, ColumnCenter, useTooltip } from "@pancakeswap/uikit";
 
 interface ApproveModalContentProps {
-  title: string
-  isMM: boolean
-  isBonus: boolean
+  title: string;
+  isMM: boolean;
+  isBonus: boolean;
 }
 
 export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title, isMM, isBonus }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <Text>{t('Pancakeswap AMM includes V3, V2 and stable swap.')}</Text>,
-    { placement: 'top' },
-  )
+    <Text>{t("Pancakeswap AMM includes V3, V2 and stable swap.")}</Text>,
+    { placement: "top" }
+  );
 
   return (
     <Box width="100%">
@@ -26,19 +26,19 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title,
           {title}
         </Text>
         <Flex>
-          <Text fontSize="14px">{t('Swapping thru:')}</Text>
+          <Text fontSize="14px">{t("Swapping thru:")}</Text>
           {isMM ? (
             <Text ml="4px" fontSize="14px">
-              {t('Pancakeswap MM')}
+              {t("Pancakeswap MM")}
             </Text>
           ) : isBonus ? (
             <Text ml="4px" fontSize="14px">
-              {t('Bonus Route')}
+              {t("Bonus Route")}
             </Text>
           ) : (
             <>
               <TooltipText ml="4px" fontSize="14px" color="textSubtle" ref={targetRef}>
-                {t('Pancakeswap AMM')}
+                {t("Pancakeswap AMM")}
               </TooltipText>
               {tooltipVisible && tooltip}
             </>
@@ -46,5 +46,5 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title,
         </Flex>
       </AutoColumn>
     </Box>
-  )
-}
+  );
+};
