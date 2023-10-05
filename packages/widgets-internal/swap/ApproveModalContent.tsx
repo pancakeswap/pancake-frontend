@@ -26,7 +26,7 @@ export type PendingApproveModalState = Extract<
 >
 
 interface ApproveModalContentProps {
-  title: any
+  title: string
   isMM: boolean
   isBonus: boolean
   currencyA: Currency
