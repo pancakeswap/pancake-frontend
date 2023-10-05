@@ -25,15 +25,15 @@ export interface AllowanceRequired {
   needsSetupApproval: boolean
   needsPermitSignature: boolean
   allowedAmount: CurrencyAmount<Token>
-  setSignature: Dispatch<SetStateAction<PermitSignature>>
+  setSignature: Dispatch<SetStateAction<PermitSignature | undefined>>
 }
 
 export type Allowance =
-  | { state: AllowanceState.LOADING; setSignature: Dispatch<SetStateAction<PermitSignature>> }
+  | { state: AllowanceState.LOADING; setSignature: Dispatch<SetStateAction<PermitSignature | undefined>> }
   | {
       state: AllowanceState.ALLOWED
       permitSignature?: PermitSignature
-      setSignature: Dispatch<SetStateAction<PermitSignature>>
+      setSignature: Dispatch<SetStateAction<PermitSignature | undefined>>
     }
   | AllowanceRequired
 

@@ -13,8 +13,8 @@ interface UseConfirmModalStateProps {
   txHash: string | undefined
   chainId: number | undefined
   approval: ApprovalState
-  approvalToken: Currency
-  currentAllowance: CurrencyAmount<Currency>
+  approvalToken: Currency | undefined
+  currentAllowance: CurrencyAmount<Currency> | undefined
   onConfirm: () => void
   allowance: Allowance
   isPendingError?: boolean

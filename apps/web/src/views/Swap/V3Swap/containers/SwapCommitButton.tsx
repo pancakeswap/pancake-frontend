@@ -112,7 +112,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const allowance = usePermit2Allowance(
     routerAddress,
     amountToApprove as any,
-    chainId && isChainSupported(chainId) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
+    isChainSupported(chainId as number) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
   )
   const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
@@ -230,7 +230,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     currentAllowance,
     isExpertMode,
     onConfirm: handleSwap,
-    allowance: allowance.state !== AllowanceState.LOADING && allowance,
+    allowance,
   })
 
   const [onPresentSettingsModal] = useModal(
@@ -245,7 +245,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       trade={trade}
       txHash={txHash}
       approval={approvalState}
-      allowance={allowance.state !== AllowanceState.LOADING && allowance}
+      allowance={allowance}
       attemptingTxn={attemptingTxn}
       originalTrade={tradeToConfirm}
       showApproveFlow={showApproveFlow}
@@ -324,7 +324,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     )
   }
 
-  const noRoute = !(trade?.routes?.length > 0) || tradeError
+  const noRoute = !(trade?.routes?.length && trade?.routes?.length > 0) || tradeError
 
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
