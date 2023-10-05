@@ -73,15 +73,19 @@ const BirthdayBunny = styled(Image)`
   }
 
   @media only screen and (min-height: 600px) {
-    top: 70px;
+    top: 3%;
   }
 
   @media only screen and (min-height: 1000px) {
-    top: 140px;
+    top: 9%;
   }
 
   @media only screen and (min-height: 1100px) {
-    top: 200px;
+    top: 14%;
+  }
+
+  @media only screen and (min-height: 1200px) {
+    top: 17%;
   }
 
   @media only screen and (min-height: 1300px) {
