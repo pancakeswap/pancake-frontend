@@ -29,9 +29,9 @@ export function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   )
 }
 
-export const useApprovalPhaseStepTitles: ({ trade }: { trade: SmartRouterTrade<TradeType> }) => {
+export const useApprovalPhaseStepTitles: ({ trade }: { trade: SmartRouterTrade<TradeType> | undefined }) => {
   [step in AllowedAllowanceState]: string
-} = ({ trade }: { trade: SmartRouterTrade<TradeType> }) => {
+} = ({ trade }: { trade: SmartRouterTrade<TradeType> | undefined }) => {
   const { t } = useTranslation()
   return useMemo(() => {
     return {

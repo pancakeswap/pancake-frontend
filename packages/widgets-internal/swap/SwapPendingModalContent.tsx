@@ -10,8 +10,8 @@ import { useUnmountingAnimation } from './useUnmountingAnimation'
 interface SwapPendingModalContentProps {
   title: string
   showIcon?: boolean
-  currencyA: Currency
-  currencyB: Currency
+  currencyA: Currency | undefined
+  currencyB: Currency | undefined
   amountA: string
   amountB: string
   currentStep: ConfirmModalState
