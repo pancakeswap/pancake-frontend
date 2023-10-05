@@ -2788,7 +2788,6 @@
   "Trade, earn, and own crypto on the all-in-one multichain DEX": "Trade, earn, and own crypto on the all-in-one multichain DEX",
   "opBNB is LIVE!": "opBNB is LIVE!",
   "PancakeSwap Now Live on opBNB!": "PancakeSwap Now Live on opBNB!",
-  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
   "Unstaking from v2 farm?": "Unstaking from v2 farm?",
   "Migrate to v3 here": "Migrate to v3 here",
   "Migrate to V3": "Migrate to V3",
@@ -2805,5 +2804,10 @@
   "Predict now": "Predict now",
   "Trade now": "Trade now",
   "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard": "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard",
-  "Learn more about the strategy": "Learn more about the strategy"
+  "Learn more about the strategy": "Learn more about the strategy",
+  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
+  "You are providing liquidity via a 3rd party liquidity manager": "You are providing liquidity via a 3rd party liquidity manager",
+  "which is responsible for managing the underlying assets.": "which is responsible for managing the underlying assets.",
+  "Please always DYOR before depositing your assets.": "Please always DYOR before depositing your assets.",
+  "Single token deposits only. The final position may consist with both tokens. Learn more about the strategy": "Single token deposits only. The final position may consist with both tokens. Learn more about the strategy"
 }

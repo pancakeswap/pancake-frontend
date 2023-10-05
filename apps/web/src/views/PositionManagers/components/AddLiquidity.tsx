@@ -9,8 +9,10 @@ import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import { memo, useCallback, useMemo, useState } from 'react'
-import { StyledModal } from './StyledModal'
-import { FeeTag } from './Tags'
+import { StyledModal } from 'views/PositionManagers/components/StyledModal'
+import { FeeTag } from 'views/PositionManagers/components/Tags'
+import { DYORWarning } from 'views/PositionManagers/components/DYORWarning'
+import { SingleTokenWarning } from 'views/PositionManagers/components/SingleTokenWarning'
 
 interface Props {
   isOpen?: boolean
@@ -131,18 +133,22 @@ export const AddLiquidity = memo(function AddLiquidity({
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={t('Add Liquidity')}>
-        <RowBetween>
-          <Text color="textSubtle">{t('Adding')}:</Text>
-          <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-            <Text color="text" bold>
-              {tokenPairName}
-            </Text>
-            <Text color="text" ml="0.25em">
-              {vaultName}
-            </Text>
+        <Flex flexDirection="column">
+          <RowBetween>
+            <Text color="textSubtle">{t('Adding')}:</Text>
+            <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
+              <Text color="text" bold>
+                {tokenPairName}
+              </Text>
+              <Text color="text" ml="0.25em">
+                {vaultName}
+              </Text>
+            </Flex>
+          </RowBetween>
+          <Flex ml="auto">
             <FeeTag feeAmount={feeTier} ml="0.25em" />
           </Flex>
-        </RowBetween>
+        </Flex>
         {allowDepositToken0 && (
           <Flex mt="1em">
             <StyledCurrencyInput
@@ -177,6 +183,8 @@ export const AddLiquidity = memo(function AddLiquidity({
             {/* <Text color="text">{formatPercent(apr)}%</Text> */}
           </RowBetween>
         </Flex>
+        <SingleTokenWarning />
+        <DYORWarning />
         <Flex mt="1.5em" flexDirection="column">
           <AddLiquidityButton
             amountA={allowDepositToken0 ? amountA : null}
