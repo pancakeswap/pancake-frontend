@@ -35,9 +35,7 @@ const usePriceQuotes = () => {
           sortedFilteredQuotes.sort((a, b) => b.quote - a.quote)
         }
 
-        return sortedFilteredQuotes.filter((quote: ProviderQuote) =>
-          chainId === ChainId.BSC ? quote.provider !== ONRAMP_PROVIDERS.MoonPay : quote.provider,
-        )
+        return sortedFilteredQuotes
       } catch (error) {
         console.error('Error fetching price quotes:', error)
         return []
