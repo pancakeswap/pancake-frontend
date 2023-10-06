@@ -70,7 +70,7 @@ export const farmsV3 = defineFarmV3Configs([
     pid: 10,
     lpAddress: '0x38848d93a410446848CA55Fdc777Fe0B2C30B071',
     token0: zksyncTokens.reth,
-    token1: zksyncTokens.eth,
+    token1: zksyncTokens.weth,
     feeAmount: FeeAmount.LOW,
   },
   {

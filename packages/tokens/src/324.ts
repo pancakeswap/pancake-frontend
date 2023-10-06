@@ -32,7 +32,7 @@ export const zksyncTokens = {
     'Rocket Pool ETH',
     'https://www.paxos.com/busd/',
   ),
-  usdp: new ERC20Token(
+  usdPlus: new ERC20Token(
     ChainId.ZKSYNC,
     '0x8E86e46278518EFc1C5CEd245cBA2C7e3ef11557',
     18,
