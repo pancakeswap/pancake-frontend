@@ -34,7 +34,7 @@ export const zksyncTokens = {
   ),
   usdp: new ERC20Token(
     ChainId.ZKSYNC,
-    '0x32Fd44bB869620C0EF993754c8a00Be67C464806',
+    '0x8E86e46278518EFc1C5CEd245cBA2C7e3ef11557',
     18,
     'USD+',
     'USD Plus',
