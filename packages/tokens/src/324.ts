@@ -38,6 +38,6 @@ export const zksyncTokens = {
     18,
     'USD+',
     'USD Plus',
-    '',
+    'http://usdplus.co',
   ),
 }
