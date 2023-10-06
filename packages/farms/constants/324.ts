@@ -59,7 +59,7 @@ export const farmsV3 = defineFarmV3Configs([
     token1: zksyncTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
   },
-   {
+  {
     pid: 9,
     lpAddress: '0x38848d93a410446848ca55fdc777fe0b2c30b071',
     token0: zksyncTokens.busd,
