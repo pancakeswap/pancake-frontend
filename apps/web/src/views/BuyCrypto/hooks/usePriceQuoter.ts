@@ -39,7 +39,7 @@ const usePriceQuotes = () => {
         return []
       }
     },
-    [userIp, chainId],
+    [userIp],
   )
 
   const fetchQuotes = useCallback(async () => {
