@@ -24,4 +24,12 @@ export const zksyncTokens = {
     'Binance USD',
     'https://www.paxos.com/busd/',
   ),
+  reth: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x32Fd44bB869620C0EF993754c8a00Be67C464806',
+    18,
+    'rETH',
+    'RETH',
+    'https://www.paxos.com/busd/',
+  ),
 }

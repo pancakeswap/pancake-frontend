@@ -52,4 +52,25 @@ export const farmsV3 = defineFarmV3Configs([
     token1: zksyncTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
   },
+  {
+    pid: 8,
+    lpAddress: '0x662cD659F91528FF27D7Cb6Ac25e6EBA11c4003C',
+    token0: zksyncTokens.weth,
+    token1: zksyncTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 9,
+    lpAddress: '0x38848d93a410446848ca55fdc777fe0b2c30b071',
+    token0: zksyncTokens.busd,
+    token1: zksyncTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 10,
+    lpAddress: '0x3693ec2590e6bf8f221f61776dc9274aed7056d6',
+    token0: zksyncTokens.reth,
+    token1: zksyncTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
 ])
