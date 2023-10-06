@@ -29,7 +29,15 @@ export const zksyncTokens = {
     '0x32Fd44bB869620C0EF993754c8a00Be67C464806',
     18,
     'rETH',
-    'RETH',
+    'Rocket Pool ETH',
     'https://www.paxos.com/busd/',
+  ),
+  usdp: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x32Fd44bB869620C0EF993754c8a00Be67C464806',
+    18,
+    'USD+',
+    'USD Plus',
+    '',
   ),
 }
