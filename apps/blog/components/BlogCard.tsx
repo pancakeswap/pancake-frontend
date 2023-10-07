@@ -4,7 +4,6 @@ import { HeightProps } from 'styled-system'
 import { ArticleDataType } from 'utils/transformArticle'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
-  height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -44,7 +43,7 @@ const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ article, i
     <StyledBlogCard {...props}>
       <Card>
         <Box overflow="hidden" height={imgHeight ?? '200px'}>
-          <StyledBackgroundImage imgUrl={imgUrl} />
+          <StyledBackgroundImage imgUrl={imgUrl} height={imgHeight ?? '200px'} />
         </Box>
         <Box padding={['15px', '15px', '20px']}>
           <Flex justifyContent="space-between">
