@@ -1,18 +1,19 @@
 import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
-import { usePositionManagerAdepterContract, usePositionManagerWrapperContract } from 'hooks/useContract'
+import { usePositionManagerAdepterContract } from 'hooks/useContract'
 import { memo, useMemo } from 'react'
-
+import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
-import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { DuoTokenVaultCard } from '../components'
-import { usePCSVault } from '../hooks'
+import { usePCSVault, AprData, AprDataInfo } from '../hooks'
 import { usePositionInfo } from '../hooks/useAdapterInfo'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
+  farmsV3: FarmV3DataWithPriceAndUserInfo[]
+  aprDataList: AprData
 }
 
-export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
+export const PCSVaultCard = memo(function PCSVaultCard({ config, farmsV3, aprDataList }: Props) {
   const { vault } = usePCSVault({ config })
   const {
     id,
@@ -27,6 +28,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     manager,
     managerFee,
     address,
+    adapterAddress,
     isSingleDepositToken,
     allowDepositToken0,
     allowDepositToken1,
@@ -36,17 +38,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
     projectVaultUrl,
     rewardPerSecond,
   } = vault
-  const managerInfo = useMemo(
-    () => ({
-      id: manager.id,
-      name: manager.name,
-    }),
-    [manager],
-  )
-  const wrapperContract = usePositionManagerWrapperContract(address)
-  const adapterAddress = useQuery(['adapterAddress', address], async () => wrapperContract.read.adapterAddr(), {
-    enabled: !!wrapperContract,
-  }).data
+
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery(
     ['adapterAddress', adapterAddress],
@@ -61,12 +53,27 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
 
   const info = usePositionInfo(address, adapterAddress ?? '0x')
 
-  const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster()
   const tokensPriceUSD = useMemo(() => {
     const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
     if (!farm) return undefined
     return { token0: Number(farm.tokenPriceBusd), token1: Number(farm.quoteTokenPriceBusd) }
   }, [farmsV3, priceFromV3FarmPid])
+
+  const managerInfo = useMemo(
+    () => ({
+      id: manager.id,
+      name: manager.name,
+    }),
+    [manager],
+  )
+
+  const aprDataInfo = useMemo(() => {
+    const { isLoading, data } = aprDataList
+    return {
+      isLoading,
+      info: data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === lpAddress.toLowerCase()),
+    }
+  }, [lpAddress, aprDataList])
 
   return (
     <DuoTokenVaultCard
@@ -99,6 +106,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
       strategyInfoUrl={strategyInfoUrl}
       projectVaultUrl={projectVaultUrl}
       rewardPerSecond={rewardPerSecond}
+      aprDataInfo={aprDataInfo}
       refetch={info?.refetchPositionInfo}
     >
       {id}

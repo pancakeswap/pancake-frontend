@@ -1,5 +1,6 @@
 import { memo, useCallback, useMemo, useState } from 'react'
 import { Button } from '@pancakeswap/uikit'
+import { Address } from 'viem'
 import { MANAGER, BaseAssets } from '@pancakeswap/position-managers'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
@@ -14,6 +15,7 @@ import { InnerCard } from './InnerCard'
 import { StakedAssets } from './StakedAssets'
 import { RewardAssets } from './RewardAssets'
 import { RemoveLiquidity } from './RemoveLiquidity'
+import { AprDataInfo } from '../hooks'
 
 interface Props {
   manager: {
@@ -32,7 +34,7 @@ interface Props {
   isSingleDepositToken: boolean
   allowDepositToken0: boolean
   allowDepositToken1: boolean
-  contractAddress: `0x${string}`
+  contractAddress: Address
   token0PriceUSD?: number
   token1PriceUSD?: number
   pendingReward: bigint | undefined
@@ -40,6 +42,10 @@ interface Props {
   poolToken0Amount?: bigint
   poolToken1Amount?: bigint
   rewardPerSecond: string
+  aprDataInfo: {
+    info: AprDataInfo | undefined
+    isLoading: boolean
+  }
   refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
@@ -70,6 +76,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   poolToken0Amount,
   poolToken1Amount,
   rewardPerSecond,
+  aprDataInfo,
   refetch,
 }: Props) {
   const { t } = useTranslation()
@@ -146,6 +153,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         token0PriceUSD={token0PriceUSD}
         token1PriceUSD={token1PriceUSD}
         rewardPerSecond={rewardPerSecond}
+        aprDataInfo={aprDataInfo}
         refetch={refetch}
       />
       <RemoveLiquidity

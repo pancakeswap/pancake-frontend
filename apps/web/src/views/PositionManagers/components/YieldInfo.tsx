@@ -6,6 +6,7 @@ import { AutoCompoundTag } from './Tags'
 
 interface Props {
   apr: string
+  isAprLoading: boolean
   withCakeReward?: boolean
   autoCompound?: boolean
   onAprClick?: () => void
@@ -16,7 +17,7 @@ const AprText = styled(Text)`
   text-decoration: dotted underline;
 `
 
-export const YieldInfo = memo(function YieldInfo({ apr, withCakeReward, autoCompound }: Props) {
+export const YieldInfo = memo(function YieldInfo({ apr, isAprLoading, withCakeReward, autoCompound }: Props) {
   const { t } = useTranslation()
 
   const earning = useMemo(() => (withCakeReward ? ['CAKE', t('Fees')].join(' + ') : t('Fees')), [withCakeReward, t])
@@ -26,7 +27,7 @@ export const YieldInfo = memo(function YieldInfo({ apr, withCakeReward, autoComp
       <RowBetween>
         <Text>{t('APR')}:</Text>
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-          {apr ? (
+          {apr || !isAprLoading ? (
             <AprText color="success" bold>
               {`${apr}%`}
             </AprText>

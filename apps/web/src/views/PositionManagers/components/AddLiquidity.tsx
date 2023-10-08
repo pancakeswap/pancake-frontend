@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { MANAGER } from '@pancakeswap/position-managers'
+import { Address } from 'viem'
 import { Currency, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import {
   Button,
@@ -26,6 +27,7 @@ import { FeeTag } from 'views/PositionManagers/components/Tags'
 import { DYORWarning } from 'views/PositionManagers/components/DYORWarning'
 import { SingleTokenWarning } from 'views/PositionManagers/components/SingleTokenWarning'
 import { useApr } from 'views/PositionManagers/hooks/useApr'
+import { AprDataInfo } from '../hooks'
 
 interface Props {
   manager: {
@@ -46,7 +48,7 @@ interface Props {
     otherAmount: CurrencyAmount<Currency>
   }
   refetch?: () => void
-  contractAddress: `0x${string}`
+  contractAddress: Address
   userCurrencyBalances: {
     token0Balance: CurrencyAmount<Currency> | undefined
     token1Balance: CurrencyAmount<Currency> | undefined
@@ -58,6 +60,10 @@ interface Props {
   token1PriceUSD?: number
   rewardPerSecond: string
   earningToken: Currency
+  aprDataInfo: {
+    info: AprDataInfo | undefined
+    isLoading: boolean
+  }
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
 }
 
@@ -85,6 +91,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   token1PriceUSD,
   rewardPerSecond,
   earningToken,
+  aprDataInfo,
   refetch,
   onDismiss,
 }: Props) {
@@ -160,8 +167,8 @@ export const AddLiquidity = memo(function AddLiquidity({
     token1PriceUSD,
     rewardPerSecond,
     earningToken,
-    avgToken0Amount: 1239673096733967,
-    avgToken1Amount: 4644178681397,
+    avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
+    avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
   })
 
   const displayBalanceText = useCallback(
@@ -228,7 +235,11 @@ export const AddLiquidity = memo(function AddLiquidity({
           </RowBetween>
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>
-            {apr ? <Text color="text">{`${apr}%`}</Text> : <Skeleton width={50} height={20} />}
+            {apr || !aprDataInfo.isLoading ? (
+              <Text color="text">{`${apr}%`}</Text>
+            ) : (
+              <Skeleton width={50} height={20} />
+            )}
           </RowBetween>
         </Flex>
         {isSingleDepositToken && <SingleTokenWarning />}

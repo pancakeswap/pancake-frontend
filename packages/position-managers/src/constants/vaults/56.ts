@@ -10,6 +10,8 @@ export const vaults: VaultConfig[] = [
     id: 1,
     name: 'ICHI',
     address: '0x7fcBe3DDc2e6BD069eb5f11374DCA99f00685189',
+    adapterAddress: '0x7F9ECfe70996aE6b65f93EF831E6037B8381BeD7',
+    lpAddress: '0x63652e66Abd23d02537759f03314c333921915E1',
     rewardPerSecond: '100000000000000',
     currencyA: bscTokens.cake,
     currencyB: bscTokens.usdt,
@@ -28,6 +30,5 @@ export const vaults: VaultConfig[] = [
     managerInfoUrl: 'https://google.com/',
     strategyInfoUrl: 'https://google.com/',
     projectVaultUrl: 'https://google.com/',
-    lpAddress: '0x63652e66Abd23d02537759f03314c333921915E1',
   },
 ]

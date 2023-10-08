@@ -2,6 +2,7 @@ import { MANAGER, ManagerFee, Strategy } from '@pancakeswap/position-managers'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import { Currency, Percent, Price, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { Address } from 'viem'
 import { ReactNode, memo, PropsWithChildren, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { useApr } from 'views/PositionManagers/hooks/useApr'
@@ -13,6 +14,7 @@ import { getVaultName } from '../utils'
 import { ExpandableSection } from './ExpandableSection'
 import { VaultInfo } from './VaultInfo'
 import { VaultLinks } from './VaultLinks'
+import { AprDataInfo } from '../hooks'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -44,7 +46,7 @@ interface Props {
   isSingleDepositToken: boolean
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
-  contractAddress: `0x${string}`
+  contractAddress: Address
   poolToken0Amount?: bigint
   poolToken1Amount?: bigint
   stakedToken0Amount?: bigint
@@ -53,12 +55,16 @@ interface Props {
   token1PriceUSD?: number
   pendingReward: bigint | undefined
   userVaultPercentage?: Percent
-  lpAddress: string
-  vaultAddress: string
+  lpAddress: Address
+  vaultAddress: Address
   managerInfoUrl: string
   strategyInfoUrl: string
   projectVaultUrl?: string
   rewardPerSecond: string
+  aprDataInfo: {
+    info: AprDataInfo | undefined
+    isLoading: boolean
+  }
   refetch?: () => void
 }
 
@@ -93,6 +99,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   strategyInfoUrl,
   projectVaultUrl,
   rewardPerSecond,
+  aprDataInfo,
   refetch,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
@@ -104,8 +111,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     token1PriceUSD,
     rewardPerSecond,
     earningToken,
-    avgToken0Amount: 1239673096733967,
-    avgToken1Amount: 4644178681397,
+    avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
+    avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
   })
 
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
@@ -127,7 +134,12 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         isSingleDepositToken={isSingleDepositToken}
       />
       <CardBody>
-        <YieldInfo apr={apr} autoCompound={autoCompound} withCakeReward={withCakeReward} />
+        <YieldInfo
+          apr={apr}
+          isAprLoading={aprDataInfo.isLoading}
+          autoCompound={autoCompound}
+          withCakeReward={withCakeReward}
+        />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement
           manager={manager}
@@ -151,6 +163,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           poolToken0Amount={poolToken0Amount}
           poolToken1Amount={poolToken1Amount}
           rewardPerSecond={rewardPerSecond}
+          aprDataInfo={aprDataInfo}
           refetch={refetch}
         />
         <ExpandableSection mt="1.5em">

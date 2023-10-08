@@ -1,4 +1,5 @@
 import { memo, useMemo, useState, useCallback } from 'react'
+import { Address } from 'viem'
 import { ModalV2, RowBetween, Text, Flex, Button, CurrencyLogo, Box, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
@@ -28,7 +29,7 @@ interface Props {
   staked1Amount?: CurrencyAmount<Currency>
   token0PriceUSD?: number
   token1PriceUSD?: number
-  contractAddress: `0x${string}`
+  contractAddress: Address
   refetch?: () => void
   onRemove?: (params: {
     amountA: CurrencyAmount<Currency>

@@ -99,7 +99,8 @@ export interface DuoTokenVault {
   // It can be used to sort the managed positions on fe
   id: number
   name: string
-  lpAddress: string
+  lpAddress: Address
+  adapterAddress: Address
   currencyA: Currency
   currencyB: Currency
   earningToken: Currency

@@ -1,4 +1,5 @@
 import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { SpaceProps } from 'styled-system'
 import { PropsWithChildren, memo, useMemo } from 'react'
 import { FlexProps, Flex, ScanLink, PlayCircleOutlineIcon } from '@pancakeswap/uikit'
@@ -23,11 +24,11 @@ const LinkContainer = styled(Flex)`
 
 interface Props extends SpaceProps, FlexProps {
   layout?: 'row' | 'column'
-  lpAddress: string
+  lpAddress: Address
+  vaultAddress: Address
   managerInfoUrl: string
   strategyInfoUrl: string
   managerAddress: string
-  vaultAddress: string
   projectVaultUrl?: string
   manager: {
     id: MANAGER

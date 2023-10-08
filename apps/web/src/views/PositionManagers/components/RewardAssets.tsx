@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react'
+import { Address } from 'viem'
 import { Button, Text, Box, Flex, Balance, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
@@ -12,7 +13,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { InnerCard } from './InnerCard'
 
 interface RewardAssetsProps {
-  contractAddress: `0x${string}`
+  contractAddress: Address
   earningToken: Currency
   pendingReward: bigint | undefined
   refetch?: () => void
