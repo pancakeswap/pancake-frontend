@@ -14,7 +14,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
-import type { TWallchainMasterInput } from './useWallchain'
+import type { TWallchainMasterInput, WallchainStatus } from './useWallchain'
 import { useWallchainSwapCallArguments } from './useWallchain'
 
 export enum SwapCallbackState {
@@ -38,6 +38,7 @@ interface UseSwapCallbackArgs {
   permitSignature?: any
   feeOptions?: FeeOptions
   onWallchainDrop: () => void
+  statusWallchain: WallchainStatus
   wallchainMasterInput?: TWallchainMasterInput
 }
 
@@ -49,6 +50,7 @@ export function useSwapCallback({
   permitSignature,
   feeOptions,
   onWallchainDrop,
+  statusWallchain,
   wallchainMasterInput,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { t } = useTranslation()
@@ -79,7 +81,8 @@ export function useSwapCallback({
     account,
     chainId,
     trade,
-    swapCalls, // using this for now as wallchain calls cause swap to fail first time (always works second time) will debug
+    // @ts-ignore
+    statusWallchain === 'found' ? wallchainSwapCalls : swapCalls,
   )
 
   return useMemo(() => {
