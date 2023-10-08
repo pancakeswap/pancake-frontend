@@ -1,5 +1,18 @@
 # Change Log
 
+## 0.64.0
+
+### Minor Changes
+
+- 435a90ac2: Add support for opBNB mainnet
+
+### Patch Changes
+
+- Updated dependencies [435a90ac2]
+  - @pancakeswap/sdk@5.6.0
+  - @pancakeswap/v3-sdk@3.5.0
+  - @pancakeswap/farms@1.0.18
+
 ## 0.63.7
 
 ### Patch Changes

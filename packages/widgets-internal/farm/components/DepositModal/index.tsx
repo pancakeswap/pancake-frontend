@@ -1,11 +1,11 @@
-import BigNumber from 'bignumber.js'
-import { useCallback, useMemo, useState } from 'react'
-import { styled } from 'styled-components'
-import _toNumber from 'lodash/toNumber'
-import { useTranslation } from '@pancakeswap/localization'
-import { getFullDisplayBalance, formatNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
-import { getInterestBreakdown } from '@pancakeswap/utils/compoundApyHelpers'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BigNumber from "bignumber.js";
+import { useCallback, useMemo, useState } from "react";
+import { styled } from "styled-components";
+import _toNumber from "lodash/toNumber";
+import { useTranslation } from "@pancakeswap/localization";
+import { getFullDisplayBalance, formatNumber, getDecimalAmount } from "@pancakeswap/utils/formatBalance";
+import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import {
   Modal,
   ModalV2,
@@ -25,12 +25,12 @@ import {
   ErrorIcon,
   CalculateIcon,
   RoiCalculatorModal,
-} from '@pancakeswap/uikit'
-import { trimTrailZero } from '@pancakeswap/utils/trimTrailZero'
+} from "@pancakeswap/uikit";
+import { trimTrailZero } from "@pancakeswap/utils/trimTrailZero";
 
 const AnnualRoiContainer = styled(Flex)`
   cursor: pointer;
-`
+`;
 
 const AnnualRoiDisplay = styled(Text)`
   width: 72px;
@@ -38,46 +38,46 @@ const AnnualRoiDisplay = styled(Text)`
   overflow: hidden;
   text-align: right;
   text-overflow: ellipsis;
-`
+`;
 
 interface DepositModalProps {
-  account: string
-  pid: number
-  max: BigNumber
-  stakedBalance: BigNumber
-  multiplier?: string
-  lpPrice?: BigNumber
-  lpLabel?: string
-  tokenName?: string
-  apr?: number
-  displayApr?: string
-  addLiquidityUrl?: string
-  cakePrice?: BigNumber
-  showActiveBooster?: boolean
-  lpTotalSupply: BigNumber
-  bCakeMultiplier?: number | null
-  showCrossChainFarmWarning?: boolean
-  crossChainWarningText?: string
-  decimals: number
-  allowance?: BigNumber
-  enablePendingTx?: boolean
-  onDismiss?: () => void
-  onConfirm: (amount: string) => void
-  handleApprove?: () => void
-  bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode
+  account: string;
+  pid: number;
+  max: BigNumber;
+  stakedBalance: BigNumber;
+  multiplier?: string;
+  lpPrice?: BigNumber;
+  lpLabel?: string;
+  tokenName?: string;
+  apr?: number;
+  displayApr?: string;
+  addLiquidityUrl?: string;
+  cakePrice?: BigNumber;
+  showActiveBooster?: boolean;
+  lpTotalSupply: BigNumber;
+  bCakeMultiplier?: number | null;
+  showCrossChainFarmWarning?: boolean;
+  crossChainWarningText?: string;
+  decimals: number;
+  allowance?: BigNumber;
+  enablePendingTx?: boolean;
+  onDismiss?: () => void;
+  onConfirm: (amount: string) => void;
+  handleApprove?: () => void;
+  bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
 }
 
 const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   account,
   max,
   stakedBalance,
-  tokenName = '',
+  tokenName = "",
   multiplier,
   displayApr,
   lpPrice = BIG_ZERO,
-  lpLabel = '',
+  lpLabel = "",
   apr = 0,
-  addLiquidityUrl = '',
+  addLiquidityUrl = "",
   cakePrice = BIG_ZERO,
   showActiveBooster,
   bCakeMultiplier,
@@ -91,27 +91,27 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   handleApprove,
   bCakeCalculatorSlot,
 }) => {
-  const [val, setVal] = useState('')
-  const [valUSDPrice, setValUSDPrice] = useState(BIG_ZERO)
-  const [pendingTx, setPendingTx] = useState(false)
-  const [showRoiCalculator, setShowRoiCalculator] = useState(false)
-  const { t } = useTranslation()
+  const [val, setVal] = useState("");
+  const [valUSDPrice, setValUSDPrice] = useState(BIG_ZERO);
+  const [pendingTx, setPendingTx] = useState(false);
+  const [showRoiCalculator, setShowRoiCalculator] = useState(false);
+  const { t } = useTranslation();
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max, decimals)
-  }, [max, decimals])
+    return getFullDisplayBalance(max, decimals);
+  }, [max, decimals]);
 
   const needEnable = useMemo(() => {
     if (allowance) {
-      const amount = getDecimalAmount(new BigNumber(val), decimals)
-      return amount.gt(allowance)
+      const amount = getDecimalAmount(new BigNumber(val), decimals);
+      return amount.gt(allowance);
     }
-    return false
-  }, [allowance, decimals, val])
+    return false;
+  }, [allowance, decimals, val]);
 
-  const lpTokensToStake = useMemo(() => new BigNumber(val), [val])
-  const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance])
+  const lpTokensToStake = useMemo(() => new BigNumber(val), [val]);
+  const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance]);
 
-  const usdToStake = useMemo(() => lpTokensToStake.times(lpPrice), [lpTokensToStake, lpPrice])
+  const usdToStake = useMemo(() => lpTokensToStake.times(lpPrice), [lpTokensToStake, lpPrice]);
 
   const interestBreakdown = useMemo(
     () =>
@@ -120,54 +120,54 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         apr,
         earningTokenPrice: cakePrice.toNumber(),
       }),
-    [lpTokensToStake, usdToStake, cakePrice, apr],
-  )
+    [lpTokensToStake, usdToStake, cakePrice, apr]
+  );
 
-  const annualRoi = useMemo(() => cakePrice.times(interestBreakdown[3]), [cakePrice, interestBreakdown])
-  const annualRoiAsNumber = useMemo(() => annualRoi.toNumber(), [annualRoi])
+  const annualRoi = useMemo(() => cakePrice.times(interestBreakdown[3]), [cakePrice, interestBreakdown]);
+  const annualRoiAsNumber = useMemo(() => annualRoi.toNumber(), [annualRoi]);
   const formattedAnnualRoi = useMemo(
     () => formatNumber(annualRoiAsNumber, annualRoi.gt(10000) ? 0 : 2, annualRoi.gt(10000) ? 0 : 2),
-    [annualRoiAsNumber, annualRoi],
-  )
+    [annualRoiAsNumber, annualRoi]
+  );
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       if (e.currentTarget.validity.valid) {
-        const inputVal = e.currentTarget.value.replace(/,/g, '.')
-        setVal(inputVal)
+        const inputVal = e.currentTarget.value.replace(/,/g, ".");
+        setVal(inputVal);
 
-        const USDPrice = inputVal === '' ? BIG_ZERO : new BigNumber(inputVal).times(lpPrice)
-        setValUSDPrice(USDPrice)
+        const USDPrice = inputVal === "" ? BIG_ZERO : new BigNumber(inputVal).times(lpPrice);
+        setValUSDPrice(USDPrice);
       }
     },
-    [setVal, setValUSDPrice, lpPrice],
-  )
+    [setVal, setValUSDPrice, lpPrice]
+  );
 
   const handleSelectMax = useCallback(() => {
-    setVal(fullBalance)
+    setVal(fullBalance);
 
-    const USDPrice = new BigNumber(fullBalance).times(lpPrice)
-    setValUSDPrice(USDPrice)
-  }, [fullBalance, setVal, setValUSDPrice, lpPrice])
+    const USDPrice = new BigNumber(fullBalance).times(lpPrice);
+    setValUSDPrice(USDPrice);
+  }, [fullBalance, setVal, setValUSDPrice, lpPrice]);
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent)
-      const amount = trimTrailZero(totalAmount.toNumber().toFixed(decimals))
-      setVal(amount as string)
+      const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent);
+      const amount = trimTrailZero(totalAmount.toNumber().toFixed(decimals));
+      setVal(amount as string);
 
-      const USDPrice = totalAmount.times(lpPrice)
-      setValUSDPrice(USDPrice)
+      const USDPrice = totalAmount.times(lpPrice);
+      setValUSDPrice(USDPrice);
     },
-    [fullBalanceNumber, decimals, lpPrice],
-  )
+    [fullBalanceNumber, decimals, lpPrice]
+  );
 
   if (showRoiCalculator) {
     return (
       <ModalV2 isOpen={showRoiCalculator}>
         <RoiCalculatorModal
           account={account}
-          linkLabel={t('Add %symbol%', { symbol: lpLabel })}
+          linkLabel={t("Add %symbol%", { symbol: lpLabel })}
           stakingTokenBalance={stakedBalance.plus(max)}
           stakingTokenDecimals={decimals}
           stakingTokenSymbol={tokenName}
@@ -183,12 +183,12 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           bCakeCalculatorSlot={bCakeCalculatorSlot}
         />
       </ModalV2>
-    )
+    );
   }
 
   return (
-    <Modal title={t('Stake LP tokens')} onDismiss={onDismiss}>
-      <ModalBody width={['100%', '100%', '100%', '420px']}>
+    <Modal title={t("Stake LP tokens")} onDismiss={onDismiss}>
+      <ModalBody width={["100%", "100%", "100%", "420px"]}>
         <ModalInput
           value={val}
           valueUSDPrice={valUSDPrice}
@@ -199,26 +199,26 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           maxAmount={fullBalanceNumber}
           symbol={tokenName}
           addLiquidityUrl={addLiquidityUrl}
-          inputTitle={t('Stake')}
+          inputTitle={t("Stake")}
           decimals={decimals}
           needEnable={needEnable}
         />
         {showActiveBooster ? (
           <Message variant="warning" icon={<ErrorIcon width="24px" color="warning" />} mt="32px">
             <MessageText>
-              {t('The yield booster multiplier will be updated based on the latest staking conditions.')}
+              {t("The yield booster multiplier will be updated based on the latest staking conditions.")}
             </MessageText>
           </Message>
         ) : null}
         <Flex mt="24px" alignItems="center" justifyContent="space-between">
           <Text mr="8px" color="textSubtle">
-            {t('Annual ROI at current rates')}:
+            {t("Annual ROI at current rates")}:
           </Text>
           {Number.isFinite(annualRoiAsNumber) ? (
             <AnnualRoiContainer
               alignItems="center"
               onClick={() => {
-                setShowRoiCalculator(true)
+                setShowRoiCalculator(true);
               }}
             >
               <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
@@ -239,7 +239,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         )}
         <ModalActions>
           <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
-            {t('Cancel')}
+            {t("Cancel")}
           </Button>
           {needEnable ? (
             <Button
@@ -248,33 +248,33 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
               endIcon={enablePendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
               onClick={handleApprove}
             >
-              {t('Enable')}
+              {t("Enable")}
             </Button>
           ) : pendingTx ? (
             <Button width="100%" isLoading={pendingTx} endIcon={<AutoRenewIcon spin color="currentColor" />}>
-              {t('Confirming')}
+              {t("Confirming")}
             </Button>
           ) : (
             <Button
               width="100%"
               disabled={!lpTokensToStake.isFinite() || lpTokensToStake.eq(0) || lpTokensToStake.gt(fullBalanceNumber)}
               onClick={async () => {
-                setPendingTx(true)
-                await onConfirm(val)
-                onDismiss?.()
-                setPendingTx(false)
+                setPendingTx(true);
+                await onConfirm(val);
+                onDismiss?.();
+                setPendingTx(false);
               }}
             >
-              {t('Confirm')}
+              {t("Confirm")}
             </Button>
           )}
         </ModalActions>
-        <LinkExternal href={addLiquidityUrl} style={{ alignSelf: 'center' }}>
-          {t('Add %symbol%', { symbol: tokenName })}
+        <LinkExternal href={addLiquidityUrl} style={{ alignSelf: "center" }}>
+          {t("Add %symbol%", { symbol: tokenName })}
         </LinkExternal>
       </ModalBody>
     </Modal>
-  )
-}
+  );
+};
 
-export default DepositModal
+export default DepositModal;

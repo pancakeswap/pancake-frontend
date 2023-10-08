@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.1.0
+
+### Minor Changes
+
+- 435a90ac2: Add support for opBNB mainnet
+
 ## 0.0.1
 
 ### Patch Changes

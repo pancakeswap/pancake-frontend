@@ -52,4 +52,18 @@ export const farmsV3 = defineFarmV3Configs([
     token1: arbitrumTokens.mgp,
     feeAmount: FeeAmount.MEDIUM,
   },
+  {
+    pid: 8,
+    lpAddress: '0x9fFCA51D23Ac7F7df82da414865Ef1055E5aFCc3',
+    token0: arbitrumTokens.arb,
+    token1: arbitrumTokens.usdc,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 9,
+    lpAddress: '0x81D1cc282e9a097115E59F67B9D81d4d1d00AC51',
+    token0: arbitrumTokens.arb,
+    token1: arbitrumTokens.usdt,
+    feeAmount: FeeAmount.LOW,
+  },
 ])

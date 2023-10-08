@@ -1,5 +1,5 @@
-import { ReactNode } from 'react'
-import { Flex } from '@pancakeswap/uikit'
+import { ReactNode } from "react";
+import { Flex } from "@pancakeswap/uikit";
 
 export const StatWrapper: React.FC<React.PropsWithChildren<{ label: ReactNode }>> = ({ children, label }) => {
   return (
@@ -7,5 +7,5 @@ export const StatWrapper: React.FC<React.PropsWithChildren<{ label: ReactNode }>
       {label}
       <Flex alignItems="center">{children}</Flex>
     </Flex>
-  )
-}
+  );
+};

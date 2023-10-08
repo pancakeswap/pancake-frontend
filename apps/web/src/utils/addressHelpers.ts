@@ -152,3 +152,7 @@ export const getRevenueSharingPoolAddress = (chainId?: number) => {
 export const getAnniversaryAchievementAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.anniversaryAchievement, chainId)
 }
+
+export const getFixedStakingAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.fixedStaking, chainId)
+}

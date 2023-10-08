@@ -2,8 +2,7 @@ import BigNumber from "bignumber.js";
 import { useMemo } from "react";
 import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
-import { parseUnits } from "viem";
-import { formatBigInt } from "@pancakeswap/utils/formatBalance";
+import { displayBalance } from "@pancakeswap/utils/displayBalance";
 import { trimTrailZero } from "@pancakeswap/utils/trimTrailZero";
 import { Flex } from "../../components/Box";
 import { Text } from "../../components/Text";
@@ -80,15 +79,6 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
   const { t } = useTranslation();
   const isBalanceZero = max === "0" || !max;
 
-  const displayBalance = (balance: `${number}`) => {
-    if (isBalanceZero) {
-      return "0";
-    }
-
-    const balanceUnits = parseUnits(balance, decimals);
-    return formatBigInt(balanceUnits, decimals, decimals);
-  };
-
   const percentAmount = useMemo(
     () => ({
       25: maxAmount ? trimTrailZero(maxAmount.dividedBy(100).multipliedBy(25).toNumber().toFixed(decimals)) : undefined,
@@ -105,7 +95,15 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
       <StyledTokenInput isWarning={isBalanceZero}>
         <Flex justifyContent="space-between" pl="16px">
           <Text fontSize="14px">{inputTitle}</Text>
-          <Text fontSize="14px">{t("Balance: %balance%", { balance: displayBalance(max as `${number}`) })}</Text>
+          <Text fontSize="14px">
+            {t("Balance: %balance%", {
+              balance: displayBalance({
+                balance: max as `${number}`,
+                decimals,
+                isBalanceZero,
+              }),
+            })}
+          </Text>
         </Flex>
         <Flex alignItems="flex-end" justifyContent="space-between">
           <StyledInput

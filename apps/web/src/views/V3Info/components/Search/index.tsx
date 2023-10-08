@@ -11,7 +11,6 @@ import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { getAddress } from 'viem'
 
 import { isAddress } from 'utils'
 import { v3InfoPath } from '../../constants'
@@ -328,8 +327,7 @@ const Search = () => {
                         <Text>{`${
                           (token.address && subgraphTokenName[isAddress(token.address) || undefined]) || token.name
                         } (${
-                          (token.address && getAddress(subgraphTokenSymbol[isAddress(token.address) || undefined])) ||
-                          token.symbol
+                          (token.address && subgraphTokenSymbol[isAddress(token.address) || undefined]) || token.symbol
                         })`}</Text>
                       </Text>
                       {/* <SaveIcon

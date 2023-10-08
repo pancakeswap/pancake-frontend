@@ -1,5 +1,18 @@
 # @pancakeswap/v3-sdk
 
+## 3.5.0
+
+### Minor Changes
+
+- 435a90ac2: Add support for opBNB mainnet
+
+### Patch Changes
+
+- Updated dependencies [435a90ac2]
+  - @pancakeswap/sdk@5.6.0
+  - @pancakeswap/chains@0.1.0
+  - @pancakeswap/tokens@0.5.0
+
 ## 3.4.4
 
 ### Patch Changes

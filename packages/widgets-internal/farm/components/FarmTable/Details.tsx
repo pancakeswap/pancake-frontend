@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { ChevronDownIcon } from '@pancakeswap/uikit'
+import { styled } from "styled-components";
+import { ChevronDownIcon } from "@pancakeswap/uikit";
 
 export interface DetailsProps {
-  actionPanelToggled: boolean
+  actionPanelToggled: boolean;
 }
 
 const Container = styled.div`
@@ -15,19 +15,19 @@ const Container = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-right: 0px;
   }
-`
+`;
 
 const ArrowIcon = styled(ChevronDownIcon)<{ $toggled?: boolean }>`
-  transform: ${({ $toggled }) => ($toggled ? 'rotate(180deg)' : 'rotate(0)')};
+  transform: ${({ $toggled }) => ($toggled ? "rotate(180deg)" : "rotate(0)")};
   height: 20px;
-`
+`;
 
 const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ actionPanelToggled }) => {
   return (
     <Container>
       <ArrowIcon color="primary" $toggled={actionPanelToggled} />
     </Container>
-  )
-}
+  );
+};
 
-export default Details
+export default Details;

@@ -44,7 +44,7 @@ import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3
 
 const { FarmV3HarvestAction } = FarmWidget.FarmV3Table
 
-const ActionContainer = styled(Flex)`
+export const ActionContainer = styled(Flex)`
   width: 100%;
   border: 2px solid ${({ theme }) => theme.colors.input};
   border-radius: 16px;

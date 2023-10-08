@@ -39,7 +39,7 @@ const collapseAnimation = keyframes`
   }
 `
 
-const StyledActionPanel = styled.div<{ expanded: boolean }>`
+export const StyledActionPanel = styled.div<{ expanded: boolean }>`
   animation: ${({ expanded }) =>
     expanded
       ? css`
@@ -61,7 +61,7 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
   }
 `
 
-const ActionContainer = styled.div<{ isAutoVault?: boolean; hasBalance?: boolean }>`
+export const ActionContainer = styled(Box)<{ isAutoVault?: boolean; hasBalance?: boolean }>`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -83,7 +83,7 @@ interface ActionPanelProps {
   expanded: boolean
 }
 
-const InfoSection = styled(Box)`
+export const InfoSection = styled(Box)`
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;

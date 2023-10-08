@@ -1,20 +1,20 @@
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import { PositionDetails } from '@pancakeswap/farms'
-import { PreTitle, Text, Button, Flex, Box, Heading, Balance } from '@pancakeswap/uikit'
+import { styled } from "styled-components";
+import { useTranslation } from "@pancakeswap/localization";
+import { PositionDetails } from "@pancakeswap/farms";
+import { PreTitle, Text, Button, Flex, Box, Heading, Balance } from "@pancakeswap/uikit";
 
-const LightGreyCard = styled('div')`
+const LightGreyCard = styled("div")`
   padding: 0;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme }) => theme.colors.dropdown};
   border-radius: ${({ theme }) => theme.radii.card};
-`
+`;
 
 interface TotalStakedBalanceProps {
-  stakedPositions: PositionDetails[]
-  earnings: number
-  earningsBusd: number
-  onClickViewAllButton: () => void
+  stakedPositions: PositionDetails[];
+  earnings: number;
+  earningsBusd: number;
+  onClickViewAllButton: () => void;
 }
 
 const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalStakedBalanceProps>> = ({
@@ -23,12 +23,12 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
   earningsBusd,
   onClickViewAllButton,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Box mt="24px">
       <PreTitle color="textSubtle" mb="8px">
-        {t('%totalStakedFarm% Staked Farming', { totalStakedFarm: stakedPositions.length })}
+        {t("%totalStakedFarm% Staked Farming", { totalStakedFarm: stakedPositions.length })}
       </PreTitle>
       <LightGreyCard>
         <Flex padding="16px" justifyContent="space-between">
@@ -38,7 +38,7 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
                 CAKE
               </Text>
               <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-                {t('Earned')}
+                {t("Earned")}
               </Text>
             </Flex>
             <Box>
@@ -48,13 +48,13 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
               </Flex>
             </Box>
           </Flex>
-          <Button style={{ alignSelf: 'center', whiteSpace: 'nowrap' }} onClick={onClickViewAllButton}>
-            {t('View All')}
+          <Button style={{ alignSelf: "center", whiteSpace: "nowrap" }} onClick={onClickViewAllButton}>
+            {t("View All")}
           </Button>
         </Flex>
       </LightGreyCard>
     </Box>
-  )
-}
+  );
+};
 
-export default TotalStakedBalance
+export default TotalStakedBalance;

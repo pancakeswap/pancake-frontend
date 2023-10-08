@@ -1,13 +1,13 @@
 {
   "name": "routing-api",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/worker-utils": "workspace:*",
-    "@pancakeswap/chains": "workspace:*",
     "graphql-request": "^5.0.0",
     "itty-router": "^2.6.1",
     "itty-router-extras": "^0.4.2",

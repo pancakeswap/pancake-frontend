@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled } from "styled-components";
 
 export const TwoColumns = styled.div`
   display: grid;
@@ -11,4 +11,4 @@ export const TwoColumns = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: 1fr 1fr;
   }
-`
+`;

@@ -34,6 +34,8 @@ const ChildrenWrapper = styled(Container)`
   min-height: auto;
   padding-top: 16px;
   padding-bottom: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-top: 32px;
@@ -43,6 +45,12 @@ const ChildrenWrapper = styled(Container)`
   ${({ theme }) => theme.mediaQueries.lg} {
     padding-top: 48px;
     padding-bottom: 48px;
+    padding-left: 16px;
+    padding-right: 16px;
+    overflow: hidden;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    overflow: visible;
   }
 `;
 

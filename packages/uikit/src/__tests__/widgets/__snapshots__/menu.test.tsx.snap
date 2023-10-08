@@ -709,15 +709,7 @@ exports[`renders correctly 1`] = `
   }
 }
 
-@media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 370px) {
 
 }
 
@@ -726,6 +718,30 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width: 852px) {
+
+}
+
+@media screen and (min-width: 968px) {
+
+}
+
+@media screen and (min-width: 1080px) {
+
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 968px) {
 
 }
 
@@ -2152,9 +2168,33 @@ exports[`renders correctly 1`] = `
 
 }
 
+@media screen and (min-width: 370px) {
+  .c9 {
+    flex-direction: column;
+  }
+}
+
 @media screen and (min-width: 576px) {
   .c9 {
     order: 1;
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 852px) {
+  .c9 {
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 968px) {
+  .c9 {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1080px) {
+  .c9 {
     flex-direction: row;
   }
 }
@@ -2178,7 +2218,7 @@ exports[`renders correctly 1`] = `
   }
 }
 
-@media screen and (min-width: 852px) {
+@media screen and (min-width: 968px) {
   .c10 {
     margin-bottom: 0px;
   }
@@ -3177,7 +3217,7 @@ exports[`renders correctly 1`] = `
           </div>
           <a
             class="c52"
-            data-theme="light"
+            data-theme="dark"
             href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
             scale="sm"
             target="_blank"
@@ -3574,15 +3614,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
 
 }
 
-@media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 370px) {
 
 }
 
@@ -3591,6 +3623,30 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
 }
 
 @media screen and (min-width: 852px) {
+
+}
+
+@media screen and (min-width: 968px) {
+
+}
+
+@media screen and (min-width: 1080px) {
+
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 968px) {
 
 }
 

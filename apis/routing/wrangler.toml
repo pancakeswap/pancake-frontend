@@ -20,7 +20,7 @@ r2_buckets = [
 ]
 name = "routing"
 [env.production.triggers]
-crons = ["0 0 * * *"]
+crons = ["*/30 * * * *"]
 
 # - AXIOM_TOKEN
 # The necessary secrets are:

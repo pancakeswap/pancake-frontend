@@ -16,7 +16,7 @@ interface NameCellProps {
   pool: Pool.DeserializedPool<Token>
 }
 
-const StyledCell = styled(Pool.BaseCell)`
+export const StyledCell = styled(Pool.BaseCell)`
   flex: 5;
   flex-direction: row;
   padding-left: 12px;

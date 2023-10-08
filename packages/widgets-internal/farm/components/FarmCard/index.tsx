@@ -1,7 +1,7 @@
-import { DetailsSection } from './DetailsSection'
+import { DetailsSection } from "./DetailsSection";
 
 const FarmCard = {
   DetailsSection,
-}
+};
 
-export default FarmCard
+export default FarmCard;
