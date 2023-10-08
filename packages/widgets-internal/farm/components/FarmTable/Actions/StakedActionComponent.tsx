@@ -1,15 +1,15 @@
-import { ReactNode } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { Text, IconButton, MinusIcon, AddIcon } from '@pancakeswap/uikit'
-import { StyledActionContainer, ActionContent, ActionTitles, IconButtonWrapper } from './styles'
+import { ReactNode } from "react";
+import { useTranslation } from "@pancakeswap/localization";
+import { Text, IconButton, MinusIcon, AddIcon } from "@pancakeswap/uikit";
+import { StyledActionContainer, ActionContent, ActionTitles, IconButtonWrapper } from "./styles";
 
 export interface StakedActionComponentProps {
-  lpSymbol: string
-  children?: ReactNode
-  disabledMinusButton?: boolean
-  disabledPlusButton?: boolean
-  onPresentWithdraw: () => void
-  onPresentDeposit: () => void
+  lpSymbol: string;
+  children?: ReactNode;
+  disabledMinusButton?: boolean;
+  disabledPlusButton?: boolean;
+  onPresentWithdraw: () => void;
+  onPresentDeposit: () => void;
 }
 
 const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<StakedActionComponentProps>> = ({
@@ -20,7 +20,7 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
   onPresentWithdraw,
   onPresentDeposit,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <StyledActionContainer>
@@ -29,7 +29,7 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
           {lpSymbol}
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Staked')}
+          {t("Staked")}
         </Text>
       </ActionTitles>
       <ActionContent>
@@ -44,7 +44,7 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
         </IconButtonWrapper>
       </ActionContent>
     </StyledActionContainer>
-  )
-}
+  );
+};
 
-export default StakedActionComponent
+export default StakedActionComponent;

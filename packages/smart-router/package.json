@@ -1,12 +1,15 @@
 {
   "name": "@pancakeswap/smart-router",
-  "version": "4.8.7",
+  "version": "4.9.0",
   "description": "A SDK for getting best routes from AMM",
   "repository": {
     "type": "git",
     "url": "https://github.com/pancakeswap/pancake-frontend.git",
     "directory": "packages/smart-router"
   },
+  "main": "dist/evm.js",
+  "module": "dist/evm.mjs",
+  "types": "dist/evm/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "build": "tsup",

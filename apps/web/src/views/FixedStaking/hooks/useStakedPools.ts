@@ -1,0 +1,221 @@
+import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useFixedStakingContract, useVaultPoolContract } from 'hooks/useContract'
+import { getAddress } from 'viem'
+import { useContractRead } from 'wagmi'
+import toNumber from 'lodash/toNumber'
+import { useMemo } from 'react'
+import { useSingleContractMultipleData } from 'state/multicall/hooks'
+import BigNumber from 'bignumber.js'
+import { VaultKey } from '@pancakeswap/pools'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+
+import { FixedStakingPool, StakedPosition } from '../type'
+import { DISABLED_POOLS } from '../constant'
+
+export function useCurrentDay(): number {
+  const fixedStakingContract = useFixedStakingContract()
+
+  const { chainId } = useActiveWeb3React()
+
+  const { data } = useContractRead({
+    abi: fixedStakingContract.abi,
+    address: fixedStakingContract.address as `0x${string}`,
+    functionName: 'getCurrentDay',
+    enabled: true,
+    watch: true,
+    chainId,
+  })
+
+  return (data || 0) as number
+}
+
+export function useShouldNotAllowWithdraw({ lockPeriod, lastDayAction }) {
+  const poolLockPeriodUnit = lockPeriod / 3
+
+  const currentDay = useCurrentDay()
+
+  return currentDay - lastDayAction <= poolLockPeriodUnit
+}
+
+export function useIfUserLocked() {
+  const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
+  const { account, chainId } = useActiveWeb3React()
+
+  const { data } = useContractRead({
+    chainId,
+    abi: vaultPoolContract.abi,
+    address: vaultPoolContract.address,
+    functionName: 'userInfo',
+    args: [account],
+    enabled: !!account,
+  })
+
+  return useMemo(() => {
+    if (!Array.isArray(data))
+      return {
+        locked: false,
+        amount: getBalanceAmount(new BigNumber(0)),
+      }
+
+    const [userShares, , , , , lockEndTime, , locked, lockedAmount] = data
+
+    const vaultPosition = getVaultPosition({
+      userShares: new BigNumber(userShares as unknown as BigNumber.Value),
+      locked,
+      lockEndTime: lockEndTime.toString(),
+    })
+
+    return {
+      locked: VaultPosition.Locked === vaultPosition,
+      amount: getBalanceAmount(new BigNumber(lockedAmount as unknown as BigNumber.Value)),
+    }
+  }, [data])
+}
+export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[] {
+  const fixedStakingContract = useFixedStakingContract()
+  const { account } = useActiveWeb3React()
+  const tokens = useOfficialsAndUserAddedTokens()
+
+  const results = useSingleContractMultipleData({
+    contract: {
+      abi: fixedStakingContract.abi,
+      address: fixedStakingContract.address,
+    },
+    functionName: 'getUserInfo',
+    args: account ? poolIndexes.map((index) => [index, account]) : [],
+  })
+
+  const currentDay = useCurrentDay()
+
+  return useMemo(() => {
+    if (!Array.isArray(results)) return []
+    return results
+      .map(({ result }, index) => {
+        if (!Array.isArray(result)) return undefined
+
+        const userInfoUserDeposit = new BigNumber(result[0].userInfo.userDeposit)
+
+        if (userInfoUserDeposit.eq(0)) {
+          return undefined
+        }
+
+        const position = result[0]
+        const endPoolTime = position.pool.endDay * 86400 + 43200
+        const endLockTime = position.endLockTime > endPoolTime ? endPoolTime : position.endLockTime
+
+        const poolLockPeriodUnit = position.pool.lockPeriod / 3
+        const { lastDayAction } = position.userInfo
+        const { withdrawalCut1, withdrawalCut2 } = position.pool
+
+        let withdrawalFee: BigNumber | null = null
+
+        const days = currentDay - lastDayAction
+
+        // logic copied from Smart Contract
+        if (days <= poolLockPeriodUnit * 2) {
+          withdrawalFee = withdrawalCut1
+        } else if (days <= poolLockPeriodUnit * 3) {
+          withdrawalFee = withdrawalCut2
+        }
+
+        return {
+          ...position,
+          pool: {
+            ...position.pool,
+            withdrawalFee,
+            poolIndex: poolIndexes[index],
+            token: tokens[getAddress(position.pool.token)],
+          },
+          endLockTime,
+        }
+      })
+      .filter(Boolean)
+  }, [currentDay, poolIndexes, results, tokens])
+}
+
+export function useStakedPools(): FixedStakingPool[] {
+  const fixedStakingContract = useFixedStakingContract()
+  const tokens = useOfficialsAndUserAddedTokens()
+  const { chainId } = useActiveWeb3React()
+
+  const { data: poolLength } = useContractRead({
+    abi: fixedStakingContract.abi,
+    address: fixedStakingContract.address as `0x${string}`,
+    functionName: 'poolLength',
+    chainId,
+    args: [],
+  })
+
+  const numberOfPools = poolLength ? toNumber(poolLength.toString()) : 0
+
+  const fixedStakePools = useSingleContractMultipleData({
+    contract: {
+      abi: fixedStakingContract.abi,
+      address: fixedStakingContract.address,
+    },
+    functionName: 'pools',
+    args: useMemo(
+      () => Array.from(Array(numberOfPools).keys()).map((index) => [BigInt(index)] as const),
+      [numberOfPools],
+    ),
+  })
+
+  return useMemo(() => {
+    if (!fixedStakePools?.length) return []
+
+    return fixedStakePools
+      .map(({ result: fixedStakePool }, index) => {
+        if (!fixedStakePool) return null
+
+        const token = tokens[getAddress(fixedStakePool[0])]
+
+        const disabled = DISABLED_POOLS[chainId]?.includes(token.address)
+
+        if (disabled) {
+          return null
+        }
+
+        /*
+          struct Pool {
+            IERC20Upgradeable token;
+            uint32 endDay;
+            uint32 lockDayPercent;
+            uint32 boostDayPercent;
+            uint32 unlockDayPercent;
+            uint32 lockPeriod; // Multiples of 3
+            uint32 withdrawalCut1;
+            uint32 withdrawalCut2;
+            bool depositEnabled;
+            uint128 maxDeposit;
+            uint128 minDeposit;
+            uint128 totalDeposited;
+            uint128 maxPoolAmount;
+            uint128 minBoostAmount;
+          }
+        */
+
+        return {
+          poolIndex: index,
+          token,
+          endDay: fixedStakePool[1],
+          lockDayPercent: fixedStakePool[2],
+          boostDayPercent: fixedStakePool[3],
+          unlockDayPercent: fixedStakePool[4],
+          lockPeriod: fixedStakePool[5],
+          withdrawalCut1: fixedStakePool[6],
+          withdrawalCut2: fixedStakePool[7],
+          // set widthdrawalFee as withdrawalCut2 to display pools' fee with unconnected account
+          withdrawalFee: fixedStakePool[7],
+          depositEnabled: fixedStakePool[8],
+          maxDeposit: fixedStakePool[9],
+          minDeposit: fixedStakePool[10],
+          totalDeposited: new BigNumber(fixedStakePool[11]),
+          maxPoolAmount: fixedStakePool[12],
+          minBoostAmount: fixedStakePool[13],
+        }
+      })
+      .filter(Boolean)
+  }, [chainId, fixedStakePools, tokens])
+}

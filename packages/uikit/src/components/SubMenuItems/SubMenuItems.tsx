@@ -1,6 +1,6 @@
 import { useIsomorphicLayoutEffect } from "framer-motion";
 import debounce from "lodash/debounce";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 import { AtomBox } from "../AtomBox";
@@ -15,6 +15,7 @@ import StyledSubMenuItems, {
 import { SubMenuItemsProps } from "./types";
 import { FlexGap } from "../Layouts";
 import NotificationDot from "../NotificationDot/NotificationDot";
+import { LinkStatus } from "../DropdownMenu/styles";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
 const SUBMENU_SCROLL_DEVIATION = 3;
@@ -44,7 +45,17 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
     else setRightClassName("");
   }, []);
 
-  const hasLabeledItem = items.some((item) => !!item.LabelIcon);
+  const { hasHighlightedItem, highlightedItemColor } = useMemo(() => {
+    const anyLabelIcon = items.some((item) => !!item.LabelIcon);
+    if (anyLabelIcon) {
+      return { hasHighlightedItem: true, highlightedItemColor: "success" as const };
+    }
+    const anyStatusIcon = items.find((item) => !!item.status);
+    if (anyStatusIcon) {
+      return { hasHighlightedItem: true, highlightedItemColor: anyStatusIcon?.status?.color || ("success" as const) };
+    }
+    return { hasHighlightedItem: false, highlightedItemColor: "success" as const };
+  }, [items]);
 
   useIsomorphicLayoutEffect(() => {
     layerController();
@@ -74,7 +85,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
             }}
           >
             {hasOverflowing && (
-              <NotificationDot show={hasLabeledItem} color="success">
+              <NotificationDot show={hasHighlightedItem} color={highlightedItemColor}>
                 <ChevronRightIcon width="24px" height="24px" />
               </NotificationDot>
             )}
@@ -86,7 +97,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
           onScroll={debounce(layerController, 100)}
           ref={scrollLayerRef}
         >
-          {items.map(({ label, LabelIcon, href, icon, itemProps, type, disabled, onClick }) => {
+          {items.map(({ label, LabelIcon, status, href, icon, itemProps, type, disabled, onClick }) => {
             const Icon = icon;
             const isExternalLink = type === DropdownMenuItemType.EXTERNAL_LINK;
             const linkProps = isExternalLink
@@ -115,6 +126,11 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
                       {Icon && <Icon color={isActive ? "secondary" : "textSubtle"} mr="4px" />}
                       {label}
                       {LabelIcon ? <LabelIcon /> : null}
+                      {status && (
+                        <LinkStatus textTransform="uppercase" color={status.color} fontSize="14px">
+                          {status.text}
+                        </LinkStatus>
+                      )}
                     </FlexGap>
                     {isExternalLink && (
                       <Box display={["none", null, "flex"]} style={{ alignItems: "center" }} ml="4px">

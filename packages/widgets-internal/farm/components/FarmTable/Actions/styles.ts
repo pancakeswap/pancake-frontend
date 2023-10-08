@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { styled } from "styled-components";
 
 export const ActionContainer = styled.div`
   padding: 16px;
@@ -20,22 +20,22 @@ export const ActionContainer = styled.div`
     margin-bottom: 0;
     /* max-height: 130px; */
   }
-`
+`;
 
 export const ActionTitles = styled.div`
   display: flex;
   margin-bottom: 8px;
-`
+`;
 
 export const ActionContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 export const IconButtonWrapper = styled.div`
   display: flex;
-`
+`;
 
 export const StyledActionContainer = styled(ActionContainer)`
   &:nth-child(3) {
@@ -47,4 +47,4 @@ export const StyledActionContainer = styled(ActionContainer)`
       margin-top: 16px;
     }
   }
-`
+`;

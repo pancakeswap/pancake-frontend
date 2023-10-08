@@ -3,9 +3,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { isMobile } from "react-device-detect";
-import { DefaultTheme, ThemeProvider, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import debounce from "lodash/debounce";
-import { dark, light } from "../../theme";
 import getPortalRoot from "../../util/getPortalRoot";
 import isTouchDevice from "../../util/isTouchDevice";
 import { Arrow, StyledTooltip } from "./StyledTooltip";
@@ -32,13 +31,6 @@ const deviceActions: { [device in Devices]: DeviceAction } = {
     start: "mouseenter",
     end: "mouseleave",
   },
-};
-
-const invertTheme = (currentTheme: DefaultTheme) => {
-  if (currentTheme.isDark) {
-    return light;
-  }
-  return dark;
 };
 
 const useTooltip = (content: React.ReactNode, options?: TooltipOptions): TooltipRefs => {
@@ -206,8 +198,13 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     ],
   });
 
+  const stopPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  }, []);
+
   const tooltip = (
     <StyledTooltip
+      onClick={stopPropagation}
       data-theme={isDark ? "light" : "dark"}
       {...animationMap}
       variants={animationVariants}

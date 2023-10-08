@@ -127,8 +127,9 @@ function CurrencySearch({
 
   const queryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
   const filteredQueryTokens = useMemo(() => {
+    if (!chainId) return queryTokens
     return mode === 'onramp-input'
-      ? queryTokens.filter((curr) => whiteListedFiatCurrenciesMap[chainId as number].includes(curr.symbol))
+      ? queryTokens.filter((curr) => whiteListedFiatCurrenciesMap[chainId].includes(curr.symbol))
       : queryTokens
   }, [mode, queryTokens, chainId])
 

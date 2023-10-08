@@ -1,32 +1,32 @@
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import BigNumber from 'bignumber.js'
-import { useTranslation } from '@pancakeswap/localization'
-import { createElement, FunctionComponent } from 'react'
-import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+import BigNumber from "bignumber.js";
+import { useTranslation } from "@pancakeswap/localization";
+import { createElement, FunctionComponent } from "react";
+import { Text, useMatchBreakpoints } from "@pancakeswap/uikit";
 
-import { CellContent, BaseCell } from './BaseCell'
-import { DeserializedPool } from '../types'
+import { CellContent, BaseCell } from "./BaseCell";
+import { DeserializedPool } from "../types";
 
 interface AprCellProps<T> {
-  pool: DeserializedPool<T>
+  pool: DeserializedPool<T>;
   aprComp: FunctionComponent<{
-    pool: DeserializedPool<T>
-    stakedBalance: BigNumber
-    showIcon: boolean
-  }>
+    pool: DeserializedPool<T>;
+    stakedBalance: BigNumber;
+    showIcon: boolean;
+  }>;
 }
 
 export function AprCell<T>({ pool, aprComp }: AprCellProps<T>) {
-  const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
-  const { userData } = pool
-  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
+  const { t } = useTranslation();
+  const { isMobile } = useMatchBreakpoints();
+  const { userData } = pool;
+  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO;
 
   return (
-    <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+    <BaseCell role="cell" flex={["1 0 50px", "1 0 50px", "2 0 100px", "2 0 100px", "1 0 120px"]}>
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {t('APR')}
+          {t("APR")}
         </Text>
         {createElement(aprComp, {
           pool,
@@ -35,5 +35,5 @@ export function AprCell<T>({ pool, aprComp }: AprCellProps<T>) {
         })}
       </CellContent>
     </BaseCell>
-  )
+  );
 }

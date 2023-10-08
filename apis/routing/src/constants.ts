@@ -13,7 +13,7 @@ export const SUPPORTED_CHAINS = [
   ChainId.BASE,
   ChainId.BASE_TESTNET,
   ChainId.LINEA,
-  ChainId.OPBNB_TESTNET,
+  ChainId.OPBNB,
 ] as const
 
 export type SupportedChainId = (typeof SUPPORTED_CHAINS)[number]
@@ -32,5 +32,5 @@ export const V3_SUBGRAPH_URLS: Record<SupportedChainId, string> = {
   [ChainId.LINEA_TESTNET]:
     'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exchange-v3-linea-goerli',
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-arb',
-  [ChainId.OPBNB_TESTNET]: '',
+  [ChainId.OPBNB]: 'https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/exchange-v3',
 }

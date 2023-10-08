@@ -1,5 +1,5 @@
-import { styled } from 'styled-components'
-import { Card } from '@pancakeswap/uikit'
+import { styled } from "styled-components";
+import { Card } from "@pancakeswap/uikit";
 
 export const StyledCard = styled(Card)<{ isFinished?: boolean }>`
   min-width: 280px;
@@ -10,10 +10,10 @@ export const StyledCard = styled(Card)<{ isFinished?: boolean }>`
   flex-direction: column;
   align-self: baseline;
   position: relative;
-  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'secondary']};
+  color: ${({ isFinished, theme }) => theme.colors[isFinished ? "textDisabled" : "secondary"]};
 
   ${({ theme }) => theme.mediaQueries.sm} {
     max-width: 350px;
     margin: 0 12px 46px;
   }
-`
+`;

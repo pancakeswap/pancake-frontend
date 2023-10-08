@@ -1,6 +1,6 @@
-import { styled } from 'styled-components'
+import { styled } from "styled-components";
 
-import { ButtonMenu } from '@pancakeswap/uikit'
+import { ButtonMenu } from "@pancakeswap/uikit";
 
 export const FullWidthButtonMenu = styled(ButtonMenu)<{ disabled?: boolean }>`
   width: 100%;
@@ -10,4 +10,4 @@ export const FullWidthButtonMenu = styled(ButtonMenu)<{ disabled?: boolean }>`
   }
 
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-`
+`;

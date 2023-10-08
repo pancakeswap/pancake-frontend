@@ -1,23 +1,25 @@
-import { styled } from 'styled-components'
-import { PageSection } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import useTheme from 'hooks/useTheme'
-import Container from 'components/Layout/Container'
 import { useTranslation } from '@pancakeswap/localization'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainId } from '@pancakeswap/chains'
+import { Box, Flex, PageSection, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useAnniversaryEffect } from 'hooks/useAnniversaryEffect'
-import Hero from './components/Hero'
-import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
-import MetricsSection from './components/MetricsSection'
-import SalesSection from './components/SalesSection'
-import WinSection from './components/WinSection'
-import FarmsPoolsRow from './components/FarmsPoolsRow'
-import Footer from './components/Footer'
-import CakeDataRow from './components/CakeDataRow'
-import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
-import UserBanner from './components/UserBanner'
+import useTheme from 'hooks/useTheme'
+import { styled } from 'styled-components'
 import MultipleBanner from './components/Banners/MultipleBanner'
+import CakeDataRow from './components/CakeDataRow'
+import CakeSection from './components/CakeSection'
+import CommunitySection from './components/CommunitySection'
+import { RightTopBox } from './components/CommunitySection/ImagesOnBg'
+import EcoSystemSection from './components/EcoSystemSection'
+import Footer from './components/Footer'
+import Hero from './components/Hero'
+import MetricsSection from './components/MetricsSection'
+import { NewsSection } from './components/NewsSection'
+import {
+  InnerWedgeWrapper,
+  OuterWedgeWrapper,
+  WedgeBottomRight,
+  WedgeTopLeft,
+  WedgeTopRight,
+} from './components/WedgeSvgs'
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -27,35 +29,14 @@ const StyledHeroSection = styled(PageSection)`
   }
 `
 
-const UserBannerWrapper = styled(Container)`
-  z-index: 1;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-  padding-left: 0px;
-  padding-right: 0px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-`
-
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
-  const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
-
-  const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
-
+  const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px', padding: '0px 16px' }
   const { t } = useTranslation()
-
+  const { isMobile } = useMatchBreakpoints()
   useAnniversaryEffect()
-
   return (
-    <>
+    <Box style={{ width: isMobile ? '100vw' : 'calc(100vw - 8px)', overflow: 'hidden', boxSizing: 'border-box' }}>
       <style jsx global>
         {`
           #home-1 .page-bg {
@@ -82,21 +63,23 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           [data-theme='dark'] #home-4 .inner-wedge svg {
             fill: #201335;
           }
+
+          #bottom-wedge4-2 svg {
+            fill: #72b8f2;
+          }
+          [data-theme='dark'] #bottom-wedge4-2 svg {
+            fill: #0b4576;
+          }
         `}
       </style>
       <StyledHeroSection
-        innerProps={{ style: { margin: '0', width: '100%' } }}
+        innerProps={{ style: { margin: '0', width: '100%', overflow: 'visible', padding: '16px' } }}
         containerProps={{
           id: 'home-1',
         }}
         index={2}
         hasCurvedDivider={false}
       >
-        {account && chainId === ChainId.BSC && (
-          <UserBannerWrapper>
-            <UserBanner />
-          </UserBannerWrapper>
-        )}
         <MultipleBanner />
         <Hero />
       </StyledHeroSection>
@@ -111,7 +94,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         <MetricsSection />
       </PageSection>
       <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
+        innerProps={{ style: { ...HomeSectionContainerStyles, maxWidth: 'auto' } }}
         background={theme.colors.background}
         containerProps={{
           id: 'home-4',
@@ -124,11 +107,14 @@ const Home: React.FC<React.PropsWithChildren> = () => {
             <WedgeTopLeft />
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
-        <SalesSection {...swapSectionData(t)} />
+        <EcoSystemSection />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
-        background={theme.colors.gradientCardHeader}
+        background={theme.colors.background}
+        containerProps={{
+          id: 'home4-2',
+        }}
         index={2}
         hasCurvedDivider={false}
       >
@@ -137,8 +123,21 @@ const Home: React.FC<React.PropsWithChildren> = () => {
             <WedgeTopRight />
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
-        <SalesSection {...earnSectionData(t)} />
-        <FarmsPoolsRow />
+        <CakeSection />
+        <Flex style={{ gap: 5 }} justifyContent="center" mt="40px">
+          <Text fontSize={24} bold>
+            {t('CAKE')}
+          </Text>
+          <Text fontSize={24} bold color="secondary">
+            {t('Figures')}
+          </Text>
+        </Flex>
+        <CakeDataRow />
+        <OuterWedgeWrapper>
+          <InnerWedgeWrapper id="bottom-wedge4-2">
+            <WedgeBottomRight />
+          </InnerWedgeWrapper>
+        </OuterWedgeWrapper>
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
@@ -148,16 +147,21 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         index={2}
         hasCurvedDivider={false}
       >
-        <WinSection />
+        <RightTopBox />
+        <CommunitySection />
       </PageSection>
       <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
+        innerProps={{
+          style: {
+            ...HomeSectionContainerStyles,
+            maxWidth: '1400px',
+          },
+        }}
         background={theme.colors.background}
         index={2}
         hasCurvedDivider={false}
       >
-        <SalesSection {...cakeSectionData(t)} />
-        <CakeDataRow />
+        <NewsSection />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
@@ -167,7 +171,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
       >
         <Footer />
       </PageSection>
-    </>
+    </Box>
   )
 }
 

@@ -1,16 +1,16 @@
-import { styled, DefaultTheme, css } from 'styled-components'
+import { styled, DefaultTheme, css } from "styled-components";
 
-import { Input } from '@pancakeswap/uikit'
-import getThemeValue from '@pancakeswap/uikit/util/getThemeValue'
+import { Input } from "@pancakeswap/uikit";
+import getThemeValue from "@pancakeswap/uikit/util/getThemeValue";
 
 interface ThemedProps {
-  theme: DefaultTheme
-  color?: string
+  theme: DefaultTheme;
+  color?: string;
 }
 
 const getColor = ({ color, theme }: ThemedProps) => {
-  return getThemeValue(theme, `colors.${color}`, color)
-}
+  return getThemeValue(theme, `colors.${color}`, color);
+};
 
 export const StyledInput = styled(Input)<{ textAlign?: string; color?: string }>`
   background: transparent;
@@ -18,7 +18,7 @@ export const StyledInput = styled(Input)<{ textAlign?: string; color?: string }>
   box-shadow: none;
   padding-left: 0;
   padding-right: 0;
-  text-align: ${({ textAlign = 'left' }) => textAlign};
+  text-align: ${({ textAlign = "left" }) => textAlign};
   border: none;
   height: 1.5em;
   min-width: 0;
@@ -36,11 +36,11 @@ export const StyledInput = styled(Input)<{ textAlign?: string; color?: string }>
   }
 
   ::beofre {
-    content: '$';
+    content: "$";
   }
 
   &:focus:not(:disabled) {
     box-shadow: none;
     outline: solid ${({ theme }) => theme.colors.primary};
   }
-`
+`;

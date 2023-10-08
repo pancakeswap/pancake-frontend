@@ -10,9 +10,10 @@ export const fetchMoonPaySignedUrl = async (
   outputCurrency: string,
   amount: string,
   isDark: boolean,
-  account: string,
-  chainId: number,
+  account: `0x${string}`,
+  chainId: number | undefined,
 ) => {
+  if (!chainId) return ''
   try {
     const baseCurrency = `${inputCurrency.toLowerCase()}${chainIdToMoonPayNetworkId[chainId]}`
 
@@ -46,9 +47,10 @@ export const fetchTransakSignedUrl = async (
   inputCurrency: string,
   outputCurrency: string,
   amount: string,
-  account: string,
-  chainId: number,
+  account: `0x${string}`,
+  chainId: number | undefined,
 ) => {
+  if (!chainId) return ''
   try {
     const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-transak-sig`, {
       headers: {
@@ -73,7 +75,7 @@ export const fetchTransakSignedUrl = async (
   }
 }
 
-export const fetchMercuryoSignedUrl = async (account: string) => {
+export const fetchMercuryoSignedUrl = async (account: `0x${string}`) => {
   try {
     const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-mercuryo-sig?walletAddress=${account}`, {
       headers: {

@@ -5,7 +5,6 @@ import {
   ArrowForwardIcon,
   Box,
   Button,
-  CurrencyLogo,
   Flex,
   MoreIcon,
   NextLinkFromReactRouter,
@@ -14,6 +13,7 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'

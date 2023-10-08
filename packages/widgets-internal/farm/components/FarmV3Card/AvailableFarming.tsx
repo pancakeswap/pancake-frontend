@@ -1,19 +1,19 @@
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import { PositionDetails } from '@pancakeswap/farms'
-import { PreTitle, Text, Button, Flex, Box } from '@pancakeswap/uikit'
+import { styled } from "styled-components";
+import { useTranslation } from "@pancakeswap/localization";
+import { PositionDetails } from "@pancakeswap/farms";
+import { PreTitle, Text, Button, Flex, Box } from "@pancakeswap/uikit";
 
-const LightGreyCard = styled('div')`
+const LightGreyCard = styled("div")`
   padding: 0;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme }) => theme.colors.dropdown};
   border-radius: ${({ theme }) => theme.radii.card};
-`
+`;
 
 interface AvailableFarmingProps {
-  lpSymbol: string
-  unstakedPositions: PositionDetails[]
-  onClickViewAllButton: () => void
+  lpSymbol: string;
+  unstakedPositions: PositionDetails[];
+  onClickViewAllButton: () => void;
 }
 
 const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<AvailableFarmingProps>> = ({
@@ -21,12 +21,12 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
   unstakedPositions,
   onClickViewAllButton,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Box>
       <PreTitle color="textSubtle" mb="8px">
-        {t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: unstakedPositions.length })}
+        {t("%totalAvailableFarm% LP Available for Farming", { totalAvailableFarm: unstakedPositions.length })}
       </PreTitle>
       <LightGreyCard>
         <Flex padding="16px" justifyContent="space-between">
@@ -42,13 +42,13 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
               ))}
             </Box>
           </Flex>
-          <Button style={{ alignSelf: 'center', whiteSpace: 'nowrap' }} onClick={onClickViewAllButton}>
-            {t('View All')}
+          <Button style={{ alignSelf: "center", whiteSpace: "nowrap" }} onClick={onClickViewAllButton}>
+            {t("View All")}
           </Button>
         </Flex>
       </LightGreyCard>
     </Box>
-  )
-}
+  );
+};
 
-export default AvailableFarming
+export default AvailableFarming;

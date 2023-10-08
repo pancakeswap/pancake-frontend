@@ -9,9 +9,9 @@ import {
   useTooltip,
   AutoColumn,
   UseModalV2Props,
-  CurrencyLogo,
   AtomBox,
 } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { Currency } from '@pancakeswap/sdk'
 import { useMemo, memo } from 'react'
 

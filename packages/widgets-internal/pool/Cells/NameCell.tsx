@@ -1,18 +1,18 @@
-import BigNumber from 'bignumber.js'
-import { useTranslation } from '@pancakeswap/localization'
-import React, { useMemo, ReactNode } from 'react'
-import { styled } from 'styled-components'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Text, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import BigNumber from "bignumber.js";
+import { useTranslation } from "@pancakeswap/localization";
+import React, { useMemo, ReactNode } from "react";
+import { styled } from "styled-components";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+import { Text, Skeleton, useMatchBreakpoints } from "@pancakeswap/uikit";
 
-import { DeserializedPool } from '../types'
-import { BaseCell, CellContent } from './BaseCell'
+import { DeserializedPool } from "../types";
+import { BaseCell, CellContent } from "./BaseCell";
 
 interface NameCellProps<T> {
-  pool: DeserializedPool<T>
-  userShares?: BigNumber
-  totalCakeInVault?: BigNumber
-  tokenPairImage: ReactNode
+  pool: DeserializedPool<T>;
+  userShares?: BigNumber;
+  totalCakeInVault?: BigNumber;
+  tokenPairImage: ReactNode;
 }
 
 const StyledCell = styled(BaseCell)`
@@ -23,32 +23,32 @@ const StyledCell = styled(BaseCell)`
     flex: 1 0 150px;
     padding-left: 32px;
   }
-`
+`;
 
 export function NameCell<T>({ pool, totalCakeInVault, userShares, tokenPairImage }: NameCellProps<T>) {
-  const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
-  const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey, totalStaked } = pool
-  const hasVaultShares = userShares?.gt(0)
+  const { t } = useTranslation();
+  const { isMobile } = useMatchBreakpoints();
+  const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey, totalStaked } = pool;
+  const hasVaultShares = userShares?.gt(0);
 
-  const stakingTokenSymbol = stakingToken.symbol
-  const earningTokenSymbol = earningToken.symbol
+  const stakingTokenSymbol = stakingToken.symbol;
+  const earningTokenSymbol = earningToken.symbol;
 
-  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
-  const isStaked = stakedBalance.gt(0)
+  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO;
+  const isStaked = stakedBalance.gt(0);
 
-  const showStakedTag = vaultKey ? hasVaultShares : isStaked
+  const showStakedTag = vaultKey ? hasVaultShares : isStaked;
 
-  const title: React.ReactNode = `${t('Earn')} ${earningTokenSymbol}`
-  const subtitle: React.ReactNode = `${t('Stake')} ${stakingTokenSymbol}`
-  const showSubtitle = sousId !== 0 || (sousId === 0 && !isMobile)
+  const title: React.ReactNode = `${t("Earn")} ${earningTokenSymbol}`;
+  const subtitle: React.ReactNode = `${t("Stake")} ${stakingTokenSymbol}`;
+  const showSubtitle = sousId !== 0 || (sousId === 0 && !isMobile);
 
   const isLoaded = useMemo(() => {
     if (pool.vaultKey) {
-      return totalCakeInVault && totalCakeInVault.gte(0)
+      return totalCakeInVault && totalCakeInVault.gte(0);
     }
-    return totalStaked && totalStaked.gte(0)
-  }, [pool.vaultKey, totalCakeInVault, totalStaked])
+    return totalStaked && totalStaked.gte(0);
+  }, [pool.vaultKey, totalCakeInVault, totalStaked]);
 
   return (
     <StyledCell role="cell">
@@ -57,8 +57,8 @@ export function NameCell<T>({ pool, totalCakeInVault, userShares, tokenPairImage
           {tokenPairImage}
           <CellContent>
             {showStakedTag && (
-              <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
-                {t('Staked')}
+              <Text fontSize="12px" bold color={isFinished ? "failure" : "secondary"} textTransform="uppercase">
+                {t("Staked")}
               </Text>
             )}
             <Text bold={!isMobile} small={isMobile}>
@@ -81,5 +81,5 @@ export function NameCell<T>({ pool, totalCakeInVault, userShares, tokenPairImage
         </>
       )}
     </StyledCell>
-  )
+  );
 }
