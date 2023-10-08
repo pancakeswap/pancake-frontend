@@ -2,7 +2,7 @@
   "extends": "@pancakeswap/tsconfig/base",
   "exclude": ["./dist/**"],
   "include": ["src", "test"],
-  "typeRoots": ["./typechain", "./node_modules/@types"],
+  "typeRoots": ["./node_modules/@types"],
   "compilerOptions": {
     "types": ["node", "jest"],
     "outDir": "./dist",

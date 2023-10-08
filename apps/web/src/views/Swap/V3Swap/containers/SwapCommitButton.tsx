@@ -136,6 +136,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     permitSignature: allowance.state === AllowanceState.ALLOWED ? allowance.permitSignature : undefined,
     onWallchainDrop,
     wallchainMasterInput,
+    statusWallchain,
   })
 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
