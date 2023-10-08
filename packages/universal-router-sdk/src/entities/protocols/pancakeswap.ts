@@ -1,4 +1,4 @@
-import { Pair, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
+import { TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
   RouteType,
@@ -6,7 +6,7 @@ import {
   SmartRouterTrade,
   StablePool,
   SwapRouter,
-  // getPoolAddress
+  getPoolAddress,
 } from '@pancakeswap/smart-router/evm'
 import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
@@ -79,8 +79,8 @@ export class PancakeSwapTrade implements Command {
           planner,
           trade as SmartRouterTrade<TradeType>,
           this.options,
-          routerMustCustody,
           payerIsUser,
+          routerMustCustody,
           performAggregatedSlippageCheck
         )
       }
@@ -312,9 +312,7 @@ async function addMixedSwap(
         inputToken = outputToken.wrapped
 
         const lastSectionInRoute = isLastSectionInRoute(i)
-        const recipientAddress = isLastSectionInRoute(i)
-          ? recipient
-          : (sections[i + 1][0] as unknown as Pair).liquidityToken.address
+        const recipientAddress = isLastSectionInRoute(i) ? recipient : getPoolAddress(sections[i + 1][0])
 
         const inAmount = i === 0 ? amountIn : BigInt(2) ** BigInt(255)
         const outAmount = !lastSectionInRoute ? 0n : amountOut
