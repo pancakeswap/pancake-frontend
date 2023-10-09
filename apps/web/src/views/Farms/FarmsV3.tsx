@@ -585,7 +585,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </Text>
                 <Flex>
                   <FinishedTextLink external color="failure" fontSize={['16px', null, '20px']} href="/migration">
-                    {t('migrate to v3 here.')}.
+                    {t('migrate to v3 here')}.
                   </FinishedTextLink>
                 </Flex>
               </FinishedTextContainer>
