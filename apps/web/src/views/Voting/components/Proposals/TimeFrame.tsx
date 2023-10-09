@@ -13,7 +13,7 @@ interface TimeFrameProps {
 }
 
 const getFormattedDate = (timestamp: number) => {
-  return dayjs(timestamp).format('MMM Do, YYYY HH:mm')
+  return dayjs.unix(timestamp).format('MMM Do, YYYY HH:mm')
 }
 
 const TimeFrame: React.FC<React.PropsWithChildren<TimeFrameProps>> = ({ startDate, endDate, proposalState }) => {
