@@ -20,7 +20,7 @@ const BurningCountDown: React.FC<React.PropsWithChildren<PropsType>> = ({ lockEn
   )
 
   const updateRemainingSeconds = useCallback(() => {
-    setRemainingSeconds(dayjs(burnDate).diff(dayjs(), 'seconds'))
+    setRemainingSeconds(burnDate.diff(dayjs(), 'seconds'))
   }, [burnDate])
 
   // Update every minute
