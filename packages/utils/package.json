@@ -7,7 +7,7 @@
   "private": true,
   "peerDependencies": {
     "@pancakeswap/localization": "workspace:*",
-    "dayjs": "^1.11.8",
+    "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
     "styled-components": "^6.0.7"
   },
