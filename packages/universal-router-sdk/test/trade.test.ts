@@ -10,7 +10,7 @@ import {
   Percent,
 } from '@pancakeswap/sdk'
 import { FeeOptions, Trade as V3Trade, Route as V3Route, Pool } from '@pancakeswap/v3-sdk'
-import { PoolType, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
+import { PoolType, SmartRouterTrade, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { parseEther, parseUnits, Address, WalletClient, zeroAddress } from 'viem'
 import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
 import { getPublicClient, getWalletClient } from './fixtures/clients'
@@ -620,7 +620,47 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(calldata).toMatchSnapshot()
     })
   })
-  describe.skip('multi-route', () => {})
+  describe('multi-route', () => {
+    it('should encode a multi-route exactInput v2 ETH-USDC & v3 ETH-USDC', async () => {
+      const amountIn = parseEther('1')
+      const v2Trade = buildV2Trade(
+        new V2Trade(
+          new V2Route([WETH_USDC_V2], ETHER, USDC),
+          CurrencyAmount.fromRawAmount(ETHER, amountIn),
+          TradeType.EXACT_INPUT
+        ),
+        [
+          {
+            type: PoolType.V2,
+            reserve0: WETH_USDC_V2.reserve0,
+            reserve1: WETH_USDC_V2.reserve1,
+          },
+        ]
+      )
+      const v3Trade = buildV3Trade(
+        await V3Trade.fromRoute(
+          new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
+          CurrencyAmount.fromRawAmount(ETHER, amountIn),
+          TradeType.EXACT_INPUT
+        ),
+        [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)]
+      )
+
+      const options = swapOptions({})
+      const trade: SmartRouterTrade<TradeType.EXACT_INPUT> = {
+        tradeType: TradeType.EXACT_INPUT,
+        inputAmount: CurrencyAmount.fromRawAmount(ETHER, amountIn * 2n),
+        outputAmount: CurrencyAmount.fromRawAmount(USDC, amountIn),
+        routes: [...v2Trade.routes, ...v3Trade.routes],
+        gasEstimate: 0n,
+        gasEstimateInUSD: CurrencyAmount.fromRawAmount(ETHER, amountIn),
+      }
+
+      const { calldata, value } = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, options)
+      expect(BigInt(value)).toEqual(amountIn * 2n)
+      expect(calldata).toMatchSnapshot()
+    })
+  })
 })
 
 describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', () => {
@@ -633,14 +673,26 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
   let USDC: ERC20Token
   let USDT: ERC20Token
   let BUSD: ERC20Token
+  let USDC_USDT_V2: Pair
+  let USDC_USDT_V3_LOW: Pool
   let WETH_USDC_V2: Pair
   let WETH_USDC_V3_MEDIUM: Pool
   let UNIVERSAL_ROUTER: Address
   let PERMIT2: Address
 
   beforeEach(async () => {
-    ;({ UNIVERSAL_ROUTER, PERMIT2, USDC, USDT, BUSD, ETHER, WETH_USDC_V2, WETH_USDC_V3_MEDIUM } =
-      await fixtureAddresses(chainId, liquidity))
+    ;({
+      UNIVERSAL_ROUTER,
+      PERMIT2,
+      USDC,
+      USDT,
+      BUSD,
+      ETHER,
+      WETH_USDC_V2,
+      WETH_USDC_V3_MEDIUM,
+      USDC_USDT_V2,
+      USDC_USDT_V3_LOW,
+    } = await fixtureAddresses(chainId, liquidity))
     wallet = getWalletClient({ chainId })
   })
 
@@ -718,6 +770,52 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       const { calldata, value } = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
+      expect(calldata).toMatchSnapshot()
+    })
+  })
+
+  describe('multi-route', () => {
+    it('should encode a multi-route exactOutput v2 USDT-USDC & v3 USDT-USDC & stable USDT-USDC', async () => {
+      const amountIn = parseUnits('1000', 6)
+      const v2Trade = buildV2Trade(
+        new V2Trade(
+          new V2Route([USDC_USDT_V2], USDT, USDC),
+          CurrencyAmount.fromRawAmount(USDT, amountIn),
+          TradeType.EXACT_INPUT
+        ),
+        [
+          {
+            type: PoolType.V2,
+            reserve0: USDC_USDT_V2.reserve0,
+            reserve1: USDC_USDT_V2.reserve1,
+          },
+        ]
+      )
+      const v3Trade = buildV3Trade(
+        await V3Trade.fromRoute(
+          new V3Route([USDC_USDT_V3_LOW], USDT, USDC),
+          CurrencyAmount.fromRawAmount(USDT, amountIn),
+          TradeType.EXACT_INPUT
+        ),
+        [convertPoolToV3Pool(USDC_USDT_V3_LOW)]
+      )
+
+      const stableTrade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [
+        await getStablePool(USDT, USDC, getPublicClient),
+      ])
+
+      const options = swapOptions({})
+      const trade: SmartRouterTrade<TradeType.EXACT_INPUT> = {
+        tradeType: TradeType.EXACT_INPUT,
+        inputAmount: CurrencyAmount.fromRawAmount(USDT, amountIn * 3n),
+        outputAmount: CurrencyAmount.fromRawAmount(USDC, amountIn),
+        routes: [...v2Trade.routes, ...v3Trade.routes, ...stableTrade.routes],
+        gasEstimate: 0n,
+        gasEstimateInUSD: CurrencyAmount.fromRawAmount(USDT, amountIn),
+      }
+      const { calldata, value } = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, options)
+
+      expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
     })
   })
