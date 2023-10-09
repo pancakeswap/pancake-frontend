@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
+import { getPathWithQueryPreserved } from '@pancakeswap/utils/clientRouter'
 
 export enum PositionManagerStatus {
   LIVE,
@@ -24,7 +25,12 @@ export function usePositionManagerStatus() {
       if (pmStatus === nextStatus) {
         return
       }
-      router.push(nextStatus === PositionManagerStatus.LIVE ? LIVE_ROUTE : FINISHED_ROUTE)
+      router.push(
+        getPathWithQueryPreserved(
+          router.asPath,
+          nextStatus === PositionManagerStatus.LIVE ? LIVE_ROUTE : FINISHED_ROUTE,
+        ),
+      )
     },
     [pmStatus, router],
   )
