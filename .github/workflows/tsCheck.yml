@@ -78,4 +78,4 @@ jobs:
           line-numbers: ${{steps.diff.outputs.lineNumbers}}
           output-behaviour: both
           comment-behaviour: edit
-          ts-config-path: ./apps/web/tsconfig.check.json
+          ts-config-path: ./apps/web/tsconfig.json

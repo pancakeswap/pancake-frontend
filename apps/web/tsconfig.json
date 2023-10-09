@@ -2,7 +2,7 @@
   "extends": "@pancakeswap/tsconfig/nextjs.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true,
