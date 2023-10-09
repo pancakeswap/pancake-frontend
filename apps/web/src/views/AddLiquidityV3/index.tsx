@@ -31,12 +31,12 @@ import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStable
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
 import { usePreviousValue } from '@pancakeswap/hooks'
-import { getAddress } from 'viem'
 
 import noop from 'lodash/noop'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
 import { resetMintState } from 'state/mint/actions'
+import { safeGetAddress } from 'utils'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
@@ -136,7 +136,7 @@ export function UniversalAddLiquidity({
       const isNATIVEOrWNATIVEOther =
         currencyIdOther !== undefined &&
         (currencyIdOther === NATIVE[chainId]?.symbol ||
-          (chainId !== undefined && getAddress(currencyIdOther) === WNATIVE[chainId]?.address))
+          (chainId !== undefined && safeGetAddress(currencyIdOther) === WNATIVE[chainId]?.address))
 
       if (isNATIVEOrWNATIVENew && isNATIVEOrWNATIVEOther) {
         return [currencyIdNew, undefined]

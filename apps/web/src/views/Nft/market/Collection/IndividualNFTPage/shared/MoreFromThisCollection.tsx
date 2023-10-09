@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import type SwiperCore from 'swiper'
 import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import useSWRImmutable from 'swr/immutable'
 import { Address } from 'wagmi'
 import { getNftsFromCollectionApi, getMarketDataForTokenIds } from 'state/nftMarket/helpers'
@@ -45,13 +45,13 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
   currentTokenName = '',
   title = <Trans>More from this collection</Trans>,
 }) => {
-  const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
+  const [swiperRef, setSwiperRef] = useState<SwiperCore | null>(null)
   const [activeIndex, setActiveIndex] = useState(1)
   const { isMobile, isMd, isLg } = useMatchBreakpoints()
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(collectionAddress)
 
-  const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
-  const checkSummedCollectionAddress = isAddress(collectionAddress) || collectionAddress
+  const isPBCollection = safeGetAddress(collectionAddress) === safeGetAddress(pancakeBunniesAddress)
+  const checkSummedCollectionAddress = safeGetAddress(collectionAddress) || collectionAddress
 
   const { data: collectionNfts } = useSWRImmutable<NftToken[]>(
     !isPBCollection && checkSummedCollectionAddress

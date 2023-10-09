@@ -44,7 +44,7 @@ import {
   useTokenTransactionsSWR,
 } from 'state/info/hooks'
 import { styled } from 'styled-components'
-import { getBlockExploreLink, isAddress } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
@@ -175,13 +175,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     fontSize={isXs || isSm ? '24px' : '40px'}
                     id="info-token-name-title"
                   >
-                    {(tokenData.address && subgraphTokenName[isAddress(tokenData.address) || undefined]) ||
-                      tokenData.name}
+                    {(tokenData.address && subgraphTokenName[safeGetAddress(tokenData.address)]) || tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                    (
-                    {(tokenData.address && subgraphTokenSymbol[isAddress(tokenData.address) || undefined]) ??
-                      tokenData.symbol}
+                    ({(tokenData.address && subgraphTokenSymbol[safeGetAddress(tokenData.address)]) ?? tokenData.symbol}
                     )
                   </Text>
                 </Flex>

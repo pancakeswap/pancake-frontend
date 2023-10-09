@@ -1,4 +1,4 @@
-import { Address, parseUnits } from 'viem'
+import { Address, isAddress, parseUnits } from 'viem'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
@@ -9,7 +9,6 @@ import { useErc721CollectionContract, useNftMarketContract } from 'hooks/useCont
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
 import { NftToken } from 'state/nftMarket/types'
-import { isAddress } from 'utils'
 import { useGetLowestPriceFromNft } from 'views/Nft/market/hooks/useGetLowestPrice'
 import ApproveAndConfirmStage from '../shared/ApproveAndConfirmStage'
 import ConfirmStage from '../shared/ConfirmStage'
@@ -94,7 +93,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
   const collectionContract = useErc721CollectionContract(nftToSell.collectionAddress)
   const nftMarketContract = useNftMarketContract()
 
-  const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)
+  const isInvalidTransferAddress = !transferAddress || (transferAddress.length > 0 && !isAddress(transferAddress))
 
   const { lowestPrice } = useGetLowestPriceFromNft(nftToSell)
 

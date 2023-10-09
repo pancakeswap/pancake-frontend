@@ -11,7 +11,7 @@ import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 
 import SwapWarningModal from '../components/SwapWarningModal'
 
@@ -41,7 +41,7 @@ export default function useWarningImport() {
   const importTokensNotInDefault = useMemo(() => {
     return !isWrongNetwork && urlLoadedTokens && !!loadedTokenList
       ? urlLoadedTokens.filter((token: Token) => {
-          const checksummedAddress = isAddress(token.address) || ''
+          const checksummedAddress = safeGetAddress(token.address) || ''
 
           return !(checksummedAddress in defaultTokens) && token.chainId === chainId
         })

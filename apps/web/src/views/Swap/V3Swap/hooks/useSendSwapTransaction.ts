@@ -10,7 +10,7 @@ import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useMemo } from 'react'
 import { useSwapState } from 'state/swap/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { calculateGasMargin, isAddress } from 'utils'
+import { calculateGasMargin, safeGetAddress } from 'utils'
 import { basisPointsToPercent } from 'utils/exchange'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
@@ -167,7 +167,7 @@ export default function useSendSwapTransaction(
             } ${outputAmount} ${outputSymbol}`
 
             const recipientAddressText =
-              recipientAddress && isAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
+              recipientAddress && safeGetAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
 
             const withRecipient = recipient === account ? base : `${base} to ${recipientAddressText}`
 

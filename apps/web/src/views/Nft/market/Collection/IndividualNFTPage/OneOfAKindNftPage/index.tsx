@@ -20,7 +20,7 @@ import { useCompleteNft } from '../../../hooks/useCompleteNft'
 import ManageNFTsCard from '../shared/ManageNFTsCard'
 
 interface IndividualNFTPageProps {
-  collectionAddress: Address
+  collectionAddress: Address | undefined
   tokenId: string
 }
 
