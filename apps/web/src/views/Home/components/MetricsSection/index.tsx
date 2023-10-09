@@ -86,7 +86,7 @@ const Stats = () => {
           value={addressCount}
           description={t('in the last 30 days')}
         />
-        <MetricsCard title={t('Total transactions:')} value={txCount} description={t('in the last 30 days')} />
+        <MetricsCard title={t('Total Trades:')} value={txCount} description={t('in the last 30 days')} />
         <MetricsCard title={t('Total Value Locked:')} value={tvl} description={t('in the last 30 days')} prefix="$" />
       </Flex>
       <ChainTags />
