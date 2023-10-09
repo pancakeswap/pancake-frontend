@@ -9,6 +9,7 @@ import {
   SwapRouter,
   getPoolAddress,
 } from '@pancakeswap/smart-router/evm'
+import { Address } from 'viem'
 import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'
@@ -322,7 +323,7 @@ async function addMixedSwap(
           const pathStr = SmartRouter.encodeMixedRouteToPath(newRoute, !isExactIn)
           if (isExactIn) {
             planner.addCommand(CommandType.V3_SWAP_EXACT_IN, [
-              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as `0x${string}`),
+              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as Address),
               inAmount, // amountIn
               outAmount, // amountOut
               pathStr, // path
@@ -330,7 +331,7 @@ async function addMixedSwap(
             ])
           } else {
             planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, [
-              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as `0x${string}`),
+              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as Address),
               outAmount, // amountIn
               inAmount, // amountOut
               pathStr, // path
