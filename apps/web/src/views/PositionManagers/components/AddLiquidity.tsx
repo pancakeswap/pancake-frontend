@@ -3,17 +3,8 @@ import { styled } from 'styled-components'
 import { MANAGER } from '@pancakeswap/position-managers'
 import { Address } from 'viem'
 import { Currency, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import {
-  Button,
-  CurrencyInput,
-  Flex,
-  ModalV2,
-  RowBetween,
-  Text,
-  useToast,
-  LinkExternal,
-  Skeleton,
-} from '@pancakeswap/uikit'
+import { Button, Flex, ModalV2, RowBetween, Text, useToast, LinkExternal, Skeleton } from '@pancakeswap/uikit'
+import { CurrencyInput } from 'components/CurrencyInput'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'

@@ -1,6 +1,7 @@
 import { memo, useMemo, useState, useCallback } from 'react'
 import { Address } from 'viem'
-import { ModalV2, RowBetween, Text, Flex, Button, CurrencyLogo, Box, useToast } from '@pancakeswap/uikit'
+import { ModalV2, RowBetween, Text, Flex, Button, Box, useToast } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
