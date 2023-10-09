@@ -235,7 +235,7 @@ export const AddLiquidity = memo(function AddLiquidity({
           </RowBetween>
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>
-            {apr || !aprDataInfo.isLoading ? (
+            {apr && !aprDataInfo.isLoading ? (
               <Text color="text">{`${apr}%`}</Text>
             ) : (
               <Skeleton width={50} height={20} />

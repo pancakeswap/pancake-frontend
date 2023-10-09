@@ -27,7 +27,7 @@ export const YieldInfo = memo(function YieldInfo({ apr, isAprLoading, withCakeRe
       <RowBetween>
         <Text>{t('APR')}:</Text>
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-          {apr || !isAprLoading ? (
+          {apr && !isAprLoading ? (
             <AprText color="success" bold>
               {`${apr}%`}
             </AprText>
