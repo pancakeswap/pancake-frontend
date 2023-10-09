@@ -1,7 +1,7 @@
-import { Currency, CurrencyAmount, ERC20Token, Pair, Token, Trade, TradeType, Trade as V2Trade } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Token, TradeType, Trade as V2Trade } from '@pancakeswap/sdk'
 import {
-  PoolType,
   RouteType,
+  SmartRouter,
   SmartRouterTrade,
   StablePool,
   StableSwap,
@@ -9,11 +9,7 @@ import {
   V3Pool,
 } from '@pancakeswap/smart-router/evm'
 import { Pool, Trade as V3Trade } from '@pancakeswap/v3-sdk'
-import { convertPairToV2Pool, convertPoolToV3Pool, convertV2PoolToSDKPool } from '../fixtures/address'
-
-function isStablePool(pool: V2Pool | V3Pool | StablePool): pool is StablePool {
-  return pool.type === PoolType.STABLE && pool.balances.length >= 2
-}
+import { convertPairToV2Pool, convertPoolToV3Pool } from '../fixtures/address'
 
 export const buildV2Trade = (
   v2Trade: V2Trade<Currency, Currency, TradeType>,
@@ -124,7 +120,7 @@ export const buildMixedRouteTrade = async <
       ;[outputAmount] = await pool.getOutputAmount(input)
       path.push(outputAmount.currency)
       amounts.push(outputAmount)
-    } else if (isStablePool(pool)) {
+    } else if (SmartRouter.isStablePool(pool)) {
       const { amplifier, balances, fee } = pool
       outputAmount = StableSwap.getSwapOutput({
         amplifier,
