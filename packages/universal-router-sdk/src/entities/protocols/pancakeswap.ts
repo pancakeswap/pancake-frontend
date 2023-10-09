@@ -1,6 +1,7 @@
 import { TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
+  PoolType,
   RouteType,
   SmartRouter,
   SmartRouterTrade,
@@ -312,7 +313,7 @@ async function addMixedSwap(
         inputToken = outputToken.wrapped
 
         const lastSectionInRoute = isLastSectionInRoute(i)
-        const recipientAddress = isLastSectionInRoute(i) ? recipient : getPoolAddress(sections[i + 1][0])
+        const recipientAddress = isLastSectionInRoute(i) ? recipient : ROUTER_AS_RECIPIENT
 
         const inAmount = i === 0 ? amountIn : BigInt(2) ** BigInt(255)
         const outAmount = !lastSectionInRoute ? 0n : amountOut
@@ -321,7 +322,7 @@ async function addMixedSwap(
           const pathStr = SmartRouter.encodeMixedRouteToPath(newRoute, !isExactIn)
           if (isExactIn) {
             planner.addCommand(CommandType.V3_SWAP_EXACT_IN, [
-              recipientAddress,
+              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as `0x${string}`),
               inAmount, // amountIn
               outAmount, // amountOut
               pathStr, // path
@@ -329,7 +330,7 @@ async function addMixedSwap(
             ])
           } else {
             planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, [
-              recipientAddress,
+              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as `0x${string}`),
               outAmount, // amountIn
               inAmount, // amountOut
               pathStr, // path
@@ -340,7 +341,7 @@ async function addMixedSwap(
           const path = newRoute.path.map((token) => token.wrapped.address)
           if (isExactIn) {
             planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [
-              isLastSectionInRoute(i) ? recipient : ROUTER_AS_RECIPIENT,
+              recipientAddress,
               inAmount, // amountIn
               outAmount, // amountOutMin
               path, // path
@@ -348,7 +349,7 @@ async function addMixedSwap(
             ])
           } else {
             planner.addCommand(CommandType.V2_SWAP_EXACT_OUT, [
-              isLastSectionInRoute(i) ? recipient : ROUTER_AS_RECIPIENT,
+              recipientAddress,
               outAmount, // amountIn
               inAmount, // amountOutMin
               path, // path
