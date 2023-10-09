@@ -52,7 +52,7 @@ const IfoVestingFooter: React.FC<React.PropsWithChildren<IfoVestingFooterProps>>
   const releaseDate = useMemo(() => {
     const currentTimeStamp = getNow();
     const date = vestingStartTime === 0 ? currentTimeStamp : ((vestingStartTime || 0) + duration) * 1000;
-    return dayjs.unix(date).format("MM/dd/yyyy HH:mm");
+    return dayjs.unix(date).format("MM/dd/YYYY HH:mm");
   }, [vestingStartTime, duration, getNow]);
 
   return (

@@ -19,5 +19,5 @@ export function StakedLimitEndOn({ lockPeriod, poolEndDay }: { lockPeriod: numbe
 
   const endTime = exceedPoolEndDay ? poolEndDay : lockEndDay
 
-  return <>{formatTime((endTime * 86400 + 43200) * 1_000)}</>
+  return <>{formatTime(endTime * 86400 + 43200)}</>
 }
