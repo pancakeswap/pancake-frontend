@@ -536,7 +536,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         CurrencyAmount.fromRawAmount(ETHER, amountOut),
         TradeType.EXACT_OUTPUT
       )
-      const v3Pool: V3Pool[] = [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM), convertPoolToV3Pool(USDC_USDT_V3_LOW)]
+      const v3Pool: V3Pool[] = [convertPoolToV3Pool(USDC_USDT_V3_LOW), convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)]
 
       const trade = buildV3Trade(v3Trade, v3Pool)
       const options = swapOptions({})
@@ -661,7 +661,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
 
       const { calldata, value } = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, options)
 
-      expect(BigInt(value)).toEqual(amountIn)
+      expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
     })
     it('should encodes a mixed exactInput USDT-stable->USDC-v2->ETH swap', async () => {
@@ -680,7 +680,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
 
       const { calldata, value } = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, options)
 
-      expect(BigInt(value)).toEqual(amountIn)
+      expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
     })
     it('should encodes a mixed exactInput ETH-v2->USDC-stable->USDT swap', async () => {
@@ -726,7 +726,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     const amountIn = parseUnits('1000', 6)
 
     const stablePool = await getStablePool(USDT, USDC, getPublicClient)
-    const trade = buildStableTrade(USDT, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
+    const trade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
 
     const options = swapOptions({})
 
@@ -739,7 +739,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     const amountIn = parseUnits('1000', 6)
 
     const stablePool = await getStablePool(USDT, USDC, getPublicClient)
-    const trade = buildStableTrade(USDT, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
+    const trade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
 
     const feeOptions: FeeOptions = {
       recipient: zeroAddress,
@@ -756,7 +756,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     const amountIn = parseUnits('1000', 6)
 
     const stablePool = await getStablePool(USDT, USDC, getPublicClient)
-    const trade = buildStableTrade(USDT, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
+    const trade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
 
     const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
     const signature = await signPermit(permit, wallet, PERMIT2)
@@ -779,7 +779,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     const USDT_USDC_POOL = await getStablePool(USDT, USDC, getPublicClient)
     const USDC_BUSD_POOL = await getStablePool(USDC, BUSD, getPublicClient)
 
-    const trade = buildStableTrade(USDT, CurrencyAmount.fromRawAmount(USDT, amountIn), [USDT_USDC_POOL, USDC_BUSD_POOL])
+    const trade = buildStableTrade(USDT, BUSD, CurrencyAmount.fromRawAmount(USDT, amountIn), [
+      USDT_USDC_POOL,
+      USDC_BUSD_POOL,
+    ])
 
     const options = swapOptions({})
     const { calldata, value } = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, options)

@@ -40,12 +40,12 @@ export const buildV2Trade = (
 
 export const buildStableTrade = (
   input: Currency,
+  output: Currency,
   amountIn: CurrencyAmount<Currency>,
   stablePools: StablePool[]
 ): SmartRouterTrade<TradeType> => {
-  // @notice: just set same amountOut as amountIn, for easy fixture
-  const amountOut = amountIn
-
+  // @notice: just set same amountOut quantity as amountIn, for easy fixture
+  const amountOut = CurrencyAmount.fromFractionalAmount(output, amountIn.numerator, amountIn.denominator)
   const path: Currency[] = [input.wrapped]
 
   for (const pool of stablePools) {
@@ -118,19 +118,20 @@ export const buildMixedRouteTrade = async <
   amounts.push(amount.wrapped)
 
   for (const pool of pools) {
+    const input = amounts[amounts.length - 1]
     let outputAmount: CurrencyAmount<Token>
     if (pool instanceof Pair || pool instanceof Pool) {
-      ;[outputAmount] = await pool.getOutputAmount(amounts[amounts.length - 1])
+      ;[outputAmount] = await pool.getOutputAmount(input)
       path.push(outputAmount.currency)
       amounts.push(outputAmount)
     } else if (isStablePool(pool)) {
       const { amplifier, balances, fee } = pool
       outputAmount = StableSwap.getSwapOutput({
         amplifier,
-        amount,
+        amount: input,
         balances,
         fee,
-        outputCurrency: balances[1].currency,
+        outputCurrency: balances[0].currency.equals(input.currency) ? balances[1].currency : balances[0].currency,
       }).wrapped
       path.push(outputAmount.currency)
       amounts.push(outputAmount)
@@ -144,7 +145,7 @@ export const buildMixedRouteTrade = async <
   return {
     tradeType,
     inputAmount: amount,
-    outputAmount: amount,
+    outputAmount: outputAmount.wrapped,
     routes: [
       {
         type: RouteType.MIXED,
