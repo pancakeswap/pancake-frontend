@@ -9,7 +9,7 @@ import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
 import { PancakeSwapOptions, SwapRouterConfig } from './utils/types'
 
-export abstract class PancakeUinversalSwapRouter {
+export abstract class PancakeUniversalSwapRouter {
   /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trades to produce call parameters for
@@ -38,7 +38,7 @@ export abstract class PancakeUinversalSwapRouter {
       : 0n
 
     trade.encode(planner, { allowRevert: false })
-    return PancakeUinversalSwapRouter.encodePlan(planner, nativeCurrencyValue, {
+    return PancakeUniversalSwapRouter.encodePlan(planner, nativeCurrencyValue, {
       deadline: options.deadlineOrPreviousBlockhash
         ? BigInt(options.deadlineOrPreviousBlockhash.toString())
         : undefined,
