@@ -5,7 +5,7 @@ import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 import { isAddress } from 'utils'
 
-import { PancakeUinversalSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
+import { PancakeUniversalSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { Address, Hex } from 'viem'
@@ -46,7 +46,7 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    const methodParamaters = PancakeUinversalSwapRouter.swapERC20CallParameters(trade, {
+    const methodParamaters = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, {
       fee: feeOptions,
       recipient,
       inputTokenPermit: permitSignature,
