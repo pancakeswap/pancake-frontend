@@ -4,7 +4,7 @@ import { useInterval } from '@pancakeswap/hooks'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { UNLOCK_FREE_DURATION } from '@pancakeswap/pools'
 import dayjs from 'dayjs'
-import { convertTimeToSeconds } from 'utils/timeHelper'
+import { convertTimeToMilliseconds } from 'utils/timeHelper'
 
 interface PropsType {
   lockEndTime: string
@@ -15,7 +15,7 @@ const BurningCountDown: React.FC<React.PropsWithChildren<PropsType>> = ({ lockEn
 
   // 1 week after lockEndTime
   const burnDate = useMemo(
-    () => dayjs.unix(convertTimeToSeconds(lockEndTime)).add(UNLOCK_FREE_DURATION, 'seconds'),
+    () => dayjs(convertTimeToMilliseconds(lockEndTime)).add(UNLOCK_FREE_DURATION, 'seconds'),
     [lockEndTime],
   )
 

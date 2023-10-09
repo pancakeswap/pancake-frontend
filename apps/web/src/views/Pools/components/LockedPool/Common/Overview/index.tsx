@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useTranslation } from '@pancakeswap/localization'
 import _toNumber from 'lodash/toNumber'
-import { convertTimeToSeconds } from 'utils/timeHelper'
+import { convertTimeToMilliseconds } from 'utils/timeHelper'
 import formatSecondsToWeeks from '../../../utils/formatSecondsToWeeks'
 import TextRow from './TextRow'
 import BalanceRow from './BalanceRow'
@@ -47,11 +47,11 @@ const Overview: React.FC<React.PropsWithChildren<OverviewPropsType>> = ({
   const now = dayjs()
 
   const unlockDate = newDuration
-    ? (Number(lockStartTime) ? dayjs.unix(convertTimeToSeconds(lockStartTime)) : now)
+    ? (Number(lockStartTime) ? dayjs(convertTimeToMilliseconds(lockStartTime)) : now)
         .add(newDuration, 'seconds')
         .toDate()
     : Number(lockEndTime)
-    ? new Date(convertTimeToSeconds(lockEndTime))
+    ? new Date(convertTimeToMilliseconds(lockEndTime))
     : now.add(duration, 'seconds').toDate()
 
   const formattediCake = useMemo(() => {

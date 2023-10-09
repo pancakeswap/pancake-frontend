@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 
 export const secondsToDay = (s: number) => Math.floor(s / (24 * 60 * 60))
 
-export const convertTimeToSeconds = (time: string): number => {
+export const convertTimeToMilliseconds = (time: string): number => {
   return parseInt(time) * 1000
 }
 
