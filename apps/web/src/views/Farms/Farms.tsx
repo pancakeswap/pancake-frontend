@@ -221,7 +221,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) =>
           farm.userData &&
           (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+            new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0)),
       ),
     [activeFarms],
   )
@@ -232,7 +232,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) =>
           farm.userData &&
           (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+            new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0)),
       ),
     [inactiveFarms],
   )
@@ -243,7 +243,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) =>
           farm.userData &&
           (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+            new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0)),
       ),
     [archivedFarms],
   )
@@ -256,16 +256,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
 
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
-        const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(
-              chainId,
-              new BigNumber(farm.poolWeight),
-              cakePrice,
-              totalLiquidity,
-              farm.lpAddress,
-              regularCakePerBlock,
-            )
-          : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+        const { cakeRewardsApr, lpRewardsApr } =
+          isActive && chainId
+            ? getFarmApr(
+                chainId,
+                new BigNumber(farm?.poolWeight ?? 0),
+                cakePrice,
+                totalLiquidity,
+                farm.lpAddress,
+                regularCakePerBlock,
+              )
+            : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
       })
@@ -282,7 +283,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
   const chosenFarms = useMemo(() => {
-    let chosenFs = []
+    let chosenFs: FarmWithStakedValue[] = []
     if (isActive) {
       chosenFs = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
     }
@@ -300,9 +301,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       const stakedBoostedOrStableSwapFarms = chosenFs.filter(
         (farm) =>
+          farm &&
           farm.userData &&
           (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+            new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0)),
       )
 
       chosenFs = stakedOnly ? farmsList(stakedBoostedOrStableSwapFarms) : farmsList(boostedOrStableSwapFarms)
@@ -329,7 +331,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
       switch (sortOption) {
         case 'apr':
-          return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr + farm.lpRewardsApr, 'desc')
+          return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.apr) + Number(farm.lpRewardsApr), 'desc')
         case 'multiplier':
           return orderBy(
             farms,
