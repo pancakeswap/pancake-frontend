@@ -11,7 +11,7 @@ import {
   InferFunctionName,
   WriteContractParameters,
 } from 'viem'
-import { EstimateContractGasParameters } from 'viem/dist/types/actions/public/estimateContractGas'
+import type { EstimateContractGasParameters } from 'viem'
 import { useWalletClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'
