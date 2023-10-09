@@ -13,12 +13,6 @@
       "@pancakeswap/uikit/*": ["../../packages/uikit/src/*"]
     }
   },
-  "exclude": [
-    "**/node_modules",
-    "**/.*/",
-    // This is the path to the generated types from removed typechain
-    "**/config/abi/types/",
-    "**/abis/types/*.ts"
-  ],
+  "exclude": ["**/node_modules", "**/.*/", "**/config/abi/types/", "**/abis/types/*.ts"],
   "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"]
 }
