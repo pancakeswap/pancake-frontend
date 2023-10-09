@@ -181,7 +181,7 @@ const fetchDerivedPriceData = async (
   const endTimestamp = dayjs()
   const endTimestampUnix = endTimestamp.unix()
   const startTimestamp = endTimestamp.subtract(getSkipDaysToStart(timeWindow), 'days').startOf('hour').unix()
-  const timestamps = []
+  const timestamps: number[] = []
   let time = startTimestamp
   if (!SWAP_INFO_BY_CHAIN[chainId][protocol0] || !SWAP_INFO_BY_CHAIN[chainId][protocol1]) {
     return null
