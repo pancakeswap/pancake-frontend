@@ -40,6 +40,10 @@ export function computeAllRoutes(input: Currency, output: Currency, candidatePoo
       }
 
       const currentTokenOut = getOutputCurrency(curPool, previousCurrencyOut)
+      if (currencyIn.wrapped.equals(currentTokenOut.wrapped)) {
+        // eslint-disable-next-line
+        continue
+      }
 
       currentRoute.push(curPool)
       poolsUsed[i] = true
