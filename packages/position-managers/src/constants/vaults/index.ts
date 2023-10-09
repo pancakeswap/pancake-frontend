@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 import { PCSDuoTokenVaultConfig, VaultConfig } from '../../types'
 import { SupportedChainId } from '../supportedChains'
