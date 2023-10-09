@@ -35,6 +35,7 @@ export const signPermit = async (permit: PermitSingle, wallet: WalletClient, per
   const { domain, types, values } = AllowanceTransfer.getPermitData(permit, permit2Address, chainId)
 
   return wallet.signTypedData({
+    account: wallet.account!,
     domain,
     types,
     primaryType: 'PermitSingle',
