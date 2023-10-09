@@ -73,6 +73,9 @@ export function useCallWithGasPrice() {
       methodArgs?: Args extends never ? undefined : Args,
       overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
     ): Promise<SendTransactionResult> => {
+      if (!walletClient) {
+        throw new Error('No valid wallet connect')
+      }
       const { gas: gas_, ...overrides_ } = overrides || {}
       let gas = gas_
       if (!gas) {
