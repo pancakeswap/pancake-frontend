@@ -646,6 +646,9 @@ describe('PancakeSwap Universal Router Trade', () => {
         [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)]
       )
 
+      v2Trade.routes[0].percent = 50
+      v3Trade.routes[0].percent = 50
+
       const options = swapOptions({})
       const trade: SmartRouterTrade<TradeType.EXACT_INPUT> = {
         tradeType: TradeType.EXACT_INPUT,
@@ -803,6 +806,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       const stableTrade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [
         await getStablePool(USDT, USDC, getPublicClient, liquidity),
       ])
+
+      v2Trade.routes[0].percent = 30
+      v3Trade.routes[0].percent = 30
+      stableTrade.routes[0].percent = 40
 
       const options = swapOptions({})
       const trade: SmartRouterTrade<TradeType.EXACT_INPUT> = {
