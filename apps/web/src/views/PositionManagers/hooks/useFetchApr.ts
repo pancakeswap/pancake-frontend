@@ -39,7 +39,7 @@ export const useFetchApr = (): AprData => {
         const result: AprDataInfo[] = await response.json()
         return result
       } catch (error) {
-        console.log(`Fetch APR API: ${error}`)
+        console.error(`Fetch APR API: ${error}`)
         return []
       }
     },
@@ -49,5 +49,5 @@ export const useFetchApr = (): AprData => {
     },
   )
 
-  return { data, isLoading, refetch }
+  return { data: data ?? [], isLoading, refetch }
 }
