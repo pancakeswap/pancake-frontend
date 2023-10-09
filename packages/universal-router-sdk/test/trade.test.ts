@@ -700,7 +700,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     it('should encodes a mixed exactInput USDT-stable->USDC-v3->ETH swap', async () => {
       const amountIn = parseUnits('1000', 6)
 
-      const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+      const stablePool = await getStablePool(USDT, USDC, getPublicClient, liquidity)
 
       const trade = await buildMixedRouteTrade(
         USDT,
@@ -719,7 +719,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     it('should encodes a mixed exactInput USDT-stable->USDC-v2->ETH swap', async () => {
       const amountIn = parseUnits('1000', 6)
 
-      const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+      const stablePool = await getStablePool(USDT, USDC, getPublicClient, liquidity)
 
       const trade = await buildMixedRouteTrade(
         USDT,
@@ -738,7 +738,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     it('should encodes a mixed exactInput ETH-v2->USDC-stable->USDT swap', async () => {
       const amountIn = parseEther('1')
 
-      const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+      const stablePool = await getStablePool(USDT, USDC, getPublicClient, liquidity)
 
       const trade = await buildMixedRouteTrade(
         ETHER,
@@ -757,7 +757,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     it('should encodes a mixed exactInput ETH-v3->USDC-stable->USDT swap', async () => {
       const amountIn = parseEther('1')
 
-      const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+      const stablePool = await getStablePool(USDT, USDC, getPublicClient, liquidity)
 
       const trade = await buildMixedRouteTrade(
         ETHER,
@@ -801,7 +801,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       )
 
       const stableTrade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [
-        await getStablePool(USDT, USDC, getPublicClient),
+        await getStablePool(USDT, USDC, getPublicClient, liquidity),
       ])
 
       const options = swapOptions({})
@@ -823,7 +823,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
   it('should encode a single exactInput USDT->USDC swap', async () => {
     const amountIn = parseUnits('1000', 6)
 
-    const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+    const stablePool = await getStablePool(USDT, USDC, getPublicClient, liquidity)
     const trade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
 
     const options = swapOptions({})
@@ -836,7 +836,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
   it('should encode a single exactInput USDT->USDC swap, with fee', async () => {
     const amountIn = parseUnits('1000', 6)
 
-    const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+    const stablePool = await getStablePool(USDT, USDC, getPublicClient, liquidity)
     const trade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
 
     const feeOptions: FeeOptions = {
@@ -853,7 +853,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
   it('should encode a single exactInput USDT->USDC swap, with permit2', async () => {
     const amountIn = parseUnits('1000', 6)
 
-    const stablePool = await getStablePool(USDT, USDC, getPublicClient)
+    const stablePool = await getStablePool(USDT, USDC, getPublicClient, liquidity)
     const trade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
 
     const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
@@ -874,7 +874,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
   it('should encode a exactInput USDT->USDC->BUSD swap', async () => {
     const amountIn = parseUnits('1000', 6)
 
-    const USDT_USDC_POOL = await getStablePool(USDT, USDC, getPublicClient)
+    const USDT_USDC_POOL = await getStablePool(USDT, USDC, getPublicClient, liquidity)
     const USDC_BUSD_POOL = await getStablePool(USDC, BUSD, getPublicClient)
 
     const trade = buildStableTrade(USDT, BUSD, CurrencyAmount.fromRawAmount(USDT, amountIn), [

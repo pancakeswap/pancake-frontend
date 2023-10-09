@@ -31,7 +31,8 @@ const fixtureTokensAddresses = (chainId: ChainId) => {
 export const getStablePool = async (
   tokenA: ERC20Token,
   tokenB: ERC20Token,
-  provider: Provider
+  provider: Provider,
+  liquidity?: bigint
 ): Promise<StablePool> => {
   const pools = await SmartRouter.getStableCandidatePools({
     currencyA: tokenA,
@@ -40,8 +41,14 @@ export const getStablePool = async (
   })
 
   if (!pools.length) throw new ReferenceError(`No Stable Pool found with token ${tokenA.symbol}/${tokenB.symbol}`)
+  const stablePool = pools[0] as StablePool
 
-  return pools[0]
+  if (liquidity) {
+    stablePool.balances[0] = CurrencyAmount.fromRawAmount(stablePool.balances[0].currency, liquidity)
+    stablePool.balances[1] = CurrencyAmount.fromRawAmount(stablePool.balances[1].currency, liquidity)
+  }
+
+  return stablePool
 }
 
 const getPair = (tokenA: ERC20Token, tokenB: ERC20Token, liquidity?: bigint) => {
