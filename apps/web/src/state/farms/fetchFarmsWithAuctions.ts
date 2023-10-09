@@ -59,7 +59,7 @@ const fetchFarmsWithAuctions = async (
     const currentAuctionEndDate = dayjs().subtract(secondsSinceEnd, 'seconds')
     return {
       winnerFarms,
-      auctionHostingEndDate: dayjs(currentAuctionEndDate).add(FARM_AUCTION_HOSTING_IN_SECONDS, 'days').toJSON(),
+      auctionHostingEndDate: currentAuctionEndDate.add(FARM_AUCTION_HOSTING_IN_SECONDS, 'seconds').toJSON(),
     }
   }
 
