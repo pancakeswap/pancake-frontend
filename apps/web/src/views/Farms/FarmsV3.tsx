@@ -43,10 +43,9 @@ import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
+import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
-import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
-import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Table from './components/FarmTable/FarmTable'
@@ -151,7 +150,6 @@ const StyledImage = styled(Image)`
 `
 
 const FinishedTextContainer = styled(Flex)`
-  padding-bottom: 32px;
   flex-direction: column;
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
@@ -455,17 +453,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 
-  const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
-
   return (
     <FarmsV3Context.Provider value={providerValue}>
       <PageHeader>
         <Flex flexDirection="column">
-          {isMigrationSupported && (
-            <Box m="24px 0">
-              <FarmV3MigrationBanner />
-            </Box>
-          )}
           <FarmFlexWrapper justifyContent="space-between">
             <Box style={{ flex: '1 1 100%' }}>
               <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
@@ -566,22 +557,38 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </LabelWrapper>
           </FilterContainer>
         </ControlContainer>
-        {isInactive && chainId === ChainId.BSC && (
-          <FinishedTextContainer>
-            <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
-              {t("Don't see the farm you are staking?")}
-            </Text>
-            <Flex>
-              <FinishedTextLink
-                external
-                color="failure"
-                fontSize={['16px', null, '20px']}
-                href="https://v1-farms.pancakeswap.finance/farms/history"
-              >
-                {t('check out v1 farms')}.
-              </FinishedTextLink>
-            </Flex>
-          </FinishedTextContainer>
+        {isInactive && (
+          <Box mb="32px">
+            {chainId === ChainId.BSC && (
+              <FinishedTextContainer>
+                <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
+                  {t("Don't see the farm you are staking?")}
+                </Text>
+                <Flex>
+                  <FinishedTextLink
+                    external
+                    color="failure"
+                    fontSize={['16px', null, '20px']}
+                    href="https://v1-farms.pancakeswap.finance/farms/history"
+                  >
+                    {t('check out v1 farms')}.
+                  </FinishedTextLink>
+                </Flex>
+              </FinishedTextContainer>
+            )}
+            {V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
+              <FinishedTextContainer>
+                <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
+                  {t('Unstaking from v2 farm?')}
+                </Text>
+                <Flex>
+                  <FinishedTextLink external color="failure" fontSize={['16px', null, '20px']} href="/migration">
+                    {t('migrate to v3 here.')}.
+                  </FinishedTextLink>
+                </Flex>
+              </FinishedTextContainer>
+            )}
+          </Box>
         )}
 
         {!isLoading && // FarmV3 initial data will be slower, wait for it loads for now to prevent showing the v2 farm from config and then v3 pop up later

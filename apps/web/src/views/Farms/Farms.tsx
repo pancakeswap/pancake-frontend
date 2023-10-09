@@ -35,8 +35,6 @@ import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
-import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
-import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 
 import { V2Farm } from './FarmsV3'
@@ -379,17 +377,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 
-  const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
-
   return (
     <FarmsContext.Provider value={providerValue}>
       <PageHeader>
         <Flex flexDirection="column">
-          {isMigrationSupported && (
-            <Box m="24px 0">
-              <FarmV3MigrationBanner />
-            </Box>
-          )}
           <FarmFlexWrapper justifyContent="space-between">
             <Box>
               <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">

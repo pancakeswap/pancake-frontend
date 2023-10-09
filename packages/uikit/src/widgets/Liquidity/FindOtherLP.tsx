@@ -16,6 +16,11 @@ export function FindOtherLP() {
           {t("Find other LP tokens")}
         </Button>
       </Link>
+      <Link style={{ marginTop: "8px" }} href="/migration" passHref>
+        <Button id="migration-link" variant="secondary" scale="sm">
+          {t("Migrate to V3")}
+        </Button>
+      </Link>
     </AtomBox>
   );
 }
