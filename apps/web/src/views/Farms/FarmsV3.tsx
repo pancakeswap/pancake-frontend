@@ -246,8 +246,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const userDataReady =
     !account ||
     (!!account &&
-      (supportedChainIdV2.includes(chainId) ? v2UserDataLoaded : true) &&
-      (supportedChainIdV3.includes(chainId) ? v3UserDataLoaded : true))
+      (chainId && supportedChainIdV2.includes(chainId) ? v2UserDataLoaded : true) &&
+      (chainId && supportedChainIdV3.includes(chainId) ? v3UserDataLoaded : true))
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
   const [v3FarmOnly, setV3FarmOnly] = useState(false)
@@ -274,7 +274,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
       farm.userData &&
       (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+        new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
     )
   })
 
@@ -285,7 +285,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
       farm.userData &&
       (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+        new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
     )
   })
 
@@ -296,7 +296,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
       farm.userData &&
       (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+        new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
     )
   })
 
@@ -310,19 +310,20 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
           return farm
         }
-        const totalLiquidityFromLp = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+        const totalLiquidityFromLp = new BigNumber(farm?.lpTotalInQuoteToken ?? 0).times(farm.quoteTokenPriceBusd)
         // Mock 1$ tvl if the farm doesn't have lp staked
         const totalLiquidity = totalLiquidityFromLp.eq(BIG_ZERO) && mockApr ? BIG_ONE : totalLiquidityFromLp
-        const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(
-              chainId,
-              new BigNumber(farm.poolWeight),
-              cakePrice,
-              totalLiquidity,
-              farm.lpAddress,
-              regularCakePerBlock,
-            )
-          : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+        const { cakeRewardsApr, lpRewardsApr } =
+          isActive && chainId
+            ? getFarmApr(
+                chainId,
+                new BigNumber(farm?.poolWeight ?? 0),
+                cakePrice,
+                totalLiquidity,
+                farm.lpAddress,
+                regularCakePerBlock,
+              )
+            : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
       })
@@ -339,7 +340,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
   const chosenFarms = useMemo(() => {
-    let chosenFs = []
+    let chosenFs: V2StakeValueAndV3Farm[] = []
     if (isActive) {
       chosenFs = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
     }
@@ -356,14 +357,15 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           (v3FarmOnly && farm.version === 3) ||
           (v2FarmOnly && farm.version === 2) ||
           (boostedOnly && farm.boosted && farm.version === 3) ||
-          (stableSwapOnly && farm.isStable),
+          (stableSwapOnly && farm.version === 2 && farm.isStable),
       )
 
-      const stakedFilterFarms = chosenFs.filter(
+      const stakedFilterFarms = chosenFs?.filter(
         (farm) =>
+          farm.version === 2 &&
           farm.userData &&
           (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+            new BigNumber(farm?.userData.proxy?.stakedBalance ?? 0).isGreaterThan(0)),
       )
 
       chosenFs = stakedOnly ? farmsList(stakedFilterFarms) : farmsList(filterFarms)
@@ -392,7 +394,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     const sortFarms = (farms: V2StakeValueAndV3Farm[]): V2StakeValueAndV3Farm[] => {
       switch (sortOption) {
         case 'apr':
-          return orderBy(farms, (farm) => (farm.version === 3 ? +farm.cakeApr : farm.apr ?? 0), 'desc')
+          return orderBy(farms, (farm) => (farm.version === 3 ? Number(farm.cakeApr) : farm.apr ?? 0), 'desc')
         case 'multiplier':
           return orderBy(farms, (farm) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0), 'desc')
         case 'earned':
@@ -576,7 +578,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </Flex>
               </FinishedTextContainer>
             )}
-            {V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
+            {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
               <FinishedTextContainer>
                 <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
                   {t('Unstaking from v2 farm?')}
