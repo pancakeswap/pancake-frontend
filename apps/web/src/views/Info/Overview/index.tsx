@@ -9,7 +9,6 @@ import {
   useProtocolTransactionsSWR,
 } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
-import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
@@ -17,7 +16,7 @@ import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import HoverableChart from '../components/InfoCharts/HoverableChart'
-import { usePoolsData } from '../hooks/usePoolsData'
+import { useNonSpamPoolsData } from '../hooks/usePoolsData'
 
 export const ChartCardsContainer = styled(Flex)`
   justify-content: space-between;
@@ -58,27 +57,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
       .filter<TokenData>((token): token is TokenData => token?.name !== 'unknown')
   }, [allTokens])
 
-  const { poolsData: rawPoolsData } = usePoolsData()
-  // top 10 pair need create at least 4 days
-  const poolsData = useMemo(
-    () =>
-      rawPoolsData.reduce((acc, data) => {
-        if (acc.length > 10) {
-          acc.push(data)
-          return acc
-        }
-
-        const maySpam = dayjs().diff(dayjs.unix(data.timestamp), 'day') < 4
-
-        // top 10 should not show may spam tokens,
-        if (maySpam) return acc
-
-        // after top 10 will not filtered
-        acc.push(data)
-        return acc
-      }, [] as typeof rawPoolsData),
-    [rawPoolsData],
-  )
+  const { poolsData } = useNonSpamPoolsData()
 
   const somePoolsAreLoading = useMemo(() => {
     return poolsData.some((pool) => !pool?.token0Price)
