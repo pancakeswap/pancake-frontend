@@ -738,8 +738,8 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     farmName: 'XCN-BNB',
     tokenAddress: '0x7324c7C0d95CEBC73eEa7E85CbAac0dBdf88a05b',
     quoteToken: bscTokens.wbnb,
-    tokenName: 'Chain',
-    projectSite: 'https://chain.com/',
+    tokenName: 'Onyx Protocol',
+    projectSite: 'https://onyx.org/',
   },
   {
     account: '0x4D85770FD4d42060d3A8075eF781830954b5C93F',
