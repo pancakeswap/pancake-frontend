@@ -2223,8 +2223,8 @@ export const bscTokens = {
     '0x7324c7C0d95CEBC73eEa7E85CbAac0dBdf88a05b',
     18,
     'XCN',
-    'Chain',
-    'https://chain.com/',
+    'Onyx Protocol',
+    'https://onyx.org/',
   ),
   metis: new ERC20Token(
     ChainId.BSC,
