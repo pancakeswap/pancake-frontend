@@ -2,7 +2,7 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
-import { encodeFunctionData } from 'viem'
+import { encodeFunctionData, toHex } from 'viem'
 import abi from './abis/UniversalRouter.json'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { encodePermit } from './utils/inputTokens'
@@ -59,6 +59,6 @@ export abstract class PancakeUniversalSwapRouter {
     const { commands, inputs } = planner
     const parameters = config.deadline ? [commands, inputs, Number(config.deadline)] : [commands, inputs]
     const calldata = encodeFunctionData({ abi, args: parameters, functionName: 'execute' })
-    return { calldata, value: nativeCurrencyValue }
+    return { calldata, value: toHex(nativeCurrencyValue) }
   }
 }
