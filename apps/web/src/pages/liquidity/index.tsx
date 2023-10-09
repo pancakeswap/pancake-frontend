@@ -14,8 +14,10 @@ import {
   HistoryIcon,
   useModal,
   Liquidity,
+  Link,
 } from '@pancakeswap/uikit'
 import { PositionDetails } from '@pancakeswap/farms'
+import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -333,7 +335,19 @@ export default function PoolListPage() {
         />
         <Body>
           {mainSection}
-          {selectedTypeIndex === FILTER.V2 ? <Liquidity.FindOtherLP /> : null}
+          {selectedTypeIndex === FILTER.V2 ? (
+            <>
+              <Liquidity.FindOtherLP>
+                {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
+                  <Link style={{ marginTop: '8px' }} href="/migration">
+                    <Button id="migration-link" variant="secondary" scale="sm">
+                      {t('Migrate to V3')}
+                    </Button>
+                  </Link>
+                )}
+              </Liquidity.FindOtherLP>
+            </>
+          ) : null}
           {showAllPositionButton && (
             <Flex alignItems="center" flexDirection="column">
               <Text color="textSubtle" mb="10px">

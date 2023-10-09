@@ -3,7 +3,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Text, Button } from "../../components";
 import { AtomBox } from "../../components/AtomBox";
 
-export function FindOtherLP() {
+export function FindOtherLP({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
 
   return (
@@ -16,11 +16,7 @@ export function FindOtherLP() {
           {t("Find other LP tokens")}
         </Button>
       </Link>
-      <Link style={{ marginTop: "8px" }} href="/migration" passHref>
-        <Button id="migration-link" variant="secondary" scale="sm">
-          {t("Migrate to V3")}
-        </Button>
-      </Link>
+      {children}
     </AtomBox>
   );
 }
