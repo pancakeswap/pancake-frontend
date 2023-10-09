@@ -102,8 +102,12 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
   const { domainName } = useDomainNameForAddress(transaction.sender)
-  const token0Symbol = subgraphTokenSymbol[safeGetAddress(transaction.token0Address)] ?? transaction.token0Symbol
-  const token1Symbol = subgraphTokenSymbol[safeGetAddress(transaction.token1Address)] ?? transaction.token1Symbol
+  const [token0Address, token1Address] = [transaction.token0Address, transaction.token1Address].map(safeGetAddress)
+  const [token0Symbol = transaction.token0Symbol, token1Symbol = transaction.token1Symbol] = [
+    token0Address,
+    token1Address,
+  ].map((address) => (address ? subgraphTokenSymbol[address] : undefined))
+
   const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
 
