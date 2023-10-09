@@ -2,7 +2,7 @@
   "extends": "@pancakeswap/tsconfig/base",
   "exclude": ["**/*.test.ts", "./dist/**"],
   "include": ["src"],
-  "typeRoots": ["./typechain", "./node_modules/@types"],
+  "typeRoots": ["./node_modules/@types"],
   "types": ["@types/mocha", "node"],
   "compilerOptions": {
     "outDir": "./dist",
