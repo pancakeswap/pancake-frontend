@@ -7,8 +7,8 @@ import BarChart from './BarChart'
 import LineChart from './LineChart'
 
 interface HoverableChartProps {
-  chartData: ChartEntry[]
-  protocolData: ProtocolData
+  chartData: ChartEntry[] | undefined
+  protocolData: ProtocolData | undefined
   currentDate: string
   valueProperty: string
   title: string
@@ -28,11 +28,11 @@ const HoverableChart = ({
 
   // Getting latest data to display on top of chart when not hovered
   useEffect(() => {
-    setHover(null)
+    setHover(undefined)
   }, [protocolData])
 
   useEffect(() => {
-    if (hover == null && protocolData) {
+    if (typeof hover === 'undefined' && protocolData) {
       setHover(protocolData[valueProperty])
     }
   }, [protocolData, hover, valueProperty])
@@ -54,7 +54,7 @@ const HoverableChart = ({
       <Text bold color="secondary">
         {title}
       </Text>
-      {hover > -1 ? ( // sometimes data is 0
+      {Number(hover) > -1 ? ( // sometimes data is 0
         <Text bold fontSize="24px">
           ${formatAmount(hover)}
         </Text>
