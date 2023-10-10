@@ -35,7 +35,7 @@ import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { warningSeverity } from 'utils/exchange'
 import { isChainSupported } from 'utils/wagmi'
-import { useAccount } from 'wagmi'
+import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
 import { useConfirmModalState } from '../hooks/useConfirmModalState'
 import { useWallchainApi } from '../hooks/useWallchain'
@@ -67,7 +67,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
+  const chainId = useChainId()
   const [isExpertMode] = useExpertMode()
   const {
     typedValue,
@@ -75,8 +75,8 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const inputCurrency = useCurrency(inputCurrencyId) as Currency
-  const outputCurrency = useCurrency(outputCurrencyId) as Currency
+  const inputCurrency = useCurrency(inputCurrencyId)
+  const outputCurrency = useCurrency(outputCurrencyId)
   const swapIsUnsupported = useIsTransactionUnsupported(inputCurrency, outputCurrency)
   const { onUserInput } = useSwapActionHandlers()
   const {
@@ -112,7 +112,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const allowance = usePermit2Allowance(
     routerAddress,
     amountToApprove as any,
-    isChainSupported(chainId as number) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
+    isChainSupported(chainId) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
   )
   // @ts-ignore
   const tradePriceBreakdown = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
@@ -205,7 +205,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(
-    tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : undefined,
+    tradePriceBreakdown ? (tradePriceBreakdown.priceImpactWithoutFee as Percent) : undefined,
   )
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
