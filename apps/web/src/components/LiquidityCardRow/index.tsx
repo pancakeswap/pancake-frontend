@@ -11,7 +11,7 @@ const TagCell = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.sm} {
     position: absolute;
     right: 16px;
-    top: 30%;
+    top: 45%;
   }
 `
 
@@ -21,6 +21,7 @@ interface LiquidityCardRowProps {
   currency1: Currency
   pairText: string | React.ReactElement
   feeAmount?: number
+  hasMerkl?: boolean
   tokenId?: bigint
   tags: React.ReactElement
   subtitle: string
@@ -37,6 +38,7 @@ export const LiquidityCardRow = ({
   subtitle,
   tokenId,
   onSwitch,
+  hasMerkl,
 }: LiquidityCardRowProps) => {
   const content = (
     <Flex justifyContent="space-between" p="16px">
@@ -52,6 +54,11 @@ export const LiquidityCardRow = ({
           {!!feeAmount && (
             <Tag variant="secondary" mr="8px" outline>
               {new Percent(feeAmount, 1_000_000).toSignificant()}%
+            </Tag>
+          )}
+          {!hasMerkl && (
+            <Tag variant="warning" mr="8px" outline>
+              Merkl Rewards
             </Tag>
           )}
           <TagCell>{tags}</TagCell>
