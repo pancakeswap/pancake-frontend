@@ -125,6 +125,19 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
         </AutoColumn>
       </Box>
     ),
-    [currencyA, isBonus, isMM, t, targetRef, title, tooltip, tooltipVisible, asBadge, approvalModalSteps, currentStep]
+    [
+      currencyA,
+      isBonus,
+      isMM,
+      t,
+      targetRef,
+      title,
+      tooltip,
+      tooltipVisible,
+      asBadge,
+      approvalModalSteps,
+      currentStep,
+      disableEntranceAnimation,
+    ]
   );
 };
