@@ -79,5 +79,3 @@ export const MERCURYO_WIDGET_URL =
   process.env.NODE_ENV === 'development'
     ? 'https://sandbox-widget.mrcr.io/embed.2.0.js'
     : 'https://widget.mercuryo.io/embed.2.0.js'
-
-export const POSITION_MANAGER_API = 'https://vault-api.pancake.run/api/v1'

@@ -3,27 +3,27 @@ import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
 
 interface PositionInfo {
-  baseCurrency?: Currency
-  quoteCurrency?: Currency
+  currencyA?: Currency
+  currencyB?: Currency
   tickLower?: number
   tickUpper?: number
   tickCurrent?: number
 }
 
 export function usePositionPrices({
-  baseCurrency: initialBaseCurrency,
-  quoteCurrency: initialQuoteCurrency,
+  currencyA: initialBaseCurrency,
+  currencyB: initialQuoteCurrency,
   tickLower,
   tickUpper,
   tickCurrent,
 }: PositionInfo) {
   const [invert, setInvert] = useState(false)
   const toggleInvert = useCallback(() => setInvert(!invert), [invert])
-  const baseCurrency = useMemo(
+  const currencyA = useMemo(
     () => (invert ? initialQuoteCurrency : initialBaseCurrency),
     [invert, initialBaseCurrency, initialQuoteCurrency],
   )
-  const quoteCurrency = useMemo(
+  const currencyB = useMemo(
     () => (invert ? initialBaseCurrency : initialQuoteCurrency),
     [invert, initialBaseCurrency, initialQuoteCurrency],
   )
@@ -31,29 +31,29 @@ export function usePositionPrices({
   const sorted = useMemo(
     () =>
       Boolean(
-        baseCurrency?.wrapped &&
-          quoteCurrency?.wrapped &&
-          !baseCurrency.wrapped.equals(quoteCurrency.wrapped) &&
-          baseCurrency.wrapped.sortsBefore(quoteCurrency.wrapped),
+        currencyA?.wrapped &&
+          currencyB?.wrapped &&
+          !currencyA.wrapped.equals(currencyB.wrapped) &&
+          currencyA.wrapped.sortsBefore(currencyB.wrapped),
       ),
-    [baseCurrency, quoteCurrency],
+    [currencyA, currencyB],
   )
 
   const tickLowerPrice = useMemo(
     () =>
-      baseCurrency?.wrapped &&
-      quoteCurrency?.wrapped &&
+      currencyA?.wrapped &&
+      currencyB?.wrapped &&
       typeof tickLower === 'number' &&
-      tickToPrice(baseCurrency.wrapped, quoteCurrency.wrapped, tickLower),
-    [tickLower, baseCurrency, quoteCurrency],
+      tickToPrice(currencyA.wrapped, currencyB.wrapped, tickLower),
+    [tickLower, currencyA, currencyB],
   )
   const tickUpperPrice = useMemo(
     () =>
-      baseCurrency?.wrapped &&
-      quoteCurrency?.wrapped &&
+      currencyA?.wrapped &&
+      currencyB?.wrapped &&
       typeof tickUpper === 'number' &&
-      tickToPrice(baseCurrency.wrapped, quoteCurrency.wrapped, tickUpper),
-    [tickUpper, baseCurrency, quoteCurrency],
+      tickToPrice(currencyA.wrapped, currencyB.wrapped, tickUpper),
+    [tickUpper, currencyA, currencyB],
   )
   const [priceLower, priceUpper] = useMemo(
     () => (sorted ? [tickLowerPrice, tickUpperPrice] : [tickUpperPrice, tickLowerPrice]),
@@ -61,16 +61,16 @@ export function usePositionPrices({
   )
   const priceCurrent = useMemo(
     () =>
-      baseCurrency?.wrapped &&
-      quoteCurrency?.wrapped &&
+      currencyA?.wrapped &&
+      currencyB?.wrapped &&
       typeof tickCurrent === 'number' &&
-      tickToPrice(baseCurrency.wrapped, quoteCurrency.wrapped, tickCurrent),
-    [tickCurrent, baseCurrency, quoteCurrency],
+      tickToPrice(currencyA.wrapped, currencyB.wrapped, tickCurrent),
+    [tickCurrent, currencyA, currencyB],
   )
 
   return {
-    baseCurrency,
-    quoteCurrency,
+    currencyA,
+    currencyB,
     priceLower,
     priceUpper,
     priceCurrent,

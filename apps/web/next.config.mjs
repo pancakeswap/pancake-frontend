@@ -56,7 +56,6 @@ const config = {
   },
   transpilePackages: [
     '@pancakeswap/farms',
-    '@pancakeswap/pools',
     '@pancakeswap/position-managers',
     '@pancakeswap/localization',
     '@pancakeswap/hooks',

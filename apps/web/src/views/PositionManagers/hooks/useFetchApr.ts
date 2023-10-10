@@ -2,9 +2,11 @@ import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
 import { useQuery } from '@tanstack/react-query'
-import { POSITION_MANAGER_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS } from '@pancakeswap/position-managers'
+import {
+  POSITION_MANAGER_API,
+  SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS,
+} from '@pancakeswap/position-managers'
 
 export interface AprDataInfo {
   token0: number

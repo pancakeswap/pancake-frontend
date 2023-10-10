@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { positionManagerAdapterABI } from 'config/abi/positionManagerAdapter'
+import { positionManagerAdapterABI } from '@pancakeswap/position-managers'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
