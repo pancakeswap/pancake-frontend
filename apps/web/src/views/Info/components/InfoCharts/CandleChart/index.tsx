@@ -66,7 +66,7 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
           borderVisible: false,
           secondsVisible: true,
           tickMarkFormatter: (unixTime: number) => {
-            return dayjs.unix(unixTime).format('MM/dd h:mm a')
+            return dayjs.unix(unixTime).format('MM/DD h:mm a')
           },
         },
         watermark: {
