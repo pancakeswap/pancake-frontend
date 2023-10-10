@@ -1,11 +1,6 @@
 import { useToast } from '@pancakeswap/uikit'
 import crypto from 'crypto'
-import {
-  DEFAULT_RELAY_URL,
-  PancakeNotifications,
-  WEB_PUSH_ENCRYPTION_KEY,
-  WEB_PUSH_IV,
-} from 'views/Notifications/constants'
+import { PancakeNotifications, SECURE_TOKEN, WEB_PUSH_ENCRYPTION_KEY, WEB_PUSH_IV } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
 import { useAccount } from 'wagmi'
 import useRegistration from './useRegistration'
@@ -41,8 +36,8 @@ const useSendPushNotification = (): IUseSendNotification => {
         const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
         await navigator.serviceWorker.ready
 
-        const existingSubscription = await registration.pushManager.getSubscription()
-        if (existingSubscription) return
+        // const existingSubscription = await registration.pushManager.getSubscription()
+        // if (existingSubscription) return
 
         const secretKeyBuffer = Buffer.from(WEB_PUSH_ENCRYPTION_KEY, 'hex')
         const ivBuffer = Buffer.from(WEB_PUSH_IV, 'hex')
@@ -80,7 +75,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-secure-token': process.env.SECURE_TOKEN as string,
+          'x-secure-token': SECURE_TOKEN,
         },
         body: JSON.stringify(notificationPayload),
       })

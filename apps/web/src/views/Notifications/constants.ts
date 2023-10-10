@@ -61,7 +61,7 @@ export const NotificationSortTypes: OptionProps[] = [
 
 export const DEFAULT_RELAY_URL = 'https://notify.walletconnect.com'
 export const DEFAULT_CAST_SIGN_KEY = process.env.NEXT_PUBLIC_CAST_SERVER_SIGN_KEY
-export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID
+export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_DEFAULT_PROJECT_ID
 export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY
 export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV
 export const SECURE_TOKEN = process.env.NEXT_PUBLIC_SECURE_TOKEN
