@@ -1840,6 +1840,9 @@ importers:
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.29)(typescript@5.1.3)
+      typescript:
+        specifier: ^5.1.3
+        version: 5.1.3
       vitest:
         specifier: ^0.30.1
         version: 0.30.1

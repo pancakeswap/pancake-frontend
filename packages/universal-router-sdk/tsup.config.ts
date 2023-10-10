@@ -10,14 +10,14 @@ export default defineConfig((options) => ({
   clean: !options.watch,
   treeshake: true,
   splitting: true,
-  //   onSuccess: async () => {
-  //     exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
-  //       if (err) {
-  //         console.error(err)
-  //         if (!options.watch) {
-  //           process.exit(1)
-  //         }
-  //       }
-  //     })
-  //   },
+  onSuccess: async () => {
+    exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
+      if (err) {
+        console.error(stdout)
+        if (!options.watch) {
+          process.exit(1)
+        }
+      }
+    })
+  },
 }))
