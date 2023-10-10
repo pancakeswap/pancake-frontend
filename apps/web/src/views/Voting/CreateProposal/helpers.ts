@@ -10,7 +10,7 @@ export const combineDateAndTime = (date: Date, time: Date) => {
     return null
   }
 
-  const dateStr = dateDayJs.format('YYYY-MM-dd')
+  const dateStr = dateDayJs.format('YYYY-MM-DD')
   const timeStr = timeDayJs.format('HH:mm:ss')
 
   return dayjs(`${dateStr}T${timeStr}`).unix()
