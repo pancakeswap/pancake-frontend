@@ -80,7 +80,7 @@ export const useConfirmModalState = ({
     }
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [allowance, approvalToken?.chainId, approvalToken?.wrapped.address, currentAllowance])
+  }, [allowance, currentAllowance, approvalToken])
 
   const performStep = useCallback(
     async (step: ConfirmModalState) => {
