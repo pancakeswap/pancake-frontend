@@ -53,7 +53,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         let encryptedData = cipher.update(data, 'utf8', 'hex')
         encryptedData += cipher.final('hex')
 
-        await fetch('http://localhost:8000./subscribe', {
+        await fetch('http://localhost:8000/subscribe', {
           method: 'POST',
           body: JSON.stringify({ subscription: encryptedData, user: account }),
           headers: { 'Content-Type': 'application/json' },
