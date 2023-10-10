@@ -91,7 +91,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(trade, deadline)
   const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
 
-  const routerAddress: string =
+  const routerAddress =
     statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
       ? approvalAddressForWallchain
       : PERMIT2_ADDRESS(chainId)

@@ -40,7 +40,7 @@ export type Allowance =
 const AVERAGE_L1_BLOCK_TIME = 12000
 
 export default function usePermit2Allowance(
-  approvalAddress: string,
+  approvalAddress: string | undefined,
   amount?: CurrencyAmount<Token>,
   spender?: string,
 ): Allowance {
