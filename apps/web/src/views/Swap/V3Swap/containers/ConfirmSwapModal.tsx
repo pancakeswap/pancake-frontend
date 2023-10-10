@@ -104,7 +104,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           title={stepContents}
           isMM={isMM}
           isBonus={isBonus}
-          currencyA={currencyA}
+          currencyA={currencyA as Currency}
           asBadge={confirmModalState === ConfirmModalState.APPROVING_TOKEN}
           currentStep={confirmModalState}
           approvalModalSteps={pendingModalSteps as any}

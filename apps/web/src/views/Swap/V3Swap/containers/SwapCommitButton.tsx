@@ -91,7 +91,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(trade, deadline)
   const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
 
-  const routerAddress =
+  const routerAddress: string =
     statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
       ? approvalAddressForWallchain
       : PERMIT2_ADDRESS(chainId)
@@ -114,7 +114,8 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     amountToApprove as any,
     isChainSupported(chainId as number) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
   )
-  const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
+  // @ts-ignore
+  const tradePriceBreakdown = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
@@ -162,9 +163,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   const handleSwap = useCallback(() => {
     if (
-      priceImpactWithoutFee &&
+      tradePriceBreakdown &&
       !confirmPriceImpactWithoutFee(
-        priceImpactWithoutFee,
+        tradePriceBreakdown.priceImpactWithoutFee,
         PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
         ALLOWED_PRICE_IMPACT_HIGH,
         t,
@@ -195,7 +196,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState, revertReason])
+  }, [tradePriceBreakdown, swapCallback, tradeToConfirm, t, setSwapState, revertReason])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
@@ -203,7 +204,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // End Handlers
 
   // warnings on slippage
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+  const priceImpactSeverity = warningSeverity(tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : 0)
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode

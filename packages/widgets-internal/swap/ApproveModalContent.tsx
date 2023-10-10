@@ -30,7 +30,7 @@ interface ApproveModalContentProps {
   title: {
     [step in AllowedAllowanceState]: string;
   };
-  isMM: boolean;
+  isMM: boolean | undefined;
   isBonus: boolean;
   currencyA: Currency;
   asBadge: boolean;

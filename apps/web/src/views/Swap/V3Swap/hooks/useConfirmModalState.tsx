@@ -37,10 +37,12 @@ export const useApprovalPhaseStepTitles: ({ trade }: { trade: SmartRouterTrade<T
   return useMemo(() => {
     return {
       [ConfirmModalState.RESETTING_APPROVAL]: t('Reset approval on USDT.'),
-      [ConfirmModalState.APPROVING_TOKEN]: t('Approve %symbol%', { symbol: trade?.inputAmount?.currency?.symbol }),
-      [ConfirmModalState.PERMITTING]: t('Permit %symbol%', { symbol: trade?.inputAmount?.currency?.symbol }),
+      [ConfirmModalState.APPROVING_TOKEN]: t('Approve %symbol%', {
+        symbol: trade ? trade.inputAmount.currency.symbol : '',
+      }),
+      [ConfirmModalState.PERMITTING]: t('Permit %symbol%', { symbol: trade ? trade.inputAmount.currency.symbol : '' }),
     }
-  }, [trade?.inputAmount?.currency?.symbol, t])
+  }, [t, trade])
 }
 
 export const useConfirmModalState = ({
@@ -61,6 +63,7 @@ export const useConfirmModalState = ({
     // Any existing USDT allowance needs to be reset before we can approve the new amount (mainnet only).
     // See the `approve` function here: https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7#code
     if (
+      approvalToken &&
       allowance.state === AllowanceState.REQUIRED &&
       allowance.needsSetupApproval &&
       currentAllowance?.greaterThan(0) &&
