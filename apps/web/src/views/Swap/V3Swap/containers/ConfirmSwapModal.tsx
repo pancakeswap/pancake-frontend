@@ -41,7 +41,7 @@ interface ConfirmSwapModalProps {
   txHash?: string
   approval: ApprovalState
   allowance?: Allowance
-  swapErrorMessage?: string
+  swapErrorMessage?: string | boolean
   showApproveFlow: boolean
   currentAllowance?: CurrencyAmount<Currency>
   confirmModalState: ConfirmModalState
@@ -106,10 +106,10 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
         <ApproveModalContent
           title={
             approval === ApprovalState.NOT_APPROVED || approval === ApprovalState.PENDING
-              ? t('Approve %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })
-              : allowance.state === AllowanceState.REQUIRED
-              ? t('Permit %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })
-              : t('Enable spending %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })
+              ? t('Approve %symbol%', { symbol: `${trade?.inputAmount?.currency?.symbol}` })
+              : allowance?.state === AllowanceState.REQUIRED
+              ? t('Permit %symbol%', { symbol: `${trade?.inputAmount?.currency?.symbol}` })
+              : t('Enable spending %symbol%', { symbol: `${trade?.inputAmount?.currency?.symbol}` })
           }
           isMM={isMM}
           isBonus={isBonus}

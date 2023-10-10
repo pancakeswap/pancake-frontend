@@ -39,7 +39,7 @@ interface TransactionConfirmSwapContentProps {
   onAcceptChanges: () => void
   allowedSlippage: number
   onConfirm: () => void
-  recipient: string
+  recipient?: string | null
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
@@ -80,7 +80,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
       if (trade?.tradeType !== TradeType.EXACT_OUTPUT) return null
 
       const isInputBalanceExist = !!(currencyBalances && currencyBalances[Field.INPUT])
-      const isInputBalanceBNB = isInputBalanceExist && currencyBalances[Field.INPUT].currency.isNative
+      const isInputBalanceBNB = isInputBalanceExist && currencyBalances[Field.INPUT]?.currency.isNative
       const inputCurrencyAmount = isInputBalanceExist
         ? isInputBalanceBNB
           ? maxAmountSpend(currencyBalances[Field.INPUT])
@@ -99,11 +99,11 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
           outputAmount={trade.outputAmount}
           currencyBalances={currencyBalances}
           tradeType={trade.tradeType}
-          priceImpactWithoutFee={priceImpactWithoutFee}
+          priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
           allowedSlippage={isMM ? <MMSlippageTolerance /> : allowedSlippage}
           slippageAdjustedAmounts={slippageAdjustedAmounts}
-          isEnoughInputBalance={isEnoughInputBalance}
-          recipient={recipient}
+          isEnoughInputBalance={isEnoughInputBalance ?? undefined}
+          recipient={recipient ?? undefined}
           showAcceptChanges={showAcceptChanges}
           onAcceptChanges={onAcceptChanges}
         />
@@ -131,11 +131,11 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
           inputAmount={trade.inputAmount}
           outputAmount={trade.outputAmount}
           currencyBalances={currencyBalances}
-          lpFee={lpFeeAmount}
-          priceImpact={priceImpactWithoutFee}
+          lpFee={lpFeeAmount ?? undefined}
+          priceImpact={priceImpactWithoutFee ?? undefined}
           disabledConfirm={showAcceptChanges}
           slippageAdjustedAmounts={slippageAdjustedAmounts}
-          isEnoughInputBalance={isEnoughInputBalance}
+          isEnoughInputBalance={isEnoughInputBalance ?? undefined}
           onConfirm={onConfirm}
         />
       ) : null
