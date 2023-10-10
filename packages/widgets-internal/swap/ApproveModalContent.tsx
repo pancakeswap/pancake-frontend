@@ -3,7 +3,7 @@ import { Spinner, Text, Box, Flex, TooltipText, AutoColumn, ColumnCenter, useToo
 
 interface ApproveModalContentProps {
   title: string;
-  isMM: boolean;
+  isMM?: boolean;
   isBonus: boolean;
 }
 
