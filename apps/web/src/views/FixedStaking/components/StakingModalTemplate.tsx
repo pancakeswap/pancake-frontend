@@ -1,5 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast, Link } from '@pancakeswap/uikit'
+import {
+  Button,
+  Modal,
+  Flex,
+  Text,
+  BalanceInput,
+  Slider,
+  Box,
+  PreTitle,
+  useToast,
+  Link,
+  Toggle,
+  Message,
+  MessageText,
+} from '@pancakeswap/uikit'
 import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
@@ -19,6 +33,7 @@ import first from 'lodash/first'
 import dayjs from 'dayjs'
 import usePrevious from 'views/V3Info/hooks/usePrevious'
 import { styled } from 'styled-components'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 
 import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
@@ -46,7 +61,7 @@ interface BodyParam {
 }
 
 export function StakingModalTemplate({
-  stakingToken,
+  stakingToken: positionStakingToken,
   pools,
   initialLockPeriod,
   stakedPeriods,
@@ -56,6 +71,7 @@ export function StakingModalTemplate({
   stakedPositions = [],
   onBack,
   title,
+  useNative,
 }: {
   title?: string
   stakingToken: Token
@@ -67,11 +83,21 @@ export function StakingModalTemplate({
   body: ReactNode | ((params: BodyParam) => ReactNode)
   hideStakeButton?: boolean
   onBack?: () => void
+  useNative?: boolean
 }) {
   const { t } = useTranslation()
   const [stakeAmount, setStakeAmount] = useState('')
   const [isConfirmed, setIsConfirmed] = useState(false)
   const [check, setCheck] = useState(false)
+  const [useBNB, toggleUseBNB] = useState(false)
+  const nativeToken = useNativeCurrency()
+
+  const isWBNB = nativeToken.wrapped.equals(positionStakingToken)
+
+  const stakingToken = useMemo(
+    () => (useNative && useBNB ? nativeToken : positionStakingToken),
+    [nativeToken, positionStakingToken, useBNB, useNative],
+  )
 
   const claimedPeriods = useMemo(
     () => stakedPositions.filter((sP) => dayjs.unix(sP.endLockTime).diff(dayjs()) <= 0).map((sP) => sP.pool.lockPeriod),
@@ -310,6 +336,7 @@ export function StakingModalTemplate({
       <Text color="textSubtle" textAlign="right" fontSize="12px" m="8px 0">
         {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingTokenBalance, stakingToken.decimals) })}
       </Text>
+
       <Box>
         <Slider
           min={0}
@@ -321,6 +348,7 @@ export function StakingModalTemplate({
           step={1}
         />
       </Box>
+
       <Flex alignItems="center" justifyContent="space-between" mt="8px" mb="16px">
         <StyledButton scale="xs" width="100%" mx="2px" variant="tertiary" onClick={() => handleChangePercent(25)}>
           25%
@@ -335,6 +363,29 @@ export function StakingModalTemplate({
           {t('Max')}
         </StyledButton>
       </Flex>
+
+      {isWBNB ? (
+        <>
+          <Flex ml="auto" alignItems="center" justifyContent="space-between" width="100%">
+            <PreTitle textTransform="uppercase" bold>
+              {t('Stake as')} BNB
+            </PreTitle>
+            <Toggle
+              id="receive-as-wnative"
+              scale="sm"
+              checked={useBNB}
+              onChange={() => toggleUseBNB((prev) => !prev)}
+            />
+          </Flex>
+
+          {useBNB ? (
+            <Message variant="warning" my="8px">
+              <MessageText>You will receive WBNB if you withdraw your staked BNB.</MessageText>
+            </Message>
+          ) : null}
+        </>
+      ) : null}
+
       <Divider />
 
       {typeof body === 'function' ? body(params) : body}
