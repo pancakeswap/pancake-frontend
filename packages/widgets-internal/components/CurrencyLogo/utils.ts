@@ -1,7 +1,8 @@
 import { getAddress } from "viem";
 import memoize from "lodash/memoize";
-import { Token, Currency } from "@pancakeswap/sdk";
+import { Token, Currency, NATIVE } from "@pancakeswap/sdk";
 import { ChainId } from "@pancakeswap/chains";
+import { ethereumTokens, bscTokens } from "@pancakeswap/tokens";
 
 const mapping: { [key: number]: string } = {
   [ChainId.BSC]: "smartchain",
@@ -46,6 +47,7 @@ const chainName: { [key: number]: string } = {
   [ChainId.ZKSYNC]: "zksync",
   [ChainId.LINEA]: "linea",
   [ChainId.BASE]: "base",
+  [ChainId.OPBNB]: "opbnb",
 };
 
 // TODO: move to utils or token-list
@@ -59,11 +61,35 @@ export const getTokenListTokenUrl = (token: Token) =>
       }${token.address}.png`
     : null;
 
+const commonCurrencySymbols = [
+  ethereumTokens.usdt,
+  ethereumTokens.usdc,
+  bscTokens.cake,
+  ethereumTokens.wbtc,
+  ethereumTokens.weth,
+  NATIVE[ChainId.BSC],
+  bscTokens.busd,
+  ethereumTokens.dai,
+].map(({ symbol }) => symbol);
+
+export const getCommonCurrencyUrl = memoize(
+  (currency?: Currency): string | undefined => getCommonCurrencyUrlBySymbol(currency?.symbol),
+  (currency?: Currency) => `logoUrls#${currency?.chainId}#${currency?.symbol}`
+);
+
+export const getCommonCurrencyUrlBySymbol = memoize(
+  (symbol?: string): string | undefined =>
+    symbol && commonCurrencySymbols.includes(symbol)
+      ? `https://tokens.pancakeswap.finance/images/symbol/${symbol.toLocaleLowerCase()}.png`
+      : undefined,
+  (symbol?: string) => `logoUrls#symbol#${symbol}`
+);
+
 export const getCurrencyLogoUrls = memoize(
   (currency?: Currency): string[] => {
     const trustWalletLogo = getTokenLogoURL(currency?.wrapped);
     const logoUrl = currency ? getTokenListTokenUrl(currency.wrapped) : null;
-    return [trustWalletLogo, logoUrl].filter((url) => Boolean(url)) as string[];
+    return [getCommonCurrencyUrl(currency), trustWalletLogo, logoUrl].filter((url): url is string => !!url);
   },
   (currency?: Currency) => `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}`
 );

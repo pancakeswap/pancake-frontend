@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { gql, GraphQLClient } from 'graphql-request'
 
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { POOL_HIDE } from '../../constants'
-import { notEmpty } from '../../utils'
 
 export const TOP_POOLS = gql`
   query topPools {
@@ -42,7 +42,7 @@ export async function fetchTopPoolAddresses(
             }
             return p.id
           })
-          .filter(notEmpty)
+          .filter((pool) => !isUndefinedOrNull(pool))
       : undefined
 
     return {

@@ -15,7 +15,7 @@ import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
 import useSWRImmutable from 'swr/immutable'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import { useAccount } from 'wagmi'
@@ -119,7 +119,7 @@ export function useDerivedSwapInfo(
   const recipientENSAddress = useGetENSAddressByName(recipient)
 
   const to: string | null =
-    (recipient === null ? account : isAddress(recipient) || isAddress(recipientENSAddress) || null) ?? null
+    (recipient === null ? account : safeGetAddress(recipient) || safeGetAddress(recipientENSAddress) || null) ?? null
 
   const relevantTokenBalances = useCurrencyBalances(
     account ?? undefined,
@@ -157,7 +157,7 @@ export function useDerivedSwapInfo(
     inputError = inputError ?? t('Select a token')
   }
 
-  const formattedTo = isAddress(to)
+  const formattedTo = safeGetAddress(to)
   if (!to || !formattedTo) {
     inputError = inputError ?? t('Enter a recipient')
   } else if (
@@ -204,7 +204,7 @@ const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-
 const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 function validatedRecipient(recipient: any): string | null {
   if (typeof recipient !== 'string') return null
-  const address = isAddress(recipient)
+  const address = safeGetAddress(recipient)
   if (address) return address
   if (ENS_NAME_REGEX.test(recipient)) return recipient
   if (ADDRESS_REGEX.test(recipient)) return recipient
@@ -216,10 +216,10 @@ export function queryParametersToSwapState(
   nativeSymbol?: string,
   defaultOutputCurrency?: string,
 ): SwapState {
-  let inputCurrency = isAddress(parsedQs.inputCurrency) || (nativeSymbol ?? DEFAULT_INPUT_CURRENCY)
+  let inputCurrency = safeGetAddress(parsedQs.inputCurrency) || (nativeSymbol ?? DEFAULT_INPUT_CURRENCY)
   let outputCurrency =
     typeof parsedQs.outputCurrency === 'string'
-      ? isAddress(parsedQs.outputCurrency) || nativeSymbol
+      ? safeGetAddress(parsedQs.outputCurrency) || nativeSymbol
       : defaultOutputCurrency
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {

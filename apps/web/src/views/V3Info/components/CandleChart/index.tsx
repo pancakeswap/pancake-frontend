@@ -105,7 +105,7 @@ const CandleChart = ({
           borderVisible: false,
           secondsVisible: true,
           tickMarkFormatter: (unixTime: number) => {
-            return dayjs.unix(unixTime).format('MM/DD h:mm A')
+            return dayjs.unix(unixTime).format('MM/DD h:mm a')
           },
         },
         watermark: {
@@ -184,7 +184,7 @@ const CandleChart = ({
           if (setLabel) setLabel(undefined)
         } else if (series && param) {
           const timestamp = param.time as number
-          const time = `${dayjs.unix(timestamp).utc().format('MMM D, YYYY h:mm A')} (UTC)`
+          const time = `${dayjs.unix(timestamp).utc().format('MMM D, YYYY h:mm a')} (UTC)`
           const parsed = param.seriesData.get(series) as { open: number } | undefined
           if (setValue) setValue(parsed?.open)
           if (setLabel) setLabel(time)

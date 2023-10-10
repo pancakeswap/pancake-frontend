@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import addSeconds from 'date-fns/addSeconds'
+import dayjs from 'dayjs'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -33,7 +33,7 @@ export const deserializeFarm = (
     ? new Date((auctionHostingStartSeconds as number) * 1000)
     : null
   const auctionHostingEndDate = auctionHostingStartDate
-    ? addSeconds(auctionHostingStartDate, auctionHostingInSeconds)
+    ? dayjs(auctionHostingStartDate).add(auctionHostingInSeconds, 'seconds').toDate()
     : null
   const now = Date.now()
   const isFarmCommunity =

@@ -4,7 +4,7 @@ import { FeeAmount, Pool, TickMath, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { MAX_UINT128 } from '../../constants'
 import { TickProcessed } from '../../data/pool/tickData'
 import { usePoolData, usePoolTickData } from '../../hooks'
@@ -73,8 +73,8 @@ const initialState = {
 export default function DensityChart({ address }: DensityChartProps) {
   // poolData
   const poolData: PoolData = usePoolData(address)
-  const formattedAddress0 = isAddress(poolData?.token0?.address)
-  const formattedAddress1 = isAddress(poolData?.token1?.address)
+  const formattedAddress0 = safeGetAddress(poolData?.token0?.address)
+  const formattedAddress1 = safeGetAddress(poolData?.token1?.address)
   const feeTier = poolData?.feeTier
 
   // parsed tokens

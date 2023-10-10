@@ -24,7 +24,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useState } from 'react'
-import { getBlockExploreLink, isAddress } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -39,6 +39,7 @@ import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state
 import { styled } from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import BarChart from '../components/BarChart/alt'
 import { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
@@ -54,7 +55,7 @@ import {
   useTokenPriceData,
   useTokenTransactions,
 } from '../hooks'
-import { currentTimestamp, notEmpty } from '../utils'
+import { currentTimestamp } from '../utils'
 import { unixToDate } from '../utils/date'
 import { formatDollarAmount } from '../utils/numbers'
 
@@ -104,7 +105,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
   const formatPoolData = useMemo(() => {
-    return poolDatas?.filter(notEmpty) ?? []
+    return poolDatas?.filter((pool) => !isUndefinedOrNull(pool)) ?? []
   }, [poolDatas])
 
   const formattedTvlData = useMemo(() => {
@@ -184,7 +185,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     <Text color="primary">{t('Tokens')}</Text>
                   </NextLinkFromReactRouter>
                   <Flex>
-                    <Text mr="8px">{subgraphTokenSymbol[isAddress(address) || undefined] ?? tokenData.symbol}</Text>
+                    <Text mr="8px">{subgraphTokenSymbol[safeGetAddress(address)] ?? tokenData.symbol}</Text>
                     <Text>{`(${truncateHash(address)})`}</Text>
                   </Flex>
                 </Breadcrumbs>
@@ -216,10 +217,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       fontSize={isXs || isSm ? '24px' : '40px'}
                       id="info-token-name-title"
                     >
-                      {(address && subgraphTokenName[isAddress(address) || undefined]) || tokenData.name}
+                      {(address && subgraphTokenName[safeGetAddress(address)]) || tokenData.name}
                     </Text>
                     <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                      ({subgraphTokenSymbol[isAddress(address) || undefined] ?? tokenData.symbol})
+                      ({subgraphTokenSymbol[safeGetAddress(address)] ?? tokenData.symbol})
                     </Text>
                   </Flex>
                   <Flex mt="8px" ml="46px" alignItems="center">

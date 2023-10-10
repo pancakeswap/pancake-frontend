@@ -1,4 +1,4 @@
-import { getUnixTime } from 'date-fns'
+import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import orderBy from 'lodash/orderBy'
 
@@ -45,7 +45,7 @@ const fetchTokenPriceData = async (
   error: boolean
 }> => {
   // Construct timestamps to query against
-  const endTimestamp = getUnixTime(new Date())
+  const endTimestamp = dayjs().unix()
   const timestamps = []
   let time = startTimestamp
   while (time <= endTimestamp) {

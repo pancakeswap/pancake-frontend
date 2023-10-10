@@ -41,6 +41,9 @@ const workerDeps = Object.keys(smartRouterPkgs.dependencies)
 
 /** @type {import('next').NextConfig} */
 const config = {
+  typescript: {
+    tsconfigPath: 'tsconfig.build.json',
+  },
   compiler: {
     styledComponents: true,
   },

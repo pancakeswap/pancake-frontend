@@ -2,7 +2,7 @@ import { Flex, Grid, Text, Button, Input, BinanceIcon, ErrorIcon } from '@pancak
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { NftToken } from 'state/nftMarket/types'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { Divider, RoundedImage } from '../shared/styles'
 import { GreyedOutContainer } from './styles'
 
@@ -25,7 +25,7 @@ const TransferStage: React.FC<React.PropsWithChildren<TransferStageProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const transferAddressEqualsConnectedAddress = isAddress(transferAddress) === isAddress(account)
+  const transferAddressEqualsConnectedAddress = safeGetAddress(transferAddress) === safeGetAddress(account)
   const getErrorText = () => {
     if (isInvalidTransferAddress) {
       return t('That’s not a BNB Smart Chain wallet address.')

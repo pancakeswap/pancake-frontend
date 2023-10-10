@@ -2,11 +2,11 @@ import { useMemo } from 'react'
 import { Box, Text, Flex, MessageText, Message } from '@pancakeswap/uikit'
 
 import { LightGreyCard } from 'components/Card'
-import { addSeconds } from 'date-fns'
+import dayjs from 'dayjs'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useTranslation } from '@pancakeswap/localization'
 import _toNumber from 'lodash/toNumber'
-import { convertTimeToSeconds } from 'utils/timeHelper'
+import { convertTimeToMilliseconds } from 'utils/timeHelper'
 import formatSecondsToWeeks from '../../../utils/formatSecondsToWeeks'
 import TextRow from './TextRow'
 import BalanceRow from './BalanceRow'
@@ -44,13 +44,15 @@ const Overview: React.FC<React.PropsWithChildren<OverviewPropsType>> = ({
     return newLockedApy && formatRoi({ usdValueStaked, lockedApy: newLockedApy, duration: newDuration })
   }, [newLockedApy, usdValueStaked, newDuration])
 
-  const now = new Date()
+  const now = dayjs()
 
   const unlockDate = newDuration
-    ? addSeconds(Number(lockStartTime) ? new Date(convertTimeToSeconds(lockStartTime)) : now, newDuration)
+    ? (Number(lockStartTime) ? dayjs(convertTimeToMilliseconds(lockStartTime)) : now)
+        .add(newDuration, 'seconds')
+        .toDate()
     : Number(lockEndTime)
-    ? new Date(convertTimeToSeconds(lockEndTime))
-    : addSeconds(now, duration)
+    ? new Date(convertTimeToMilliseconds(lockEndTime))
+    : now.add(duration, 'seconds').toDate()
 
   const formattediCake = useMemo(() => {
     return formatICake({ lockedAmount, duration, ceiling }) || 0

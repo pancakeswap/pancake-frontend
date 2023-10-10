@@ -22,7 +22,6 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import Page from 'components/Layout/Page'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
-import { Duration } from 'date-fns'
 import { useMemo } from 'react'
 import {
   multiChainId,
@@ -44,7 +43,7 @@ import {
   useTokenTransactionsSWR,
 } from 'state/info/hooks'
 import { styled } from 'styled-components'
-import { getBlockExploreLink, isAddress } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
@@ -53,6 +52,10 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+
+dayjs.extend(duration)
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -74,7 +77,7 @@ const StyledCMCLink = styled(UIKitLink)`
     opacity: 0.8;
   }
 `
-const DEFAULT_TIME_WINDOW: Duration = { weeks: 1 }
+const DEFAULT_TIME_WINDOW = dayjs.duration(1, 'weeks')
 
 const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = ({ routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
@@ -175,13 +178,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     fontSize={isXs || isSm ? '24px' : '40px'}
                     id="info-token-name-title"
                   >
-                    {(tokenData.address && subgraphTokenName[isAddress(tokenData.address) || undefined]) ||
-                      tokenData.name}
+                    {(tokenData.address && subgraphTokenName[safeGetAddress(tokenData.address)]) || tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                    (
-                    {(tokenData.address && subgraphTokenSymbol[isAddress(tokenData.address) || undefined]) ??
-                      tokenData.symbol}
+                    ({(tokenData.address && subgraphTokenSymbol[safeGetAddress(tokenData.address)]) ?? tokenData.symbol}
                     )
                   </Text>
                 </Flex>

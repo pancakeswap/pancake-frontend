@@ -3,7 +3,7 @@ import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 
@@ -62,7 +62,7 @@ export function useSwapInputError(
     inputError = inputError ?? t('Select a token')
   }
 
-  const formattedTo = isAddress(to)
+  const formattedTo = safeGetAddress(to)
   if (!to || !formattedTo) {
     inputError = inputError ?? t('Enter a recipient')
   } else if (BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 || (trade && involvesAddress(trade, formattedTo))) {

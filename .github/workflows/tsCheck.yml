@@ -63,7 +63,7 @@ jobs:
           echo 'Files removed: ${{steps.files.outputs.files_deleted}}'
 
       - name: Check typescript errors
-        uses: chefjackson/action-check-typescript@v1.1.2
+        uses: chefjackson/action-check-typescript@v1.1.3
         if: steps.files.outputs.changed == 'true'
         env:
           NODE_OPTIONS: '--max_old_space_size=4096'
@@ -78,4 +78,4 @@ jobs:
           line-numbers: ${{steps.diff.outputs.lineNumbers}}
           output-behaviour: both
           comment-behaviour: edit
-          ts-config-path: ./apps/web/tsconfig.check.json
+          ts-config-path: ./apps/web/tsconfig.json
