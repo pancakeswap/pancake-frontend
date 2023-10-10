@@ -11,7 +11,7 @@ import pickBy from 'lodash/pickBy'
 import range from 'lodash/range'
 import lodashSize from 'lodash/size'
 import { stringify } from 'querystring'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { Address } from 'wagmi'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import { getNftMarketContract } from 'utils/contractHelpers'
@@ -168,7 +168,7 @@ export const getNftsFromCollectionApi = async (
   size = 100,
   page = 1,
 ): Promise<ApiResponseCollectionTokens> => {
-  const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
+  const isPBCollection = safeGetAddress(collectionAddress) === safeGetAddress(pancakeBunniesAddress)
   const requestPath = `${API_NFT}/collections/${collectionAddress}/tokens${
     !isPBCollection ? `?page=${page}&size=${size}` : ``
   }`
@@ -306,7 +306,7 @@ export const getNftsFromCollectionSg = async (
   skip = 0,
 ): Promise<TokenMarketData[]> => {
   // Squad to be sorted by tokenId as this matches the order of the paginated API return. For PBs - get the most recent,
-  const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
+  const isPBCollection = safeGetAddress(collectionAddress) === safeGetAddress(pancakeBunniesAddress)
 
   try {
     const res = await request(

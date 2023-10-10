@@ -20,7 +20,8 @@ import { useDebounce } from '@pancakeswap/hooks'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { API_PROFILE } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
-import { formatDistance, parseISO } from 'date-fns'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
@@ -29,6 +30,8 @@ import { useAccount } from 'wagmi'
 import { REGISTER_COST, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from './config'
 import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
+
+dayjs.extend(relativeTime)
 
 enum ExistingUserState {
   IDLE = 'idle', // initial state
@@ -171,7 +174,7 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
         const data = await response.json()
 
         if (response.ok) {
-          const dateCreated = formatDistance(parseISO(data.created_at), new Date())
+          const dateCreated = dayjs(data.created_at).toNow(true)
           setMessage(t('Created %dateCreated% ago', { dateCreated }))
 
           actions.setUserName(data.username)

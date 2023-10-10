@@ -128,11 +128,7 @@ export default function FixedStakingOverview({
           {t('Stake Period Ends')}
         </Text>
         <Text color={safeAlreadyStakedAmount.greaterThan(0) ? 'failure' : undefined} bold>
-          {unlockTime ? (
-            formatTime(unlockTime * 1_000)
-          ) : (
-            <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
-          )}
+          {unlockTime ? formatTime(unlockTime) : <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />}
         </Text>
       </Flex>
       <Flex alignItems="baseline" justifyContent="space-between">

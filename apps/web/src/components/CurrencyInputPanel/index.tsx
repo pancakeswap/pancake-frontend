@@ -3,7 +3,7 @@ import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk
 import { Button, Text, useModal, Flex, Box, CopyButton, Loading, Skeleton, ArrowDropDownIcon } from '@pancakeswap/uikit'
 import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -100,7 +100,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
 
   const mode = id
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
-  const tokenAddress = token ? isAddress(token.address) : null
+  const tokenAddress = token ? safeGetAddress(token.address) : null
 
   const amountInDollar = useStablecoinPriceAmount(
     showUSDPrice ? currency : undefined,

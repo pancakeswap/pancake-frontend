@@ -8,7 +8,7 @@ import { PotteryWithdrawAbleData } from 'state/types'
 import WithdrawButton from 'views/Pottery/components/Pot/Claim/WithdrawButton'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
 import { getDrawnDate } from 'views/Lottery/helpers'
-import { addDays } from 'date-fns'
+import dayjs from 'dayjs'
 
 interface AvailableWithdrawProps {
   withdrawData: PotteryWithdrawAbleData
@@ -36,9 +36,9 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
 
   const lockDate = useMemo(() => getDrawnDate(locale, lockedDate?.toString()), [lockedDate, locale])
-  const withdrawableDate = addDays(new Date(parseInt(lockedDate, 10) * 1000), 70).getTime()
+  const withdrawableDate = dayjs.unix(parseInt(lockedDate, 10)).add(70, 'days').unix()
   const withdrawableDateStr = useMemo(
-    () => getDrawnDate(locale, (withdrawableDate / 1000).toString()),
+    () => getDrawnDate(locale, withdrawableDate.toString()),
     [withdrawableDate, locale],
   )
 

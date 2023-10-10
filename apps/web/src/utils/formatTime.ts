@@ -1,5 +1,5 @@
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 
 export function formatTime(time: number | Date) {
-  return format(time, 'MMM d, yyyy HH:mm')
+  return dayjs(time).format('MMM d, YYYY HH:mm')
 }

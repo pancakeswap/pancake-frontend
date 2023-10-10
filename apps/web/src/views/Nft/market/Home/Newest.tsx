@@ -5,7 +5,7 @@ import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { Address } from 'wagmi'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { CollectibleLinkCard } from '../components/CollectibleCard'
 import GridPlaceholder from '../components/GridPlaceholder'
 
@@ -14,7 +14,7 @@ import GridPlaceholder from '../components/GridPlaceholder'
  * @returns Array of NftToken
  */
 const useNewestNfts = () => {
-  const [newestNfts, setNewestNfts] = useState<NftToken[]>(null)
+  const [newestNfts, setNewestNfts] = useState<NftToken[] | null>(null)
 
   useEffect(() => {
     const fetchNewestNfts = async () => {
@@ -65,7 +65,7 @@ const Newest: React.FC<React.PropsWithChildren> = () => {
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
         >
           {nfts.map((nft) => {
-            const isPBCollection = isAddress(nft.collectionAddress) === pancakeBunniesAddress
+            const isPBCollection = safeGetAddress(nft.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
             const currentAskPrice =
               !isPBCollection && nft.marketData?.isTradable ? parseFloat(nft.marketData?.currentAskPrice) : undefined
             return (

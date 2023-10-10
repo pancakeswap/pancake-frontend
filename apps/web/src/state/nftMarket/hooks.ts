@@ -1,4 +1,4 @@
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { useAtom } from 'jotai'
 import { TFetchStatus } from 'config/constants/types'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -23,8 +23,8 @@ export const useGetCollections = (): { data: ApiCollections; status: TFetchStatu
   return { data: collections, status }
 }
 
-export const useGetCollection = (collectionAddress: string): Collection | undefined => {
-  const checksummedCollectionAddress = isAddress(collectionAddress) || ''
+export const useGetCollection = (collectionAddress: string | undefined): Collection | undefined => {
+  const checksummedCollectionAddress = safeGetAddress(collectionAddress) || ''
   const { data } = useSWR(
     checksummedCollectionAddress ? ['nftMarket', 'collections', checksummedCollectionAddress.toLowerCase()] : null,
     async () => getCollection(checksummedCollectionAddress),
@@ -67,7 +67,7 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
           .flat()
           .map((result, index) => [
             nftsInWallet[index].tokenId,
-            profileAddress.toLowerCase() === result.result.toLowerCase(),
+            profileAddress.toLowerCase() === result?.result?.toLowerCase(),
           ]),
       )
     : null

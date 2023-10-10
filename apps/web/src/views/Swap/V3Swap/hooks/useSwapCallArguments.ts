@@ -3,12 +3,12 @@ import { Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 
 import { PancakeUniversalSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
-import { Address, Hex } from 'viem'
+import { Address, Hex, isAddress } from 'viem'
 
 interface SwapCall {
   address: Address
@@ -21,7 +21,8 @@ interface SwapCall {
  * @param trade trade to execute
  * @param allowedSlippage user allowed slippage
  * @param recipientAddressOrName the ENS name or address of the recipient of the swap output
- * @param signatureData the signature data of the permit of the input token amount, if available
+ * @param deadline the deadline for executing the trade
+ * @param feeOptions the fee options to be applied to the trade.
  */
 export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
@@ -34,7 +35,7 @@ export function useSwapCallArguments(
   const { account, chainId } = useAccountActiveChain()
   const recipientENSAddress = useGetENSAddressByName(recipientAddress)
   const recipient = (
-    recipientAddress === null
+    recipientAddress === null || recipientAddress === undefined
       ? account
       : isAddress(recipientAddress)
       ? recipientAddress

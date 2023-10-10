@@ -17,7 +17,7 @@ import { CommitButton } from 'components/CommitButton'
 import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
-import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, memo, useCallback, useEffect, useState, useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import { ONRAMP_PROVIDERS, chainIdToMercuryoNetworkId } from 'views/BuyCrypto/constants'
@@ -146,19 +146,22 @@ export const FiatOnRampModalButton = ({
     />,
   )
 
-  let buttonText: ReactNode | string = t(`Buy with %provider%`, { provider })
-  if (disabled) {
-    buttonText = (
-      <>
-        <Flex alignItems="center">
-          <Text px="4px" fontWeight="bold" color="white">
-            {t('Fetching Quotes')}
-          </Text>
-          <CircleLoader stroke="white" />
-        </Flex>
-      </>
-    )
-  }
+  const buttonText = useMemo(() => {
+    if (disabled) {
+      return (
+        <>
+          <Flex alignItems="center">
+            <Text px="4px" fontWeight="bold" color="white">
+              {t('Fetching Quotes')}
+            </Text>
+            <CircleLoader stroke="white" />
+          </Flex>
+        </>
+      )
+    }
+    return t(`Buy with %provider%`, { provider })
+  }, [disabled, provider, t])
+
   return (
     <AutoColumn gap="md">
       <CommitButton onClick={onPresentConfirmModal} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
@@ -190,7 +193,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   const handleDismiss = useCallback(async () => {
     onDismiss?.()
-    setModalView(CryptoFormView.Input)
+    setModalView(CryptoFormView.Quote)
   }, [onDismiss, setModalView])
 
   const fetchSignedIframeUrl = useCallback(async () => {

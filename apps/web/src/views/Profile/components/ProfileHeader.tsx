@@ -12,7 +12,7 @@ import {
   ScanLink,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBlockExploreLink, isAddress } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
@@ -63,7 +63,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     false,
   )
 
-  const isConnectedAccount = isAddress(account) === isAddress(accountPath)
+  const isConnectedAccount = safeGetAddress(account) === safeGetAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
   const numPoints = !isProfileLoading ? (profile?.points ? formatNumber(profile.points, 0, 0) : '-') : null
   const numAchievements = !isAchievementsLoading

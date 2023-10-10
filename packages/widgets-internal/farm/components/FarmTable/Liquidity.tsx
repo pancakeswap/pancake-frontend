@@ -1,14 +1,15 @@
 import { useTranslation } from "@pancakeswap/localization";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { styled } from "styled-components";
 import { Skeleton, HelpIcon, Text, TooltipRefs, useTooltip } from "@pancakeswap/uikit";
 import { FarmTableLiquidityProps } from "../../types";
 
+dayjs.extend(relativeTime);
+
 const distanceToNow = (timeInMilliSeconds: number) => {
   const time = new Date(timeInMilliSeconds);
-  return time > new Date() || !Number.isFinite(timeInMilliSeconds)
-    ? `now`
-    : formatDistanceToNow(time, { addSuffix: true });
+  return time > new Date() || !Number.isFinite(timeInMilliSeconds) ? `now` : dayjs(time).toNow();
 };
 
 const ReferenceElement = styled.div`

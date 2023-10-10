@@ -1,6 +1,6 @@
 import { ERC20Token, Pair } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import memoize from 'lodash/memoize'
 
 const getLpAddress = memoize(
@@ -11,14 +11,14 @@ const getLpAddress = memoize(
       return null
     }
     if (typeof token1 === 'string' || token1 instanceof String) {
-      const checksummedToken1Address = isAddress(token1)
+      const checksummedToken1Address = safeGetAddress(token1)
       if (!checksummedToken1Address) {
         return null
       }
       token1AsTokenInstance = new ERC20Token(chainId, checksummedToken1Address, 18, 'Cake-LP')
     }
     if (typeof token2 === 'string' || token2 instanceof String) {
-      const checksummedToken2Address = isAddress(token2)
+      const checksummedToken2Address = safeGetAddress(token2)
       if (!checksummedToken2Address) {
         return null
       }
