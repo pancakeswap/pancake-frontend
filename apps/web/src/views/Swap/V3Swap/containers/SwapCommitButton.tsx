@@ -165,7 +165,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     if (
       tradePriceBreakdown &&
       !confirmPriceImpactWithoutFee(
-        tradePriceBreakdown.priceImpactWithoutFee,
+        tradePriceBreakdown.priceImpactWithoutFee as Percent,
         PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
         ALLOWED_PRICE_IMPACT_HIGH,
         t,
@@ -204,7 +204,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // End Handlers
 
   // warnings on slippage
-  const priceImpactSeverity = warningSeverity(tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : 0)
+  const priceImpactSeverity = warningSeverity(
+    tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : undefined,
+  )
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
