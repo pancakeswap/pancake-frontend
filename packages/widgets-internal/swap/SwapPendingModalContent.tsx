@@ -6,8 +6,8 @@ import TokenTransferInfo from "./TokenTransferInfo";
 interface SwapPendingModalContentProps {
   title: string;
   showIcon?: boolean;
-  currencyA: Currency;
-  currencyB: Currency;
+  currencyA?: Currency;
+  currencyB?: Currency;
   amountA: string;
   amountB: string;
   children?: ReactNode;

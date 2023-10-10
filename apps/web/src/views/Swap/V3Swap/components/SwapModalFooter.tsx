@@ -40,14 +40,14 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   isRFQReady,
   currencyBalances,
 }: {
-  trade: SmartRouterTrade<TradeType> | null | undefined
+  trade?: SmartRouterTrade<TradeType>
   tradeType: TradeType
-  lpFee: CurrencyAmount<Currency>
+  lpFee?: CurrencyAmount<Currency>
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
-  priceImpact: Percent
+  priceImpact?: Percent
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
-  isEnoughInputBalance: boolean
+  isEnoughInputBalance?: boolean
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
   isMM?: boolean
@@ -72,7 +72,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
       return mmFormatExecutionPrice(trade, showInverted)
     }
 
-    const price = SmartRouter.getExecutionPrice(trade)
+    const price = SmartRouter.getExecutionPrice(trade) ?? undefined
     return formatExecutionPrice(price, inputAmount, outputAmount, showInverted)
   }, [inputAmount, isMM, outputAmount, trade, showInverted])
 

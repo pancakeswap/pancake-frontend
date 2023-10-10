@@ -9,8 +9,8 @@ import usePrevious from 'views/V3Info/hooks/usePrevious'
 import { usePublicClient } from 'wagmi'
 
 interface UseConfirmModalStateProps {
-  txHash: string
-  chainId: ChainId
+  txHash?: string
+  chainId?: ChainId
   approval: ApprovalState
   approvalToken: Currency
   currentAllowance: CurrencyAmount<Currency>

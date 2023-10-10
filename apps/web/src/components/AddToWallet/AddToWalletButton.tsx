@@ -20,9 +20,9 @@ export enum AddToWalletTextOptions {
 }
 
 export interface AddToWalletButtonProps {
-  tokenAddress: string
-  tokenSymbol: string
-  tokenDecimals: number
+  tokenAddress?: string
+  tokenSymbol?: string
+  tokenDecimals?: number
   tokenLogo?: string
   textOptions?: AddToWalletTextOptions
   marginTextBetweenLogo?: string
@@ -38,7 +38,7 @@ const Icons = {
   MetaMask: MetamaskIcon,
 }
 
-const getWalletText = (textOptions: AddToWalletTextOptions, tokenSymbol: string, t: any) => {
+const getWalletText = (textOptions: AddToWalletTextOptions, tokenSymbol: string | undefined, t: any) => {
   return (
     textOptions !== AddToWalletTextOptions.NO_TEXT &&
     (textOptions === AddToWalletTextOptions.TEXT
@@ -93,6 +93,7 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
       {...props}
       onClick={() => {
         const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
+        if (!tokenAddress || !tokenSymbol || !image) return
         connector.watchAsset?.({
           address: tokenAddress,
           symbol: tokenSymbol,

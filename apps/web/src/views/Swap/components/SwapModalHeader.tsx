@@ -32,8 +32,8 @@ export default function SwapModalHeader({
   tradeType: TradeType
   priceImpactWithoutFee?: Percent
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
-  isEnoughInputBalance: boolean
-  recipient: string | null
+  isEnoughInputBalance?: boolean
+  recipient?: string
   showAcceptChanges: boolean
   onAcceptChanges: () => void
   allowedSlippage: number | ReactElement
@@ -58,11 +58,11 @@ export default function SwapModalHeader({
   const tradeInfoText = useMemo(() => {
     return tradeType === TradeType.EXACT_INPUT
       ? t('Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.', {
-          amount,
+          amount: `${amount}`,
           symbol,
         })
       : t('Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.', {
-          amount,
+          amount: `${amount}`,
           symbol,
         })
   }, [t, tradeType, amount, symbol])

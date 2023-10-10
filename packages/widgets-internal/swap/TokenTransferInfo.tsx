@@ -3,12 +3,12 @@ import { Text, Box, Flex, ArrowForwardIcon } from "@pancakeswap/uikit";
 import { CurrencyLogo } from "../components/CurrencyLogo";
 
 interface TokenTransferInfoProps {
-  symbolA: string;
-  symbolB: string;
+  symbolA?: string;
+  symbolB?: string;
   amountA: string;
   amountB: string;
-  currencyA: Currency;
-  currencyB: Currency;
+  currencyA?: Currency;
+  currencyB?: Currency;
 }
 
 const TokenTransferInfo: React.FC<TokenTransferInfoProps> = ({
