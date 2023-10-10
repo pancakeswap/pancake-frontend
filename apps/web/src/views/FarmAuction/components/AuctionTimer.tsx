@@ -1,5 +1,5 @@
 import { styled } from 'styled-components'
-import { isAfter, differenceInSeconds } from 'date-fns'
+import dayjs from 'dayjs'
 import { Text, Flex, PocketWatchIcon, Skeleton } from '@pancakeswap/uikit'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
@@ -32,9 +32,9 @@ const AuctionTimer: React.FC<React.PropsWithChildren<{ auction: Auction }>> = ({
     )
   }
   const { startDate, endDate } = auction
-  const timerUntil = isAfter(startDate, new Date()) ? startDate : endDate
+  const timerUntil = dayjs(startDate).isAfter(dayjs()) ? startDate : endDate
   const timerTitle = timerUntil === endDate ? t('Ending in') : t('Next auction')
-  const secondsRemaining = differenceInSeconds(timerUntil, new Date())
+  const secondsRemaining = dayjs(timerUntil).diff(dayjs(), 'seconds')
   const { days, hours, minutes } = getTimePeriods(secondsRemaining)
   return (
     <Flex justifyContent="center" alignItems="center" mb="48px">

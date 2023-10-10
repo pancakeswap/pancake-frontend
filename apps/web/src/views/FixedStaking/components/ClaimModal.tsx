@@ -87,7 +87,7 @@ export function ClaimModal({
 
   const poolEnded = unlockTime >= poolEndDay * 86400 + 43200
 
-  const unlockTimeFormat = formatTime(unlockTime * 1_000)
+  const unlockTimeFormat = formatTime(unlockTime)
 
   return (
     <>

@@ -64,10 +64,20 @@ const StyledMarquee = styled(Marquee)`
   border-radius: 12px;
 `
 
+const StyledChainIcon = styled('div')`
+  svg path {
+    fill: ${({ theme }) => theme.colors.invertedContrast};
+  }
+`
+
 const newsItems = [
   {
     key: 'BNB Chain',
-    component: <BinanceChainIcon />,
+    component: (
+      <StyledChainIcon>
+        <BinanceChainIcon />
+      </StyledChainIcon>
+    ),
     background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #F0B90B',
     iconWidth: '26px',
   },
@@ -85,7 +95,11 @@ const newsItems = [
   },
   {
     key: 'Polygon zkEVM',
-    component: <ZkEVMIcon />,
+    component: (
+      <StyledChainIcon>
+        <ZkEVMIcon />
+      </StyledChainIcon>
+    ),
     background: '#AD73DE',
     iconWidth: '24px',
   },
@@ -109,7 +123,11 @@ const newsItems = [
   },
   {
     key: 'Base',
-    component: <BaseIcon />,
+    component: (
+      <StyledChainIcon>
+        <BaseIcon />
+      </StyledChainIcon>
+    ),
     background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #75A1FF',
     iconWidth: '20px',
   },

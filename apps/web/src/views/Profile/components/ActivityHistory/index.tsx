@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
-import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { getUserActivity } from 'state/nftMarket/helpers'
 import { PaginationButton, Card, Flex, Table, Text, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
@@ -10,10 +9,11 @@ import TableLoader from 'components/TableLoader'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
 import { useBNBPrice } from 'hooks/useBNBPrice'
+import { isAddress } from 'viem'
+import { fetchActivityNftMetadata } from 'views/Nft/market/ActivityHistory/utils/fetchActivityNftMetadata'
 import { sortUserActivity } from '../../utils/sortUserActivity'
 import NoNftsImage from '../../../Nft/market/components/Activity/NoNftsImage'
 import ActivityRow from '../../../Nft/market/components/Activity/ActivityRow'
-import { fetchActivityNftMetadata } from '../../../Nft/market/ActivityHistory/utils/fetchActivityNftMetadata'
 
 const MAX_PER_PAGE = 8
 

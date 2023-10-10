@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/sdk",
   "license": "MIT",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "description": "🛠 An SDK for building applications on top of Pancakeswap.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -41,7 +41,7 @@
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3",
     "toformat": "^2.0.0",
-    "viem": "^1.10.9"
+    "viem": "^1.15.1"
   },
   "devDependencies": {
     "@types/big.js": "^4.0.5",

@@ -13,7 +13,7 @@ import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { NftToken } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBscScanLinkForNft, isAddress } from 'utils'
+import { getBscScanLinkForNft, safeGetAddress } from 'utils'
 import { HorizontalDivider, RoundedImage } from './BuySellModals/shared/styles'
 import EditProfileModal from '../../../Profile/components/EditProfileModal'
 import { nftsBaseUrl, pancakeBunniesAddress } from '../constants'
@@ -39,7 +39,9 @@ const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> =
   const { theme } = useTheme()
 
   const itemPageUrlId =
-    isAddress(nft.collectionAddress) === pancakeBunniesAddress ? nft.attributes[0].value : nft.tokenId
+    safeGetAddress(nft.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
+      ? nft.attributes[0].value
+      : nft.tokenId
 
   return (
     <StyledModal title={t('Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>

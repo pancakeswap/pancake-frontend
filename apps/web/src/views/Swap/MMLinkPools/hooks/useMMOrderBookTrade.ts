@@ -8,7 +8,7 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 
 import { useAccount } from 'wagmi'
 import { getMMOrderBook } from '../apis'
@@ -171,7 +171,7 @@ export const useMMTrade = (
       result = result ?? t('Select a token')
     }
 
-    const formattedTo = isAddress(to)
+    const formattedTo = safeGetAddress(to)
     if (!to || !formattedTo) {
       result = result ?? t('Enter a recipient')
     } else if (

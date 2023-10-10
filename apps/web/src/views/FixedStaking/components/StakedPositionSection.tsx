@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { useMemo } from 'react'
 
-import { differenceInMilliseconds, format } from 'date-fns'
+import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 
 import { LockedFixedTag } from './LockedFixedTag'
@@ -48,7 +48,7 @@ function InfoSection({
       </Text>
 
       <Text color="textSubtle" fontSize="12px">
-        {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${format(unlockTime * 1_000, 'MMM d, yyyy')}`}
+        {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${dayjs.unix(unlockTime).format('MMM d, YYYY')}`}
       </Text>
 
       <Text color="textSubtle" fontSize="12px">
@@ -162,7 +162,7 @@ export function StakedPositionSection({
 
   const poolEndDay = pool.pools.find((p) => p.poolIndex === poolIndex)?.endDay || 0
 
-  const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date()) <= 0
+  const shouldUnlock = dayjs.unix(unlockTime).diff(dayjs()) <= 0
 
   const stakedPositions = useMemo(() => [stakePosition], [stakePosition])
 

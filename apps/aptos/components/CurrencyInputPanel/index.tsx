@@ -124,7 +124,7 @@ export const CurrencyInputPanel = ({
               onClick={onPresentCurrencyModal}
               title={currency?.name}
             >
-              {isMounted && <CurrencyLogo currency={currency} size="24px" />}
+              {isMounted && <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />}
               <Text>{currency?.symbol}</Text>
               {!disableCurrencySelect && <ChevronDownIcon />}
             </Button>

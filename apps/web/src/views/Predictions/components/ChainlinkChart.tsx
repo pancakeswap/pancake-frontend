@@ -19,7 +19,7 @@ import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createChart, IChartApi, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp } from 'lightweight-charts'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import { darken } from 'polished'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
@@ -244,7 +244,7 @@ const Chart = ({
         fixRightEdge: true,
         fixLeftEdge: true,
         tickMarkFormatter: (unixTime: number) => {
-          return format(unixTime * 1000, 'h:mm a')
+          return dayjs.unix(unixTime).format('h:mm a')
         },
       },
       grid: {

@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/smart-router",
-  "version": "4.9.0",
+  "version": "4.9.1",
   "description": "A SDK for getting best routes from AMM",
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
     "mnemonist": "^0.38.3",
     "stats-lite": "^2.2.0",
     "tiny-invariant": "^1.1.0",
-    "viem": "^1.10.9",
+    "viem": "^1.15.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {

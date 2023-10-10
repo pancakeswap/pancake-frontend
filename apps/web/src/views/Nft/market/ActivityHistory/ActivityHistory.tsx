@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { Box, Button, Flex, Table, Text, Th, useMatchBreakpoints, PaginationButton } from '@pancakeswap/uikit'
 import { getCollectionActivity } from 'state/nftMarket/helpers'
@@ -11,6 +11,7 @@ import useTheme from 'hooks/useTheme'
 import { useLastUpdated } from '@pancakeswap/hooks'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { useBNBPrice } from 'hooks/useBNBPrice'
+import { isAddress } from 'viem'
 import NoNftsImage from '../components/Activity/NoNftsImage'
 import ActivityFilters from './ActivityFilters'
 import ActivityRow from '../components/Activity/ActivityRow'
@@ -187,7 +188,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
                     const nftMeta = nftMetadata.find(
                       (metaNft) =>
                         metaNft.tokenId === activity.nft.tokenId &&
-                        isAddress(metaNft.collectionAddress) === isAddress(activity.nft?.collection.id),
+                        safeGetAddress(metaNft.collectionAddress) === safeGetAddress(activity.nft?.collection.id),
                     )
                     return (
                       <ActivityRow
