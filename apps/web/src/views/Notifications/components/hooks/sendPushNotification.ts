@@ -59,7 +59,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         let encryptedData = cipher.update(data, 'utf8', 'hex')
         encryptedData += cipher.final('hex')
 
-        await fetch('http://localhost:8000/subscribe', {
+        await fetch('http://localhost:8020./subscribe', {
           method: 'POST',
           body: JSON.stringify({ subscription: encryptedData, user: account }),
           headers: { 'Content-Type': 'application/json' },
@@ -77,15 +77,10 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      const authKeyResponse = await fetch(`http://localhost:8000/walletconnect-auth-key`)
-      const result = await authKeyResponse.json()
-      const authKey = result.secretKey
-
-      await fetch(`${DEFAULT_RELAY_URL}/${'a14938037e06221040c0fa6a69a1d95f'}/notify`, {
+      await fetch(`http://localhost:8020/walletconnect-notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authKey}`,
         },
         body: JSON.stringify(notificationPayload),
       })
