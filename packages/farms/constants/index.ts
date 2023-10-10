@@ -1,17 +1,18 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, getChainName } from '@pancakeswap/chains'
 import { isStableFarm, SerializedFarmConfig, supportedChainIdV2 } from '..'
 
 let logged = false
 
 export const getFarmConfig = async (chainId: ChainId) => {
   if (supportedChainIdV2.includes(chainId as number)) {
+    const chainName = getChainName(chainId)
     try {
-      return (await import(`/${chainId}.ts`)).default.filter(
+      return (await import(`/${chainName}.ts`)).default.filter(
         (f: SerializedFarmConfig) => f.pid !== null,
       ) as SerializedFarmConfig[]
     } catch (error) {
       if (!logged) {
-        console.error('Cannot get farm config', error, chainId)
+        console.error('Cannot get farm config', error, chainId, chainName)
         logged = true
       }
       return []
@@ -22,13 +23,14 @@ export const getFarmConfig = async (chainId: ChainId) => {
 
 export const getStableConfig = async (chainId: ChainId) => {
   if (supportedChainIdV2.includes(chainId as number)) {
+    const chainName = getChainName(chainId)
     try {
-      const farms = (await import(`/${chainId}.ts`)).default as SerializedFarmConfig[]
+      const farms = (await import(`/${chainName}.ts`)).default as SerializedFarmConfig[]
 
       return farms.filter(isStableFarm)
     } catch (error) {
       if (!logged) {
-        console.error('Cannot get stable farm config', error, chainId)
+        console.error('Cannot get stable farm config', error, chainId, chainName)
         logged = true
       }
       return []
