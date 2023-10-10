@@ -74,8 +74,10 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
     <Text>{t("Pancakeswap AMM includes V3, V2 and stable swap.")}</Text>,
     { placement: "top" }
   );
+
   const currentStepContainerRef = useRef<HTMLDivElement>(null);
   useUnmountingAnimation(currentStepContainerRef, () => AnimationType.EXITING);
+  const disableEntranceAnimation = approvalModalSteps[0] === currentStep;
 
   return useMemo(
     () => (
@@ -90,7 +92,7 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
             return (
               Boolean(step === currentStep) && (
                 <StepTitleAnimationContainer
-                  disableEntranceAnimation={approvalModalSteps[0] === currentStep}
+                  disableEntranceAnimation={disableEntranceAnimation}
                   key={step}
                   ref={step === currentStep ? currentStepContainerRef : undefined}
                 >
