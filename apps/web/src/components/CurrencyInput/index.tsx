@@ -12,7 +12,7 @@ interface Props {
   maxText?: ReactNode
 }
 
-export function CurrencyInput({ currency, balance, value, onChange, balanceText, maxText = 'Max' }: Props) {
+export function CurrencyInput({ currency, balance, value, onChange, balanceText, maxText = 'Max', ...rest }: Props) {
   const isMax = useMemo(() => balance && value && balance.toExact() === value, [balance, value])
   const onMaxClick = useCallback(
     (e: MouseEvent) => {
@@ -51,6 +51,7 @@ export function CurrencyInput({ currency, balance, value, onChange, balanceText,
 
   return (
     <BalanceInput
+      {...rest}
       inputProps={{ style: { textAlign: 'left' } }}
       value={value}
       onUserInput={onChange}
