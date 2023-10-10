@@ -1,9 +1,13 @@
 import { BigintIsh, TradeType } from '@pancakeswap/sdk'
+import { PermitSingle } from '@pancakeswap/permit2-sdk'
 import { SmartRouterTrade, SwapOptions } from '@pancakeswap/smart-router/evm'
 import { Address } from 'viem'
 import type { AbiParametersToPrimitiveTypes } from 'abitype'
-import { Permit2Permit } from './inputTokens'
 import { ABI_PARAMETER, CommandUsed } from './routerCommands'
+
+export interface Permit2Signature extends PermitSingle {
+  signature: string
+}
 
 export type AnyTradeType = SmartRouterTrade<TradeType> | SmartRouterTrade<TradeType>[]
 
@@ -13,7 +17,7 @@ export type SwapRouterConfig = {
 }
 
 export type PancakeSwapOptions = Omit<SwapOptions, 'inputTokenPermit'> & {
-  inputTokenPermit?: Permit2Permit
+  inputTokenPermit?: Permit2Signature
 }
 
 export type ChainConfig = {

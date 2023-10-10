@@ -3,10 +3,7 @@ import type { Address } from 'viem'
 import invariant from 'tiny-invariant'
 import { OPENSEA_CONDUIT_SPENDER_ID, ROUTER_AS_RECIPIENT, SUDOSWAP_SPENDER_ID } from './constants'
 import { CommandType, RoutePlanner } from './routerCommands'
-
-export interface Permit2Permit extends PermitSingle {
-  signature: string
-}
+import { Permit2Signature } from './types'
 
 export type ApproveProtocol = {
   token: string
@@ -21,7 +18,7 @@ export type Permit2TransferFrom = {
 
 export type InputTokenOptions = {
   approval?: ApproveProtocol
-  permit2Permit?: Permit2Permit
+  permit2Permit?: Permit2Signature
   permit2TransferFrom?: Permit2TransferFrom
 }
 
@@ -33,7 +30,7 @@ const hexToBytes = (hex: string): number[] => {
   }
   return bytes
 }
-export function encodePermit(planner: RoutePlanner, permit2: Permit2Permit): void {
+export function encodePermit(planner: RoutePlanner, permit2: Permit2Signature): void {
   planner.addCommand(CommandType.PERMIT2_PERMIT, [permit2, permit2.signature as `0x${string}`])
 }
 

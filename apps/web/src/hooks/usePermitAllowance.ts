@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AllowanceTransfer, generatePermitTypedData, PERMIT2_ADDRESS, PermitSingle } from '@pancakeswap/permit2-sdk'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useCallback, useMemo } from 'react'
@@ -54,15 +55,11 @@ interface Permit extends PermitSingle {
   sigDeadline: string
 }
 
-export interface PermitSignature extends Permit {
-  signature: string
-}
-
 export function useUpdatePermitAllowance(
   token: Token | undefined,
   spender: string | undefined,
   nonce: number | undefined,
-  onPermitSignature: (signature: PermitSignature) => void,
+  onPermitSignature: (signature: Permit2Signature) => void,
 ) {
   const { account, chainId } = useAccountActiveChain()
   const { signTypedDataAsync } = useSignTypedData()

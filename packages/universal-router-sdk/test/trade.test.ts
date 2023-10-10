@@ -16,10 +16,9 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
 import { getPublicClient, getWalletClient } from './fixtures/clients'
 import { PancakeUniversalSwapRouter } from '../src'
-import { PancakeSwapOptions } from '../src/utils/types'
+import { PancakeSwapOptions, Permit2Signature } from '../src/utils/types'
 import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
 import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
-import { Permit2Permit } from '../src/utils/inputTokens'
 
 const swapOptions = (options: Partial<PancakeSwapOptions>): PancakeSwapOptions => {
   let slippageTolerance = new Percent(5, 100)
@@ -237,7 +236,7 @@ describe('PancakeSwap Universal Router Trade', () => {
 
       const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
       const signature = await signPermit(permit, wallet, PERMIT2)
-      const permit2Permit: Permit2Permit = {
+      const permit2Permit: Permit2Signature = {
         ...permit,
         signature,
       }
@@ -268,7 +267,7 @@ describe('PancakeSwap Universal Router Trade', () => {
 
       const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
       const signature = await signEIP2098Permit(permit, wallet, PERMIT2)
-      const permit2Permit: Permit2Permit = {
+      const permit2Permit: Permit2Signature = {
         ...permit,
         signature,
       }
@@ -449,7 +448,7 @@ describe('PancakeSwap Universal Router Trade', () => {
 
       const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
       const signature = await signPermit(permit, wallet, PERMIT2)
-      const permit2Permit: Permit2Permit = {
+      const permit2Permit: Permit2Signature = {
         ...permit,
         signature,
       }
@@ -866,7 +865,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
 
     const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
     const signature = await signPermit(permit, wallet, PERMIT2)
-    const permit2Permit: Permit2Permit = {
+    const permit2Permit: Permit2Signature = {
       ...permit,
       signature,
     }

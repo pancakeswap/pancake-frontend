@@ -1,6 +1,7 @@
 import { useInterval } from '@pancakeswap/hooks'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
-import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
+import { usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react'
 import { useHasPendingApproval, useHasPendingRevocation } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
@@ -25,15 +26,15 @@ export interface AllowanceRequired {
   needsSetupApproval: boolean
   needsPermitSignature: boolean
   allowedAmount: CurrencyAmount<Token>
-  setSignature: Dispatch<SetStateAction<PermitSignature>>
+  setSignature: Dispatch<SetStateAction<Permit2Signature>>
 }
 
 export type Allowance =
-  | { state: AllowanceState.LOADING; setSignature: Dispatch<SetStateAction<PermitSignature>> }
+  | { state: AllowanceState.LOADING; setSignature: Dispatch<SetStateAction<Permit2Signature>> }
   | {
       state: AllowanceState.ALLOWED
-      permitSignature?: PermitSignature
-      setSignature: Dispatch<SetStateAction<PermitSignature>>
+      permitSignature?: Permit2Signature
+      setSignature: Dispatch<SetStateAction<Permit2Signature>>
     }
   | AllowanceRequired
 
@@ -63,7 +64,7 @@ export default function usePermit2Allowance(
     AVERAGE_L1_BLOCK_TIME,
   )
 
-  const [signature, setSignature] = useState<PermitSignature>()
+  const [signature, setSignature] = useState<Permit2Signature>()
   const isSigned = useMemo(() => {
     if (!amount || !signature) return false
     // @ts-ignore
