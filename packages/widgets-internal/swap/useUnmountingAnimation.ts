@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from 'react'
+import { RefObject, useEffect } from "react";
 
 /**
  * Checks whether a given node is currently animating.
@@ -7,7 +7,7 @@ import { RefObject, useEffect } from 'react'
  * @returns - true if the node is animating; false otherwise.
  */
 function isAnimating(node?: Animatable | Document): boolean {
-  return (node?.getAnimations?.().length ?? 0) > 0
+  return (node?.getAnimations?.().length ?? 0) > 0;
 }
 
 /**
@@ -28,18 +28,18 @@ export function useUnmountingAnimation(
   node: RefObject<HTMLElement>,
   getAnimatingClass: () => string,
   animatedElements?: RefObject<HTMLElement>[],
-  skip = false,
+  skip = false
 ) {
   useEffect(() => {
-    const { current } = node
+    const { current } = node;
 
     // Gather all elements to animate, defaulting to the current node if none are specified.
-    const animated = animatedElements?.map((element) => element.current) ?? [current]
-    const parent = current?.parentElement
-    const removeChild = parent?.removeChild
+    const animated = animatedElements?.map((element) => element.current) ?? [current];
+    const parent = current?.parentElement;
+    const removeChild = parent?.removeChild;
 
     // If we can't remove the child or skipping is requested, stop here.
-    if (!(parent && removeChild) || skip) return
+    if (!(parent && removeChild) || skip) return;
 
     // Override the parent's removeChild function to add our animation logic
     // eslint-disable-next-line func-names
@@ -47,34 +47,34 @@ export function useUnmountingAnimation(
       // If the current child is the one being removed and it's supposed to animate
       if ((child as Node) === current && animated) {
         // Add animation class to all elements
-        animated.forEach((element) => element?.classList.add(getAnimatingClass()))
+        animated.forEach((element) => element?.classList.add(getAnimatingClass()));
 
         // Check if any of the animated elements is animating
-        const animating = animated.find((element) => isAnimating(element ?? undefined))
+        const animating = animated.find((element) => isAnimating(element ?? undefined));
         if (animating) {
           // If an element is animating, we wait for the animation to end before removing the child
-          animating?.addEventListener('animationend', (x) => {
+          animating?.addEventListener("animationend", (x) => {
             // This check is needed because the animationend event will fire for all animations on the
             // element or its children.
             if (x.target === animating) {
-              removeChild.call(parent, child)
+              removeChild.call(parent, child);
             }
-          })
+          });
         } else {
           // If no element is animating, we remove the child immediately
-          removeChild.call(parent, child)
+          removeChild.call(parent, child);
         }
         // We've handled the removal, so we return the child
-        return child
+        return child;
       }
       // If the child isn't the one we're supposed to animate, remove it normally
-      return removeChild.call(parent, child) as T
-    }
+      return removeChild.call(parent, child) as T;
+    };
 
     // Reset the removeChild function to its original value when the component is unmounted
     // eslint-disable-next-line consistent-return
     return () => {
-      parent.removeChild = removeChild
-    }
-  }, [animatedElements, getAnimatingClass, node, skip])
+      parent.removeChild = removeChild;
+    };
+  }, [animatedElements, getAnimatingClass, node, skip]);
 }

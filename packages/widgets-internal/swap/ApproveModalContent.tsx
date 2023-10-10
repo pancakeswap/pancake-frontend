@@ -1,11 +1,11 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/swap-sdk-core'
-import { AutoColumn, Box, Column, ColumnCenter, Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import { FC, ReactNode, Ref, useMemo, useRef } from 'react'
-import styled, { css } from 'styled-components'
-import { ApprovalPhaseIcon } from './Logos'
-import { AnimationType, slideInAnimation, slideOutAnimation } from './styles'
-import { useUnmountingAnimation } from './useUnmountingAnimation'
+import { useTranslation } from "@pancakeswap/localization";
+import { Currency } from "@pancakeswap/swap-sdk-core";
+import { AutoColumn, Box, Column, ColumnCenter, Flex, Text, TooltipText, useTooltip } from "@pancakeswap/uikit";
+import { FC, ReactNode, Ref, useMemo, useRef } from "react";
+import styled, { css } from "styled-components";
+import { ApprovalPhaseIcon } from "./Logos";
+import { AnimationType, slideInAnimation, slideOutAnimation } from "./styles";
+import { useUnmountingAnimation } from "./useUnmountingAnimation";
 
 export enum ConfirmModalState {
   REVIEWING,
@@ -19,33 +19,33 @@ export enum ConfirmModalState {
 export type PendingApproveModalState = Extract<
   ConfirmModalState,
   ConfirmModalState.APPROVING_TOKEN | ConfirmModalState.PERMITTING | ConfirmModalState.RESETTING_APPROVAL
->
+>;
 
 type AllowedAllowanceState =
   | ConfirmModalState.RESETTING_APPROVAL
   | ConfirmModalState.APPROVING_TOKEN
-  | ConfirmModalState.PERMITTING
+  | ConfirmModalState.PERMITTING;
 
 interface ApproveModalContentProps {
   title: {
-    [step in AllowedAllowanceState]: string
-  }
-  isMM: boolean
-  isBonus: boolean
-  currencyA: Currency
-  asBadge: boolean
-  currentStep: ConfirmModalState
-  approvalModalSteps: PendingApproveModalState[]
+    [step in AllowedAllowanceState]: string;
+  };
+  isMM: boolean;
+  isBonus: boolean;
+  currencyA: Currency;
+  asBadge: boolean;
+  currentStep: ConfirmModalState;
+  approvalModalSteps: PendingApproveModalState[];
 }
 
 interface StepTitleAnimationContainerProps {
-  disableEntranceAnimation?: boolean
-  children: ReactNode
-  ref?: Ref<HTMLDivElement>
+  disableEntranceAnimation?: boolean;
+  children: ReactNode;
+  ref?: Ref<HTMLDivElement>;
 }
 
 export const StepTitleAnimationContainer: FC<StepTitleAnimationContainerProps> = styled(
-  Column,
+  Column
 )<StepTitleAnimationContainerProps>`
   align-items: center;
   transition: display 300ms ease-in-out;
@@ -58,7 +58,7 @@ export const StepTitleAnimationContainer: FC<StepTitleAnimationContainerProps> =
   &.${AnimationType.EXITING} {
     ${slideOutAnimation}
   }
-`
+`;
 
 export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
   title,
@@ -69,13 +69,13 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
   currentStep,
   approvalModalSteps,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <Text>{t('Pancakeswap AMM includes V3, V2 and stable swap.')}</Text>,
-    { placement: 'top' },
-  )
-  const currentStepContainerRef = useRef<HTMLDivElement>(null)
-  useUnmountingAnimation(currentStepContainerRef, () => AnimationType.EXITING)
+    <Text>{t("Pancakeswap AMM includes V3, V2 and stable swap.")}</Text>,
+    { placement: "top" }
+  );
+  const currentStepContainerRef = useRef<HTMLDivElement>(null);
+  useUnmountingAnimation(currentStepContainerRef, () => AnimationType.EXITING);
 
   return useMemo(
     () => (
@@ -98,19 +98,19 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
                     {title[step]}
                   </Text>
                   <Flex>
-                    <Text fontSize="14px">{t('Swapping thru:')}</Text>
+                    <Text fontSize="14px">{t("Swapping thru:")}</Text>
                     {isMM ? (
                       <Text ml="4px" fontSize="14px">
-                        {t('Pancakeswap MM')}
+                        {t("Pancakeswap MM")}
                       </Text>
                     ) : isBonus ? (
                       <Text ml="4px" fontSize="14px">
-                        {t('Bonus Route')}
+                        {t("Bonus Route")}
                       </Text>
                     ) : (
                       <>
                         <TooltipText ml="4px" fontSize="14px" color="textSubtle" ref={targetRef}>
-                          {t('Pancakeswap AMM')}
+                          {t("Pancakeswap AMM")}
                         </TooltipText>
                         {tooltipVisible && tooltip}
                       </>
@@ -118,11 +118,11 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
                   </Flex>
                 </StepTitleAnimationContainer>
               )
-            )
+            );
           })}
         </AutoColumn>
       </Box>
     ),
-    [currencyA, isBonus, isMM, t, targetRef, title, tooltip, tooltipVisible, asBadge, approvalModalSteps, currentStep],
-  )
-}
+    [currencyA, isBonus, isMM, t, targetRef, title, tooltip, tooltipVisible, asBadge, approvalModalSteps, currentStep]
+  );
+};
