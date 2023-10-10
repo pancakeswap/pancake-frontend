@@ -1,10 +1,9 @@
 {
   "extends": "@pancakeswap/tsconfig/base",
   "exclude": ["./dist/**"],
-  "include": ["src", "test"],
-  "typeRoots": ["./node_modules/@types"],
+  "include": ["src"],
   "compilerOptions": {
-    "types": ["node", "jest"],
+    "types": ["node", "vitest/globals"],
     "outDir": "./dist",
     "lib": ["ESNext"],
     "target": "es2020",

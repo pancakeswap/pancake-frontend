@@ -12,6 +12,7 @@ import {
 import { FeeOptions, Trade as V3Trade, Route as V3Route, Pool } from '@pancakeswap/v3-sdk'
 import { PoolType, SmartRouterTrade, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { parseEther, parseUnits, Address, WalletClient, zeroAddress } from 'viem'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
 import { getPublicClient, getWalletClient } from './fixtures/clients'
 import { PancakeUniversalSwapRouter } from '../src'
