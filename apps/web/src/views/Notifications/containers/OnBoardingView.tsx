@@ -76,7 +76,8 @@ const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, accou
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      subscribeToPushNotifications()
+      if (!identityKey) handleRegistration()
+      else requestNotificationPermission().then(() => handleSubscribe())
     },
     [handleRegistration, handleSubscribe, identityKey, requestNotificationPermission],
   )
