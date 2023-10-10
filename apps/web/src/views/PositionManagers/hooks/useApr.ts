@@ -76,20 +76,5 @@ export const useApr = ({
 
   const totalApr = useMemo(() => cakeYieldApr.plus(totalLpApr), [cakeYieldApr, totalLpApr])
 
-  console.log({
-    rewardEndTime,
-    totalStakedInUsd: totalStakedInUsd.toString(),
-    totalLpApr: totalLpApr.toString(),
-    poolToken0Amount: poolToken0Amount?.toString(),
-    poolToken1Amount: poolToken1Amount?.toString(),
-    apiToken0: avgToken0Amount.toString(),
-    apiToken1: avgToken1Amount.toString(),
-    cakePriceBusd: cakePriceBusd.toString(),
-    ONE_YEAR,
-    oneYearInSec: YEAR_IN_SECONDS,
-    rewardPerSecond,
-    totalApr: totalApr.toString(),
-  })
-
   return !totalApr.isNaN() ? totalApr.toFixed(2) ?? '-' : ''
 }
