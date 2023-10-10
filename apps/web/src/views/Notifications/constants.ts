@@ -59,12 +59,12 @@ export const NotificationSortTypes: OptionProps[] = [
   },
 ]
 
-export const DEFAULT_CAST_SIGN_KEY = process.env.NEXT_PUBLIC_CAST_SERVER_SIGN_KEY
-export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID || 'a14938037e06221040c0fa6a69a1d95f'
 export const DEFAULT_RELAY_URL = 'https://notify.walletconnect.com'
-export const WEB_PUSH_ENCRYPTION_KEY =
-  process.env.ENCRYPTION_SECRET_KEY || 'ee68a5c2733a30e4d3f3e679ba646d83d12cf4f6ee631a2825f9763445591398'
-export const WEB_PUSH_IV = process.env.IV || '359da65b8f571c847706283d8d578a4f'
+export const DEFAULT_CAST_SIGN_KEY = process.env.NEXT_PUBLIC_CAST_SERVER_SIGN_KEY
+export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID
+export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY
+export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV
+export const SECURE_TOKEN = process.env.NEXT_PUBLIC_SECURE_TOKEN
 
 export const PancakeNotifications: {
   [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(args: T[]) => pushNotification

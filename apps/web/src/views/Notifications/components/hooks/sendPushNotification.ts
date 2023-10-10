@@ -15,7 +15,6 @@ interface IUseSendNotification {
   subscribeToPushNotifications(): Promise<void>
   requestNotificationPermission: () => Promise<void | NotificationPermission>
 }
-const publicVapidKey = 'BFEZ07DxapGRLITs13MKaqFPmmbKoHgNLUDn-8aFjF4eitQypUHHsYyx39RSaYvQAxWgz18zvGOXsXw0y8_WxTY'
 
 const useSendPushNotification = (): IUseSendNotification => {
   const { address: account } = useAccount()
@@ -50,7 +49,7 @@ const useSendPushNotification = (): IUseSendNotification => {
 
         const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: publicVapidKey,
+          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
         })
 
         const data = JSON.stringify(subscription)
@@ -59,7 +58,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         let encryptedData = cipher.update(data, 'utf8', 'hex')
         encryptedData += cipher.final('hex')
 
-        await fetch('http://localhost:8020./subscribe', {
+        await fetch('http://localhost:8000./subscribe', {
           method: 'POST',
           body: JSON.stringify({ subscription: encryptedData, user: account }),
           headers: { 'Content-Type': 'application/json' },
@@ -77,10 +76,11 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      await fetch(`http://localhost:8020/walletconnect-notify`, {
+      await fetch(`http://localhost:8000/walletconnect-notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-secure-token': process.env.SECURE_TOKEN as string,
         },
         body: JSON.stringify(notificationPayload),
       })
