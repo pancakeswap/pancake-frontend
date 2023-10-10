@@ -81,6 +81,10 @@ const SettingsModal = ({ account }: { account: string | undefined }) => {
     }
     const sortNotifications = (unFilteredNotifications: NotifyClientTypes.NotifyMessageRecord[]): any[] => {
       switch (notificationType) {
+        case SubsctiptionType.Lottery:
+          return typeFilter(SubsctiptionType.Lottery, unFilteredNotifications)
+        case SubsctiptionType.Prediction:
+          return typeFilter(SubsctiptionType.Prediction, unFilteredNotifications)
         case SubsctiptionType.Liquidity:
           return typeFilter(SubsctiptionType.Liquidity, unFilteredNotifications)
         case SubsctiptionType.Staking:
@@ -89,6 +93,12 @@ const SettingsModal = ({ account }: { account: string | undefined }) => {
           return typeFilter(SubsctiptionType.Pools, unFilteredNotifications)
         case SubsctiptionType.Farms:
           return typeFilter(SubsctiptionType.Farms, unFilteredNotifications)
+        case SubsctiptionType.PriceUpdates:
+          return typeFilter(SubsctiptionType.PriceUpdates, unFilteredNotifications)
+        case SubsctiptionType.Promotional:
+          return typeFilter(SubsctiptionType.Promotional, unFilteredNotifications)
+        case SubsctiptionType.Voting:
+          return typeFilter(SubsctiptionType.Voting, unFilteredNotifications)
         case SubsctiptionType.Alerts:
           return typeFilter(SubsctiptionType.Alerts, unFilteredNotifications)
         default:

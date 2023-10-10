@@ -9,10 +9,15 @@ export enum ResponseEvents {
 }
 
 export enum SubsctiptionType {
+  Lottery = 'Lottery',
+  Prediction = 'Prediction',
   Liquidity = 'Liquidity',
   Staking = 'Staking',
   Farms = 'Farms',
   Pools = 'Pools',
+  PriceUpdates = 'PriceUpdates',
+  Promotional = 'Promotional',
+  Voting = 'Voting',
   Alerts = 'alerts',
 }
 
@@ -54,7 +59,17 @@ export type SubscriptionState = {
   isOnboarded: boolean
 }
 
-export type pushNotifyTypes = 'Liquidity' | 'Staking' | 'Pools' | 'Farms' | 'alerts'
+export type pushNotifyTypes =
+  | 'Lottery'
+  | 'Prediction'
+  | 'Liquidity'
+  | 'Staking'
+  | 'Pools'
+  | 'Farms'
+  | 'PriceUpdates'
+  | 'Promotional'
+  | 'Voting'
+  | 'alerts'
 
 export enum BuilderNames {
   OnBoardNotification = 'OnBoardNotification',

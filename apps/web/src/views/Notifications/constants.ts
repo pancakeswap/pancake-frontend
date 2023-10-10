@@ -7,6 +7,14 @@ export const NotificationFilterTypes: OptionProps[] = [
     value: 'All',
   },
   {
+    label: 'Lottery',
+    value: 'Lottery',
+  },
+  {
+    label: 'Prediction',
+    value: 'Prediction',
+  },
+  {
     label: 'Liquidity',
     value: 'Liquidity',
   },
@@ -21,6 +29,18 @@ export const NotificationFilterTypes: OptionProps[] = [
   {
     label: 'Farm',
     value: 'Farms',
+  },
+  {
+    label: 'Price Updates',
+    value: 'PriceUpdates',
+  },
+  {
+    label: 'Promotional',
+    value: 'Promotional',
+  },
+  {
+    label: 'Voting',
+    value: 'Voting',
   },
   {
     label: 'Alerts',
