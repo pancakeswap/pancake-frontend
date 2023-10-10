@@ -1,7 +1,10 @@
 import { Text } from '@pancakeswap/uikit'
-import { toDate, format } from 'date-fns'
 import { useTranslation } from '@pancakeswap/localization'
 import { ProposalState } from 'state/types'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+
+dayjs.extend(advancedFormat)
 
 interface TimeFrameProps {
   startDate: number
@@ -10,8 +13,7 @@ interface TimeFrameProps {
 }
 
 const getFormattedDate = (timestamp: number) => {
-  const date = toDate(timestamp * 1000)
-  return format(date, 'MMM do, yyyy HH:mm')
+  return dayjs.unix(timestamp).format('MMM Do, YYYY HH:mm')
 }
 
 const TimeFrame: React.FC<React.PropsWithChildren<TimeFrameProps>> = ({ startDate, endDate, proposalState }) => {

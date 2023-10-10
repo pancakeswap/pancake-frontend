@@ -1,14 +1,14 @@
-import { ReactNode } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { Text, Button, Flex } from '@pancakeswap/uikit'
+import { ReactNode } from "react";
+import { useTranslation } from "@pancakeswap/localization";
+import { Text, Button, Flex } from "@pancakeswap/uikit";
 
 interface NoPositionProps {
-  inactive: boolean
-  account: string
-  hasNoPosition: boolean
-  boostedAction?: ReactNode
-  connectWalletButton: ReactNode
-  onAddLiquidityClick: () => void
+  inactive: boolean;
+  account: string;
+  hasNoPosition: boolean;
+  boostedAction?: ReactNode;
+  connectWalletButton: ReactNode;
+  onAddLiquidityClick: () => void;
 }
 
 const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProps>> = ({
@@ -19,7 +19,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProp
   connectWalletButton,
   onAddLiquidityClick,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Flex flexDirection="column">
@@ -27,11 +27,11 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProp
       {account && hasNoPosition ? (
         <Flex flexDirection="column">
           <Text color="textSubtle" bold textTransform="uppercase" fontSize="12px" mb="8px">
-            {t('no position found')}
+            {t("no position found")}
           </Text>
           {!inactive && (
             <Button width="100%" onClick={onAddLiquidityClick}>
-              {t('Add Liquidity')}
+              {t("Add Liquidity")}
             </Button>
           )}
         </Flex>
@@ -39,7 +39,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProp
         <>{connectWalletButton}</>
       )}
     </Flex>
-  )
-}
+  );
+};
 
-export default NoPosition
+export default NoPosition;

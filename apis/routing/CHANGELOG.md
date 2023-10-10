@@ -1,5 +1,39 @@
 # routing-api
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies [8e3ac5427]
+  - @pancakeswap/sdk@5.7.0
+  - @pancakeswap/farms@1.0.19
+  - @pancakeswap/smart-router@4.9.1
+  - @pancakeswap/v3-sdk@3.5.1
+
+## 0.3.0
+
+### Minor Changes
+
+- 435a90ac2: Add support for opBNB mainnet
+
+### Patch Changes
+
+- 5b1c68cb6: Default to subgraph cache fallback for v3 candidate pools fetcher
+- Updated dependencies [5b1c68cb6]
+- Updated dependencies [435a90ac2]
+  - @pancakeswap/smart-router@4.9.0
+  - @pancakeswap/sdk@5.6.0
+  - @pancakeswap/chains@0.1.0
+  - @pancakeswap/v3-sdk@3.5.0
+  - @pancakeswap/farms@1.0.18
+
+## 0.2.11
+
+### Patch Changes
+
+- Updated dependencies [1577caa6f]
+  - @pancakeswap/smart-router@4.8.8
+
 ## 0.2.10
 
 ### Patch Changes

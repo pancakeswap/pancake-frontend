@@ -31,7 +31,6 @@
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "vitest --run",
-    "install:ur": "cd node_modules/@uniswap/universal-router && forge install",
     "prettier:fix": "prettier --write '**/*.ts' && prettier --write '**/*.json'",
     "lint:fix": "yarn prettier:fix && yarn forge:fix",
     "prettier": "prettier --check '**/*.ts' && prettier --check '**/*.json'"
@@ -53,10 +52,8 @@
     "chai": "^4.3.4",
     "dotenv": "^16.0.3",
     "eslint-plugin-prettier": "^3.4.0",
-    "hardhat": "^2.6.8",
     "prettier": "^2.3.1",
     "ts-node": "^10.0.0",
-    "tsdx": "^0.14.1",
     "tslib": "^2.3.0",
     "tsup": "^6.7.0",
     "typedoc": "^0.21.2",
@@ -72,8 +69,6 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@uniswap/universal-router": "1.4.3",
     "abitype": "^0.9.8",
-    "bignumber.js": "^9.0.2",
-    "jsbi": "^4.3.0",
     "tiny-invariant": "^1.1.0",
     "viem": "^1.10.9"
   }

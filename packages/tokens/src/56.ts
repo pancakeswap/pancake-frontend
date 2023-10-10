@@ -1313,6 +1313,14 @@ export const bscTokens = {
     'TRON Token',
     'https://tron.network/',
   ),
+  trxv2: new ERC20Token(
+    ChainId.BSC,
+    '0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3',
+    6,
+    'TRX',
+    'TRON Token v2',
+    'https://tron.network/',
+  ),
   win: new ERC20Token(
     ChainId.BSC,
     '0xaeF0d72a118ce24feE3cD1d43d383897D05B4e99',

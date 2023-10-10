@@ -3,13 +3,13 @@ import { getNftsFromCollectionApi, getNftsFromDifferentCollectionsApi } from 'st
 import uniqBy from 'lodash/uniqBy'
 import partition from 'lodash/partition'
 import { Address } from 'wagmi'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { pancakeBunniesAddress } from '../../constants'
 
 export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<NftToken[]> => {
   const [pbCollections, nonPBCollections] = partition(
     activities,
-    (activity) => isAddress(activity.nft.collection.id) === pancakeBunniesAddress,
+    (activity) => safeGetAddress(activity.nft.collection.id) === safeGetAddress(pancakeBunniesAddress),
   )
 
   const activityNftTokenIds = uniqBy(

@@ -1,21 +1,21 @@
-import { Currency } from '@pancakeswap/sdk'
-import { ArrowUpIcon, AutoColumn, Box, ColumnCenter, Text } from '@pancakeswap/uikit'
-import { ReactNode, useRef } from 'react'
-import { ConfirmModalState, StepTitleAnimationContainer } from './ApproveModalContent'
-import { FadePresence, PendingSwapConfirmationIcon } from './Logos'
-import TokenTransferInfo from './TokenTransferInfo'
-import { AnimationType } from './styles'
-import { useUnmountingAnimation } from './useUnmountingAnimation'
+import { Currency } from "@pancakeswap/sdk";
+import { ArrowUpIcon, AutoColumn, Box, ColumnCenter, Text } from "@pancakeswap/uikit";
+import { ReactNode, useRef } from "react";
+import { ConfirmModalState, StepTitleAnimationContainer } from "./ApproveModalContent";
+import { FadePresence, PendingSwapConfirmationIcon } from "./Logos";
+import TokenTransferInfo from "./TokenTransferInfo";
+import { AnimationType } from "./styles";
+import { useUnmountingAnimation } from "./useUnmountingAnimation";
 
 interface SwapPendingModalContentProps {
-  title: string
-  showIcon?: boolean
-  currencyA: Currency | undefined
-  currencyB: Currency | undefined
-  amountA: string
-  amountB: string
-  currentStep: ConfirmModalState
-  children?: ReactNode
+  title: string;
+  showIcon?: boolean;
+  currencyA: Currency | undefined;
+  currencyB: Currency | undefined;
+  amountA: string;
+  amountB: string;
+  currentStep: ConfirmModalState;
+  children?: ReactNode;
 }
 
 export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = ({
@@ -28,11 +28,11 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
   currentStep,
   children,
 }) => {
-  const symbolA = currencyA?.symbol
-  const symbolB = currencyB?.symbol
+  const symbolA = currencyA?.symbol;
+  const symbolB = currencyB?.symbol;
 
-  const currentStepContainerRef = useRef<HTMLDivElement>(null)
-  useUnmountingAnimation(currentStepContainerRef, () => AnimationType.EXITING)
+  const currentStepContainerRef = useRef<HTMLDivElement>(null);
+  useUnmountingAnimation(currentStepContainerRef, () => AnimationType.EXITING);
 
   return (
     <Box width="100%">
@@ -68,5 +68,5 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
         </StepTitleAnimationContainer>
       </AutoColumn>
     </Box>
-  )
-}
+  );
+};

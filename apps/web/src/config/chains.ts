@@ -31,6 +31,7 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.ZKSYNC_TESTNET]: 'zkSyncTestnet',
   [ChainId.LINEA]: 'linea',
   [ChainId.LINEA_TESTNET]: 'lineaTestnet',
+  [ChainId.OPBNB]: 'opBNB',
   [ChainId.OPBNB_TESTNET]: 'opBnbTestnet',
   [ChainId.BASE]: 'base',
   [ChainId.BASE_TESTNET]: 'baseTestnet',
@@ -75,7 +76,7 @@ const scrollSepolia = {
 } as const satisfies Chain
 
 export const opbnbTestnet = {
-  id: 5_611,
+  id: ChainId.OPBNB_TESTNET,
   name: 'opBNB Testnet',
   network: 'opbnb-testnet',
   nativeCurrency: bscTestnet.nativeCurrency,
@@ -90,7 +91,7 @@ export const opbnbTestnet = {
   blockExplorers: {
     default: {
       name: 'opBNBScan',
-      url: 'https://opbnbscan.com',
+      url: 'https://testnet.opbnbscan.com',
     },
   },
   contracts: {
@@ -102,8 +103,35 @@ export const opbnbTestnet = {
   testnet: true,
 } as const satisfies Chain
 
+export const opbnb = {
+  id: ChainId.OPBNB,
+  name: 'opBNB Mainnet',
+  network: 'opbnb',
+  nativeCurrency: bsc_.nativeCurrency,
+  rpcUrls: {
+    default: {
+      http: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+    },
+    public: {
+      http: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'opBNBScan',
+      url: 'https://opbnbscan.com',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 512881,
+    },
+  },
+} as const satisfies Chain
+
 export const linea = {
-  id: 59_144,
+  id: ChainId.LINEA,
   name: 'Linea Mainnet',
   network: 'linea-mainnet',
   nativeCurrency: { name: 'Linea Ether', symbol: 'ETH', decimals: 18 },
@@ -130,10 +158,6 @@ export const linea = {
       name: 'Etherscan',
       url: 'https://lineascan.build',
     },
-    blockscout: {
-      name: 'Blockscout',
-      url: 'https://explorer.linea.build',
-    },
   },
   contracts: {
     multicall3: {
@@ -159,6 +183,7 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.LINEA,
   ChainId.BASE,
   ChainId.BASE_TESTNET,
+  ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,
 ]
 
@@ -179,6 +204,7 @@ export const CHAINS = [
   arbitrum,
   base,
   baseGoerli,
+  opbnb,
   opbnbTestnet,
   scrollSepolia,
 ]

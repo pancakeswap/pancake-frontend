@@ -1,12 +1,15 @@
-import { Pair, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
+import { TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
+  PoolType,
   RouteType,
   SmartRouter,
   SmartRouterTrade,
   StablePool,
   SwapRouter,
+  getPoolAddress,
 } from '@pancakeswap/smart-router/evm'
+import { Address } from 'viem'
 import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'
@@ -73,22 +76,13 @@ export class PancakeSwapTrade implements Command {
           payerIsUser,
           performAggregatedSlippageCheck
         )
-      } else if (trade.routes.every((r) => r.type === RouteType.MIXED)) {
-        addMixedSwap(
-          planner,
-          trade as SmartRouterTrade<TradeType>,
-          this.options,
-          routerMustCustody,
-          payerIsUser,
-          performAggregatedSlippageCheck
-        )
       } else {
         addMixedSwap(
           planner,
           trade as SmartRouterTrade<TradeType>,
           this.options,
-          routerMustCustody,
           payerIsUser,
+          routerMustCustody,
           performAggregatedSlippageCheck
         )
       }
@@ -271,8 +265,7 @@ async function addMixedSwap(
           payerIsUser,
           performAggregatedSlippageCheck
         )
-      }
-      if (mixedRouteIsAllV2(route)) {
+      } else if (mixedRouteIsAllV2(route)) {
         addV2Swap(
           planner,
           {
@@ -286,8 +279,7 @@ async function addMixedSwap(
           payerIsUser,
           performAggregatedSlippageCheck
         )
-      }
-      if (mixedRouteIsAllStable(route)) {
+      } else if (mixedRouteIsAllStable(route)) {
         addStableSwap(
           planner,
           {
@@ -301,6 +293,8 @@ async function addMixedSwap(
           performAggregatedSlippageCheck,
           payerIsUser
         )
+      } else {
+        throw new Error('Unsupported route to encode')
       }
     } else {
       const sections = SmartRouter.partitionMixedRouteByProtocol(route)
@@ -316,30 +310,28 @@ async function addMixedSwap(
         const section = sections[i]
         /// Now, we get output of this section
         outputToken = SmartRouter.getOutputOfPools(section, inputToken)
-        inputToken = outputToken.wrapped
         const newRoute = SmartRouter.buildBaseRoute([...section], inputToken, outputToken)
+        inputToken = outputToken.wrapped
 
         const lastSectionInRoute = isLastSectionInRoute(i)
-        const recipientAddress = isLastSectionInRoute(i)
-          ? recipient
-          : (sections[i + 1][0] as unknown as Pair).liquidityToken.address
+        const recipientAddress = isLastSectionInRoute(i) ? recipient : ROUTER_AS_RECIPIENT
 
-        const inAmount = i === 0 ? amountIn : 0n
+        const inAmount = i === 0 ? amountIn : BigInt(2) ** BigInt(255)
         const outAmount = !lastSectionInRoute ? 0n : amountOut
 
         if (mixedRouteIsAllV3(newRoute as BaseRoute)) {
           const pathStr = SmartRouter.encodeMixedRouteToPath(newRoute, !isExactIn)
           if (isExactIn) {
             planner.addCommand(CommandType.V3_SWAP_EXACT_IN, [
-              recipientAddress,
+              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as Address),
               inAmount, // amountIn
               outAmount, // amountOut
               pathStr, // path
               payerIsUser && i === 0, // payerIsUser
             ])
           } else {
-            planner.addCommand(CommandType.V3_SWAP_EXACT_IN, [
-              recipientAddress,
+            planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, [
+              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as Address),
               outAmount, // amountIn
               inAmount, // amountOut
               pathStr, // path
@@ -350,15 +342,15 @@ async function addMixedSwap(
           const path = newRoute.path.map((token) => token.wrapped.address)
           if (isExactIn) {
             planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [
-              recipientAddress, // recipient
+              recipientAddress,
               inAmount, // amountIn
               outAmount, // amountOutMin
               path, // path
               payerIsUser && i === 0,
             ])
           } else {
-            planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [
-              recipientAddress, // recipient
+            planner.addCommand(CommandType.V2_SWAP_EXACT_OUT, [
+              recipientAddress,
               outAmount, // amountIn
               inAmount, // amountOutMin
               path, // path

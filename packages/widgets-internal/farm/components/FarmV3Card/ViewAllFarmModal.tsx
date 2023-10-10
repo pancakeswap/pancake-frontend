@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { ReactNode } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
+import { styled } from "styled-components";
+import { ReactNode } from "react";
+import { useTranslation } from "@pancakeswap/localization";
 //  should be ok to import type from sdk
-import type { FeeAmount } from '@pancakeswap/v3-sdk'
+import type { FeeAmount } from "@pancakeswap/v3-sdk";
 import {
   Text,
   Button,
@@ -17,29 +17,29 @@ import {
   AutoRow,
   RowBetween,
   Tag,
-} from '@pancakeswap/uikit'
-import Tags from '../Tags'
+} from "@pancakeswap/uikit";
+import Tags from "../Tags";
 
-const { BoostedTag, FarmAuctionTag, V3FeeTag } = Tags
+const { BoostedTag, FarmAuctionTag, V3FeeTag } = Tags;
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   height: auto;
   max-height: 60vh;
-`
+`;
 
 interface ViewAllFarmModalProps extends ModalProps {
-  isReady: boolean
-  lpSymbol: string
-  onAddLiquidity: () => void
-  tokenPairImage: ReactNode
-  boosted?: boolean
-  feeAmount?: FeeAmount
-  isCommunityFarm?: boolean
-  multiplier: string
-  children: ReactNode
-  onHarvestAll?: () => void
-  harvesting?: boolean
+  isReady: boolean;
+  lpSymbol: string;
+  onAddLiquidity: () => void;
+  tokenPairImage: ReactNode;
+  boosted?: boolean;
+  feeAmount?: FeeAmount;
+  isCommunityFarm?: boolean;
+  multiplier: string;
+  children: ReactNode;
+  onHarvestAll?: () => void;
+  harvesting?: boolean;
 }
 
 const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllFarmModalProps>> = ({
@@ -55,16 +55,16 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
   onHarvestAll,
   harvesting,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
-    <ModalContainer style={{ minWidth: '300px', maxHeight: '90vh', overflow: 'hidden' }}>
+    <ModalContainer style={{ minWidth: "300px", maxHeight: "90vh", overflow: "hidden" }}>
       <AtomBox bg="gradientBubblegum" py="24px" maxWidth="420px">
         <RowBetween flexWrap="nowrap" px="24px">
           <Flex alignItems="center" width="100%">
             {tokenPairImage}
             <Text bold m="0 8px">
-              {lpSymbol.split(' ')[0]}
+              {lpSymbol.split(" ")[0]}
             </Text>
             <AutoRow gap="4px" justifyContent="flex-start" flex={1}>
               {isReady && multiplier && (
@@ -86,14 +86,14 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
           {onHarvestAll && (
             <ModalActions>
               <Button width="100%" variant="primary" disabled={harvesting} onClick={onHarvestAll}>
-                {t('Harvest All')}
+                {t("Harvest All")}
               </Button>
             </ModalActions>
           )}
         </AutoColumn>
       </AtomBox>
     </ModalContainer>
-  )
-}
+  );
+};
 
-export default ViewAllFarmModal
+export default ViewAllFarmModal;

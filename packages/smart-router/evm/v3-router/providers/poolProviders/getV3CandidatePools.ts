@@ -30,7 +30,6 @@ type DefaultParams = GetV3PoolsParams & {
   // In millisecond
   fallbackTimeout?: number
   subgraphFallback?: boolean
-  subgraphCacheFallback?: boolean
   staticFallback?: boolean
 }
 
@@ -127,22 +126,15 @@ export function createGetV3CandidatePools<T = any>(
 }
 
 export async function getV3CandidatePools(params: DefaultParams) {
-  const {
-    subgraphCacheFallback = true,
-    subgraphFallback = true,
-    staticFallback = true,
-    fallbackTimeout,
-    ...rest
-  } = params
+  const { subgraphFallback = true, staticFallback = true, fallbackTimeout, ...rest } = params
 
   const fallbacks: GetV3Pools[] = []
-  // Fallback to get pools from on chain and ref tvl by subgraph cache
-  if (subgraphCacheFallback) {
-    fallbacks.push(getV3PoolsWithTvlFromOnChainFallback)
-  }
 
-  // Fallback to get all pools info from subgraph
   if (subgraphFallback) {
+    // Fallback to get pools from on chain and ref tvl by subgraph
+    fallbacks.push(getV3PoolsWithTvlFromOnChain)
+
+    // Fallback to get all pools info from subgraph
     fallbacks.push(async (p) => {
       const { currencyA, currencyB, pairs: providedPairs, subgraphProvider } = p
       const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
@@ -155,8 +147,8 @@ export async function getV3CandidatePools(params: DefaultParams) {
     fallbacks.push(getV3PoolsWithTvlFromOnChainStaticFallback)
   }
 
-  // Deafult try get pools from on chain and ref tvl by subgraph
-  const getV3PoolsWithFallback = createGetV3CandidatePools(getV3PoolsWithTvlFromOnChain, {
+  // Deafult try get pools from on chain and ref tvl by subgraph cache
+  const getV3PoolsWithFallback = createGetV3CandidatePools(getV3PoolsWithTvlFromOnChainFallback, {
     fallbacks,
     fallbackTimeout,
   })

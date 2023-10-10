@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
-import { formatUnits } from 'viem'
 import { getLanguageCodeFromLS } from '@pancakeswap/localization'
 import _trimEnd from 'lodash/trimEnd'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
+import { formatUnits } from './viem/formatUnits'
 
 /**
  * Take a formatted amount, e.g. 15 BNB and convert it to full decimal value, e.g. 15000000000000000
@@ -57,7 +57,7 @@ export const formatBigIntToFixed = (number: bigint, displayDecimals = 18, decima
   return (+formattedString).toFixed(displayDecimals)
 }
 
-export const formatLocalisedCompactNumber = (number: number): string => {
+export const formatLocalisedCompactNumber = (number: number, isShort?: boolean): string => {
   const codeFromStorage = getLanguageCodeFromLS()
 
   const isClient = typeof window === 'object'
@@ -70,7 +70,7 @@ export const formatLocalisedCompactNumber = (number: number): string => {
 
   return new Intl.NumberFormat(codeFromStorage, {
     notation: 'compact',
-    compactDisplay: 'long',
+    compactDisplay: isShort ? 'short' : 'long',
     maximumSignificantDigits: 2,
   }).format(number)
 }

@@ -1,9 +1,9 @@
-import { useCallback, useMemo } from 'react'
-import { styled, css } from 'styled-components'
+import { useCallback, useMemo } from "react";
+import { styled, css } from "styled-components";
 
-import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useTranslation } from "@pancakeswap/localization";
+import BigNumber from "bignumber.js";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import {
   Text,
   CalculateIcon,
@@ -14,9 +14,9 @@ import {
   BalanceWithLoading,
   useModal,
   Flex,
-} from '@pancakeswap/uikit'
+} from "@pancakeswap/uikit";
 
-import { DeserializedPool } from './types'
+import { DeserializedPool } from "./types";
 
 const AprLabelContainer = styled(Flex)<{ enableHover: boolean }>`
   ${({ enableHover }) =>
@@ -27,24 +27,24 @@ const AprLabelContainer = styled(Flex)<{ enableHover: boolean }>`
           }
         `
       : null}
-`
+`;
 
 interface AprProps<T> extends FlexProps {
-  pool: DeserializedPool<T>
-  stakedBalance: BigNumber
-  showIcon: boolean
-  performanceFee?: number
-  fontSize?: string
-  shouldShowApr: boolean
-  account: string
-  autoCompoundFrequency: number
+  pool: DeserializedPool<T>;
+  stakedBalance: BigNumber;
+  showIcon: boolean;
+  performanceFee?: number;
+  fontSize?: string;
+  shouldShowApr: boolean;
+  account: string;
+  autoCompoundFrequency: number;
 }
 
 export function Apr<T>({
   pool,
   showIcon,
   stakedBalance,
-  fontSize = '16px',
+  fontSize = "16px",
   performanceFee = 0,
   shouldShowApr,
   account,
@@ -61,18 +61,18 @@ export function Apr<T>({
     apr,
     rawApr,
     vaultKey,
-  } = pool
-  const { t } = useTranslation()
+  } = pool;
+  const { t } = useTranslation();
 
   const stakingTokenBalance = useMemo(
     () => (userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO),
-    [userData],
-  )
+    [userData]
+  );
 
   const apyModalLink = useMemo(
-    () => (stakingToken?.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'),
-    [stakingToken],
-  )
+    () => (stakingToken?.address ? `/swap?outputCurrency=${stakingToken.address}` : "/swap"),
+    [stakingToken]
+  );
 
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
@@ -82,24 +82,24 @@ export function Apr<T>({
       stakingTokenBalance={stakedBalance.plus(stakingTokenBalance)}
       stakingTokenDecimals={stakingToken.decimals}
       apr={vaultKey ? rawApr : apr}
-      stakingTokenSymbol={stakingToken?.symbol || ''}
-      linkLabel={t('Get %symbol%', { symbol: stakingToken?.symbol || '' })}
+      stakingTokenSymbol={stakingToken?.symbol || ""}
+      linkLabel={t("Get %symbol%", { symbol: stakingToken?.symbol || "" })}
       linkHref={apyModalLink}
       earningTokenSymbol={earningToken?.symbol}
       autoCompoundFrequency={autoCompoundFrequency}
       performanceFee={performanceFee}
-    />,
-  )
+    />
+  );
 
   const openRoiModal = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
-      event.stopPropagation()
-      onPresentApyModal()
+      event.stopPropagation();
+      onPresentApyModal();
     },
-    [onPresentApyModal],
-  )
+    [onPresentApyModal]
+  );
 
-  const isValidate = apr !== undefined && !Number.isNaN(apr)
+  const isValidate = apr !== undefined && !Number.isNaN(apr);
 
   return (
     <AprLabelContainer enableHover={!isFinished} alignItems="center" justifyContent="flex-start" {...props}>
@@ -109,8 +109,8 @@ export function Apr<T>({
             <>
               <BalanceWithLoading
                 onClick={(event) => {
-                  if (!showIcon || isFinished) return
-                  openRoiModal(event)
+                  if (!showIcon || isFinished) return;
+                  openRoiModal(event);
                 }}
                 fontSize={fontSize}
                 isDisabled={isFinished}
@@ -132,5 +132,5 @@ export function Apr<T>({
         <Skeleton width="80px" height="16px" />
       )}
     </AprLabelContainer>
-  )
+  );
 }

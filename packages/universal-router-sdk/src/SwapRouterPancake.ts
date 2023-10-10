@@ -2,14 +2,14 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
-import { Hex, encodeFunctionData, toHex } from 'viem'
+import { encodeFunctionData, toHex } from 'viem'
 import abi from './abis/UniversalRouter.json'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
 import { PancakeSwapOptions, SwapRouterConfig } from './utils/types'
 
-export abstract class PancakeUniSwapRouter {
+export abstract class PancakeUniversalSwapRouter {
   /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trades to produce call parameters for
@@ -34,11 +34,11 @@ export abstract class PancakeUniSwapRouter {
     }
 
     const nativeCurrencyValue = inputCurrency.isNative
-      ? toHex(SmartRouter.maximumAmountIn(sampleTrade, options.slippageTolerance, sampleTrade.inputAmount).quotient)
-      : toHex('0')
+      ? SmartRouter.maximumAmountIn(sampleTrade, options.slippageTolerance, sampleTrade.inputAmount).quotient
+      : 0n
 
     trade.encode(planner, { allowRevert: false })
-    return PancakeUniSwapRouter.encodePlan(planner, nativeCurrencyValue as `0x${string}`, {
+    return PancakeUniversalSwapRouter.encodePlan(planner, nativeCurrencyValue, {
       deadline: options.deadlineOrPreviousBlockhash
         ? BigInt(options.deadlineOrPreviousBlockhash.toString())
         : undefined,
@@ -53,15 +53,12 @@ export abstract class PancakeUniSwapRouter {
    */
   private static encodePlan(
     planner: RoutePlanner,
-    nativeCurrencyValue: Hex,
+    nativeCurrencyValue: bigint,
     config: SwapRouterConfig = {}
   ): MethodParameters {
     const { commands, inputs } = planner
-    // view encodeFunctionData doesnt take in signature only name. so not sure how to handle this, perhaps solft
-    // fix is to force a deadline to be passed in SwapRouterConfig
-    // const functionSignature = !!config.deadline ? 'execute(bytes,bytes[],uint256)' : 'execute(bytes,bytes[])'
     const parameters = config.deadline ? [commands, inputs, Number(config.deadline)] : [commands, inputs]
     const calldata = encodeFunctionData({ abi, args: parameters, functionName: 'execute' })
-    return { calldata, value: nativeCurrencyValue }
+    return { calldata, value: toHex(nativeCurrencyValue) }
   }
 }

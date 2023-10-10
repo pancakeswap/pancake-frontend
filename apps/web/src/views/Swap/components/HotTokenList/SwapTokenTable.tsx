@@ -5,7 +5,6 @@ import {
   ArrowForwardIcon,
   Box,
   Button,
-  CurrencyLogo,
   Flex,
   MoreIcon,
   NextLinkFromReactRouter,
@@ -14,6 +13,7 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
@@ -21,7 +21,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useStableSwapPath } from 'state/info/hooks'
 import { InfoDataSource } from 'state/info/types'
 import { styled } from 'styled-components'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -170,7 +170,7 @@ const DataRow: React.FC<
   const { isXs, isSm } = useMatchBreakpoints()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
-  const address = isAddress(tokenData.address)
+  const address = safeGetAddress(tokenData.address)
   const currencyFromAddress = useMemo(
     () => (address ? new Token(chainId, address, tokenData.decimals, tokenData.symbol) : null),
     [tokenData, chainId, address],

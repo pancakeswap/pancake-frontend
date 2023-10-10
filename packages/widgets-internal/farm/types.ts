@@ -1,172 +1,172 @@
-import { ReactNode } from 'react'
-import BigNumber from 'bignumber.js'
-import { Token } from '@pancakeswap/sdk'
+import { ReactNode } from "react";
+import BigNumber from "bignumber.js";
+import { Token } from "@pancakeswap/sdk";
 
 export interface FarmTableEarnedProps {
-  earnings: number
-  pid: number
+  earnings: number;
+  pid: number;
 }
 
 export interface FarmTableAmountProps {
-  amount: number
+  amount: number;
 }
 
 export interface FarmTableLiquidityProps {
-  liquidity: BigNumber
-  updatedAt?: number
-  inactive?: boolean
+  liquidity: BigNumber;
+  updatedAt?: number;
+  inactive?: boolean;
 }
 
 export interface FarmTableMultiplierProps {
-  multiplier: string
-  rewardCakePerSecond?: boolean
-  farmCakePerSecond?: string
-  totalMultipliers?: string
+  multiplier: string;
+  rewardCakePerSecond?: boolean;
+  farmCakePerSecond?: string;
+  totalMultipliers?: string;
 }
 
 export interface FarmTableFarmTokenInfoProps {
-  label: string
-  pid: number
-  token: Token
-  quoteToken: Token
-  isReady: boolean
-  isStaking?: boolean
-  children?: ReactNode
-  isCommunity?: boolean
+  label: string;
+  pid: number;
+  token: Token;
+  quoteToken: Token;
+  isReady: boolean;
+  isStaking?: boolean;
+  children?: ReactNode;
+  isCommunity?: boolean;
 }
 
 export type ColumnsDefTypes = {
-  id: number
-  label: string
-  name: string
-  sortable: boolean
-}
+  id: number;
+  label: string;
+  name: string;
+  sortable: boolean;
+};
 
 export const MobileColumnSchema: ColumnsDefTypes[] = [
   {
     id: 1,
-    name: 'farm',
+    name: "farm",
     sortable: true,
-    label: '',
+    label: "",
   },
   {
     id: 2,
-    name: 'earned',
+    name: "earned",
     sortable: true,
-    label: 'Earned',
+    label: "Earned",
   },
   {
     id: 3,
-    name: 'apr',
+    name: "apr",
     sortable: true,
-    label: 'APR',
+    label: "APR",
   },
   {
     id: 6,
-    name: 'details',
+    name: "details",
     sortable: true,
-    label: '',
+    label: "",
   },
-]
+];
 
 export const DesktopColumnSchema: ColumnsDefTypes[] = [
   {
     id: 1,
-    name: 'farm',
+    name: "farm",
     sortable: true,
-    label: '',
+    label: "",
   },
   {
     id: 2,
-    name: 'type',
+    name: "type",
     sortable: false,
-    label: '',
+    label: "",
   },
   {
     id: 3,
-    name: 'earned',
+    name: "earned",
     sortable: true,
-    label: 'Earned',
+    label: "Earned",
   },
   {
     id: 4,
-    name: 'apr',
+    name: "apr",
     sortable: true,
-    label: 'APR',
+    label: "APR",
   },
   {
     id: 5,
-    name: 'liquidity',
+    name: "liquidity",
     sortable: true,
-    label: 'Staked Liquidity',
+    label: "Staked Liquidity",
   },
   {
     id: 6,
-    name: 'multiplier',
+    name: "multiplier",
     sortable: true,
-    label: 'Multiplier',
+    label: "Multiplier",
   },
   {
     id: 7,
-    name: 'details',
+    name: "details",
     sortable: true,
-    label: '',
+    label: "",
   },
-]
+];
 
 export const V3DesktopColumnSchema: ColumnsDefTypes[] = [
   {
     id: 1,
-    name: 'farm',
+    name: "farm",
     sortable: true,
-    label: '',
+    label: "",
   },
   {
     id: 2,
-    name: 'type',
+    name: "type",
     sortable: false,
-    label: '',
+    label: "",
   },
   {
     id: 3,
-    name: 'earned',
+    name: "earned",
     sortable: true,
-    label: 'Earned',
+    label: "Earned",
   },
   {
     id: 4,
-    name: 'apr',
+    name: "apr",
     sortable: true,
-    label: 'APR',
+    label: "APR",
   },
   {
     id: 5,
-    name: 'stakedLiquidity',
+    name: "stakedLiquidity",
     sortable: true,
-    label: 'Staked Liquidity',
+    label: "Staked Liquidity",
   },
   {
     id: 6,
-    name: 'multiplier',
+    name: "multiplier",
     sortable: true,
-    label: 'Multiplier',
+    label: "Multiplier",
   },
   {
     id: 7,
-    name: 'availableLp',
+    name: "availableLp",
     sortable: false,
-    label: 'Available',
+    label: "Available",
   },
   {
     id: 8,
-    name: 'stakedLp',
+    name: "stakedLp",
     sortable: false,
-    label: 'Staked',
+    label: "Staked",
   },
   {
     id: 7,
-    name: 'details',
+    name: "details",
     sortable: true,
-    label: '',
+    label: "",
   },
-]
+];

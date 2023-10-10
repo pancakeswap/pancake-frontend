@@ -8,10 +8,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AllowedAllowanceState, ConfirmModalState, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
 import usePrevious from 'views/V3Info/hooks/usePrevious'
 import { usePublicClient } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
 
 interface UseConfirmModalStateProps {
-  txHash: string | undefined
-  chainId: number | undefined
+  txHash?: string
+  chainId?: ChainId
   approval: ApprovalState
   approvalToken: Currency | undefined
   currentAllowance: CurrencyAmount<Currency> | undefined

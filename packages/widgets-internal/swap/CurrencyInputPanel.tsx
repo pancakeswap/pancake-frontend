@@ -1,13 +1,13 @@
-import { Text, AtomBox, SwapCSS } from '@pancakeswap/uikit'
+import { Text, AtomBox, SwapCSS } from "@pancakeswap/uikit";
 
-import { NumericalInput, NumericalInputProps } from './NumericalInput'
+import { NumericalInput, NumericalInputProps } from "./NumericalInput";
 
-interface CurrencyInputPanelProps extends Omit<NumericalInputProps, 'onBlur'> {
-  onInputBlur?: () => void
-  id: string
-  top?: React.ReactNode
-  bottom?: React.ReactNode
-  showBridgeWarning?: boolean
+interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
+  onInputBlur?: () => void;
+  id: string;
+  top?: React.ReactNode;
+  bottom?: React.ReactNode;
+  showBridgeWarning?: boolean;
 }
 export function CurrencyInputPanel({
   value,
@@ -59,7 +59,7 @@ export function CurrencyInputPanel({
               value={value}
               onBlur={onInputBlur}
               onUserInput={(val) => {
-                onUserInput(val)
+                onUserInput(val);
               }}
             />
           </AtomBox>
@@ -77,5 +77,5 @@ export function CurrencyInputPanel({
         )}
       </AtomBox>
     </AtomBox>
-  )
+  );
 }

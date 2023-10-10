@@ -2,11 +2,14 @@ import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
-import { secondsToHours } from 'date-fns'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { secondsToDay } from 'utils/timeHelper'
 import { VaultKey } from 'state/types'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
+
+dayjs.extend(duration)
 
 interface UnstakingFeeCountdownRowProps {
   isTableVariant?: boolean
@@ -55,7 +58,7 @@ const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCou
   // Show the timer if a user is connected, has deposited, and has an unstaking fee
   const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee
 
-  const withdrawalFeePeriodHour = withdrawalFeePeriod ? secondsToHours(withdrawalFeePeriod) : '-'
+  const withdrawalFeePeriodHour = withdrawalFeePeriod ? dayjs.duration(withdrawalFeePeriod, 'seconds').asHours() : '-'
 
   const getRowText = () => {
     if (noFeeToPay) {

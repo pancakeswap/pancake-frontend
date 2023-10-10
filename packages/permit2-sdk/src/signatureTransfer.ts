@@ -1,13 +1,14 @@
 import invariant from 'tiny-invariant'
 import { BigintIsh } from '@pancakeswap/sdk'
+import { Address } from 'viem'
 import { permit2Domain } from './domain'
 import { MaxSigDeadline, MaxUnorderedNonce, MaxSignatureTransferAmount } from './constants'
-import { TypedDataDomain, TypedDataField } from './utils/types'
+import { TypedDataDomain, TypedDataParameter } from './utils/types'
 
 export interface Witness {
   witness: any
   witnessTypeName: string
-  witnessType: Record<string, TypedDataField[]>
+  witnessType: Record<string, TypedDataParameter[]>
 }
 
 export interface TokenPermissions {
@@ -31,13 +32,13 @@ export interface PermitBatchTransferFrom {
 
 export type PermitTransferFromData = {
   domain: TypedDataDomain
-  types: Record<string, TypedDataField[]>
+  types: Record<string, TypedDataParameter[]>
   values: PermitTransferFrom
 }
 
 export type PermitBatchTransferFromData = {
   domain: TypedDataDomain
-  types: Record<string, TypedDataField[]>
+  types: Record<string, TypedDataParameter[]>
   values: PermitBatchTransferFrom
 }
 
@@ -66,7 +67,7 @@ const PERMIT_BATCH_TRANSFER_FROM_TYPES = {
   TokenPermissions: TOKEN_PERMISSIONS,
 }
 
-function permitTransferFromWithWitnessType(witness: Witness): Record<string, TypedDataField[]> {
+function permitTransferFromWithWitnessType(witness: Witness): Record<string, TypedDataParameter[]> {
   return {
     PermitWitnessTransferFrom: [
       { name: 'permitted', type: 'TokenPermissions' },
@@ -80,7 +81,7 @@ function permitTransferFromWithWitnessType(witness: Witness): Record<string, Typ
   }
 }
 
-function permitBatchTransferFromWithWitnessType(witness: Witness): Record<string, TypedDataField[]> {
+function permitBatchTransferFromWithWitnessType(witness: Witness): Record<string, TypedDataParameter[]> {
   return {
     PermitBatchWitnessTransferFrom: [
       { name: 'permitted', type: 'TokenPermissions[]' },
@@ -109,7 +110,7 @@ export abstract class SignatureTransfer {
   // for signing the given permit data
   public static getPermitData(
     permit: PermitTransferFrom | PermitBatchTransferFrom,
-    permit2Address: string,
+    permit2Address: Address,
     chainId: number,
     witness?: Witness
   ): PermitTransferFromData | PermitBatchTransferFromData {

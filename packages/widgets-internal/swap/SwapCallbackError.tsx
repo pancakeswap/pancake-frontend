@@ -1,5 +1,5 @@
-import { styled } from 'styled-components'
-import { ErrorIcon } from '@pancakeswap/uikit'
+import { styled } from "styled-components";
+import { ErrorIcon } from "@pancakeswap/uikit";
 
 const SwapCallbackErrorInner = styled.div`
   background-color: ${({ theme }) => `${theme.colors.failure33}`};
@@ -17,7 +17,7 @@ const SwapCallbackErrorInner = styled.div`
     margin: 0;
     font-weight: 500;
   }
-`
+`;
 
 const SwapCallbackErrorInnerAlertTriangle = styled.div`
   background-color: ${({ theme }) => `${theme.colors.failure33}`};
@@ -28,7 +28,7 @@ const SwapCallbackErrorInnerAlertTriangle = styled.div`
   border-radius: 12px;
   min-width: 48px;
   height: 48px;
-`
+`;
 
 export function SwapCallbackError({ error }: { error: string }) {
   return (
@@ -38,5 +38,5 @@ export function SwapCallbackError({ error }: { error: string }) {
       </SwapCallbackErrorInnerAlertTriangle>
       <p>{error}</p>
     </SwapCallbackErrorInner>
-  )
+  );
 }

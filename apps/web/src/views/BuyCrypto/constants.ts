@@ -102,14 +102,25 @@ export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: string[] } = {
   [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
 }
 
-export const networkDisplay: { [id: number]: string } = {
-  [ChainId.ETHEREUM]: 'Ethereum',
-  [ChainId.BSC]: 'BNB Smart Chain',
-  [ChainId.ZKSYNC]: 'zkSync Era',
-  [ChainId.ARBITRUM_ONE]: 'Arbitrum One',
-  [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
-  [ChainId.LINEA]: 'Linea Mainnet',
-  [ChainId.BASE]: 'Base Mainnet',
+export const getNetworkDisplay = (chainId: number | undefined): string => {
+  switch (chainId as ChainId) {
+    case ChainId.ETHEREUM:
+      return 'Ethereum'
+    case ChainId.BSC:
+      return 'BNB Smart Chain'
+    case ChainId.ZKSYNC:
+      return 'zkSync Era'
+    case ChainId.ARBITRUM_ONE:
+      return 'Arbitrum One'
+    case ChainId.POLYGON_ZKEVM:
+      return 'Polygon zkEVM'
+    case ChainId.LINEA:
+      return 'Linea Mainnet'
+    case ChainId.BASE:
+      return 'Base Mainnet'
+    default:
+      return ''
+  }
 }
 
 export const chainIdToMercuryoNetworkId: { [id: number]: string } = {
@@ -154,20 +165,17 @@ export const getChainCurrencyWarningMessages = (
   t: (key: TranslationKey, data?: ContextData) => string,
   chainId: number,
 ) => {
+  const networkDisplay = getNetworkDisplay(chainId)
   return {
-    [ChainId.BSC]: t(
-      'USDT quotes are currently unavailable in USD on BNB Smart Chain. Please select another currency to receive USDT quotes',
-      { chainId: networkDisplay[chainId] },
-    ),
     [ChainId.ARBITRUM_ONE]: t(
       'UEDC.e quotes are currently unavailable in USD on Arbitrum. Please select another currency to receive USDC.e quotes',
-      { chainId: networkDisplay[chainId] },
+      { chainId: networkDisplay },
     ),
     [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
-      chainId: networkDisplay[chainId],
+      chainId: networkDisplay,
     }),
     [ChainId.BASE]: t('%chainId% supports limited fiat currencies. USD are not supported', {
-      chainId: networkDisplay[chainId],
+      chainId: networkDisplay,
     }),
   }
 }

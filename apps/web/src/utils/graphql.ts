@@ -48,6 +48,7 @@ export const v3Clients = {
   [ChainId.BASE]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BASE]),
   [ChainId.BASE_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BASE_TESTNET]),
   [ChainId.SCROLL_SEPOLIA]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.SCROLL_SEPOLIA]),
+  [ChainId.OPBNB]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.OPBNB]),
 }
 
 export const v3InfoClients = { ...v3Clients, [ChainId.BSC]: new GraphQLClient(V3_BSC_INFO_CLIENT) }
@@ -61,6 +62,8 @@ export const v2Clients = {
   [ChainId.ZKSYNC]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.ZKSYNC]),
   [ChainId.LINEA]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.LINEA]),
   [ChainId.BASE]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.BASE]),
+  [ChainId.ARBITRUM_ONE]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.ARBITRUM_ONE]),
+  [ChainId.OPBNB]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.OPBNB]),
 }
 
 export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
@@ -77,7 +80,7 @@ export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
 export const bitQueryServerClient = new GraphQLClient(BIT_QUERY, {
   headers: {
     // only server, no `NEXT_PUBLIC` not going to expose in client
-    'X-API-KEY': process.env.BIT_QUERY_HEADER,
+    'X-API-KEY': process.env.BIT_QUERY_HEADER || '',
   },
   timeout: 5000,
 })

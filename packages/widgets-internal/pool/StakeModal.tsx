@@ -1,12 +1,12 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from "@pancakeswap/localization";
 
-import BigNumber from 'bignumber.js'
-import { useCallback, useEffect, useState } from 'react'
-import { styled, useTheme } from 'styled-components'
-import { getInterestBreakdown } from '@pancakeswap/utils/compoundApyHelpers'
-import { formatNumber, getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import removeTrailingZeros from '@pancakeswap/utils/removeTrailingZeros'
-import getThemeValue from '@pancakeswap/uikit/util/getThemeValue'
+import BigNumber from "bignumber.js";
+import { useCallback, useEffect, useState } from "react";
+import { styled, useTheme } from "styled-components";
+import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
+import { formatNumber, getDecimalAmount, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
+import removeTrailingZeros from "@pancakeswap/utils/removeTrailingZeros";
+import getThemeValue from "@pancakeswap/uikit/util/getThemeValue";
 import {
   Box,
   AutoRenewIcon,
@@ -23,17 +23,17 @@ import {
   RoiCalculatorModal,
   TextProps,
   Modal,
-} from '@pancakeswap/uikit'
+} from "@pancakeswap/uikit";
 
-import PercentageButton from './PercentageButton'
+import PercentageButton from "./PercentageButton";
 
 const StyledLink = styled(Link)`
   width: 100%;
-`
+`;
 
 const AnnualRoiContainer = styled(Flex)`
   cursor: pointer;
-`
+`;
 
 const AnnualRoiDisplay = styled((props: TextProps) => <Text {...props} />)`
   width: 72px;
@@ -41,34 +41,34 @@ const AnnualRoiDisplay = styled((props: TextProps) => <Text {...props} />)`
   overflow: hidden;
   text-align: right;
   text-overflow: ellipsis;
-`
+`;
 
 interface StakeModalProps {
   // Pool attributes
-  stakingTokenDecimals: number
-  stakingTokenSymbol: string
-  stakingTokenAddress: string
-  earningTokenPrice: number
-  apr: number
-  stakingLimit: BigNumber
-  earningTokenSymbol: string
-  userDataStakedBalance: BigNumber
-  userDataStakingTokenBalance: BigNumber
-  enableEmergencyWithdraw: boolean
+  stakingTokenDecimals: number;
+  stakingTokenSymbol: string;
+  stakingTokenAddress: string;
+  earningTokenPrice: number;
+  apr: number;
+  stakingLimit: BigNumber;
+  earningTokenSymbol: string;
+  userDataStakedBalance: BigNumber;
+  userDataStakingTokenBalance: BigNumber;
+  enableEmergencyWithdraw: boolean;
 
-  stakingTokenBalance: BigNumber
-  stakingTokenPrice: number
-  isRemovingStake?: boolean
-  needEnable?: boolean
-  enablePendingTx?: boolean
-  setAmount?: (value: string) => void
-  onDismiss?: () => void
-  handleEnableApprove?: () => void
-  account: string
-  handleConfirmClick: any
-  pendingTx: boolean
-  imageUrl?: string
-  warning?: React.ReactElement
+  stakingTokenBalance: BigNumber;
+  stakingTokenPrice: number;
+  isRemovingStake?: boolean;
+  needEnable?: boolean;
+  enablePendingTx?: boolean;
+  setAmount?: (value: string) => void;
+  onDismiss?: () => void;
+  handleEnableApprove?: () => void;
+  account: string;
+  handleConfirmClick: any;
+  pendingTx: boolean;
+  imageUrl?: string;
+  warning?: React.ReactElement;
 }
 
 export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
@@ -93,48 +93,48 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   account,
   pendingTx,
   handleConfirmClick,
-  imageUrl = '/images/tokens/',
+  imageUrl = "/images/tokens/",
   warning,
 }) => {
-  const { t } = useTranslation()
-  const theme = useTheme()
-  const [stakeAmount, setStakeAmount] = useState('')
-  const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false)
-  const [percent, setPercent] = useState(0)
-  const [showRoiCalculator, setShowRoiCalculator] = useState(false)
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const [stakeAmount, setStakeAmount] = useState("");
+  const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false);
+  const [percent, setPercent] = useState(0);
+  const [showRoiCalculator, setShowRoiCalculator] = useState(false);
   const getCalculatedStakingLimit = useCallback(() => {
     if (isRemovingStake) {
-      return userDataStakedBalance
+      return userDataStakedBalance;
     }
     if (stakingLimit.gt(0)) {
-      const stakingLimitLeft = stakingLimit.minus(userDataStakedBalance)
+      const stakingLimitLeft = stakingLimit.minus(userDataStakedBalance);
       if (stakingTokenBalance.gt(stakingLimitLeft)) {
-        return stakingLimitLeft
+        return stakingLimitLeft;
       }
     }
-    return stakingTokenBalance
-  }, [userDataStakedBalance, stakingTokenBalance, stakingLimit, isRemovingStake])
-  const fullDecimalStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingTokenDecimals)
+    return stakingTokenBalance;
+  }, [userDataStakedBalance, stakingTokenBalance, stakingLimit, isRemovingStake]);
+  const fullDecimalStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingTokenDecimals);
   const userNotEnoughToken = isRemovingStake
     ? userDataStakedBalance.lt(fullDecimalStakeAmount)
-    : userDataStakingTokenBalance.lt(fullDecimalStakeAmount)
+    : userDataStakingTokenBalance.lt(fullDecimalStakeAmount);
 
-  const usdValueStaked = new BigNumber(stakeAmount).times(stakingTokenPrice)
-  const formattedUsdValueStaked = !usdValueStaked.isNaN() && formatNumber(usdValueStaked.toNumber())
+  const usdValueStaked = new BigNumber(stakeAmount).times(stakingTokenPrice);
+  const formattedUsdValueStaked = !usdValueStaked.isNaN() && formatNumber(usdValueStaked.toNumber());
 
   const interestBreakdown = getInterestBreakdown({
     principalInUSD: !usdValueStaked.isNaN() ? usdValueStaked.toNumber() : 0,
     apr,
     earningTokenPrice,
-  })
-  const annualRoi = interestBreakdown[3] * earningTokenPrice
-  const formattedAnnualRoi = formatNumber(annualRoi, annualRoi > 10000 ? 0 : 2, annualRoi > 10000 ? 0 : 2)
+  });
+  const annualRoi = interestBreakdown[3] * earningTokenPrice;
+  const formattedAnnualRoi = formatNumber(annualRoi, annualRoi > 10000 ? 0 : 2, annualRoi > 10000 ? 0 : 2);
 
-  const getTokenLink = stakingTokenAddress ? `/swap?outputCurrency=${stakingTokenAddress}` : '/swap'
+  const getTokenLink = stakingTokenAddress ? `/swap?outputCurrency=${stakingTokenAddress}` : "/swap";
 
   useEffect(() => {
     if (stakingLimit.gt(0) && !isRemovingStake) {
-      setHasReachedStakedLimit(fullDecimalStakeAmount.plus(userDataStakedBalance).gt(stakingLimit))
+      setHasReachedStakedLimit(fullDecimalStakeAmount.plus(userDataStakedBalance).gt(stakingLimit));
     }
   }, [
     stakeAmount,
@@ -143,39 +143,39 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
     setHasReachedStakedLimit,
     fullDecimalStakeAmount,
     userDataStakedBalance,
-  ])
+  ]);
 
   const handleStakeInputChange = (input: string) => {
     if (input) {
-      const convertedInput = getDecimalAmount(new BigNumber(input), stakingTokenDecimals)
-      const percentage = Math.floor(convertedInput.dividedBy(getCalculatedStakingLimit()).multipliedBy(100).toNumber())
-      setPercent(Math.min(percentage, 100))
+      const convertedInput = getDecimalAmount(new BigNumber(input), stakingTokenDecimals);
+      const percentage = Math.floor(convertedInput.dividedBy(getCalculatedStakingLimit()).multipliedBy(100).toNumber());
+      setPercent(Math.min(percentage, 100));
     } else {
-      setPercent(0)
+      setPercent(0);
     }
-    setStakeAmount(input)
-  }
+    setStakeAmount(input);
+  };
 
   const handleChangePercent = useCallback(
     (sliderPercent: number) => {
       if (sliderPercent > 0) {
-        const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent)
-        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingTokenDecimals, stakingTokenDecimals)
+        const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent);
+        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingTokenDecimals, stakingTokenDecimals);
 
-        setStakeAmount(removeTrailingZeros(amountToStake))
+        setStakeAmount(removeTrailingZeros(amountToStake));
       } else {
-        setStakeAmount('')
+        setStakeAmount("");
       }
-      setPercent(sliderPercent)
+      setPercent(sliderPercent);
     },
-    [getCalculatedStakingLimit, stakingTokenDecimals],
-  )
+    [getCalculatedStakingLimit, stakingTokenDecimals]
+  );
 
   useEffect(() => {
     if (setAmount) {
-      setAmount(Number(stakeAmount) > 0 ? stakeAmount : '0')
+      setAmount(Number(stakeAmount) > 0 ? stakeAmount : "0");
     }
-  }, [setAmount, stakeAmount])
+  }, [setAmount, stakeAmount]);
 
   if (showRoiCalculator) {
     return (
@@ -185,7 +185,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
         stakingTokenPrice={stakingTokenPrice}
         stakingTokenDecimals={stakingTokenDecimals}
         apr={apr}
-        linkLabel={t('Get %symbol%', { symbol: stakingTokenSymbol })}
+        linkLabel={t("Get %symbol%", { symbol: stakingTokenSymbol })}
         linkHref={getTokenLink}
         stakingTokenBalance={userDataStakedBalance.plus(stakingTokenBalance)}
         stakingTokenSymbol={stakingTokenSymbol}
@@ -193,27 +193,27 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
         onBack={() => setShowRoiCalculator(false)}
         initialValue={stakeAmount}
       />
-    )
+    );
   }
 
   return (
     <Modal
       minWidth="346px"
-      title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
+      title={isRemovingStake ? t("Unstake") : t("Stake in Pool")}
       onDismiss={onDismiss}
-      headerBackground={getThemeValue(theme, 'colors.gradientCardHeader')}
+      headerBackground={getThemeValue(theme, "colors.gradientCardHeader")}
     >
       <Box overflow="hide auto">
         {stakingLimit.gt(0) && !isRemovingStake && (
-          <Text color="secondary" bold mb="24px" style={{ textAlign: 'center' }} fontSize="16px">
-            {t('Max stake for this pool: %amount% %token%', {
+          <Text color="secondary" bold mb="24px" style={{ textAlign: "center" }} fontSize="16px">
+            {t("Max stake for this pool: %amount% %token%", {
               amount: getFullDisplayBalance(stakingLimit, stakingTokenDecimals, 0),
               token: stakingTokenSymbol,
             })}
           </Text>
         )}
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
-          <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}:</Text>
+          <Text bold>{isRemovingStake ? t("Unstake") : t("Stake")}:</Text>
           <Flex alignItems="center" minWidth="70px">
             <Image src={`${imageUrl}${stakingTokenAddress}.png`} width={24} height={24} alt={stakingTokenSymbol} />
             <Text ml="4px" bold>
@@ -229,16 +229,16 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           decimals={stakingTokenDecimals}
         />
         {hasReachedStakeLimit && (
-          <Text color="failure" fontSize="12px" style={{ textAlign: 'right' }} mt="4px">
-            {t('Maximum total stake: %amount% %token%', {
+          <Text color="failure" fontSize="12px" style={{ textAlign: "right" }} mt="4px">
+            {t("Maximum total stake: %amount% %token%", {
               amount: getFullDisplayBalance(new BigNumber(stakingLimit), stakingTokenDecimals, 0),
               token: stakingTokenSymbol,
             })}
           </Text>
         )}
         {userNotEnoughToken && (
-          <Text color="failure" fontSize="12px" style={{ textAlign: 'right' }} mt="4px">
-            {t('Insufficient %symbol% balance', {
+          <Text color="failure" fontSize="12px" style={{ textAlign: "right" }} mt="4px">
+            {t("Insufficient %symbol% balance", {
               symbol: stakingTokenSymbol,
             })}
           </Text>
@@ -249,10 +249,10 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           </Text>
         )}
         <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-          {t('Balance: %balance%', {
+          {t("Balance: %balance%", {
             balance: getFullDisplayBalance(
               isRemovingStake ? userDataStakedBalance : stakingTokenBalance,
-              stakingTokenDecimals,
+              stakingTokenDecimals
             ),
           })}
         </Text>
@@ -269,19 +269,19 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           <PercentageButton onClick={() => handleChangePercent(25)}>25%</PercentageButton>
           <PercentageButton onClick={() => handleChangePercent(50)}>50%</PercentageButton>
           <PercentageButton onClick={() => handleChangePercent(75)}>75%</PercentageButton>
-          <PercentageButton onClick={() => handleChangePercent(100)}>{t('Max')}</PercentageButton>
+          <PercentageButton onClick={() => handleChangePercent(100)}>{t("Max")}</PercentageButton>
         </Flex>
         {warning}
         {!isRemovingStake && (
           <Flex mt="24px" alignItems="center" justifyContent="space-between">
             <Text mr="8px" color="textSubtle">
-              {t('Annual ROI at current rates')}:
+              {t("Annual ROI at current rates")}:
             </Text>
             {Number.isFinite(annualRoi) ? (
               <AnnualRoiContainer
                 alignItems="center"
                 onClick={() => {
-                  setShowRoiCalculator(true)
+                  setShowRoiCalculator(true);
                 }}
               >
                 <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
@@ -298,7 +298,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           <Flex maxWidth="346px" mt="24px">
             <Text textAlign="center">
               {t(
-                'This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.',
+                "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested."
               )}
             </Text>
           </Flex>
@@ -312,7 +312,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
             mt="24px"
             minHeight={48}
           >
-            {t('Enable')}
+            {t("Enable")}
           </Button>
         ) : (
           <Button
@@ -323,17 +323,17 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
             disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || hasReachedStakeLimit || userNotEnoughToken}
             mt="24px"
           >
-            {pendingTx ? t('Confirming') : t('Confirm')}
+            {pendingTx ? t("Confirming") : t("Confirm")}
           </Button>
         )}
         {!isRemovingStake && (
           <StyledLink external href={getTokenLink}>
             <Button width="100%" mt="8px" variant="secondary">
-              {t('Get %symbol%', { symbol: stakingTokenSymbol })}
+              {t("Get %symbol%", { symbol: stakingTokenSymbol })}
             </Button>
           </StyledLink>
         )}
       </Box>
     </Modal>
-  )
-}
+  );
+};

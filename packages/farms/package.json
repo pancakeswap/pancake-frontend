@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/farms",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "sideEffects": false,
   "private": true,
   "scripts": {
@@ -21,8 +21,8 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
     "bignumber.js": "^9.0.0",
-    "date-fns": "^2.29.3",
+    "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
-    "viem": "^1.10.9"
+    "viem": "^1.15.1"
   }
 }

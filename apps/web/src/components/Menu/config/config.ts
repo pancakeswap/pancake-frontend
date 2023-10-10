@@ -1,27 +1,26 @@
-import {
-  MenuItemsType,
-  DropdownMenuItemType,
-  SwapIcon,
-  SwapFillIcon,
-  EarnFillIcon,
-  PancakeProtectorIcon,
-  EarnIcon,
-  TrophyIcon,
-  TrophyFillIcon,
-  MoreIcon,
-  BirthdayIcon,
-  DropdownMenuItems,
-} from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import {
+  BirthdayIcon,
+  DropdownMenuItemType,
+  DropdownMenuItems,
+  EarnFillIcon,
+  EarnIcon,
+  MenuItemsType,
+  MoreIcon,
+  PancakeProtectorIcon,
+  SwapFillIcon,
+  SwapIcon,
+} from '@pancakeswap/uikit'
+import {
+  FIXED_STAKING_SUPPORTED_CHAINS,
+  LIQUID_STAKING_SUPPORTED_CHAINS,
   SUPPORT_BUY_CRYPTO,
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
-  LIQUID_STAKING_SUPPORTED_CHAINS,
 } from 'config/constants/supportChains'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
 export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
@@ -89,6 +88,11 @@ const config: (
           href: '/buy-crypto',
           supportChainIds: SUPPORT_BUY_CRYPTO,
         },
+        {
+          label: t('Trading Reward'),
+          href: '/trading-reward',
+          hideSubNav: true,
+        },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
@@ -114,26 +118,19 @@ const config: (
           href: '/liquid-staking',
           supportChainIds: LIQUID_STAKING_SUPPORTED_CHAINS,
         },
+        {
+          label: t('Simple Staking'),
+          href: '/simple-staking',
+          supportChainIds: FIXED_STAKING_SUPPORTED_CHAINS,
+        },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
-      label: t('Win'),
-      href: '/prediction',
-      icon: TrophyIcon,
-      fillIcon: TrophyFillIcon,
-      supportChainIds: SUPPORT_ONLY_BSC,
+      label: t('Game'),
+      icon: PancakeProtectorIcon,
+      hideSubNav: true,
+      href: 'https://protectors.pancakeswap.finance',
       items: [
-        {
-          label: t('Trading Reward'),
-          href: '/trading-reward',
-          hideSubNav: true,
-        },
-        {
-          label: t('Trading Competition'),
-          href: '/competition',
-          image: '/images/decorations/tc.png',
-          hideSubNav: true,
-        },
         {
           label: t('Prediction (BETA)'),
           href: '/prediction',
@@ -149,14 +146,6 @@ const config: (
           href: '/pottery',
           image: '/images/decorations/lottery.png',
         },
-      ],
-    },
-    {
-      label: t('Game'),
-      icon: PancakeProtectorIcon,
-      hideSubNav: true,
-      href: 'https://protectors.pancakeswap.finance',
-      items: [
         {
           label: t('Pancake Protectors'),
           href: 'https://protectors.pancakeswap.finance',
@@ -197,6 +186,16 @@ const config: (
         {
           label: t('Jupiter Predictors'),
           href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-5-jupiter-predictors-predicting-crypto-movements',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('Saturn Syndicate'),
+          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-6-saturn-syndicate-perpetual-trading-galore',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('Uranus Memories'),
+          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-uranus-memories-share-your-favorite-memory-and-product-on-pancake-swap',
           status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },

@@ -39,7 +39,7 @@ export function poolsRoute(router: Router) {
         object.writeHttpMetadata(headers)
         headers.set('etag', object.httpEtag)
 
-        headers.append('Cache-Control', 's-maxage=86400')
+        headers.append('Cache-Control', 's-maxage=1800, stale-while-revalidate=900')
 
         return new Response(object.body, {
           headers,

@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 import { createChart, IChartApi, LineStyle, UTCTimestamp } from "lightweight-charts";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
@@ -85,7 +85,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
         borderVisible: false,
         secondsVisible: false,
         tickMarkFormatter: (unixTime: number) => {
-          return format(unixTime * 1000, dateFormattingByTimewindow[timeWindow]);
+          return dayjs.unix(unixTime).format(dateFormattingByTimewindow[timeWindow]);
         },
       },
       grid: {

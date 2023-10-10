@@ -1,10 +1,10 @@
-import { useCallback, useState } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCallback, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
 import { useBuyCryptoState } from 'state/buyCrypto/hooks'
-import { fetchProviderQuotes } from './useProviderQuotes'
-import { fetchProviderAvailabilities } from './useProviderAvailability'
 import { ProviderQuote } from '../types'
+import { fetchProviderAvailabilities } from './useProviderAvailability'
+import { fetchProviderQuotes } from './useProviderQuotes'
 
 const usePriceQuotes = () => {
   const [quotes, setQuotes] = useState<ProviderQuote[]>([])
@@ -46,8 +46,8 @@ const usePriceQuotes = () => {
     if (!chainId || !outputCurrency || !inputCurrency) return
     try {
       const providerQuotes = await fetchProviderQuotes({
-        fiatCurrency: outputCurrency?.toUpperCase(),
-        cryptoCurrency: inputCurrency?.toUpperCase(),
+        fiatCurrency: outputCurrency.toUpperCase(),
+        cryptoCurrency: inputCurrency.toUpperCase(),
         fiatAmount: Number(amount).toString(),
         network: chainId,
       })

@@ -155,6 +155,14 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
     },
     {
+      "name": "PancakeSwap Token",
+      "symbol": "CAKE3",
+      "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
+    },
+    {
       "name": "Test BUSD Token",
       "symbol": "tBUSD",
       "address": "0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814",
@@ -417,6 +425,30 @@
       "chainId": 5611,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
+    },
+    {
+      "name": "Wrapped BNB",
+      "symbol": "WBNB",
+      "address": "0x4200000000000000000000000000000000000006",
+      "chainId": 204,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
+    },
+    {
+      "name": "Ethereum Token",
+      "symbol": "ETH",
+      "address": "0xe7798f023fc62146e8aa1b36da45fb70855a77ea",
+      "chainId": 204,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
+    },
+    {
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "address": "0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3",
+      "chainId": 204,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
     },
     {
       "name": "PancakeSwap Token",

@@ -42,7 +42,7 @@ import {
   SerializedLockedCakeVault,
 } from 'state/types'
 import { Address, erc20ABI } from 'wagmi'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { publicClient } from 'utils/wagmi'
 import { getViemClients } from 'utils/viem'
 import { fetchTokenUSDValue } from 'utils/llamaPrice'
@@ -208,7 +208,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         block.timestamp > 0 && timeLimit ? block.timestamp > Number(timeLimit.endTimestamp) : false
       const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
-      const stakingTokenAddress = isAddress(pool.stakingToken.address)
+      const stakingTokenAddress = safeGetAddress(pool.stakingToken.address)
       let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
       if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
         // TODO: Remove this when fetchTokenUSDValue can get APL USD Price
@@ -225,7 +225,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         }
       }
 
-      const earningTokenAddress = isAddress(pool.earningToken.address)
+      const earningTokenAddress = safeGetAddress(pool.earningToken.address)
       let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
       if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
         // eslint-disable-next-line no-await-in-loop

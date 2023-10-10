@@ -1,5 +1,24 @@
 # @pancakeswap/multicall
 
+## 3.2.1
+
+### Patch Changes
+
+- Updated dependencies [8e3ac5427]
+  - @pancakeswap/sdk@5.7.0
+
+## 3.2.0
+
+### Minor Changes
+
+- 435a90ac2: Add support for opBNB mainnet
+
+### Patch Changes
+
+- Updated dependencies [435a90ac2]
+  - @pancakeswap/sdk@5.6.0
+  - @pancakeswap/chains@0.1.0
+
 ## 3.1.2
 
 ### Patch Changes

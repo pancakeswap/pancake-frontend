@@ -1,15 +1,15 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, CheckmarkCircleIcon, Text } from '@pancakeswap/uikit'
-import { ReactNode } from 'react'
-import { StepTitleAnimationContainer } from './ApproveModalContent'
-import { FadePresence } from './Logos'
+import { useTranslation } from "@pancakeswap/localization";
+import { AutoColumn, Box, CheckmarkCircleIcon, Text } from "@pancakeswap/uikit";
+import { ReactNode } from "react";
+import { StepTitleAnimationContainer } from "./ApproveModalContent";
+import { FadePresence } from "./Logos";
 
 interface SwaReceiptContents {
-  explorerLink: ReactNode
-  children: ReactNode
+  explorerLink: ReactNode;
+  children: ReactNode;
 }
 export const SwapTransactionReceiptModalContent = ({ explorerLink, children }: SwaReceiptContents) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Box width="100%">
@@ -21,12 +21,12 @@ export const SwapTransactionReceiptModalContent = ({ explorerLink, children }: S
       <AutoColumn justify="center">
         <StepTitleAnimationContainer>
           <Text bold textAlign="center">
-            {t('Transaction receipt')}
+            {t("Transaction receipt")}
           </Text>
           {explorerLink}
         </StepTitleAnimationContainer>
         {children}
       </AutoColumn>
     </Box>
-  )
-}
+  );
+};

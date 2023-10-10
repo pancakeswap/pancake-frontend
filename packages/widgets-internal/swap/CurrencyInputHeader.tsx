@@ -1,9 +1,9 @@
-import { ReactNode, memo } from 'react'
-import { Heading, AtomBox, Text } from '@pancakeswap/uikit'
+import { ReactNode, memo } from "react";
+import { Heading, AtomBox, Text } from "@pancakeswap/uikit";
 
 interface Props {
-  title: ReactNode
-  subtitle: ReactNode
+  title: ReactNode;
+  subtitle: ReactNode;
 }
 
 export const CurrencyInputHeader = memo(({ title, subtitle }: Props) => {
@@ -14,15 +14,15 @@ export const CurrencyInputHeader = memo(({ title, subtitle }: Props) => {
       </AtomBox>
       {subtitle}
     </AtomBox>
-  )
-})
+  );
+});
 
 export const CurrencyInputHeaderTitle = memo(({ children }: { children: ReactNode }) => (
   <Heading as="h2">{children}</Heading>
-))
+));
 
 export const CurrencyInputHeaderSubTitle = memo(({ children }: { children: ReactNode }) => (
   <Text color="textSubtle" fontSize="14px" textAlign="center">
     {children}
   </Text>
-))
+));

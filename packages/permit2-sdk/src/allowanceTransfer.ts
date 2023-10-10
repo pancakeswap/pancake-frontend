@@ -1,8 +1,9 @@
 import invariant from 'tiny-invariant'
 import { BigintIsh } from '@pancakeswap/sdk'
+import { Address, TypedData } from 'viem'
 import { MaxSigDeadline, MaxOrderedNonce, MaxAllowanceTransferAmount, MaxAllowanceExpiration } from './constants'
 import { permit2Domain } from './domain'
-import { TypedDataDomain, TypedDataField } from './utils/types'
+import { TypedDataDomain } from './utils/types'
 
 export interface PermitDetails {
   token: string
@@ -15,25 +16,24 @@ export interface PermitSingle {
   details: PermitDetails
   spender: string
   sigDeadline: BigintIsh
+  [key: string]: unknown
 }
 
 export interface PermitBatch {
   details: PermitDetails[]
   spender: string
   sigDeadline: BigintIsh
+  [key: string]: unknown
 }
 
-export type PermitSingleData = {
+type TypedStructData<TValue> = {
   domain: TypedDataDomain
-  types: Record<string, TypedDataField[]>
-  values: PermitSingle
+  types: TypedData
+  values: TValue
 }
 
-export type PermitBatchData = {
-  domain: TypedDataDomain
-  types: Record<string, TypedDataField[]>
-  values: PermitBatch
-}
+export type PermitSingleData = TypedStructData<PermitSingle>
+export type PermitBatchData = TypedStructData<PermitBatch>
 
 const PERMIT_DETAILS = [
   { name: 'token', type: 'address' },
@@ -75,7 +75,7 @@ export abstract class AllowanceTransfer {
   // for signing the given permit data
   public static getPermitData(
     permit: PermitSingle | PermitBatch,
-    permit2Address: string,
+    permit2Address: Address,
     chainId: number
   ): PermitSingleData | PermitBatchData {
     invariant(MaxSigDeadline >= BigInt(permit.sigDeadline), 'SIG_DEADLINE_OUT_OF_RANGE')

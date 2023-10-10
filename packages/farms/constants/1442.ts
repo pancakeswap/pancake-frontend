@@ -12,14 +12,14 @@ export const farmsV3 = defineFarmV3Configs([
   },
   {
     pid: 2,
-    lpAddress: '0xfc45871d6c0df3cdae736db52b2d81ac61ecf6ef',
+    lpAddress: '0xfc45871d6c0Df3CDAE736dB52B2d81ac61EcF6eF',
     token0: polygonZkEvmTestnetTokens.weth,
     token1: polygonZkEvmTestnetTokens.mockB,
     feeAmount: FeeAmount.MEDIUM,
   },
   {
     pid: 3,
-    lpAddress: '0x9c7505095aa5a1b2227822ba47d13054ec570972',
+    lpAddress: '0x9c7505095aA5a1B2227822BA47D13054eC570972',
     token0: polygonZkEvmTestnetTokens.mockB,
     token1: polygonZkEvmTestnetTokens.mockC,
     feeAmount: FeeAmount.HIGH,

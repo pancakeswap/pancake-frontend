@@ -5,7 +5,7 @@ import { NftToken } from 'state/nftMarket/types'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import useSWR from 'swr'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 
 const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const { address: account } = useAccount()
@@ -25,7 +25,7 @@ const useNftOwner = (nft: NftToken, isOwnNft = false) => {
       try {
         if (isOwnNft && account) {
           setOwner(account)
-        } else if (tokenOwner && isAddress(tokenOwner) !== isAddress(pancakeProfileAddress)) {
+        } else if (tokenOwner && safeGetAddress(tokenOwner) !== safeGetAddress(pancakeProfileAddress)) {
           setOwner(tokenOwner)
         } else {
           setOwner(null)

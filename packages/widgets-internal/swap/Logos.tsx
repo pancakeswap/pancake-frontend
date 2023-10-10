@@ -1,9 +1,10 @@
-import { Currency } from '@pancakeswap/swap-sdk-core'
-import { Box, CurrencyLogo, Spinner as Sp, SpinnerProps, Svg } from '@pancakeswap/uikit'
-import { useRef } from 'react'
-import { styled, useTheme } from 'styled-components'
-import { AnimationType, FadeWrapper, RotationStyle, StyledSVG } from './styles'
-import { useUnmountingAnimation } from './useUnmountingAnimation'
+import { Currency } from "@pancakeswap/swap-sdk-core";
+import { Box, Spinner as Sp, SpinnerProps, Svg } from "@pancakeswap/uikit";
+import { useRef } from "react";
+import { styled, useTheme } from "styled-components";
+import { CurrencyLogo } from "../components/CurrencyLogo";
+import { AnimationType, FadeWrapper, RotationStyle, StyledSVG } from "./styles";
+import { useUnmountingAnimation } from "./useUnmountingAnimation";
 
 const LoadingIndicator = styled(LoaderV3)`
   stroke: grey;
@@ -14,23 +15,23 @@ const LoadingIndicator = styled(LoaderV3)`
   left: -7px;
   position: absolute;
   z-index: -100;
-`
+`;
 
 const CurrencyLoaderContainer = styled(FadePresence)<{ asBadge: boolean }>`
   z-index: 2;
   border-radius: 50%;
   position: absolute;
   transition: all 250ms ease-in-out;
-  height: ${({ asBadge }) => (asBadge ? '25px' : '80px')};
-  width: ${({ asBadge }) => (asBadge ? '25px' : '80px')};
-  bottom: ${({ asBadge }) => (asBadge ? '-4px' : 0)};
-  right: ${({ asBadge }) => (asBadge ? '-4px' : 0)};
-  outline: ${({ theme, asBadge }) => (asBadge ? `2px solid ${theme.background}` : '')};
-`
+  height: ${({ asBadge }) => (asBadge ? "25px" : "80px")};
+  width: ${({ asBadge }) => (asBadge ? "25px" : "80px")};
+  bottom: ${({ asBadge }) => (asBadge ? "-4px" : 0)};
+  right: ${({ asBadge }) => (asBadge ? "-4px" : 0)};
+  outline: ${({ theme, asBadge }) => (asBadge ? `2px solid ${theme.background}` : "")};
+`;
 
 const RaisedCurrencyLogo = styled(CurrencyLogo)`
   z-index: 1;
-`
+`;
 const AllowanceIconCircle = styled(FadePresence)<{ width: number; height: number; showSpinner: boolean }>`
   display: flex;
   position: relative;
@@ -39,9 +40,9 @@ const AllowanceIconCircle = styled(FadePresence)<{ width: number; height: number
   border-radius: 50%;
   align-items: center;
   justify-content: center;
-  background-color: ${({ showSpinner, theme }) => (showSpinner ? 'transparent' : theme.colors.primary)};
+  background-color: ${({ showSpinner, theme }) => (showSpinner ? "transparent" : theme.colors.primary)};
   z-index: 5;
-`
+`;
 const PermitIcon = () => {
   return (
     <Svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,37 +51,37 @@ const PermitIcon = () => {
         fill="#F5F6FC"
       />
     </Svg>
-  )
-}
+  );
+};
 
-export function LoaderV3({ size = '4px', ...rest }: { size?: string; [k: string]: any }) {
-  const theme = useTheme()
+export function LoaderV3({ size = "4px", ...rest }: { size?: string; [k: string]: any }) {
+  const theme = useTheme();
   return (
     <StyledRotatingSVG
       size={size}
       viewBox="0 0 54 54"
       xmlns="http://www.w3.org/2000/svg"
-      fill={theme.colors.textSubtle ?? ''}
-      stroke={theme.colors.textSubtle ?? ''}
+      fill={theme.colors.textSubtle ?? ""}
+      stroke={theme.colors.textSubtle ?? ""}
       strokeWidth={0.1}
       {...rest}
     >
       <path
         opacity="0.1"
         d="M53.6666 26.9999C53.6666 41.7275 41.7276 53.6666 27 53.6666C12.2724 53.6666 0.333313 41.7275 0.333313 26.9999C0.333313 12.2723 12.2724 0.333252 27 0.333252C41.7276 0.333252 53.6666 12.2723 53.6666 26.9999ZM8.33331 26.9999C8.33331 37.3092 16.6907 45.6666 27 45.6666C37.3093 45.6666 45.6666 37.3092 45.6666 26.9999C45.6666 16.6906 37.3093 8.33325 27 8.33325C16.6907 8.33325 8.33331 16.6906 8.33331 26.9999Z"
-        fill={theme.colors.textSubtle ?? ''}
+        fill={theme.colors.textSubtle ?? ""}
       />
       <path
         d="M49.6666 26.9999C51.8758 26.9999 53.6973 25.1992 53.3672 23.0149C53.0452 20.884 52.4652 18.7951 51.6368 16.795C50.2966 13.5597 48.3324 10.62 45.8562 8.14374C43.3799 5.66751 40.4402 3.70326 37.2049 2.36313C35.2048 1.53466 33.1159 0.954747 30.985 0.632693C28.8007 0.30256 27 2.12411 27 4.33325C27 6.54239 28.8108 8.29042 30.9695 8.76019C32.0523 8.99585 33.1146 9.32804 34.1434 9.75417C36.4081 10.6923 38.4659 12.0672 40.1993 13.8006C41.9327 15.534 43.3076 17.5918 44.2457 19.8565C44.6719 20.8853 45.004 21.9476 45.2397 23.0304C45.7095 25.1891 47.4575 26.9999 49.6666 26.9999Z"
-        fill={theme.colors.textSubtle ?? ''}
+        fill={theme.colors.textSubtle ?? ""}
       />
     </StyledRotatingSVG>
-  )
+  );
 }
 
 export const StyledRotatingSVG = styled(StyledSVG)`
   ${RotationStyle}
-`
+`;
 
 export function FadePresence({
   children,
@@ -88,35 +89,35 @@ export function FadePresence({
   $scale = false,
   ...rest
 }: {
-  children: React.ReactNode
-  className?: string
-  $scale?: boolean
+  children: React.ReactNode;
+  className?: string;
+  $scale?: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null)
-  useUnmountingAnimation(ref, () => AnimationType.EXITING)
+  const ref = useRef<HTMLDivElement>(null);
+  useUnmountingAnimation(ref, () => AnimationType.EXITING);
   return (
     <FadeWrapper ref={ref} className={className} $scale={$scale} {...rest}>
       {children}
     </FadeWrapper>
-  )
+  );
 }
 
 export const Spinner: React.FC<React.PropsWithChildren<SpinnerProps>> = () => {
-  const ref = useRef<HTMLDivElement>(null)
-  useUnmountingAnimation(ref, () => AnimationType.EXITING)
+  const ref = useRef<HTMLDivElement>(null);
+  useUnmountingAnimation(ref, () => AnimationType.EXITING);
   return (
     <FadePresence $scale>
       <Sp />
     </FadePresence>
-  )
-}
+  );
+};
 
 export function CurrencyLoader({ currency, asBadge = false }: { currency?: Currency; asBadge?: boolean }) {
   return (
     <CurrencyLoaderContainer asBadge={asBadge} data-testid={`pending-modal-currency-logo-${currency?.symbol}`} $scale>
       <RaisedCurrencyLogo currency={currency} size="100%" />
     </CurrencyLoaderContainer>
-  )
+  );
 }
 
 export const ApprovalPhaseIcon = ({
@@ -124,9 +125,9 @@ export const ApprovalPhaseIcon = ({
   currency,
   asBadge,
 }: {
-  size?: number
-  currency: Currency
-  asBadge: boolean
+  size?: number;
+  currency: Currency;
+  asBadge: boolean;
 }) => {
   return (
     <AllowanceIconCircle width={size} height={size} showSpinner={false} $scale>
@@ -134,8 +135,8 @@ export const ApprovalPhaseIcon = ({
       <PermitIcon />
       <CurrencyLoader currency={currency} asBadge={asBadge} />
     </AllowanceIconCircle>
-  )
-}
+  );
+};
 
 export const PendingSwapConfirmationIcon = ({ size = 128 }: { size?: number }) => {
   return (
@@ -144,13 +145,13 @@ export const PendingSwapConfirmationIcon = ({ size = 128 }: { size?: number }) =
         <Spinner />
       </Box>
     </AllowanceIconCircle>
-  )
-}
+  );
+};
 
 export function LoadingIndicatorOverlay() {
   return (
     <FadePresence>
       <LoadingIndicator />
     </FadePresence>
-  )
+  );
 }

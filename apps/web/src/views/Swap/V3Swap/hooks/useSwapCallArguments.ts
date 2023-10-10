@@ -3,9 +3,9 @@ import { Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 
-import { PancakeUniSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
+import { PancakeUniversalSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { Address, Hex } from 'viem'
@@ -21,24 +21,25 @@ interface SwapCall {
  * @param trade trade to execute
  * @param allowedSlippage user allowed slippage
  * @param recipientAddressOrName the ENS name or address of the recipient of the swap output
- * @param signatureData the signature data of the permit of the input token amount, if available
+ * @param deadline the deadline for executing the trade
+ * @param feeOptions the fee options to be applied to the trade.
  */
 export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
-  recipientAddress: string | null | undefined,
+  recipientAddressOrName: string | null | undefined,
   permitSignature: string | null | undefined,
   deadline: bigint | undefined,
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
   const { account, chainId } = useAccountActiveChain()
-  const recipientENSAddress = useGetENSAddressByName(recipientAddress)
+  const recipientENSAddress = useGetENSAddressByName(recipientAddressOrName)
   const recipient = (
-    recipientAddress === null
+    recipientAddressOrName === null || recipientAddressOrName === undefined
       ? account
-      : isAddress(recipientAddress)
-      ? recipientAddress
-      : isAddress(recipientENSAddress)
+      : safeGetAddress(recipientAddressOrName)
+      ? recipientAddressOrName
+      : safeGetAddress(recipientENSAddress)
       ? recipientENSAddress
       : null
   ) as Address | null
@@ -46,7 +47,7 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    const methodParamaters = PancakeUniSwapRouter.swapERC20CallParameters(trade, {
+    const methodParamaters = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, {
       fee: feeOptions,
       recipient,
       inputTokenPermit: permitSignature,

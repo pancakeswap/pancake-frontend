@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
@@ -47,17 +47,24 @@ export function BuyCryptoForm({
   } = useBuyCryptoState()
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
-    typedValue as string,
-    minAmount as number,
-    minBaseAmount as number,
-    maxAmount as number,
-    maxBaseAmount as number,
-    outputCurrencyId as string,
-    inputCurrencyId as string,
+    typedValue,
+    minAmount,
+    minBaseAmount,
+    maxAmount,
+    maxBaseAmount,
+    outputCurrencyId,
+    inputCurrencyId,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
 
-  const outputCurrency: any = fiatCurrencyMap[outputCurrencyId as string]
+  const outputCurrency: {
+    symbol: string
+    name: string
+  } = useMemo(() => {
+    if (!outputCurrencyId) return fiatCurrencyMap.USD
+    return fiatCurrencyMap[outputCurrencyId]
+  }, [outputCurrencyId])
+
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
   const handleTypeOutput = useCallback(
     (value: string) => {
@@ -69,16 +76,14 @@ export function BuyCryptoForm({
   )
   // need to relocate this
   const fetchMinBuyAmounts = useCallback(async () => {
-    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId as string, inputCurrencyId as string, chainId)
+    if (!outputCurrencyId || !inputCurrencyId || !chainId) return
 
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
     if (!limitAmounts) return
 
     onFieldAInput(
       toString(
-        calculateDefaultAmount(
-          limitAmounts.baseCurrency?.minBuyAmount,
-          limitAmounts.baseCurrency.code.toUpperCase() as string,
-        ),
+        calculateDefaultAmount(limitAmounts.baseCurrency?.minBuyAmount, limitAmounts.baseCurrency.code.toUpperCase()),
       ),
     )
 
@@ -121,7 +126,7 @@ export function BuyCryptoForm({
             showCommonBases={false}
             topElement={<Text color="textSubtle">{t('I want to spend')}</Text>}
             error={Boolean(error)}
-            value={typedValue}
+            value={typedValue ?? ''}
             onUserInput={handleTypeOutput}
             bottomElement={
               <Text pt="6px" pb="12px" fontSize="12px" color={theme.colors.failure}>
@@ -138,17 +143,15 @@ export function BuyCryptoForm({
             topElement={<Text color="textSubtle">{t('I want to buy')}</Text>}
             currencyLoading={!inputCurrency}
             bottomElement={<></>}
+            value=""
           />
         </Box>
-        {[ChainId.BASE, ChainId.LINEA, ChainId.BSC, ChainId.ARBITRUM_ONE].includes(chainId) ? (
-          (chainId === ChainId.BSC && inputCurrencyId === 'USDT' && outputCurrencyId === 'USD') ||
-          (chainId === ChainId.ARBITRUM_ONE && inputCurrencyId === 'USDC.e' && outputCurrencyId === 'USD') ? (
-            <Message variant="warning" padding="16px">
-              <Text fontSize="15px" color="#D67E0B">
-                {getChainCurrencyWarningMessages(t, chainId)[chainId]}
-              </Text>
-            </Message>
-          ) : null
+        {[ChainId.BASE, ChainId.LINEA, ChainId.ARBITRUM_ONE].includes(chainId) ? (
+          <Message variant="warning" padding="16px">
+            <Text fontSize="15px" color="#D67E0B">
+              {getChainCurrencyWarningMessages(t, chainId)[chainId]}
+            </Text>
+          </Message>
         ) : null}
         <Text color="textSubtle" fontSize="14px" px="4px">
           {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}

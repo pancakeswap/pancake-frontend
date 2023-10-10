@@ -1,11 +1,11 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Text, Button } from '@pancakeswap/uikit'
-import { StyledActionContainer, ActionContent, ActionTitles } from './styles'
+import { useTranslation } from "@pancakeswap/localization";
+import { Text, Button } from "@pancakeswap/uikit";
+import { StyledActionContainer, ActionContent, ActionTitles } from "./styles";
 
 export interface StakeComponentProps {
-  lpSymbol: string
-  isStakeReady: boolean
-  onPresentDeposit: () => void
+  lpSymbol: string;
+  isStakeReady: boolean;
+  onPresentDeposit: () => void;
 }
 
 const StakeComponent: React.FunctionComponent<React.PropsWithChildren<StakeComponentProps>> = ({
@@ -13,13 +13,13 @@ const StakeComponent: React.FunctionComponent<React.PropsWithChildren<StakeCompo
   isStakeReady,
   onPresentDeposit,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <StyledActionContainer>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
-          {t('Stake')}
+          {t("Stake")}
         </Text>
         <Text bold color="secondary" fontSize="12px">
           {lpSymbol}
@@ -27,11 +27,11 @@ const StakeComponent: React.FunctionComponent<React.PropsWithChildren<StakeCompo
       </ActionTitles>
       <ActionContent>
         <Button width="100%" onClick={onPresentDeposit} variant="secondary" disabled={isStakeReady}>
-          {t('Stake LP')}
+          {t("Stake LP")}
         </Button>
       </ActionContent>
     </StyledActionContainer>
-  )
-}
+  );
+};
 
-export default StakeComponent
+export default StakeComponent;

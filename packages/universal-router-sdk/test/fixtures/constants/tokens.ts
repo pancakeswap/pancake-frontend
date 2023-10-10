@@ -25,6 +25,7 @@ export const ETHER = {
 }
 
 export const CAKE = {
+  ...MockToken,
   ...Tokens.CAKE,
 
   // @notice: temporary ignore missed testnet address
@@ -47,6 +48,7 @@ export const USDT = {
   [ChainId.BASE_TESTNET]: new ERC20Token(ChainId.BASE_TESTNET, zeroAddress, 6, 'USDT'),
 }
 export const USDC = {
+  ...MockToken,
   ...Tokens.USDC,
   // @notice: temporary ignore missed testnet address
   [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(ChainId.POLYGON_ZKEVM_TESTNET, zeroAddress, 6, '_USDC'),
