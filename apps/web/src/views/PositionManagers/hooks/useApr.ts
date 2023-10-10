@@ -5,6 +5,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useTotalStakedInUsd } from 'views/PositionManagers/hooks/useTotalStakedInUsd'
 import { YEAR_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 interface AprProps {
   currencyA: Currency
@@ -17,6 +18,7 @@ interface AprProps {
   token0PriceUSD?: number
   token1PriceUSD?: number
   earningToken: Currency
+  rewardEndTime: number
 }
 
 const ONE_YEAR = 365
@@ -32,8 +34,11 @@ export const useApr = ({
   avgToken0Amount,
   avgToken1Amount,
   earningToken,
+  rewardEndTime,
 }: AprProps): string => {
   const cakePriceBusd = useCakePrice()
+
+  const isRewardEnded = useMemo(() => Date.now() / 1000 >= rewardEndTime, [rewardEndTime])
 
   const totalStakedInUsd = useTotalStakedInUsd({
     currencyA,
@@ -58,15 +63,21 @@ export const useApr = ({
   }, [avgToken0Amount, avgToken1Amount, currencyA, currencyB, token0PriceUSD, token1PriceUSD, totalStakedInUsd])
 
   const cakeYieldApr = useMemo(() => {
+    if (isRewardEnded) {
+      return BIG_ZERO
+    }
+
     return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals)
       .times(YEAR_IN_SECONDS)
       .times(cakePriceBusd)
       .div(totalStakedInUsd)
-  }, [earningToken, rewardPerSecond, cakePriceBusd, totalStakedInUsd])
+      .times(100)
+  }, [isRewardEnded, earningToken, rewardPerSecond, cakePriceBusd, totalStakedInUsd])
 
   const totalApr = useMemo(() => cakeYieldApr.plus(totalLpApr), [cakeYieldApr, totalLpApr])
 
   console.log({
+    rewardEndTime,
     totalStakedInUsd: totalStakedInUsd.toString(),
     totalLpApr: totalLpApr.toString(),
     poolToken0Amount: poolToken0Amount?.toString(),

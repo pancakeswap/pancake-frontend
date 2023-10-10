@@ -37,6 +37,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config, farmsV3, aprDat
     strategyInfoUrl,
     projectVaultUrl,
     rewardPerSecond,
+    endTimestamp,
   } = vault
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
@@ -107,6 +108,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config, farmsV3, aprDat
       projectVaultUrl={projectVaultUrl}
       rewardPerSecond={rewardPerSecond}
       aprDataInfo={aprDataInfo}
+      rewardEndTime={endTimestamp}
       refetch={info?.refetchPositionInfo}
     >
       {id}
