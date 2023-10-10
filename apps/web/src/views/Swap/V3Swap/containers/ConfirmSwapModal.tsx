@@ -40,7 +40,7 @@ interface ConfirmSwapModalProps {
   attemptingTxn: boolean
   txHash?: string
   approval: ApprovalState
-  swapErrorMessage?: string
+  swapErrorMessage?: string | boolean
   showApproveFlow: boolean
   confirmModalState: ConfirmModalState
   startSwapFlow: () => void
@@ -102,7 +102,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     ) {
       return (
         <ApproveModalContent
-          title={t('Enable spending %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })}
+          title={t('Enable spending %symbol%', { symbol: `${trade?.inputAmount?.currency?.symbol}` })}
           isMM={isMM}
           isBonus={isBonus}
         />
