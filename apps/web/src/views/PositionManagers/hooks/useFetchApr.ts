@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
 import { useQuery } from '@tanstack/react-query'
@@ -21,6 +22,12 @@ export interface AprData {
 
 export const useFetchApr = (): AprData => {
   const { chainId } = useActiveChainId()
+
+  const supportedChain = useMemo((): boolean => {
+    const chainIds = POSITION_MANAGERS_SUPPORTED_CHAINS
+    return Boolean(chainId && chainIds.includes(chainId))
+  }, [chainId])
+
   const { data, isLoading, refetch } = useQuery(
     ['/fetch-position-manager-apr', chainId],
     async () => {
@@ -44,7 +51,7 @@ export const useFetchApr = (): AprData => {
       }
     },
     {
-      enabled: !POSITION_MANAGERS_SUPPORTED_CHAINS[chainId],
+      enabled: supportedChain,
       refetchOnWindowFocus: false,
     },
   )

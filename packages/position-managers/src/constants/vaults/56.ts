@@ -30,6 +30,6 @@ export const vaults: VaultConfig[] = [
     managerInfoUrl: 'https://google.com/',
     strategyInfoUrl: 'https://google.com/',
     projectVaultUrl: 'https://google.com/',
-    endTimestamp: 1696467600,
+    endTimestamp: 1696941000,
   },
 ]
