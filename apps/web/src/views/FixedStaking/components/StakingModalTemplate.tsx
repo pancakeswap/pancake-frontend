@@ -25,7 +25,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent, Currency } from '@pancakeswap/sdk'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
@@ -48,8 +48,8 @@ const StyledButton = styled(Button)`
 
 interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
-  stakeCurrencyAmount: CurrencyAmount<Token>
-  alreadyStakedAmount: CurrencyAmount<Token>
+  stakeCurrencyAmount: CurrencyAmount<Currency>
+  alreadyStakedAmount: CurrencyAmount<Currency>
   lockPeriod: number
   isStaked: boolean
   boostAPR: Percent
@@ -74,7 +74,7 @@ export function StakingModalTemplate({
   useNative,
 }: {
   title?: string
-  stakingToken: Token
+  stakingToken: Currency
   pools: FixedStakingPool[]
   stakedPositions?: StakedPosition[]
   initialLockPeriod: number
@@ -137,7 +137,7 @@ export function StakingModalTemplate({
 
   const [percent, setPercent] = useState(0)
   const { balance: bnbBalance } = useGetBnbBalance()
-  const { balance: positionStakingTokenBalance } = useTokenBalance(positionStakingToken?.address)
+  const { balance: positionStakingTokenBalance } = useTokenBalance(positionStakingToken?.wrapped?.address)
 
   const stakingTokenBalance = useMemo(
     () => (enableNative ? new BigNumber(bnbBalance?.toString()) : positionStakingTokenBalance),

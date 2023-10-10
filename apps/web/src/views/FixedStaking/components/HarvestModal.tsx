@@ -3,7 +3,7 @@ import { Button, ModalV2, useModalV2, Modal, Flex, Text, Box, PreTitle, InfoFill
 
 import { ReactNode, useState } from 'react'
 import { LightGreyCard } from 'components/Card'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent, Currency } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
@@ -37,18 +37,18 @@ export function HarvestModal({
   isConfirmed?: boolean
   poolEndDay: number
   onBack: () => void
-  stakingToken: Token
+  stakingToken: Currency
   pools: FixedStakingPool[]
   children: (openModal: () => void) => ReactNode
   lockPeriod: number
-  amountDeposit: CurrencyAmount<Token>
-  accrueInterest: CurrencyAmount<Token>
-  projectedReturnAmount: CurrencyAmount<Token>
+  amountDeposit: CurrencyAmount<Currency>
+  accrueInterest: CurrencyAmount<Currency>
+  projectedReturnAmount: CurrencyAmount<Currency>
   boostAPR: Percent
   lockAPR: Percent
   unlockAPR: Percent
   pendingTx: boolean
-  handleSubmission: (type: UnstakeType, amount: CurrencyAmount<Token>) => Promise<void>
+  handleSubmission: (type: UnstakeType, amount: CurrencyAmount<Currency>) => Promise<void>
 }) {
   const { account } = useAccountActiveChain()
   const [check, setCheck] = useState(false)

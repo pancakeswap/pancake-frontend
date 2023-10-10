@@ -11,7 +11,7 @@ import {
   Flex,
   Button,
 } from '@pancakeswap/uikit'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent, Currency } from '@pancakeswap/sdk'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
@@ -32,12 +32,12 @@ function FixedStakingRoiCard({
   lastDayAction,
   poolEndDay,
 }: {
-  stakeAmount: CurrencyAmount<Token>
+  stakeAmount: CurrencyAmount<Currency>
   lockAPR: Percent
   boostAPR: Percent
   unlockAPR: Percent
   poolEndDay: number
-  lastDayAction?: number
+  lastDayAction: number
   lockPeriod?: number
   isBoost?: boolean
 }) {
@@ -87,7 +87,7 @@ export function FixedStakingCalculator({
   initialLockPeriod,
   hideBackButton,
 }: {
-  stakingToken: Token
+  stakingToken: Currency
   pools: FixedStakingPool[]
   initialLockPeriod: number
   hideBackButton?: boolean
@@ -119,7 +119,7 @@ export function FixedStakingCalculator({
       >
         <StakingModalTemplate
           title={t('ROI Calculator')}
-          onBack={hideBackButton ? null : () => stakeModal.onDismiss()}
+          onBack={hideBackButton ? undefined : () => stakeModal.onDismiss()}
           hideStakeButton
           stakingToken={stakingToken}
           pools={pools}
