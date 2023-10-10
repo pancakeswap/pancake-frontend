@@ -111,35 +111,62 @@ const useInverter = ({
   }
 }
 
-// function getRatio(
-//   lower: Price<Currency, Currency>,
-//   current: Price<Currency, Currency>,
-//   upper: Price<Currency, Currency>,
-// ) {
-//   try {
-//     if (!current.greaterThan(lower)) {
-//       return 100
-//     }
+function PositionPriceSection({
+  priceUpper,
+  currencyQuote,
+  currencyBase,
+  isMobile,
+  priceLower,
+  inverted,
+  pool,
+  tickAtLimit,
+}) {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
-//     if (!current.lessThan(upper)) {
-//       return 0
-//     }
-
-//     const a = Number.parseFloat(lower.toSignificant(15))
-//     const b = Number.parseFloat(upper.toSignificant(15))
-//     const c = Number.parseFloat(current.toSignificant(15))
-
-//     const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
-
-//     if (ratio < 0 || ratio > 100) {
-//       throw Error('Out of range')
-//     }
-
-//     return ratio
-//   } catch {
-//     return undefined
-//   }
-// }
+  return (
+    <>
+      <AutoRow justifyContent="space-between" mb="16px" mt="24px">
+        <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
+          {t('Price Range')}
+        </Text>
+        {currencyBase && currencyQuote && (
+          <RateToggle currencyA={currencyBase} handleRateToggle={() => setManuallyInverted(!manuallyInverted)} />
+        )}
+      </AutoRow>
+      <AutoRow mb="8px">
+        <Flex alignItems="center" justifyContent="space-between" width="100%" flexWrap={['wrap', 'wrap', 'nowrap']}>
+          <RangePriceSection
+            mr={['0', '0', '16px']}
+            mb={['8px', '8px', '0']}
+            title={t('Min Price')}
+            price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
+            currency0={currencyQuote}
+            currency1={currencyBase}
+          />
+          {isMobile ? null : <SyncAltIcon width="24px" mx="16px" />}
+          <RangePriceSection
+            ml={['0', '0', '16px']}
+            title={t('Max Price')}
+            price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
+            currency0={currencyQuote}
+            currency1={currencyBase}
+          />
+        </Flex>
+      </AutoRow>
+      {pool && currencyQuote && currencyBase ? (
+        <RangePriceSection
+          title={t('Current Price')}
+          currency0={currencyQuote}
+          currency1={currencyBase}
+          price={formatPrice(inverted ? pool.token1Price : pool.token0Price, 6, locale)}
+        />
+      ) : null}
+    </>
+  )
+}
 
 export default function PoolPage() {
   const {
@@ -509,11 +536,11 @@ export default function PoolPage() {
                     </Text>
                     {isMobile && (
                       <Flex>
-                        {isStakedInMCv3 && (
+                        {isStakedInMCv3 ? (
                           <Tag mr="8px" outline variant="warning">
                             {t('Farming')}
                           </Tag>
-                        )}
+                        ) : null}
                         <RangeTag removed={removed} outOfRange={!inRange} />
                       </Flex>
                     )}
@@ -740,50 +767,16 @@ export default function PoolPage() {
                   </Flex>
                 </Flex>
               )}
-              <AutoRow justifyContent="space-between" mb="16px" mt="24px">
-                <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                  {t('Price Range')}
-                </Text>
-                {currencyBase && currencyQuote && (
-                  <RateToggle
-                    currencyA={currencyBase}
-                    handleRateToggle={() => setManuallyInverted(!manuallyInverted)}
-                  />
-                )}
-              </AutoRow>
-              <AutoRow mb="8px">
-                <Flex
-                  alignItems="center"
-                  justifyContent="space-between"
-                  width="100%"
-                  flexWrap={['wrap', 'wrap', 'nowrap']}
-                >
-                  <RangePriceSection
-                    mr={['0', '0', '16px']}
-                    mb={['8px', '8px', '0']}
-                    title={t('Min Price')}
-                    price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
-                    currency0={currencyQuote}
-                    currency1={currencyBase}
-                  />
-                  {isMobile ? null : <SyncAltIcon width="24px" mx="16px" />}
-                  <RangePriceSection
-                    ml={['0', '0', '16px']}
-                    title={t('Max Price')}
-                    price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
-                    currency0={currencyQuote}
-                    currency1={currencyBase}
-                  />
-                </Flex>
-              </AutoRow>
-              {pool && currencyQuote && currencyBase ? (
-                <RangePriceSection
-                  title={t('Current Price')}
-                  currency0={currencyQuote}
-                  currency1={currencyBase}
-                  price={formatPrice(inverted ? pool.token1Price : pool.token0Price, 6, locale)}
-                />
-              ) : null}
+              <PositionPriceSection
+                currencyQuote={currencyQuote}
+                currencyBase={currencyBase}
+                isMobile={isMobile}
+                priceLower={priceLower}
+                inverted={inverted}
+                pool={pool}
+                priceUpper={priceUpper}
+                tickAtLimit={tickAtLimit}
+              />
               {positionDetails && currency0 && currency1 && (
                 <PositionHistory
                   tokenId={positionDetails.tokenId.toString()}
