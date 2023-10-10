@@ -8,7 +8,7 @@ import { safeGetAddress } from 'utils'
 import { PancakeUniversalSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
-import { Address, Hex, isAddress } from 'viem'
+import { Address, Hex } from 'viem'
 
 interface SwapCall {
   address: Address
@@ -27,19 +27,19 @@ interface SwapCall {
 export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
-  recipientAddress: string | null | undefined,
+  recipientAddressOrName: string | null | undefined,
   permitSignature: string | null | undefined,
   deadline: bigint | undefined,
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
   const { account, chainId } = useAccountActiveChain()
-  const recipientENSAddress = useGetENSAddressByName(recipientAddress)
+  const recipientENSAddress = useGetENSAddressByName(recipientAddressOrName)
   const recipient = (
-    recipientAddress === null
+    recipientAddressOrName === null || recipientAddressOrName === undefined
       ? account
-      : isAddress(recipientAddress)
-      ? recipientAddress
-      : isAddress(recipientENSAddress)
+      : safeGetAddress(recipientAddressOrName)
+      ? recipientAddressOrName
+      : safeGetAddress(recipientENSAddress)
       ? recipientENSAddress
       : null
   ) as Address | null
