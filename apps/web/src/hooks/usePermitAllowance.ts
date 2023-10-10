@@ -1,5 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AllowanceTransfer, generatePermitTypedData, PERMIT2_ADDRESS, PermitSingle } from '@pancakeswap/permit2-sdk'
+import {
+  AllowanceTransfer,
+  generatePermitTypedData,
+  PERMIT2_ADDRESS,
+  PermitSingle,
+  Permit2ABI,
+} from '@pancakeswap/permit2-sdk'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { SLOW_INTERVAL } from 'config/constants'
@@ -9,15 +15,14 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { publicClient } from 'utils/wagmi'
 import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
 import { useQuery, useSignTypedData } from 'wagmi'
-import { zeroAddress } from 'viem'
-import PERMIT2_ABI from '../config/abi/permit2.json'
+import { Address, zeroAddress } from 'viem'
 import useAccountActiveChain from './useAccountActiveChain'
 import { useActiveChainId } from './useActiveChainId'
 
-export function usePermitAllowance(token?: Token, owner?: string, spender?: string) {
+export function usePermitAllowance(token?: Token, owner?: Address, spender?: Address) {
   const { chainId } = useActiveChainId()
 
-  const inputs = useMemo(
+  const inputs = useMemo<[Address, Address, Address]>(
     () => [owner ?? zeroAddress, token?.address ?? zeroAddress, spender ?? zeroAddress],
     [owner, spender, token?.address],
   )
@@ -25,12 +30,14 @@ export function usePermitAllowance(token?: Token, owner?: string, spender?: stri
   const { data: allowance } = useQuery(
     [chainId, token?.address, owner, spender],
     () =>
-      publicClient({ chainId }).readContract({
-        abi: PERMIT2_ABI,
-        address: PERMIT2_ADDRESS(chainId),
-        functionName: 'allowance',
-        args: inputs,
-      }),
+      chainId
+        ? publicClient({ chainId }).readContract({
+            abi: Permit2ABI,
+            address: PERMIT2_ADDRESS(chainId),
+            functionName: 'allowance',
+            args: inputs,
+          })
+        : undefined,
     {
       refetchInterval: SLOW_INTERVAL,
       retry: true,

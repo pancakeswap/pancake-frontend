@@ -12,6 +12,7 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 import { Allowance } from 'hooks/usePermit2Allowance'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useState } from 'react'
+import { Address } from 'viem'
 import { Field } from 'state/swap/actions'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
@@ -25,7 +26,7 @@ const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
   swapIsUnsupported: boolean
-  account: string
+  account: Address | undefined
   showWrap: boolean
   wrapInputError: string
   onWrap: () => Promise<void>
@@ -85,7 +86,7 @@ export function MMSwapCommitButton({
     swapCalls,
   )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: SmartRouterTrade<TradeType>
+    tradeToConfirm: SmartRouterTrade<TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined

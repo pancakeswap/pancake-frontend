@@ -4,7 +4,7 @@ import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react'
 import { useHasPendingApproval, useHasPendingRevocation } from 'state/transactions/hooks'
-import { useAccount } from 'wagmi'
+import { useAccount, Address } from 'wagmi'
 import { ApprovalState, useApproveCallback } from './useApproveCallback'
 import useTokenAllowance from './useTokenAllowance'
 
@@ -14,7 +14,21 @@ export enum AllowanceState {
   ALLOWED,
 }
 
-export interface AllowanceRequired {
+export interface BaseAllowance {
+  state: AllowanceState
+  setSignature: Dispatch<SetStateAction<Permit2Signature | undefined>>
+  [k: string]: unknown
+}
+
+export interface AllowanceLoading extends BaseAllowance {
+  state: AllowanceState.LOADING
+}
+export interface AllowanceAllowed extends BaseAllowance {
+  state: AllowanceState.ALLOWED
+  permitSignature?: Permit2Signature
+}
+
+export interface AllowanceRequired extends BaseAllowance {
   isRevocationPending: boolean
   state: AllowanceState.REQUIRED
   token: Token
@@ -26,24 +40,16 @@ export interface AllowanceRequired {
   needsSetupApproval: boolean
   needsPermitSignature: boolean
   allowedAmount: CurrencyAmount<Token>
-  setSignature: Dispatch<SetStateAction<Permit2Signature>>
 }
 
-export type Allowance =
-  | { state: AllowanceState.LOADING; setSignature: Dispatch<SetStateAction<Permit2Signature>> }
-  | {
-      state: AllowanceState.ALLOWED
-      permitSignature?: Permit2Signature
-      setSignature: Dispatch<SetStateAction<Permit2Signature>>
-    }
-  | AllowanceRequired
+export type Allowance = AllowanceLoading | AllowanceAllowed | AllowanceRequired
 
 const AVERAGE_L1_BLOCK_TIME = 12000
 
 export default function usePermit2Allowance(
   approvalAddress: string,
   amount?: CurrencyAmount<Token>,
-  spender?: string,
+  spender?: Address,
 ): Allowance {
   const { address: account } = useAccount()
   const token = amount?.currency
@@ -81,10 +87,10 @@ export default function usePermit2Allowance(
 
   const shouldRequestSignature = !(isPermitted || isSigned)
 
-  return useMemo(() => {
+  return useMemo((): Allowance => {
     if (token) {
       if (!tokenAllowance || !permitAllowance) {
-        return { state: AllowanceState.LOADING, setSignature }
+        return { state: AllowanceState.LOADING, setSignature } satisfies AllowanceLoading
       }
       if (shouldRequestSignature) {
         return {
@@ -100,7 +106,7 @@ export default function usePermit2Allowance(
           needsPermitSignature: shouldRequestSignature,
           allowedAmount: tokenAllowance,
           setSignature,
-        }
+        } satisfies AllowanceRequired
       }
       if (!isApproved) {
         return {
@@ -116,7 +122,7 @@ export default function usePermit2Allowance(
           needsPermitSignature: shouldRequestSignature,
           allowedAmount: tokenAllowance,
           setSignature,
-        }
+        } satisfies AllowanceRequired
       }
     }
     return {
@@ -126,7 +132,7 @@ export default function usePermit2Allowance(
       needsSetupApproval: false,
       needsPermitSignature: false,
       setSignature,
-    }
+    } satisfies BaseAllowance
   }, [
     approveCallback,
     isApprovalLoading,
