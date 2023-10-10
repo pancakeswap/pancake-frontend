@@ -16,7 +16,7 @@ import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
 import first from 'lodash/first'
-import { differenceInMilliseconds } from 'date-fns'
+import dayjs from 'dayjs'
 import usePrevious from 'views/V3Info/hooks/usePrevious'
 import { styled } from 'styled-components'
 
@@ -74,10 +74,7 @@ export function StakingModalTemplate({
   const [check, setCheck] = useState(false)
 
   const claimedPeriods = useMemo(
-    () =>
-      stakedPositions
-        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) <= 0)
-        .map((sP) => sP.pool.lockPeriod),
+    () => stakedPositions.filter((sP) => dayjs.unix(sP.endLockTime).diff(dayjs()) <= 0).map((sP) => sP.pool.lockPeriod),
     [stakedPositions],
   )
 

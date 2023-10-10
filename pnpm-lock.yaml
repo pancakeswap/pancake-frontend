@@ -123,9 +123,9 @@ importers:
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       graphql-request:
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
@@ -303,9 +303,9 @@ importers:
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       jotai:
         specifier: ^2.2.2
         version: 2.2.2(react@18.2.0)
@@ -661,12 +661,9 @@ importers:
       d3:
         specifier: ^7.8.2
         version: 7.8.4
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
       dayjs:
-        specifier: ^1.11.7
-        version: 1.11.7
+        specifier: ^1.11.10
+        version: 1.11.10
       easymde:
         specifier: ^2.16.1
         version: 2.16.1
@@ -1111,9 +1108,9 @@ importers:
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1546,9 +1543,9 @@ importers:
       csstype:
         specifier: ^3.1.2
         version: 3.1.2
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       deepmerge:
         specifier: ^4.0.0
         version: 4.2.2
@@ -1757,9 +1754,9 @@ importers:
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../localization
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1906,9 +1903,9 @@ importers:
       d3:
         specifier: ^7.8.2
         version: 7.8.4
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1966,6 +1963,9 @@ importers:
       bignumber.js:
         specifier: ^9.1.1
         version: 9.1.1
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       ethers:
         specifier: ^5.0.0
         version: 5.7.2
@@ -14954,7 +14954,7 @@ packages:
       cli-table3: 0.6.3
       commander: 5.1.0
       common-tags: 1.8.2
-      dayjs: 1.11.7
+      dayjs: 1.11.10
       debug: 4.3.4(supports-color@8.1.1)
       enquirer: 2.3.6
       eventemitter2: 6.4.5
@@ -15291,8 +15291,8 @@ packages:
       time-zone: 1.0.0
     dev: true
 
-  /dayjs@1.11.7:
-    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
 
   /de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}

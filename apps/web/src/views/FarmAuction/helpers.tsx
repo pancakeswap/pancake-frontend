@@ -1,4 +1,3 @@
-import { toDate, add, differenceInHours } from 'date-fns'
 import { BSC_BLOCK_TIME, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'utils/types'
@@ -9,6 +8,7 @@ import { farmAuctionABI } from 'config/abi/farmAuction'
 import { ContractFunctionResult } from 'viem'
 import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import dayjs from 'dayjs'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
@@ -86,14 +86,14 @@ const getDateForBlock = async (currentBlock: number, block: number) => {
   if (currentBlock > block) {
     try {
       const { timestamp } = await publicClient({ chainId: ChainId.BSC }).getBlock({ blockNumber: BigInt(block) })
-      return toDate(Number(timestamp) * 1000)
+      return dayjs.unix(Number(timestamp)).toDate()
     } finally {
       // Use logic below
     }
   }
   const blocksUntilBlock = block - currentBlock
   const secondsUntilStart = blocksUntilBlock * BSC_BLOCK_TIME
-  return add(new Date(), { seconds: secondsUntilStart })
+  return dayjs().add(secondsUntilStart, 'seconds').toDate()
 }
 
 // Get additional auction information based on the date received from smart contract
@@ -129,7 +129,7 @@ export const processAuctionData = async (
     id: auctionId,
     startDate,
     endDate,
-    auctionDuration: differenceInHours(endDate, startDate),
+    auctionDuration: dayjs(endDate).diff(dayjs(startDate), 'hours'),
     ...processedAuctionData,
     status: auctionStatus,
   }

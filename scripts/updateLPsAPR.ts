@@ -4,7 +4,7 @@ import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import _toLower from 'lodash/toLower'
-import { sub, getUnixTime } from 'date-fns'
+import dayjs from 'dayjs'
 import { ChainId } from '@pancakeswap/chains'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
 import { BlockResponse } from '../apps/web/src/components/SubgraphHealthIndicator'
@@ -27,8 +27,7 @@ interface AprMap {
 }
 
 const getWeekAgoTimestamp = () => {
-  const weekAgo = sub(new Date(), { weeks: 1 })
-  return getUnixTime(weekAgo)
+  return dayjs().subtract(1, 'weeks').unix()
 }
 
 const LP_HOLDERS_FEE = 0.0017
@@ -106,9 +105,9 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
   const stableSwapAddress = stableFarm?.stableSwapAddress
 
   try {
-    const day7Ago = sub(new Date(), { days: 7 })
+    const day7Ago = dayjs().subtract(7, 'days')
 
-    const day7AgoTimestamp = getUnixTime(day7Ago)
+    const day7AgoTimestamp = day7Ago.unix()
 
     const blockDay7Ago = await getBlockAtTimestamp(day7AgoTimestamp)
 

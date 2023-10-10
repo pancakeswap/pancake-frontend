@@ -138,7 +138,7 @@
     "bignumber.js": "^9.0.0",
     "clsx": "^1.2.1",
     "csstype": "^3.1.2",
-    "date-fns": "^2.29.3",
+    "dayjs": "^1.11.10",
     "deepmerge": "^4.0.0",
     "framer-motion": "10.16.4",
     "lightweight-charts": "^4.0.1",

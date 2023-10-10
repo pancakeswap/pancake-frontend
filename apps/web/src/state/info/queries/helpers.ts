@@ -1,7 +1,7 @@
 import fromPairs from 'lodash/fromPairs'
 import { ONE_DAY_UNIX } from 'config/constants/info'
 
-import { getUnixTime } from 'date-fns'
+import dayjs from 'dayjs'
 import { TransactionType } from 'state/info/types'
 import { ChartEntry } from '../types'
 import { MultiChainName, multiChainStartTime } from '../constant'
@@ -119,7 +119,7 @@ export const fetchChartData = async (
   // fill in empty days ( there will be no day datas if no trades made that day )
   let timestamp = firstAvailableDayData?.date ?? multiChainStartTime[chainName]
   let latestLiquidityUSD = firstAvailableDayData?.liquidityUSD ?? 0
-  const endTimestamp = getUnixTime(new Date())
+  const endTimestamp = dayjs().unix()
   while (timestamp < endTimestamp - ONE_DAY_UNIX) {
     timestamp += ONE_DAY_UNIX
     const dayOrdinal = parseInt((timestamp / ONE_DAY_UNIX).toFixed(0), 10)
@@ -182,7 +182,7 @@ export const fetchChartDataWithAddress = async (
   // fill in empty days ( there will be no day datas if no trades made that day )
   let timestamp = firstAvailableDayData?.date ?? multiChainStartTime[chainName]
   let latestLiquidityUSD = firstAvailableDayData?.liquidityUSD ?? 0
-  const endTimestamp = getUnixTime(new Date())
+  const endTimestamp = dayjs().unix()
   while (timestamp < endTimestamp - ONE_DAY_UNIX) {
     timestamp += ONE_DAY_UNIX
     const dayOrdinal = parseInt((timestamp / ONE_DAY_UNIX).toFixed(0), 10)

@@ -4,17 +4,20 @@ import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Radio, ScanLink, Skeleton, Text } from '@pancakeswap/uikit'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
-import { formatDistanceToNowStrict } from 'date-fns'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
 import { styled } from 'styled-components'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { multiChainId, subgraphTokenSymbol, ChainLinkSupportChains } from 'state/info/constant'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
+
+dayjs.extend(relativeTime)
 
 const Wrapper = styled.div`
   width: 100%;
@@ -143,7 +146,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       >
         {domainName || truncateHash(transaction.sender)}
       </ScanLink>
-      <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
+      <Text>{dayjs.unix(parseInt(transaction.timestamp, 10)).toNow(true)}</Text>
     </ResponsiveGrid>
   )
 }

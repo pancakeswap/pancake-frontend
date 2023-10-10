@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { differenceInSeconds } from 'date-fns'
-import { convertTimeToSeconds } from 'utils/timeHelper'
+import dayjs from 'dayjs'
+import { convertTimeToMilliseconds } from 'utils/timeHelper'
 import { Modal, Box, MessageText, Message, Checkbox, Flex, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from '@pancakeswap/localization'
@@ -100,12 +100,8 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
     [totalLockedAmountBN, stakingTokenPrice, stakingToken.decimals],
   )
 
-  const remainingDuration = differenceInSeconds(new Date(convertTimeToSeconds(lockEndTime)), new Date(), {
-    roundingMethod: 'ceil',
-  })
-  const passedDuration = differenceInSeconds(new Date(), new Date(convertTimeToSeconds(lockStartTime)), {
-    roundingMethod: 'ceil',
-  })
+  const remainingDuration = dayjs(convertTimeToMilliseconds(lockEndTime)).diff(dayjs(), 'seconds')
+  const passedDuration = dayjs().diff(dayjs(convertTimeToMilliseconds(lockStartTime)), 'seconds')
 
   // if you locked for 1 week, then add cake without renew the extension, it's possible that remainingDuration + passedDuration less than 1 week.
   const atLeastOneWeekNewDuration = Math.max(ONE_WEEK_DEFAULT + MIN_DURATION_BUFFER, remainingDuration + passedDuration)
