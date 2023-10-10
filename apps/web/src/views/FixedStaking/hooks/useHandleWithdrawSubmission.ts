@@ -47,7 +47,7 @@ export function useHandleWithdrawSubmission({
         const linkElement = createElement(
           Link,
           {
-            href: '/',
+            href: 'https://docs.pancakeswap.finance/products/simple-staking/faq#what-happens-in-the-withdrawal-process-when-withdrawal-approval-is-pending',
             target: '_blank',
           },
           t('Learn more'),

@@ -10,5 +10,5 @@ export const PERCENT_DIGIT = 1000000000
 export const DAYS_A_YEAR = 365
 
 export const DISABLED_POOLS = {
-  [ChainId.BSC]: [bscTokens.wbnb.address],
+  // [ChainId.BSC]: [bscTokens.wbnb.address],
 }
