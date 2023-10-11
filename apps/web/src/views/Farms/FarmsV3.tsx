@@ -341,6 +341,15 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const chosenFarms = useMemo(() => {
     let chosenFs: V2StakeValueAndV3Farm[] = []
+    if (isActive) {
+      chosenFs = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
+    }
+    if (isInactive) {
+      chosenFs = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
+    }
+    if (isArchived) {
+      chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
+    }
 
     if (v3FarmOnly || v2FarmOnly || boostedOnly || stableSwapOnly) {
       const filterFarms = chosenFs.filter(
@@ -360,16 +369,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       )
 
       chosenFs = stakedOnly ? farmsList(stakedFilterFarms) : farmsList(filterFarms)
-    }
-
-    if (isActive) {
-      chosenFs = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
-    }
-    if (isInactive) {
-      chosenFs = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
-    }
-    if (isArchived) {
-      chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
     }
 
     return chosenFs
