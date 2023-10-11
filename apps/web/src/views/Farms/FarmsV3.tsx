@@ -267,16 +267,20 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const archivedFarms = farmsLP
 
-  const stakedOnlyFarms = activeFarms.filter((farm) => {
-    if (farm.version === 3) {
-      return farm.stakedPositions.length > 0
-    }
-    return (
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
-    )
-  })
+  const getStakedFarms = useCallback((farmsData) => {
+    return farmsData.filter((farm) => {
+      if (farm.version === 3) {
+        return farm.stakedPositions.length > 0
+      }
+      return (
+        farm.userData &&
+        (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+          new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
+      )
+    })
+  }, [])
+
+  const stakedOnlyFarms = useMemo(() => getStakedFarms(activeFarms), [activeFarms, getStakedFarms])
 
   const stakedInactiveFarms = inactiveFarms.filter((farm) => {
     if (farm.version === 3) {
@@ -360,7 +364,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           (stableSwapOnly && farm.version === 2 && farm.isStable),
       )
 
-      chosenFs = filterFarmsWithTypes
+      const stakedFilterFarmsWithTypes = getStakedFarms(filterFarmsWithTypes)
+
+      chosenFs = stakedOnly ? farmsList(stakedFilterFarmsWithTypes) : farmsList(filterFarmsWithTypes)
     }
 
     return chosenFs
@@ -370,6 +376,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     isArchived,
     stakedOnly,
     farmsList,
+    getStakedFarms,
     stakedOnlyFarms,
     activeFarms,
     stakedInactiveFarms,
