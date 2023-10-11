@@ -105,7 +105,7 @@ export const multiChainQueryClient = {
   ARB: v2Clients[ChainId.ARBITRUM_ONE],
   LINEA: v2Clients[ChainId.LINEA],
   BASE: v2Clients[ChainId.BASE],
-  opBNB: v2Clients[ChainId.OPBNB],
+  OPBNB: v2Clients[ChainId.OPBNB],
 }
 
 export const multiChainScan: Record<MultiChainName, string> = {
