@@ -34,7 +34,7 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.BASE]: 'base',
   [ChainId.BASE_TESTNET]: 'baseTestnet',
   [ChainId.SCROLL_SEPOLIA]: 'scrollSepolia',
-} as const satisfies Record<ChainId, string>
+} as const
 
 const scrollSepolia = {
   ...scrollSepolia_,

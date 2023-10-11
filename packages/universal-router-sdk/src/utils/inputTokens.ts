@@ -1,11 +1,9 @@
 import { PermitSingle } from '@pancakeswap/permit2-sdk'
+import type { Address } from 'viem'
 import invariant from 'tiny-invariant'
 import { OPENSEA_CONDUIT_SPENDER_ID, ROUTER_AS_RECIPIENT, SUDOSWAP_SPENDER_ID } from './constants'
 import { CommandType, RoutePlanner } from './routerCommands'
-
-export interface Permit2Permit extends PermitSingle {
-  signature: string
-}
+import { Permit2Signature } from './types'
 
 export type ApproveProtocol = {
   token: string
@@ -20,7 +18,7 @@ export type Permit2TransferFrom = {
 
 export type InputTokenOptions = {
   approval?: ApproveProtocol
-  permit2Permit?: Permit2Permit
+  permit2Permit?: Permit2Signature
   permit2TransferFrom?: Permit2TransferFrom
 }
 
@@ -32,7 +30,7 @@ const hexToBytes = (hex: string): number[] => {
   }
   return bytes
 }
-export function encodePermit(planner: RoutePlanner, permit2: Permit2Permit): void {
+export function encodePermit(planner: RoutePlanner, permit2: Permit2Signature): void {
   planner.addCommand(CommandType.PERMIT2_PERMIT, [permit2, permit2.signature as `0x${string}`])
 }
 
@@ -53,8 +51,8 @@ export function encodeInputTokenOptions(planner: RoutePlanner, options: InputTok
   // if an options.approval is required, add it
   if (options.approval) {
     planner.addCommand(CommandType.APPROVE_ERC20, [
-      options.approval.token,
-      mapApprovalProtocol(options.approval.protocol),
+      options.approval.token as Address,
+      BigInt(mapApprovalProtocol(options.approval.protocol)),
     ])
   }
 
@@ -65,9 +63,9 @@ export function encodeInputTokenOptions(planner: RoutePlanner, options: InputTok
 
   if (options.permit2TransferFrom) {
     planner.addCommand(CommandType.PERMIT2_TRANSFER_FROM, [
-      options.permit2TransferFrom.token,
-      options.permit2TransferFrom.recipient ? options.permit2TransferFrom.recipient : ROUTER_AS_RECIPIENT,
-      options.permit2TransferFrom.amount,
+      options.permit2TransferFrom.token as Address,
+      (options.permit2TransferFrom.recipient ? options.permit2TransferFrom.recipient : ROUTER_AS_RECIPIENT) as Address,
+      BigInt(options.permit2TransferFrom.amount),
     ])
   }
 }

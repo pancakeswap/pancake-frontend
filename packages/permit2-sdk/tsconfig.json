@@ -2,8 +2,6 @@
   "extends": "@pancakeswap/tsconfig/base",
   "exclude": ["**/*.test.ts", "./dist/**"],
   "include": ["src"],
-  "typeRoots": ["./node_modules/@types"],
-  "types": ["@types/mocha", "node"],
   "compilerOptions": {
     "outDir": "./dist",
     "lib": ["ESNext"],

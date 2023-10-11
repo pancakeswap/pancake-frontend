@@ -2,6 +2,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { ReactNode, useMemo } from 'react'
 
@@ -35,7 +36,7 @@ interface UseSwapCallbackArgs {
   // allowedSlippage: Percent // in bips
   // recipientAddressOrName: string | null | undefined // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   deadline?: bigint
-  permitSignature?: any
+  permitSignature: Permit2Signature | undefined
   feeOptions?: FeeOptions
   onWallchainDrop: () => void
   statusWallchain: WallchainStatus
@@ -80,7 +81,7 @@ export function useSwapCallback({
   const { callback } = useSendSwapTransaction(
     account,
     chainId,
-    trade,
+    trade ?? undefined,
     // @ts-ignore
     statusWallchain === 'found' ? wallchainSwapCalls : swapCalls,
   )

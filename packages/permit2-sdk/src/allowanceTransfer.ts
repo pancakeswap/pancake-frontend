@@ -76,7 +76,7 @@ export abstract class AllowanceTransfer {
   public static getPermitData(
     permit: PermitSingle | PermitBatch,
     permit2Address: Address,
-    chainId: number
+    chainId: number,
   ): PermitSingleData | PermitBatchData {
     invariant(MaxSigDeadline >= BigInt(permit.sigDeadline), 'SIG_DEADLINE_OUT_OF_RANGE')
 

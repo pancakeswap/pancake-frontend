@@ -12,6 +12,7 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 import { Allowance } from 'hooks/usePermit2Allowance'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useState } from 'react'
+import { Address } from 'viem'
 import { Field } from 'state/swap/actions'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
@@ -25,10 +26,10 @@ const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
   swapIsUnsupported: boolean
-  account: string
+  account: Address | undefined
   showWrap: boolean
-  wrapInputError: string
-  onWrap: () => Promise<void>
+  wrapInputError?: string
+  onWrap?: () => Promise<void>
   wrapType: WrapType
   approval: ApprovalState
   allowance: Allowance
@@ -44,11 +45,11 @@ interface SwapCommitButtonPropsType {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
-  recipient: string
+  recipient: string | null
   onUserInput: (field: Field, typedValue: string) => void
   mmQuoteExpiryRemainingSec?: number | null
   isPendingError: boolean
-  currentAllowance: CurrencyAmount<Currency>
+  currentAllowance?: CurrencyAmount<Currency>
 }
 
 export function MMSwapCommitButton({

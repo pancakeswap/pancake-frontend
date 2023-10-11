@@ -112,7 +112,7 @@ export abstract class SignatureTransfer {
     permit: PermitTransferFrom | PermitBatchTransferFrom,
     permit2Address: Address,
     chainId: number,
-    witness?: Witness
+    witness?: Witness,
   ): PermitTransferFromData | PermitBatchTransferFromData {
     invariant(MaxSigDeadline >= BigInt(permit.deadline), 'SIG_DEADLINE_OUT_OF_RANGE')
     invariant(MaxUnorderedNonce >= BigInt(permit.nonce), 'NONCE_OUT_OF_RANGE')

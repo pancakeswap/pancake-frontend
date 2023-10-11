@@ -25,39 +25,22 @@
     "pancakeswap"
   ],
   "scripts": {
-    "lint": "eslint src test",
     "build": "tsup",
     "dev": "tsup --watch",
+    "coverage": "vitest run --coverage",
+    "test": "vitest --run",
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "test": "vitest --run",
-    "prettier:fix": "prettier --write '**/*.ts' && prettier --write '**/*.json'",
-    "lint:fix": "yarn prettier:fix && yarn forge:fix",
-    "prettier": "prettier --check '**/*.ts' && prettier --check '**/*.json'"
+    "format:check": "prettier --check --loglevel error \"src/**/*.{js,jsx,ts,tsx,json}\"",
+    "format:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\""
   },
   "author": "@Pancakeswap",
-  "prettier": {
-    "printWidth": 120,
-    "semi": false,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
   "devDependencies": {
     "@pancakeswap/tokens": "workspace:*",
-    "@types/chai": "^4.2.18",
-    "@types/jest": "^29.5.0",
-    "@types/mocha": "^8.2.2",
     "@types/node": "^15.12.2",
-    "@types/node-fetch": "^2.6.2",
-    "chai": "^4.3.4",
-    "dotenv": "^16.0.3",
-    "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.1",
-    "ts-node": "^10.0.0",
     "tslib": "^2.3.0",
     "tsup": "^6.7.0",
-    "typedoc": "^0.21.2",
-    "typescript": "^4.3.3",
+    "typescript": "^5.1.3",
     "vitest": "^0.30.1"
   },
   "dependencies": {
@@ -67,7 +50,6 @@
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
-    "@uniswap/universal-router": "1.4.3",
     "abitype": "^0.9.8",
     "tiny-invariant": "^1.1.0",
     "viem": "^1.10.9"

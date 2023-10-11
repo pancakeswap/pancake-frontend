@@ -13,7 +13,7 @@ export const makePermit = (
   // as spender
   routerAddress: Address,
   amount: string = MaxAllowanceTransferAmount.toString(),
-  nonce = 0
+  nonce = 0,
 ): PermitSingle => {
   return {
     details: {

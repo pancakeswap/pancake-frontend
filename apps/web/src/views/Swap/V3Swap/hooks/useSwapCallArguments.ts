@@ -3,9 +3,12 @@ import { Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
+import {
+  PancakeUniversalSwapRouter,
+  UNIVERSAL_ROUTER_ADDRESS,
+  Permit2Signature,
+} from '@pancakeswap/universal-router-sdk'
 import { safeGetAddress } from 'utils'
-
-import { PancakeUniversalSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { Address, Hex } from 'viem'
@@ -28,12 +31,12 @@ export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
   recipientAddressOrName: string | null | undefined,
-  permitSignature: string | null | undefined,
+  permitSignature: Permit2Signature | undefined,
   deadline: bigint | undefined,
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
   const { account, chainId } = useAccountActiveChain()
-  const recipientENSAddress = useGetENSAddressByName(recipientAddressOrName)
+  const recipientENSAddress = useGetENSAddressByName(recipientAddressOrName ?? undefined)
   const recipient = (
     recipientAddressOrName === null || recipientAddressOrName === undefined
       ? account
@@ -47,7 +50,7 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    const methodParamaters = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, {
+    const methodParameters = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, {
       fee: feeOptions,
       recipient,
       inputTokenPermit: permitSignature,
@@ -59,8 +62,8 @@ export function useSwapCallArguments(
     return [
       {
         address: swapRouterAddress,
-        calldata: methodParamaters.calldata as `0x${string}`,
-        value: methodParamaters.value as `0x${string}`,
+        calldata: methodParameters.calldata as `0x${string}`,
+        value: methodParameters.value as `0x${string}`,
       },
     ]
   }, [account, allowedSlippage, chainId, deadline, feeOptions, recipient, permitSignature, trade])

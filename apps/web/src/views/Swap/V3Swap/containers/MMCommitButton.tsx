@@ -23,14 +23,14 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
   } = useSwapState()
   const chainId = useChainId()
 
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
+  const inputCurrency = useCurrency(inputCurrencyId) ?? undefined
+  const outputCurrency = useCurrency(outputCurrencyId) ?? undefined
   const { address: account } = useAccount()
   const [isExpertMode] = useExpertMode()
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({
-      [Field.INPUT]: inputCurrency ?? undefined,
-      [Field.OUTPUT]: outputCurrency ?? undefined,
+      [Field.INPUT]: inputCurrency,
+      [Field.OUTPUT]: outputCurrency,
     }),
     [inputCurrency, outputCurrency],
   )
@@ -50,6 +50,7 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
 
   const allowance = usePermit2Allowance(
     mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
+    undefined,
     isChainSupported(chainId) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
   )
 

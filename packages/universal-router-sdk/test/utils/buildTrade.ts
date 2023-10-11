@@ -13,7 +13,7 @@ import { convertPairToV2Pool, convertPoolToV3Pool } from '../fixtures/address'
 
 export const buildV2Trade = (
   v2Trade: V2Trade<Currency, Currency, TradeType>,
-  v2Pools: V2Pool[]
+  v2Pools: V2Pool[],
 ): SmartRouterTrade<TradeType> => {
   return {
     tradeType: v2Trade.tradeType,
@@ -38,7 +38,7 @@ export const buildStableTrade = (
   input: Currency,
   output: Currency,
   amountIn: CurrencyAmount<Currency>,
-  stablePools: StablePool[]
+  stablePools: StablePool[],
 ): SmartRouterTrade<TradeType> => {
   // @notice: just set same amountOut quantity as amountIn, for easy fixture
   const amountOut = CurrencyAmount.fromFractionalAmount(output, amountIn.numerator, amountIn.denominator)
@@ -70,7 +70,7 @@ export const buildStableTrade = (
 
 export const buildV3Trade = (
   trade: V3Trade<Currency, Currency, TradeType>,
-  pools: V3Pool[]
+  pools: V3Pool[],
 ): SmartRouterTrade<TradeType> => {
   return {
     tradeType: trade.tradeType,
@@ -94,12 +94,12 @@ export const buildV3Trade = (
 export const buildMixedRouteTrade = async <
   TInput extends Currency,
   TOutput extends Currency,
-  TTradeType extends TradeType
+  TTradeType extends TradeType,
 >(
   tokenIn: TInput,
   amount: CurrencyAmount<TTradeType extends TradeType.EXACT_INPUT ? TInput : TOutput>,
   tradeType: TTradeType,
-  pools: Array<Pair | Pool | StablePool>
+  pools: Array<Pair | Pool | StablePool>,
 ): Promise<SmartRouterTrade<TradeType>> => {
   const path: Currency[] = [tokenIn.wrapped]
   const outputPools = pools.map((pool) => {

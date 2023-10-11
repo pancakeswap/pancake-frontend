@@ -42,8 +42,8 @@ export class PancakeSwapTrade implements Command {
           SmartRouter.maximumAmountIn(
             sampleTrade,
             this.options.slippageTolerance,
-            sampleTrade.inputAmount
-          ).quotient.toString()
+            sampleTrade.inputAmount,
+          ).quotient.toString(),
         ),
       ])
       // since WETH is now owned by the router, the router pays for inputs
@@ -65,7 +65,7 @@ export class PancakeSwapTrade implements Command {
           this.options,
           routerMustCustody,
           payerIsUser,
-          performAggregatedSlippageCheck
+          performAggregatedSlippageCheck,
         )
       } else if (trade.routes.every((r) => r.type === RouteType.V3)) {
         addV3Swap(
@@ -74,7 +74,7 @@ export class PancakeSwapTrade implements Command {
           this.options,
           routerMustCustody,
           payerIsUser,
-          performAggregatedSlippageCheck
+          performAggregatedSlippageCheck,
         )
       } else {
         addMixedSwap(
@@ -83,7 +83,7 @@ export class PancakeSwapTrade implements Command {
           this.options,
           payerIsUser,
           routerMustCustody,
-          performAggregatedSlippageCheck
+          performAggregatedSlippageCheck,
         )
       }
     }
@@ -144,7 +144,7 @@ function addV2Swap(
   options: PancakeSwapOptions,
   routerMustCustody: boolean,
   payerIsUser: boolean,
-  performAggregatedSlippageCheck: boolean
+  performAggregatedSlippageCheck: boolean,
 ): void {
   const amountIn = BigInt(SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient.toString())
   const amountOut = BigInt(SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient.toString())
@@ -176,7 +176,7 @@ async function addV3Swap(
   options: PancakeSwapOptions,
   routerMustCustody: boolean,
   payerIsUser: boolean,
-  performAggregatedSlippageCheck: boolean
+  performAggregatedSlippageCheck: boolean,
 ): Promise<void> {
   for (const route of trade.routes) {
     const { inputAmount, outputAmount } = route
@@ -185,7 +185,7 @@ async function addV3Swap(
     // as a v3 swap is essentially a for of mixedRoute
     const path = SmartRouter.encodeMixedRouteToPath(
       { ...route, input: inputAmount.currency, output: outputAmount.currency },
-      trade.tradeType === TradeType.EXACT_OUTPUT
+      trade.tradeType === TradeType.EXACT_OUTPUT,
     )
     const amountIn = BigInt(SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient.toString())
     const amountOut = BigInt(SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient.toString())
@@ -223,7 +223,7 @@ async function addMixedSwap(
   options: PancakeSwapOptions,
   payerIsUser: boolean,
   routerMustCustody: boolean,
-  performAggregatedSlippageCheck: boolean
+  performAggregatedSlippageCheck: boolean,
 ): Promise<void> {
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
 
@@ -263,7 +263,7 @@ async function addMixedSwap(
           options,
           routerMustCustody,
           payerIsUser,
-          performAggregatedSlippageCheck
+          performAggregatedSlippageCheck,
         )
       } else if (mixedRouteIsAllV2(route)) {
         addV2Swap(
@@ -277,7 +277,7 @@ async function addMixedSwap(
           options,
           routerMustCustody,
           payerIsUser,
-          performAggregatedSlippageCheck
+          performAggregatedSlippageCheck,
         )
       } else if (mixedRouteIsAllStable(route)) {
         addStableSwap(
@@ -291,7 +291,7 @@ async function addMixedSwap(
           options,
           routerMustCustody,
           performAggregatedSlippageCheck,
-          payerIsUser
+          payerIsUser,
         )
       } else {
         throw new Error('Unsupported route to encode')
@@ -395,7 +395,7 @@ async function addStableSwap(
   routerMustCustody: boolean,
   performAggregatedSlippageCheck: boolean,
   // @notice: stable swap inputToken will never be nativeToken
-  payerIsUser = false
+  payerIsUser = false,
 ): Promise<void> {
   const amountIn: bigint = SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient
   const amountOut: bigint = SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient
