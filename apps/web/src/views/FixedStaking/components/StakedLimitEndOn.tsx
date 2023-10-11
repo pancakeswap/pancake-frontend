@@ -1,8 +1,8 @@
-import { formatTime } from 'utils/formatTime'
+import { formatUnixTime } from 'utils/formatTime'
 
 import { useCurrentDay } from '../hooks/useStakedPools'
 
-export function StakedLimitEndOn({ lockPeriod, poolEndDay }: { lockPeriod: number; poolEndDay: number }) {
+export function StakedLimitEndOn({ lockPeriod, poolEndDay }: { lockPeriod?: number; poolEndDay?: number }) {
   const lastDayAction = useCurrentDay()
 
   /**
@@ -13,11 +13,15 @@ export function StakedLimitEndOn({ lockPeriod, poolEndDay }: { lockPeriod: numbe
         : info.userInfo.lastDayAction * 86400 + 43200;
    */
 
+  if (!lockPeriod || !poolEndDay) {
+    return null
+  }
+
   const lockEndDay = lastDayAction + lockPeriod
 
   const exceedPoolEndDay = lockEndDay > poolEndDay
 
   const endTime = exceedPoolEndDay ? poolEndDay : lockEndDay
 
-  return <>{formatTime(endTime * 86400 + 43200)}</>
+  return <>{formatUnixTime(endTime * 86400 + 43200)}</>
 }
