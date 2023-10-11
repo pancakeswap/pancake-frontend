@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@datadog/browser-logs": "^5.1.0",
+    "@angleprotocol/sdk": "^3.0.121",
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
     "@next/bundle-analyzer": "13.0.7",

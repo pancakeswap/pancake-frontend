@@ -7,6 +7,9 @@ export function MerklSection() {
 
   return (
     <>
+      <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
+        {t('Merkl Rewards')}
+      </Text>
       <AutoRow justifyContent="space-between" mb="8px">
         <Text fontSize="24px" fontWeight={600}>
           $ -
