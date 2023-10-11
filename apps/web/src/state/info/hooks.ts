@@ -83,7 +83,7 @@ export const useAllPoolDataSWR = () => {
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
     blocks && chainName && [`info/pools/data/${type}`, chainName],
-    () => fetchAllPoolData(blocks, chainName),
+    () => fetchAllPoolData(blocks ?? [], chainName),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return useMemo(() => {
@@ -91,7 +91,7 @@ export const useAllPoolDataSWR = () => {
   }, [data])
 }
 
-export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
+export const usePoolDatasSWR = (poolAddresses: string[]): (PoolData | undefined)[] => {
   const name = poolAddresses.join('')
   const chainName = useChainNameByQuery()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
@@ -99,7 +99,7 @@ export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
     blocks && chainName && [`info/pool/data/${name}/${type}`, chainName],
-    () => fetchAllPoolDataWithAddress(blocks, chainName, poolAddresses),
+    () => fetchAllPoolDataWithAddress(blocks ?? [], chainName, poolAddresses),
     SWR_SETTINGS,
   )
 
@@ -144,7 +144,7 @@ export const useAllTokenHighLight = (targetChainName?: MultiChainNameExtend): To
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data, isLoading } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${type}`, chainName],
-    () => fetchAllTokenData(chainName, blocks),
+    () => fetchAllTokenData(chainName, blocks ?? []),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
 
@@ -171,7 +171,7 @@ export const useAllTokenDataSWR = (): {
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${type}`, chainName],
-    () => fetchAllTokenData(chainName, blocks),
+    () => fetchAllTokenData(chainName, blocks ?? []),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data ?? {}
@@ -181,7 +181,7 @@ const graphPerPage = 50
 
 const fetcher = (addresses: string[], chainName: MultiChainName, blocks: Block[]) => {
   const times = Math.ceil(addresses.length / graphPerPage)
-  const addressGroup = []
+  const addressGroup: Array<string[]> = []
   for (let i = 0; i < times; i++) {
     addressGroup.push(addresses.slice(i * graphPerPage, (i + 1) * graphPerPage))
   }
@@ -196,7 +196,7 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data, isLoading } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
-    () => fetcher(addresses || [], chainName, blocks),
+    () => fetcher(addresses || [], chainName, blocks ?? []),
     withSettings ? SWR_SETTINGS : SWR_SETTINGS_WITHOUT_REFETCH,
   )
   const allData = useMemo(() => {
@@ -220,7 +220,7 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
 }
 
 export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
-  const allTokenData = useTokenDatasSWR([address])
+  const allTokenData = useTokenDatasSWR([address ?? ''])
   return allTokenData?.find((d) => d.address === address) ?? undefined
 }
 
@@ -308,6 +308,8 @@ export const useChainNameByQuery = (): MultiChainName => {
         return 'LINEA'
       case 'base':
         return 'BASE'
+      case 'opbnb':
+        return 'OPBNB'
       default:
         return 'BSC'
     }
