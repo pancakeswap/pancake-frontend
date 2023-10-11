@@ -50,6 +50,7 @@ export function FixedRestakingModal({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          useNative
           stakedPositions={stakedPositions}
           stakingToken={stakingToken}
           pools={pools}

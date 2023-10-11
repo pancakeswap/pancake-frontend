@@ -91,9 +91,11 @@ export function StakingModalTemplate({
   const [check, setCheck] = useState(false)
   const [useBNB, toggleUseBNB] = useState(false)
   const nativeToken = useNativeCurrency()
+  const [percent, setPercent] = useState(0)
 
   useEffect(() => {
     setStakeAmount('')
+    setPercent(0)
   }, [useBNB])
 
   const isWBNB = nativeToken.wrapped.equals(positionStakingToken)
@@ -135,7 +137,6 @@ export function StakingModalTemplate({
     boostDayPercent: selectedPool?.boostDayPercent,
   })
 
-  const [percent, setPercent] = useState(0)
   const { balance: bnbBalance } = useGetBnbBalance()
   const { balance: positionStakingTokenBalance } = useTokenBalance(positionStakingToken?.wrapped?.address)
 
@@ -168,7 +169,7 @@ export function StakingModalTemplate({
 
   const totalStakedAmount = stakeCurrencyAmount.add(depositedAmount)
 
-  if (stakeCurrencyAmount.greaterThan(stakingTokenBalance.toNumber())) {
+  if (stakeCurrencyAmount.greaterThan(stakingTokenBalance.toString())) {
     error = t('Insufficient %symbol% balance', { symbol: stakingToken.symbol })
   } else if (totalStakedAmount.greaterThan(maxStakeAmount)) {
     error = t('Maximum %amount% %symbol%', {
@@ -193,7 +194,9 @@ export function StakingModalTemplate({
     const receipt = await fetchWithCatchTxError(() => {
       const methodArgs = [selectedPool?.poolIndex, rawAmount.toString()]
 
-      return callWithGasPrice(fixedStakingContract, 'deposit', methodArgs)
+      return callWithGasPrice(fixedStakingContract, 'deposit', methodArgs, {
+        value: enableNative ? rawAmount.toString() : 0n,
+      })
     })
 
     if (receipt?.status) {
@@ -207,6 +210,7 @@ export function StakingModalTemplate({
     }
   }, [
     callWithGasPrice,
+    enableNative,
     fetchWithCatchTxError,
     fixedStakingContract,
     rawAmount,
