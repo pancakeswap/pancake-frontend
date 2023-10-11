@@ -11,9 +11,8 @@ const AuctionProgress: React.FC<React.PropsWithChildren<{ auction: Auction }>> =
       if (auction.status === AuctionStatus.ToBeAnnounced || auction.status === AuctionStatus.Pending) {
         return 0
       }
-      const now = dayjs()
       const auctionDuration = dayjs(auction.endDate).diff(dayjs(auction.startDate), 'seconds')
-      const secondsPassed = now.diff(dayjs(auction.startDate), 'seconds')
+      const secondsPassed = dayjs().diff(dayjs(auction.startDate), 'seconds')
       const percentagePassed = (secondsPassed * 100) / auctionDuration
       return percentagePassed < 100 ? percentagePassed : 100
     },

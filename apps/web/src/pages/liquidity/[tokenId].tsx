@@ -996,7 +996,7 @@ function PositionHistoryRow({
 
   const isPlus = type !== 'burn'
 
-  const date = useMemo(() => dayjs(+positionTx.timestamp * 1_000), [positionTx.timestamp])
+  const date = useMemo(() => dayjs.unix(+positionTx.timestamp), [positionTx.timestamp])
   const mobileDate = useMemo(() => isMobile && date.format('YYYY/MM/DD'), [isMobile, date])
   const mobileTime = useMemo(() => isMobile && date.format('HH:mm:ss'), [isMobile, date])
   const desktopDate = useMemo(() => !isMobile && date.toDate().toLocaleString(), [isMobile, date])
