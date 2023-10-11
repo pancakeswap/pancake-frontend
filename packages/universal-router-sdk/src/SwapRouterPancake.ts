@@ -2,12 +2,12 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
-import { encodeFunctionData, toHex } from 'viem'
-import abi from './abis/UniversalRouter.json'
+import { encodeFunctionData, toHex, Hex } from 'viem'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
 import { PancakeSwapOptions, SwapRouterConfig } from './utils/types'
+import { UniversalRouterABI } from './abis/UniversalRouter'
 
 export abstract class PancakeUniversalSwapRouter {
   /**
@@ -57,8 +57,16 @@ export abstract class PancakeUniversalSwapRouter {
     config: SwapRouterConfig = {},
   ): MethodParameters {
     const { commands, inputs } = planner
-    const parameters = config.deadline ? [commands, inputs, Number(config.deadline)] : [commands, inputs]
-    const calldata = encodeFunctionData({ abi, args: parameters, functionName: 'execute' })
+    let calldata: Hex
+    if (config.deadline) {
+      calldata = encodeFunctionData({
+        abi: UniversalRouterABI,
+        args: [commands, inputs, BigInt(config.deadline)],
+        functionName: 'execute',
+      })
+    } else {
+      calldata = encodeFunctionData({ abi: UniversalRouterABI, args: [commands, inputs], functionName: 'execute' })
+    }
     return { calldata, value: toHex(nativeCurrencyValue) }
   }
 }
