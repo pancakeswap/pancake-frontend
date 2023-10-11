@@ -1,22 +1,28 @@
 import { ContextApi } from '@pancakeswap/localization'
-import { format, parseISO, isValid } from 'date-fns'
+import dayjs from 'dayjs'
 import { MINIMUM_CHOICES } from './Choices'
 import { FormState } from './types'
 
 export const combineDateAndTime = (date: Date, time: Date) => {
-  if (!isValid(date) || !isValid(time)) {
+  const dateDayJs = dayjs(date)
+  const timeDayJs = dayjs(time)
+  if (!dateDayJs.isValid() || !timeDayJs.isValid()) {
     return null
   }
 
-  const dateStr = format(date, 'yyyy-MM-dd')
-  const timeStr = format(time, 'HH:mm:ss')
+  const dateStr = dateDayJs.format('YYYY-MM-dd')
+  const timeStr = timeDayJs.format('HH:mm:ss')
 
-  return parseISO(`${dateStr}T${timeStr}`).getTime() / 1e3
+  return dayjs(`${dateStr}T${timeStr}`).unix()
 }
 
 export const getFormErrors = (formData: FormState, t: ContextApi['t']) => {
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = formData
   const errors: { [key: string]: string[] } = {}
+  const startDateDayJs = dayjs(startDate)
+  const startTimeDayJs = dayjs(startTime)
+  const endDateDayJs = dayjs(endDate)
+  const endTimeDayJs = dayjs(endTime)
 
   if (!name) {
     errors.name = [t('%field% is required', { field: 'Title' })]
@@ -37,19 +43,19 @@ export const getFormErrors = (formData: FormState, t: ContextApi['t']) => {
       : (errors.choices = [t('Choices must not be empty')])
   }
 
-  if (!isValid(startDate)) {
+  if (!startDateDayJs.isValid()) {
     errors.startDate = [t('Please select a valid date')]
   }
 
-  if (!isValid(startTime)) {
+  if (!startTimeDayJs.isValid()) {
     errors.startTime = [t('Please select a valid time')]
   }
 
-  if (!isValid(endDate)) {
+  if (!endDateDayJs.isValid()) {
     errors.endDate = [t('Please select a valid date')]
   }
 
-  if (!isValid(endTime)) {
+  if (!endTimeDayJs.isValid()) {
     errors.endTime = [t('Please select a valid time')]
   }
 

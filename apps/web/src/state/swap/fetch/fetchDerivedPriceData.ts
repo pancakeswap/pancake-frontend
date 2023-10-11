@@ -7,7 +7,7 @@ import {
   V3_SUBGRAPH_URLS,
 } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
-import { getUnixTime, startOfHour, sub } from 'date-fns'
+import dayjs from 'dayjs'
 import request from 'graphql-request'
 import mapValues from 'lodash/mapValues'
 import orderBy from 'lodash/orderBy'
@@ -178,14 +178,15 @@ const fetchDerivedPriceData = async (
   chainId: ChainId,
 ) => {
   const interval = getInterval(timeWindow)
-  const endTimestamp = getUnixTime(new Date())
-  const startTimestamp = getUnixTime(startOfHour(sub(endTimestamp * 1000, { days: getSkipDaysToStart(timeWindow) })))
+  const endTimestamp = dayjs()
+  const endTimestampUnix = endTimestamp.unix()
+  const startTimestamp = endTimestamp.subtract(getSkipDaysToStart(timeWindow), 'days').startOf('hour').unix()
   const timestamps: number[] = []
   let time = startTimestamp
   if (!SWAP_INFO_BY_CHAIN[chainId][protocol0] || !SWAP_INFO_BY_CHAIN[chainId][protocol1]) {
     return null
   }
-  while (time <= endTimestamp) {
+  while (time <= endTimestampUnix) {
     timestamps.push(time)
     time += interval
   }

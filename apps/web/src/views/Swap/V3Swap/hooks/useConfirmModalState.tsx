@@ -1,28 +1,50 @@
-import { ChainId } from '@pancakeswap/chains'
-import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { useTranslation } from '@pancakeswap/localization'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { Allowance, AllowanceRequired, AllowanceState } from 'hooks/usePermit2Allowance'
-import { useCallback, useEffect, useState } from 'react'
-import { ConfirmModalState, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { AllowedAllowanceState, ConfirmModalState, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
 import usePrevious from 'views/V3Info/hooks/usePrevious'
 import { usePublicClient } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
 
 interface UseConfirmModalStateProps {
-  txHash: string
-  chainId: ChainId
+  txHash?: string
+  chainId?: ChainId
   approval: ApprovalState
-  approvalToken: Currency
-  currentAllowance: CurrencyAmount<Currency>
+  approvalToken: Currency | undefined
+  currentAllowance: CurrencyAmount<Currency> | undefined
   onConfirm: () => void
   allowance: Allowance
   isPendingError?: boolean
   isExpertMode: boolean
 }
 
-function isInApprovalPhase(confirmModalState: ConfirmModalState) {
-  return confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.PERMITTING
+export function isInApprovalPhase(confirmModalState: ConfirmModalState) {
+  return (
+    confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+    confirmModalState === ConfirmModalState.PERMITTING ||
+    confirmModalState === ConfirmModalState.RESETTING_APPROVAL
+  )
 }
+
+export const useApprovalPhaseStepTitles: ({ trade }: { trade: SmartRouterTrade<TradeType> | undefined }) => {
+  [step in AllowedAllowanceState]: string
+} = ({ trade }: { trade: SmartRouterTrade<TradeType> | undefined }) => {
+  const { t } = useTranslation()
+  return useMemo(() => {
+    return {
+      [ConfirmModalState.RESETTING_APPROVAL]: t('Reset approval on USDT.'),
+      [ConfirmModalState.APPROVING_TOKEN]: t('Approve %symbol%', {
+        symbol: trade ? trade.inputAmount.currency.symbol : '',
+      }),
+      [ConfirmModalState.PERMITTING]: t('Permit %symbol%', { symbol: trade ? trade.inputAmount.currency.symbol : '' }),
+    }
+  }, [t, trade])
+}
+
 export const useConfirmModalState = ({
   chainId,
   txHash,
@@ -41,6 +63,7 @@ export const useConfirmModalState = ({
     // Any existing USDT allowance needs to be reset before we can approve the new amount (mainnet only).
     // See the `approve` function here: https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7#code
     if (
+      approvalToken &&
       allowance.state === AllowanceState.REQUIRED &&
       allowance.needsSetupApproval &&
       currentAllowance?.greaterThan(0) &&
@@ -57,7 +80,7 @@ export const useConfirmModalState = ({
     }
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [allowance, approvalToken?.chainId, approvalToken?.wrapped.address, currentAllowance])
+  }, [allowance, currentAllowance, approvalToken])
 
   const performStep = useCallback(
     async (step: ConfirmModalState) => {
@@ -129,7 +152,6 @@ export const useConfirmModalState = ({
     if (
       allowance.state === AllowanceState.REQUIRED &&
       allowance.needsPermitSignature &&
-      // If the token approval switched from missing to fulfilled, trigger the next step (permit2 signature).
       !allowance.needsSetupApproval &&
       previousSetupApprovalNeeded
     ) {
@@ -147,8 +169,6 @@ export const useConfirmModalState = ({
   }, [allowance, performStep, previousRevocationPending])
 
   useEffect(() => {
-    // Automatically triggers the next phase if the local modal state still thinks we're in the approval phase,
-    // but the allowance has been set. This will automaticaly trigger the swap.
     if (isInApprovalPhase(confirmModalState) && allowance.state === AllowanceState.ALLOWED) {
       performStep(ConfirmModalState.PENDING_CONFIRMATION)
     }

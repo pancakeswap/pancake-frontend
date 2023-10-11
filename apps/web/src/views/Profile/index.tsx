@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { useAchievementsForAddress, useProfileForAddress } from 'state/profile/hooks'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
@@ -28,7 +28,7 @@ const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) =>
   const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
 
-  const invalidAddress = !accountAddress || isAddress(accountAddress) === false
+  const invalidAddress = !accountAddress || safeGetAddress(accountAddress) === undefined
 
   const {
     profile,

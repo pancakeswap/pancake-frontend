@@ -9,7 +9,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { limitReducerAtom } from 'state/limitOrders/reducer'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -450,10 +450,10 @@ function parseIndependentFieldURLParameter(urlParam: any): Field {
 
 function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
-    const valid = isAddress(urlParam)
+    const valid = safeGetAddress(urlParam)
     if (valid) return valid
     if (urlParam.toUpperCase() === 'BNB') return 'BNB'
-    if (valid === false) return 'BNB'
+    if (valid === undefined) return 'BNB'
   }
   return ''
 }

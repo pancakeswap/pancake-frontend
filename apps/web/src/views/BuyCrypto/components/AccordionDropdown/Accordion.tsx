@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
-import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import AccordionItem from './AccordionItem'
 
 function Accordion({
@@ -32,20 +31,18 @@ function Accordion({
   }
   return (
     <FlexGap flexDirection="column" gap="16px">
-      {combinedQuotes
-        .filter((quote: ProviderQuote) => quote.provider !== ONRAMP_PROVIDERS.MoonPay)
-        .map((quote: ProviderQuote, idx) => {
-          return (
-            <AccordionItem
-              key={quote.provider}
-              active={currentIdx === idx}
-              btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
-              quote={quote}
-              fetching={fetching}
-              setModalView={setModalView}
-            />
-          )
-        })}
+      {combinedQuotes.map((quote: ProviderQuote, idx) => {
+        return (
+          <AccordionItem
+            key={quote.provider}
+            active={currentIdx === idx}
+            btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
+            quote={quote}
+            fetching={fetching}
+            setModalView={setModalView}
+          />
+        )
+      })}
     </FlexGap>
   )
 }

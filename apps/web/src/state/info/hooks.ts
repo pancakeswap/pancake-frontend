@@ -1,4 +1,5 @@
-import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -22,6 +23,8 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
+
+dayjs.extend(duration)
 
 // Protocol hooks
 
@@ -248,10 +251,9 @@ export const useTokenChartDataSWR = (address: string): ChartEntry[] | undefined 
 export const useTokenPriceDataSWR = (
   address: string,
   interval: number,
-  timeWindow: Duration,
+  timeWindow: duration.Duration,
 ): PriceChartEntry[] | undefined => {
-  const utcCurrentTime = getUnixTime(new Date()) * 1000
-  const startTimestamp = getUnixTime(startOfHour(sub(utcCurrentTime, timeWindow)))
+  const startTimestamp = dayjs().subtract(timeWindow).startOf('hours').unix()
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(

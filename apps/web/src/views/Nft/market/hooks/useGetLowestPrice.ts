@@ -4,7 +4,7 @@ import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { NftToken } from 'state/nftMarket/types'
 import { Address } from 'wagmi'
 import useSWR from 'swr'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { pancakeBunniesAddress } from '../constants'
 
 export interface LowestNftPrice {
@@ -54,7 +54,7 @@ export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice =
 }
 
 export const useGetLowestPriceFromNft = (nft: NftToken): LowestNftPrice => {
-  const isPancakeBunny = isAddress(nft.collectionAddress) === pancakeBunniesAddress
+  const isPancakeBunny = safeGetAddress(nft.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
 
   const bunnyIdAttr = isPancakeBunny && getBunnyIdFromNft(nft)
 

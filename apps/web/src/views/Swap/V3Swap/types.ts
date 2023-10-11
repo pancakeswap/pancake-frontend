@@ -15,3 +15,8 @@ export type PendingConfirmModalState = Extract<
   | ConfirmModalState.WRAPPING
   | ConfirmModalState.RESETTING_APPROVAL
 >
+
+export type AllowedAllowanceState =
+  | ConfirmModalState.RESETTING_APPROVAL
+  | ConfirmModalState.APPROVING_TOKEN
+  | ConfirmModalState.PERMITTING

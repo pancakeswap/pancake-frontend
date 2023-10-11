@@ -2,10 +2,10 @@ import { Text, Box } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { differenceInHours } from 'date-fns'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedVaultUser } from 'state/types'
 import { Token } from '@pancakeswap/sdk'
+import dayjs from 'dayjs'
 import { getCakeVaultEarnings } from '../helpers'
 
 interface AutoEarningsBreakdownProps {
@@ -34,7 +34,7 @@ const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakd
   )
 
   const lastActionInMs = userData.lastUserActionTime ? parseInt(userData.lastUserActionTime) * 1000 : 0
-  const hourDiffSinceLastAction = differenceInHours(Date.now(), lastActionInMs)
+  const hourDiffSinceLastAction = dayjs().diff(dayjs(lastActionInMs), 'hours')
   const earnedCakePerHour = hourDiffSinceLastAction ? autoCakeToDisplay / hourDiffSinceLastAction : 0
   const earnedUsdPerHour = hourDiffSinceLastAction ? autoUsdToDisplay / hourDiffSinceLastAction : 0
 

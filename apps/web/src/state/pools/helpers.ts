@@ -9,7 +9,7 @@ import {
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { DeserializedPool } from '@pancakeswap/pools'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { Token } from '@pancakeswap/sdk'
 
@@ -164,8 +164,8 @@ export const getTokenPricesFromFarm = (
   }[],
 ) => {
   return farms.reduce((prices, farm) => {
-    const quoteTokenAddress = isAddress(farm.quoteToken.address)
-    const tokenAddress = isAddress(farm.token.address)
+    const quoteTokenAddress = safeGetAddress(farm.quoteToken.address)
+    const tokenAddress = safeGetAddress(farm.token.address)
     /* eslint-disable no-param-reassign */
     if (quoteTokenAddress && !prices[quoteTokenAddress]) {
       prices[quoteTokenAddress] = new BigNumber(farm.quoteTokenPriceBusd).toNumber()

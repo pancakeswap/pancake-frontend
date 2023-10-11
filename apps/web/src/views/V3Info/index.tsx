@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import BarChart from './components/BarChart/alt'
 import { DarkGreyCard } from './components/Card'
 import LineChart from './components/LineChart/alt'
@@ -23,7 +24,6 @@ import {
 } from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'
-import { notEmpty } from './utils'
 import { getPercentChange } from './utils/data'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
@@ -92,7 +92,7 @@ export default function Home() {
     if (topTokensData)
       return Object.values(topTokensData)
         .map((d) => d)
-        .filter(notEmpty)
+        .filter((d) => !isUndefinedOrNull(d))
         .filter((d) => d.tvlUSD > 0)
     return []
   }, [topTokensData])
@@ -101,7 +101,7 @@ export default function Home() {
     if (topPoolsData)
       return Object.values(topPoolsData)
         .map((p) => p)
-        .filter(notEmpty)
+        .filter((p) => !isUndefinedOrNull(p))
     return []
   }, [topPoolsData])
 

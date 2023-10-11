@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import BigNumber from 'bignumber.js'
-import { getBlockExploreLink, isAddress } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import MobileModal from './MobileModal'
@@ -57,7 +57,7 @@ const ActivityRow: React.FC<React.PropsWithChildren<ActivityRowProps>> = ({
       isUserActivity={isUserActivity}
     />,
   )
-  const isPBCollection = nft ? isAddress(nft.collectionAddress) === pancakeBunniesAddress : false
+  const isPBCollection = nft ? safeGetAddress(nft.collectionAddress) === safeGetAddress(pancakeBunniesAddress) : false
   const tokenId =
     nft && isPBCollection
       ? nft.attributes.find((attribute) => attribute.traitType === 'bunnyId')?.value

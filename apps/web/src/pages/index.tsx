@@ -1,5 +1,5 @@
 import { formatEther } from 'viem'
-import { getUnixTime, sub } from 'date-fns'
+import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
 import { SWRConfig } from 'swr'
@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   `
 
-  const days30Ago = sub(new Date(), { days: 30 })
+  const days30Ago = dayjs().subtract(30, 'days')
 
   const results = {
     totalTx30Days: txCount,
@@ -49,7 +49,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   try {
-    const [days30AgoBlock] = await getBlocksFromTimestamps([getUnixTime(days30Ago)])
+    const [days30AgoBlock] = await getBlocksFromTimestamps([days30Ago.unix()])
 
     if (!days30AgoBlock) {
       throw new Error('No block found for 30 days ago')
