@@ -24,7 +24,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { collectionAddress } = params
+  const collectionAddress = params?.collectionAddress
   if (typeof collectionAddress !== 'string') {
     return {
       notFound: true,
