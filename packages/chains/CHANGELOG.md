@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.2.0
+
+### Minor Changes
+
+- ed3146c93: Add chain names
+
 ## 0.1.0
 
 ### Minor Changes
