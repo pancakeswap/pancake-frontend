@@ -44,7 +44,7 @@ import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
-
+import { getStakedFarms } from 'views/Farms/utils/getStakedFarms'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { useAccount } from 'wagmi'
 import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -172,7 +172,7 @@ export interface V3Farm extends V3FarmWithoutStakedValue {
   version: 3
 }
 
-interface V2FarmWithoutStakedValue extends DeserializedFarm {
+export interface V2FarmWithoutStakedValue extends DeserializedFarm {
   version: 2
 }
 
@@ -267,24 +267,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const archivedFarms = farmsLP
 
-  const getStakedFarms = useCallback((farmsData) => {
-    return farmsData.filter((farm) => {
-      if (farm.version === 3) {
-        return farm.stakedPositions.length > 0
-      }
-      return (
-        farm.userData &&
-        (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-          new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
-      )
-    })
-  }, [])
+  const stakedOnlyFarms = useMemo(() => getStakedFarms(activeFarms), [activeFarms])
 
-  const stakedOnlyFarms = useMemo(() => getStakedFarms(activeFarms), [activeFarms, getStakedFarms])
+  const stakedInactiveFarms = useMemo(() => getStakedFarms(inactiveFarms), [inactiveFarms])
 
-  const stakedInactiveFarms = useMemo(() => getStakedFarms(inactiveFarms), [inactiveFarms, getStakedFarms])
-
-  const stakedArchivedFarms = useMemo(() => getStakedFarms(archivedFarms), [archivedFarms, getStakedFarms])
+  const stakedArchivedFarms = useMemo(() => getStakedFarms(archivedFarms), [archivedFarms])
 
   const farmsList = useCallback(
     (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farm[] => {
@@ -358,7 +345,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     isArchived,
     stakedOnly,
     farmsList,
-    getStakedFarms,
     stakedOnlyFarms,
     activeFarms,
     stakedInactiveFarms,

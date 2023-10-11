@@ -36,6 +36,7 @@ import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 import { useAccount } from 'wagmi'
+import { getStakedMinProgramFarms } from 'views/Farms/utils/getStakedMinProgramFarms'
 
 import { V2Farm } from './FarmsV3'
 import Table from './components/FarmTable/FarmTable'
@@ -215,21 +216,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
   const archivedFarms = farmsLP
 
-  const getStakedFarms = useCallback((farmsData) => {
-    return farmsData.filter((farm) => {
-      return (
-        farm.userData &&
-        (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-          new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
-      )
-    })
-  }, [])
+  const stakedOnlyFarms = useMemo(() => getStakedMinProgramFarms(activeFarms), [activeFarms])
 
-  const stakedOnlyFarms = useMemo(() => getStakedFarms(activeFarms), [activeFarms, getStakedFarms])
+  const stakedInactiveFarms = useMemo(() => getStakedMinProgramFarms(inactiveFarms), [inactiveFarms])
 
-  const stakedInactiveFarms = useMemo(() => getStakedFarms(inactiveFarms), [inactiveFarms, getStakedFarms])
-
-  const stakedArchivedFarms = useMemo(() => getStakedFarms(archivedFarms), [archivedFarms, getStakedFarms])
+  const stakedArchivedFarms = useMemo(() => getStakedMinProgramFarms(archivedFarms), [archivedFarms])
 
   const farmsList = useCallback(
     (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
@@ -282,7 +273,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
       )
 
-      const stakedBoostedOrStableSwapFarms = getStakedFarms(boostedOrStableSwapFarms)
+      const stakedBoostedOrStableSwapFarms = getStakedMinProgramFarms(boostedOrStableSwapFarms)
 
       chosenFs = stakedOnly ? farmsList(stakedBoostedOrStableSwapFarms) : farmsList(boostedOrStableSwapFarms)
     }
@@ -291,7 +282,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, [
     activeFarms,
     farmsList,
-    getStakedFarms,
     inactiveFarms,
     archivedFarms,
     isActive,
