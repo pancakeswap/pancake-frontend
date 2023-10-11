@@ -50,6 +50,7 @@ interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
   stakeCurrencyAmount: CurrencyAmount<Currency>
   alreadyStakedAmount: CurrencyAmount<Currency>
+  positionStakeCurrencyAmount: CurrencyAmount<Currency>
   lockPeriod: number
   isStaked: boolean
   boostAPR: Percent
@@ -155,6 +156,10 @@ export function StakingModalTemplate({
   const rawAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
 
   const stakeCurrencyAmount = CurrencyAmount.fromRawAmount(stakingToken, rawAmount.gt(0) ? rawAmount.toString() : '0')
+  const positionStakeCurrencyAmount = CurrencyAmount.fromRawAmount(
+    positionStakingToken,
+    rawAmount.gt(0) ? rawAmount.toString() : '0',
+  )
 
   const totalPoolDeposited = CurrencyAmount.fromRawAmount(
     stakingToken,
@@ -268,6 +273,7 @@ export function StakingModalTemplate({
     () => ({
       alreadyStakedAmount: depositedAmount,
       stakeCurrencyAmount,
+      positionStakeCurrencyAmount,
       setLockPeriod,
       lockPeriod,
       isStaked,
@@ -281,6 +287,7 @@ export function StakingModalTemplate({
     [
       depositedAmount,
       stakeCurrencyAmount,
+      positionStakeCurrencyAmount,
       lockPeriod,
       isStaked,
       boostAPR,

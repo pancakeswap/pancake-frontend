@@ -73,6 +73,7 @@ export function FixedRestakingModal({
             boostAPR,
             lockAPR,
             lastDayAction,
+            positionStakeCurrencyAmount,
           }) => (
             <>
               <WithdrawalMessage lockPeriod={lockPeriod} />
@@ -88,7 +89,7 @@ export function FixedRestakingModal({
                         <PreTitle mr="4px">{t('New')}</PreTitle>
                         <PreTitle color="textSubtle">{t('Staked Amount')}</PreTitle>
                       </Flex>
-                      <AmountWithUSDSub amount={amountDeposit.add(stakeCurrencyAmount)} />
+                      <AmountWithUSDSub amount={amountDeposit.add(positionStakeCurrencyAmount)} />
                     </Box>
                     <Box style={{ textAlign: 'end' }}>
                       <PreTitle color="textSubtle">{t('Stake Period')}</PreTitle>
