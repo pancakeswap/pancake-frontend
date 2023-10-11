@@ -80,7 +80,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   const { t } = useTranslation()
   const chainName = useChainNameByQuery()
   const foundChain = chains.find((d) => d.id === multiChainId[chainName])
-  const symbol = multiChainShortName[foundChain?.id ?? 0] ?? foundChain?.nativeCurrency?.symbol
+  const symbol = multiChainShortName[foundChain?.id ?? -1] ?? foundChain?.nativeCurrency?.symbol
   const router = useRouter()
   const switchNetwork = useCallback(
     (chianId: number) => {
