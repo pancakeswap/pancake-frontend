@@ -20,7 +20,8 @@ const PERMIT2_ADDRESSES: { [key: number]: Address } = {
   [ChainId.ZKSYNC_TESTNET]: '0x0000000000000000000000000000000000000000',
 }
 
-export const PERMIT2_ADDRESS = (chainId: number): Address => {
+export const PERMIT2_ADDRESS = (chainId: number | undefined): Address => {
+  if (chainId === undefined) return PERMIT2_ADDRESSES[56]
   if (!(chainId in PERMIT2_ADDRESSES)) throw new Error(`Universal Router not deployed on chain ${chainId}`)
   return PERMIT2_ADDRESSES[chainId]
 }

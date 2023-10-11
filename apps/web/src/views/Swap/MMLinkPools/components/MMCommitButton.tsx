@@ -181,10 +181,11 @@ export function MMSwapCommitButton({
       currencyBalances={currencyBalances}
       isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
       currentAllowance={currentAllowance}
-      swapErrorMessage={swapErrorMessage || (!rfqTrade.trade && t('Unable request a quote'))}
+      swapErrorMessage={swapErrorMessage ?? t('Unable request a quote')}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
+      isPendingError={false}
     />,
     true,
     true,
