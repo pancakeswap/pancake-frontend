@@ -11,7 +11,7 @@ import {
 } from '@pancakeswap/sdk'
 import { FeeOptions, Trade as V3Trade, Route as V3Route, Pool } from '@pancakeswap/v3-sdk'
 import { PoolType, SmartRouterTrade, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
-import { parseEther, parseUnits, Address, WalletClient, zeroAddress } from 'viem'
+import { parseEther, parseUnits, Address, WalletClient, zeroAddress, isHex, stringify } from 'viem'
 import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
 import { getPublicClient, getWalletClient } from './fixtures/clients'
 import { PancakeUniversalSwapRouter } from '../src'
@@ -19,6 +19,7 @@ import { PancakeSwapOptions } from '../src/utils/types'
 import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
 import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
 import { Permit2Permit } from '../src/utils/inputTokens'
+import { decodeUniversalCalldata } from './utils/calldataDecode'
 
 const swapOptions = (options: Partial<PancakeSwapOptions>): PancakeSwapOptions => {
   let slippageTolerance = new Percent(5, 100)
@@ -46,6 +47,15 @@ describe('PancakeSwap Universal Router Trade', () => {
   let USDC_USDT_V3_LOW: Pool
   let UNIVERSAL_ROUTER: Address
   let PERMIT2: Address
+
+  expect.addSnapshotSerializer({
+    serialize(val) {
+      return stringify(decodeUniversalCalldata(val), null, 2)
+    },
+    test(val) {
+      return val && isHex(val)
+    },
+  })
 
   beforeEach(async () => {
     ;({
