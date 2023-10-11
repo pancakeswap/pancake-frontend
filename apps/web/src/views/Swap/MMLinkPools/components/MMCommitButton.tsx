@@ -28,8 +28,8 @@ interface SwapCommitButtonPropsType {
   swapIsUnsupported: boolean
   account: Address | undefined
   showWrap: boolean
-  wrapInputError: string
-  onWrap: () => Promise<void>
+  wrapInputError?: string
+  onWrap?: () => Promise<void>
   wrapType: WrapType
   approval: ApprovalState
   allowance: Allowance
@@ -45,11 +45,11 @@ interface SwapCommitButtonPropsType {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
-  recipient: string
+  recipient: string | null
   onUserInput: (field: Field, typedValue: string) => void
   mmQuoteExpiryRemainingSec?: number | null
   isPendingError: boolean
-  currentAllowance: CurrencyAmount<Currency>
+  currentAllowance?: CurrencyAmount<Currency>
 }
 
 export function MMSwapCommitButton({

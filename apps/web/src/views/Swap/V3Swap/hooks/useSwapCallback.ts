@@ -81,7 +81,7 @@ export function useSwapCallback({
   const { callback } = useSendSwapTransaction(
     account,
     chainId,
-    trade,
+    trade ?? undefined,
     // @ts-ignore
     statusWallchain === 'found' ? wallchainSwapCalls : swapCalls,
   )

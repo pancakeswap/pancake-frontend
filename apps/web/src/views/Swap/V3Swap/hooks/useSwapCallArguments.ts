@@ -30,8 +30,8 @@ interface SwapCall {
 export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
-  permitSignature: Permit2Signature | undefined,
   recipientAddressOrName: string | null | undefined,
+  permitSignature: Permit2Signature | undefined,
   deadline: bigint | undefined,
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
