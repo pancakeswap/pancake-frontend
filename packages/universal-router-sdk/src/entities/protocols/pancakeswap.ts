@@ -420,6 +420,7 @@ async function addStableSwap(
       payerIsUser,
     ]
     planner.addCommand(CommandType.STABLE_SWAP_EXACT_IN, exactInputParams)
+    return
   }
 
   const exactOutputParams: ABIParametersType<CommandType.STABLE_SWAP_EXACT_IN> = [
