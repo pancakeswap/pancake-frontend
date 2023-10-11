@@ -282,27 +282,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const stakedOnlyFarms = useMemo(() => getStakedFarms(activeFarms), [activeFarms, getStakedFarms])
 
-  const stakedInactiveFarms = inactiveFarms.filter((farm) => {
-    if (farm.version === 3) {
-      return farm.stakedPositions.length > 0
-    }
-    return (
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
-    )
-  })
+  const stakedInactiveFarms = useMemo(() => getStakedFarms(inactiveFarms), [inactiveFarms, getStakedFarms])
 
-  const stakedArchivedFarms = archivedFarms.filter((farm) => {
-    if (farm.version === 3) {
-      return farm.stakedPositions.length > 0
-    }
-    return (
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
-    )
-  })
+  const stakedArchivedFarms = useMemo(() => getStakedFarms(archivedFarms), [archivedFarms, getStakedFarms])
 
   const farmsList = useCallback(
     (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farm[] => {
