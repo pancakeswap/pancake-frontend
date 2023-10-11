@@ -69,7 +69,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2], ETHER, USDC),
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pool: V2Pool = {
         type: PoolType.V2,
@@ -90,7 +90,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2], ETHER, USDC),
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pool: V2Pool = {
         type: PoolType.V2,
@@ -117,7 +117,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2, USDC_USDT_V2], ETHER, USDT),
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pools: V2Pool[] = [
         {
@@ -145,7 +145,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2, USDC_USDT_V2], ETHER, USDT),
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pools: V2Pool[] = [
         {
@@ -177,7 +177,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2], USDC, ETHER),
         CurrencyAmount.fromRawAmount(USDC, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pool: V2Pool = {
         type: PoolType.V2,
@@ -198,7 +198,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2], USDC, ETHER),
         CurrencyAmount.fromRawAmount(USDC, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pool: V2Pool = {
         type: PoolType.V2,
@@ -225,7 +225,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2], USDC, ETHER),
         CurrencyAmount.fromRawAmount(USDC, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pool: V2Pool = {
         type: PoolType.V2,
@@ -256,7 +256,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2], USDC, ETHER),
         CurrencyAmount.fromRawAmount(USDC, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pool: V2Pool = {
         type: PoolType.V2,
@@ -287,7 +287,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([USDC_USDT_V2, WETH_USDC_V2], USDT, ETHER),
         CurrencyAmount.fromRawAmount(USDT, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v2Pools: V2Pool[] = [
         {
@@ -315,7 +315,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2], ETHER, USDC),
         CurrencyAmount.fromRawAmount(USDC, amountOut),
-        TradeType.EXACT_OUTPUT
+        TradeType.EXACT_OUTPUT,
       )
       const v2Pool: V2Pool = {
         type: PoolType.V2,
@@ -336,7 +336,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v2Trade = new V2Trade(
         new V2Route([WETH_USDC_V2], USDC, ETHER),
         CurrencyAmount.fromRawAmount(ETHER, amountOut),
-        TradeType.EXACT_OUTPUT
+        TradeType.EXACT_OUTPUT,
       )
       const v2Pool: V2Pool = {
         type: PoolType.V2,
@@ -359,7 +359,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
 
@@ -376,7 +376,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
 
@@ -400,7 +400,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM], USDC, ETHER),
         CurrencyAmount.fromRawAmount(USDC, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
 
@@ -417,7 +417,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM], USDC, ETHER),
         CurrencyAmount.fromRawAmount(USDC, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
       const trade = buildV3Trade(v3Trade, [v3Pool])
@@ -440,7 +440,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM], USDC, ETHER),
         CurrencyAmount.fromRawAmount(USDC, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
 
@@ -466,7 +466,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM, USDC_USDT_V3_LOW], ETHER, USDT),
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
-        TradeType.EXACT_INPUT
+        TradeType.EXACT_INPUT,
       )
       const v3Pool: V3Pool[] = [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM), convertPoolToV3Pool(USDC_USDT_V3_LOW)]
 
@@ -483,7 +483,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
         CurrencyAmount.fromRawAmount(USDC, amountOut),
-        TradeType.EXACT_OUTPUT
+        TradeType.EXACT_OUTPUT,
       )
       const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
 
@@ -500,7 +500,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM], USDC, ETHER),
         CurrencyAmount.fromRawAmount(ETHER, amountOut),
-        TradeType.EXACT_OUTPUT
+        TradeType.EXACT_OUTPUT,
       )
       const v3Pool: V3Pool = convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)
 
@@ -517,7 +517,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([WETH_USDC_V3_MEDIUM, USDC_USDT_V3_LOW], ETHER, USDT),
         CurrencyAmount.fromRawAmount(USDT, amountOut),
-        TradeType.EXACT_OUTPUT
+        TradeType.EXACT_OUTPUT,
       )
       const v3Pool: V3Pool[] = [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM), convertPoolToV3Pool(USDC_USDT_V3_LOW)]
 
@@ -534,7 +534,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const v3Trade = await V3Trade.fromRoute(
         new V3Route([USDC_USDT_V3_LOW, WETH_USDC_V3_MEDIUM], USDT, ETHER),
         CurrencyAmount.fromRawAmount(ETHER, amountOut),
-        TradeType.EXACT_OUTPUT
+        TradeType.EXACT_OUTPUT,
       )
       const v3Pool: V3Pool[] = [convertPoolToV3Pool(USDC_USDT_V3_LOW), convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)]
 
@@ -555,7 +555,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         ETHER,
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
         TradeType.EXACT_INPUT,
-        [WETH_USDC_V3_MEDIUM, USDC_USDT_V2]
+        [WETH_USDC_V3_MEDIUM, USDC_USDT_V2],
       )
 
       const options = swapOptions({})
@@ -573,7 +573,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         ETHER,
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
         TradeType.EXACT_INPUT,
-        [WETH_USDC_V2, USDC_USDT_V3_LOW]
+        [WETH_USDC_V2, USDC_USDT_V3_LOW],
       )
 
       const options = swapOptions({})
@@ -591,7 +591,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         ETHER,
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
         TradeType.EXACT_INPUT,
-        [WETH_USDC_V2, USDC_USDT_V2]
+        [WETH_USDC_V2, USDC_USDT_V2],
       )
 
       const options = swapOptions({})
@@ -609,7 +609,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         USDT,
         CurrencyAmount.fromRawAmount(USDT, amountIn),
         TradeType.EXACT_INPUT,
-        [USDC_USDT_V2, WETH_USDC_V3_MEDIUM]
+        [USDC_USDT_V2, WETH_USDC_V3_MEDIUM],
       )
 
       const options = swapOptions({})
@@ -627,7 +627,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         new V2Trade(
           new V2Route([WETH_USDC_V2], ETHER, USDC),
           CurrencyAmount.fromRawAmount(ETHER, amountIn),
-          TradeType.EXACT_INPUT
+          TradeType.EXACT_INPUT,
         ),
         [
           {
@@ -635,15 +635,15 @@ describe('PancakeSwap Universal Router Trade', () => {
             reserve0: WETH_USDC_V2.reserve0,
             reserve1: WETH_USDC_V2.reserve1,
           },
-        ]
+        ],
       )
       const v3Trade = buildV3Trade(
         await V3Trade.fromRoute(
           new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
           CurrencyAmount.fromRawAmount(ETHER, amountIn),
-          TradeType.EXACT_INPUT
+          TradeType.EXACT_INPUT,
         ),
-        [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)]
+        [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)],
       )
 
       v2Trade.routes[0].percent = 50
@@ -709,7 +709,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
         USDT,
         CurrencyAmount.fromRawAmount(USDT, amountIn),
         TradeType.EXACT_INPUT,
-        [stablePool, WETH_USDC_V3_MEDIUM]
+        [stablePool, WETH_USDC_V3_MEDIUM],
       )
 
       const options = swapOptions({})
@@ -728,7 +728,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
         USDT,
         CurrencyAmount.fromRawAmount(USDT, amountIn),
         TradeType.EXACT_INPUT,
-        [stablePool, WETH_USDC_V2]
+        [stablePool, WETH_USDC_V2],
       )
 
       const options = swapOptions({})
@@ -747,7 +747,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
         ETHER,
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
         TradeType.EXACT_INPUT,
-        [WETH_USDC_V2, stablePool]
+        [WETH_USDC_V2, stablePool],
       )
 
       const options = swapOptions({})
@@ -766,7 +766,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
         ETHER,
         CurrencyAmount.fromRawAmount(ETHER, amountIn),
         TradeType.EXACT_INPUT,
-        [WETH_USDC_V3_MEDIUM, stablePool]
+        [WETH_USDC_V3_MEDIUM, stablePool],
       )
       const options = swapOptions({})
 
@@ -784,7 +784,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
         new V2Trade(
           new V2Route([USDC_USDT_V2], USDT, USDC),
           CurrencyAmount.fromRawAmount(USDT, amountIn),
-          TradeType.EXACT_INPUT
+          TradeType.EXACT_INPUT,
         ),
         [
           {
@@ -792,15 +792,15 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
             reserve0: USDC_USDT_V2.reserve0,
             reserve1: USDC_USDT_V2.reserve1,
           },
-        ]
+        ],
       )
       const v3Trade = buildV3Trade(
         await V3Trade.fromRoute(
           new V3Route([USDC_USDT_V3_LOW], USDT, USDC),
           CurrencyAmount.fromRawAmount(USDT, amountIn),
-          TradeType.EXACT_INPUT
+          TradeType.EXACT_INPUT,
         ),
-        [convertPoolToV3Pool(USDC_USDT_V3_LOW)]
+        [convertPoolToV3Pool(USDC_USDT_V3_LOW)],
       )
 
       const stableTrade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [

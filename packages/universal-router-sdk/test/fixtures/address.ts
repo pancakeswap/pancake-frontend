@@ -32,7 +32,7 @@ export const getStablePool = async (
   tokenA: ERC20Token,
   tokenB: ERC20Token,
   provider: Provider,
-  liquidity?: bigint
+  liquidity?: bigint,
 ): Promise<StablePool> => {
   const pools = await SmartRouter.getStableCandidatePools({
     currencyA: tokenA,
@@ -182,7 +182,7 @@ export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => 
       reserve: liquidity,
     })(getPublicClient),
     USDC_USDT_V3_LOW: await fixturePool({ tokenA: USDC, tokenB: USDT, feeAmount: FeeAmount.LOW, reserve: liquidity })(
-      getPublicClient
+      getPublicClient,
     ),
   }
 

@@ -17,7 +17,7 @@ export abstract class PancakeUniversalSwapRouter {
    */
   public static swapERC20CallParameters(
     trades: SmartRouterTrade<TradeType>,
-    options: PancakeSwapOptions
+    options: PancakeSwapOptions,
   ): MethodParameters {
     // TODO: use permit if signature included in swapOptions
     const planner = new RoutePlanner()
@@ -54,7 +54,7 @@ export abstract class PancakeUniversalSwapRouter {
   private static encodePlan(
     planner: RoutePlanner,
     nativeCurrencyValue: bigint,
-    config: SwapRouterConfig = {}
+    config: SwapRouterConfig = {},
   ): MethodParameters {
     const { commands, inputs } = planner
     const parameters = config.deadline ? [commands, inputs, Number(config.deadline)] : [commands, inputs]

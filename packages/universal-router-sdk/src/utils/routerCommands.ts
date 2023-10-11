@@ -141,22 +141,22 @@ export const ABI_PARAMETER = {
 
   // swap actions
   [CommandType.V3_SWAP_EXACT_IN]: parseAbiParameters(
-    'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bool payerIsUser'
+    'address recipient, uint256 amountIn, uint256 amountOutMin, bytes path, bool payerIsUser',
   ),
   [CommandType.V3_SWAP_EXACT_OUT]: parseAbiParameters(
-    'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bool payerIsUser'
+    'address recipient, uint256 amountOut, uint256 amountInMax, bytes path, bool payerIsUser',
   ),
   [CommandType.V2_SWAP_EXACT_IN]: parseAbiParameters(
-    'address recipient, uint256 amountIn, uint256 amountOutMin, address[] path, bool payerIsUser'
+    'address recipient, uint256 amountIn, uint256 amountOutMin, address[] path, bool payerIsUser',
   ),
   [CommandType.V2_SWAP_EXACT_OUT]: parseAbiParameters(
-    'address recipient, uint256 amountOut, uint256 amountInMax, address[] path, bool payerIsUser'
+    'address recipient, uint256 amountOut, uint256 amountInMax, address[] path, bool payerIsUser',
   ),
   [CommandType.STABLE_SWAP_EXACT_IN]: parseAbiParameters(
-    'address recipient, uint256 amountIn, uint256 amountOutMin, address[] path, uint256[] flag, bool payerIsUser'
+    'address recipient, uint256 amountIn, uint256 amountOutMin, address[] path, uint256[] flag, bool payerIsUser',
   ),
   [CommandType.STABLE_SWAP_EXACT_OUT]: parseAbiParameters(
-    'address recipient, uint256 amountOut, uint256 amountInMax, address[] path, uint256[] flag, bool payerIsUser'
+    'address recipient, uint256 amountOut, uint256 amountInMax, address[] path, uint256[] flag, bool payerIsUser',
   ),
 
   // Token Actions and Checks
@@ -179,7 +179,7 @@ export const ABI_PARAMETER = {
   [CommandType.LOOKS_RARE_V2]: parseAbiParameters('uint256 value, bytes data'),
   [CommandType.X2Y2_721]: parseAbiParameters('uint256 value, bytes data, address recipient, address token, uint256 id'),
   [CommandType.X2Y2_1155]: parseAbiParameters(
-    'uint256 value, bytes data, address recipient, address token, uint256 id, uint256 amount'
+    'uint256 value, bytes data, address recipient, address token, uint256 id, uint256 amount',
   ),
   [CommandType.PANCAKE_NFT_WBNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
   [CommandType.PANCAKE_NFT_BNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
@@ -213,7 +213,7 @@ export class RoutePlanner {
   addCommand<TCommandType extends CommandUsed>(
     type: TCommandType,
     parameters: ABIParametersType<TCommandType>,
-    allowRevert = false
+    allowRevert = false,
   ): void {
     const command = createCommand(type, parameters)
     this.inputs.push(command.encodedInput)
@@ -235,7 +235,7 @@ export type RouterCommand = {
 
 export function createCommand<TCommandType extends CommandUsed>(
   type: TCommandType,
-  parameters: ABIParametersType<TCommandType>
+  parameters: ABIParametersType<TCommandType>,
 ): RouterCommand {
   // const params = parameters.filter((param) => param !== null)
   const encodedInput = encodeAbiParameters(ABI_PARAMETER[type], parameters as any)
