@@ -71,7 +71,7 @@ export default function FixedStakingOverview({
 
   const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
     amountDeposit: stakeAmount.add(safeAlreadyStakedAmount),
-    lastDayAction: safeAlreadyStakedAmount.greaterThan(0) && stakeAmount.equalTo(0) ? lastDayAction : currentDay,
+    lastDayAction: (safeAlreadyStakedAmount.greaterThan(0) && stakeAmount.equalTo(0) ? lastDayAction : currentDay) || 0,
     lockPeriod: lockPeriod || 0,
     apr,
     poolEndDay,
