@@ -76,7 +76,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   allowDepositToken0,
   contractAddress,
   userCurrencyBalances,
-  userVaultPercentage,
+  // userVaultPercentage,
   poolToken0Amount,
   poolToken1Amount,
   token0PriceUSD,
@@ -223,10 +223,10 @@ export const AddLiquidity = memo(function AddLiquidity({
           </Flex>
         )}
         <Flex mt="1.5em" flexDirection="column">
-          <RowBetween>
+          {/* <RowBetween>
             <Text color="text">{t('Your share in the vault')}:</Text>
             <Text color="text">{`${userVaultPercentage?.toFixed(2)}%`}</Text>
-          </RowBetween>
+          </RowBetween> */}
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>
             {apr && !aprDataInfo.isLoading ? (
