@@ -62,6 +62,7 @@ export const SUBGRAPH_START_BLOCK = {
   [ChainId.ARBITRUM_ONE]: 101028949,
   [ChainId.LINEA]: 1444,
   [ChainId.BASE]: 2912007,
+  [ChainId.OPBNB]: 1721753,
 }
 
 export const NODE_REAL_ADDRESS_LIMIT = 50
