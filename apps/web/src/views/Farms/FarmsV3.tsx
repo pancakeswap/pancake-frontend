@@ -352,23 +352,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
 
     if (v3FarmOnly || v2FarmOnly || boostedOnly || stableSwapOnly) {
-      const filterFarms = chosenFs.filter(
+      chosenFs = chosenFs.filter(
         (farm) =>
           (v3FarmOnly && farm.version === 3) ||
           (v2FarmOnly && farm.version === 2) ||
           (boostedOnly && farm.boosted && farm.version === 3) ||
           (stableSwapOnly && farm.version === 2 && farm.isStable),
       )
-
-      const stakedFilterFarms = chosenFs?.filter(
-        (farm) =>
-          farm.version === 2 &&
-          farm.userData &&
-          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm?.userData.proxy?.stakedBalance ?? 0).isGreaterThan(0)),
-      )
-
-      chosenFs = stakedOnly ? farmsList(stakedFilterFarms) : farmsList(filterFarms)
     }
 
     return chosenFs
