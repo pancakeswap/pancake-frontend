@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
 import { ROUND_BUFFER } from 'state/predictions/config'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
-import { getNow } from 'utils/getNow'
+import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatTokenv2 } from '../../helpers'
 import CardFlip from '../CardFlip'
@@ -86,7 +86,7 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   )
 
   useEffect(() => {
-    const secondsToLock = lockTimestamp ? lockTimestamp - getNow() : 0
+    const secondsToLock = lockTimestamp ? lockTimestamp - getNowInSeconds() : 0
     if (secondsToLock > 0) {
       const setIsBufferPhaseTimeout = setTimeout(() => {
         setIsBufferPhase(true)

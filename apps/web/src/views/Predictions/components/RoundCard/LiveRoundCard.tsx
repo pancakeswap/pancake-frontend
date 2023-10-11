@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
-import { getNow } from 'utils/getNow'
+import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { useTranslation } from '@pancakeswap/localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
@@ -47,7 +47,7 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
   const isHouse = useMemo(() => {
-    const secondsToClose = closeTimestamp ? closeTimestamp - getNow() : 0
+    const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
     return lockPrice && price === lockPrice && secondsToClose <= SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE
   }, [closeTimestamp, lockPrice, price])
 
@@ -63,7 +63,7 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   })
 
   useEffect(() => {
-    const secondsToClose = closeTimestamp ? closeTimestamp - getNow() : 0
+    const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
     if (secondsToClose > 0) {
       const refreshPriceTimeout = setTimeout(() => {
         refresh()
