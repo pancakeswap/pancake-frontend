@@ -352,13 +352,15 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
 
     if (v3FarmOnly || v2FarmOnly || boostedOnly || stableSwapOnly) {
-      chosenFs = chosenFs.filter(
+      const filterFarmsWithTypes = chosenFs.filter(
         (farm) =>
           (v3FarmOnly && farm.version === 3) ||
           (v2FarmOnly && farm.version === 2) ||
           (boostedOnly && farm.boosted && farm.version === 3) ||
           (stableSwapOnly && farm.version === 2 && farm.isStable),
       )
+
+      chosenFs = filterFarmsWithTypes
     }
 
     return chosenFs
