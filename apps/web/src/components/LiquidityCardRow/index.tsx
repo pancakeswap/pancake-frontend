@@ -4,6 +4,7 @@ import { styled } from 'styled-components'
 
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { Percent, Currency } from '@pancakeswap/sdk'
+import { MerklRewardsTag } from 'views/Merkl/components/MerklTag'
 
 const TagCell = styled(Flex)`
   padding: 8px 0;
@@ -56,11 +57,7 @@ export const LiquidityCardRow = ({
               {new Percent(feeAmount, 1_000_000).toSignificant()}%
             </Tag>
           )}
-          {!hasMerkl && (
-            <Tag variant="warning" mr="8px" outline>
-              Merkl Rewards
-            </Tag>
-          )}
+          {!hasMerkl && <MerklRewardsTag />}
           <TagCell>{tags}</TagCell>
         </Flex>
         <Flex>

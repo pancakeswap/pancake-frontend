@@ -77,6 +77,8 @@ import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { ChainLinkSupportChains } from 'state/info/constant'
+import { MerklSection } from 'views/Merkl/components/MerklSection'
+import { MerklTag } from 'views/Merkl/components/MerklTag'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -120,6 +122,8 @@ function PositionPriceSection({
   inverted,
   pool,
   tickAtLimit,
+  setManuallyInverted,
+  manuallyInverted,
 }) {
   const {
     t,
@@ -528,6 +532,7 @@ export default function PoolPage() {
                         <RangeTag ml="8px" removed={removed} outOfRange={!inRange} />
                       </>
                     )}
+                    <MerklTag />
                   </Flex>
                   <RowBetween gap="16px" flexWrap="nowrap">
                     <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
@@ -767,16 +772,26 @@ export default function PoolPage() {
                   </Flex>
                 </Flex>
               )}
-              <PositionPriceSection
-                currencyQuote={currencyQuote}
-                currencyBase={currencyBase}
-                isMobile={isMobile}
-                priceLower={priceLower}
-                inverted={inverted}
-                pool={pool}
-                priceUpper={priceUpper}
-                tickAtLimit={tickAtLimit}
-              />
+              <Flex>
+                <Box width="100%">
+                  <PositionPriceSection
+                    manuallyInverted={manuallyInverted}
+                    setManuallyInverted={setManuallyInverted}
+                    currencyQuote={currencyQuote}
+                    currencyBase={currencyBase}
+                    isMobile={isMobile}
+                    priceLower={priceLower}
+                    inverted={inverted}
+                    pool={pool}
+                    priceUpper={priceUpper}
+                    tickAtLimit={tickAtLimit}
+                  />
+                </Box>
+
+                <Box width="100%" ml="16px">
+                  <MerklSection />
+                </Box>
+              </Flex>
               {positionDetails && currency0 && currency1 && (
                 <PositionHistory
                   tokenId={positionDetails.tokenId.toString()}
