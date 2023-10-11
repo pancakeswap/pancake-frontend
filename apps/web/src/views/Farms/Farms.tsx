@@ -299,7 +299,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
       )
 
-      const stakedBoostedOrStableSwapFarms = chosenFs.filter(
+      const stakedBoostedOrStableSwapFarms = boostedOrStableSwapFarms.filter(
         (farm) =>
           farm &&
           farm.userData &&
