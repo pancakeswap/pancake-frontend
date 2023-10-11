@@ -94,6 +94,7 @@ export const multiChainPaths = {
   [ChainId.ARBITRUM_ONE]: '/arb',
   [ChainId.LINEA]: '/linea',
   [ChainId.BASE]: '/base',
+  [ChainId.OPBNB]: '/opbnb',
 }
 
 export const multiChainQueryClient = {
