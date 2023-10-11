@@ -9,7 +9,6 @@ import {
   ChartIcon,
   HistoryIcon,
   IconButton,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { PredictionStatus } from 'state/types'
@@ -60,8 +59,6 @@ const MobileMenu = () => {
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
-
-  const { isMobile } = useMatchBreakpoints()
 
   const handleItemClick = (index: number) => {
     switch (index) {
