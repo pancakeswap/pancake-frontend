@@ -23,28 +23,24 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json}\"",
+    "format:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\"",
+    "prepublishOnly": "pnpm run build"
   },
   "keywords": [
     "pancakeswap",
     "ethereum"
   ],
   "dependencies": {
-    "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/sdk": "workspace:*",
     "tiny-invariant": "^1.3.1",
     "tslib": "^2.6.2",
     "viem": "1.10.9"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.25",
-    "prettier": "^2.4.1",
     "tsup": "^6.7.0",
     "vitest": "^0.30.1"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "semi": false,
-    "singleQuote": true
   }
 }
