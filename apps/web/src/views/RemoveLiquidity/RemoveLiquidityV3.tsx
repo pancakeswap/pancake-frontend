@@ -186,7 +186,6 @@ function Remove({ tokenId }: { tokenId: bigint }) {
       sendTransactionAsync({
         ...txn,
         gas: calculateGasMargin(gas),
-        chainId,
       })
         .then((response) => {
           const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)

@@ -211,7 +211,6 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             data: calldata,
             value: hexToBigInt(value),
             gas: calculateGasMargin(gasLimit),
-            chainId,
           })
         })
         .then((response) => {
