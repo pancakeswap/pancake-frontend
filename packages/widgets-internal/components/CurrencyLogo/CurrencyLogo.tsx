@@ -3,9 +3,8 @@ import { ChainId } from "@pancakeswap/chains";
 import { useMemo } from "react";
 import { styled } from "styled-components";
 import { useHttpLocations } from "@pancakeswap/hooks";
+import { TokenLogo, BinanceIcon } from "@pancakeswap/uikit";
 
-import { TokenLogo } from "../TokenLogo";
-import { BinanceIcon } from "../Svg";
 import { getCurrencyLogoUrls } from "./utils";
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`

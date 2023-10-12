@@ -1,5 +1,18 @@
 # @pancakeswap/sdk
 
+## 5.7.1
+
+### Patch Changes
+
+- Updated dependencies [ed3146c93]
+  - @pancakeswap/chains@0.2.0
+
+## 5.7.0
+
+### Minor Changes
+
+- 8e3ac5427: Add back ChainId export
+
 ## 5.6.0
 
 ### Minor Changes

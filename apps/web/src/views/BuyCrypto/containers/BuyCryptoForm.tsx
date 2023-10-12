@@ -146,15 +146,12 @@ export function BuyCryptoForm({
             value=""
           />
         </Box>
-        {[ChainId.BASE, ChainId.LINEA, ChainId.BSC, ChainId.ARBITRUM_ONE].includes(chainId) ? (
-          (chainId === ChainId.BSC && inputCurrencyId === 'USDT' && outputCurrencyId === 'USD') ||
-          (chainId === ChainId.ARBITRUM_ONE && inputCurrencyId === 'USDC.e' && outputCurrencyId === 'USD') ? (
-            <Message variant="warning" padding="16px">
-              <Text fontSize="15px" color="#D67E0B">
-                {getChainCurrencyWarningMessages(t, chainId)[chainId]}
-              </Text>
-            </Message>
-          ) : null
+        {[ChainId.BASE, ChainId.LINEA, ChainId.ARBITRUM_ONE].includes(chainId) ? (
+          <Message variant="warning" padding="16px">
+            <Text fontSize="15px" color="#D67E0B">
+              {getChainCurrencyWarningMessages(t, chainId)[chainId]}
+            </Text>
+          </Message>
         ) : null}
         <Text color="textSubtle" fontSize="14px" px="4px">
           {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}

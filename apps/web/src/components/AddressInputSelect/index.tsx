@@ -1,7 +1,7 @@
 import { ChangeEvent, useState, useEffect } from 'react'
 import { Box, BoxProps, Text, Input } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import { isAddress } from 'utils'
+import { isAddress } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import CircleLoader from 'components/Loader/CircleLoader'
 
@@ -81,7 +81,7 @@ const AddressInputSelect: React.FC<React.PropsWithChildren<AddressInputSelectPro
 
   // When we have a valid address fetch the data
   useEffect(() => {
-    const isValidAddress = isAddress(value) !== false
+    const isValidAddress = isAddress(value)
 
     const validAddressHandler = async () => {
       try {

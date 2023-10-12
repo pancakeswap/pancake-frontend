@@ -1,5 +1,5 @@
-import { useRef } from 'react'
-import { styled } from 'styled-components'
+import { useRef } from "react";
+import { styled } from "styled-components";
 
 const StyledTable = styled.div`
   border-radius: ${({ theme }) => theme.radii.card};
@@ -14,17 +14,17 @@ const StyledTable = styled.div`
     border-bottom-left-radius: ${({ theme }) => theme.radii.card};
     border-bottom-right-radius: ${({ theme }) => theme.radii.card};
   }
-`
+`;
 
 const StyledTableBorder = styled.div`
   border-radius: ${({ theme }) => theme.radii.card};
   background-color: ${({ theme }) => theme.colors.cardBorder};
   padding: 1px 1px 3px 1px;
   background-size: 400% 400%;
-`
+`;
 
 export const PoolsTable: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const tableWrapperEl = useRef<HTMLDivElement>(null)
+  const tableWrapperEl = useRef<HTMLDivElement>(null);
 
   return (
     <StyledTableBorder>
@@ -32,5 +32,5 @@ export const PoolsTable: React.FC<React.PropsWithChildren> = ({ children }) => {
         {children}
       </StyledTable>
     </StyledTableBorder>
-  )
-}
+  );
+};

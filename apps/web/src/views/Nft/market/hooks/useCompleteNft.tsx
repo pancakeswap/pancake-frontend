@@ -7,9 +7,9 @@ import { NftLocation, NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import useSWR from 'swr'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 
-const useNftOwn = (collectionAddress: Address, tokenId: string, marketData?: TokenMarketData) => {
+const useNftOwn = (collectionAddress: Address | undefined, tokenId: string, marketData?: TokenMarketData) => {
   const { address: account } = useAccount()
   const collectionContract = useErc721CollectionContract(collectionAddress)
   const { isInitialized: isProfileInitialized, profile } = useProfile()
@@ -24,33 +24,33 @@ const useNftOwn = (collectionAddress: Address, tokenId: string, marketData?: Tok
       ? ['nft', 'own', collectionAddress, tokenId, marketData?.currentSeller]
       : null,
     async () => {
-      let isOwn = false
-      let nftIsProfilePic = false
-      let location: NftLocation
-
-      nftIsProfilePic = tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
+      const nftIsProfilePic =
+        tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
       const nftIsOnSale = marketData ? marketData?.currentSeller !== NOT_ON_SALE_SELLER : false
       if (nftIsOnSale) {
-        isOwn = isAddress(marketData?.currentSeller) === isAddress(account)
-        location = NftLocation.FORSALE
-      } else if (nftIsProfilePic) {
-        isOwn = true
-        location = NftLocation.PROFILE
-      } else {
-        isOwn = isAddress(tokenOwner) === isAddress(account)
-        location = NftLocation.WALLET
+        return {
+          isOwn: safeGetAddress(marketData?.currentSeller) === safeGetAddress(account),
+          nftIsProfilePic,
+          location: NftLocation.FORSALE,
+        }
       }
-
+      if (nftIsProfilePic) {
+        return {
+          isOwn: true,
+          nftIsProfilePic,
+          location: NftLocation.PROFILE,
+        }
+      }
       return {
-        isOwn,
+        isOwn: safeGetAddress(tokenOwner) === safeGetAddress(account),
         nftIsProfilePic,
-        location,
+        location: NftLocation.WALLET,
       }
     },
   )
 }
 
-export const useCompleteNft = (collectionAddress: Address, tokenId: string) => {
+export const useCompleteNft = (collectionAddress: Address | undefined, tokenId: string) => {
   const { data: nft, mutate } = useSWR(
     collectionAddress && tokenId ? ['nft', collectionAddress, tokenId] : null,
     async () => {
@@ -76,7 +76,7 @@ export const useCompleteNft = (collectionAddress: Address, tokenId: string) => {
     async () => {
       const [onChainMarketDatas, marketDatas] = await Promise.all([
         getNftsOnChainMarketData(collectionAddress, [tokenId]),
-        getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1),
+        getNftsMarketData({ collection: collectionAddress?.toLowerCase(), tokenId }, 1),
       ])
       const onChainMarketData = onChainMarketDatas[0]
 

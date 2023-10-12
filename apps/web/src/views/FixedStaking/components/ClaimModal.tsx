@@ -3,7 +3,7 @@ import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { ReactNode, useMemo, useState } from 'react'
-import { formatTime } from 'utils/formatTime'
+import { formatUnixTime } from 'utils/formatTime'
 
 import { UnstakeEndedModal } from './UnstakeModal'
 import { HarvestModal } from './HarvestModal'
@@ -87,7 +87,7 @@ export function ClaimModal({
 
   const poolEnded = unlockTime >= poolEndDay * 86400 + 43200
 
-  const unlockTimeFormat = formatTime(unlockTime * 1_000)
+  const unlockTimeFormat = formatUnixTime(unlockTime)
 
   return (
     <>
@@ -114,7 +114,7 @@ export function ClaimModal({
             <Modal
               title={<ModalTitle tokenTitle={token.symbol} token={token} lockPeriod={lockPeriod} />}
               width={['100%', '100%', '420px']}
-              maxWidth={['100%', , '420px']}
+              maxWidth={['100%', '', '420px']}
             >
               <PreTitle color="textSubtle">{t('Overview')}</PreTitle>
               <LightCard mb="16px">

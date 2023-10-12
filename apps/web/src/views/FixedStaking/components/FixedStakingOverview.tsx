@@ -5,7 +5,7 @@ import { LightGreyCard } from 'components/Card'
 
 import { ReactNode, useMemo } from 'react'
 import TextRow from 'views/Pools/components/LockedPool/Common/Overview/TextRow'
-import { formatTime } from 'utils/formatTime'
+import { formatUnixTime } from 'utils/formatTime'
 
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
@@ -71,7 +71,7 @@ export default function FixedStakingOverview({
 
   const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
     amountDeposit: stakeAmount.add(safeAlreadyStakedAmount),
-    lastDayAction: safeAlreadyStakedAmount.greaterThan(0) && stakeAmount.equalTo(0) ? lastDayAction : currentDay,
+    lastDayAction: (safeAlreadyStakedAmount.greaterThan(0) && stakeAmount.equalTo(0) ? lastDayAction : currentDay) || 0,
     lockPeriod: lockPeriod || 0,
     apr,
     poolEndDay,
@@ -129,7 +129,7 @@ export default function FixedStakingOverview({
         </Text>
         <Text color={safeAlreadyStakedAmount.greaterThan(0) ? 'failure' : undefined} bold>
           {unlockTime ? (
-            formatTime(unlockTime * 1_000)
+            formatUnixTime(unlockTime)
           ) : (
             <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
           )}

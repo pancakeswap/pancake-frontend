@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { useMemo } from 'react'
 
-import { differenceInMilliseconds, format } from 'date-fns'
+import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 
 import { LockedFixedTag } from './LockedFixedTag'
@@ -15,7 +15,7 @@ import { UnstakeBeforeEnededModal } from './UnstakeBeforeEndedModal'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
-import { useCurrentDay } from '../hooks/useStakedPools'
+// import { useCurrentDay } from '../hooks/useStakedPools'
 
 const FlexLeft = styled(Flex)`
   width: 100%;
@@ -48,7 +48,7 @@ function InfoSection({
       </Text>
 
       <Text color="textSubtle" fontSize="12px">
-        {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${format(unlockTime * 1_000, 'MMM d, yyyy')}`}
+        {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${dayjs.unix(unlockTime).format('MMM D, YYYY')}`}
       </Text>
 
       <Text color="textSubtle" fontSize="12px">
@@ -162,13 +162,13 @@ export function StakedPositionSection({
 
   const poolEndDay = pool.pools.find((p) => p.poolIndex === poolIndex)?.endDay || 0
 
-  const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date()) <= 0
+  const shouldUnlock = dayjs.unix(unlockTime).diff(dayjs()) <= 0
 
   const stakedPositions = useMemo(() => [stakePosition], [stakePosition])
 
   const apr = stakePosition.userInfo.boost ? boostAPR : lockAPR
 
-  const currentDay = useCurrentDay()
+  // const currentDay = useCurrentDay()
 
   const actionSection = (
     <Flex justifyContent="space-between" width="100%">
@@ -196,7 +196,7 @@ export function StakedPositionSection({
       >
         {(openClaimModal) =>
           shouldUnlock ? (
-            <Button height="auto" onClick={openClaimModal}>
+            <Button disabled height="auto" onClick={openClaimModal}>
               {t('Claim')}
             </Button>
           ) : null
@@ -218,8 +218,9 @@ export function StakedPositionSection({
             poolIndex={poolIndex}
             lastDayAction={stakePositionUserInfo.lastDayAction}
           >
-            {(openUnstakeModal, notAllowWithdrawal) => (
-              <IconButton disabled={notAllowWithdrawal} variant="secondary" onClick={openUnstakeModal} mr="6px">
+            {(openUnstakeModal) => (
+              /* disabled={notAllowWithdrawal} */
+              <IconButton disabled variant="secondary" onClick={openUnstakeModal} mr="6px">
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
             )}
@@ -233,7 +234,8 @@ export function StakedPositionSection({
             initialLockPeriod={lockPeriod}
           >
             {(openModal) => (
-              <IconButton disabled={currentDay + lockPeriod > poolEndDay} variant="secondary" onClick={openModal}>
+              /* disabled=currentDay + lockPeriod > poolEndDay */
+              <IconButton disabled variant="secondary" onClick={openModal}>
                 <AddIcon color="primary" width="14px" />
               </IconButton>
             )}

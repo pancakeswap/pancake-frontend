@@ -4,9 +4,9 @@ import { useAllTokens } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import orderBy from 'lodash/orderBy'
 import { useMemo } from 'react'
-import { isAddress } from 'utils'
+import { safeGetAddress } from 'utils'
 import { getMulticallAddress } from 'utils/addressHelpers'
-import { Address } from 'viem'
+import { Address, isAddress } from 'viem'
 import { erc20ABI, useAccount } from 'wagmi'
 import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks'
 
@@ -20,7 +20,9 @@ export function useNativeBalances(uncheckedAddresses?: (string | undefined)[]): 
 
   const addresses: Address[] = useMemo(
     () =>
-      uncheckedAddresses ? orderBy(uncheckedAddresses.map(isAddress).filter((a): a is Address => a !== false)) : [],
+      uncheckedAddresses
+        ? orderBy(uncheckedAddresses.map(safeGetAddress).filter((a): a is Address => a !== undefined))
+        : [],
     [uncheckedAddresses],
   )
 
@@ -55,7 +57,7 @@ export function useTokenBalancesWithLoadingIndicator(
   tokens?: (Token | undefined)[],
 ): [{ [tokenAddress: string]: CurrencyAmount<Token> | undefined }, boolean] {
   const validatedTokens: Token[] = useMemo(
-    () => tokens?.filter((t?: Token): t is Token => isAddress(t?.address) !== false) ?? [],
+    () => tokens?.filter((t?: Token): t is Token => t && isAddress(t.address)) ?? [],
     [tokens],
   )
 

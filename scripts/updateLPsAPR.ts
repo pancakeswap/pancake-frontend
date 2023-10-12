@@ -4,8 +4,8 @@ import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import _toLower from 'lodash/toLower'
-import { sub, getUnixTime } from 'date-fns'
-import { ChainId } from '@pancakeswap/chains'
+import dayjs from 'dayjs'
+import { ChainId, getChainName } from '@pancakeswap/chains'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
 import { BlockResponse } from '../apps/web/src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT_WITH_CHAIN } from '../apps/web/src/config/constants/endpoints'
@@ -27,8 +27,7 @@ interface AprMap {
 }
 
 const getWeekAgoTimestamp = () => {
-  const weekAgo = sub(new Date(), { weeks: 1 })
-  return getUnixTime(weekAgo)
+  return dayjs().subtract(1, 'weeks').unix()
 }
 
 const LP_HOLDERS_FEE = 0.0017
@@ -106,9 +105,9 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
   const stableSwapAddress = stableFarm?.stableSwapAddress
 
   try {
-    const day7Ago = sub(new Date(), { days: 7 })
+    const day7Ago = dayjs().subtract(7, 'days')
 
-    const day7AgoTimestamp = getUnixTime(day7Ago)
+    const day7AgoTimestamp = day7Ago.unix()
 
     const blockDay7Ago = await getBlockAtTimestamp(day7AgoTimestamp)
 
@@ -219,13 +218,14 @@ const fetchAndUpdateLPsAPR = async () => {
 
 let logged = false
 export const getFarmConfig = async (chainId: ChainId) => {
+  const chainName = getChainName(chainId)
   try {
-    return (await import(`../packages/farms/constants/${chainId}`)).default.filter(
+    return (await import(`../packages/farms/constants/${chainName}`)).default.filter(
       (f: SerializedFarmConfig) => f.pid !== null,
     ) as SerializedFarmConfig[]
   } catch (error) {
     if (!logged) {
-      console.error('Cannot get farm config', error, chainId)
+      console.error('Cannot get farm config', error, chainId, chainName)
       logged = true
     }
     return []

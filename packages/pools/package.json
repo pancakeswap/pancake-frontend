@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/pools",
-  "version": "4.0.13",
+  "version": "4.0.15",
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
@@ -21,8 +21,8 @@
     "@pancakeswap/chains": "workspace:*",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
-    "viem": "^1.10.9",
-    "wagmi": "^1.3.10"
+    "viem": "^1.15.1",
+    "wagmi": "^1.4.3"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",

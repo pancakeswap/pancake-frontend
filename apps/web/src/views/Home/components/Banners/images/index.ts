@@ -85,8 +85,26 @@ import mercuryoLogo from './mercuryo-logo.png'
 import opbnbBg from './opbnb-bg.png'
 import opbnbBgMobile from './opbnb-bg-mobile.png'
 import opbnbBunny from './opbnb-bunny.png'
+import galxeBirthdayCampaignPedictMobile from './galxeMobileBunny1.png'
+import galxeBirthdayCampaignPerpMobile from './galxeMobileBunnny2.png'
+import galxeSyndicateBg from './galxeSyndicateBg.png'
+import galxePredictorsBg from './galxePredictorsBg.png'
+import galxeSyndicateBunny from './galxe-syndicate-bunny.png'
+import galxeSyndicateBackground from './galxe-syndicate-bg.png'
+import galxePredictorsBunny from './galxe-predictors-bunny.png'
+import galxePancakeBannerLogo from './galaxe-pancake-banner-logo.png'
+import galxePredictorsBackground from './galxe-predictors-bg.png'
 
 export {
+  galxePredictorsBackground,
+  galxePancakeBannerLogo,
+  galxePredictorsBunny,
+  galxeSyndicateBackground,
+  galxeSyndicateBunny,
+  galxeSyndicateBg,
+  galxePredictorsBg,
+  galxeBirthdayCampaignPedictMobile,
+  galxeBirthdayCampaignPerpMobile,
   lotteryImage,
   IFOImage,
   competitionImage,

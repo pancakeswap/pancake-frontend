@@ -1,4 +1,4 @@
-import { differenceInMilliseconds } from 'date-fns'
+import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import { FixedStakingPool } from '../type'
 
@@ -6,18 +6,12 @@ export default function useSelectedPeriod({ pool, stakedPositions }) {
   const [selectedPeriodIndex, setSelectedPeriodIndex] = useState<number | null>(null)
 
   const claimedPeriods = useMemo(
-    () =>
-      stakedPositions
-        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) <= 0)
-        .map((sP) => sP.pool.lockPeriod),
+    () => stakedPositions.filter((sP) => dayjs.unix(sP.endLockTime).diff(dayjs()) <= 0).map((sP) => sP.pool.lockPeriod),
     [stakedPositions],
   )
 
   const lockedPeriods = useMemo(
-    () =>
-      stakedPositions
-        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) > 0)
-        .map((sP) => sP.pool.lockPeriod),
+    () => stakedPositions.filter((sP) => dayjs.unix(sP.endLockTime).diff(dayjs()) > 0).map((sP) => sP.pool.lockPeriod),
     [stakedPositions],
   )
 

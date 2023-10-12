@@ -5,11 +5,11 @@ import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPools
 import { useMemo } from 'react'
 import { useChainIdByQuery, usePoolDatasSWR } from 'state/info/hooks'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
-import { usePoolsData } from '../hooks/usePoolsData'
+import { useNonSpamPoolsData } from '../hooks/usePoolsData'
 
 const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { poolsData, stableSwapsAprs } = usePoolsData()
+  const { poolsData, stableSwapsAprs } = useNonSpamPoolsData()
   const chainId = useChainIdByQuery()
   const { savedPools } = useInfoUserSavedTokensAndPools(chainId)
   const watchlistPools = usePoolDatasSWR(savedPools)

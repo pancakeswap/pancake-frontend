@@ -1,18 +1,18 @@
-import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
-import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { FeeCalculator, TickMath } from '@pancakeswap/v3-sdk'
-import { useCallback, useMemo, useState, useEffect } from 'react'
-import { formatPrice, formatAmount } from '@pancakeswap/utils/formatFractions'
+import { Currency, CurrencyAmount, Price } from "@pancakeswap/sdk";
+import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
+import { FeeCalculator, TickMath } from "@pancakeswap/v3-sdk";
+import { useCallback, useMemo, useState, useEffect } from "react";
+import { formatPrice, formatAmount } from "@pancakeswap/utils/formatFractions";
 
-import { getTokenAmountsFromDepositUsd } from '../utils'
+import { getTokenAmountsFromDepositUsd } from "../utils";
 
 interface Params {
-  independentAmount?: CurrencyAmount<Currency>
-  currencyA?: Currency
-  currencyB?: Currency
-  tickLower?: number
-  tickUpper?: number
-  sqrtRatioX96?: bigint
+  independentAmount?: CurrencyAmount<Currency>;
+  currencyA?: Currency;
+  currencyB?: Currency;
+  tickLower?: number;
+  tickUpper?: number;
+  sqrtRatioX96?: bigint;
 }
 
 export function useAmounts({
@@ -24,14 +24,14 @@ export function useAmounts({
   sqrtRatioX96,
 }: Params) {
   const [independentField, setIndependentField] = useState({
-    value: formatAmount(initialIndependentAmount, 6) || '0',
+    value: formatAmount(initialIndependentAmount, 6) || "0",
     currency: initialIndependentAmount?.currency,
-  })
+  });
 
   const independentAmount = useMemo(() => {
-    const { value, currency } = independentField
-    return tryParseAmount(value, currency)
-  }, [independentField])
+    const { value, currency } = independentField;
+    return tryParseAmount(value, currency);
+  }, [independentField]);
 
   const amounts = useTokenAmounts({
     amount: independentAmount,
@@ -40,49 +40,49 @@ export function useAmounts({
     tickLower,
     tickUpper,
     sqrtRatioX96,
-  })
+  });
 
   const onChange = useCallback((value: string, currency?: Currency) => {
     if (currency) {
       setIndependentField({
         value,
         currency,
-      })
+      });
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (initialIndependentAmount) {
       setIndependentField({
-        value: formatAmount(initialIndependentAmount, 6) || '0',
+        value: formatAmount(initialIndependentAmount, 6) || "0",
         currency: initialIndependentAmount.currency,
-      })
+      });
     }
-  }, [initialIndependentAmount])
+  }, [initialIndependentAmount]);
 
-  const [amountA, amountB] = amounts
-  const { value, currency } = independentField
+  const [amountA, amountB] = amounts;
+  const { value, currency } = independentField;
   return {
     amountA,
     amountB,
-    valueA: currencyA && currency?.equals(currencyA) ? value : formatAmount(amountA, 6) || '0',
-    valueB: currencyB && currency?.equals(currencyB) ? value : formatAmount(amountB, 6) || '0',
+    valueA: currencyA && currency?.equals(currencyA) ? value : formatAmount(amountA, 6) || "0",
+    valueB: currencyB && currency?.equals(currencyB) ? value : formatAmount(amountB, 6) || "0",
     independentAmount: currencyA && currencyB && currency?.equals(currencyA) ? amountA : amountB,
     dependentCurrency: currencyA && currencyB && currency?.equals(currencyA) ? currencyB : currencyA,
     onChange,
-  }
+  };
 }
 
 interface AmountsByUsdValueParams {
-  usdValue?: string
-  currencyA?: Currency
-  currencyB?: Currency
-  price?: Price<Currency, Currency>
-  priceLower?: Price<Currency, Currency>
-  priceUpper?: Price<Currency, Currency>
-  sqrtRatioX96?: bigint
-  currencyAUsdPrice?: number
-  currencyBUsdPrice?: number
+  usdValue?: string;
+  currencyA?: Currency;
+  currencyB?: Currency;
+  price?: Price<Currency, Currency>;
+  priceLower?: Price<Currency, Currency>;
+  priceUpper?: Price<Currency, Currency>;
+  sqrtRatioX96?: bigint;
+  currencyAUsdPrice?: number;
+  currencyBUsdPrice?: number;
 }
 
 export function useAmountsByUsdValue({
@@ -107,7 +107,7 @@ export function useAmountsByUsdValue({
       sqrtRatioX96,
       currencyAUsdPrice,
       currencyBUsdPrice,
-    })
+    });
   }, [
     usdValue,
     currencyA,
@@ -118,24 +118,24 @@ export function useAmountsByUsdValue({
     priceLower,
     priceUpper,
     price,
-  ])
-  const [amountA, amountB] = amounts
+  ]);
+  const [amountA, amountB] = amounts;
 
   return {
     amountA,
     amountB,
-    valueA: amountA ? formatAmount(amountA, 6) : '0',
-    valueB: amountB ? formatAmount(amountB, 6) : '0',
-  }
+    valueA: amountA ? formatAmount(amountA, 6) : "0",
+    valueB: amountB ? formatAmount(amountB, 6) : "0",
+  };
 }
 
 interface TokenAmountOptions {
-  amount?: CurrencyAmount<Currency>
-  currencyA?: Currency
-  currencyB?: Currency
-  sqrtRatioX96?: bigint
-  tickLower?: number
-  tickUpper?: number
+  amount?: CurrencyAmount<Currency>;
+  currencyA?: Currency;
+  currencyB?: Currency;
+  sqrtRatioX96?: bigint;
+  tickLower?: number;
+  tickUpper?: number;
 }
 
 function useTokenAmounts({ amount, currencyA, currencyB, sqrtRatioX96, tickLower, tickUpper }: TokenAmountOptions) {
@@ -144,16 +144,16 @@ function useTokenAmounts({ amount, currencyA, currencyB, sqrtRatioX96, tickLower
       !amount ||
       !currencyA ||
       !currencyB ||
-      typeof tickLower !== 'number' ||
-      typeof tickUpper !== 'number' ||
+      typeof tickLower !== "number" ||
+      typeof tickUpper !== "number" ||
       !sqrtRatioX96
     ) {
-      return []
+      return [];
     }
-    const tickCurrent = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
-    const tickInRange = tickCurrent > tickLower && tickCurrent < tickUpper
-    const isAIndependent = currencyA.equals(amount.currency)
-    const dependentCurrency = isAIndependent ? currencyB : currencyA
+    const tickCurrent = TickMath.getTickAtSqrtRatio(sqrtRatioX96);
+    const tickInRange = tickCurrent > tickLower && tickCurrent < tickUpper;
+    const isAIndependent = currencyA.equals(amount.currency);
+    const dependentCurrency = isAIndependent ? currencyB : currencyA;
     const dependentAmount = tickInRange
       ? FeeCalculator.getDependentAmount({
           amount,
@@ -162,14 +162,14 @@ function useTokenAmounts({ amount, currencyA, currencyB, sqrtRatioX96, tickLower
           tickUpper,
           sqrtRatioX96,
         })
-      : CurrencyAmount.fromRawAmount(dependentCurrency, '0')
+      : CurrencyAmount.fromRawAmount(dependentCurrency, "0");
 
     if (!dependentAmount) {
-      return []
+      return [];
     }
 
-    const amountA = isAIndependent ? amount : dependentAmount
-    const amountB = !isAIndependent ? amount : dependentAmount
-    return [amountA, amountB]
-  }, [currencyA, currencyB, sqrtRatioX96, tickLower, tickUpper, amount])
+    const amountA = isAIndependent ? amount : dependentAmount;
+    const amountB = !isAIndependent ? amount : dependentAmount;
+    return [amountA, amountB];
+  }, [currencyA, currencyB, sqrtRatioX96, tickLower, tickUpper, amount]);
 }

@@ -17,7 +17,7 @@ const JupiterPredictorsContainer = styled(Box)`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     position: absolute;
-    margin: -120px 0 0 16px;
+    margin: -180px 0 0 16px;
   }
 `
 

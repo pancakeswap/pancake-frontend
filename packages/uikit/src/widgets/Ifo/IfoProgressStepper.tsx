@@ -1,5 +1,5 @@
 import { useEffect, Fragment, useState } from "react";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { Flex } from "../../components/Box";
@@ -64,7 +64,7 @@ const IfoProgressStepper: React.FC<React.PropsWithChildren<IfoProgressStepperPro
     <Flex>
       {steps.map((step, index: number) => {
         const isPastSpacer = index < activeStepIndex;
-        const dateText = step.timeStamp === 0 ? t("Now") : format(step.timeStamp, "MM/dd/yyyy HH:mm");
+        const dateText = step.timeStamp === 0 ? t("Now") : dayjs(step.timeStamp).format("MM/DD/YYYY HH:mm");
 
         return (
           <Fragment key={step.key}>

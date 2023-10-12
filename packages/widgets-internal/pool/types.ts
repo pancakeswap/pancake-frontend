@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js'
+import BigNumber from "bignumber.js";
 import type {
   PoolCategory,
   PoolConfigBaseProps,
@@ -13,8 +13,8 @@ import type {
   DeserializedVaultFees,
   DeserializedVaultUser,
   DeserializedCakeVault,
-} from '@pancakeswap/pools'
-import { VaultKey } from '@pancakeswap/pools'
+} from "@pancakeswap/pools";
+import { VaultKey } from "@pancakeswap/pools";
 
 export {
   PoolCategory,
@@ -31,13 +31,13 @@ export {
   DeserializedVaultUser,
   DeserializedCakeVault,
   VaultKey,
-}
+};
 
 export interface HarvestActionsProps {
-  earnings: BigNumber
-  isLoading?: boolean
-  onPresentCollect: any
-  earningTokenPrice: number
-  earningTokenBalance: number
-  earningTokenDollarBalance: number
+  earnings: BigNumber;
+  isLoading?: boolean;
+  onPresentCollect: any;
+  earningTokenPrice: number;
+  earningTokenBalance: number;
+  earningTokenDollarBalance: number;
 }

@@ -3,7 +3,7 @@ import { ModalV2, useModalV2, Flex, Box, PreTitle, MessageText, Message, Button 
 import { ReactNode, useMemo } from 'react'
 import Divider from 'components/Divider'
 import { Token } from '@pancakeswap/sdk'
-import { differenceInMilliseconds } from 'date-fns'
+import dayjs from 'dayjs'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -35,18 +35,12 @@ export function FixedStakingModal({
   const stakeModal = useModalV2()
 
   const stakedPeriods = useMemo(
-    () =>
-      stakedPositions
-        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) > 0)
-        .map((sP) => sP.pool.lockPeriod),
+    () => stakedPositions.filter((sP) => dayjs.unix(sP.endLockTime).diff(dayjs()) > 0).map((sP) => sP.pool.lockPeriod),
     [stakedPositions],
   )
 
   const claimedPeriods = useMemo(
-    () =>
-      stakedPositions
-        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) <= 0)
-        .map((sP) => sP.pool.lockPeriod),
+    () => stakedPositions.filter((sP) => dayjs.unix(sP.endLockTime).diff(dayjs()) <= 0).map((sP) => sP.pool.lockPeriod),
     [stakedPositions],
   )
 

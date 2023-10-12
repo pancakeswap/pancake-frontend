@@ -1,5 +1,29 @@
 # @pancakeswap/widgets-internal
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [ed3146c93]
+  - @pancakeswap/chains@0.2.0
+  - @pancakeswap/farms@1.0.20
+  - @pancakeswap/pools@4.0.15
+  - @pancakeswap/sdk@5.7.1
+  - @pancakeswap/tokens@0.5.2
+  - @pancakeswap/uikit@0.64.0
+  - @pancakeswap/v3-sdk@3.5.2
+
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [8e3ac5427]
+  - @pancakeswap/sdk@5.7.0
+  - @pancakeswap/farms@1.0.19
+  - @pancakeswap/tokens@0.5.1
+  - @pancakeswap/v3-sdk@3.5.1
+  - @pancakeswap/pools@4.0.14
+
 ## 0.0.6
 
 ### Patch Changes

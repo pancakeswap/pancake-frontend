@@ -8,8 +8,8 @@ import { SendTransactionResult } from 'wagmi/actions'
 import { ChainId } from '@pancakeswap/chains'
 
 interface UseConfirmModalStateProps {
-  txHash: string
-  chainId: ChainId
+  txHash?: string
+  chainId?: ChainId
   approval: ApprovalState
   approvalToken: Currency
   isPendingError: boolean

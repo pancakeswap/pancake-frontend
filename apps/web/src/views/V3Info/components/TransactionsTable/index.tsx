@@ -14,7 +14,7 @@ import { useChainNameByQuery } from 'state/info/hooks'
 import { multiChainId, subgraphTokenSymbol, ChainLinkSupportChains } from 'state/info/constant'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { getBlockExploreLink, isAddress } from 'utils'
+import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { Transaction, TransactionType } from '../../types'
 import { shortenAddress } from '../../utils'
@@ -96,10 +96,8 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
-  const token0Symbol =
-    subgraphTokenSymbol[isAddress(transaction.token0Address) || undefined] ?? transaction.token0Symbol
-  const token1Symbol =
-    subgraphTokenSymbol[isAddress(transaction.token1Address) || undefined] ?? transaction.token1Symbol
+  const token0Symbol = subgraphTokenSymbol[safeGetAddress(transaction.token0Address)] ?? transaction.token0Symbol
+  const token1Symbol = subgraphTokenSymbol[safeGetAddress(transaction.token1Address)] ?? transaction.token1Symbol
   const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
 

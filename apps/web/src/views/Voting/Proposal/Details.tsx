@@ -1,6 +1,6 @@
 import { Box, Card, CardBody, CardHeader, Flex, Heading, LinkExternal, ScanLink, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import { Proposal } from 'state/types'
 import { getBlockExploreLink } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
@@ -55,13 +55,13 @@ const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) 
             <Text color="textSubtle" fontSize="14px">
               {t('Start Date')}
             </Text>
-            <Text ml="8px">{format(startDate, 'yyyy-MM-dd HH:mm')}</Text>
+            <Text ml="8px">{dayjs(startDate).format('YYYY-MM-DD HH:mm')}</Text>
           </Flex>
           <Flex alignItems="center">
             <Text color="textSubtle" fontSize="14px">
               {t('End Date')}
             </Text>
-            <Text ml="8px">{format(endDate, 'yyyy-MM-dd HH:mm')}</Text>
+            <Text ml="8px">{dayjs(endDate).format('YYYY-MM-DD HH:mm')}</Text>
           </Flex>
         </DetailBox>
       </CardBody>

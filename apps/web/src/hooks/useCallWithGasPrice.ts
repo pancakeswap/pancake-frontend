@@ -11,7 +11,7 @@ import {
   InferFunctionName,
   WriteContractParameters,
 } from 'viem'
-import { EstimateContractGasParameters } from 'viem/dist/types/actions/public/estimateContractGas'
+import type { EstimateContractGasParameters } from 'viem'
 import { useWalletClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'
@@ -73,6 +73,9 @@ export function useCallWithGasPrice() {
       methodArgs?: Args extends never ? undefined : Args,
       overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
     ): Promise<SendTransactionResult> => {
+      if (!walletClient) {
+        throw new Error('No valid wallet connect')
+      }
       const { gas: gas_, ...overrides_ } = overrides || {}
       let gas = gas_
       if (!gas) {

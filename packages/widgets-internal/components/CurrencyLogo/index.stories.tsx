@@ -1,9 +1,9 @@
 import React from "react";
 /* eslint-disable import/no-unresolved */
 import { Meta } from "@storybook/react/types-6-0";
-import { bscToken, cakeToken } from "../../shared";
 
 import { CurrencyLogo } from "./index";
+import { cakeToken, bscToken } from "../../mockData";
 
 export default {
   title: "Components/CurrencyLogo",

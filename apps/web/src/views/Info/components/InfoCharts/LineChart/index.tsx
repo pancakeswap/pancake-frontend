@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from '
 import useTheme from 'hooks/useTheme'
 import { LineChartLoader } from 'components/ChartLoaders'
 import { createChart, IChartApi } from 'lightweight-charts'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import { darken } from 'polished'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -60,7 +60,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
         borderVisible: false,
         secondsVisible: false,
         tickMarkFormatter: (unixTime: number) => {
-          return format(unixTime * 1000, 'h:mm a')
+          return dayjs.unix(unixTime).format('h:mm a')
         },
       },
       grid: {

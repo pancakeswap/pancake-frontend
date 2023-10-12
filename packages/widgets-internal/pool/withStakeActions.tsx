@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js'
-import { ReactElement } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from "bignumber.js";
+import { ReactElement } from "react";
+import { useTranslation } from "@pancakeswap/localization";
+import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import {
   Button,
   IconButton,
@@ -14,27 +14,27 @@ import {
   useTooltip,
   MinusIcon,
   AddIcon,
-} from '@pancakeswap/uikit'
+} from "@pancakeswap/uikit";
 
-import { DeserializedPool } from './types'
+import { DeserializedPool } from "./types";
 
 interface StakeActionsPropsType<T> {
-  pool: DeserializedPool<T>
-  stakingTokenBalance: BigNumber
-  stakedBalance: BigNumber
-  isBnbPool: boolean
-  isStaked: ConstrainBoolean
-  isLoading?: boolean
-  hideLocateAddress?: boolean
+  pool: DeserializedPool<T>;
+  stakingTokenBalance: BigNumber;
+  stakedBalance: BigNumber;
+  isBnbPool: boolean;
+  isStaked: ConstrainBoolean;
+  isLoading?: boolean;
+  hideLocateAddress?: boolean;
 }
 
 export interface StakeModalPropsType<T> {
-  isBnbPool: boolean
-  pool: DeserializedPool<T>
-  stakingTokenBalance: BigNumber
-  stakingTokenPrice: number
-  isRemovingStake?: boolean
-  onDismiss?: () => void
+  isBnbPool: boolean;
+  pool: DeserializedPool<T>;
+  stakingTokenBalance: BigNumber;
+  stakingTokenPrice: number;
+  isRemovingStake?: boolean;
+  onDismiss?: () => void;
 }
 
 export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) => ReactElement) {
@@ -47,20 +47,20 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
     isLoading = false,
     hideLocateAddress = false,
   }: StakeActionsPropsType<T>) => {
-    const { stakingToken, stakingTokenPrice, stakingLimit, isFinished, userData } = pool
-    const { t } = useTranslation()
-    const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken?.decimals)
+    const { stakingToken, stakingTokenPrice, stakingLimit, isFinished, userData } = pool;
+    const { t } = useTranslation();
+    const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken?.decimals);
     const stakedTokenDollarBalance = stakingTokenPrice
       ? getBalanceNumber(stakedBalance?.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
-      : 0
+      : 0;
 
     const [onPresentTokenRequired] = useModal(
       <NotEnoughTokensModal
         hideLocateAddress={hideLocateAddress}
         tokenAddress={stakingToken.address}
-        tokenSymbol={stakingToken?.symbol || ''}
-      />,
-    )
+        tokenSymbol={stakingToken?.symbol || ""}
+      />
+    );
 
     const [onPresentStake] = useModal(
       <StakeModal
@@ -68,8 +68,8 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
         pool={pool}
         stakingTokenBalance={stakingTokenBalance}
         stakingTokenPrice={stakingTokenPrice || 0}
-      />,
-    )
+      />
+    );
 
     const [onPresentUnstake] = useModal(
       <StakeModal
@@ -78,15 +78,15 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
         pool={pool}
         stakingTokenPrice={stakingTokenPrice || 0}
         isRemovingStake
-      />,
-    )
+      />
+    );
 
     const { targetRef, tooltip, tooltipVisible } = useTooltip(
-      t('You’ve already staked the maximum amount you can stake in this pool!'),
-      { placement: 'bottom' },
-    )
+      t("You’ve already staked the maximum amount you can stake in this pool!"),
+      { placement: "bottom" }
+    );
 
-    const reachStakingLimit = stakingLimit?.gt(0) && userData?.stakedBalance?.gte(stakingLimit)
+    const reachStakingLimit = stakingLimit?.gt(0) && userData?.stakedBalance?.gte(stakingLimit);
 
     const renderStakeAction = () => {
       return isStaked ? (
@@ -132,13 +132,13 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
         </Flex>
       ) : (
         <Button disabled={isFinished} onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
-          {t('Stake')}
+          {t("Stake")}
         </Button>
-      )
-    }
+      );
+    };
 
     return (
       <Flex flexDirection="column">{isLoading ? <Skeleton width="100%" height="52px" /> : renderStakeAction()}</Flex>
-    )
-  }
+    );
+  };
 }

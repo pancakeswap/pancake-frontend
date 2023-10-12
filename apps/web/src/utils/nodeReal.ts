@@ -48,6 +48,11 @@ export const getNodeRealUrlV2 = (chainId: number, key?: string) => {
         host = `bsc-mainnet.nodereal.io/v1/${key}`
       }
       break
+    case ChainId.OPBNB:
+      if (key) {
+        host = `opbnb-mainnet.nodereal.io/v1/${key}`
+      }
+      break
     case ChainId.POLYGON_ZKEVM:
       if (key) {
         host = `open-platform.nodereal.io/${key}/polygon-zkevm-rpc`
@@ -56,6 +61,16 @@ export const getNodeRealUrlV2 = (chainId: number, key?: string) => {
     case ChainId.ARBITRUM_ONE:
       if (key) {
         host = `open-platform.nodereal.io/${key}/arbitrum-nitro`
+      }
+      break
+    case ChainId.BASE:
+      if (key) {
+        host = `open-platform.nodereal.io/${key}/base`
+      }
+      break
+    case ChainId.ZKSYNC:
+      if (key) {
+        host = `open-platform.nodereal.io/${key}/zksync`
       }
       break
     default:

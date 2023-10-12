@@ -1,14 +1,14 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Balance, Flex, Button, Text } from '@pancakeswap/uikit'
-import { ActionContent, ActionTitles } from './styles'
+import { useTranslation } from "@pancakeswap/localization";
+import { Balance, Flex, Button, Text } from "@pancakeswap/uikit";
+import { ActionContent, ActionTitles } from "./styles";
 
 export interface HarvestActionProps {
-  earnings: number
-  earningsBusd: number
-  pendingTx: boolean
-  userDataReady: boolean
-  handleHarvest: () => void
-  disabled?: boolean
+  earnings: number;
+  earningsBusd: number;
+  pendingTx: boolean;
+  userDataReady: boolean;
+  handleHarvest: () => void;
+  disabled?: boolean;
 }
 
 const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
@@ -19,7 +19,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
   handleHarvest,
   disabled,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Flex height="100%" flexDirection="column" width="100%">
@@ -28,10 +28,10 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
           CAKE
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Earned')}
+          {t("Earned")}
         </Text>
       </ActionTitles>
-      <ActionContent style={{ height: '100%', alignItems: 'flex-start' }}>
+      <ActionContent style={{ height: "100%", alignItems: "flex-start" }}>
         <div>
           <Balance fontSize={20} bold decimals={2} value={earnings} />
           {earningsBusd > 0 && (
@@ -39,11 +39,11 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
           )}
         </div>
         <Button ml="4px" disabled={pendingTx || !userDataReady || disabled} onClick={handleHarvest}>
-          {pendingTx ? t('Harvesting') : t('Harvest')}
+          {pendingTx ? t("Harvesting") : t("Harvest")}
         </Button>
       </ActionContent>
     </Flex>
-  )
-}
+  );
+};
 
-export default HarvestAction
+export default HarvestAction;

@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { ColorType, createChart, IChartApi } from 'lightweight-charts'
-import { format } from 'date-fns'
 import { useTheme } from '@pancakeswap/hooks'
 import { CandleChartLoader } from 'components/ChartLoaders'
 import { baseColors, lightColors, darkColors } from '@pancakeswap/uikit'
+import dayjs from 'dayjs'
 
 const CANDLE_CHART_HEIGHT = 250
 
@@ -66,7 +66,7 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
           borderVisible: false,
           secondsVisible: true,
           tickMarkFormatter: (unixTime: number) => {
-            return format(unixTime * 1000, 'MM/dd h:mm a')
+            return dayjs.unix(unixTime).format('MM/DD h:mm a')
           },
         },
         watermark: {

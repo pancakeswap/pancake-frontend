@@ -19,16 +19,16 @@ import Script from 'next/script'
 import { Fragment } from 'react'
 import { DefaultSeo } from 'next-seo'
 import { PageMeta } from 'components/Layout/Page'
+import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
+import { ThirdYearBirthdayCake } from 'views/Home/components/ThirdYearBirthdayCake'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
-import { SentryErrorBoundary } from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
-import { ThirdYearBirthdayCake } from '../views/Home/components/ThirdYearBirthdayCake'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 

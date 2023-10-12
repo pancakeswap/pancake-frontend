@@ -1,12 +1,12 @@
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
+import { styled } from "styled-components";
+import { useTranslation } from "@pancakeswap/localization";
 
-import { Text, ChevronDownIcon } from '@pancakeswap/uikit'
-import { BaseCell } from './BaseCell'
+import { Text, ChevronDownIcon } from "@pancakeswap/uikit";
+import { BaseCell } from "./BaseCell";
 
 interface ExpandActionCellProps {
-  expanded: boolean
-  isFullLayout: boolean
+  expanded: boolean;
+  isFullLayout: boolean;
 }
 
 const StyledCell = styled(BaseCell)`
@@ -21,26 +21,26 @@ const StyledCell = styled(BaseCell)`
     padding-right: 32px;
     padding-left: 8px;
   }
-`
+`;
 
 const ArrowIcon = styled((props: any) => <ChevronDownIcon {...props} />)<{ $toggled?: boolean }>`
-  transform: ${({ $toggled }) => ($toggled ? 'rotate(180deg)' : 'rotate(0)')};
+  transform: ${({ $toggled }) => ($toggled ? "rotate(180deg)" : "rotate(0)")};
   height: 24px;
-`
+`;
 
 export const ExpandActionCell: React.FC<React.PropsWithChildren<ExpandActionCellProps>> = ({
   expanded,
   isFullLayout,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <StyledCell role="cell">
       {isFullLayout && (
         <Text color="primary" bold>
-          {expanded ? t('Hide') : t('Details')}
+          {expanded ? t("Hide") : t("Details")}
         </Text>
       )}
       <ArrowIcon color="primary" $toggled={expanded} />
     </StyledCell>
-  )
-}
+  );
+};

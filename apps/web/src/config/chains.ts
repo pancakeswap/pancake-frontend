@@ -158,10 +158,6 @@ export const linea = {
       name: 'Etherscan',
       url: 'https://lineascan.build',
     },
-    blockscout: {
-      name: 'Blockscout',
-      url: 'https://explorer.linea.build',
-    },
   },
   contracts: {
     multicall3: {

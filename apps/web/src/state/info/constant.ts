@@ -4,6 +4,7 @@ import {
   BLOCKS_CLIENT_ZKSYNC,
   BLOCKS_CLIENT_LINEA,
   BLOCKS_CLIENT_BASE,
+  BLOCKS_CLIENT_OPBNB,
 } from 'config/constants/endpoints'
 import { infoClientETH, infoClient, infoStableSwapClient, v2Clients } from 'utils/graphql'
 import { GraphQLClient } from 'graphql-request'
@@ -17,10 +18,10 @@ import {
   BSC_TOKEN_WHITELIST,
   ETH_TOKEN_WHITELIST,
 } from 'config/constants/info'
-import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync, linea, base } from 'wagmi/chains'
+import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync, linea, base, opBNB } from 'wagmi/chains'
 import mapValues from 'lodash/mapValues'
 
-export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB' | 'LINEA' | 'BASE'
+export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB' | 'LINEA' | 'BASE' | 'OPBNB'
 
 export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET' | 'ZKSYNC_TESTNET'
 
@@ -32,6 +33,7 @@ export const multiChainName: Record<number | string, MultiChainNameExtend> = {
   [ChainId.ZKSYNC]: 'ZKSYNC',
   [ChainId.LINEA]: 'LINEA',
   [ChainId.BASE]: 'BASE',
+  [ChainId.OPBNB]: 'OPBNB',
 }
 
 export const multiChainShortName: Record<number, string> = {
@@ -46,6 +48,7 @@ export const multiChainQueryMainToken: Record<MultiChainName, string> = {
   ARB: 'ARB',
   LINEA: 'ETH',
   BASE: 'ETH',
+  OPBNB: 'BNB',
 }
 
 export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
@@ -58,6 +61,7 @@ export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
   ARB: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
   LINEA: BLOCKS_CLIENT_LINEA,
   BASE: BLOCKS_CLIENT_BASE,
+  OPBNB: BLOCKS_CLIENT_OPBNB,
 }
 
 export const multiChainStartTime = {
@@ -68,6 +72,7 @@ export const multiChainStartTime = {
   ARB: 1686732526,
   LINEA: 1692878400,
   BASE: 1693483200,
+  OPBNB: 1695945600,
 }
 
 export const multiChainId: Record<MultiChainName, ChainId> = {
@@ -78,6 +83,7 @@ export const multiChainId: Record<MultiChainName, ChainId> = {
   ARB: ChainId.ARBITRUM_ONE,
   LINEA: ChainId.LINEA,
   BASE: ChainId.BASE,
+  OPBNB: ChainId.OPBNB,
 }
 
 export const multiChainPaths = {
@@ -88,6 +94,7 @@ export const multiChainPaths = {
   [ChainId.ARBITRUM_ONE]: '/arb',
   [ChainId.LINEA]: '/linea',
   [ChainId.BASE]: '/base',
+  [ChainId.OPBNB]: '/opbnb',
 }
 
 export const multiChainQueryClient = {
@@ -98,6 +105,7 @@ export const multiChainQueryClient = {
   ARB: v2Clients[ChainId.ARBITRUM_ONE],
   LINEA: v2Clients[ChainId.LINEA],
   BASE: v2Clients[ChainId.BASE],
+  OPBNB: v2Clients[ChainId.OPBNB],
 }
 
 export const multiChainScan: Record<MultiChainName, string> = {
@@ -108,6 +116,7 @@ export const multiChainScan: Record<MultiChainName, string> = {
   ARB: arbitrum.blockExplorers.default.name,
   LINEA: linea.blockExplorers.default.name,
   BASE: base.blockExplorers.default.name,
+  OPBNB: opBNB.blockExplorers.default.name,
 }
 
 export const multiChainTokenBlackList: Record<MultiChainName, string[]> = mapValues(
@@ -119,6 +128,7 @@ export const multiChainTokenBlackList: Record<MultiChainName, string[]> = mapVal
     ARB: ['0x'],
     LINEA: ['0x'],
     BASE: ['0x'],
+    OPBNB: ['0x'],
   },
   (val) => val.map((address) => address.toLowerCase()),
 )
@@ -132,6 +142,7 @@ export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = mapVal
     ARB: [],
     LINEA: [],
     BASE: [],
+    OPBNB: [],
   },
   (val) => val.map((address) => address.toLowerCase()),
 )
