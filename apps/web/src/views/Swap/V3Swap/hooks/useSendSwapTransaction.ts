@@ -153,11 +153,11 @@ export default function useSendSwapTransaction(
             const inputAmount =
               trade.tradeType === TradeType.EXACT_INPUT
                 ? formatAmount(trade.inputAmount, 3)
-                : (formatAmount(SmartRouter.maximumAmountIn(trade, pct), 3) as string)
+                : formatAmount(SmartRouter.maximumAmountIn(trade, pct), 3) ?? '0'
             const outputAmount =
               trade.tradeType === TradeType.EXACT_OUTPUT
                 ? formatAmount(trade.outputAmount, 3)
-                : (formatAmount(SmartRouter.minimumAmountOut(trade, pct), 3) as string)
+                : formatAmount(SmartRouter.minimumAmountOut(trade, pct), 3) ?? '0'
 
             const base = `Swap ${
               trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''
