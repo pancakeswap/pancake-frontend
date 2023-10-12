@@ -150,14 +150,14 @@ export default function useSendSwapTransaction(
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
             const pct = basisPointsToPercent(allowedSlippage)
-            const inputAmount: string =
+            const inputAmount =
               trade.tradeType === TradeType.EXACT_INPUT
                 ? formatAmount(trade.inputAmount, 3)
-                : formatAmount(SmartRouter.maximumAmountIn(trade, pct), 3)
-            const outputAmount: string =
+                : (formatAmount(SmartRouter.maximumAmountIn(trade, pct), 3) as string)
+            const outputAmount =
               trade.tradeType === TradeType.EXACT_OUTPUT
                 ? formatAmount(trade.outputAmount, 3)
-                : formatAmount(SmartRouter.minimumAmountOut(trade, pct), 3)
+                : (formatAmount(SmartRouter.minimumAmountOut(trade, pct), 3) as string)
 
             const base = `Swap ${
               trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''
