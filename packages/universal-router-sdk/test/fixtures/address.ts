@@ -11,11 +11,11 @@ import {
   encodeSqrtRatioX96,
   nearestUsableTick,
 } from '@pancakeswap/v3-sdk'
-import { CAKE, ETHER, USDC, USDT, WETH9, BUSD } from './constants/tokens'
-import { V2_FACTORY_ADDRESSES } from './constants/addresses'
-import { Provider, getPublicClient } from './clients'
 import { getPermit2Address, getUniversalRouterAddress } from '../../src'
+import { Provider, getPublicClient } from './clients'
 import { v3PoolAbi } from './constants/abi'
+import { V2_FACTORY_ADDRESSES } from './constants/addresses'
+import { BUSD, CAKE, ETHER, USDC, USDT, WETH9 } from './constants/tokens'
 
 const fixtureTokensAddresses = (chainId: ChainId) => {
   return {
@@ -168,7 +168,7 @@ const fixturePool = ({
 export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => {
   const tokens = fixtureTokensAddresses(chainId)
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const { ETHER, USDC, USDT, WETH, CAKE } = tokens
+  const { USDC, USDT, WETH } = tokens
 
   const v2Pairs = {
     WETH_USDC_V2: await getPair(WETH, USDC, liquidity)(getPublicClient),

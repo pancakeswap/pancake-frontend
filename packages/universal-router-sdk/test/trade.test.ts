@@ -40,7 +40,6 @@ describe('PancakeSwap Universal Router Trade', () => {
   let ETHER: Ether
   let USDC: ERC20Token
   let USDT: ERC20Token
-  let WETH: ERC20Token
   let WETH_USDC_V2: Pair
   let USDC_USDT_V2: Pair
   let WETH_USDC_V3_MEDIUM: Pool
@@ -64,7 +63,6 @@ describe('PancakeSwap Universal Router Trade', () => {
       ETHER,
       USDC,
       USDT,
-      WETH,
       WETH_USDC_V2,
       USDC_USDT_V2,
       USDC_USDT_V3_LOW,
