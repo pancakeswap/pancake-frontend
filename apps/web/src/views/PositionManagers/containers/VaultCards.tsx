@@ -25,7 +25,6 @@ export const VaultCards = memo(function VaultCards() {
     usePositionManagerDetailsData()
   const aprDataList = useFetchApr()
   const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster()
-  console.log('positionMangerDetailsData', positionMangerDetailsData)
 
   const cards = configs
     .filter((d) => {
