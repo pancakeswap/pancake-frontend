@@ -1,12 +1,11 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Box, Text } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
+import { Infrastructure } from 'views/Game/components/Developers/Infrastructure'
 import { Footer } from 'views/Game/components/Developers/Footer'
 
 export const GameDevelopers = () => {
-  const { t } = useTranslation()
-
   return (
     <Box>
+      <Infrastructure />
       <Footer />
     </Box>
   )
