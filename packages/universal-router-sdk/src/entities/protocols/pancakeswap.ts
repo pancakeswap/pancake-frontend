@@ -10,7 +10,7 @@ import {
   getPoolAddress,
 } from '@pancakeswap/smart-router/evm'
 import { Address } from 'viem'
-import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
+import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'
 import { ABIParametersType, AnyTradeType, PancakeSwapOptions } from '../../utils/types'
@@ -299,89 +299,76 @@ async function addMixedSwap(
     } else {
       const sections = SmartRouter.partitionMixedRouteByProtocol(route)
 
-      const isLastSectionInRoute = (i: number) => {
-        return i === sections.length - 1
-      }
-
       let outputToken
       let inputToken = inputAmount.currency.wrapped
 
       for (let i = 0; i < sections.length; i++) {
         const section = sections[i]
+        const nextSection = sections[i + 1] ?? []
+        const isFirstSection = i == 0
+        const isLastSection = i === sections.length - 1
+
+        const nextIsV2 = nextSection.every(SmartRouter.isV2Pool)
+
+        const getRecipient = (): Address => {
+          if (isLastSection) return recipient
+          if (nextIsV2) {
+            const address = getPoolAddress(nextSection[0])
+            if (!address) throw new Error('unknown v2 pool address')
+            return address
+          }
+          return ROUTER_AS_RECIPIENT
+        }
+
         /// Now, we get output of this section
         outputToken = SmartRouter.getOutputOfPools(section, inputToken)
         const newRoute = SmartRouter.buildBaseRoute([...section], inputToken, outputToken)
         inputToken = outputToken.wrapped
 
-        const lastSectionInRoute = isLastSectionInRoute(i)
-        const recipientAddress = isLastSectionInRoute(i) ? recipient : ROUTER_AS_RECIPIENT
+        const payByUser = payerIsUser && isFirstSection
 
-        const inAmount = i === 0 ? amountIn : BigInt(2) ** BigInt(255)
-        const outAmount = !lastSectionInRoute ? 0n : amountOut
+        const inAmount = isFirstSection ? amountIn : CONTRACT_BALANCE
+        const outAmount = isLastSection ? amountOut : 0n
+        const amounts: [bigint, bigint] = isExactIn ? [inAmount, outAmount] : [outAmount, inAmount]
 
-        if (mixedRouteIsAllV3(newRoute as BaseRoute)) {
-          const pathStr = SmartRouter.encodeMixedRouteToPath(newRoute, !isExactIn)
-          if (isExactIn) {
-            planner.addCommand(CommandType.V3_SWAP_EXACT_IN, [
-              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as Address),
-              inAmount, // amountIn
-              outAmount, // amountOut
-              pathStr, // path
-              payerIsUser && i === 0, // payerIsUser
-            ])
-          } else {
-            planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, [
-              isLastSectionInRoute(i) ? recipient : (getPoolAddress(sections[i + 1][0]) as Address),
-              outAmount, // amountIn
-              inAmount, // amountOut
-              pathStr, // path
-              payerIsUser && i === 0, // payerIsUser
-            ])
+        switch (newRoute.type) {
+          case RouteType.V3: {
+            const path = SmartRouter.encodeMixedRouteToPath(newRoute, !isExactIn)
+            if (isExactIn) {
+              planner.addCommand(CommandType.V3_SWAP_EXACT_IN, [getRecipient(), ...amounts, path, payByUser])
+            } else {
+              planner.addCommand(CommandType.V3_SWAP_EXACT_OUT, [getRecipient(), ...amounts, path, payByUser])
+            }
+            break
           }
-        } else if (mixedRouteIsAllV2(newRoute as BaseRoute)) {
-          const path = newRoute.path.map((token) => token.wrapped.address)
-          if (isExactIn) {
-            planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [
-              recipientAddress,
-              inAmount, // amountIn
-              outAmount, // amountOutMin
-              path, // path
-              payerIsUser && i === 0,
-            ])
-          } else {
-            planner.addCommand(CommandType.V2_SWAP_EXACT_OUT, [
-              recipientAddress,
-              outAmount, // amountIn
-              inAmount, // amountOutMin
-              path, // path
-              payerIsUser && i === 0,
-            ])
+          case RouteType.V2: {
+            const path = newRoute.path.map((token) => token.wrapped.address)
+            if (isExactIn) {
+              planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [getRecipient(), ...amounts, path, payByUser])
+            } else {
+              planner.addCommand(CommandType.V2_SWAP_EXACT_OUT, [getRecipient(), ...amounts, path, payByUser])
+            }
+            break
           }
-        } else if (mixedRouteIsAllStable(newRoute)) {
-          const path = newRoute.path.map((token) => token.wrapped.address)
-          // eslint-disable-next-line no-loop-func
-          const flags = newRoute.pools.map((pool) => BigInt((pool as StablePool).balances.length))
-          if (isExactIn) {
-            planner.addCommand(CommandType.STABLE_SWAP_EXACT_IN, [
-              recipientAddress,
-              inAmount,
-              outAmount,
-              path,
-              flags,
-              payerIsUser && i === 0,
-            ])
-          } else {
-            planner.addCommand(CommandType.STABLE_SWAP_EXACT_OUT, [
-              recipientAddress,
-              outAmount,
-              inAmount,
-              path,
-              flags,
-              payerIsUser && i === 0,
-            ])
+          case RouteType.STABLE: {
+            const path = newRoute.path.map((token) => token.wrapped.address)
+
+            const flags = (newRoute.pools as StablePool[]).map((pool) => BigInt(pool.balances.length))
+            if (isExactIn) {
+              planner.addCommand(CommandType.STABLE_SWAP_EXACT_IN, [getRecipient(), ...amounts, path, flags, payByUser])
+            } else {
+              planner.addCommand(CommandType.STABLE_SWAP_EXACT_OUT, [
+                getRecipient(),
+                ...amounts,
+                path,
+                flags,
+                payByUser,
+              ])
+            }
+            break
           }
-        } else {
-          throw new Error('Unsupported route')
+          default:
+            throw new RangeError('Unexpected route type')
         }
       }
     }

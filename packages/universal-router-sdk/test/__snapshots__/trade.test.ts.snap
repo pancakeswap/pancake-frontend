@@ -116,7 +116,7 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mix
       {
         "type": "address",
         "name": "recipient",
-        "value": "0x3EFebC418efB585248A0D2140cfb87aFcc2C63DD"
+        "value": "0x0000000000000000000000000000000000000002"
       },
       {
         "type": "uint256",
@@ -191,7 +191,7 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mix
       {
         "type": "address",
         "name": "recipient",
-        "value": "0x0000000000000000000000000000000000000002"
+        "value": "0xEa26B78255Df2bBC31C1eBf60010D78670185bD0"
       },
       {
         "type": "uint256",
