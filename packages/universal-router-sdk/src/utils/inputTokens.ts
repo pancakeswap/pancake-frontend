@@ -3,7 +3,7 @@ import type { Address } from 'viem'
 import invariant from 'tiny-invariant'
 import { OPENSEA_CONDUIT_SPENDER_ID, ROUTER_AS_RECIPIENT, SUDOSWAP_SPENDER_ID } from './constants'
 import { CommandType, RoutePlanner } from './routerCommands'
-import { Permit2Signature } from './types'
+import { Permit2Signature } from '../entities/types'
 
 export type ApproveProtocol = {
   token: string

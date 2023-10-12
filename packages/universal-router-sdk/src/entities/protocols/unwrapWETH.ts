@@ -1,10 +1,11 @@
-import { BigintIsh } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
+import { BigintIsh, WETH9 } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
-import { ROUTER_AS_RECIPIENT, WETH_ADDRESS } from '../../utils/constants'
+import { ROUTER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeInputTokenOptions } from '../../utils/inputTokens'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'
+import { Permit2Signature } from '../types'
 import { Command, RouterTradeType, TradeConfig } from '../Command'
-import { Permit2Signature } from '../../utils/types'
 
 export class UnwrapWETH implements Command {
   readonly tradeType: RouterTradeType = RouterTradeType.UnwrapWETH
@@ -15,8 +16,8 @@ export class UnwrapWETH implements Command {
 
   readonly amount: BigintIsh
 
-  constructor(amount: BigintIsh, chainId: number, permit2?: Permit2Signature) {
-    this.wethAddress = WETH_ADDRESS(chainId)
+  constructor(amount: BigintIsh, chainId: ChainId, permit2?: Permit2Signature) {
+    this.wethAddress = WETH9[chainId].address
     this.amount = amount
 
     if (permit2) {

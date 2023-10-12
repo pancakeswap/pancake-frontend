@@ -6,10 +6,10 @@ import { encodeFunctionData, toHex, Hex } from 'viem'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
-import { PancakeSwapOptions, SwapRouterConfig } from './utils/types'
+import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
 import { UniversalRouterABI } from './abis/UniversalRouter'
 
-export abstract class PancakeUniversalSwapRouter {
+export abstract class PancakeswapUniversalRouter {
   /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trades to produce call parameters for
@@ -23,8 +23,8 @@ export abstract class PancakeUniversalSwapRouter {
     const planner = new RoutePlanner()
 
     const trade: PancakeSwapTrade = new PancakeSwapTrade(trades, options)
-    const tradess = !Array.isArray(trade.trade) ? [trade.trade] : trade.trade
-    const sampleTrade = tradess[0]
+    const tradesList = !Array.isArray(trade.trade) ? [trade.trade] : trade.trade
+    const sampleTrade = tradesList[0]
 
     const inputCurrency = sampleTrade.inputAmount.currency
     invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
@@ -38,7 +38,7 @@ export abstract class PancakeUniversalSwapRouter {
       : 0n
 
     trade.encode(planner, { allowRevert: false })
-    return PancakeUniversalSwapRouter.encodePlan(planner, nativeCurrencyValue, {
+    return PancakeswapUniversalRouter.encodePlan(planner, nativeCurrencyValue, {
       deadline: options.deadlineOrPreviousBlockhash
         ? BigInt(options.deadlineOrPreviousBlockhash.toString())
         : undefined,

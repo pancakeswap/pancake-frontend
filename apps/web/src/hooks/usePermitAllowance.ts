@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   AllowanceTransfer,
   generatePermitTypedData,
-  PERMIT2_ADDRESS,
+  getPermit2Address,
   PermitSingle,
   Permit2ABI,
 } from '@pancakeswap/permit2-sdk'
@@ -33,7 +33,7 @@ export function usePermitAllowance(token?: Token, owner?: Address, spender?: Add
       chainId
         ? publicClient({ chainId }).readContract({
             abi: Permit2ABI,
-            address: PERMIT2_ADDRESS(chainId),
+            address: getPermit2Address(chainId),
             functionName: 'allowance',
             args: inputs,
           })
@@ -82,7 +82,7 @@ export function useUpdatePermitAllowance(
       if (nonce === undefined) throw new Error('missing nonce')
 
       const permit: Permit = generatePermitTypedData(token, nonce, spender)
-      const { domain, types, values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS(chainId), chainId)
+      const { domain, types, values } = AllowanceTransfer.getPermitData(permit, getPermit2Address(chainId), chainId)
 
       const signature = await signTypedDataAsync({
         account,

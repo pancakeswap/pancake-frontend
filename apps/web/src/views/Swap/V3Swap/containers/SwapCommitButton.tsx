@@ -3,13 +3,13 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { Currency, CurrencyAmount, Fraction, ONE, Percent } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
-import { UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
+import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 
-import { PERMIT2_ADDRESS } from '@pancakeswap/permit2-sdk'
+import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -93,7 +93,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const routerAddress =
     statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
       ? approvalAddressForWallchain
-      : PERMIT2_ADDRESS(chainId)
+      : getPermit2Address(chainId)
 
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
@@ -111,7 +111,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const allowance = usePermit2Allowance(
     routerAddress,
     amountToApprove as any,
-    isChainSupported(chainId) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
+    isChainSupported(chainId) ? getUniversalRouterAddress(chainId) : undefined,
   )
   // @ts-ignore
   const tradePriceBreakdown = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])

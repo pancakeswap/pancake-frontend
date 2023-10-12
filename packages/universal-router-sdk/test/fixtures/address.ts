@@ -14,7 +14,7 @@ import {
 import { CAKE, ETHER, USDC, USDT, WETH9, BUSD } from './constants/tokens'
 import { V2_FACTORY_ADDRESSES } from './constants/addresses'
 import { Provider, getPublicClient } from './clients'
-import { PERMIT2_ADDRESS, UNIVERSAL_ROUTER_ADDRESS } from '../../src'
+import { getPermit2Address, getUniversalRouterAddress } from '../../src'
 import { v3PoolAbi } from './constants/abi'
 
 const fixtureTokensAddresses = (chainId: ChainId) => {
@@ -167,6 +167,7 @@ const fixturePool = ({
 
 export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => {
   const tokens = fixtureTokensAddresses(chainId)
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const { ETHER, USDC, USDT, WETH, CAKE } = tokens
 
   const v2Pairs = {
@@ -186,8 +187,8 @@ export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => 
     ),
   }
 
-  const UNIVERSAL_ROUTER = UNIVERSAL_ROUTER_ADDRESS(chainId)
-  const PERMIT2 = PERMIT2_ADDRESS(chainId)
+  const UNIVERSAL_ROUTER = getUniversalRouterAddress(chainId)
+  const PERMIT2 = getPermit2Address(chainId)
 
   return {
     ...tokens,
