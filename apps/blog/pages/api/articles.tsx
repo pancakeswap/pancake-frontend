@@ -35,7 +35,7 @@ export const articles = async (req: NextApiRequest, res: NextApiResponse) => {
   const response = await fetch(requestUrl, mergedOptions)
 
   if (!response.ok) {
-    return res.status(400).json({ message: 'An error occured please try again' })
+    return res.status(400).json({ message: 'An error occurred please try again' })
   }
 
   const data = await response.json()

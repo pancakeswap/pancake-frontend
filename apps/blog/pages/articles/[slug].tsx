@@ -90,7 +90,7 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const { title, description, imgUrl } = fallback['/article']
 
   return (
-    <div>
+    <>
       <PageMeta title={title} description={description} imgUrl={imgUrl} />
       <SWRConfig value={{ fallback }}>
         <Box>
@@ -103,7 +103,7 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
           )}
         </Box>
       </SWRConfig>
-    </div>
+    </>
   )
 }
 

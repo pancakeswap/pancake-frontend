@@ -9,6 +9,7 @@ import ArticleView from 'components/Article/ArticleView'
 import useSWR from 'swr'
 import { ArticleDataType } from 'utils/transformArticle'
 import 'swiper/css/bundle'
+import dynamic from 'next/dynamic'
 
 const StyledChefsChoiceContainer = styled(Flex)`
   margin: 61px auto 48px auto;
@@ -70,4 +71,6 @@ const ChefsChoice = () => {
   )
 }
 
-export default ChefsChoice
+export default dynamic(() => Promise.resolve(ChefsChoice), {
+  ssr: false,
+})
