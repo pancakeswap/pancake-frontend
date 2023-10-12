@@ -1,5 +1,5 @@
 import { captureException } from '@sentry/nextjs'
-import { UnknownRpcError, UserRejectedRequestError } from 'viem'
+import { UserRejectedRequestError, UnknownRpcError } from 'viem'
 
 const assignError = (maybeError: any) => {
   if (typeof maybeError === 'string') {
@@ -45,13 +45,12 @@ export const isUserRejected = (err) => {
       return isUserRejected(err.cause)
     }
   }
-  if (err.message.includes('Cannot read properties of undefined')) return true
   return false
 }
 
 const ENABLED_LOG = false
 
-export const logError = (error: Error | any) => {
+export const logError = (error: Error | unknown) => {
   if (ENABLED_LOG) {
     if (error instanceof Error) {
       captureException(error)

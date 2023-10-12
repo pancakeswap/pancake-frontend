@@ -141,7 +141,6 @@ export default function useSendSwapTransaction(
 
         return sendTransactionAsync({
           account,
-          chainId,
           to: call.address,
           data: call.calldata,
           value: call.value && !isZero(call.value) ? hexToBigInt(call.value) : 0n,
