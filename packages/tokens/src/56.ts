@@ -2743,7 +2743,7 @@ export const bscTokens = {
     ChainId.BSC,
     '0x016aBB5E48A7B64C2014f8834ecbE56CD72BF13D',
     18,
-    'esDRNT',
+    'esRDNT',
     'Radpie esRDNT',
     'https://www.marblex.io/tc',
   ),
