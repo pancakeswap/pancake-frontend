@@ -191,7 +191,7 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mix
       {
         "type": "address",
         "name": "recipient",
-        "value": "0xEa26B78255Df2bBC31C1eBf60010D78670185bD0"
+        "value": "0x0000000000000000000000000000000000000002"
       },
       {
         "type": "uint256",
@@ -269,7 +269,7 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mix
       {
         "type": "address",
         "name": "recipient",
-        "value": "0xe54329122183164440bF5EB6467A244A09B94471"
+        "value": "0x0000000000000000000000000000000000000002"
       },
       {
         "type": "uint256",
@@ -442,46 +442,6 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mul
     ]
   },
   {
-    "command": "STABLE_SWAP_EXACT_OUT",
-    "args": [
-      {
-        "type": "address",
-        "name": "recipient",
-        "value": "0x0000000000000000000000000000000000000002"
-      },
-      {
-        "type": "uint256",
-        "name": "amountOut",
-        "value": "1000000000"
-      },
-      {
-        "type": "uint256",
-        "name": "amountInMax",
-        "value": "952380952"
-      },
-      {
-        "type": "address[]",
-        "name": "path",
-        "value": [
-          "0x55d398326f99059fF775485246999027B3197955",
-          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
-        ]
-      },
-      {
-        "type": "uint256[]",
-        "name": "flag",
-        "value": [
-          "2"
-        ]
-      },
-      {
-        "type": "bool",
-        "name": "payerIsUser",
-        "value": true
-      }
-    ]
-  },
-  {
     "command": "UNWRAP_WETH",
     "args": [
       {
@@ -587,46 +547,6 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > sho
         "value": true
       }
     ]
-  },
-  {
-    "command": "STABLE_SWAP_EXACT_OUT",
-    "args": [
-      {
-        "type": "address",
-        "name": "recipient",
-        "value": "0x0000000000000000000000000000000000000000"
-      },
-      {
-        "type": "uint256",
-        "name": "amountOut",
-        "value": "1000000000"
-      },
-      {
-        "type": "uint256",
-        "name": "amountInMax",
-        "value": "952380952"
-      },
-      {
-        "type": "address[]",
-        "name": "path",
-        "value": [
-          "0x55d398326f99059fF775485246999027B3197955",
-          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
-        ]
-      },
-      {
-        "type": "uint256[]",
-        "name": "flag",
-        "value": [
-          "2"
-        ]
-      },
-      {
-        "type": "bool",
-        "name": "payerIsUser",
-        "value": true
-      }
-    ]
   }
 ]
 `;
@@ -649,46 +569,6 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > sho
       {
         "type": "uint256",
         "name": "amountOutMin",
-        "value": "909090909"
-      },
-      {
-        "type": "address[]",
-        "name": "path",
-        "value": [
-          "0x55d398326f99059fF775485246999027B3197955",
-          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
-        ]
-      },
-      {
-        "type": "uint256[]",
-        "name": "flag",
-        "value": [
-          "2"
-        ]
-      },
-      {
-        "type": "bool",
-        "name": "payerIsUser",
-        "value": true
-      }
-    ]
-  },
-  {
-    "command": "STABLE_SWAP_EXACT_OUT",
-    "args": [
-      {
-        "type": "address",
-        "name": "recipient",
-        "value": "0x0000000000000000000000000000000000000002"
-      },
-      {
-        "type": "uint256",
-        "name": "amountOut",
-        "value": "1000000000"
-      },
-      {
-        "type": "uint256",
-        "name": "amountInMax",
         "value": "909090909"
       },
       {
@@ -798,46 +678,6 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > sho
       {
         "type": "uint256",
         "name": "amountOutMin",
-        "value": "952380952"
-      },
-      {
-        "type": "address[]",
-        "name": "path",
-        "value": [
-          "0x55d398326f99059fF775485246999027B3197955",
-          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
-        ]
-      },
-      {
-        "type": "uint256[]",
-        "name": "flag",
-        "value": [
-          "2"
-        ]
-      },
-      {
-        "type": "bool",
-        "name": "payerIsUser",
-        "value": true
-      }
-    ]
-  },
-  {
-    "command": "STABLE_SWAP_EXACT_OUT",
-    "args": [
-      {
-        "type": "address",
-        "name": "recipient",
-        "value": "0x0000000000000000000000000000000000000000"
-      },
-      {
-        "type": "uint256",
-        "name": "amountOut",
-        "value": "1000000000"
-      },
-      {
-        "type": "uint256",
-        "name": "amountInMax",
         "value": "952380952"
       },
       {
