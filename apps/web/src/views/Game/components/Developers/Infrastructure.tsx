@@ -1,10 +1,10 @@
 import { styled } from 'styled-components'
 import { useTranslation, Trans } from '@pancakeswap/localization'
-import { Box, Flex, Text, Heading, Card } from '@pancakeswap/uikit'
+import { Flex, Text, Heading, Card, PageSection } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import GradientLogo from 'views/Home/components/GradientLogoSvg'
 
-const StyledContainer = styled(Box)`
+const StyledContainer = styled(PageSection)`
   padding: 89px 16px 24px 16px;
   background: ${({ theme }) =>
     theme.isDark
@@ -99,7 +99,13 @@ const InfrastructureList = [
 export const Infrastructure = () => {
   const { t } = useTranslation()
   return (
-    <StyledContainer>
+    <StyledContainer
+      index={2}
+      concaveDivider
+      dividerPosition="top"
+      clipFill={{ light: '#FFF', dark: '#191326' }}
+      containerProps={{ style: { marginTop: '-30px' } }}
+    >
       <Flex pt="24px" alignItems="center" flexDirection="column" justifyContent="center">
         <GradientLogo height="36px" width="36px" mb="24px" />
         <Heading maxWidth={['745px']} textAlign="center" scale="xl" mb="32px">
