@@ -15,7 +15,7 @@ import { UnstakeBeforeEnededModal } from './UnstakeBeforeEndedModal'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
-import { useCurrentDay } from '../hooks/useStakedPools'
+// import { useCurrentDay } from '../hooks/useStakedPools'
 
 const FlexLeft = styled(Flex)`
   width: 100%;
@@ -168,7 +168,7 @@ export function StakedPositionSection({
 
   const apr = stakePosition.userInfo.boost ? boostAPR : lockAPR
 
-  const currentDay = useCurrentDay()
+  // const currentDay = useCurrentDay()
 
   const actionSection = (
     <Flex justifyContent="space-between" width="100%">
