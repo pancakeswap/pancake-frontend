@@ -25,6 +25,7 @@ export const VaultCards = memo(function VaultCards() {
     usePositionManagerDetailsData()
   const aprDataList = useFetchApr()
   const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster()
+  console.log('positionMangerDetailsData', positionMangerDetailsData)
 
   const cards = configs
     .filter((d) => {
@@ -47,20 +48,18 @@ export const VaultCards = memo(function VaultCards() {
     })
     .sort((a, b) => {
       if (sortBy === 'apr') {
-        return -(positionMangerDetailsData?.[a.id]?.apr ?? 0 - positionMangerDetailsData?.[b.id]?.apr ?? 0)
+        return (positionMangerDetailsData?.[b.id]?.apr ?? 0) - (positionMangerDetailsData?.[a.id]?.apr ?? 0)
       }
       if (sortBy === 'earned') {
-        return -(positionMangerDetailsData?.[a.id]?.earned ?? 0 - positionMangerDetailsData?.[b.id]?.earned ?? 0)
+        return (positionMangerDetailsData?.[b.id]?.earned ?? 0) - (positionMangerDetailsData?.[a.id]?.earned ?? 0)
       }
       if (sortBy === 'totalStaked') {
-        return -(
-          positionMangerDetailsData?.[a.id]?.totalStaked ??
-          0 - positionMangerDetailsData?.[b.id]?.totalStaked ??
-          0
+        return (
+          (positionMangerDetailsData?.[b.id]?.totalStaked ?? 0) - (positionMangerDetailsData?.[a.id]?.totalStaked ?? 0)
         )
       }
       if (sortBy === 'latest') {
-        return -(a.id - b.id)
+        return b.id - a.id
       }
       return a.id - b.id
     })

@@ -3,7 +3,7 @@ import { usePositionManagerAdepterContract } from 'hooks/useContract'
 import { memo, useMemo, useEffect } from 'react'
 import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
-import { CurrencyAmount, Pair } from '@pancakeswap/sdk'
+import { CurrencyAmount } from '@pancakeswap/sdk'
 import { DuoTokenVaultCard } from '../components'
 import {
   usePCSVault,
