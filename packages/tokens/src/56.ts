@@ -2745,6 +2745,6 @@ export const bscTokens = {
     18,
     'esRDNT',
     'Radpie esRDNT',
-    'https://www.marblex.io/tc',
+    'https://radiant.capital/',
   ),
 }
