@@ -2363,8 +2363,6 @@
   "Hide closed positions": "Sembunyikan posisi yang telah ditutup",
   "Liquidity source": "Sumber likuiditas",
   "Customize Routing": "Sesuaikan Perutean",
-  "PCS v3 Migration": "Migrasi PCS v3",
-  "Migrate to continue farming CAKE rewards and earning trading fees.": "Bermigrasi untuk melanjutkan farming hadiah CAKE dan menghasilkan biaya perdagangan.",
   "Guide": "Panduan",
   "At least one AMM liquidity source has to be enabled to support normal trading.": "Minimal satu sumber likuiditas AMM harus diaktifkan untuk mendukung perdagangan normal.",
   "Unable to establish trading route due to customized routing.": "Tidak berhasil membuat rute perdagangan karena perutean yang dikustomisasi.",
@@ -2808,5 +2806,8 @@
   "Predict now": "Predict now",
   "Trade now": "Trade now",
   "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard": "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard",
-  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking"
+  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
+  "Unstaking from v2 farm?": "Unstaking from v2 farm?",
+  "Migrate to v3 here": "Migrate to v3 here",
+  "Migrate to V3": "Migrate to V3"
 }
