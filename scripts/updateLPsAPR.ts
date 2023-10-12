@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import _toLower from 'lodash/toLower'
 import dayjs from 'dayjs'
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, getChainName } from '@pancakeswap/chains'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
 import { BlockResponse } from '../apps/web/src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT_WITH_CHAIN } from '../apps/web/src/config/constants/endpoints'
@@ -218,13 +218,14 @@ const fetchAndUpdateLPsAPR = async () => {
 
 let logged = false
 export const getFarmConfig = async (chainId: ChainId) => {
+  const chainName = getChainName(chainId)
   try {
-    return (await import(`../packages/farms/constants/${chainId}`)).default.filter(
+    return (await import(`../packages/farms/constants/${chainName}`)).default.filter(
       (f: SerializedFarmConfig) => f.pid !== null,
     ) as SerializedFarmConfig[]
   } catch (error) {
     if (!logged) {
-      console.error('Cannot get farm config', error, chainId)
+      console.error('Cannot get farm config', error, chainId, chainName)
       logged = true
     }
     return []
