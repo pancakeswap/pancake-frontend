@@ -137,8 +137,12 @@ const config: (
       label: t('Game'),
       icon: PancakeProtectorIcon,
       hideSubNav: true,
-      href: 'https://protectors.pancakeswap.finance',
+      href: '/game',
       items: [
+        {
+          label: t('Gaming Marketplace'),
+          href: '/game',
+        },
         {
           label: t('Prediction (BETA)'),
           href: '/prediction',

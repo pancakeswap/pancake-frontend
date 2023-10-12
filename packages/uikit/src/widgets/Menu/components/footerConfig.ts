@@ -15,7 +15,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Game"),
-        href: "/prediction",
+        href: "/game",
       },
       {
         label: t("NFT"),
