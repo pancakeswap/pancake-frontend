@@ -3,7 +3,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Text, Button } from "../../components";
 import { AtomBox } from "../../components/AtomBox";
 
-export function FindOtherLP() {
+export function FindOtherLP({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
 
   return (
@@ -16,6 +16,7 @@ export function FindOtherLP() {
           {t("Find other LP tokens")}
         </Button>
       </Link>
+      {children}
     </AtomBox>
   );
 }

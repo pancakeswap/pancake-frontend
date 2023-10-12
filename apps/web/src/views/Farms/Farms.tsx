@@ -35,9 +35,8 @@ import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
-import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
-import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
+import { getStakedMinProgramFarms } from 'views/Farms/utils/getStakedMinProgramFarms'
 
 import { V2Farm } from './FarmsV3'
 import Table from './components/FarmTable/FarmTable'
@@ -217,38 +216,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
   const archivedFarms = farmsLP
 
-  const stakedOnlyFarms = useMemo(
-    () =>
-      activeFarms.filter(
-        (farm) =>
-          farm.userData &&
-          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
-      ),
-    [activeFarms],
-  )
+  const stakedOnlyFarms = useMemo(() => getStakedMinProgramFarms(activeFarms), [activeFarms])
 
-  const stakedInactiveFarms = useMemo(
-    () =>
-      inactiveFarms.filter(
-        (farm) =>
-          farm.userData &&
-          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
-      ),
-    [inactiveFarms],
-  )
+  const stakedInactiveFarms = useMemo(() => getStakedMinProgramFarms(inactiveFarms), [inactiveFarms])
 
-  const stakedArchivedFarms = useMemo(
-    () =>
-      archivedFarms.filter(
-        (farm) =>
-          farm.userData &&
-          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
-      ),
-    [archivedFarms],
-  )
+  const stakedArchivedFarms = useMemo(() => getStakedMinProgramFarms(archivedFarms), [archivedFarms])
 
   const farmsList = useCallback(
     (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
@@ -258,16 +230,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
 
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
-        const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(
-              chainId,
-              new BigNumber(farm.poolWeight),
-              cakePrice,
-              totalLiquidity,
-              farm.lpAddress,
-              regularCakePerBlock,
-            )
-          : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+        const { cakeRewardsApr, lpRewardsApr } =
+          isActive && chainId
+            ? getFarmApr(
+                chainId,
+                new BigNumber(farm?.poolWeight ?? 0),
+                cakePrice,
+                totalLiquidity,
+                farm.lpAddress,
+                regularCakePerBlock,
+              )
+            : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
       })
@@ -284,7 +257,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
   const chosenFarms = useMemo(() => {
-    let chosenFs = []
+    let chosenFs: FarmWithStakedValue[] = []
     if (isActive) {
       chosenFs = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
     }
@@ -300,12 +273,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
       )
 
-      const stakedBoostedOrStableSwapFarms = chosenFs.filter(
-        (farm) =>
-          farm.userData &&
-          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
-      )
+      const stakedBoostedOrStableSwapFarms = getStakedMinProgramFarms(boostedOrStableSwapFarms)
 
       chosenFs = stakedOnly ? farmsList(stakedBoostedOrStableSwapFarms) : farmsList(boostedOrStableSwapFarms)
     }
@@ -331,7 +299,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
       switch (sortOption) {
         case 'apr':
-          return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr + farm.lpRewardsApr, 'desc')
+          return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.apr) + Number(farm.lpRewardsApr), 'desc')
         case 'multiplier':
           return orderBy(
             farms,
@@ -379,17 +347,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 
-  const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
-
   return (
     <FarmsContext.Provider value={providerValue}>
       <PageHeader>
         <Flex flexDirection="column">
-          {isMigrationSupported && (
-            <Box m="24px 0">
-              <FarmV3MigrationBanner />
-            </Box>
-          )}
           <FarmFlexWrapper justifyContent="space-between">
             <Box>
               <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
