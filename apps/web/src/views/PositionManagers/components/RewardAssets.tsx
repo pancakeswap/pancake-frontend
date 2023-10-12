@@ -11,6 +11,7 @@ import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { InnerCard } from './InnerCard'
+import { useEarningTokenPriceInfo } from '../hooks'
 
 interface RewardAssetsProps {
   contractAddress: Address
@@ -29,19 +30,9 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   const { account, chain } = useWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const earningTokenPrice = useStablecoinPrice(earningToken ?? undefined, { enabled: !!earningToken })
+  const { earningUsdValue, earningsBalance } = useEarningTokenPriceInfo(earningToken, pendingReward)
 
   const wrapperContract = usePositionManagerWrapperContract(contractAddress)
-
-  const earningsBalance = useMemo(
-    () => getBalanceAmount(new BigNumber(pendingReward?.toString() ?? 0), earningToken.decimals).toNumber(),
-    [pendingReward, earningToken],
-  )
-
-  const earningUsdValue = useMemo(
-    () => new BigNumber(earningsBalance).times(earningTokenPrice?.toSignificant() ?? 0).toNumber(),
-    [earningsBalance, earningTokenPrice],
-  )
 
   const isDisabled = useMemo(() => pendingTx || new BigNumber(earningsBalance).lte(0), [pendingTx, earningsBalance])
 

@@ -1,19 +1,35 @@
 import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
 import { usePositionManagerAdepterContract } from 'hooks/useContract'
-import { memo, useMemo } from 'react'
+import { memo, useMemo, useEffect } from 'react'
 import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
+import { CurrencyAmount, Pair } from '@pancakeswap/sdk'
 import { DuoTokenVaultCard } from '../components'
-import { usePCSVault, AprData, AprDataInfo } from '../hooks'
-import { usePositionInfo } from '../hooks/useAdapterInfo'
+import {
+  usePCSVault,
+  AprData,
+  AprDataInfo,
+  PositionManagerDetailsData,
+  useEarningTokenPriceInfo,
+  useTotalStakedInUsd,
+  usePositionInfo,
+  useApr,
+  useTotalAssetInUsd,
+} from '../hooks'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
   farmsV3: FarmV3DataWithPriceAndUserInfo[]
   aprDataList: AprData
+  updatePositionMangerDetailsData: (id: number, newData: PositionManagerDetailsData) => void
 }
 
-export const PCSVaultCard = memo(function PCSVaultCard({ config, farmsV3, aprDataList }: Props) {
+export const PCSVaultCard = memo(function PCSVaultCard({
+  config,
+  farmsV3,
+  aprDataList,
+  updatePositionMangerDetailsData,
+}: Props) {
   const { vault } = usePCSVault({ config })
   const {
     id,
@@ -75,6 +91,54 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config, farmsV3, aprDat
       info: data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === lpAddress.toLowerCase()),
     }
   }, [lpAddress, aprDataList])
+
+  const { earningUsdValue } = useEarningTokenPriceInfo(earningToken, info?.pendingReward)
+
+  const totalStakedInUsd = useTotalStakedInUsd({
+    currencyA,
+    currencyB,
+    poolToken0Amount: info?.poolToken0Amounts,
+    poolToken1Amount: info?.poolToken1Amounts,
+    token0PriceUSD: tokensPriceUSD?.token0,
+    token1PriceUSD: tokensPriceUSD?.token1,
+  })
+
+  const apr = useApr({
+    currencyA,
+    currencyB,
+    poolToken0Amount: info?.poolToken0Amounts,
+    poolToken1Amount: info?.poolToken1Amounts,
+    token0PriceUSD: tokensPriceUSD?.token0,
+    token1PriceUSD: tokensPriceUSD?.token1,
+    rewardPerSecond,
+    earningToken,
+    avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
+    avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
+    rewardEndTime: endTimestamp,
+  })
+
+  const staked0Amount = info?.userToken0Amounts
+    ? CurrencyAmount.fromRawAmount(currencyA, info.userToken0Amounts)
+    : undefined
+  const staked1Amount = info?.userToken1Amounts
+    ? CurrencyAmount.fromRawAmount(currencyB, info.userToken0Amounts)
+    : undefined
+  const totalAssetsInUsd = useTotalAssetInUsd(
+    staked0Amount,
+    staked1Amount,
+    tokensPriceUSD?.token0,
+    tokensPriceUSD?.token1,
+  )
+
+  useEffect(() => {
+    updatePositionMangerDetailsData(id, {
+      apr: apr ? Number(apr) : 0,
+      earned: earningUsdValue,
+      totalStaked: totalStakedInUsd,
+      isUserStaked: totalAssetsInUsd > 0,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apr, earningUsdValue, totalStakedInUsd, id])
 
   return (
     <DuoTokenVaultCard

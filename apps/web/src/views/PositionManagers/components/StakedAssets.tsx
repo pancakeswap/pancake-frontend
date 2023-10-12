@@ -6,6 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
 import { styled } from 'styled-components'
+import { useTotalAssetInUsd } from '../hooks'
 
 const Title = styled(Text).attrs({
   bold: true,
@@ -41,12 +42,7 @@ export const StakedAssets = memo(function StakedAssets({
 }: StakedAssetsProps) {
   const { t } = useTranslation()
 
-  const totalAssetsInUsd = useMemo(() => {
-    return (
-      Number(formatAmount(staked0Amount)) * (token0PriceUSD ?? 0) +
-      Number(formatAmount(staked1Amount)) * (token1PriceUSD ?? 0)
-    )
-  }, [staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD])
+  const totalAssetsInUsd = useTotalAssetInUsd(staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD)
 
   return (
     <>
