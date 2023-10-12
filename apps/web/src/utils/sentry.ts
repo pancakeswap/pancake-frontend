@@ -45,6 +45,7 @@ export const isUserRejected = (err) => {
       return isUserRejected(err.cause)
     }
   }
+  if (err.message.includes('Cannot read properties of undefined')) return true
   return false
 }
 
