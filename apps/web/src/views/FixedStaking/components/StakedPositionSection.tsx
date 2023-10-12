@@ -196,7 +196,7 @@ export function StakedPositionSection({
       >
         {(openClaimModal) =>
           shouldUnlock ? (
-            <Button height="auto" onClick={openClaimModal}>
+            <Button disabled height="auto" onClick={openClaimModal}>
               {t('Claim')}
             </Button>
           ) : null
@@ -218,8 +218,9 @@ export function StakedPositionSection({
             poolIndex={poolIndex}
             lastDayAction={stakePositionUserInfo.lastDayAction}
           >
-            {(openUnstakeModal, notAllowWithdrawal) => (
-              <IconButton disabled={notAllowWithdrawal} variant="secondary" onClick={openUnstakeModal} mr="6px">
+            {(openUnstakeModal) => (
+              /* disabled={notAllowWithdrawal} */
+              <IconButton disabled variant="secondary" onClick={openUnstakeModal} mr="6px">
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
             )}
@@ -233,7 +234,8 @@ export function StakedPositionSection({
             initialLockPeriod={lockPeriod}
           >
             {(openModal) => (
-              <IconButton disabled={currentDay + lockPeriod > poolEndDay} variant="secondary" onClick={openModal}>
+              /* disabled=currentDay + lockPeriod > poolEndDay */
+              <IconButton disabled variant="secondary" onClick={openModal}>
                 <AddIcon color="primary" width="14px" />
               </IconButton>
             )}

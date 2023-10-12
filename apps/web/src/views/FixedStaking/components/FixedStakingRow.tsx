@@ -168,7 +168,11 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                       stakingToken={pool.token}
                       stakedPositions={stakedPositions}
                     >
-                      {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
+                      {(openModal) => (
+                        <Button onClick={openModal} disabled>
+                          {t('Stake')}
+                        </Button>
+                      )}
                     </FixedStakingModal>
                   </LightGreyCard>
                 </ActionContainer>
