@@ -35,7 +35,7 @@ export const VaultCards = memo(function VaultCards() {
     })
     .filter((d) => {
       if (search) {
-        return d.name.toLowerCase().includes(search.toLowerCase())
+        return `${d.currencyA.symbol}-${d.currencyB.symbol}${d.name}`.toLowerCase().includes(search.toLowerCase())
       }
       return true
     })
