@@ -74,7 +74,7 @@ export default function RemoveLiquidityV3() {
     }
   }, [tokenId])
 
-  return <Remove tokenId={parsedTokenId} />
+  return parsedTokenId ? <Remove tokenId={parsedTokenId} /> : null
 }
 
 function Remove({ tokenId }: { tokenId: bigint }) {
