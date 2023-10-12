@@ -600,4 +600,4 @@ export const nftxZapAbi = [
     stateMutability: 'payable',
     type: 'receive',
   },
-]
+] as const

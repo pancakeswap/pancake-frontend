@@ -10,10 +10,10 @@ import {
   computePoolAddress,
   encodeSqrtRatioX96,
   nearestUsableTick,
+  v3PoolAbi,
 } from '@pancakeswap/v3-sdk'
 import { getPermit2Address, getUniversalRouterAddress } from '../../src'
 import { Provider, getPublicClient } from './clients'
-import { v3PoolAbi } from './constants/abi'
 import { V2_FACTORY_ADDRESSES } from './constants/addresses'
 import { BUSD, CAKE, ETHER, USDC, USDT, WETH9 } from './constants/tokens'
 

@@ -2527,4 +2527,4 @@ export const elementAbi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const

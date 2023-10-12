@@ -239,4 +239,4 @@ export const nft20Abi = [
     stateMutability: 'payable',
     type: 'receive',
   },
-]
+] as const

@@ -1921,4 +1921,4 @@ export const looksRareV2Abi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const

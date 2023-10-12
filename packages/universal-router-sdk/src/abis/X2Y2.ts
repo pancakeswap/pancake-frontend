@@ -1083,4 +1083,4 @@ export const x2y2Abi = [
     stateMutability: 'payable',
     type: 'receive',
   },
-]
+] as const

@@ -219,4 +219,4 @@ export const erc20Abi = [
     name: 'Transfer',
     type: 'event',
   },
-]
+] as const

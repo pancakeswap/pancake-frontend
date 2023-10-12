@@ -2592,4 +2592,4 @@ export const seaportAbi = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-]
+] as const

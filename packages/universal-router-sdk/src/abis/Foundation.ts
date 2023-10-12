@@ -1578,4 +1578,4 @@ export const foundationAb = [
     stateMutability: 'payable',
     type: 'receive',
   },
-]
+] as const
