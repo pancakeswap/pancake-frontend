@@ -308,7 +308,7 @@ async function addMixedSwap(
         const isFirstSection = i == 0
         const isLastSection = i === sections.length - 1
 
-        const nextIsV2 = nextSection.every(SmartRouter.isV2Pool)
+        const nextIsV2 = nextSection.length && nextSection.every(SmartRouter.isV2Pool)
 
         const getRecipient = (): Address => {
           if (isLastSection) return recipient
