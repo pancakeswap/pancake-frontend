@@ -55,7 +55,6 @@ interface Props {
   token1PriceUSD?: number
   pendingReward: bigint | undefined
   userVaultPercentage?: Percent
-  lpAddress: Address
   vaultAddress: Address
   managerInfoUrl: string
   strategyInfoUrl: string
@@ -94,7 +93,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   token1PriceUSD,
   pendingReward,
   userVaultPercentage,
-  lpAddress,
+
   vaultAddress,
   managerInfoUrl,
   strategyInfoUrl,
@@ -186,7 +185,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           <VaultLinks
             mt="0.5em"
             manager={manager}
-            lpAddress={lpAddress}
             vaultAddress={vaultAddress}
             managerAddress={contractAddress}
             managerInfoUrl={managerInfoUrl}

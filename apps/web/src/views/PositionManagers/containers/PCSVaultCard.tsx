@@ -15,6 +15,7 @@ import {
   usePositionInfo,
   useApr,
   useTotalAssetInUsd,
+  useTokenPriceFromSubgraph,
 } from '../hooks'
 
 interface Props {
@@ -67,14 +68,18 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       enabled: !!adapterContract,
     },
   ).data
+  const priceFromSubgraph = useTokenPriceFromSubgraph(
+    priceFromV3FarmPid ? undefined : currencyA.isToken ? currencyA.address.toLowerCase() : undefined,
+    priceFromV3FarmPid ? undefined : currencyB.isToken ? currencyB.address.toLowerCase() : undefined,
+  )
 
   const info = usePositionInfo(address, adapterAddress ?? '0x')
 
   const tokensPriceUSD = useMemo(() => {
     const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
-    if (!farm) return undefined
+    if (!farm) return priceFromSubgraph
     return { token0: Number(farm.tokenPriceBusd), token1: Number(farm.quoteTokenPriceBusd) }
-  }, [farmsV3, priceFromV3FarmPid])
+  }, [farmsV3, priceFromV3FarmPid, priceFromSubgraph])
 
   const managerInfo = useMemo(
     () => ({
@@ -88,7 +93,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     const { isLoading, data } = aprDataList
     return {
       isLoading,
-      info: data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === lpAddress.toLowerCase()),
+      info: data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === lpAddress?.toLowerCase()),
     }
   }, [lpAddress, aprDataList])
 
@@ -165,7 +170,6 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       poolToken1Amount={info?.poolToken1Amounts}
       pendingReward={info?.pendingReward}
       userVaultPercentage={info?.userVaultPercentage}
-      lpAddress={lpAddress}
       vaultAddress={adapterAddress ?? '0x'}
       managerInfoUrl={managerInfoUrl}
       strategyInfoUrl={strategyInfoUrl}

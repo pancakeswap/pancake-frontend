@@ -24,7 +24,6 @@ const LinkContainer = styled(Flex)`
 
 interface Props extends SpaceProps, FlexProps {
   layout?: 'row' | 'column'
-  lpAddress: Address
   vaultAddress: Address
   managerInfoUrl: string
   strategyInfoUrl: string
@@ -40,7 +39,6 @@ const LinkSupportChains = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export const VaultLinks = memo(function VaultLinks({
   layout = 'column',
-  // lpAddress,
   managerInfoUrl,
   strategyInfoUrl,
   projectVaultUrl,
