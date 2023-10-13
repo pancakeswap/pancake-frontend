@@ -19,6 +19,7 @@ interface AprProps {
   token1PriceUSD?: number
   earningToken: Currency
   rewardEndTime: number
+  rewardStartTime: number
 }
 
 const ONE_YEAR = 365
@@ -35,10 +36,14 @@ export const useApr = ({
   avgToken1Amount,
   earningToken,
   rewardEndTime,
+  rewardStartTime,
 }: AprProps): string => {
   const cakePriceBusd = useCakePrice()
 
-  const isRewardEnded = useMemo(() => Date.now() / 1000 >= rewardEndTime, [rewardEndTime])
+  const isInRewardDateRange = useMemo(
+    () => Date.now() / 1000 < rewardEndTime && Date.now() / 1000 >= rewardStartTime,
+    [rewardEndTime, rewardStartTime],
+  )
 
   const totalStakedInUsd = useTotalStakedInUsd({
     currencyA,
@@ -63,7 +68,7 @@ export const useApr = ({
   }, [avgToken0Amount, avgToken1Amount, currencyA, currencyB, token0PriceUSD, token1PriceUSD, totalStakedInUsd])
 
   const cakeYieldApr = useMemo(() => {
-    if (isRewardEnded) {
+    if (!isInRewardDateRange) {
       return BIG_ZERO
     }
 
@@ -72,7 +77,7 @@ export const useApr = ({
       .times(cakePriceBusd)
       .div(totalStakedInUsd)
       .times(100)
-  }, [isRewardEnded, earningToken, rewardPerSecond, cakePriceBusd, totalStakedInUsd])
+  }, [isInRewardDateRange, earningToken, rewardPerSecond, cakePriceBusd, totalStakedInUsd])
 
   const totalApr = useMemo(() => cakeYieldApr.plus(totalLpApr), [cakeYieldApr, totalLpApr])
 

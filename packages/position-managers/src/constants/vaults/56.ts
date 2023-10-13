@@ -30,12 +30,13 @@ export const vaults: VaultConfig[] = [
     managerInfoUrl: 'https://google.com/',
     strategyInfoUrl: 'https://google.com/',
     projectVaultUrl: 'https://google.com/',
-    endTimestamp: 1735686000,
+    endTimestamp: 1696941000,
+    startTimestamp: 1696912200,
   },
   {
     id: 2,
     name: 'ICHI',
-    address: '0xF7B31BFECBA26C7F6097B3431A1a06a93F9805a2',
+    address: '0x8642877b9db26e0F6ef62f35e1f914A8db4bf223',
     adapterAddress: '0xF7B31BFECBA26C7F6097B3431A1a06a93F9805a2',
     lpAddress: '0x36696169C63e42cd08ce11f5deeBbCeBae652050',
     rewardPerSecond: '100000000000000',
@@ -57,6 +58,7 @@ export const vaults: VaultConfig[] = [
     strategyInfoUrl: 'https://google.com/',
     projectVaultUrl: 'https://google.com/',
     endTimestamp: 1735686000,
+    startTimestamp: 1735603200,
   },
   {
     id: 3,
@@ -83,6 +85,7 @@ export const vaults: VaultConfig[] = [
     strategyInfoUrl: 'https://google.com/',
     projectVaultUrl: 'https://google.com/',
     endTimestamp: 1735686000,
+    startTimestamp: 1735603200,
   },
   {
     id: 4,
@@ -109,6 +112,7 @@ export const vaults: VaultConfig[] = [
     strategyInfoUrl: 'https://google.com/',
     projectVaultUrl: 'https://google.com/',
     endTimestamp: 1735686000,
+    startTimestamp: 1735603200,
   },
   {
     id: 5,
@@ -133,6 +137,7 @@ export const vaults: VaultConfig[] = [
     strategyInfoUrl: 'https://google.com/',
     projectVaultUrl: 'https://google.com/',
     endTimestamp: 1735686000,
+    startTimestamp: 1735603200,
   },
   {
     id: 6,
@@ -157,5 +162,6 @@ export const vaults: VaultConfig[] = [
     strategyInfoUrl: 'https://google.com/',
     projectVaultUrl: 'https://google.com/',
     endTimestamp: 1735686000,
+    startTimestamp: 1735603200,
   },
 ]

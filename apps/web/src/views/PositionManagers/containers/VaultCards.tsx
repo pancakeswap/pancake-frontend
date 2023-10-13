@@ -24,7 +24,6 @@ export const VaultCards = memo(function VaultCards() {
   const { data: positionMangerDetailsData, updateData: updatePositionMangerDetailsData } =
     usePositionManagerDetailsData()
   const aprDataList = useFetchApr()
-  console.log('aprDataList', aprDataList)
   const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster()
 
   const cards = configs
@@ -42,9 +41,11 @@ export const VaultCards = memo(function VaultCards() {
     })
     .filter((d) => {
       if (status === PositionManagerStatus.FINISHED) {
-        return d.endTimestamp <= Date.now() / 1000
+        return false
+        // return d.endTimestamp <= Date.now() / 1000
       }
-      return d.endTimestamp > Date.now() / 1000
+      return true
+      // return d.endTimestamp > Date.now() / 1000
     })
     .sort((a, b) => {
       if (sortBy === 'apr') {

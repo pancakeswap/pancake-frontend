@@ -55,6 +55,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     projectVaultUrl,
     rewardPerSecond,
     endTimestamp,
+    startTimestamp,
   } = vault
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
@@ -120,6 +121,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
     avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
     rewardEndTime: endTimestamp,
+    rewardStartTime: startTimestamp,
   })
 
   const staked0Amount = info?.userToken0Amounts

@@ -117,6 +117,7 @@ export interface DuoTokenVault {
   strategyInfoUrl: string
   projectVaultUrl?: string
   endTimestamp: number
+  startTimestamp: number
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {
