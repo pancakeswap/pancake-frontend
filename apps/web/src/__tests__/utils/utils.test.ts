@@ -77,10 +77,10 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[4] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[3] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[4].items?.[2])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items?.[1])
   })
 
   it('should return undefined if item is not found', () => {
@@ -99,10 +99,10 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[4] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[3] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[4].items?.[2])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items?.[1])
   })
 
   it.todo('should return items with supportChainId')

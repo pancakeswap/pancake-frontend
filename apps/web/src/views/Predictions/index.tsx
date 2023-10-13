@@ -3,7 +3,6 @@ import { useEffect, useRef } from 'react'
 import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { PredictionsChartView } from 'state/types'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
-import { styled } from 'styled-components'
 import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
 import { PredictionSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
@@ -16,20 +15,6 @@ import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
 import usePollPredictions from './hooks/usePollPredictions'
 import Mobile from './Mobile'
-
-const Decorations = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url(/images/pottery/bg-star.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  pointer-events: none;
-  opacity: 0.2;
-`
 
 function Warnings() {
   const [showDisclaimer] = useUserPredictionChartDisclaimerShow()
@@ -74,7 +59,6 @@ const Predictions = () => {
       <RiskDisclaimer />
       <SwiperProvider>
         <Container>
-          <Decorations />
           {isDesktop ? <Desktop /> : <Mobile />}
           <CollectWinningsPopup />
         </Container>

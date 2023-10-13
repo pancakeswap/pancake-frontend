@@ -23,7 +23,6 @@ import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import { ThirdYearBirthdayCake } from 'views/Home/components/ThirdYearBirthdayCake'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import Menu from '../components/Menu'
@@ -140,7 +139,6 @@ type NextPageWithLayout = NextPage & {
    * */
   chains?: number[]
   isShowScrollToTopButton?: true
-  isShowThirdYearButton?: false
   /**
    * Meta component for page, hacky solution for static build page to avoid `PersistGate` which blocks the page from rendering
    */
@@ -162,7 +160,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
-  const isShowThirdYearButton = Component.isShowThirdYearButton || false
 
   return (
     <ProductionErrorBoundary>
@@ -177,7 +174,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
-      {isShowThirdYearButton && <ThirdYearBirthdayCake />}
     </ProductionErrorBoundary>
   )
 }
