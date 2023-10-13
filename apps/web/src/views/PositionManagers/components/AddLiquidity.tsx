@@ -3,7 +3,17 @@ import { styled } from 'styled-components'
 import { MANAGER } from '@pancakeswap/position-managers'
 import { Address } from 'viem'
 import { Currency, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, Flex, ModalV2, RowBetween, Text, useToast, LinkExternal, Skeleton } from '@pancakeswap/uikit'
+import {
+  Button,
+  Flex,
+  ModalV2,
+  RowBetween,
+  Text,
+  useToast,
+  LinkExternal,
+  Skeleton,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { CurrencyInput } from 'components/CurrencyInput'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -188,6 +198,37 @@ export const AddLiquidity = memo(function AddLiquidity({
     return amountA.equalTo('0') || amountB.equalTo('0') || balanceAmountMoreThenValueA || balanceAmountMoreThenValueB
   }, [allowDepositToken0, allowDepositToken1, amountA, amountB, userCurrencyBalances])
 
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <>
+      <Text>
+        {t('Combined APR')}:{' '}
+        <Text style={{ display: 'inline-block' }} bold>
+          {`${apr.combinedApr}%`}
+        </Text>
+      </Text>
+      <ul>
+        <li>
+          {t('CAKE APR')}:{' '}
+          <Text style={{ display: 'inline-block' }} bold>
+            {`${apr.cakeYieldApr}%`}
+          </Text>
+        </li>
+        <li>
+          {t('LP APR')}:{' '}
+          <Text style={{ display: 'inline-block' }} bold>
+            {apr.lpApr}%
+          </Text>
+        </li>
+        <Text lineHeight="120%" mt="20px">
+          {t('Calculated based on previous 7 days average data.')}
+        </Text>
+      </ul>
+    </>,
+    {
+      placement: 'top',
+    },
+  )
+
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={t('Add Liquidity')}>
@@ -232,8 +273,11 @@ export const AddLiquidity = memo(function AddLiquidity({
           </RowBetween> */}
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>
-            {apr && !aprDataInfo.isLoading ? (
-              <Text color="text">{`${apr}%`}</Text>
+            {apr.combinedApr && !aprDataInfo.isLoading ? (
+              <Text color="text" ref={targetRef}>
+                {`${apr.combinedApr}%`}
+                {tooltipVisible && tooltip}
+              </Text>
             ) : (
               <Skeleton width={50} height={20} />
             )}

@@ -139,7 +139,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
 
   useEffect(() => {
     updatePositionMangerDetailsData(id, {
-      apr: apr ? Number(apr) : 0,
+      apr: apr ? Number(apr.combinedApr) : 0,
       earned: earningUsdValue,
       totalStaked: totalStakedInUsd,
       isUserStaked: totalAssetsInUsd > 0,

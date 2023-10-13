@@ -22,6 +22,12 @@ interface AprProps {
   rewardStartTime: number
 }
 
+export interface AprResult {
+  combinedApr: string
+  lpApr: string
+  cakeYieldApr: string
+}
+
 const ONE_YEAR = 365
 
 export const useApr = ({
@@ -37,7 +43,7 @@ export const useApr = ({
   earningToken,
   rewardEndTime,
   rewardStartTime,
-}: AprProps): string => {
+}: AprProps): AprResult => {
   const cakePriceBusd = useCakePrice()
 
   const isInRewardDateRange = useMemo(
@@ -81,5 +87,9 @@ export const useApr = ({
 
   const totalApr = useMemo(() => cakeYieldApr.plus(totalLpApr), [cakeYieldApr, totalLpApr])
 
-  return !totalApr.isNaN() ? totalApr.toFixed(2) ?? '-' : ''
+  return {
+    combinedApr: !totalApr.isNaN() ? totalApr.toFixed(2) ?? '-' : '',
+    lpApr: !totalLpApr.isNaN() ? totalLpApr.toFixed(2) ?? '-' : '',
+    cakeYieldApr: !cakeYieldApr.isNaN() ? cakeYieldApr.toFixed(2) ?? '-' : '',
+  }
 }
