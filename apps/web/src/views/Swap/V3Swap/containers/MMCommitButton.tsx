@@ -9,7 +9,7 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { isChainSupported } from 'utils/wagmi'
-import { UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
+import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
 import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButton'
 import { useAccount, useChainId } from 'wagmi'
 import usePermit2Allowance from 'hooks/usePermit2Allowance'
@@ -51,7 +51,7 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
   const allowance = usePermit2Allowance(
     mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
     undefined,
-    isChainSupported(chainId) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined,
+    isChainSupported(chainId) ? getUniversalRouterAddress(chainId) : undefined,
   )
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change

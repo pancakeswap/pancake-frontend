@@ -1,7 +1,6 @@
 import { TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
-  PoolType,
   RouteType,
   SmartRouter,
   SmartRouterTrade,
@@ -12,9 +11,9 @@ import {
 import { Address } from 'viem'
 import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
-import { CommandType, RoutePlanner } from '../../utils/routerCommands'
-import { ABIParametersType, AnyTradeType, PancakeSwapOptions } from '../../utils/types'
+import { ABIParametersType, CommandType, RoutePlanner } from '../../utils/routerCommands'
 import { Command, RouterTradeType, TradeConfig } from '../Command'
+import { AnyTradeType, PancakeSwapOptions } from '../types'
 
 // Wrapper for pancakeswap router-sdk trade entity to encode swaps for Universal Router
 // also translates trade objects from previous (v2, v3) SDKs
@@ -59,32 +58,11 @@ export class PancakeSwapTrade implements Command {
 
     for (const trade of trades) {
       if (trade.routes.length === 1 && trade.routes[0].type === RouteType.V2) {
-        addV2Swap(
-          planner,
-          trade as SmartRouterTrade<TradeType>,
-          this.options,
-          routerMustCustody,
-          payerIsUser,
-          performAggregatedSlippageCheck,
-        )
+        addV2Swap(planner, trade, this.options, routerMustCustody, payerIsUser, performAggregatedSlippageCheck)
       } else if (trade.routes.every((r) => r.type === RouteType.V3)) {
-        addV3Swap(
-          planner,
-          trade as SmartRouterTrade<TradeType>,
-          this.options,
-          routerMustCustody,
-          payerIsUser,
-          performAggregatedSlippageCheck,
-        )
+        addV3Swap(planner, trade, this.options, routerMustCustody, payerIsUser, performAggregatedSlippageCheck)
       } else {
-        addMixedSwap(
-          planner,
-          trade as SmartRouterTrade<TradeType>,
-          this.options,
-          payerIsUser,
-          routerMustCustody,
-          performAggregatedSlippageCheck,
-        )
+        addMixedSwap(planner, trade, this.options, payerIsUser, routerMustCustody, performAggregatedSlippageCheck)
       }
     }
     // const ZERO_OUT: CurrencyAmount<Currency> = CurrencyAmount.fromRawAmount(sampleTrade.outputAmount.currency, 0)
@@ -152,10 +130,14 @@ function addV2Swap(
   // V2 trade should have only one route
   const route = trade.routes[0]
   const path = route.path.map((token) => token.wrapped.address)
-  const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
+  const recipient = routerMustCustody
+    ? ROUTER_AS_RECIPIENT
+    : typeof options.recipient === 'undefined'
+    ? SENDER_AS_RECIPIENT
+    : validateAndParseAddress(options.recipient)
 
   // same as encodeV2Swap only we dont return calldatas instead we push to the command planner
-  if (trade.tradeType == TradeType.EXACT_INPUT) {
+  if (trade.tradeType === TradeType.EXACT_INPUT) {
     planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [
       // if native, we have to unwrap so keep in the router for now
       recipient,
@@ -164,7 +146,7 @@ function addV2Swap(
       path,
       payerIsUser,
     ])
-  } else if (trade.tradeType == TradeType.EXACT_OUTPUT) {
+  } else if (trade.tradeType === TradeType.EXACT_OUTPUT) {
     planner.addCommand(CommandType.V2_SWAP_EXACT_OUT, [recipient, amountOut, amountIn, path, payerIsUser])
   }
 }
@@ -190,7 +172,11 @@ async function addV3Swap(
     const amountIn = BigInt(SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient.toString())
     const amountOut = BigInt(SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient.toString())
 
-    const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
+    const recipient = routerMustCustody
+      ? ROUTER_AS_RECIPIENT
+      : typeof options.recipient === 'undefined'
+      ? SENDER_AS_RECIPIENT
+      : validateAndParseAddress(options.recipient)
 
     // similar to encodeV3Swap only we dont need to add a case for signle hop. by using ecodeMixedRoutePath
     // we can get the parthStr for all cases
@@ -235,7 +221,11 @@ async function addMixedSwap(
     // flag for whether the trade is single hop or not
     const singleHop = pools.length === 1
 
-    const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
+    const recipient = routerMustCustody
+      ? ROUTER_AS_RECIPIENT
+      : typeof options.recipient === 'undefined'
+      ? SENDER_AS_RECIPIENT
+      : validateAndParseAddress(options.recipient)
 
     const mixedRouteIsAllV3 = (r: Omit<BaseRoute, 'input' | 'output'>) => {
       return r.pools.every(SmartRouter.isV3Pool)
@@ -305,7 +295,7 @@ async function addMixedSwap(
       for (let i = 0; i < sections.length; i++) {
         const section = sections[i]
         const nextSection = sections[i + 1] ?? []
-        const isFirstSection = i == 0
+        const isFirstSection = i === 0
         const isLastSection = i === sections.length - 1
 
         const nextIsV2 = nextSection.length && nextSection.every(SmartRouter.isV2Pool)
@@ -320,7 +310,7 @@ async function addMixedSwap(
           return ROUTER_AS_RECIPIENT
         }
 
-        /// Now, we get output of this section
+        // Now, we get output of this section
         outputToken = SmartRouter.getOutputOfPools(section, inputToken)
         const newRoute = SmartRouter.buildBaseRoute([...section], inputToken, outputToken)
         inputToken = outputToken.wrapped

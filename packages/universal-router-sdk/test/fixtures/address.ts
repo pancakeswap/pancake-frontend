@@ -10,12 +10,12 @@ import {
   computePoolAddress,
   encodeSqrtRatioX96,
   nearestUsableTick,
+  v3PoolAbi,
 } from '@pancakeswap/v3-sdk'
-import { CAKE, ETHER, USDC, USDT, WETH9, BUSD } from './constants/tokens'
-import { V2_FACTORY_ADDRESSES } from './constants/addresses'
+import { getPermit2Address, getUniversalRouterAddress } from '../../src'
 import { Provider, getPublicClient } from './clients'
-import { PERMIT2_ADDRESS, UNIVERSAL_ROUTER_ADDRESS } from '../../src'
-import { v3PoolAbi } from './constants/abi'
+import { V2_FACTORY_ADDRESSES } from './constants/addresses'
+import { BUSD, CAKE, ETHER, USDC, USDT, WETH9 } from './constants/tokens'
 
 const fixtureTokensAddresses = (chainId: ChainId) => {
   return {
@@ -167,7 +167,8 @@ const fixturePool = ({
 
 export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => {
   const tokens = fixtureTokensAddresses(chainId)
-  const { ETHER, USDC, USDT, WETH, CAKE } = tokens
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const { USDC, USDT, WETH } = tokens
 
   const v2Pairs = {
     WETH_USDC_V2: await getPair(WETH, USDC, liquidity)(getPublicClient),
@@ -186,8 +187,8 @@ export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => 
     ),
   }
 
-  const UNIVERSAL_ROUTER = UNIVERSAL_ROUTER_ADDRESS(chainId)
-  const PERMIT2 = PERMIT2_ADDRESS(chainId)
+  const UNIVERSAL_ROUTER = getUniversalRouterAddress(chainId)
+  const PERMIT2 = getPermit2Address(chainId)
 
   return {
     ...tokens,

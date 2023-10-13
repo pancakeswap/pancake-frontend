@@ -48,10 +48,9 @@
     "@pancakeswap/permit2-sdk": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
-    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "abitype": "^0.9.8",
     "tiny-invariant": "^1.1.0",
-    "viem": "^1.10.9"
+    "viem": "^1.15.1"
   }
 }

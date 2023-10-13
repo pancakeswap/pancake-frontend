@@ -1,4 +1,4 @@
-export { PancakeUniversalSwapRouter } from './SwapRouterPancake'
+export { PancakeSwapUniversalRouter } from './SwapRouterPancake'
 export * from './entities'
-export * from './utils/types'
-export { UNIVERSAL_ROUTER_ADDRESS, PERMIT2_ADDRESS, ROUTER_AS_RECIPIENT, WETH_ADDRESS } from './utils/constants'
+export * from './entities/types'
+export { getUniversalRouterAddress, getPermit2Address, ROUTER_AS_RECIPIENT } from './utils/constants'

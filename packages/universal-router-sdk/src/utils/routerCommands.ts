@@ -1,5 +1,8 @@
 import { Hex, encodeAbiParameters, parseAbiParameters } from 'viem'
-import { ABIParametersType } from './types'
+import { AbiParametersToPrimitiveTypes } from 'abitype'
+
+export type ABIType = typeof ABI_PARAMETER
+export type ABIParametersType<TCommandType extends CommandUsed> = AbiParametersToPrimitiveTypes<ABIType[TCommandType]>
 
 /**
  * CommandTypes
@@ -221,6 +224,7 @@ export class RoutePlanner {
       if (!REVERTIBLE_COMMANDS.has(command.type)) {
         throw new Error(`command type: ${command.type} cannot be allowed to revert`)
       }
+      // eslint-disable-next-line no-bitwise
       command.type |= ALLOW_REVERT_FLAG
     }
 

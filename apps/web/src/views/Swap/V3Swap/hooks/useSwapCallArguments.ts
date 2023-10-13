@@ -4,8 +4,8 @@ import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 import {
-  PancakeUniversalSwapRouter,
-  UNIVERSAL_ROUTER_ADDRESS,
+  PancakeSwapUniversalRouter,
+  getUniversalRouterAddress,
   Permit2Signature,
 } from '@pancakeswap/universal-router-sdk'
 import { safeGetAddress } from 'utils'
@@ -50,14 +50,14 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    const methodParameters = PancakeUniversalSwapRouter.swapERC20CallParameters(trade, {
+    const methodParameters = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, {
       fee: feeOptions,
       recipient,
       inputTokenPermit: permitSignature,
       slippageTolerance: allowedSlippage,
       deadlineOrPreviousBlockhash: deadline?.toString(),
     })
-    const swapRouterAddress = UNIVERSAL_ROUTER_ADDRESS(chainId)
+    const swapRouterAddress = getUniversalRouterAddress(chainId)
     if (!swapRouterAddress) return []
     return [
       {
