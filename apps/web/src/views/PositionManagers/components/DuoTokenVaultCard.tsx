@@ -65,6 +65,7 @@ interface Props {
     isLoading: boolean
   }
   rewardEndTime: number
+  rewardStartTime: number
   refetch?: () => void
 }
 
@@ -102,6 +103,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   aprDataInfo,
   rewardEndTime,
   refetch,
+  rewardStartTime,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -115,6 +117,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
     avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
     rewardEndTime,
+    rewardStartTime,
   })
 
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
@@ -168,6 +171,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           aprDataInfo={aprDataInfo}
           rewardEndTime={rewardEndTime}
           refetch={refetch}
+          rewardStartTime={rewardStartTime}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

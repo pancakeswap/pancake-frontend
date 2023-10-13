@@ -179,6 +179,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       rewardPerSecond={rewardPerSecond}
       aprDataInfo={aprDataInfo}
       rewardEndTime={endTimestamp}
+      rewardStartTime={startTimestamp}
       refetch={info?.refetchPositionInfo}
     >
       {id}

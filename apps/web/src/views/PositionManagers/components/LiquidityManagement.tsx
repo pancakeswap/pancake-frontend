@@ -47,6 +47,7 @@ interface Props {
     isLoading: boolean
   }
   rewardEndTime: number
+  rewardStartTime: number
   refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
@@ -79,6 +80,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   rewardPerSecond,
   aprDataInfo,
   rewardEndTime,
+  rewardStartTime,
   refetch,
 }: Props) {
   const { t } = useTranslation()
@@ -158,6 +160,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         aprDataInfo={aprDataInfo}
         rewardEndTime={rewardEndTime}
         refetch={refetch}
+        rewardStartTime={rewardStartTime}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

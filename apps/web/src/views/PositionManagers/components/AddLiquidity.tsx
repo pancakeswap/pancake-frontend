@@ -56,6 +56,7 @@ interface Props {
     isLoading: boolean
   }
   rewardEndTime: number
+  rewardStartTime: number
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
 }
 
@@ -85,6 +86,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   earningToken,
   aprDataInfo,
   rewardEndTime,
+  rewardStartTime,
   refetch,
   onDismiss,
 }: Props) {
@@ -163,6 +165,7 @@ export const AddLiquidity = memo(function AddLiquidity({
     avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
     avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
     rewardEndTime,
+    rewardStartTime,
   })
 
   const displayBalanceText = useCallback(
