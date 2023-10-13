@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, FlexLayout, Heading, Message, MessageText, PageHeader, ToggleView, ViewMode } from '@pancakeswap/uikit'
+import { Flex, FlexLayout, Heading, PageHeader, ToggleView, ViewMode } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 import Page from 'components/Layout/Page'
 import { useMemo, useState } from 'react'
@@ -75,12 +75,6 @@ const FixedStaking = () => {
         </Flex>
       </PageHeader>
       <Page title={t('Pools')}>
-        <Message variant="warning" mb="16px">
-          <MessageText>
-            Simple staking deposits and withdrawals are currently paused due to technical difficulties. Current user
-            funds are not affected and staking positions are safe and locked.
-          </MessageText>
-        </Message>
         <Flex mb="24px">
           <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
         </Flex>
