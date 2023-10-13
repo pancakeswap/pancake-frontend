@@ -9,7 +9,7 @@ import { RoutePlanner } from './utils/routerCommands'
 import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
 import { UniversalRouterABI } from './abis/UniversalRouter'
 
-export abstract class PancakeswapUniversalRouter {
+export abstract class PancakeSwapUniversalRouter {
   /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trades to produce call parameters for
@@ -38,7 +38,7 @@ export abstract class PancakeswapUniversalRouter {
       : 0n
 
     trade.encode(planner, { allowRevert: false })
-    return PancakeswapUniversalRouter.encodePlan(planner, nativeCurrencyValue, {
+    return PancakeSwapUniversalRouter.encodePlan(planner, nativeCurrencyValue, {
       deadline: options.deadlineOrPreviousBlockhash
         ? BigInt(options.deadlineOrPreviousBlockhash.toString())
         : undefined,

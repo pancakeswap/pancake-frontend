@@ -21,7 +21,7 @@ const PERMIT2_ADDRESSES: { [key: number]: Address } = {
 }
 
 export const getPermit2Address = (chainId: ChainId | undefined): Address => {
-  if (chainId === undefined) return PERMIT2_ADDRESSES[56]
+  if (chainId === undefined) return PERMIT2_ADDRESSES[ChainId.BSC]
   if (!(chainId in PERMIT2_ADDRESSES)) throw new Error(`Universal Router not deployed on chain ${chainId}`)
   return PERMIT2_ADDRESSES[chainId]
 }

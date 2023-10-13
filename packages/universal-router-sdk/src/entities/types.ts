@@ -17,8 +17,3 @@ export type SwapRouterConfig = {
 export type PancakeSwapOptions = Omit<SwapOptions, 'inputTokenPermit'> & {
   inputTokenPermit?: Permit2Signature
 }
-
-export type ChainConfig = {
-  router: Address
-  permit2Address: Address
-}

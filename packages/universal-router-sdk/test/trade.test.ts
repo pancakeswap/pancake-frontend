@@ -15,7 +15,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { parseEther, parseUnits, Address, WalletClient, zeroAddress, isHex, stringify } from 'viem'
 import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
 import { getPublicClient, getWalletClient } from './fixtures/clients'
-import { PancakeswapUniversalRouter } from '../src'
+import { PancakeSwapUniversalRouter } from '../src'
 import { PancakeSwapOptions, Permit2Signature } from '../src/entities/types'
 import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
 import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
@@ -87,7 +87,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV2Trade(v2Trade, [v2Pool])
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -114,7 +114,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         fee: feeOptions,
       })
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -142,7 +142,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV2Trade(v2Trade, v2Pools)
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -174,7 +174,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       }
       const options = swapOptions({ fee: feeOptions })
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -195,7 +195,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV2Trade(v2Trade, [v2Pool])
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -222,7 +222,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         fee: feeOptions,
       })
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -253,7 +253,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         inputTokenPermit: permit2Permit,
       })
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -284,7 +284,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         inputTokenPermit: permit2Permit,
       })
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -312,7 +312,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV2Trade(v2Trade, v2Pools)
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -333,7 +333,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV2Trade(v2Trade, [v2Pool])
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).not.toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -354,7 +354,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV2Trade(v2Trade, [v2Pool])
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -374,7 +374,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV3Trade(v3Trade, [v3Pool])
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -398,7 +398,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         fee: feeOptions,
       })
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -415,7 +415,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV3Trade(v3Trade, [v3Pool])
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -438,7 +438,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         fee: feeOptions,
       })
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -464,7 +464,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         inputTokenPermit: permit2Permit,
       })
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -481,7 +481,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV3Trade(v3Trade, v3Pool)
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -498,7 +498,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV3Trade(v3Trade, [v3Pool])
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).not.toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -515,7 +515,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV3Trade(v3Trade, [v3Pool])
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -532,7 +532,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV3Trade(v3Trade, v3Pool)
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).not.toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -549,7 +549,7 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV3Trade(v3Trade, v3Pool)
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -568,7 +568,7 @@ describe('PancakeSwap Universal Router Trade', () => {
 
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -586,7 +586,7 @@ describe('PancakeSwap Universal Router Trade', () => {
 
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -604,7 +604,7 @@ describe('PancakeSwap Universal Router Trade', () => {
 
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -622,7 +622,7 @@ describe('PancakeSwap Universal Router Trade', () => {
 
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -667,7 +667,7 @@ describe('PancakeSwap Universal Router Trade', () => {
         gasEstimateInUSD: CurrencyAmount.fromRawAmount(ETHER, amountIn),
       }
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
       expect(BigInt(value)).toEqual(amountIn * 2n)
       expect(calldata).toMatchSnapshot()
     })
@@ -722,7 +722,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
 
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -741,7 +741,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
 
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -760,7 +760,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
 
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -778,7 +778,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       )
       const options = swapOptions({})
 
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -828,7 +828,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
         gasEstimate: 0n,
         gasEstimateInUSD: CurrencyAmount.fromRawAmount(USDT, amountIn),
       }
-      const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+      const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
       expect(calldata).toMatchSnapshot()
@@ -843,7 +843,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
 
     const options = swapOptions({})
 
-    const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+    const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
     expect(BigInt(value)).toEqual(0n)
     expect(calldata).toMatchSnapshot()
@@ -860,7 +860,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     }
     const options = swapOptions({ fee: feeOptions })
 
-    const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+    const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
     expect(BigInt(value)).toEqual(0n)
     expect(calldata).toMatchSnapshot()
@@ -881,7 +881,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       inputTokenPermit: permit2Permit,
     })
 
-    const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+    const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
     expect(BigInt(value)).toEqual(0n)
     expect(calldata).toMatchSnapshot()
@@ -898,7 +898,7 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     ])
 
     const options = swapOptions({})
-    const { calldata, value } = PancakeswapUniversalRouter.swapERC20CallParameters(trade, options)
+    const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
     expect(BigInt(value)).toEqual(0n)
     expect(calldata).toMatchSnapshot()
   })
