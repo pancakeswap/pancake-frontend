@@ -3,19 +3,23 @@ import { Distributor__factory, MerklAPIData, registry } from '@angleprotocol/sdk
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallback, useMemo, useState } from 'react'
 import useSWRImmutable from 'swr/immutable'
-import { useWalletClient } from 'wagmi'
+import { usePublicClient, useWalletClient } from 'wagmi'
 
 export const MERKL_API = 'https://api.angle.money/v1/merkl'
 
-export default function useMerkl(merklUser?: string, vaultPool?: string) {
+const MERKL_PANCAKESWAPV3_ID = 3
+
+export default function useMerkl(poolAddress?: string) {
   const { account, chainId } = useAccountActiveChain()
   const [isClaiming, setIsClaiming] = useState(false)
+  const provider = usePublicClient({ chainId })
+
   const { data: signer } = useWalletClient()
 
   const { data, isLoading } = useSWRImmutable(
-    chainId && merklUser ? `fetchMerkl-${chainId}-${merklUser}` : null,
+    chainId && account && poolAddress ? `fetchMerkl-${chainId}-${account}` : null,
     async () => {
-      const response = await fetch(`${MERKL_API}?chainId=${chainId}&user=${merklUser}`)
+      const response = await fetch(`${MERKL_API}?chainId=${chainId}&user=${account}`)
       const merklData = (await response.json()) as MerklAPIData | undefined
 
       if (!merklData) return null
@@ -23,7 +27,7 @@ export default function useMerkl(merklUser?: string, vaultPool?: string) {
       const { pools } = merklData
 
       const merklPoolData = Object.keys(pools)
-        .filter((poolId) => poolId === vaultPool)
+        .filter((poolId) => pools[poolId].amm === MERKL_PANCAKESWAPV3_ID && poolId === poolAddress)
         .map((poolId) => pools[poolId])[0]
 
       if (!merklPoolData) return null
@@ -41,44 +45,76 @@ export default function useMerkl(merklUser?: string, vaultPool?: string) {
     },
   )
 
-  // const { transactionData, ...merklInfo } = data || {
-  //   apr: 0,
-  //   rewardsPerToken: [],
-  //   transactionData: null,
-  // }
+  const { transactionData, rewardsPerToken } = useMemo(
+    () =>
+      data || {
+        rewardsPerToken: [],
+        transactionData: null,
+      },
+    [data],
+  )
 
-  const claimTokenReward = () => {}
+  const contractAddress = chainId ? registry(chainId)?.Merkl?.Distributor : undefined
 
-  // const claimTokenReward = useCallback(async () => {
-  //   const contractAddress = chainId ? registry(chainId)?.Merkl?.Distributor : undefined
+  // const contract = Distributor__factory.connect(contractAddress, provider)
 
-  //   if (!account || !provider || !contractAddress || !transactionData || !merklUser) return undefined
+  console.log('contractAddress: ', contractAddress)
 
-  //   const tokens = Object.keys(transactionData).filter((k) => transactionData[k].proof !== undefined)
-  //   const claims = tokens.map((t) => transactionData[t].claim)
-  //   const proofs = tokens.map((t) => transactionData[t].proof)
+  const claimTokenReward = useCallback(async () => {
+    const contractAddress = chainId ? registry(chainId)?.Merkl?.Distributor : undefined
 
-  //   // eslint-disable-next-line camelcase
-  //   const contract = Distributor__factory.connect(contractAddress, signer)
+    if (!account || !contractAddress || !transactionData || !account) return undefined
 
-  //   setIsClaiming(true)
+    const tokens = Object.keys(transactionData).filter((k) => transactionData[k].proof !== undefined)
+    const claims = tokens.map((t) => transactionData[t].claim)
+    const proofs = tokens.map((t) => transactionData[t].proof)
 
-  //   try {
-  //     await (
-  //       await contract.claim(
-  //         // vaultId
-  //         tokens.map((_) => merklUser),
-  //         tokens,
-  //         claims,
-  //         proofs as string[][],
-  //       )
-  //     ).wait()
-  //   } catch (err) {
-  //     console.error('claimTokenReward error:', err)
-  //   } finally {
-  //     setIsClaiming(false)
-  //   }
-  // }, [account, chainId, transactionData, provider, merklUser])
+    // eslint-disable-next-line camelcase
+    const contract = Distributor__factory.connect(contractAddress, provider)
 
-  return useMemo(() => ({ ...merklInfo, claimTokenReward, isClaiming }), [claimTokenReward, isClaiming, merklInfo])
+    setIsClaiming(true)
+
+    // const { callWithGasPrice } = useCallWithGasPrice()
+    // const onApprove = useCallback(async () => {
+    //   const receipt = await fetchWithCatchTxError(() => {
+    //     return callWithGasPrice(ethContract, 'approve', [spender as Address, MaxUint256])
+    //   })
+
+    //   if (receipt?.status) {
+    //     toastSuccess(
+    //       t('Success!'),
+    //       <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+    //         {t('Please progress to the next step.')}
+    //       </ToastDescriptionWithTx>,
+    //     )
+    //   }
+    // }, [spender, ethContract, t, callWithGasPrice, fetchWithCatchTxError, toastSuccess])
+
+    try {
+      await (
+        await contract.claim(
+          // vaultId
+          tokens.map((_) => account),
+          tokens,
+          claims,
+          proofs as string[][],
+        )
+      ).wait()
+    } catch (err) {
+      console.error('claimTokenReward error:', err)
+    } finally {
+      setIsClaiming(false)
+    }
+
+    // Fix eslint warning
+    return undefined
+  }, [chainId, account, transactionData, provider])
+
+  return useMemo(
+    () => ({
+      rewardsPerToken,
+      claimTokenReward,
+    }),
+    [claimTokenReward, rewardsPerToken],
+  )
 }

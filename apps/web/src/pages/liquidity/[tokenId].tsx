@@ -28,7 +28,7 @@ import {
 } from '@pancakeswap/uikit'
 import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 
-import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
+import { MasterChefV3, NonfungiblePositionManager, Pool, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import { useFarm } from 'hooks/useFarm'
@@ -79,6 +79,7 @@ import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { ChainLinkSupportChains } from 'state/info/constant'
 import { MerklSection } from 'views/Merkl/components/MerklSection'
 import { MerklTag } from 'views/Merkl/components/MerklTag'
+import useMerkl from 'views/Merkl/hooks/useMerkl'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -227,6 +228,10 @@ export default function PoolPage() {
     }
     return undefined
   }, [liquidity, pool, tickLower, tickUpper])
+
+  const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
+
+  useMerkl(poolAddress)
 
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
