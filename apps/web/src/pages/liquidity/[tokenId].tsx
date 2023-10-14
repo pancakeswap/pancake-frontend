@@ -79,7 +79,6 @@ import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { ChainLinkSupportChains } from 'state/info/constant'
 import { MerklSection } from 'views/Merkl/components/MerklSection'
 import { MerklTag } from 'views/Merkl/components/MerklTag'
-import useMerkl from 'views/Merkl/hooks/useMerkl'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -230,8 +229,6 @@ export default function PoolPage() {
   }, [liquidity, pool, tickLower, tickUpper])
 
   const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
-
-  useMerkl(poolAddress)
 
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
@@ -537,7 +534,7 @@ export default function PoolPage() {
                         <RangeTag ml="8px" removed={removed} outOfRange={!inRange} />
                       </>
                     )}
-                    <MerklTag />
+                    <MerklTag poolAddress={poolAddress} />
                   </Flex>
                   <RowBetween gap="16px" flexWrap="nowrap">
                     <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
@@ -777,7 +774,7 @@ export default function PoolPage() {
                   </Flex>
                 </Flex>
               )}
-              <Flex>
+              <Flex flexWrap={['wrap', 'wrap', 'wrap', 'nowrap']}>
                 <Box width="100%">
                   <PositionPriceSection
                     manuallyInverted={manuallyInverted}
@@ -793,9 +790,7 @@ export default function PoolPage() {
                   />
                 </Box>
 
-                <Box width="100%" ml="16px">
-                  <MerklSection />
-                </Box>
+                <MerklSection poolAddress={poolAddress} />
               </Flex>
               {positionDetails && currency0 && currency1 && (
                 <PositionHistory

@@ -1,22 +1,25 @@
-import { AutoRow, Button, Text, Flex, Message, MessageText } from '@pancakeswap/uikit'
+import { AutoRow, Button, Text, Flex, Message, MessageText, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { LightGreyCard } from 'components/Card'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 
-export function MerklSection() {
+import useMerkl from '../hooks/useMerkl'
+
+export function MerklSection({ poolAddress }: { poolAddress: string | null }) {
   const { t } = useTranslation()
 
-  return (
-    <>
-      <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-        {t('Merkl Rewards')}
-      </Text>
-      <AutoRow justifyContent="space-between" mb="8px">
-        <Text fontSize="24px" fontWeight={600}>
-          $ -
-        </Text>
+  const { claimTokenReward, isClaiming, rewardsPerToken } = useMerkl(poolAddress)
 
-        <Button scale="sm" onClick={() => {}}>
-          {t('Claim')}
+  if (!rewardsPerToken.length) return null
+
+  return (
+    <Box width="100%" ml={[0, 0, 0, '16px']} mt="24px">
+      <AutoRow justifyContent="space-between" mb="8px">
+        <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
+          {t('Merkl Rewards')}
+        </Text>
+        <Button disabled={isClaiming} scale="sm" onClick={claimTokenReward}>
+          {isClaiming ? t('Claiming...') : t('Claim')}
         </Button>
       </AutoRow>
       <LightGreyCard
@@ -26,17 +29,19 @@ export function MerklSection() {
           marginBottom: '8px',
         }}
       >
-        <AutoRow justifyContent="space-between" mb="8px">
-          <Flex>
-            {/* <CurrencyLogo currency={feeValueUpper?.currency} /> */}
-            <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-              MATIC
-            </Text>
-          </Flex>
-          <Flex justifyContent="center">
-            <Text small>-</Text>
-          </Flex>
-        </AutoRow>
+        {rewardsPerToken.map((tokenAmount) => (
+          <AutoRow justifyContent="space-between" mb="8px">
+            <Flex>
+              <CurrencyLogo currency={tokenAmount.currency} />
+              <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                {tokenAmount.currency.symbol}
+              </Text>
+            </Flex>
+            <Flex justifyContent="center">
+              <Text small>{tokenAmount.toSignificant(6)}</Text>
+            </Flex>
+          </AutoRow>
+        ))}
       </LightGreyCard>
       <Message variant="primary">
         <MessageText>
@@ -44,6 +49,6 @@ export function MerklSection() {
           Learn more about Merkl
         </MessageText>
       </Message>
-    </>
+    </Box>
   )
 }

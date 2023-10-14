@@ -1,6 +1,8 @@
 import { Text, Card, Flex, Tag, SyncAltIcon } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import { styled } from 'styled-components'
+import { useMemo } from 'react'
+import { Pool } from '@pancakeswap/v3-sdk'
 
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { Percent, Currency } from '@pancakeswap/sdk'
@@ -41,6 +43,11 @@ export const LiquidityCardRow = ({
   onSwitch,
   hasMerkl,
 }: LiquidityCardRowProps) => {
+  const poolAddress = useMemo(
+    () => Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount),
+    [currency0, currency1, feeAmount],
+  )
+
   const content = (
     <Flex justifyContent="space-between" p="16px">
       <Flex flexDirection="column">
@@ -57,7 +64,7 @@ export const LiquidityCardRow = ({
               {new Percent(feeAmount, 1_000_000).toSignificant()}%
             </Tag>
           )}
-          {!hasMerkl && <MerklRewardsTag />}
+          {!hasMerkl && <MerklRewardsTag poolAddress={poolAddress} />}
           <TagCell>{tags}</TagCell>
         </Flex>
         <Flex>
