@@ -1,18 +1,16 @@
-import { Box, Flex, Text, Button, Link, PageSection } from '@pancakeswap/uikit'
-import { useTheme } from '@pancakeswap/hooks'
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/image'
+import { useState } from 'react'
 import NextLink from 'next/link'
-import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
-import { GameCard } from 'views/Game/components/Community/Banner/GameCard'
-
+import { styled } from 'styled-components'
+import { useTheme } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Text, ChevronLeftIcon, ChevronRightIcon, PageSection } from '@pancakeswap/uikit'
 import 'swiper/css'
 import 'swiper/css/autoplay'
-import 'swiper/css/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper/types'
-import { Autoplay, Navigation } from 'swiper/modules'
+import { Autoplay } from 'swiper/modules'
+import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
+import { GameCard } from 'views/Game/components/Community/Banner/GameCard'
 
 const Decorations = styled(Box)`
   position: absolute;
@@ -59,11 +57,34 @@ const Decorations = styled(Box)`
   }
 }`
 
+const ArrowButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  svg path {
+    fill: ${({ theme }) => theme.colors.primary};
+  }
+  cursor: pointer;
+`
+
 const test = [1, 2, 3, 4]
 
 export const Banner = () => {
   const { t } = useTranslation()
-  const { isDark } = useTheme()
+  const { theme, isDark } = useTheme()
+  const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
+
+  const handlePrevSlide = () => {
+    swiper?.slidePrev()
+  }
+
+  const handleNextSlide = () => {
+    swiper?.slideNext()
+  }
 
   return (
     <PageSection
@@ -89,9 +110,9 @@ export const Banner = () => {
         margin="auto"
         flexDirection="column"
         justifyContent="space-between"
-        width={['100%', '100%', '100%', '100%', '100%', '100%', '1200px']}
+        width={['100%', '100%', '100%', '100%', '100%', '100%', '1257px']}
       >
-        <Box mb={['60px']}>
+        <Box mb={['60px']} width={['100%', '100%', '100%', '100%', '100%', '100%', '1200px']}>
           <Text color="secondary" bold mb="24px" lineHeight="110%" fontSize={['40px']}>
             {t('PancakeSwap Gaming Community')}
           </Text>
@@ -99,77 +120,58 @@ export const Banner = () => {
             {t('Every Game, Every Chain, One Destination')}
           </Text>
         </Box>
-
-        {/* <Swiper
-          loop
-          resizeObserver
-          slidesPerView={3}
-          spaceBetween={20}
-          autoplay={{
-            delay: 2500,
-            pauseOnMouseEnter: true,
-            disableOnInteraction: false,
-          }}
-          modules={[Autoplay]}
-          breakpoints={{
-            320: {
-              slidesPerView: 1,
-              spaceBetween: 20,
-            },
-            920: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            1200: {
-              slidesPerView: 3,
-              spaceBetween: 0,
-            },
-          }}
-        >
-          <SwiperSlide>
-            <GameCard
-              // padding="16px"
-              imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <GameCard
-              // padding="16px"
-              imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <GameCard
-              // padding="16px"
-              imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-            />
-          </SwiperSlide>
-        </Swiper> */}
-        <Box width="100%">
+        <Flex width="100%">
+          <Flex alignItems="center" mr="32px">
+            <ArrowButton onClick={handlePrevSlide}>
+              <ChevronLeftIcon color={theme.colors.textSubtle} />
+            </ArrowButton>
+          </Flex>
           <Swiper
             loop
-            slidesPerView={3}
-            spaceBetween={16}
-            modules={[Autoplay, Navigation]}
+            resizeObserver
+            centeredSlides
+            slidesPerView={1}
+            spaceBetween={20}
+            onSwiper={setSwiper}
+            modules={[Autoplay]}
             autoplay={{
               delay: 2500,
               pauseOnMouseEnter: true,
               disableOnInteraction: false,
             }}
-            navigation={{
-              prevEl: '.prev',
-              nextEl: '.next',
+            breakpoints={{
+              320: {
+                slidesPerView: 1,
+                spaceBetween: 20,
+              },
+              920: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              1200: {
+                slidesPerView: 3,
+                spaceBetween: 32,
+              },
             }}
           >
             {test.map((introStep) => (
               <SwiperSlide key={introStep}>
-                <NextLink passHref href="/articles">
-                  <GameCard imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg" />
+                <NextLink passHref href="/">
+                  <GameCard
+                    width={['355px']}
+                    id={introStep}
+                    imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
+                  />
                 </NextLink>
               </SwiperSlide>
             ))}
           </Swiper>
-        </Box>
+          <Flex alignItems="center" ml="32px">
+            <ArrowButton onClick={handleNextSlide}>
+              <ChevronRightIcon color={theme.colors.textSubtle} />
+            </ArrowButton>
+          </Flex>
+        </Flex>
       </Flex>
     </PageSection>
   )
