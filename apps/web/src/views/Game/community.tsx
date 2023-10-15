@@ -1,7 +1,10 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { Box } from '@pancakeswap/uikit'
+import { Banner } from 'views/Game/components/Community/Banner'
 
 export const GameCommunity = () => {
-  const { t } = useTranslation()
-
-  return <>123</>
+  return (
+    <Box>
+      <Banner />
+    </Box>
+  )
 }
