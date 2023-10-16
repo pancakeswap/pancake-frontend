@@ -306,7 +306,7 @@ export const useFetchPairPricesV3 = ({
   const { data: protocol1 } = useSWRImmutable(
     token1Address && chainId && ['protocol', token1Address, chainId],
     async () => {
-      return getTokenBestTvlProtocol(token0Address, chainId)
+      return getTokenBestTvlProtocol(token1Address, chainId)
     },
   )
 

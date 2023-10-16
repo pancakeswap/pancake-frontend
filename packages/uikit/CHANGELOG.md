@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.64.1
+
+### Patch Changes
+
+- 2ceb8e9ff: Dependencies update
+
 ## 0.64.0
 
 ### Minor Changes
