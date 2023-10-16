@@ -71,6 +71,7 @@ test('exports', () => {
       "selfPermitABI",
       "v3StakerABI",
       "swapRouterABI",
+      "v3PoolAbi",
     ]
   `)
 })
