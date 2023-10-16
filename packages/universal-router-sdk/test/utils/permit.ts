@@ -52,6 +52,7 @@ export const signEIP2098Permit = async (permit: PermitSingle, wallet: WalletClie
   const signature = hexToSignature(sig)
   const yParity = BigInt(signature.v) === 27n ? 0 : 1
   const yParityAndS = toBytes(signature.s)
+  // eslint-disable-next-line no-bitwise
   if (yParity) yParityAndS[0] |= 0x80
   return concat([signature.r, toHex(yParityAndS)])
 }
