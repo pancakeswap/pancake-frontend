@@ -3,13 +3,11 @@ import { useTranslation, Trans } from '@pancakeswap/localization'
 import { Flex, Text, Heading, Card, PageSection } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import GradientLogo from 'views/Home/components/GradientLogoSvg'
+import { LIGHT_BG, DARK_BG } from 'views/Game/pageSectionStyles'
 
 const StyledContainer = styled(PageSection)`
   padding: 89px 16px 24px 16px;
-  background: ${({ theme }) =>
-    theme.isDark
-      ? ' radial-gradient(105.94% 70.71% at 50% 50%, #21193A 0%, #191326 100%)'
-      : 'linear-gradient(180deg, #FFF 0%, #FAF9FA 48.15%, #D7CAEC 100%)'};
+  background: ${({ theme }) => (theme.isDark ? DARK_BG : LIGHT_BG)};
 `
 
 const StyledList = styled(Flex)`
