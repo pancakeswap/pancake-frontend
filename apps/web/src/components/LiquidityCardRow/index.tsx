@@ -44,7 +44,8 @@ export const LiquidityCardRow = ({
   hasMerkl,
 }: LiquidityCardRowProps) => {
   const poolAddress = useMemo(
-    () => Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount),
+    () =>
+      currency0 && currency0 && feeAmount ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount) : null,
     [currency0, currency1, feeAmount],
   )
 
