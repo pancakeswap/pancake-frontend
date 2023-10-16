@@ -14,7 +14,7 @@ export const CategoriesSelector = ({ selected, categoriesData, childMargin, setS
   const { t } = useTranslation()
 
   const allCategories = useMemo(() => {
-    const firstCategories = { id: 0, name: t('All') }
+    const firstCategories = { id: 0, name: `${t('All')} (${categoriesData.length})` }
     return [firstCategories, ...categoriesData]
   }, [categoriesData, t])
 

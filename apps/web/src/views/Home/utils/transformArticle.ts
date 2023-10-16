@@ -13,6 +13,7 @@ export interface ArticleDataType {
   categories: Array<string>
   newsOutBoundLink: string
   newsFromPlatform: string
+  gamesCategories: Array<string>
 }
 
 export interface ArticleType {
@@ -34,5 +35,6 @@ export const transformArticle = (article: ResponseArticleDataType): ArticleDataT
     newsOutBoundLink: article?.attributes?.newsOutBoundLink ?? '',
     imgUrl: article?.attributes?.image?.data?.[0]?.attributes?.url ?? '',
     categories: article.attributes?.categories?.data?.map((i) => i.attributes.name),
+    gamesCategories: article.attributes?.['games-categories']?.data?.map((i) => i.attributes.name),
   }
 }

@@ -58,19 +58,10 @@ const Decorations = styled(Box)`
 
 export const Banner = () => {
   const { t } = useTranslation()
-  const { isDark } = useTheme()
+  const { theme } = useTheme()
 
   return (
-    <PageSection
-      index={1}
-      position="relative"
-      hasCurvedDivider={false}
-      background={
-        isDark
-          ? 'linear-gradient(140deg, #313D5C 0%, #3D2A54 100%)'
-          : 'linear-gradient(140deg, #E5FDFF 0%, #F3EFFF 100%)'
-      }
-    >
+    <PageSection index={1} position="relative" hasCurvedDivider={false} background={theme.colors.gradientBubblegum}>
       <Decorations>
         <img src="/images/game/developers/left-1.png" width="79px" height="207px" alt="left1" />
         <img src="/images/game/developers/star.png" width="49px" height="43px" alt="star" />

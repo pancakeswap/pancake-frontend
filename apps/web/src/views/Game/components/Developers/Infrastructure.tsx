@@ -44,8 +44,8 @@ const StyledGameBenefitsListContainer = styled(Flex)`
 `
 
 const StyledCard = styled(Card)`
-  maxwidth: 282px;
-  alignself: flex-start;
+  max-width: 282px;
+  align-self: flex-start;
   margin: 0 0 16px 0;
 
   ${StyledList} {

@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import { styled } from 'styled-components'
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, ChevronLeftIcon, ChevronRightIcon, PageSection } from '@pancakeswap/uikit'
+import { Box, Flex, Text, ChevronLeftIcon, ChevronRightIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -11,6 +11,29 @@ import type { Swiper as SwiperClass } from 'swiper/types'
 import { Autoplay } from 'swiper/modules'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import { GameCard } from 'views/Game/components/Community/Banner/GameCard'
+
+const StyledBackground = styled(Box)`
+  position: relative;
+  margin-bottom: 105px;
+  padding: 45px 16px 0 16px;
+  z-index: 1;
+`
+
+const StyledGradientBg = styled('div')`
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 65%;
+  background: ${({ theme }) => theme.colors.gradientBubblegum};
+  border-bottom-left-radius: 50% 5%;
+  border-bottom-right-radius: 50% 5%;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    height: 90%;
+  }
+`
 
 const Decorations = styled(Box)`
   position: absolute;
@@ -75,7 +98,8 @@ const test = [1, 2, 3, 4]
 
 export const Banner = () => {
   const { t } = useTranslation()
-  const { theme, isDark } = useTheme()
+  const { theme } = useTheme()
+  const { isDesktop } = useMatchBreakpoints()
   const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
   const handlePrevSlide = () => {
@@ -87,16 +111,8 @@ export const Banner = () => {
   }
 
   return (
-    <PageSection
-      index={1}
-      position="relative"
-      hasCurvedDivider={false}
-      background={
-        isDark
-          ? 'linear-gradient(140deg, #313D5C 0%, #3D2A54 100%)'
-          : 'linear-gradient(140deg, #E5FDFF 0%, #F3EFFF 100%)'
-      }
-    >
+    <StyledBackground>
+      <StyledGradientBg />
       <Decorations>
         <img src="/images/game/developers/left-1.png" width="79px" height="207px" alt="left1" />
         <img src="/images/game/developers/star.png" width="49px" height="43px" alt="star" />
@@ -121,11 +137,13 @@ export const Banner = () => {
           </Text>
         </Box>
         <Flex width="100%">
-          <Flex alignItems="center" mr="32px">
-            <ArrowButton onClick={handlePrevSlide}>
-              <ChevronLeftIcon color={theme.colors.textSubtle} />
-            </ArrowButton>
-          </Flex>
+          {isDesktop && (
+            <Flex alignItems="center" mr="32px">
+              <ArrowButton onClick={handlePrevSlide}>
+                <ChevronLeftIcon color={theme.colors.textSubtle} />
+              </ArrowButton>
+            </Flex>
+          )}
           <Swiper
             loop
             resizeObserver
@@ -158,7 +176,7 @@ export const Banner = () => {
               <SwiperSlide key={introStep}>
                 <NextLink passHref href="/">
                   <GameCard
-                    width={['355px']}
+                    width={['100%', '100%', '355px']}
                     id={introStep}
                     imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
                   />
@@ -166,13 +184,15 @@ export const Banner = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-          <Flex alignItems="center" ml="32px">
-            <ArrowButton onClick={handleNextSlide}>
-              <ChevronRightIcon color={theme.colors.textSubtle} />
-            </ArrowButton>
-          </Flex>
+          {isDesktop && (
+            <Flex alignItems="center" ml="32px">
+              <ArrowButton onClick={handleNextSlide}>
+                <ChevronRightIcon color={theme.colors.textSubtle} />
+              </ArrowButton>
+            </Flex>
+          )}
         </Flex>
       </Flex>
-    </PageSection>
+    </StyledBackground>
   )
 }
