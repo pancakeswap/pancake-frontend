@@ -55,7 +55,7 @@ export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticle
 export const getCategories = async (): Promise<Categories[]> => {
   try {
     const response = await fetchAPI('/categories', {
-      fields: 'id,name',
+      fields: 'name',
       filters: {
         name: {
           $notIn: filterTagArray,

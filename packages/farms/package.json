@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/farms",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "sideEffects": false,
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.168",
     "tsx": "^3.12.1",
-    "wrangler": "2.15.0"
+    "wrangler": "2.20.1"
   },
   "dependencies": {
     "@pancakeswap/sdk": "workspace:*",

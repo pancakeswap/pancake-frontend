@@ -157,8 +157,8 @@ const AllArticle = () => {
             alignItems={['flexStart', 'flexStart', 'flexStart', 'center']}
             p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
           >
-            <Flex flexDirection={['column', 'row']}>
-              {languageItems.length > 0 && (
+            {languageItems.length > 0 && (
+              <Flex flexDirection={['column', 'row']}>
                 <Box width="100%">
                   <ArticleSortSelect
                     title={t('Languages')}
@@ -167,11 +167,11 @@ const AllArticle = () => {
                     setOption={handleSwitchLanguage}
                   />
                 </Box>
-              )}
-              <Box width="100%" m={['10px 0 0 0', '0 0 0 16px', '0 0 0 16px', '0 16px']}>
-                <ArticleSortSelect title={t('Sort By')} options={sortByItems} setOption={setSortBy} />
-              </Box>
-            </Flex>
+                <Box width="100%" m={['10px 0 0 0', '0 0 0 16px', '0 0 0 16px', '0 16px']}>
+                  <ArticleSortSelect title={t('Sort By')} options={sortByItems} setOption={setSortBy} />
+                </Box>
+              </Flex>
+            )}
             <Box width="100%" m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
               <InputGroup startIcon={<SearchIcon style={{ zIndex: 1 }} color="textSubtle" width="18px" />}>
                 <SearchInput placeholder="Search" initialValue={query} onChange={(e) => setQuery(e.target.value)} />
