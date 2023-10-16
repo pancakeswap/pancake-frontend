@@ -48,6 +48,7 @@ export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticle
       categories: [],
       newsOutBoundLink: '',
       newsFromPlatform: '',
+      gamesCategories: [],
     }
   }
 }

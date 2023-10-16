@@ -75,7 +75,7 @@ export const Banner = () => {
         margin="auto"
         flexDirection="column"
         justifyContent="space-between"
-        width={['100%', '100%', '100%', '100%', '100%', '100%', '1257px']}
+        maxWidth={['100%', '100%', '100%', '100%', '100%', '100%', '1257px']}
       >
         <Box mb={['60px']} width={['100%', '100%', '100%', '100%', '100%', '100%', '1200px']}>
           <Text color="secondary" bold mb="24px" lineHeight="110%" fontSize={['40px']}>
@@ -98,7 +98,7 @@ export const Banner = () => {
             resizeObserver
             centeredSlides
             slidesPerView={1}
-            spaceBetween={20}
+            spaceBetween={16}
             onSwiper={setSwiper}
             modules={[Autoplay]}
             autoplay={{
@@ -109,14 +109,11 @@ export const Banner = () => {
             breakpoints={{
               320: {
                 slidesPerView: 1,
-                spaceBetween: 20,
               },
               920: {
                 slidesPerView: 2,
-                spaceBetween: 20,
               },
-              1200: {
-                slidesPerView: 3,
+              1440: {
                 spaceBetween: 32,
               },
             }}
@@ -125,7 +122,6 @@ export const Banner = () => {
               <SwiperSlide key={introStep}>
                 <NextLink passHref href="/">
                   <GameCard
-                    width={['100%', '100%', '355px']}
                     id={introStep}
                     imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
                   />
