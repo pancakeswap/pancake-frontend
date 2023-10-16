@@ -144,8 +144,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       totalStaked: totalStakedInUsd,
       isUserStaked: totalAssetsInUsd > 0,
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apr, earningUsdValue, totalStakedInUsd, id])
+  }, [earningUsdValue, totalStakedInUsd, id, totalAssetsInUsd, apr, updatePositionMangerDetailsData])
 
   return (
     <DuoTokenVaultCard

@@ -87,9 +87,13 @@ export const useApr = ({
 
   const totalApr = useMemo(() => cakeYieldApr.plus(totalLpApr), [cakeYieldApr, totalLpApr])
 
-  return {
-    combinedApr: !totalApr.isNaN() ? totalApr.toFixed(2) ?? '-' : '',
-    lpApr: !totalLpApr.isNaN() ? totalLpApr.toFixed(2) ?? '-' : '',
-    cakeYieldApr: !cakeYieldApr.isNaN() ? cakeYieldApr.toFixed(2) ?? '-' : '',
-  }
+  const aprData = useMemo(() => {
+    return {
+      combinedApr: !totalApr.isNaN() ? totalApr.toFixed(2) ?? '-' : '',
+      lpApr: !totalLpApr.isNaN() ? totalLpApr.toFixed(2) ?? '-' : '',
+      cakeYieldApr: !cakeYieldApr.isNaN() ? cakeYieldApr.toFixed(2) ?? '-' : '',
+    }
+  }, [totalApr, totalLpApr, cakeYieldApr])
+
+  return aprData
 }
