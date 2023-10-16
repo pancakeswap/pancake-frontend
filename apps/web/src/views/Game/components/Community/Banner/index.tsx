@@ -96,7 +96,7 @@ export const Banner = () => {
           <Swiper
             loop
             resizeObserver
-            centeredSlides
+            // centeredSlides
             slidesPerView={1}
             spaceBetween={16}
             onSwiper={setSwiper}
@@ -114,6 +114,7 @@ export const Banner = () => {
                 slidesPerView: 2,
               },
               1440: {
+                slidesPerView: 3,
                 spaceBetween: 32,
               },
             }}
