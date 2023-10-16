@@ -17,7 +17,7 @@ export const registerToken = async (
 ) => {
   // better leave this undefined for default image instead of broken image url
   const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
-  const tokenAdded = await window.ethereum.request({
+  const tokenAdded = await window?.ethereum?.request({
     method: 'wallet_watchAsset',
     params: {
       type: 'ERC20',

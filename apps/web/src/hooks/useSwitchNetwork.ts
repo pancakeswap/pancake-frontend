@@ -79,7 +79,7 @@ export function useSwitchNetwork() {
           !(
             typeof window !== 'undefined' &&
             // @ts-ignore // TODO: add type later
-            (window.ethereum?.isSafePal || window.ethereum?.isMathWallet)
+            window.ethereum?.isMathWallet
           )
         : true,
     [_switchNetworkAsync, isConnected],
