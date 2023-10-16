@@ -1,4 +1,5 @@
-import { Box, BoxProps, Card, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, Card, Text, Flex, Link, DiscordIcon, TelegramIcon } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { HeightProps } from 'styled-system'
 
@@ -27,6 +28,20 @@ const StyledLogo = styled(Box)<{ imgUrl: string }>`
   background-image: ${({ imgUrl }) => `url(${imgUrl})`};
 `
 
+const CircleButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  svg path {
+    fill: #fff;
+  }
+`
+
 interface GameCardProps extends BoxProps {
   id: any // delete
   imgUrl: string
@@ -35,13 +50,15 @@ interface GameCardProps extends BoxProps {
 }
 
 export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ id, imgUrl, imgHeight, ...props }) => {
+  const { t } = useTranslation()
+
   return (
     <StyledGameCard {...props}>
       <Card>
         <Box overflow="hidden" height={imgHeight ?? '200px'}>
           <StyledBackgroundImage imgUrl={imgUrl} />
         </Box>
-        <StyledLogo imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg" />
+        <StyledLogo imgUrl="https://assets.pancakeswap.finance/web/chains/56.png" />
         <Box padding="20px">
           <Text color="textSubtle" mb="8px" bold fontSize={['12px']} lineHeight="120%">
             Mobox
@@ -49,6 +66,28 @@ export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ id,
           <Text mb="24px" bold fontSize={['20px']} lineHeight="22px">
             Pancake Protectors {id}
           </Text>
+          <Box>
+            <Flex mb="16px">
+              <Link external href="/">
+                <CircleButton>
+                  <DiscordIcon />
+                </CircleButton>
+                <Text ml="8px" bold style={{ alignSelf: 'center' }}>
+                  {t('Discord')}
+                </Text>
+              </Link>
+            </Flex>
+            <Flex>
+              <Link external href="/">
+                <CircleButton>
+                  <TelegramIcon />
+                </CircleButton>
+                <Text ml="8px" bold style={{ alignSelf: 'center' }}>
+                  {t('Telegram')}
+                </Text>
+              </Link>
+            </Flex>
+          </Box>
         </Box>
       </Card>
     </StyledGameCard>

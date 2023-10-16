@@ -5,23 +5,24 @@ import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon 
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { Categories } from 'views/Home/types'
-// import { CardArticle } from 'views/Game/components/Community/CardArticle'
+import { CardArticle } from 'views/Game/components/Community/CardArticle'
 import { CategoriesSelector } from 'views/Game/components/Community/CategoriesSelector'
 import { SkeletonArticle } from 'views/Game/components/Community/SkeletonArticle'
 import { ArticleSortSelect } from 'views/Game/components/Community/ArticleSortSelect'
+import { useAllGamesArticle } from 'views/Game/hooks/useAllGamesArticle'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
-  margin: 45px auto 80px auto;
-  z-index: 0;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin: 80px auto;
-  }
+  margin: 0px auto;
+  padding-bottom: 80px;
 
   @media screen and (min-width: 1440px) {
-    width: 1160px;
+    width: 1200px;
   }
+`
+
+const StyledContainerBackground = styled(Box)`
+  background: ${({ theme }) => theme.card.background};
 `
 
 const StyledTagContainer = styled(Box)`
@@ -60,15 +61,15 @@ const StyledCard = styled(Flex)`
   }
 `
 
-const AllArticle = () => {
+export const AllArticle = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const [query, setQuery] = useState('')
   const articlesWrapperEl = useRef<HTMLDivElement>(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [selectedCategories, setSelectCategoriesSelected] = useState(0)
+  const [selectedGamesCategories, setSelectGamesCategoriesSelected] = useState(0)
   const [sortBy, setSortBy] = useState('createAt:desc')
-  // const [languageOption, setLanguageOption] = useState('en')
+  const [languageOption, setLanguageOption] = useState('en')
   const sortByItems = [
     { label: t('Newest First'), value: 'createAt:desc' },
     { label: t('Oldest First'), value: 'createAt:asc' },
@@ -79,7 +80,7 @@ const AllArticle = () => {
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [query, selectedCategories, sortBy])
+  }, [query, selectedGamesCategories, sortBy])
 
   useEffect(() => {
     if (router.isReady && router.query.category) {
@@ -87,7 +88,7 @@ const AllArticle = () => {
         (category) => category.name.toLowerCase() === (router.query.category as string).toLowerCase(),
       )
       if (searchedTopic) {
-        setSelectCategoriesSelected(searchedTopic.id)
+        setSelectGamesCategoriesSelected(searchedTopic.id)
         window.scrollTo({
           top: articlesWrapperEl?.current?.offsetTop,
           behavior: 'smooth',
@@ -96,23 +97,14 @@ const AllArticle = () => {
     }
   }, [categoriesData, router.isReady, router.query.category])
 
-  // const { articlesData, isFetching } = useAllArticle({
-  //   query,
-  //   sortBy,
-  //   currentPage,
-  //   languageOption,
-  //   selectedCategories,
-  // })
-  const isFetching = false
-  const articlesData = {
-    data: [],
-    pagination: {
-      page: 0,
-      pageSize: 0,
-      pageCount: 0,
-      total: 0,
-    },
-  }
+  const { articlesData, isFetching } = useAllGamesArticle({
+    query,
+    sortBy,
+    currentPage,
+    languageOption,
+    selectedGamesCategories,
+  })
+
   const articles = articlesData?.data
 
   const handlePagination = (value: number) => {
@@ -124,19 +116,19 @@ const AllArticle = () => {
     <StyledArticleContainer id="all" ref={articlesWrapperEl}>
       <Text
         bold
+        pl={['16px']}
         color="secondary"
         mb={['12px', '12px', '12px', '35px']}
-        pl={['16px']}
         fontSize={['24px', '24px', '24px', '40px']}
       >
-        {t('All articles')}
+        {t('Games Announcements')}
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
         <StyledTagContainer>
           <CategoriesSelector
-            selected={selectedCategories}
+            selected={selectedGamesCategories}
             categoriesData={categoriesData ?? []}
-            setSelected={setSelectCategoriesSelected}
+            setSelected={setSelectGamesCategoriesSelected}
             childMargin="0 0 28px 0"
           />
         </StyledTagContainer>
@@ -147,12 +139,12 @@ const AllArticle = () => {
             alignItems={['flexStart', 'flexStart', 'flexStart', 'center']}
             p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
           >
-            <Flex flexDirection={['column', 'row']}>
-              <Box width="100%" m={['10px 0 0 0', '0 0 0 16px', '0 0 0 16px', '0 16px']}>
+            <Flex flexDirection={['column', 'row']} mr={['0', '0', '0', 'auto']}>
+              <Box width="100%" m={['10px 0 0 0', '0', '0', '0 16px 0 0']}>
                 <ArticleSortSelect title={t('Sort By')} options={sortByItems} setOption={setSortBy} />
               </Box>
             </Flex>
-            <Box width="100%" m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
+            <Box width={['100%', '100%', '100%', '420px']} m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
               <InputGroup startIcon={<SearchIcon style={{ zIndex: 1 }} color="textSubtle" width="18px" />}>
                 <SearchInput placeholder="Search" initialValue={query} onChange={(e) => setQuery(e.target.value)} />
               </InputGroup>
@@ -164,9 +156,9 @@ const AllArticle = () => {
             </Text>
             <Flex overflowY="auto">
               <CategoriesSelector
-                selected={selectedCategories}
+                selected={selectedGamesCategories}
                 categoriesData={categoriesData ?? []}
-                setSelected={setSelectCategoriesSelected}
+                setSelected={setSelectGamesCategoriesSelected}
                 childMargin="0 4px 4px 0"
               />
             </Flex>
@@ -180,11 +172,11 @@ const AllArticle = () => {
               {isFetching && articles.length === 0 ? (
                 <SkeletonArticle />
               ) : (
-                <>
+                <StyledContainerBackground>
                   <Box>
-                    {/* {articles.map((article) => (
+                    {articles.map((article) => (
                       <CardArticle key={article.id} article={article} />
-                    ))} */}
+                    ))}
                   </Box>
                   <PaginationButton
                     showMaxPageText
@@ -192,7 +184,7 @@ const AllArticle = () => {
                     maxPage={articlesData.pagination.pageCount}
                     setCurrentPage={handlePagination}
                   />
-                </>
+                </StyledContainerBackground>
               )}
             </StyledCard>
           )}
@@ -201,5 +193,3 @@ const AllArticle = () => {
     </StyledArticleContainer>
   )
 }
-
-export default AllArticle
