@@ -31,8 +31,9 @@
     "test": "vitest --run",
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "format:check": "prettier --check --loglevel error \"src/**/*.{js,jsx,ts,tsx,json}\"",
-    "format:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\""
+    "format:check": "prettier --check --loglevel error \"{src,test}/**/*.{js,jsx,ts,tsx,json}\"",
+    "format:write": "prettier --write \"{src,test}/**/*.{js,jsx,ts,tsx,json}\"",
+    "lint": "eslint '{src,test}/**/*.{js,jsx,ts,json}'"
   },
   "author": "@Pancakeswap",
   "devDependencies": {

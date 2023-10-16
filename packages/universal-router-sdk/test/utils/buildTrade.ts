@@ -117,6 +117,7 @@ export const buildMixedRouteTrade = async <
     const input = amounts[amounts.length - 1]
     let outputAmount: CurrencyAmount<Token>
     if (pool instanceof Pair || pool instanceof Pool) {
+      // eslint-disable-next-line no-await-in-loop
       ;[outputAmount] = await pool.getOutputAmount(input)
       path.push(outputAmount.currency)
       amounts.push(outputAmount)

@@ -1,4 +1,4 @@
-import { decodeFunctionData, Hex, decodeAbiParameters, ParseAbiParameters, toHex, stringify } from 'viem'
+import { decodeFunctionData, Hex, decodeAbiParameters, ParseAbiParameters } from 'viem'
 import { UniversalRouterABI } from '../../src/abis/UniversalRouter'
 import { ABI_PARAMETER, CommandType } from '../../src/utils/routerCommands'
 
