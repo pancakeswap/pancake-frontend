@@ -118,6 +118,7 @@ export function FixedStakingCalculator({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          useNative
           title={t('ROI Calculator')}
           onBack={hideBackButton ? undefined : () => stakeModal.onDismiss()}
           hideStakeButton
