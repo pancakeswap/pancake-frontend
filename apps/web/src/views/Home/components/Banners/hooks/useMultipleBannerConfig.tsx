@@ -2,8 +2,6 @@ import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
 import BaseBanner from '../BaseBanner'
 import CompetitionBanner from '../CompetitionBanner'
-import GalxePedictBanner from '../GalxePedictBanner'
-import GalxeSyndicateBanner from '../GalxeSyndicateBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import IFOBanner from '../IFOBanner'
 import LiquidStakingBanner from '../LiquidStakingBanner'
@@ -44,8 +42,6 @@ export const useMultipleBannerConfig = () => {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      { shouldRender: true, banner: <GalxeSyndicateBanner /> },
-      { shouldRender: true, banner: <GalxePedictBanner /> },
       { shouldRender: true, banner: <OpBnbBanner /> },
       { shouldRender: true, banner: <BaseBanner /> },
       {

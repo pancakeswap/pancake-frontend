@@ -32,7 +32,7 @@ export const transformArticle = (article: ResponseArticleDataType): ArticleDataT
     description: article?.attributes?.description ?? '',
     newsFromPlatform: article?.attributes?.newsFromPlatform ?? '',
     newsOutBoundLink: article?.attributes?.newsOutBoundLink ?? '',
-    imgUrl: article?.attributes?.image?.data?.attributes?.url ?? '',
+    imgUrl: article?.attributes?.image?.data?.[0]?.attributes?.url ?? '',
     categories: article.attributes?.categories?.data?.map((i) => i.attributes.name),
   }
 }

@@ -2363,8 +2363,6 @@
   "Hide closed positions": "Ascunde pozițiile închise",
   "Liquidity source": "Sursă de lichidități",
   "Customize Routing": "Personalizează rutarea",
-  "PCS v3 Migration": "Migrare PCS v3",
-  "Migrate to continue farming CAKE rewards and earning trading fees.": "Migrează pentru a continua să cultivi recompense CAKE și să câștigi taxe de tranzacționare.",
   "Guide": "Ghid",
   "At least one AMM liquidity source has to be enabled to support normal trading.": "Cel puțin o sursă de lichidități AMM a fost activată pentru a susține tranzacționarea normală.",
   "Unable to establish trading route due to customized routing.": "Nu se poate stabili ruta de tranzacționare din cauza rutării personalizate.",
@@ -2808,5 +2806,8 @@
   "Predict now": "Predict now",
   "Trade now": "Trade now",
   "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard": "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard",
-  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking"
+  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
+  "Unstaking from v2 farm?": "Unstaking from v2 farm?",
+  "Migrate to v3 here": "Migrate to v3 here",
+  "Migrate to V3": "Migrate to V3"
 }

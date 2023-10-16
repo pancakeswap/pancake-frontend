@@ -48,7 +48,7 @@ function InfoSection({
       </Text>
 
       <Text color="textSubtle" fontSize="12px">
-        {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${dayjs.unix(unlockTime).format('MMM d, YYYY')}`}
+        {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${dayjs.unix(unlockTime).format('MMM D, YYYY')}`}
       </Text>
 
       <Text color="textSubtle" fontSize="12px">

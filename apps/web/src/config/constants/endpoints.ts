@@ -32,6 +32,7 @@ export const BLOCKS_CLIENT_POLYGON_ZKEVM =
 export const BLOCKS_CLIENT_ZKSYNC = 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest'
 export const BLOCKS_CLIENT_LINEA = 'https://graph-query.linea.build/subgraphs/name/kybernetwork/linea-blocks'
 export const BLOCKS_CLIENT_BASE = 'https://api.studio.thegraph.com/query/48211/base-blocks/version/latest'
+export const BLOCKS_CLIENT_OPBNB = 'https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/blocks'
 export const STABLESWAP_SUBGRAPH_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap'
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/pancakeswap/nft-market'
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
@@ -66,7 +67,7 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
   [ChainId.LINEA]: BLOCKS_CLIENT_LINEA,
   [ChainId.BASE]: BLOCKS_CLIENT_BASE,
-  [ChainId.OPBNB]: 'https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/blocks',
+  [ChainId.OPBNB]: BLOCKS_CLIENT_OPBNB,
 }
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'

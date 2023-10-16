@@ -9,13 +9,11 @@ import {
   ChartIcon,
   HistoryIcon,
   IconButton,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { PredictionStatus } from 'state/types'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/predictions/hooks'
 import { setChartPaneState, setHistoryPaneState } from 'state/predictions'
-import Image from 'next/image'
 import useSwiper from '../hooks/useSwiper'
 
 const ButtonNav = styled.div`
@@ -41,17 +39,6 @@ const StyledMobileMenu = styled.div`
   }
 `
 
-const BunnyContainer = styled.div`
-  position: relative;
-  left: -42%;
-  top: -15px;
-  margin-top: -125px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: -155px;
-  }
-`
-
 const getActiveIndex = (isHistoryOpen: boolean, isChartOpen: boolean) => {
   if (isHistoryOpen) {
     return 2
@@ -72,8 +59,6 @@ const MobileMenu = () => {
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
-
-  const { isMobile } = useMatchBreakpoints()
 
   const handleItemClick = (index: number) => {
     switch (index) {
@@ -99,16 +84,6 @@ const MobileMenu = () => {
         </IconButton>
       </ButtonNav>
       <TabNav>
-        {activeIndex === 0 && (
-          <BunnyContainer>
-            <Image
-              width={isMobile ? 134 : 164}
-              height={isMobile ? 125 : 155}
-              src="/images/predictions/birthday/mobile-bunny.png"
-              alt="mobile-bunny"
-            />
-          </BunnyContainer>
-        )}
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle" onItemClick={handleItemClick}>
           <ButtonMenuItem>
             <Cards color="currentColor" />

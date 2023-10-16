@@ -11,7 +11,6 @@ import { ErrorNotification, PauseNotification } from './components/Notification'
 import { PageView } from './types'
 import Menu from './components/Menu'
 import LoadingSection from './components/LoadingSection'
-import { JupiterPredictors } from './components/JupiterPredictors'
 
 const StyledMobile = styled.div`
   display: flex;
@@ -57,7 +56,6 @@ const Mobile: React.FC<React.PropsWithChildren> = () => {
             {status === PredictionStatus.PAUSED && <PauseNotification />}
             {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
               <Box width="100%">
-                <JupiterPredictors />
                 <Menu />
                 {status === PredictionStatus.LIVE ? <Positions view={view} /> : <LoadingSection />}
                 <Flex justifyContent="right">

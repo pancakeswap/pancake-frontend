@@ -108,7 +108,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {cliff === 0 ? t('Vesting Start') : t('Cliff')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {dayjs(timeCliff).format('MM/dd/YYYY HH:mm')}
+          {dayjs(timeCliff).format('MM/DD/YYYY HH:mm')}
         </Text>
       </Flex>
       <Flex justifyContent="space-between">
@@ -116,7 +116,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {t('Vesting end')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {dayjs(timeVestingEnd).format('MM/dd/YYYY HH:mm')}
+          {dayjs(timeVestingEnd).format('MM/DD/YYYY HH:mm')}
         </Text>
       </Flex>
       <WhiteCard>

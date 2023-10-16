@@ -1,4 +1,4 @@
-import { V3_MIGRATION_SUPPORTED_CHAINS } from 'utils/isV3MigrationSupported'
+import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import Migration from '../views/Migration/v3'
 
 const MigrationPage = () => <Migration />

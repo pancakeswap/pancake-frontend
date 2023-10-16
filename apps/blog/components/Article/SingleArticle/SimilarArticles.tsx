@@ -9,6 +9,7 @@ import MoreButton from 'components/MoreButton'
 import useSWR from 'swr'
 import { ArticleDataType } from 'utils/transformArticle'
 import 'swiper/css/bundle'
+import dynamic from 'next/dynamic'
 
 const SimilarArticles = () => {
   const { t } = useTranslation()
@@ -67,4 +68,6 @@ const SimilarArticles = () => {
   )
 }
 
-export default SimilarArticles
+export default dynamic(() => Promise.resolve(SimilarArticles), {
+  ssr: false,
+})

@@ -1,10 +1,10 @@
-import { getNow } from 'utils/getNow'
+import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { accurateTimer } from 'utils/accurateTimer'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { useIsWindowVisible } from '@pancakeswap/hooks'
 
 const getSecondsRemainingToNow = (timestamp: number) => {
-  const now = getNow()
+  const now = getNowInSeconds()
   return Number.isFinite(timestamp) && timestamp > now ? timestamp - now : 0
 }
 
