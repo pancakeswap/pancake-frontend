@@ -41,3 +41,74 @@ test('exports', () => {
     ]
   `)
 })
+
+test('StableSwap exports', () => {
+  expect(Object.keys(exports.StableSwap)).toMatchInlineSnapshot(`
+    [
+      "getSwapInput",
+      "getSwapInputWithtouFee",
+      "getSwapOutput",
+      "getSwapOutputWithoutFee",
+      "getLPOutputWithoutFee",
+      "getLPOutput",
+      "getD",
+    ]
+  `)
+})
+test('SmartRouter exports', () => {
+  expect(Object.keys(exports.SmartRouter)).toMatchInlineSnapshot(`
+    [
+      "getBestTrade",
+      "v2PoolSubgraphSelection",
+      "v3PoolSubgraphSelection",
+      "getV2PoolsOnChain",
+      "getStablePoolsOnChain",
+      "getV3PoolsWithoutTicksOnChain",
+      "getV3PoolSubgraph",
+      "getV2PoolSubgraph",
+      "getAllV3PoolsFromSubgraph",
+      "v3PoolTvlSelector",
+      "v2PoolTvlSelector",
+      "createHybridPoolProvider",
+      "createStaticPoolProvider",
+      "createV2PoolsProviderByCommonTokenPrices",
+      "getV2PoolsWithTvlByCommonTokenPrices",
+      "createGetV2CandidatePools",
+      "getV2CandidatePools",
+      "v3PoolsOnChainProviderFactory",
+      "getV3PoolsWithTvlFromOnChain",
+      "getV3PoolsWithTvlFromOnChainFallback",
+      "getV3PoolsWithTvlFromOnChainStaticFallback",
+      "createGetV3CandidatePoolsWithFallbacks",
+      "createGetV3CandidatePools",
+      "getV3CandidatePools",
+      "getStableCandidatePools",
+      "getCandidatePools",
+      "createPoolProvider",
+      "createQuoteProvider",
+      "createOffChainQuoteProvider",
+      "PancakeMulticallProvider",
+      "createCommonTokenPriceProvider",
+      "getTokenUsdPricesBySubgraph",
+      "getCommonTokenPricesBySubgraph",
+      "getCommonTokenPricesByLlma",
+      "getCommonTokenPricesByWalletApi",
+      "getCommonTokenPrices",
+      "getExecutionPrice",
+      "maximumAmountIn",
+      "minimumAmountOut",
+      "isV2Pool",
+      "isV3Pool",
+      "isStablePool",
+      "getMidPrice",
+      "involvesCurrency",
+      "metric",
+      "log",
+      "Transformer",
+      "getPoolAddress",
+      "getPairCombinations",
+      "getCheckAgainstBaseTokens",
+      "APISchema",
+    ]
+  `)
+})
