@@ -55,13 +55,13 @@ const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) 
             <Text color="textSubtle" fontSize="14px">
               {t('Start Date')}
             </Text>
-            <Text ml="8px">{dayjs(startDate).format('YYYY-MM-dd HH:mm')}</Text>
+            <Text ml="8px">{dayjs(startDate).format('YYYY-MM-DD HH:mm')}</Text>
           </Flex>
           <Flex alignItems="center">
             <Text color="textSubtle" fontSize="14px">
               {t('End Date')}
             </Text>
-            <Text ml="8px">{dayjs(endDate).format('YYYY-MM-dd HH:mm')}</Text>
+            <Text ml="8px">{dayjs(endDate).format('YYYY-MM-DD HH:mm')}</Text>
           </Flex>
         </DetailBox>
       </CardBody>

@@ -1,7 +1,6 @@
-import { ArrowBackIcon, ArrowForwardIcon, Flex, IconButton } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Flex, IconButton, BunnyCardsIcon } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { useGetSortedRoundsCurrentEpoch } from 'state/predictions/hooks'
-import Image from 'next/image'
 import useSwiper from '../hooks/useSwiper'
 
 const StyledPrevNextNav = styled(Flex)`
@@ -10,7 +9,7 @@ const StyledPrevNextNav = styled(Flex)`
   justify-content: space-between;
   overflow: initial;
   position: relative;
-  width: 139px;
+  width: 128px;
   z-index: 1;
 
   box-shadow: ${({ theme }) => theme.shadows.level1};
@@ -25,9 +24,8 @@ const StyledPrevNextNav = styled(Flex)`
 const Icon = styled.div`
   position: absolute;
   cursor: pointer;
-  margin-left: 5px;
-  left: 20%;
-  transform: translateX(-13px);
+  left: 50%;
+  margin-left: -32px;
 `
 
 const PrevNextNav = () => {
@@ -55,7 +53,7 @@ const PrevNextNav = () => {
         <ArrowBackIcon color="primary" width="24px" />
       </IconButton>
       <Icon onClick={handleSlideToLive}>
-        <Image width={139} height={120} src="/images/predictions/birthday/birthday-icon.png" alt="birthday-icon" />
+        <BunnyCardsIcon width="64px" />
       </Icon>
       <IconButton variant="text" scale="sm" onClick={handleNextSlide}>
         <ArrowForwardIcon color="primary" width="24px" />

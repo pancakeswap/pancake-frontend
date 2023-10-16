@@ -1,7 +1,7 @@
 /* eslint-disable address/addr-type */
 import { SerializedFarm } from '@pancakeswap/farms'
-import farms1 from '@pancakeswap/farms/constants/1'
-import farms56 from '@pancakeswap/farms/constants/56'
+import farms1 from '@pancakeswap/farms/constants/eth'
+import farms56 from '@pancakeswap/farms/constants/bsc'
 import { Native } from '@pancakeswap/sdk'
 import { getLpContract } from 'utils/contractHelpers'
 import { describe, it } from 'vitest'
@@ -9,7 +9,7 @@ import { describe, it } from 'vitest'
 // Test only against the last 10 farms, for performance concern
 const farmsToTest: [number, SerializedFarm, number][] = farms56
   .filter((farm) => farm.pid !== 0 && farm.pid !== null)
-  .filter((farm) => !farm.stableSwapAddress)
+  .filter((farm) => !(farm as any).stableSwapAddress)
   .slice(0, 10)
   .map((farm) => [farm.pid, farm, 56])
 

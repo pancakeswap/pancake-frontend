@@ -2363,8 +2363,6 @@
   "Hide closed positions": "終了したポジションを非表示",
   "Liquidity source": "流動性ソース",
   "Customize Routing": "ルーティングをカスタマイズ",
-  "PCS v3 Migration": "PCS v3への移行",
-  "Migrate to continue farming CAKE rewards and earning trading fees.": "移行して、CAKE報酬のファーミングとトレード手数料の獲得を続けます。",
   "Guide": "ガイド",
   "At least one AMM liquidity source has to be enabled to support normal trading.": "通常のトレードをサポートするには、少なくとも1つのAMM流動性ソースを有効にする必要があります。",
   "Unable to establish trading route due to customized routing.": "ルーティングのカスタマイズにより、トレードルートを確立できません。",
@@ -2808,5 +2806,8 @@
   "Predict now": "Predict now",
   "Trade now": "Trade now",
   "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard": "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard",
-  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking"
+  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
+  "Unstaking from v2 farm?": "Unstaking from v2 farm?",
+  "Migrate to v3 here": "Migrate to v3 here",
+  "Migrate to V3": "Migrate to V3"
 }

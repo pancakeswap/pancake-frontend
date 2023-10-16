@@ -2363,8 +2363,6 @@
   "Hide closed positions": "마감 포지션 숨기기",
   "Liquidity source": "유동성 소스",
   "Customize Routing": "라우팅 사용자 지정",
-  "PCS v3 Migration": "PCS v3 마이그레이션",
-  "Migrate to continue farming CAKE rewards and earning trading fees.": "계속해서 CAKE 리워드를 파밍하고 거래 수수료를 받으려면 마이그레이션하세요.",
   "Guide": "가이드",
   "At least one AMM liquidity source has to be enabled to support normal trading.": "정상적인 거래를 지원하려면 하나 이상의 AMM 유동성 소스를 활성화해야 합니다.",
   "Unable to establish trading route due to customized routing.": "사용자 지정된 라우팅으로 인해 거래 라우트를 설정할 수 없습니다.",
@@ -2808,5 +2806,8 @@
   "Predict now": "Predict now",
   "Trade now": "Trade now",
   "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard": "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard",
-  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking"
+  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
+  "Unstaking from v2 farm?": "Unstaking from v2 farm?",
+  "Migrate to v3 here": "Migrate to v3 here",
+  "Migrate to V3": "Migrate to V3"
 }

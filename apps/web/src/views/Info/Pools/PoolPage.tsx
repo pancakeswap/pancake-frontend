@@ -17,6 +17,7 @@ import {
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { getChainName } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -76,7 +77,7 @@ const LockedTokensContainer = styled(Flex)`
 `
 
 const getFarmConfig = async (chainId: number) => {
-  const config = await import(`@pancakeswap/farms/constants/${chainId}`)
+  const config = await import(`@pancakeswap/farms/constants/${getChainName(chainId)}`)
   return config
 }
 
@@ -101,7 +102,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
-  const stableAPR = useStableSwapAPR(isStableSwap && address)
+  const stableAPR = useStableSwapAPR(isStableSwap ? address : undefined)
   const { data: farmConfig } = useSWRImmutable(isStableSwap && chainId && `info/gerFarmConfig/${chainId}`, () =>
     getFarmConfig(chainId),
   )
@@ -109,9 +110,9 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const feeDisplay = useMemo(() => {
     if (isStableSwap && farmConfig) {
       const stableLpFee =
-        farmConfig?.default.find((d) => d.stableSwapAddress?.toLowerCase() === address)?.stableLpFee ?? 0
+        farmConfig?.default.find((d: any) => d.stableSwapAddress?.toLowerCase() === address)?.stableLpFee ?? 0
       return new BigNumber(stableLpFee)
-        .times(showWeeklyData ? poolData?.volumeOutUSDWeek : poolData?.volumeOutUSD)
+        .times((showWeeklyData ? poolData?.volumeOutUSDWeek : poolData?.volumeOutUSD) ?? 0)
         .toNumber()
     }
     return showWeeklyData ? poolData?.lpFees7d : poolData?.lpFees24h
@@ -127,7 +128,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
 
   return (
     <Page>
-      <NextSeo title={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null} />
+      <NextSeo title={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : undefined} />
       {poolData ? (
         <>
           <Flex justifyContent="space-between" mb="16px" flexDirection={['column', 'column', 'row']}>
@@ -298,11 +299,12 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                       </Text>
                       <Text color="textSubtle" fontSize="12px">
                         {t('out of $%totalFees% total fees', {
-                          totalFees: isStableSwap
-                            ? formatAmount(stableTotalFee)
-                            : showWeeklyData
-                            ? formatAmount(poolData.totalFees7d)
-                            : formatAmount(poolData.totalFees24h),
+                          totalFees:
+                            (isStableSwap
+                              ? formatAmount(stableTotalFee)
+                              : showWeeklyData
+                              ? formatAmount(poolData.totalFees7d)
+                              : formatAmount(poolData.totalFees24h)) || '',
                         })}
                       </Text>
                     </Flex>
@@ -310,7 +312,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                 </Flex>
               </Card>
             </Box>
-            <ChartCard variant="pool" chartData={chartData} />
+            <ChartCard variant="pool" chartData={chartData || []} />
           </ContentLayout>
           <Heading mb="16px" mt="40px" scale="lg">
             {t('Transactions')}

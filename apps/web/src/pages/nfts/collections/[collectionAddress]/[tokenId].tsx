@@ -5,7 +5,6 @@ import { getCollection, getNftApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 // eslint-disable-next-line camelcase
 import { SWRConfig, unstable_serialize } from 'swr'
-import SubMenu from 'views/Nft/market/components/SubMenu'
 
 const IndividualNFTPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
@@ -14,7 +13,6 @@ const IndividualNFTPage = ({ fallback = {} }: InferGetStaticPropsType<typeof get
         fallback,
       }}
     >
-      <SubMenu />
       <IndividualNFT />
     </SWRConfig>
   )
@@ -28,7 +26,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { collectionAddress, tokenId } = params
+  const collectionAddress = params?.collectionAddress
+  const tokenId = params?.tokenId
 
   if (typeof collectionAddress !== 'string' || typeof tokenId !== 'string') {
     return {

@@ -2363,8 +2363,6 @@
   "Hide closed positions": "إخفاء المراكز المقفلة",
   "Liquidity source": "مصدر السيولة",
   "Customize Routing": "تخصيص المسار",
-  "PCS v3 Migration": "ترحيل إلى PCS v3",
-  "Migrate to continue farming CAKE rewards and earning trading fees.": "قم بالترحيل لمواصلة زراعة مكافآت CAKE وربح رسوم التداول.",
   "Guide": "الدليل",
   "At least one AMM liquidity source has to be enabled to support normal trading.": "يجب تمكين مصدر سيولة AMM واحد على الأقل لدعم التداول العادي.",
   "Unable to establish trading route due to customized routing.": "تعذر إنشاء مسار تداول بسبب المسار المخصص.",
@@ -2808,5 +2806,8 @@
   "Predict now": "Predict now",
   "Trade now": "Trade now",
   "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard": "Saturn Syndicate: Trade perpetuals and share $10,000 rewards Daily reward for new users and to top the leaderboard",
-  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking"
+  "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
+  "Unstaking from v2 farm?": "Unstaking from v2 farm?",
+  "Migrate to v3 here": "Migrate to v3 here",
+  "Migrate to V3": "Migrate to V3"
 }

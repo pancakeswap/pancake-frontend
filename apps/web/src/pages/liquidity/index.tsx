@@ -14,8 +14,10 @@ import {
   HistoryIcon,
   useModal,
   Liquidity,
+  Link,
 } from '@pancakeswap/uikit'
 import { PositionDetails } from '@pancakeswap/farms'
+import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -36,13 +38,11 @@ import useStableConfig, {
 import { useMemo, useState } from 'react'
 import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
-import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import { LiquidityCardRow } from 'components/LiquidityCardRow'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useAtom } from 'jotai'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
-import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 const Body = styled(CardBody)`
@@ -276,7 +276,6 @@ export default function PoolListPage() {
   ])
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
-  const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
 
   const handleClickShowAllPositions = () => {
     setShowAllPositionWithQuery(true)
@@ -289,11 +288,6 @@ export default function PoolListPage() {
 
   return (
     <Page>
-      {isMigrationSupported && (
-        <Flex m="24px 0" maxWidth="854px">
-          <FarmV3MigrationBanner />
-        </Flex>
-      )}
       <AppBody
         style={{
           maxWidth: '854px',
@@ -341,7 +335,19 @@ export default function PoolListPage() {
         />
         <Body>
           {mainSection}
-          {selectedTypeIndex === FILTER.V2 ? <Liquidity.FindOtherLP /> : null}
+          {selectedTypeIndex === FILTER.V2 ? (
+            <>
+              <Liquidity.FindOtherLP>
+                {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
+                  <Link style={{ marginTop: '8px' }} href="/migration">
+                    <Button id="migration-link" variant="secondary" scale="sm">
+                      {t('Migrate to V3')}
+                    </Button>
+                  </Link>
+                )}
+              </Liquidity.FindOtherLP>
+            </>
+          ) : null}
           {showAllPositionButton && (
             <Flex alignItems="center" flexDirection="column">
               <Text color="textSubtle" mb="10px">
