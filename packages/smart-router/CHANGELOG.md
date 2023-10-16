@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.9.3
+
+### Patch Changes
+
+- 70a787a25: Upgrade zod
+
 ## 4.9.2
 
 ### Patch Changes
