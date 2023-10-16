@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/uikit",
-  "version": "0.64.0",
+  "version": "0.64.1",
   "description": "Set of UI components for pancake projects",
   "type": "module",
   "main": "dist/index.cjs",

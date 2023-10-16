@@ -1,5 +1,11 @@
 # @pancakeswap/farms
 
+## 1.0.21
+
+### Patch Changes
+
+- 2ceb8e9ff: Dependencies update
+
 ## 1.0.20
 
 ### Patch Changes
