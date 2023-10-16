@@ -7,6 +7,8 @@ import min from 'lodash/min'
 import max from 'lodash/max'
 import BigNumber from 'bignumber.js'
 import { bscTokens } from '@pancakeswap/tokens'
+import partition from 'lodash/partition'
+import { Address } from 'viem'
 
 import { useStakedPools, useStakedPositionsByUser } from './hooks/useStakedPools'
 import { FixedStakingCard } from './components/FixedStakingCard'
@@ -64,10 +66,13 @@ const FixedStaking = () => {
   }, [groupPoolsByToken])
 
   // Put WBNB on top
-  const sortedPoolGroup = useMemo(
-    () => Object.keys(poolGroup).sort((a) => (a === bscTokens.wbnb.address ? -1 : 1)),
-    [poolGroup],
-  )
+  const sortedPoolGroup = useMemo(() => {
+    const [first, last] = partition(Object.keys(poolGroup), (poolAddress) =>
+      [bscTokens.wbnb.address, bscTokens.cake.address].includes(poolAddress as Address),
+    )
+
+    return [...first, ...last]
+  }, [poolGroup])
 
   return (
     <>
