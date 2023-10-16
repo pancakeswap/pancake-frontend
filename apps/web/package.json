@@ -108,7 +108,7 @@
     "uuid": "^8.0.0",
     "viem": "^1.15.1",
     "wagmi": "^1.4.3",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.4.2",
