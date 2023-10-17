@@ -135,7 +135,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     ? CurrencyAmount.fromRawAmount(currencyA, info.userToken0Amounts)
     : undefined
   const staked1Amount = info?.userToken1Amounts
-    ? CurrencyAmount.fromRawAmount(currencyB, info.userToken0Amounts)
+    ? CurrencyAmount.fromRawAmount(currencyB, info.userToken1Amounts)
     : undefined
   const totalAssetsInUsd = useTotalAssetInUsd(
     staked0Amount,
@@ -187,6 +187,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       rewardEndTime={endTimestamp}
       rewardStartTime={startTimestamp}
       refetch={info?.refetchPositionInfo}
+      totalAssetsInUsd={totalAssetsInUsd}
     >
       {id}
     </DuoTokenVaultCard>

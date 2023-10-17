@@ -67,6 +67,7 @@ interface Props {
   rewardEndTime: number
   rewardStartTime: number
   refetch?: () => void
+  totalAssetsInUsd: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -94,7 +95,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   token1PriceUSD,
   pendingReward,
   userVaultPercentage,
-
   vaultAddress,
   managerInfoUrl,
   strategyInfoUrl,
@@ -104,6 +104,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   rewardEndTime,
   refetch,
   rewardStartTime,
+  totalAssetsInUsd,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -140,10 +141,12 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
       />
       <CardBody>
         <YieldInfo
+          id={id}
           apr={apr}
           isAprLoading={aprDataInfo.isLoading}
           autoCompound={autoCompound}
           withCakeReward={withCakeReward}
+          totalAssetsInUsd={totalAssetsInUsd}
         />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement
