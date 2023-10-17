@@ -23,7 +23,6 @@ import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Address, useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePredictionsContract } from 'hooks/useContract'
@@ -31,7 +30,7 @@ import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { REWARD_RATE } from 'state/predictions/config'
 import { Bet } from 'state/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { multiplyPriceByAmount } from 'utils/prices'
+import useTokenPrice from 'views/Predictions/hooks/useTokenPrice'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
@@ -99,10 +98,10 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
-  const bnbBusdPrice = useBUSDPrice(token)
+  const tokenPrice = useTokenPrice(token)
 
   const { epochs, total } = calculateClaimableRounds(history)
-  const totalBnb = multiplyPriceByAmount(bnbBusdPrice, total)
+  const totalToken = tokenPrice.multipliedBy(total).toNumber()
 
   const isLoading = isLoadingHistory || !epochs?.length
 
@@ -159,7 +158,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
           <Box style={{ textAlign: 'right' }}>
             <Text>{`${formatNumber(total, 0, 4)} ${token.symbol}`}</Text>
             <Text fontSize="12px" color="textSubtle">
-              {`~$${totalBnb.toFixed(2)}`}
+              {`~$${totalToken.toFixed(2)}`}
             </Text>
           </Box>
         </Flex>

@@ -7,7 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import useBUSDPrice from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { DAY_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { multiplyPriceByAmount } from 'utils/prices'
 
@@ -94,7 +94,7 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
   const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
-  const price = useBUSDPrice(ifo.currency)
+  const price = useStablecoinPrice(ifo.currency)
 
   const dollarValueOfToken = multiplyPriceByAmount(price, maxToken, ifo.currency.decimals)
 

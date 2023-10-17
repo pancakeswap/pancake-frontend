@@ -30,8 +30,8 @@ const PredictionCardContent = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const bnbBusdPrice = useBNBPrice()
-  const cakePrice = useCakePrice()
+  const bnbBusdPrice = useBNBPrice({ enabled: loadData })
+  const cakePrice = useCakePrice({ enabled: loadData })
 
   const { data } = useSWR(loadData ? ['prediction', 'tokenWon'] : null, getTotalWon, {
     refreshInterval: SLOW_INTERVAL,
