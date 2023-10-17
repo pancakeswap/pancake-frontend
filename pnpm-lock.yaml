@@ -307,8 +307,8 @@ importers:
         specifier: ^1.11.10
         version: 1.11.10
       jotai:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -680,8 +680,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
       jotai:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
@@ -1430,8 +1430,8 @@ importers:
         specifier: ^18.2.21
         version: 18.2.21
       jotai:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
       localforage:
         specifier: ^1.10.0
         version: 1.10.0
@@ -1771,8 +1771,8 @@ importers:
         specifier: ^9.0.0
         version: 9.1.1
       jotai:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
       styled-components:
         specifier: ^6.0.7
         version: 6.0.7(babel-plugin-styled-components@1.13.3)(react-dom@18.2.0)(react@18.2.0)
@@ -19326,6 +19326,22 @@ packages:
       react:
         optional: true
     dependencies:
+      react: 18.2.0
+    dev: false
+
+  /jotai@2.4.3(@types/react@18.2.21)(react@18.2.0):
+    resolution: {integrity: sha512-CSAHX9LqWG5WCrU8OgBoZbBJ+Bo9rQU0mPusEF4e0CZ/SNFgurG26vb3UpgvCSJZgYVcUQNiUBM5q86PA8rstQ==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.21
       react: 18.2.0
 
   /joycon@3.1.1:
