@@ -194,8 +194,10 @@ export const AddLiquidity = memo(function AddLiquidity({
       allowDepositToken1 &&
       amountB.greaterThan('0') &&
       Number(userCurrencyBalances?.token1Balance?.toSignificant()) < Number(amountB?.toSignificant())
-
-    return amountA.equalTo('0') || amountB.equalTo('0') || balanceAmountMoreThenValueA || balanceAmountMoreThenValueB
+    return (
+      (allowDepositToken0 && (amountA.equalTo('0') || balanceAmountMoreThenValueA)) ||
+      (allowDepositToken1 && (amountB.equalTo('0') || balanceAmountMoreThenValueB))
+    )
   }, [allowDepositToken0, allowDepositToken1, amountA, amountB, userCurrencyBalances])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
