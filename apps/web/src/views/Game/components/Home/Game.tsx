@@ -1,24 +1,8 @@
-import { useState } from 'react'
 import { styled } from 'styled-components'
 import Image from 'next/image'
-import {
-  Flex,
-  Box,
-  Text,
-  Button,
-  CardHeader,
-  Link,
-  Card,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  TelegramIcon,
-} from '@pancakeswap/uikit'
+import { Flex, Box, Text, Button, CardHeader, Link, Card, TelegramIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-
-import 'swiper/css'
-import 'swiper/css/autoplay'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import type { Swiper as SwiperClass } from 'swiper/types'
+import { Carousel } from 'views/Game/components/Home/Carousel'
 
 const StyledGameContainer = styled(Flex)<{ isHorizontal?: boolean }>`
   flex-direction: column;
@@ -59,7 +43,7 @@ const StyledTag = styled(Button)<{ isPurple?: boolean }>`
   font-weight: 400;
   box-shadow: 0px 0px 1px 0px #757575;
   border: ${({ theme, isPurple }) => `solid 1px ${isPurple ? theme.colors.secondary : theme.colors.textSubtle}`};
-  color: ${({ theme, isPurple }) => (isPurple ? 'white' : theme.colors.textSubtle)};
+  color: ${({ theme }) => theme.colors.textSubtle};
   background-color: ${({ theme, isPurple }) => (isPurple ? theme.colors.secondary : theme.card.background)};
 `
 
@@ -77,99 +61,13 @@ const StyledLeftContainer = styled(Box)<{ isHorizontal?: boolean }>`
 const StyledCarouselContainer = styled(Box)<{ isHorizontal?: boolean }>`
   padding: 16px;
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  background: rgba(39, 38, 44, 0.8);
   height: ${({ isHorizontal }) => (isHorizontal ? '429px' : '100%')};
-`
-
-const StyledCarouselImage = styled(Box)<{ imgUrl: string; isActive?: boolean; isHorizontal?: boolean }>`
-  height: ${({ isHorizontal }) => (isHorizontal ? '104px' : '143px')};
-  width: ${({ isHorizontal }) => (isHorizontal ? '157px' : '96px')};
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: 0.5s;
-  border-radius: 8px;
-  background-image: ${({ imgUrl }) => `url(${imgUrl})`};
-  border: ${({ theme, isActive }) => `solid 3px  ${isActive ? theme.colors.primary : 'black'}`};
-`
-
-const StyledSwiperContainer = styled(Box)<{ isHorizontal?: boolean }>`
-  position: relative;
-  border-radius: 16px;
-  padding: 16px 6px 8px 16px;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  margin: ${({ isHorizontal }) => (isHorizontal ? '32px 0 0 0' : '0 0 24px 0')};
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: ${({ isHorizontal }) => `${isHorizontal ? '-10px' : '20px'}`};
-    left: ${({ isHorizontal }) => `${isHorizontal ? '20px' : '-10px'}`};
-    width: 0;
-    height: 0;
-
-    border-top: ${({ isHorizontal }) => `${isHorizontal ? 0 : '10px solid transparent'}`};
-    border-bottom: ${({ theme, isHorizontal }) =>
-      `10px solid ${isHorizontal ? theme.colors.backgroundAlt : 'transparent'}`};
-    border-right: ${({ theme, isHorizontal }) =>
-      `10px solid ${isHorizontal ? 'transparent' : theme.colors.backgroundAlt}`};
-    border-left: ${({ isHorizontal }) => `${isHorizontal ? '10px solid transparent' : 0}`};
-  }
 `
 
 interface GameProps {
   isLatest?: boolean
   isHorizontal: boolean
-}
-
-interface CarouselProps {
-  isHorizontal: boolean
-}
-
-const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({ isHorizontal }) => {
-  const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
-
-  return (
-    <StyledSwiperContainer isHorizontal={isHorizontal}>
-      <Swiper
-        // loop
-        resizeObserver
-        slidesPerView={4}
-        spaceBetween={10}
-        // centeredSlides
-        onSwiper={setSwiper}
-      >
-        <SwiperSlide>
-          <StyledCarouselImage
-            isHorizontal={isHorizontal}
-            imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StyledCarouselImage
-            isHorizontal={isHorizontal}
-            imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StyledCarouselImage
-            isHorizontal={isHorizontal}
-            imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StyledCarouselImage
-            isHorizontal={isHorizontal}
-            imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-          />
-        </SwiperSlide>
-      </Swiper>
-      <Flex justifyContent="space-between" mt="10px">
-        <ChevronLeftIcon cursor="pointer" width={24} height={24} />
-        <ChevronRightIcon cursor="pointer" width={24} height={24} />
-      </Flex>
-    </StyledSwiperContainer>
-  )
 }
 
 export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, isHorizontal }) => {
@@ -213,8 +111,10 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
               </Text>
               <Flex mb="24px" justifyContent="space-between">
                 <StyledTag scale="xs" isPurple style={{ alignSelf: 'center' }}>
-                  <Text fontSize={14}>Genera:</Text>
-                  <Text fontSize={14} bold ml="4px">
+                  <Text fontSize={14} color="white">
+                    Genera:
+                  </Text>
+                  <Text fontSize={14} bold ml="4px" color="white">
                     Defense
                   </Text>
                 </StyledTag>
@@ -233,7 +133,11 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
                 </Flex>
               </Flex>
               <Link mb="49px" width="100% !important" external href="/">
-                <Button width="100%">{t('Play Now')}</Button>
+                <Button width="100%">
+                  <Text bold color="white">
+                    {t('Play Now')}
+                  </Text>
+                </Button>
               </Link>
 
               {!isHorizontal && <Carousel isHorizontal={isHorizontal} />}

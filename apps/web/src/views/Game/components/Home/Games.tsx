@@ -2,22 +2,24 @@ import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text, Button, CardHeader, Card } from '@pancakeswap/uikit'
 
-const StyledCard = styled(Box)`
+const StyledCard = styled(Box)<{ picked?: boolean }>`
   position: relative;
   width: 300px;
 
-  // &:before {
-  //   content: '';
-  //   position: absolute;
-  //   bottom: -15px;
-  //   left: 50%;
-  //   width: 0px;
-  //   height: 0px;
-  //   border-right: 15px solid transparent;
-  //   border-left: 15px solid transparent;
-  //   border-top: ${({ theme }) => `15px solid ${theme.colors.backgroundAlt}`};
-  //   transform: translateX(-50%);
-  // }
+  &:before {
+    display: ${({ picked }) => (picked ? 'blokc' : 'none')};
+    content: '';
+    z-index: 1;
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    width: 0px;
+    height: 0px;
+    border-right: 15px solid transparent;
+    border-left: 15px solid transparent;
+    transform: translateX(-50%);
+    border-top: ${({ theme }) => `15px solid ${theme.colors.backgroundAlt}`};
+  }
 `
 
 const StyledContainer = styled(Flex)`
@@ -77,7 +79,7 @@ export const Games = () => {
   return (
     <StyledContainer>
       {[1, 2].map((i) => (
-        <StyledCard>
+        <StyledCard picked={i === 1}>
           <Card>
             <Header imgUrl="/images/ifos/sable-bg.png" />
             <Box padding="20px">
