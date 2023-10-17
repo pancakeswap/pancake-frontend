@@ -10,7 +10,6 @@ import {
   MessageText,
   ScanLink,
   LinkExternal,
-  InfoBox,
 } from '@pancakeswap/uikit'
 import { ChainLinkSupportChains } from 'state/info/constant'
 import { useIsExpertMode } from '@pancakeswap/utils/user'
@@ -31,6 +30,7 @@ import { getBlockExploreLink } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import ApproveLiquidityTokens from 'views/AddLiquidityV3/components/ApproveLiquidityTokens'
+import { InfoBox } from '@pancakeswap/widgets-internal'
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 import RangeSelector from './V3FormView/components/RangeSelector'
 
