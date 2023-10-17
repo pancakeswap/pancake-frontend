@@ -14,9 +14,14 @@ import { Decorations } from 'views/Game/components/Decorations'
 
 const StyledBackground = styled(Box)`
   position: relative;
-  margin-bottom: 105px;
-  padding: 45px 16px 0 16px;
+  margin-bottom: 70px;
+  padding: 30px 16px 0 16px;
   z-index: 1;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-bottom: 105px;
+    padding: 45px 16px 0 16px;
+  }
 `
 
 const StyledGradientBg = styled('div')`
@@ -25,7 +30,7 @@ const StyledGradientBg = styled('div')`
   top: 0;
   left: 0;
   width: 100%;
-  height: 65%;
+  height: 110%;
   background: ${({ theme }) => theme.colors.gradientBubblegum};
   border-bottom-left-radius: 50% 5%;
   border-bottom-right-radius: 50% 5%;
@@ -77,11 +82,14 @@ export const Banner = () => {
         justifyContent="space-between"
         maxWidth={['100%', '100%', '100%', '100%', '100%', '100%', '1257px']}
       >
-        <Box mb={['60px']} width={['100%', '100%', '100%', '100%', '100%', '100%', '1200px']}>
-          <Text color="secondary" bold mb="24px" lineHeight="110%" fontSize={['40px']}>
-            {t('PancakeSwap Gaming Community')}
+        <Box
+          mb={['23px', '23px', '23px', '23px', '60px']}
+          width={['100%', '100%', '100%', '100%', '100%', '100%', '1200px']}
+        >
+          <Text bold color="secondary" lineHeight="110%" fontSize={['40px']} mb={['8px', '8px', '8px', '8px', '24px']}>
+            {isDesktop ? t('PancakeSwap Gaming Community') : t('Gaming Community')}
           </Text>
-          <Text bold lineHeight="110%" fontSize={['16px', '16px', '16px', '24px']}>
+          <Text bold lineHeight="110%" fontSize={['16px', '16px', '16px', '16px', '24px']}>
             {t('Every Game, Every Chain, One Destination')}
           </Text>
         </Box>

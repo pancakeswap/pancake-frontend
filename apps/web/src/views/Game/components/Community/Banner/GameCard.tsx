@@ -1,7 +1,6 @@
 import { Box, BoxProps, Card, Text, Flex, Link, DiscordIcon, TelegramIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
-import { HeightProps } from 'styled-system'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -46,24 +45,23 @@ interface GameCardProps extends BoxProps {
   id: any // delete
   imgUrl: string
   // article?: ArticleDataType
-  imgHeight?: HeightProps['height']
 }
 
-export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ id, imgUrl, imgHeight, ...props }) => {
+export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ id, imgUrl, ...props }) => {
   const { t } = useTranslation()
 
   return (
     <StyledGameCard {...props}>
       <Card>
-        <Box overflow="hidden" height={imgHeight ?? '200px'}>
+        <Box overflow="hidden" height={['134px', '134px', '134px', '134px', '200px']}>
           <StyledBackgroundImage imgUrl={imgUrl} />
         </Box>
         <StyledLogo imgUrl="https://assets.pancakeswap.finance/web/chains/56.png" />
-        <Box padding="20px">
+        <Box padding={['11px', '11px', '11px', '11px', '20px']}>
           <Text color="textSubtle" mb="8px" bold fontSize={['12px']} lineHeight="120%">
             Mobox
           </Text>
-          <Text mb="24px" bold fontSize={['20px']} lineHeight="22px">
+          <Text mb={['16px', '16px', '16px', '16px', '24px']} bold fontSize={['20px']} lineHeight="22px">
             Pancake Protectors {id}
           </Text>
           <Box>

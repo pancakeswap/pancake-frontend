@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Flex, Button } from '@pancakeswap/uikit'
+import { Flex, Button, Text } from '@pancakeswap/uikit'
 import { Categories } from 'views/Home/types'
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -20,19 +20,35 @@ export const CategoriesSelector = ({ selected, categoriesData, childMargin, setS
 
   return (
     <Flex flexDirection={['row', 'row', 'row', 'row', 'row', 'row', 'column']}>
-      {allCategories?.map((category) => (
-        <Button
-          key={category.id}
-          scale="sm"
-          display="block"
-          width="fit-content"
-          m={childMargin}
-          variant={selected === category.id ? 'subtle' : 'light'}
-          onClick={() => setSelected(category.id)}
-        >
-          {category.name}
-        </Button>
-      ))}
+      {allCategories?.map((category) => {
+        if (selected === category.id) {
+          return (
+            <Button
+              key={category.id}
+              scale="sm"
+              display="block"
+              width="fit-content"
+              m={childMargin}
+              variant="subtle"
+              onClick={() => setSelected(category.id)}
+            >
+              {category.name}
+            </Button>
+          )
+        }
+        return (
+          <Text
+            key={category.id}
+            display="block"
+            width="fit-content"
+            padding="0 16px"
+            color="textSubtle"
+            style={{ cursor: 'pointer' }}
+          >
+            {category.name}
+          </Text>
+        )
+      })}
     </Flex>
   )
 }
