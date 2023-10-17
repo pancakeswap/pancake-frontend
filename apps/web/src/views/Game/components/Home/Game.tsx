@@ -1,8 +1,11 @@
 import { styled } from 'styled-components'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import { Flex, Box, Text, Button, CardHeader, Link, Card, TelegramIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Carousel } from 'views/Game/components/Home/Carousel'
+import { CarouselView } from 'views/Game/components/Home/CarouselView'
+import { carouselData } from '../mockData'
 
 const StyledGameContainer = styled(Flex)<{ isHorizontal?: boolean }>`
   flex-direction: column;
@@ -58,13 +61,6 @@ const StyledLeftContainer = styled(Box)<{ isHorizontal?: boolean }>`
   min-width: ${({ isHorizontal }) => (isHorizontal ? '671px' : '392px')};
 `
 
-const StyledCarouselContainer = styled(Box)<{ isHorizontal?: boolean }>`
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(39, 38, 44, 0.8);
-  height: ${({ isHorizontal }) => (isHorizontal ? '429px' : '100%')};
-`
-
 interface GameProps {
   isLatest?: boolean
   isHorizontal: boolean
@@ -72,6 +68,10 @@ interface GameProps {
 
 export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, isHorizontal }) => {
   const { t } = useTranslation()
+  const [carouselId, setCarouselId] = useState(0)
+  const fakeDate = JSON.parse(JSON.stringify(carouselData))
+
+  const previewCarouseData = useMemo(() => fakeDate[carouselId], [carouselId, fakeDate])
 
   return (
     <StyledGameContainer isHorizontal={isHorizontal}>
@@ -95,8 +95,10 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
         <StyledGameInfoContainer padding="0 32px 32px 32px">
           <Flex width="100%" justifyContent="space-between" paddingTop={['32px']}>
             <StyledLeftContainer width="100%">
-              <StyledCarouselContainer isHorizontal={isHorizontal}>1233</StyledCarouselContainer>
-              {isHorizontal && <Carousel isHorizontal={isHorizontal} />}
+              <CarouselView isHorizontal={isHorizontal} carouselData={previewCarouseData} />
+              {isHorizontal && (
+                <Carousel carouselData={fakeDate} isHorizontal={isHorizontal} setCarouselId={setCarouselId} />
+              )}
             </StyledLeftContainer>
             <StyledGameInformation>
               <Text mb="24px" bold fontSize={['40px']} lineHeight="110%">
@@ -140,7 +142,9 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
                 </Button>
               </Link>
 
-              {!isHorizontal && <Carousel isHorizontal={isHorizontal} />}
+              {!isHorizontal && (
+                <Carousel carouselData={fakeDate} isHorizontal={isHorizontal} setCarouselId={setCarouselId} />
+              )}
 
               <Box>
                 <Text>TRENDING TAGS FOR THIS GAME:</Text>
