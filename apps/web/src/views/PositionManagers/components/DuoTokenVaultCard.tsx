@@ -189,6 +189,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
             allowDepositToken0={allowDepositToken0}
             allowDepositToken1={allowDepositToken1}
             isSingleDepositToken={isSingleDepositToken}
+            rewardPerSecond={rewardPerSecond}
+            earningToken={earningToken}
           />
           <VaultLinks
             mt="0.5em"

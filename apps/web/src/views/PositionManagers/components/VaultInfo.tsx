@@ -1,11 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BaseAssets, ManagerFee } from '@pancakeswap/position-managers'
 import { Currency, Price } from '@pancakeswap/sdk'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { Box, RowBetween, Text } from '@pancakeswap/uikit'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { SpaceProps } from 'styled-system'
 import { useTotalStakedInUsd } from 'views/PositionManagers/hooks/useTotalStakedInUsd'
+import BigNumber from 'bignumber.js'
 
 const InfoText = styled(Text).attrs({
   fontSize: '0.875em',
@@ -32,6 +34,8 @@ export interface VaultInfoProps extends SpaceProps {
   poolToken1Amount?: bigint
   token0PriceUSD?: number
   token1PriceUSD?: number
+  rewardPerSecond: string
+  earningToken: Currency
 }
 
 export const VaultInfo = memo(function VaultInfo({
@@ -44,9 +48,16 @@ export const VaultInfo = memo(function VaultInfo({
   isSingleDepositToken,
   allowDepositToken0,
   allowDepositToken1,
+  rewardPerSecond,
+  earningToken,
+  managerFee,
   ...props
 }: VaultInfoProps) {
   const { t } = useTranslation()
+
+  const tokenPerSecond = useMemo(() => {
+    return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals).toNumber()
+  }, [rewardPerSecond, earningToken])
 
   const totalStakedInUsd = useTotalStakedInUsd({
     currencyA,
@@ -69,6 +80,14 @@ export const VaultInfo = memo(function VaultInfo({
       <RowBetween>
         <InfoText>{t('Total staked')}:</InfoText>
         <InfoText>{`$${totalStakedInUsd.toFixed(2)}`}</InfoText>
+      </RowBetween>
+      <RowBetween>
+        <InfoText>{t('Farming Rewards')}:</InfoText>
+        <InfoText>{`~${tokenPerSecond} ${earningToken.symbol} / ${t('second')}`}</InfoText>
+      </RowBetween>
+      <RowBetween>
+        <InfoText>{t('Manager Fee')}:</InfoText>
+        <InfoText>{`${managerFee?.rate.numerator}`}%</InfoText>
       </RowBetween>
     </Box>
   )
