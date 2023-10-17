@@ -6,8 +6,12 @@ import GradientLogo from 'views/Home/components/GradientLogoSvg'
 import { LIGHT_BG, DARK_BG } from 'views/Game/pageSectionStyles'
 
 const StyledContainer = styled(PageSection)`
-  padding: 89px 16px 24px 16px;
+  padding: 0px 16px 24px 16px;
   background: ${({ theme }) => (theme.isDark ? DARK_BG : LIGHT_BG)};
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding: 89px 24px 24px 24px;
+  }
 `
 
 const StyledList = styled(Flex)`
@@ -23,13 +27,14 @@ const StyledList = styled(Flex)`
 const StyledGameBenefitsListContainer = styled(Flex)`
   width: 282px;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: 588px;
   }
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1200px;
+    justify-content: space-between;
   }
 
   ${StyledList} {
@@ -104,7 +109,7 @@ export const Infrastructure = () => {
       clipFill={{ light: '#FFF', dark: '#191326' }}
       containerProps={{ style: { marginTop: '-30px' } }}
     >
-      <Flex pt="24px" alignItems="center" flexDirection="column" justifyContent="center">
+      <Flex pt={['0', '0', '0', '0', '24px']} alignItems="center" flexDirection="column" justifyContent="center">
         <GradientLogo height="36px" width="36px" mb="24px" />
         <Heading maxWidth={['745px']} textAlign="center" scale="xl" mb="32px">
           {t('Bring Your Game to Life on PancakeSwap')}
@@ -114,10 +119,10 @@ export const Infrastructure = () => {
             // eslint-disable-next-line react/no-array-index-key
             <StyledList key={`benefit-${index}`}>
               <Image width={240} height={240} src={benefit.imgUrl} alt="" />
-              <Text mt="24px" bold fontSize={['20px']} color="secondary" mb="8px">
+              <Text lineHeight="110%" mt="24px" bold fontSize={['20px']} color="secondary" mb="8px">
                 {benefit.title}
               </Text>
-              <Text bold fontSize={['20px']}>
+              <Text lineHeight="110%" bold fontSize={['20px']}>
                 {benefit.desc}
               </Text>
             </StyledList>
@@ -139,10 +144,10 @@ export const Infrastructure = () => {
             // eslint-disable-next-line react/no-array-index-key
             <StyledCard key={`infrastructure-${index}`}>
               <StyledList>
-                <Text bold fontSize={['24px']} mb="16px">
+                <Text lineHeight="110%" bold fontSize={['24px']} mb="16px">
                   {infrastructure.title}
                 </Text>
-                <Text fontSize={['14px']} color="textSubtle">
+                <Text lineHeight="120%" fontSize={['14px']} color="textSubtle">
                   {infrastructure.desc}
                 </Text>
               </StyledList>
