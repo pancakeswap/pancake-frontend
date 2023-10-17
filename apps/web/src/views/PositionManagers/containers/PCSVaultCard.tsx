@@ -79,8 +79,13 @@ export const PCSVaultCard = memo(function PCSVaultCard({
   const tokensPriceUSD = useMemo(() => {
     const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
     if (!farm) return priceFromSubgraph
-    return { token0: Number(farm.tokenPriceBusd), token1: Number(farm.quoteTokenPriceBusd) }
-  }, [farmsV3, priceFromV3FarmPid, priceFromSubgraph])
+    const isToken0And1Reversed =
+      farm.token.address.toLowerCase() === (currencyB.isToken ? currencyB.address.toLowerCase() : '')
+    return {
+      token0: Number(isToken0And1Reversed ? farm.quoteTokenPriceBusd : farm.tokenPriceBusd),
+      token1: Number(isToken0And1Reversed ? farm.tokenPriceBusd : farm.quoteTokenPriceBusd),
+    }
+  }, [farmsV3, priceFromV3FarmPid, priceFromSubgraph, currencyB])
 
   const managerInfo = useMemo(
     () => ({
