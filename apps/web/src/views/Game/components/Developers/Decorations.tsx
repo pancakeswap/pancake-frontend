@@ -67,11 +67,15 @@ const StyledDecorations = styled(Box)`
     & :nth-child(3) {
       top: 40%;
       right: -2%;
+      width: 101px;
+      height: 105px;
     }
   
     & :nth-child(4) {
-      top: 35%;
+      top: 32%;
       right: -1%;
+      width: 109px;
+      height: 90px;
     }
   
     & :nth-child(5) {
