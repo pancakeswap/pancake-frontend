@@ -65,6 +65,6 @@ export * from "./BunnyKnownPlaceholder";
 export * from "./DropdownMenu";
 export * from "./DynamicSection";
 export * from "./Chart";
-
+export * from "./LoadingDot";
 export * from "./AtomBox";
 export { default as RoiCard } from "./RoiCalculatorModal/RoiCard";

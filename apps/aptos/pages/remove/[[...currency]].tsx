@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox, AutoColumn, Box, CardBody, Liquidity as LiquidityUI, RowBetween, Text } from '@pancakeswap/uikit'
+import { AtomBox, AutoColumn, Box, CardBody, RowBetween, Text } from '@pancakeswap/uikit'
+import { Liquidity as LiquidityUI } from '@pancakeswap/widgets-internal'
 import { LightGreyCard } from 'components/Card'
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import { PageMeta } from 'components/Layout/Page'

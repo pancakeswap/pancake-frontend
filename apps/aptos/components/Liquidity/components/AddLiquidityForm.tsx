@@ -1,7 +1,8 @@
 import { CurrencyAmount, Token, Percent } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 
-import { Liquidity as LiquidityUI, Column, AddIcon, CardBody, AutoColumn, Button } from '@pancakeswap/uikit'
+import { Column, AddIcon, CardBody, AutoColumn, Button } from '@pancakeswap/uikit'
+import { Liquidity } from '@pancakeswap/widgets-internal'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import AddLiquidityButton from 'components/Liquidity/components/AddLiquidityButton'
 import { PairState } from 'hooks/usePairs'
@@ -18,7 +19,7 @@ import PoolPriceBar from './PoolPriceBar'
 import PricePoolShareSection from './PricePoolShareSection'
 import SlippageSection from './SlippageSection'
 
-const { FirstLP } = LiquidityUI
+const { FirstLP } = Liquidity
 
 export default function AddLiquidityForm({ notSupportPair }: { notSupportPair: boolean }) {
   const { t } = useTranslation()
