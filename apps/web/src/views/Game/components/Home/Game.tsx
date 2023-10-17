@@ -1,7 +1,18 @@
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import Image from 'next/image'
-import { Flex, Box, Text, Button, CardHeader, Link, Card, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Box,
+  Text,
+  Button,
+  CardHeader,
+  Link,
+  Card,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  TelegramIcon,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 import 'swiper/css'
@@ -42,14 +53,14 @@ const Header = styled(CardHeader)`
   }
 `
 
-const StyledTag = styled(Button)`
+const StyledTag = styled(Button)<{ isPurple?: boolean }>`
   padding: 4px 8px;
   font-size: 14px;
   font-weight: 400;
   box-shadow: 0px 0px 1px 0px #757575;
-  border: ${({ theme }) => `solid 1px ${theme.colors.textSubtle}`};
-  color: ${({ theme }) => theme.colors.textSubtle};
-  background-color: ${({ theme }) => theme.card.background};
+  border: ${({ theme, isPurple }) => `solid 1px ${isPurple ? theme.colors.secondary : theme.colors.textSubtle}`};
+  color: ${({ theme, isPurple }) => (isPurple ? 'white' : theme.colors.textSubtle)};
+  background-color: ${({ theme, isPurple }) => (isPurple ? theme.colors.secondary : theme.card.background)};
 `
 
 const StyledTagContainer = styled(Flex)`
@@ -200,6 +211,27 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
                 PancakeSwap and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players,
                 as well as CAKE, Pancake Squad, and Bunnies holders.
               </Text>
+              <Flex mb="24px" justifyContent="space-between">
+                <StyledTag scale="xs" isPurple style={{ alignSelf: 'center' }}>
+                  <Text fontSize={14}>Genera:</Text>
+                  <Text fontSize={14} bold ml="4px">
+                    Defense
+                  </Text>
+                </StyledTag>
+                <Flex>
+                  <Box>
+                    <Text bold as="span" fontSize={12} color="textSubtle" textTransform="uppercase">
+                      Published by
+                    </Text>
+                    <Text m="0 4px" bold as="span" fontSize={12} color="secondary" textTransform="uppercase">
+                      dev_name
+                    </Text>
+                  </Box>
+                  <Link external href="/">
+                    <TelegramIcon color="secondary" />
+                  </Link>
+                </Flex>
+              </Flex>
               <Link mb="49px" width="100% !important" external href="/">
                 <Button width="100%">{t('Play Now')}</Button>
               </Link>
