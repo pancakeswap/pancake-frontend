@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 4.0.17
+
+### Patch Changes
+
+- 4dd27c7a7: Move Eth and Bsc Pool to finished pools'
+
 ## 4.0.16
 
 ### Patch Changes
