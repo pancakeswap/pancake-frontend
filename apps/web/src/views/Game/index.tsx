@@ -17,7 +17,7 @@ export const GameHomePage = () => {
       <Banner />
       <Decorations />
       <StyledBackground>
-        <Game isLatest />
+        <Game isLatest isHorizontal={false} />
       </StyledBackground>
       <OtherGames />
     </>
