@@ -1,4 +1,4 @@
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/swap-sdk-core'
 import { useMemo } from 'react'
 import { DAYS_A_YEAR } from '../constant'
 import { useCurrentDay } from './useStakedPools'
@@ -11,7 +11,7 @@ export function useCalculateProjectedReturnAmount({
   poolEndDay,
   lastDayAction,
 }: {
-  amountDeposit: CurrencyAmount<Token>
+  amountDeposit: CurrencyAmount<Currency>
   lockPeriod: number
   poolEndDay: number
   lastDayAction: number

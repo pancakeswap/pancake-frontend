@@ -7,7 +7,7 @@ import { ReactNode, useMemo } from 'react'
 import TextRow from 'views/Pools/components/LockedPool/Common/Overview/TextRow'
 import { formatUnixTime } from 'utils/formatTime'
 
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent, Currency } from '@pancakeswap/swap-sdk-core'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
 import { useCurrentDay } from '../hooks/useStakedPools'
@@ -47,8 +47,8 @@ export default function FixedStakingOverview({
   unlockTime?: number
   disableStrike?: boolean
   isUnstakeView?: boolean
-  stakeAmount: CurrencyAmount<Token>
-  alreadyStakedAmount?: CurrencyAmount<Token>
+  stakeAmount: CurrencyAmount<Currency>
+  alreadyStakedAmount?: CurrencyAmount<Currency>
   lockAPR: Percent
   boostAPR: Percent
   unlockAPR: Percent

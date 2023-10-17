@@ -177,6 +177,10 @@ export function useStakedPools(): FixedStakingPool[] {
           return null
         }
 
+        const lockPeriod = fixedStakePool[5]
+
+        if (lockPeriod < 30) return null
+
         /*
           struct Pool {
             IERC20Upgradeable token;
@@ -203,7 +207,7 @@ export function useStakedPools(): FixedStakingPool[] {
           lockDayPercent: fixedStakePool[2],
           boostDayPercent: fixedStakePool[3],
           unlockDayPercent: fixedStakePool[4],
-          lockPeriod: fixedStakePool[5],
+          lockPeriod,
           withdrawalCut1: fixedStakePool[6],
           withdrawalCut2: fixedStakePool[7],
           // set widthdrawalFee as withdrawalCut2 to display pools' fee with unconnected account

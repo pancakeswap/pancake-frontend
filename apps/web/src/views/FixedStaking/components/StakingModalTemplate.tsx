@@ -1,9 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast, Link } from '@pancakeswap/uikit'
+import {
+  Button,
+  Modal,
+  Flex,
+  Text,
+  BalanceInput,
+  Slider,
+  Box,
+  PreTitle,
+  useToast,
+  Link,
+  Toggle,
+  Message,
+  MessageText,
+} from '@pancakeswap/uikit'
 import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
-import useTokenBalance from 'hooks/useTokenBalance'
+import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
 import Divider from 'components/Divider'
 import { useFixedStakingContract } from 'hooks/useContract'
@@ -11,7 +25,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent, Currency } from '@pancakeswap/sdk'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
@@ -19,6 +33,7 @@ import first from 'lodash/first'
 import dayjs from 'dayjs'
 import usePrevious from 'views/V3Info/hooks/usePrevious'
 import { styled } from 'styled-components'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 
 import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
@@ -33,8 +48,9 @@ const StyledButton = styled(Button)`
 
 interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
-  stakeCurrencyAmount: CurrencyAmount<Token>
-  alreadyStakedAmount: CurrencyAmount<Token>
+  stakeCurrencyAmount: CurrencyAmount<Currency>
+  alreadyStakedAmount: CurrencyAmount<Currency>
+  positionStakeCurrencyAmount: CurrencyAmount<Currency>
   lockPeriod: number
   isStaked: boolean
   boostAPR: Percent
@@ -46,7 +62,7 @@ interface BodyParam {
 }
 
 export function StakingModalTemplate({
-  stakingToken,
+  stakingToken: positionStakingToken,
   pools,
   initialLockPeriod,
   stakedPeriods,
@@ -56,9 +72,10 @@ export function StakingModalTemplate({
   stakedPositions = [],
   onBack,
   title,
+  useNative,
 }: {
   title?: string
-  stakingToken: Token
+  stakingToken: Currency
   pools: FixedStakingPool[]
   stakedPositions?: StakedPosition[]
   initialLockPeriod: number
@@ -67,11 +84,29 @@ export function StakingModalTemplate({
   body: ReactNode | ((params: BodyParam) => ReactNode)
   hideStakeButton?: boolean
   onBack?: () => void
+  useNative?: boolean
 }) {
   const { t } = useTranslation()
   const [stakeAmount, setStakeAmount] = useState('')
   const [isConfirmed, setIsConfirmed] = useState(false)
   const [check, setCheck] = useState(false)
+  const [useBNB, toggleUseBNB] = useState(false)
+  const nativeToken = useNativeCurrency()
+  const [percent, setPercent] = useState(0)
+
+  useEffect(() => {
+    setStakeAmount('')
+    setPercent(0)
+  }, [useBNB])
+
+  const isWBNB = nativeToken.wrapped.equals(positionStakingToken)
+
+  const enableNative = useNative && useBNB
+
+  const stakingToken = useMemo(
+    () => (enableNative ? nativeToken : positionStakingToken),
+    [enableNative, nativeToken, positionStakingToken],
+  )
 
   const claimedPeriods = useMemo(
     () => stakedPositions.filter((sP) => dayjs.unix(sP.endLockTime).diff(dayjs()) <= 0).map((sP) => sP.pool.lockPeriod),
@@ -80,7 +115,7 @@ export function StakingModalTemplate({
 
   const [lockPeriod, setLockPeriod] = useState(
     initialLockPeriod === null || initialLockPeriod === undefined
-      ? first(pools.filter((p) => !claimedPeriods.includes(p.lockPeriod))).lockPeriod
+      ? first(pools.filter((p) => !claimedPeriods.includes(p.lockPeriod)))?.lockPeriod || 0
       : initialLockPeriod,
   )
 
@@ -103,8 +138,14 @@ export function StakingModalTemplate({
     boostDayPercent: selectedPool?.boostDayPercent,
   })
 
-  const [percent, setPercent] = useState(0)
-  const { balance: stakingTokenBalance } = useTokenBalance(stakingToken?.address)
+  const { balance: bnbBalance } = useGetBnbBalance()
+  const { balance: positionStakingTokenBalance } = useTokenBalance(positionStakingToken?.wrapped?.address)
+
+  const stakingTokenBalance = useMemo(
+    () => (enableNative ? new BigNumber(bnbBalance?.toString()) : positionStakingTokenBalance),
+    [bnbBalance, enableNative, positionStakingTokenBalance],
+  )
+
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const fixedStakingContract = useFixedStakingContract()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -115,6 +156,10 @@ export function StakingModalTemplate({
   const rawAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
 
   const stakeCurrencyAmount = CurrencyAmount.fromRawAmount(stakingToken, rawAmount.gt(0) ? rawAmount.toString() : '0')
+  const positionStakeCurrencyAmount = CurrencyAmount.fromRawAmount(
+    positionStakingToken,
+    rawAmount.gt(0) ? rawAmount.toString() : '0',
+  )
 
   const totalPoolDeposited = CurrencyAmount.fromRawAmount(
     stakingToken,
@@ -125,11 +170,11 @@ export function StakingModalTemplate({
   const minStakeAmount = CurrencyAmount.fromRawAmount(stakingToken, selectedPool ? selectedPool.minDeposit : '0')
   const maxStakePoolAmount = CurrencyAmount.fromRawAmount(stakingToken, selectedPool ? selectedPool.maxPoolAmount : '0')
 
-  let error = null
+  let error = ''
 
   const totalStakedAmount = stakeCurrencyAmount.add(depositedAmount)
 
-  if (stakeCurrencyAmount.greaterThan(stakingTokenBalance.toNumber())) {
+  if (stakeCurrencyAmount.greaterThan(stakingTokenBalance.toString())) {
     error = t('Insufficient %symbol% balance', { symbol: stakingToken.symbol })
   } else if (totalStakedAmount.greaterThan(maxStakeAmount)) {
     error = t('Maximum %amount% %symbol%', {
@@ -154,7 +199,9 @@ export function StakingModalTemplate({
     const receipt = await fetchWithCatchTxError(() => {
       const methodArgs = [selectedPool?.poolIndex, rawAmount.toString()]
 
-      return callWithGasPrice(fixedStakingContract, 'deposit', methodArgs)
+      return callWithGasPrice(fixedStakingContract, 'deposit', methodArgs, {
+        value: enableNative ? rawAmount.toString() : 0n,
+      })
     })
 
     if (receipt?.status) {
@@ -168,6 +215,7 @@ export function StakingModalTemplate({
     }
   }, [
     callWithGasPrice,
+    enableNative,
     fetchWithCatchTxError,
     fixedStakingContract,
     rawAmount,
@@ -225,6 +273,7 @@ export function StakingModalTemplate({
     () => ({
       alreadyStakedAmount: depositedAmount,
       stakeCurrencyAmount,
+      positionStakeCurrencyAmount,
       setLockPeriod,
       lockPeriod,
       isStaked,
@@ -238,6 +287,7 @@ export function StakingModalTemplate({
     [
       depositedAmount,
       stakeCurrencyAmount,
+      positionStakeCurrencyAmount,
       lockPeriod,
       isStaked,
       boostAPR,
@@ -267,7 +317,7 @@ export function StakingModalTemplate({
       <Modal
         title={<ModalTitle token={stakingToken} tokenTitle={`${t('Stake')} ${stakingToken?.symbol}`} />}
         width={['100%', '100%', '420px']}
-        maxWidth={['100%', , '420px']}
+        maxWidth={['100%', '100%', '420px']}
       >
         <StakeConfirmModal
           isBoost={isBoost}
@@ -286,7 +336,7 @@ export function StakingModalTemplate({
     <Modal
       title={title || <ModalTitle token={stakingToken} tokenTitle={`${t('Stake')} ${stakingToken?.symbol}`} />}
       width={['100%', '100%', '420px']}
-      maxWidth={['100%', , '420px']}
+      maxWidth={['100%', '100%', '420px']}
       onBack={onBack}
     >
       {head ? head() : null}
@@ -310,6 +360,7 @@ export function StakingModalTemplate({
       <Text color="textSubtle" textAlign="right" fontSize="12px" m="8px 0">
         {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingTokenBalance, stakingToken.decimals) })}
       </Text>
+
       <Box>
         <Slider
           min={0}
@@ -321,6 +372,7 @@ export function StakingModalTemplate({
           step={1}
         />
       </Box>
+
       <Flex alignItems="center" justifyContent="space-between" mt="8px" mb="16px">
         <StyledButton scale="xs" width="100%" mx="2px" variant="tertiary" onClick={() => handleChangePercent(25)}>
           25%
@@ -335,6 +387,29 @@ export function StakingModalTemplate({
           {t('Max')}
         </StyledButton>
       </Flex>
+
+      {isWBNB ? (
+        <>
+          <Flex ml="auto" alignItems="center" justifyContent="space-between" width="100%">
+            <PreTitle textTransform="uppercase" bold>
+              {t('Stake as')} BNB
+            </PreTitle>
+            <Toggle
+              id="receive-as-wnative"
+              scale="sm"
+              checked={useBNB}
+              onChange={() => toggleUseBNB((prev) => !prev)}
+            />
+          </Flex>
+
+          {useBNB ? (
+            <Message variant="warning" my="8px">
+              <MessageText>You will receive WBNB if you withdraw your staked BNB.</MessageText>
+            </Message>
+          ) : null}
+        </>
+      ) : null}
+
       <Divider />
 
       {typeof body === 'function' ? body(params) : body}
@@ -353,7 +428,7 @@ export function StakingModalTemplate({
             </Button>
           ) : !rawAmount.gt(0) || approvalState === ApprovalState.APPROVED ? (
             <Button
-              disabled={!rawAmount.gt(0) || pendingTx || error || !check}
+              disabled={!rawAmount.gt(0) || pendingTx || Boolean(error) || !check}
               style={{
                 minHeight: '48px',
               }}

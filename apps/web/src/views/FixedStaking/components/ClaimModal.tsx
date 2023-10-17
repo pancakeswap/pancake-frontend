@@ -1,7 +1,7 @@
 import { Box, Flex, Modal, ModalV2, PreTitle, Text, Button, useModalV2, Card } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent, Currency } from '@pancakeswap/swap-sdk-core'
 import { ReactNode, useMemo, useState } from 'react'
 import { formatUnixTime } from 'utils/formatTime'
 
@@ -32,7 +32,7 @@ export function ClaimModal({
 }: {
   stakePosition: StakedPosition
   poolEndDay: number
-  token: Token
+  token: Currency
   lockPeriod: number
   unlockTime: number
   lockAPR: Percent
