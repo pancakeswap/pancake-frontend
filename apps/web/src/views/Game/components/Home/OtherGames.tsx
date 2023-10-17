@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
+import { Games } from 'views/Game/components/Home/Games'
 import { Game } from 'views/Game/components/Home/Game'
 
 const StyledContainer = styled(Box)`
@@ -17,6 +18,7 @@ export const OtherGames = () => {
       <Text bold mb="32px" lineHeight="110%" textAlign="center" fontSize={['40px']}>
         {t('Explore Other Games')}
       </Text>
+      <Games />
       <Game isHorizontal />
     </StyledContainer>
   )
