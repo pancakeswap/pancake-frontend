@@ -3,7 +3,6 @@ export const carouselData = [
     type: 'image',
     imageUrl:
       'https://cdn.akamai.steamstatic.com/steam/apps/578080/ss_4454f310776c626a76baeca2d05fd82bd17c6ee0.600x338.jpg?t=1694608943',
-    videoUrl: '',
   },
   {
     type: 'video',

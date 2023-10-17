@@ -27,7 +27,16 @@ export const CarouselView: React.FC<React.PropsWithChildren<CarouselViewProps>> 
   return (
     <StyledCarouselContainer isHorizontal={isHorizontal}>
       {carouselData.type === CarouselType.VIDEO ? (
-        <video width="100%" height="100%" muted autoPlay controls src={carouselData.videoUrl} />
+        <video
+          muted
+          autoPlay
+          controls
+          width="100%"
+          height="100%"
+          disablePictureInPicture
+          src={carouselData.videoUrl}
+          controlsList="nodownload noplaybackrate noremoteplayback"
+        />
       ) : (
         <StyledImage imgUrl={carouselData.imageUrl} />
       )}
