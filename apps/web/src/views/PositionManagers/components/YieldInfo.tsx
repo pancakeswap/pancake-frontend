@@ -13,6 +13,7 @@ interface Props {
   apr: AprResult
   isAprLoading: boolean
   withCakeReward?: boolean
+  lpSymbol: string
   autoCompound?: boolean
   totalAssetsInUsd: number
   onAprClick?: () => void
@@ -31,6 +32,7 @@ export const YieldInfo = memo(function YieldInfo({
   withCakeReward,
   autoCompound,
   totalAssetsInUsd,
+  lpSymbol,
 }: Props) {
   const { t } = useTranslation()
 
@@ -76,7 +78,7 @@ export const YieldInfo = memo(function YieldInfo({
       linkLabel=""
       stakingTokenBalance={new BigNumber(10)}
       stakingTokenDecimals={1}
-      stakingTokenSymbol={`CAKE-USDT${id}`}
+      stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={totalAssetsInUsd}
       earningTokenPrice={cakePriceBusd.toNumber()}
       apr={Number(apr.cakeYieldApr) + Number(apr.lpApr)}

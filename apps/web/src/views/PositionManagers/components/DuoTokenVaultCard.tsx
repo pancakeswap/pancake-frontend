@@ -147,6 +147,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           autoCompound={autoCompound}
           withCakeReward={withCakeReward}
           totalAssetsInUsd={totalAssetsInUsd}
+          lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
         />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement
