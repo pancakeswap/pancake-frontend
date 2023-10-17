@@ -100,10 +100,9 @@ const HarvestCard: React.FC<React.PropsWithChildren<HarvestCardProps>> = ({ onHa
       }[]
     ).map((farm) => farm.sendTx.tokenId)
     if (v3Farms.length > 0) {
-      onHarvestStart?.()
       await onHarvestAll(v3Farms)
-      onHarvestEnd?.()
     }
+    onHarvestEnd?.()
   }, [
     farmsWithStakedBalance,
     onHarvestAll,
