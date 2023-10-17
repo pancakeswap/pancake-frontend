@@ -94,7 +94,9 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     const { isLoading, data } = aprDataList
     return {
       isLoading,
-      info: data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === lpAddress?.toLowerCase()),
+      info: data?.length
+        ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === lpAddress?.toLowerCase())
+        : undefined,
     }
   }, [lpAddress, aprDataList])
 
