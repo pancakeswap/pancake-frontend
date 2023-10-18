@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Text, Dots } from "../../components";
+import { Text } from "../Text";
+import { Dots } from "../Loader/Dots";
 
 export function LoadingDot() {
   const { t } = useTranslation();

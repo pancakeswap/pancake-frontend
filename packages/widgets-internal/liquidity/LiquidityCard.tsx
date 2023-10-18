@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 
-import { Card, CardBody, CardFooter } from "../../components/Card";
-import { AtomBox, AtomBoxProps } from "../../components";
+import { Card, CardBody, CardFooter, AtomBox, AtomBoxProps } from "@pancakeswap/uikit";
 import LiquidityCardHeader from "./LiquidityCardHeader";
 
 type LiquidityCardProps = AtomBoxProps;

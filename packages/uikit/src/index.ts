@@ -18,7 +18,6 @@ export * from "./contexts";
 // Widgets
 export * from "./widgets/Modal";
 export * from "./widgets/Menu";
-export * as Liquidity from "./widgets/Liquidity";
 export * from "./widgets/Ifo";
 
 // Theme

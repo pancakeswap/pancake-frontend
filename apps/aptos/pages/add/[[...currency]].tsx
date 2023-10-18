@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Liquidity as LiquidityUI } from '@pancakeswap/uikit'
+import { AutoColumn } from '@pancakeswap/uikit'
+import { Liquidity as LiquidityUI } from '@pancakeswap/widgets-internal'
 import { PageMeta } from 'components/Layout/Page'
 
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'

@@ -13,7 +13,6 @@ import {
   IconButton,
   HistoryIcon,
   useModal,
-  Liquidity,
   Link,
 } from '@pancakeswap/uikit'
 import { PositionDetails } from '@pancakeswap/farms'
@@ -44,6 +43,7 @@ import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useAtom } from 'jotai'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { Liquidity } from '@pancakeswap/widgets-internal'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
