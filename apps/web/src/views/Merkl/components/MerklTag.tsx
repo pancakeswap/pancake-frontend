@@ -4,9 +4,9 @@ import { useMerklInfo } from '../hooks/useMerkl'
 
 export function MerklTag({ poolAddress }: { poolAddress: string | null }) {
   const { t } = useTranslation()
-  const { rewardsPerToken } = useMerklInfo(poolAddress)
+  const { hasMerkl } = useMerklInfo(poolAddress)
 
-  if (!rewardsPerToken.length) return null
+  if (!hasMerkl) return null
 
   return (
     <Tag ml="8px" outline variant="warning">
@@ -17,9 +17,9 @@ export function MerklTag({ poolAddress }: { poolAddress: string | null }) {
 
 export function MerklRewardsTag({ poolAddress }: { poolAddress: string | null }) {
   const { t } = useTranslation()
-  const { rewardsPerToken } = useMerklInfo(poolAddress)
+  const { hasMerkl } = useMerklInfo(poolAddress)
 
-  if (!rewardsPerToken.length) return null
+  if (!hasMerkl) return null
 
   return (
     <Tag variant="warning" mr="8px" outline>

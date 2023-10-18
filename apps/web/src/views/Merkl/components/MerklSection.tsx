@@ -1,4 +1,4 @@
-import { AutoRow, Button, Text, Flex, Message, MessageText, Box } from '@pancakeswap/uikit'
+import { AutoRow, Button, Text, Flex, Message, MessageText, Box, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
@@ -45,8 +45,14 @@ export function MerklSection({ poolAddress }: { poolAddress: string | null }) {
       </LightGreyCard>
       <Message variant="primary">
         <MessageText>
-          This liquidity position is currently earning rewards on Merkl. Check details here <br />
-          Learn more about Merkl
+          This liquidity position is currently earning rewards on Merkl. Check details{' '}
+          <Link external style={{ display: 'inline-flex' }} href="https://merkl.angle.money/">
+            {t('here')}
+          </Link>{' '}
+          <br />
+          <Link external style={{ display: 'inline-flex' }} href="https://merkl.angle.money/">
+            {t('Learn more about Merkl')}
+          </Link>
         </MessageText>
       </Message>
     </Box>

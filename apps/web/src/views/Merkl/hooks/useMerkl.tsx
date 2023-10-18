@@ -11,6 +11,7 @@ import { useCallback, useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { getContract } from 'utils/contractHelpers'
 import { Address, useWalletClient } from 'wagmi'
+import first from 'lodash/first'
 
 export const MERKL_API = 'https://api.angle.money/v1/merkl'
 
@@ -23,22 +24,27 @@ export function useMerklInfo(poolAddress: string | null): {
     leaf: string
     proof?: string[]
   } | null
+  hasMerkl: boolean
 } {
   const { account, chainId } = useAccountActiveChain()
 
   const { data, isLoading } = useSWRImmutable(
-    chainId && account && poolAddress ? `fetchMerkl-${chainId}-${account}` : null,
+    chainId && poolAddress && account ? `fetchMerkl-${chainId}-${account}-${poolAddress}` : null,
     async () => {
-      const response = await fetch(`${MERKL_API}?chainId=${chainId}&user=${account}&AMMs[]=pancakeswapv3`)
+      const response = await fetch(
+        `${MERKL_API}?chainId=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
+      )
       const merklData = (await response.json()) as MerklAPIData | undefined
 
       if (!merklData) return null
 
       const { pools } = merklData
 
-      const merklPoolData = Object.keys(pools)
-        .filter((poolId) => poolId === poolAddress)
-        .map((poolId) => pools[poolId])[0]
+      const merklPoolData = first(
+        Object.keys(pools)
+          .filter((poolId) => poolId === poolAddress)
+          .map((poolId) => pools[poolId]),
+      )
 
       if (!merklPoolData) return null
 
@@ -55,6 +61,7 @@ export function useMerklInfo(poolAddress: string | null): {
         : []
 
       return {
+        hasMerkl: Boolean(merklPoolData),
         rewardsPerToken,
         transactionData: merklData.transactionData,
         isLoading,
