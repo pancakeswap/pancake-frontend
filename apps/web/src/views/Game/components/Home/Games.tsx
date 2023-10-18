@@ -74,6 +74,13 @@ const StyledTag = styled(Button)`
   background-color: ${({ theme }) => theme.colors.secondary};
 `
 
+const StyledTextLineClamp = styled(Text)<{ lineClamp: number }>`
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${({ lineClamp }) => lineClamp};
+`
+
 export const Games = () => {
   const { t } = useTranslation()
   return (
@@ -83,14 +90,20 @@ export const Games = () => {
           <Card>
             <Header imgUrl="/images/ifos/sable-bg.png" />
             <Box padding="20px">
-              <Text>Pancake Mayor Name of the game or promotion title here</Text>
-              <Text mb="20px">
+              <StyledTextLineClamp lineClamp={2} bold fontSize={20} lineHeight="110%">
+                Pancake Mayor Name of the game or promotion title here
+              </StyledTextLineClamp>
+              <StyledTextLineClamp lineClamp={3} m="20px 0" fontSize={12} color="textSubtle" lineHeight="120%">
                 Brief extract Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                 ut labore et dolore magna alere... 140 character max.
-              </Text>
+              </StyledTextLineClamp>
               <Box>
-                <Text>Publish Date: MM DD, YYYY</Text>
-                <Text mb="20px">Publisher:</Text>
+                <Text fontSize={12} color="textSubtle" bold>
+                  {t('Publish Date: %date%', { date: 'MM DD, YYYY' })}{' '}
+                </Text>
+                <Text fontSize={12} color="textSubtle" bold mb="20px">
+                  {t('Publisher:')}
+                </Text>
                 <Flex justifyContent="space-between">
                   <HorizontalLogo imgUrl="/images/ifos/sable-bg.png" />
                   <StyledTag scale="xs">Casual</StyledTag>
