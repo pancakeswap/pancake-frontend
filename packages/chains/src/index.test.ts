@@ -6,7 +6,11 @@ test('exports', () => {
     [
       "ChainId",
       "chainNames",
+      "chainNameToChainId",
+      "defiLlamaChainNames",
       "getChainName",
+      "getLlamaChainName",
+      "getChainIdByChainName",
     ]
   `)
 })

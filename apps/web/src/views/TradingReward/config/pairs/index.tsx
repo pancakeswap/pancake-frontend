@@ -9,6 +9,7 @@ import { farmsV3 as zkSyncFarm } from '@pancakeswap/farms/constants/zkSync'
 import { farmsV3 as lineaFarm } from '@pancakeswap/farms/constants/linea'
 import { farmsV3 as arbitrumFarm } from '@pancakeswap/farms/constants/arb'
 import { farmsV3 as baseFarm } from '@pancakeswap/farms/constants/base'
+import { farmsV3 as opBnbTestnetFarms } from '@pancakeswap/farms/constants/opBnbTestnet'
 import { tradingRewardV3Pair as tradingRewardV3Pair56 } from './56'
 
 export const tradingRewardPairConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
@@ -23,4 +24,5 @@ export const tradingRewardPairConfigChainMap: Record<FarmV3SupportedChainId, Com
   [ChainId.ARBITRUM_ONE]: arbitrumFarm,
   [ChainId.LINEA]: lineaFarm,
   [ChainId.BASE]: baseFarm,
+  [ChainId.OPBNB_TESTNET]: opBnbTestnetFarms,
 }

@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest'
-import * as exports from './index'
+import * as namedExports from './index'
 
 test('exports', () => {
-  expect(Object.keys(exports)).toMatchInlineSnapshot(`
+  expect(Object.keys(namedExports)).toMatchInlineSnapshot(`
     [
       "getFarmApr",
       "getPositionFarmApr",
@@ -17,6 +17,7 @@ test('exports', () => {
       "supportedChainIdV3",
       "bCakeSupportedChainId",
       "supportedChainIdV2",
+      "supportedChainId",
       "createFarmFetcher",
       "createFarmFetcherV3",
       "masterChefV3Addresses",
