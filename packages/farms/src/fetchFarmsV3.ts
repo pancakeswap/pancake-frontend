@@ -1,5 +1,5 @@
 import { ERC20Token, Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, getLlamaChainName } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { Address, PublicClient, formatUnits } from 'viem'
@@ -7,7 +7,7 @@ import BN from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
 
-import { DEFAULT_COMMON_PRICE, PriceHelper, CHAIN_ID_TO_CHAIN_NAME } from '../constants/common'
+import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
 import { ComputedFarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 import { getFarmApr } from './apr'
 import { FarmV3SupportedChainId, supportedChainIdV3 } from './const'
@@ -443,10 +443,7 @@ export const fetchTokenUSDValues = async (currencies: Currency[] = []): Promise<
 
   if (currencies.length > 0) {
     const list = currencies
-      .map(
-        (currency) =>
-          `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId as FarmV3SupportedChainId]}:${currency.wrapped.address}`,
-      )
+      .map((currency) => `${getLlamaChainName(currency.chainId)}:${currency.wrapped.address}`)
       .join(',')
     const result: { coins: { [key: string]: { price: string } } } = await fetch(
       `https://coins.llama.fi/prices/current/${list}`,
