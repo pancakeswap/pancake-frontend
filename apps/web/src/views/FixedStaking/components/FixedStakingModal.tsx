@@ -60,6 +60,7 @@ export function FixedStakingModal({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          useNative
           stakingToken={stakingToken}
           pools={pools}
           initialLockPeriod={initialLockPeriod}

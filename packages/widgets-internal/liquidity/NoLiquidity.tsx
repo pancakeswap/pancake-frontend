@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Text } from "../../components";
+import { Text } from "@pancakeswap/uikit";
 
 export function NoLiquidity() {
   const { t } = useTranslation();

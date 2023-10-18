@@ -1,5 +1,7 @@
+import { useCallback } from 'react'
 import { Box, Flex } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { useSwiper } from 'swiper/react'
 import HarvestCard from './HarvestCard'
 import UserDetail from './UserDetail'
 
@@ -16,6 +18,16 @@ const StyledCard = styled(Box)`
 `
 
 const UserBanner = () => {
+  const swiper = useSwiper()
+
+  const handleHarvestStart = useCallback(() => {
+    swiper?.autoplay?.stop()
+  }, [swiper])
+
+  const handleHarvestEnd = useCallback(() => {
+    swiper?.autoplay?.start()
+  }, [swiper])
+
   return (
     <StyledCard p={['16px', null, null, '40px']}>
       <Flex alignItems="center" justifyContent="center" flexDirection={['column', null, null, 'row']}>
@@ -23,7 +35,7 @@ const UserBanner = () => {
           <UserDetail />
         </Flex>
         <Flex flex="1" width={['100%', null, 'auto']}>
-          <HarvestCard />
+          <HarvestCard onHarvestStart={handleHarvestStart} onHarvestEnd={handleHarvestEnd} />
         </Flex>
       </Flex>
     </StyledCard>

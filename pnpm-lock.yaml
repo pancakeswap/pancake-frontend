@@ -307,8 +307,8 @@ importers:
         specifier: ^1.11.10
         version: 1.11.10
       jotai:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -340,8 +340,8 @@ importers:
         specifier: ^10.3.1
         version: 10.3.1
       swr:
-        specifier: ^2.1.5
-        version: 2.1.5(react@18.2.0)
+        specifier: ^2.2.4
+        version: 2.2.4(react@18.2.0)
       typescript:
         specifier: ^5.1.3
         version: 5.1.3
@@ -431,8 +431,8 @@ importers:
         specifier: ^10.3.1
         version: 10.3.1
       swr:
-        specifier: ^2.1.5
-        version: 2.1.5(react@18.2.0)
+        specifier: ^2.2.4
+        version: 2.2.4(react@18.2.0)
       typescript:
         specifier: ^5.1.3
         version: 5.1.3
@@ -686,8 +686,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
       jotai:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
@@ -776,8 +776,8 @@ importers:
         specifier: ^10.3.1
         version: 10.3.1
       swr:
-        specifier: ^2.1.5
-        version: 2.1.5(react@18.2.0)
+        specifier: ^2.2.4
+        version: 2.2.4(react@18.2.0)
       tiny-invariant:
         specifier: ^1.1.0
         version: 1.2.0
@@ -1461,8 +1461,8 @@ importers:
         specifier: ^18.2.21
         version: 18.2.21
       jotai:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
       localforage:
         specifier: ^1.10.0
         version: 1.10.0
@@ -1848,14 +1848,14 @@ importers:
         specifier: ^9.0.0
         version: 9.1.1
       jotai:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ^2.4.3
+        version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
       styled-components:
         specifier: ^6.0.7
         version: 6.0.7(babel-plugin-styled-components@1.13.3)(react-dom@18.2.0)(react@18.2.0)
       swr:
-        specifier: ^2.1.3
-        version: 2.1.5(react@18.2.0)
+        specifier: ^2.2.4
+        version: 2.2.4(react@18.2.0)
       vitest:
         specifier: ^0.30.1
         version: 0.30.1
@@ -19408,6 +19408,22 @@ packages:
         optional: true
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /jotai@2.4.3(@types/react@18.2.21)(react@18.2.0):
+    resolution: {integrity: sha512-CSAHX9LqWG5WCrU8OgBoZbBJ+Bo9rQU0mPusEF4e0CZ/SNFgurG26vb3UpgvCSJZgYVcUQNiUBM5q86PA8rstQ==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.21
+      react: 18.2.0
 
   /joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
@@ -24324,11 +24340,12 @@ packages:
     engines: {node: '>= 4.7.0'}
     dev: false
 
-  /swr@2.1.5(react@18.2.0):
-    resolution: {integrity: sha512-/OhfZMcEpuz77KavXST5q6XE9nrOBOVcBLWjMT+oAE/kQHyE3PASrevXCtQDZ8aamntOfFkbVJp7Il9tNBQWrw==}
+  /swr@2.2.4(react@18.2.0):
+    resolution: {integrity: sha512-njiZ/4RiIhoOlAaLYDqwz5qH/KZXVilRLvomrx83HjzCWTfa+InyfAjv05PSFxnmLzZkNO9ZfvgoqzAaEI4sGQ==}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
+      client-only: 0.0.1
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
 

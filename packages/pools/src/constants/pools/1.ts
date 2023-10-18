@@ -12,14 +12,6 @@ export const livePools: SerializedPool[] = [
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.0006045',
   },
-  {
-    sousId: 8,
-    stakingToken: ethereumTokens.cake,
-    earningToken: ethereumTokens.wstETH,
-    contractAddress: '0x3C6452d5a217Cc65b98F0803c6D1BD7Fe588389A',
-    poolCategory: PoolCategory.CORE,
-    tokenPerSecond: '0.00000271',
-  },
 ].map((p) => ({
   ...p,
   contractAddress: getAddress(p.contractAddress),
@@ -29,6 +21,14 @@ export const livePools: SerializedPool[] = [
 
 // known finished pools
 export const finishedPools: SerializedPool[] = [
+  {
+    sousId: 8,
+    stakingToken: ethereumTokens.cake,
+    earningToken: ethereumTokens.wstETH,
+    contractAddress: '0x3C6452d5a217Cc65b98F0803c6D1BD7Fe588389A',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.00000271',
+  },
   {
     sousId: 7,
     stakingToken: ethereumTokens.cake,

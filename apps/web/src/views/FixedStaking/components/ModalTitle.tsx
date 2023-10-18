@@ -1,7 +1,7 @@
 import { Flex, Heading } from '@pancakeswap/uikit'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
-import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
 
 export function ModalTitle({
@@ -11,7 +11,7 @@ export function ModalTitle({
   isEnded,
 }: {
   isEnded?: boolean
-  token: Token
+  token: Currency
   tokenTitle: string
   lockPeriod?: number
 }) {
