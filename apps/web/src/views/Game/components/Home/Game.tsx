@@ -1,18 +1,24 @@
 import { styled } from 'styled-components'
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
-import { Flex, Box, Text, Button, CardHeader, Link, Card, TelegramIcon } from '@pancakeswap/uikit'
+import { Flex, Box, Text, Button, CardHeader, Link, Card, TelegramIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Carousel } from 'views/Game/components/Home/Carousel'
 import { CarouselView } from 'views/Game/components/Home/CarouselView'
 import { carouselData } from '../mockData'
 
 const StyledGameContainer = styled(Flex)<{ isHorizontal?: boolean }>`
-  flex-direction: column;
+  width: 100%;
   margin: auto;
-  padding-bottom: 82px;
-  width: ${({ isHorizontal }) => (isHorizontal ? '1101px' : '948px')};
+  padding-bottom: 32px;
+  flex-direction: column;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-bottom: 82px;
+    width: ${({ isHorizontal }) => (isHorizontal ? '1101px' : '948px')};
+  }
 `
+
 const StyledGameInfoContainer = styled(Box)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 `
@@ -61,6 +67,13 @@ const StyledLeftContainer = styled(Box)<{ isHorizontal?: boolean }>`
   min-width: ${({ isHorizontal }) => (isHorizontal ? '671px' : '392px')};
 `
 
+const StyledTextLineClamp = styled(Text)<{ lineClamp: number }>`
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${({ lineClamp }) => lineClamp};
+`
+
 interface GameProps {
   isLatest?: boolean
   isHorizontal: boolean
@@ -68,6 +81,7 @@ interface GameProps {
 
 export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, isHorizontal }) => {
   const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
   const [carouselId, setCarouselId] = useState(0)
   const fakeDate = JSON.parse(JSON.stringify(carouselData))
 
@@ -75,7 +89,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
 
   return (
     <StyledGameContainer isHorizontal={isHorizontal}>
-      {isLatest && (
+      {isLatest && isDesktop && (
         <Flex flexDirection="column" mb="32px">
           <Box margin="auto">
             <Image width={59} height={64} alt="flagship-game" src="/images/game/home/flagship-game.png" />
@@ -90,76 +104,98 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
           </Flex>
         </Flex>
       )}
-      <Card>
-        <Header />
-        <StyledGameInfoContainer padding="0 32px 32px 32px">
-          <Flex width="100%" justifyContent="space-between" paddingTop={['32px']}>
-            <StyledLeftContainer width="100%">
-              <CarouselView isHorizontal={isHorizontal} carouselData={previewCarouseData} />
-              {isHorizontal && (
-                <Carousel carouselData={fakeDate} isHorizontal={isHorizontal} setCarouselId={setCarouselId} />
-              )}
-            </StyledLeftContainer>
-            <StyledGameInformation>
-              <Text mb="24px" bold fontSize={['40px']} lineHeight="110%">
-                Pancake Protectors
-              </Text>
-              <Text mb="24px" bold fontSize={['24px']} color="secondary" lineHeight="110%">
-                Unlock the Power of CAKE and Perks for Pancake Squad and Bunnies Holders
-              </Text>
-              <Text mb="24px" lineHeight="120%">
-                PancakeSwap and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players,
-                as well as CAKE, Pancake Squad, and Bunnies holders.
-              </Text>
-              <Flex mb="24px" justifyContent="space-between">
-                <StyledTag scale="xs" isPurple style={{ alignSelf: 'center' }}>
-                  <Text fontSize={14} color="white">
-                    Genera:
-                  </Text>
-                  <Text fontSize={14} bold ml="4px" color="white">
-                    Defense
-                  </Text>
-                </StyledTag>
-                <Flex>
-                  <Box>
-                    <Text bold as="span" fontSize={12} color="textSubtle" textTransform="uppercase">
-                      Published by
+      <Box padding={['0 16px', '0 16px', '0 16px', '0 16px', '0']}>
+        <Card>
+          <Header />
+          <StyledGameInfoContainer padding="0 32px 32px 32px">
+            <Flex width="100%" justifyContent="space-between" paddingTop={['32px']}>
+              <StyledLeftContainer width="100%">
+                <CarouselView isHorizontal={isHorizontal} carouselData={previewCarouseData} />
+                {isHorizontal && (
+                  <Carousel carouselData={fakeDate} isHorizontal={isHorizontal} setCarouselId={setCarouselId} />
+                )}
+              </StyledLeftContainer>
+              <StyledGameInformation>
+                <Text mb="24px" bold fontSize={['40px']} lineHeight="110%">
+                  Pancake Protectors
+                </Text>
+                <StyledTextLineClamp
+                  lineClamp={2}
+                  mb="24px"
+                  bold
+                  fontSize={['24px']}
+                  color="secondary"
+                  lineHeight="110%"
+                >
+                  Unlock the Power of CAKE and Perks for Pancake Squad and Bunnies Holders
+                </StyledTextLineClamp>
+                <StyledTextLineClamp lineClamp={3} mb="24px" lineHeight="120%">
+                  PancakeSwap and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi
+                  players, as well as CAKE, Pancake Squad, and Bunnies holders.
+                </StyledTextLineClamp>
+                <Flex mb="24px" justifyContent="space-between">
+                  <StyledTag scale="xs" isPurple style={{ alignSelf: 'center' }}>
+                    <Text fontSize={14} color="white">
+                      Genera:
                     </Text>
-                    <Text m="0 4px" bold as="span" fontSize={12} color="secondary" textTransform="uppercase">
-                      dev_name
+                    <Text fontSize={14} bold ml="4px" color="white">
+                      Defense
                     </Text>
-                  </Box>
-                  <Link external href="/">
-                    <TelegramIcon color="secondary" />
-                  </Link>
+                  </StyledTag>
+                  <Flex>
+                    <Flex flexDirection={['column', 'column', 'column', 'column', 'row']} mr="4px">
+                      <Text
+                        bold
+                        fontSize={12}
+                        color="textSubtle"
+                        textTransform="uppercase"
+                        textAlign={['right', 'right', 'right', 'right', 'left']}
+                      >
+                        Published by
+                      </Text>
+                      <Text
+                        bold
+                        fontSize={12}
+                        color="secondary"
+                        textTransform="uppercase"
+                        m={['0', '0', '0', '0 0 0 4px']}
+                        textAlign={['right', 'right', 'right', 'right', 'left']}
+                      >
+                        dev_name
+                      </Text>
+                    </Flex>
+                    <Link external href="/">
+                      <TelegramIcon color="secondary" />
+                    </Link>
+                  </Flex>
                 </Flex>
-              </Flex>
-              <Link mb="49px" width="100% !important" external href="/">
-                <Button width="100%">
-                  <Text bold color="white">
-                    {t('Play Now')}
-                  </Text>
-                </Button>
-              </Link>
+                <Link mb="49px" width="100% !important" external href="/">
+                  <Button width="100%">
+                    <Text bold color="white">
+                      {t('Play Now')}
+                    </Text>
+                  </Button>
+                </Link>
 
-              {!isHorizontal && (
-                <Carousel carouselData={fakeDate} isHorizontal={isHorizontal} setCarouselId={setCarouselId} />
-              )}
+                {!isHorizontal && (
+                  <Carousel carouselData={fakeDate} isHorizontal={isHorizontal} setCarouselId={setCarouselId} />
+                )}
 
-              <Box>
-                <Text>TRENDING TAGS FOR THIS GAME:</Text>
-                <StyledTagContainer>
-                  <StyledTag scale="sm">PvP</StyledTag>
-                  <StyledTag scale="sm">Strategy</StyledTag>
-                  <StyledTag scale="sm">Pancake Squad</StyledTag>
-                  <StyledTag scale="sm">Pancake Bunnies</StyledTag>
-                  <StyledTag scale="sm">Tower Defense</StyledTag>
-                </StyledTagContainer>
-              </Box>
-            </StyledGameInformation>
-          </Flex>
-        </StyledGameInfoContainer>
-      </Card>
+                <Box>
+                  <Text textTransform="uppercase">{t('trending tags for this game:')}</Text>
+                  <StyledTagContainer>
+                    <StyledTag scale="sm">PvP</StyledTag>
+                    <StyledTag scale="sm">Strategy</StyledTag>
+                    <StyledTag scale="sm">Pancake Squad</StyledTag>
+                    <StyledTag scale="sm">Pancake Bunnies</StyledTag>
+                    <StyledTag scale="sm">Tower Defense</StyledTag>
+                  </StyledTagContainer>
+                </Box>
+              </StyledGameInformation>
+            </Flex>
+          </StyledGameInfoContainer>
+        </Card>
+      </Box>
     </StyledGameContainer>
   )
 }
