@@ -135,7 +135,7 @@ export default function SwapModalHeader({
           {tradeInfoText}
         </Text>
       </AutoColumn>
-      {recipient !== null ? (
+      {recipient ? (
         <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
           <Text color="textSubtle">
             {recipientSentToText}
