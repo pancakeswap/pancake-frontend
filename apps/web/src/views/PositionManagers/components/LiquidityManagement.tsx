@@ -18,6 +18,7 @@ import { RemoveLiquidity } from './RemoveLiquidity'
 import { AprDataInfo } from '../hooks'
 
 interface Props {
+  id: string | number
   manager: {
     id: MANAGER
     name: string
@@ -48,6 +49,7 @@ interface Props {
   }
   rewardEndTime: number
   rewardStartTime: number
+  totalAssetsInUsd: number
   refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
@@ -57,6 +59,7 @@ interface Props {
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
+  id,
   manager,
   currencyA,
   currencyB,
@@ -82,6 +85,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   rewardEndTime,
   rewardStartTime,
   refetch,
+  totalAssetsInUsd,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -137,6 +141,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         </CardSection>
       )}
       <AddLiquidity
+        id={id}
         manager={manager}
         vaultName={vaultName}
         feeTier={feeTier}
@@ -161,6 +166,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         rewardEndTime={rewardEndTime}
         refetch={refetch}
         rewardStartTime={rewardStartTime}
+        totalAssetsInUsd={totalAssetsInUsd}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

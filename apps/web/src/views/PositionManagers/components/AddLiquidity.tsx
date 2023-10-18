@@ -29,8 +29,10 @@ import { DYORWarning } from 'views/PositionManagers/components/DYORWarning'
 import { SingleTokenWarning } from 'views/PositionManagers/components/SingleTokenWarning'
 import { useApr } from 'views/PositionManagers/hooks/useApr'
 import { AprDataInfo } from '../hooks'
+import { AprButton } from './AprButton'
 
 interface Props {
+  id: string | number
   manager: {
     id: MANAGER
     name: string
@@ -68,6 +70,7 @@ interface Props {
   rewardEndTime: number
   rewardStartTime: number
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
+  totalAssetsInUsd: number
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -75,6 +78,7 @@ const StyledCurrencyInput = styled(CurrencyInput)`
 `
 
 export const AddLiquidity = memo(function AddLiquidity({
+  id,
   manager,
   ratio,
   isOpen,
@@ -99,6 +103,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   rewardStartTime,
   refetch,
   onDismiss,
+  totalAssetsInUsd,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -200,37 +205,6 @@ export const AddLiquidity = memo(function AddLiquidity({
     )
   }, [allowDepositToken0, allowDepositToken1, amountA, amountB, userCurrencyBalances])
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <>
-      <Text>
-        {t('Combined APR')}:{' '}
-        <Text style={{ display: 'inline-block' }} bold>
-          {`${apr.combinedApr}%`}
-        </Text>
-      </Text>
-      <ul>
-        <li>
-          {t('CAKE APR')}:{' '}
-          <Text style={{ display: 'inline-block' }} bold>
-            {`${apr.cakeYieldApr}%`}
-          </Text>
-        </li>
-        <li>
-          {t('LP APR')}:{' '}
-          <Text style={{ display: 'inline-block' }} bold>
-            {apr.lpApr}%
-          </Text>
-        </li>
-        <Text lineHeight="120%" mt="20px">
-          {t('Calculated based on previous 7 days average data.')}
-        </Text>
-      </ul>
-    </>,
-    {
-      placement: 'top',
-    },
-  )
-
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={t('Add Liquidity')}>
@@ -275,14 +249,13 @@ export const AddLiquidity = memo(function AddLiquidity({
           </RowBetween> */}
           <RowBetween>
             <Text color="text">{t('APR')}:</Text>
-            {apr.combinedApr && !aprDataInfo.isLoading ? (
-              <Text color="text" ref={targetRef}>
-                {`${apr.combinedApr}%`}
-                {tooltipVisible && tooltip}
-              </Text>
-            ) : (
-              <Skeleton width={50} height={20} />
-            )}
+            <AprButton
+              id={id}
+              apr={apr}
+              isAprLoading={aprDataInfo.isLoading}
+              lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
+              totalAssetsInUsd={totalAssetsInUsd}
+            />
           </RowBetween>
         </Flex>
         {isSingleDepositToken && <SingleTokenWarning />}
