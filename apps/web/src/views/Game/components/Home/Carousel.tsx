@@ -16,8 +16,8 @@ const StyledCarouselImage = styled(Box)<{
 }>`
   position: relative;
   cursor: pointer;
+  width: 100%;
   height: ${({ isHorizontal }) => (isHorizontal ? '104px' : '143px')};
-  width: ${({ isHorizontal }) => (isHorizontal ? '157px' : '96px')};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -41,16 +41,22 @@ const StyledCarouselImage = styled(Box)<{
     background-image: url('/images/game/home/carousel/play-icon-1.png');
     transform: translate(-50%, -50%);
   }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    width: ${({ isHorizontal }) => (isHorizontal ? '157px' : '96px')};
+  }
 `
 
 const StyledSwiperContainer = styled(Box)<{ isHorizontal?: boolean }>`
   position: relative;
-  border-radius: 16px;
+  border-radius: 0;
   background: rgba(39, 38, 44, 0.8);
+  width: calc(100% + 40px);
   padding: ${({ isHorizontal }) => (isHorizontal ? '16px 6px 8px 11px' : '16px 6px 8px 16px')};
-  margin: ${({ isHorizontal }) => (isHorizontal ? '32px 0 0 0' : '0 0 24px 0')};
+  margin: ${({ isHorizontal }) => (isHorizontal ? '0 0 0 -20px' : '0 0px 24px -20px')};
 
   &:before {
+    display: none;
     content: '';
     position: absolute;
     top: ${({ isHorizontal }) => `${isHorizontal ? '-10px' : '20px'}`};
@@ -64,6 +70,21 @@ const StyledSwiperContainer = styled(Box)<{ isHorizontal?: boolean }>`
     border-right: ${({ theme, isHorizontal }) =>
       `10px solid ${isHorizontal ? 'transparent' : theme.colors.backgroundAlt}`};
     border-left: ${({ isHorizontal }) => `${isHorizontal ? '10px solid transparent' : 0}`};
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: calc(100% + 64px);
+    margin: ${({ isHorizontal }) => (isHorizontal ? '0px 0 0 -32px' : '0 0px 24px -32px')};
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    width: 100%;
+    border-radius: 16px;
+    margin: ${({ isHorizontal }) => (isHorizontal ? '32px 0 0 0px' : '0 0px 24px 0px')};
+
+    &:before {
+      display: block;
+    }
   }
 `
 
