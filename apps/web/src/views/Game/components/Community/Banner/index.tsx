@@ -42,9 +42,11 @@ const StyledGradientBg = styled('div')`
 
 const ArrowButton = styled.div`
   display: flex;
+  align-self: center;
   justify-content: center;
   align-items: center;
   width: 32px;
+  min-width: 32px;
   height: 32px;
   border-radius: 16px;
   border: 2px solid ${({ theme }) => theme.colors.primary};
@@ -52,6 +54,10 @@ const ArrowButton = styled.div`
     fill: ${({ theme }) => theme.colors.primary};
   }
   cursor: pointer;
+
+  &.swiper-button-disabled {
+    display: none;
+  }
 `
 
 const test = [1, 2, 3, 4]
@@ -87,14 +93,12 @@ export const Banner = () => {
         </Box>
         <Flex width="100%">
           {isDesktop && (
-            <Flex alignItems="center" mr="32px">
-              <ArrowButton className="prev">
-                <ChevronLeftIcon cursor="pointer" color={theme.colors.textSubtle} />
-              </ArrowButton>
-            </Flex>
+            <ArrowButton className="prev" style={{ marginRight: '32px' }}>
+              <ChevronLeftIcon color={theme.colors.textSubtle} />
+            </ArrowButton>
           )}
           <Swiper
-            loop
+            // loop
             resizeObserver
             // centeredSlides
             slidesPerView={1}
@@ -135,11 +139,9 @@ export const Banner = () => {
             ))}
           </Swiper>
           {isDesktop && (
-            <Flex alignItems="center" ml="32px">
-              <ArrowButton className="next">
-                <ChevronRightIcon cursor="pointer" color={theme.colors.textSubtle} />
-              </ArrowButton>
-            </Flex>
+            <ArrowButton className="next" style={{ marginLeft: '32px' }}>
+              <ChevronRightIcon color={theme.colors.textSubtle} />
+            </ArrowButton>
           )}
         </Flex>
       </Flex>
