@@ -108,7 +108,6 @@ export interface DuoTokenVault {
   manager: PositionManager
   strategy: Strategy
   managerFee: ManagerFee
-  rewardPerSecond: string
   isSingleDepositToken: boolean
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean
@@ -116,8 +115,6 @@ export interface DuoTokenVault {
   managerInfoUrl: string
   strategyInfoUrl: string
   projectVaultUrl?: string
-  endTimestamp: number
-  startTimestamp: number
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

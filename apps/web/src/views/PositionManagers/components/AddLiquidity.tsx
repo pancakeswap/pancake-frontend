@@ -1,32 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
 import { MANAGER } from '@pancakeswap/position-managers'
-import { Address } from 'viem'
-import { Currency, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import {
-  Button,
-  Flex,
-  ModalV2,
-  RowBetween,
-  Text,
-  useToast,
-  LinkExternal,
-  Skeleton,
-  useTooltip,
-} from '@pancakeswap/uikit'
-import { CurrencyInput } from 'components/CurrencyInput'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { Button, Flex, LinkExternal, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { CurrencyInput } from 'components/CurrencyInput'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import { memo, useCallback, useMemo, useState } from 'react'
-import { StyledModal } from 'views/PositionManagers/components/StyledModal'
-import { FeeTag } from 'views/PositionManagers/components/Tags'
+import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { DYORWarning } from 'views/PositionManagers/components/DYORWarning'
 import { SingleTokenWarning } from 'views/PositionManagers/components/SingleTokenWarning'
+import { StyledModal } from 'views/PositionManagers/components/StyledModal'
+import { FeeTag } from 'views/PositionManagers/components/Tags'
 import { useApr } from 'views/PositionManagers/hooks/useApr'
 import { AprDataInfo } from '../hooks'
 import { AprButton } from './AprButton'

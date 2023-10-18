@@ -53,9 +53,6 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     managerInfoUrl,
     strategyInfoUrl,
     projectVaultUrl,
-    rewardPerSecond,
-    endTimestamp,
-    startTimestamp,
   } = vault
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
@@ -123,12 +120,12 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     poolToken1Amount: info?.poolToken1Amounts,
     token0PriceUSD: tokensPriceUSD?.token0,
     token1PriceUSD: tokensPriceUSD?.token1,
-    rewardPerSecond,
+    rewardPerSecond: info.rewardPerSecond,
     earningToken,
     avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
     avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
-    rewardEndTime: endTimestamp,
-    rewardStartTime: startTimestamp,
+    rewardEndTime: info.endTimestamp,
+    rewardStartTime: info.startTimestamp,
   })
 
   const staked0Amount = info?.userToken0Amounts
@@ -182,10 +179,10 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       managerInfoUrl={managerInfoUrl}
       strategyInfoUrl={strategyInfoUrl}
       projectVaultUrl={projectVaultUrl}
-      rewardPerSecond={rewardPerSecond}
+      rewardPerSecond={info.rewardPerSecond}
       aprDataInfo={aprDataInfo}
-      rewardEndTime={endTimestamp}
-      rewardStartTime={startTimestamp}
+      rewardEndTime={info.endTimestamp}
+      rewardStartTime={info.startTimestamp}
       refetch={info?.refetchPositionInfo}
       totalAssetsInUsd={totalAssetsInUsd}
     >

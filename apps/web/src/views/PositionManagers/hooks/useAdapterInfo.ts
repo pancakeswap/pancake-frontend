@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { positionManagerAdapterABI } from '@pancakeswap/position-managers'
+import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
@@ -58,7 +58,7 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
 }
 
 export const useAdapterTokensAmounts = (adapterAddress: Address) => {
-  const chainId = useActiveChainId()
+  const { chainId } = useActiveChainId()
   const { data, refetch } = useQuery(
     ['AdapterTokensAmounts', adapterAddress],
     () => getAdapterTokensAmounts({ address: adapterAddress, chainId }),
@@ -88,10 +88,26 @@ export const useUserAmounts = (wrapperAddress: Address) => {
   return { data, refetch }
 }
 
+export const useWrapperStaticData = (wrapperAddress: Address) => {
+  const { chainId } = useActiveChainId()
+  const { data, refetch } = useQuery(
+    ['useWrapperStaticData', wrapperAddress, chainId],
+    () => getWrapperStaticData({ address: wrapperAddress, chainId }),
+    {
+      enabled: !!wrapperAddress && !!chainId,
+      refetchInterval: 30000,
+      staleTime: 30000,
+      cacheTime: 30000,
+    },
+  )
+  return { data, refetch }
+}
+
 export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address) => {
   const { data: userAmounts, refetch: refetchUserAmounts } = useUserAmounts(wrapperAddress)
   const { data: poolAmounts, refetch: refetchPoolAmounts } = useAdapterTokensAmounts(adapterAddress)
   const { data: pendingReward, refetch: refetchPendingReward } = useUserPendingRewardAmounts(wrapperAddress)
+  const { data: staticData } = useWrapperStaticData(wrapperAddress)
 
   const poolAndUserAmountsReady = userAmounts && poolAmounts
 
@@ -113,6 +129,9 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
       refetchPoolAmounts()
       refetchPendingReward()
     },
+    startTimestamp: staticData?.startTimestamp ? Number(staticData.startTimestamp) : 0,
+    endTimestamp: staticData?.endTimestamp ? Number(staticData.endTimestamp) : 0,
+    rewardPerSecond: staticData?.rewardPerSecond ?? '',
   }
 }
 
@@ -130,4 +149,44 @@ export const useUserPendingRewardAmounts = (wrapperAddress: Address) => {
     },
   )
   return { data, refetch }
+}
+
+export async function getWrapperStaticData({ address, chainId }): Promise<{
+  startTimestamp: string
+  endTimestamp: string
+  rewardPerSecond: string
+} | null> {
+  const [startTimestampData, endTimestampData, rewardPerSecondData] = await publicClient({ chainId }).multicall({
+    contracts: [
+      {
+        address,
+        functionName: 'startTimestamp',
+        abi: positionManagerWrapperABI,
+      },
+      {
+        address,
+        functionName: 'endTimestamp',
+        abi: positionManagerWrapperABI,
+      },
+      {
+        address,
+        functionName: 'rewardPerSecond',
+        abi: positionManagerWrapperABI,
+      },
+    ],
+  })
+
+  if (!startTimestampData.result || !endTimestampData.result || !rewardPerSecondData) return null
+
+  const [startTimestamp, endTimestamp, rewardPerSecond] = [
+    startTimestampData.result,
+    endTimestampData.result,
+    rewardPerSecondData.result,
+  ]
+
+  return {
+    startTimestamp: startTimestamp.toString(),
+    endTimestamp: endTimestamp.toString(),
+    rewardPerSecond: rewardPerSecond?.toString() ?? '',
+  }
 }
