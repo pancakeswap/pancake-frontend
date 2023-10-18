@@ -8,7 +8,7 @@ import 'swiper/css'
 import 'swiper/css/autoplay'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper/types'
-import { Autoplay } from 'swiper/modules'
+import { Autoplay, Navigation } from 'swiper/modules'
 import { GameCard } from 'views/Game/components/Community/Banner/GameCard'
 import { Decorations } from 'views/Game/components/Decorations'
 
@@ -62,14 +62,6 @@ export const Banner = () => {
   const { isDesktop } = useMatchBreakpoints()
   const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
-  const handlePrevSlide = () => {
-    swiper?.slidePrev()
-  }
-
-  const handleNextSlide = () => {
-    swiper?.slideNext()
-  }
-
   return (
     <StyledBackground>
       <StyledGradientBg />
@@ -96,8 +88,8 @@ export const Banner = () => {
         <Flex width="100%">
           {isDesktop && (
             <Flex alignItems="center" mr="32px">
-              <ArrowButton onClick={handlePrevSlide}>
-                <ChevronLeftIcon color={theme.colors.textSubtle} />
+              <ArrowButton className="prev">
+                <ChevronLeftIcon cursor="pointer" color={theme.colors.textSubtle} />
               </ArrowButton>
             </Flex>
           )}
@@ -108,11 +100,15 @@ export const Banner = () => {
             slidesPerView={1}
             spaceBetween={16}
             onSwiper={setSwiper}
-            modules={[Autoplay]}
+            modules={[Autoplay, Navigation]}
             autoplay={{
               delay: 2500,
               pauseOnMouseEnter: true,
               disableOnInteraction: false,
+            }}
+            navigation={{
+              prevEl: '.prev',
+              nextEl: '.next',
             }}
             breakpoints={{
               320: {
@@ -140,8 +136,8 @@ export const Banner = () => {
           </Swiper>
           {isDesktop && (
             <Flex alignItems="center" ml="32px">
-              <ArrowButton onClick={handleNextSlide}>
-                <ChevronRightIcon color={theme.colors.textSubtle} />
+              <ArrowButton className="next">
+                <ChevronRightIcon cursor="pointer" color={theme.colors.textSubtle} />
               </ArrowButton>
             </Flex>
           )}

@@ -4,9 +4,10 @@ import { Flex, Box, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit
 import { CarouselType } from 'views/Game/types'
 
 import 'swiper/css'
-import 'swiper/css/autoplay'
+import 'swiper/css/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper/types'
+import { Navigation } from 'swiper/modules'
 
 const StyledCarouselImage = styled(Box)<{
   imgUrl: string
@@ -104,12 +105,23 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
   return (
     <StyledSwiperContainer isHorizontal={isHorizontal}>
       <Swiper
-        // loop
-        resizeObserver
-        slidesPerView={4}
-        spaceBetween={10}
+        loop
+        initialSlide={0}
         // centeredSlides
+        slidesPerView={3}
+        spaceBetween={10}
+        modules={[Navigation]}
         onSwiper={setSwiper}
+        // onRealIndexChange={handleRealIndexChange}
+        navigation={{
+          prevEl: '.prev',
+          nextEl: '.next',
+        }}
+        breakpoints={{
+          920: {
+            slidesPerView: 4,
+          },
+        }}
       >
         {carouselData.map((carousel, index) => (
           <SwiperSlide key={carousel.imageUrl}>
@@ -119,12 +131,13 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
               isVideo={carousel.type === CarouselType.VIDEO}
               onClick={() => setCarouselId(index)}
             />
+            {index}
           </SwiperSlide>
         ))}
       </Swiper>
       <Flex justifyContent="space-between" mt="10px">
-        <ChevronLeftIcon color="white" cursor="pointer" width={24} height={24} />
-        <ChevronRightIcon color="white" cursor="pointer" width={24} height={24} />
+        <ChevronLeftIcon className="prev" color="white" cursor="pointer" width={24} height={24} />
+        <ChevronRightIcon className="next" color="white" cursor="pointer" width={24} height={24} />
       </Flex>
     </StyledSwiperContainer>
   )
