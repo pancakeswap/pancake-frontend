@@ -52,7 +52,7 @@ const Header = styled(CardHeader)`
 `
 
 const StyledLeftContainer = styled(Box)<{ isHorizontal?: boolean }>`
-  min-width: 100%;
+  width: 100%;
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: ${({ isHorizontal }) => (isHorizontal ? '671px' : '392px')};
   }

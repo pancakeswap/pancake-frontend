@@ -3,7 +3,7 @@ import { Box } from '@pancakeswap/uikit'
 import { CarouselType } from 'views/Game/types'
 
 const StyledCarouselContainer = styled(Box)`
-  padding: 16px;
+  padding: 16px 16px 2px 16px;
   width: calc(100% + 40px);
   margin-left: -20px;
   background: rgba(39, 38, 44, 0.8);
