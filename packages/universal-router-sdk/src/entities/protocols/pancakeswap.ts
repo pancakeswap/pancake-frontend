@@ -215,8 +215,8 @@ async function addMixedSwap(
 
   for (const route of trade.routes) {
     const { inputAmount, outputAmount, pools } = route
-    const amountIn: bigint = SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient
-    const amountOut: bigint = SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient
+    const amountIn: bigint = SmartRouter.maximumAmountIn(trade, options.slippageTolerance, inputAmount).quotient
+    const amountOut: bigint = SmartRouter.minimumAmountOut(trade, options.slippageTolerance, outputAmount).quotient
 
     // flag for whether the trade is single hop or not
     const singleHop = pools.length === 1
