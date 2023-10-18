@@ -1,6 +1,6 @@
 export enum MANAGER {
   PCS = 'pcs-position-manager',
-  ICHI = 'ichi-position-manager',
+  BRIL = 'bril-position-manager',
 }
 
 export interface BaseManager {
@@ -14,9 +14,9 @@ export const baseManagers: { [manager in MANAGER]: BaseManager } = {
     id: MANAGER.PCS,
     name: 'PCS',
   },
-  [MANAGER.ICHI]: {
-    id: MANAGER.ICHI,
-    name: 'ICHI Finance',
+  [MANAGER.BRIL]: {
+    id: MANAGER.BRIL,
+    name: 'Bril Finance',
     introLink: 'https://www.ichi.org/',
   },
 }
