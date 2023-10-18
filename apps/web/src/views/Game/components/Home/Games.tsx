@@ -39,7 +39,7 @@ const Header = styled(CardHeader)<{ imgUrl: string }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 200px;
+  height: 112px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

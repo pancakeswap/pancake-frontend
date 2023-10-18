@@ -7,8 +7,12 @@ import { Game } from 'views/Game/components/Home/Game'
 import { OtherGames } from 'views/Game/components/Home/OtherGames'
 
 const StyledBackground = styled(Box)`
-  padding-top: 56px;
+  padding: 32px 16px 0 16px;
   background: ${({ theme }) => (theme.isDark ? DARK_BG : LIGHT_BG)};
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    padding: 56px 0 0 0;
+  }
 `
 
 export const GameHomePage = () => {
