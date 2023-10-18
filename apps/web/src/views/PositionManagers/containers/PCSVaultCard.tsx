@@ -149,7 +149,6 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       isUserStaked: totalAssetsInUsd > 0,
     })
   }, [earningUsdValue, totalStakedInUsd, id, totalAssetsInUsd, apr, updatePositionMangerDetailsData])
-
   return (
     <DuoTokenVaultCard
       id={id}

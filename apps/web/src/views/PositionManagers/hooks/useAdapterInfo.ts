@@ -139,7 +139,7 @@ export const useUserPendingRewardAmounts = (wrapperAddress: Address) => {
   const { account } = useActiveWeb3React()
   const contract = usePositionManagerWrapperContract(wrapperAddress)
   const { data, refetch } = useQuery(
-    ['useUserPendingRewardAmounts', account],
+    ['useUserPendingRewardAmounts', account, wrapperAddress],
     () => contract.read.pendingReward([account ?? '0x']),
     {
       enabled: !!account,
