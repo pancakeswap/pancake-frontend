@@ -18,6 +18,7 @@ export const POOLS_FAST_REVALIDATE = {
   [ChainId.OPBNB_TESTNET]: 10_000,
   [ChainId.BASE]: 10_000,
   [ChainId.BASE_TESTNET]: 10_000,
+  [ChainId.SCROLL]: 10_000,
   [ChainId.SCROLL_SEPOLIA]: 10_000,
 } as const satisfies Record<ChainId, number>
 
@@ -39,6 +40,7 @@ export const POOLS_NORMAL_REVALIDATE = {
   [ChainId.OPBNB_TESTNET]: 15_000,
   [ChainId.BASE]: 15_000,
   [ChainId.BASE_TESTNET]: 15_000,
+  [ChainId.SCROLL]: 15_000,
   [ChainId.SCROLL_SEPOLIA]: 15_000,
 } as const satisfies Record<ChainId, number>
 
@@ -59,5 +61,6 @@ export const POOLS_SLOW_REVALIDATE = {
   [ChainId.OPBNB_TESTNET]: 20_000,
   [ChainId.BASE]: 20_000,
   [ChainId.BASE_TESTNET]: 20_000,
+  [ChainId.SCROLL]: 20_000,
   [ChainId.SCROLL_SEPOLIA]: 20_000,
 } as const satisfies Record<ChainId, number>

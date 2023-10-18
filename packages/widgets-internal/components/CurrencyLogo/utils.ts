@@ -13,6 +13,7 @@ const mapping: { [key: number]: string } = {
   [ChainId.BASE]: "base",
   [ChainId.LINEA]: "linea",
   [ChainId.OPBNB]: "opbnb",
+  [ChainId.SCROLL]: "scroll",
 };
 
 export const getTokenLogoURL = memoize(

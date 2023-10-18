@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, V2_SUBGRAPHS, V3_SUBGRAPHS } from '@pancakeswap/chains'
 import {
   INFO_CLIENT,
   INFO_CLIENT_ETH,
@@ -65,6 +65,10 @@ const SWAP_INFO_BY_CHAIN = {
   },
   [ChainId.BASE_TESTNET]: {
     v3: V3_SUBGRAPH_URLS[ChainId.BASE_TESTNET],
+  },
+  [ChainId.SCROLL]: {
+    v2: V2_SUBGRAPHS[ChainId.SCROLL],
+    v3: V3_SUBGRAPHS[ChainId.SCROLL],
   },
   [ChainId.SCROLL_SEPOLIA]: {
     v3: V3_SUBGRAPH_URLS[ChainId.SCROLL_SEPOLIA],

@@ -279,6 +279,7 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
+  [ChainId.SCROLL]: new ERC20Token(ChainId.SCROLL, '0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4', 6, 'USDC', 'USD Coin'),
   [ChainId.SCROLL_SEPOLIA]: new ERC20Token(
     ChainId.SCROLL_SEPOLIA,
     '0x02a3e7E0480B668bD46b42852C58363F93e3bA5C',
@@ -334,6 +335,13 @@ export const USDT = {
     'Tether USD',
   ),
   [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0xA219439258ca9da29E9Cc4cE5596924745e12B93', 6, 'USDT', 'Tether USD'),
+  [ChainId.SCROLL]: new ERC20Token(
+    ChainId.SCROLL,
+    '0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
 }
 
 export const WBTC_ETH = new ERC20Token(
@@ -361,5 +369,6 @@ export const STABLE_COIN = {
   [ChainId.OPBNB_TESTNET]: USDT[ChainId.OPBNB_TESTNET],
   [ChainId.BASE]: USDC[ChainId.BASE],
   [ChainId.BASE_TESTNET]: USDC[ChainId.BASE_TESTNET],
+  [ChainId.SCROLL]: USDC[ChainId.SCROLL],
   [ChainId.SCROLL_SEPOLIA]: USDC[ChainId.SCROLL_SEPOLIA],
 } satisfies Record<ChainId, ERC20Token>

@@ -18,6 +18,7 @@ import {
   opBnbTestnetTokens,
   baseTokens,
   baseTestnetTokens,
+  scrollTokens,
   scrollSepoliaTokens,
   lineaTokens,
 } from '@pancakeswap/tokens'
@@ -47,6 +48,7 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.OPBNB_TESTNET]: 6_000,
   [ChainId.BASE]: 6_000,
   [ChainId.BASE_TESTNET]: 6_000,
+  [ChainId.SCROLL]: 6_000,
   [ChainId.SCROLL_SEPOLIA]: 6_000,
 } as const satisfies Record<ChainId, number>
 
@@ -73,6 +75,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   ],
   [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
+  [ChainId.SCROLL]: [scrollTokens.usdc, scrollTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
 
@@ -94,6 +97,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.OPBNB]: [opBnbTokens.wbnb, opBnbTokens.usdt],
   [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
+  [ChainId.SCROLL]: [scrollTokens.usdc, scrollTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
 
@@ -122,6 +126,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.OPBNB_TESTNET]: [[opBnbTestnetTokens.usdt, opBnbTestnetTokens.wbnb]],
   [ChainId.BASE]: [[baseTokens.usdc, baseTokens.weth]],
   [ChainId.BASE_TESTNET]: [[baseTestnetTokens.usdc, baseTestnetTokens.weth]],
+  [ChainId.SCROLL]: [[scrollTokens.usdc, scrollTokens.weth]],
   [ChainId.SCROLL_SEPOLIA]: [[scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth]],
 }
 

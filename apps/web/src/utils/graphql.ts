@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, V3_SUBGRAPHS, V2_SUBGRAPHS } from '@pancakeswap/chains'
 import {
   BIT_QUERY,
   INFO_CLIENT,
@@ -49,6 +49,7 @@ export const v3Clients = {
   [ChainId.BASE_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BASE_TESTNET]),
   [ChainId.SCROLL_SEPOLIA]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.SCROLL_SEPOLIA]),
   [ChainId.OPBNB]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.OPBNB]),
+  [ChainId.SCROLL]: new GraphQLClient(V3_SUBGRAPHS[ChainId.SCROLL]),
 }
 
 export const v3InfoClients = { ...v3Clients, [ChainId.BSC]: new GraphQLClient(V3_BSC_INFO_CLIENT) }
@@ -64,6 +65,7 @@ export const v2Clients = {
   [ChainId.BASE]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.BASE]),
   [ChainId.ARBITRUM_ONE]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.ARBITRUM_ONE]),
   [ChainId.OPBNB]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.OPBNB]),
+  [ChainId.SCROLL]: new GraphQLClient(V2_SUBGRAPHS[ChainId.SCROLL]),
 }
 
 export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)

@@ -17,6 +17,7 @@ export const chainNames: Record<ChainId, string> = {
   [ChainId.OPBNB_TESTNET]: 'opBnbTestnet',
   [ChainId.BASE]: 'base',
   [ChainId.BASE_TESTNET]: 'baseTestnet',
+  [ChainId.SCROLL]: 'scroll',
   [ChainId.SCROLL_SEPOLIA]: 'scrollSepolia',
 }
 
@@ -47,4 +48,5 @@ export const defiLlamaChainNames: Record<ChainId, string> = {
   [ChainId.SCROLL_SEPOLIA]: '',
   [ChainId.LINEA]: 'linea',
   [ChainId.BASE]: 'base',
+  [ChainId.SCROLL]: '',
 }

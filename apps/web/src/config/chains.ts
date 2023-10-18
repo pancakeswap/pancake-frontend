@@ -150,6 +150,36 @@ export const linea = {
   testnet: false,
 } as const satisfies Chain
 
+export const scroll = {
+  id: ChainId.SCROLL,
+  name: 'Scroll',
+  network: 'scroll',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.scroll.io'],
+      webSocket: ['wss://wss-rpc.scroll.io/ws'],
+    },
+    public: {
+      http: ['https://rpc.scroll.io'],
+      webSocket: ['wss://wss-rpc.scroll.io/ws'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Scrollscan',
+      url: 'https://scrollscan.com',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 14,
+    },
+  },
+  testnet: false,
+} as const satisfies Chain
+
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
  * The expectation is that all of these networks have immediate transaction confirmation.
@@ -167,6 +197,8 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.BASE_TESTNET,
   ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,
+  ChainId.SCROLL,
+  ChainId.SCROLL_SEPOLIA,
 ]
 
 export const CHAINS = [
@@ -189,4 +221,5 @@ export const CHAINS = [
   opbnb,
   opbnbTestnet,
   scrollSepolia,
+  scroll,
 ]
