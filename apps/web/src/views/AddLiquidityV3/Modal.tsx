@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
@@ -8,7 +9,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import currencyId from 'utils/currencyId'
-import { useCallback } from 'react'
+import AddLiquidityV2FormProvider from 'views/AddLiquidity/AddLiquidityV2FormProvider'
 import { AprCalculator } from './components/AprCalculator'
 import { UniversalAddLiquidity } from '.'
 import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProvider'
@@ -61,47 +62,52 @@ export function AddLiquidityV3Modal({
     }, 600)
   }, [onDismiss, router])
 
+  const onAddLiquidityCallback = useCallback(
+    (hash: `0x${string}`) => {
+      if (hash) {
+        waitForTransaction({
+          hash,
+          chainId: currency0?.chainId,
+        }).then(() => {
+          dismiss()
+        })
+      } else {
+        dismiss()
+      }
+    },
+    [currency0, dismiss, waitForTransaction],
+  )
+
   return (
     <ModalV2 isOpen={isOpen} onDismiss={dismiss} closeOnOverlayClick>
-      <LiquidityFormProvider
-        onAddLiquidityCallback={(hash: `0x${string}`) => {
-          if (hash) {
-            waitForTransaction({
-              hash,
-              chainId: currency0?.chainId,
-            }).then(() => {
-              dismiss()
-            })
-          } else {
-            dismiss()
-          }
-        }}
-      >
-        <Modal
-          bodyPadding="8px"
-          title={t('Add Liquidity')}
-          headerRightSlot={
-            <AutoRow width="auto" gap="8px">
-              <AprCalculator
-                baseCurrency={baseCurrency}
-                quoteCurrency={quoteCurrency}
-                feeAmount={feeAmount}
-                showTitle={false}
+      <AddLiquidityV2FormProvider>
+        <LiquidityFormProvider onAddLiquidityCallback={onAddLiquidityCallback}>
+          <Modal
+            bodyPadding="8px"
+            title={t('Add Liquidity')}
+            headerRightSlot={
+              <AutoRow width="auto" gap="8px">
+                <AprCalculator
+                  baseCurrency={baseCurrency}
+                  quoteCurrency={quoteCurrency}
+                  feeAmount={feeAmount}
+                  showTitle={false}
+                />
+                <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
+              </AutoRow>
+            }
+          >
+            <Box maxWidth="856px">
+              <UniversalAddLiquidity
+                currencyIdA={currencyIdA}
+                currencyIdB={currencyIdB}
+                preferredSelectType={preferredSelectType}
+                preferredFeeAmount={feeAmount}
               />
-              <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
-            </AutoRow>
-          }
-        >
-          <Box maxWidth="856px">
-            <UniversalAddLiquidity
-              currencyIdA={currencyIdA}
-              currencyIdB={currencyIdB}
-              preferredSelectType={preferredSelectType}
-              preferredFeeAmount={feeAmount}
-            />
-          </Box>
-        </Modal>
-      </LiquidityFormProvider>
+            </Box>
+          </Modal>
+        </LiquidityFormProvider>
+      </AddLiquidityV2FormProvider>
     </ModalV2>
   )
 }

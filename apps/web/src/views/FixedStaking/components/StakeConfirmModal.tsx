@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { PreTitle, Flex, Box, Text } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 
 import FixedStakingOverview from './FixedStakingOverview'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
@@ -16,7 +17,7 @@ export function StakeConfirmModal({
   lockPeriod,
   isBoost,
 }: {
-  stakeCurrencyAmount: CurrencyAmount<Token>
+  stakeCurrencyAmount: CurrencyAmount<Currency>
   lockPeriod: number
   boostAPR: Percent
   lockAPR: Percent

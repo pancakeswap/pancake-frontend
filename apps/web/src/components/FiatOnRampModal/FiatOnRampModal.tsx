@@ -6,12 +6,12 @@ import {
   Flex,
   Heading,
   InjectedModalProps,
+  LoadingDot,
   ModalTitle,
   ModalWrapper,
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { LoadingDot } from '@pancakeswap/uikit/widgets/Liquidity'
 
 import { CommitButton } from 'components/CommitButton'
 import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL } from 'config/constants/endpoints'

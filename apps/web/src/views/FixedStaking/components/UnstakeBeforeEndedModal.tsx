@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent, Currency } from '@pancakeswap/swap-sdk-core'
 import { Box, Button, Flex, Message, MessageText, Modal, ModalV2, PreTitle, Text, useModalV2 } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { ReactNode, useMemo } from 'react'
@@ -32,7 +32,7 @@ export function UnstakeBeforeEnededModal({
   poolEndDay: number
   boostAPR: Percent
   unlockAPR: Percent
-  token: Token
+  token: Currency
   lockPeriod: number
   lockAPR: Percent
   stakePositionUserInfo: StakePositionUserInfo

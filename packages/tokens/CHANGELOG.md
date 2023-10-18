@@ -1,5 +1,12 @@
 # @pancakeswap/tokens
 
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies [d994c3335]
+  - @pancakeswap/token-lists@0.0.9
+
 ## 0.5.2
 
 ### Patch Changes

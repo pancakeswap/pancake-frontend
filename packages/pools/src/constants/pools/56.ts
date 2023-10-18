@@ -77,15 +77,6 @@ export const livePools: SerializedPool[] = [
     version: 3,
   },
   {
-    sousId: 354,
-    stakingToken: bscTokens.cake,
-    earningToken: bscTokens.snbnb,
-    contractAddress: '0x854906693F7bAc4E4c8C31c001b6a42b3d93493E',
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.00004813',
-    version: 3,
-  },
-  {
     sousId: 352,
     stakingToken: bscTokens.cake,
     earningToken: bscTokens.sable,
@@ -101,6 +92,33 @@ export const livePools: SerializedPool[] = [
     contractAddress: '0x283812B4F4c77A0f169b6F8a79d1d7d996770477',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.02411',
+    version: 3,
+  },
+  {
+    sousId: 347,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.tusd,
+    contractAddress: '0x72cd910eE115E494485Dd32Ce7bC5dE563eceA51',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.02314',
+    version: 3,
+  },
+].map((p) => ({
+  ...p,
+  contractAddress: getAddress(p.contractAddress),
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
+}))
+
+// known finished pools
+const finishedPools = [
+  {
+    sousId: 354,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.snbnb,
+    contractAddress: '0x854906693F7bAc4E4c8C31c001b6a42b3d93493E',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.00004813',
     version: 3,
   },
   {
@@ -130,24 +148,6 @@ export const livePools: SerializedPool[] = [
     tokenPerBlock: '0.07716',
     version: 3,
   },
-  {
-    sousId: 347,
-    stakingToken: bscTokens.cake,
-    earningToken: bscTokens.tusd,
-    contractAddress: '0x72cd910eE115E494485Dd32Ce7bC5dE563eceA51',
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.02314',
-    version: 3,
-  },
-].map((p) => ({
-  ...p,
-  contractAddress: getAddress(p.contractAddress),
-  stakingToken: p.stakingToken.serialize,
-  earningToken: p.earningToken.serialize,
-}))
-
-// known finished pools
-const finishedPools = [
   {
     sousId: 353,
     stakingToken: bscTokens.cake,
