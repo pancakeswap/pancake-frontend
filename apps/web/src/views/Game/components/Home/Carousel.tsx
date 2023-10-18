@@ -89,6 +89,17 @@ const StyledSwiperContainer = styled(Box)<{ isHorizontal?: boolean }>`
   }
 `
 
+const StyledSwiperNavigation = styled(Flex)`
+  svg {
+    cursor: pointer;
+  }
+
+  svg.swiper-button-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`
+
 interface CarouselProps {
   isHorizontal: boolean
   carouselData: Array<any>
@@ -100,19 +111,15 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
   carouselData,
   setCarouselId,
 }) => {
-  const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
+  const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
   return (
     <StyledSwiperContainer isHorizontal={isHorizontal}>
       <Swiper
-        loop
-        initialSlide={0}
-        // centeredSlides
         slidesPerView={3}
         spaceBetween={10}
         modules={[Navigation]}
         onSwiper={setSwiper}
-        // onRealIndexChange={handleRealIndexChange}
         navigation={{
           prevEl: '.prev',
           nextEl: '.next',
@@ -135,10 +142,10 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
           </SwiperSlide>
         ))}
       </Swiper>
-      <Flex justifyContent="space-between" mt="10px">
-        <ChevronLeftIcon className="prev" color="white" cursor="pointer" width={24} height={24} />
-        <ChevronRightIcon className="next" color="white" cursor="pointer" width={24} height={24} />
-      </Flex>
+      <StyledSwiperNavigation justifyContent="space-between" mt="10px">
+        <ChevronLeftIcon className="prev" color="white" width={24} height={24} />
+        <ChevronRightIcon className="next" color="white" width={24} height={24} />
+      </StyledSwiperNavigation>
     </StyledSwiperContainer>
   )
 }
