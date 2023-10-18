@@ -9,7 +9,7 @@ import { Bet, BetPosition } from 'state/types'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
 import { useGetIsClaimable } from 'state/predictions/hooks'
-import useTokenPrice from 'views/Predictions/hooks/useTokenPrice'
+import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
 import { getBlockExploreLink } from 'utils'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 

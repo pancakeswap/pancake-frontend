@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
-const useTokenPrice = (token: Currency, enabled = true): BigNumber => {
+export const useTokenPrice = (token: Currency, enabled = true): BigNumber => {
   const enableCake = useMemo(() => enabled && token.equals(bscTokens.cake), [enabled, token])
   const enableBnb = useMemo(() => enabled && token.equals(bscTokens.bnb), [enabled, token])
   const enableOther = useMemo(() => enabled && !enableCake && !enableBnb, [enabled, enableCake, enableBnb])
@@ -24,5 +24,3 @@ const useTokenPrice = (token: Currency, enabled = true): BigNumber => {
   }
   return tokenPrice ? new BigNumber(tokenPrice.toSignificant(18)) : BIG_ZERO
 }
-
-export default useTokenPrice

@@ -30,7 +30,7 @@ import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { REWARD_RATE } from 'state/predictions/config'
 import { Bet } from 'state/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import useTokenPrice from 'views/Predictions/hooks/useTokenPrice'
+import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
