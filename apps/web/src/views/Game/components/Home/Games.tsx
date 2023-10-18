@@ -69,9 +69,15 @@ const HorizontalLogo = styled(Box)<{ imgUrl: string }>`
 
 const StyledTag = styled(Button)`
   font-weight: 400;
-  align-self: center;
+  width: fit-content;
+  margin-top: 12px;
   color: ${({ theme }) => theme.colors.background};
   background-color: ${({ theme }) => theme.colors.secondary};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: 0px;
+    align-self: center;
+  }
 `
 
 const StyledTextLineClamp = styled(Text)<{ lineClamp: number }>`
@@ -104,7 +110,7 @@ export const Games = () => {
                 <Text fontSize={12} color="textSubtle" bold mb="20px">
                   {t('Publisher:')}
                 </Text>
-                <Flex justifyContent="space-between">
+                <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
                   <HorizontalLogo imgUrl="/images/ifos/sable-bg.png" />
                   <StyledTag scale="xs">Casual</StyledTag>
                 </Flex>
