@@ -30,37 +30,7 @@ export const UniversalRouterABI = [
           },
           {
             internalType: 'address',
-            name: 'nftxZap',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
             name: 'x2y2',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
-            name: 'foundation',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
-            name: 'sudoswap',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
-            name: 'elementMarket',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
-            name: 'nft20Zap',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
-            name: 'cryptopunks',
             type: 'address',
           },
           {
@@ -94,14 +64,34 @@ export const UniversalRouterABI = [
             type: 'address',
           },
           {
+            internalType: 'address',
+            name: 'v3Deployer',
+            type: 'address',
+          },
+          {
             internalType: 'bytes32',
-            name: 'pairInitCodeHash',
+            name: 'v2InitCodeHash',
             type: 'bytes32',
           },
           {
             internalType: 'bytes32',
-            name: 'poolInitCodeHash',
+            name: 'v3InitCodeHash',
             type: 'bytes32',
+          },
+          {
+            internalType: 'address',
+            name: 'stableFactory',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'stableInfo',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'pancakeNFTMarket',
+            type: 'address',
           },
         ],
         internalType: 'struct RouterParameters',
@@ -115,6 +105,11 @@ export const UniversalRouterABI = [
   {
     inputs: [],
     name: 'BalanceTooLow',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'BuyPancakeNFTFailed',
     type: 'error',
   },
   {
@@ -196,6 +191,16 @@ export const UniversalRouterABI = [
   },
   {
     inputs: [],
+    name: 'InvalidPoolAddress',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'InvalidPoolLength',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'InvalidReserves',
     type: 'error',
   },
@@ -212,6 +217,21 @@ export const UniversalRouterABI = [
   {
     inputs: [],
     name: 'SliceOutOfBounds',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'StableInvalidPath',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'StableTooLittleReceived',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'StableTooMuchRequested',
     type: 'error',
   },
   {
@@ -273,6 +293,38 @@ export const UniversalRouterABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'Paused',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: 'uint256',
         name: 'amount',
@@ -280,6 +332,38 @@ export const UniversalRouterABI = [
       },
     ],
     name: 'RewardsSent',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'factory',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'info',
+        type: 'address',
+      },
+    ],
+    name: 'SetStableSwap',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'Unpaused',
     type: 'event',
   },
   {
@@ -449,6 +533,113 @@ export const UniversalRouterABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'int256',
+        name: 'amount0Delta',
+        type: 'int256',
+      },
+      {
+        internalType: 'int256',
+        name: 'amount1Delta',
+        type: 'int256',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'pancakeV3SwapCallback',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pause',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'paused',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_factory',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_info',
+        type: 'address',
+      },
+    ],
+    name: 'setStableSwap',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'stableSwapFactory',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'stableSwapInfo',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'bytes4',
@@ -470,22 +661,19 @@ export const UniversalRouterABI = [
   {
     inputs: [
       {
-        internalType: 'int256',
-        name: 'amount0Delta',
-        type: 'int256',
-      },
-      {
-        internalType: 'int256',
-        name: 'amount1Delta',
-        type: 'int256',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
       },
     ],
-    name: 'uniswapV3SwapCallback',
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'unpause',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

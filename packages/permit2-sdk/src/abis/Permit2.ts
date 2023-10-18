@@ -1,6 +1,12 @@
 export const Permit2ABI = [
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'deadline',
+        type: 'uint256',
+      },
+    ],
     name: 'AllowanceExpired',
     type: 'error',
   },
@@ -10,12 +16,24 @@ export const Permit2ABI = [
     type: 'error',
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
     name: 'InsufficientAllowance',
     type: 'error',
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'maxAmount',
+        type: 'uint256',
+      },
+    ],
     name: 'InvalidAmount',
     type: 'error',
   },
@@ -36,6 +54,11 @@ export const Permit2ABI = [
   },
   {
     inputs: [],
+    name: 'InvalidSignatureLength',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'InvalidSigner',
     type: 'error',
   },
@@ -45,12 +68,13 @@ export const Permit2ABI = [
     type: 'error',
   },
   {
-    inputs: [],
-    name: 'NotSpender',
-    type: 'error',
-  },
-  {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'signatureDeadline',
+        type: 'uint256',
+      },
+    ],
     name: 'SignatureExpired',
     type: 'error',
   },
@@ -151,6 +175,49 @@ export const Permit2ABI = [
       },
     ],
     name: 'NonceInvalidation',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'spender',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint160',
+        name: 'amount',
+        type: 'uint160',
+      },
+      {
+        indexed: false,
+        internalType: 'uint48',
+        name: 'expiration',
+        type: 'uint48',
+      },
+      {
+        indexed: false,
+        internalType: 'uint48',
+        name: 'nonce',
+        type: 'uint48',
+      },
+    ],
+    name: 'Permit',
     type: 'event',
   },
   {
@@ -489,6 +556,75 @@ export const Permit2ABI = [
                 type: 'uint256',
               },
             ],
+            internalType: 'struct ISignatureTransfer.TokenPermissions',
+            name: 'permitted',
+            type: 'tuple',
+          },
+          {
+            internalType: 'uint256',
+            name: 'nonce',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'deadline',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct ISignatureTransfer.PermitTransferFrom',
+        name: 'permit',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'to',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'requestedAmount',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct ISignatureTransfer.SignatureTransferDetails',
+        name: 'transferDetails',
+        type: 'tuple',
+      },
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'signature',
+        type: 'bytes',
+      },
+    ],
+    name: 'permitTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'token',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+              },
+            ],
             internalType: 'struct ISignatureTransfer.TokenPermissions[]',
             name: 'permitted',
             type: 'tuple[]',
@@ -509,11 +645,6 @@ export const Permit2ABI = [
         type: 'tuple',
       },
       {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
         components: [
           {
             internalType: 'address',
@@ -531,66 +662,9 @@ export const Permit2ABI = [
         type: 'tuple[]',
       },
       {
-        internalType: 'bytes',
-        name: 'signature',
-        type: 'bytes',
-      },
-    ],
-    name: 'permitTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'token',
-                type: 'address',
-              },
-              {
-                internalType: 'uint256',
-                name: 'amount',
-                type: 'uint256',
-              },
-            ],
-            internalType: 'struct ISignatureTransfer.TokenPermissions',
-            name: 'permitted',
-            type: 'tuple',
-          },
-          {
-            internalType: 'uint256',
-            name: 'nonce',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'deadline',
-            type: 'uint256',
-          },
-        ],
-        internalType: 'struct ISignatureTransfer.PermitTransferFrom',
-        name: 'permit',
-        type: 'tuple',
-      },
-      {
         internalType: 'address',
         name: 'owner',
         type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'requestedAmount',
-        type: 'uint256',
       },
       {
         internalType: 'bytes',
@@ -640,19 +714,26 @@ export const Permit2ABI = [
         type: 'tuple',
       },
       {
+        components: [
+          {
+            internalType: 'address',
+            name: 'to',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'requestedAmount',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct ISignatureTransfer.SignatureTransferDetails',
+        name: 'transferDetails',
+        type: 'tuple',
+      },
+      {
         internalType: 'address',
         name: 'owner',
         type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'requestedAmount',
-        type: 'uint256',
       },
       {
         internalType: 'bytes32',
@@ -661,12 +742,7 @@ export const Permit2ABI = [
       },
       {
         internalType: 'string',
-        name: 'witnessTypeName',
-        type: 'string',
-      },
-      {
-        internalType: 'string',
-        name: 'witnessType',
+        name: 'witnessTypeString',
         type: 'string',
       },
       {
@@ -717,11 +793,6 @@ export const Permit2ABI = [
         type: 'tuple',
       },
       {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
         components: [
           {
             internalType: 'address',
@@ -739,18 +810,18 @@ export const Permit2ABI = [
         type: 'tuple[]',
       },
       {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
         internalType: 'bytes32',
         name: 'witness',
         type: 'bytes32',
       },
       {
         internalType: 'string',
-        name: 'witnessTypeName',
-        type: 'string',
-      },
-      {
-        internalType: 'string',
-        name: 'witnessType',
+        name: 'witnessTypeString',
         type: 'string',
       },
       {
@@ -767,24 +838,31 @@ export const Permit2ABI = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'token',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint160',
-        name: 'amount',
-        type: 'uint160',
+        components: [
+          {
+            internalType: 'address',
+            name: 'from',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'to',
+            type: 'address',
+          },
+          {
+            internalType: 'uint160',
+            name: 'amount',
+            type: 'uint160',
+          },
+          {
+            internalType: 'address',
+            name: 'token',
+            type: 'address',
+          },
+        ],
+        internalType: 'struct IAllowanceTransfer.AllowanceTransferDetails[]',
+        name: 'transferDetails',
+        type: 'tuple[]',
       },
     ],
     name: 'transferFrom',
@@ -800,26 +878,19 @@ export const Permit2ABI = [
         type: 'address',
       },
       {
-        components: [
-          {
-            internalType: 'address',
-            name: 'token',
-            type: 'address',
-          },
-          {
-            internalType: 'uint160',
-            name: 'amount',
-            type: 'uint160',
-          },
-          {
-            internalType: 'address',
-            name: 'to',
-            type: 'address',
-          },
-        ],
-        internalType: 'struct IAllowanceTransfer.AllowanceTransferDetails[]',
-        name: 'transferDetails',
-        type: 'tuple[]',
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint160',
+        name: 'amount',
+        type: 'uint160',
+      },
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
       },
     ],
     name: 'transferFrom',
