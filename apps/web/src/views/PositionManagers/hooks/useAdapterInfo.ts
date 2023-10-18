@@ -132,6 +132,9 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
     startTimestamp: staticData?.startTimestamp ? Number(staticData.startTimestamp) : 0,
     endTimestamp: staticData?.endTimestamp ? Number(staticData.endTimestamp) : 0,
     rewardPerSecond: staticData?.rewardPerSecond ?? '',
+    totalSupplyAmounts: poolAmounts?.totalSupply,
+    userLpAmounts: userAmounts?.[0],
+    precision: poolAmounts?.precision,
   }
 }
 

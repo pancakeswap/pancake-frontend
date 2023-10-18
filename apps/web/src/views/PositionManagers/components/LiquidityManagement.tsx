@@ -56,6 +56,9 @@ interface Props {
 
   // TODO: replace with needed returned information
   onRemoveLiquidity?: (params: { assets: BaseAssets; percentage: Percent }) => Promise<void>
+  userLpAmounts?: bigint
+  totalSupplyAmounts?: bigint
+  precision?: bigint
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -86,6 +89,9 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   rewardStartTime,
   refetch,
   totalAssetsInUsd,
+  userLpAmounts,
+  totalSupplyAmounts,
+  precision,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -167,6 +173,9 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         refetch={refetch}
         rewardStartTime={rewardStartTime}
         totalAssetsInUsd={totalAssetsInUsd}
+        totalSupplyAmounts={totalSupplyAmounts}
+        userLpAmounts={userLpAmounts}
+        precision={precision}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

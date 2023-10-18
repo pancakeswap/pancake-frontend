@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, RoiCalculatorModal, Skeleton, Text, useModal, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { AprResult } from '../hooks'
@@ -13,6 +13,9 @@ interface Props {
   isAprLoading: boolean
   lpSymbol: string
   totalAssetsInUsd: number
+  userLpAmounts?: bigint
+  totalSupplyAmounts?: bigint
+  precision?: bigint
 }
 
 const AprText = styled(Text)`
@@ -21,12 +24,28 @@ const AprText = styled(Text)`
   cursor: pointer;
 `
 
-export const AprButton = memo(function YieldInfo({ id, apr, isAprLoading, totalAssetsInUsd, lpSymbol }: Props) {
+export const AprButton = memo(function YieldInfo({
+  id,
+  apr,
+  isAprLoading,
+  totalAssetsInUsd,
+  lpSymbol,
+  userLpAmounts,
+  precision,
+}: Props) {
   const { t } = useTranslation()
 
   const { address: account } = useAccount()
   const cakePriceBusd = useCakePrice()
+  const tokenBalance = useMemo(
+    () => new BigNumber(Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
+    [userLpAmounts, precision],
+  )
 
+  const tokenPrice = useMemo(
+    () => totalAssetsInUsd / (Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
+    [userLpAmounts, precision, totalAssetsInUsd],
+  )
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text>
@@ -63,10 +82,10 @@ export const AprButton = memo(function YieldInfo({ id, apr, isAprLoading, totalA
       account={account ?? ''}
       pid={Number(id)}
       linkLabel=""
-      stakingTokenBalance={new BigNumber(10)}
-      stakingTokenDecimals={1}
+      stakingTokenBalance={tokenBalance}
+      stakingTokenDecimals={0}
       stakingTokenSymbol={lpSymbol}
-      stakingTokenPrice={totalAssetsInUsd}
+      stakingTokenPrice={tokenPrice}
       earningTokenPrice={cakePriceBusd.toNumber()}
       apr={Number(apr.cakeYieldApr) + Number(apr.lpApr)}
       displayApr={apr.combinedApr}

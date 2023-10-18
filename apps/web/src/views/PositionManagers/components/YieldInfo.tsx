@@ -14,6 +14,9 @@ interface Props {
   autoCompound?: boolean
   totalAssetsInUsd: number
   onAprClick?: () => void
+  userLpAmounts?: bigint
+  totalSupplyAmounts?: bigint
+  precision?: bigint
 }
 
 export const YieldInfo = memo(function YieldInfo({
@@ -24,6 +27,9 @@ export const YieldInfo = memo(function YieldInfo({
   autoCompound,
   totalAssetsInUsd,
   lpSymbol,
+  userLpAmounts,
+  totalSupplyAmounts,
+  precision,
 }: Props) {
   const { t } = useTranslation()
 
@@ -39,6 +45,9 @@ export const YieldInfo = memo(function YieldInfo({
           isAprLoading={isAprLoading}
           lpSymbol={lpSymbol}
           totalAssetsInUsd={totalAssetsInUsd}
+          totalSupplyAmounts={totalSupplyAmounts}
+          userLpAmounts={userLpAmounts}
+          precision={precision}
         />
       </RowBetween>
       <RowBetween>

@@ -184,6 +184,9 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       rewardStartTime={info.startTimestamp}
       refetch={info?.refetchPositionInfo}
       totalAssetsInUsd={totalAssetsInUsd}
+      totalSupplyAmounts={info?.totalSupplyAmounts}
+      userLpAmounts={info?.userLpAmounts}
+      precision={info?.precision}
     >
       {id}
     </DuoTokenVaultCard>

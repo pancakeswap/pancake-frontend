@@ -61,6 +61,9 @@ interface Props {
   rewardStartTime: number
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
   totalAssetsInUsd: number
+  userLpAmounts?: bigint
+  totalSupplyAmounts?: bigint
+  precision?: bigint
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -94,6 +97,9 @@ export const AddLiquidity = memo(function AddLiquidity({
   refetch,
   onDismiss,
   totalAssetsInUsd,
+  userLpAmounts,
+  totalSupplyAmounts,
+  precision,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -245,6 +251,9 @@ export const AddLiquidity = memo(function AddLiquidity({
               isAprLoading={aprDataInfo.isLoading}
               lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
               totalAssetsInUsd={totalAssetsInUsd}
+              userLpAmounts={userLpAmounts}
+              totalSupplyAmounts={totalSupplyAmounts}
+              precision={precision}
             />
           </RowBetween>
         </Flex>

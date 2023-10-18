@@ -68,6 +68,9 @@ interface Props {
   rewardStartTime: number
   refetch?: () => void
   totalAssetsInUsd: number
+  userLpAmounts?: bigint
+  totalSupplyAmounts?: bigint
+  precision?: bigint
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -105,6 +108,9 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   refetch,
   rewardStartTime,
   totalAssetsInUsd,
+  userLpAmounts,
+  totalSupplyAmounts,
+  precision,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -148,6 +154,9 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           withCakeReward={withCakeReward}
           totalAssetsInUsd={totalAssetsInUsd}
           lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
+          totalSupplyAmounts={totalSupplyAmounts}
+          userLpAmounts={userLpAmounts}
+          precision={precision}
         />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement
@@ -178,6 +187,9 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           rewardEndTime={rewardEndTime}
           refetch={refetch}
           rewardStartTime={rewardStartTime}
+          totalSupplyAmounts={totalSupplyAmounts}
+          userLpAmounts={userLpAmounts}
+          precision={precision}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo
