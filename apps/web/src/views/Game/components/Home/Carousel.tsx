@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { styled } from 'styled-components'
 import { Flex, Box, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import { CarouselType } from 'views/Game/types'
@@ -12,8 +12,8 @@ import { Navigation } from 'swiper/modules'
 const StyledCarouselImage = styled(Box)<{
   imgUrl: string
   isVideo: boolean
-  isActive?: boolean
-  isHorizontal?: boolean
+  isActive: boolean
+  isHorizontal: boolean
 }>`
   position: relative;
   cursor: pointer;
@@ -48,7 +48,7 @@ const StyledCarouselImage = styled(Box)<{
   }
 `
 
-const StyledSwiperContainer = styled(Box)<{ isHorizontal?: boolean }>`
+const StyledSwiperContainer = styled(Box)<{ isHorizontal: boolean }>`
   position: relative;
   border-radius: 0;
   background: rgba(39, 38, 44, 0.8);
@@ -73,7 +73,7 @@ const StyledSwiperContainer = styled(Box)<{ isHorizontal?: boolean }>`
     border-left: ${({ isHorizontal }) => `${isHorizontal ? '10px solid transparent' : 0}`};
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     width: calc(100% + 64px);
     margin: ${({ isHorizontal }) => (isHorizontal ? '0px 0 0 -32px' : '0 0px 24px -32px')};
   }
@@ -102,29 +102,42 @@ const StyledSwiperNavigation = styled(Flex)`
 
 interface CarouselProps {
   isHorizontal: boolean
+  carouselId: number
   carouselData: Array<any>
   setCarouselId: (index: number) => void
 }
 
 export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
+  carouselId,
   isHorizontal,
   carouselData,
   setCarouselId,
 }) => {
   const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
+  const handleRealIndexChange = useCallback(
+    (swiperInstance: SwiperClass) => {
+      setCarouselId(swiperInstance.realIndex)
+    },
+    [setCarouselId],
+  )
+
   return (
     <StyledSwiperContainer isHorizontal={isHorizontal}>
       <Swiper
-        slidesPerView={3}
+        slidesPerView={2}
         spaceBetween={10}
         modules={[Navigation]}
         onSwiper={setSwiper}
+        onRealIndexChange={handleRealIndexChange}
         navigation={{
           prevEl: '.prev',
           nextEl: '.next',
         }}
         breakpoints={{
+          370: {
+            slidesPerView: 3,
+          },
           920: {
             slidesPerView: 4,
           },
@@ -133,12 +146,12 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
         {carouselData.map((carousel, index) => (
           <SwiperSlide key={carousel.imageUrl}>
             <StyledCarouselImage
+              isActive={carouselId === index}
               imgUrl={carousel.imageUrl}
               isHorizontal={isHorizontal}
               isVideo={carousel.type === CarouselType.VIDEO}
               onClick={() => setCarouselId(index)}
             />
-            {index}
           </SwiperSlide>
         ))}
       </Swiper>
