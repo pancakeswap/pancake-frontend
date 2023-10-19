@@ -31,6 +31,20 @@ export const farmsV3 = defineFarmV3Configs([
     token1: polygonZkEvmTokens.matic,
     feeAmount: FeeAmount.MEDIUM,
   },
+  {
+    pid: 5,
+    lpAddress: '0x39aCc7cf02af19A1eB0e3628bA0F5C48f44beBF3',
+    token0: polygonZkEvmTokens.usdc,
+    token1: polygonZkEvmTokens.grai,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 6,
+    lpAddress: '0xf1e501f74Ed9dc619be53Fddb698c94AbF9D56B6',
+    token0: polygonZkEvmTokens.weth,
+    token1: polygonZkEvmTokens.wbtc,
+    feeAmount: FeeAmount.LOWEST,
+  },
 ])
 
 export default farmsV3
