@@ -41,7 +41,7 @@ const StyledGradientBg = styled('div')`
 `
 
 const ArrowButton = styled.div`
-  display: flex;
+  display: none;
   align-self: center;
   justify-content: center;
   align-items: center;
@@ -56,7 +56,18 @@ const ArrowButton = styled.div`
   cursor: pointer;
 
   &.swiper-button-disabled {
-    display: none;
+    opacity: 0.5;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    display: flex;
+  }
+`
+
+const StyledSwiperContainer = styled(Box)`
+  width: 100%;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    width: calc(100% - 141px);
   }
 `
 
@@ -66,7 +77,7 @@ export const Banner = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isDesktop } = useMatchBreakpoints()
-  const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
+  const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
   return (
     <StyledBackground>
@@ -92,57 +103,53 @@ export const Banner = () => {
           </Text>
         </Box>
         <Flex width="100%">
-          {isDesktop && (
-            <ArrowButton className="prev" style={{ marginRight: '32px' }}>
-              <ChevronLeftIcon color={theme.colors.textSubtle} />
-            </ArrowButton>
-          )}
-          <Swiper
-            // loop
-            resizeObserver
-            // centeredSlides
-            slidesPerView={1}
-            spaceBetween={16}
-            onSwiper={setSwiper}
-            modules={[Autoplay, Navigation]}
-            autoplay={{
-              delay: 2500,
-              pauseOnMouseEnter: true,
-              disableOnInteraction: false,
-            }}
-            navigation={{
-              prevEl: '.prev',
-              nextEl: '.next',
-            }}
-            breakpoints={{
-              320: {
-                slidesPerView: 1,
-              },
-              920: {
-                slidesPerView: 2,
-              },
-              1440: {
-                slidesPerView: 3,
-                spaceBetween: 32,
-              },
-            }}
-          >
-            {test.map((introStep) => (
-              <SwiperSlide key={introStep}>
-                <NextLink passHref href="/">
-                  <GameCard
-                    id={introStep}
-                    imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-                  />
-                </NextLink>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          {isDesktop && (
-            <ArrowButton className="next" style={{ marginLeft: '32px' }}>
-              <ChevronRightIcon color={theme.colors.textSubtle} />
-            </ArrowButton>
-          )}
+          <ArrowButton className="prev" style={{ marginRight: '32px' }}>
+            <ChevronLeftIcon color={theme.colors.textSubtle} />
+          </ArrowButton>
+          <StyledSwiperContainer>
+            <Swiper
+              resizeObserver
+              slidesPerView={1}
+              spaceBetween={16}
+              onSwiper={setSwiper}
+              modules={[Autoplay, Navigation]}
+              autoplay={{
+                delay: 2500,
+                pauseOnMouseEnter: true,
+                disableOnInteraction: false,
+              }}
+              navigation={{
+                prevEl: '.prev',
+                nextEl: '.next',
+              }}
+              breakpoints={{
+                320: {
+                  slidesPerView: 1,
+                },
+                920: {
+                  slidesPerView: 2,
+                },
+                1440: {
+                  slidesPerView: 3,
+                  spaceBetween: 32,
+                },
+              }}
+            >
+              {test.map((introStep) => (
+                <SwiperSlide key={introStep}>
+                  <NextLink passHref href="/">
+                    <GameCard
+                      id={introStep}
+                      imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
+                    />
+                  </NextLink>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </StyledSwiperContainer>
+          <ArrowButton className="next" style={{ marginLeft: '32px' }}>
+            <ChevronRightIcon color={theme.colors.textSubtle} />
+          </ArrowButton>
         </Flex>
       </Flex>
     </StyledBackground>
