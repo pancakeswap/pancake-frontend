@@ -30,7 +30,7 @@ export function useMerklInfo(poolAddress: string | null): {
   const { account, chainId } = useAccountActiveChain()
 
   const { data, isLoading, mutate } = useSWRImmutable(
-    chainId && poolAddress && account ? `fetchMerkl-${chainId}-${account}-${poolAddress}` : null,
+    chainId && poolAddress ? `fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}` : null,
     async () => {
       const response = await fetch(
         `${MERKL_API}?chainId=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
