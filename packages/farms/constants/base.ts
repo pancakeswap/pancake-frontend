@@ -19,7 +19,7 @@ export const farmsV3 = defineFarmV3Configs([
   },
   {
     pid: 9,
-    lpAddress: '0x0D486753B99b1e0548d3505D8B797c673b58Cad3',
+    lpAddress: '0xF6C0A374a483101e04EF5F7Ac9Bd15d9142BAC95',
     token0: baseTokens.weth,
     token1: baseTokens.usdbc,
     feeAmount: FeeAmount.LOWEST,
