@@ -24,6 +24,7 @@ const StyledCarouselImage = styled(Box)<{
   background-repeat: no-repeat;
   transition: 0.5s;
   border-radius: 8px;
+  margin-top: 10px;
   background-image: ${({ imgUrl }) => `url(${imgUrl})`};
   border: ${({ theme, isActive }) => `solid 3px  ${isActive ? theme.colors.primary : 'black'}`};
 
@@ -43,8 +44,25 @@ const StyledCarouselImage = styled(Box)<{
     transform: translate(-50%, -50%);
   }
 
+  &:after {
+    display: ${({ isActive }) => (isActive ? 'block' : 'none')};
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    border-bottom: ${({ theme }) => `10px solid ${theme.colors.primary}`};
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    transform: translateX(-50%);
+  }
+
   ${({ theme }) => theme.mediaQueries.xl} {
+    margin-top: 0;
     width: ${({ isHorizontal }) => (isHorizontal ? '157px' : '96px')};
+
+    &:after {
+      display: none;
+    }
   }
 `
 
