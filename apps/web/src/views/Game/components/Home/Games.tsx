@@ -1,13 +1,19 @@
 import { styled } from 'styled-components'
+import { useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text, Button, CardHeader, Card } from '@pancakeswap/uikit'
+
+import 'swiper/css'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import type { Swiper as SwiperClass } from 'swiper/types'
 
 const StyledCard = styled(Box)<{ picked?: boolean }>`
   position: relative;
   width: 300px;
+  margin-bottom: 0;
 
   &:before {
-    display: ${({ picked }) => (picked ? 'blokc' : 'none')};
+    display: none;
     content: '';
     z-index: 1;
     position: absolute;
@@ -20,18 +26,24 @@ const StyledCard = styled(Box)<{ picked?: boolean }>`
     transform: translateX(-50%);
     border-top: ${({ theme }) => `15px solid ${theme.colors.backgroundAlt}`};
   }
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+      margin-bottom: 15px;
+
+      &:before {
+        display: ${({ picked }) => (picked ? 'block' : 'none')};
+      }
+    }
+  }
 `
 
 const StyledContainer = styled(Flex)`
-  margin-bottom: 85px;
-  justify-content: center;
+  max-width: 298px;
+  margin: 0 auto 20px auto;
 
-  ${StyledCard} {
-    margin-right: 34px;
-
-    &:last-child {
-      margin: 0;
-    }
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-width: 630px; // 2 swiper
+    margin: 0 auto 85px auto;
   }
 `
 
@@ -89,36 +101,56 @@ const StyledTextLineClamp = styled(Text)<{ lineClamp: number }>`
 
 export const Games = () => {
   const { t } = useTranslation()
+  const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
+
   return (
     <StyledContainer>
-      {[1, 2].map((i) => (
-        <StyledCard picked={i === 1}>
-          <Card>
-            <Header imgUrl="/images/ifos/sable-bg.png" />
-            <Box padding="20px">
-              <StyledTextLineClamp lineClamp={2} bold fontSize={20} lineHeight="110%">
-                Pancake Mayor Name of the game or promotion title here
-              </StyledTextLineClamp>
-              <StyledTextLineClamp lineClamp={3} m="20px 0" fontSize={12} color="textSubtle" lineHeight="120%">
-                Brief extract Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                ut labore et dolore magna alere... 140 character max.
-              </StyledTextLineClamp>
-              <Box>
-                <Text fontSize={12} color="textSubtle" bold>
-                  {t('Publish Date: %date%', { date: 'MM DD, YYYY' })}{' '}
-                </Text>
-                <Text fontSize={12} color="textSubtle" bold mb="20px">
-                  {t('Publisher:')}
-                </Text>
-                <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
-                  <HorizontalLogo imgUrl="/images/ifos/sable-bg.png" />
-                  <StyledTag scale="xs">Casual</StyledTag>
-                </Flex>
-              </Box>
-            </Box>
-          </Card>
-        </StyledCard>
-      ))}
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={10}
+        onSwiper={setSwiper}
+        navigation={{
+          prevEl: '.prev',
+          nextEl: '.next',
+        }}
+        breakpoints={{
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 34,
+          },
+        }}
+      >
+        {[1, 2].map((i) => (
+          <SwiperSlide key={i}>
+            <StyledCard picked={i === 1}>
+              <Card>
+                <Header imgUrl="/images/ifos/sable-bg.png" />
+                <Box padding="20px">
+                  <StyledTextLineClamp lineClamp={2} bold fontSize={20} lineHeight="110%">
+                    Pancake Mayor Name of the game or promotion title here
+                  </StyledTextLineClamp>
+                  <StyledTextLineClamp lineClamp={3} m="20px 0" fontSize={12} color="textSubtle" lineHeight="120%">
+                    Brief extract Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna alere... 140 character max.
+                  </StyledTextLineClamp>
+                  <Box>
+                    <Text fontSize={12} color="textSubtle" bold>
+                      {t('Publish Date: %date%', { date: 'MM DD, YYYY' })}{' '}
+                    </Text>
+                    <Text fontSize={12} color="textSubtle" bold mb="20px">
+                      {t('Publisher:')}
+                    </Text>
+                    <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
+                      <HorizontalLogo imgUrl="/images/ifos/sable-bg.png" />
+                      <StyledTag scale="xs">Casual</StyledTag>
+                    </Flex>
+                  </Box>
+                </Box>
+              </Card>
+            </StyledCard>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </StyledContainer>
   )
 }
