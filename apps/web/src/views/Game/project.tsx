@@ -28,8 +28,6 @@ const SplitWrapper = styled(Box)`
 `
 
 const StyledIframe = styled.iframe`
-  top: 0;
-  left: 0 !important;
   width: 100%;
   height: 100%;
 `
@@ -80,35 +78,12 @@ export const GameProject = () => {
   const splitWrapperRef = useRef<null | HTMLDivElement>(null)
   const videoRef = useRef<null | HTMLDivElement>(null)
   const gutterRef = useRef<null | HTMLDivElement>(null)
+  const iframeRef = useRef<null | HTMLIFrameElement>(null)
   const splitInstance = useRef<SplitInstance>()
 
   const [isPaneOpen, setIsPaneOpen] = useState(false)
 
   // router.query.projectId
-
-  const openPane = () => {
-    if (splitWrapperRef?.current) {
-      splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
-      splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
-
-      // Purely comedic: We only want to animate if we are clicking the open chart button
-      // If we keep the transition on the resizing becomes very choppy
-      delay(() => {
-        if (splitWrapperRef?.current) {
-          splitWrapperRef.current.style.transition = ''
-        }
-      }, 1500)
-
-      setIsPaneOpen(true)
-    }
-  }
-
-  // unmount
-  useEffect(() => {
-    return () => {
-      setIsPaneOpen(false)
-    }
-  }, [])
 
   useEffect(() => {
     const threshold = 100
@@ -142,11 +117,34 @@ export const GameProject = () => {
     }
   }, [gutterRef, isPaneOpen])
 
+  const openPane = () => {
+    if (splitWrapperRef?.current) {
+      splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
+      splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
+
+      // Purely comedic: We only want to animate if we are clicking the open chart button
+      // If we keep the transition on the resizing becomes very choppy
+      delay(() => {
+        if (splitWrapperRef?.current) {
+          splitWrapperRef.current.style.transition = ''
+        }
+      }, 150)
+
+      setIsPaneOpen(true)
+    }
+
+    delay(() => {
+      if (iframeRef?.current) {
+        iframeRef.current.style.left = '0'
+      }
+    }, 425)
+  }
+
   return (
     <StyledDesktop>
       <SplitWrapper ref={splitWrapperRef}>
         <StyledContainer>
-          <StyledIframe src="https://protectors.pancakeswap.finance/">
+          <StyledIframe ref={iframeRef} id="project-game-iframe" src="https://protectors.pancakeswap.finance/">
             {t(`Your browser doesn't support iframe`)}
           </StyledIframe>
         </StyledContainer>
