@@ -95,14 +95,12 @@ export default function PoolListPage() {
   const isNeedFilterByQuery = useMemo(() => token0 || token1 || fee, [token0, token1, fee])
   const [showAllPositionWithQuery, setShowAllPositionWithQuery] = useState(false)
 
-  const v2PairsSection: null | JSX.Element[] = useMemo(() => {
-    if (!v2Pairs?.length) return null
-
-    return v2Pairs.map((pair, index) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <V2PairCard key={`${pair?.token0}-${pair?.token1}-${index}`} pair={pair} account={account} />
-    ))
-  }, [account, v2Pairs])
+  const v2PairsSection: null | JSX.Element[] = v2Pairs?.length
+    ? v2Pairs.map((pair, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <V2PairCard key={`${pair?.token0}-${pair?.token1}-${index}`} pair={pair} account={account} />
+      ))
+    : null
 
   const stablePairsSection: null | JSX.Element[] = useMemo(() => {
     if (!stablePairs?.length) return null

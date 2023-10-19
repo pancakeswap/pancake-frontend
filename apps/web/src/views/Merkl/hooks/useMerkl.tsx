@@ -1,5 +1,4 @@
-// eslint-disable-next-line camelcase
-import { Distributor__factory, MerklAPIData, registry } from '@angleprotocol/sdk'
+import { Distributor__factory as DistributorFactory, MerklAPIData, registry } from '@angleprotocol/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
@@ -12,6 +11,7 @@ import useSWRImmutable from 'swr/immutable'
 import { getContract } from 'utils/contractHelpers'
 import { Address, useWalletClient } from 'wagmi'
 import first from 'lodash/first'
+import { KeyedMutator } from 'swr'
 
 export const MERKL_API = 'https://api.angle.money/v1/merkl'
 
@@ -25,10 +25,11 @@ export function useMerklInfo(poolAddress: string | null): {
     proof?: string[]
   } | null
   hasMerkl: boolean
+  refreshData: KeyedMutator<any>
 } {
   const { account, chainId } = useAccountActiveChain()
 
-  const { data, isLoading } = useSWRImmutable(
+  const { data, isLoading, mutate } = useSWRImmutable(
     chainId && poolAddress && account ? `fetchMerkl-${chainId}-${account}-${poolAddress}` : null,
     async () => {
       const response = await fetch(
@@ -42,7 +43,7 @@ export function useMerklInfo(poolAddress: string | null): {
 
       const merklPoolData = first(
         Object.keys(pools)
-          .filter((poolId) => poolId === poolAddress)
+          .filter((poolId) => poolId === poolAddress && pools[poolId].meanAPR !== 0)
           .map((poolId) => pools[poolId]),
       )
 
@@ -51,13 +52,15 @@ export function useMerklInfo(poolAddress: string | null): {
       const rewardsPerTokenObject = merklPoolData?.rewardsPerToken
 
       const rewardsPerToken = rewardsPerTokenObject
-        ? Object.keys(rewardsPerTokenObject).map((tokenAddress) => {
-            const tokenInfo = rewardsPerTokenObject[tokenAddress]
+        ? Object.keys(rewardsPerTokenObject)
+            .map((tokenAddress) => {
+              const tokenInfo = rewardsPerTokenObject[tokenAddress]
 
-            const token = new Token(chainId as number, tokenAddress as Address, tokenInfo.decimals, tokenInfo.symbol)
+              const token = new Token(chainId as number, tokenAddress as Address, tokenInfo.decimals, tokenInfo.symbol)
 
-            return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
-          })
+              return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
+            })
+            .filter((rewardTokenAmount) => rewardTokenAmount.greaterThan(0))
         : []
 
       return {
@@ -71,11 +74,14 @@ export function useMerklInfo(poolAddress: string | null): {
 
   return useMemo(
     () =>
-      data || {
-        rewardsPerToken: [],
-        transactionData: null,
-      },
-    [data],
+      data
+        ? { ...data, refreshData: mutate }
+        : {
+            rewardsPerToken: [],
+            transactionData: null,
+            refreshData: mutate,
+          },
+    [data, mutate],
   )
 }
 
@@ -84,7 +90,7 @@ export default function useMerkl(poolAddress: string | null) {
 
   const { data: signer } = useWalletClient()
 
-  const { transactionData, rewardsPerToken } = useMerklInfo(poolAddress)
+  const { transactionData, rewardsPerToken, refreshData } = useMerklInfo(poolAddress)
 
   const { callWithGasPrice } = useCallWithGasPrice()
   const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()
@@ -97,15 +103,24 @@ export default function useMerkl(poolAddress: string | null) {
     if (!account || !contractAddress || !signer) return undefined
 
     const distributorContract = getContract({
-      // eslint-disable-next-line camelcase
-      abi: Distributor__factory.abi,
+      abi: DistributorFactory.abi,
       address: contractAddress as Address,
       signer,
     })
 
     if (!transactionData || !distributorContract) return undefined
 
-    const tokens = Object.keys(transactionData).filter((k) => transactionData[k].proof !== undefined)
+    const tokens = rewardsPerToken
+      .map((rewardToken) => {
+        const tokenAddress = rewardToken.currency.wrapped.address
+        const tokenTransactionData = transactionData[tokenAddress]
+
+        if (!tokenTransactionData || !tokenTransactionData.proof || tokenTransactionData.claim === '0') return undefined
+
+        return tokenAddress
+      })
+      .filter(Boolean) as string[]
+
     const claims = tokens.map((txnData) => transactionData[txnData].claim)
     const proofs = tokens.map((txnData) => transactionData[txnData].proof)
 
@@ -125,11 +140,24 @@ export default function useMerkl(poolAddress: string | null) {
           {t('Merkl Rewards are claimed')}
         </ToastDescriptionWithTx>,
       )
+
+      refreshData()
     }
 
     // Fix eslint warning
     return undefined
-  }, [chainId, account, signer, transactionData, fetchWithCatchTxError, callWithGasPrice, toastSuccess, t])
+  }, [
+    chainId,
+    account,
+    signer,
+    transactionData,
+    fetchWithCatchTxError,
+    rewardsPerToken,
+    callWithGasPrice,
+    toastSuccess,
+    t,
+    refreshData,
+  ])
 
   return useMemo(
     () => ({
