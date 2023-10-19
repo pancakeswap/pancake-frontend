@@ -1,6 +1,6 @@
-import { Currency, CurrencyAmount, Price, WNATIVE, WETH9, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price, WETH9, TradeType } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { BUSD, CAKE, USDC, STABLE_COIN } from '@pancakeswap/tokens'
+import { CAKE, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { multiplyPriceByAmount } from 'utils/prices'
@@ -9,7 +9,6 @@ import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMulti
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 import { warningSeverity } from 'utils/exchange'
-import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
 
@@ -135,102 +134,8 @@ export function useStablecoinPrice(
   return price
 }
 
-/**
- * Returns the price in BUSD of the input currency
- * @param currency currency to compute the BUSD price of
- * @deprecated it's using v2 pair
- */
-export default function useBUSDPrice(currency?: Currency): Price<Currency, Currency> | undefined {
-  const { chainId } = useActiveChainId()
-  const wrapped = currency?.wrapped
-  const wnative = chainId ? WNATIVE[chainId] : undefined
-  const stable = chainId ? BUSD[chainId] || USDC[chainId] : undefined
-
-  const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
-    () => [
-      [chainId && wrapped && wnative?.equals(wrapped) ? undefined : currency, chainId ? wnative : undefined],
-      [stable && wrapped?.equals(stable) ? undefined : wrapped, stable],
-      [chainId ? wnative : undefined, stable],
-    ],
-    [wnative, stable, chainId, currency, wrapped],
-  )
-  const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = useV2Pairs(tokenPairs)
-
-  return useMemo(() => {
-    if (!currency || !wrapped || !chainId || !wnative) {
-      return undefined
-    }
-
-    // handle busd
-    if (wrapped.equals(stable)) {
-      return new Price(stable, stable, '1', '1')
-    }
-
-    const isBUSDPairExist =
-      busdPair &&
-      busdPairState === PairState.EXISTS &&
-      busdPair.reserve0.greaterThan('0') &&
-      busdPair.reserve1.greaterThan('0')
-
-    // handle wbnb/bnb
-    if (wrapped.equals(wnative)) {
-      if (isBUSDPairExist) {
-        const price = busdPair.priceOf(wnative)
-        return new Price(currency, stable, price.denominator, price.numerator)
-      }
-      return undefined
-    }
-
-    const isBnbPairExist =
-      bnbPair &&
-      bnbPairState === PairState.EXISTS &&
-      bnbPair.reserve0.greaterThan('0') &&
-      bnbPair.reserve1.greaterThan('0')
-    const isBusdBnbPairExist =
-      busdBnbPair &&
-      busdBnbPairState === PairState.EXISTS &&
-      busdBnbPair.reserve0.greaterThan('0') &&
-      busdBnbPair.reserve1.greaterThan('0')
-
-    const bnbPairBNBAmount = isBnbPairExist && bnbPair?.reserveOf(wnative)
-    const bnbPairBNBBUSDValue: bigint =
-      bnbPairBNBAmount && isBUSDPairExist && isBusdBnbPairExist
-        ? busdBnbPair.priceOf(wnative).quote(bnbPairBNBAmount).quotient
-        : 0n
-
-    // all other tokens
-    // first try the busd pair
-    if (isBUSDPairExist && busdPair.reserveOf(stable).greaterThan(bnbPairBNBBUSDValue)) {
-      const price = busdPair.priceOf(wrapped)
-      return new Price(currency, stable, price.denominator, price.numerator)
-    }
-    if (isBnbPairExist && isBusdBnbPairExist) {
-      if (busdBnbPair.reserveOf(stable).greaterThan('0') && bnbPair.reserveOf(wnative).greaterThan('0')) {
-        const bnbBusdPrice = busdBnbPair.priceOf(stable)
-        const currencyBnbPrice = bnbPair.priceOf(wnative)
-        const busdPrice = bnbBusdPrice.multiply(currencyBnbPrice).invert()
-        return new Price(currency, stable, busdPrice.denominator, busdPrice.numerator)
-      }
-    }
-
-    return undefined
-  }, [
-    currency,
-    wrapped,
-    chainId,
-    wnative,
-    stable,
-    bnbPair,
-    busdBnbPair,
-    busdPairState,
-    busdPair,
-    bnbPairState,
-    busdBnbPairState,
-  ])
-}
-
 export const useStablecoinPriceAmount = (
-  currency?: Currency | null,
+  currency?: Currency,
   amount?: number,
   config?: UseStablecoinPriceConfig,
 ): number | undefined => {
