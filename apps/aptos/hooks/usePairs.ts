@@ -14,7 +14,6 @@ export function usePairsFromAddresses(pairReservesAddresses: string[]) {
   const parsesAddress = useMemo(
     () =>
       pairReservesAddresses.flatMap((addr) => {
-        console.log(addr, 'addr')
         return Pair.parseType(addr)
       }),
     [pairReservesAddresses],
