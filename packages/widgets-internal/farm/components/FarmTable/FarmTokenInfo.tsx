@@ -1,9 +1,14 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Flex, Skeleton, Text } from "@pancakeswap/uikit";
+import { Box, Flex, Link, Row, Skeleton, Text, TooltipText, WarningIcon, useTooltip } from "@pancakeswap/uikit";
 import { useMemo } from "react";
 import { styled } from "styled-components";
-
+import { isMobile } from "react-device-detect";
 import { FarmTableFarmTokenInfoProps } from "../../types";
+
+const InlineLink = styled(Link)`
+  display: inline;
+  margin-left: 4px;
+`;
 
 const Container = styled.div`
   padding-left: 16px;
@@ -24,6 +29,31 @@ const TokenWrapper = styled.div`
   }
 `;
 
+const MerklTooltip: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <Box>
+        <Text display="inline">
+          <p>
+            {t("Incentives have moved to")}
+            <InlineLink
+              external
+              display="inline"
+              href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=RETH&chains=1%2C"
+            >
+              {t("Merkl")}
+            </InlineLink>
+            , {t("and are now claimable without staking your LP token.")}
+          </p>
+          <br />
+          {t("Continue seeding your liquidity on PancakeSwap to accrue the rewards!")}
+        </Text>
+      </Box>
+    </>
+  );
+};
+
 const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenInfoProps>> = ({
   label,
   isReady,
@@ -31,6 +61,11 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
   children,
 }) => {
   const { t } = useTranslation();
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(<MerklTooltip />, {
+    placement: "top-start",
+    tooltipOffset: [-20, 10],
+    trigger: isMobile ? "focus" : "hover",
+  });
 
   const handleRenderFarming = useMemo(() => {
     if (isStaking) {
@@ -60,7 +95,15 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
       <TokenWrapper>{children}</TokenWrapper>
       <div>
         {handleRenderFarming}
-        <Text bold>{label}</Text>
+        <Row gap="sm">
+          <Text bold>{label}</Text>
+          <TooltipText ref={targetRef}>
+            <Text lineHeight={0}>
+              <WarningIcon color="warning" />
+            </Text>
+          </TooltipText>
+        </Row>
+        {tooltipVisible ? tooltip : null}
       </div>
     </Container>
   );
