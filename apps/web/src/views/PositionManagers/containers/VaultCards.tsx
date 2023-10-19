@@ -38,14 +38,14 @@ export const VaultCards = memo(function VaultCards() {
       }
       return true
     })
-    // .filter((d) => {
-    //   if (status === PositionManagerStatus.FINISHED) {
-    //     return false
-    //     // return d.endTimestamp <= Date.now() / 1000
-    //   }
-    //   return true
-    //   // return d.endTimestamp > Date.now() / 1000
-    // })
+    .filter(() => {
+      if (status === PositionManagerStatus.FINISHED) {
+        return false
+        // return d.endTimestamp <= Date.now() / 1000
+      }
+      return true
+      // return d.endTimestamp > Date.now() / 1000
+    })
     .sort((a, b) => {
       if (sortBy === 'apr') {
         return (positionMangerDetailsData?.[b.id]?.apr ?? 0) - (positionMangerDetailsData?.[a.id]?.apr ?? 0)
