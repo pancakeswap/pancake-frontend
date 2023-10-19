@@ -8,14 +8,12 @@ import { CarouselView } from 'views/Game/components/Home/CarouselView'
 import { TrendingTags, StyledTag } from 'views/Game/components/Home/TrendingTags'
 import { carouselData } from '../mockData'
 
-const StyledGameContainer = styled(Flex)<{ isHorizontal?: boolean }>`
+const StyledGameContainer = styled(Flex)<{ isHorizontal: boolean }>`
   width: 100%;
   margin: auto;
-  padding-bottom: 32px;
   flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
-    padding-bottom: 82px;
     width: ${({ isHorizontal }) => (isHorizontal ? '1101px' : '948px')};
   }
 `
@@ -24,13 +22,13 @@ const StyledGameInfoContainer = styled(Box)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 `
 
-const StyledGameInformation = styled(Flex)<{ isHorizontal?: boolean }>`
+const StyledGameInformation = styled(Flex)`
   width: 100%;
   flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.xl} {
     margin-left: 32px;
-    width: ${({ isHorizontal }) => (isHorizontal ? '365px' : '467px')};
+    width: 467px;
   }
 `
 
@@ -51,7 +49,7 @@ const Header = styled(CardHeader)`
   }
 `
 
-const StyledLeftContainer = styled(Box)<{ isHorizontal?: boolean }>`
+const StyledLeftContainer = styled(Box)<{ isHorizontal: boolean }>`
   width: 100%;
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: ${({ isHorizontal }) => (isHorizontal ? '671px' : '392px')};
@@ -113,11 +111,16 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
               'row',
             ]}
           >
-            <StyledLeftContainer>
+            <StyledLeftContainer isHorizontal={isHorizontal}>
               <Box height="100%" mb={['16px', '16px', '16px', '16px', '16px', '0']}>
                 <CarouselView isHorizontal={isHorizontal} carouselData={previewCarouseData} />
                 {((!isHorizontal && !isXxl) || isHorizontal) && (
-                  <Carousel carouselData={fakeDate} isHorizontal={isHorizontal} setCarouselId={setCarouselId} />
+                  <Carousel
+                    carouselId={carouselId}
+                    carouselData={fakeDate}
+                    isHorizontal={isHorizontal}
+                    setCarouselId={setCarouselId}
+                  />
                 )}
               </Box>
               {!isXxl && <TrendingTags />}
@@ -189,7 +192,12 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
               </Link>
 
               {isXxl && !isHorizontal && (
-                <Carousel carouselData={fakeDate} isHorizontal={isHorizontal} setCarouselId={setCarouselId} />
+                <Carousel
+                  carouselId={carouselId}
+                  carouselData={fakeDate}
+                  isHorizontal={isHorizontal}
+                  setCarouselId={setCarouselId}
+                />
               )}
 
               {isXxl && <TrendingTags />}
