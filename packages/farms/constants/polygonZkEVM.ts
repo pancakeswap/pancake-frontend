@@ -43,7 +43,7 @@ export const farmsV3 = defineFarmV3Configs([
     lpAddress: '0xf1e501f74Ed9dc619be53Fddb698c94AbF9D56B6',
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.wbtc,
-    feeAmount: FeeAmount.LOWEST,
+    feeAmount: FeeAmount.LOW,
   },
 ])
 
