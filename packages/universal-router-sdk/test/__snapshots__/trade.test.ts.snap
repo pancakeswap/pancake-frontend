@@ -1496,14 +1496,14 @@ exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactI
             "expiration": 281474976710655,
             "nonce": 0
           },
-          "spender": "0x0000000000000000000000000000000000000000",
+          "spender": "0x65b382653f7C31bC0Af67f188122035461ec9C76",
           "sigDeadline": "281474976710655"
         }
       },
       {
         "type": "bytes",
         "name": "data",
-        "value": "0xef0399321935181de4f5a706fbfd00ee91cdc3bc0c92512b0baa6d1dd6a06886ac04a0069105dd2fe4a2242b6e31a172cd56f422311d9195a8967dddbe3dec58"
+        "value": "0x92ff2b035c8005213bd910849532da0f4adde9e35393c8ed4872db90eef2c153492dec30a70476e98f21d28398396669fbef6f9785c903ef83810673ec96fc8d"
       }
     ]
   },
@@ -1558,14 +1558,14 @@ exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactI
             "expiration": 281474976710655,
             "nonce": 0
           },
-          "spender": "0x0000000000000000000000000000000000000000",
+          "spender": "0x65b382653f7C31bC0Af67f188122035461ec9C76",
           "sigDeadline": "281474976710655"
         }
       },
       {
         "type": "bytes",
         "name": "data",
-        "value": "0xef0399321935181de4f5a706fbfd00ee91cdc3bc0c92512b0baa6d1dd6a068862c04a0069105dd2fe4a2242b6e31a172cd56f422311d9195a8967dddbe3dec581c"
+        "value": "0x92ff2b035c8005213bd910849532da0f4adde9e35393c8ed4872db90eef2c153492dec30a70476e98f21d28398396669fbef6f9785c903ef83810673ec96fc8d1b"
       }
     ]
   },
@@ -2130,14 +2130,14 @@ exports[`PancakeSwap Universal Router Trade > v3 > should encode a single exactI
             "expiration": 281474976710655,
             "nonce": 0
           },
-          "spender": "0x0000000000000000000000000000000000000000",
+          "spender": "0x65b382653f7C31bC0Af67f188122035461ec9C76",
           "sigDeadline": "281474976710655"
         }
       },
       {
         "type": "bytes",
         "name": "data",
-        "value": "0xef0399321935181de4f5a706fbfd00ee91cdc3bc0c92512b0baa6d1dd6a068862c04a0069105dd2fe4a2242b6e31a172cd56f422311d9195a8967dddbe3dec581c"
+        "value": "0x92ff2b035c8005213bd910849532da0f4adde9e35393c8ed4872db90eef2c153492dec30a70476e98f21d28398396669fbef6f9785c903ef83810673ec96fc8d1b"
       }
     ]
   },
