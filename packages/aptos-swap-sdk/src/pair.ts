@@ -44,6 +44,7 @@ export class Pair {
   public static parseType(type: string) {
     const parsedTypeTag = new TypeTagParser(type).parseTypeTag()
     invariant(parsedTypeTag instanceof TxnBuilderTypes.TypeTagStruct, `Pair type: ${type}`)
+    console.log(type, '???', parsedTypeTag.value.type_args)
     invariant(parsedTypeTag.value.type_args.length === 2, `Pair type length`)
 
     const [typeArg0, tyepArg1] = parsedTypeTag.value.type_args
