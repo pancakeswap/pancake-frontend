@@ -8,21 +8,22 @@ import { Flex, Box, Button } from '@pancakeswap/uikit'
 import { TabToggle } from 'components/TabToggle'
 import { useTranslation } from '@pancakeswap/localization'
 
+const StyledDesktop = styled.div`
+  display: flex;
+  height: calc(100vh - 100px - 66px);
+`
+
 const StyledContainer = styled.div`
   position: relative;
-  height: 500px;
-  height: calc(100vh - 100px - 66px - 24px);
+  width: 100%;
+  height: 100%;
 `
 
 const SplitWrapper = styled(Box)`
-  width: 100%;
-  height: 100%;
-  border: solid 1px;
-
   display: grid;
   flex: 1;
   grid-template-columns: 1fr;
-  grid-template-rows: 1.2r 24px 0;
+  grid-template-rows: 1fr 24px 0;
   overflow: hidden;
 `
 
@@ -81,7 +82,7 @@ export const GameProject = () => {
   const gutterRef = useRef<null | HTMLDivElement>(null)
   const splitInstance = useRef<SplitInstance>()
 
-  const [isPaneOpen, setIsPaneOpen] = useState(true)
+  const [isPaneOpen, setIsPaneOpen] = useState(false)
 
   // router.query.projectId
 
@@ -96,7 +97,7 @@ export const GameProject = () => {
         if (splitWrapperRef?.current) {
           splitWrapperRef.current.style.transition = ''
         }
-      }, 150)
+      }, 1500)
 
       setIsPaneOpen(true)
     }
@@ -110,7 +111,7 @@ export const GameProject = () => {
   }, [])
 
   useEffect(() => {
-    const threshold = 300
+    const threshold = 100
     const handleDrag = debounce(() => {
       const videoHeight = videoRef?.current?.getBoundingClientRect?.()
 
@@ -142,46 +143,47 @@ export const GameProject = () => {
   }, [gutterRef, isPaneOpen])
 
   return (
-    <SplitWrapper ref={splitWrapperRef}>
-      <StyledContainer>
-        <StyledIframe src="https://protectors.pancakeswap.finance/">
-          {t(`Your browser doesn't support iframe`)}
-        </StyledIframe>
-      </StyledContainer>
-      {/* <Box height={500}>12313</Box> */}
+    <StyledDesktop>
+      <SplitWrapper ref={splitWrapperRef}>
+        <StyledContainer>
+          <StyledIframe src="https://protectors.pancakeswap.finance/">
+            {t(`Your browser doesn't support iframe`)}
+          </StyledIframe>
+        </StyledContainer>
 
-      <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} onClick={() => openPane()}>
-        <ExpandButtonGroup>
-          <TabToggle
-            height="42px"
-            as={Button}
-            style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-            isActive
-            // isActive={chartView === PredictionsChartView.TradingView}
-            onMouseDown={(e) => {
-              e.stopPropagation()
-              e.preventDefault()
-              // dispatch(setChartView(PredictionsChartView.TradingView))
-            }}
-          >
-            Playlist title 1
-          </TabToggle>
-          <TabToggle
-            as={Button}
-            height="42px"
-            style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-            // isActive={chartView === PredictionsChartView.Chainlink}
-            onMouseDown={(e) => {
-              e.stopPropagation()
-              e.preventDefault()
-              // dispatch(setChartView(PredictionsChartView.Chainlink))
-            }}
-          >
-            Playlist title 2
-          </TabToggle>
-        </ExpandButtonGroup>
-      </Gutter>
-      <VideoPane ref={videoRef}>{isPaneOpen && <>123123</>}</VideoPane>
-    </SplitWrapper>
+        <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} onClick={() => openPane()}>
+          <ExpandButtonGroup>
+            <TabToggle
+              height="42px"
+              as={Button}
+              style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
+              isActive
+              // isActive={chartView === PredictionsChartView.TradingView}
+              onMouseDown={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                // dispatch(setChartView(PredictionsChartView.TradingView))
+              }}
+            >
+              Playlist title 1
+            </TabToggle>
+            <TabToggle
+              as={Button}
+              height="42px"
+              style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
+              // isActive={chartView === PredictionsChartView.Chainlink}
+              onMouseDown={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                // dispatch(setChartView(PredictionsChartView.Chainlink))
+              }}
+            >
+              Playlist title 2
+            </TabToggle>
+          </ExpandButtonGroup>
+        </Gutter>
+        <VideoPane ref={videoRef}>{isPaneOpen && <Box>123123</Box>}</VideoPane>
+      </SplitWrapper>
+    </StyledDesktop>
   )
 }
