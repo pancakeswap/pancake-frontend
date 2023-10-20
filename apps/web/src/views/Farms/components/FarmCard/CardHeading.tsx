@@ -1,5 +1,5 @@
 import { Token } from '@pancakeswap/sdk'
-import { AutoRow, Flex, Heading, Skeleton, Tag, useTooltip, FarmMultiplierInfo, Row, Box } from '@pancakeswap/uikit'
+import { AutoRow, Flex, Heading, Skeleton, Tag, useTooltip, FarmMultiplierInfo, Box } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { TokenPairImage } from 'components/TokenImage'
@@ -21,7 +21,7 @@ type ExpandableSectionProps = {
   pid?: number
   farmCakePerSecond?: string
   totalMultipliers?: string
-  merklLink?: string
+  merklLink?: string | false
 }
 
 const Wrapper = styled(Flex)`
