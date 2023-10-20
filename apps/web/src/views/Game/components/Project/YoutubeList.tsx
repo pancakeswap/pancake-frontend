@@ -6,19 +6,56 @@ import { YoutubeModal } from 'views/Game/components/Project/YoutubeModal'
 import { youtubeList } from '../mockYoutubeList'
 
 const StyledYoutubeContainer = styled(Card)`
-  width: 25%;
+  width: 100%;
   cursor: pointer;
-  margin-right: 24px;
+  margin: 0 0 24px 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: calc(50% - 12px);
+    margin: 0 24px 24px 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    width: calc(25% - 36px);
+    margin: 0 24px 0 0;
+  }
 `
 
 const StyledContainer = styled(Flex)`
   margin: auto;
   padding: 30px 0;
-  max-width: 1192px;
+  max-width: 286px;
+  flex-direction: column;
 
   ${StyledYoutubeContainer} {
     &:last-child {
       margin-right: 0;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-width: 580px;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    ${StyledYoutubeContainer} {
+      &:nth-child(even) {
+        margin-right: 0;
+      }
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    max-width: 1192px;
+
+    ${StyledYoutubeContainer} {
+      &:nth-child(even) {
+        margin-right: 24px;
+      }
+
+      &:nth-child(n + 4) {
+        margin-right: 0;
+      }
     }
   }
 `

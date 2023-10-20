@@ -8,6 +8,7 @@ import { Flex, Box, Button } from '@pancakeswap/uikit'
 import { TabToggle } from 'components/TabToggle'
 import { useTranslation } from '@pancakeswap/localization'
 import { YoutubeList } from 'views/Game/components/Project/YoutubeList'
+import { TextProjectBy } from 'views/Game/components/Project/TextProjectBy'
 
 const StyledDesktop = styled.div`
   display: flex;
@@ -56,7 +57,6 @@ const ExpandButtonGroup = styled(Flex)`
   bottom: 24px;
   left: 32px;
   position: absolute;
-  display: none;
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: 24px 24px 0 0;
   z-index: 50;
@@ -66,7 +66,7 @@ const ExpandButtonGroup = styled(Flex)`
 `
 
 const VideoPane = styled.div`
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   background: ${({ theme }) => theme.colors.background};
 `
@@ -180,6 +180,7 @@ export const GameProject = () => {
               Playlist title 2
             </TabToggle>
           </ExpandButtonGroup>
+          <TextProjectBy />
         </Gutter>
         <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList />}</VideoPane>
       </SplitWrapper>

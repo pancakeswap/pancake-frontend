@@ -8,7 +8,7 @@ const Header = styled(CardHeader)<{ imgUrl: string }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 156px;
+  height: 146px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -30,10 +30,6 @@ const Header = styled(CardHeader)<{ imgUrl: string }>`
     background-repeat: no-repeat;
     background-image: url('/images/game/home/carousel/play-icon-1.png');
     transform: translate(-50%, -50%);
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: 156px;
   }
 `
 
