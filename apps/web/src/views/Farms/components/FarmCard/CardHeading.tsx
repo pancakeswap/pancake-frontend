@@ -1,11 +1,12 @@
 import { Token } from '@pancakeswap/sdk'
-import { AutoRow, Flex, Heading, Skeleton, Tag, useTooltip, FarmMultiplierInfo } from '@pancakeswap/uikit'
+import { AutoRow, Flex, Heading, Skeleton, Tag, useTooltip, FarmMultiplierInfo, Row, Box } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
 
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
+const { MerklNotice } = FarmWidget
 
 type ExpandableSectionProps = {
   lpLabel?: string
@@ -64,7 +65,12 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
       )}
       <Flex flexDirection="column" alignItems="flex-end" width="100%">
         {isReady ? (
-          <Heading mb="4px">{lpLabel?.split(' ')?.[0] ?? ''}</Heading>
+          <Heading mb="4px" display="inline-flex">
+            {lpLabel?.split(' ')?.[0] ?? ''}
+            <Box mr="-4px" ml="4px">
+              <MerklNotice.WithTooltip placement="top" tooltipOffset={[0, 10]} />
+            </Box>
+          </Heading>
         ) : (
           <Skeleton mb="4px" width={60} height={18} />
         )}

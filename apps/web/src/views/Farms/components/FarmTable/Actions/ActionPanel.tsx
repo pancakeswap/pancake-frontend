@@ -1,5 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Skeleton, Text, useMatchBreakpoints, useModalV2, ScanLink, LinkExternal } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Skeleton,
+  Text,
+  useMatchBreakpoints,
+  useModalV2,
+  ScanLink,
+  LinkExternal,
+  Message,
+  MessageText,
+  Box,
+  InfoFilledIcon,
+} from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -10,7 +22,6 @@ import { styled, css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
-
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { useAccount } from 'wagmi'
@@ -23,6 +34,7 @@ import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAct
 
 const { Multiplier, Liquidity, StakedLiquidity } = FarmWidget.FarmTable
 const { NoPosition } = FarmWidget.FarmV3Table
+const { MerklNotice } = FarmWidget
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -146,6 +158,18 @@ const ActionPanelContainer = ({ expanded, values, infos, children }) => {
   )
 }
 
+const MerklWarning: React.FC = () => {
+  return (
+    <Box mb="24px" width="100%" mx="12px">
+      <Message variant="warning" icon={<InfoFilledIcon color="#D67E0A" />}>
+        <MessageText>
+          <MerklNotice.Content linkColor="currentColor" />
+        </MessageText>
+      </Message>
+    </Box>
+  )
+}
+
 export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   expanded,
   details,
@@ -229,6 +253,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
           </>
         }
       >
+        {!isDesktop ? <MerklWarning /> : null}
         {!userDataReady ? (
           <Skeleton height={200} width="100%" />
         ) : account && !hasNoPosition ? (

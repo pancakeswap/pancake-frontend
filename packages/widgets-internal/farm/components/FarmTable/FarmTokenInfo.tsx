@@ -62,7 +62,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
         {handleRenderFarming}
         <Row gap="sm">
           <Text bold>{label}</Text>
-          <MerklNotice />
+          <MerklNotice.WithTooltip />
         </Row>
       </div>
     </Container>

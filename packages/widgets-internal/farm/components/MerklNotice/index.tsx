@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Box, Link, Text, TooltipText, WarningIcon, useTooltip } from "@pancakeswap/uikit";
+import { Box, Link, Placement, Text, TooltipText, WarningIcon, useTooltip } from "@pancakeswap/uikit";
 import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 
@@ -8,15 +8,20 @@ const InlineLink = styled(Link)`
   margin-left: 4px;
 `;
 
-const MerklTooltip: React.FC = () => {
+type MerklNoticeContentProps = {
+  linkColor?: string;
+};
+
+export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({ linkColor = "primary" }) => {
   const { t } = useTranslation();
   return (
     <>
       <Box>
-        <Text display="inline">
+        <Text display="inline" color="currentColor">
           <p>
             {t("Incentives have moved to")}
             <InlineLink
+              color={linkColor}
               external
               display="inline"
               href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=RETH&chains=1%2C"
@@ -33,17 +38,28 @@ const MerklTooltip: React.FC = () => {
   );
 };
 
-const MerklNotice: React.FC = () => {
-  const { tooltip, tooltipVisible, targetRef } = useTooltip(<MerklTooltip />, {
-    placement: "top-start",
-    tooltipOffset: [-20, 10],
+type MerklNoticeProps = {
+  // warning icon width/height px
+  size?: string;
+  placement?: Placement;
+  tooltipOffset?: [number, number];
+};
+
+const MerklNotice: React.FC<MerklNoticeProps> = ({
+  size = "20px",
+  placement = "top-start",
+  tooltipOffset = [-20, 10],
+}) => {
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(<MerklNoticeContent />, {
+    placement,
+    tooltipOffset,
     trigger: isMobile ? "focus" : "hover",
   });
   return (
     <>
-      <TooltipText ref={targetRef}>
+      <TooltipText ref={targetRef} display="inline">
         <Text lineHeight={0}>
-          <WarningIcon color="warning" />
+          <WarningIcon color="warning" width={size} height={size} />
         </Text>
       </TooltipText>
       {tooltipVisible ? tooltip : null}
@@ -51,4 +67,7 @@ const MerklNotice: React.FC = () => {
   );
 };
 
-export default MerklNotice;
+export default {
+  WithTooltip: MerklNotice,
+  Content: MerklNoticeContent,
+};
