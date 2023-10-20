@@ -25,6 +25,10 @@
       "import": "./src/css/atoms.ts",
       "types": "./dist/css/atoms.d.ts"
     },
+    "./css/vars.css": {
+      "import": "./src/css/vars.css.ts",
+      "types": "./dist/css/vars.css.d.ts"
+    },
     "./css/responsiveStyle": {
       "import": "./src/css/responsiveStyle.ts",
       "types": "./dist/css/responsiveStyle.d.ts"
