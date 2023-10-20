@@ -54,6 +54,7 @@ export interface ActionPanelV3Props {
   multiplier: FarmWidget.FarmTableMultiplierProps
   stakedLiquidity: FarmWidget.FarmTableLiquidityProps
   details: V3Farm
+  farm: FarmWidget.FarmTableFarmTokenInfoProps & { version: 3 }
   userDataReady: boolean
   expanded: boolean
   alignLinksToRight?: boolean
@@ -173,6 +174,7 @@ const MerklWarning: React.FC = () => {
 export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   expanded,
   details,
+  farm: farm_,
   multiplier,
   stakedLiquidity,
   alignLinksToRight,
@@ -182,6 +184,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
+  const { isMerkl } = farm_
   const farm = details
   const isActive = farm.multiplier !== '0X'
   const lpLabel = useMemo(() => farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, ''), [farm.lpSymbol])
@@ -253,7 +256,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
           </>
         }
       >
-        {!isDesktop ? <MerklWarning /> : null}
+        {!isDesktop && isMerkl ? <MerklWarning /> : null}
         {!userDataReady ? (
           <Skeleton height={200} width="100%" />
         ) : account && !hasNoPosition ? (

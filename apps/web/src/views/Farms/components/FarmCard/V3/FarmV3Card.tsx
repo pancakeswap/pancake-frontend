@@ -11,6 +11,7 @@ import { getBlockExploreLink } from 'utils'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
+import { useIsMerkl } from 'views/Farms/hooks/v3/useIsMerkl'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
@@ -64,6 +65,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   const isPromotedFarm = farm.token.symbol === 'CAKE'
   const { status: boostStatus } = useBoostStatus(farm.pid)
 
+  const isMerkl = useIsMerkl({ chainId, lpAddress })
   const infoUrl = useMemo(() => {
     return `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
   }, [chainId, lpAddress])
@@ -90,6 +92,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
       <FarmCardInnerContainer>
         <CardHeading
           lpLabel={lpLabel}
+          isMerkl={isMerkl}
           multiplier={farm.multiplier}
           token={farm.token}
           quoteToken={farm.quoteToken}
