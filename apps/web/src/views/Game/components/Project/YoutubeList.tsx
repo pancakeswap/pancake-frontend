@@ -17,7 +17,6 @@ const StyledYoutubeContainer = styled(Card)`
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: calc(25% - 36px);
-    margin: 0 24px 0 0;
   }
 `
 
