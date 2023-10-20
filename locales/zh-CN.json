@@ -42,7 +42,7 @@
   "APR:": "APR:",
   "Stake Periods:": "Stake Periods:",
   "Total Staked:": "Total Staked:",
-  "Simple Staking": "Simple Staking",
+  "Simple Staking": "简单赚币",
   "Position Overview": "Position Overview",
   "Duration": "Duration",
   "days": "days",
@@ -2791,5 +2791,5 @@
   "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
   "Unstaking from v2 farm?": "Unstaking from v2 farm?",
   "Migrate to v3 here": "Migrate to v3 here",
-  "Migrate to V3": "Migrate to V3"
+  "Migrate to V3": "迁移到 V3"
 }
