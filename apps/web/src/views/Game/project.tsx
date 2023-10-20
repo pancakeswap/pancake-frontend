@@ -12,7 +12,7 @@ import { TextProjectBy } from 'views/Game/components/Project/TextProjectBy'
 
 const StyledDesktop = styled.div`
   display: flex;
-  height: calc(100vh - 100px - 66px);
+  height: calc(100vh - 100px);
 `
 
 const StyledContainer = styled.div`
