@@ -10,9 +10,10 @@ const InlineLink = styled(Link)`
 
 type MerklNoticeContentProps = {
   linkColor?: string;
+  merklLink: string;
 };
 
-export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({ linkColor = "primary" }) => {
+export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({ linkColor = "primary", merklLink }) => {
   const { t } = useTranslation();
   return (
     <>
@@ -20,12 +21,7 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({ linkColo
         <Text display="inline" color="currentColor">
           <p>
             {t("Incentives have moved to")}
-            <InlineLink
-              color={linkColor}
-              external
-              display="inline"
-              href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=RETH&chains=1%2C"
-            >
+            <InlineLink color={linkColor} external display="inline" href={merklLink}>
               {t("Merkl")}
             </InlineLink>
             , {t("and are now claimable without staking your LP token.")}
@@ -43,14 +39,16 @@ type MerklNoticeProps = {
   size?: string;
   placement?: Placement;
   tooltipOffset?: [number, number];
+  merklLink: string;
 };
 
 const MerklNotice: React.FC<MerklNoticeProps> = ({
   size = "20px",
   placement = "top-start",
   tooltipOffset = [-20, 10],
+  merklLink,
 }) => {
-  const { tooltip, tooltipVisible, targetRef } = useTooltip(<MerklNoticeContent />, {
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(<MerklNoticeContent merklLink={merklLink} />, {
     placement,
     tooltipOffset,
     trigger: isMobile ? "focus" : "hover",

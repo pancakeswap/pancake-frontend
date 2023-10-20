@@ -2,9 +2,7 @@ import { RowType } from '@pancakeswap/uikit'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
-
 import BigNumber from 'bignumber.js'
-import { MERKL_POOLS } from 'config/merkl'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useMemo, useRef } from 'react'
@@ -12,6 +10,7 @@ import { styled } from 'styled-components'
 import { V2Farm, V2StakeValueAndV3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
+import { getMerklLink } from 'views/Farms/utils/getMerklLink'
 import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
@@ -206,9 +205,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         }
         return row
       }
-      const isMerkl = MERKL_POOLS.some(
-        (pool) => pool.chainId === chainId && pool.address.toLowerCase() === farm.lpAddress.toLowerCase(),
-      )
+
+      const merklLink = getMerklLink({ chainId, lpAddress: farm.lpAddress })
       return {
         initialActivity,
         apr: {
@@ -225,7 +223,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           isReady: farm.multiplier !== undefined,
           isStaking: farm.stakedPositions?.length > 0,
           isCommunity: farm.isCommunity,
-          isMerkl,
+          merklLink,
         },
         type: 'v3',
         details: farm,

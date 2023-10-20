@@ -159,12 +159,14 @@ const ActionPanelContainer = ({ expanded, values, infos, children }) => {
   )
 }
 
-const MerklWarning: React.FC = () => {
+const MerklWarning: React.FC<{
+  merklLink: string
+}> = ({ merklLink }) => {
   return (
     <Box mb="24px" width="100%" mx="12px">
       <Message variant="warning" icon={<InfoFilledIcon color="#D67E0A" />}>
         <MessageText>
-          <MerklNotice.Content linkColor="currentColor" />
+          <MerklNotice.Content merklLink={merklLink} linkColor="currentColor" />
         </MessageText>
       </Message>
     </Box>
@@ -184,7 +186,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
-  const { isMerkl } = farm_
+  const { merklLink } = farm_
   const farm = details
   const isActive = farm.multiplier !== '0X'
   const lpLabel = useMemo(() => farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, ''), [farm.lpSymbol])
@@ -256,7 +258,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
           </>
         }
       >
-        {!isDesktop && isMerkl ? <MerklWarning /> : null}
+        {!isDesktop && merklLink ? <MerklWarning merklLink={merklLink} /> : null}
         {!userDataReady ? (
           <Skeleton height={200} width="100%" />
         ) : account && !hasNoPosition ? (

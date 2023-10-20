@@ -21,7 +21,7 @@ type ExpandableSectionProps = {
   pid?: number
   farmCakePerSecond?: string
   totalMultipliers?: string
-  isMerkl?: boolean
+  merklLink?: string
 }
 
 const Wrapper = styled(Flex)`
@@ -45,7 +45,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   feeAmount,
   farmCakePerSecond,
   totalMultipliers,
-  isMerkl,
+  merklLink,
 }) => {
   const isReady = multiplier !== undefined
 
@@ -69,9 +69,9 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         {isReady ? (
           <Heading mb="4px" display="inline-flex">
             {lpLabel?.split(' ')?.[0] ?? ''}
-            {isMerkl ? (
+            {merklLink ? (
               <Box mr="-4px" ml="4px">
-                <MerklNotice.WithTooltip placement="top" tooltipOffset={[0, 10]} />
+                <MerklNotice.WithTooltip placement="top" tooltipOffset={[0, 10]} merklLink={merklLink} />
               </Box>
             ) : null}
           </Heading>
