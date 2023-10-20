@@ -1,5 +1,11 @@
 # @pancakeswap/aptos-swap-sdk
 
+## 1.0.1
+
+### Patch Changes
+
+- 15520e566: Fix parse recursive type args on pair
+
 ## 1.0.0
 
 ### Major Changes
