@@ -77,8 +77,8 @@ import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { ChainLinkSupportChains } from 'state/info/constant'
-import { MerklSection } from 'views/Merkl/components/MerklSection'
-import { MerklTag } from 'views/Merkl/components/MerklTag'
+import { MerklSection } from 'components/Merkl/MerklSection'
+import { MerklTag } from 'components/Merkl/MerklTag'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;

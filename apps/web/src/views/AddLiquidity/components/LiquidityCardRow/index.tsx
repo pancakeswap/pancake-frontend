@@ -6,7 +6,7 @@ import { Pool } from '@pancakeswap/v3-sdk'
 
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { Percent, Currency } from '@pancakeswap/sdk'
-import { MerklRewardsTag } from 'views/Merkl/components/MerklTag'
+import { MerklRewardsTag } from 'components/Merkl/MerklTag'
 
 const TagCell = styled(Flex)`
   padding: 8px 0;

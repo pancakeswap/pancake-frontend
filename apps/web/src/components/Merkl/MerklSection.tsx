@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 
-import useMerkl from '../hooks/useMerkl'
+import useMerkl from '../../hooks/useMerkl'
 
 export function MerklSection({ poolAddress }: { poolAddress: string | null }) {
   const { t } = useTranslation()
