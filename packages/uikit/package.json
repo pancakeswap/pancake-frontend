@@ -89,7 +89,6 @@
     "jest-styled-components": "^7.0.8",
     "js-cookie": "*",
     "next": "*",
-    "next-seo": "*",
     "next-themes": "^0.2.1",
     "polished": "^4.2.2",
     "react": "^18.2.0",
@@ -117,7 +116,6 @@
   "peerDependencies": {
     "js-cookie": "*",
     "next": "*",
-    "next-seo": "*",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-device-detect": "*",

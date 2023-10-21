@@ -447,7 +447,11 @@ export default function PoolPage() {
   const isOwnNFT = isStakedInMCv3 || ownsNFT
 
   if (!isLoading && poolState === PoolState.NOT_EXISTS) {
-    return <NotFound />
+    return (
+      <NotFound>
+        <NextSeo title="404" />
+      </NotFound>
+    )
   }
 
   const farmingTips =

@@ -8,6 +8,7 @@ import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import { getArticle, getSingleArticle } from 'hooks/getArticle'
 import PageMeta from 'components/PageMeta'
 import { filterTagArray } from 'utils/filterTagArray'
+import { NextSeo } from 'next-seo'
 
 export async function getStaticPaths() {
   return {
@@ -84,7 +85,11 @@ export const getStaticProps = (async ({ params, previewData }) => {
 const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ fallback }) => {
   const router = useRouter()
   if (!router.isFallback && !fallback?.['/article']?.title) {
-    return <NotFound />
+    return (
+      <NotFound>
+        <NextSeo title="404" />
+      </NotFound>
+    )
   }
 
   const { title, description, imgUrl } = fallback['/article']
