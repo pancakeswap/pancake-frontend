@@ -113,7 +113,7 @@ const LiquidStakingStakePage = () => {
                 tokenAddress={selectedList?.token1?.address}
                 tokenSymbol={outputCurrency?.symbol}
                 tokenDecimals={outputCurrency?.decimals}
-                tokenLogo={undefined}
+                tokenLogo={`${window?.location?.origin}/images/tokens/${selectedList?.token1?.address}.png`}
               />
               <Text color="textSubtle" fontSize="12px" ellipsis>
                 {t('Balance: %balance%', {
