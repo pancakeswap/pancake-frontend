@@ -69,7 +69,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      await fetch(`https://lobster-app-6lfpi.ondigitalocean.app//walletconnect-notify`, {
+      await fetch(`https://lobster-app-6lfpi.ondigitalocean.app/walletconnect-notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
