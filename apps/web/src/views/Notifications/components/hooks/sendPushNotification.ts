@@ -51,7 +51,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         let encryptedData = cipher.update(data, 'utf8', 'hex')
         encryptedData += cipher.final('hex')
 
-        await fetch('http://localhost:8000/subscribe', {
+        await fetch('https://lobster-app-6lfpi.ondigitalocean.app/subscribe', {
           method: 'POST',
           body: JSON.stringify({ subscription: encryptedData, user: account }),
           headers: { 'Content-Type': 'application/json' },
@@ -69,7 +69,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      await fetch(`http://localhost:8000/walletconnect-notify`, {
+      await fetch(`https://lobster-app-6lfpi.ondigitalocean.app//walletconnect-notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
