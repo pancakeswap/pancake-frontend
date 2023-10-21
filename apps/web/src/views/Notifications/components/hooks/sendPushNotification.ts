@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi'
 import useRegistration from './useRegistration'
 
 interface IUseSendNotification {
-  sendPushNotification: (notificationType: BuilderNames, args?: string[]) => Promise<void>
+  sendPushNotification: (notificationType: BuilderNames, args: string[]) => Promise<void>
   subscribeToPushNotifications(): Promise<void>
   requestNotificationPermission: () => Promise<void | NotificationPermission>
 }
@@ -35,9 +35,6 @@ const useSendPushNotification = (): IUseSendNotification => {
       try {
         const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
         await navigator.serviceWorker.ready
-
-        // const existingSubscription = await registration.pushManager.getSubscription()
-        // if (existingSubscription) return
 
         const secretKeyBuffer = Buffer.from(WEB_PUSH_ENCRYPTION_KEY, 'hex')
         const ivBuffer = Buffer.from(WEB_PUSH_IV, 'hex')

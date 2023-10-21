@@ -29,7 +29,7 @@ const NotificationMenu: React.FC<
   UserMenuProps & {
     isMenuOpen: boolean
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
-    identityKey: string | null
+    identityKey: string | undefined
     isSubscribed: boolean
     handleRegistration: () => Promise<void>
   }

@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useCallback } from 'react'
 interface ISettingsprops {
   title: string
   description: string
+  id: string
   setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
   isSubscribed: {
     description: string
@@ -18,16 +19,16 @@ interface ISettingsContainerProps {
   setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
 }
 
-const Settingsitem = ({ title, description, isSubscribed, setScopes }: ISettingsprops) => {
+const Settingsitem = ({ title, id, description, isSubscribed, setScopes }: ISettingsprops) => {
   const toggleScopeEnabled = useCallback(() => {
     setScopes((prevScopes) => ({
       ...prevScopes,
-      [title]: {
-        ...prevScopes[title],
-        enabled: !prevScopes[title].enabled,
+      [id]: {
+        ...prevScopes[id],
+        enabled: !prevScopes[id].enabled,
       },
     }))
-  }, [setScopes, title])
+  }, [setScopes, id])
 
   return (
     <Box>
@@ -57,10 +58,14 @@ const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
       <Divider />
       <Box maxHeight="360px" overflowY="scroll" paddingX="24px">
         {Object.entries(scopes).map(([title, scope]) => {
+          // @ts-ignore
+          // eslint-disable-next-line prefer-destructuring
+          const name = scope.name
           return (
             <Settingsitem
               key={title}
-              title={title}
+              title={name}
+              id={title}
               description={scope.description}
               isSubscribed={scope}
               setScopes={setScopes}

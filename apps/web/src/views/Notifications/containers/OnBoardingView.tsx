@@ -19,7 +19,7 @@ interface IOnboardingButtonProps {
 
 interface IOnBoardingProps {
   setIsRightView: Dispatch<SetStateAction<boolean>>
-  identityKey: string | null
+  identityKey: string | undefined
   handleRegistration: () => Promise<void>
   account: string | undefined
 }
