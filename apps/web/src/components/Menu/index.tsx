@@ -53,7 +53,7 @@ const Menu = (props) => {
 
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId: DEFAULT_PROJECT_ID,
-    domain: 'web-git-feat-web3-notis-fallback.pancake.run',
+    domain: 'pc-custom-web-git-main-chefbingbong.vercel.app',
   })
 
   return (
