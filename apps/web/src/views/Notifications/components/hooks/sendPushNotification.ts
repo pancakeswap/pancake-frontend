@@ -33,6 +33,7 @@ const useSendPushNotification = (): IUseSendNotification => {
   async function subscribeToPushNotifications() {
     if ('serviceWorker' in navigator) {
       try {
+        console.log('heyy')
         const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
         await navigator.serviceWorker.ready
 

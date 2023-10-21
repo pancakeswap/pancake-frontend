@@ -77,7 +77,7 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
         <Box marginRight="12px" display="flex" minWidth="50px">
           <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={65} width={65} unoptimized />
         </Box>
-        <Flex flexDirection="column">
+        <Flex flexDirection="column" width="100%">
           <Flex justifyContent="space-between">
             <Text fontWeight="bold">{title}</Text>
             <Box paddingX="5px" height="fit-content" onClick={deleteNotification}>
@@ -85,8 +85,14 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
             </Box>
           </Flex>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
-            {formatedDescription}
-            <StyledLink hidden={url && true} href={url} target="_blank" rel="noreferrer noopener">
+            <Text> {formatedDescription}</Text>
+
+            <StyledLink
+              hidden={Boolean(typeof url === 'string')}
+              href={url ?? ''}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               {t('View Link')}
             </StyledLink>
           </Description>

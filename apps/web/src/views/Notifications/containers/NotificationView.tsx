@@ -87,18 +87,12 @@ const SettingsModal = ({ account }: { account: string | undefined }) => {
           return typeFilter(SubsctiptionType.Prediction, unFilteredNotifications)
         case SubsctiptionType.Liquidity:
           return typeFilter(SubsctiptionType.Liquidity, unFilteredNotifications)
-        case SubsctiptionType.Staking:
-          return typeFilter(SubsctiptionType.Staking, unFilteredNotifications)
-        case SubsctiptionType.Pools:
-          return typeFilter(SubsctiptionType.Pools, unFilteredNotifications)
         case SubsctiptionType.Farms:
           return typeFilter(SubsctiptionType.Farms, unFilteredNotifications)
         case SubsctiptionType.PriceUpdates:
           return typeFilter(SubsctiptionType.PriceUpdates, unFilteredNotifications)
         case SubsctiptionType.Promotional:
           return typeFilter(SubsctiptionType.Promotional, unFilteredNotifications)
-        case SubsctiptionType.Voting:
-          return typeFilter(SubsctiptionType.Voting, unFilteredNotifications)
         case SubsctiptionType.Alerts:
           return typeFilter(SubsctiptionType.Alerts, unFilteredNotifications)
         default:

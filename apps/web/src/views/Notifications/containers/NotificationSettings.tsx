@@ -74,7 +74,7 @@ const NotificationSettingsMain = ({ account }: { account: string | undefined }) 
     setloading(true)
     try {
       await unsubscribe()
-      toast.toastError(Events.Unsubscribed.title, Events.Unsubscribed.message)
+      toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message)
     } catch (error: any) {
       toast.toastWarning(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }

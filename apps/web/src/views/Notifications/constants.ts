@@ -19,28 +19,16 @@ export const NotificationFilterTypes: OptionProps[] = [
     value: 'Liquidity',
   },
   {
-    label: 'Staking',
-    value: 'Staking',
-  },
-  {
-    label: 'Pools',
-    value: 'Pools',
-  },
-  {
     label: 'Farm',
     value: 'Farms',
   },
   {
-    label: 'Price Updates',
+    label: 'Prices',
     value: 'PriceUpdates',
   },
   {
-    label: 'Promotional',
+    label: 'Promotion',
     value: 'Promotional',
-  },
-  {
-    label: 'Voting',
-    value: 'Voting',
   },
   {
     label: 'Alerts',
@@ -59,8 +47,6 @@ export const NotificationSortTypes: OptionProps[] = [
   },
 ]
 
-export const DEFAULT_RELAY_URL = 'https://notify.walletconnect.com'
-export const DEFAULT_CAST_SIGN_KEY = process.env.NEXT_PUBLIC_CAST_SERVER_SIGN_KEY ?? ''
 export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_DEFAULT_PROJECT_ID ?? ''
 export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY ?? ''
 export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
@@ -75,7 +61,7 @@ export const PancakeNotifications: {
       body: 'You have successfully subscribed to Pancake Notifications Wooo!',
       icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pc-custom-web.vercel.app',
-      type: 'Liquidity',
+      type: 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
     }
   },
   newLpNotification: (): pushNotification => {
@@ -84,7 +70,7 @@ export const PancakeNotifications: {
       body: `New LP position successfully added. you will be notified on important updates.`,
       icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pc-custom-web.vercel.app',
-      type: 'Liquidity',
+      type: 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
     }
     // ... add more as we create use cases
   },

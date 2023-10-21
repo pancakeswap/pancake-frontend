@@ -12,12 +12,9 @@ export enum SubsctiptionType {
   Lottery = 'Lottery',
   Prediction = 'Prediction',
   Liquidity = 'Liquidity',
-  Staking = 'Staking',
   Farms = 'Farms',
-  Pools = 'Pools',
   PriceUpdates = 'PriceUpdates',
   Promotional = 'Promotional',
-  Voting = 'Voting',
   Alerts = 'alerts',
 }
 
@@ -59,18 +56,6 @@ export type SubscriptionState = {
   isOnboarded: boolean
 }
 
-export type pushNotifyTypes =
-  | 'Lottery'
-  | 'Prediction'
-  | 'Liquidity'
-  | 'Staking'
-  | 'Pools'
-  | 'Farms'
-  | 'PriceUpdates'
-  | 'Promotional'
-  | 'Voting'
-  | 'alerts'
-
 export enum BuilderNames {
   OnBoardNotification = 'OnBoardNotification',
   newLpNotification = 'newLpNotification',
@@ -80,7 +65,7 @@ export type pushNotification = {
   body: string
   icon: string
   url: string
-  type: pushNotifyTypes
+  type: string
 }
 
 export type NotificationPayload = {

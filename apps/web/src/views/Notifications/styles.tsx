@@ -115,10 +115,9 @@ export const NotificationContainerStyled = styled.div`
 
 export const StyledNotificationWrapper = styled.div<{ isclosing: boolean }>`
   animation-fill-mode: forwards;
-  width: 100%;
   border-radius: 10px;
   display: flex;
-  padding: 8px 15px;
+  padding: 8px 8px 15px 15px;
   position: relative;
   overflow: hidden;
 
@@ -134,6 +133,7 @@ export const ContentsContainer = styled.div`
   overflow: hidden;
   transition: transform 0.3s;
   background-color: ${({ theme }) => (theme.isDark ? '#372F46' : '#EDEAF4')};
+  width: 100%;
 
   &:hover {
     transform: scale(1.01);
@@ -153,6 +153,7 @@ export const Description = styled.div<{ show: boolean; elementHeight: number }>`
   margin-bottom: 5px 0;
   overflow: hidden;
   max-width: 100%;
+  word-break: break-word;
   transition: max-height 0.33s ease-in-out;
   max-height: ${({ show, elementHeight }) => (show ? `${elementHeight}px` : '32px')};
 `
@@ -172,7 +173,7 @@ export const StyledLink = styled(Link)<{ hidden: boolean }>`
   color: ${({ theme }) => `${theme.colors.primary}`};
   font-weight: bold;
   display: ${({ hidden }) => `${hidden ? 'flex' : 'none'}`};
-  margin-top: 12px;
+  margin-top: 17px;
   margin-bottom: 6px;
   justify-content: center;
   align-items: center;

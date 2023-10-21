@@ -57,15 +57,15 @@ const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
     <>
       <Divider />
       <Box maxHeight="360px" overflowY="scroll" paddingX="24px">
-        {Object.entries(scopes).map(([title, scope]) => {
+        {Object.entries(scopes).map(([id, scope]) => {
           // @ts-ignore
           // eslint-disable-next-line prefer-destructuring
           const name = scope.name
           return (
             <Settingsitem
-              key={title}
+              key={id}
               title={name}
-              id={title}
+              id={id}
               description={scope.description}
               isSubscribed={scope}
               setScopes={setScopes}
