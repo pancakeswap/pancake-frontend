@@ -7,11 +7,10 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback, useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
 import { getContract } from 'utils/contractHelpers'
 import { Address, useWalletClient } from 'wagmi'
 import first from 'lodash/first'
-import { KeyedMutator } from 'swr'
+import { useQuery } from '@tanstack/react-query'
 
 export const MERKL_API = 'https://api.angle.money/v1/merkl'
 
@@ -25,13 +24,13 @@ export function useMerklInfo(poolAddress: string | null): {
     proof?: string[]
   } | null
   hasMerkl: boolean
-  refreshData: KeyedMutator<any>
+  refreshData: () => void
 } {
   const { account, chainId } = useAccountActiveChain()
 
-  const { data, isLoading, mutate } = useSWRImmutable(
-    chainId && poolAddress ? `fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}` : null,
-    async () => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: [`fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}`],
+    queryFn: async () => {
       const response = await fetch(
         `${MERKL_API}?chainId=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
       )
@@ -70,18 +69,18 @@ export function useMerklInfo(poolAddress: string | null): {
         isLoading,
       }
     },
-  )
+  })
 
   return useMemo(
     () =>
       data
-        ? { ...data, refreshData: mutate }
+        ? { ...data, refreshData: refetch }
         : {
             rewardsPerToken: [],
             transactionData: null,
-            refreshData: mutate,
+            refreshData: refetch,
           },
-    [data, mutate],
+    [data, refetch],
   )
 }
 
