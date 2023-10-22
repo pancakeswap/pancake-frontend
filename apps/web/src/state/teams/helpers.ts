@@ -35,6 +35,7 @@ export const getTeam = async (teamId: number): Promise<Team> => {
  * Gets on-chain data and merges it with the existing static list of teams
  */
 export const getTeams = async (): Promise<TeamsById> => {
+  console.info('mmmmmmmm')
   try {
     const profileContract = getProfileContract()
     const teamsById = fromPairs(teamsList.map((team) => [team.id, team]))
