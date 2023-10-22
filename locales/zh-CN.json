@@ -1881,7 +1881,7 @@
   "CAKE Emission Projection": "CAKE 产出量预测",
   "Boosted by vCAKE": "由 vCAKE 助推",
   "Boosting Expired": "助推已过期",
-  "Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals.": "快照区块当时您的 vCAKE 加权已结束。请延长您的定期质押时长，以激活您在未来投票提案中的投票权加权。",
+  "Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals.": "快照区块当时您的 vCAKE 加权已结束。请更新您的锁仓质押仓位，您将享有投票权加权并在未来的投票提案中使用。",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% 的购买代币将在一段时间内线性释放，过后可以在线性释放页面查看及领取。\n%percentageTgeRelease%% 的购买代币立即释放，在 IFO 结束时可马上领取。",
   "The vested tokens will be released linearly over a period of %days% days.": "授权代币将在 %days% 天的期间内以线性方式释放。",
   "Yield Booster": "收益助推器",
