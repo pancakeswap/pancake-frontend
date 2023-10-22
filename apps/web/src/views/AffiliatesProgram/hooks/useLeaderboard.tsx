@@ -1,7 +1,7 @@
-import useSWRImmutable from 'swr/immutable'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { MetricDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
+import { useQuery } from '@tanstack/react-query'
 
 export interface ListType {
   address: string
@@ -18,8 +18,8 @@ interface Leaderboard {
 const useLeaderboard = (): Leaderboard => {
   const cakePriceBusd = useCakePrice()
 
-  const { data, isLoading } = useSWRImmutable(
-    cakePriceBusd.gt(0) && ['/affiliate-program-leaderboard', cakePriceBusd],
+  const { data, isLoading } = useQuery(
+    ['affiliates-program', 'affiliate-program-leaderboard', cakePriceBusd],
     async () => {
       const response = await fetch(`/api/affiliates-program/leader-board`)
       const result = await response.json()
@@ -31,6 +31,11 @@ const useLeaderboard = (): Leaderboard => {
         }
       })
       return list
+    },
+    {
+      enabled: cakePriceBusd.gt(0),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   )
 

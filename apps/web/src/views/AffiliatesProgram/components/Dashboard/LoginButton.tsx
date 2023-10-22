@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react'
 import { SiweMessage } from 'siwe'
-import { useSWRConfig } from 'swr'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { getCookie } from 'cookies-next'
@@ -8,11 +7,12 @@ import { Button } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
+import { useQueryClient } from '@tanstack/react-query'
 
 const LoginButton = () => {
   const { t } = useTranslation()
   const { address } = useAccount()
-  const { mutate } = useSWRConfig()
+  const queryClient = useQueryClient()
   const { signMessageAsync } = useSignMessage()
   const { chainId } = useActiveChainId()
   const [isLoading, setIsLoading] = useState(false)
@@ -45,7 +45,7 @@ const LoginButton = () => {
         const { status } = await response.json()
 
         if (status === 'success') {
-          await mutate(['/auth-affiliate', address, cookie])
+          await queryClient.invalidateQueries(['affiliates-program', 'auth-affiliate', address, cookie])
         }
       }
     } catch (error) {
