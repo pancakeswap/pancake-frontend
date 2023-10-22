@@ -6,19 +6,29 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { Flex, Box, Button } from '@pancakeswap/uikit'
 import { TabToggle } from 'components/TabToggle'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { useTranslation } from '@pancakeswap/localization'
 import { YoutubeList } from 'views/Game/components/Project/YoutubeList'
 import { TextProjectBy } from 'views/Game/components/Project/TextProjectBy'
 
-const StyledDesktop = styled.div`
+const StyledDesktop = styled.div<{ showPhishingBanner: boolean }>`
   display: flex;
-  height: calc(100vh - 100px);
+  height: ${({ showPhishingBanner }) =>
+    showPhishingBanner ? `calc(100vh - 100px - 84px - 50px)` : `calc(100vh - 100px)`};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: ${({ showPhishingBanner }) => (showPhishingBanner ? `calc(100vh - 100px - 70px)` : `calc(100vh - 100px)`)};
+  }
 `
 
 const StyledContainer = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 42px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    min-height: auto;
+  }
 `
 
 const SplitWrapper = styled(Box)`
@@ -32,6 +42,7 @@ const SplitWrapper = styled(Box)`
 const StyledIframe = styled.iframe`
   width: 100%;
   height: 100%;
+  min-height: 500px;
 `
 
 const Gutter = styled.div<{ isPaneOpen?: boolean }>`
@@ -76,6 +87,8 @@ const GRID_TEMPLATE_ROW = '1.2fr 24px 0.55fr'
 export const GameProject = () => {
   const { t } = useTranslation()
   const router = useRouter()
+  const [showPhishingBanner] = usePhishingBanner()
+
   const splitWrapperRef = useRef<null | HTMLDivElement>(null)
   const videoRef = useRef<null | HTMLDivElement>(null)
   const gutterRef = useRef<null | HTMLDivElement>(null)
@@ -142,7 +155,7 @@ export const GameProject = () => {
   }
 
   return (
-    <StyledDesktop>
+    <StyledDesktop showPhishingBanner={showPhishingBanner}>
       <SplitWrapper ref={splitWrapperRef}>
         <StyledContainer>
           <StyledIframe ref={iframeRef} id="project-game-iframe" src="https://protectors.pancakeswap.finance/">
