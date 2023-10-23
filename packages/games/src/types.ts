@@ -3,15 +3,20 @@ export interface PlaylistData {
   videoId: string // youtube Id
 }
 
-export enum PostersDataType {
+export enum PostersItemDataType {
   Image = 'image',
   Video = 'video',
 }
 
-export interface PostersData {
-  type: PostersDataType
+export interface PostersItemData {
+  type: PostersItemDataType
   imageUrl: string
   videoUrl?: string
+}
+
+export enum PostersLayout {
+  Horizontal = 'horizontal',
+  Vertical = 'vertical',
 }
 
 export interface Game {
@@ -21,11 +26,13 @@ export interface Game {
   subTitle: string
   description: string
   publishDate: number // timestamp in seconds
-  isHorizontal: boolean
   headerImageUrl: string
   projectLogoUrl: string
   gameLink: string
-  posters: PostersData[] // Minimum requirements 4
+  posters: {
+    layout: PostersLayout
+    items: PostersItemData[] // Minimum requirements 4
+  }
   playlist: PlaylistData[] // Minimum requirements 4
   socialMedia: {
     telegramUrl?: string
