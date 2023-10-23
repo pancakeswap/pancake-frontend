@@ -17,7 +17,6 @@ const nextConfig = {
     styledComponents: true,
   },
   transpilePackages: [
-    '@pancakeswap/uikit',
     '@pancakeswap/localization',
     '@pancakeswap/hooks',
     '@pancakeswap/utils',

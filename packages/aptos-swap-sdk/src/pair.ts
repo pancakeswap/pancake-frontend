@@ -19,6 +19,16 @@ import { Currency } from './currency'
 import { PAIR_LP_TYPE_TAG, PAIR_RESERVE_TYPE_TAG } from './constants'
 import { Coin } from './coin'
 
+const typeArgToAddress = (typeArg: TxnBuilderTypes.TypeTagStruct): string => {
+  const children = typeArg.value.type_args
+    .filter((ta) => ta instanceof TxnBuilderTypes.TypeTagStruct)
+    .map((ta) => typeArgToAddress(ta as TxnBuilderTypes.TypeTagStruct))
+
+  return `${HexString.fromUint8Array(typeArg.value.address.address).toShortString()}::${
+    typeArg.value.module_name.value
+  }::${typeArg.value.name.value}${children.length > 0 ? `<${children.join(', ')}>` : ''}`
+}
+
 export class Pair {
   public readonly liquidityToken: Coin
 
@@ -46,21 +56,14 @@ export class Pair {
     invariant(parsedTypeTag instanceof TxnBuilderTypes.TypeTagStruct, `Pair type: ${type}`)
     invariant(parsedTypeTag.value.type_args.length === 2, `Pair type length`)
 
-    const [typeArg0, tyepArg1] = parsedTypeTag.value.type_args
+    const [typeArg0, typeArg1] = parsedTypeTag.value.type_args
 
     invariant(
-      typeArg0 instanceof TxnBuilderTypes.TypeTagStruct && tyepArg1 instanceof TxnBuilderTypes.TypeTagStruct,
+      typeArg0 instanceof TxnBuilderTypes.TypeTagStruct && typeArg1 instanceof TxnBuilderTypes.TypeTagStruct,
       'type args'
     )
 
-    const [address0, address1] = [
-      `${HexString.fromUint8Array(typeArg0.value.address.address).toShortString()}::${
-        typeArg0.value.module_name.value
-      }::${typeArg0.value.name.value}`,
-      `${HexString.fromUint8Array(tyepArg1.value.address.address).toShortString()}::${
-        tyepArg1.value.module_name.value
-      }::${tyepArg1.value.name.value}`,
-    ]
+    const [address0, address1] = [typeArgToAddress(typeArg0), typeArgToAddress(typeArg1)]
 
     return [address0, address1] as const
   }

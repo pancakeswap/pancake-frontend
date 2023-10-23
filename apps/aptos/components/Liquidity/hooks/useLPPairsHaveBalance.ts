@@ -5,7 +5,7 @@ import {
   COIN_STORE_TYPE_PREFIX,
   createAccountResourceFilter,
   FetchAccountResourcesResult,
-  unwrapTypeArgFromString,
+  unwrapTypeFromString,
 } from '@pancakeswap/awgmi/core'
 import { PairState, usePairsFromAddresses } from 'hooks/usePairs'
 import { useMemo } from 'react'
@@ -45,7 +45,7 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
   const mmV2PairsBalances = useMemo(
     () =>
       (v2PairsBalances
-        ?.map((p) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeArgFromString(p.type)}>`)
+        ?.map((p) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeFromString(unwrapTypeFromString(p.type)!)}>`)
         .filter(Boolean) as string[]) ?? [],
     [v2PairsBalances],
   )

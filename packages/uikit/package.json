@@ -25,6 +25,10 @@
       "import": "./src/css/atoms.ts",
       "types": "./dist/css/atoms.d.ts"
     },
+    "./css/vars.css": {
+      "import": "./src/css/vars.css.ts",
+      "types": "./dist/css/vars.css.d.ts"
+    },
     "./css/responsiveStyle": {
       "import": "./src/css/responsiveStyle.ts",
       "types": "./dist/css/responsiveStyle.d.ts"
@@ -85,7 +89,6 @@
     "jest-styled-components": "^7.0.8",
     "js-cookie": "*",
     "next": "*",
-    "next-seo": "*",
     "next-themes": "^0.2.1",
     "polished": "^4.2.2",
     "react": "^18.2.0",
@@ -113,7 +116,6 @@
   "peerDependencies": {
     "js-cookie": "*",
     "next": "*",
-    "next-seo": "*",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-device-detect": "*",
