@@ -8,10 +8,10 @@ export const getMerklLink = ({
 }: {
   chainId?: ChainId | number
   lpAddress?: Address
-}): string | false => {
-  if (!chainId || !lpAddress) return false
+}): string | undefined => {
+  if (!chainId || !lpAddress) return undefined
 
-  let link: string | false = false
+  let link: string | undefined
 
   MERKL_POOLS.forEach((pool) => {
     if (pool.chainId === chainId && pool.address.toLowerCase() === lpAddress.toLowerCase()) {

@@ -21,7 +21,7 @@ type ExpandableSectionProps = {
   pid?: number
   farmCakePerSecond?: string
   totalMultipliers?: string
-  merklLink?: string | false
+  merklLink?: string
 }
 
 const Wrapper = styled(Flex)`
