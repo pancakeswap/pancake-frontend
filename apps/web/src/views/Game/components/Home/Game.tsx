@@ -1,13 +1,13 @@
 import { styled } from 'styled-components'
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
+import { GameType, PostersLayout, PostersItemData } from '@pancakeswap/games'
 import { Flex, Box, Text, Button, CardHeader, Link, Card, TelegramIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Carousel } from 'views/Game/components/Home/Carousel'
 import { CarouselView } from 'views/Game/components/Home/CarouselView'
 import { TrendingTags, StyledTag } from 'views/Game/components/Home/TrendingTags'
 import { StyledTextLineClamp } from 'views/Game/components/StyledTextLineClamp'
-import { carouselData } from '../mockData'
 
 const StyledGameContainer = styled(Flex)<{ isHorizontal: boolean }>`
   width: 100%;
@@ -59,16 +59,18 @@ const StyledLeftContainer = styled(Box)<{ isHorizontal: boolean }>`
 
 interface GameProps {
   isLatest?: boolean
-  isHorizontal: boolean
+  game: GameType
 }
 
-export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, isHorizontal }) => {
+export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, game }) => {
   const { t } = useTranslation()
   const { isDesktop, isXxl } = useMatchBreakpoints()
   const [carouselId, setCarouselId] = useState(0)
-  const fakeDate = JSON.parse(JSON.stringify(carouselData))
 
-  const previewCarouseData = useMemo(() => fakeDate[carouselId], [carouselId, fakeDate])
+  const carouselData: PostersItemData[] = useMemo(() => game.posters.items, [game])
+  const previewCarouseData: PostersItemData = useMemo(() => carouselData[carouselId], [carouselId, carouselData])
+
+  const isHorizontal: boolean = useMemo(() => game.posters.layout === PostersLayout.Horizontal, [game])
 
   return (
     <StyledGameContainer isHorizontal={isHorizontal}>
@@ -79,10 +81,10 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
           </Box>
           <Flex justifyContent="center">
             <Text as="span" bold fontSize={['40px']} color="secondary">
-              Flagship
+              {t('Flagship')}
             </Text>
             <Text as="span" ml="8px" bold fontSize={['40px']}>
-              Game
+              {t('Game')}
             </Text>
           </Flex>
         </Flex>
@@ -111,7 +113,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
                 {((!isHorizontal && !isXxl) || isHorizontal) && (
                   <Carousel
                     carouselId={carouselId}
-                    carouselData={fakeDate}
+                    carouselData={carouselData}
                     isHorizontal={isHorizontal}
                     setCarouselId={setCarouselId}
                   />
@@ -121,7 +123,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
             </StyledLeftContainer>
             <StyledGameInformation>
               <Text bold lineHeight="110%" fontSize={['32px', '32px', '32px', '32px', '32px', '40px']}>
-                Pancake Protectors
+                {game.title}
               </Text>
               <StyledTextLineClamp
                 bold
@@ -131,15 +133,14 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
                 fontSize={['20px', '20px', '20px', '20px', '20px', '24px']}
                 m={['12px 0', '12px 0', '12px 0', '12px 0', '12px 0', '24px 0']}
               >
-                Unlock the Power of CAKE and Perks for Pancake Squad and Bunnies Holders
+                {game.subTitle}
               </StyledTextLineClamp>
               <StyledTextLineClamp
                 lineClamp={3}
                 lineHeight="120%"
                 mb={['32px', '32px', '32px', '32px', '32px', '24px']}
               >
-                PancakeSwap and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players,
-                as well as CAKE, Pancake Squad, and Bunnies holders.
+                {game.description}
               </StyledTextLineClamp>
               <Flex justifyContent="space-between" mb={['32px', '32px', '32px', '32px', '32px', '24px']}>
                 <StyledTag scale="xs" isPurple style={{ alignSelf: 'center' }}>
@@ -151,15 +152,9 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
                   </Text>
                 </StyledTag>
                 <Flex>
-                  <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'row']} mr="4px">
-                    <Text
-                      bold
-                      fontSize={12}
-                      color="textSubtle"
-                      textTransform="uppercase"
-                      textAlign={['right', 'right', 'right', 'right', 'left']}
-                    >
-                      Published by
+                  <Flex flexDirection="column" mr="4px">
+                    <Text bold fontSize={12} color="textSubtle" textTransform="uppercase" textAlign="right">
+                      {t('Published by')}
                     </Text>
                     <Text
                       bold
@@ -167,19 +162,21 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
                       color="secondary"
                       textTransform="uppercase"
                       m={['0', '0', '0', '0 0 0 4px']}
-                      textAlign={['right', 'right', 'right', 'right', 'left']}
+                      textAlign="right"
                     >
-                      dev_name
+                      {game.projectName}
                     </Text>
                   </Flex>
-                  <Link external href="/">
-                    <TelegramIcon color="secondary" />
-                  </Link>
+                  {game?.socialMedia?.telegram && (
+                    <Link external href={game.socialMedia.telegram}>
+                      <TelegramIcon color="secondary" />
+                    </Link>
+                  )}
                 </Flex>
               </Flex>
               <Link
-                href="/game/project/123"
                 width="100% !important"
+                href={`/game/project/${game.id}`}
                 mb={['32px', '32px', '32px', '32px', '32px', '49px']}
               >
                 <Button width="100%">
@@ -192,7 +189,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
               {isXxl && !isHorizontal && (
                 <Carousel
                   carouselId={carouselId}
-                  carouselData={fakeDate}
+                  carouselData={carouselData}
                   isHorizontal={isHorizontal}
                   setCarouselId={setCarouselId}
                 />

@@ -19,7 +19,7 @@ export const OtherGames = () => {
         {t('Explore Other Games')}
       </Text>
       <Games />
-      <Game isHorizontal />
+      {/* <Game /> */}
     </StyledContainer>
   )
 }

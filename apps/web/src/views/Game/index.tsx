@@ -1,10 +1,13 @@
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { Box } from '@pancakeswap/uikit'
+import { GameType } from '@pancakeswap/games'
 import { LIGHT_BG, DARK_BG } from 'views/Game/pageSectionStyles'
 import { Decorations } from 'views/Game/components/Decorations'
 import { Banner } from 'views/Game/components/Home/Banner'
 import { Game } from 'views/Game/components/Home/Game'
 import { OtherGames } from 'views/Game/components/Home/OtherGames'
+import { useGamesConfig } from 'views/Game/hooks/useGamesConfig'
 
 const StyledBackground = styled(Box)`
   padding: 32px 16px 32px 16px;
@@ -16,14 +19,19 @@ const StyledBackground = styled(Box)`
 `
 
 export const GameHomePage = () => {
+  const config = useGamesConfig()
+
+  const latestGame: GameType = useMemo(() => config.slice(0, 1)[0], [config])
+  const otherGames: GameType[] = useMemo(() => config.slice(1), [config])
+
   return (
     <>
       <Banner />
       <Decorations />
       <StyledBackground>
-        <Game isLatest isHorizontal={false} />
+        <Game isLatest game={latestGame} />
       </StyledBackground>
-      <OtherGames />
+      {/* <OtherGames /> */}
     </>
   )
 }

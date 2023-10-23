@@ -2,6 +2,7 @@ import { styled } from 'styled-components'
 import { useMemo } from 'react'
 import { Box, CardHeader } from '@pancakeswap/uikit'
 import { StyledTextLineClamp } from 'views/Game/components/StyledTextLineClamp'
+import { PlayListData } from '@pancakeswap/games'
 
 const Header = styled(CardHeader)<{ imgUrl: string }>`
   position: relative;
@@ -34,7 +35,7 @@ const Header = styled(CardHeader)<{ imgUrl: string }>`
 `
 
 interface YoutubeProps {
-  youtube: any
+  youtube: PlayListData
   handleClickYoutubeVideo: (videoId: string) => void
 }
 

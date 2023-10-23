@@ -2,16 +2,18 @@ import { styled } from 'styled-components'
 import Split, { SplitInstance } from 'split-grid'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { Flex, Box, Button, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { TabToggle } from 'components/TabToggle'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { useTranslation } from '@pancakeswap/localization'
+import { GameType } from '@pancakeswap/games'
 import { YoutubeList } from 'views/Game/components/Project/YoutubeList'
 import { TextProjectBy } from 'views/Game/components/Project/TextProjectBy'
 import { QuickAccess } from 'views/Game/components/Project/QuickAccess'
 import { QuickAccessModal } from 'views/Game/components/Project/QuickAccessModal'
+import { useGamesConfig } from 'views/Game/hooks/useGamesConfig'
 
 const StyledDesktop = styled.div<{ showPhishingBanner: boolean }>`
   display: flex;
@@ -93,10 +95,12 @@ const GRID_TEMPLATE_ROW = '1.2fr 24px 0.55fr'
 
 export const GameProject = () => {
   const { t } = useTranslation()
-  const router = useRouter()
+  const { query } = useRouter()
+  const config = useGamesConfig()
   const { isDesktop } = useMatchBreakpoints()
   const [showPhishingBanner] = usePhishingBanner()
-  const [onPresentQuickAccessModal] = useModal(<QuickAccessModal />)
+
+  const gameData: GameType | undefined = useMemo(() => config.find((i) => i.id === query?.projectId), [config, query])
 
   const splitWrapperRef = useRef<null | HTMLDivElement>(null)
   const videoRef = useRef<null | HTMLDivElement>(null)
@@ -105,8 +109,7 @@ export const GameProject = () => {
   const splitInstance = useRef<SplitInstance>()
 
   const [isPaneOpen, setIsPaneOpen] = useState(false)
-
-  // router.query.projectId
+  const [onPresentQuickAccessModal] = useModal(gameData && <QuickAccessModal game={gameData} />)
 
   useEffect(() => {
     const threshold = 100
@@ -163,11 +166,15 @@ export const GameProject = () => {
     }, 425)
   }
 
+  if (!gameData) {
+    return null
+  }
+
   return (
     <StyledDesktop showPhishingBanner={showPhishingBanner}>
       <SplitWrapper ref={splitWrapperRef}>
         <StyledContainer>
-          <StyledIframe ref={iframeRef} src="https://protectors.pancakeswap.finance/">
+          <StyledIframe ref={iframeRef} src={gameData.gameLink}>
             {t(`Your browser doesn't support iframe`)}
           </StyledIframe>
         </StyledContainer>
@@ -200,10 +207,10 @@ export const GameProject = () => {
               </TabToggle>
             )}
           </ExpandButtonGroup>
-          {isDesktop && <QuickAccess />}
-          <TextProjectBy />
+          {isDesktop && <QuickAccess game={gameData} />}
+          <TextProjectBy game={gameData} />
         </Gutter>
-        <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList />}</VideoPane>
+        <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList playList={gameData.playList} />}</VideoPane>
       </SplitWrapper>
     </StyledDesktop>
   )

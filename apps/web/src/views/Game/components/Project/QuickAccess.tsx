@@ -2,6 +2,7 @@ import { styled } from 'styled-components'
 import { useState } from 'react'
 import { Flex, Box, Text, Link, TelegramIcon, DiscordIcon, ChevronUpIcon } from '@pancakeswap/uikit'
 import { Trans, useTranslation } from '@pancakeswap/localization'
+import { GameType } from '@pancakeswap/games'
 
 const StyledQuickAccess = styled(Box)<{ isOpen?: boolean }>`
   position: ${({ isOpen }) => (isOpen ? 'static' : 'absolute')};
@@ -35,11 +36,14 @@ const LIST = [
 
 interface QuickAccessProps {
   isOpen?: boolean
+  game: GameType
 }
 
-export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = ({ isOpen }) => {
+export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = ({ isOpen, game }) => {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(isOpen ?? false)
+  const telegram = game?.socialMedia?.telegram ?? ''
+  const discord = game?.socialMedia?.discord ?? ''
 
   const toggleExpand = (e: { stopPropagation: () => void; preventDefault: () => void }) => {
     if (!isOpen) {
@@ -64,14 +68,22 @@ export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = 
               <Text>{i.title}</Text>
             </StyledLink>
           ))}
-          <Flex padding="16px 0">
-            <StyledLink external href="/">
-              <TelegramIcon color="textSubtle" />
-            </StyledLink>
-            <StyledLink external href="/" ml="16px">
-              <DiscordIcon color="textSubtle" />
-            </StyledLink>
-          </Flex>
+          <>
+            {telegram || discord ? (
+              <Flex padding="16px 0">
+                {telegram && (
+                  <StyledLink external href={telegram}>
+                    <TelegramIcon color="textSubtle" />
+                  </StyledLink>
+                )}
+                {discord && (
+                  <StyledLink external href={discord} ml={telegram ? '16px' : '0'}>
+                    <DiscordIcon color="textSubtle" />
+                  </StyledLink>
+                )}
+              </Flex>
+            ) : null}
+          </>
         </Box>
       )}
     </StyledQuickAccess>

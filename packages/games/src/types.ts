@@ -1,4 +1,4 @@
-export interface PlaylistData {
+export interface PlayListData {
   title: string
   videoId: string // Youtube Video Id
 }
@@ -10,8 +10,8 @@ export enum PostersItemDataType {
 
 export interface PostersItemData {
   type: PostersItemDataType
-  imageUrl: string
-  videoUrl?: string
+  image: string
+  video?: string
 }
 
 export enum PostersLayout {
@@ -19,23 +19,23 @@ export enum PostersLayout {
   Vertical = 'vertical',
 }
 
-export interface Game {
+export interface GameType {
   id: string
   projectName: string
   title: string
   subTitle: string
   description: string
   publishDate: number // timestamp in seconds
-  headerImageUrl: string
-  projectLogoUrl: string
+  headerImage: string
+  projectLogo: string
   gameLink: string
   posters: {
     layout: PostersLayout
     items: PostersItemData[] // Minimum requirements 4
   }
-  playlist: PlaylistData[] // Minimum requirements 4
+  playList: PlayListData[] // Minimum requirements 4
   socialMedia: {
-    telegramUrl?: string
-    discordUrl?: string
+    telegram?: string
+    discord?: string
   }
 }
