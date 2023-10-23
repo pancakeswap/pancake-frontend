@@ -1,5 +1,17 @@
 # routing-api
 
+## 0.3.5
+
+### Patch Changes
+
+- c236a3ee4: Add subgraph endpoints to chains
+- Updated dependencies [c236a3ee4]
+  - @pancakeswap/chains@0.3.0
+  - @pancakeswap/farms@1.0.23
+  - @pancakeswap/smart-router@4.9.5
+  - @pancakeswap/sdk@5.7.2
+  - @pancakeswap/v3-sdk@3.5.4
+
 ## 0.3.4
 
 ### Patch Changes
