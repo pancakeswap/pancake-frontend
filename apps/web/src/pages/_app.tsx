@@ -58,7 +58,7 @@ function MPGlobalHooks() {
   return null
 }
 
-function MyApp(props: AppProps<{ initialReduxState: any }>) {
+function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>) {
   const { pageProps, Component } = props
   const store = useStore(pageProps.initialReduxState)
 
@@ -80,7 +80,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         )}
       </Head>
       <DefaultSeo {...SEO} />
-      <Providers store={store}>
+      <Providers store={store} dehydratedState={pageProps.dehydratedState}>
         <PageMeta />
         {(Component as NextPageWithLayout).Meta && (
           // @ts-ignore
