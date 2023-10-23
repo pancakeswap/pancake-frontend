@@ -251,7 +251,10 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={bsc}>
+              <StyledScanLink
+                useBscCoinFallback={typeof chainId !== 'undefined' && ChainLinkSupportChains.includes(chainId)}
+                href={bsc}
+              >
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>
@@ -306,6 +309,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   )
 
   const infoUrl = useMemo(() => {
+    if (!chainId) return ''
     if (farm.isStable) {
       return `/info${multiChainPaths[chainId]}/pairs/${farm.stableSwapAddress}?type=stableSwap&chain=${CHAIN_QUERY_NAME[chainId]}`
     }
@@ -375,7 +379,10 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={bsc}>
+              <StyledScanLink
+                useBscCoinFallback={typeof chainId !== 'undefined' && ChainLinkSupportChains.includes(chainId)}
+                href={bsc}
+              >
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>

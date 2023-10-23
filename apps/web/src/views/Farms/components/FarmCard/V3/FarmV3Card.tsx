@@ -67,7 +67,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
 
   const merklLink = getMerklLink({ chainId, lpAddress })
   const infoUrl = useMemo(() => {
-    return `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
+    return chainId ? `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}` : ''
   }, [chainId, lpAddress])
 
   const toggleExpandableSection = useCallback(() => {
@@ -137,7 +137,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
               removed={removed}
               scanAddress={{ link: getBlockExploreLink(lpAddress, 'address', chainId), chainId }}
               infoAddress={infoUrl}
-              totalValueFormatted={`$${parseInt(farm.activeTvlUSD).toLocaleString(undefined, {
+              totalValueFormatted={`$${parseInt(farm.activeTvlUSD ?? '0').toLocaleString(undefined, {
                 maximumFractionDigits: 0,
               })}`}
               totalValueLabel={t('Staked Liquidity')}

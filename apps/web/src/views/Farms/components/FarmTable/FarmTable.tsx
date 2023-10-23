@@ -1,4 +1,5 @@
 import { RowType } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
@@ -7,10 +8,10 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useMemo, useRef } from 'react'
 import { styled } from 'styled-components'
+import { getMerklLink } from 'utils/getMerklLink'
 import { V2Farm, V2StakeValueAndV3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
-import { getMerklLink } from 'utils/getMerklLink'
 import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
@@ -72,11 +73,11 @@ const TableContainer = styled.div`
 `
 
 const getV2FarmEarnings = (farm: V2Farm) => {
-  const existingEarnings = new BigNumber(farm.userData.earnings)
+  const existingEarnings = farm.userData?.earnings ? new BigNumber(farm.userData?.earnings) : BIG_ZERO
   let earnings: BigNumber = existingEarnings
 
   if (farm.boosted) {
-    const proxyEarnings = new BigNumber(farm.userData?.proxy?.earnings)
+    const proxyEarnings = farm.userData?.proxy?.earnings ? new BigNumber(farm.userData?.proxy?.earnings) : BIG_ZERO
 
     earnings = proxyEarnings.gt(0) ? proxyEarnings : existingEarnings
   }
@@ -164,12 +165,12 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       if (farm.version === 2) {
         const row: RowProps = {
           apr: {
-            value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+            value: getDisplayApr(farm.apr, farm.lpRewardsApr) ?? '',
             pid: farm.pid,
-            multiplier: farm.multiplier,
+            multiplier: farm.multiplier ?? '',
             lpLabel,
             lpSymbol: farm.lpSymbol,
-            lpTokenPrice: farm.lpTokenPrice,
+            lpTokenPrice: farm.lpTokenPrice ?? BIG_ZERO,
             tokenAddress,
             quoteTokenAddress,
             cakePrice,
@@ -192,11 +193,11 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             pid: farm.pid,
           },
           liquidity: {
-            liquidity: farm?.liquidity,
+            liquidity: farm?.liquidity ?? BIG_ZERO,
           },
           multiplier: {
-            multiplier: farm.multiplier,
-            farmCakePerSecond: farmV2Multiplier.getFarmCakePerSecond(farm.poolWeight),
+            multiplier: farm.multiplier ?? '',
+            farmCakePerSecond: farmV2Multiplier.getFarmCakePerSecond(farm.poolWeight ?? BIG_ZERO),
             totalMultipliers: farmV2Multiplier.totalMultipliers,
           },
           type: farm.isCommunity ? 'community' : 'v2',
