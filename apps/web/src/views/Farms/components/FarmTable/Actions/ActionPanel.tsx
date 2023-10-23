@@ -9,7 +9,6 @@ import {
   LinkExternal,
   Message,
   MessageText,
-  Box,
   InfoFilledIcon,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
@@ -159,17 +158,33 @@ const ActionPanelContainer = ({ expanded, values, infos, children }) => {
   )
 }
 
+const StyleMerklWarning = styled.div`
+  margin-bottom: 24px;
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+`
+
 const MerklWarning: React.FC<{
   merklLink: string
 }> = ({ merklLink }) => {
   return (
-    <Box mb="24px" width="100%" mx="12px">
+    <StyleMerklWarning>
       <Message variant="warning" icon={<InfoFilledIcon color="#D67E0A" />}>
         <MessageText>
           <MerklNotice.Content merklLink={merklLink} linkColor="currentColor" />
         </MessageText>
       </Message>
-    </Box>
+    </StyleMerklWarning>
   )
 }
 

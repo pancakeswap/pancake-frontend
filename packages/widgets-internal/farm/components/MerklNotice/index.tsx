@@ -1,10 +1,10 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Box, Link, Placement, Text, TooltipText, WarningIcon, useTooltip } from "@pancakeswap/uikit";
+import { Box, LinkExternal, Placement, Text, TooltipText, WarningIcon, useTooltip } from "@pancakeswap/uikit";
 import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 
-const InlineLink = styled(Link)`
-  display: inline;
+const InlineLink = styled(LinkExternal)`
+  display: inline-flex;
   margin-left: 4px;
 `;
 
