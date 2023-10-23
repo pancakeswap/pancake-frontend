@@ -3,6 +3,7 @@ import { Box } from '@pancakeswap/uikit'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 
 const StyledDecorations = styled(Box)`
+  display: none;
   position: absolute;
   top: 0;
   left: 50%;
@@ -44,6 +45,10 @@ const StyledDecorations = styled(Box)`
     right: 8%;
     bottom: 0%;
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    display: block;
   }
 }`
 
