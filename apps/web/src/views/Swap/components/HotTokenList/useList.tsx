@@ -23,7 +23,10 @@ export const useTokenHighLightList = () => {
   const { chainId } = useActiveChainId()
   const chainWhiteList = useChainWhiteList(chainId)
   const allTokensFromWhiteList = useTokenDatasSWR(chainWhiteList || [], false)
-  const allTokensFromChain = useAllTokenHighLight(!chainWhiteList, multiChainName[chainId])
+  const allTokensFromChain = useAllTokenHighLight({
+    enable: !chainWhiteList,
+    targetChainName: multiChainName[chainId],
+  })
   const tokenAddresses: string[] = useMemo(
     () => allTokensFromChain?.map(({ address }) => address) || [],
     [allTokensFromChain],
