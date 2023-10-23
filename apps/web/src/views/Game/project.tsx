@@ -109,7 +109,7 @@ export const GameProject = () => {
   const splitInstance = useRef<SplitInstance>()
 
   const [isPaneOpen, setIsPaneOpen] = useState(false)
-  const [onPresentQuickAccessModal] = useModal(gameData && <QuickAccessModal game={gameData} />)
+  const [onPresentQuickAccessModal] = useModal(<QuickAccessModal game={gameData} />, true, true, 'quick-access-modal')
 
   useEffect(() => {
     const threshold = 100
@@ -197,7 +197,7 @@ export const GameProject = () => {
                 height="42px"
                 as={Button}
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-                onClick={(e) => {
+                onMouseDown={(e) => {
                   e.stopPropagation()
                   e.preventDefault()
                   onPresentQuickAccessModal()

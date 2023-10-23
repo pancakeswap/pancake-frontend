@@ -20,9 +20,8 @@ const StyledBackground = styled(Box)`
 
 export const GameHomePage = () => {
   const config = useGamesConfig()
-
-  const latestGame: GameType = useMemo(() => config.slice(0, 1)[0], [config])
-  const otherGames: GameType[] = useMemo(() => config.slice(1), [config])
+  const latestGame: GameType = useMemo(() => config.slice(0, 1)?.[0], [config])
+  const otherGames: GameType[] = useMemo(() => config.slice(1, 5), [config])
 
   return (
     <>
@@ -31,7 +30,7 @@ export const GameHomePage = () => {
       <StyledBackground>
         <Game isLatest game={latestGame} />
       </StyledBackground>
-      {/* <OtherGames /> */}
+      {otherGames.length > 0 && <OtherGames otherGames={otherGames} />}
     </>
   )
 }

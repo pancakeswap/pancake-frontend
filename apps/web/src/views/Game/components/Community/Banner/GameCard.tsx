@@ -1,6 +1,7 @@
 import { Box, BoxProps, Card, Text, Flex, Link, DiscordIcon, TelegramIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
+import { GameType } from '@pancakeswap/games'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -42,49 +43,53 @@ const CircleButton = styled.div`
 `
 
 interface GameCardProps extends BoxProps {
-  id: any // delete
-  imgUrl: string
-  // article?: ArticleDataType
+  game: GameType
 }
 
-export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ id, imgUrl, ...props }) => {
+export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ game, ...props }) => {
   const { t } = useTranslation()
+  const telegram = game?.socialMedia?.telegram ?? ''
+  const discord = game?.socialMedia?.discord ?? ''
 
   return (
     <StyledGameCard {...props}>
       <Card>
         <Box overflow="hidden" height={['134px', '134px', '134px', '134px', '200px']}>
-          <StyledBackgroundImage imgUrl={imgUrl} />
+          <StyledBackgroundImage imgUrl={game.headerImage} />
         </Box>
-        <StyledLogo imgUrl="https://assets.pancakeswap.finance/web/chains/56.png" />
+        <StyledLogo imgUrl={game.projectLogo} />
         <Box padding={['11px', '11px', '11px', '11px', '20px']}>
-          <Text color="textSubtle" mb="8px" bold fontSize={['12px']} lineHeight="120%">
-            Mobox
+          <Text bold mb="8px" lineHeight="120%" color="textSubtle" fontSize={['12px']}>
+            {game.projectName}
           </Text>
-          <Text mb={['16px', '16px', '16px', '16px', '24px']} bold fontSize={['20px']} lineHeight="22px">
-            Pancake Protectors {id}
+          <Text bold fontSize={['20px']} lineHeight="22px" mb={['16px', '16px', '16px', '16px', '24px']}>
+            {game.title}
           </Text>
           <Box>
-            <Flex mb="16px">
-              <Link external href="/">
-                <CircleButton>
-                  <DiscordIcon />
-                </CircleButton>
-                <Text ml="8px" bold style={{ alignSelf: 'center' }}>
-                  {t('Discord')}
-                </Text>
-              </Link>
-            </Flex>
-            <Flex>
-              <Link external href="/">
-                <CircleButton>
-                  <TelegramIcon />
-                </CircleButton>
-                <Text ml="8px" bold style={{ alignSelf: 'center' }}>
-                  {t('Telegram')}
-                </Text>
-              </Link>
-            </Flex>
+            {discord && (
+              <Flex mb="16px">
+                <Link external href={discord}>
+                  <CircleButton>
+                    <DiscordIcon />
+                  </CircleButton>
+                  <Text ml="8px" bold style={{ alignSelf: 'center' }}>
+                    {t('Discord')}
+                  </Text>
+                </Link>
+              </Flex>
+            )}
+            {telegram && (
+              <Flex>
+                <Link external href={telegram}>
+                  <CircleButton>
+                    <TelegramIcon />
+                  </CircleButton>
+                  <Text ml="8px" bold style={{ alignSelf: 'center' }}>
+                    {t('Telegram')}
+                  </Text>
+                </Link>
+              </Flex>
+            )}
           </Box>
         </Box>
       </Card>

@@ -1,5 +1,7 @@
 import { styled } from 'styled-components'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import dayjs from 'dayjs'
+import { GameType } from '@pancakeswap/games'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text, Button, CardHeader, Card } from '@pancakeswap/uikit'
 import { StyledTextLineClamp } from 'views/Game/components/StyledTextLineClamp'
@@ -38,7 +40,8 @@ const StyledCard = styled(Box)<{ picked?: boolean }>`
   }
 `
 
-const StyledContainer = styled(Flex)`
+const StyledSwiper = styled(Swiper)`
+  position: relative;
   max-width: 298px;
   margin: 0 auto 20px auto;
 
@@ -93,58 +96,67 @@ const StyledTag = styled(Button)`
   }
 `
 
-export const Games = () => {
+interface GamesProps {
+  otherGames: GameType[]
+  pickedGameId: string
+  setPickedGameId: (id: string) => void
+}
+
+export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGames, pickedGameId, setPickedGameId }) => {
   const { t } = useTranslation()
   const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
+  const getTime = useCallback((timestamp: number) => {
+    const timeToMilliseconds = timestamp * 1000
+    return dayjs(timeToMilliseconds).format('MM/DD/YYYY')
+  }, [])
+
   return (
-    <StyledContainer>
-      <Swiper
-        slidesPerView={1}
-        spaceBetween={10}
-        onSwiper={setSwiper}
-        navigation={{
-          prevEl: '.prev',
-          nextEl: '.next',
-        }}
-        breakpoints={{
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 34,
-          },
-        }}
-      >
-        {[1, 2].map((i) => (
-          <SwiperSlide key={i}>
-            <StyledCard picked={i === 1}>
-              <Card>
-                <Header imgUrl="/images/ifos/sable-bg.png" />
-                <Box padding="20px">
-                  <StyledTextLineClamp lineClamp={2} bold fontSize={20} lineHeight="110%">
-                    Pancake Mayor Name of the game or promotion title here
-                  </StyledTextLineClamp>
-                  <StyledTextLineClamp lineClamp={3} m="20px 0" fontSize={12} color="textSubtle" lineHeight="120%">
-                    Brief extract Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna alere... 140 character max.
-                  </StyledTextLineClamp>
-                  <Box>
-                    <Text fontSize={12} color="textSubtle" bold>
-                      {t('Publish Date: %date%', { date: 'MM DD, YYYY' })}{' '}
-                    </Text>
-                    <Text fontSize={12} color="textSubtle" bold mb="20px">
-                      {t('Publisher:')}
-                    </Text>
-                    <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
-                      <HorizontalLogo imgUrl="/images/ifos/sable-bg.png" />
-                      <StyledTag scale="xs">Casual</StyledTag>
-                    </Flex>
-                  </Box>
+    <StyledSwiper
+      slidesPerView={1}
+      spaceBetween={10}
+      onSwiper={setSwiper}
+      navigation={{
+        prevEl: '.prev',
+        nextEl: '.next',
+      }}
+      centeredSlides
+      breakpoints={{
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 34,
+        },
+      }}
+    >
+      {otherGames?.map((game) => (
+        <SwiperSlide key={game.id} onClick={() => setPickedGameId(game.id)}>
+          <StyledCard picked={game.id === pickedGameId}>
+            <Card>
+              <Header imgUrl={game.headerImage} />
+              <Box padding="20px">
+                <StyledTextLineClamp lineClamp={2} bold fontSize={20} lineHeight="110%">
+                  {game.title}
+                </StyledTextLineClamp>
+                <StyledTextLineClamp lineClamp={3} m="20px 0" fontSize={12} color="textSubtle" lineHeight="120%">
+                  {game.description}
+                </StyledTextLineClamp>
+                <Box>
+                  <Text fontSize={12} color="textSubtle" bold>
+                    {t('Publish Date: %date%', { date: getTime(game.publishDate) })}
+                  </Text>
+                  <Text fontSize={12} color="textSubtle" bold mb="20px">
+                    {t('Publisher:')}
+                  </Text>
+                  <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
+                    <HorizontalLogo imgUrl={game.projectLogo} />
+                    <StyledTag scale="xs">Casual</StyledTag>
+                  </Flex>
                 </Box>
-              </Card>
-            </StyledCard>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </StyledContainer>
+              </Box>
+            </Card>
+          </StyledCard>
+        </SwiperSlide>
+      ))}
+    </StyledSwiper>
   )
 }

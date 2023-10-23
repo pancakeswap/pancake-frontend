@@ -26,7 +26,7 @@ const StyledModal = styled(Modal)`
 `
 
 interface YoutubeModalProps {
-  youtube: PlaylistData
+  youtube: PlaylistData | undefined
   onDismiss?: () => void
 }
 

@@ -9,10 +9,14 @@ const StyledQuickAccessModal = styled(Box)`
 `
 
 interface QuickAccessModalProps {
-  game: GameType
+  game: GameType | undefined
 }
 
 export const QuickAccessModal: React.FC<React.PropsWithChildren<QuickAccessModalProps>> = ({ game }) => {
+  if (!game) {
+    return null
+  }
+
   return (
     <StyledQuickAccessModal>
       <QuickAccess isOpen game={game} />

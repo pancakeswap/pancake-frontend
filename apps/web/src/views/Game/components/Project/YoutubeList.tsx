@@ -67,7 +67,7 @@ export const YoutubeList: React.FC<React.PropsWithChildren<YoutubeListProps>> = 
   const [pickedYoutubeId, setPickedYoutubeId] = useState('')
 
   const pickedYoutube = useMemo(() => playlist.find((i) => i.videoId === pickedYoutubeId), [playlist, pickedYoutubeId])
-  const [onShowYoutubeModal] = useModal(pickedYoutube && <YoutubeModal youtube={pickedYoutube} />, true, true)
+  const [onShowYoutubeModal] = useModal(<YoutubeModal youtube={pickedYoutube} />, true, true, 'youtube-modal')
 
   const handleClickYoutubeVideo = (youtubeId: string) => {
     setPickedYoutubeId(youtubeId)
