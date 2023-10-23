@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { styled } from 'styled-components'
+import { PostersItemDataType, PostersItemData } from '@pancakeswap/games'
 import { Flex, Box, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit'
-import { CarouselType } from 'views/Game/types'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -121,7 +121,7 @@ const StyledSwiperNavigation = styled(Flex)`
 interface CarouselProps {
   isHorizontal: boolean
   carouselId: number
-  carouselData: Array<any>
+  carouselData: PostersItemData[]
   setCarouselId: (index: number) => void
 }
 
@@ -162,12 +162,12 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
         }}
       >
         {carouselData.map((carousel, index) => (
-          <SwiperSlide key={carousel.imageUrl}>
+          <SwiperSlide key={carousel.image}>
             <StyledCarouselImage
               isActive={carouselId === index}
-              imgUrl={carousel.imageUrl}
+              imgUrl={carousel.image}
               isHorizontal={isHorizontal}
-              isVideo={carousel.type === CarouselType.VIDEO}
+              isVideo={carousel.type === PostersItemDataType.Video}
               onClick={() => setCarouselId(index)}
             />
           </SwiperSlide>

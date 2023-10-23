@@ -1,5 +1,6 @@
 import { styled } from 'styled-components'
 import { Box } from '@pancakeswap/uikit'
+import { GameType } from '@pancakeswap/games'
 import { QuickAccess } from 'views/Game/components/Project/QuickAccess'
 
 const StyledQuickAccessModal = styled(Box)`
@@ -7,10 +8,14 @@ const StyledQuickAccessModal = styled(Box)`
   z-index: ${({ theme }) => theme.zIndices.modal};
 `
 
-export const QuickAccessModal = () => {
+interface QuickAccessModalProps {
+  game: GameType
+}
+
+export const QuickAccessModal: React.FC<React.PropsWithChildren<QuickAccessModalProps>> = ({ game }) => {
   return (
     <StyledQuickAccessModal>
-      <QuickAccess isOpen />
+      <QuickAccess isOpen game={game} />
     </StyledQuickAccessModal>
   )
 }

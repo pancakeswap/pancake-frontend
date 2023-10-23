@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import { Box } from '@pancakeswap/uikit'
-import { CarouselType } from 'views/Game/types'
+import { PostersItemData, PostersItemDataType } from '@pancakeswap/games'
 
 const StyledCarouselContainer = styled(Box)<{ isHorizontal: boolean }>`
   padding: 16px 16px 2px 16px;
@@ -43,13 +43,13 @@ const StyledImage = styled(Box)<{ imgUrl: string; isHorizontal: boolean }>`
 
 interface CarouselViewProps {
   isHorizontal: boolean
-  carouselData: any
+  carouselData: PostersItemData
 }
 
 export const CarouselView: React.FC<React.PropsWithChildren<CarouselViewProps>> = ({ isHorizontal, carouselData }) => {
   return (
     <StyledCarouselContainer isHorizontal={isHorizontal}>
-      {carouselData.type === CarouselType.VIDEO ? (
+      {carouselData.type === PostersItemDataType.Video ? (
         <video
           muted
           autoPlay
@@ -57,12 +57,12 @@ export const CarouselView: React.FC<React.PropsWithChildren<CarouselViewProps>> 
           width="100%"
           height="100%"
           disablePictureInPicture
-          src={carouselData.videoUrl}
-          poster={carouselData.imageUrl}
+          src={carouselData.video}
+          poster={carouselData.image}
           controlsList="nodownload noplaybackrate noremoteplayback"
         />
       ) : (
-        <StyledImage imgUrl={carouselData.imageUrl} isHorizontal={isHorizontal} />
+        <StyledImage imgUrl={carouselData.image} isHorizontal={isHorizontal} />
       )}
     </StyledCarouselContainer>
   )

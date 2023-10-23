@@ -1,5 +1,7 @@
 import { styled } from 'styled-components'
 import { Flex, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { GameType } from '@pancakeswap/games'
 
 const StyledProjectBy = styled(Flex)`
   display: none;
@@ -12,17 +14,19 @@ const StyledProjectBy = styled(Flex)`
   }
 `
 
-export const TextProjectBy = () => {
+interface TextProjectByProps {
+  game: GameType
+}
+
+export const TextProjectBy: React.FC<React.PropsWithChildren<TextProjectByProps>> = ({ game }) => {
+  const { t } = useTranslation()
   return (
     <StyledProjectBy px="24px">
       <Text fontSize="14px" color="textSubtle">
-        GAME NAME
+        {t('Published By')}
       </Text>
-      <Text fontSize="14px" m="0 4px" color="textSubtle">
-        By
-      </Text>
-      <Text fontSize="14px" color="primary">
-        Dev
+      <Text ml="4px" fontSize="14px" color="primary">
+        {game.projectName}
       </Text>
     </StyledProjectBy>
   )
