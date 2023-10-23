@@ -11,6 +11,8 @@ test('exports', () => {
       "getChainName",
       "getLlamaChainName",
       "getChainIdByChainName",
+      "V3_SUBGRAPHS",
+      "V2_SUBGRAPHS",
     ]
   `)
 })
