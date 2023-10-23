@@ -1,15 +1,15 @@
-export interface YoutubeData {
+export interface PlaylistData {
   title: string
-  videoId: string
+  videoId: string // youtube Id
 }
 
-export enum CarouselDataType {
+export enum PostersDataType {
   Image = 'image',
   Video = 'video',
 }
 
-export interface CarouselData {
-  type: CarouselDataType
+export interface PostersData {
+  type: PostersDataType
   imageUrl: string
   videoUrl?: string
 }
@@ -25,8 +25,8 @@ export interface Game {
   headerImageUrl: string
   projectLogoUrl: string
   gameLink: string
-  carouselData: CarouselData[] // Minimum requirements 4
-  youtubeVideo: YoutubeData[] // Minimum requirements 4
+  posters: PostersData[] // Minimum requirements 4
+  playlist: PlaylistData[] // Minimum requirements 4
   socialMedia: {
     telegramUrl?: string
     discordUrl?: string
