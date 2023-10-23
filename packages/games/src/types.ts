@@ -1,4 +1,4 @@
-export interface PlayListData {
+export interface PlaylistData {
   title: string
   videoId: string // Youtube Video Id
 }
@@ -33,7 +33,7 @@ export interface GameType {
     layout: PostersLayout
     items: PostersItemData[] // Minimum requirements 4
   }
-  playList: PlayListData[] // Minimum requirements 4
+  playlist: PlaylistData[] // Minimum requirements 4
   socialMedia: {
     telegram?: string
     discord?: string

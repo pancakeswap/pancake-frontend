@@ -36,7 +36,7 @@ export const example: GameType = {
       },
     ],
   },
-  playList: [
+  playlist: [
     {
       videoId: '--UcFQ64sjY',
       title: 'Pancake Protectors is here! Discover the power of CAKE and perks for Pancake Squads and Bunnies',

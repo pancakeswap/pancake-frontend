@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import { Modal } from '@pancakeswap/uikit'
 import YouTube from 'react-youtube'
-import { PlayListData } from '@pancakeswap/games'
+import { PlaylistData } from '@pancakeswap/games'
 
 const StyledModal = styled(Modal)`
   width: 100%;
@@ -26,7 +26,7 @@ const StyledModal = styled(Modal)`
 `
 
 interface YoutubeModalProps {
-  youtube: PlayListData
+  youtube: PlaylistData
   onDismiss?: () => void
 }
 
