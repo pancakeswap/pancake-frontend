@@ -1,6 +1,6 @@
 export interface PlaylistData {
   title: string
-  videoId: string // youtube Id
+  videoId: string // Youtube Video Id
 }
 
 export enum PostersItemDataType {
