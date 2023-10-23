@@ -1,4 +1,4 @@
-import { Game, PostersDataType } from '../../types'
+import { Game, PostersLayout, PostersItemDataType } from '../../types'
 
 export const example: Game = {
   id: 'example',
@@ -8,32 +8,34 @@ export const example: Game = {
   description:
     'PancakeSwap and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players, as well as CAKE, Pancake Squad, and Bunnies holders.',
   publishDate: 1698044972,
-  isHorizontal: true,
   headerImageUrl: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
   projectLogoUrl: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
   gameLink: 'https://protectors.pancakeswap.finance/',
-  posters: [
-    {
-      type: PostersDataType.Image,
-      imageUrl:
-        'https://cdn.akamai.steamstatic.com/steam/apps/578080/ss_4454f310776c626a76baeca2d05fd82bd17c6ee0.600x338.jpg?t=1694608943',
-    },
-    {
-      type: PostersDataType.Video,
-      imageUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/256962886/movie.293x165.jpg?t=1691652642',
-      videoUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/256962886/movie480_vp9.webm?t=1691652642',
-    },
-    {
-      type: PostersDataType.Video,
-      imageUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/256957737/movie.293x165.jpg?t=1689138251',
-      videoUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/256957737/movie480_vp9.webm?t=1689138251',
-    },
-    {
-      type: PostersDataType.Video,
-      imageUrl:
-        'https://cdn.akamai.steamstatic.com/steam/apps/578080/ss_108e2981889423b057b778cd07ae25ac18406cf1.1920x1080.jpg?t=1694608943',
-    },
-  ],
+  posters: {
+    layout: PostersLayout.Vertical,
+    items: [
+      {
+        type: PostersItemDataType.Image,
+        imageUrl:
+          'https://cdn.akamai.steamstatic.com/steam/apps/578080/ss_4454f310776c626a76baeca2d05fd82bd17c6ee0.600x338.jpg?t=1694608943',
+      },
+      {
+        type: PostersItemDataType.Video,
+        imageUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/256962886/movie.293x165.jpg?t=1691652642',
+        videoUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/256962886/movie480_vp9.webm?t=1691652642',
+      },
+      {
+        type: PostersItemDataType.Video,
+        imageUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/256957737/movie.293x165.jpg?t=1689138251',
+        videoUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/256957737/movie480_vp9.webm?t=1689138251',
+      },
+      {
+        type: PostersItemDataType.Video,
+        imageUrl:
+          'https://cdn.akamai.steamstatic.com/steam/apps/578080/ss_108e2981889423b057b778cd07ae25ac18406cf1.1920x1080.jpg?t=1694608943',
+      },
+    ],
+  },
   playlist: [
     {
       videoId: '--UcFQ64sjY',
