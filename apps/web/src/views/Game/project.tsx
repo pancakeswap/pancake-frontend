@@ -4,12 +4,14 @@ import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { Flex, Box, Button } from '@pancakeswap/uikit'
+import { Flex, Box, Button, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { TabToggle } from 'components/TabToggle'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { useTranslation } from '@pancakeswap/localization'
 import { YoutubeList } from 'views/Game/components/Project/YoutubeList'
 import { TextProjectBy } from 'views/Game/components/Project/TextProjectBy'
+import { QuickAccess } from 'views/Game/components/Project/QuickAccess'
+import { QuickAccessModal } from 'views/Game/components/Project/QuickAccessModal'
 
 const StyledDesktop = styled.div<{ showPhishingBanner: boolean }>`
   display: flex;
@@ -17,7 +19,7 @@ const StyledDesktop = styled.div<{ showPhishingBanner: boolean }>`
     showPhishingBanner ? `calc(100vh - 100px - 84px - 50px)` : `calc(100vh - 100px)`};
 
   ${({ theme }) => theme.mediaQueries.md} {
-    height: ${({ showPhishingBanner }) => (showPhishingBanner ? `calc(100vh - 100px - 70px)` : `calc(100vh - 100px)`)};
+    height: ${({ showPhishingBanner }) => (showPhishingBanner ? `calc(100vh - 100px - 69px)` : `calc(100vh - 100px)`)};
   }
 `
 
@@ -46,10 +48,11 @@ const StyledIframe = styled.iframe`
 `
 
 const Gutter = styled.div<{ isPaneOpen?: boolean }>`
+  position: relative;
+  width: 100%;
   background: ${({ theme }) => theme.card.background};
   cursor: ${({ isPaneOpen }) => (isPaneOpen ? 'row-resize' : 'pointer')};
   height: 24px;
-  position: relative;
 
   &:before {
     background-color: ${({ theme }) => theme.colors.textSubtle};
@@ -65,14 +68,18 @@ const Gutter = styled.div<{ isPaneOpen?: boolean }>`
 `
 
 const ExpandButtonGroup = styled(Flex)`
-  bottom: 24px;
-  left: 32px;
   position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: 50;
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: 24px 24px 0 0;
-  z-index: 50;
+  transform: translateX(-50%);
+
   ${({ theme }) => theme.mediaQueries.lg} {
     display: inline-flex;
+    left: 32px;
+    transform: translateX(0%);
   }
 `
 
@@ -87,7 +94,9 @@ const GRID_TEMPLATE_ROW = '1.2fr 24px 0.55fr'
 export const GameProject = () => {
   const { t } = useTranslation()
   const router = useRouter()
+  const { isDesktop } = useMatchBreakpoints()
   const [showPhishingBanner] = usePhishingBanner()
+  const [onPresentQuickAccessModal] = useModal(<QuickAccessModal />)
 
   const splitWrapperRef = useRef<null | HTMLDivElement>(null)
   const videoRef = useRef<null | HTMLDivElement>(null)
@@ -158,11 +167,10 @@ export const GameProject = () => {
     <StyledDesktop showPhishingBanner={showPhishingBanner}>
       <SplitWrapper ref={splitWrapperRef}>
         <StyledContainer>
-          <StyledIframe ref={iframeRef} id="project-game-iframe" src="https://protectors.pancakeswap.finance/">
+          <StyledIframe ref={iframeRef} src="https://protectors.pancakeswap.finance/">
             {t(`Your browser doesn't support iframe`)}
           </StyledIframe>
         </StyledContainer>
-
         <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} onClick={() => openPane()}>
           <ExpandButtonGroup>
             <TabToggle
@@ -170,29 +178,29 @@ export const GameProject = () => {
               as={Button}
               style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
               isActive
-              // isActive={chartView === PredictionsChartView.TradingView}
               onMouseDown={(e) => {
                 e.stopPropagation()
                 e.preventDefault()
-                // dispatch(setChartView(PredictionsChartView.TradingView))
               }}
             >
-              Playlist title 1
+              {t('Learn More')}
             </TabToggle>
-            <TabToggle
-              as={Button}
-              height="42px"
-              style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-              // isActive={chartView === PredictionsChartView.Chainlink}
-              onMouseDown={(e) => {
-                e.stopPropagation()
-                e.preventDefault()
-                // dispatch(setChartView(PredictionsChartView.Chainlink))
-              }}
-            >
-              Playlist title 2
-            </TabToggle>
+            {!isDesktop && (
+              <TabToggle
+                height="42px"
+                as={Button}
+                style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  onPresentQuickAccessModal()
+                }}
+              >
+                {t('Quick Access')}
+              </TabToggle>
+            )}
           </ExpandButtonGroup>
+          {isDesktop && <QuickAccess />}
           <TextProjectBy />
         </Gutter>
         <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList />}</VideoPane>

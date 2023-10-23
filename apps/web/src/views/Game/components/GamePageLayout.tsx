@@ -5,7 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 
 export const GamePageLayout = ({ children }) => {
   const { t } = useTranslation()
-  const { pathname } = useRouter()
+  const { query, pathname } = useRouter()
 
   const subMenuItems = useMemo(
     () => [
@@ -25,10 +25,14 @@ export const GamePageLayout = ({ children }) => {
     [t],
   )
 
-  const activeSubItem = useMemo(
-    () => subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href,
-    [subMenuItems, pathname],
-  )
+  const activeSubItem = useMemo(() => {
+    // /game/project/${projectId}
+    if (query.projectId) {
+      return `/game`
+    }
+
+    return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href
+  }, [query, subMenuItems, pathname])
 
   return (
     <Box>

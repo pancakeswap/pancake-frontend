@@ -177,7 +177,11 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, i
                   </Link>
                 </Flex>
               </Flex>
-              <Link external href="/" width="100% !important" mb={['32px', '32px', '32px', '32px', '32px', '49px']}>
+              <Link
+                href="/game/project/123"
+                width="100% !important"
+                mb={['32px', '32px', '32px', '32px', '32px', '49px']}
+              >
                 <Button width="100%">
                   <Text bold color="white">
                     {t('Play Now')}
