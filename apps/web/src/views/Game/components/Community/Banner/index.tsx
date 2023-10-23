@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import NextLink from 'next/link'
 import { styled } from 'styled-components'
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { GameType } from '@pancakeswap/games'
 import { Box, Flex, Text, ChevronLeftIcon, ChevronRightIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import 'swiper/css'
 import 'swiper/css/autoplay'
@@ -11,6 +12,7 @@ import type { Swiper as SwiperClass } from 'swiper/types'
 import { Autoplay, Navigation } from 'swiper/modules'
 import { GameCard } from 'views/Game/components/Community/Banner/GameCard'
 import { Decorations } from 'views/Game/components/Decorations'
+import { useGamesConfig } from 'views/Game/hooks/useGamesConfig'
 
 const StyledBackground = styled(Box)`
   position: relative;
@@ -71,18 +73,19 @@ const StyledSwiperContainer = styled(Box)`
   }
 `
 
-const test = [1, 2, 3, 4]
-
 export const Banner = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isDesktop } = useMatchBreakpoints()
   const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
+  const config = useGamesConfig()
+  const games: GameType[] = useMemo(() => config.slice(1, 7), [config])
+
   return (
     <StyledBackground>
       <StyledGradientBg />
-      <Decorations />
+      {games.length > 0 && <Decorations />}
       <Flex
         position="relative"
         zIndex="1"
@@ -102,55 +105,54 @@ export const Banner = () => {
             {t('Every Game, Every Chain, One Destination')}
           </Text>
         </Box>
-        <Flex width="100%">
-          <ArrowButton className="prev" style={{ marginRight: '32px' }}>
-            <ChevronLeftIcon color={theme.colors.textSubtle} />
-          </ArrowButton>
-          <StyledSwiperContainer>
-            <Swiper
-              resizeObserver
-              slidesPerView={1}
-              spaceBetween={16}
-              onSwiper={setSwiper}
-              modules={[Autoplay, Navigation]}
-              autoplay={{
-                delay: 2500,
-                pauseOnMouseEnter: true,
-                disableOnInteraction: false,
-              }}
-              navigation={{
-                prevEl: '.prev',
-                nextEl: '.next',
-              }}
-              breakpoints={{
-                320: {
-                  slidesPerView: 1,
-                },
-                920: {
-                  slidesPerView: 2,
-                },
-                1440: {
-                  slidesPerView: 3,
-                  spaceBetween: 32,
-                },
-              }}
-            >
-              {test.map((introStep) => (
-                <SwiperSlide key={introStep}>
-                  <NextLink passHref href="/">
-                    <GameCard
-                      id={introStep}
-                      imgUrl="https://sgp1.digitaloceanspaces.com/strapi.space/57b10f498f5c9c518308b32a33f11539.jpg"
-                    />
-                  </NextLink>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </StyledSwiperContainer>
-          <ArrowButton className="next" style={{ marginLeft: '32px' }}>
-            <ChevronRightIcon color={theme.colors.textSubtle} />
-          </ArrowButton>
-        </Flex>
+        {games.length > 0 && (
+          <Flex width="100%">
+            <ArrowButton className="prev" style={{ marginRight: '32px' }}>
+              <ChevronLeftIcon color={theme.colors.textSubtle} />
+            </ArrowButton>
+            <StyledSwiperContainer>
+              <Swiper
+                resizeObserver
+                slidesPerView={1}
+                spaceBetween={16}
+                onSwiper={setSwiper}
+                modules={[Autoplay, Navigation]}
+                autoplay={{
+                  delay: 2500,
+                  pauseOnMouseEnter: true,
+                  disableOnInteraction: false,
+                }}
+                navigation={{
+                  prevEl: '.prev',
+                  nextEl: '.next',
+                }}
+                breakpoints={{
+                  320: {
+                    slidesPerView: 1,
+                  },
+                  920: {
+                    slidesPerView: 2,
+                  },
+                  1440: {
+                    slidesPerView: 3,
+                    spaceBetween: 32,
+                  },
+                }}
+              >
+                {games.map((game) => (
+                  <SwiperSlide key={game.id}>
+                    <NextLink passHref href={`/game/project/${game.id}`}>
+                      <GameCard game={game} />
+                    </NextLink>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </StyledSwiperContainer>
+            <ArrowButton className="next" style={{ marginLeft: '32px' }}>
+              <ChevronRightIcon color={theme.colors.textSubtle} />
+            </ArrowButton>
+          </Flex>
+        )}
       </Flex>
     </StyledBackground>
   )

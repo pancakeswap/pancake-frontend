@@ -11,6 +11,8 @@ const StyledQuickAccess = styled(Box)<{ isOpen?: boolean }>`
   bottom: 24px;
   background: ${({ theme }) => theme.colors.input};
   border-radius: ${({ isOpen }) => (isOpen ? '24px' : '24px 24px 0px 0px')};
+  z-index: 50;
+  cursor: pointer;
 `
 
 export const StyledLink = styled(Link)`
@@ -55,7 +57,7 @@ export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = 
 
   return (
     <StyledQuickAccess isOpen={isOpen}>
-      <Flex padding="9px 0" justifyContent="space-between" onClick={toggleExpand}>
+      <Flex padding="9px 0" justifyContent="space-between" onMouseDown={toggleExpand}>
         <Text color="textSubtle" bold>
           {t('Quick Access')}
         </Text>
