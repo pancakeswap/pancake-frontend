@@ -136,7 +136,7 @@ export const usePoolTransactionsSWR = (address: string): Transaction[] | undefin
 
 // Tokens hooks
 
-export const useAllTokenHighLight = (enable: boolean, targetChainName?: MultiChainNameExtend): TokenData[] => {
+export const useAllTokenHighLight = (options: { enable?: boolean; targetChainName?: MultiChainNameExtend }): TokenData[] => {
   const chainNameByQuery = useChainNameByQuery()
   const chainName = targetChainName ?? chainNameByQuery
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
