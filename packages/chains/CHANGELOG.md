@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.3.0
+
+### Minor Changes
+
+- c236a3ee4: Add subgraph endpoints to chains
+
 ## 0.2.0
 
 ### Minor Changes
