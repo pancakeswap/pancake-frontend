@@ -210,7 +210,7 @@ export const GameProject = () => {
           {isDesktop && <QuickAccess game={gameData} />}
           <TextProjectBy game={gameData} />
         </Gutter>
-        <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList playList={gameData.playList} />}</VideoPane>
+        <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList playlist={gameData.playlist} />}</VideoPane>
       </SplitWrapper>
     </StyledDesktop>
   )

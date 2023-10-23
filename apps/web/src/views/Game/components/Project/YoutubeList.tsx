@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 import { Flex, Card, useModal } from '@pancakeswap/uikit'
 import { Youtube } from 'views/Game/components/Project/Youtube'
 import { YoutubeModal } from 'views/Game/components/Project/YoutubeModal'
-import { PlayListData } from '@pancakeswap/games'
+import { PlaylistData } from '@pancakeswap/games'
 
 const StyledYoutubeContainer = styled(Card)`
   width: 100%;
@@ -60,13 +60,13 @@ const StyledContainer = styled(Flex)`
 `
 
 interface YoutubeListProps {
-  playList: PlayListData[]
+  playlist: PlaylistData[]
 }
 
-export const YoutubeList: React.FC<React.PropsWithChildren<YoutubeListProps>> = ({ playList }) => {
+export const YoutubeList: React.FC<React.PropsWithChildren<YoutubeListProps>> = ({ playlist }) => {
   const [pickedYoutubeId, setPickedYoutubeId] = useState('')
 
-  const pickedYoutube = useMemo(() => playList.find((i) => i.videoId === pickedYoutubeId), [playList, pickedYoutubeId])
+  const pickedYoutube = useMemo(() => playlist.find((i) => i.videoId === pickedYoutubeId), [playlist, pickedYoutubeId])
   const [onShowYoutubeModal] = useModal(pickedYoutube && <YoutubeModal youtube={pickedYoutube} />, true, true)
 
   const handleClickYoutubeVideo = (youtubeId: string) => {
@@ -76,7 +76,7 @@ export const YoutubeList: React.FC<React.PropsWithChildren<YoutubeListProps>> = 
 
   return (
     <StyledContainer>
-      {playList.map((youtube) => (
+      {playlist.map((youtube) => (
         <StyledYoutubeContainer key={youtube.videoId}>
           <Youtube youtube={youtube} handleClickYoutubeVideo={handleClickYoutubeVideo} />
         </StyledYoutubeContainer>
