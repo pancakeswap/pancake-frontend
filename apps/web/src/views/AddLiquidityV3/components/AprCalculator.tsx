@@ -158,7 +158,7 @@ export function AprCalculator({
   const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0) || (inverted ? aprAmountB : aprAmountA)
   const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1) || (inverted ? aprAmountA : aprAmountB)
   const [amount0, amount1] = inverted ? [validAmountB, validAmountA] : [validAmountA, validAmountB]
-  const inRange = isPoolTickInRange(pool ?? undefined, tickLower ?? 0, tickUpper ?? 0)
+  const inRange = isPoolTickInRange(pool ?? undefined, tickLower ?? undefined, tickUpper ?? undefined)
   const allTicks = useMemo(
     () =>
       data?.map(
