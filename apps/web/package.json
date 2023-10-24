@@ -56,6 +56,7 @@
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/wagmi": "workspace:*",
+    "@pancakeswap/games": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^7.52.1",

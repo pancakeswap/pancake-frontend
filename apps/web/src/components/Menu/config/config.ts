@@ -23,6 +23,7 @@ import {
 } from 'config/constants/supportChains'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { SUPPORTED_CHAIN_IDS as GAMES_SUPPORTED_CHAINS } from '@pancakeswap/games'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
 export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
@@ -30,7 +31,7 @@ export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: 
 }
 
 const addMenuItemSupported = (item, chainId) => {
-  if (!chainId || !item.supportChainIds) {
+  if (!chainId || !item.supportChainIds || item?.supportChainIds?.length === 0) {
     return item
   }
   if (item.supportChainIds?.includes(chainId)) {
@@ -142,6 +143,8 @@ const config: (
         {
           label: t('Gaming Marketplace'),
           href: '/game',
+          status: { text: t('New'), color: 'success' },
+          supportChainIds: GAMES_SUPPORTED_CHAINS,
         },
         {
           label: t('Prediction (BETA)'),
@@ -163,7 +166,7 @@ const config: (
           href: 'https://protectors.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
-      ],
+      ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
       label: t('NFT'),
