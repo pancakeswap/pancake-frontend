@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import { Flex, Button, Text } from '@pancakeswap/uikit'
-import { Categories } from 'views/Home/types'
 import { useTranslation } from '@pancakeswap/localization'
+import { GameCategoriesType } from 'views/Game/hooks/useGameCategories'
 
 interface CategoriesSelectorProps {
   selected: number
-  categoriesData: Categories[]
+  categoriesData: GameCategoriesType[]
   childMargin: string
   setSelected: (value: number) => void
 }
@@ -14,7 +14,8 @@ export const CategoriesSelector = ({ selected, categoriesData, childMargin, setS
   const { t } = useTranslation()
 
   const allCategories = useMemo(() => {
-    const firstCategories = { id: 0, name: `${t('All')} (${categoriesData.length})` }
+    const total = categoriesData.reduce((subTotal, item) => item.total + subTotal, 0)
+    const firstCategories = { id: 0, total, name: `${t('All')} (${total})` }
     return [firstCategories, ...categoriesData]
   }, [categoriesData, t])
 
@@ -43,9 +44,10 @@ export const CategoriesSelector = ({ selected, categoriesData, childMargin, setS
             width="fit-content"
             padding="0 16px"
             color="textSubtle"
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}
+            m={['0', '0', '0', '0', '0', '0', '36px 0 0 0']}
           >
-            {category.name}
+            {`${category.name} (${category.total})`}
           </Text>
         )
       })}
