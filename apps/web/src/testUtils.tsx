@@ -46,7 +46,9 @@ export function renderWithProvider(
   function Wrapper({ children }) {
     return (
       <RouterContext.Provider value={{ ...mockRouter, ...router }}>
-        <Provider store={store}>{children}</Provider>
+        <Provider store={store} dehydratedState={{}}>
+          {children}
+        </Provider>
       </RouterContext.Provider>
     )
   }
@@ -63,7 +65,7 @@ export const createJotaiWrapper =
   (reduxState = undefined, testAtom, initState = undefined) =>
   ({ children }) =>
     (
-      <Provider store={makeStore(reduxState)}>
+      <Provider store={makeStore(reduxState)} dehydratedState={{}}>
         <JotaiProvider>
           {initState ? <HydrateAtoms initialValues={[[testAtom, initState]]}>{children}</HydrateAtoms> : children}
         </JotaiProvider>
@@ -73,7 +75,11 @@ export const createJotaiWrapper =
 export const createReduxWrapper =
   (initState = undefined) =>
   ({ children }) =>
-    <Provider store={makeStore(initState)}>{children}</Provider>
+    (
+      <Provider store={makeStore(initState)} dehydratedState={{}}>
+        {children}
+      </Provider>
+    )
 
 export const createSWRWrapper =
   (fallbackData = undefined) =>

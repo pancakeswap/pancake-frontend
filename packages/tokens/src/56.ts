@@ -2747,4 +2747,12 @@ export const bscTokens = {
     'Radpie esRDNT',
     'https://radiant.capital/',
   ),
+  fdusd: new ERC20Token(
+    ChainId.BSC,
+    '0xc5f0f7b66764F6ec8C8Dff7BA683102295E16409',
+    18,
+    'FDUSD',
+    'First Digital USD',
+    'https://firstdigitallabs.com/',
+  ),
 }

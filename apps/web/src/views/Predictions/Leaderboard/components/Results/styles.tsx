@@ -1,9 +1,8 @@
 import { Token } from '@pancakeswap/sdk'
 import { Flex, FlexProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useBUSDPrice from 'hooks/useBUSDPrice'
-import { multiplyPriceByAmount } from 'utils/prices'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
 
 export const Row: React.FC<React.PropsWithChildren<FlexProps>> = ({ children, ...props }) => {
   return (
@@ -31,12 +30,11 @@ export const NetWinningsView: React.FC<React.PropsWithChildren<NetWinningsProps 
   textColor = 'text',
   ...props
 }) => {
-  const bnbBusdPrice = useBUSDPrice(token)
-  const value = multiplyPriceByAmount(bnbBusdPrice, Math.abs(amount))
-
+  const tokenPrice = useTokenPrice(token, !!amount)
   if (!amount) {
     return null
   }
+  const value = tokenPrice.multipliedBy(Math.abs(amount)).toNumber()
 
   return (
     <Flex flexDirection="column" alignItems="flex-end" {...props}>

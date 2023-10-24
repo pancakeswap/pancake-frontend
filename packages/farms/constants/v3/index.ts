@@ -12,6 +12,7 @@ import { farmsV3 as polygonZkEVMTestnetFarms } from '../polygonZkEVMTestnet'
 import { farmsV3 as arbFarms } from '../arb'
 import { farmsV3 as lineaFarms } from '../linea'
 import { farmsV3 as baseFarms } from '../base'
+import { farmsV3 as opBnbTestnetFarms } from '../opBnbTestnet'
 
 export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
   [ChainId.ETHEREUM]: ethFarms,
@@ -25,4 +26,5 @@ export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmC
   [ChainId.ARBITRUM_ONE]: arbFarms,
   [ChainId.LINEA]: lineaFarms,
   [ChainId.BASE]: baseFarms,
+  [ChainId.OPBNB_TESTNET]: opBnbTestnetFarms,
 }

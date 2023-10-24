@@ -1,28 +1,30 @@
 import { useEffect, useState } from 'react'
 import isEqual from 'lodash/isEqual'
-import useSWR from 'swr'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { ConnectedBidder } from 'config/constants/types'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { Address } from 'wagmi'
 import { FAST_INTERVAL } from 'config/constants'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useQuery } from '@tanstack/react-query'
 import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account: Address) => {
-  const { data: currentAuctionId = null } = useSWR(
+  const { data: currentAuctionId = null } = useQuery(
     ['farmAuction', 'currentAuctionId'],
     async () => {
       const auctionId = await farmAuctionContract.read.currentAuctionId()
       return Number(auctionId)
     },
-    { refreshInterval: FAST_INTERVAL },
+    {
+      refetchInterval: FAST_INTERVAL,
+    },
   )
 
   const {
     data: { auction: currentAuction, bidders },
     mutate: refreshBidders,
-  } = useFarmAuction(currentAuctionId, { refreshInterval: FAST_INTERVAL })
+  } = useFarmAuction(currentAuctionId, { refetchInterval: FAST_INTERVAL })
   const [connectedBidder, setConnectedBidder] = useState<ConnectedBidder | null>(null)
 
   const farmAuctionContract = useFarmAuctionContract()

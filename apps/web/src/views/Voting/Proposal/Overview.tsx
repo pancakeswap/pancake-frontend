@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
 import Container from 'components/Layout/Container'
 import PageLoader from 'components/Loader/PageLoader'
+import { NextSeo } from 'next-seo'
 import { FetchStatus } from 'config/constants/types'
 import { isCoreProposal } from '../helpers'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
@@ -39,7 +40,11 @@ const Overview = () => {
   const isPageLoading = votesLoadingStatus === FetchStatus.Fetching || proposalLoadingStatus === FetchStatus.Fetching
 
   if (!proposal && error) {
-    return <NotFound />
+    return (
+      <NotFound>
+        <NextSeo title="404" />
+      </NotFound>
+    )
   }
 
   if (isFallback || !proposal) {

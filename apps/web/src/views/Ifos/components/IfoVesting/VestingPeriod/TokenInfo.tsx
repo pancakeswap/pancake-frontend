@@ -6,7 +6,7 @@ import { TokenImage } from 'components/TokenImage'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import useBUSDPrice from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 import Expand from './Expand'
@@ -44,7 +44,7 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, d
     return getBalanceNumber(totalReleaseAmount, token.decimals)
   }, [token, vestingComputeReleasableAmount, basicReleaseAmount])
 
-  const price = useBUSDPrice(token)
+  const price = useStablecoinPrice(token)
   const dollarValueOfToken = multiplyPriceByAmount(price, amountAvailable, token.decimals)
 
   return (

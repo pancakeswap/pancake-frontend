@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest'
-import * as exports from './index'
+import * as exportedNameSpaces from './index'
 
 test('exports', () => {
-  expect(Object.keys(exports)).toMatchInlineSnapshot(`
+  expect(Object.keys(exportedNameSpaces)).toMatchInlineSnapshot(`
     [
       "StableSwap",
       "SmartRouter",
@@ -17,7 +17,6 @@ test('exports', () => {
       "BIPS_BASE",
       "MIN_BNB",
       "BETTER_TRADE_LESS_HOPS_THRESHOLD",
-      "CHAIN_ID_TO_CHAIN_NAME",
       "SMART_ROUTER_ADDRESSES",
       "V2_ROUTER_ADDRESS",
       "STABLE_SWAP_INFO_ADDRESS",
@@ -44,7 +43,7 @@ test('exports', () => {
 })
 
 test('StableSwap exports', () => {
-  expect(Object.keys(exports.StableSwap)).toMatchInlineSnapshot(`
+  expect(Object.keys(exportedNameSpaces.StableSwap)).toMatchInlineSnapshot(`
     [
       "getSwapInput",
       "getSwapInputWithtouFee",
@@ -57,7 +56,7 @@ test('StableSwap exports', () => {
   `)
 })
 test('SmartRouter exports', () => {
-  expect(Object.keys(exports.SmartRouter)).toMatchInlineSnapshot(`
+  expect(Object.keys(exportedNameSpaces.SmartRouter)).toMatchInlineSnapshot(`
     [
       "getBestTrade",
       "v2PoolSubgraphSelection",

@@ -132,4 +132,11 @@ export const mainnetTokens = {
     'Thala Token',
     'https://www.thalalabs.xyz/',
   ),
+  amapt: new Coin(
+    ChainId.MAINNET,
+    '0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::amapt_token::AmnisApt',
+    8,
+    'amAPT',
+    'Amnis Aptos Coin',
+  ),
 }

@@ -31,4 +31,11 @@ export const farmsV3 = defineFarmV3Configs([
     token1: lineaTokens.dai,
     feeAmount: FeeAmount.LOWEST,
   },
+  {
+    pid: 5,
+    lpAddress: '0x85164B6d8a74bA481AB6D02D2C4e779ECCBAF982',
+    token0: lineaTokens.usdc,
+    token1: lineaTokens.axlusdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
 ])

@@ -1,21 +1,13 @@
 // eslint-disable-next-line camelcase
-import { SWRConfig, unstable_serialize } from 'swr'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import TeamPageRouter from 'views/Teams/TeamPageRouter'
 import teams from 'config/constants/teams'
 import { getTeam } from 'state/teams/helpers'
 import { teamsById } from 'utils/teamsById'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 
-const TeamPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return (
-    <SWRConfig
-      value={{
-        fallback,
-      }}
-    >
-      <TeamPageRouter />
-    </SWRConfig>
-  )
+const TeamPage = () => {
+  return <TeamPageRouter />
 }
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -26,6 +18,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const queryClient = new QueryClient()
   const { id } = params
   if (typeof id !== 'string') {
     return {
@@ -42,13 +35,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  const fetchedTeam = await getTeam(idNumber)
+  const fetchedTeam = await queryClient.fetchQuery(['team', id], () => getTeam(idNumber))
+
   if (!fetchedTeam) {
+    await queryClient.prefetchQuery(['team', id], () => teamsById[id])
+
     return {
       props: {
-        fallback: {
-          [unstable_serialize(['team', id])]: teamsById[id],
-        },
+        dehydratedState: dehydrate(queryClient),
       },
       revalidate: 1,
     }
@@ -56,9 +50,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
-      fallback: {
-        [unstable_serialize(['team', id])]: fetchedTeam,
-      },
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: 60 * 60, // 1 hour
   }

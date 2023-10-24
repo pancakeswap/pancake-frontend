@@ -1,5 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Skeleton, Text, useMatchBreakpoints, useModalV2, ScanLink, LinkExternal } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Skeleton,
+  Text,
+  useMatchBreakpoints,
+  useModalV2,
+  ScanLink,
+  LinkExternal,
+  Message,
+  MessageText,
+  InfoFilledIcon,
+} from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -10,7 +21,6 @@ import { styled, css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
-
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { useAccount } from 'wagmi'
@@ -23,6 +33,7 @@ import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAct
 
 const { Multiplier, Liquidity, StakedLiquidity } = FarmWidget.FarmTable
 const { NoPosition } = FarmWidget.FarmV3Table
+const { MerklNotice } = FarmWidget
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -42,6 +53,7 @@ export interface ActionPanelV3Props {
   multiplier: FarmWidget.FarmTableMultiplierProps
   stakedLiquidity: FarmWidget.FarmTableLiquidityProps
   details: V3Farm
+  farm: FarmWidget.FarmTableFarmTokenInfoProps & { version: 3 }
   userDataReady: boolean
   expanded: boolean
   alignLinksToRight?: boolean
@@ -146,9 +158,40 @@ const ActionPanelContainer = ({ expanded, values, infos, children }) => {
   )
 }
 
+const StyleMerklWarning = styled.div`
+  margin-bottom: 24px;
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+`
+
+const MerklWarning: React.FC<{
+  merklLink: string
+}> = ({ merklLink }) => {
+  return (
+    <StyleMerklWarning>
+      <Message variant="warning" icon={<InfoFilledIcon color="#D67E0A" />}>
+        <MessageText>
+          <MerklNotice.Content merklLink={merklLink} linkColor="currentColor" />
+        </MessageText>
+      </Message>
+    </StyleMerklWarning>
+  )
+}
+
 export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   expanded,
   details,
+  farm: farm_,
   multiplier,
   stakedLiquidity,
   alignLinksToRight,
@@ -158,6 +201,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
+  const { merklLink } = farm_
   const farm = details
   const isActive = farm.multiplier !== '0X'
   const lpLabel = useMemo(() => farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, ''), [farm.lpSymbol])
@@ -222,13 +266,17 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={bsc}>
+              <StyledScanLink
+                useBscCoinFallback={typeof chainId !== 'undefined' && ChainLinkSupportChains.includes(chainId)}
+                href={bsc}
+              >
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>
           </>
         }
       >
+        {!isDesktop && merklLink ? <MerklWarning merklLink={merklLink} /> : null}
         {!userDataReady ? (
           <Skeleton height={200} width="100%" />
         ) : account && !hasNoPosition ? (
@@ -276,6 +324,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   )
 
   const infoUrl = useMemo(() => {
+    if (!chainId) return ''
     if (farm.isStable) {
       return `/info${multiChainPaths[chainId]}/pairs/${farm.stableSwapAddress}?type=stableSwap&chain=${CHAIN_QUERY_NAME[chainId]}`
     }
@@ -345,7 +394,10 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink useBscCoinFallback={ChainLinkSupportChains.includes(chainId)} href={bsc}>
+              <StyledScanLink
+                useBscCoinFallback={typeof chainId !== 'undefined' && ChainLinkSupportChains.includes(chainId)}
+                href={bsc}
+              >
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>

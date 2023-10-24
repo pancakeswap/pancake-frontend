@@ -202,11 +202,12 @@ const V3Tag: React.FC<TagProps> = (props) => (
   </Tag>
 );
 
-const V3FeeTag: React.FC<TagProps & { feeAmount: FeeAmount }> = ({ feeAmount, ...props }) => (
-  <Tag variant="secondary" outline {...props}>
-    {feeAmount / 10_000}%
-  </Tag>
-);
+const V3FeeTag: React.FC<TagProps & { feeAmount?: FeeAmount }> = ({ feeAmount, ...props }) =>
+  feeAmount ? (
+    <Tag variant="secondary" outline {...props}>
+      {feeAmount / 10_000}%
+    </Tag>
+  ) : null;
 
 const EthTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   return (

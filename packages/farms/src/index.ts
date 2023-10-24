@@ -9,6 +9,8 @@ import {
   supportedChainIdV3,
   bCakeSupportedChainId,
   FarmV2SupportedChainId,
+  supportedChainId,
+  FarmSupportedChainId,
 } from './const'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './v2/fetchFarmsV2'
 import {
@@ -22,7 +24,14 @@ import {
 } from './fetchFarmsV3'
 import { ComputedFarmConfigV3, FarmV3DataWithPrice } from './types'
 
-export { type FarmV3SupportedChainId, supportedChainIdV3, bCakeSupportedChainId, supportedChainIdV2 }
+export {
+  type FarmV3SupportedChainId,
+  type FarmSupportedChainId,
+  supportedChainIdV3,
+  bCakeSupportedChainId,
+  supportedChainIdV2,
+  supportedChainId,
+}
 
 export function createFarmFetcher(provider: ({ chainId }: { chainId: FarmV2SupportedChainId }) => PublicClient) {
   const fetchFarms = async (

@@ -69,6 +69,8 @@ const LiquidStakingStakePage = () => {
     return null
   }
 
+  const isClient = typeof window === 'object'
+
   return (
     <Page>
       <AppBody mb="24px">
@@ -113,7 +115,11 @@ const LiquidStakingStakePage = () => {
                 tokenAddress={selectedList?.token1?.address}
                 tokenSymbol={outputCurrency?.symbol}
                 tokenDecimals={outputCurrency?.decimals}
-                tokenLogo={undefined}
+                tokenLogo={
+                  isClient
+                    ? `${window?.location?.origin}/images/tokens/${selectedList?.token1?.address}.png`
+                    : undefined
+                }
               />
               <Text color="textSubtle" fontSize="12px" ellipsis>
                 {t('Balance: %balance%', {

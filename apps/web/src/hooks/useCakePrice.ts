@@ -9,12 +9,13 @@ import { FAST_INTERVAL } from 'config/constants'
 import { useQuery } from '@tanstack/react-query'
 
 // for migration to bignumber.js to avoid breaking changes
-export const useCakePrice = () => {
+export const useCakePrice = ({ enabled = true } = {}) => {
   const { data } = useQuery<BigNumber, Error>({
     queryKey: ['cakePrice'],
     queryFn: async () => new BigNumber(await getCakePriceFromOracle()),
     staleTime: FAST_INTERVAL,
     refetchInterval: FAST_INTERVAL,
+    enabled,
   })
   return data ?? BIG_ZERO
 }

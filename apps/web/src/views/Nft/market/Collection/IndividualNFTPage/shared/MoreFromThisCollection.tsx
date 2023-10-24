@@ -90,60 +90,64 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
     },
   )
 
-  let nftsToShow = useMemo(() => {
-    return shuffle(
+  const nftsToShow = useMemo(() => {
+    let shuffled = shuffle(
       allPancakeBunnyNfts
         ? allPancakeBunnyNfts.filter((nft) => nft.name !== currentTokenName)
         : collectionNfts?.filter((nft) => nft.name !== currentTokenName && nft.marketData?.isTradable),
     )
-  }, [allPancakeBunnyNfts, collectionNfts, currentTokenName])
+
+    if (isPBCollection) {
+      // PancakeBunnies should display 1 card per bunny id
+      shuffled = shuffled.reduce((nftArray, current) => {
+        const bunnyId = current.attributes[0].value
+        if (!nftArray.find((nft) => nft.attributes[0].value === bunnyId)) {
+          nftArray.push(current)
+        }
+        return nftArray
+      }, [])
+    }
+    return shuffled.slice(0, 12)
+  }, [allPancakeBunnyNfts, collectionNfts, currentTokenName, isPBCollection])
+
+  const [slidesPerView, maxPageIndex] = useMemo(() => {
+    let slides
+    let extraPages = 1
+    if (isMd) {
+      slides = 2
+    } else if (isLg) {
+      slides = 3
+    } else {
+      slides = 4
+    }
+    if (nftsToShow.length % slides === 0) {
+      extraPages = 0
+    }
+    const maxPage = Math.max(Math.floor(nftsToShow.length / slides) + extraPages, 1)
+    return [slides, maxPage]
+  }, [isMd, isLg, nftsToShow?.length])
 
   if (!nftsToShow || nftsToShow.length === 0) {
     return null
   }
 
-  let slidesPerView = 4
-  let maxPageIndex = 3
-
-  if (isMd) {
-    slidesPerView = 2
-    maxPageIndex = 6
-  }
-
-  if (isLg) {
-    slidesPerView = 3
-    maxPageIndex = 4
-  }
-
-  if (isPBCollection) {
-    // PancakeBunnies should display 1 card per bunny id
-    nftsToShow = nftsToShow.reduce((nftArray, current) => {
-      const bunnyId = current.attributes[0].value
-      if (!nftArray.find((nft) => nft.attributes[0].value === bunnyId)) {
-        nftArray.push(current)
-      }
-      return nftArray
-    }, [])
-  }
-  nftsToShow = nftsToShow.slice(0, 12)
-
   const nextSlide = () => {
     if (activeIndex < maxPageIndex - 1) {
       setActiveIndex((index) => index + 1)
-      swiperRef.slideNext()
+      swiperRef?.slideNext()
     }
   }
 
   const previousSlide = () => {
     if (activeIndex > 0) {
       setActiveIndex((index) => index - 1)
-      swiperRef.slidePrev()
+      swiperRef?.slidePrev()
     }
   }
 
   const goToSlide = (index: number) => {
     setActiveIndex(index / slidesPerView)
-    swiperRef.slideTo(index)
+    swiperRef?.slideTo(index)
   }
 
   const updateActiveIndex = ({ activeIndex: newActiveIndex }) => {
