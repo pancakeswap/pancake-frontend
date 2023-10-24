@@ -2,11 +2,11 @@ import { styled } from 'styled-components'
 import { Address } from 'viem'
 import { SpaceProps } from 'styled-system'
 import { PropsWithChildren, memo, useMemo } from 'react'
-import { FlexProps, Flex, ScanLink, PlayCircleOutlineIcon } from '@pancakeswap/uikit'
+import { FlexProps, Flex, ScanLink } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
-import { MANAGER, baseManagers, BaseManager } from '@pancakeswap/position-managers'
+import { MANAGER } from '@pancakeswap/position-managers'
 
 import { getBlockExploreLink } from 'utils'
 
@@ -41,17 +41,17 @@ export const VaultLinks = memo(function VaultLinks({
   layout = 'column',
   managerInfoUrl,
   strategyInfoUrl,
-  projectVaultUrl,
+  // projectVaultUrl,
   managerAddress,
   vaultAddress,
-  manager,
+  // manager,
   children,
   ...props
 }: PropsWithChildren<Props>) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
 
-  const managerInfo: BaseManager = useMemo(() => baseManagers[manager.id], [manager])
+  // const managerInfo: BaseManager = useMemo(() => baseManagers[manager.id], [manager])
 
   const useBscCoinFallback = useMemo(() => (chainId ? LinkSupportChains.includes(chainId) : false), [chainId])
 
@@ -72,11 +72,11 @@ export const VaultLinks = memo(function VaultLinks({
       >
         {t('View Vault Contract')}
       </StyledScanLink>
-      {projectVaultUrl && managerInfo && (
+      {/* {projectVaultUrl && managerInfo && (
         <StyledScanLink href={projectVaultUrl} icon={<PlayCircleOutlineIcon />}>
           {t('View Vault on %managerName%', { managerName: managerInfo.name })}
         </StyledScanLink>
-      )}
+      )} */}
       {children}
     </LinkContainer>
   )
