@@ -61,6 +61,7 @@ const config = {
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
     '@pancakeswap/widgets-internal',
+    '@pancakeswap/games',
   ],
   reactStrictMode: true,
   swcMinify: true,
