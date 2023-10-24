@@ -1,8 +1,7 @@
-import { Percent } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 
-import { ManagerFeeType, Strategy, VaultConfig } from '../../types'
+import { Strategy, VaultConfig } from '../../types'
 import { MANAGER } from '../managers'
 
 export const vaults: VaultConfig[] = [
@@ -11,16 +10,11 @@ export const vaults: VaultConfig[] = [
     name: 'BRIL',
     address: '0xF8C4d24Af47cBD87E3C8Cc368fcd7e3cd2a13083',
     adapterAddress: '0x6F34909c663e6E6dA32b73f0aa5aD7bdABf21a63',
-    lpAddress: '0x0Def612e7a7b51ca7Ee38f7905dA809BD3491268',
     currencyA: bscTokens.cake,
     currencyB: bscTokens.usdt,
     earningToken: bscTokens.cake,
     feeTier: FeeAmount.MEDIUM,
     strategy: Strategy.YIELD_IQ,
-    managerFee: {
-      type: ManagerFeeType.LP_REWARDS,
-      rate: new Percent(1, 100),
-    },
     manager: MANAGER.BRIL,
     isSingleDepositToken: true,
     allowDepositToken0: true,
@@ -35,16 +29,11 @@ export const vaults: VaultConfig[] = [
     name: 'BRIL',
     address: '0x799Ea58D15429fa7C42cc211e2181FD4EF54ec37',
     adapterAddress: '0x443454bd4916E84EB3de7b50F4D7f6B384E72457',
-    lpAddress: '0x553A31Bb23218a10FF1fFE6492f0D3C71fb88D24',
     currencyA: bscTokens.usdt,
     currencyB: bscTokens.wbnb,
     earningToken: bscTokens.cake,
     feeTier: FeeAmount.LOW,
     strategy: Strategy.YIELD_IQ,
-    managerFee: {
-      type: ManagerFeeType.LP_REWARDS,
-      rate: new Percent(1, 100),
-    },
     manager: MANAGER.BRIL,
     isSingleDepositToken: true,
     allowDepositToken0: true,
@@ -59,16 +48,11 @@ export const vaults: VaultConfig[] = [
     name: 'BRIL',
     address: '0xCd03B3757BC956e312F639dA1661d18DB7e72ED7',
     adapterAddress: '0x2cFE4c59286D06630eA9f6Da8b2887BaC1AD9c4C',
-    lpAddress: '0x8f22d7B80446F1dc4C5eb47F2038e17CA0306e0D',
     currencyA: bscTokens.cake,
     currencyB: bscTokens.wbnb,
     earningToken: bscTokens.cake,
     feeTier: FeeAmount.MEDIUM,
     strategy: Strategy.YIELD_IQ,
-    managerFee: {
-      type: ManagerFeeType.LP_REWARDS,
-      rate: new Percent(1, 100),
-    },
     manager: MANAGER.BRIL,
     isSingleDepositToken: true,
     allowDepositToken0: false,
@@ -83,16 +67,11 @@ export const vaults: VaultConfig[] = [
     name: 'BRIL',
     address: '0x2044bCaaDa8370b4ee8Ad47DaAD290B80878D068',
     adapterAddress: '0x259C5a1f3482C3988c546745A876E3f1017533df',
-    lpAddress: '0x585374f0502B8E2814e5A3eB16B06DB964610b77',
     currencyA: bscTokens.usdt,
     currencyB: bscTokens.btcb,
     earningToken: bscTokens.cake,
     feeTier: FeeAmount.LOW,
     strategy: Strategy.YIELD_IQ,
-    managerFee: {
-      type: ManagerFeeType.LP_REWARDS,
-      rate: new Percent(1, 100),
-    },
     manager: MANAGER.BRIL,
     isSingleDepositToken: true,
     allowDepositToken0: false,
@@ -107,16 +86,11 @@ export const vaults: VaultConfig[] = [
     name: 'BRIL',
     address: '0x819c1C2FeF70Eb45919Ce7c7936cC0da95E30A33',
     adapterAddress: '0x0CD23a6DcDF86535dF5b160E0adc0C7C46f80BaC',
-    lpAddress: '0x4005A85F68f307cD97e23F7710162E1eBE6139Ac',
     currencyA: bscTokens.cake,
     currencyB: bscTokens.btcb,
     earningToken: bscTokens.cake,
     feeTier: FeeAmount.LOW,
     strategy: Strategy.YIELD_IQ,
-    managerFee: {
-      type: ManagerFeeType.LP_REWARDS,
-      rate: new Percent(1, 100),
-    },
     manager: MANAGER.BRIL,
     isSingleDepositToken: true,
     allowDepositToken0: false,
@@ -130,16 +104,11 @@ export const vaults: VaultConfig[] = [
     name: 'BRIL',
     address: '0x7216B5ae51a459Add75Dc3d0f1B030996da82aE0',
     adapterAddress: '0xdE4810cF706F2df6a4Ab063D7008a575Fb2B6c4C',
-    lpAddress: '0x17A39482e7f42ebB0f65d2978dcB1423E399D07a',
     currencyA: bscTokens.cake,
     currencyB: bscTokens.eth,
     earningToken: bscTokens.cake,
     feeTier: FeeAmount.LOW,
     strategy: Strategy.YIELD_IQ,
-    managerFee: {
-      type: ManagerFeeType.LP_REWARDS,
-      rate: new Percent(1, 100),
-    },
     manager: MANAGER.BRIL,
     isSingleDepositToken: true,
     allowDepositToken0: false,

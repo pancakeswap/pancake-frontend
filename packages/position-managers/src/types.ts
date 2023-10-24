@@ -99,7 +99,6 @@ export interface DuoTokenVault {
   // It can be used to sort the managed positions on fe
   id: number
   name: string
-  lpAddress?: Address
   adapterAddress: Address
   currencyA: Currency
   currencyB: Currency
@@ -107,7 +106,6 @@ export interface DuoTokenVault {
   feeTier: FeeAmount
   manager: PositionManager
   strategy: Strategy
-  managerFee: ManagerFee
   isSingleDepositToken: boolean
   allowDepositToken0?: boolean
   allowDepositToken1?: boolean

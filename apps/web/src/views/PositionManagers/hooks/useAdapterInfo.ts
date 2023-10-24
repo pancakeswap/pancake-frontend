@@ -14,38 +14,70 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   token1PerShare: bigint
   precision: bigint
   totalSupply: bigint
+  managerFeePercentage: Percent
+  vaultAddress: Address
+  managerAddress: Address
 } | null> {
-  const [totalSupplyData, tokenPerShareData, PRECISIONData] = await publicClient({ chainId }).multicall({
-    contracts: [
-      {
-        address,
-        functionName: 'totalSupply',
-        abi: positionManagerAdapterABI,
-      },
-      {
-        address,
-        functionName: 'tokenPerShare',
-        abi: positionManagerAdapterABI,
-      },
-      {
-        address,
-        functionName: 'PRECISION',
-        abi: positionManagerAdapterABI,
-      },
-    ],
-  })
+  const [totalSupplyData, tokenPerShareData, PRECISIONData, managerFeeData, vaultAddressData, managerAddressData] =
+    await publicClient({
+      chainId,
+    }).multicall({
+      contracts: [
+        {
+          address,
+          functionName: 'totalSupply',
+          abi: positionManagerAdapterABI,
+        },
+        {
+          address,
+          functionName: 'tokenPerShare',
+          abi: positionManagerAdapterABI,
+        },
+        {
+          address,
+          functionName: 'PRECISION',
+          abi: positionManagerAdapterABI,
+        },
+        {
+          address,
+          functionName: 'managerFee',
+          abi: positionManagerAdapterABI,
+        },
+        {
+          address,
+          functionName: 'vault',
+          abi: positionManagerAdapterABI,
+        },
+        {
+          address,
+          functionName: 'manager',
+          abi: positionManagerAdapterABI,
+        },
+      ],
+    })
 
-  if (!totalSupplyData.result || !tokenPerShareData.result || !PRECISIONData) return null
+  if (
+    !totalSupplyData?.result ||
+    !tokenPerShareData?.result ||
+    !PRECISIONData?.result ||
+    (!managerFeeData?.result && managerFeeData?.result !== 0n) ||
+    !vaultAddressData?.result ||
+    !managerAddressData?.result
+  )
+    return null
 
-  const [totalSupply, tokenPerShare, PRECISION] = [
+  const [totalSupply, tokenPerShare, PRECISION, managerFee, vaultAddress, managerAddress] = [
     totalSupplyData.result,
     tokenPerShareData.result,
     PRECISIONData.result,
+    managerFeeData.result,
+    vaultAddressData.result,
+    managerAddressData.result,
   ]
-
   const precision = PRECISION ?? BigInt(0)
   const token0Amounts = (totalSupply * tokenPerShare[0]) / precision
   const token1Amounts = (totalSupply * tokenPerShare[1]) / precision
+  const managerFeePercentage = new Percent(Number((managerFee * 100n) / precision), 10000)
 
   return {
     token0Amounts,
@@ -54,16 +86,19 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
     token1PerShare: tokenPerShare[1],
     precision,
     totalSupply,
+    managerFeePercentage,
+    vaultAddress,
+    managerAddress,
   }
 }
 
 export const useAdapterTokensAmounts = (adapterAddress: Address) => {
   const { chainId } = useActiveChainId()
   const { data, refetch } = useQuery(
-    ['AdapterTokensAmounts', adapterAddress],
+    ['AdapterTokensAmounts', adapterAddress, chainId],
     () => getAdapterTokensAmounts({ address: adapterAddress, chainId }),
     {
-      enabled: !!adapterAddress,
+      enabled: !!adapterAddress && !!chainId,
       refetchInterval: 3000,
       staleTime: 3000,
       cacheTime: 3000,
@@ -135,6 +170,10 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
     totalSupplyAmounts: poolAmounts?.totalSupply,
     userLpAmounts: userAmounts?.[0],
     precision: poolAmounts?.precision,
+    adapterAddress: staticData?.adapterAddress,
+    vaultAddress: poolAmounts?.vaultAddress,
+    managerFeePercentage: poolAmounts?.managerFeePercentage,
+    managerAddress: poolAmounts?.managerAddress,
   }
 }
 
@@ -158,8 +197,11 @@ export async function getWrapperStaticData({ address, chainId }): Promise<{
   startTimestamp: string
   endTimestamp: string
   rewardPerSecond: string
+  adapterAddress: Address
 } | null> {
-  const [startTimestampData, endTimestampData, rewardPerSecondData] = await publicClient({ chainId }).multicall({
+  const [startTimestampData, endTimestampData, rewardPerSecondData, adapterAddrData] = await publicClient({
+    chainId,
+  }).multicall({
     contracts: [
       {
         address,
@@ -176,20 +218,28 @@ export async function getWrapperStaticData({ address, chainId }): Promise<{
         functionName: 'rewardPerSecond',
         abi: positionManagerWrapperABI,
       },
+      {
+        address,
+        functionName: 'adapterAddr',
+        abi: positionManagerWrapperABI,
+      },
     ],
   })
 
-  if (!startTimestampData.result || !endTimestampData.result || !rewardPerSecondData) return null
+  if (!startTimestampData.result || !endTimestampData.result || !rewardPerSecondData.result || !adapterAddrData.result)
+    return null
 
-  const [startTimestamp, endTimestamp, rewardPerSecond] = [
+  const [startTimestamp, endTimestamp, rewardPerSecond, adapterAddress] = [
     startTimestampData.result,
     endTimestampData.result,
     rewardPerSecondData.result,
+    adapterAddrData.result,
   ]
 
   return {
     startTimestamp: startTimestamp.toString(),
     endTimestamp: endTimestamp.toString(),
     rewardPerSecond: rewardPerSecond?.toString() ?? '',
+    adapterAddress,
   }
 }

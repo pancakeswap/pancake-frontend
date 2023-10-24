@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BaseAssets, ManagerFee } from '@pancakeswap/position-managers'
-import { Currency, Price } from '@pancakeswap/sdk'
+import { BaseAssets } from '@pancakeswap/position-managers'
+import { Currency, Price, Percent } from '@pancakeswap/sdk'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { Box, RowBetween, Text } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
@@ -29,7 +29,7 @@ export interface VaultInfoProps extends SpaceProps {
   // price of the current pool
   price?: Price<Currency, Currency>
 
-  managerFee?: ManagerFee
+  managerFee?: Percent
   poolToken0Amount?: bigint
   poolToken1Amount?: bigint
   token0PriceUSD?: number
@@ -91,7 +91,7 @@ export const VaultInfo = memo(function VaultInfo({
       )}
       <RowBetween>
         <InfoText>{t('Manager Fee')}:</InfoText>
-        <InfoText>{`${managerFee?.rate.numerator}`}%</InfoText>
+        <InfoText>{`${managerFee?.numerator}`}%</InfoText>
       </RowBetween>
     </Box>
   )

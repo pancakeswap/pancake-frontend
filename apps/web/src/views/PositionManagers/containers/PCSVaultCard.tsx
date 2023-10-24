@@ -34,7 +34,6 @@ export const PCSVaultCard = memo(function PCSVaultCard({
   const { vault } = usePCSVault({ config })
   const {
     id,
-    lpAddress,
     currencyA,
     currencyB,
     earningToken,
@@ -43,7 +42,6 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     feeTier,
     autoFarm,
     manager,
-    managerFee,
     address,
     adapterAddress,
     isSingleDepositToken,
@@ -97,10 +95,10 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     return {
       isLoading,
       info: data?.length
-        ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === lpAddress?.toLowerCase())
+        ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
         : undefined,
     }
-  }, [lpAddress, aprDataList])
+  }, [info.vaultAddress, aprDataList])
 
   const { earningUsdValue } = useEarningTokenPriceInfo(earningToken, info?.pendingReward)
 
@@ -160,7 +158,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       feeTier={feeTier}
       autoFarm={autoFarm}
       manager={managerInfo}
-      managerFee={managerFee}
+      managerFee={info?.managerFeePercentage}
       ratio={tokenRatio ?? 1}
       isSingleDepositToken={isSingleDepositToken}
       allowDepositToken0={allowDepositToken0}
@@ -174,7 +172,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       poolToken1Amount={info?.poolToken1Amounts}
       pendingReward={info?.pendingReward}
       userVaultPercentage={info?.userVaultPercentage}
-      vaultAddress={adapterAddress ?? '0x'}
+      managerAddress={info?.managerAddress ?? '0x'}
       managerInfoUrl={managerInfoUrl}
       strategyInfoUrl={strategyInfoUrl}
       projectVaultUrl={projectVaultUrl}

@@ -1,4 +1,4 @@
-import { MANAGER, ManagerFee, Strategy } from '@pancakeswap/position-managers'
+import { MANAGER, Strategy } from '@pancakeswap/position-managers'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import { Currency, Percent, Price, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -39,7 +39,7 @@ interface Props {
     id: MANAGER
     name: string
   }
-  managerFee: ManagerFee
+  managerFee?: Percent
   autoFarm?: boolean
   autoCompound?: boolean
   info?: ReactNode
@@ -55,7 +55,7 @@ interface Props {
   token1PriceUSD?: number
   pendingReward: bigint | undefined
   userVaultPercentage?: Percent
-  vaultAddress: Address
+  managerAddress: Address
   managerInfoUrl: string
   strategyInfoUrl: string
   projectVaultUrl?: string
@@ -98,7 +98,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   token1PriceUSD,
   pendingReward,
   userVaultPercentage,
-  vaultAddress,
   managerInfoUrl,
   strategyInfoUrl,
   projectVaultUrl,
@@ -111,6 +110,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   userLpAmounts,
   totalSupplyAmounts,
   precision,
+  managerAddress,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -212,8 +212,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           <VaultLinks
             mt="0.5em"
             manager={manager}
-            vaultAddress={vaultAddress}
-            managerAddress={contractAddress}
+            vaultAddress={contractAddress}
+            managerAddress={managerAddress}
             managerInfoUrl={managerInfoUrl}
             strategyInfoUrl={strategyInfoUrl}
             projectVaultUrl={projectVaultUrl}
