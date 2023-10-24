@@ -5,6 +5,7 @@ import { Button, Flex, LinkExternal, ModalV2, RowBetween, Text, useToast } from 
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
 import { CurrencyInput } from 'components/CurrencyInput'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
@@ -104,6 +105,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
   const { t } = useTranslation()
+  const { account, chain } = useWeb3React()
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
 
   const onInputChange = useCallback(
@@ -185,6 +187,11 @@ export const AddLiquidity = memo(function AddLiquidity({
     [],
   )
 
+  const onDone = useCallback(() => {
+    onDismiss?.()
+    refetch?.()
+  }, [onDismiss, refetch])
+
   const disabled = useMemo(() => {
     const balanceAmountMoreThenValueA =
       allowDepositToken0 &&
@@ -201,106 +208,6 @@ export const AddLiquidity = memo(function AddLiquidity({
     )
   }, [allowDepositToken0, allowDepositToken1, amountA, amountB, userCurrencyBalances])
 
-  return (
-    <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
-      <StyledModal title={t('Add Liquidity')}>
-        <RowBetween>
-          <Text color="textSubtle">{t('Adding')}:</Text>
-          <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-            <Text color="text" bold>
-              {tokenPairName}
-            </Text>
-            <Text color="text" ml="0.25em">
-              {vaultName}
-            </Text>
-            <FeeTag feeAmount={feeTier} ml="0.25em" />
-          </Flex>
-        </RowBetween>
-        {allowDepositToken0 && (
-          <Flex mt="1em">
-            <StyledCurrencyInput
-              value={valueA}
-              currency={currencyA}
-              balance={userCurrencyBalances.token0Balance}
-              balanceText={displayBalanceText(userCurrencyBalances?.token0Balance)}
-              onChange={onCurrencyAChange}
-            />
-          </Flex>
-        )}
-        {allowDepositToken1 && (
-          <Flex mt="1em">
-            <StyledCurrencyInput
-              value={valueB}
-              currency={currencyB}
-              balance={userCurrencyBalances.token1Balance}
-              balanceText={displayBalanceText(userCurrencyBalances?.token1Balance)}
-              onChange={onCurrencyBChange}
-            />
-          </Flex>
-        )}
-        <Flex mt="1.5em" flexDirection="column">
-          {/* <RowBetween>
-            <Text color="text">{t('Your share in the vault')}:</Text>
-            <Text color="text">{`${userVaultPercentage?.toFixed(2)}%`}</Text>
-          </RowBetween> */}
-          <RowBetween>
-            <Text color="text">{t('APR')}:</Text>
-            <AprButton
-              id={id}
-              apr={apr}
-              isAprLoading={aprDataInfo.isLoading}
-              lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
-              totalAssetsInUsd={totalAssetsInUsd}
-              userLpAmounts={userLpAmounts}
-              totalSupplyAmounts={totalSupplyAmounts}
-              precision={precision}
-            />
-          </RowBetween>
-        </Flex>
-        {isSingleDepositToken && <SingleTokenWarning />}
-        <DYORWarning manager={manager} />
-        <Flex mt="1.5em" flexDirection="column">
-          <AddLiquidityButton
-            amountA={allowDepositToken0 ? amountA : undefined}
-            amountB={allowDepositToken1 ? amountB : undefined}
-            contractAddress={contractAddress}
-            disabled={disabled}
-            onDone={() => {
-              onDismiss?.()
-              refetch?.()
-            }}
-          />
-        </Flex>
-      </StyledModal>
-    </ModalV2>
-  )
-})
-
-interface AddLiquidityButtonProps {
-  amountA: CurrencyAmount<Currency> | undefined
-  amountB: CurrencyAmount<Currency> | undefined
-  contractAddress: `0x${string}`
-  disabled?: boolean
-  onDone?: () => void
-}
-
-export const AddLiquidityButton = memo(function AddLiquidityButton({
-  amountA,
-  amountB,
-  contractAddress,
-  disabled,
-  onDone,
-}: AddLiquidityButtonProps) {
-  const { t } = useTranslation()
-  const { account, chain } = useWeb3React()
-  const { approvalState: approvalStateToken0, approveCallback: approveCallbackToken0 } = useApproveCallback(
-    amountA,
-    contractAddress,
-  )
-  const { approvalState: approvalStateToken1, approveCallback: approveCallbackToken1 } = useApproveCallback(
-    amountB,
-    contractAddress,
-  )
   const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
@@ -320,9 +227,116 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
           {t('Your funds have been staked in position manager.')}
         </ToastDescriptionWithTx>,
       )
-      onDone?.()
+      onDone()
     }
-  }, [amountA, amountB, positionManagerWrapperContract, account, chain, toastSuccess, t, onDone, fetchWithCatchTxError])
+  }, [amountA, amountB, positionManagerWrapperContract, account, chain, toastSuccess, t, fetchWithCatchTxError, onDone])
+
+  return (
+    <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
+      <StyledModal title={pendingTx ? t('Pending Confirm') : t('Add Liquidity')}>
+        {pendingTx ? (
+          <ConfirmationPendingContent pendingText={t('Add Liquidity')} />
+        ) : (
+          <>
+            <RowBetween>
+              <Text color="textSubtle">{t('Adding')}:</Text>
+              <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
+                <Text color="text" bold>
+                  {tokenPairName}
+                </Text>
+                <Text color="text" ml="0.25em">
+                  {vaultName}
+                </Text>
+                <FeeTag feeAmount={feeTier} ml="0.25em" />
+              </Flex>
+            </RowBetween>
+            {allowDepositToken0 && (
+              <Flex mt="1em">
+                <StyledCurrencyInput
+                  value={valueA}
+                  currency={currencyA}
+                  balance={userCurrencyBalances.token0Balance}
+                  balanceText={displayBalanceText(userCurrencyBalances?.token0Balance)}
+                  onChange={onCurrencyAChange}
+                />
+              </Flex>
+            )}
+            {allowDepositToken1 && (
+              <Flex mt="1em">
+                <StyledCurrencyInput
+                  value={valueB}
+                  currency={currencyB}
+                  balance={userCurrencyBalances.token1Balance}
+                  balanceText={displayBalanceText(userCurrencyBalances?.token1Balance)}
+                  onChange={onCurrencyBChange}
+                />
+              </Flex>
+            )}
+            <Flex mt="1.5em" flexDirection="column">
+              {/* <RowBetween>
+            <Text color="text">{t('Your share in the vault')}:</Text>
+            <Text color="text">{`${userVaultPercentage?.toFixed(2)}%`}</Text>
+          </RowBetween> */}
+              <RowBetween>
+                <Text color="text">{t('APR')}:</Text>
+                <AprButton
+                  id={id}
+                  apr={apr}
+                  isAprLoading={aprDataInfo.isLoading}
+                  lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
+                  totalAssetsInUsd={totalAssetsInUsd}
+                  userLpAmounts={userLpAmounts}
+                  totalSupplyAmounts={totalSupplyAmounts}
+                  precision={precision}
+                />
+              </RowBetween>
+            </Flex>
+            {isSingleDepositToken && <SingleTokenWarning />}
+            <DYORWarning manager={manager} />
+            <Flex mt="1.5em" flexDirection="column">
+              <AddLiquidityButton
+                amountA={allowDepositToken0 ? amountA : undefined}
+                amountB={allowDepositToken1 ? amountB : undefined}
+                contractAddress={contractAddress}
+                disabled={disabled}
+                onAddLiquidity={mintThenDeposit}
+                isLoading={pendingTx}
+              />
+            </Flex>
+          </>
+        )}
+      </StyledModal>
+    </ModalV2>
+  )
+})
+
+interface AddLiquidityButtonProps {
+  amountA: CurrencyAmount<Currency> | undefined
+  amountB: CurrencyAmount<Currency> | undefined
+  contractAddress: `0x${string}`
+  disabled?: boolean
+  onAddLiquidity?: () => void
+  isLoading?: boolean
+}
+
+export const AddLiquidityButton = memo(function AddLiquidityButton({
+  amountA,
+  amountB,
+  contractAddress,
+  disabled,
+  onAddLiquidity,
+  isLoading,
+}: AddLiquidityButtonProps) {
+  const { t } = useTranslation()
+
+  const { approvalState: approvalStateToken0, approveCallback: approveCallbackToken0 } = useApproveCallback(
+    amountA,
+    contractAddress,
+  )
+  const { approvalState: approvalStateToken1, approveCallback: approveCallbackToken1 } = useApproveCallback(
+    amountB,
+    contractAddress,
+  )
 
   const showAmountButtonA = useMemo(
     () => amountA && approvalStateToken0 === ApprovalState.NOT_APPROVED,
@@ -367,9 +381,9 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
         mt="0.5em"
         width="100%"
         variant="primary"
-        isLoading={pendingTx}
+        isLoading={isLoading}
         disabled={isConfirmButtonDisabled}
-        onClick={mintThenDeposit}
+        onClick={onAddLiquidity}
       >
         {t('Confirm')}
       </Button>

@@ -1,23 +1,23 @@
-import { memo, useMemo, useState, useCallback } from 'react'
-import { Address } from 'viem'
-import { ModalV2, RowBetween, Text, Flex, Button, Box, useToast } from '@pancakeswap/uikit'
-import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import type { AtomBoxProps } from '@pancakeswap/uikit'
+import { Box, Button, Flex, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { ConfirmationPendingContent, CurrencyLogo } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
-import type { AtomBoxProps } from '@pancakeswap/uikit'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { SpaceProps } from 'styled-system'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
-import { ToastDescriptionWithTx } from 'components/Toast'
+import { memo, useCallback, useMemo, useState } from 'react'
+import { SpaceProps } from 'styled-system'
+import { Address } from 'viem'
 
-import { StyledModal } from './StyledModal'
-import { FeeTag } from './Tags'
 import { InnerCard } from './InnerCard'
 import { PercentSlider } from './PercentSlider'
+import { StyledModal } from './StyledModal'
+import { FeeTag } from './Tags'
 
 interface Props {
   isOpen?: boolean
@@ -91,28 +91,39 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
-      <StyledModal title={t('Remove Liquidity')}>
-        <RowBetween>
-          <Text color="textSubtle">{t('Removing')}:</Text>
-          <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-            <Text color="text" bold>
-              {tokenPairName}
-            </Text>
-            <Text color="text" ml="0.25em">
-              {vaultName}
-            </Text>
-            <FeeTag feeAmount={feeTier} ml="0.25em" />
-          </Flex>
-        </RowBetween>
-        <InnerCard>
-          <CurrencyAmountDisplay currency={currencyA} amount={amountA} priceUSD={token0PriceUSD} />
-          <CurrencyAmountDisplay currency={currencyB} mt="8px" amount={amountB} priceUSD={token1PriceUSD} />
-        </InnerCard>
-        <PercentSlider percent={percent} onChange={setPercent} mt="1em" />
-        <RemoveLiquidityButton mt="1.5em" onClick={withdrawThenBurn} isLoading={pendingTx} disabled={percent <= 0} />
-        <Text mt="24px" lineHeight="1.2" fontSize="12px" textAlign="center" color="textSubtle">
-          {t('Token amounts displayed above are estimations. The final amount of tokens received may vary.')}
-        </Text>
+      <StyledModal title={pendingTx ? t('Pending Confirm') : t('Remove Liquidity')}>
+        {pendingTx ? (
+          <ConfirmationPendingContent pendingText={t('Remove Liquidity')} />
+        ) : (
+          <>
+            <RowBetween>
+              <Text color="textSubtle">{t('Removing')}:</Text>
+              <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
+                <Text color="text" bold>
+                  {tokenPairName}
+                </Text>
+                <Text color="text" ml="0.25em">
+                  {vaultName}
+                </Text>
+                <FeeTag feeAmount={feeTier} ml="0.25em" />
+              </Flex>
+            </RowBetween>
+            <InnerCard>
+              <CurrencyAmountDisplay currency={currencyA} amount={amountA} priceUSD={token0PriceUSD} />
+              <CurrencyAmountDisplay currency={currencyB} mt="8px" amount={amountB} priceUSD={token1PriceUSD} />
+            </InnerCard>
+            <PercentSlider percent={percent} onChange={setPercent} mt="1em" />
+            <RemoveLiquidityButton
+              mt="1.5em"
+              onClick={withdrawThenBurn}
+              isLoading={pendingTx}
+              disabled={percent <= 0}
+            />
+            <Text mt="24px" lineHeight="1.2" fontSize="12px" textAlign="center" color="textSubtle">
+              {t('Token amounts displayed above are estimations. The final amount of tokens received may vary.')}
+            </Text>{' '}
+          </>
+        )}
       </StyledModal>
     </ModalV2>
   )
