@@ -24,7 +24,7 @@ const StyledCarouselContainer = styled(Box)<{ isHorizontal: boolean }>`
 `
 
 const StyledImage = styled(Box)<{ imgUrl: string; isHorizontal: boolean }>`
-  width: ${({ isHorizontal }) => (isHorizontal ? '100%' : '362px')};
+  max-width: ${({ isHorizontal }) => (isHorizontal ? '100%' : '362px')};
   height: ${({ isHorizontal }) => (isHorizontal ? '197px' : '495px')};
   background-size: contain;
   background-position: center;

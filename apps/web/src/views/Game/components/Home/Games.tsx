@@ -69,15 +69,14 @@ const Header = styled(CardHeader)<{ imgUrl: string }>`
   }
 `
 
-const HorizontalLogo = styled(Box)<{ imgUrl: string }>`
+const ProjectLogo = styled(Box)<{ imgUrl: string }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 73px;
+  width: 80px;
   height: 27px;
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   background-image: ${({ imgUrl }) => `url('${imgUrl}')`};
@@ -148,7 +147,7 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
                     {t('Publisher:')}
                   </Text>
                   <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
-                    <HorizontalLogo imgUrl={game.projectLogo} />
+                    <ProjectLogo imgUrl={game.projectLogo} />
                     <StyledTag scale="xs">Casual</StyledTag>
                   </Flex>
                 </Box>

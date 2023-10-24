@@ -10,6 +10,7 @@ export const example: GameType = {
   publishDate: 1698044972,
   headerImage: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
   projectLogo: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+  projectCircleLogo: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
   gameLink: 'https://protectors.pancakeswap.finance/',
   posters: {
     layout: PostersLayout.Horizontal,

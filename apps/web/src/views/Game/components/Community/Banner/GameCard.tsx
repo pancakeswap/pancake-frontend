@@ -16,7 +16,7 @@ const StyledGameCard = styled(Box)`
   cursor: pointer;
 `
 
-const StyledLogo = styled(Box)<{ imgUrl: string }>`
+const StyledCircleLogo = styled(Box)<{ imgUrl: string }>`
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -57,7 +57,7 @@ export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ gam
         <Box overflow="hidden" height={['134px', '134px', '134px', '134px', '200px']}>
           <StyledBackgroundImage imgUrl={game.headerImage} />
         </Box>
-        <StyledLogo imgUrl={game.projectLogo} />
+        <StyledCircleLogo imgUrl={game.projectCircleLogo} />
         <Box padding={['11px', '11px', '11px', '11px', '20px']}>
           <Text bold mb="8px" lineHeight="120%" color="textSubtle" fontSize={['12px']}>
             {game.projectName}
