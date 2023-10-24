@@ -7,7 +7,7 @@ import {
   useAmountsByUsdValue,
 } from '@pancakeswap/widgets-internal/roi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator, Tick } from '@pancakeswap/v3-sdk'
+import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -159,23 +159,12 @@ export function AprCalculator({
   const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1) || (inverted ? aprAmountA : aprAmountB)
   const [amount0, amount1] = inverted ? [validAmountB, validAmountA] : [validAmountA, validAmountB]
   const inRange = isPoolTickInRange(pool ?? undefined, tickLower ?? undefined, tickUpper ?? undefined)
-  const allTicks = useMemo(
-    () =>
-      data?.map(
-        ({ tick, liquidityNet }) => new Tick({ index: parseInt(tick), liquidityNet, liquidityGross: liquidityNet }),
-      ),
-    [data],
-  )
-  const mostActiveLiquidity = useMemo(
-    () => allTicks && sqrtRatioX96 && FeeCalculator.getLiquidityFromSqrtRatioX96(allTicks, sqrtRatioX96),
-    [allTicks, sqrtRatioX96],
-  )
   const { apr } = useRoi({
     tickLower,
     tickUpper,
     sqrtRatioX96,
     fee: feeAmount,
-    mostActiveLiquidity,
+    mostActiveLiquidity: pool?.liquidity,
     amountA: validAmountA,
     amountB: validAmountB,
     compoundOn: false,
