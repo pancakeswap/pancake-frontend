@@ -11,7 +11,7 @@ export enum PostersItemDataType {
 export interface PostersItemData {
   type: PostersItemDataType
   image: string
-  video?: string
+  video?: string // format mp4 / webm
 }
 
 export enum PostersLayout {
@@ -28,6 +28,7 @@ export interface GameType {
   publishDate: number // timestamp in seconds
   headerImage: string
   projectLogo: string
+  projectCircleLogo: string
   gameLink: string
   posters: {
     layout: PostersLayout
