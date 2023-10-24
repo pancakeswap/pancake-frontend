@@ -25,6 +25,7 @@ const StyledGameInfoContainer = styled(Box)`
 
 const StyledGameInformation = styled(Flex)`
   width: 100%;
+  flex: 2;
   flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -33,7 +34,7 @@ const StyledGameInformation = styled(Flex)`
   }
 `
 
-const Header = styled(CardHeader)`
+const Header = styled(CardHeader)<{ imgUrl: string }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -44,15 +45,17 @@ const Header = styled(CardHeader)`
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   background-color: ${({ theme }) => theme.colors.dropdown};
-  background-image: url('/images/ifos/sable-bg.png');
+  background-image: ${({ imgUrl }) => `url('${imgUrl}')`};
   ${({ theme }) => theme.mediaQueries.md} {
     height: 112px;
   }
 `
 
-const StyledLeftContainer = styled(Box)<{ isHorizontal: boolean }>`
+const StyledLeftContainer = styled(Flex)<{ isHorizontal: boolean }>`
   width: 100%;
-  ${({ theme }) => theme.mediaQueries.sm} {
+  flex: 1;
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.md} {
     min-width: ${({ isHorizontal }) => (isHorizontal ? '671px' : '392px')};
   }
 `
@@ -90,7 +93,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
         </Flex>
       )}
       <Card>
-        <Header />
+        <Header imgUrl={game.headerImage} />
         <StyledGameInfoContainer
           padding={['0 20px 20px 20px', '0 20px 20px 20px', '0 20px 20px 20px', '0 20px 20px 20px', '0 32px 32px 32px']}
         >

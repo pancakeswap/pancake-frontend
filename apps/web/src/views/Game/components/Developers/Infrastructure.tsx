@@ -24,6 +24,25 @@ const StyledList = styled(Flex)`
   }
 `
 
+const StyledCard = styled(Card)`
+  max-width: 282px;
+  align-self: flex-start;
+  margin: 0 0 16px 0;
+
+  ${StyledList} {
+    padding: 24px;
+    margin: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: 0 16px 16px 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    margin: 0;
+  }
+`
+
 const StyledGameBenefitsListContainer = styled(Flex)`
   width: 282px;
   flex-wrap: wrap;
@@ -44,16 +63,13 @@ const StyledGameBenefitsListContainer = styled(Flex)`
       }
     }
   }
-`
 
-const StyledCard = styled(Card)`
-  max-width: 282px;
-  align-self: flex-start;
-  margin: 0 0 16px 0;
-
-  ${StyledList} {
-    padding: 24px;
-    margin: 0;
+  ${StyledCard} {
+    ${({ theme }) => theme.mediaQueries.md} {
+      &:nth-child(even) {
+        margin-right: 0;
+      }
+    }
   }
 `
 

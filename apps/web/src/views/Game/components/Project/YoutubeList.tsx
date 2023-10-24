@@ -52,7 +52,7 @@ const StyledContainer = styled(Flex)`
         margin-right: 24px;
       }
 
-      &:nth-child(n + 4) {
+      &:nth-child(4n + 0) {
         margin-right: 0;
       }
     }

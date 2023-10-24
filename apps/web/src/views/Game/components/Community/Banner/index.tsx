@@ -107,9 +107,11 @@ export const Banner = () => {
         </Box>
         {games.length > 0 && (
           <Flex width="100%">
-            <ArrowButton className="prev" style={{ marginRight: '32px' }}>
-              <ChevronLeftIcon color={theme.colors.textSubtle} />
-            </ArrowButton>
+            {games.length > 1 && (
+              <ArrowButton className="prev" style={{ marginRight: '32px' }}>
+                <ChevronLeftIcon color={theme.colors.textSubtle} />
+              </ArrowButton>
+            )}
             <StyledSwiperContainer>
               <Swiper
                 resizeObserver
@@ -148,9 +150,11 @@ export const Banner = () => {
                 ))}
               </Swiper>
             </StyledSwiperContainer>
-            <ArrowButton className="next" style={{ marginLeft: '32px' }}>
-              <ChevronRightIcon color={theme.colors.textSubtle} />
-            </ArrowButton>
+            {games.length > 1 && (
+              <ArrowButton className="next" style={{ marginLeft: '32px' }}>
+                <ChevronRightIcon color={theme.colors.textSubtle} />
+              </ArrowButton>
+            )}
           </Flex>
         )}
       </Flex>
