@@ -2,10 +2,10 @@ import { Progress } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import { SLOW_INTERVAL } from 'config/constants'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 
 const AuctionProgress: React.FC<React.PropsWithChildren<{ auction: Auction }>> = ({ auction }) => {
-  const { data: progress = 0 } = useSWR(
+  const { data: progress = 0 } = useQuery(
     ['farmAuction', 'auctionProgress'],
     async () => {
       if (auction.status === AuctionStatus.ToBeAnnounced || auction.status === AuctionStatus.Pending) {
@@ -17,7 +17,7 @@ const AuctionProgress: React.FC<React.PropsWithChildren<{ auction: Auction }>> =
       return percentagePassed < 100 ? percentagePassed : 100
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      refetchInterval: SLOW_INTERVAL,
     },
   )
 
