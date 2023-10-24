@@ -191,6 +191,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           totalSupplyAmounts={totalSupplyAmounts}
           userLpAmounts={userLpAmounts}
           precision={precision}
+          isInCakeRewardDateRange={apr.isInCakeRewardDateRange}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo
@@ -206,6 +207,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
             isSingleDepositToken={isSingleDepositToken}
             rewardPerSecond={rewardPerSecond}
             earningToken={earningToken}
+            isInCakeRewardDateRange={apr.isInCakeRewardDateRange}
           />
           <VaultLinks
             mt="0.5em"

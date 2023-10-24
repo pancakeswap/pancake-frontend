@@ -26,6 +26,7 @@ export interface AprResult {
   combinedApr: string
   lpApr: string
   cakeYieldApr: string
+  isInCakeRewardDateRange: boolean
 }
 
 const ONE_YEAR = 365
@@ -46,7 +47,7 @@ export const useApr = ({
 }: AprProps): AprResult => {
   const cakePriceBusd = useCakePrice()
 
-  const isInRewardDateRange = useMemo(
+  const isInCakeRewardDateRange = useMemo(
     () => Date.now() / 1000 < rewardEndTime && Date.now() / 1000 >= rewardStartTime,
     [rewardEndTime, rewardStartTime],
   )
@@ -74,7 +75,7 @@ export const useApr = ({
   }, [avgToken0Amount, avgToken1Amount, currencyA, currencyB, token0PriceUSD, token1PriceUSD, totalStakedInUsd])
 
   const cakeYieldApr = useMemo(() => {
-    if (!isInRewardDateRange) {
+    if (!isInCakeRewardDateRange) {
       return BIG_ZERO
     }
 
@@ -83,7 +84,7 @@ export const useApr = ({
       .times(cakePriceBusd)
       .div(totalStakedInUsd)
       .times(100)
-  }, [isInRewardDateRange, earningToken, rewardPerSecond, cakePriceBusd, totalStakedInUsd])
+  }, [isInCakeRewardDateRange, earningToken, rewardPerSecond, cakePriceBusd, totalStakedInUsd])
 
   const totalApr = useMemo(() => cakeYieldApr.plus(totalLpApr), [cakeYieldApr, totalLpApr])
 
@@ -92,8 +93,9 @@ export const useApr = ({
       combinedApr: !totalApr.isNaN() ? totalApr.toFixed(2) ?? '-' : '',
       lpApr: !totalLpApr.isNaN() ? totalLpApr.toFixed(2) ?? '-' : '',
       cakeYieldApr: !cakeYieldApr.isNaN() ? cakeYieldApr.toFixed(2) ?? '-' : '',
+      isInCakeRewardDateRange,
     }
-  }, [totalApr, totalLpApr, cakeYieldApr])
+  }, [totalApr, totalLpApr, cakeYieldApr, isInCakeRewardDateRange])
 
   return aprData
 }

@@ -36,6 +36,7 @@ export interface VaultInfoProps extends SpaceProps {
   token1PriceUSD?: number
   rewardPerSecond: string
   earningToken: Currency
+  isInCakeRewardDateRange: boolean
 }
 
 export const VaultInfo = memo(function VaultInfo({
@@ -51,6 +52,7 @@ export const VaultInfo = memo(function VaultInfo({
   rewardPerSecond,
   earningToken,
   managerFee,
+  isInCakeRewardDateRange,
   ...props
 }: VaultInfoProps) {
   const { t } = useTranslation()
@@ -81,10 +83,12 @@ export const VaultInfo = memo(function VaultInfo({
         <InfoText>{t('Total staked')}:</InfoText>
         <InfoText>{`$${totalStakedInUsd.toFixed(2)}`}</InfoText>
       </RowBetween>
-      <RowBetween>
-        <InfoText>{t('Farming Rewards')}:</InfoText>
-        <InfoText>{`~${tokenPerSecond} ${earningToken.symbol} / ${t('second')}`}</InfoText>
-      </RowBetween>
+      {isInCakeRewardDateRange && (
+        <RowBetween>
+          <InfoText>{t('Farming Rewards')}:</InfoText>
+          <InfoText>{`~${tokenPerSecond} ${earningToken.symbol} / ${t('second')}`}</InfoText>
+        </RowBetween>
+      )}
       <RowBetween>
         <InfoText>{t('Manager Fee')}:</InfoText>
         <InfoText>{`${managerFee?.rate.numerator}`}%</InfoText>

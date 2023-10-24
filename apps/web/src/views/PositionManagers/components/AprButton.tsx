@@ -55,12 +55,14 @@ export const AprButton = memo(function YieldInfo({
         </Text>
       </Text>
       <ul>
-        <li>
-          {t('CAKE APR')}:{' '}
-          <Text style={{ display: 'inline-block' }} bold>
-            {`${apr.cakeYieldApr}%`}
-          </Text>
-        </li>
+        {apr.isInCakeRewardDateRange && (
+          <li>
+            {t('CAKE APR')}:{' '}
+            <Text style={{ display: 'inline-block' }} bold>
+              {`${apr.cakeYieldApr}%`}
+            </Text>
+          </li>
+        )}
         <li>
           {t('LP APR')}:{' '}
           <Text style={{ display: 'inline-block' }} bold>

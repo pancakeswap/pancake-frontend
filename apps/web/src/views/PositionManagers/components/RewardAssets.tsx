@@ -15,6 +15,7 @@ interface RewardAssetsProps {
   contractAddress: Address
   earningToken: Currency
   pendingReward: bigint | undefined
+  isInCakeRewardDateRange: boolean
   refetch?: () => void
 }
 
@@ -23,6 +24,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   pendingReward,
   earningToken,
   refetch,
+  isInCakeRewardDateRange,
 }) => {
   const { t } = useTranslation()
   const { account, chain } = useWeb3React()
@@ -52,7 +54,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
       )
     }
   }, [earningToken, account, chain, wrapperContract, t, refetch, fetchWithCatchTxError, toastSuccess])
-
+  if (!isInCakeRewardDateRange && earningsBalance <= 0) return null
   return (
     <InnerCard>
       <Flex>

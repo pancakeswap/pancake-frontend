@@ -59,6 +59,7 @@ interface Props {
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
+  isInCakeRewardDateRange: boolean
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -92,6 +93,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   userLpAmounts,
   totalSupplyAmounts,
   precision,
+  isInCakeRewardDateRange,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -134,6 +136,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
             contractAddress={contractAddress}
             pendingReward={pendingReward}
             earningToken={earningToken}
+            isInCakeRewardDateRange={isInCakeRewardDateRange}
             refetch={refetch}
           />
         </>
