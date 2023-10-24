@@ -138,7 +138,7 @@ const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoPro
     {
       refetchInterval: SLOW_INTERVAL,
       initialData: [],
-      enabled: Boolean(campaignIds.length > 0 && account),
+      enabled: Boolean(campaignIds.length > 0 && account && type),
     },
   )
 
