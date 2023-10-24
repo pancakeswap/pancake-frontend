@@ -1,5 +1,4 @@
 import { styled } from 'styled-components'
-import useSWR from 'swr'
 import { useState, useEffect, useRef } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -11,6 +10,7 @@ import { SkeletonArticle } from 'views/Game/components/Community/SkeletonArticle
 import { ArticleSortSelect } from 'views/Game/components/Community/ArticleSortSelect'
 import { useAllGamesArticle } from 'views/Game/hooks/useAllGamesArticle'
 import { useLanguage } from 'views/Game/hooks/useLanguage'
+import { useGameCategories } from 'views/Game/hooks/useGameCategories'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -78,7 +78,7 @@ export const AllArticle = () => {
     { label: t('Sort Title A-Z'), value: 'title:asc' },
     { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
-  const { data: categoriesData } = useSWR<Categories[]>('/categories')
+  const gameCategories = useGameCategories({ languageOption })
 
   useEffect(() => {
     setCurrentPage(1)
@@ -86,7 +86,7 @@ export const AllArticle = () => {
 
   useEffect(() => {
     if (router.isReady && router.query.category) {
-      const searchedTopic: Categories | undefined = categoriesData?.find(
+      const searchedTopic: Categories | undefined = gameCategories?.find(
         (category) => category.name.toLowerCase() === (router.query.category as string).toLowerCase(),
       )
       if (searchedTopic) {
@@ -97,7 +97,7 @@ export const AllArticle = () => {
         })
       }
     }
-  }, [categoriesData, router.isReady, router.query.category])
+  }, [gameCategories, router.isReady, router.query.category])
 
   useEffect(() => {
     if (languageItems.includes(currentLanguage.code)) {
@@ -134,10 +134,10 @@ export const AllArticle = () => {
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
         <StyledTagContainer>
           <CategoriesSelector
+            childMargin="0"
             selected={selectedGamesCategories}
-            categoriesData={categoriesData ?? []}
+            categoriesData={gameCategories ?? []}
             setSelected={setSelectGamesCategoriesSelected}
-            childMargin="0 0 28px 0"
           />
         </StyledTagContainer>
         <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
@@ -165,7 +165,7 @@ export const AllArticle = () => {
             <Flex overflowY="auto">
               <CategoriesSelector
                 selected={selectedGamesCategories}
-                categoriesData={categoriesData ?? []}
+                categoriesData={gameCategories ?? []}
                 setSelected={setSelectGamesCategoriesSelected}
                 childMargin="0 4px 4px 0"
               />

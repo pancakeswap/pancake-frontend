@@ -65,6 +65,9 @@ export interface ResponseCategoriesType {
   id: number
   attributes: {
     name: string
+    articles: {
+      data: []
+    }
   }
 }
 
