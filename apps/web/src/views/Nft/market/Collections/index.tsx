@@ -172,14 +172,6 @@ const Collectible = () => {
     }
   }, [isMobile, page])
 
-  useEffect(() => {
-    let extraPages = 1
-    if (collections.length % ITEMS_PER_PAGE === 0) {
-      extraPages = 0
-    }
-    setMaxPage(Math.max(Math.floor(collections.length / ITEMS_PER_PAGE) + extraPages, 1))
-  }, [collections])
-
   const sortedCollections = useMemo(() => {
     return orderBy(
       collections,
@@ -195,6 +187,14 @@ const Collectible = () => {
       sortDirection ? 'desc' : 'asc',
     ).filter((collection) => !DELIST_COLLECTIONS[collection.address])
   }, [collections, sortField, sortDirection])
+
+  useEffect(() => {
+    let extraPages = 1
+    if (sortedCollections.length % ITEMS_PER_PAGE === 0) {
+      extraPages = 0
+    }
+    setMaxPage(Math.max(Math.floor(sortedCollections.length / ITEMS_PER_PAGE) + extraPages, 1))
+  }, [sortedCollections])
 
   return (
     <>

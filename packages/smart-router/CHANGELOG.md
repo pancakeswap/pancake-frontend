@@ -1,5 +1,16 @@
 # @pancakeswap/smart-router
 
+## 4.9.5
+
+### Patch Changes
+
+- Updated dependencies [c236a3ee4]
+  - @pancakeswap/chains@0.3.0
+  - @pancakeswap/multicall@3.2.3
+  - @pancakeswap/sdk@5.7.2
+  - @pancakeswap/tokens@0.5.4
+  - @pancakeswap/v3-sdk@3.5.4
+
 ## 4.9.4
 
 ### Patch Changes

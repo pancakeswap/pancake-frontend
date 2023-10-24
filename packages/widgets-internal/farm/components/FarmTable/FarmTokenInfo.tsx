@@ -1,9 +1,9 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Flex, Skeleton, Text } from "@pancakeswap/uikit";
+import { Flex, Row, Skeleton, Text } from "@pancakeswap/uikit";
 import { useMemo } from "react";
 import { styled } from "styled-components";
-
 import { FarmTableFarmTokenInfoProps } from "../../types";
+import MerklNotice from "../MerklNotice";
 
 const Container = styled.div`
   padding-left: 16px;
@@ -28,6 +28,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
   label,
   isReady,
   isStaking,
+  merklLink,
   children,
 }) => {
   const { t } = useTranslation();
@@ -60,7 +61,10 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
       <TokenWrapper>{children}</TokenWrapper>
       <div>
         {handleRenderFarming}
-        <Text bold>{label}</Text>
+        <Row gap="sm">
+          <Text bold>{label}</Text>
+          {merklLink ? <MerklNotice.WithTooltip merklLink={merklLink} /> : null}
+        </Row>
       </div>
     </Container>
   );

@@ -400,10 +400,10 @@ async function addStableSwap(
     return
   }
 
-  const exactOutputParams: ABIParametersType<CommandType.STABLE_SWAP_EXACT_IN> = [
+  const exactOutputParams: ABIParametersType<CommandType.STABLE_SWAP_EXACT_OUT> = [
     recipient,
-    amountIn,
     amountOut,
+    amountIn,
     path,
     flags,
     payerIsUser,

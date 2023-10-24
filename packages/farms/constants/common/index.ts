@@ -22,20 +22,6 @@ export type PriceHelper = {
   list: ERC20Token[]
 }
 
-export const CHAIN_ID_TO_CHAIN_NAME = {
-  [ChainId.BSC]: 'bsc',
-  [ChainId.ETHEREUM]: 'ethereum',
-  [ChainId.GOERLI]: 'ethereum',
-  [ChainId.BSC_TESTNET]: 'bsc',
-  [ChainId.POLYGON_ZKEVM]: 'polygon_zkevm',
-  [ChainId.ZKSYNC]: 'era',
-  [ChainId.POLYGON_ZKEVM_TESTNET]: '',
-  [ChainId.ZKSYNC_TESTNET]: '',
-  [ChainId.ARBITRUM_ONE]: 'arbitrum',
-  [ChainId.LINEA]: 'linea',
-  [ChainId.BASE]: 'base',
-} satisfies Record<FarmV3SupportedChainId, string>
-
 export const priceHelperTokens = {
   [ChainId.ETHEREUM]: {
     chain: 'ethereum',
@@ -89,4 +75,5 @@ export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> =
   [ChainId.ARBITRUM_ONE]: {},
   [ChainId.LINEA]: {},
   [ChainId.BASE]: {},
+  [ChainId.OPBNB_TESTNET]: {},
 }

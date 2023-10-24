@@ -297,4 +297,12 @@ export const ethereumTokens = {
     'RociFi',
     'https://roci.fi/',
   ),
+  ethx: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xA35b1B31Ce002FBF2058D22F30f95D405200A15b',
+    18,
+    'ETHx',
+    'ETHx',
+    'https://www.staderlabs.com/',
+  ),
 }

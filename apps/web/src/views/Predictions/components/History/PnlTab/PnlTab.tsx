@@ -5,8 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import { REWARD_RATE } from 'state/predictions/config'
 import { getBlockExploreLink } from 'utils'
-import { multiplyPriceByAmount } from 'utils/prices'
-import useBUSDPrice from 'hooks/useBUSDPrice'
+import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
 import { useGetCurrentEpoch } from 'state/predictions/hooks'
 import { Bet, BetPosition } from 'state/types'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
@@ -107,7 +106,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
   const { address: account } = useAccount()
   const currentEpoch = useGetCurrentEpoch()
   const { token, displayedDecimals } = useConfig()
-  const bnbBusdPrice = useBUSDPrice(token)
+  const tokenPrice = useTokenPrice(token)
 
   const summary = getPnlSummary(bets, currentEpoch)
 
@@ -120,11 +119,11 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
   // Guard in case user has only lost rounds
   const hasBestRound = summary.won.bestRound.payout !== 0
 
-  const netResultInUsd = multiplyPriceByAmount(bnbBusdPrice, netResultAmount)
-  const avgBnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, avgBnbWonPerRound)
+  const netResultInUsd = tokenPrice.multipliedBy(netResultAmount).toNumber()
+  const avgBnbWonInUsd = tokenPrice.multipliedBy(avgBnbWonPerRound).toNumber()
   const avgBnbWonInUsdDisplay = !Number.isNaN(avgBnbWonInUsd) ? `~${avgBnbWonInUsd.toFixed(2)}` : '~$0.00'
-  const betRoundInUsd = multiplyPriceByAmount(bnbBusdPrice, summary.won.bestRound.payout)
-  const avgPositionEnteredInUsd = multiplyPriceByAmount(bnbBusdPrice, avgPositionEntered)
+  const betRoundInUsd = tokenPrice.multipliedBy(summary.won.bestRound.payout).toNumber()
+  const avgPositionEnteredInUsd = tokenPrice.multipliedBy(avgPositionEntered).toNumber()
   const avgPositionEnteredInUsdDisplay = !Number.isNaN(avgPositionEnteredInUsd)
     ? `~${avgPositionEnteredInUsd.toFixed(2)}`
     : '~$0.00'
@@ -188,9 +187,9 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
 
         <Divider />
 
-        <SummaryRow type="won" summary={summary} bnbBusdPrice={bnbBusdPrice} />
-        <SummaryRow type="lost" summary={summary} bnbBusdPrice={bnbBusdPrice} />
-        <SummaryRow type="entered" summary={summary} bnbBusdPrice={bnbBusdPrice} />
+        <SummaryRow type="won" summary={summary} tokenPrice={tokenPrice} />
+        <SummaryRow type="lost" summary={summary} tokenPrice={tokenPrice} />
+        <SummaryRow type="entered" summary={summary} tokenPrice={tokenPrice} />
 
         <Flex justifyContent="center" mt="24px">
           <Link href={`${getBlockExploreLink(account, 'address')}#internaltx`} mb="16px" external>

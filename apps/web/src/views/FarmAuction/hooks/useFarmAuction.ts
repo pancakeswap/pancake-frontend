@@ -1,6 +1,6 @@
-import useSWR from 'swr'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { AUCTION_BIDDERS_TO_FETCH } from 'config'
+import { useQuery } from '@tanstack/react-query'
 import { processAuctionData, sortAuctionBidders } from '../helpers'
 
 export const useFarmAuction = (auctionId: number, configuration?: any) => {
@@ -11,9 +11,9 @@ export const useFarmAuction = (auctionId: number, configuration?: any) => {
       auction: null,
       bidders: null,
     },
-    mutate: refreshBidders,
-  } = useSWR(
-    Number.isFinite(auctionId) && auctionId > 0 ? ['farmAuction', auctionId] : null,
+    refetch,
+  } = useQuery(
+    ['farmAuction', auctionId],
     async () => {
       const auctionData = await farmAuctionContract.read.auctions([BigInt(auctionId)])
       const processedAuction = await processAuctionData(auctionId, {
@@ -31,8 +31,11 @@ export const useFarmAuction = (auctionId: number, configuration?: any) => {
       ])
       return { auction: processedAuction, bidders: sortAuctionBidders(currentAuctionBidders, processedAuction) }
     },
-    configuration || {},
+    {
+      enabled: Boolean(Number.isFinite(auctionId) && auctionId > 0),
+      ...configuration,
+    },
   )
 
-  return { data, mutate: refreshBidders }
+  return { data, mutate: refetch }
 }
