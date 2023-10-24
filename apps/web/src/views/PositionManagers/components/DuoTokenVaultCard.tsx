@@ -144,6 +144,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         autoFarm={autoFarm}
         autoCompound={autoCompound}
         isSingleDepositToken={isSingleDepositToken}
+        allowDepositToken1={allowDepositToken1}
       />
       <CardBody>
         <YieldInfo

@@ -13,7 +13,7 @@ interface Props {
   vaultName: string
   feeTier: FeeAmount
   isSingleDepositToken: boolean
-
+  allowDepositToken1: boolean
   autoFarm?: boolean
   autoCompound?: boolean
 }
@@ -26,12 +26,28 @@ export const CardTitle = memo(function CardTitle({
   isSingleDepositToken,
   autoFarm,
   autoCompound,
+  allowDepositToken1,
 }: Props) {
-  const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
+  const isTokenDisplayReverse = useMemo(
+    () => isSingleDepositToken && allowDepositToken1,
+    [isSingleDepositToken, allowDepositToken1],
+  )
+  const displayCurrencyA = useMemo(
+    () => (isTokenDisplayReverse ? currencyB : currencyA),
+    [isTokenDisplayReverse, currencyA, currencyB],
+  )
+  const displayCurrencyB = useMemo(
+    () => (isTokenDisplayReverse ? currencyA : currencyB),
+    [isTokenDisplayReverse, currencyA, currencyB],
+  )
+  const tokenPairName = useMemo(
+    () => `${displayCurrencyA.symbol}-${displayCurrencyB.symbol}`,
+    [displayCurrencyA, displayCurrencyB],
+  )
 
   return (
     <CardHeader>
-      <TokenPairLogos currencyA={currencyA} currencyB={currencyB} autoMark={autoCompound} />
+      <TokenPairLogos currencyA={displayCurrencyA} currencyB={displayCurrencyB} autoMark={autoCompound} />
       <Flex flexDirection="column" justifyContent="flex-start">
         <Flex flexDirection="row" justifyContent="flex-end">
           <Text fontSize="1.3em" bold>
