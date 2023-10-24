@@ -10,6 +10,7 @@ import { CategoriesSelector } from 'views/Game/components/Community/CategoriesSe
 import { SkeletonArticle } from 'views/Game/components/Community/SkeletonArticle'
 import { ArticleSortSelect } from 'views/Game/components/Community/ArticleSortSelect'
 import { useAllGamesArticle } from 'views/Game/hooks/useAllGamesArticle'
+import { useLanguage } from 'views/Game/hooks/useLanguage'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -62,7 +63,7 @@ const StyledCard = styled(Flex)`
 `
 
 export const AllArticle = () => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const router = useRouter()
   const [query, setQuery] = useState('')
   const articlesWrapperEl = useRef<HTMLDivElement>(null)
@@ -70,6 +71,7 @@ export const AllArticle = () => {
   const [selectedGamesCategories, setSelectGamesCategoriesSelected] = useState(0)
   const [sortBy, setSortBy] = useState('createAt:desc')
   const [languageOption, setLanguageOption] = useState('en')
+  const languageItems = useLanguage()
   const sortByItems = [
     { label: t('Newest First'), value: 'createAt:desc' },
     { label: t('Oldest First'), value: 'createAt:asc' },
@@ -96,6 +98,12 @@ export const AllArticle = () => {
       }
     }
   }, [categoriesData, router.isReady, router.query.category])
+
+  useEffect(() => {
+    if (languageItems.includes(currentLanguage.code)) {
+      setLanguageOption(currentLanguage.code)
+    }
+  }, [currentLanguage.code, languageItems])
 
   const { articlesData, isFetching } = useAllGamesArticle({
     query,

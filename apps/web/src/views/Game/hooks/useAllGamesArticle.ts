@@ -1,5 +1,5 @@
 import qs from 'qs'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 import { ResponseArticleType, ResponseArticleDataType } from 'views/Home/types'
 import { fetchAPI } from 'views/Home/utils/api'
 import { transformArticle, ArticleType } from 'views/Home/utils/transformArticle'
@@ -24,8 +24,8 @@ export const useAllGamesArticle = ({
   languageOption,
   selectedGamesCategories,
 }: UseAllGamesArticleProps): AllGamesArticleType => {
-  const { data: articlesData, isLoading } = useSWR(
-    ['/games-articles', query, currentPage, selectedGamesCategories, sortBy, languageOption],
+  const { data: articlesData, isLoading } = useQuery(
+    ['games-articles', query, currentPage, selectedGamesCategories, sortBy, languageOption],
     async () => {
       try {
         const urlParamsObject = {
@@ -73,10 +73,8 @@ export const useAllGamesArticle = ({
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   )
 
