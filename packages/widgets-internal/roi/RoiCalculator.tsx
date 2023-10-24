@@ -55,9 +55,9 @@ export type RoiCalculatorProps = {
       time: Date;
       value: number;
     }[];
-    maxPrice: number;
-    minPrice: number;
-    averagePrice: number;
+    maxPrice?: number;
+    minPrice?: number;
+    averagePrice?: number;
   };
   ticks?: TickData[];
   price?: Price<Token, Token>;
