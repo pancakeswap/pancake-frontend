@@ -31,9 +31,9 @@ export interface GameType {
   gameLink: string
   posters: {
     layout: PostersLayout
-    items: PostersItemData[] // Minimum requirements 4
+    items: PostersItemData[]
   }
-  playlist: PlaylistData[] // Minimum requirements 4
+  playlist: PlaylistData[]
   socialMedia: {
     telegram?: string
     discord?: string
