@@ -1,9 +1,9 @@
-import useSWR from 'swr'
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/chains'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { useTradingRewardContract, useTradingRewardTopTraderContract } from 'hooks/useContract'
+import { useQuery } from '@tanstack/react-query'
 
 export enum RewardStatus {
   ALL = '0',
@@ -148,8 +148,8 @@ const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps)
   const tradingRewardTopTradersContract = useTradingRewardTopTraderContract({ chainId: ChainId.BSC })
   const contract = type === RewardType.CAKE_STAKERS ? tradingRewardContract : tradingRewardTopTradersContract
 
-  const { data: allPairs, isLoading } = useSWR(
-    status && type && ['/all-activated-trading-reward-pair', status, type],
+  const { data: allPairs, isLoading } = useQuery(
+    ['tradingReward', 'all-activated-trading-reward-pair', status, type],
     async () => {
       try {
         const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}/type/${type}`)
@@ -176,11 +176,10 @@ const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps)
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
-      fallbackData: initialAllTradingRewardState,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      initialData: initialAllTradingRewardState,
+      enabled: Boolean(status && type),
     },
   )
 

@@ -1,10 +1,10 @@
-import useSWR from 'swr'
 import { ChainId } from '@pancakeswap/chains'
 import { useAccount } from 'wagmi'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { tradingRewardPairConfigChainMap } from 'views/TradingReward/config/pairs'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { useQuery } from '@tanstack/react-query'
 
 interface UseRewardBreakdownProps {
   allUserCampaignInfo: UserCampaignInfoDetail[]
@@ -43,8 +43,8 @@ const useRewardBreakdown = ({
 }: UseRewardBreakdownProps): RewardBreakdown => {
   const { address: account } = useAccount()
 
-  const { data: rewardBreakdownList, isLoading } = useSWR(
-    ['/rewards-breakdown', allUserCampaignInfo, allTradingRewardPairData, account],
+  const { data: rewardBreakdownList, isLoading } = useQuery(
+    ['tradingReward', 'rewards-breakdown', allUserCampaignInfo, allTradingRewardPairData, account],
     async () => {
       try {
         const dataInfo = Object.keys(campaignPairs).map((campaignId) => {
@@ -95,7 +95,8 @@ const useRewardBreakdown = ({
       }
     },
     {
-      fallbackData: [],
+      initialData: [],
+      enabled: Boolean(account),
     },
   )
 

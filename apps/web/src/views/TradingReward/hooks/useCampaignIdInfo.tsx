@@ -1,8 +1,8 @@
-import useSWR from 'swr'
 import BigNumber from 'bignumber.js'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { ChainId } from '@pancakeswap/chains'
 import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { useQuery } from '@tanstack/react-query'
 
 export interface CampaignVolume {
   pool: string
@@ -45,8 +45,8 @@ interface UseCampaignIdInfoProps {
 }
 
 const useCampaignIdInfo = ({ campaignId, type }: UseCampaignIdInfoProps): CampaignIdInfo => {
-  const { data: campaignIdInfo, isLoading } = useSWR(
-    campaignId && type && ['/campaign-id-info', campaignId, type],
+  const { data: campaignIdInfo, isLoading } = useQuery(
+    ['tradingReward', 'campaign-id-info', campaignId, type],
     async () => {
       try {
         const response = await fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}/address/0x/type/${type}`)
@@ -76,11 +76,10 @@ const useCampaignIdInfo = ({ campaignId, type }: UseCampaignIdInfoProps): Campai
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
-      fallbackData: initialState,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      initialData: initialState,
+      enabled: Boolean(campaignId && type),
     },
   )
 
