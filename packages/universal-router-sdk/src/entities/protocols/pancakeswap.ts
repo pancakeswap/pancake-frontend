@@ -165,8 +165,8 @@ async function addV3Swap(
       { ...route, input: inputAmount.currency, output: outputAmount.currency },
       trade.tradeType === TradeType.EXACT_OUTPUT,
     )
-    const amountIn = BigInt(SmartRouter.maximumAmountIn(trade, options.slippageTolerance).quotient.toString())
-    const amountOut = BigInt(SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient.toString())
+    const amountIn: bigint = SmartRouter.maximumAmountIn(trade, options.slippageTolerance, inputAmount).quotient
+    const amountOut: bigint = SmartRouter.minimumAmountOut(trade, options.slippageTolerance, outputAmount).quotient
 
     const recipient = routerMustCustody
       ? ROUTER_AS_RECIPIENT
