@@ -156,15 +156,22 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                 </StyledTag>
                 <Flex>
                   <Flex flexDirection="column" mr="4px">
-                    <Text bold fontSize={12} color="textSubtle" textTransform="uppercase" textAlign="right">
+                    <Text
+                      bold
+                      fontSize={12}
+                      lineHeight="120%"
+                      color="textSubtle"
+                      textTransform="uppercase"
+                      textAlign="right"
+                    >
                       {t('Published By')}
                     </Text>
                     <Text
                       bold
                       fontSize={12}
                       color="secondary"
+                      lineHeight="120%"
                       textTransform="uppercase"
-                      m={['0', '0', '0', '0 0 0 4px']}
                       textAlign="right"
                     >
                       {game.projectName}

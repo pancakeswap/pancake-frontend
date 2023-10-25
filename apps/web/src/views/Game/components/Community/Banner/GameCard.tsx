@@ -1,5 +1,6 @@
 import { Box, BoxProps, Card, Text, Flex, Link, DiscordIcon, TelegramIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { GameType } from '@pancakeswap/games'
 
@@ -48,6 +49,7 @@ interface GameCardProps extends BoxProps {
 
 export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ game, ...props }) => {
   const { t } = useTranslation()
+  const { isDark } = useTheme()
   const telegram = game?.socialMedia?.telegram ?? ''
   const discord = game?.socialMedia?.discord ?? ''
 
@@ -57,7 +59,7 @@ export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ gam
         <Box overflow="hidden" height={['134px', '134px', '134px', '134px', '200px']}>
           <StyledBackgroundImage imgUrl={game.headerImage} />
         </Box>
-        <StyledCircleLogo imgUrl={game.projectCircleLogo} />
+        <StyledCircleLogo imgUrl={isDark ? game.projectCircleLogo.darkTheme : game.projectCircleLogo.lightTheme} />
         <Box padding={['11px', '11px', '11px', '11px', '20px']}>
           <Text bold mb="8px" lineHeight="120%" color="textSubtle" fontSize={['12px']}>
             {game.projectName}

@@ -19,6 +19,11 @@ export enum PostersLayout {
   Vertical = 'vertical',
 }
 
+export interface Logo {
+  lightTheme: string
+  darkTheme: string
+}
+
 export interface GameType {
   id: string
   projectName: string
@@ -27,8 +32,8 @@ export interface GameType {
   description: string
   publishDate: number // timestamp in seconds
   headerImage: string
-  projectLogo: string
-  projectCircleLogo: string
+  projectLogo: Logo
+  projectCircleLogo: Logo
   gameLink: string
   posters: {
     layout: PostersLayout
