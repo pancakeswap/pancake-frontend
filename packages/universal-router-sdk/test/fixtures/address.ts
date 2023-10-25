@@ -12,7 +12,8 @@ import {
   nearestUsableTick,
   v3PoolAbi,
 } from '@pancakeswap/v3-sdk'
-import { getPermit2Address, getUniversalRouterAddress } from '../../src'
+import { getPermit2Address } from '@pancakeswap/permit2-sdk'
+import { getUniversalRouterAddress } from '../../src'
 import { Provider, getPublicClient } from './clients'
 import { V2_FACTORY_ADDRESSES } from './constants/addresses'
 import { BUSD, CAKE, ETHER, USDC, USDT, WETH9 } from './constants/tokens'
