@@ -789,7 +789,7 @@
   "Community Farm Auction": "社群農場競拍",
   "Each week, qualifying projects can bid CAKE for the right to host a 10-day Farm on PancakeSwap.": "每週，符合條件的專案都可以提交 CAKE 出價，以便競標掌管為期 10 天的 PancakeSwap 農場的權利。",
   "Apply for a Farm/Pool": "申請農場/資金池",
-  "Community Auctions": "社群拍賣",
+  "Community Auctions": "社群農場競拍",
   "FAQs": "常見問題集",
   "Auction duration": "拍賣持續時間",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "輸出為估計值。如果價格變化超過 %slippage%%，則系統將退還您的交易。",
