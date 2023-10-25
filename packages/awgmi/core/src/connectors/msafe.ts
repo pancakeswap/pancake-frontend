@@ -74,7 +74,7 @@ export class MsafeConnector extends Connector<MSafeWallet, MSafeWalletOptions> {
 
     provider.onChangeNetwork((network_) => {
       this.emit('change', {
-        network: network_,
+        network: network_.toLowerCase(),
       })
     })
 
@@ -82,7 +82,7 @@ export class MsafeConnector extends Connector<MSafeWallet, MSafeWalletOptions> {
       account: {
         address: account.address as Address,
       },
-      network: network ?? 'mainnet',
+      network: network.toLowerCase() ?? 'mainnet',
       provider,
     }
   }
@@ -92,7 +92,7 @@ export class MsafeConnector extends Connector<MSafeWallet, MSafeWalletOptions> {
     if (!provider) throw new ConnectorNotFoundError()
     const networkName = await provider.network()
     if (!networkName) throw new ChainNotConfiguredError()
-    return networkName
+    return networkName.toLowerCase()
   }
 
   async account(): Promise<Account> {
