@@ -10,6 +10,7 @@ export enum ConnectorNames {
   TrustWallet = 'trustWallet',
   SafePal = 'safePal',
   Rise = 'rise',
+  Msafe = 'msafe',
 }
 
 export const wallets: WalletConfigV2<ConnectorNames>[] = [
@@ -105,5 +106,19 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
         ? 'https://addons.mozilla.org/en-US/firefox/addon/rise-wallet/'
         : 'https://chrome.google.com/webstore/detail/rise-aptos-wallet/hbbgbephgojikajhfbomhlmmollphcad',
     },
+  },
+  {
+    id: 'msafe',
+    title: 'Msafe',
+    icon: '/images/wallets/msafe.png',
+    get installed() {
+      return (
+        typeof window !== 'undefined' &&
+        typeof document !== 'undefined' &&
+        typeof window?.parent !== 'undefined' &&
+        window?.parent.window !== window
+      )
+    },
+    connectorId: ConnectorNames.Msafe,
   },
 ]

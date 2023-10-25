@@ -1,0 +1,4 @@
+{
+  "main": "../../dist/connectors/msafe.js",
+  "module": "../../dist/connectors/msafe.mjs"
+}
