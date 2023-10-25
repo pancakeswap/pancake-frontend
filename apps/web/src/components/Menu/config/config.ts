@@ -161,11 +161,6 @@ const config: (
           href: '/pottery',
           image: '/images/decorations/lottery.png',
         },
-        {
-          label: t('Pancake Protectors'),
-          href: 'https://protectors.pancakeswap.finance',
-          type: DropdownMenuItemType.EXTERNAL_LINK,
-        },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
