@@ -1,6 +1,6 @@
-import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
+import { useQuery } from '@tanstack/react-query'
 
 interface UseLiquidStakingList {
   data: LiquidStakingList[]
@@ -14,8 +14,8 @@ export const fetchLiquidStaking = async (chainId: number) => {
 export const useLiquidStakingList = (): UseLiquidStakingList => {
   const { chainId } = useActiveChainId()
 
-  const { data, isLoading } = useSWR(
-    ['/liquidStaking-list', chainId],
+  const { data, isLoading } = useQuery(
+    ['liquidStaking', 'liquidStaking-list', chainId],
     async () => {
       try {
         return fetchLiquidStaking(chainId)
@@ -25,10 +25,8 @@ export const useLiquidStakingList = (): UseLiquidStakingList => {
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   )
 
