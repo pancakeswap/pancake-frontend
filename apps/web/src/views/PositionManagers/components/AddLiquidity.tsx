@@ -222,7 +222,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
-  // console.log(amountA.numerator, amountB.numerator, account, contractAddress, 'lalalala')
+
   const mintThenDeposit = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() =>
       positionManagerWrapperContract.write.mintThenDeposit(
