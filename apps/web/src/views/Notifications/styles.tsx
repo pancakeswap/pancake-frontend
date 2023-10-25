@@ -1,6 +1,6 @@
-import styled, { keyframes, css } from 'styled-components'
-import { Box, CheckmarkIcon, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
+import styled, { css, keyframes } from 'styled-components'
 
 // Notification View styles
 export const Menu = styled.div<{ isOpen: boolean }>`
