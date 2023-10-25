@@ -1,5 +1,4 @@
 import { ChainId } from '@pancakeswap/chains'
-import { OnChainProvider } from '@pancakeswap/smart-router/evm'
 import { CHAINS } from 'config/chains'
 import { SERVER_NODES } from 'config/nodes'
 import { createPublicClient, fallback, http, PublicClient } from 'viem'
@@ -27,6 +26,6 @@ export const viemServerClients = CHAINS.reduce((prev, cur) => {
   }
 }, {} as Record<ChainId, PublicClient>)
 
-export const getViemClients: OnChainProvider = ({ chainId }: { chainId?: ChainId }) => {
+export const getViemClients = ({ chainId }: { chainId: ChainId }) => {
   return viemServerClients[chainId]
 }
