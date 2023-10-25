@@ -9,6 +9,7 @@ import {
 } from '@pancakeswap/uikit'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
+import Image from 'next/image'
 import useUnreadNotifications from '../hooks/useUnreadNotifications'
 
 interface InotificationBellProps {
@@ -19,7 +20,7 @@ interface InotificationBellProps {
 const NotificationBell = ({ unread, toggleMenu }: InotificationBellProps) => {
   return (
     <BellIconContainer onClick={toggleMenu}>
-      <NotificationBellIcon />
+      <Image src="/images/notifications/notifications.svg" alt="notifications" width={25} height={25} />
       {unread > 0 ? <div className="notification-badge">{unread}</div> : null}
     </BellIconContainer>
   )

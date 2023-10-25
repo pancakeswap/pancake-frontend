@@ -4,7 +4,7 @@ import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useMessages } from '@web3inbox/widget-react'
 import Image from 'next/image'
 import { useCallback, useMemo, useState } from 'react'
-import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
+import { NotificationFilterTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
@@ -50,17 +50,12 @@ const NoNotificationsView = () => {
 }
 
 const SettingsModal = ({ account }: { account: string | undefined }) => {
-  const [sortOptionsType, setSortOptionsType] = useState<string>('Latest')
   const [notificationType, setNotificationType] = useState<string>('All')
   const { messages: notifications, deleteMessage } = useMessages(account)
   const { t } = useTranslation()
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
     setNotificationType(option.value)
-  }, [])
-
-  const handleSortOptionChange = useCallback((option: OptionProps) => {
-    setSortOptionsType(option.value)
   }, [])
 
   const removeAllNotifications = useCallback(async () => {
@@ -110,11 +105,6 @@ const SettingsModal = ({ account }: { account: string | undefined }) => {
           options={NotificationFilterTypes}
           description="Filter By Type"
         />
-        <NotificationFilter
-          onOptionChange={handleSortOptionChange}
-          options={NotificationSortTypes}
-          description="Sort By Date"
-        />
         <Button marginTop="20px" height="40px" maxWidth="95px" variant="primary" onClick={removeAllNotifications}>
           <Text px="4px" fontWeight="bold" color="white">
             {t('Clear')}
@@ -124,7 +114,7 @@ const SettingsModal = ({ account }: { account: string | undefined }) => {
       <Box minHeight="360px" overflowY="scroll">
         <NotificationContainerStyled>
           {filteredNotifications.length > 0 ? (
-            <NotificationItem notifications={filteredNotifications} sortOptionsType={sortOptionsType} />
+            <NotificationItem notifications={filteredNotifications} />
           ) : (
             <NoNotificationsView />
           )}

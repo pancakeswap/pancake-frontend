@@ -23,7 +23,6 @@ interface INotificationprops {
 
 interface INotificationContainerProps {
   notifications: NotifyClientTypes.NotifyMessageRecord[]
-  sortOptionsType: string
 }
 
 const formatStringWithNewlines = (inputString: string) => {
@@ -107,26 +106,21 @@ const BottomRow = ({
   )
 }
 
-const NotificationContainer = ({ notifications, sortOptionsType }: INotificationContainerProps) => {
+const NotificationContainer = ({ notifications }: INotificationContainerProps) => {
   return (
     <Box>
-      {notifications
-        .sort((a: NotifyClientTypes.NotifyMessageRecord, b: NotifyClientTypes.NotifyMessageRecord) => {
-          if (sortOptionsType === 'Latest') return b.publishedAt - a.publishedAt
-          return a.publishedAt - b.publishedAt
-        })
-        .map((notification: NotifyClientTypes.NotifyMessageRecord) => {
-          return (
-            <NotificationItem
-              key={notification.id}
-              title={notification.message.title}
-              description={notification.message.body}
-              date={notification.publishedAt}
-              url={notification.message.url}
-              image={notification.message.icon}
-            />
-          )
-        })}
+      {notifications.map((notification: NotifyClientTypes.NotifyMessageRecord) => {
+        return (
+          <NotificationItem
+            key={notification.id}
+            title={notification.message.title}
+            description={notification.message.body}
+            date={notification.publishedAt}
+            url={notification.message.url}
+            image={notification.message.icon}
+          />
+        )
+      })}
     </Box>
   )
 }

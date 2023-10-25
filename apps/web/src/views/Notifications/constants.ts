@@ -36,17 +36,6 @@ export const NotificationFilterTypes: OptionProps[] = [
   },
 ]
 
-export const NotificationSortTypes: OptionProps[] = [
-  {
-    label: 'Latest',
-    value: 'Latest',
-  },
-  {
-    label: 'Oldest',
-    value: 'Oldest',
-  },
-]
-
 export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_DEFAULT_PROJECT_ID ?? ''
 export const SECURE_TOKEN = process.env.NEXT_PUBLIC_SECURE_TOKEN ?? ''
 
