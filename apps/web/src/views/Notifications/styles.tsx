@@ -128,7 +128,7 @@ export const ContentsContainer = styled.div`
   display: flex;
   align-items: flex-start;
   padding: 15px;
-  border: 1px solid #ccc;
+  border: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: 18px;
   overflow: hidden;
   transition: transform 0.3s;
@@ -139,12 +139,6 @@ export const ContentsContainer = styled.div`
     transform: scale(1.01);
     background-color: ${({ theme }) => (theme.isDark ? '#372F46' : '#EDEAF4')};
   }
-
-  ${({ theme }) =>
-    theme.isDark &&
-    css`
-      background-color: #372f46;
-    `}
 
   transition: background-color 0.15s ease;
 `
