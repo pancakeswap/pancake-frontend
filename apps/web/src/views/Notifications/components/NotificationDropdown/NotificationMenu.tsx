@@ -1,15 +1,7 @@
-import {
-  Box,
-  Flex,
-  ModalV2,
-  ModalWrapper,
-  NotificationBellIcon,
-  UserMenuProps,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { Box, Flex, ModalV2, ModalWrapper, UserMenuProps, useMatchBreakpoints } from '@pancakeswap/uikit'
+import Image from 'next/image'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
-import Image from 'next/image'
 import useUnreadNotifications from '../hooks/useUnreadNotifications'
 
 interface InotificationBellProps {
