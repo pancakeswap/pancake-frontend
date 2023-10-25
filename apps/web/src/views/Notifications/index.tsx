@@ -11,41 +11,32 @@ import { ModalHeader, ModalTitle, ViewContainer } from './styles'
 
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
-  onDismiss: () => void
   isNotificationView: boolean
   isSettings?: boolean
   account: string | undefined
 }
 
-const ModalBackButton: React.FC<
-  React.PropsWithChildren<{ onBack: (e: React.MouseEvent<HTMLButtonElement>) => void; isSettings: boolean }>
-> = ({ onBack, isSettings }) => {
-  return (
-    <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
-      {isSettings ? <ArrowBackIcon color="primary" /> : <CogIcon color="primary" />}
-    </IconButton>
-  )
-}
-
-const NotificationHeader = ({
-  isSettings = false,
-  onBack,
-  onDismiss,
-  isNotificationView,
-  account,
-}: INotifyHeaderprops) => {
+const NotificationHeader = ({ isSettings = false, onBack, isNotificationView, account }: INotifyHeaderprops) => {
   const { t } = useTranslation()
   return (
     <>
       {isNotificationView ? (
         <ModalHeader>
-          {account ? <ModalCloseButton onDismiss={onDismiss} /> : null}
+          {account ? (
+            <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
+              <ArrowBackIcon color={isSettings ? 'primary' : 'transparent'} />
+            </IconButton>
+          ) : null}
           <ModalTitle>
             <Heading fontSize="20px" padding="0px" textAlign="center">
               {t('Notifications')}
             </Heading>
           </ModalTitle>
-          {account ? <ModalBackButton onBack={onBack} isSettings={isSettings} /> : null}
+          {account ? (
+            <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
+              <CogIcon color={isSettings ? 'transparent' : 'primary'} />
+            </IconButton>
+          ) : null}
         </ModalHeader>
       ) : (
         <ModalHeader>
@@ -75,7 +66,6 @@ const Notifications = () => {
     },
     [setIsRightView, isRightView],
   )
-  const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
 
   return (
     <NotificationMenu
@@ -90,7 +80,6 @@ const Notifications = () => {
         <Box>
           <NotificationHeader
             onBack={toggleSettings}
-            onDismiss={onDismiss}
             isSettings={!isRightView}
             isNotificationView={isSubscribed}
             account={account}

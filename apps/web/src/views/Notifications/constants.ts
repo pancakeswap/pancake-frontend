@@ -58,7 +58,7 @@ export const PancakeNotifications: {
       title: 'Welcome Aboard',
       body: 'You have successfully subscribed to Pancake Notifications Wooo!',
       icon: `https://pancakeswap.finance/logo.png`,
-      url: 'https://pc-custom-web.vercel.app',
+      url: '',
       type: 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
     }
   },

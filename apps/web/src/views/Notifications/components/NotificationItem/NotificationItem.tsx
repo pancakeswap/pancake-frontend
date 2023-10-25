@@ -17,7 +17,7 @@ interface INotificationprops {
   title: string
   description: string
   date: number
-  url?: string | undefined
+  url: string
   image?: string | undefined
 }
 
@@ -38,7 +38,6 @@ const formatStringWithNewlines = (inputString: string) => {
 const NotificationItem = ({ title, description, date, image, url }: INotificationprops) => {
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
-  const [isClosing, setIsClosing] = useState<boolean>(false)
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -59,7 +58,7 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
   const formatedDescription = formatStringWithNewlines(description)
 
   return (
-    <StyledNotificationWrapper isclosing={isClosing} ref={containerRef} onClick={handleExpandClick}>
+    <StyledNotificationWrapper ref={containerRef} onClick={handleExpandClick}>
       <ContentsContainer>
         <Box marginRight="12px" display="flex" minWidth="50px">
           <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={65} width={65} unoptimized />
@@ -68,33 +67,39 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
           <Text fontWeight="bold">{title}</Text>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
             <Text> {formatedDescription}</Text>
-
-            <StyledLink
-              hidden={Boolean(typeof url === 'string')}
-              href={url ?? ''}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('View Link')}
-            </StyledLink>
+            {url !== '' ? (
+              <StyledLink hidden href={url} target="_blank" rel="noreferrer noopener">
+                {t('View Link')}
+              </StyledLink>
+            ) : null}
           </Description>
-          <BottomRow show={show} formattedDate={formattedDate} />
+          <BottomRow show={show} formattedDate={formattedDate} elementHeight={elementHeight} />
         </Flex>
       </ContentsContainer>
     </StyledNotificationWrapper>
   )
 }
 
-const BottomRow = ({ show, formattedDate }: { show: boolean; formattedDate: string }) => {
+const BottomRow = ({
+  show,
+  formattedDate,
+  elementHeight,
+}: {
+  show: boolean
+  formattedDate: string
+  elementHeight: number
+}) => {
   const { t } = useTranslation()
   return (
-    <Row justifyContent="space-between" marginTop="6px">
-      <FlexRow>
-        <ExpandButton color="secondary" fontSize="15px">
-          {show ? t('Show Less') : t('Show More')}
-        </ExpandButton>
-        {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}
-      </FlexRow>
+    <Row justifyContent={elementHeight > 35 ? 'space-between' : 'flex-end'} marginTop="6px">
+      {elementHeight > 35 ? (
+        <FlexRow>
+          <ExpandButton color="secondary" fontSize="15px">
+            {show ? t('Show Less') : t('Show More')}
+          </ExpandButton>
+          {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}
+        </FlexRow>
+      ) : null}
       <Text fontSize="15px" marginRight="8px">
         {formattedDate}
       </Text>
