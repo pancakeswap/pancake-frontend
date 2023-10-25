@@ -124,7 +124,7 @@ export const AddLiquidity = memo(function AddLiquidity({
       isToken0: boolean
     }) => {
       setValue(value)
-      setOtherValue((Number(value) * (isToken0 ? ratio : 1 / ratio)).toString())
+      setOtherValue((Number(value) * (isToken0 ? 1 / ratio : ratio)).toString())
     },
     [ratio],
   )
@@ -211,13 +211,16 @@ export const AddLiquidity = memo(function AddLiquidity({
   const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
-
+  // console.log(amountA.numerator, amountB.numerator, account, contractAddress, 'lalalala')
   const mintThenDeposit = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() =>
-      positionManagerWrapperContract.write.mintThenDeposit([amountA?.numerator ?? 0n, amountB?.numerator ?? 0n, '0x'], {
-        account: account ?? '0x',
-        chain,
-      }),
+      positionManagerWrapperContract.write.mintThenDeposit(
+        [allowDepositToken0 ? amountA?.numerator ?? 0n : 0n, allowDepositToken1 ? amountB?.numerator ?? 0n : 0n, '0x'],
+        {
+          account: account ?? '0x',
+          chain,
+        },
+      ),
     )
 
     if (receipt?.status) {
@@ -229,7 +232,19 @@ export const AddLiquidity = memo(function AddLiquidity({
       )
       onDone()
     }
-  }, [amountA, amountB, positionManagerWrapperContract, account, chain, toastSuccess, t, fetchWithCatchTxError, onDone])
+  }, [
+    amountA,
+    amountB,
+    positionManagerWrapperContract,
+    account,
+    chain,
+    toastSuccess,
+    t,
+    fetchWithCatchTxError,
+    onDone,
+    allowDepositToken0,
+    allowDepositToken1,
+  ])
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
