@@ -1,8 +1,8 @@
-import useSWR from 'swr'
 import { useAccount } from 'wagmi'
 import qs from 'qs'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
 import { FAST_INTERVAL } from 'config/constants'
+import { useQuery } from '@tanstack/react-query'
 
 export type ClaimStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
 
@@ -29,8 +29,8 @@ const useUserClaimList = ({ currentPage }) => {
   const { address } = useAccount()
   const { isUserExist } = useUserExist()
 
-  const { data, isLoading, mutate } = useSWR(
-    address && isUserExist && ['/user-claim-list', isUserExist, address, currentPage],
+  const { data, isLoading, refetch } = useQuery(
+    ['affiliates-program', 'user-claim-list', isUserExist, address, currentPage],
     async () => {
       try {
         const skip = currentPage === 1 ? 0 : (currentPage - 1) * MAX_PER_PAGE
@@ -51,7 +51,8 @@ const useUserClaimList = ({ currentPage }) => {
       }
     },
     {
-      refreshInterval: FAST_INTERVAL * 3,
+      enabled: Boolean(address && isUserExist),
+      refetchInterval: FAST_INTERVAL * 3,
       keepPreviousData: true,
     },
   )
@@ -59,7 +60,7 @@ const useUserClaimList = ({ currentPage }) => {
   return {
     data,
     isFetching: isLoading,
-    mutate,
+    mutate: refetch,
   }
 }
 

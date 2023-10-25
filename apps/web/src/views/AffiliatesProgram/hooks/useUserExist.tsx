@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
 import qs from 'qs'
 
@@ -9,8 +9,8 @@ interface UserExistResponse {
 const useUserExist = () => {
   const { address } = useAccount()
 
-  const { data: isUserExist, isLoading } = useSWR(
-    address && ['/user-exist', address],
+  const { data: isUserExist, isLoading } = useQuery(
+    ['affiliates-program', 'user-exist', address],
     async () => {
       try {
         const queryString = qs.stringify({ address })
@@ -23,10 +23,9 @@ const useUserExist = () => {
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
+      enabled: !!address,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   )
 

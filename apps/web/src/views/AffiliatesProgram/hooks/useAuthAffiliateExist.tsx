@@ -1,6 +1,6 @@
-import useSWR from 'swr'
 import { useAccount } from 'wagmi'
 import qs from 'qs'
+import { useQuery } from '@tanstack/react-query'
 
 interface AuthAffiliateExistResponse {
   exist: boolean
@@ -9,8 +9,8 @@ interface AuthAffiliateExistResponse {
 const useAuthAffiliateExist = () => {
   const { address } = useAccount()
 
-  const { data: isAffiliateExist } = useSWR(
-    address && ['/affiliate-exist', address],
+  const { data: isAffiliateExist } = useQuery(
+    ['affiliates-program', 'affiliate-exist', address],
     async () => {
       try {
         const queryString = qs.stringify({ address })
@@ -23,10 +23,9 @@ const useAuthAffiliateExist = () => {
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
+      enabled: !!address,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   )
 
