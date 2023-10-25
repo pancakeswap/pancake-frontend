@@ -78,7 +78,7 @@ const useAuthAffiliate = (): AffiliateInfoType => {
   const cookie = getCookie(AFFILIATE_SID)
 
   const { data, refetch } = useQuery(
-    ['affiliates-program', 'auth-affiliate', address, cookie],
+    ['affiliates-program', 'auth-affiliate', address],
     async () => {
       try {
         const response = await fetch(`/api/affiliates-program/affiliate-info`)
