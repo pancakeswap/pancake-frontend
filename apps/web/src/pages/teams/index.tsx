@@ -1,29 +1,23 @@
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
-import { SWRConfig } from 'swr'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
+import { GetStaticProps } from 'next'
+import { teamsById } from 'utils/teamsById'
+import { getTeams } from 'state/teams/helpers'
 import Teams from '../../views/Teams'
-import { getTeams } from '../../state/teams/helpers'
-import { teamsById } from '../../utils/teamsById'
 
-const TeamsPage = ({ fallback }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return (
-    <SWRConfig
-      value={{
-        fallback,
-      }}
-    >
-      <Teams />
-    </SWRConfig>
-  )
+const TeamsPage = () => {
+  return <Teams />
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const fetchedTeams = await getTeams()
-  if (!fetchedTeams) {
+  const queryClient = new QueryClient()
+
+  const fetchedTeams = await queryClient.fetchQuery(['teams'], getTeams)
+
+  if (fetchedTeams) {
+    await queryClient.prefetchQuery(['teams'], () => teamsById)
     return {
       props: {
-        fallback: {
-          teams: teamsById,
-        },
+        dehydratedState: dehydrate(queryClient),
       },
       revalidate: 1,
     }
@@ -31,11 +25,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      fallback: {
-        teams: fetchedTeams,
-      },
+      dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 60 * 60 * 12, // 12 hours
+    revalidate: 60 * 60 * 12,
   }
 }
 

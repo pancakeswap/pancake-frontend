@@ -1,6 +1,5 @@
-import { Price, Currency } from '@pancakeswap/sdk'
+import BigNumber from 'bignumber.js'
 import { Flex, Text } from '@pancakeswap/uikit'
-import { multiplyPriceByAmount } from 'utils/prices'
 import { useTranslation } from '@pancakeswap/localization'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatBnb } from '../helpers'
@@ -10,7 +9,7 @@ type SummaryType = 'won' | 'lost' | 'entered'
 interface SummaryRowProps {
   type: SummaryType
   summary: any
-  bnbBusdPrice: Price<Currency, Currency>
+  tokenPrice: BigNumber
 }
 
 const summaryTypeColors = {
@@ -25,7 +24,7 @@ const summaryTypeSigns = {
   entered: '',
 }
 
-const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, summary, bnbBusdPrice }) => {
+const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, summary, tokenPrice }) => {
   const { t } = useTranslation()
 
   const color = summaryTypeColors[type]
@@ -34,7 +33,7 @@ const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, 
   const roundsInPercents = ((rounds * 100) / totalRounds).toFixed(2)
   const typeTranslationKey = type.charAt(0).toUpperCase() + type.slice(1)
   const displayAmount = type === 'won' ? summary[type].payout : amount
-  const amountInUsd = multiplyPriceByAmount(bnbBusdPrice, displayAmount)
+  const amountInUsd = tokenPrice.multipliedBy(displayAmount).toNumber()
   const { token, displayedDecimals } = useConfig()
   const roundsInPercentsDisplay = !Number.isNaN(parseFloat(roundsInPercents)) ? `${roundsInPercents}%` : '0%'
 

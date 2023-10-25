@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ModalV2, useModalV2, Text, Box, PreTitle, Flex, Message, MessageText } from '@pancakeswap/uikit'
 import { ReactNode } from 'react'
-import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -24,13 +24,13 @@ export function FixedRestakingModal({
   amountDeposit,
   stakedPositions,
 }: {
-  stakingToken: Token
+  stakingToken: Currency
   pools: FixedStakingPool[]
   children: (openModal: () => void) => ReactNode
   initialLockPeriod: number
   stakedPeriods: number[]
   setSelectedPeriodIndex?: (value: number | null) => void
-  amountDeposit: CurrencyAmount<Token>
+  amountDeposit: CurrencyAmount<Currency>
   stakedPositions: StakedPosition[]
 }) {
   const { account } = useAccountActiveChain()
@@ -50,6 +50,7 @@ export function FixedRestakingModal({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          useNative
           stakedPositions={stakedPositions}
           stakingToken={stakingToken}
           pools={pools}
@@ -72,6 +73,7 @@ export function FixedRestakingModal({
             boostAPR,
             lockAPR,
             lastDayAction,
+            positionStakeCurrencyAmount,
           }) => (
             <>
               <WithdrawalMessage lockPeriod={lockPeriod} />
@@ -87,7 +89,7 @@ export function FixedRestakingModal({
                         <PreTitle mr="4px">{t('New')}</PreTitle>
                         <PreTitle color="textSubtle">{t('Staked Amount')}</PreTitle>
                       </Flex>
-                      <AmountWithUSDSub amount={amountDeposit.add(stakeCurrencyAmount)} />
+                      <AmountWithUSDSub amount={amountDeposit.add(positionStakeCurrencyAmount)} />
                     </Box>
                     <Box style={{ textAlign: 'end' }}>
                       <PreTitle color="textSubtle">{t('Stake Period')}</PreTitle>

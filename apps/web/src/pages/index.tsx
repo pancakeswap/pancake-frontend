@@ -129,6 +129,5 @@ export const getStaticProps: GetStaticProps = async () => {
 }
 
 IndexPage.chains = []
-IndexPage.isShowThirdYearButton = true
 
 export default IndexPage

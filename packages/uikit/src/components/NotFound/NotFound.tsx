@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
-import { NextSeo } from "next-seo";
-import { useTranslation } from "@pancakeswap/localization";
 import Link from "next/link";
+import { ReactNode } from "react";
+import { useTranslation } from "@pancakeswap/localization";
 import { LogoIcon } from "../Svg";
 import { Heading } from "../Heading";
 import { Text } from "../Text";
@@ -15,12 +15,12 @@ const StyledNotFound = styled.div`
   justify-content: center;
 `;
 
-const NotFound = ({ statusCode = 404 }: { statusCode?: number }) => {
+const NotFound = ({ statusCode = 404, children }: { statusCode?: number; children: ReactNode }) => {
   const { t } = useTranslation();
 
   return (
     <>
-      <NextSeo title="404" />
+      {children}
       <StyledNotFound>
         <LogoIcon width="64px" mb="8px" />
         <Heading scale="xxl">{statusCode}</Heading>

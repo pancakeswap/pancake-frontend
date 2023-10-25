@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text, IconButton, AddIcon, MinusIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent, Currency } from '@pancakeswap/swap-sdk-core'
 import { useMemo } from 'react'
 
 import dayjs from 'dayjs'
@@ -35,9 +35,9 @@ function InfoSection({
   apr: Percent
   shouldUnlock: boolean
   unlockTime: number
-  accrueInterest: CurrencyAmount<Token>
+  accrueInterest: CurrencyAmount<Currency>
   tokenSymbol: string
-  projectedReturnAmount: CurrencyAmount<Token>
+  projectedReturnAmount: CurrencyAmount<Currency>
 }) {
   const { t } = useTranslation()
 
@@ -125,7 +125,7 @@ export function StakedPositionSection({
 }: {
   unlockTime: number
   boostDayPercent: number
-  token: Token
+  token: Currency
   stakePosition: StakedPosition
   stakePositionUserInfo: StakePositionUserInfo
   lockPeriod: number

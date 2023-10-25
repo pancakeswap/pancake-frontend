@@ -26,7 +26,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
             <Heading scale="lg" textAlign="end">
               {pool.token.symbol}
             </Heading>
-            {new BigNumber(first(pool.pools)?.boostDayPercent).gt(0) ? (
+            {new BigNumber(first(pool.pools)?.boostDayPercent || '0').gt(0) ? (
               <Tag outline variant="success" startIcon={<StarCircle width="18px" color="success" />}>
                 {t('Locked Cake Boost')}
               </Tag>
@@ -74,9 +74,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                 <FixedStakingModal
                   setSelectedPeriodIndex={setSelectedPeriodIndex}
                   key={selectedPeriodIndex}
-                  initialLockPeriod={
-                    selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex].lockPeriod : undefined
-                  }
+                  initialLockPeriod={selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex].lockPeriod : 0}
                   pools={pool.pools}
                   stakingToken={pool.token}
                   stakedPositions={stakedPositions}

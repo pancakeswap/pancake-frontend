@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, chainNames } from '@pancakeswap/chains'
 import memoize from 'lodash/memoize'
 import {
   bsc as bsc_,
@@ -18,25 +18,7 @@ import {
   Chain,
 } from 'wagmi/chains'
 
-export const CHAIN_QUERY_NAME = {
-  [ChainId.ETHEREUM]: 'eth',
-  [ChainId.GOERLI]: 'goerli',
-  [ChainId.BSC]: 'bsc',
-  [ChainId.BSC_TESTNET]: 'bscTestnet',
-  [ChainId.ARBITRUM_ONE]: 'arb',
-  [ChainId.ARBITRUM_GOERLI]: 'arbGoerli',
-  [ChainId.POLYGON_ZKEVM]: 'polygonZkEVM',
-  [ChainId.POLYGON_ZKEVM_TESTNET]: 'polygonZkEVMTestnet',
-  [ChainId.ZKSYNC]: 'zkSync',
-  [ChainId.ZKSYNC_TESTNET]: 'zkSyncTestnet',
-  [ChainId.LINEA]: 'linea',
-  [ChainId.LINEA_TESTNET]: 'lineaTestnet',
-  [ChainId.OPBNB]: 'opBNB',
-  [ChainId.OPBNB_TESTNET]: 'opBnbTestnet',
-  [ChainId.BASE]: 'base',
-  [ChainId.BASE_TESTNET]: 'baseTestnet',
-  [ChainId.SCROLL_SEPOLIA]: 'scrollSepolia',
-} as const satisfies Record<ChainId, string>
+export const CHAIN_QUERY_NAME = chainNames
 
 const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
   return {

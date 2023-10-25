@@ -1,5 +1,33 @@
 # @pancakeswap/pools
 
+## 4.0.19
+
+### Patch Changes
+
+- Updated dependencies [c236a3ee4]
+  - @pancakeswap/chains@0.3.0
+  - @pancakeswap/tokens@0.5.4
+
+## 4.0.18
+
+### Patch Changes
+
+- Updated dependencies [d994c3335]
+  - @pancakeswap/token-lists@0.0.9
+  - @pancakeswap/tokens@0.5.3
+
+## 4.0.17
+
+### Patch Changes
+
+- 4dd27c7a7: Move Eth and Bsc Pool to finished pools'
+
+## 4.0.16
+
+### Patch Changes
+
+- 7eb8e5849: Add new ALP arbitrum pool
+
 ## 4.0.15
 
 ### Patch Changes

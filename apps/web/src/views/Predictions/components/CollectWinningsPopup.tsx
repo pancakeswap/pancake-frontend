@@ -1,14 +1,13 @@
 import { memo, useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { styled, css, keyframes } from 'styled-components'
-import { Button, CloseIcon, IconButton, Box } from '@pancakeswap/uikit'
+import { Button, CloseIcon, IconButton, TrophyGoldIcon } from '@pancakeswap/uikit'
 import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBetHistory } from 'state/predictions/helpers'
 import { useGetPredictionsStatus, useIsHistoryPaneOpen } from 'state/predictions/hooks'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { setHistoryPaneState } from 'state/predictions'
-import Image from 'next/image'
 import { useConfig } from '../context/ConfigProvider'
 
 /**
@@ -184,15 +183,7 @@ const CollectWinningsPopup = () => {
     <CSSTransition in={isOpen} unmountOnExit nodeRef={ref} timeout={1000} classNames="popup">
       <Wrapper ref={ref}>
         <Popup style={{ position: 'relative' }}>
-          <Box
-            position="absolute"
-            top="-2px"
-            left="-25px"
-            zIndex="1"
-            style={{ pointerEvents: 'none', transform: 'rotate(-20deg)' }}
-          >
-            <Image width={89} height={70} src="/images/predictions/birthday/birthday-icon.png" alt="birthday-icon" />
-          </Box>
+          <TrophyGoldIcon width="64px" style={{ flex: 'none' }} mr="8px" />
           <Button ml="30px" style={{ flex: 1 }} onClick={handleOpenHistory}>
             {t('Collect Winnings')}
           </Button>

@@ -5,8 +5,8 @@ import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
 const affiliateFeeCreate = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookie = getCookie(AFFILIATE_SID, { req, res, sameSite: true })
 
-  if (!process.env.AFFILIATE_PROGRAM_API_URL || req.method !== 'POST' || !cookie) {
-    return res.status(400).json({ message: 'API URL Empty / Method wrong / Cookie not exist' })
+  if (!process.env.AFFILIATE_PROGRAM_API_URL || req.method !== 'POST') {
+    return res.status(400).json({ message: 'API URL Empty / Method wrong' })
   }
 
   const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/affiliate/fee/create`

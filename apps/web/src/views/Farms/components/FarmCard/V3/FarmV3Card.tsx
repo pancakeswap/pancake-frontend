@@ -12,6 +12,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
+import { getMerklLink } from 'utils/getMerklLink'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
@@ -64,8 +65,9 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   const isPromotedFarm = farm.token.symbol === 'CAKE'
   const { status: boostStatus } = useBoostStatus(farm.pid)
 
+  const merklLink = getMerklLink({ chainId, lpAddress })
   const infoUrl = useMemo(() => {
-    return `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
+    return chainId ? `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}` : ''
   }, [chainId, lpAddress])
 
   const toggleExpandableSection = useCallback(() => {
@@ -90,6 +92,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
       <FarmCardInnerContainer>
         <CardHeading
           lpLabel={lpLabel}
+          merklLink={merklLink}
           multiplier={farm.multiplier}
           token={farm.token}
           quoteToken={farm.quoteToken}
@@ -134,7 +137,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
               removed={removed}
               scanAddress={{ link: getBlockExploreLink(lpAddress, 'address', chainId), chainId }}
               infoAddress={infoUrl}
-              totalValueFormatted={`$${parseInt(farm.activeTvlUSD).toLocaleString(undefined, {
+              totalValueFormatted={`$${parseInt(farm.activeTvlUSD ?? '0').toLocaleString(undefined, {
                 maximumFractionDigits: 0,
               })}`}
               totalValueLabel={t('Staked Liquidity')}

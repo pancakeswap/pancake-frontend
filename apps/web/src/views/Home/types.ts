@@ -40,7 +40,7 @@ export interface ResponseArticleDataType {
       data: CategoriesType[]
     }
     image: {
-      data: ArticleImageType
+      data: ArticleImageType[]
     }
     newsOutBoundLink: string
     newsFromPlatform: string

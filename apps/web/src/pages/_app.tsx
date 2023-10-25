@@ -59,7 +59,7 @@ function MPGlobalHooks() {
   return null
 }
 
-function MyApp(props: AppProps<{ initialReduxState: any }>) {
+function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>) {
   const { pageProps, Component } = props
   const store = useStore(pageProps.initialReduxState)
 
@@ -81,7 +81,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         )}
       </Head>
       <DefaultSeo {...SEO} />
-      <Providers store={store}>
+      <Providers store={store} dehydratedState={pageProps.dehydratedState}>
         <PageMeta />
         {(Component as NextPageWithLayout).Meta && (
           // @ts-ignore
@@ -140,7 +140,6 @@ type NextPageWithLayout = NextPage & {
    * */
   chains?: number[]
   isShowScrollToTopButton?: true
-  isShowThirdYearButton?: false
   /**
    * Meta component for page, hacky solution for static build page to avoid `PersistGate` which blocks the page from rendering
    */
@@ -162,7 +161,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
-  const isShowThirdYearButton = Component.isShowThirdYearButton || false
 
   return (
     <ProductionErrorBoundary>
@@ -177,7 +175,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
-      {isShowThirdYearButton && <ThirdYearBirthdayCake />}
     </ProductionErrorBoundary>
   )
 }

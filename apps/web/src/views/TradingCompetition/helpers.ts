@@ -1,7 +1,7 @@
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { easterPrizes, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import BigNumber from 'bignumber.js'
-import useBUSDPrice from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { bscTokens } from '@pancakeswap/tokens'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -31,9 +31,9 @@ export const useFanTokenCompetitionRewards = ({
   userPortoRewards: string | number
   userSantosRewards: string | number
 }) => {
-  const lazioPriceBUSD = useBUSDPrice(bscTokens.lazio)
-  const portoPriceBUSD = useBUSDPrice(bscTokens.porto)
-  const santosPriceBUSD = useBUSDPrice(bscTokens.santos)
+  const lazioPriceBUSD = useStablecoinPrice(bscTokens.lazio)
+  const portoPriceBUSD = useStablecoinPrice(bscTokens.porto)
+  const santosPriceBUSD = useStablecoinPrice(bscTokens.santos)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
   const lazioAsBigNumber = new BigNumber(userLazioRewards as string)
   const portoAsBigNumber = new BigNumber(userPortoRewards as string)
@@ -68,7 +68,7 @@ export const useMoboxCompetitionRewards = ({
   userCakeRewards: string | number
   userMoboxRewards: string | number
 }) => {
-  const moboxPriceBUSD = useBUSDPrice(bscTokens.mbox)
+  const moboxPriceBUSD = useStablecoinPrice(bscTokens.mbox)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
   const moboxAsBigNumber = new BigNumber(userMoboxRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
@@ -94,7 +94,7 @@ export const useModCompetitionRewards = ({
   userCakeRewards: string | number
   userDarRewards: string | number
 }) => {
-  const darPriceBUSD = useBUSDPrice(bscTokens.dar)
+  const darPriceBUSD = useStablecoinPrice(bscTokens.dar)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
   const darAsBigNumber = new BigNumber(userDarRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)

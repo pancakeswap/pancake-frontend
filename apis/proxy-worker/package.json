@@ -1,6 +1,6 @@
 {
   "name": "proxy-worker",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "itty-router": "^2.6.1",
     "itty-router-extras": "^0.4.2"
@@ -10,7 +10,7 @@
     "@pancakeswap/tsconfig": "workspace:*",
     "@cloudflare/workers-types": "^3.10.0",
     "typescript": "^5.1.3",
-    "wrangler": "2.0.6"
+    "wrangler": "2.20.1"
   },
   "private": true,
   "scripts": {

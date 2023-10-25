@@ -48,7 +48,10 @@ export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.BASE]: new GraphQLClient('https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest', {
     fetch,
   }),
-} satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
+} satisfies Record<
+  Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET>,
+  GraphQLClient
+>
 
 const zChainId = z.enum([
   String(ChainId.BSC),
@@ -173,7 +176,10 @@ const handler_ = async (req: Request, event: FetchEvent) => {
   }
 
   const { chainId: chainIdString, address: address_ } = parsed.data
-  const chainId = Number(chainIdString) as Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>
+  const chainId = Number(chainIdString) as Exclude<
+    FarmV3SupportedChainId,
+    ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET
+  >
 
   const address = address_.toLowerCase()
 

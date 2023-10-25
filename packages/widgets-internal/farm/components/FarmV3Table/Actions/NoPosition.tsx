@@ -27,7 +27,7 @@ const ActionContainer = styled.div`
 
 interface WalletNotConnectedProps {
   inactive: boolean;
-  account: string;
+  account?: string;
   boostedAction: ReactNode;
   connectWalletButton: ReactNode;
   hasNoPosition: boolean;

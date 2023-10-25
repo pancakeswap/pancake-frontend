@@ -5,7 +5,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useFixedStakingContract } from 'hooks/useContract'
 import { createElement, useCallback, useMemo } from 'react'
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { useContractRead } from 'wagmi'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
@@ -19,7 +19,7 @@ export function useHandleWithdrawSubmission({
   onSuccess,
 }: {
   poolIndex: number
-  stakingToken: Token
+  stakingToken: Currency
   onSuccess?: () => void
 }) {
   const { t } = useTranslation()
@@ -29,7 +29,7 @@ export function useHandleWithdrawSubmission({
   const fixedStakingContract = useFixedStakingContract()
   const { chainId } = useAccountActiveChain()
 
-  const tokenContract = getBep20Contract(stakingToken.address)
+  const tokenContract = getBep20Contract(stakingToken.wrapped.address)
 
   const { data } = useContractRead({
     chainId,
@@ -42,12 +42,12 @@ export function useHandleWithdrawSubmission({
   const stakingTokenBalanceInPool = CurrencyAmount.fromRawAmount(stakingToken, data || '0')
 
   const handleSubmission = useCallback(
-    async (type: UnstakeType, totalGetAmount: CurrencyAmount<Token>) => {
+    async (type: UnstakeType, totalGetAmount: CurrencyAmount<Currency>) => {
       if (totalGetAmount.greaterThan(stakingTokenBalanceInPool)) {
         const linkElement = createElement(
           Link,
           {
-            href: '/',
+            href: 'https://docs.pancakeswap.finance/products/simple-staking/faq#what-happens-in-the-withdrawal-process-when-withdrawal-approval-is-pending',
             target: '_blank',
           },
           t('Learn more'),
