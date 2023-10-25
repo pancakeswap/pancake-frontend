@@ -132,12 +132,12 @@ export const ContentsContainer = styled.div`
   border-radius: 18px;
   overflow: hidden;
   transition: transform 0.3s;
-  background-color: ${({ theme }) => (theme.isDark ? '#372F46' : '#EDEAF4')};
+  background-color: transparent;
   width: 100%;
 
   &:hover {
     transform: scale(1.01);
-    background-color: transparent;
+    background-color: ${({ theme }) => (theme.isDark ? '#372F46' : '#EDEAF4')};
   }
 
   ${({ theme }) =>

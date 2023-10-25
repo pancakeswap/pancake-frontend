@@ -49,7 +49,7 @@ const NotificationSettingsMain = ({ account }: { account: string | undefined }) 
   const getEnabledScopes = (scopesMap: NotifyClientTypes.NotifySubscription['scope']) => {
     const enabledScopeKeys: string[] = []
     Object.entries(scopesMap).forEach(([key, scope]) => {
-      if (scope.enabled) enabledScopeKeys.push(key)
+      if ((scope as any).enabled) enabledScopeKeys.push(key)
     })
     return enabledScopeKeys
   }

@@ -3,7 +3,6 @@ import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalC
 import { useManageSubscription } from '@web3inbox/widget-react'
 import { useCallback, useState } from 'react'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
-import { useAccount } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import useRegistration from './components/hooks/useRegistration'
 import NotificationSettingsMain from './containers/NotificationSettings'
@@ -15,6 +14,7 @@ interface INotifyHeaderprops {
   onDismiss: () => void
   isNotificationView: boolean
   isSettings?: boolean
+  account: string | undefined
 }
 
 const ModalBackButton: React.FC<
@@ -27,20 +27,25 @@ const ModalBackButton: React.FC<
   )
 }
 
-const NotificationHeader = ({ isSettings = false, onBack, onDismiss, isNotificationView }: INotifyHeaderprops) => {
+const NotificationHeader = ({
+  isSettings = false,
+  onBack,
+  onDismiss,
+  isNotificationView,
+  account,
+}: INotifyHeaderprops) => {
   const { t } = useTranslation()
-  const { account: eip155Account } = useRegistration()
   return (
     <>
       {isNotificationView ? (
         <ModalHeader>
-          {eip155Account ? <ModalBackButton onBack={onBack} isSettings={isSettings} /> : null}
+          {account ? <ModalCloseButton onDismiss={onDismiss} /> : null}
           <ModalTitle>
             <Heading fontSize="20px" padding="0px" textAlign="center">
               {t('Notifications')}
             </Heading>
           </ModalTitle>
-          {eip155Account ? <ModalCloseButton onDismiss={onDismiss} /> : null}
+          {account ? <ModalBackButton onBack={onBack} isSettings={isSettings} /> : null}
         </ModalHeader>
       ) : (
         <ModalHeader>
@@ -60,7 +65,6 @@ const Notifications = () => {
   const [isRightView, setIsRightView] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { account, identityKey, handleRegistration } = useRegistration()
-  const { address } = useAccount()
   const { isSubscribed } = useManageSubscription(account)
 
   const toggleSettings = useCallback(
@@ -89,8 +93,9 @@ const Notifications = () => {
             onDismiss={onDismiss}
             isSettings={!isRightView}
             isNotificationView={isSubscribed}
+            account={account}
           />
-          {isSubscribed && address ? (
+          {isSubscribed && account ? (
             <ViewContainer isRightView={isRightView}>
               <SettingsModal account={account} />
               <NotificationSettingsMain account={account} />

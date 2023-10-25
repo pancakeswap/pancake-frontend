@@ -35,7 +35,7 @@ const useRegistration = () => {
     }
   }, [signMessage, registerIdentity, account, toast])
 
-  return { handleRegistration, identityKey, account, setAccount }
+  return { handleRegistration, identityKey, account, setAccount, address }
 }
 
 export default useRegistration

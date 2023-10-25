@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, Row, Text } from '@pancakeswap/uikit'
+import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Row, Text } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -16,9 +16,7 @@ import FlexRow from 'views/Predictions/components/FlexRow'
 interface INotificationprops {
   title: string
   description: string
-  id: number
   date: number
-  removeNotification: (id: number) => Promise<void>
   url?: string | undefined
   image?: string | undefined
 }
@@ -26,8 +24,8 @@ interface INotificationprops {
 interface INotificationContainerProps {
   notifications: NotifyClientTypes.NotifyMessageRecord[]
   sortOptionsType: string
-  removeNotification: (id: number) => Promise<void>
 }
+
 const formatStringWithNewlines = (inputString: string) => {
   return inputString.split('\n').map((line: string, index: number) => (
     // eslint-disable-next-line react/no-array-index-key
@@ -37,7 +35,7 @@ const formatStringWithNewlines = (inputString: string) => {
   ))
 }
 
-const NotificationItem = ({ title, description, id, date, image, url, removeNotification }: INotificationprops) => {
+const NotificationItem = ({ title, description, date, image, url }: INotificationprops) => {
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
   const [isClosing, setIsClosing] = useState<boolean>(false)
@@ -45,17 +43,6 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
-
-  const deleteNotification = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      e.stopPropagation()
-      setIsClosing(true)
-      setTimeout(() => {
-        removeNotification(id).then(() => setIsClosing(false))
-      }, 300)
-    },
-    [removeNotification, id],
-  )
 
   const handleExpandClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -78,12 +65,7 @@ const NotificationItem = ({ title, description, id, date, image, url, removeNoti
           <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={65} width={65} unoptimized />
         </Box>
         <Flex flexDirection="column" width="100%">
-          <Flex justifyContent="space-between">
-            <Text fontWeight="bold">{title}</Text>
-            <Box paddingX="5px" height="fit-content" onClick={deleteNotification}>
-              <CloseIcon cursor="pointer" />
-            </Box>
-          </Flex>
+          <Text fontWeight="bold">{title}</Text>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
             <Text> {formatedDescription}</Text>
 
@@ -120,7 +102,7 @@ const BottomRow = ({ show, formattedDate }: { show: boolean; formattedDate: stri
   )
 }
 
-const NotificationContainer = ({ notifications, sortOptionsType, removeNotification }: INotificationContainerProps) => {
+const NotificationContainer = ({ notifications, sortOptionsType }: INotificationContainerProps) => {
   return (
     <Box>
       {notifications
@@ -134,11 +116,9 @@ const NotificationContainer = ({ notifications, sortOptionsType, removeNotificat
               key={notification.id}
               title={notification.message.title}
               description={notification.message.body}
-              id={notification.id}
               date={notification.publishedAt}
               url={notification.message.url}
               image={notification.message.icon}
-              removeNotification={removeNotification}
             />
           )
         })}

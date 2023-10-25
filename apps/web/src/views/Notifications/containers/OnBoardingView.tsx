@@ -15,6 +15,7 @@ interface IOnboardingButtonProps {
   onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
   loading: boolean
   isOnBoarded: boolean
+  account: string | undefined
 }
 
 interface IOnBoardingProps {
@@ -24,12 +25,11 @@ interface IOnBoardingProps {
   account: string | undefined
 }
 
-function OnboardingButton({ onClick, loading, isOnBoarded }: IOnboardingButtonProps) {
+function OnboardingButton({ onClick, loading, isOnBoarded, account }: IOnboardingButtonProps) {
   const { t } = useTranslation()
-  const { account: eip155Account } = useRegistration()
   const buttonText = getOnBoardingButtonText(isOnBoarded, loading, t)
 
-  if (!eip155Account)
+  if (!account)
     return (
       <AutoColumn gap="md" marginTop="6px" width="100%">
         <ConnectWalletButton height="50px" />
@@ -55,31 +55,29 @@ const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, accou
   const toast = useToast()
   const { t } = useTranslation()
   const { subscribe, isSubscribing } = useManageSubscription(account)
-  const { sendPushNotification, requestNotificationPermission, subscribeToPushNotifications } =
-    useSendPushNotification()
+  const { sendPushNotification } = useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {
     if (!account) return
     setloading(true)
     try {
-      await subscribeToPushNotifications()
       await subscribe()
       setIsRightView(true)
-      setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, []), 1000)
+      setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, [], account), 1000)
       setloading(false)
     } catch (error) {
       toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
       setloading(false)
     }
-  }, [account, setloading, toast, sendPushNotification, subscribe, setIsRightView, subscribeToPushNotifications])
+  }, [account, setloading, toast, sendPushNotification, subscribe, setIsRightView])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
       if (!identityKey) handleRegistration()
-      else requestNotificationPermission().then(() => handleSubscribe())
+      else handleSubscribe()
     },
-    [handleRegistration, handleSubscribe, identityKey, requestNotificationPermission],
+    [handleRegistration, handleSubscribe, identityKey],
   )
 
   const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(identityKey), t)
@@ -100,6 +98,7 @@ const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, accou
           loading={loading || isSubscribing}
           onClick={handleAction}
           isOnBoarded={Boolean(identityKey)}
+          account={account}
         />
       </FlexGap>
     </Box>

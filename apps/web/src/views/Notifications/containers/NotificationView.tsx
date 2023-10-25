@@ -124,11 +124,7 @@ const SettingsModal = ({ account }: { account: string | undefined }) => {
       <Box minHeight="360px" overflowY="scroll">
         <NotificationContainerStyled>
           {filteredNotifications.length > 0 ? (
-            <NotificationItem
-              notifications={filteredNotifications}
-              sortOptionsType={sortOptionsType}
-              removeNotification={deleteMessage}
-            />
+            <NotificationItem notifications={filteredNotifications} sortOptionsType={sortOptionsType} />
           ) : (
             <NoNotificationsView />
           )}

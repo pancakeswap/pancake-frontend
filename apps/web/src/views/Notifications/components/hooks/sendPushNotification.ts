@@ -1,71 +1,17 @@
 import { useToast } from '@pancakeswap/uikit'
-import crypto from 'crypto'
-import { PancakeNotifications, SECURE_TOKEN, WEB_PUSH_ENCRYPTION_KEY, WEB_PUSH_IV } from 'views/Notifications/constants'
+import { PancakeNotifications, SECURE_TOKEN } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
-import { useAccount } from 'wagmi'
-import useRegistration from './useRegistration'
 
 interface IUseSendNotification {
-  sendPushNotification: (notificationType: BuilderNames, args: string[]) => Promise<void>
-  subscribeToPushNotifications(): Promise<void>
-  requestNotificationPermission: () => Promise<void | NotificationPermission>
+  sendPushNotification: (notificationType: BuilderNames, args: string[], account: string) => Promise<void>
 }
 
 const useSendPushNotification = (): IUseSendNotification => {
-  const { address: account } = useAccount()
-  const { account: eip155Account } = useRegistration()
   const toast = useToast()
 
-  const requestNotificationPermission = async () => {
-    if (!('Notification' in window)) {
-      return Promise.reject(new Error('This browser does not support desktop push notifications'))
-    }
-    switch (Notification.permission) {
-      case 'granted':
-        return Promise.resolve()
-      case 'denied':
-        return Promise.reject(new Error('User does not want to receive notifications'))
-      default:
-        return Notification.requestPermission()
-    }
-  }
-
-  async function subscribeToPushNotifications() {
-    if ('serviceWorker' in navigator) {
-      try {
-        console.log('heyy')
-        const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
-        await navigator.serviceWorker.ready
-
-        const secretKeyBuffer = Buffer.from(WEB_PUSH_ENCRYPTION_KEY, 'hex')
-        const ivBuffer = Buffer.from(WEB_PUSH_IV, 'hex')
-
-        const subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY,
-        })
-
-        const data = JSON.stringify(subscription)
-        const cipher = crypto.createCipheriv('aes-256-cbc', secretKeyBuffer, ivBuffer)
-
-        let encryptedData = cipher.update(data, 'utf8', 'hex')
-        encryptedData += cipher.final('hex')
-
-        await fetch('https://lobster-app-6lfpi.ondigitalocean.app/subscribe', {
-          method: 'POST',
-          body: JSON.stringify({ subscription: encryptedData, user: account }),
-          headers: { 'Content-Type': 'application/json' },
-        })
-      } catch (error) {
-        console.error('failed to subscribe to push notis', error)
-      }
-    }
-  }
-
-  const sendPushNotification = async (notificationType: BuilderNames, args: string[]) => {
-    if (!eip155Account) return
+  const sendPushNotification = async (notificationType: BuilderNames, args: string[], account: string) => {
     const notificationPayload: NotificationPayload = {
-      accounts: [eip155Account],
+      accounts: [account],
       notification: PancakeNotifications[notificationType](args),
     }
     try {
@@ -83,7 +29,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       }
     }
   }
-  return { sendPushNotification, subscribeToPushNotifications, requestNotificationPermission }
+  return { sendPushNotification }
 }
 
 export default useSendPushNotification
