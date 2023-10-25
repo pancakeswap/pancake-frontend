@@ -3,6 +3,7 @@ import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalC
 import { useManageSubscription } from '@web3inbox/widget-react'
 import { useCallback, useState } from 'react'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
+import { useAccount } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import useRegistration from './components/hooks/useRegistration'
 import NotificationSettingsMain from './containers/NotificationSettings'
@@ -59,6 +60,7 @@ const Notifications = () => {
   const [isRightView, setIsRightView] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { account, identityKey, handleRegistration } = useRegistration()
+  const { address } = useAccount()
   const { isSubscribed } = useManageSubscription(account)
 
   const toggleSettings = useCallback(
@@ -88,7 +90,7 @@ const Notifications = () => {
             isSettings={!isRightView}
             isNotificationView={isSubscribed}
           />
-          {isSubscribed && account ? (
+          {isSubscribed && address ? (
             <ViewContainer isRightView={isRightView}>
               <SettingsModal account={account} />
               <NotificationSettingsMain account={account} />

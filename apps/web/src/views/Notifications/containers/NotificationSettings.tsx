@@ -94,7 +94,7 @@ const NotificationSettingsMain = ({ account }: { account: string | undefined }) 
     <Box paddingBottom="24px" width="100%">
       <ScrollableContainer>
         <SettingsContainer scopes={scopes} setScopes={setScopes} />
-        <Box paddingX="24px">
+        <Box paddingX="24px" marginTop="10px">
           <NotificationActionButton
             isUnsubscribing={loading || isUnsubscribing}
             handleSubscriptionAction={handleAction}
