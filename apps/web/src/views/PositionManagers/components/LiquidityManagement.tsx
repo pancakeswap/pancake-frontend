@@ -50,6 +50,7 @@ interface Props {
   rewardEndTime: number
   rewardStartTime: number
   totalAssetsInUsd: number
+  totalStakedInUsd: number
   refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
@@ -94,6 +95,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   totalSupplyAmounts,
   precision,
   isInCakeRewardDateRange,
+  totalStakedInUsd,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -179,6 +181,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         totalSupplyAmounts={totalSupplyAmounts}
         userLpAmounts={userLpAmounts}
         precision={precision}
+        totalStakedInUsd={totalStakedInUsd}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

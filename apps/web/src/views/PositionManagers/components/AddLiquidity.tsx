@@ -6,6 +6,7 @@ import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
+import BigNumber from 'bignumber.js'
 import { CurrencyInput } from 'components/CurrencyInput'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
@@ -62,6 +63,7 @@ interface Props {
   rewardStartTime: number
   onAdd?: (params: { amountA: CurrencyAmount<Currency>; amountB: CurrencyAmount<Currency> }) => Promise<void>
   totalAssetsInUsd: number
+  totalStakedInUsd: number
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
@@ -85,7 +87,6 @@ export const AddLiquidity = memo(function AddLiquidity({
   allowDepositToken0,
   contractAddress,
   userCurrencyBalances,
-  // userVaultPercentage,
   poolToken0Amount,
   poolToken1Amount,
   token0PriceUSD,
@@ -101,6 +102,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   userLpAmounts,
   totalSupplyAmounts,
   precision,
+  totalStakedInUsd,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -165,6 +167,15 @@ export const AddLiquidity = memo(function AddLiquidity({
     () => tryParseAmount(valueB, currencyB) || CurrencyAmount.fromRawAmount(currencyB, '0'),
     [valueB, currencyB],
   )
+
+  const userVaultPercentage = useMemo(() => {
+    const totalPoolToken0Usd = new BigNumber(amountA?.toSignificant() ?? 0).times(token0PriceUSD ?? 0)?.toNumber()
+    const totalPoolToken1Usd = new BigNumber(amountB?.toSignificant() ?? 0).times(token1PriceUSD ?? 0)?.toNumber()
+
+    const userTotalDepositUSD =
+      (allowDepositToken0 ? totalPoolToken0Usd : 0) + (allowDepositToken1 ? totalPoolToken1Usd : 0)
+    return (userTotalDepositUSD / (totalStakedInUsd + userTotalDepositUSD)) * 100
+  }, [allowDepositToken0, allowDepositToken1, amountA, amountB, token0PriceUSD, token1PriceUSD, totalStakedInUsd])
 
   const apr = useApr({
     currencyA,
@@ -288,10 +299,10 @@ export const AddLiquidity = memo(function AddLiquidity({
               </Flex>
             )}
             <Flex mt="1.5em" flexDirection="column">
-              {/* <RowBetween>
-            <Text color="text">{t('Your share in the vault')}:</Text>
-            <Text color="text">{`${userVaultPercentage?.toFixed(2)}%`}</Text>
-          </RowBetween> */}
+              <RowBetween>
+                <Text color="text">{t('Your share in the vault')}:</Text>
+                <Text color="text">{`${userVaultPercentage?.toFixed(2)}%`}</Text>
+              </RowBetween>
               <RowBetween>
                 <Text color="text">{t('APR')}:</Text>
                 <AprButton

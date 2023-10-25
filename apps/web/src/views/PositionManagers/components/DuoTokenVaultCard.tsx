@@ -68,6 +68,7 @@ interface Props {
   rewardStartTime: number
   refetch?: () => void
   totalAssetsInUsd: number
+  totalStakedInUsd: number
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
@@ -97,7 +98,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   token0PriceUSD,
   token1PriceUSD,
   pendingReward,
-  userVaultPercentage,
   managerInfoUrl,
   strategyInfoUrl,
   projectVaultUrl,
@@ -111,6 +111,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   totalSupplyAmounts,
   precision,
   managerAddress,
+  totalStakedInUsd,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -180,7 +181,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           token0PriceUSD={token0PriceUSD}
           token1PriceUSD={token1PriceUSD}
           pendingReward={pendingReward}
-          userVaultPercentage={userVaultPercentage}
           poolToken0Amount={poolToken0Amount}
           poolToken1Amount={poolToken1Amount}
           rewardPerSecond={rewardPerSecond}
@@ -192,6 +192,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           userLpAmounts={userLpAmounts}
           precision={precision}
           isInCakeRewardDateRange={apr.isInCakeRewardDateRange}
+          totalStakedInUsd={totalStakedInUsd}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

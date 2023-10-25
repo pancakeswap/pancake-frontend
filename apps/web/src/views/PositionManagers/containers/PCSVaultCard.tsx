@@ -185,6 +185,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       totalSupplyAmounts={info?.totalSupplyAmounts}
       userLpAmounts={info?.userLpAmounts}
       precision={info?.precision}
+      totalStakedInUsd={totalStakedInUsd}
     >
       {id}
     </DuoTokenVaultCard>
