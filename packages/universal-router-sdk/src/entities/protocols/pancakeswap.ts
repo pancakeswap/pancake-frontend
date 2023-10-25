@@ -89,21 +89,17 @@ export class PancakeSwapTrade implements Command {
         if (this.type === TradeType.EXACT_OUTPUT) {
           minAmountOut = minAmountOut.subtract(minAmountOut.multiply(feeBips))
         }
-
-        // The remaining tokens that need to be sent to the user after the fee is taken will be caught
-        // by this if-else clause.
-        if (outputIsNative) {
-          planner.addCommand(CommandType.UNWRAP_WETH, [
-            this.options.recipient,
-            BigInt(minAmountOut.quotient.toString()),
-          ])
-        } else {
-          planner.addCommand(CommandType.SWEEP, [
-            sampleTrade.outputAmount.currency.wrapped.address,
-            this.options.recipient,
-            BigInt(minAmountOut.quotient.toString()),
-          ])
-        }
+      }
+      // The remaining tokens that need to be sent to the user after the fee is taken will be caught
+      // by this if-else clause.
+      if (outputIsNative) {
+        planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, BigInt(minAmountOut.quotient.toString())])
+      } else {
+        planner.addCommand(CommandType.SWEEP, [
+          sampleTrade.outputAmount.currency.wrapped.address,
+          this.options.recipient,
+          BigInt(minAmountOut.quotient.toString()),
+        ])
       }
 
       if ((inputIsNative && this.type === TradeType.EXACT_OUTPUT) || SwapRouter.riskOfPartialFill(trades)) {
