@@ -9,8 +9,14 @@ export const example: GameType = {
     'Immerse yourself in the exhilarating world of Pancake Protector with this meticulously crafted collection of NFTs. Designed exclusively for the game, these NFTs bestow extraordinary attribute bonuses upon your heroes, elevating their capabilities to unmatched heights. Step into the realm of epic battles and heroic quests as you wield the power of these remarkable artefact. But that’s not all - the Exclusive Fashion NFTs unlock captivating and exclusive visual transformations, ensuring your designated heroes stand out in style. Prepare for an unforgettable adventure and unleash the full potential of these extraordinary NFTs in your quest to become a true champion of Pancake Protector!',
   publishDate: 1698044972,
   headerImage: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
-  projectLogo: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
-  projectCircleLogo: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+  projectLogo: {
+    lightTheme: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+    darkTheme: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+  },
+  projectCircleLogo: {
+    lightTheme: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+    darkTheme: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+  },
   gameLink: 'https://protectors.pancakeswap.finance/',
   posters: {
     layout: PostersLayout.Horizontal,

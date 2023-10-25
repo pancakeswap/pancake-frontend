@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
 import { useState, useCallback } from 'react'
 import dayjs from 'dayjs'
+import useTheme from 'hooks/useTheme'
 import { GameType } from '@pancakeswap/games'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text, Button, CardHeader, Card } from '@pancakeswap/uikit'
@@ -103,6 +104,7 @@ interface GamesProps {
 
 export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGames, pickedGameId, setPickedGameId }) => {
   const { t } = useTranslation()
+  const { isDark } = useTheme()
   const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
   const getTime = useCallback((timestamp: number) => {
@@ -147,7 +149,7 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
                     {t('Publisher:')}
                   </Text>
                   <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
-                    <ProjectLogo imgUrl={game.projectLogo} />
+                    <ProjectLogo imgUrl={isDark ? game.projectLogo.darkTheme : game.projectLogo.lightTheme} />
                     <StyledTag scale="xs">Casual</StyledTag>
                   </Flex>
                 </Box>

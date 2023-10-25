@@ -59,6 +59,7 @@ const ArrowButton = styled.div`
 
   &.swiper-button-disabled {
     opacity: 0.5;
+    cursor: not-allowed;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -80,7 +81,7 @@ export const Banner = () => {
   const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
   const config = useGamesConfig()
-  const games: GameType[] = useMemo(() => config.slice(1, 7), [config])
+  const games: GameType[] = useMemo(() => config.slice(0, 6), [config])
 
   return (
     <StyledBackground>
