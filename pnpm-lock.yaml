@@ -1036,6 +1036,9 @@ importers:
       aptos:
         specifier: ^1.3.16
         version: 1.3.16
+      msafe-wallet:
+        specifier: ^2.1.5
+        version: 2.1.5
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.29)(typescript@5.1.3)
@@ -19514,6 +19517,13 @@ packages:
       '@metamask/safe-event-emitter': 2.0.0
       eth-rpc-errors: 4.0.2
 
+  /json-rpc-protocol@0.13.2:
+    resolution: {integrity: sha512-2InSi+c7wGESmvYcEVS0clctpJCodV7gLqLN1BIIPNK07wokXIwhOL8RQWU4O7oX5adChn6HJGtIU6JaUQ1P/A==}
+    engines: {node: '>=4'}
+    dependencies:
+      make-error: 1.3.6
+    dev: true
+
   /json-rpc-random-id@1.0.1:
     resolution: {integrity: sha512-RJ9YYNCkhVDBuP4zN5BBtYAzEl03yq/jIIsyif0JY9qyJuQQZNeDK7anAPKKlyEtLSj2s8h6hNh2F8zO5q7ScA==}
 
@@ -20783,6 +20793,13 @@ packages:
 
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  /msafe-wallet@2.1.5:
+    resolution: {integrity: sha512-azUF0o96WTYh6jJCwVG9FQ4erRlScvEn0z5+l7WNCbqP9oPKUCR2ySttDjaMa0cO06wz5huk3bW59ND7swiH6Q==}
+    dependencies:
+      buffer: 6.0.3
+      json-rpc-protocol: 0.13.2
+    dev: true
 
   /muggle-string@0.3.1:
     resolution: {integrity: sha512-ckmWDJjphvd/FvZawgygcUeQCxzvohjFO5RxTjj4eq8kw359gFF3E1brjfI+viLMxss5JrHTDRHZvu2/tuy0Qg==}
