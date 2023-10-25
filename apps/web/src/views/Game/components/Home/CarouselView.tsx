@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
-import { Box } from '@pancakeswap/uikit'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { PostersItemData, PostersItemDataType } from '@pancakeswap/games'
+import { useIsIOS } from 'views/Home/hooks/useIsIOS'
 
 const StyledCarouselContainer = styled(Box)<{ isHorizontal: boolean }>`
   padding: 16px 16px 2px 16px;
@@ -47,9 +48,12 @@ interface CarouselViewProps {
 }
 
 export const CarouselView: React.FC<React.PropsWithChildren<CarouselViewProps>> = ({ isHorizontal, carouselData }) => {
+  const { isIOS } = useIsIOS()
+  const { isMobile } = useMatchBreakpoints()
+
   return (
     <StyledCarouselContainer isHorizontal={isHorizontal}>
-      {carouselData.type === PostersItemDataType.Video ? (
+      {(!isIOS || !isMobile) && carouselData.type === PostersItemDataType.Video ? (
         <video
           muted
           autoPlay

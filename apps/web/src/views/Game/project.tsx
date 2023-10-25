@@ -18,7 +18,7 @@ import { useGamesConfig } from 'views/Game/hooks/useGamesConfig'
 const StyledDesktop = styled.div<{ showPhishingBanner: boolean }>`
   display: flex;
   height: ${({ showPhishingBanner }) =>
-    showPhishingBanner ? `calc(100vh - 100px - 84px - 50px)` : `calc(100vh - 99px)`};
+    showPhishingBanner ? `calc(100vh - 100px - 84px - 50px)` : `calc(100vh - 148px)`};
 
   ${({ theme }) => theme.mediaQueries.md} {
     height: ${({ showPhishingBanner }) => (showPhishingBanner ? `calc(100vh - 100px - 69px)` : `calc(100vh - 99px)`)};
