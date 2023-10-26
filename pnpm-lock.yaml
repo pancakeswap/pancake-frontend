@@ -316,8 +316,8 @@ importers:
         specifier: 13.5.1
         version: 13.5.1(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
       next-axiom:
-        specifier: ^0.18.0
-        version: 0.18.0(next@13.5.1)
+        specifier: ^1.1.0
+        version: 1.1.0(next@13.5.1)(react@18.2.0)
       next-seo:
         specifier: ^5.15.0
         version: 5.15.0(next@13.5.1)(react-dom@18.2.0)(react@18.2.0)
@@ -404,8 +404,8 @@ importers:
         specifier: 13.5.1
         version: 13.5.1(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
       next-axiom:
-        specifier: ^0.18.0
-        version: 0.18.0(next@13.5.1)
+        specifier: ^1.1.0
+        version: 1.1.0(next@13.5.1)(react@18.2.0)
       next-seo:
         specifier: ^5.15.0
         version: 5.15.0(next@13.5.1)(react-dom@18.2.0)(react@18.2.0)
@@ -498,8 +498,8 @@ importers:
         specifier: 13.5.1
         version: 13.5.1(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
       next-axiom:
-        specifier: ^0.18.0
-        version: 0.18.0(next@13.5.1)
+        specifier: ^1.1.0
+        version: 1.1.0(next@13.5.1)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.1)(react-dom@18.2.0)(react@18.2.0)
@@ -701,8 +701,8 @@ importers:
         specifier: 13.5.1
         version: 13.5.1(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
       next-axiom:
-        specifier: ^0.18.0
-        version: 0.18.0(next@13.5.1)
+        specifier: ^1.1.0
+        version: 1.1.0(next@13.5.1)(react@18.2.0)
       next-seo:
         specifier: ^5.15.0
         version: 5.15.0(next@13.5.1)(react-dom@18.2.0)(react@18.2.0)
@@ -20942,13 +20942,15 @@ packages:
   /neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  /next-axiom@0.18.0(next@13.5.1):
-    resolution: {integrity: sha512-OexBGAQ3l/EPCIxbaGVee+JmJZfW6DMT/NCqaRw6tsZ7dO72rsZCAMhDh6qT41+dCyb+X10Dzx3yHVy+3p1qyw==}
-    engines: {node: '>=15'}
+  /next-axiom@1.1.0(next@13.5.1)(react@18.2.0):
+    resolution: {integrity: sha512-/Fh8MOM7gzeR58SA0HfF2ZyNp4WY3cv0hbH3XW3e0u3FG4IGPfFoRuNtpWx3qv4YCqm3jmoR3CVP/dc0VF6xMQ==}
+    engines: {node: '>=18'}
     peerDependencies:
-      next: ^12.1.4 || ^13
+      next: '>=13.4'
+      react: '>=18.0.0'
     dependencies:
       next: 13.5.1(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
       whatwg-fetch: 3.6.2
     dev: false
 
