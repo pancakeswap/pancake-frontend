@@ -166,6 +166,11 @@ export const GameProject = () => {
     }, 425)
   }
 
+  const gameUrl = useMemo(() => {
+    const defaultUrl = gameData?.gameLink
+    return query?.gameQuery ? `${defaultUrl}?${query?.gameQuery}` : defaultUrl
+  }, [gameData, query])
+
   if (!gameData) {
     return null
   }
@@ -174,7 +179,7 @@ export const GameProject = () => {
     <StyledDesktop showPhishingBanner={showPhishingBanner}>
       <SplitWrapper ref={splitWrapperRef}>
         <StyledContainer>
-          <StyledIframe ref={iframeRef} src={gameData.gameLink}>
+          <StyledIframe ref={iframeRef} src={gameUrl}>
             {t(`Your browser doesn't support iframe`)}
           </StyledIframe>
         </StyledContainer>
