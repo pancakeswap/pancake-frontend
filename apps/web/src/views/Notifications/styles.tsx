@@ -7,9 +7,10 @@ export const Menu = styled.div<{ isOpen: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: 24px;
-  padding-bottom: 4px;
+  // padding-bottom: 4px;
   pointer-events: auto;
   width: 400px;
+  max-height: 510px;
   overflow: hidden;
   position: relative;
   visibility: visible;
@@ -112,7 +113,7 @@ export const NotificationsWrapper = styled.div<{ isClosing: boolean }>`
 `
 
 export const NotificationContainerStyled = styled.div`
-  max-height: 365px;
+  max-height: 370px;
   margin-top: 8px;
   overflow-x: hidden;
   overflow-y: auto;

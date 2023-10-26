@@ -31,7 +31,7 @@ interface INotificationContainerProps {
 const formatStringWithNewlines = (inputString: string) => {
   return inputString.split('\n').map((line: string, index: number) => (
     // eslint-disable-next-line react/no-array-index-key
-    <Text key={`message-line-${index}`} lineHeight="15px" color="textSubtle">
+    <Text key={`message-line-${index}`} lineHeight="15px" color="textSubtle" fontSize="14px">
       {line}
     </Text>
   ))
@@ -65,9 +65,11 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
           <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={65} width={65} unoptimized />
         </Box>
         <Flex flexDirection="column" width="100%">
-          <Text fontWeight="bold">{title}</Text>
+          <Text fontWeight="bold" lineHeight="18px">
+            {title}
+          </Text>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
-            <Text> {formatedDescription}</Text>
+            <Text>{formatedDescription}</Text>
             {url !== '' ? (
               <StyledLink hidden href={url} target="_blank" rel="noreferrer noopener">
                 {t('View Link')}
@@ -95,13 +97,13 @@ const BottomRow = ({
     <Row justifyContent={elementHeight > 35 ? 'space-between' : 'flex-end'} marginTop="6px">
       {elementHeight > 35 ? (
         <FlexRow>
-          <ExpandButton color="secondary" fontSize="15px">
+          <ExpandButton color="secondary" fontSize="14px">
             {show ? t('Show Less') : t('Show More')}
           </ExpandButton>
           {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}
         </FlexRow>
       ) : null}
-      <Text fontSize="15px">{formattedDate}</Text>
+      <Text fontSize="12px">{formattedDate}</Text>
     </Row>
   )
 }
