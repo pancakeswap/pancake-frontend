@@ -1,6 +1,7 @@
 import { Box, Flex, Row, Text, Toggle } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { Dispatch, SetStateAction, useCallback } from 'react'
+import { NotificationContainerStyled } from 'views/Notifications/styles'
 import { Scope } from 'views/Notifications/types'
 
 interface ISettingsprops {
@@ -26,14 +27,14 @@ const Settingsitem = ({ scope, id, setScopes }: ISettingsprops) => {
   }, [setScopes, id])
 
   return (
-    <Box>
-      <Row flexDirection="column" mt="4px" alignItems="flex-start">
-        <Text fontWeight="bold" fontSize="16px" textAlign="left">
+    <Box paddingLeft="24px" paddingRight="16px" paddingBottom="8px">
+      <Row flexDirection="column" alignItems="flex-start">
+        <Text fontWeight="bold" fontSize="16px" textAlign="left" lineHeight="16px">
           {scope.name}
         </Text>
       </Row>
-      <Flex justifyContent="space-between" alignItems="center" mb="16px">
-        <Text maxWidth="80%" color="textSubtle">
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text maxWidth="80%" color="textSubtle" lineHeight="22px">
           {scope.description}
         </Text>
         <Toggle id="toggle-expert-mode-button" scale="md" checked={scope.enabled} onChange={toggleScopeEnabled} />
@@ -44,11 +45,11 @@ const Settingsitem = ({ scope, id, setScopes }: ISettingsprops) => {
 
 const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
   return (
-    <Box maxHeight="360px" overflowY="scroll" paddingLeft="24px" paddingRight="18px">
+    <NotificationContainerStyled>
       {Object.entries(scopes).map(([id, scope]) => {
         return <Settingsitem key={id} id={id} scope={scope} setScopes={setScopes} />
       })}
-    </Box>
+    </NotificationContainerStyled>
   )
 }
 

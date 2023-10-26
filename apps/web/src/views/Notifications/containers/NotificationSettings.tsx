@@ -5,6 +5,7 @@ import {
   Box,
   CircleLoader,
   Flex,
+  FlexGap,
   IconButton,
   ModalCloseButton,
   Text,
@@ -33,14 +34,14 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
   const buttonText = getSettingsButtonText(isUnsubscribing, objectsAreEqual, t)
 
   return (
-    <AutoColumn gap="md" marginTop="6px">
-      <CommitButton variant="primary" onClick={handleSubscriptionAction} isLoading={isUnsubscribing} height="50px">
-        <Flex alignItems="center">
-          <Text px="4px" fontWeight="bold" color="white">
+    <AutoColumn>
+      <CommitButton onClick={handleSubscriptionAction} isLoading={isUnsubscribing} height="50px">
+        <FlexGap alignItems="center" gap="6px">
+          <Text fontWeight="bold" color="white">
             {buttonText}
           </Text>
           {isUnsubscribing ? <CircleLoader stroke="white" /> : null}
-        </Flex>
+        </FlexGap>
       </CommitButton>
     </AutoColumn>
   )
@@ -107,15 +108,15 @@ const NotificationSettingsView = ({
   )
 
   return (
-    <Box paddingBottom="24px" width="100%">
+    <Box width="100%">
       <NotificationHeader
         leftIcon={
-          <IconButton tabIndex={-1} variant="text" onClick={toggleSettings} area-label="go back" mr="8px">
+          <IconButton tabIndex={-1} variant="text" onClick={toggleSettings}>
             <ArrowBackIcon color="primary" />
           </IconButton>
         }
         rightIcon={
-          <IconButton tabIndex={-1} variant="text" onClick={onDismiss} area-label="go back" mr="8px">
+          <IconButton tabIndex={-1} variant="text" onClick={onDismiss}>
             <ModalCloseButton onDismiss={onDismiss} />
           </IconButton>
         }
@@ -123,7 +124,7 @@ const NotificationSettingsView = ({
       />
       <ScrollableContainer>
         <SettingsContainer scopes={scopes} setScopes={setScopes} />
-        <Box paddingX="24px" marginTop="10px">
+        <Box paddingX="24px" paddingTop="8px" paddingBottom="24px">
           <NotificationActionButton
             isUnsubscribing={isUnsubscribing}
             handleSubscriptionAction={handleAction}

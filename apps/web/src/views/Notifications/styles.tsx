@@ -49,24 +49,6 @@ export const ModalHeader = styled.div<{ background?: string }>`
   }
 `
 
-export const LabelWrapper = styled.div`
-  > ${Text} {
-    font-size: 12px;
-  }
-`
-
-export const FilterContainer = styled.div`
-  display: flex;
-  juxtify-content: space-between;
-  align-items: center;
-  width: 100%;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: auto;
-    padding: 0;
-  }
-`
-
 export const StyledInputCurrencyWrapper = styled.div`
   display: flex;
   position: relative;
@@ -130,12 +112,22 @@ export const NotificationsWrapper = styled.div<{ isClosing: boolean }>`
 `
 
 export const NotificationContainerStyled = styled.div`
-  max-height: 375px;
-  height: 100%;
+  max-height: 370px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   overflow-x: hidden;
   overflow-y: auto;
-  &:hover {
-    cursor: pointer;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.cardBorder};
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px ${({ theme }) => theme.colors.input};
+    border-radius: 10px;
   }
 `
 
@@ -143,7 +135,7 @@ export const StyledNotificationWrapper = styled.div`
   animation-fill-mode: forwards;
   border-radius: 10px;
   display: flex;
-  padding: 5px 10px 5px 10px;
+  padding: 0px 12px 8px 12px;
   position: relative;
   overflow: hidden;
 
@@ -162,6 +154,7 @@ export const ContentsContainer = styled.div`
   width: 100%;
 
   &:hover {
+    cursor: pointer;
     transform: scale(1.01);
     background-color: ${({ theme }) => (theme.isDark ? '#372F46' : '#EDEAF4')};
   }

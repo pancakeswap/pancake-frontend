@@ -14,29 +14,10 @@ import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useMessages } from '@web3inbox/widget-react'
 import { useCallback, useMemo, useState } from 'react'
 import { NotificationFilterTypes } from 'views/Notifications/constants'
-import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
+import { NotificationContainerStyled } from 'views/Notifications/styles'
+import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
-import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
-
-interface INotificationFilterProps {
-  options: OptionProps[]
-  onOptionChange: (option: OptionProps) => void
-  description: string
-}
-
-const NotificationFilter = ({ options, onOptionChange, description }: INotificationFilterProps) => {
-  return (
-    <FilterContainer>
-      <LabelWrapper>
-        <Text textTransform="uppercase" mb="4px" ml="4px">
-          {description}
-        </Text>
-        <Select onOptionChange={onOptionChange} options={options} />
-      </LabelWrapper>
-    </FilterContainer>
-  )
-}
 
 const NotificationView = ({
   toggleSettings,
@@ -98,35 +79,33 @@ const NotificationView = ({
   }, [notifications, notificationType])
 
   return (
-    <Box paddingBottom="24px" width="100%">
+    <Box width="100%">
       <NotificationHeader
         leftIcon={
-          <IconButton tabIndex={-1} variant="text" onClick={onDismiss} area-label="go back" mr="8px">
+          <IconButton tabIndex={-1} variant="text" onClick={onDismiss}>
             <ModalCloseButton onDismiss={onDismiss} />
           </IconButton>
         }
         rightIcon={
-          <IconButton tabIndex={-1} variant="text" onClick={toggleSettings} area-label="go back" mr="8px">
+          <IconButton tabIndex={-1} variant="text" onClick={toggleSettings}>
             <CogIcon color="primary" />
           </IconButton>
         }
         text={t('Notifications')}
       />
-      <FlexGap alignItems="center" justifyContent="flex-start" paddingX="24px" marginBottom="8px" gap="12px">
-        <NotificationFilter
-          onOptionChange={handleNotifyOptionChange}
-          options={NotificationFilterTypes}
-          description="Filter By Type"
-        />
-        <Button
-          tabIndex={-1}
-          marginTop="20px"
-          height="40px"
-          maxWidth="95px"
-          variant="secondary"
-          onClick={removeAllNotifications}
-        >
-          <Text px="4px" fontWeight="bold" color="primary">
+      <FlexGap
+        alignItems="center"
+        justifyContent="flex-start"
+        gap="12px"
+        paddingBottom="8px"
+        paddingTop="4px"
+        paddingX="22px"
+      >
+        <Box width="125px">
+          <Select onOptionChange={handleNotifyOptionChange} options={NotificationFilterTypes} />
+        </Box>
+        <Button height="40px" variant="secondary" onClick={removeAllNotifications}>
+          <Text fontWeight="bold" color="primary">
             {t('Clear')}
           </Text>
         </Button>
