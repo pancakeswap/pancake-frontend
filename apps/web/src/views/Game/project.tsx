@@ -168,7 +168,7 @@ export const GameProject = () => {
 
   const gameUrl = useMemo(() => {
     const defaultUrl = gameData?.gameLink
-    return query?.gameQuery ? `${defaultUrl}?${query?.gameQuery}` : defaultUrl
+    return query?.gameSearch ? `${defaultUrl}?${query?.gameSearch}` : defaultUrl
   }, [gameData, query])
 
   if (!gameData) {
