@@ -177,6 +177,7 @@ export const AddLiquidity = memo(function AddLiquidity({
     const totalPoolToken1Usd = new BigNumber(amountB?.toSignificant() ?? 0).times(token1PriceUSD ?? 0)?.toNumber()
     const userTotalDepositUSD =
       (allowDepositToken0 ? totalPoolToken0Usd : 0) + (allowDepositToken1 ? totalPoolToken1Usd : 0)
+
     return ((userTotalDepositUSD + totalAssetsInUsd) / (totalStakedInUsd + userTotalDepositUSD)) * 100
   }, [
     allowDepositToken0,

@@ -10,8 +10,8 @@ export const useTotalAssetInUsd = (
 ) => {
   const totalAssetsInUsd = useMemo(() => {
     return (
-      Number(formatAmount(staked0Amount)) * (token0PriceUSD ?? 0) +
-      Number(formatAmount(staked1Amount)) * (token1PriceUSD ?? 0)
+      Number(formatAmount(staked0Amount) ?? 0) * (token0PriceUSD ?? 0) +
+      Number(formatAmount(staked1Amount) ?? 0) * (token1PriceUSD ?? 0)
     )
   }, [staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD])
   return totalAssetsInUsd
