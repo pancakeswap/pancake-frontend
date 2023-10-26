@@ -124,7 +124,7 @@ const NotificationSettingsView = ({
       />
       <ScrollableContainer>
         <SettingsContainer scopes={scopes} setScopes={setScopes} />
-        <Box paddingX="24px" paddingTop="8px" paddingBottom="24px">
+        <Box paddingX="24px" paddingTop="16px" paddingBottom="24px">
           <NotificationActionButton
             isUnsubscribing={isUnsubscribing}
             handleSubscriptionAction={handleAction}

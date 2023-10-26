@@ -34,7 +34,7 @@ const Settingsitem = ({ scope, id, setScopes }: ISettingsprops) => {
         </Text>
       </Row>
       <Flex justifyContent="space-between" alignItems="center">
-        <Text maxWidth="80%" color="textSubtle" lineHeight="22px">
+        <Text maxWidth="80%" color="textSubtle" lineHeight="24px">
           {scope.description}
         </Text>
         <Toggle id="toggle-expert-mode-button" scale="md" checked={scope.enabled} onChange={toggleScopeEnabled} />

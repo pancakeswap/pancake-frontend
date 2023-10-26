@@ -112,12 +112,12 @@ export const NotificationsWrapper = styled.div<{ isClosing: boolean }>`
 `
 
 export const NotificationContainerStyled = styled.div`
-  max-height: 370px;
+  max-height: 365px;
   margin-top: 8px;
-  margin-bottom: 8px;
   overflow-x: hidden;
   overflow-y: auto;
-
+  border-top: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
+  padding-top: 8px;
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -133,21 +133,21 @@ export const NotificationContainerStyled = styled.div`
 
 export const StyledNotificationWrapper = styled.div`
   animation-fill-mode: forwards;
-  border-radius: 10px;
   display: flex;
-  padding: 0px 12px 8px 12px;
   position: relative;
   overflow: hidden;
-
+  padding-left: 10px;
+  padding-right: 10px;
   animation: ${() => openRight} 0.65s;
 `
 
 export const ContentsContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  padding: 15px;
-  border: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 18px;
+  padding: 8px;
+  border-bottom: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 12px;
+
   overflow: hidden;
   transition: transform 0.3s;
   background-color: transparent;

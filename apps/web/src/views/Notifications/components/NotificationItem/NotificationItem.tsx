@@ -61,7 +61,7 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
   return (
     <StyledNotificationWrapper ref={containerRef} onClick={handleExpandClick}>
       <ContentsContainer>
-        <Box marginRight="12px" display="flex" minWidth="50px">
+        <Box marginRight="16px" display="flex" paddingY="4px">
           <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={65} width={65} unoptimized />
         </Box>
         <Flex flexDirection="column" width="100%">
@@ -101,9 +101,7 @@ const BottomRow = ({
           {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}
         </FlexRow>
       ) : null}
-      <Text fontSize="15px" marginRight="8px">
-        {formattedDate}
-      </Text>
+      <Text fontSize="15px">{formattedDate}</Text>
     </Row>
   )
 }
@@ -113,7 +111,7 @@ const NotificationContainer = ({ notifications, isClosing }: INotificationContai
   if (notifications.length === 0) {
     return (
       <NoNotificationsWrapper>
-        <Box paddingY="24px" height="100%">
+        <Box paddingY="24px" marginY="18px" height="100%">
           <FlexGap paddingX="26px" rowGap="8px" flexDirection="column" justifyContent="center" alignItems="center">
             <Box minHeight="122px">
               <Image src="/images/notifications/notification-bell-onboard.png" alt="#" height={100} width={100} />
