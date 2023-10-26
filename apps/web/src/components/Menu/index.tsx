@@ -2,7 +2,6 @@ import { languageList, useTranslation } from '@pancakeswap/localization'
 import { NextLinkFromReactRouter, Menu as UikitMenu, footerLinks, useModal } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { useInitWeb3InboxClient } from '@web3inbox/widget-react'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
@@ -13,7 +12,6 @@ import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import Notifications from 'views/Notifications'
-import { DEFAULT_PROJECT_ID } from 'views/Notifications/constants'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import UserMenu from './UserMenu'
@@ -51,11 +49,6 @@ const Menu = (props) => {
     return footerLinks(t)
   }, [t])
 
-  const isW3iInitialized = useInitWeb3InboxClient({
-    projectId: DEFAULT_PROJECT_ID,
-    domain: 'pc-custom-web-git-main-chefbingbong.vercel.app',
-  })
-
   return (
     <>
       <UikitMenu
@@ -63,7 +56,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
-            {isW3iInitialized ? <Notifications /> : null}
+            <Notifications />
             <NetworkSwitcher />
             <UserMenu />
           </>

@@ -4,24 +4,19 @@ import Divider from 'components/Divider'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 
 interface ISettingsprops {
-  title: string
-  description: string
+  scope: NotifyClientTypes.NotifySubscription['scope']
   id: string
   setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
-  isSubscribed: {
-    description: string
-    enabled: boolean
-  }
 }
 
 interface ISettingsContainerProps {
-  scopes: NotifyClientTypes.NotifySubscription['scope']
+  scopes: NotifyClientTypes.NotifySubscription['scope'][]
   setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
 }
 
-const Settingsitem = ({ title, id, description, isSubscribed, setScopes }: ISettingsprops) => {
+const Settingsitem = ({ scope, id, setScopes }: ISettingsprops) => {
   const toggleScopeEnabled = useCallback(() => {
-    setScopes((prevScopes) => ({
+    setScopes((prevScopes: NotifyClientTypes.NotifySubscription['scope'][]) => ({
       ...prevScopes,
       [id]: {
         ...prevScopes[id],
@@ -32,21 +27,16 @@ const Settingsitem = ({ title, id, description, isSubscribed, setScopes }: ISett
 
   return (
     <Box>
-      <Row flexDirection="column" mt="8px" alignItems="flex-start">
+      <Row flexDirection="column" mt="4px" alignItems="flex-start">
         <Text fontWeight="bold" fontSize="16px" textAlign="left">
-          {title}
+          {scope.name}
         </Text>
       </Row>
       <Flex justifyContent="space-between" alignItems="center" mb="16px">
         <Text maxWidth="80%" color="textSubtle">
-          {description}
+          {scope.description}
         </Text>
-        <Toggle
-          id="toggle-expert-mode-button"
-          scale="md"
-          checked={isSubscribed.enabled}
-          onChange={toggleScopeEnabled}
-        />
+        <Toggle id="toggle-expert-mode-button" scale="md" checked={scope.enabled} onChange={toggleScopeEnabled} />
       </Flex>
     </Box>
   )
@@ -58,19 +48,7 @@ const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
       <Divider />
       <Box maxHeight="360px" overflowY="scroll" paddingX="24px">
         {Object.entries(scopes).map(([id, scope]) => {
-          // @ts-ignore
-          // eslint-disable-next-line prefer-destructuring
-          const name = scope.name
-          return (
-            <Settingsitem
-              key={id}
-              title={name}
-              id={id}
-              description={scope.description}
-              isSubscribed={scope}
-              setScopes={setScopes}
-            />
-          )
+          return <Settingsitem key={id} id={id} scope={scope} setScopes={setScopes} />
         })}
       </Box>
     </>

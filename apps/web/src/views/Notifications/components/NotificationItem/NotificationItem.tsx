@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Row, Text } from '@pancakeswap/uikit'
+import { Box, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -41,6 +41,7 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
+  const formatedDescription = formatStringWithNewlines(description)
 
   const handleExpandClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -53,8 +54,6 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
   useEffect(() => {
     if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
   }, [])
-
-  const formatedDescription = formatStringWithNewlines(description)
 
   return (
     <StyledNotificationWrapper ref={containerRef} onClick={handleExpandClick}>
@@ -107,6 +106,24 @@ const BottomRow = ({
 }
 
 const NotificationContainer = ({ notifications }: INotificationContainerProps) => {
+  const { t } = useTranslation()
+  if (notifications.length === 0) {
+    return (
+      <Box paddingY="24px">
+        <FlexGap paddingX="26px" rowGap="8px" flexDirection="column" justifyContent="center" alignItems="center">
+          <Image src="/images/notifications/notification-bell-onboard.png" alt="#" height={100} width={100} />
+          <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
+            {t('All Set')}
+          </Text>
+          <Text fontSize="16px" textAlign="center" color="textSubtle">
+            {t(
+              'Any notifications that you recieve will appear here. you willl also recieve moblile notification on your mobile wallet.',
+            )}
+          </Text>
+        </FlexGap>
+      </Box>
+    )
+  }
   return (
     <Box>
       {notifications.map((notification: NotifyClientTypes.NotifyMessageRecord) => {

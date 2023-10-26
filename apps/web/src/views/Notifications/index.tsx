@@ -1,42 +1,38 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon } from '@pancakeswap/uikit'
+import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
 import { useManageSubscription } from '@web3inbox/widget-react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import useRegistration from './components/hooks/useRegistration'
-import NotificationSettingsMain from './containers/NotificationSettings'
-import SettingsModal from './containers/NotificationView'
+import NotificationSettingsView from './containers/NotificationSettings'
+import NotificationView from './containers/NotificationView'
 import { ModalHeader, ModalTitle, ViewContainer } from './styles'
 
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
   isNotificationView: boolean
   isSettings?: boolean
-  account: string | undefined
+  onDismiss: () => void
 }
 
-const NotificationHeader = ({ isSettings = false, onBack, isNotificationView, account }: INotifyHeaderprops) => {
+const NotificationHeader = ({ isSettings = false, onBack, isNotificationView, onDismiss }: INotifyHeaderprops) => {
   const { t } = useTranslation()
   return (
     <>
       {isNotificationView ? (
         <ModalHeader>
-          {account ? (
-            <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
-              <ArrowBackIcon color={isSettings ? 'primary' : 'transparent'} />
-            </IconButton>
-          ) : null}
+          <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
+            {isSettings ? <ArrowBackIcon color="primary" /> : <ModalCloseButton onDismiss={onDismiss} />}
+          </IconButton>
           <ModalTitle>
             <Heading fontSize="20px" padding="0px" textAlign="center">
               {t('Notifications')}
             </Heading>
           </ModalTitle>
-          {account ? (
-            <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
-              <CogIcon color={isSettings ? 'transparent' : 'primary'} />
-            </IconButton>
-          ) : null}
+          <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
+            {isSettings ? <ModalCloseButton onDismiss={onDismiss} /> : <CogIcon color="primary" />}
+          </IconButton>
         </ModalHeader>
       ) : (
         <ModalHeader>
@@ -53,19 +49,27 @@ const NotificationHeader = ({ isSettings = false, onBack, isNotificationView, ac
 }
 
 const Notifications = () => {
-  const [isRightView, setIsRightView] = useState(true)
+  const [viewIndex, setViewIndex] = useState(1)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const { account, identityKey, handleRegistration } = useRegistration()
+  const { account, identityKey, handleRegistration, address, isW3iInitialized } = useRegistration()
   const { isSubscribed } = useManageSubscription(account)
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()
-      if (isRightView) setIsRightView(false)
-      else setIsRightView(true)
+      if (viewIndex === 0 || viewIndex === 2) setViewIndex(1)
+      else setViewIndex(2)
     },
-    [setIsRightView, isRightView],
+    [setViewIndex, viewIndex],
   )
+
+  const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
+  const isReady = Boolean(isSubscribed && address && isW3iInitialized)
+
+  useEffect(() => {
+    if (!address || !isReady) setViewIndex(0)
+    if (isReady) setViewIndex(1)
+  }, [address, isReady])
 
   return (
     <NotificationMenu
@@ -74,29 +78,24 @@ const Notifications = () => {
       isSubscribed={isSubscribed}
       identityKey={identityKey}
       handleRegistration={handleRegistration}
-      mr="8px"
     >
       {() => (
         <Box>
           <NotificationHeader
             onBack={toggleSettings}
-            isSettings={!isRightView}
-            isNotificationView={isSubscribed}
-            account={account}
+            isSettings={Boolean(viewIndex === 2)}
+            isNotificationView={isReady}
+            onDismiss={onDismiss}
           />
-          {isSubscribed && account ? (
-            <ViewContainer isRightView={isRightView}>
-              <SettingsModal account={account} />
-              <NotificationSettingsMain account={account} />
-            </ViewContainer>
-          ) : (
+          <ViewContainer viewIndex={viewIndex}>
             <OnBoardingView
-              setIsRightView={setIsRightView}
               identityKey={identityKey}
               handleRegistration={handleRegistration}
-              account={account}
+              isReady={isW3iInitialized}
             />
-          )}
+            <NotificationView />
+            <NotificationSettingsView />
+          </ViewContainer>
         </Box>
       )}
     </NotificationMenu>

@@ -6,6 +6,7 @@ import _isEqual from 'lodash/isEqual'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useManageSubscription, useSubscriptionScopes } from '@web3inbox/widget-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useAccount } from 'wagmi'
 import SettingsContainer from '../components/Settingsitem/SettingsItem'
 import { Events } from '../constants'
 import { ScrollableContainer } from '../styles'
@@ -35,11 +36,11 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
   )
 }
 
-const NotificationSettingsMain = ({ account }: { account: string | undefined }) => {
-  const [loading, setloading] = useState<boolean>(false)
-  const { unsubscribe, isUnsubscribing } = useManageSubscription(account)
+const NotificationSettingsView = () => {
+  const { address: account } = useAccount()
+  const { unsubscribe, isUnsubscribing } = useManageSubscription(`eip155:1:${account}`)
 
-  const { scopes: currentScopes, updateScopes } = useSubscriptionScopes(account)
+  const { scopes: currentScopes, updateScopes } = useSubscriptionScopes(`eip155:1:${account}`)
   const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
 
   const toast = useToast()
@@ -71,14 +72,12 @@ const NotificationSettingsMain = ({ account }: { account: string | undefined }) 
   }, [currentScopes, toast, scopes, updateScopes])
 
   const handleUnSubscribe = useCallback(async () => {
-    setloading(true)
     try {
       await unsubscribe()
       toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message)
     } catch (error: any) {
       toast.toastWarning(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }
-    setloading(false)
   }, [unsubscribe, toast])
 
   const handleAction = useCallback(
@@ -96,7 +95,7 @@ const NotificationSettingsMain = ({ account }: { account: string | undefined }) 
         <SettingsContainer scopes={scopes} setScopes={setScopes} />
         <Box paddingX="24px" marginTop="10px">
           <NotificationActionButton
-            isUnsubscribing={loading || isUnsubscribing}
+            isUnsubscribing={isUnsubscribing}
             handleSubscriptionAction={handleAction}
             objectsAreEqual={objectsAreEqual}
           />
@@ -106,4 +105,4 @@ const NotificationSettingsMain = ({ account }: { account: string | undefined }) 
   )
 }
 
-export default NotificationSettingsMain
+export default NotificationSettingsView

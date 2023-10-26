@@ -4,7 +4,8 @@ import { useManageSubscription } from '@web3inbox/widget-react'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { useCallback } from 'react'
+import { useAccount } from 'wagmi'
 import useSendPushNotification from '../components/hooks/sendPushNotification'
 import { Events } from '../constants'
 import { BuilderNames } from '../types'
@@ -15,29 +16,29 @@ interface IOnboardingButtonProps {
   loading: boolean
   isOnBoarded: boolean
   account: string | undefined
+  isReady: boolean
 }
 
 interface IOnBoardingProps {
-  setIsRightView: Dispatch<SetStateAction<boolean>>
   identityKey: string | undefined
   handleRegistration: () => Promise<void>
-  account: string | undefined
+  isReady: boolean
 }
 
-function OnboardingButton({ onClick, loading, isOnBoarded, account }: IOnboardingButtonProps) {
+function OnboardingButton({ onClick, loading, isOnBoarded, account, isReady }: IOnboardingButtonProps) {
   const { t } = useTranslation()
   const buttonText = getOnBoardingButtonText(isOnBoarded, loading, t)
 
   if (!account)
     return (
-      <AutoColumn gap="md" marginTop="6px" width="100%">
-        <ConnectWalletButton height="50px" />
+      <AutoColumn gap="md" marginTop="24px" width="100%">
+        <ConnectWalletButton height="50px" disabled={!isReady} />
       </AutoColumn>
     )
 
   return (
-    <AutoColumn gap="md" marginTop="6px" width="100%">
-      <CommitButton variant="primary" onClick={onClick} isLoading={loading} height="50px">
+    <AutoColumn gap="md" marginTop="24px" width="100%">
+      <CommitButton variant="primary" onClick={onClick} isLoading={loading} height="50px" disabled={!isReady}>
         <Flex alignItems="center">
           <Text px="4px" fontWeight="bold" color="white">
             {buttonText}
@@ -49,26 +50,22 @@ function OnboardingButton({ onClick, loading, isOnBoarded, account }: IOnboardin
   )
 }
 
-const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, account }: IOnBoardingProps) => {
-  const [loading, setloading] = useState<boolean>(false)
+const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardingProps) => {
   const toast = useToast()
   const { t } = useTranslation()
-  const { subscribe, isSubscribing } = useManageSubscription(account)
+  const { address: account } = useAccount()
+  const { subscribe, isSubscribing } = useManageSubscription(`eip155:1:${account}`)
   const { sendPushNotification } = useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {
     if (!account) return
-    setloading(true)
     try {
       await subscribe()
-      setIsRightView(true)
-      setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, [], account), 1000)
-      setloading(false)
+      setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`), 1000)
     } catch (error) {
       toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
-      setloading(false)
     }
-  }, [account, setloading, toast, sendPushNotification, subscribe, setIsRightView])
+  }, [account, toast, sendPushNotification, subscribe])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
@@ -82,24 +79,27 @@ const OnBoardingView = ({ setIsRightView, identityKey, handleRegistration, accou
   const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(identityKey), t)
 
   return (
-    <Box padding="24px">
-      <Box pl="24px">
-        <Image src="/IMG.png" alt="#" height={185} width={270} />
-      </Box>
-      <FlexGap rowGap="12px" flexDirection="column" justifyContent="center" alignItems="center">
-        <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
-          {t('Notifications From PancakeSwap')}
-        </Text>
-        <Text fontSize="16px" textAlign="center" color="textSubtle">
-          {onBoardingDescription}
-        </Text>
-        <OnboardingButton
-          loading={loading || isSubscribing}
-          onClick={handleAction}
-          isOnBoarded={Boolean(identityKey)}
-          account={account}
-        />
-      </FlexGap>
+    <Box width="100%">
+      <div style={{ padding: '24px' }}>
+        <Box pl="24px">
+          <Image src="/images/notifications/notification-bell-check.png" alt="#" height={185} width={270} />
+        </Box>
+        <FlexGap rowGap="12px" flexDirection="column" justifyContent="center" alignItems="center">
+          <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
+            {t('Notifications From PancakeSwap')}
+          </Text>
+          <Text fontSize="16px" textAlign="center" color="textSubtle">
+            {onBoardingDescription}
+          </Text>
+          <OnboardingButton
+            loading={isSubscribing}
+            onClick={handleAction}
+            isOnBoarded={Boolean(identityKey)}
+            account={account}
+            isReady={isReady}
+          />
+        </FlexGap>
+      </div>
     </Box>
   )
 }

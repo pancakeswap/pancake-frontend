@@ -1,7 +1,7 @@
 import { useToast } from '@pancakeswap/uikit'
-import { useW3iAccount } from '@web3inbox/widget-react'
+import { useW3iAccount, useInitWeb3InboxClient } from '@web3inbox/widget-react'
 import { useCallback, useEffect } from 'react'
-import { Events } from 'views/Notifications/constants'
+import { DEFAULT_PROJECT_ID, Events } from 'views/Notifications/constants'
 import { useAccount, useSignMessage } from 'wagmi'
 
 const useRegistration = () => {
@@ -9,6 +9,11 @@ const useRegistration = () => {
   const { signMessageAsync } = useSignMessage()
   const { account, register: registerIdentity, identityKey, setAccount } = useW3iAccount()
   const toast = useToast()
+
+  const isW3iInitialized = useInitWeb3InboxClient({
+    projectId: DEFAULT_PROJECT_ID,
+    domain: 'pc-custom-web-git-main-chefbingbong.vercel.app',
+  })
 
   useEffect(() => {
     if (!address) return
@@ -35,7 +40,7 @@ const useRegistration = () => {
     }
   }, [signMessage, registerIdentity, account, toast])
 
-  return { handleRegistration, identityKey, account, setAccount, address }
+  return { handleRegistration, identityKey, account, setAccount, address, isW3iInitialized }
 }
 
 export default useRegistration

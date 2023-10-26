@@ -8,14 +8,24 @@ export enum ResponseEvents {
   Unsubscribed = 'Unsubscribed',
 }
 
+enum ScopeIdsToName {
+  Lottery = '81be3ea1-c562-433d-9dfe-d709ce7d3719',
+  Prediction = '5759ebab-f70c-4f83-9fa0-36b6e6513c94',
+  Liquidity = 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
+  Farms = '7b43cae7-6e49-4644-aa3f-fb28883c9576',
+  PriceUpdates = 'ad885f1d-3f25-46ea-916a-7ebe630b6f98',
+  Promotional = ' 5e0b7598-7fbe-4695-8a3c-b14cb4b78a11',
+  Alerts = 'bf991425-0c3e-448c-87f9-b116decea164',
+}
+
 export enum SubsctiptionType {
-  Lottery = 'Lottery',
-  Prediction = 'Prediction',
-  Liquidity = 'Liquidity',
-  Farms = 'Farms',
-  PriceUpdates = 'PriceUpdates',
-  Promotional = 'Promotional',
-  Alerts = 'alerts',
+  Lottery = ScopeIdsToName.Lottery,
+  Prediction = ScopeIdsToName.Prediction,
+  Liquidity = ScopeIdsToName.Liquidity,
+  Farms = ScopeIdsToName.Farms,
+  PriceUpdates = ScopeIdsToName.PriceUpdates,
+  Promotional = ScopeIdsToName.Promotional,
+  Alerts = ScopeIdsToName.Alerts,
 }
 
 export type EventInformation = {
@@ -36,24 +46,6 @@ export type NotificationType = {
   id: number
   title: string
   type: string
-}
-
-export type NotifyType = {
-  title: string
-  description: string
-}
-
-export type RelayerType = {
-  value: string | undefined
-  label: string
-}
-
-export type SubscriptionState = {
-  isSubscribing: boolean
-  isSubscribed: boolean
-  isUnsubscribing: boolean
-  isOnboarding: boolean
-  isOnboarded: boolean
 }
 
 export enum BuilderNames {

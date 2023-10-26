@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, FlexGap, OptionProps, Select, Text } from '@pancakeswap/uikit'
+import { Box, Button, FlexGap, OptionProps, Select, Text } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useMessages } from '@web3inbox/widget-react'
-import Image from 'next/image'
 import { useCallback, useMemo, useState } from 'react'
 import { NotificationFilterTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
+import { useAccount } from 'wagmi'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
 
@@ -28,30 +28,10 @@ const NotificationFilter = ({ options, onOptionChange, description }: INotificat
   )
 }
 
-const NoNotificationsView = () => {
-  const { t } = useTranslation()
-  return (
-    <>
-      <Flex paddingX="26px" alignItems="center" justifyContent="center" height="140px" onClick={() => null}>
-        <Image src="/Group883379635.png" alt="#" height={100} width={100} />
-      </Flex>
-      <FlexGap paddingX="26px" rowGap="16px" flexDirection="column" justifyContent="center" alignItems="center">
-        <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
-          {t('All Set')}
-        </Text>
-        <Text fontSize="16px" textAlign="center" color="textSubtle">
-          {t(
-            'Any notifications that you recieve will appear here. you willl also recieve moblile notification on your mobile wallet.',
-          )}
-        </Text>
-      </FlexGap>
-    </>
-  )
-}
-
-const SettingsModal = ({ account }: { account: string | undefined }) => {
+const NotificationView = () => {
   const [notificationType, setNotificationType] = useState<string>('All')
-  const { messages: notifications, deleteMessage } = useMessages(account)
+  const { address: account } = useAccount()
+  const { messages: notifications, deleteMessage } = useMessages(`eip155:1:${account}`)
   const { t } = useTranslation()
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
@@ -99,29 +79,25 @@ const SettingsModal = ({ account }: { account: string | undefined }) => {
 
   return (
     <Box paddingBottom="24px" width="100%">
-      <Flex alignItems="center" justifyContent="space-between" paddingX="24px" marginBottom="16px">
+      <FlexGap alignItems="center" justifyContent="flex-start" paddingX="24px" marginBottom="8px" gap="12px">
         <NotificationFilter
           onOptionChange={handleNotifyOptionChange}
           options={NotificationFilterTypes}
           description="Filter By Type"
         />
-        <Button marginTop="20px" height="40px" maxWidth="95px" variant="primary" onClick={removeAllNotifications}>
-          <Text px="4px" fontWeight="bold" color="white">
+        <Button marginTop="20px" height="40px" maxWidth="95px" variant="secondary" onClick={removeAllNotifications}>
+          <Text px="4px" fontWeight="bold" color="primary">
             {t('Clear')}
           </Text>
         </Button>
-      </Flex>
-      <Box minHeight="360px" overflowY="scroll">
+      </FlexGap>
+      <Box minHeight="360px">
         <NotificationContainerStyled>
-          {filteredNotifications.length > 0 ? (
-            <NotificationItem notifications={filteredNotifications} />
-          ) : (
-            <NoNotificationsView />
-          )}
+          <NotificationItem notifications={filteredNotifications} />
         </NotificationContainerStyled>
       </Box>
     </Box>
   )
 }
 
-export default SettingsModal
+export default NotificationView

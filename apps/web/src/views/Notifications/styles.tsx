@@ -75,11 +75,11 @@ export const StyledInputCurrencyWrapper = styled.div`
   height: 200%; /* Specify the height of the container */
   min-height: 450px;
 `
-export const ViewContainer = styled.div<{ isRightView: boolean }>`
+export const ViewContainer = styled.div<{ viewIndex: number }>`
   display: flex;
-  width: 200%;
+  width: 300%;
   transition: transform 300ms ease-in-out;
-  transform: translateX(${({ isRightView }) => (isRightView ? '0%' : '-50%')});
+  transform: translateX(${({ viewIndex }) => (viewIndex === 0 ? '0%' : viewIndex === 1 ? '-33.33%' : '-66.66%')});
 `
 
 export const ModalTitle = styled(Flex)`
@@ -96,18 +96,11 @@ export const opneRight = keyframes`
         right: 0%;
     }
 `
-export const openLeft = keyframes` 
-    0% {
-        right: 0%;
-    }
-    100% {
-        right: -150%;
-    }
-`
 
 export const NotificationContainerStyled = styled.div`
-  max-height: 360px;
+  max-height: 375px;
   overflow-x: hidden;
+  overflow-y: scroll;
   &:hover {
     cursor: pointer;
   }
@@ -117,7 +110,7 @@ export const StyledNotificationWrapper = styled.div`
   animation-fill-mode: forwards;
   border-radius: 10px;
   display: flex;
-  padding: 5px 8px 5px 15px;
+  padding: 5px 10px 5px 16px;
   position: relative;
   overflow: hidden;
 

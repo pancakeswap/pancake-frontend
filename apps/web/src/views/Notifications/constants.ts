@@ -1,5 +1,11 @@
 import { OptionProps } from '@pancakeswap/uikit'
-import { EventInformation, PancakeNotificationBuilders, ResponseEvents, pushNotification } from './types'
+import {
+  EventInformation,
+  PancakeNotificationBuilders,
+  ResponseEvents,
+  SubsctiptionType,
+  pushNotification,
+} from './types'
 
 export const NotificationFilterTypes: OptionProps[] = [
   {
@@ -8,31 +14,31 @@ export const NotificationFilterTypes: OptionProps[] = [
   },
   {
     label: 'Lottery',
-    value: 'Lottery',
+    value: SubsctiptionType.Lottery,
   },
   {
     label: 'Prediction',
-    value: 'Prediction',
+    value: SubsctiptionType.Prediction,
   },
   {
     label: 'Liquidity',
-    value: 'Liquidity',
+    value: SubsctiptionType.Liquidity,
   },
   {
     label: 'Farm',
-    value: 'Farms',
+    value: SubsctiptionType.Farms,
   },
   {
     label: 'Prices',
-    value: 'PriceUpdates',
+    value: SubsctiptionType.PriceUpdates,
   },
   {
     label: 'Promotion',
-    value: 'Promotional',
+    value: SubsctiptionType.Promotional,
   },
   {
     label: 'Alerts',
-    value: 'alerts',
+    value: SubsctiptionType.Alerts,
   },
 ]
 
