@@ -45,14 +45,14 @@ const ShareImageModal: React.FC<React.PropsWithChildren<ShareImageModalProps>> =
   cakersShareImage,
 }) => {
   const { t } = useTranslation()
-  const { global, team, volume } = userLeaderboardInformation
-  const [bgImage, setBgImage] = useState(null)
-  const [profileImage, setProfileImage] = useState(null)
+  const { global, team, volume } = userLeaderboardInformation as any
+  const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null)
+  const [profileImage, setProfileImage] = useState<HTMLImageElement | null>(null)
   // const [profileOverlayImage, setProfileOverlayImage] = useState(null)
-  const [medalImage, setMedalImage] = useState(null)
+  const [medalImage, setMedalImage] = useState<HTMLImageElement | null>(null)
 
-  const [imageFromCanvas, setImageFromCanvas] = useState(null)
-  const canvas = useRef(null)
+  const [imageFromCanvas, setImageFromCanvas] = useState<string | null>(null)
+  const canvas = useRef<HTMLCanvasElement | null>(null)
 
   const getMedal = (rank_: string | number) => {
     const rank = Number(rank_)
@@ -102,28 +102,29 @@ const ShareImageModal: React.FC<React.PropsWithChildren<ShareImageModalProps>> =
 
       const ctx = canvasEl.getContext('2d')
 
-      ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight)
-      ctx.drawImage(profileImage, canvasWidth * 0.0315, canvasHeight * 0.07, canvasWidth * 0.19, canvasWidth * 0.19)
-      // ctx.drawImage(profileOverlayImage, 0, 0, canvasWidth * 0.235, canvasWidth * 0.235)
-      ctx.drawImage(medalImage, canvasWidth * 0.15, canvasHeight * 0.32, canvasWidth * 0.06, canvasWidth * 0.06)
+      if (ctx) {
+        ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight)
+        ctx.drawImage(profileImage, canvasWidth * 0.0315, canvasHeight * 0.07, canvasWidth * 0.19, canvasWidth * 0.19)
+        // ctx.drawImage(profileOverlayImage, 0, 0, canvasWidth * 0.235, canvasWidth * 0.235)
+        ctx.drawImage(medalImage, canvasWidth * 0.15, canvasHeight * 0.32, canvasWidth * 0.06, canvasWidth * 0.06)
 
-      ctx.font = 'bold 84px Kanit'
-      ctx.fillStyle = 'white'
-      ctx.fillText(`@${profile.username}`, canvasWidth * 0.033, canvasHeight * 0.53)
+        ctx.font = 'bold 84px Kanit'
+        ctx.fillStyle = 'white'
+        ctx.fillText(`@${profile.username}`, canvasWidth * 0.033, canvasHeight * 0.53)
 
-      ctx.font = 'bold 72px Kanit'
-      ctx.fillText(`# ${team}`, canvasWidth * 0.18, canvasHeight * 0.69)
-      ctx.fillText(`# ${global}`, canvasWidth * 0.18, canvasHeight * 0.79)
-      ctx.fillText(`$ ${localiseTradingVolume(volume)}`, canvasWidth * 0.18, canvasHeight * 0.89)
-
-      setImageFromCanvas(canvasEl.toDataURL('image/png'))
+        ctx.font = 'bold 72px Kanit'
+        ctx.fillText(`# ${team}`, canvasWidth * 0.18, canvasHeight * 0.69)
+        ctx.fillText(`# ${global}`, canvasWidth * 0.18, canvasHeight * 0.79)
+        ctx.fillText(`$ ${localiseTradingVolume(volume)}`, canvasWidth * 0.18, canvasHeight * 0.89)
+        setImageFromCanvas(canvasEl.toDataURL('image/png'))
+      }
     }
   }, [bgImage, profileImage, team, global, volume, profile, medalImage])
 
   const downloadImage = () => {
     const link = document.createElement('a')
-    link.download = `battle-${profile.username}.png`
-    link.href = imageFromCanvas
+    link.download = `battle-${profile?.username}.png`
+    link.href = imageFromCanvas ?? ''
     link.click()
   }
 

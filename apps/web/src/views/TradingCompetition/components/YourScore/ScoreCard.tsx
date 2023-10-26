@@ -86,7 +86,7 @@ const ScoreCard: React.FC<React.PropsWithChildren<ScoreCardProps>> = ({
   const handleOnClick = useCallback(() => onPresentClaimModal?.(), [onPresentClaimModal])
 
   const isClaimButtonDisabled = Boolean(isLoading || finishedAndPrizesClaimed || finishedAndNothingToClaim)
-  const { hasUserClaimed } = userTradingInformation
+  const { hasUserClaimed } = userTradingInformation as any
 
   const getClaimButtonText = () => {
     if (userCanClaimPrizes) {
@@ -130,7 +130,7 @@ const ScoreCard: React.FC<React.PropsWithChildren<ScoreCardProps>> = ({
               userLeaderboardInformation={userLeaderboardInformation}
               currentPhase={currentPhase}
             />
-            {hasRegistered && (currentPhase.state === CLAIM || currentPhase.state === OVER) && userPrizeGrid}
+            {hasRegistered && (currentPhase?.state === CLAIM || currentPhase?.state === OVER) && userPrizeGrid}
             {!account && (
               <Flex mt="24px" justifyContent="center">
                 <ConnectWalletButton />
@@ -139,7 +139,7 @@ const ScoreCard: React.FC<React.PropsWithChildren<ScoreCardProps>> = ({
           </>
         )}
       </CardBody>
-      {hasRegistered && currentPhase.state === CLAIM && (
+      {hasRegistered && currentPhase?.state === CLAIM && (
         <StyledCardFooter>
           <LaurelLeftIcon />
           <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={handleOnClick}>
