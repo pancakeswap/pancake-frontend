@@ -46,11 +46,15 @@ export function MerklSection({ poolAddress }: { poolAddress: string | null }) {
       <Message variant="primary">
         <MessageText>
           This liquidity position is currently earning rewards on Merkl. Check details{' '}
-          <Link external style={{ display: 'inline-flex' }} href="https://merkl.angle.money/">
+          <Link
+            external
+            style={{ display: 'inline-flex' }}
+            href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=PancakeSwap"
+          >
             {t('here')}
           </Link>{' '}
           <br />
-          <Link external style={{ display: 'inline-flex' }} href="https://merkl.angle.money/">
+          <Link external style={{ display: 'inline-flex' }} href="https://docs.angle.money/side-products/merkl">
             {t('Learn more about Merkl')}
           </Link>
         </MessageText>
