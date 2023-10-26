@@ -4,7 +4,6 @@ import {
   AutoColumn,
   Box,
   CircleLoader,
-  Flex,
   FlexGap,
   IconButton,
   ModalCloseButton,
