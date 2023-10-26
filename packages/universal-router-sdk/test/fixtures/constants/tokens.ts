@@ -58,3 +58,8 @@ export const BUSD = {
   ...MockToken,
   ...Tokens.BUSD,
 }
+
+export const WBNB = {
+  ...MockToken,
+  [ChainId.BSC]: Tokens.bscTokens.wbnb,
+}
