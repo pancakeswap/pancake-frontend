@@ -14,6 +14,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { Address } from 'viem'
 import { DYORWarning } from 'views/PositionManagers/components/DYORWarning'
 import { SingleTokenWarning } from 'views/PositionManagers/components/SingleTokenWarning'
@@ -106,7 +107,10 @@ export const AddLiquidity = memo(function AddLiquidity({
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { account, chain } = useWeb3React()
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
 
@@ -171,11 +175,19 @@ export const AddLiquidity = memo(function AddLiquidity({
   const userVaultPercentage = useMemo(() => {
     const totalPoolToken0Usd = new BigNumber(amountA?.toSignificant() ?? 0).times(token0PriceUSD ?? 0)?.toNumber()
     const totalPoolToken1Usd = new BigNumber(amountB?.toSignificant() ?? 0).times(token1PriceUSD ?? 0)?.toNumber()
-
     const userTotalDepositUSD =
       (allowDepositToken0 ? totalPoolToken0Usd : 0) + (allowDepositToken1 ? totalPoolToken1Usd : 0)
-    return (userTotalDepositUSD / (totalStakedInUsd + userTotalDepositUSD)) * 100
-  }, [allowDepositToken0, allowDepositToken1, amountA, amountB, token0PriceUSD, token1PriceUSD, totalStakedInUsd])
+    return ((userTotalDepositUSD + totalAssetsInUsd) / (totalStakedInUsd + userTotalDepositUSD)) * 100
+  }, [
+    allowDepositToken0,
+    allowDepositToken1,
+    amountA,
+    amountB,
+    token0PriceUSD,
+    token1PriceUSD,
+    totalStakedInUsd,
+    totalAssetsInUsd,
+  ])
 
   const apr = useApr({
     currencyA,
@@ -257,11 +269,29 @@ export const AddLiquidity = memo(function AddLiquidity({
     allowDepositToken1,
   ])
 
+  const translationData = useMemo(
+    () => ({
+      amountA: allowDepositToken0 ? formatCurrencyAmount(amountA, 4, locale) : '',
+      symbolA: allowDepositToken0 ? currencyA.symbol : '',
+      amountB: allowDepositToken1 ? formatCurrencyAmount(amountB, 4, locale) : '',
+      symbolB: allowDepositToken1 ? currencyB.symbol : '',
+    }),
+    [allowDepositToken0, allowDepositToken1, amountA, amountB, currencyA.symbol, currencyB.symbol, locale],
+  )
+
+  const pendingText = useMemo(
+    () =>
+      !isSingleDepositToken
+        ? t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData)
+        : t('Supplying %amountA% %symbolA% %amountB% %symbolB%', translationData),
+    [t, isSingleDepositToken, translationData],
+  )
+
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={pendingTx ? t('Pending Confirm') : t('Add Liquidity')}>
         {pendingTx ? (
-          <ConfirmationPendingContent pendingText={t('Add Liquidity')} />
+          <ConfirmationPendingContent pendingText={pendingText} />
         ) : (
           <>
             <RowBetween>

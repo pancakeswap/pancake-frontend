@@ -93,7 +93,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={pendingTx ? t('Pending Confirm') : t('Remove Liquidity')}>
         {pendingTx ? (
-          <ConfirmationPendingContent pendingText={t('Remove Liquidity')} />
+          <ConfirmationPendingContent pendingText={t('Removing Liquidity')} />
         ) : (
           <>
             <RowBetween>
