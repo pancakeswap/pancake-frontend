@@ -1,12 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, CircleLoader, Flex, Text, useToast } from '@pancakeswap/uikit'
+import {
+  ArrowBackIcon,
+  AutoColumn,
+  Box,
+  CircleLoader,
+  Flex,
+  IconButton,
+  ModalCloseButton,
+  Text,
+  useToast,
+} from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import _isEqual from 'lodash/isEqual'
 
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useManageSubscription, useSubscriptionScopes } from '@web3inbox/widget-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useAccount } from 'wagmi'
+import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import SettingsContainer from '../components/Settingsitem/SettingsItem'
 import { Events } from '../constants'
 import { ScrollableContainer } from '../styles'
@@ -36,18 +46,24 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
   )
 }
 
-const NotificationSettingsView = () => {
-  const { address: account } = useAccount()
-  const { unsubscribe, isUnsubscribing } = useManageSubscription(`eip155:1:${account}`)
-
-  const { scopes: currentScopes, updateScopes } = useSubscriptionScopes(`eip155:1:${account}`)
-  const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
-
+const NotificationSettingsView = ({
+  toggleSettings,
+  onDismiss,
+  toggleOnboardView,
+}: {
+  toggleSettings: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onDismiss: () => void
+  toggleOnboardView: () => void
+}) => {
+  const { unsubscribe, isUnsubscribing } = useManageSubscription()
+  const { scopes: currentScopes, updateScopes } = useSubscriptionScopes()
+  const [scopes, setScopes] = useState<NotifyClientTypes.ScopeMap>({})
+  const prevScopesRef = useRef<NotifyClientTypes.ScopeMap>(currentScopes)
   const toast = useToast()
-  const prevScopesRef = useRef<NotifyClientTypes.NotifySubscription['scope']>(currentScopes)
+  const { t } = useTranslation()
   const objectsAreEqual = _isEqual(scopes, prevScopesRef.current)
 
-  const getEnabledScopes = (scopesMap: NotifyClientTypes.NotifySubscription['scope']) => {
+  const getEnabledScopes = (scopesMap: NotifyClientTypes.ScopeMap) => {
     const enabledScopeKeys: string[] = []
     Object.entries(scopesMap).forEach(([key, scope]) => {
       if ((scope as any).enabled) enabledScopeKeys.push(key)
@@ -73,12 +89,13 @@ const NotificationSettingsView = () => {
 
   const handleUnSubscribe = useCallback(async () => {
     try {
+      toggleOnboardView()
       await unsubscribe()
       toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message)
     } catch (error: any) {
       toast.toastWarning(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }
-  }, [unsubscribe, toast])
+  }, [unsubscribe, toast, toggleOnboardView])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
@@ -91,6 +108,19 @@ const NotificationSettingsView = () => {
 
   return (
     <Box paddingBottom="24px" width="100%">
+      <NotificationHeader
+        leftIcon={
+          <IconButton tabIndex={-1} variant="text" onClick={toggleSettings} area-label="go back" mr="8px">
+            <ArrowBackIcon color="primary" />
+          </IconButton>
+        }
+        rightIcon={
+          <IconButton tabIndex={-1} variant="text" onClick={onDismiss} area-label="go back" mr="8px">
+            <ModalCloseButton onDismiss={onDismiss} />
+          </IconButton>
+        }
+        text={t('Settings')}
+      />
       <ScrollableContainer>
         <SettingsContainer scopes={scopes} setScopes={setScopes} />
         <Box paddingX="24px" marginTop="10px">

@@ -1,6 +1,6 @@
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 
 // Notification View styles
 export const Menu = styled.div<{ isOpen: boolean }>`
@@ -87,8 +87,7 @@ export const ModalTitle = styled(Flex)`
   flex: 1;
   justify-content: center;
 `
-
-export const opneRight = keyframes` 
+export const openRight = keyframes` 
     0% {
         right: -150%;
     }
@@ -97,10 +96,44 @@ export const opneRight = keyframes`
     }
 `
 
+export const closeRight = keyframes` 
+    0% {
+        right: 0%;
+    }
+    100% {
+        right: -150%;
+    }
+`
+export const openLeft = keyframes` 
+    0% {
+        right: 150%;
+    }
+    100% {
+        right: 0%;
+    }
+`
+
+export const NoNotificationsWrapper = styled.div`
+  animation-fill-mode: forwards;
+  position: relative;
+  animation: ${() => openLeft} 0.65s;
+`
+
+export const NotificationsWrapper = styled.div<{ isClosing: boolean }>`
+  animation-fill-mode: forwards;
+  position: relative;
+  ${({ isClosing }) =>
+    isClosing &&
+    css`
+      animation: ${() => closeRight} 0.65s;
+    `}
+`
+
 export const NotificationContainerStyled = styled.div`
   max-height: 375px;
+  height: 100%;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   &:hover {
     cursor: pointer;
   }
@@ -110,11 +143,11 @@ export const StyledNotificationWrapper = styled.div`
   animation-fill-mode: forwards;
   border-radius: 10px;
   display: flex;
-  padding: 5px 10px 5px 16px;
+  padding: 5px 10px 5px 10px;
   position: relative;
   overflow: hidden;
 
-  animation: ${() => opneRight} 0.65s;
+  animation: ${() => openRight} 0.65s;
 `
 
 export const ContentsContainer = styled.div`
@@ -165,11 +198,13 @@ export const StyledLink = styled(Link)<{ hidden: boolean }>`
   justify-content: center;
   align-items: center;
 `
-export const BellIconContainer = styled(Box)`
+export const BellIconContainer = styled(Flex)`
   position: relative;
   padding-right: 16px;
-  padding-left: 8px;
+  padding-left: 6px;
   cursor: pointer;
+  justify-content: center;
+  align-items: center;
 
   svg {
     color: ${({ theme }) => theme.colors.textSubtle};

@@ -7,7 +7,7 @@ import { useAccount, useSignMessage } from 'wagmi'
 const useRegistration = () => {
   const { address } = useAccount()
   const { signMessageAsync } = useSignMessage()
-  const { account, register: registerIdentity, identityKey, setAccount } = useW3iAccount()
+  const { register: registerIdentity, identityKey, setAccount } = useW3iAccount()
   const toast = useToast()
 
   const isW3iInitialized = useInitWeb3InboxClient({
@@ -31,16 +31,16 @@ const useRegistration = () => {
     [signMessageAsync],
   )
   const handleRegistration = useCallback(async () => {
-    if (!account) return
+    if (!address) return
     try {
       await registerIdentity(signMessage)
     } catch (registerIdentityError) {
       toast.toastError(Events.SubscriptionRequestError.title, 'User Denied the request')
       console.error({ registerIdentityError })
     }
-  }, [signMessage, registerIdentity, account, toast])
+  }, [signMessage, registerIdentity, address, toast])
 
-  return { handleRegistration, identityKey, account, setAccount, address, isW3iInitialized }
+  return { handleRegistration, identityKey, address, isW3iInitialized }
 }
 
 export default useRegistration

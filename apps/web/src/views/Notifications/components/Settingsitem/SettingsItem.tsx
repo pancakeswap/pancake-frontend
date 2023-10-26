@@ -1,22 +1,22 @@
 import { Box, Flex, Row, Text, Toggle } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
-import Divider from 'components/Divider'
 import { Dispatch, SetStateAction, useCallback } from 'react'
+import { Scope } from 'views/Notifications/types'
 
 interface ISettingsprops {
-  scope: NotifyClientTypes.NotifySubscription['scope']
+  scope: Scope
   id: string
   setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
 }
 
 interface ISettingsContainerProps {
-  scopes: NotifyClientTypes.NotifySubscription['scope'][]
+  scopes: NotifyClientTypes.ScopeMap
   setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
 }
 
 const Settingsitem = ({ scope, id, setScopes }: ISettingsprops) => {
   const toggleScopeEnabled = useCallback(() => {
-    setScopes((prevScopes: NotifyClientTypes.NotifySubscription['scope'][]) => ({
+    setScopes((prevScopes: NotifyClientTypes.ScopeMap) => ({
       ...prevScopes,
       [id]: {
         ...prevScopes[id],
@@ -44,14 +44,11 @@ const Settingsitem = ({ scope, id, setScopes }: ISettingsprops) => {
 
 const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
   return (
-    <>
-      <Divider />
-      <Box maxHeight="360px" overflowY="scroll" paddingX="24px">
-        {Object.entries(scopes).map(([id, scope]) => {
-          return <Settingsitem key={id} id={id} scope={scope} setScopes={setScopes} />
-        })}
-      </Box>
-    </>
+    <Box maxHeight="360px" overflowY="scroll" paddingLeft="24px" paddingRight="18px">
+      {Object.entries(scopes).map(([id, scope]) => {
+        return <Settingsitem key={id} id={id} scope={scope} setScopes={setScopes} />
+      })}
+    </Box>
   )
 }
 

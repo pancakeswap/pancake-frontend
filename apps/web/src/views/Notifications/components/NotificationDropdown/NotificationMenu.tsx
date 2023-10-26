@@ -2,7 +2,7 @@ import { Box, Flex, ModalV2, ModalWrapper, UserMenuProps, useMatchBreakpoints } 
 import Image from 'next/image'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
-import useUnreadNotifications from '../hooks/useUnreadNotifications'
+import useUnreadNotifications from '../../hooks/useUnreadNotifications'
 
 interface InotificationBellProps {
   unread: number
@@ -12,7 +12,7 @@ interface InotificationBellProps {
 const NotificationBell = ({ unread, toggleMenu }: InotificationBellProps) => {
   return (
     <BellIconContainer onClick={toggleMenu}>
-      <Image src="/images/notifications/notifications.svg" alt="notifications" width={25} height={25} />
+      <Image src="/images/notifications/notifications.svg" alt="notifications" width={26} height={26} />
       {unread > 0 ? <div className="notification-badge">{unread}</div> : null}
     </BellIconContainer>
   )
@@ -22,27 +22,25 @@ const NotificationMenu: React.FC<
   UserMenuProps & {
     isMenuOpen: boolean
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
-    identityKey: string | undefined
-    isSubscribed: boolean
+    isRegistered: boolean
     handleRegistration: () => Promise<void>
   }
-> = ({ children, isMenuOpen, setIsMenuOpen, identityKey, handleRegistration, isSubscribed }) => {
+> = ({ children, isMenuOpen, setIsMenuOpen, isRegistered, handleRegistration }) => {
   const { unread, setUnread } = useUnreadNotifications()
 
   const ref = useRef<HTMLDivElement>(null)
   const { isMobile } = useMatchBreakpoints()
 
   const toggleMenu = useCallback(() => {
-    if (!identityKey && isSubscribed) handleRegistration()
+    if (isRegistered) handleRegistration()
     setUnread(0)
     localStorage.setItem('unread', '0')
     setIsMenuOpen(!isMenuOpen)
-  }, [setIsMenuOpen, isMenuOpen, setUnread, identityKey, handleRegistration, isSubscribed])
+  }, [setIsMenuOpen, isMenuOpen, setUnread, isRegistered, handleRegistration])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
-      if (!ref.current) return
-      if (!ref.current.contains(e.target as Node | null)) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         setIsMenuOpen(false)
         localStorage.setItem('unread', '0')
         setUnread(0)
@@ -54,7 +52,7 @@ const NotificationMenu: React.FC<
 
   if (isMobile) {
     return (
-      <Flex alignItems="center" justifyContent="center" height="100%">
+      <Flex alignItems="center" justifyContent="center" height="100%" tabIndex={-1}>
         <NotificationBell unread={unread} toggleMenu={toggleMenu} />
         <ModalV2 isOpen={isMenuOpen} onDismiss={toggleMenu} closeOnOverlayClick>
           <ModalWrapper minWidth="320px">{children?.({ isOpen: isMenuOpen })}</ModalWrapper>
@@ -63,7 +61,7 @@ const NotificationMenu: React.FC<
     )
   }
   return (
-    <Flex alignItems="center" justifyContent="center" height="100%" ref={ref}>
+    <Flex alignItems="center" justifyContent="center" height="100%" ref={ref} tabIndex={-1}>
       <NotificationBell unread={unread} toggleMenu={toggleMenu} />
       <Menu isOpen={isMenuOpen} style={{ top: '100%', position: 'fixed' }}>
         <Box>{children?.({ isOpen: isMenuOpen })}</Box>

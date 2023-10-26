@@ -637,6 +637,9 @@ importers:
       '@wallchain/sdk':
         specifier: ^0.6.8
         version: 0.6.8
+      '@walletconnect/notify-client':
+        specifier: ^0.14.4
+        version: 0.14.4(encoding@0.1.13)
       '@web3inbox/core':
         specifier: 0.0.20
         version: 0.0.20(@types/react@18.2.21)(encoding@0.1.13)(react@18.2.0)
@@ -12242,7 +12245,7 @@ packages:
       '@walletconnect/identity-keys': 0.2.2(encoding@0.1.13)
       '@walletconnect/jsonrpc-utils': 1.0.7
       '@walletconnect/time': 1.0.2
-      '@walletconnect/utils': 2.10.1
+      '@walletconnect/utils': 2.10.4
       axios: 1.5.1
       jwt-decode: 3.1.2
     transitivePeerDependencies:

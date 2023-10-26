@@ -7,6 +7,8 @@ import {
   ContentsContainer,
   Description,
   ExpandButton,
+  NoNotificationsWrapper,
+  NotificationsWrapper,
   StyledLink,
   StyledNotificationWrapper,
 } from 'views/Notifications/styles'
@@ -23,6 +25,7 @@ interface INotificationprops {
 
 interface INotificationContainerProps {
   notifications: NotifyClientTypes.NotifyMessageRecord[]
+  isClosing: boolean
 }
 
 const formatStringWithNewlines = (inputString: string) => {
@@ -105,27 +108,31 @@ const BottomRow = ({
   )
 }
 
-const NotificationContainer = ({ notifications }: INotificationContainerProps) => {
+const NotificationContainer = ({ notifications, isClosing }: INotificationContainerProps) => {
   const { t } = useTranslation()
   if (notifications.length === 0) {
     return (
-      <Box paddingY="24px">
-        <FlexGap paddingX="26px" rowGap="8px" flexDirection="column" justifyContent="center" alignItems="center">
-          <Image src="/images/notifications/notification-bell-onboard.png" alt="#" height={100} width={100} />
-          <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
-            {t('All Set')}
-          </Text>
-          <Text fontSize="16px" textAlign="center" color="textSubtle">
-            {t(
-              'Any notifications that you recieve will appear here. you willl also recieve moblile notification on your mobile wallet.',
-            )}
-          </Text>
-        </FlexGap>
-      </Box>
+      <NoNotificationsWrapper>
+        <Box paddingY="24px" height="100%">
+          <FlexGap paddingX="26px" rowGap="8px" flexDirection="column" justifyContent="center" alignItems="center">
+            <Box minHeight="122px">
+              <Image src="/images/notifications/notification-bell-onboard.png" alt="#" height={100} width={100} />
+            </Box>
+            <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
+              {t('All Set')}
+            </Text>
+            <Text fontSize="16px" textAlign="center" color="textSubtle">
+              {t(
+                'Any notifications that you recieve will appear here. you willl also recieve moblile notification on your mobile wallet.',
+              )}
+            </Text>
+          </FlexGap>
+        </Box>
+      </NoNotificationsWrapper>
     )
   }
   return (
-    <Box>
+    <NotificationsWrapper isClosing={isClosing}>
       {notifications.map((notification: NotifyClientTypes.NotifyMessageRecord) => {
         return (
           <NotificationItem
@@ -138,7 +145,7 @@ const NotificationContainer = ({ notifications }: INotificationContainerProps) =
           />
         )
       })}
-    </Box>
+    </NotificationsWrapper>
   )
 }
 

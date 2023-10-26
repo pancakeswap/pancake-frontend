@@ -1,13 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, FlexGap, OptionProps, Select, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  Button,
+  CogIcon,
+  FlexGap,
+  IconButton,
+  ModalCloseButton,
+  OptionProps,
+  Select,
+  Text,
+} from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useMessages } from '@web3inbox/widget-react'
 import { useCallback, useMemo, useState } from 'react'
 import { NotificationFilterTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
-import { useAccount } from 'wagmi'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
+import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 
 interface INotificationFilterProps {
   options: OptionProps[]
@@ -28,10 +38,16 @@ const NotificationFilter = ({ options, onOptionChange, description }: INotificat
   )
 }
 
-const NotificationView = () => {
+const NotificationView = ({
+  toggleSettings,
+  onDismiss,
+}: {
+  toggleSettings: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onDismiss: () => void
+}) => {
   const [notificationType, setNotificationType] = useState<string>('All')
-  const { address: account } = useAccount()
-  const { messages: notifications, deleteMessage } = useMessages(`eip155:1:${account}`)
+  const [isClosing, setIsClosing] = useState<boolean>(false)
+  const { messages: notifications, deleteMessage } = useMessages()
   const { t } = useTranslation()
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
@@ -39,9 +55,13 @@ const NotificationView = () => {
   }, [])
 
   const removeAllNotifications = useCallback(async () => {
-    notifications.forEach((notification) => {
-      deleteMessage(notification.id)
-    })
+    setIsClosing(true)
+    setTimeout(() => {
+      notifications.forEach((notification) => {
+        deleteMessage(notification.id)
+      })
+      setIsClosing(false)
+    }, 400)
   }, [notifications, deleteMessage])
 
   const filteredNotifications: any = useMemo(() => {
@@ -79,23 +99,41 @@ const NotificationView = () => {
 
   return (
     <Box paddingBottom="24px" width="100%">
+      <NotificationHeader
+        leftIcon={
+          <IconButton tabIndex={-1} variant="text" onClick={onDismiss} area-label="go back" mr="8px">
+            <ModalCloseButton onDismiss={onDismiss} />
+          </IconButton>
+        }
+        rightIcon={
+          <IconButton tabIndex={-1} variant="text" onClick={toggleSettings} area-label="go back" mr="8px">
+            <CogIcon color="primary" />
+          </IconButton>
+        }
+        text={t('Notifications')}
+      />
       <FlexGap alignItems="center" justifyContent="flex-start" paddingX="24px" marginBottom="8px" gap="12px">
         <NotificationFilter
           onOptionChange={handleNotifyOptionChange}
           options={NotificationFilterTypes}
           description="Filter By Type"
         />
-        <Button marginTop="20px" height="40px" maxWidth="95px" variant="secondary" onClick={removeAllNotifications}>
+        <Button
+          tabIndex={-1}
+          marginTop="20px"
+          height="40px"
+          maxWidth="95px"
+          variant="secondary"
+          onClick={removeAllNotifications}
+        >
           <Text px="4px" fontWeight="bold" color="primary">
             {t('Clear')}
           </Text>
         </Button>
       </FlexGap>
-      <Box minHeight="360px">
-        <NotificationContainerStyled>
-          <NotificationItem notifications={filteredNotifications} />
-        </NotificationContainerStyled>
-      </Box>
+      <NotificationContainerStyled>
+        <NotificationItem notifications={filteredNotifications} isClosing={isClosing} />
+      </NotificationContainerStyled>
     </Box>
   )
 }

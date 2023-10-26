@@ -1,100 +1,61 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import { useManageSubscription } from '@web3inbox/widget-react'
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import useRegistration from './components/hooks/useRegistration'
 import NotificationSettingsView from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
-import { ModalHeader, ModalTitle, ViewContainer } from './styles'
-
-interface INotifyHeaderprops {
-  onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
-  isNotificationView: boolean
-  isSettings?: boolean
-  onDismiss: () => void
-}
-
-const NotificationHeader = ({ isSettings = false, onBack, isNotificationView, onDismiss }: INotifyHeaderprops) => {
-  const { t } = useTranslation()
-  return (
-    <>
-      {isNotificationView ? (
-        <ModalHeader>
-          <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
-            {isSettings ? <ArrowBackIcon color="primary" /> : <ModalCloseButton onDismiss={onDismiss} />}
-          </IconButton>
-          <ModalTitle>
-            <Heading fontSize="20px" padding="0px" textAlign="center">
-              {t('Notifications')}
-            </Heading>
-          </ModalTitle>
-          <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
-            {isSettings ? <ModalCloseButton onDismiss={onDismiss} /> : <CogIcon color="primary" />}
-          </IconButton>
-        </ModalHeader>
-      ) : (
-        <ModalHeader>
-          <Box display="flex" padding="8px" paddingLeft="20px">
-            <LogoRoundIcon width="40px" mr="12px" />
-            <Heading fontSize="24px" padding="0px" textAlign="left" mr="8px">
-              {t('PancakeSwap would like to send you notifications')}
-            </Heading>
-          </Box>
-        </ModalHeader>
-      )}
-    </>
-  )
-}
+import useRegistration from './hooks/useRegistration'
+import { ViewContainer } from './styles'
+import { PAGE_VIEW } from './types'
 
 const Notifications = () => {
-  const [viewIndex, setViewIndex] = useState(1)
+  const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const { account, identityKey, handleRegistration, address, isW3iInitialized } = useRegistration()
-  const { isSubscribed } = useManageSubscription(account)
+  const { identityKey, handleRegistration, address, isW3iInitialized } = useRegistration()
+  const { isSubscribed } = useManageSubscription()
 
+  const isReady = Boolean(isSubscribed && address && isW3iInitialized)
+  const isRegistered = Boolean(!identityKey && isSubscribed)
+
+  const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
+  const toggleOnboardView = useCallback(() => setViewIndex(PAGE_VIEW.OnboardView), [setViewIndex])
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()
-      if (viewIndex === 0 || viewIndex === 2) setViewIndex(1)
-      else setViewIndex(2)
+      if (viewIndex === PAGE_VIEW.OnboardView || viewIndex === PAGE_VIEW.SettingsView)
+        setViewIndex(PAGE_VIEW.NotificationView)
+      else setViewIndex(PAGE_VIEW.SettingsView)
     },
     [setViewIndex, viewIndex],
   )
 
-  const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
-  const isReady = Boolean(isSubscribed && address && isW3iInitialized)
-
   useEffect(() => {
-    if (!address || !isReady) setViewIndex(0)
-    if (isReady) setViewIndex(1)
+    if (!address) setViewIndex(PAGE_VIEW.OnboardView)
+    if (isReady) setViewIndex(PAGE_VIEW.NotificationView)
   }, [address, isReady])
 
   return (
     <NotificationMenu
       isMenuOpen={isMenuOpen}
       setIsMenuOpen={setIsMenuOpen}
-      isSubscribed={isSubscribed}
-      identityKey={identityKey}
+      isRegistered={isRegistered}
       handleRegistration={handleRegistration}
     >
       {() => (
-        <Box>
-          <NotificationHeader
-            onBack={toggleSettings}
-            isSettings={Boolean(viewIndex === 2)}
-            isNotificationView={isReady}
-            onDismiss={onDismiss}
-          />
+        <Box tabIndex={-1}>
           <ViewContainer viewIndex={viewIndex}>
             <OnBoardingView
               identityKey={identityKey}
               handleRegistration={handleRegistration}
               isReady={isW3iInitialized}
             />
-            <NotificationView />
-            <NotificationSettingsView />
+            <NotificationView toggleSettings={toggleSettings} onDismiss={onDismiss} />
+            <NotificationSettingsView
+              toggleSettings={toggleSettings}
+              onDismiss={onDismiss}
+              toggleOnboardView={toggleOnboardView}
+            />
           </ViewContainer>
         </Box>
       )}
@@ -102,4 +63,4 @@ const Notifications = () => {
   )
 }
 
-export default Notifications
+export default React.memo(Notifications)

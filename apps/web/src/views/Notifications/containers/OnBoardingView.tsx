@@ -1,12 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  Box,
+  CircleLoader,
+  Flex,
+  FlexGap,
+  Heading,
+  LogoRoundIcon,
+  Text,
+  useToast,
+} from '@pancakeswap/uikit'
 import { useManageSubscription } from '@web3inbox/widget-react'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/image'
 import { useCallback } from 'react'
 import { useAccount } from 'wagmi'
-import useSendPushNotification from '../components/hooks/sendPushNotification'
+import useSendPushNotification from '../hooks/sendPushNotification'
 import { Events } from '../constants'
 import { BuilderNames } from '../types'
 import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
@@ -54,11 +64,10 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
   const toast = useToast()
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { subscribe, isSubscribing } = useManageSubscription(`eip155:1:${account}`)
+  const { subscribe, isSubscribing } = useManageSubscription()
   const { sendPushNotification } = useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {
-    if (!account) return
     try {
       await subscribe()
       setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`), 1000)
@@ -81,7 +90,14 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
   return (
     <Box width="100%">
       <div style={{ padding: '24px' }}>
-        <Box pl="24px">
+        <Box display="flex">
+          <LogoRoundIcon width="40px" mr="12px" />
+          <Heading fontSize="24px" padding="0px" textAlign="left" mr="8px">
+            {t('PancakeSwap would like to send you notifications')}
+          </Heading>
+        </Box>
+
+        <Box pl="24px" pt="24px">
           <Image src="/images/notifications/notification-bell-check.png" alt="#" height={185} width={270} />
         </Box>
         <FlexGap rowGap="12px" flexDirection="column" justifyContent="center" alignItems="center">

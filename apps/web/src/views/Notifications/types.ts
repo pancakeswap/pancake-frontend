@@ -28,9 +28,22 @@ export enum SubsctiptionType {
   Alerts = ScopeIdsToName.Alerts,
 }
 
+export enum PAGE_VIEW {
+  OnboardView = 0,
+  NotificationView = 1,
+  SettingsView = 2,
+}
+
 export type EventInformation = {
   title: string
   message?: string
+}
+
+export type Scope = {
+  name: string
+  id: string
+  description: string
+  enabled: boolean
 }
 
 export enum NotificationView {
