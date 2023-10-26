@@ -1,5 +1,11 @@
 # @pancakeswap/awgmi
 
+## 0.2.0
+
+### Minor Changes
+
+- 2a684051f: Add msafe connector
+
 ## 0.1.15
 
 ### Patch Changes
