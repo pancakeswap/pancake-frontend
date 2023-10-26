@@ -1,5 +1,5 @@
 import { styled } from 'styled-components'
-import { StaticImageData } from 'next/dist/client/image'
+import { StaticImageData } from 'next/dist/client/legacy/image'
 import { Flex, Box, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import orderBy from 'lodash/orderBy'
