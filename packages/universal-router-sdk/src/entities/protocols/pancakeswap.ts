@@ -87,7 +87,7 @@ export class PancakeSwapTrade implements Command {
         // If the trade is exact output, and a fee was taken, we must adjust the amount out to be the amount after the fee
         // Otherwise we continue as expected with the trade's normal expected output
         if (this.type === TradeType.EXACT_OUTPUT) {
-          minAmountOut = minAmountOut.subtract(minAmountOut.multiply(feeBips))
+          minAmountOut = minAmountOut.subtract(minAmountOut.multiply(feeBips).divide(10000))
         }
       }
       // The remaining tokens that need to be sent to the user after the fee is taken will be caught
@@ -101,12 +101,11 @@ export class PancakeSwapTrade implements Command {
           BigInt(minAmountOut.quotient.toString()),
         ])
       }
-
-      if ((inputIsNative && this.type === TradeType.EXACT_OUTPUT) || SwapRouter.riskOfPartialFill(trades)) {
-        // for exactOutput swaps that take native currency as input
-        // we need to send back the change to the user
-        planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, 0n])
-      }
+    }
+    if (inputIsNative && (this.type === TradeType.EXACT_OUTPUT || SwapRouter.riskOfPartialFill(trades))) {
+      // for exactOutput swaps that take native currency as input
+      // we need to send back the change to the user
+      planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, 0n])
     }
   }
 }
@@ -126,11 +125,10 @@ function addV2Swap(
   // V2 trade should have only one route
   const route = trade.routes[0]
   const path = route.path.map((token) => token.wrapped.address)
+
   const recipient = routerMustCustody
     ? ROUTER_AS_RECIPIENT
-    : typeof options.recipient === 'undefined'
-    ? SENDER_AS_RECIPIENT
-    : validateAndParseAddress(options.recipient)
+    : validateAndParseAddress(options.recipient ?? SENDER_AS_RECIPIENT)
 
   // same as encodeV2Swap only we dont return calldatas instead we push to the command planner
   if (trade.tradeType === TradeType.EXACT_INPUT) {
@@ -170,9 +168,7 @@ async function addV3Swap(
 
     const recipient = routerMustCustody
       ? ROUTER_AS_RECIPIENT
-      : typeof options.recipient === 'undefined'
-      ? SENDER_AS_RECIPIENT
-      : validateAndParseAddress(options.recipient)
+      : validateAndParseAddress(options.recipient ?? SENDER_AS_RECIPIENT)
 
     // similar to encodeV3Swap only we dont need to add a case for signle hop. by using ecodeMixedRoutePath
     // we can get the parthStr for all cases
@@ -219,9 +215,7 @@ async function addMixedSwap(
 
     const recipient = routerMustCustody
       ? ROUTER_AS_RECIPIENT
-      : typeof options.recipient === 'undefined'
-      ? SENDER_AS_RECIPIENT
-      : validateAndParseAddress(options.recipient)
+      : validateAndParseAddress(options.recipient ?? SENDER_AS_RECIPIENT)
 
     const mixedRouteIsAllV3 = (r: Omit<BaseRoute, 'input' | 'output'>) => {
       return r.pools.every(SmartRouter.isV3Pool)

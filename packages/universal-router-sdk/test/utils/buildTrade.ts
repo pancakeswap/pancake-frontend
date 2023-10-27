@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair, Token, TradeType, Trade as V2Trade } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Native, Pair, TradeType, Trade as V2Trade } from '@pancakeswap/sdk'
 import {
   RouteType,
   SmartRouter,
@@ -100,6 +100,7 @@ export const buildMixedRouteTrade = async <
   amount: CurrencyAmount<TTradeType extends TradeType.EXACT_INPUT ? TInput : TOutput>,
   tradeType: TTradeType,
   pools: Array<Pair | Pool | StablePool>,
+  isOutputNative = true,
 ): Promise<SmartRouterTrade<TradeType>> => {
   const path: Currency[] = [tokenIn.wrapped]
   const outputPools = pools.map((pool) => {
@@ -109,16 +110,16 @@ export const buildMixedRouteTrade = async <
     return pool
   })
 
-  const amounts: CurrencyAmount<Token>[] = []
+  const amounts: CurrencyAmount<Currency>[] = []
 
   amounts.push(amount.wrapped)
 
   for (const pool of pools) {
     const input = amounts[amounts.length - 1]
-    let outputAmount: CurrencyAmount<Token>
+    let outputAmount: CurrencyAmount<Currency>
     if (pool instanceof Pair || pool instanceof Pool) {
       // eslint-disable-next-line no-await-in-loop
-      ;[outputAmount] = await pool.getOutputAmount(input)
+      ;[outputAmount] = await pool.getOutputAmount(input as CurrencyAmount<ERC20Token>)
       path.push(outputAmount.currency)
       amounts.push(outputAmount)
     } else if (SmartRouter.isStablePool(pool)) {
@@ -137,12 +138,16 @@ export const buildMixedRouteTrade = async <
 
   // mixed Router support exactIn only
   const inputAmount = amount
-  const outputAmount = amounts[amounts.length - 1]
-
+  let outputAmount = amounts[amounts.length - 1]
+  const nativeCurrency = Native.onChain(outputAmount.currency.chainId)
+  // is wrapped token
+  if (outputAmount.currency.wrapped.equals(nativeCurrency.wrapped) && isOutputNative) {
+    outputAmount = CurrencyAmount.fromFractionalAmount(nativeCurrency, outputAmount.numerator, outputAmount.denominator)
+  }
   return {
     tradeType,
     inputAmount: amount,
-    outputAmount: outputAmount.wrapped,
+    outputAmount: isOutputNative ? outputAmount : outputAmount.wrapped,
     routes: [
       {
         type: RouteType.MIXED,

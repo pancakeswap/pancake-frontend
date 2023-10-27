@@ -16,7 +16,7 @@ import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { getUniversalRouterAddress } from '../../src'
 import { Provider, getPublicClient } from './clients'
 import { V2_FACTORY_ADDRESSES } from './constants/addresses'
-import { BUSD, CAKE, ETHER, USDC, USDT, WETH9 } from './constants/tokens'
+import { BUSD, CAKE, ETHER, USDC, USDT, WETH9, WBNB } from './constants/tokens'
 
 const fixtureTokensAddresses = (chainId: ChainId) => {
   return {
@@ -26,6 +26,7 @@ const fixtureTokensAddresses = (chainId: ChainId) => {
     CAKE: CAKE[chainId],
     WETH: WETH9[chainId],
     BUSD: BUSD[chainId],
+    WBNB: WBNB[chainId],
   }
 }
 
@@ -169,10 +170,11 @@ const fixturePool = ({
 export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => {
   const tokens = fixtureTokensAddresses(chainId)
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const { USDC, USDT, WETH } = tokens
+  const { USDC, USDT, WETH, WBNB } = tokens
 
   const v2Pairs = {
     WETH_USDC_V2: await getPair(WETH, USDC, liquidity)(getPublicClient),
+    WBNB_USDC_V2: await getPair(WBNB, USDC, liquidity)(getPublicClient),
     USDC_USDT_V2: await getPair(USDT, USDC, liquidity)(getPublicClient),
   }
 
@@ -183,9 +185,33 @@ export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => 
       feeAmount: FeeAmount.MEDIUM,
       reserve: liquidity,
     })(getPublicClient),
+    WETH_USDC_V3_MEDIUM_ADDRESS: computePoolAddress({
+      deployerAddress: DEPLOYER_ADDRESSES[chainId],
+      tokenA: WETH,
+      tokenB: USDC,
+      fee: FeeAmount.MEDIUM,
+    }),
+    WETH_USDC_V3_LOW: await fixturePool({
+      tokenA: WETH,
+      tokenB: USDC,
+      reserve: liquidity,
+      feeAmount: FeeAmount.LOW,
+    })(getPublicClient),
+    WBNB_USDC_V3_MEDIUM: await fixturePool({
+      tokenA: WBNB,
+      tokenB: USDC,
+      feeAmount: FeeAmount.MEDIUM,
+      reserve: liquidity,
+    })(getPublicClient),
     USDC_USDT_V3_LOW: await fixturePool({ tokenA: USDC, tokenB: USDT, feeAmount: FeeAmount.LOW, reserve: liquidity })(
       getPublicClient,
     ),
+    USDC_USDT_V3_LOW_ADDRESS: computePoolAddress({
+      deployerAddress: DEPLOYER_ADDRESSES[chainId],
+      tokenA: USDC,
+      tokenB: USDT,
+      fee: FeeAmount.LOW,
+    }),
   }
 
   const UNIVERSAL_ROUTER = getUniversalRouterAddress(chainId)
