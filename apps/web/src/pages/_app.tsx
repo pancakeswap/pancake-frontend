@@ -97,7 +97,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           </PersistGate>
         </Blocklist>
       </Providers>
-      <Script
+      {/* <Script
         strategy="afterInteractive"
         id="google-tag"
         dangerouslySetInnerHTML={{
@@ -109,7 +109,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
             })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTAG}');
           `,
         }}
-      />
+      /> */}
       <Script
         strategy="afterInteractive"
         id="google-tag-new"
