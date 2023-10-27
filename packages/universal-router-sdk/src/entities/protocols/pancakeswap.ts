@@ -126,9 +126,9 @@ function addV2Swap(
   const route = trade.routes[0]
   const path = route.path.map((token) => token.wrapped.address)
 
-  if (!options.recipient) throw new Error('recipient is required')
-
-  const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient)
+  const recipient = routerMustCustody
+    ? ROUTER_AS_RECIPIENT
+    : validateAndParseAddress(options.recipient ?? SENDER_AS_RECIPIENT)
 
   // same as encodeV2Swap only we dont return calldatas instead we push to the command planner
   if (trade.tradeType === TradeType.EXACT_INPUT) {
@@ -166,9 +166,9 @@ async function addV3Swap(
     const amountIn: bigint = SmartRouter.maximumAmountIn(trade, options.slippageTolerance, inputAmount).quotient
     const amountOut: bigint = SmartRouter.minimumAmountOut(trade, options.slippageTolerance, outputAmount).quotient
 
-    if (!options.recipient) throw new Error('recipient is required')
-
-    const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient)
+    const recipient = routerMustCustody
+      ? ROUTER_AS_RECIPIENT
+      : validateAndParseAddress(options.recipient ?? SENDER_AS_RECIPIENT)
 
     // similar to encodeV3Swap only we dont need to add a case for signle hop. by using ecodeMixedRoutePath
     // we can get the parthStr for all cases
@@ -213,9 +213,9 @@ async function addMixedSwap(
     // flag for whether the trade is single hop or not
     const singleHop = pools.length === 1
 
-    if (!options.recipient) throw new Error('recipient is required')
-
-    const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient)
+    const recipient = routerMustCustody
+      ? ROUTER_AS_RECIPIENT
+      : validateAndParseAddress(options.recipient ?? SENDER_AS_RECIPIENT)
 
     const mixedRouteIsAllV3 = (r: Omit<BaseRoute, 'input' | 'output'>) => {
       return r.pools.every(SmartRouter.isV3Pool)
