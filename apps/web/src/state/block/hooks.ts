@@ -16,10 +16,10 @@ export const usePollBlockNumber = () => {
       queryClient.setQueryData(['blockNumber', chainId], Number(data))
     },
     onSuccess: (data) => {
-      if (!queryClient.getQueryCache().find(['initialBlockNumber', chainId])?.state?.data) {
+      if (!queryClient.getQueryCache().find<number>(['initialBlockNumber', chainId])?.state?.data) {
         queryClient.setQueryData(['initialBlockNumber', chainId], Number(data))
       }
-      if (!queryClient.getQueryCache().find(['initialBlockTimestamp', chainId])?.state?.data) {
+      if (!queryClient.getQueryCache().find<number>(['initialBlockTimestamp', chainId])?.state?.data) {
         const fetchInitialBlockTimestamp = async () => {
           const provider = viemClients[chainId as keyof typeof viemClients]
           if (provider) {

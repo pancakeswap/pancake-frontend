@@ -254,7 +254,7 @@ export function useSingleContractMultipleData<TAbi extends Abi | readonly unknow
   const queryClient = useQueryClient()
 
   return useMemo(() => {
-    const currentBlockNumber = queryClient.getQueryCache().find(['blockNumber', chainId])?.state?.data
+    const currentBlockNumber = queryClient.getQueryCache().find<number>(['blockNumber', chainId])?.state?.data
     return results.map((result) => toCallState(result, contract.abi, functionName, currentBlockNumber))
   }, [queryClient, chainId, results, contract.abi, functionName])
 }
@@ -315,7 +315,7 @@ export function useMultipleContractSingleData<TAbi extends Abi | readonly unknow
   const queryClient = useQueryClient()
 
   return useMemo(() => {
-    const currentBlockNumber = queryClient.getQueryCache().find(['blockNumber', chainId])?.state?.data
+    const currentBlockNumber = queryClient.getQueryCache().find<number>(['blockNumber', chainId])?.state?.data
     return results.map((result) => toCallState(result, abi, functionName, currentBlockNumber))
   }, [queryClient, chainId, results, abi, functionName])
 }
@@ -360,7 +360,7 @@ export function useSingleCallResult<TAbi extends Abi | readonly unknown[], TFunc
   const { chainId } = useActiveChainId()
 
   return useMemo(() => {
-    const currentBlockNumber = queryClient.getQueryCache().find(['blockNumber', chainId])?.state?.data
+    const currentBlockNumber = queryClient.getQueryCache().find<number>(['blockNumber', chainId])?.state?.data
     return toCallState(result, contract?.abi, functionName, currentBlockNumber)
   }, [queryClient, chainId, result, contract?.abi, functionName])
 }
