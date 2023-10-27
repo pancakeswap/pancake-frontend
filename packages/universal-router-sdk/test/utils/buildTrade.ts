@@ -141,7 +141,7 @@ export const buildMixedRouteTrade = async <
   let outputAmount = amounts[amounts.length - 1]
   const nativeCurrency = Native.onChain(outputAmount.currency.chainId)
   // is wrapped token
-  if (outputAmount.currency.wrapped.address === nativeCurrency.wrapped.address && isOutputNative) {
+  if (outputAmount.currency.wrapped.equals(nativeCurrency.wrapped) && isOutputNative) {
     outputAmount = CurrencyAmount.fromFractionalAmount(nativeCurrency, outputAmount.numerator, outputAmount.denominator)
   }
   return {
