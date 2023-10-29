@@ -62,6 +62,7 @@ export const useCurrentBlock = (): number => {
     enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
   })
   return Number(currentBlock)
 }
@@ -90,6 +91,7 @@ export const useInitialBlock = (): number => {
     enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
   })
   return Number(initialBlock)
 }
@@ -100,6 +102,7 @@ export const useInitialBlockTimestamp = (): number => {
     enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
   })
   return Number(initialBlockTimestamp)
 }
