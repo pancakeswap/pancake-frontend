@@ -10,7 +10,11 @@ import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'ne
 import Head from 'next/head'
 import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Menu from '../components/Menu'
+
+// Create a client
+const queryClient = new QueryClient()
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -61,20 +65,24 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#1FC7D4" />
       </Head>
       <DefaultSeo {...SEO} />
-      <NextThemeProvider>
-        <StyledThemeProvider>
-          <LanguageProvider>
-            <ModalProvider>
-              <ResetCSS />
-              <GlobalStyle />
-              <Menu />
-              <WrapBalancerProvider>
-                <Component {...pageProps} />
-              </WrapBalancerProvider>
-            </ModalProvider>
-          </LanguageProvider>
-        </StyledThemeProvider>
-      </NextThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <NextThemeProvider>
+            <StyledThemeProvider>
+              <LanguageProvider>
+                <ModalProvider>
+                  <ResetCSS />
+                  <GlobalStyle />
+                  <Menu />
+                  <WrapBalancerProvider>
+                    <Component {...pageProps} />
+                  </WrapBalancerProvider>
+                </ModalProvider>
+              </LanguageProvider>
+            </StyledThemeProvider>
+          </NextThemeProvider>
+        </Hydrate>
+      </QueryClientProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"
