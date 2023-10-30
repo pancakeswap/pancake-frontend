@@ -13,6 +13,7 @@ const nextConfig = {
     '@pancakeswap/hooks',
     '@pancakeswap/localization',
     '@pancakeswap/utils',
+    '@pancakeswap/games',
   ],
   compiler: {
     styledComponents: true,
