@@ -30,7 +30,8 @@
     "zod": "^3.22.3",
     "dayjs": "^1.11.10",
     "@tanstack/react-query": "^4.28.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "split-grid": "^1.0.11"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.4.2",
@@ -41,6 +42,8 @@
     "@types/styled-system": "^5.1.17",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/next-config": "workspace:*",
-    "@types/qs": "^6.0.0"
+    "@types/qs": "^6.0.0",
+    "@types/lodash": "^4.14.178",
+    "eslint-plugin-lodash": "^7.4.0"
   }
 }

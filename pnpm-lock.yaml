@@ -589,6 +589,9 @@ importers:
       react-youtube:
         specifier: ^10.1.0
         version: 10.1.0(react@18.2.0)
+      split-grid:
+        specifier: ^1.0.11
+        version: 1.0.11
       styled-components:
         specifier: 6.0.7
         version: 6.0.7(babel-plugin-styled-components@1.13.3)(react-dom@18.2.0)(react@18.2.0)
@@ -608,6 +611,9 @@ importers:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@types/lodash':
+        specifier: ^4.14.178
+        version: 4.14.186
       '@types/node':
         specifier: 18.0.4
         version: 18.0.4
@@ -626,6 +632,9 @@ importers:
       eslint:
         specifier: ^8.32.0
         version: 8.32.0
+      eslint-plugin-lodash:
+        specifier: ^7.4.0
+        version: 7.4.0(eslint@8.32.0)
 
   apps/web:
     dependencies:

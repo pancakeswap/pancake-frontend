@@ -44,6 +44,9 @@ export interface ResponseArticleDataType {
     }
     newsOutBoundLink: string
     newsFromPlatform: string
+    'games-categories': {
+      data: CategoriesType[]
+    }
   }
 }
 
