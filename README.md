@@ -67,6 +67,19 @@ pnpm dev:blog
 ```sh
 pnpm build:blog
 ```
+
+## `apps/games`
+<details>
+<summary>
+How to start
+</summary>
+
+```sh
+pnpm dev:games
+```
+```sh
+pnpm build:games
+```
 </details>
 
 

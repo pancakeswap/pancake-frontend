@@ -1,5 +1,4 @@
 import { Order, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
-import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
 
@@ -8,11 +7,12 @@ import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 
 import orderBy from 'lodash/orderBy'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useQuery } from '@tanstack/react-query'
 import { ORDER_CATEGORY, LimitOrderStatus } from '../types'
 
-export const OPEN_ORDERS_SWR_KEY = ['gelato', 'openOrders']
-export const EXECUTED_CANCELLED_ORDERS_SWR_KEY = ['gelato', 'cancelledExecutedOrders']
-export const EXECUTED_EXPIRED_ORDERS_SWR_KEY = ['gelato', 'expiredExecutedOrders']
+export const OPEN_ORDERS_QUERY_KEY = ['limitOrders', 'gelato', 'openOrders']
+export const EXECUTED_CANCELLED_ORDERS_QUERY_KEY = ['limitOrders', 'gelato', 'cancelledExecutedOrders']
+export const EXECUTED_EXPIRED_ORDERS_QUERY_KEY = ['limitOrders', 'gelato', 'expiredExecutedOrders']
 
 function newOrdersFirst(a: Order, b: Order) {
   return Number(b.updatedAt) - Number(a.updatedAt)
@@ -76,8 +76,8 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
 
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
-  const { data } = useSWR(
-    startFetch ? OPEN_ORDERS_SWR_KEY : null,
+  const { data } = useQuery(
+    OPEN_ORDERS_QUERY_KEY,
     async () => {
       try {
         const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
@@ -110,7 +110,8 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
       ].sort(newOrdersFirst)
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(startFetch),
+      refetchInterval: SLOW_INTERVAL,
     },
   )
 
@@ -123,8 +124,8 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
 
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
-  const { data } = useSWR(
-    startFetch ? EXECUTED_CANCELLED_ORDERS_SWR_KEY : null,
+  const { data } = useQuery(
+    EXECUTED_CANCELLED_ORDERS_QUERY_KEY,
     async () => {
       try {
         const acc = account.toLowerCase()
@@ -158,7 +159,8 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
       return [...pendingCancelledOrdersLS, ...cancelledOrdersLS, ...executedOrdersLS].sort(newOrdersFirst)
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(startFetch),
+      refetchInterval: SLOW_INTERVAL,
     },
   )
 
@@ -171,8 +173,8 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
 
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
-  const { data } = useSWR(
-    startFetch ? EXECUTED_EXPIRED_ORDERS_SWR_KEY : null,
+  const { data } = useQuery(
+    EXECUTED_EXPIRED_ORDERS_QUERY_KEY,
     async () => {
       try {
         const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
@@ -192,7 +194,8 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
       return expiredOrdersLS.sort(newOrdersFirst)
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(startFetch),
+      refetchInterval: SLOW_INTERVAL,
     },
   )
 

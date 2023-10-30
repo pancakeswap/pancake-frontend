@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.9.6
+
+### Patch Changes
+
+- 0f8e92425: Add usdc as base token to check against on polygon zkevm
+
 ## 4.9.5
 
 ### Patch Changes

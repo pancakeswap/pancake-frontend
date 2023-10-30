@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import { useSWRConfig } from 'swr'
 import { parseEther, encodePacked, keccak256 } from 'viem'
 import { useAccount } from 'wagmi'
 import { ChainId } from '@pancakeswap/chains'
@@ -12,6 +11,7 @@ import { useTradingRewardContract, useTradingRewardTopTraderContract } from 'hoo
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { Qualification, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface UseClaimAllRewardProps {
   campaignIds: Array<string>
@@ -24,7 +24,7 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, typ
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { toastSuccess } = useToast()
-  const { mutate } = useSWRConfig()
+  const queryClient = useQueryClient()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const tradingRewardContract = useTradingRewardContract({ chainId: ChainId.BSC })
   const tradingRewardTopTradersContract = useTradingRewardTopTraderContract({ chainId: ChainId.BSC })
@@ -61,7 +61,7 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, typ
     )
 
     if (receipt?.status) {
-      await mutate(['/all-campaign-id-info', account, campaignIds])
+      await queryClient.invalidateQueries(['tradingReward', 'all-campaign-id-info', account, campaignIds])
       toastSuccess(
         t('Success!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -75,7 +75,7 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, typ
     campaignIds,
     contract,
     fetchWithCatchTxError,
-    mutate,
+    queryClient,
     qualification.minAmountUSD,
     t,
     toastSuccess,

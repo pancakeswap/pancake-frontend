@@ -1,6 +1,6 @@
-import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
+import { useQuery } from '@tanstack/react-query'
 
 interface UseLiquidStakingAprDetail {
   apr: number
@@ -18,8 +18,8 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
   const { chainId } = useActiveChainId()
   const { data: liquidStakingList } = useLiquidStakingList()
 
-  const { data, isLoading, mutate } = useSWR(
-    liquidStakingList?.length && ['liquid-staking-apr', chainId, liquidStakingList],
+  const { data, isLoading, refetch } = useQuery(
+    ['liquidStaking', 'liquid-staking-apr', chainId, liquidStakingList],
     async () => {
       try {
         const result = await Promise.all(
@@ -45,11 +45,12 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
         return []
       }
     },
+    { enabled: Boolean(liquidStakingList?.length) },
   )
 
   return {
     isFetching: isLoading,
     aprs: data ?? [],
-    refresh: mutate,
+    refresh: refetch,
   }
 }

@@ -1,7 +1,7 @@
-import useSWR from 'swr'
 import { useAccount } from 'wagmi'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { useQuery } from '@tanstack/react-query'
 
 const initialState = {
   topTradersIndex: 0,
@@ -13,8 +13,8 @@ const initialState = {
 
 export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
   const { address: account } = useAccount()
-  const { data, isLoading } = useSWR(
-    Number(campaignId) > 0 && account && ['/user-trade-rank', campaignId, account],
+  const { data, isLoading } = useQuery(
+    ['tradingReward', 'user-trade-rank', campaignId, account],
     async () => {
       try {
         const response = await fetch(
@@ -34,10 +34,10 @@ export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
-      fallbackData: initialState,
+      enabled: Boolean(Number(campaignId) > 0 && account),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      initialData: initialState,
     },
   )
 

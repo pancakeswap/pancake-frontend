@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/awgmi",
   "license": "MIT",
-  "version": "0.1.15",
+  "version": "0.2.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.mjs",
@@ -23,6 +23,7 @@
   "peerDependencies": {
     "@blocto/sdk": "^0.5.4",
     "aptos": "^1.3.16",
+    "msafe-wallet": "^2.1.5",
     "react": "^18.0.0"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@types/react": "^18.2.21",
     "@types/use-sync-external-store": "^0.0.3",
     "aptos": "^1.3.16",
+    "msafe-wallet": "^2.1.5",
     "tsup": "^6.7.0",
     "vitest": "^0.27.2"
   },
@@ -92,6 +94,11 @@
       "types": "./dist/connectors/rise.d.ts",
       "import": "./dist/connectors/rise.mjs",
       "default": "./dist/connectors/rise.js"
+    },
+    "./connectors/msafe": {
+      "types": "./dist/connectors/msafe.d.ts",
+      "import": "./dist/connectors/msafe.mjs",
+      "default": "./dist/connectors/msafe.js"
     }
   },
   "peerDependenciesMeta": {
@@ -99,6 +106,9 @@
       "optional": true
     },
     "@blocto/sdk": {
+      "optional": true
+    },
+    "msafe-wallet": {
       "optional": true
     }
   }
