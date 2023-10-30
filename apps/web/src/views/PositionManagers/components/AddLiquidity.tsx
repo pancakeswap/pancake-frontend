@@ -418,8 +418,6 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
     [amountA, amountB, disabled, approvalStateToken0, approvalStateToken1],
   )
 
-  console.log('learnMoreAboutUrl', learnMoreAboutUrl)
-
   return (
     <>
       {showAmountButtonA && (
