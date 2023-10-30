@@ -51,6 +51,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
     managerInfoUrl,
     strategyInfoUrl,
     projectVaultUrl,
+    learnMoreAboutUrl,
   } = vault
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
@@ -186,6 +187,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       userLpAmounts={info?.userLpAmounts}
       precision={info?.precision}
       totalStakedInUsd={totalStakedInUsd}
+      learnMoreAboutUrl={learnMoreAboutUrl}
     >
       {id}
     </DuoTokenVaultCard>

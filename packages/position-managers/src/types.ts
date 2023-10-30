@@ -114,6 +114,7 @@ export interface DuoTokenVault {
   strategyInfoUrl: string
   projectVaultUrl?: string
   learnMoreUrl?: string
+  learnMoreAboutUrl?: string
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

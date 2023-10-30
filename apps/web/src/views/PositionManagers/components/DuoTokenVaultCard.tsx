@@ -59,6 +59,7 @@ interface Props {
   managerInfoUrl: string
   strategyInfoUrl: string
   projectVaultUrl?: string
+  learnMoreAboutUrl?: string
   rewardPerSecond: string
   aprDataInfo: {
     info: AprDataInfo | undefined
@@ -112,6 +113,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   precision,
   managerAddress,
   totalStakedInUsd,
+  learnMoreAboutUrl,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -194,6 +196,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           isInCakeRewardDateRange={apr.isInCakeRewardDateRange}
           totalStakedInUsd={totalStakedInUsd}
           strategyInfoUrl={strategyInfoUrl}
+          learnMoreAboutUrl={learnMoreAboutUrl}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

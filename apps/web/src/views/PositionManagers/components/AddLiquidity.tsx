@@ -68,7 +68,8 @@ interface Props {
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
-  strategyInfoUrl: string
+  strategyInfoUrl?: string
+  learnMoreAboutUrl?: string
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -106,6 +107,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   precision,
   totalStakedInUsd,
   strategyInfoUrl,
+  learnMoreAboutUrl,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -360,6 +362,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                 disabled={disabled}
                 onAddLiquidity={mintThenDeposit}
                 isLoading={pendingTx}
+                learnMoreAboutUrl={learnMoreAboutUrl}
               />
             </Flex>
           </>
@@ -376,6 +379,7 @@ interface AddLiquidityButtonProps {
   disabled?: boolean
   onAddLiquidity?: () => void
   isLoading?: boolean
+  learnMoreAboutUrl?: string
 }
 
 export const AddLiquidityButton = memo(function AddLiquidityButton({
@@ -385,6 +389,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
   disabled,
   onAddLiquidity,
   isLoading,
+  learnMoreAboutUrl,
 }: AddLiquidityButtonProps) {
   const { t } = useTranslation()
 
@@ -412,6 +417,8 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
       (amountB && approvalStateToken1 !== ApprovalState.APPROVED),
     [amountA, amountB, disabled, approvalStateToken0, approvalStateToken1],
   )
+
+  console.log('learnMoreAboutUrl', learnMoreAboutUrl)
 
   return (
     <>
@@ -446,7 +453,7 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
       >
         {t('Confirm')}
       </Button>
-      <LinkExternal external margin="24.5px auto 0 auto" href="https://docs.pancakeswap.finance/">
+      <LinkExternal external margin="24.5px auto 0 auto" href={learnMoreAboutUrl}>
         {t('Learn more about the strategy')}
       </LinkExternal>
     </>

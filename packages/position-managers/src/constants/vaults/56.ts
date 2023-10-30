@@ -22,7 +22,7 @@ export const vaults: VaultConfig[] = [
     priceFromV3FarmPid: 3,
     managerInfoUrl: 'https://www.bril.finance/',
     strategyInfoUrl: 'https://docs.bril.finance/yield-iq/overview',
-    learnMoreUrl: 'https://docs.bril.finance/yield-iq/overview',
+    learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',
   },
   {
     id: 2,
@@ -41,7 +41,7 @@ export const vaults: VaultConfig[] = [
     priceFromV3FarmPid: 5,
     managerInfoUrl: 'https://www.bril.finance/',
     strategyInfoUrl: 'https://docs.bril.finance/yield-iq/overview',
-    learnMoreUrl: 'https://docs.bril.finance/yield-iq/overview',
+    learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',
   },
   {
     id: 3,
@@ -60,7 +60,7 @@ export const vaults: VaultConfig[] = [
     priceFromV3FarmPid: 1,
     managerInfoUrl: 'https://www.bril.finance/',
     strategyInfoUrl: 'https://docs.bril.finance/yield-iq/overview',
-    learnMoreUrl: 'https://docs.bril.finance/yield-iq/overview',
+    learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',
   },
   {
     id: 4,
@@ -79,7 +79,7 @@ export const vaults: VaultConfig[] = [
     priceFromV3FarmPid: 7,
     managerInfoUrl: 'https://www.bril.finance/',
     strategyInfoUrl: 'https://docs.bril.finance/yield-iq/overview',
-    learnMoreUrl: 'https://docs.bril.finance/yield-iq/overview',
+    learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',
   },
   {
     id: 5,
@@ -97,7 +97,7 @@ export const vaults: VaultConfig[] = [
     allowDepositToken1: true,
     managerInfoUrl: 'https://www.bril.finance/',
     strategyInfoUrl: 'https://docs.bril.finance/yield-iq/overview',
-    learnMoreUrl: 'https://docs.bril.finance/yield-iq/overview',
+    learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',
   },
   {
     id: 6,
@@ -115,6 +115,6 @@ export const vaults: VaultConfig[] = [
     allowDepositToken1: true,
     managerInfoUrl: 'https://www.bril.finance/',
     strategyInfoUrl: 'https://docs.bril.finance/yield-iq/overview',
-    learnMoreUrl: 'https://docs.bril.finance/yield-iq/overview',
+    learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',
   },
 ]
