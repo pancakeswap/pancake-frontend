@@ -36,9 +36,10 @@ export const usePollBlockNumber = () => {
     ['blockNumberFetcher', chainId],
     async () => {
       queryClient.setQueryData(['blockNumber', chainId], Number(blockNumber))
+      return null
     },
     {
-      enabled: Boolean(chainId),
+      enabled: false,
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
