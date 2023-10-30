@@ -15,7 +15,6 @@ import { useTranslation, languageList, Trans } from '@pancakeswap/localization'
 import { styled, useTheme } from 'styled-components'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import NoSSR from 'components/NoSSR'
 
 const StyledMenuItem = styled('div')<{ $isActive?: boolean }>`
   position: relative;
@@ -69,7 +68,7 @@ const Menu = () => {
         <Logo href="/" />
         <Flex pl={['10px', '10px', '10px', '50px']}>
           {MenuConfig.map((menu) => (
-            <Flex key={menu?.title?.toString()}>
+            <Flex key={menu.href}>
               {menu.items ? (
                 <DropdownMenu items={menu.items}>
                   <NextLink href={menu.href} passHref>
@@ -102,11 +101,9 @@ const Menu = () => {
             setLang={setLanguage}
           />
         </Box>
-        <NoSSR>
-          <Box mr="16px">
-            <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
-          </Box>
-        </NoSSR>
+        <Box mr="16px">
+          <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
+        </Box>
         {isDesktop && (
           <Link external href="https://pancakeswap.finance/">
             <Button scale="sm">{t('Launch App')}</Button>

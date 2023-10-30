@@ -1,6 +1,7 @@
 import React from 'react'
 import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
 import { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { LanguageProvider } from '@pancakeswap/localization'
@@ -91,4 +92,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default dynamic(() => Promise.resolve(MyApp), {
+  ssr: false,
+})
