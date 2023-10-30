@@ -32,6 +32,7 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@datadog/browser-logs": "^5.1.0",
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
     "@next/bundle-analyzer": "13.0.7",
@@ -90,8 +91,8 @@
     "react-datepicker": "^4.8.0",
     "react-device-detect": "^2.1.2",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
     "react-fast-marquee": "^1.6.0",
+    "react-redux": "^8.0.5",
     "react-transition-group": "^4.4.5",
     "react-window": "^1.8.7",
     "recharts": "2.1.15",
