@@ -93,6 +93,11 @@ const VideoPane = styled.div`
 
 const GRID_TEMPLATE_ROW = '1.2fr 24px 0.55fr'
 
+interface OnMouseDownType {
+  stopPropagation: () => void
+  preventDefault: () => void
+}
+
 export const GameProject = () => {
   const { t } = useTranslation()
   const { query } = useRouter()
@@ -190,7 +195,7 @@ export const GameProject = () => {
               as={Button}
               style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
               isActive
-              onMouseDown={(e) => {
+              onMouseDown={(e: OnMouseDownType) => {
                 e.stopPropagation()
                 e.preventDefault()
               }}
@@ -202,7 +207,7 @@ export const GameProject = () => {
                 height="42px"
                 as={Button}
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-                onMouseDown={(e) => {
+                onMouseDown={(e: OnMouseDownType) => {
                   e.stopPropagation()
                   e.preventDefault()
                   onPresentQuickAccessModal()
