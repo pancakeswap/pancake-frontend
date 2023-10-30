@@ -49,23 +49,23 @@ export const AprButton = memo(function YieldInfo({
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text>
-        {t('Combined APR')}:{' '}
-        <Text style={{ display: 'inline-block' }} bold>
+        {t('Combined APR')}:
+        <Text ml="3px" style={{ display: 'inline-block' }} bold>
           {`${apr.combinedApr}%`}
         </Text>
       </Text>
       <ul>
         {apr.isInCakeRewardDateRange && (
           <li>
-            {t('CAKE APR')}:{' '}
-            <Text style={{ display: 'inline-block' }} bold>
+            {t('CAKE APR')}:
+            <Text ml="3px" style={{ display: 'inline-block' }} bold>
               {`${apr.cakeYieldApr}%`}
             </Text>
           </li>
         )}
         <li>
-          {t('LP APR')}:{' '}
-          <Text style={{ display: 'inline-block' }} bold>
+          {t('LP APR')}:
+          <Text ml="3px" style={{ display: 'inline-block' }} bold>
             {apr.lpApr}%
           </Text>
         </li>
