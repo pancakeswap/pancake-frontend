@@ -49,8 +49,8 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
   )
 
   const allowance = usePermit2Allowance(
+    mmTradeInfo?.routerAddress,
     mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
-    undefined,
     isChainSupported(chainId) ? getUniversalRouterAddress(chainId) : undefined,
   )
 
