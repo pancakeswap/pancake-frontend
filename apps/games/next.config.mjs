@@ -14,6 +14,7 @@ const nextConfig = {
     '@pancakeswap/localization',
     '@pancakeswap/utils',
     '@pancakeswap/games',
+    '@pancakeswap/blog',
   ],
   compiler: {
     styledComponents: true,

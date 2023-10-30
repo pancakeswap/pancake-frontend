@@ -1,7 +1,6 @@
 import qs from 'qs'
 import { useQuery } from '@tanstack/react-query'
-import { fetchAPI } from 'views/Home/utils/api'
-import { ResponseCategoriesType } from 'views/Home/types'
+import { fetchAPI, ResponseCategoriesType } from '@pancakeswap/blog'
 
 interface UseGameCategoriesProps {
   languageOption: string

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchAPI } from 'views/Home/utils/api'
+import { fetchAPI } from '@pancakeswap/blog'
 
 interface ResponseLanguageType {
   code: string

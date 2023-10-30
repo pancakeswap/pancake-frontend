@@ -58,8 +58,8 @@ const ArrowButton = styled.div`
   cursor: pointer;
 
   &.swiper-button-disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    opacity: 0;
+    pointer-events: none;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {

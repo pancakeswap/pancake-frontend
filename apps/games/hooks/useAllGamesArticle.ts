@@ -1,8 +1,12 @@
 import qs from 'qs'
 import { useQuery } from '@tanstack/react-query'
-import { ResponseArticleType, ResponseArticleDataType } from 'views/Home/types'
-import { fetchAPI } from 'views/Home/utils/api'
-import { transformArticle, ArticleType } from 'views/Home/utils/transformArticle'
+import {
+  ResponseArticleType,
+  ResponseArticleDataType,
+  transformArticle,
+  ArticleType,
+  fetchAPI,
+} from '@pancakeswap/blog'
 
 interface UseAllGamesArticleProps {
   query: string
