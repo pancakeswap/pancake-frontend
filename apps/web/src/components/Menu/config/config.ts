@@ -30,7 +30,7 @@ export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: 
 }
 
 const addMenuItemSupported = (item, chainId) => {
-  if (!chainId || !item.supportChainIds || item?.supportChainIds?.length === 0) {
+  if (!chainId || !item.supportChainIds) {
     return item
   }
   if (item.supportChainIds?.includes(chainId)) {
