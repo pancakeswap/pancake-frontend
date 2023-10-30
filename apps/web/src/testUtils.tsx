@@ -13,8 +13,7 @@ import { SWRConfig } from 'swr'
 import { vi } from 'vitest'
 import { WagmiConfig } from 'wagmi'
 import { useHydrateAtoms } from 'jotai/utils'
-import { wagmiConfig } from 'utils/wagmi'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { wagmiConfig } from './utils/wagmi'
 
 const mockRouter: NextRouter = {
   basePath: '',
@@ -93,15 +92,8 @@ export const createSWRWrapper =
 
 export const createWagmiWrapper =
   () =>
-  ({ children }) => {
-    const queryClient = new QueryClient()
-
-    return (
-      <QueryClientProvider client={queryClient}>
-        <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
-      </QueryClientProvider>
-    )
-  }
+  ({ children }) =>
+    <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
 
 // re-export everything
 export * from '@testing-library/react'
