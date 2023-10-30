@@ -1,7 +1,7 @@
 import { useAccount } from 'wagmi'
 import { fetchPredictionData } from 'state/predictions'
 import { useInitialBlock } from 'state/block/hooks'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useConfig } from '../context/ConfigProvider'
 
@@ -13,15 +13,11 @@ const usePollPredictions = () => {
   const initialBlock = useInitialBlock()
   const { address: predictionsAddress } = useConfig()
 
-  useSWR(
-    initialBlock > 0 ? ['predictions', account, predictionsAddress] : null,
-    () => dispatch(fetchPredictionData(account)),
-    {
-      refreshInterval: POLL_TIME_IN_SECONDS * 1000,
-      refreshWhenHidden: true,
-      refreshWhenOffline: true,
-    },
-  )
+  useQuery(['predictions', account, predictionsAddress], () => dispatch(fetchPredictionData(account)), {
+    enabled: Boolean(account && initialBlock > 0),
+    refetchInterval: POLL_TIME_IN_SECONDS * 1000,
+    refetchIntervalInBackground: true,
+  })
 }
 
 export default usePollPredictions
