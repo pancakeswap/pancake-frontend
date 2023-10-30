@@ -61,6 +61,7 @@ interface Props {
   totalSupplyAmounts?: bigint
   precision?: bigint
   isInCakeRewardDateRange: boolean
+  strategyInfoUrl: string
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -96,6 +97,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   precision,
   isInCakeRewardDateRange,
   totalStakedInUsd,
+  strategyInfoUrl,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -182,6 +184,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         userLpAmounts={userLpAmounts}
         precision={precision}
         totalStakedInUsd={totalStakedInUsd}
+        strategyInfoUrl={strategyInfoUrl}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

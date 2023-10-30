@@ -193,6 +193,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           precision={precision}
           isInCakeRewardDateRange={apr.isInCakeRewardDateRange}
           totalStakedInUsd={totalStakedInUsd}
+          strategyInfoUrl={strategyInfoUrl}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

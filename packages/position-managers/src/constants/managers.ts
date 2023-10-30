@@ -17,7 +17,7 @@ export const baseManagers: { [manager in MANAGER]: BaseManager } = {
   [MANAGER.BRIL]: {
     id: MANAGER.BRIL,
     name: 'Bril Finance',
-    introLink: 'https://www.ichi.org/',
+    introLink: 'https://www.bril.finance/',
   },
 }
 

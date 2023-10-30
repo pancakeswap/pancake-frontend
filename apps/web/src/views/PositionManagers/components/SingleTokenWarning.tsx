@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Message, MessageText, Text, Link } from '@pancakeswap/uikit'
+import { memo } from 'react'
 
-export const SingleTokenWarning = () => {
+export const SingleTokenWarning: React.FC<{ strategyInfoUrl: string }> = memo(({ strategyInfoUrl }) => {
   const { t } = useTranslation()
 
   return (
@@ -19,7 +20,7 @@ export const SingleTokenWarning = () => {
           fontSize={14}
           color="secondary"
           display="inline-block !important"
-          href="https://www.ichi.org/"
+          href={strategyInfoUrl}
           style={{ textDecoration: 'underline' }}
         >
           {t('here')}
@@ -27,4 +28,4 @@ export const SingleTokenWarning = () => {
       </MessageText>
     </Message>
   )
-}
+})

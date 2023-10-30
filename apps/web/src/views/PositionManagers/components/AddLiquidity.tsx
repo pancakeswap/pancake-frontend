@@ -68,6 +68,7 @@ interface Props {
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
+  strategyInfoUrl: string
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -104,6 +105,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   totalSupplyAmounts,
   precision,
   totalStakedInUsd,
+  strategyInfoUrl,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -348,7 +350,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                 />
               </RowBetween>
             </Flex>
-            {isSingleDepositToken && <SingleTokenWarning />}
+            {isSingleDepositToken && <SingleTokenWarning strategyInfoUrl={strategyInfoUrl} />}
             <DYORWarning manager={manager} />
             <Flex mt="1.5em" flexDirection="column">
               <AddLiquidityButton
