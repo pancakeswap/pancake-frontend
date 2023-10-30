@@ -66,7 +66,7 @@
     "canvas-confetti": "^1.5.1",
     "clsx": "^1.2.1",
     "cookies-next": "^2.1.1",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "d3": "^7.8.2",
     "dayjs": "^1.11.10",
     "easymde": "^2.16.1",

@@ -3,7 +3,16 @@ import { getAddress } from 'viem'
 
 import { PoolCategory, SerializedPool } from '../../types'
 
-export const livePools: SerializedPool[] = [
+export const livePools: SerializedPool[] = []
+// .map((p) => ({
+//   ...p,
+//   contractAddress: getAddress(p.contractAddress),
+//   stakingToken: p.stakingToken.serialize,
+//   earningToken: p.earningToken.serialize,
+// }))
+
+// known finished pools
+export const finishedPools: SerializedPool[] = [
   {
     sousId: 9,
     stakingToken: ethereumTokens.cake,
@@ -12,15 +21,6 @@ export const livePools: SerializedPool[] = [
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.0006045',
   },
-].map((p) => ({
-  ...p,
-  contractAddress: getAddress(p.contractAddress),
-  stakingToken: p.stakingToken.serialize,
-  earningToken: p.earningToken.serialize,
-}))
-
-// known finished pools
-export const finishedPools: SerializedPool[] = [
   {
     sousId: 8,
     stakingToken: ethereumTokens.cake,

@@ -1,7 +1,7 @@
-import useSWR from 'swr'
 import { useAccount } from 'wagmi'
 import { getCookie, deleteCookie } from 'cookies-next'
 import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
+import { useQuery } from '@tanstack/react-query'
 
 export interface FeeType {
   affiliateAddress: string
@@ -77,31 +77,37 @@ const useAuthAffiliate = (): AffiliateInfoType => {
   const { address } = useAccount()
   const cookie = getCookie(AFFILIATE_SID)
 
-  const { data, mutate } = useSWR(address && cookie !== '' && ['/auth-affiliate', address, cookie], async () => {
-    try {
-      const response = await fetch(`/api/affiliates-program/affiliate-info`)
-      const result: AffiliateInfoResponse = await response.json()
-      if (result.status === 'error') {
-        deleteCookie(AFFILIATE_SID, { sameSite: true })
-      }
+  const { data, refetch } = useQuery(
+    ['affiliates-program', 'auth-affiliate', address],
+    async () => {
+      try {
+        const response = await fetch(`/api/affiliates-program/affiliate-info`)
+        const result: AffiliateInfoResponse = await response.json()
+        if (result.status === 'error') {
+          deleteCookie(AFFILIATE_SID, { sameSite: true })
+        }
 
-      return {
-        isAffiliate: result.status === 'success',
-        affiliate: result.affiliate,
+        return {
+          isAffiliate: result.status === 'success',
+          affiliate: result.affiliate,
+        }
+      } catch (error) {
+        console.error(`Fetch Affiliate Exist Error: ${error}`)
+        return {
+          isAffiliate: false,
+          affiliate: initAffiliateData,
+        }
       }
-    } catch (error) {
-      console.error(`Fetch Affiliate Exist Error: ${error}`)
-      return {
-        isAffiliate: false,
-        affiliate: initAffiliateData,
-      }
-    }
-  })
+    },
+    {
+      enabled: Boolean(address && cookie !== ''),
+    },
+  )
 
   return {
     isAffiliate: (data?.isAffiliate && !!address) ?? false,
     affiliate: data?.affiliate ?? initAffiliateData,
-    refresh: mutate,
+    refresh: refetch,
   }
 }
 

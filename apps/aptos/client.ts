@@ -48,5 +48,5 @@ export const client = createClient({
 
     return new AptosClient(defaultChain.nodeUrls.default)
   },
-  autoConnect: true,
+  autoConnect: false,
 })

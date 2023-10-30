@@ -82,9 +82,9 @@ const TeamRanksWithParticipants: React.FC<React.PropsWithChildren<TeamRanksWithP
   const participants = useGetParticipants(participantSubgraphAddress)
 
   const isTeamLeaderboardDataComplete = Boolean(
-    team1LeaderboardInformation.leaderboardData &&
-      team2LeaderboardInformation.leaderboardData &&
-      team3LeaderboardInformation.leaderboardData,
+    team1LeaderboardInformation?.leaderboardData &&
+      team2LeaderboardInformation?.leaderboardData &&
+      team3LeaderboardInformation?.leaderboardData,
   )
 
   const isGlobalLeaderboardDataComplete = Boolean(isTeamLeaderboardDataComplete && globalLeaderboardInformation)
@@ -93,9 +93,9 @@ const TeamRanksWithParticipants: React.FC<React.PropsWithChildren<TeamRanksWithP
     return orderBy(arrayOfTeams, (team) => team.leaderboardData.volume, 'desc')
   }
 
-  const teamsSortedByVolume =
-    isTeamLeaderboardDataComplete &&
-    getTeamsSortedByVolume([team1LeaderboardInformation, team2LeaderboardInformation, team3LeaderboardInformation])
+  const teamsSortedByVolume = isTeamLeaderboardDataComplete
+    ? getTeamsSortedByVolume([team1LeaderboardInformation, team2LeaderboardInformation, team3LeaderboardInformation])
+    : undefined
 
   return (
     <Wrapper>

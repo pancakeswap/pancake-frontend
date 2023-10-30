@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const userRegenerateSignature = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!process.env.AFFILIATE_PROGRAM_API_URL || req.method !== 'POST') {
-    return res.status(400).json({ message: 'API URL Empty / Method wrong / Cookie not exist' })
+    return res.status(400).json({ message: 'API URL Empty / Method wrong' })
   }
 
   const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/user/fee/claim/regenerate-signature`

@@ -15,6 +15,7 @@ import { Fragment } from 'react'
 import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
 import { WrongNetworkModal } from 'components/WrongNetworkModal'
+import useEagerConnect from 'hooks/useEagerConnect'
 
 // This config is required for number formatting
 BigNumber.config({
@@ -37,6 +38,7 @@ function Updaters() {
 }
 
 function GlobalHooks() {
+  useEagerConnect()
   return null
 }
 

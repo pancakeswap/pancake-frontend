@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Box, LinkExternal, Placement, Text, TooltipText, WarningIcon, useTooltip } from "@pancakeswap/uikit";
+import { Box, InfoFilledIcon, LinkExternal, Placement, Text, TooltipText, useTooltip } from "@pancakeswap/uikit";
 import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 
@@ -57,7 +57,7 @@ const MerklNotice: React.FC<MerklNoticeProps> = ({
     <>
       <TooltipText ref={targetRef} display="inline">
         <Text lineHeight={0}>
-          <WarningIcon color="warning" width={size} height={size} />
+          <InfoFilledIcon color="#6532CD" width={size} height={size} />
         </Text>
       </TooltipText>
       {tooltipVisible ? tooltip : null}

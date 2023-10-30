@@ -789,7 +789,7 @@
   "Community Farm Auction": "社区农场竞拍",
   "Each week, qualifying projects can bid CAKE for the right to host a 10-day Farm on PancakeSwap.": "每周，符合条件的项目可以使用 CAKE 来竞标举办为期 10 天的 PancakeSwap 农场的权利。",
   "Apply for a Farm/Pool": "申请农场/糖浆池",
-  "Community Auctions": "社区拍卖",
+  "Community Auctions": "社区农场竞拍",
   "FAQs": "常见问题解答",
   "Auction duration": "拍卖时长",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "输出为估值。如果价格变化超过 %slippage%%，您的交易将被撤回。",
@@ -2791,5 +2791,9 @@
   "Earn rewards hassle-free with single-sided staking": "Earn rewards hassle-free with single-sided staking",
   "Unstaking from v2 farm?": "Unstaking from v2 farm?",
   "Migrate to v3 here": "Migrate to v3 here",
-  "Migrate to V3": "迁移到 V3"
+  "Migrate to V3": "迁移到 V3",
+  "Incentives have moved to": "Incentives have moved to",
+  "Merkl": "Merkl",
+  "and are now claimable without staking your LP token.": "and are now claimable without staking your LP token.",
+  "Continue seeding your liquidity on PancakeSwap to accrue the rewards!": "Continue seeding your liquidity on PancakeSwap to accrue the rewards!"
 }

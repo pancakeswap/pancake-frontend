@@ -9,7 +9,7 @@ import {
   LinkExternal,
   Message,
   MessageText,
-  InfoFilledIcon,
+  VerifiedIcon,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -179,8 +179,8 @@ const MerklWarning: React.FC<{
 }> = ({ merklLink }) => {
   return (
     <StyleMerklWarning>
-      <Message variant="warning" icon={<InfoFilledIcon color="#D67E0A" />}>
-        <MessageText>
+      <Message variant="primary" icon={<VerifiedIcon color="#7645D9" />}>
+        <MessageText color="#7645D9">
           <MerklNotice.Content merklLink={merklLink} linkColor="currentColor" />
         </MessageText>
       </Message>

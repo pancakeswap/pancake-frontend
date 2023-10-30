@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, Price, Token, ZERO, Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
-import { FeeAmount, FeeCalculator, Tick, TickMath, sqrtRatioX96ToPrice } from "@pancakeswap/v3-sdk";
+import { FeeAmount, FeeCalculator, TickMath, sqrtRatioX96ToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
@@ -55,9 +55,9 @@ export type RoiCalculatorProps = {
       time: Date;
       value: number;
     }[];
-    maxPrice: number;
-    minPrice: number;
-    averagePrice: number;
+    maxPrice?: number;
+    minPrice?: number;
+    averagePrice?: number;
   };
   ticks?: TickData[];
   price?: Price<Token, Token>;
@@ -170,17 +170,6 @@ export function RoiCalculator({
 
     return currencyA.wrapped.sortsBefore(currencyB.wrapped) ? accuratePrice : accuratePrice.invert();
   }, [sqrtRatioX96, currencyA, currencyB]);
-  const ticks = useMemo(
-    () =>
-      ticksRaw?.map(
-        ({ tick, liquidityNet }) => new Tick({ index: parseInt(tick), liquidityNet, liquidityGross: liquidityNet })
-      ),
-    [ticksRaw]
-  );
-  const mostActiveLiquidity = useMemo(
-    () => ticks && sqrtRatioX96 && FeeCalculator.getLiquidityFromSqrtRatioX96(ticks, sqrtRatioX96),
-    [ticks, sqrtRatioX96]
-  );
 
   const priceRange = usePriceRange({
     feeAmount,
@@ -287,7 +276,7 @@ export function RoiCalculator({
       tickUpper: priceRange?.tickUpper,
       volume24H,
       sqrtRatioX96,
-      mostActiveLiquidity,
+      mostActiveLiquidity: liquidity,
       fee: feeAmount,
       protocolFee,
       compoundEvery: compoundingIndexToFrequency[compoundIndex],
