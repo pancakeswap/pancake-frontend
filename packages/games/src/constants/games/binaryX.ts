@@ -8,14 +8,14 @@ export const binaryX: GameType = {
   description:
     'BinaryX aims to introduce high quality games to Web3 and the metaverse. We develop our own games such as CyberChess and CyberLand. We are constantly re-assessing and optimising the tokenomic models of our games to provide a good gaming experience for our users.',
   publishDate: 1698044972,
-  headerImage: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+  headerImage: '/images/game/binaryx/header.jpg',
   projectLogo: {
-    lightTheme: 'https://www.binaryx.pro/_next/static/media/logo.88362623.svg',
-    darkTheme: 'https://www.binaryx.pro/_next/static/media/logo.88362623.svg',
+    lightTheme: '/images/game/binaryx/project-logo-light-theme.png',
+    darkTheme: '/images/game/binaryx/project-logo-dark-theme.png',
   },
   projectCircleLogo: {
-    lightTheme: 'https://pbs.twimg.com/profile_images/1610142710194925569/RqJfmXQV_400x400.jpg',
-    darkTheme: 'https://pbs.twimg.com/profile_images/1610142710194925569/RqJfmXQV_400x400.jpg',
+    lightTheme: '/images/game/binaryx/project-circle.png',
+    darkTheme: '/images/game/binaryx/project-circle.png',
   },
   gameLink: 'https://play.cryptomayor.xyz/pancake/index.html',
   posters: {
@@ -23,64 +23,27 @@ export const binaryX: GameType = {
     items: [
       {
         type: PostersItemDataType.Image,
-        image:
-          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2Fc0324b41-1a5c-4b22-988d-6b0f4db8b1581271817841257595350.jpg&w=3840&q=75',
+        image: '/images/game/binaryx/posters-1.jpg',
       },
       {
         type: PostersItemDataType.Image,
-        image:
-          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F6d97436c-3240-474d-960b-61204517a4e84162343369575143256.jpg&w=3840&q=75',
+        image: '/images/game/binaryx/posters-2.jpg',
       },
       {
         type: PostersItemDataType.Image,
-        image:
-          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F9823828c-2168-4bfb-97fe-0e430663931c2391024833674775783.png&w=3840&q=75',
+        image: '/images/game/binaryx/posters-3.jpg',
       },
       {
         type: PostersItemDataType.Image,
-        image:
-          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F528f2c74-e981-412e-a7a8-63117969a420987032063527451128.png&w=3840&q=75',
+        image: '/images/game/binaryx/posters-4.jpg',
       },
       {
         type: PostersItemDataType.Image,
-        image:
-          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2Fc0324b41-1a5c-4b22-988d-6b0f4db8b1581271817841257595350.jpg&w=3840&q=75?time=1233',
-      },
-      {
-        type: PostersItemDataType.Image,
-        image:
-          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F6d97436c-3240-474d-960b-61204517a4e84162343369575143256.jpg&w=3840&q=75?time=12565',
-      },
-      {
-        type: PostersItemDataType.Image,
-        image:
-          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F9823828c-2168-4bfb-97fe-0e430663931c2391024833674775783.png&w=3840&q=75?time=1233223',
-      },
-      {
-        type: PostersItemDataType.Image,
-        image:
-          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F528f2c74-e981-412e-a7a8-63117969a420987032063527451128.png&w=3840&q=75?time=1233123123',
+        image: '/images/game/binaryx/posters-5.jpg',
       },
     ],
   },
-  playlist: [
-    // {
-    //   videoId: '--UcFQ64sjY',
-    //   title: 'Pancake Protectors is here! Discover the power of CAKE and perks for Pancake Squads and Bunnies',
-    // },
-    // {
-    //   videoId: '-KViZLhrVE4',
-    //   title: 'Pancake Protectors 2 Minute Guide For BEGINNERS | EP 4 Using CAKE in the game',
-    // },
-    // {
-    //   videoId: '0L8bPhzT-xU',
-    //   title: 'Pancake Protectors is here! Discover the power of CAKE and perks for Pancake Squads and Bunnies',
-    // },
-    // {
-    //   videoId: '3gbxF8-eBAg',
-    //   title: 'Pancake Protectors Explained in 2 Minutes For BEGINNERS | EP 1: From Connection to Conquest',
-    // },
-  ],
+  playlist: [],
   socialMedia: {
     telegram: 'https://t.me/binaryxGlobal',
     discord: 'https://discord.com/invite/binaryx',

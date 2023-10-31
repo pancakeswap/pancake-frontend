@@ -25,6 +25,7 @@ const StyledCircleLogo = styled(Box)<{ imgUrl: string }>`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   background-image: ${({ imgUrl }) => `url(${imgUrl})`};
 `
 

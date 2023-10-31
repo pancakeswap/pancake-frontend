@@ -43,7 +43,7 @@ const StyledIframe = styled.iframe`
   min-height: 500px;
 `
 
-const Gutter = styled.div<{ isPaneOpen?: boolean }>`
+const Gutter = styled.div<{ isPaneOpen?: boolean; hasPlayList?: boolean }>`
   position: relative;
   width: 100%;
   background: ${({ theme }) => theme.card.background};
@@ -51,6 +51,7 @@ const Gutter = styled.div<{ isPaneOpen?: boolean }>`
   height: 24px;
 
   &:before {
+    display: ${({ hasPlayList }) => (hasPlayList ? 'block' : 'none')};
     background-color: ${({ theme }) => theme.colors.textSubtle};
     border-radius: 8px;
     content: '';
@@ -142,32 +143,36 @@ export const GameProject = () => {
   }, [gutterRef, isPaneOpen])
 
   const openPane = () => {
-    if (splitWrapperRef?.current) {
-      splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
-      splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
+    if (hasPlayList) {
+      if (splitWrapperRef?.current) {
+        splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
+        splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
 
-      // Purely comedic: We only want to animate if we are clicking the open chart button
-      // If we keep the transition on the resizing becomes very choppy
-      delay(() => {
-        if (splitWrapperRef?.current) {
-          splitWrapperRef.current.style.transition = ''
-        }
-      }, 150)
+        // Purely comedic: We only want to animate if we are clicking the open chart button
+        // If we keep the transition on the resizing becomes very choppy
+        delay(() => {
+          if (splitWrapperRef?.current) {
+            splitWrapperRef.current.style.transition = ''
+          }
+        }, 150)
 
-      setIsPaneOpen(true)
-    }
-
-    delay(() => {
-      if (iframeRef?.current) {
-        iframeRef.current.style.left = '0'
+        setIsPaneOpen(true)
       }
-    }, 425)
+
+      delay(() => {
+        if (iframeRef?.current) {
+          iframeRef.current.style.left = '0'
+        }
+      }, 425)
+    }
   }
 
   const gameUrl = useMemo(() => {
     const defaultUrl = gameData?.gameLink
     return query?.gameSearch ? `${defaultUrl}${query?.gameSearch}` : defaultUrl
   }, [gameData, query])
+
+  const hasPlayList = useMemo(() => Number(gameData?.playlist?.length) > 0, [gameData])
 
   if (!gameData) {
     return null
@@ -181,20 +186,24 @@ export const GameProject = () => {
             {t(`Your browser doesn't support iframe`)}
           </StyledIframe>
         </StyledContainer>
-        <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} onClick={() => openPane()}>
+        <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} hasPlayList={hasPlayList} onClick={() => openPane()}>
           <ExpandButtonGroup>
-            <TabToggle
-              height="42px"
-              as={Button}
-              style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-              isActive
-              onMouseDown={(e: OnMouseDownType) => {
-                e.stopPropagation()
-                e.preventDefault()
-              }}
-            >
-              {t('Learn More')}
-            </TabToggle>
+            {hasPlayList && (
+              <>
+                <TabToggle
+                  height="42px"
+                  as={Button}
+                  style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
+                  isActive
+                  onMouseDown={(e: OnMouseDownType) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                  }}
+                >
+                  {t('Learn More')}
+                </TabToggle>
+              </>
+            )}
             {!isDesktop && (
               <TabToggle
                 height="42px"
