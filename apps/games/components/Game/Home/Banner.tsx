@@ -34,7 +34,7 @@ export const Banner = () => {
           {t('Play, Build and Connect on PancakeSwap')}
         </Text>
         <Flex mt="16px">
-          <StyledLinkExternal href="1231" showExternalIcon={false}>
+          <StyledLinkExternal href="https://t.me/ChefMochi" showExternalIcon={false}>
             <Text bold color="primary">
               {t('Start Building')}
             </Text>
