@@ -41,6 +41,26 @@ export const binaryX: GameType = {
         image:
           'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F528f2c74-e981-412e-a7a8-63117969a420987032063527451128.png&w=3840&q=75',
       },
+      {
+        type: PostersItemDataType.Image,
+        image:
+          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2Fc0324b41-1a5c-4b22-988d-6b0f4db8b1581271817841257595350.jpg&w=3840&q=75',
+      },
+      {
+        type: PostersItemDataType.Image,
+        image:
+          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F6d97436c-3240-474d-960b-61204517a4e84162343369575143256.jpg&w=3840&q=75',
+      },
+      {
+        type: PostersItemDataType.Image,
+        image:
+          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F9823828c-2168-4bfb-97fe-0e430663931c2391024833674775783.png&w=3840&q=75',
+      },
+      {
+        type: PostersItemDataType.Image,
+        image:
+          'https://www.binaryx.pro/_next/image?url=https%3A%2F%2Fs3.ap-northeast-1.amazonaws.com%2Fbinaryx-game%2Fbinaryx-web-dev%2F528f2c74-e981-412e-a7a8-63117969a420987032063527451128.png&w=3840&q=75',
+      },
     ],
   },
   playlist: [
