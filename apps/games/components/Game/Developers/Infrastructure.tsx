@@ -26,7 +26,6 @@ const StyledList = styled(Flex)`
 
 const StyledCard = styled(Card)`
   max-width: 282px;
-  align-self: flex-start;
   margin: 0 0 16px 0;
 
   ${StyledList} {
@@ -102,11 +101,11 @@ const InfrastructureList = [
     desc: <Trans>Ensuring maximum protection for your games</Trans>,
   },
   {
-    title: <Trans>Consistent 99.99% Uptime</Trans>,
+    title: <Trans>Consistent Uptime</Trans>,
     desc: <Trans>Reliable Service for your uninterrupted operations</Trans>,
   },
   {
-    title: <Trans>Access Top-Tier Industry Talent and Expertise</Trans>,
+    title: <Trans>Access Top-Tier Industry and Expertise</Trans>,
     desc: <Trans>Guidance from the leading DEX in the industry</Trans>,
   },
   {
