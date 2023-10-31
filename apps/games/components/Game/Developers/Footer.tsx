@@ -1,6 +1,6 @@
 import { keyframes, styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, useMatchBreakpoints, Button } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useMatchBreakpoints, Button, Link } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import SunburstSvg from 'components/Game/Developers/SunburstSvg'
 import ctaPancakeBig from 'components/Game/Developers/images/cta-pancake-big.png'
@@ -141,7 +141,9 @@ export const Footer = () => {
         <Text mb="24px" fontWeight={600} color="#F4EEFF" textAlign="center" fontSize={isMobile ? 32 : 40}>
           {t('Build Games with PancakeSwap Now')}
         </Text>
-        <Button mt="24px">{t('Start Building')}</Button>
+        <Link external href="https://t.me/ChefMochi">
+          <Button mt="24px">{t('Start Building')}</Button>
+        </Link>
       </Wrapper>
     </StyledContainer>
   )

@@ -103,10 +103,10 @@ export const Banner = () => {
             {t('Design Games to Captivate 1.5 Million Potential Players')}
           </Text>
           <Flex alignSelf={['flex-start', 'flex-start', 'flex-start', 'auto']}>
-            <NextLinkFromReactRouter to="/swap?showTradingReward=true">
+            <Link external href="https://t.me/ChefMochi">
               <Button>{t('Start Building')}</Button>
-            </NextLinkFromReactRouter>
-            <Link href="#howToEarn">
+            </Link>
+            <Link external href="https://t.me/ChefMochi">
               <Button ml="12px" variant="secondary">
                 {`${t('Learn More')}`}
               </Button>
