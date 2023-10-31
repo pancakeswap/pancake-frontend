@@ -1,5 +1,4 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
-import { log } from 'next-axiom'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getViemClients } from 'utils/viem'
@@ -29,8 +28,9 @@ const fetchWithLogging = async (url: RequestInfo | URL, init?: RequestInit) => {
   const end = Date.now()
   if (urlString && size) {
     if (!urlString.includes('vercel-vitals.axiom.co')) {
-      if (process.env.NODE_ENV !== 'production') {
-        log.info('QuoteRPC', {
+      if (process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.log('QuoteRPC', {
           url: urlString,
           size,
           time: end - start,
