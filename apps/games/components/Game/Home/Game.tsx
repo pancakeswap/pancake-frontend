@@ -100,7 +100,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
 
   return (
     <StyledGameContainer isHorizontal={isHorizontal}>
-      {isLatest && isDesktop && (
+      {isLatest && isDesktop && game.id === 'pancake-protectors' && (
         <Flex flexDirection="column" mb="32px">
           <Box margin="auto">
             <Image width={59} height={64} alt="flagship-game" src="/images/game/home/flagship-game.png" />
