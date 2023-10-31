@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import uniqueId from 'lodash/uniqueId'
 import { styled } from 'styled-components'
 import { PostersItemDataType, PostersItemData } from '@pancakeswap/games'
 import { Flex, Box, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit'
@@ -131,7 +132,8 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
   carouselData,
   setCarouselId,
 }) => {
-  const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
+  const [prevClass] = useState(() => uniqueId('prev-'))
+  const [nextClass] = useState(() => uniqueId('next-'))
 
   const handleRealIndexChange = useCallback(
     (swiperInstance: SwiperClass) => {
@@ -143,14 +145,12 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
   return (
     <StyledSwiperContainer isHorizontal={isHorizontal}>
       <Swiper
-        slidesPerView={2}
         spaceBetween={10}
         modules={[Navigation]}
-        onSwiper={setSwiper}
         onRealIndexChange={handleRealIndexChange}
         navigation={{
-          prevEl: '.prev',
-          nextEl: '.next',
+          prevEl: `.${prevClass}`,
+          nextEl: `.${nextClass}`,
         }}
         breakpoints={{
           370: {
@@ -174,8 +174,8 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
         ))}
       </Swiper>
       <StyledSwiperNavigation justifyContent="space-between" mt="10px">
-        <ChevronLeftIcon className="prev" color="white" width={24} height={24} />
-        <ChevronRightIcon className="next" color="white" width={24} height={24} />
+        <ChevronLeftIcon className={prevClass} color="white" width={24} height={24} />
+        <ChevronRightIcon className={nextClass} color="white" width={24} height={24} />
       </StyledSwiperNavigation>
     </StyledSwiperContainer>
   )
