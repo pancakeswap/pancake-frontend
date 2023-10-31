@@ -183,7 +183,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                 <Flex justifyContent="space-between" mb={['32px', '32px', '32px', '32px', '32px', '24px']}>
                   <StyledTag scale="xs" isPurple style={{ alignSelf: 'center' }}>
                     <Text fontSize={14} color="white">
-                      Genera:
+                      Genre:
                     </Text>
                     <Text fontSize={14} bold ml="4px" color="white">
                       Defense
