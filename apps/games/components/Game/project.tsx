@@ -6,7 +6,6 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { Flex, Box, Button, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { TabToggle } from 'components/TabToggle'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { useTranslation } from '@pancakeswap/localization'
 import { GameType } from '@pancakeswap/games'
 import { YoutubeList } from 'components/Game/Project/YoutubeList'
@@ -15,14 +14,9 @@ import { QuickAccess } from 'components/Game/Project/QuickAccess'
 import { QuickAccessModal } from 'components/Game/Project/QuickAccessModal'
 import { useGamesConfig } from 'hooks/useGamesConfig'
 
-const StyledDesktop = styled.div<{ showPhishingBanner: boolean }>`
+const StyledDesktop = styled.div`
   display: flex;
-  height: ${({ showPhishingBanner }) =>
-    showPhishingBanner ? `calc(100vh - 100px - 84px - 50px)` : `calc(100vh - 148px)`};
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: ${({ showPhishingBanner }) => (showPhishingBanner ? `calc(100vh - 100px - 69px)` : `calc(100vh - 99px)`)};
-  }
+  height: calc(100vh - 56px);
 `
 
 const StyledContainer = styled.div`
@@ -103,7 +97,6 @@ export const GameProject = () => {
   const { query } = useRouter()
   const config = useGamesConfig()
   const { isDesktop } = useMatchBreakpoints()
-  const [showPhishingBanner] = usePhishingBanner()
 
   const gameData: GameType | undefined = useMemo(() => config.find((i) => i.id === query?.projectId), [config, query])
 
@@ -181,7 +174,7 @@ export const GameProject = () => {
   }
 
   return (
-    <StyledDesktop showPhishingBanner={showPhishingBanner}>
+    <StyledDesktop>
       <SplitWrapper ref={splitWrapperRef}>
         <StyledContainer>
           <StyledIframe ref={iframeRef} src={gameUrl}>
