@@ -46,7 +46,7 @@ const Header = styled(CardHeader)<{ imgUrl: string }>`
   border-top-right-radius: 24px;
   background-color: ${({ theme }) => theme.colors.dropdown};
   background-image: ${({ imgUrl }) => `url('${imgUrl}')`};
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     height: 112px;
   }
 `
@@ -71,6 +71,10 @@ const StyledHeaderIconImage = styled(Box)<{ imgUrl: string }>`
   background-size: contain;
   background-position: center;
   background-image: ${({ imgUrl }) => `url('${imgUrl}')`};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    top: 1.7%;
+  }
 
   ${({ theme }) => theme.mediaQueries.md} {
     top: -31px;

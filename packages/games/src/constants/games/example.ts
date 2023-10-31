@@ -8,7 +8,7 @@ export const example: GameType = {
   description:
     'Immerse yourself in the exhilarating world of Pancake Protector with this meticulously crafted collection of NFTs. Designed exclusively for the game, these NFTs bestow extraordinary attribute bonuses upon your heroes, elevating their capabilities to unmatched heights. Step into the realm of epic battles and heroic quests as you wield the power of these remarkable artefact. But that’s not all - the Exclusive Fashion NFTs unlock captivating and exclusive visual transformations, ensuring your designated heroes stand out in style. Prepare for an unforgettable adventure and unleash the full potential of these extraordinary NFTs in your quest to become a true champion of Pancake Protector!',
   publishDate: 1698044972,
-  headerImage: '/images/game/example-header.jpg',
+  headerImage: '/images/game/example-header-1.png',
   headerIconImage: {
     desktop: '/images/game/example-desktop-header-icon.png',
     mobile: '/images/game/example-mobile-header-icon.png',
