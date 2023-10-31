@@ -72,6 +72,7 @@ const ExpandButtonGroup = styled(Flex)`
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: 24px 24px 0 0;
   transform: translateX(-50%);
+  z-index: 20;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     display: inline-flex;
@@ -186,7 +187,7 @@ export const GameProject = () => {
             {t(`Your browser doesn't support iframe`)}
           </StyledIframe>
         </StyledContainer>
-        <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} hasPlayList={hasPlayList} onClick={() => openPane()}>
+        <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} hasPlayList={hasPlayList}>
           <ExpandButtonGroup>
             {hasPlayList && (
               <>
@@ -198,6 +199,7 @@ export const GameProject = () => {
                   onMouseDown={(e: OnMouseDownType) => {
                     e.stopPropagation()
                     e.preventDefault()
+                    openPane()
                   }}
                 >
                   {t('Learn More')}
@@ -219,7 +221,7 @@ export const GameProject = () => {
               </TabToggle>
             )}
           </ExpandButtonGroup>
-          {isDesktop && <QuickAccess game={gameData} />}
+          {/* {isDesktop && <QuickAccess game={gameData} />} */}
           <TextProjectBy game={gameData} />
         </Gutter>
         <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList playlist={gameData.playlist} />}</VideoPane>
