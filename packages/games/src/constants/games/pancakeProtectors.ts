@@ -23,7 +23,7 @@ export const pancakeProtectors: GameType = {
   },
   gameLink: 'https://protectors.pancakeswap.finance/',
   posters: {
-    layout: PostersLayout.Horizontal,
+    layout: PostersLayout.Vertical,
     items: [
       {
         type: PostersItemDataType.Image,
