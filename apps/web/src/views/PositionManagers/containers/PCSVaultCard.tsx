@@ -56,13 +56,16 @@ export const PCSVaultCard = memo(function PCSVaultCard({
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery(
-    ['adapterAddress', adapterAddress],
+    ['adapterAddress', adapterAddress, id],
     async () => {
       const result = await adapterContract.read.tokenPerShare()
-      return Number((result[0] * 100n) / result[1]) / 100
+      return Number((result[0] * 1000000n) / result[1]) / 1000000
     },
     {
       enabled: !!adapterContract,
+      refetchInterval: 6000,
+      staleTime: 6000,
+      cacheTime: 6000,
     },
   ).data
   const priceFromSubgraph = useTokenPriceFromSubgraph(
