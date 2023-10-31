@@ -1,10 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
 
 import { PCSDuoTokenVaultConfig, VaultConfig } from '../../types'
-import { SupportedChainId } from '../supportedChains'
-import { vaults as ethVaults } from './eth'
-import { vaults as bscVaults } from './bsc'
 import { MANAGER } from '../managers'
+import { SupportedChainId } from '../supportedChains'
+import { vaults as bscVaults } from './bsc'
+import { vaults as ethVaults } from './eth'
 
 export type VaultsConfigByChain = {
   [chainId in SupportedChainId]: VaultConfig[]

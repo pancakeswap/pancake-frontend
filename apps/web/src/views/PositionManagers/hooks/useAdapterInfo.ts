@@ -78,6 +78,7 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   const precision = PRECISION ?? BigInt(0)
   const token0Amounts = (totalSupply * tokenPerShare[0]) / precision
   const token1Amounts = (totalSupply * tokenPerShare[1]) / precision
+  if (address === '0x94482EE27465DdC74343ecBd73A169da3f53D797') console.log(managerFee, 'managerFee???')
   const managerFeePercentage = new Percent(Number((managerFee * 100n) / precision), 10000)
 
   return {
