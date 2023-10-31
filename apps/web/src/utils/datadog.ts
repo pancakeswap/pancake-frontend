@@ -30,3 +30,5 @@ export function getLogger(name: string, config?: Partial<LogsInitConfiguration>)
     },
   })
 }
+
+export const logger = getLogger('main')
