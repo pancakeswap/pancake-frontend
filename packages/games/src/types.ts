@@ -32,6 +32,10 @@ export interface GameType {
   description: string
   publishDate: number // timestamp in seconds
   headerImage: string
+  headerIconImage?: {
+    desktop: string
+    mobile: string
+  }
   projectLogo: Logo
   projectCircleLogo: Logo
   gameLink: string
