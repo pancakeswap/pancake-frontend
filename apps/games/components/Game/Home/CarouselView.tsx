@@ -34,11 +34,11 @@ const StyledImage = styled(Box)<{ imgUrl: string; isHorizontal: boolean }>`
   background-image: ${({ imgUrl }) => `url(${imgUrl})`};
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    height: ${({ isHorizontal }) => (isHorizontal ? '429px' : '641px')};
+    height: ${({ isHorizontal }) => (isHorizontal ? '362px' : '641px')};
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    height: ${({ isHorizontal }) => (isHorizontal ? '429px' : '641px')};
+    height: ${({ isHorizontal }) => (isHorizontal ? '362px' : '641px')};
   }
 `
 
