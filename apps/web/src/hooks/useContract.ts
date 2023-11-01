@@ -52,6 +52,7 @@ import {
   getRevenueSharingPoolContract,
   getAnniversaryAchievementContract,
   getFixedStakingContract,
+  getVeCakeContract,
 } from 'utils/contractHelpers'
 
 import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -465,4 +466,12 @@ export const useFixedStakingContract = () => {
   const { data: signer } = useWalletClient()
 
   return useMemo(() => getFixedStakingContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useVeCakeContract = () => {
+  const { chainId } = useActiveChainId()
+
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getVeCakeContract(signer ?? undefined, chainId), [chainId, signer])
 }

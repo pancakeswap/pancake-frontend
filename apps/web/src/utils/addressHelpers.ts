@@ -156,3 +156,7 @@ export const getAnniversaryAchievementAddress = (chainId?: number) => {
 export const getFixedStakingAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.fixedStaking, chainId)
 }
+
+export const getVeCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.veCake, chainId)
+}

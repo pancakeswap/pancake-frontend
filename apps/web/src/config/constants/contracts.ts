@@ -261,4 +261,7 @@ export default {
     [ChainId.BSC]: '0xC0E92c9B437734a0c0e0466F76cDf71c5478b0AB',
     [ChainId.BSC_TESTNET]: '0x',
   },
+  veCake: {
+    [ChainId.BSC_TESTNET]: '0xD512FDe5b20B136Ffd8E0087194BEf8537dc88AE',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
