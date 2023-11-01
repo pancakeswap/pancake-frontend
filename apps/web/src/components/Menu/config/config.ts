@@ -19,6 +19,7 @@ import {
   FIXED_STAKING_SUPPORTED_CHAINS,
   LIQUID_STAKING_SUPPORTED_CHAINS,
   SUPPORT_BUY_CRYPTO,
+  SUPPORT_CAKE_STAKING,
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
 } from 'config/constants/supportChains'
@@ -130,6 +131,12 @@ const config: (
           label: t('Simple Staking'),
           href: '/simple-staking',
           supportChainIds: FIXED_STAKING_SUPPORTED_CHAINS,
+        },
+        {
+          label: t('CAKE Staking'),
+          href: '/cake-staking',
+          supportChainIds: SUPPORT_CAKE_STAKING,
+          status: { text: t('New'), color: 'success' },
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
