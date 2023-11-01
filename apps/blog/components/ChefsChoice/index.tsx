@@ -6,10 +6,10 @@ import BlogCard from 'components/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay } from 'swiper/modules'
 import ArticleView from 'components/Article/ArticleView'
-import useSWR from 'swr'
 import { ArticleDataType } from 'utils/transformArticle'
 import 'swiper/css/bundle'
 import dynamic from 'next/dynamic'
+import { useQuery } from '@tanstack/react-query'
 
 const StyledChefsChoiceContainer = styled(Flex)`
   margin: 61px auto 48px auto;
@@ -21,7 +21,7 @@ const StyledChefsChoiceContainer = styled(Flex)`
 
 const ChefsChoice = () => {
   const { t } = useTranslation()
-  const { data: articlesData } = useSWR<ArticleDataType[]>('/chefChoiceArticle')
+  const { data: articlesData } = useQuery<ArticleDataType[]>(['/chefChoiceArticle'], { enabled: false })
 
   return (
     <StyledChefsChoiceContainer justifyContent="center">

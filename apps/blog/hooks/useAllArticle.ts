@@ -1,7 +1,7 @@
 import qs from 'qs'
-import useSWR from 'swr'
 import { ResponseArticleType, ResponseArticleDataType } from 'types'
 import { transformArticle, ArticleType } from 'utils/transformArticle'
+import { useQuery } from '@tanstack/react-query'
 
 interface UseAllArticleProps {
   query: string
@@ -23,7 +23,7 @@ const useAllArticle = ({
   languageOption,
   selectedCategories,
 }: UseAllArticleProps): AllArticleType => {
-  const { data: articlesData, isLoading } = useSWR(
+  const { data: articlesData, isLoading } = useQuery(
     ['/articles', query, currentPage, selectedCategories, sortBy, languageOption],
     async () => {
       try {
@@ -67,10 +67,9 @@ const useAllArticle = ({
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   )
 

@@ -6,14 +6,14 @@ import { Autoplay } from 'swiper/modules'
 import ArticleView from 'components/Article/ArticleView'
 import NextLink from 'next/link'
 import MoreButton from 'components/MoreButton'
-import useSWR from 'swr'
 import { ArticleDataType } from 'utils/transformArticle'
 import 'swiper/css/bundle'
 import dynamic from 'next/dynamic'
+import { useQuery } from '@tanstack/react-query'
 
 const SimilarArticles = () => {
   const { t } = useTranslation()
-  const { data: similarArticles } = useSWR<ArticleDataType[]>('/similarArticles')
+  const { data: similarArticles } = useQuery<ArticleDataType[]>(['/similarArticles'], { enabled: false })
 
   return (
     <Flex maxWidth="100%" m="50px auto" flexDirection="column">

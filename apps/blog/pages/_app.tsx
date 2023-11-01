@@ -3,6 +3,7 @@ import { AppProps } from 'next/app'
 import Script from 'next/script'
 import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { LanguageProvider } from '@pancakeswap/localization'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import Head from 'next/head'
@@ -14,6 +15,9 @@ declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
   export interface DefaultTheme extends PancakeTheme {}
 }
+
+// Create a client
+const queryClient = new QueryClient()
 
 const StyledThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
   const { resolvedTheme } = useNextTheme()
@@ -59,20 +63,24 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#1FC7D4" />
       </Head>
       <DefaultSeo {...SEO} />
-      <NextThemeProvider>
-        <StyledThemeProvider>
-          <LanguageProvider>
-            <ModalProvider>
-              <ResetCSS />
-              <GlobalStyle />
-              <Menu />
-              <WrapBalancerProvider>
-                <Component {...pageProps} />
-              </WrapBalancerProvider>
-            </ModalProvider>
-          </LanguageProvider>
-        </StyledThemeProvider>
-      </NextThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <NextThemeProvider>
+            <StyledThemeProvider>
+              <LanguageProvider>
+                <ModalProvider>
+                  <ResetCSS />
+                  <GlobalStyle />
+                  <Menu />
+                  <WrapBalancerProvider>
+                    <Component {...pageProps} />
+                  </WrapBalancerProvider>
+                </ModalProvider>
+              </LanguageProvider>
+            </StyledThemeProvider>
+          </NextThemeProvider>
+        </Hydrate>
+      </QueryClientProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"
