@@ -4,11 +4,14 @@ import {
   Box,
   Button,
   Flex,
+  Grid,
   Heading,
   NextLinkFromReactRouter,
   PageHeader,
   Text,
 } from '@pancakeswap/uikit'
+import Page from 'components/Layout/Page'
+import { BenefitCard } from './components/BenefitCard'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
 
 const CakeStaking = () => {
@@ -43,7 +46,37 @@ const CakeStaking = () => {
             <NewCakeStakingCard />
           </Box>
         </Flex>
+        <Text fontSize="40px" bold color="secondary" lineHeight="110%" mt="45px" mb="48px">
+          {t('Benefits of veCAKE')}
+        </Text>
+        <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="repeat(2, 1fr)" alignItems="center" mx="auto">
+          <BenefitCard
+            type="earnCake"
+            dataText="123,456,789 CAKE"
+            onClick={() => {
+              throw Error('To be implemented')
+            }}
+          />
+          <BenefitCard
+            type="gaugesVoting"
+            dataText="153"
+            onClick={() => {
+              throw Error('To be implemented')
+            }}
+          />
+        </Grid>
       </PageHeader>
+      <Page title={t('Cake staking')}>
+        <Heading scale="xl" mb="48px">
+          {t('And So Much More...')}
+        </Heading>
+        <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="repeat(2, 1fr)" alignItems="center" mx="auto">
+          <BenefitCard type="farmBoost" dataText="123,456,789 CAKE" />
+          <BenefitCard type="snapshotVoting" dataText="153" />
+          <BenefitCard type="ifo" dataText="123,456,789 CAKE" />
+          <BenefitCard type="more" />
+        </Grid>
+      </Page>
     </>
   )
 }
