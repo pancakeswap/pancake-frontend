@@ -43,6 +43,7 @@ export const YoutubeModal: React.FC<React.PropsWithChildren<YoutubeModalProps>> 
           playerVars: {
             controls: 1,
             autoplay: 1,
+            mute: 1,
           },
         }}
       />
