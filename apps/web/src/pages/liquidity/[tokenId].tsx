@@ -79,6 +79,7 @@ import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { ChainLinkSupportChains } from 'state/info/constant'
 import { MerklSection } from 'components/Merkl/MerklSection'
 import { MerklTag } from 'components/Merkl/MerklTag'
+import { useMerklInfo } from 'hooks/useMerkl'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -479,6 +480,8 @@ export default function PoolPage() {
 
   const isOwnNFT = isStakedInMCv3 || ownsNFT
 
+  const { hasMerkl } = useMerklInfo(poolAddress)
+
   if (!isLoading && poolState === PoolState.NOT_EXISTS) {
     return (
       <NotFound>
@@ -488,7 +491,7 @@ export default function PoolPage() {
   }
 
   const farmingTips =
-    inRange && ownsNFT && hasActiveFarm && !isStakedInMCv3 ? (
+    inRange && ownsNFT && hasActiveFarm && !isStakedInMCv3 && !hasMerkl ? (
       <Message variant="primary" mb="2em">
         <Box>
           <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
@@ -791,6 +794,8 @@ export default function PoolPage() {
                 </Box>
 
                 <MerklSection
+                  outRange={!inRange}
+                  isStakedInMCv3={Boolean(isStakedInMCv3)}
                   notEnoughLiquidity={Boolean(
                     fiatValueOfLiquidity
                       ? fiatValueOfLiquidity.lessThan(

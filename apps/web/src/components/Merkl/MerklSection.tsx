@@ -8,9 +8,13 @@ import useMerkl from '../../hooks/useMerkl'
 export function MerklSection({
   poolAddress,
   notEnoughLiquidity,
+  isStakedInMCv3,
+  outRange,
 }: {
+  outRange: boolean
   poolAddress: string | null
   notEnoughLiquidity: boolean
+  isStakedInMCv3: boolean
 }) {
   const { t } = useTranslation()
 
@@ -60,25 +64,47 @@ export function MerklSection({
         {tooltipVisible && tooltip}
       </LightGreyCard>
 
-      <Message variant={notEnoughLiquidity ? 'warning' : 'primary'}>
-        <MessageText>
-          {notEnoughLiquidity
-            ? 'This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.'
-            : 'This liquidity position is currently earning rewards on Merkl.'}{' '}
-          Check details{' '}
-          <Link
-            external
-            style={{ display: 'inline-flex' }}
-            href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=PancakeSwap"
-          >
-            {t('here')}
-          </Link>{' '}
-          <br />
-          <Link external style={{ display: 'inline-flex' }} href="https://docs.angle.money/side-products/merkl">
-            {t('Learn more about Merkl')}
-          </Link>
-        </MessageText>
-      </Message>
+      {isStakedInMCv3 ? (
+        <Message variant="warning">
+          <MessageText>
+            To earn rewards on Merkl, unstake this position from PancakeSwap Farms.
+            <br />
+            <Link external style={{ display: 'inline-flex' }} href="https://docs.angle.money/side-products/merkl">
+              {t('Learn more about Merkl')}
+            </Link>
+          </MessageText>
+        </Message>
+      ) : outRange ? (
+        <Message variant="warning">
+          <MessageText>
+            This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.
+            <br />
+            <Link external style={{ display: 'inline-flex' }} href="https://docs.angle.money/side-products/merkl">
+              {t('Learn more about Merkl')}
+            </Link>
+          </MessageText>
+        </Message>
+      ) : (
+        <Message variant={notEnoughLiquidity ? 'warning' : 'primary'}>
+          <MessageText>
+            {notEnoughLiquidity
+              ? 'This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.'
+              : 'This liquidity position is currently earning rewards on Merkl.'}{' '}
+            Check details{' '}
+            <Link
+              external
+              style={{ display: 'inline-flex' }}
+              href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=PancakeSwap"
+            >
+              {t('here')}
+            </Link>{' '}
+            <br />
+            <Link external style={{ display: 'inline-flex' }} href="https://docs.angle.money/side-products/merkl">
+              {t('Learn more about Merkl')}
+            </Link>
+          </MessageText>
+        </Message>
+      )}
     </Box>
   )
 }
