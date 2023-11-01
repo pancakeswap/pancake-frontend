@@ -5,80 +5,44 @@ import { floatingStarsLeft, floatingStarsRight } from 'components/Game/Decoratio
 const StyledDecorations = styled(Box)`
   position: absolute;
   top: 0;
-  left: 50%;
+  left: 0%;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  overflow: hidden;
-  transform: translateX(-50%);
-  z-index: 2;
+  z-index: 3;
   > img {
     position: absolute;
   }
 
   & :nth-child(1) {
-    top: 40%;
-    left: 0%;
-    width: 63px;
-    height: 163px;
-    animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
+    top: -1%;
+    right: -1%;
+    animation: ${floatingStarsLeft} 2.5s ease-in-out infinite;
+  }
+
+  & :nth-child(2), & :nth-child(3) {
+    display: none;
   }
 
   & :nth-child(2) {
-    top: 35%;
-    left: 2%;
+    top: 15%;
+    left: 0%;
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
 
   & :nth-child(3) {
-    right: 0%;
-    top: 82%;
-    animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
-  }
-
-  & :nth-child(4) {
-    top: 76%;
-    right: 1%;
-    animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
-  }
-
-  & :nth-child(5) {
-    display: none;
-    right: 5%;
-    bottom: 35%;
+    top: 60%;
+    right: -1%;
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    z-index: 1;
-
     & :nth-child(1) {
-      top: 30%;
-      left: 0%;
-      width: 79px;
-      height: 207px;
-    }
-  
-    & :nth-child(2) {
-      top: 30%;
-      left: 2%;
+      top: -5%;
+      right: 2%;
     }
 
-    & :nth-child(3) {
-      top: 40%;
-      right: -2%;
-      width: 101px;
-      height: 105px;
-    }
-  
-    & :nth-child(4) {
-      top: 32%;
-      right: -1%;
-      width: 109px;
-      height: 90px;
-    }
-  
-    & :nth-child(5) {
+    & :nth-child(2), & :nth-child(3) {
       display: block;
     }
   }
@@ -87,11 +51,9 @@ const StyledDecorations = styled(Box)`
 export const Decorations = () => {
   return (
     <StyledDecorations>
-      <img src="/images/game/developers/left-1.png" width="79px" height="207px" alt="left1" />
-      <img src="/images/game/developers/star.png" width="49px" height="43px" alt="star" />
-      <img src="/images/game/developers/right-1-1.png" width="81px" height="85px" alt="right1" />
-      <img src="/images/game/developers/right-2-1.png" width="89px" height="70px" alt="right2" />
-      <img src="/images/game/developers/star.png" width="67px" height="59px" alt="star2" />
+      <img src="/images/game/developers/piezas-2.png" width="100px" height="113px" alt="piezas2" />
+      <img src="/images/game/developers/piezas-3.png" width="159px" height="199px" alt="piezas3" />
+      <img src="/images/game/developers/piezas-4.png" width="74px" height="73px" alt="piezas4" />
     </StyledDecorations>
   )
 }

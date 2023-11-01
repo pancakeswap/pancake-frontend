@@ -1,9 +1,10 @@
 import { styled } from 'styled-components'
 import { useTranslation, Trans } from '@pancakeswap/localization'
-import { Flex, Text, Heading, Card, PageSection } from '@pancakeswap/uikit'
+import { Flex, Text, Heading, Card, PageSection, Box } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import GradientLogo from 'components/Game/GradientLogoSvg'
 import { LIGHT_BG, DARK_BG } from 'components/Game/pageSectionStyles'
+import { Decorations } from 'components/Game/Developers/Decorations'
 
 const StyledContainer = styled(PageSection)`
   padding: 0px 16px 24px 16px;
@@ -117,59 +118,62 @@ const InfrastructureList = [
 export const Infrastructure = () => {
   const { t } = useTranslation()
   return (
-    <StyledContainer
-      index={2}
-      concaveDivider
-      dividerPosition="top"
-      clipFill={{ light: '#FFF', dark: '#191326' }}
-      containerProps={{ style: { marginTop: '-30px' } }}
-    >
-      <Flex pt={['0', '0', '0', '0', '24px']} alignItems="center" flexDirection="column" justifyContent="center">
-        <GradientLogo height="36px" width="36px" mb="24px" />
-        <Heading maxWidth={['745px']} textAlign="center" scale="xl" mb="32px">
-          {t('Bring Your Game to Life on PancakeSwap')}
-        </Heading>
-        <StyledGameBenefitsListContainer>
-          {GameBenefitsList.map((benefit, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <StyledList key={`benefit-${index}`}>
-              <Image width={240} height={240} src={benefit.imgUrl} alt="" />
-              <Text lineHeight="110%" mt="24px" bold fontSize={['20px']} color="secondary" mb="8px">
-                {benefit.title}
-              </Text>
-              <Text lineHeight="110%" bold fontSize={['20px']}>
-                {benefit.desc}
-              </Text>
-            </StyledList>
-          ))}
-        </StyledGameBenefitsListContainer>
-      </Flex>
-
-      <Flex
-        alignItems="center"
-        flexDirection="column"
-        justifyContent="center"
-        m={['72px 0 0 0', '72px 0 0 0', '72px 0 0 0', '120px 0 89px 0']}
+    <Box position="relative">
+      <Decorations />
+      <StyledContainer
+        index={2}
+        concaveDivider
+        dividerPosition="top"
+        clipFill={{ light: '#FFF', dark: '#191326' }}
+        containerProps={{ style: { marginTop: '-30px' } }}
       >
-        <Heading maxWidth={['745px']} textAlign="center" scale="xl" mb="32px">
-          {t('Your Complete Developer Infrastructure')}
-        </Heading>
-        <StyledGameBenefitsListContainer>
-          {InfrastructureList.map((infrastructure, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <StyledCard key={`infrastructure-${index}`}>
-              <StyledList>
-                <Text lineHeight="110%" bold fontSize={['24px']} mb="16px">
-                  {infrastructure.title}
+        <Flex pt={['0', '0', '0', '0', '24px']} alignItems="center" flexDirection="column" justifyContent="center">
+          <GradientLogo height="36px" width="36px" mb="24px" />
+          <Heading maxWidth={['745px']} textAlign="center" scale="xl" mb="32px">
+            {t('Bring Your Game to Life on PancakeSwap')}
+          </Heading>
+          <StyledGameBenefitsListContainer>
+            {GameBenefitsList.map((benefit, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <StyledList key={`benefit-${index}`}>
+                <Image width={240} height={240} src={benefit.imgUrl} alt="" />
+                <Text lineHeight="110%" mt="24px" bold fontSize={['20px']} color="secondary" mb="8px">
+                  {benefit.title}
                 </Text>
-                <Text lineHeight="120%" fontSize={['14px']} color="textSubtle">
-                  {infrastructure.desc}
+                <Text lineHeight="110%" bold fontSize={['20px']}>
+                  {benefit.desc}
                 </Text>
               </StyledList>
-            </StyledCard>
-          ))}
-        </StyledGameBenefitsListContainer>
-      </Flex>
-    </StyledContainer>
+            ))}
+          </StyledGameBenefitsListContainer>
+        </Flex>
+
+        <Flex
+          alignItems="center"
+          flexDirection="column"
+          justifyContent="center"
+          m={['72px 0 0 0', '72px 0 0 0', '72px 0 0 0', '120px 0 89px 0']}
+        >
+          <Heading maxWidth={['745px']} textAlign="center" scale="xl" mb="32px">
+            {t('Your Complete Developer Infrastructure')}
+          </Heading>
+          <StyledGameBenefitsListContainer>
+            {InfrastructureList.map((infrastructure, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <StyledCard key={`infrastructure-${index}`}>
+                <StyledList>
+                  <Text lineHeight="110%" bold fontSize={['24px']} mb="16px">
+                    {infrastructure.title}
+                  </Text>
+                  <Text lineHeight="120%" fontSize={['14px']} color="textSubtle">
+                    {infrastructure.desc}
+                  </Text>
+                </StyledList>
+              </StyledCard>
+            ))}
+          </StyledGameBenefitsListContainer>
+        </Flex>
+      </StyledContainer>
+    </Box>
   )
 }
