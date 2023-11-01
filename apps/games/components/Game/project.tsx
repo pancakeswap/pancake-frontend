@@ -1,18 +1,12 @@
 import { styled } from 'styled-components'
-import Split, { SplitInstance } from 'split-grid'
-import debounce from 'lodash/debounce'
-import delay from 'lodash/delay'
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { Flex, Box, Button, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
-import { TabToggle } from 'components/TabToggle'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { GameType } from '@pancakeswap/games'
-import { YoutubeList } from 'components/Game/Project/YoutubeList'
-import { TextProjectBy } from 'components/Game/Project/TextProjectBy'
-import { QuickAccess } from 'components/Game/Project/QuickAccess'
-import { QuickAccessModal } from 'components/Game/Project/QuickAccessModal'
 import { useGamesConfig } from 'hooks/useGamesConfig'
+import { DesktopView } from 'components/Game/Project/DesktopView'
+import { MobileView } from 'components/Game/Project/MobileView'
 
 const StyledDesktop = styled.div`
   display: flex;
@@ -30,11 +24,17 @@ const StyledContainer = styled.div`
 `
 
 const SplitWrapper = styled(Box)`
-  display: grid;
-  flex: 1;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 24px 0;
-  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: grid;
+    flex: 1;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 24px 0;
+    overflow: hidden;
+  }
 `
 
 const StyledIframe = styled.iframe`
@@ -43,136 +43,21 @@ const StyledIframe = styled.iframe`
   min-height: 500px;
 `
 
-const Gutter = styled.div<{ isPaneOpen?: boolean; hasPlayList?: boolean }>`
-  position: relative;
-  width: 100%;
-  background: ${({ theme }) => theme.card.background};
-  cursor: ${({ isPaneOpen }) => (isPaneOpen ? 'row-resize' : 'pointer')};
-  height: 24px;
-
-  &:before {
-    display: ${({ hasPlayList }) => (hasPlayList ? 'block' : 'none')};
-    background-color: ${({ theme }) => theme.colors.textSubtle};
-    border-radius: 8px;
-    content: '';
-    height: 4px;
-    left: 50%;
-    margin-left: -32px;
-    position: absolute;
-    top: 10px;
-    width: 64px;
-  }
-`
-
-const ExpandButtonGroup = styled(Flex)`
-  position: absolute;
-  left: 50%;
-  bottom: 24px;
-  z-index: 50;
-  background-color: ${({ theme }) => theme.colors.input};
-  border-radius: 24px 24px 0 0;
-  transform: translateX(-50%);
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: inline-flex;
-    left: 32px;
-    transform: translateX(0%);
-  }
-`
-
-const VideoPane = styled.div`
-  overflow: auto;
-  position: relative;
-  background: ${({ theme }) => theme.colors.background};
-`
-
-const GRID_TEMPLATE_ROW = '1.2fr 24px 0.55fr'
-
-interface OnMouseDownType {
-  stopPropagation: () => void
-  preventDefault: () => void
-}
-
 export const GameProject = () => {
   const { t } = useTranslation()
   const { query } = useRouter()
   const config = useGamesConfig()
+  const iframeRef = useRef<null | HTMLIFrameElement>(null)
   const { isDesktop } = useMatchBreakpoints()
 
   const gameData: GameType | undefined = useMemo(() => config.find((i) => i.id === query?.projectId), [config, query])
 
   const splitWrapperRef = useRef<null | HTMLDivElement>(null)
-  const videoRef = useRef<null | HTMLDivElement>(null)
-  const gutterRef = useRef<null | HTMLDivElement>(null)
-  const iframeRef = useRef<null | HTMLIFrameElement>(null)
-  const splitInstance = useRef<SplitInstance>()
-
-  const [isPaneOpen, setIsPaneOpen] = useState(false)
-  const [onPresentQuickAccessModal] = useModal(<QuickAccessModal game={gameData} />, true, true, 'quick-access-modal')
-
-  useEffect(() => {
-    const threshold = 100
-    const handleDrag = debounce(() => {
-      const videoHeight = videoRef?.current?.getBoundingClientRect?.()
-
-      // If the height of the chart pane goes below the "snapOffset" threshold mark the chart pane as closed
-      setIsPaneOpen(Number(videoHeight?.height) > threshold)
-    }, 50)
-
-    if (isPaneOpen && !splitInstance.current && gutterRef?.current) {
-      splitInstance.current = Split({
-        dragInterval: 1,
-        snapOffset: threshold,
-        onDrag: handleDrag,
-        rowGutters: [
-          {
-            track: 1,
-            element: gutterRef.current,
-          },
-        ],
-      })
-    } else if (!isPaneOpen && splitInstance.current) {
-      splitInstance.current?.destroy()
-      splitInstance.current = undefined
-    }
-
-    return () => {
-      splitInstance.current?.destroy()
-      splitInstance.current = undefined
-    }
-  }, [gutterRef, isPaneOpen])
-
-  const openPane = () => {
-    if (hasPlayList) {
-      if (splitWrapperRef?.current) {
-        splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
-        splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
-
-        // Purely comedic: We only want to animate if we are clicking the open chart button
-        // If we keep the transition on the resizing becomes very choppy
-        delay(() => {
-          if (splitWrapperRef?.current) {
-            splitWrapperRef.current.style.transition = ''
-          }
-        }, 150)
-
-        setIsPaneOpen(true)
-      }
-
-      delay(() => {
-        if (iframeRef?.current) {
-          iframeRef.current.style.left = '0'
-        }
-      }, 425)
-    }
-  }
 
   const gameUrl = useMemo(() => {
     const defaultUrl = gameData?.gameLink
     return query?.gameSearch ? `${defaultUrl}${query?.gameSearch}` : defaultUrl
   }, [gameData, query])
-
-  const hasPlayList = useMemo(() => Number(gameData?.playlist?.length) > 0, [gameData])
 
   if (!gameData) {
     return null
@@ -186,44 +71,11 @@ export const GameProject = () => {
             {t(`Your browser doesn't support iframe`)}
           </StyledIframe>
         </StyledContainer>
-        <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} hasPlayList={hasPlayList} onClick={openPane}>
-          <ExpandButtonGroup>
-            {hasPlayList && (
-              <>
-                <TabToggle
-                  height="42px"
-                  as={Button}
-                  style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-                  isActive
-                  onMouseDown={(e: OnMouseDownType) => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    openPane()
-                  }}
-                >
-                  {t('Learn More')}
-                </TabToggle>
-              </>
-            )}
-            {!isDesktop && (
-              <TabToggle
-                height="42px"
-                as={Button}
-                style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-                onMouseDown={(e: OnMouseDownType) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  onPresentQuickAccessModal()
-                }}
-              >
-                {t('Quick Access')}
-              </TabToggle>
-            )}
-          </ExpandButtonGroup>
-          {isDesktop && <QuickAccess game={gameData} />}
-          <TextProjectBy game={gameData} />
-        </Gutter>
-        <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList playlist={gameData.playlist} />}</VideoPane>
+        {isDesktop ? (
+          <DesktopView iframeRef={iframeRef} splitWrapperRef={splitWrapperRef} gameData={gameData} />
+        ) : (
+          <MobileView gameData={gameData} />
+        )}
       </SplitWrapper>
     </StyledDesktop>
   )
