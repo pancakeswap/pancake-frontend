@@ -61,6 +61,7 @@ import { affiliateProgramABI } from 'config/abi/affiliateProgram'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
 import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
+import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
@@ -247,6 +248,24 @@ export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: n
   return getContract({ abi: bCakeFarmBoosterV3ABI, address: getBCakeFarmBoosterV3Address(chainId), signer, chainId })
 }
 
+export const getPositionManagerWrapperContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: positionManagerWrapperABI,
+    address,
+    signer,
+    chainId,
+  })
+}
+
+export const getPositionManagerAdapterContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: positionManagerAdapterABI,
+    address,
+    signer,
+    chainId,
+  })
+}
+
 export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {
   return getContract({
     abi: bCakeFarmBoosterProxyFactoryABI,
@@ -348,7 +367,7 @@ export const getMasterChefV3Contract = (signer?: WalletClient, chainId?: number)
   return mcv3Address
     ? getContract({
         abi: masterChefV3ABI,
-        address: getMasterChefV3Address(chainId),
+        address: mcv3Address,
         chainId,
         signer,
       })
