@@ -790,7 +790,20 @@ export default function PoolPage() {
                   />
                 </Box>
 
-                <MerklSection poolAddress={poolAddress} />
+                <MerklSection
+                  notEnoughLiquidity={Boolean(
+                    fiatValueOfLiquidity
+                      ? fiatValueOfLiquidity.lessThan(
+                          // NOTE: if Liquidity is lessage 20$, can't participate in Merkl
+                          new Fraction(
+                            BigInt(20) * fiatValueOfLiquidity.decimalScale * fiatValueOfLiquidity.denominator,
+                            fiatValueOfLiquidity?.denominator,
+                          ),
+                        )
+                      : false,
+                  )}
+                  poolAddress={poolAddress}
+                />
               </Flex>
               {positionDetails && currency0 && currency1 && (
                 <PositionHistory

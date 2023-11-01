@@ -1,14 +1,28 @@
-import { AutoRow, Button, Text, Flex, Message, MessageText, Box, Link } from '@pancakeswap/uikit'
+import { AutoRow, Button, Text, Flex, Message, MessageText, Box, Link, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 
 import useMerkl from '../../hooks/useMerkl'
 
-export function MerklSection({ poolAddress }: { poolAddress: string | null }) {
+export function MerklSection({
+  poolAddress,
+  notEnoughLiquidity,
+}: {
+  poolAddress: string | null
+  notEnoughLiquidity: boolean
+}) {
   const { t } = useTranslation()
 
   const { claimTokenReward, isClaiming, rewardsPerToken } = useMerkl(poolAddress)
+
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(
+    t('Combined number of Merkl rewards from all the positions under this trading pair.'),
+    {
+      placement: 'top',
+      trigger: 'hover',
+    },
+  )
 
   if (!rewardsPerToken.length) return null
 
@@ -23,6 +37,7 @@ export function MerklSection({ poolAddress }: { poolAddress: string | null }) {
         </Button>
       </AutoRow>
       <LightGreyCard
+        ref={targetRef}
         mr="4px"
         style={{
           padding: '16px 8px',
@@ -42,10 +57,15 @@ export function MerklSection({ poolAddress }: { poolAddress: string | null }) {
             </Flex>
           </AutoRow>
         ))}
+        {tooltipVisible && tooltip}
       </LightGreyCard>
-      <Message variant="primary">
+
+      <Message variant={notEnoughLiquidity ? 'warning' : 'primary'}>
         <MessageText>
-          This liquidity position is currently earning rewards on Merkl. Check details{' '}
+          {notEnoughLiquidity
+            ? 'This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.'
+            : 'This liquidity position is currently earning rewards on Merkl.'}{' '}
+          Check details{' '}
           <Link
             external
             style={{ display: 'inline-flex' }}
