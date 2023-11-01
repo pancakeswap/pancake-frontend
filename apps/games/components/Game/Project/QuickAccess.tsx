@@ -55,6 +55,12 @@ export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = 
     }
   }
 
+  const handleClick = (e: any, url: string) => {
+    e.stopPropagation()
+    e.preventDefault()
+    window.open(url, '_blank', 'noopener noreferrer')
+  }
+
   return (
     <StyledQuickAccess isOpen={isOpen}>
       <Flex padding="9px 0" justifyContent="space-between" onMouseDown={toggleExpand}>
@@ -66,7 +72,7 @@ export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = 
       {isExpanded && (
         <Box>
           {LIST.map((i) => (
-            <StyledLink key={i.url} href={i.url} padding="9px 0">
+            <StyledLink key={i.url} href={i.url} padding="9px 0" onMouseDown={(e) => handleClick(e, i.url)}>
               <Text>{i.title}</Text>
             </StyledLink>
           ))}
@@ -74,12 +80,17 @@ export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = 
             {telegram || discord ? (
               <Flex padding="16px 0">
                 {telegram && (
-                  <StyledLink external href={telegram}>
+                  <StyledLink external href={telegram} onMouseDown={(e) => handleClick(e, telegram)}>
                     <TelegramIcon color="textSubtle" />
                   </StyledLink>
                 )}
                 {discord && (
-                  <StyledLink external href={discord} ml={telegram ? '16px' : '0'}>
+                  <StyledLink
+                    external
+                    href={discord}
+                    ml={telegram ? '16px' : '0'}
+                    onMouseDown={(e) => handleClick(e, discord)}
+                  >
                     <DiscordIcon color="textSubtle" />
                   </StyledLink>
                 )}

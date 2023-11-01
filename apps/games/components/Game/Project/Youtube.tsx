@@ -54,10 +54,6 @@ export const Youtube: React.FC<React.PropsWithChildren<YoutubeProps>> = ({ youtu
     [youtube],
   )
 
-  // const handleClick = (videoId: string) => {
-  //   window.open
-  // }
-
   return (
     <StyledContainer external href={`https://www.youtube.com/watch?v=${youtube.videoId}`}>
       <Header imgUrl={youtubeImage} />
