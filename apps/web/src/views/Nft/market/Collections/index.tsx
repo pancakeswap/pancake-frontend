@@ -17,9 +17,10 @@ import {
   PageHeader,
   Select,
   OptionProps,
-  NextLinkFromReactRouter,
   ToggleView,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
 import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'

@@ -19,7 +19,6 @@ import {
   Image,
   Link,
   Loading,
-  NextLinkFromReactRouter,
   OptionProps,
   PageHeader,
   SearchInput,
@@ -28,7 +27,8 @@ import {
   Toggle,
   ToggleView,
 } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
+
+import { FarmWidget, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'

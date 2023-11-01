@@ -2,18 +2,9 @@ import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCakePrice } from 'hooks/useCakePrice'
-import {
-  Box,
-  Flex,
-  Text,
-  Card,
-  LinkExternal,
-  Message,
-  MessageText,
-  WarningIcon,
-  Balance,
-  NextLinkFromReactRouter,
-} from '@pancakeswap/uikit'
+import { Box, Flex, Text, Card, LinkExternal, Message, MessageText, WarningIcon, Balance } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'

@@ -10,13 +10,14 @@ import {
   Flex,
   Heading,
   HelpIcon,
-  NextLinkFromReactRouter,
   ScanLink,
   Spinner,
   Text,
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { getChainName } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'

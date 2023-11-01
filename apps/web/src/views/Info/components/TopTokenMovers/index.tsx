@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, Flex, Text, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useEffect, useMemo, useRef } from 'react'
 import { useAllTokenDataQuery, useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'

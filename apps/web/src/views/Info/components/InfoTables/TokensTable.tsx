@@ -1,15 +1,8 @@
 import { useState, useMemo, useCallback, useEffect, Fragment } from 'react'
 import { styled } from 'styled-components'
-import {
-  Text,
-  Flex,
-  Box,
-  Skeleton,
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  useMatchBreakpoints,
-  NextLinkFromReactRouter,
-} from '@pancakeswap/uikit'
+import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useMultiChainPath, useStableSwapPath, useChainNameByQuery } from 'state/info/hooks'
 import { subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
 import { TokenData } from 'state/info/types'
