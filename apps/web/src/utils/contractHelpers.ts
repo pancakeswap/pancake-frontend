@@ -36,6 +36,7 @@ import {
   getRevenueSharingPoolAddress,
   getAnniversaryAchievementAddress,
   getFixedStakingAddress,
+  getVeCakeAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -90,6 +91,7 @@ import { getViemClients, viemClients } from 'utils/viem'
 import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
 import { fixedStakingABI } from 'config/abi/fixedStaking'
+import { veCakeABI } from 'config/abi/veCake'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -445,6 +447,15 @@ export const getFixedStakingContract = (signer?: WalletClient, chainId?: number)
   return getContract({
     abi: fixedStakingABI,
     address: getFixedStakingAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getVeCakeContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: veCakeABI,
+    address: getVeCakeAddress(chainId) ?? getVeCakeAddress(ChainId.BSC_TESTNET),
     signer,
     chainId,
   })
