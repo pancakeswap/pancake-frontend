@@ -4,7 +4,7 @@ import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 
 import { FAST_INTERVAL } from 'config/constants'
 import { getViemClients } from 'utils/viem'
@@ -32,8 +32,8 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
     return farm ?? null
   }, [chainId, currencyA, currencyB, feeAmount])
 
-  return useSWR(
-    chainId && farmConfig && [chainId, farmConfig.token0.symbol, farmConfig.token1.symbol, farmConfig.feeAmount],
+  return useQuery(
+    [chainId, farmConfig.token0.symbol, farmConfig.token1.symbol, farmConfig.feeAmount],
     async () => {
       if (!farmConfig) {
         throw new Error('Invalid farm config')
@@ -68,8 +68,9 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
       }
     },
     {
-      refreshInterval: FAST_INTERVAL * 3,
-      dedupingInterval: FAST_INTERVAL,
+      enabled: Boolean(chainId && farmConfig),
+      refetchInterval: FAST_INTERVAL * 3,
+      staleTime: FAST_INTERVAL,
     },
   )
 }
