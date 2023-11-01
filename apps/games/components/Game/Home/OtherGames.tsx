@@ -36,7 +36,9 @@ export const OtherGames: React.FC<React.PropsWithChildren<OtherGamesProps>> = ({
       <Text bold mb="32px" lineHeight="110%" textAlign="center" fontSize={['40px']}>
         {t('Explore Other Games')}
       </Text>
-      <Games otherGames={otherGames} pickedGameId={pickedGameId} setPickedGameId={setPickedGameId} />
+      {otherGames.length > 2 && (
+        <Games otherGames={otherGames} pickedGameId={pickedGameId} setPickedGameId={setPickedGameId} />
+      )}
       {pickedGame && <Game game={pickedGame} />}
     </StyledContainer>
   )
