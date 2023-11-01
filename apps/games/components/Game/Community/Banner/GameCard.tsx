@@ -67,7 +67,7 @@ export const GameCard: React.FC<React.PropsWithChildren<GameCardProps>> = ({ gam
           <Text bold fontSize={['20px']} lineHeight="22px" mb={['16px', '16px', '16px', '16px', '24px']}>
             {game.title}
           </Text>
-          <Box>
+          <Box onClick={(e) => e.stopPropagation()}>
             {discord && (
               <Flex mb="16px">
                 <Link external href={discord}>
