@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import { useMemo } from 'react'
-import { Box, CardHeader } from '@pancakeswap/uikit'
+import { Link, Box, CardHeader } from '@pancakeswap/uikit'
 import { StyledTextLineClamp } from 'components/Game/StyledTextLineClamp'
 import { PlaylistData } from '@pancakeswap/games'
 
@@ -10,6 +10,7 @@ const Header = styled(CardHeader)<{ imgUrl: string }>`
   justify-content: flex-end;
   align-items: center;
   height: 146px;
+  width: 100%;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -34,25 +35,37 @@ const Header = styled(CardHeader)<{ imgUrl: string }>`
   }
 `
 
+const StyledContainer = styled(Link)`
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 interface YoutubeProps {
   youtube: PlaylistData
-  handleClickYoutubeVideo: (videoId: string) => void
 }
 
-export const Youtube: React.FC<React.PropsWithChildren<YoutubeProps>> = ({ youtube, handleClickYoutubeVideo }) => {
+export const Youtube: React.FC<React.PropsWithChildren<YoutubeProps>> = ({ youtube }) => {
   const youtubeImage = useMemo(
     () => `https://ytimg.googleusercontent.com/vi/${youtube.videoId}/sddefault.jpg`,
     [youtube],
   )
 
+  // const handleClick = (videoId: string) => {
+  //   window.open
+  // }
+
   return (
-    <Box onClick={() => handleClickYoutubeVideo(youtube.videoId)}>
+    <StyledContainer external href={`https://www.youtube.com/watch?v=${youtube.videoId}`}>
       <Header imgUrl={youtubeImage} />
       <Box padding="20px">
         <StyledTextLineClamp bold lineClamp={3}>
           {youtube.title}
         </StyledTextLineClamp>
       </Box>
-    </Box>
+    </StyledContainer>
   )
 }

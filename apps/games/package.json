@@ -15,7 +15,6 @@
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/games": "workspace:*",
     "@pancakeswap/blog": "workspace:*",
-    "react-youtube": "^10.1.0",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
