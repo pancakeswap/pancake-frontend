@@ -1,4 +1,15 @@
-import { AutoRow, Button, Text, Flex, Message, MessageText, Box, Link, useTooltip } from '@pancakeswap/uikit'
+import {
+  AutoRow,
+  Button,
+  Text,
+  Flex,
+  Message,
+  MessageText,
+  Box,
+  Link,
+  useTooltip,
+  TooltipText,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
@@ -57,7 +68,7 @@ export function MerklSection({
               </Text>
             </Flex>
             <Flex justifyContent="center">
-              <Text small>{tokenAmount.toSignificant(6)}</Text>
+              <TooltipText small>{tokenAmount.toSignificant(6)}</TooltipText>
             </Flex>
           </AutoRow>
         ))}
