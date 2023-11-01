@@ -41,7 +41,7 @@ export const useFetchApr = (): AprData => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            avgFeeCalculationDays: '7',
+            avgFeeCalculationDays: '1',
           }),
         })
 

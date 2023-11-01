@@ -81,7 +81,10 @@ export const VaultInfo = memo(function VaultInfo({
       )}
       <RowBetween>
         <InfoText>{t('Total staked')}:</InfoText>
-        <InfoText>{`$${totalStakedInUsd.toFixed(2)}`}</InfoText>
+        <InfoText>{`$${totalStakedInUsd.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`}</InfoText>
       </RowBetween>
       {isInCakeRewardDateRange && (
         <RowBetween>
