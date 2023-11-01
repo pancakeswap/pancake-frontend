@@ -24,15 +24,15 @@ export const StyledLink = styled(Link)`
 const LIST = [
   {
     title: <Trans>NFT marketplace</Trans>,
-    url: '/nfts',
+    url: 'https://pancakeswap.finance/nfts',
   },
   {
     title: <Trans>Buy Squad / Bunnies</Trans>,
-    url: '/nfts/collections/0x0a8901b0E25DEb55A87524f0cC164E9644020EBA',
+    url: 'https://pancakeswap.finance/nfts/collections/0x0a8901b0E25DEb55A87524f0cC164E9644020EBA',
   },
   {
     title: <Trans>Swap Token</Trans>,
-    url: '/swap',
+    url: 'https://pancakeswap.finance/swap',
   },
 ]
 
