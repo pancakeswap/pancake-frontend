@@ -1722,7 +1722,7 @@ importers:
         version: 4.1.0(rollup@2.78.0)
       '@rollup/plugin-typescript':
         specifier: ^8.2.1
-        version: 8.3.1(rollup@2.78.0)(tslib@2.4.0)(typescript@5.1.3)
+        version: 8.3.1(rollup@2.78.0)(tslib@2.4.0)(typescript@4.9.5)
       '@rollup/plugin-url':
         specifier: ^6.0.0
         version: 6.1.0(rollup@2.78.0)
@@ -1740,13 +1740,13 @@ importers:
         version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.0.7
-        version: 7.0.7(typescript@5.1.3)(vite@4.3.9)
+        version: 7.0.7(typescript@4.9.5)(vite@4.3.9)
       '@storybook/react':
         specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)
       '@storybook/react-vite':
         specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(vite@4.3.9)
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(vite@4.3.9)
       '@testing-library/jest-dom':
         specifier: ^5.11.6
         version: 5.16.2
@@ -1860,22 +1860,19 @@ importers:
         version: 1.8.0(@storybook/addons@6.5.16)(@storybook/react@7.0.7)(@types/react@18.2.21)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       ts-jest:
         specifier: ^27.1.3
-        version: 27.1.3(@babel/core@7.21.3)(babel-jest@29.3.1)(esbuild@0.17.19)(jest@29.3.1)(typescript@5.1.3)
+        version: 27.1.3(@babel/core@7.21.3)(babel-jest@29.3.1)(esbuild@0.17.19)(jest@29.3.1)(typescript@4.9.5)
       vite:
         specifier: 4.3.9
         version: 4.3.9(@types/node@18.16.2)
       vite-plugin-dts:
         specifier: ^3.5.3
-        version: 3.5.3(@types/node@18.16.2)(rollup@2.78.0)(typescript@5.1.3)(vite@4.3.9)
+        version: 3.5.3(@types/node@18.16.2)(rollup@2.78.0)(typescript@4.9.5)(vite@4.3.9)
       vite-tsconfig-paths:
         specifier: ^4.0.3
-        version: 4.0.3(typescript@5.1.3)(vite@4.3.9)
+        version: 4.0.3(typescript@4.9.5)(vite@4.3.9)
       vitest:
         specifier: ^0.27.2
         version: 0.27.2
-      wagmi:
-        specifier: ^1.4.3
-        version: 1.4.3(@types/react@18.2.21)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.15.1)(zod@3.22.3)
 
   packages/utils:
     dependencies:
@@ -7742,7 +7739,7 @@ packages:
       chalk: 4.1.2
     dev: true
 
-  /@joshwooding/vite-plugin-react-docgen-typescript@0.2.1(typescript@5.1.3)(vite@4.3.9):
+  /@joshwooding/vite-plugin-react-docgen-typescript@0.2.1(typescript@4.9.5)(vite@4.3.9):
     resolution: {integrity: sha512-ou4ZJSXMMWHqGS4g8uNRbC5TiTWxAgQZiVucoUrOCWuPrTbkpJbmVyIi9jU72SBry7gQtuMEDp4YR8EEXAg7VQ==}
     peerDependencies:
       typescript: '>= 4.3.x'
@@ -7754,8 +7751,8 @@ packages:
       glob: 7.2.3
       glob-promise: 4.2.2(glob@7.2.3)
       magic-string: 0.27.0
-      react-docgen-typescript: 2.2.2(typescript@5.1.3)
-      typescript: 5.1.3
+      react-docgen-typescript: 2.2.2(typescript@4.9.5)
+      typescript: 4.9.5
       vite: 4.3.9(@types/node@18.16.2)
     dev: true
 
@@ -8804,7 +8801,7 @@ packages:
       rollup: 2.78.0
     dev: true
 
-  /@rollup/plugin-typescript@8.3.1(rollup@2.78.0)(tslib@2.4.0)(typescript@5.1.3):
+  /@rollup/plugin-typescript@8.3.1(rollup@2.78.0)(tslib@2.4.0)(typescript@4.9.5):
     resolution: {integrity: sha512-84rExe3ICUBXzqNX48WZV2Jp3OddjTMX97O2Py6D1KJaGSwWp0mDHXj+bCGNJqWHIEKDIT2U0sDjhP4czKi6cA==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
@@ -8816,7 +8813,7 @@ packages:
       resolve: 1.22.1
       rollup: 2.78.0
       tslib: 2.4.0
-      typescript: 5.1.3
+      typescript: 4.9.5
     dev: true
 
   /@rollup/plugin-url@6.1.0(rollup@2.78.0):
@@ -9750,7 +9747,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/builder-vite@7.0.7(typescript@5.1.3)(vite@4.3.9):
+  /@storybook/builder-vite@7.0.7(typescript@4.9.5)(vite@4.3.9):
     resolution: {integrity: sha512-2wL6fsFWzij+R155urOLc7EjZtlVWf4FLfaSlLGAuZwRQU40N04YdMaHMp9tjd9Vdr5fxEDwTB51PnVWJMlsEw==}
     peerDependencies:
       '@preact/preset-vite': '*'
@@ -9785,7 +9782,7 @@ packages:
       remark-external-links: 8.0.0
       remark-slug: 6.1.0
       rollup: 2.78.0
-      typescript: 5.1.3
+      typescript: 4.9.5
       vite: 4.3.9(@types/node@18.16.2)
     transitivePeerDependencies:
       - supports-color
@@ -10156,7 +10153,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /@storybook/react-vite@7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(vite@4.3.9):
+  /@storybook/react-vite@7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(vite@4.3.9):
     resolution: {integrity: sha512-RuWfP/kiLpuHdcF9dWUUp9SOGMmO0FJ0HGV5yAOhGmi8KmTzvc8zjC+hJjj+sSgn2n71BO8pG/zqGl16FwfwVQ==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -10164,10 +10161,10 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
       vite: ^3.0.0 || ^4.0.0
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.2.1(typescript@5.1.3)(vite@4.3.9)
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.2.1(typescript@4.9.5)(vite@4.3.9)
       '@rollup/pluginutils': 4.2.1
-      '@storybook/builder-vite': 7.0.7(typescript@5.1.3)(vite@4.3.9)
-      '@storybook/react': 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)
+      '@storybook/builder-vite': 7.0.7(typescript@4.9.5)(vite@4.3.9)
+      '@storybook/react': 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)
       '@vitejs/plugin-react': 3.1.0(vite@4.3.9)
       ast-types: 0.14.2
       magic-string: 0.27.0
@@ -10182,7 +10179,7 @@ packages:
       - vite-plugin-glimmerx
     dev: true
 
-  /@storybook/react@7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3):
+  /@storybook/react@7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5):
     resolution: {integrity: sha512-eEsIfAGumzo7KRi/WKFpn/PGFhwLv72oiEM/8l5MMX/6poIkiekunqJLfx2BoL4cCtiS4g7OYzOdWjN01DwVCg==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
@@ -10215,7 +10212,7 @@ packages:
       react-element-to-jsx-string: 15.0.0(react-dom@18.2.0)(react@18.2.0)
       ts-dedent: 2.2.0
       type-fest: 2.19.0
-      typescript: 5.1.3
+      typescript: 4.9.5
       util-deprecate: 1.0.2
     transitivePeerDependencies:
       - supports-color
@@ -12440,7 +12437,7 @@ packages:
       '@vue/shared': 3.3.4
     dev: true
 
-  /@vue/language-core@1.8.8(typescript@5.1.3):
+  /@vue/language-core@1.8.8(typescript@4.9.5):
     resolution: {integrity: sha512-i4KMTuPazf48yMdYoebTkgSOJdFraE4pQf0B+FTOFkbB+6hAfjrSou/UmYWRsWyZV6r4Rc6DDZdI39CJwL0rWw==}
     peerDependencies:
       typescript: '*'
@@ -12455,7 +12452,7 @@ packages:
       '@vue/shared': 3.3.4
       minimatch: 9.0.3
       muggle-string: 0.3.1
-      typescript: 5.1.3
+      typescript: 4.9.5
       vue-template-compiler: 2.7.14
     dev: true
 
@@ -12469,11 +12466,11 @@ packages:
     resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
     dev: true
 
-  /@vue/typescript@1.8.8(typescript@5.1.3):
+  /@vue/typescript@1.8.8(typescript@4.9.5):
     resolution: {integrity: sha512-jUnmMB6egu5wl342eaUH236v8tdcEPXXkPgj+eI/F6JwW/lb+yAU6U07ZbQ3MVabZRlupIlPESB7ajgAGixhow==}
     dependencies:
       '@volar/typescript': 1.10.1
-      '@vue/language-core': 1.8.8(typescript@5.1.3)
+      '@vue/language-core': 1.8.8(typescript@4.9.5)
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -23303,12 +23300,12 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       ua-parser-js: 0.7.31
 
-  /react-docgen-typescript@2.2.2(typescript@5.1.3):
+  /react-docgen-typescript@2.2.2(typescript@4.9.5):
     resolution: {integrity: sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg==}
     peerDependencies:
       typescript: '>= 4.3.x'
     dependencies:
-      typescript: 5.1.3
+      typescript: 4.9.5
     dev: true
 
   /react-docgen@6.0.0-alpha.3:
@@ -25506,7 +25503,7 @@ packages:
       styled-components: "^4.x.x ||\_^5.x.x"
     dependencies:
       '@storybook/addons': 6.5.16(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/react': 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)
+      '@storybook/react': 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)
       global: 4.4.0
       qss: 2.0.3
       react: 18.2.0
@@ -25752,7 +25749,7 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
 
-  /ts-jest@27.1.3(@babel/core@7.21.3)(babel-jest@29.3.1)(esbuild@0.17.19)(jest@29.3.1)(typescript@5.1.3):
+  /ts-jest@27.1.3(@babel/core@7.21.3)(babel-jest@29.3.1)(esbuild@0.17.19)(jest@29.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-6Nlura7s6uM9BVUAoqLH7JHyMXjz8gluryjpPXxr3IxZdAXnU6FhjvVLHFtfd1vsE1p8zD1OJfskkc0jhTSnkA==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -25784,8 +25781,21 @@ packages:
       lodash.memoize: 4.1.2
       make-error: 1.3.6
       semver: 7.5.0
-      typescript: 5.1.3
+      typescript: 4.9.5
       yargs-parser: 20.2.9
+    dev: true
+
+  /tsconfck@2.0.2(typescript@4.9.5):
+    resolution: {integrity: sha512-H3DWlwKpow+GpVLm/2cpmok72pwRr1YFROV3YzAmvzfGFiC1zEM/mc9b7+1XnrxuXtEbhJ7xUSIqjPFbedp7aQ==}
+    engines: {node: ^14.13.1 || ^16 || >=18, pnpm: ^7.18.0}
+    hasBin: true
+    peerDependencies:
+      typescript: ^4.3.5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.9.5
     dev: true
 
   /tsconfck@2.0.2(typescript@5.1.3):
@@ -26076,6 +26086,12 @@ packages:
   /typeforce@1.18.0:
     resolution: {integrity: sha512-7uc1O8h1M1g0rArakJdf0uLRSSgFcYexrVoKo+bzJd32gd4gDy2L/Z+8/FjPnU9ydY3pEnVPtr9FyscYY60K1g==}
     dev: false
+
+  /typescript@4.9.5:
+    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
 
   /typescript@5.0.4:
     resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
@@ -26652,7 +26668,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-dts@3.5.3(@types/node@18.16.2)(rollup@2.78.0)(typescript@5.1.3)(vite@4.3.9):
+  /vite-plugin-dts@3.5.3(@types/node@18.16.2)(rollup@2.78.0)(typescript@4.9.5)(vite@4.3.9):
     resolution: {integrity: sha512-h94j/+SR1PhLR9jnEtcjZILagE2QZBAV8V1y3T2Ujcet1VI0Et4dZSU1W8fbnp6obB7B3/b8hArqdi2/9HuH+w==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -26664,16 +26680,30 @@ packages:
     dependencies:
       '@microsoft/api-extractor': 7.36.4(@types/node@18.16.2)
       '@rollup/pluginutils': 5.0.2(rollup@2.78.0)
-      '@vue/language-core': 1.8.8(typescript@5.1.3)
+      '@vue/language-core': 1.8.8(typescript@4.9.5)
       debug: 4.3.4(supports-color@8.1.1)
       kolorist: 1.8.0
-      typescript: 5.1.3
+      typescript: 4.9.5
       vite: 4.3.9(@types/node@18.16.2)
-      vue-tsc: 1.8.8(typescript@5.1.3)
+      vue-tsc: 1.8.8(typescript@4.9.5)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
       - supports-color
+    dev: true
+
+  /vite-tsconfig-paths@4.0.3(typescript@4.9.5)(vite@4.3.9):
+    resolution: {integrity: sha512-gRO2Q/tOkV+9kMht5tz90+IaEKvW2zCnvwJV3tp2ruPNZOTM5rF+yXorJT4ggmAMYEaJ3nyXjx5P5jY5FwiZ+A==}
+    peerDependencies:
+      vite: '>2.0.0-0'
+    dependencies:
+      debug: 4.3.4(supports-color@8.1.1)
+      globrex: 0.1.2
+      tsconfck: 2.0.2(typescript@4.9.5)
+      vite: 4.3.9(@types/node@18.16.2)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
     dev: true
 
   /vite-tsconfig-paths@4.0.3(typescript@5.1.3)(vite@4.3.9):
@@ -27006,16 +27036,16 @@ packages:
       he: 1.2.0
     dev: true
 
-  /vue-tsc@1.8.8(typescript@5.1.3):
+  /vue-tsc@1.8.8(typescript@4.9.5):
     resolution: {integrity: sha512-bSydNFQsF7AMvwWsRXD7cBIXaNs/KSjvzWLymq/UtKE36697sboX4EccSHFVxvgdBlI1frYPc/VMKJNB7DFeDQ==}
     hasBin: true
     peerDependencies:
       typescript: '*'
     dependencies:
-      '@vue/language-core': 1.8.8(typescript@5.1.3)
-      '@vue/typescript': 1.8.8(typescript@5.1.3)
+      '@vue/language-core': 1.8.8(typescript@4.9.5)
+      '@vue/typescript': 1.8.8(typescript@4.9.5)
       semver: 7.5.4
-      typescript: 5.1.3
+      typescript: 4.9.5
     dev: true
 
   /w3c-hr-time@1.0.2:
