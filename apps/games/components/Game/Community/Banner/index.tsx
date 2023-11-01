@@ -87,14 +87,7 @@ export const Banner = () => {
     <StyledBackground>
       <StyledGradientBg />
       {games.length > 0 && <Decorations />}
-      <Flex
-        position="relative"
-        zIndex="1"
-        margin="auto"
-        flexDirection="column"
-        justifyContent="space-between"
-        maxWidth={['100%', '100%', '100%', '100%', '100%', '100%', '1257px']}
-      >
+      <Flex position="relative" zIndex="1" margin="auto" flexDirection="column" alignItems="center">
         <Box
           mb={['23px', '23px', '23px', '23px', '60px']}
           width={['100%', '100%', '100%', '100%', '100%', '100%', '1200px']}
@@ -106,58 +99,61 @@ export const Banner = () => {
             {t('Every Game, Every Chain, One Destination')}
           </Text>
         </Box>
-        {games.length > 0 && (
-          <Flex width="100%">
-            {games.length > 1 && (
-              <ArrowButton className="prev" style={{ marginRight: '32px' }}>
-                <ChevronLeftIcon color={theme.colors.textSubtle} />
-              </ArrowButton>
-            )}
-            <StyledSwiperContainer>
-              <Swiper
-                resizeObserver
-                slidesPerView={1}
-                spaceBetween={16}
-                onSwiper={setSwiper}
-                modules={[Autoplay, Navigation]}
-                autoplay={{
-                  delay: 2500,
-                  pauseOnMouseEnter: true,
-                  disableOnInteraction: false,
-                }}
-                navigation={{
-                  prevEl: '.prev',
-                  nextEl: '.next',
-                }}
-                breakpoints={{
-                  320: {
-                    slidesPerView: 1,
-                  },
-                  920: {
-                    slidesPerView: 2,
-                  },
-                  1440: {
-                    slidesPerView: 3,
-                    spaceBetween: 32,
-                  },
-                }}
-              >
-                {games.map((game) => (
-                  <SwiperSlide key={game.id}>
-                    <NextLink passHref href={`/project/${game.id}`}>
-                      <GameCard game={game} />
-                    </NextLink>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </StyledSwiperContainer>
-            {games.length > 1 && (
-              <ArrowButton className="next" style={{ marginLeft: '32px' }}>
-                <ChevronRightIcon color={theme.colors.textSubtle} />
-              </ArrowButton>
-            )}
-          </Flex>
-        )}
+        <Box margin="auto" width={['100%', '100%', '100%', '100%', '100%', '100%', '754px']}>
+          {games.length > 0 && (
+            <Flex width="100%">
+              {games.length > 1 && (
+                <ArrowButton className="prev" style={{ marginRight: '32px' }}>
+                  <ChevronLeftIcon color={theme.colors.textSubtle} />
+                </ArrowButton>
+              )}
+              <StyledSwiperContainer>
+                <Swiper
+                  resizeObserver
+                  slidesPerView={1}
+                  spaceBetween={16}
+                  onSwiper={setSwiper}
+                  modules={[Autoplay, Navigation]}
+                  autoplay={{
+                    delay: 2500,
+                    pauseOnMouseEnter: true,
+                    disableOnInteraction: false,
+                  }}
+                  navigation={{
+                    prevEl: '.prev',
+                    nextEl: '.next',
+                  }}
+                  breakpoints={{
+                    320: {
+                      slidesPerView: 1,
+                    },
+                    920: {
+                      slidesPerView: 2,
+                      spaceBetween: 32,
+                    },
+                    // 1440: {
+                    //   slidesPerView: 3,
+                    //   spaceBetween: 32,
+                    // },
+                  }}
+                >
+                  {games.map((game) => (
+                    <SwiperSlide key={game.id}>
+                      <NextLink passHref href={`/project/${game.id}`}>
+                        <GameCard game={game} />
+                      </NextLink>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </StyledSwiperContainer>
+              {games.length > 1 && (
+                <ArrowButton className="next" style={{ marginLeft: '32px' }}>
+                  <ChevronRightIcon color={theme.colors.textSubtle} />
+                </ArrowButton>
+              )}
+            </Flex>
+          )}
+        </Box>
       </Flex>
     </StyledBackground>
   )
