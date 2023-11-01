@@ -14,7 +14,7 @@ const Gutter = styled.div`
 `
 
 const ExpandButtonGroup = styled(Flex)`
-  max-width: 320px;
+  max-width: 254px;
   margin: auto;
   border-radius: 24px 24px 0 0;
   background-color: ${({ theme }) => theme.colors.input};
