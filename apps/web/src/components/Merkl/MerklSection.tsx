@@ -41,6 +41,18 @@ export function MerklSection({
 
   if (!rewardsPerToken.length) return null
 
+  const learnMoreComp = (
+    <Link
+      color="text"
+      fontSize="md"
+      external
+      style={{ display: 'inline-flex' }}
+      href="https://docs.angle.money/side-products/merkl"
+    >
+      {t('Learn more about Merkl')}
+    </Link>
+  )
+
   return (
     <Box width="100%" ml={[0, 0, 0, '16px']} mt="24px">
       <AutoRow justifyContent="space-between" mb="8px">
@@ -80,9 +92,7 @@ export function MerklSection({
           <MessageText>
             To earn rewards on Merkl, unstake this position from PancakeSwap Farms.
             <br />
-            <Link external style={{ display: 'inline-flex' }} href="https://docs.angle.money/side-products/merkl">
-              {t('Learn more about Merkl')}
-            </Link>
+            {learnMoreComp}
           </MessageText>
         </Message>
       ) : outRange ? (
@@ -90,9 +100,7 @@ export function MerklSection({
           <MessageText>
             This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.
             <br />
-            <Link external style={{ display: 'inline-flex' }} href="https://docs.angle.money/side-products/merkl">
-              {t('Learn more about Merkl')}
-            </Link>
+            {learnMoreComp}
           </MessageText>
         </Message>
       ) : (
@@ -103,16 +111,16 @@ export function MerklSection({
               : 'This liquidity position is currently earning rewards on Merkl.'}{' '}
             Check details{' '}
             <Link
+              fontSize="md"
               external
+              color="text"
               style={{ display: 'inline-flex' }}
               href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=PancakeSwap"
             >
               {t('here')}
             </Link>{' '}
             <br />
-            <Link external style={{ display: 'inline-flex' }} href="https://docs.angle.money/side-products/merkl">
-              {t('Learn more about Merkl')}
-            </Link>
+            {learnMoreComp}
           </MessageText>
         </Message>
       )}
