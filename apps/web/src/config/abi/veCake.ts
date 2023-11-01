@@ -805,4 +805,4 @@ export const veCakeABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-]
+] as const
