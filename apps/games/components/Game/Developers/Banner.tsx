@@ -3,7 +3,7 @@ import { useTheme } from '@pancakeswap/hooks'
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
-import { Decorations } from 'components/Game/Developers/Decorations'
+import { floatingStarsLeft } from 'components/Game/DecorationsAnimation'
 
 const StyledPageSection = styled(PageSection)`
   padding: 32px 0;
@@ -22,22 +22,49 @@ const StyledPageSection = styled(PageSection)`
 
 const StyledBunny = styled(Box)`
   position: absolute;
-  right: -20%;
+  left: 50%;
   bottom: 24px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    right: -14%;
-  }
+  transform: translateX(-50%);
 
   ${({ theme }) => theme.mediaQueries.xl} {
     position: static;
+    transform: translateX(0%);
+  }
+`
+
+const Decorations = styled(Box)`
+  position: absolute;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+  > img {
+    position: absolute;
+  }
+
+  & :nth-child(1) {
+    top: 70%;
+    left: -2%;
+    animation: ${floatingStarsLeft} 2.5s ease-in-out infinite;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    z-index: 0;
+
+    & :nth-child(1) {
+      top: 10%;
+      left: -1%;
+    }
   }
 `
 
 export const Banner = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isXxl } = useMatchBreakpoints()
 
   return (
     <StyledPageSection
@@ -46,7 +73,9 @@ export const Banner = () => {
       hasCurvedDivider={false}
       background={theme.colors.gradientBubblegum}
     >
-      <Decorations />
+      <Decorations>
+        <img src="/images/game/developers/piezas-1.png" width="66.5px" height="72px" alt="piezas1" />
+      </Decorations>
       <Flex
         position="relative"
         zIndex="1"
@@ -106,11 +135,14 @@ export const Banner = () => {
         </Flex>
         <StyledBunny>
           <Image
-            width={isDesktop ? 532 : 354}
-            height={isDesktop ? 532 : 354}
             alt="banner-image"
-            style={{ zIndex: 0 }}
-            src="/images/game/developers/banner-bunny.png"
+            width={isXxl ? 533 : 323}
+            height={isXxl ? 522 : 262}
+            style={{
+              zIndex: 0,
+              minWidth: isXxl ? 533 : 323,
+            }}
+            src="/images/game/developers/game-banner-bunny.png"
           />
         </StyledBunny>
       </Flex>

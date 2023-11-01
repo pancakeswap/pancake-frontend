@@ -5,7 +5,7 @@ import { Footer } from 'components/Game/Developers/Footer'
 
 export const GameDevelopers = () => {
   return (
-    <Box>
+    <Box overflowX="hidden">
       <Banner />
       <Infrastructure />
       <Footer />
