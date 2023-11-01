@@ -91,7 +91,7 @@ const GameBenefitsList = [
   {
     title: <Trans>Explore Top Blockchains</Trans>,
     desc: <Trans>PancakeSwap operates on 10 popular blockchains, welcoming developers from diverse ecosystems</Trans>,
-    imgUrl: '/images/game/developers/bring-your-game-4.png',
+    imgUrl: '/images/game/developers/bring-your-game-4-1.png',
   },
 ]
 
