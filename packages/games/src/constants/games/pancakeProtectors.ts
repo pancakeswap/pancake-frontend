@@ -6,7 +6,7 @@ export const pancakeProtectors: GameType = {
   title: 'Pancake Protector',
   subTitle: 'Unlock the Power of CAKE and Perks for Pancake Squad and Bunnies Holders',
   description:
-    'Immerse yourself in the exhilarating world of Pancake Protector with this meticulously crafted collection of NFTs. Designed exclusively for the game, these NFTs bestow extraordinary attribute bonuses upon your heroes, elevating their capabilities to unmatched heights. Step into the realm of epic battles and heroic quests as you wield the power of these remarkable artefact. But that’s not all - the Exclusive Fashion NFTs unlock captivating and exclusive visual transformations, ensuring your designated heroes stand out in style. Prepare for an unforgettable adventure and unleash the full potential of these extraordinary NFTs in your quest to become a true champion of Pancake Protector!',
+    'PancakeSwap and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players, as well as CAKE, Pancake Squad, and Bunnies holders.',
   publishDate: 1698044972,
   headerImage: '/images/game/example-header.jpeg',
   headerIconImage: {
@@ -14,12 +14,12 @@ export const pancakeProtectors: GameType = {
     mobile: '/images/game/example-mobile-header-icon.png',
   },
   projectLogo: {
-    lightTheme: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
-    darkTheme: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+    lightTheme: '/images/game/game-page-image/project-logo-light-theme.png',
+    darkTheme: '/images/game/game-page-image/project-logo-dark-theme.png',
   },
   projectCircleLogo: {
-    lightTheme: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
-    darkTheme: 'https://pancakeswap.finance/images/ifos/sable-bg.png',
+    lightTheme: '/images/game/game-page-image/mobox-circle-logo.png',
+    darkTheme: '/images/game/game-page-image/mobox-circle-logo.png',
   },
   gameLink: 'https://protectors.pancakeswap.finance/',
   posters: {
@@ -27,8 +27,19 @@ export const pancakeProtectors: GameType = {
     items: [
       {
         type: PostersItemDataType.Image,
-        image:
-          'https://cdn.akamai.steamstatic.com/steam/apps/578080/ss_4454f310776c626a76baeca2d05fd82bd17c6ee0.600x338.jpg?t=1694608943',
+        image: '/images/game/game-page-image/1.png',
+      },
+      {
+        type: PostersItemDataType.Image,
+        image: '/images/game/game-page-image/2.jpg',
+      },
+      {
+        type: PostersItemDataType.Image,
+        image: '/images/game/game-page-image/3.png',
+      },
+      {
+        type: PostersItemDataType.Image,
+        image: '/images/game/game-page-image/4.png',
       },
     ],
   },
