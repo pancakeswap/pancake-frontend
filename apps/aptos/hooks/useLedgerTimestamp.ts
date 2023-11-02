@@ -6,7 +6,7 @@ import { useActiveChainId } from './useNetwork'
 export const useLedgerTimestamp = () => {
   const chainId = useActiveChainId()
   const queryClient = useQueryClient()
-  const { data: lastCheck } = useQuery(['ledgerTimestampLastCheck', chainId], {
+  const { data: lastCheck } = useQuery<number>(['ledgerTimestampLastCheck', chainId], {
     enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
