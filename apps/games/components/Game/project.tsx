@@ -10,7 +10,11 @@ import { MobileView } from 'components/Game/Project/MobileView'
 
 const StyledDesktop = styled.div`
   display: flex;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 56px - 42px);
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: calc(100vh - 56px);
+  }
 `
 
 const StyledContainer = styled.div`

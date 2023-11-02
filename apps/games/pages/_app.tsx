@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import { NextPage } from 'next'
 import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
 import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
@@ -53,8 +54,19 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: unset !important;
   }
 `
+type NextPageWithLayout = NextPage & {
+  Layout?: React.FC<React.PropsWithChildren<unknown>>
+  /** render component without all layouts */
+  pure?: true
+}
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const Layout = Component.Layout || Fragment
+
   return (
     <>
       <Head>
@@ -74,9 +86,11 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <ResetCSS />
                   <GlobalStyle />
                   <Menu />
-                  <WrapBalancerProvider>
-                    <Component {...pageProps} />
-                  </WrapBalancerProvider>
+                  <Layout>
+                    <WrapBalancerProvider>
+                      <Component {...pageProps} />
+                    </WrapBalancerProvider>
+                  </Layout>
                 </ModalProvider>
               </LanguageProvider>
             </StyledThemeProvider>
