@@ -535,6 +535,9 @@ importers:
       '@pancakeswap/blog':
         specifier: workspace:*
         version: link:../../packages/blog
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../../packages/chains
       '@pancakeswap/games':
         specifier: workspace:*
         version: link:../../packages/games

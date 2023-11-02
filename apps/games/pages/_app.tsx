@@ -13,6 +13,7 @@ import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Menu from '../components/Menu'
+import Footer from '../components/Footer'
 
 // Create a client
 const queryClient = new QueryClient()
@@ -91,6 +92,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                       <Component {...pageProps} />
                     </WrapBalancerProvider>
                   </Layout>
+                  <Footer />
                 </ModalProvider>
               </LanguageProvider>
             </StyledThemeProvider>
