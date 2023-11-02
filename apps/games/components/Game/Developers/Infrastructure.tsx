@@ -49,15 +49,17 @@ const StyledCard = styled(Card)`
 `
 
 const StyledGameBenefitsListContainer = styled(Flex)`
+  width: 312px;
   flex-wrap: wrap;
   justify-content: center;
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: 588px;
+    justify-content: space-between;
   }
+
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1200px;
-    justify-content: space-between;
   }
 
   ${StyledList} {
