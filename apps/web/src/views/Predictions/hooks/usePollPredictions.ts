@@ -14,7 +14,7 @@ const usePollPredictions = () => {
   const { address: predictionsAddress } = useConfig()
 
   useQuery(['predictions', account, predictionsAddress], () => dispatch(fetchPredictionData(account)), {
-    enabled: Boolean(account && initialBlock > 0),
+    enabled: initialBlock > 0,
     refetchInterval: POLL_TIME_IN_SECONDS * 1000,
     refetchIntervalInBackground: true,
   })
