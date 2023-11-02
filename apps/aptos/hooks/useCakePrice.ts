@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from '@pancakeswap/awgmi'
 
 export const useCakePrice = () => {
   return useQuery(

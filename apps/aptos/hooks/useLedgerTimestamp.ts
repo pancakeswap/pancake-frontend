@@ -1,27 +1,35 @@
 import { useCallback } from 'react'
-import { useSWRConfig } from 'swr'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery, useQueryClient } from '@pancakeswap/awgmi'
 import { fetchLedgerInfo } from '@pancakeswap/awgmi/core'
 import { useActiveChainId } from './useNetwork'
 
 export const useLedgerTimestamp = () => {
   const chainId = useActiveChainId()
-  const { mutate } = useSWRConfig()
-  const { data: lastCheck } = useSWRImmutable(['ledgerTimestampLastCheck', chainId])
+  const queryClient = useQueryClient()
+  const { data: lastCheck } = useQuery(['ledgerTimestampLastCheck', chainId], {
+    enabled: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
-  const { data: ledgerTimestamp, error } = useSWRImmutable(
+  const { data: ledgerTimestamp, error } = useQuery(
     ['ledgerTimestamp', chainId],
     async () => {
       /* eslint-disable camelcase */
       const { ledger_timestamp } = await fetchLedgerInfo()
-      mutate(['ledgerTimestampLastCheck', chainId], Date.now(), { revalidate: false })
+      queryClient.getQueryCache().find(['ledgerTimestampLastCheck', chainId])?.setData(Date.now())
       return Math.floor(parseInt(ledger_timestamp) / 1000)
       /* eslint-enable camelcase */
     },
     {
-      dedupingInterval: 1000 * 15,
-      refreshInterval: 1000 * 15,
+      enabled: Boolean(chainId),
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
       keepPreviousData: true,
+      refetchInterval: 1000 * 15,
+      staleTime: 1000 * 15,
     },
   )
 
