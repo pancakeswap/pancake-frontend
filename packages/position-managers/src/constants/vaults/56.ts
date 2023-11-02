@@ -126,7 +126,7 @@ export const vaults: VaultConfig[] = [
     currencyB: bscTokens.busd,
     earningToken: bscTokens.cake,
     feeTier: FeeAmount.LOW,
-    strategy: Strategy.YIELD_IQ,
+    strategy: Strategy.ACTIVE,
     manager: MANAGER.RANGE,
     isSingleDepositToken: false,
     allowDepositToken0: true,

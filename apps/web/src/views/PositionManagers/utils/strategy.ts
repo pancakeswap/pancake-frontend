@@ -7,6 +7,8 @@ export function getStrategyName(t: TranslateFunction, strategy: Strategy) {
       return t('Typical Wide')
     case Strategy.YIELD_IQ:
       return t('Yield IQ')
+    case Strategy.ACTIVE:
+      return t('Active')
     default:
       return ''
   }

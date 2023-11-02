@@ -13,6 +13,7 @@ export enum OnChainActionType {
 export enum Strategy {
   TYPICAL_WIDE,
   YIELD_IQ,
+  ACTIVE,
 }
 
 export interface OnChainActionResponse {
