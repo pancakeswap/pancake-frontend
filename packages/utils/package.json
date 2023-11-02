@@ -7,7 +7,6 @@
   "private": true,
   "peerDependencies": {
     "@pancakeswap/localization": "workspace:*",
-    "@tanstack/react-query": "^4.28.0",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
     "styled-components": "^6.0.7"
