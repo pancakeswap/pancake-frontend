@@ -1,12 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { GameType, GAMES_LIST, SUPPORTED_CHAIN_IDS } from '@pancakeswap/games'
+import { GamePageLayout } from 'components/Game/GamePageLayout'
+import { GameType, GAMES_LIST } from '@pancakeswap/games'
 import { GameProject } from 'components/Game/project'
 
 const GameProjectPage = () => {
   return <GameProject />
 }
 
-GameProjectPage.chains = SUPPORTED_CHAIN_IDS
+GameProjectPage.Layout = GamePageLayout
 
 export default GameProjectPage
 
