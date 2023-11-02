@@ -10,11 +10,15 @@ import {
   PageHeader,
   Text,
 } from '@pancakeswap/uikit'
+import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import Page from 'components/Layout/Page'
+import { getTotalIFOSold } from 'config/constants/ifo'
 import { BenefitCard } from './components/BenefitCard'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 import { useSnapshotVotingCount } from './hooks/useSnapshotVotingCount'
+
+const totalIFOSold = getTotalIFOSold()
 
 const CakeStaking = () => {
   const { t } = useTranslation()
@@ -77,7 +81,7 @@ const CakeStaking = () => {
         <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="repeat(2, 1fr)" alignItems="center" mx="auto">
           <BenefitCard type="farmBoost" dataText="3x" />
           <BenefitCard type="snapshotVoting" dataText={`${snapshotVotingCount}`} />
-          <BenefitCard type="ifo" dataText="123,456,789 CAKE" />
+          <BenefitCard type="ifo" dataText={`$${formatAmount(totalIFOSold, { notation: 'standard' })}`} />
           <BenefitCard type="more" />
         </Grid>
       </Page>
