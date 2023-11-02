@@ -53,6 +53,7 @@ import {
   getAnniversaryAchievementContract,
   getFixedStakingContract,
   getVeCakeContract,
+  getGaugesVotingContract,
 } from 'utils/contractHelpers'
 
 import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -463,4 +464,12 @@ export const useVeCakeContract = () => {
   const { data: signer } = useWalletClient()
 
   return useMemo(() => getVeCakeContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useGaugesVotingContract = () => {
+  const { chainId } = useActiveChainId()
+
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getGaugesVotingContract(signer ?? undefined, chainId), [chainId, signer])
 }

@@ -37,6 +37,7 @@ import {
   getAnniversaryAchievementAddress,
   getFixedStakingAddress,
   getVeCakeAddress,
+  getGaugesVotingAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -92,6 +93,7 @@ import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
 import { fixedStakingABI } from 'config/abi/fixedStaking'
 import { veCakeABI } from 'config/abi/veCake'
+import { gaugesVotingABI } from 'config/abi/gaugesVoting'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -456,6 +458,15 @@ export const getVeCakeContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: veCakeABI,
     address: getVeCakeAddress(chainId) ?? getVeCakeAddress(ChainId.BSC_TESTNET),
+    signer,
+    chainId,
+  })
+}
+
+export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: gaugesVotingABI,
+    address: getGaugesVotingAddress(chainId) ?? getGaugesVotingAddress(ChainId.BSC_TESTNET),
     signer,
     chainId,
   })
