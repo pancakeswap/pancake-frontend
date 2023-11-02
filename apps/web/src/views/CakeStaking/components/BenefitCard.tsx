@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Card, Flex, FlexGap, Heading, Text } from '@pancakeswap/uikit'
+import { Button, Card, Flex, FlexGap, Heading, NextLinkFromReactRouter, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 type BenefitCardType = 'earnCake' | 'gaugesVoting' | 'farmBoost' | 'snapshotVoting' | 'ifo' | 'more'
@@ -61,6 +61,7 @@ const BENEFITS: Record<BenefitCardType, BenefitItem> = {
       'Boost your earnings in fixed staking.',
       'More to come...',
     ],
+    link: 'blog/@todo',
   },
 }
 
@@ -76,9 +77,15 @@ export const BenefitCard: React.FC<{
   const { t } = useTranslation()
   const info = BENEFITS[type] as BenefitItem
 
+  const button = info.btnText ? (
+    <Button width="100%" mt="auto" variant={onClick ? 'primary' : 'secondary'} onClick={onClick}>
+      {t(info.btnText)}
+    </Button>
+  ) : null
+
   return (
     <StyledCard innerCardProps={{ p: '24px' }}>
-      <FlexGap flexDirection="column" gap="16px" height="100%">
+      <FlexGap flexDirection="column" gap="16px" height="100%" justifyContent="space-between">
         <FlexGap gap="16px" alignItems="center">
           <img srcSet={`${info.headImg} 2x`} alt="earn-cake" />
           <FlexGap flexDirection="column" gap="8px">
@@ -106,11 +113,12 @@ export const BenefitCard: React.FC<{
             </ul>
           </Text>
         </div>
-        {info.btnText ? (
-          <Button width="100%" mt="auto" variant={onClick ? 'primary' : 'secondary'} as={info.link ? 'a' : 'button'}>
-            {t(info.btnText)}
-          </Button>
+        {button && info.link ? (
+          <NextLinkFromReactRouter to={info.link} prefetch={false}>
+            {button}
+          </NextLinkFromReactRouter>
         ) : null}
+        {button && onClick ? button : null}
       </FlexGap>
     </StyledCard>
   )
