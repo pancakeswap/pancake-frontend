@@ -658,4 +658,19 @@ const ifos: Ifo[] = [
   },
 ]
 
+export const getTotalIFOSold = () => {
+  const unwrap = (usd: string) => {
+    return Number(usd.replace('$', '').replaceAll(',', ''))
+  }
+  return ifos.reduce((accum, current) => {
+    if (current.poolBasic?.raiseAmount) {
+      return accum + unwrap(current.poolBasic.raiseAmount)
+    }
+    if (current.poolUnlimited?.raiseAmount) {
+      return accum + unwrap(current.poolUnlimited.raiseAmount)
+    }
+    return accum
+  }, 0)
+}
+
 export default ifos
