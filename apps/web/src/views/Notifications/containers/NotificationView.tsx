@@ -104,7 +104,7 @@ const NotificationView = ({
         <Box width="125px">
           <Select onOptionChange={handleNotifyOptionChange} options={NotificationFilterTypes} />
         </Box>
-        <Button height="40px" variant="secondary" onClick={removeAllNotifications}>
+        <Button height="40px" variant="secondary" onClick={removeAllNotifications} paddingX="12px">
           <Text fontWeight="bold" color="primary">
             {t('Clear')}
           </Text>
