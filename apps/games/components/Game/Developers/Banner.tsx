@@ -33,6 +33,7 @@ const StyledBunny = styled(Box)`
 `
 
 const Decorations = styled(Box)`
+  display: none;
   position: absolute;
   top: 0;
   left: 0%;
@@ -40,24 +41,19 @@ const Decorations = styled(Box)`
   height: 100%;
   pointer-events: none;
   overflow: hidden;
-  z-index: 2;
+  z-index: 0;
   > img {
     position: absolute;
   }
 
   & :nth-child(1) {
-    top: 70%;
-    left: -2%;
+    top: 10%;
+    left: -1%;
     animation: ${floatingStarsLeft} 2.5s ease-in-out infinite;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    z-index: 0;
-
-    & :nth-child(1) {
-      top: 10%;
-      left: -1%;
-    }
+    display: block;
   }
 `
 
