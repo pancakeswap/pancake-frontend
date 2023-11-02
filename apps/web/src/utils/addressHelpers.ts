@@ -160,3 +160,7 @@ export const getFixedStakingAddress = (chainId?: number) => {
 export const getVeCakeAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.veCake, chainId)
 }
+
+export const getGaugesVotingAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.gaugesVoting, chainId)
+}

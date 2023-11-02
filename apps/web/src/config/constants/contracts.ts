@@ -264,4 +264,7 @@ export default {
   veCake: {
     [ChainId.BSC_TESTNET]: '0xD512FDe5b20B136Ffd8E0087194BEf8537dc88AE',
   },
+  gaugesVoting: {
+    [ChainId.BSC_TESTNET]: '0x575Cd08d493B8b65d82A5d3c5e8Ce57D3724191f',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
