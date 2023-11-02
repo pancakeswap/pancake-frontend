@@ -14,10 +14,12 @@ import Page from 'components/Layout/Page'
 import { BenefitCard } from './components/BenefitCard'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
+import { useSnapshotVotingCount } from './hooks/useSnapshotVotingCount'
 
 const CakeStaking = () => {
   const { t } = useTranslation()
   const gaugesVotingCount = useGaugesVotingCount()
+  const snapshotVotingCount = useSnapshotVotingCount()
   return (
     <>
       <PageHeader>
@@ -73,8 +75,8 @@ const CakeStaking = () => {
           {t('And So Much More...')}
         </Heading>
         <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="repeat(2, 1fr)" alignItems="center" mx="auto">
-          <BenefitCard type="farmBoost" dataText="123,456,789 CAKE" />
-          <BenefitCard type="snapshotVoting" dataText="153" />
+          <BenefitCard type="farmBoost" dataText="3x" />
+          <BenefitCard type="snapshotVoting" dataText={`${snapshotVotingCount}`} />
           <BenefitCard type="ifo" dataText="123,456,789 CAKE" />
           <BenefitCard type="more" />
         </Grid>
