@@ -25,7 +25,7 @@ interface Props {
   updatePositionMangerDetailsData: (id: number, newData: PositionManagerDetailsData) => void
 }
 
-export const PCSVaultCard = memo(function PCSVaultCard({
+export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   config,
   farmsV3,
   aprDataList,
