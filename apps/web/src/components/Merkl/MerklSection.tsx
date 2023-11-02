@@ -59,7 +59,11 @@ export function MerklSection({
         <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
           {t('Merkl Rewards')}
         </Text>
-        <Button disabled={isClaiming} scale="sm" onClick={claimTokenReward}>
+        <Button
+          disabled={isClaiming || rewardsPerToken.every((r) => r.equalTo('0'))}
+          scale="sm"
+          onClick={claimTokenReward}
+        >
           {isClaiming ? t('Claiming...') : t('Claim')}
         </Button>
       </AutoRow>

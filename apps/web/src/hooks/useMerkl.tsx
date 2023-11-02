@@ -51,15 +51,13 @@ export function useMerklInfo(poolAddress: string | null): {
       const rewardsPerTokenObject = merklPoolData?.rewardsPerToken
 
       const rewardsPerToken = rewardsPerTokenObject
-        ? Object.keys(rewardsPerTokenObject)
-            .map((tokenAddress) => {
-              const tokenInfo = rewardsPerTokenObject[tokenAddress]
+        ? Object.keys(rewardsPerTokenObject).map((tokenAddress) => {
+            const tokenInfo = rewardsPerTokenObject[tokenAddress]
 
-              const token = new Token(chainId as number, tokenAddress as Address, tokenInfo.decimals, tokenInfo.symbol)
+            const token = new Token(chainId as number, tokenAddress as Address, tokenInfo.decimals, tokenInfo.symbol)
 
-              return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
-            })
-            .filter((rewardTokenAmount) => rewardTokenAmount.greaterThan(0))
+            return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
+          })
         : []
 
       return {
