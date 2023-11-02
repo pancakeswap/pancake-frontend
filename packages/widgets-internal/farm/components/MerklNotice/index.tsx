@@ -24,10 +24,11 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({ linkColo
             <InlineLink color={linkColor} external display="inline" href={merklLink}>
               {t("Merkl")}
             </InlineLink>
-            , {t("and are now claimable without staking your LP token.")}
           </p>
           <br />
-          {t("Continue seeding your liquidity on PancakeSwap to accrue the rewards!")}
+          {t(
+            "To earn Merkl rewards, continue seeding liquidity on PancakeSwap, but DO NOT stake your LP token in the Farm. Otherwise, you will not accrue rewards."
+          )}
         </Text>
       </Box>
     </>

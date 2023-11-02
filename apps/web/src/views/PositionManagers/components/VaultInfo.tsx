@@ -89,7 +89,10 @@ export const VaultInfo = memo(function VaultInfo({
       {isInCakeRewardDateRange && (
         <RowBetween>
           <InfoText>{t('Farming Rewards')}:</InfoText>
-          <InfoText>{`~${tokenPerSecond} ${earningToken.symbol} / ${t('second')}`}</InfoText>
+          <InfoText>{`~${tokenPerSecond.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 6,
+          })} ${earningToken.symbol} / ${t('second')}`}</InfoText>
         </RowBetween>
       )}
       <RowBetween>
