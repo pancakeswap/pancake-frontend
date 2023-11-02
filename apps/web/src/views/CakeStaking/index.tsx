@@ -13,9 +13,11 @@ import {
 import Page from 'components/Layout/Page'
 import { BenefitCard } from './components/BenefitCard'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
+import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 
 const CakeStaking = () => {
   const { t } = useTranslation()
+  const gaugesVotingCount = useGaugesVotingCount()
   return (
     <>
       <PageHeader>
@@ -59,7 +61,7 @@ const CakeStaking = () => {
           />
           <BenefitCard
             type="gaugesVoting"
-            dataText="153"
+            dataText={`${gaugesVotingCount ?? 0}`}
             onClick={() => {
               throw Error('To be implemented')
             }}
