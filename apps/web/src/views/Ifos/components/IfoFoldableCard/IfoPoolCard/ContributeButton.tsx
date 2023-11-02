@@ -1,13 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useMemo } from 'react'
-import {
-  Button,
-  IfoGetTokenModal,
-  useModal,
-  useToast,
-  getTokenListTokenUrl,
-  getTokenLogoURLByAddress,
-} from '@pancakeswap/uikit'
+import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit'
+import { getTokenListTokenUrl, getTokenLogoURLByAddress } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from '@pancakeswap/ifos'

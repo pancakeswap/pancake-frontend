@@ -38,7 +38,7 @@ export const MessageTextLink = styled(Link)`
   cursor: pointer;
 `
 
-export const TextLink = styled(NextLink) <TypographyProps>`
+export const TextLink = styled(NextLink)<TypographyProps>`
   display: inline;
   text-decoration: underline;
   font-weight: bold;

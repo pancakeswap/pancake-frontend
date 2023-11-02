@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { memo } from "react";
-
-import { HelpIcon } from "../Svg";
+import { HelpIcon } from "@pancakeswap/uikit";
 
 export const ChainLogo = memo(
   ({ chainId, width = 24, height = 24 }: { chainId?: number; width?: number; height?: number }) => {

@@ -1,4 +1,5 @@
-import { Box, Message, MessageText, Flex, ChainLogo } from '@pancakeswap/uikit'
+import { Box, Message, MessageText, Flex } from '@pancakeswap/uikit'
+import { ChainLogo } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { useCallback, MouseEvent } from 'react'

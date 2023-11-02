@@ -21,7 +21,7 @@ const WhiteCard = styled.div`
   margin: 8px 0 20px 0;
 `
 
-const StyleTag = styled(Tag) <{ isPrivate: boolean }>`
+const StyleTag = styled(Tag)<{ isPrivate: boolean }>`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.text};
   background: ${({ theme, isPrivate }) => (isPrivate ? theme.colors.gradientBlue : theme.colors.gradientViolet)};
@@ -55,8 +55,8 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({
     poolId === PoolIds.poolUnlimited
       ? t('Public Sale')
       : isBasicSale(ifoBasicSaleType)
-        ? t('Basic Sale')
-        : t('Private Sale')
+      ? t('Basic Sale')
+      : t('Private Sale')
 
   const currentBlock = useCurrentBlock()
   const publicIfoData = useGetPublicIfoV3Data(data.ifo)

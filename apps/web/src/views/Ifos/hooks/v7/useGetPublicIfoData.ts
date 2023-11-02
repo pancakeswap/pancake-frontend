@@ -6,7 +6,8 @@ import { CAKE } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus, ifoV7ABI } from '@pancakeswap/ifos'
 import { useAccount } from 'wagmi'
 
-import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
+import { useLpTokenPrice } from 'state/farms/hooks'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { publicClient } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
@@ -98,7 +99,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address: account } = useAccount()
   const { chainId } = ifo
   const { address, plannedStartTime } = ifo
-  const cakePriceUsd = usePriceCakeUSD()
+  const cakePriceUsd = useCakePrice()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === CAKE[ifo.chainId] ? cakePriceUsd : lpTokenPriceInUsd
 
