@@ -43,7 +43,7 @@ export function MerklSection({
 
   const learnMoreComp = (
     <Link
-      color="text"
+      color="currentColor"
       fontSize="md"
       external
       style={{ display: 'inline-flex' }}
@@ -93,7 +93,7 @@ export function MerklSection({
 
       {isStakedInMCv3 ? (
         <Message variant="warning">
-          <MessageText>
+          <MessageText color="textSubtle">
             To earn rewards on Merkl, unstake this position from PancakeSwap Farms.
             <br />
             {learnMoreComp}
@@ -101,7 +101,7 @@ export function MerklSection({
         </Message>
       ) : outRange ? (
         <Message variant="warning">
-          <MessageText>
+          <MessageText color="textSubtle">
             This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.
             <br />
             {learnMoreComp}
@@ -109,7 +109,7 @@ export function MerklSection({
         </Message>
       ) : (
         <Message variant={notEnoughLiquidity ? 'warning' : 'primary'}>
-          <MessageText>
+          <MessageText color={notEnoughLiquidity ? 'textSubtle' : ''}>
             {notEnoughLiquidity
               ? 'This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.'
               : 'This liquidity position is currently earning rewards on Merkl.'}{' '}
@@ -117,7 +117,7 @@ export function MerklSection({
             <Link
               fontSize="md"
               external
-              color="text"
+              color="currentColor"
               style={{ display: 'inline-flex' }}
               href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=PancakeSwap"
             >

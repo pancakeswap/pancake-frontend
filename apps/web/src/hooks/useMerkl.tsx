@@ -10,7 +10,10 @@ import { useCallback, useMemo } from 'react'
 import { getContract } from 'utils/contractHelpers'
 import { Address, useWalletClient } from 'wagmi'
 import first from 'lodash/first'
+import uniq from 'lodash/uniq'
 import { useQuery } from '@tanstack/react-query'
+import { useAllLists } from 'state/lists/hooks'
+import { TokenInfo } from '@pancakeswap/token-lists'
 
 export const MERKL_API = 'https://api.angle.money/v1/merkl'
 
@@ -63,23 +66,49 @@ export function useMerklInfo(poolAddress: string | null): {
       return {
         hasMerkl: Boolean(merklPoolData),
         rewardsPerToken,
+        rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
         transactionData: merklData.transactionData,
         isLoading,
       }
     },
   })
 
-  return useMemo(
-    () =>
-      data
-        ? { ...data, refreshData: refetch }
-        : {
-            rewardsPerToken: [],
-            transactionData: null,
-            refreshData: refetch,
-          },
-    [data, refetch],
-  )
+  const lists = useAllLists()
+
+  return useMemo(() => {
+    if (!data)
+      return {
+        rewardsPerToken: [],
+        transactionData: null,
+        refreshData: refetch,
+      }
+
+    const { rewardsPerToken = [], rewardTokenAddresses = [], ...rest } = data
+
+    const rewardCurrencies = (rewardTokenAddresses as string[])
+      .reduce<TokenInfo[]>((result, address) => {
+        Object.values(lists).find((list) => {
+          const token: TokenInfo | undefined = list?.current?.tokens.find((t) => t.address === address)
+
+          if (token) return result.push(token)
+
+          return false
+        })
+
+        return result
+      }, [])
+      .map((info) => {
+        const t = new Token(chainId as number, info.address, info.decimals, info.symbol)
+
+        return CurrencyAmount.fromRawAmount(t, '0')
+      })
+
+    return {
+      ...rest,
+      rewardsPerToken: rewardsPerToken.length ? rewardsPerToken : rewardCurrencies,
+      refreshData: refetch,
+    }
+  }, [chainId, data, lists, refetch])
 }
 
 export default function useMerkl(poolAddress: string | null) {
