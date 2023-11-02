@@ -17,8 +17,13 @@ const StyledContainer = styled(PageSection)`
 
 const StyledList = styled(Flex)`
   flex-direction: column;
-  max-width: 282px;
-  margin: 0 0 12px 0;
+  max-width: 312px;
+  margin: 0 auto 12px auto;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-width: 282px;
+    margin: 0 0 12px 0;
+  }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     margin: 0 24px 0 0;
@@ -44,7 +49,6 @@ const StyledCard = styled(Card)`
 `
 
 const StyledGameBenefitsListContainer = styled(Flex)`
-  width: 282px;
   flex-wrap: wrap;
   justify-content: center;
 
@@ -77,17 +81,17 @@ const GameBenefitsList = [
   {
     title: <Trans>Connect with a 1.5 Million Ready-to-Play Community</Trans>,
     desc: <Trans>Join the community and create games with infinite possibilities</Trans>,
-    imgUrl: '/images/game/developers/bring-your-game-1.png',
+    imgUrl: '/images/game/developers/bring-your-game-1-1.png',
   },
   {
     title: <Trans>Elevate Your Games with Real Utility</Trans>,
     desc: <Trans>Integrate CAKE tokens and NFTs to enrich the gaming experience</Trans>,
-    imgUrl: '/images/game/developers/bring-your-game-2.png',
+    imgUrl: '/images/game/developers/bring-your-game-2-1.png',
   },
   {
     title: <Trans>Partner with the Leading Brand in the Industry</Trans>,
     desc: <Trans>Build Games with the most reputable global brand in the industry</Trans>,
-    imgUrl: '/images/game/developers/bring-your-game-3.png',
+    imgUrl: '/images/game/developers/bring-your-game-3-1.png',
   },
   {
     title: <Trans>Explore Top Blockchains</Trans>,
@@ -136,11 +140,20 @@ export const Infrastructure = () => {
             {GameBenefitsList.map((benefit, index) => (
               // eslint-disable-next-line react/no-array-index-key
               <StyledList key={`benefit-${index}`}>
-                <Image width={240} height={240} src={benefit.imgUrl} alt="" />
-                <Text lineHeight="110%" mt="24px" bold fontSize={['20px']} color="secondary" mb="8px">
+                <Box m={['auto', 'auto', 'auto', 'auto', '0']}>
+                  <Image width={240} height={240} src={benefit.imgUrl} alt="" />
+                </Box>
+                <Text
+                  lineHeight="110%"
+                  mt={['8px', '8px', '8px', '8px', '24px']}
+                  bold
+                  fontSize={['20px']}
+                  color="secondary"
+                  mb="8px"
+                >
                   {benefit.title}
                 </Text>
-                <Text lineHeight="110%" bold fontSize={['20px']}>
+                <Text lineHeight="110%" mb={['28px', '28px', '28px', '28px', '0']} bold fontSize={['20px']}>
                   {benefit.desc}
                 </Text>
               </StyledList>

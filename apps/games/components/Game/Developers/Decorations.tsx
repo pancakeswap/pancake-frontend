@@ -3,6 +3,7 @@ import { Box } from '@pancakeswap/uikit'
 import { floatingStarsLeft, floatingStarsRight } from 'components/Game/DecorationsAnimation'
 
 const StyledDecorations = styled(Box)`
+  display: none;
   position: absolute;
   top: 0;
   left: 0%;
@@ -15,13 +16,9 @@ const StyledDecorations = styled(Box)`
   }
 
   & :nth-child(1) {
-    top: -1%;
-    right: -1%;
+    top: -5%;
+    right: 2%;
     animation: ${floatingStarsLeft} 2.5s ease-in-out infinite;
-  }
-
-  & :nth-child(2), & :nth-child(3) {
-    display: none;
   }
 
   & :nth-child(2) {
@@ -37,14 +34,7 @@ const StyledDecorations = styled(Box)`
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    & :nth-child(1) {
-      top: -5%;
-      right: 2%;
-    }
-
-    & :nth-child(2), & :nth-child(3) {
-      display: block;
-    }
+    display: block;
   }
 }`
 
