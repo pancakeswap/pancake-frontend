@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
-import { Categories } from '@pancakeswap/blog'
+import { Categories, getLanguageCodeFromLS, LS_KEY } from '@pancakeswap/blog'
 import { CardArticle } from 'components/Game/Community/CardArticle'
 import { CategoriesSelector } from 'components/Game/Community/CategoriesSelector'
 import { SkeletonArticle } from 'components/Game/Community/SkeletonArticle'
@@ -63,7 +63,7 @@ const StyledCard = styled(Flex)`
 `
 
 export const AllArticle = () => {
-  const { t, currentLanguage } = useTranslation()
+  const { t } = useTranslation()
   const router = useRouter()
   const [query, setQuery] = useState('')
   const articlesWrapperEl = useRef<HTMLDivElement>(null)
@@ -99,11 +99,21 @@ export const AllArticle = () => {
     }
   }, [gameCategories, router.isReady, router.query.category])
 
+  const codeFromStorage = getLanguageCodeFromLS()
   useEffect(() => {
-    if (languageItems.includes(currentLanguage.code)) {
-      setLanguageOption(currentLanguage.code)
+    if (codeFromStorage) {
+      setLanguageOption(codeFromStorage)
     }
-  }, [currentLanguage.code, languageItems])
+  }, [codeFromStorage])
+
+  const handleSwitchLanguage = (language: string) => {
+    setLanguageOption(language)
+
+    const blogCodeFromStorage = localStorage.getItem(LS_KEY)
+    if (blogCodeFromStorage !== language) {
+      localStorage.setItem(LS_KEY, language)
+    }
+  }
 
   const { articlesData, isFetching } = useAllGamesArticle({
     query,
@@ -147,12 +157,22 @@ export const AllArticle = () => {
             alignItems={['flexStart', 'flexStart', 'flexStart', 'center']}
             p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
           >
-            <Flex flexDirection={['column', 'row']} mr={['0', '0', '0', 'auto']}>
-              <Box width="100%" m={['10px 0 0 0', '0', '0', '0 16px 0 0']}>
-                <ArticleSortSelect title={t('Sort By')} options={sortByItems} setOption={setSortBy} />
-              </Box>
-            </Flex>
-            <Box width={['100%', '100%', '100%', '420px']} m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
+            {languageItems.length > 0 && (
+              <Flex flexDirection={['column', 'row']} mr={['0', '0', '0', 'auto']}>
+                <Box width="100%">
+                  <ArticleSortSelect
+                    title={t('Languages')}
+                    value={languageOption}
+                    options={languageItems}
+                    setOption={handleSwitchLanguage}
+                  />
+                </Box>
+                <Box width="100%" m={['10px 0 0 0', '0 0 0 16px', '0 0 0 16px', '0 16px']}>
+                  <ArticleSortSelect title={t('Sort By')} options={sortByItems} setOption={setSortBy} />
+                </Box>
+              </Flex>
+            )}
+            <Box width="100%" m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
               <InputGroup startIcon={<SearchIcon style={{ zIndex: 1 }} color="textSubtle" width="18px" />}>
                 <SearchInput placeholder="Search" initialValue={query} onChange={(e) => setQuery(e.target.value)} />
               </InputGroup>
