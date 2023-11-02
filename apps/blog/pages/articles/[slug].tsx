@@ -73,7 +73,7 @@ export const getStaticProps = (async ({ params, previewData }) => {
           },
         },
       },
-    }),
+    }).then((result) => result.data),
   )
 
   return {
@@ -81,7 +81,7 @@ export const getStaticProps = (async ({ params, previewData }) => {
       dehydratedState: dehydrate(queryClient),
       fallback: {
         '/article': article,
-        '/similarArticles': similarArticles.data,
+        '/similarArticles': similarArticles,
         isPreviewMode: !!isPreviewMode,
       },
     },
