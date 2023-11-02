@@ -26,6 +26,7 @@ const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     title: 'Gauges Voting',
     subTitle: 'Number of Gauges to Vote',
     btnText: 'Check Gauges',
+    link: '/gauges-voting',
     desc: ['Boost rewards on your favorite farms', 'Claim additional incentives from other protocols'],
   },
   farmBoost: {
@@ -118,7 +119,7 @@ export const BenefitCard: React.FC<{
             {button}
           </NextLinkFromReactRouter>
         ) : null}
-        {button && onClick ? button : null}
+        {button && !info.link && onClick ? button : null}
       </FlexGap>
     </StyledCard>
   )
