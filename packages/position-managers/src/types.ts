@@ -2,7 +2,7 @@ import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Address, Hash } from 'viem'
 
-import { MANAGER, BaseManager } from './constants/managers'
+import { BaseManager, MANAGER } from './constants/managers'
 
 export enum OnChainActionType {
   ADD_LIQUIDITY,
