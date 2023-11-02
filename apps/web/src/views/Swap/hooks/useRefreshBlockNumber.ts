@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { useSWRConfig } from 'swr'
+import { useQueryClient } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export const useRefreshBlockNumber = () => {
@@ -11,19 +11,19 @@ export const useRefreshBlockNumber = () => {
     }
   }, [isLoading])
 
-  const { mutate } = useSWRConfig()
+  const queryClient = useQueryClient()
   const { chainId } = useActiveChainId()
 
   useEffect(() => {
     if (!isLoading) return
 
-    mutate(['blockNumberFetcher', chainId])
+    queryClient.invalidateQueries(['blockNumberFetcher', chainId])
 
     // setTimeout is used to demonstrate the loading
     // because the real loading state occurs on multicall state
     // we don't know when the fetch is finished.
     setTimeout(() => setFetch(false), 500)
-  }, [mutate, isLoading, chainId])
+  }, [queryClient, isLoading, chainId])
 
   return { refreshBlockNumber, isLoading }
 }
