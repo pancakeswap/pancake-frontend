@@ -6,6 +6,7 @@ import {
   Flex,
   Grid,
   Heading,
+  ModalV2,
   NextLinkFromReactRouter,
   PageHeader,
   Text,
@@ -13,7 +14,9 @@ import {
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import Page from 'components/Layout/Page'
 import { getTotalIFOSold } from 'config/constants/ifo'
+import { useState } from 'react'
 import { BenefitCard } from './components/BenefitCard'
+import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 import { useSnapshotVotingCount } from './hooks/useSnapshotVotingCount'
@@ -24,8 +27,13 @@ const CakeStaking = () => {
   const { t } = useTranslation()
   const gaugesVotingCount = useGaugesVotingCount()
   const snapshotVotingCount = useSnapshotVotingCount()
+  const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
+
   return (
     <>
+      <ModalV2 isOpen={cakeRewardModalVisible} closeOnOverlayClick onDismiss={() => setCakeRewardModalVisible(false)}>
+        <CakeRewardsCard onDismiss={() => setCakeRewardModalVisible(false)} />
+      </ModalV2>
       <PageHeader>
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
@@ -62,16 +70,10 @@ const CakeStaking = () => {
             type="earnCake"
             dataText="123,456,789 CAKE"
             onClick={() => {
-              throw Error('To be implemented')
+              setCakeRewardModalVisible(true)
             }}
           />
-          <BenefitCard
-            type="gaugesVoting"
-            dataText={`${gaugesVotingCount ?? 0}`}
-            onClick={() => {
-              throw Error('To be implemented')
-            }}
-          />
+          <BenefitCard type="gaugesVoting" dataText={`${gaugesVotingCount ?? 0}`} onClick={() => {}} />
         </Grid>
       </PageHeader>
       <Page title={t('Cake staking')}>
