@@ -2,11 +2,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { multicallReducerAtom } from 'state/multicall/reducer'
-import {
-  // eslint-disable-next-line camelcase
-  unstable_serialize,
-  useSWRConfig,
-} from 'swr'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Abi,
   Address,
@@ -255,12 +251,12 @@ export function useSingleContractMultipleData<TAbi extends Abi | readonly unknow
 
   const results = useCallsData(calls, options)
 
-  const { cache } = useSWRConfig()
+  const queryClient = useQueryClient()
 
   return useMemo(() => {
-    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+    const currentBlockNumber = queryClient.getQueryCache().find<number>(['blockNumber', chainId])?.state?.data
     return results.map((result) => toCallState(result, contract.abi, functionName, currentBlockNumber))
-  }, [cache, chainId, results, contract.abi, functionName])
+  }, [queryClient, chainId, results, contract.abi, functionName])
 }
 
 const DEFAULT_OPTIONS = {
@@ -316,12 +312,12 @@ export function useMultipleContractSingleData<TAbi extends Abi | readonly unknow
   const results = useCallsData(calls, options?.blocksPerFetch ? { blocksPerFetch } : DEFAULT_OPTIONS)
   const { chainId } = useActiveChainId()
 
-  const { cache } = useSWRConfig()
+  const queryClient = useQueryClient()
 
   return useMemo(() => {
-    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+    const currentBlockNumber = queryClient.getQueryCache().find<number>(['blockNumber', chainId])?.state?.data
     return results.map((result) => toCallState(result, abi, functionName, currentBlockNumber))
-  }, [cache, chainId, results, abi, functionName])
+  }, [queryClient, chainId, results, abi, functionName])
 }
 
 export type SingleCallParameters<
@@ -360,11 +356,11 @@ export function useSingleCallResult<TAbi extends Abi | readonly unknown[], TFunc
 
   const result = useCallsData(calls, options)[0]
 
-  const { cache } = useSWRConfig()
+  const queryClient = useQueryClient()
   const { chainId } = useActiveChainId()
 
   return useMemo(() => {
-    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+    const currentBlockNumber = queryClient.getQueryCache().find<number>(['blockNumber', chainId])?.state?.data
     return toCallState(result, contract?.abi, functionName, currentBlockNumber)
-  }, [cache, chainId, result, contract?.abi, functionName])
+  }, [queryClient, chainId, result, contract?.abi, functionName])
 }

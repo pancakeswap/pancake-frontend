@@ -5,10 +5,10 @@ import { useOrderActionHandlers } from 'state/limitOrders/hooks'
 import { Field, Rate } from 'state/limitOrders/types'
 import { Currency, Price } from '@pancakeswap/sdk'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useSWRConfig } from 'swr'
+import { useQueryClient } from '@tanstack/react-query'
 import {
-  OPEN_ORDERS_SWR_KEY,
-  EXECUTED_CANCELLED_ORDERS_SWR_KEY,
+  OPEN_ORDERS_QUERY_KEY,
+  EXECUTED_CANCELLED_ORDERS_QUERY_KEY,
 } from 'views/LimitOrders/hooks/useGelatoLimitOrdersHistory'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useGelatoLimitOrdersLib from './useGelatoLimitOrdersLib'
@@ -41,7 +41,7 @@ export interface GelatoLimitOrdersHandlers {
 const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
   const { account, chainId } = useAccountActiveChain()
 
-  const { mutate } = useSWRConfig()
+  const queryClient = useQueryClient()
 
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
@@ -102,12 +102,12 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         } as Order,
       })
 
-      mutate(OPEN_ORDERS_SWR_KEY)
-      mutate(EXECUTED_CANCELLED_ORDERS_SWR_KEY)
+      queryClient.invalidateQueries(OPEN_ORDERS_QUERY_KEY)
+      queryClient.invalidateQueries(EXECUTED_CANCELLED_ORDERS_QUERY_KEY)
 
       return tx
     },
-    [addTransaction, chainId, gelatoLimitOrders, mutate],
+    [addTransaction, chainId, gelatoLimitOrders, queryClient],
   )
 
   const handleLimitOrderCancellation = useCallback(
@@ -179,12 +179,12 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         },
       })
 
-      mutate(OPEN_ORDERS_SWR_KEY)
-      mutate(EXECUTED_CANCELLED_ORDERS_SWR_KEY)
+      queryClient.invalidateQueries(OPEN_ORDERS_QUERY_KEY)
+      queryClient.invalidateQueries(EXECUTED_CANCELLED_ORDERS_QUERY_KEY)
 
       return tx
     },
-    [gelatoLimitOrders, chainId, account, addTransaction, mutate],
+    [gelatoLimitOrders, chainId, account, addTransaction, queryClient],
   )
 
   const handleInput = useCallback(

@@ -1,0 +1,19 @@
+{
+  "env": {
+    "es6": true,
+    "browser": true,
+    "jest": true
+  },
+  "plugins": ["lodash"],
+  "extends": ["plugin:@next/next/recommended"],
+  "rules": {
+    "no-restricted-syntax": 0,
+    "import/no-unresolved": 0,
+    "no-console": ["warn", { "allow": ["info", "warn", "error", "debug"] }],
+    "no-plusplus": 0,
+    "prefer-destructuring": ["warn", { "object": true, "array": false }],
+    "no-underscore-dangle": 0,
+    "lodash/import-scope": [2, "method"],
+    "@next/next/no-img-element": 0
+  }
+}

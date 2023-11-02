@@ -7,7 +7,7 @@ import { ArrowUpIcon } from "../Svg";
 const FixedContainer = styled.div`
   position: fixed;
   right: 18px;
-  bottom: calc(82px + env(safe-area-inset-bottom));
+  bottom: calc(110px + env(safe-area-inset-bottom));
 `;
 
 const ScrollToTopButtonV2 = () => {

@@ -1,8 +1,9 @@
+import 'utils/workerPolyfill'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
-import { log } from 'next-axiom'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getViemClients } from 'utils/viem'
+import { getLogger } from 'utils/datadog'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
@@ -15,6 +16,7 @@ export type WorkerGetBestTradeEvent = [
 ]
 
 const fetch_ = fetch
+const logger = getLogger('quote-rpc', { forwardErrorsToLogs: false })
 
 const fetchWithLogging = async (url: RequestInfo | URL, init?: RequestInit) => {
   const start = Date.now()
@@ -28,13 +30,19 @@ const fetchWithLogging = async (url: RequestInfo | URL, init?: RequestInit) => {
   const response = await fetch_(url, init)
   const end = Date.now()
   if (urlString && size) {
-    if (!urlString.includes('vercel-vitals.axiom.co')) {
-      log.info('QuoteRPC', {
-        url: urlString,
-        size,
-        time: end - start,
-        status: response.status,
-      })
+    if (!urlString.includes('datadoghq.com')) {
+      try {
+        logger.info('Quote RPC', {
+          rpc: {
+            duration: end - start,
+            url: urlString,
+            size,
+            status: response.status,
+          },
+        })
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 
