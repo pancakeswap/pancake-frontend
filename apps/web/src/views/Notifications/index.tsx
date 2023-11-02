@@ -13,7 +13,7 @@ const Notifications = () => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { identityKey, handleRegistration, address, isW3iInitialized } = useRegistration()
-  const { isSubscribed } = useManageSubscription()
+  const { isSubscribed } = useManageSubscription(`eip155:1:${address}`)
 
   const isReady = Boolean(isSubscribed && address && isW3iInitialized)
   const isRegistered = Boolean(!identityKey && isSubscribed)
@@ -31,7 +31,7 @@ const Notifications = () => {
   )
 
   useEffect(() => {
-    if (!address) setViewIndex(PAGE_VIEW.OnboardView)
+    if (!address || !isReady) setViewIndex(PAGE_VIEW.OnboardView)
     if (isReady) setViewIndex(PAGE_VIEW.NotificationView)
   }, [address, isReady])
 
