@@ -75,7 +75,7 @@ const StyledGameBenefitsListContainer = styled(Flex)`
 
 const GameBenefitsList = [
   {
-    title: <Trans>PConnect with a 1.5 Million Ready-to-Play Community</Trans>,
+    title: <Trans>Connect with a 1.5 Million Ready-to-Play Community</Trans>,
     desc: <Trans>Join the community and create games with infinite possibilities</Trans>,
     imgUrl: '/images/game/developers/bring-your-game-1.png',
   },

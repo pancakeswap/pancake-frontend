@@ -28,7 +28,7 @@ export const Banner = () => {
           mb={['16px', '16px', '16px', '16px', '16px', '24px']}
           fontSize={['40px', '40px', '40px', '40px', '40px', '64px']}
         >
-          {isDesktop ? t('PancakeSwap Gaming Marketplace ') : t('Gaming Marketplace')}
+          {isDesktop ? t('PancakeSwap Gaming Marketplace') : t('Gaming Marketplace')}
         </Text>
         <Text bold lineHeight="110%" fontSize={['16px', '16px', '16px', '16px', '24px']}>
           {t('Play, Build and Connect on PancakeSwap')}
