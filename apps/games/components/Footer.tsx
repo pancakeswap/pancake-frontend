@@ -3,8 +3,8 @@ import { footerLinks } from '@pancakeswap/uikit'
 import Footer from '@pancakeswap/uikit/components/Footer'
 import { languageList, useTranslation } from '@pancakeswap/localization'
 import { useTheme } from 'next-themes'
-import { useCakePrice } from '@pancakeswap/utils/useCakePrice'
 import { ChainId } from '@pancakeswap/chains'
+import { useCakePrice } from 'hooks/useCakePrice'
 
 const FooterPage = () => {
   const { setTheme, resolvedTheme } = useTheme()
