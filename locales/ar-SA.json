@@ -1799,9 +1799,6 @@
   "Wallet not connected": "المحفظة غير مربوطة",
   "Deposited CAKE will be locked for 10 weeks": "سيتم تجميد CAKE المودعة لمدة 10 أسابيع",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "سيتم تحويل إيداع CAKE إلى تجمع الرهن ثابت المدة. يُرجى ملاحظة أنه يمكن سحب CAKE المودع بعد 10 أسابيع فقط.",
-  "Pottery draws on each Friday at 12 PM UTC!": "يجري السحب على رهان اليانصيب في كل يوم جمعة الساعة 12 مساء بالتوقيت العالمي الموحد!",
-  "Next draw date": "تاريخ السحب التالي",
-  "Locked date": "تاريخ التجميد",
   "in": "بعد",
   "Chance of winning next round": "فرصة الفوز بالجولة التالية",
   "Your": "خاصة بك",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% من مكافآت الرهن من الأموال المودعة",
   "Fees (8%)": "الرسوم (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "8% من وعاء الجوائز الموزعة كل أسبوع سيتم قيدها كرسوم",
-  "until the next draw": "حتى السحب التالي",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "تكون فرصتك في الفوز متناسبة مع CAKE الذي تودعه بالنسبة إلى إجمالي وديعة CAKE لرهان اليانصيب. حاليًا، يوجد حد على إجمالي حجم وديعة CAKE أثناء الإصدار التجريبي.",
   "winning chance": "فرصة الفوز",
   "TVL": "إجمالي القيمة المجمَّدة (TVL)",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }
