@@ -20,6 +20,7 @@ import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 import { useSnapshotVotingCount } from './hooks/useSnapshotVotingCount'
+import { LockCake } from './components/LockCake'
 
 const totalIFOSold = getTotalIFOSold()
 
@@ -62,6 +63,7 @@ const CakeStaking = () => {
             <NewCakeStakingCard />
           </Box>
         </Flex>
+        <LockCake />
         <Text fontSize="40px" bold color="secondary" lineHeight="110%" mt="45px" mb="48px">
           {t('Benefits of veCAKE')}
         </Text>
