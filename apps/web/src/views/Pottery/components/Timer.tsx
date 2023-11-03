@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { Flex, Heading, Text } from '@pancakeswap/uikit'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { remainTimeToNextFriday } from '../helpers'
 
 const FlexGap = styled(Flex)<{ gap: string }>`
   gap: ${({ gap }) => gap};
@@ -61,14 +60,6 @@ const Timer: React.FC<React.PropsWithChildren<{ secondsRemaining: number; text: 
       </FlexContainer>
     </>
   )
-}
-
-export const BannerTimer: React.FC<React.PropsWithChildren> = () => {
-  const { t } = useTranslation()
-
-  const secondsRemaining = remainTimeToNextFriday()
-
-  return <Timer secondsRemaining={secondsRemaining} text={t('until the next draw')} />
 }
 
 export const LockTimer: React.FC<React.PropsWithChildren<{ lockTime: number }>> = ({ lockTime }) => {
