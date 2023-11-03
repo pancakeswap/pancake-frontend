@@ -29,7 +29,7 @@ const Pottery: React.FC<React.PropsWithChildren> = () => {
       <Box padding="0 16px" margin="10px auto" width={['100%', '100%', '100%', '800px']}>
         <Message variant="warning">
           <MessageText>
-            <Text as="span">{t('Pancakeswap Prediction (BETA) is indefinitely halted. Please refer')}</Text>
+            <Text as="span">{t('Pancakeswap Pottery (BETA) is indefinitely halted. Please refer')}</Text>
             <Link
               style={{ display: 'inline-block' }}
               m="0 4px"
