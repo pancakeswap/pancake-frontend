@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, getChainName } from '@pancakeswap/chains'
 
 import { BaseIfoConfig, Ifo } from '../../types'
 import { isCrossChainIfoSupportedOnly, isIfoSupported } from '../../utils'
@@ -10,7 +10,7 @@ export async function getIfoConfig(chainId?: ChainId): Promise<Ifo[]> {
   }
 
   try {
-    const { ifos } = await import(`./${chainId}`)
+    const { ifos } = await import(`./${getChainName(chainId)}`)
     return ifos.map((ifo: BaseIfoConfig) => ({
       ...ifo,
       chainId,
