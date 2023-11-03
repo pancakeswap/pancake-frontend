@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Dompet tidak terhubung",
   "Deposited CAKE will be locked for 10 weeks": "CAKE yang disetorkan akan dikunci selama 10 minggu",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Setoran CAKE akan dialihkan ke pool penumpukan termin tetap. Harap ketahui bahwa CAKE yang disetorkan HANYA dapat ditarik setelah 10 minggu.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Pengundian Pottery pada setiap Jumat, pukul 12.00 UTC!",
-  "Next draw date": "Tanggal pengundian selanjutnya",
-  "Locked date": "Tanggal terkunci",
   "in": "dalam",
   "Chance of winning next round": "Peluang menang di babak selanjutnya",
   "Your": "Anda",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% dari hadiah penumpukan berasal dari dana yang disetorkan",
   "Fees (8%)": "Biaya (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "8% dari pot hadiah yang didistribusikan setiap minggu akan dibebankan sebagai biaya",
-  "until the next draw": "hingga pengundian selanjutnya",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Peluang Anda untuk menang proporsional dengan setoran CAKE Anda yang relatif terhadap total setoran CAKE untuk Pottery. Saat ini, ada batas untuk ukuran total setoran CAKE selama rilis beta.",
   "winning chance": "peluang kemenangan",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }
