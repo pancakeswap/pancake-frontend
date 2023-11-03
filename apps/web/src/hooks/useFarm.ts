@@ -33,9 +33,9 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
   }, [chainId, currencyA, currencyB, feeAmount])
 
   return useQuery(
-    [chainId, farmConfig.token0.symbol, farmConfig.token1.symbol, farmConfig.feeAmount],
+    [chainId, farmConfig?.token0.symbol, farmConfig?.token1.symbol, farmConfig?.feeAmount],
     async () => {
-      if (!farmConfig) {
+      if (!farmConfig || !chainId) {
         throw new Error('Invalid farm config')
       }
       const tokensToGetPrice: ERC20Token[] = priceHelperTokens[chainId].list || []
