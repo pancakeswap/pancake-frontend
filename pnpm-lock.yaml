@@ -397,6 +397,9 @@ importers:
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@tanstack/react-query':
+        specifier: ^4.28.0
+        version: 4.28.0(react-dom@18.2.0)(react@18.2.0)
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
         version: 2.3.0(@types/node@18.0.4)(next@13.4.2)(webpack@5.88.2)
@@ -430,9 +433,6 @@ importers:
       swiper:
         specifier: ^10.3.1
         version: 10.3.1
-      swr:
-        specifier: ^2.2.4
-        version: 2.2.4(react@18.2.0)
       typescript:
         specifier: ^5.1.3
         version: 5.1.3

@@ -1,5 +1,4 @@
 import { styled } from 'styled-components'
-import useSWR from 'swr'
 import { useState, useEffect, useRef } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
 import CardArticle from 'components/Article/CardArticle'
@@ -12,6 +11,7 @@ import useAllArticle from 'hooks/useAllArticle'
 import useLanguage from 'hooks/useLanguage'
 import SkeletonArticle from 'components/SkeletonArticle'
 import { getLanguageCodeFromLS, LS_KEY } from 'utils/getLanguageCodeFromLS'
+import { useQuery } from '@tanstack/react-query'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -79,7 +79,7 @@ const AllArticle = () => {
     { label: t('Sort Title A-Z'), value: 'title:asc' },
     { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
-  const { data: categoriesData } = useSWR<Categories[]>('/categories')
+  const { data: categoriesData } = useQuery<Categories[]>(['/categories'], { enabled: false })
 
   useEffect(() => {
     setCurrentPage(1)
