@@ -12,8 +12,8 @@ import { PAGE_VIEW } from './types'
 const Notifications = () => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const { identityKey, handleRegistration, address, isW3iInitialized } = useRegistration()
-  const { isSubscribed } = useManageSubscription(`eip155:1:${address}`)
+  const { account, identityKey, handleRegistration, address, isW3iInitialized } = useRegistration()
+  const { isSubscribed } = useManageSubscription(account)
 
   const isReady = Boolean(isSubscribed && address && isW3iInitialized)
   const isRegistered = Boolean(!identityKey && isSubscribed)

@@ -64,7 +64,7 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
   const toast = useToast()
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { subscribe, isSubscribing } = useManageSubscription()
+  const { subscribe, isSubscribing } = useManageSubscription(`eip155:1:${account}`)
   const { sendPushNotification } = useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {

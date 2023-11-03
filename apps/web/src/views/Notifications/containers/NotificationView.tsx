@@ -15,6 +15,7 @@ import { useMessages } from '@web3inbox/widget-react'
 import { useCallback, useMemo, useState } from 'react'
 import { NotificationFilterTypes } from 'views/Notifications/constants'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
+import { useAccount } from 'wagmi'
 import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
@@ -28,7 +29,8 @@ const NotificationView = ({
 }) => {
   const [notificationType, setNotificationType] = useState<string>('All')
   const [isClosing, setIsClosing] = useState<boolean>(false)
-  const { messages: notifications, deleteMessage } = useMessages()
+  const { address: account } = useAccount()
+  const { messages: notifications, deleteMessage } = useMessages(`eip155:1:${account}`)
   const { t } = useTranslation()
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
