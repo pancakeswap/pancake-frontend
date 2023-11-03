@@ -24,7 +24,7 @@ export const OtherGames: React.FC<React.PropsWithChildren<OtherGamesProps>> = ({
     if (otherGames?.length) {
       setPickedGameId(otherGames?.[0]?.id)
     }
-  }, [])
+  }, [otherGames])
 
   const pickedGame: GameType | undefined = useMemo(
     () => otherGames?.find((i) => i.id === pickedGameId),

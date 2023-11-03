@@ -157,7 +157,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                 <Flex>
                   <Flex flexDirection="column" mr="4px">
                     <Text bold fontSize={12} color="textSubtle" textTransform="uppercase" textAlign="right">
-                      {t('Published by')}
+                      {t('Published By')}
                     </Text>
                     <Text
                       bold
