@@ -361,10 +361,10 @@ const useV3BoostedFarm = (pids: number[]) => {
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
 
   const { data } = useQuery(
-    ['v3/boostedFarm', chainId, pids.join('-')],
+    ['v3/boostedFarm', chainId, pids?.join('-')],
     () => getV3FarmBoosterWhiteList({ farmBoosterContract: farmBoosterV3Contract, chainId, pids }),
     {
-      enabled: Boolean(chainId && pids.length > 0 && bCakeSupportedChainId.includes(chainId)),
+      enabled: Boolean(chainId && pids?.length > 0 && bCakeSupportedChainId.includes(chainId)),
       retry: 3,
       retryDelay: 3000,
       keepPreviousData: true,
