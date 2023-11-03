@@ -8,18 +8,18 @@ export const pancakeProtectors: GameType = {
   description:
     'PancakeSwap and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players, as well as CAKE, Pancake Squad, and Bunnies holders.',
   publishDate: 1698044972,
-  headerImage: '/images/game/example-header.jpeg',
+  headerImage: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/header.jpeg',
   headerIconImage: {
-    desktop: '/images/game/example-desktop-header-icon.png',
-    mobile: '/images/game/example-mobile-header-icon.png',
+    desktop: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/desktop-header-icon.png',
+    mobile: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/mobile-header-icon.png',
   },
   projectLogo: {
-    lightTheme: '/images/game/game-page-image/project-logo-light-theme.png',
-    darkTheme: '/images/game/game-page-image/project-logo-dark-theme.png',
+    lightTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/project-logo-light-theme.png',
+    darkTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/project-logo-dark-theme.png',
   },
   projectCircleLogo: {
-    lightTheme: '/images/game/game-page-image/mobox-circle-logo.png',
-    darkTheme: '/images/game/game-page-image/mobox-circle-logo.png',
+    lightTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/mobox-circle-logo.png',
+    darkTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/mobox-circle-logo.png',
   },
   gameLink: 'https://protectors.pancakeswap.finance/',
   posters: {
@@ -27,19 +27,19 @@ export const pancakeProtectors: GameType = {
     items: [
       {
         type: PostersItemDataType.Image,
-        image: '/images/game/game-page-image/1.png',
+        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/1.png',
       },
       {
         type: PostersItemDataType.Image,
-        image: '/images/game/game-page-image/2.jpg',
+        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/2.jpg',
       },
       {
         type: PostersItemDataType.Image,
-        image: '/images/game/game-page-image/3.png',
+        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/3.png',
       },
       {
         type: PostersItemDataType.Image,
-        image: '/images/game/game-page-image/4.png',
+        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/4.png',
       },
     ],
   },
