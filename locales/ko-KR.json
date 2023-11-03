@@ -1799,9 +1799,6 @@
   "Wallet not connected": "지갑 연결 끊김",
   "Deposited CAKE will be locked for 10 weeks": "예치된 CAKE는 10주 동안 잠깁니다",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "CAKE 예치는 고정 기간 스테이킹 풀로 전환됩니다. 예치된 CAKE는 10주가 지나야만 인출 가능합니다.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Pottery 추첨은 매주 금요일 오후 12시(UTC)에 진행됩니다!",
-  "Next draw date": "다음 추첨일",
-  "Locked date": "잠긴 날짜",
   "in": "남은 시간:",
   "Chance of winning next round": "다음 라운드 당첨 가능성",
   "Your": "내",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "예치된 자금에서 스테이킹 리워드의 20%",
   "Fees (8%)": "수수료(8%)",
   "8% of the prize pot distributed each week will be charged as fees": "매주 배분되는 상금 포트의 8%가 수수료로 청구됩니다",
-  "until the next draw": "다음 추첨까지 남은 시간",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "당첨 확률은 Pottery에 대한 총 CAKE 예치 대비 회원님이 예치하는 CAKE에 비례합니다. 현재, 베타 릴리스 기간 동안 총 CAKE 예치 규모에 대한 캡이 있습니다.",
   "winning chance": "당첨 기회",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }
