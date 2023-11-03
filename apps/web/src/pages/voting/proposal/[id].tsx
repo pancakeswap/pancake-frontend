@@ -19,14 +19,17 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 ProposalPage.Meta = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (props.id && props.dehydratedState?.queries?.[0]?.state?.data) {
-    const proposal = props.dehydratedState?.queries?.[0]?.state?.data
-    return (
-      <NextSeo
-        openGraph={{
-          description: proposal.title,
-        }}
-      />
-    )
+    // @ts-ignore
+    const { title } = props.dehydratedState?.queries?.[0]?.state?.data
+    if (title) {
+      return (
+        <NextSeo
+          openGraph={{
+            description: title,
+          }}
+        />
+      )
+    }
   }
   return null
 }
