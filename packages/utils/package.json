@@ -17,7 +17,6 @@
     "bignumber.js": "^9.0.0",
     "jotai": "^2.4.3",
     "styled-components": "^6.0.7",
-    "swr": "^2.2.4",
     "vitest": "^0.30.1"
   },
   "peerDependenciesMeta": {

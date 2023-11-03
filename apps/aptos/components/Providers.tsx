@@ -1,5 +1,4 @@
 import { ModalProvider, light, dark, UIKitProvider } from '@pancakeswap/uikit'
-import { SWRConfig } from 'swr'
 import { LanguageProvider } from '@pancakeswap/localization'
 import { AwgmiConfig } from '@pancakeswap/awgmi'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
@@ -20,9 +19,7 @@ const Providers: React.FC<React.PropsWithChildren<{ children: React.ReactNode }>
       <NextThemeProvider>
         <StyledUIKitProvider>
           <LanguageProvider>
-            <SWRConfig>
-              <ModalProvider>{children}</ModalProvider>
-            </SWRConfig>
+            <ModalProvider>{children}</ModalProvider>
           </LanguageProvider>
         </StyledUIKitProvider>
       </NextThemeProvider>
