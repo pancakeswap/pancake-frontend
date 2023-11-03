@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Wallet not connected",
   "Deposited CAKE will be locked for 10 weeks": "Deposited CAKE will be locked for 10 weeks",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Pottery draws on each Friday at 12 PM UTC!",
-  "Next draw date": "Next draw date",
-  "Locked date": "Locked date",
   "in": "in",
   "Chance of winning next round": "Chance of winning next round",
   "Your": "Your",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% of the staking rewards from the funds deposited",
   "Fees (8%)": "Fees (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "8% of the prize pot distributed each week will be charged as fees",
-  "until the next draw": "until the next draw",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.",
   "winning chance": "winning chance",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "We are indefinite halt PancakeSwap Prediction (BETA). Please refer to": "We are indefinite halt PancakeSwap Prediction (BETA). Please refer to",
+  "for more details": "for more details"
 }
