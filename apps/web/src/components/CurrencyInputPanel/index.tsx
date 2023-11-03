@@ -1,7 +1,7 @@
 import { useMemo, memo, useCallback } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, Text, useModal, Flex, Box, CopyButton, Loading, Skeleton, ArrowDropDownIcon } from '@pancakeswap/uikit'
-import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
+import { Swap as SwapUI, CurrencyLogo, DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
@@ -16,7 +16,6 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useAccount } from 'wagmi'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
-import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
 
