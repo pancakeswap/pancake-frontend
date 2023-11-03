@@ -102,7 +102,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   const tokenAddress = token ? safeGetAddress(token.address) : null
 
   const amountInDollar = useStablecoinPriceAmount(
-    showUSDPrice ? currency : undefined,
+    showUSDPrice ? currency ?? undefined : undefined,
     Number.isFinite(+value) ? +value : undefined,
     {
       hideIfPriceImpactTooHigh: true,
