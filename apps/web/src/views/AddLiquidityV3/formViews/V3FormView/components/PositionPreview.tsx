@@ -13,7 +13,7 @@ import { Bound } from 'config/constants/types'
 import Divider from 'components/Divider'
 import { RangePriceSection } from 'components/RangePriceSection'
 import { formatPrice } from 'utils/formatCurrencyAmount'
-import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 
 import { RangeTag } from '../../../../../components/RangeTag'
 import RateToggle from './RateToggle'

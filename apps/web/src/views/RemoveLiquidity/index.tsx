@@ -31,7 +31,7 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/useLPApr'
-import { formattedCurrencyAmount } from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import { formattedCurrencyAmount } from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { splitSignature } from 'utils/splitSignature'
 import { Hash } from 'viem'
 
