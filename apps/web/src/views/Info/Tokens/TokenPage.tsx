@@ -34,13 +34,13 @@ import {
   useChainIdByQuery,
   useChainNameByQuery,
   useMultiChainPath,
-  usePoolDatasSWR,
-  usePoolsForTokenSWR,
+  usePoolDatasQuery,
+  usePoolsForTokenQuery,
   useStableSwapPath,
-  useTokenChartDataSWR,
-  useTokenDataSWR,
-  useTokenPriceDataSWR,
-  useTokenTransactionsSWR,
+  useTokenChartDataQuery,
+  useTokenDataQuery,
+  useTokenPriceDataQuery,
+  useTokenTransactionsQuery,
 } from 'state/info/hooks'
 import { styled } from 'styled-components'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
@@ -90,14 +90,14 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   const cmcLink = useCMCLink(address)
 
-  const tokenData = useTokenDataSWR(address)
-  const poolsForToken = usePoolsForTokenSWR(address)
-  const poolDatas = usePoolDatasSWR(useMemo(() => poolsForToken ?? [], [poolsForToken]))
-  const transactions = useTokenTransactionsSWR(address)
-  const chartData = useTokenChartDataSWR(address)
+  const tokenData = useTokenDataQuery(address)
+  const poolsForToken = usePoolsForTokenQuery(address)
+  const poolDatas = usePoolDatasQuery(useMemo(() => poolsForToken ?? [], [poolsForToken]))
+  const transactions = useTokenTransactionsQuery(address)
+  const chartData = useTokenChartDataQuery(address)
 
   // pricing data
-  const priceData = useTokenPriceDataSWR(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
+  const priceData = useTokenPriceDataQuery(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
   const adjustedPriceData = useMemo(() => {
     // Include latest available price
     if (priceData && tokenData && priceData.length > 0) {
@@ -118,6 +118,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const chainPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
   const infoTypeParam = useStableSwapPath()
+  const checksummedAddress = safeGetAddress(tokenData?.address)
 
   return (
     <Page>
@@ -178,11 +179,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     fontSize={isXs || isSm ? '24px' : '40px'}
                     id="info-token-name-title"
                   >
-                    {(tokenData.address && subgraphTokenName[safeGetAddress(tokenData.address)]) || tokenData.name}
+                    {checksummedAddress ? subgraphTokenName[checksummedAddress] : tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                    ({(tokenData.address && subgraphTokenSymbol[safeGetAddress(tokenData.address)]) ?? tokenData.symbol}
-                    )
+                    ({checksummedAddress ? subgraphTokenSymbol[checksummedAddress] : tokenData.symbol})
                   </Text>
                 </Flex>
                 <Flex mt="8px" ml="46px" alignItems="center">

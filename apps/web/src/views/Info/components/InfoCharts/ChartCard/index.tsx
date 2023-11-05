@@ -21,7 +21,7 @@ enum ChartView {
 
 interface ChartCardProps {
   variant: 'pool' | 'token'
-  chartData: ChartEntry[]
+  chartData: ChartEntry[] | undefined
   tokenData?: TokenData
   tokenPriceData?: PriceChartEntry[]
 }
@@ -66,7 +66,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
   }, [chartData])
 
   const getLatestValueDisplay = () => {
-    let valueToDisplay = null
+    let valueToDisplay: string | undefined = ''
     if (hoverValue) {
       valueToDisplay = formatAmount(hoverValue)
     } else if (view === ChartView.VOLUME && formattedVolumeData.length > 0) {
@@ -95,10 +95,12 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
         <TabToggle isActive={view === ChartView.LIQUIDITY} onClick={() => setView(ChartView.LIQUIDITY)}>
           <Text>{t('Liquidity')}</Text>
         </TabToggle>
-        {variant === 'token' && (
+        {variant === 'token' ? (
           <TabToggle isActive={view === ChartView.PRICE} onClick={() => setView(ChartView.PRICE)}>
             <Text>{t('Price')}</Text>
           </TabToggle>
+        ) : (
+          <></>
         )}
       </TabToggleGroup>
 

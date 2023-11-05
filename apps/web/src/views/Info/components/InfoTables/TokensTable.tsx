@@ -103,6 +103,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
   const chianPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
   const stableSwapPath = useStableSwapPath()
+  const checksummedAddress = safeGetAddress(tokenData.address)
 
   return (
     <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
@@ -115,12 +116,8 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
-              <Text>
-                {(tokenData.address && subgraphTokenName[safeGetAddress(tokenData.address)]) || tokenData.name}
-              </Text>
-              <Text ml="8px">
-                ({(tokenData.address && subgraphTokenSymbol[safeGetAddress(tokenData.address)]) || tokenData.symbol})
-              </Text>
+              <Text>{checksummedAddress ? subgraphTokenName[checksummedAddress] : tokenData.name}</Text>
+              <Text ml="8px">({checksummedAddress ? subgraphTokenSymbol[checksummedAddress] : tokenData.symbol})</Text>
             </Flex>
           )}
         </Flex>
@@ -148,7 +145,7 @@ const MAX_ITEMS = 10
 
 const TokenTable: React.FC<
   React.PropsWithChildren<{
-    tokenDatas: TokenData[] | undefined
+    tokenDatas: (TokenData | undefined)[]
     maxItems?: number
   }>
 > = ({ tokenDatas, maxItems = MAX_ITEMS }) => {
@@ -172,7 +169,7 @@ const TokenTable: React.FC<
     return tokenDatas
       ? orderBy(
           tokenDatas,
-          (tokenData) => tokenData[sortField as keyof TokenData],
+          (tokenData) => tokenData?.[sortField as keyof TokenData],
           sortDirection ? 'desc' : 'asc',
         ).slice(maxItems * (page - 1), page * maxItems)
       : []

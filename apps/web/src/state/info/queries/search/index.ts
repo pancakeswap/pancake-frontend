@@ -1,7 +1,7 @@
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { useGetChainName, usePoolDatasSWR, useTokenDatasSWR } from 'state/info/hooks'
+import { useGetChainName, usePoolDatasQuery, useTokenDatasQuery } from 'state/info/hooks'
 import { PoolData, TokenData } from 'state/info/types'
 import { getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 
@@ -56,15 +56,15 @@ const getIds = (entityArrays: SingleQueryResponse[][]) => {
 const useFetchSearchResults = (
   searchString: string,
 ): {
-  tokens: TokenData[]
-  pools: PoolData[]
+  tokens: TokenData[] | undefined
+  pools: (PoolData | undefined)[]
   tokensLoading: boolean
   poolsLoading: boolean
   error: boolean
 } => {
   const [searchResults, setSearchResults] = useState({
-    tokens: [], // Token ids found by search query
-    pools: [], // Pool ids found by search query
+    tokens: [] as string[], // Token ids found by search query
+    pools: [] as string[], // Pool ids found by search query
     loading: false, // Search query is in progress
     error: false, // GraphQL returned error
   })
@@ -85,11 +85,12 @@ const useFetchSearchResults = (
 
   const tokenQuery = TOKEN_SEARCH
   const poolQuery = POOL_SEARCH
-  const queryClient = getMultiChainQueryEndPointWithStableSwap(chainName)
+  const queryClient = chainName ? getMultiChainQueryEndPointWithStableSwap(chainName) : undefined
 
   useEffect(() => {
     const search = async () => {
       try {
+        if (!queryClient) return
         const tokens = await queryClient.request<TokenSearchResponse>(tokenQuery, {
           symbol: searchString.toUpperCase(),
           // Most well known tokens have first letter capitalized
@@ -127,12 +128,12 @@ const useFetchSearchResults = (
   // Save ids to Redux
   // Token and Pool updater will then go fetch full data for these addresses
   // These hooks in turn will return data of tokens that have been fetched
-  const tokenDatasFull = useTokenDatasSWR(searchResults.tokens)
-  const poolDatasFull = usePoolDatasSWR(searchResults.pools)
+  const tokenDatasFull = useTokenDatasQuery(searchResults.tokens)
+  const poolDatasFull = usePoolDatasQuery(searchResults.pools)
 
   // If above hooks returned not all tokens/pools it means
   // that some requests for full data are in progress
-  const tokensLoading = tokenDatasFull.length !== searchResults.tokens.length || searchResults.loading
+  const tokensLoading = tokenDatasFull?.length !== searchResults.tokens.length || searchResults.loading
   const poolsLoading = poolDatasFull.length !== searchResults.pools.length || searchResults.loading
 
   return {

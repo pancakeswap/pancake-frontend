@@ -12,8 +12,8 @@ import {
   useChainIdByQuery,
   useChainNameByQuery,
   useMultiChainPath,
-  usePoolDatasSWR,
-  useTokenDatasSWR,
+  usePoolDatasQuery,
+  useTokenDatasQuery,
 } from 'state/info/hooks'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
@@ -140,11 +140,12 @@ const tokenIncludesSearchTerm = (token: BasicTokenData, value: string) => {
   )
 }
 
-const poolIncludesSearchTerm = (pool: PoolData, value: string) => {
+const poolIncludesSearchTerm = (pool: PoolData | undefined, value: string) => {
   return (
-    pool.address.toLowerCase().includes(value.toLowerCase()) ||
-    tokenIncludesSearchTerm(pool.token0, value) ||
-    tokenIncludesSearchTerm(pool.token1, value)
+    pool &&
+    (pool.address.toLowerCase().includes(value.toLowerCase()) ||
+      tokenIncludesSearchTerm(pool.token0, value) ||
+      tokenIncludesSearchTerm(pool.token1, value))
   )
 }
 
@@ -188,16 +189,20 @@ const Search = () => {
   }
 
   useEffect(() => {
-    if (showMenu) {
-      document.addEventListener('click', handleOutsideClick)
-      document.querySelector('body').style.overflow = 'hidden'
-    } else {
-      document.removeEventListener('click', handleOutsideClick)
-      document.querySelector('body').style.overflow = 'visible'
+    const htmlBodyElement = document.querySelector('body')
+    if (htmlBodyElement) {
+      if (showMenu) {
+        document.addEventListener('click', handleOutsideClick)
+        htmlBodyElement.style.overflow = 'hidden'
+      } else {
+        document.removeEventListener('click', handleOutsideClick)
+        htmlBodyElement.style.overflow = 'visible'
+      }
+      return () => {
+        document.removeEventListener('click', handleOutsideClick)
+      }
     }
-    return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
+    return undefined
   }, [showMenu])
 
   const handleItemClick = (to: string) => {
@@ -208,15 +213,15 @@ const Search = () => {
   }
 
   // get date for watchlist
-  const watchListTokenData = useTokenDatasSWR(savedTokens)
-  const watchListPoolData = usePoolDatasSWR(savedPools)
+  const watchListTokenData = useTokenDatasQuery(savedTokens)
+  const watchListPoolData = usePoolDatasQuery(savedPools)
   const watchListPoolLoading = watchListPoolData.length !== savedPools.length
 
   // filter on view
   const [showWatchlist, setShowWatchlist] = useState(false)
   const tokensForList = useMemo(() => {
     if (showWatchlist) {
-      return watchListTokenData.filter((token) => tokenIncludesSearchTerm(token, value))
+      return watchListTokenData ? watchListTokenData.filter((token) => tokenIncludesSearchTerm(token, value)) : []
     }
     return orderBy(tokens, (token) => token.volumeUSD, 'desc')
   }, [showWatchlist, tokens, watchListTokenData, value])
@@ -225,7 +230,7 @@ const Search = () => {
     if (showWatchlist) {
       return watchListPoolData.filter((pool) => poolIncludesSearchTerm(pool, value))
     }
-    return orderBy(pools, (pool) => pool.volumeUSD, 'desc')
+    return orderBy(pools, (pool) => pool?.volumeUSD, 'desc')
   }, [pools, showWatchlist, watchListPoolData, value])
 
   const contentUnderTokenList = () => {
@@ -315,6 +320,7 @@ const Search = () => {
               )}
             </ResponsiveGrid>
             {tokensForList.slice(0, tokensShown).map((token) => {
+              const checksummedAddress = safeGetAddress(token.address)
               return (
                 <HoverRowLink
                   onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}${stableSwapQuery}`)}
@@ -324,8 +330,8 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${(token.address && subgraphTokenName[safeGetAddress(token.address)]) || token.name} (${
-                          (token.address && subgraphTokenSymbol[safeGetAddress(token.address)]) || token.symbol
+                        <Text>{`${checksummedAddress ? subgraphTokenName[checksummedAddress] : token.name} (${
+                          checksummedAddress ? subgraphTokenSymbol[checksummedAddress] : token.symbol
                         })`}</Text>
                       </Text>
                       <SaveIcon
@@ -353,7 +359,7 @@ const Search = () => {
                 else setTokensShown(tokensForList.length)
               }}
               ref={showMoreTokenRef}
-              style={{ display: tokensForList.length <= tokensShown && 'none' }}
+              style={{ ...(tokensForList.length <= tokensShown && { display: 'none' }) }}
             >
               {t('See more...')}
             </HoverText>
@@ -382,32 +388,34 @@ const Search = () => {
             {poolForList.slice(0, poolsShown).map((p) => {
               return (
                 <HoverRowLink
-                  onClick={() => handleItemClick(`/info${chainPath}/pairs/${p.address}${stableSwapQuery}`)}
-                  key={`searchPoolResult${p.address}`}
+                  onClick={() => handleItemClick(`/info${chainPath}/pairs/${p?.address}${stableSwapQuery}`)}
+                  key={`searchPoolResult${p?.address}`}
                 >
                   <ResponsiveGrid>
                     <Flex>
                       <DoubleCurrencyLogo
-                        address0={p.token0.address}
-                        address1={p.token1.address}
+                        address0={p?.token0.address}
+                        address1={p?.token1.address}
                         chainName={chainName}
                       />
                       <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
-                        <Text>{`${p.token0.symbol} / ${p.token1.symbol}`}</Text>
+                        <Text>{`${p?.token0.symbol} / ${p?.token1.symbol}`}</Text>
                       </Text>
                       <SaveIcon
                         id="watchlist-icon"
                         style={{ marginLeft: '10px' }}
-                        fill={savedPools.includes(p.address)}
+                        fill={p ? savedPools.includes(p.address) : false}
                         onClick={(e) => {
                           e.stopPropagation()
-                          addPool(p.address)
+                          if (p) {
+                            addPool(p.address)
+                          }
                         }}
                       />
                     </Flex>
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSD)}</Text>}
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSDWeek)}</Text>}
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.liquidityUSD)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.volumeUSD)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.volumeUSDWeek)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.liquidityUSD)}</Text>}
                   </ResponsiveGrid>
                 </HoverRowLink>
               )
@@ -419,7 +427,7 @@ const Search = () => {
                 else setPoolsShown(poolForList.length)
               }}
               ref={showMorePoolRef}
-              style={{ display: poolForList.length <= poolsShown && 'none' }}
+              style={{ ...(poolForList.length <= poolsShown && { display: 'none' }) }}
             >
               {t('See more...')}
             </HoverText>
