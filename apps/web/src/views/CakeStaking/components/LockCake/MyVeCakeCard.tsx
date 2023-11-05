@@ -37,7 +37,7 @@ export enum StatingStatus {
   Migrate = 'Migrate',
 }
 
-const MyVeCakeCard = () => {
+export const MyVeCakeCard = () => {
   // @todo @ChefJerry useHook
   // const balance = 1253.48
   const balance = 0
@@ -144,14 +144,5 @@ const LockedInfo = () => {
         </Flex>
       )}
     </FlexGap>
-  )
-}
-
-export const LockCake = () => {
-  return (
-    <Grid gridGap="24px" gridTemplateColumns="1fr 2fr">
-      <MyVeCakeCard />
-      <MyVeCakeCard />
-    </Grid>
   )
 }
