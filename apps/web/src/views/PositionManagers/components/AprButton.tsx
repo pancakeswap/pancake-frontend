@@ -12,6 +12,7 @@ interface Props {
   apr: AprResult
   isAprLoading: boolean
   lpSymbol: string
+  totalStakedInUsd: number
   totalAssetsInUsd: number
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
@@ -28,9 +29,10 @@ export const AprButton = memo(function YieldInfo({
   id,
   apr,
   isAprLoading,
-  totalAssetsInUsd,
+  totalStakedInUsd,
   lpSymbol,
   userLpAmounts,
+  totalSupplyAmounts,
   precision,
 }: Props) {
   const { t } = useTranslation()
@@ -43,8 +45,8 @@ export const AprButton = memo(function YieldInfo({
   )
 
   const tokenPrice = useMemo(
-    () => totalAssetsInUsd / (Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
-    [userLpAmounts, precision, totalAssetsInUsd],
+    () => totalStakedInUsd / (Number(((totalSupplyAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
+    [totalSupplyAmounts, precision, totalStakedInUsd],
   )
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>

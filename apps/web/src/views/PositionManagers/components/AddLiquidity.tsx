@@ -346,6 +346,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                   isAprLoading={aprDataInfo.isLoading}
                   lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
                   totalAssetsInUsd={totalAssetsInUsd}
+                  totalStakedInUsd={totalStakedInUsd}
                   userLpAmounts={userLpAmounts}
                   totalSupplyAmounts={totalSupplyAmounts}
                   precision={precision}
