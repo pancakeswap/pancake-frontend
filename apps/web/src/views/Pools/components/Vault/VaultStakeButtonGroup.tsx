@@ -15,7 +15,7 @@ export const VaultStakeButtonGroup = ({
         'Flexible staking offers flexibility for staking/unstaking whenever you want. Locked staking offers higher APY as well as other benefits.',
       )}
     </Box>,
-    {},
+    { placement: 'bottom-start' },
   )
   return (
     <Box width="100%">
