@@ -137,11 +137,11 @@ const config: (
       label: t('Game'),
       icon: PancakeProtectorIcon,
       hideSubNav: true,
-      href: 'https://pancakeswap.game/',
+      href: 'https://pancakeswap.games/',
       items: [
         {
           label: t('Gaming Marketplace'),
-          href: 'https://pancakeswap.game/',
+          href: 'https://pancakeswap.games/',
           status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
