@@ -3,7 +3,7 @@ import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
-
+import { getVeCakeAddress } from 'utils/addressHelpers'
 import { Address, erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -48,6 +48,14 @@ export const useBSCCakeBalance = () => {
   const { balance, fetchStatus } = useTokenBalance(CAKE[ChainId.BSC]?.address, true)
 
   return { balance: BigInt(balance.toString()), fetchStatus }
+}
+
+// veCake only deploy on bsc/bscTestnet
+export const useVeCakeBalance = () => {
+  const { chainId } = useActiveChainId()
+  const { balance, fetchStatus } = useTokenBalance(getVeCakeAddress(chainId))
+
+  return { balance, fetchStatus }
 }
 
 export default useTokenBalance
