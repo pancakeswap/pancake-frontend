@@ -20,7 +20,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 ProposalPage.Meta = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (props.id && props.dehydratedState?.queries?.[0]?.state?.data) {
     // @ts-ignore
-    const { title } = props.dehydratedState?.queries?.[0]?.state?.data
+    const title = props.dehydratedState?.queries?.[0]?.state?.data?.ttile
     if (title) {
       return (
         <NextSeo
