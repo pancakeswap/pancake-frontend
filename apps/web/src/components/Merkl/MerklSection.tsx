@@ -52,7 +52,7 @@ export function MerklSection({
 
   const { claimTokenReward, isClaiming, rewardsPerToken, hasMerkl } = useMerkl(poolAddress)
 
-  if (!rewardsPerToken.length) return null
+  if (!rewardsPerToken.length || (!hasMerkl && rewardsPerToken.every((r) => r.equalTo('0')))) return null
 
   const learnMoreComp = (
     <Link
