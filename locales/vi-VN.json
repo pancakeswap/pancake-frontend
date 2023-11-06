@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Chưa kết nối ví",
   "Deposited CAKE will be locked for 10 weeks": "Tiền CAKE được gửi sẽ được khóa trong 10 tuần",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Tiền gửi CAKE sẽ được chuyển vào quỹ đặt cọc thời hạn cố định. Vui lòng lưu ý lượng CAKE đã gửi sẽ CHỈ có thể được rút sau 10 tuần.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Rút thăm Hũ vào 12h trưa giờ UTC mỗi thứ 6!",
-  "Next draw date": "Ngày rút thăm tiếp theo",
-  "Locked date": "Ngày khóa",
   "in": "sau",
   "Chance of winning next round": "Cơ hội chiến thắng ở vòng tiếp theo",
   "Your": "Của bạn",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% phần thưởng đặt cọc từ số tiền được gửi",
   "Fees (8%)": "Lệ phí (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "8% hũ giải thưởng được phân bổ mỗi tuần sẽ được tính làm lệ phí",
-  "until the next draw": "cho đến lần rút thăm tiếp theo",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Cơ hội chiến thắng của bạn tỷ lệ với lượng CAKE mà bạn đã gửi trên tổng lượng CAKE được gửi vào Hũ. Hiện tại, có một mức giới hạn về tổng lượng tiền gửi CAKE trong bản phát hành beta.",
   "winning chance": "cơ hội chiến thắng",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

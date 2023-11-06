@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Hindi nakakonekta ang wallet",
   "Deposited CAKE will be locked for 10 weeks": "Ila-lock sa loob ng 10 linggo ang naidepositong CAKE",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Ililipat ang deposito ng CAKE sa fixed-term na pool sa pag-stake. Pakitandaang puwede LANG ma-withdraw ang naidepositong CAKE pagkatapos ng 10 linggo.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Bumubunot ang pottery kada Biyernes nang 12 PM UTC!",
-  "Next draw date": "Susunod na petsa ng pagbunot",
-  "Locked date": "Naka-lock na petsa",
   "in": "sa",
   "Chance of winning next round": "Tsansang manalo sa susunod na round",
   "Your": "Iyong",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% ng mga reward sa pag-stake mula mga naidepositong pondo",
   "Fees (8%)": "Mga Bayarin (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "8% ng pot ng premyo na ipinapamahagi bawat linggo ay sisingilin bilang mga bayarin",
-  "until the next draw": "hanggang sa susunod na bunot",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Ang tsansa mong manalo ay katumbas ng CAKE na idineposito mo kaugnay ng kabuuang idinepositong CAKE para sa Pottery. Sa kasalukuyan, walang cap sa kabuuang laki ng deposito ng CAKE sa panahon ng pag-release ng beta.",
   "winning chance": "pagkakataong manalo",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

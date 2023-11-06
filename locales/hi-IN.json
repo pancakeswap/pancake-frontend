@@ -1799,9 +1799,6 @@
   "Wallet not connected": "वॉलेट कनेक्टेड नहीं है",
   "Deposited CAKE will be locked for 10 weeks": "जमा किया गया CAKE 10 सप्ताह के लिए लॉक किया जाएगा",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "CAKE जमा को निश्चित अवधि के स्टेकिंग पूल में डायवर्ट किया जाएगा। कृपया नोट करें कि जमा किए गए CAKE केवल 10 सप्ताह बाद ही निकाले जा सकते हैं।",
-  "Pottery draws on each Friday at 12 PM UTC!": "पॉटरी ड्रॉ हर शुक्रवार को 12 PM UTC बजे!",
-  "Next draw date": "अगली ड्रॉ तिथि",
-  "Locked date": "लॉक की गई तिथि",
   "in": "में",
   "Chance of winning next round": "अगला राउंड जीतने की संभावना",
   "Your": "आपका",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "जमा किए गए फंड में से स्टेकिंग पुरस्कार का 20%",
   "Fees (8%)": "फ़ीस (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "हर सप्ताह वितरित किए गए पुरस्कार पॉट का 8% फ़ीस के रूप में लिया जाएगा",
-  "until the next draw": "अगला ड्रॉ होने तक",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "जीतने की आपकी संभावना पॉटरी के कुल CAKE जमा के सापेक्ष में आपके द्वारा जमा CAKE के समानुपात में होती है। फिलहाल, बीटा रिलीज के दौरान कुल CAKE जमा के आकार पर एक सीमा लागू है।",
   "winning chance": "जीतने की संभावना",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

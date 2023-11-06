@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Гаманець не підключено",
   "Deposited CAKE will be locked for 10 weeks": "Внесені токени CAKE буде заблоковано на 10 тижнів",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Внесок CAKE буде переспрямовано в пул стейкінгу фіксованої тривалості. Зверніть увагу, що внесені токени CAKE можна буде вивести тільки за 10 тижнів.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Тиражі Потереї відбуваються щоп’ятниці о 12:00 (UTC)!",
-  "Next draw date": "Дата наступного тиражу",
-  "Locked date": "Дата блокування",
   "in": "за",
   "Chance of winning next round": "Шанс виграти в наступному раунді",
   "Your": "Ваш",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% нагород за стейкінг із внесених коштів",
   "Fees (8%)": "Комісії (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "8% призового банку, що розподіляється щотижня, стягуватиметься як комісія",
-  "until the next draw": "до наступного тиражу",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Ваш шанс виграти пропорційний частці вашого внеску CAKE у загальній внесеній у Потерею кількості CAKE. Зараз доступна лише бета-версія, тому загальну суму внеску CAKE обмежено.",
   "winning chance": "шанс виграти",
   "TVL": "Загальна вартість заблокованого",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

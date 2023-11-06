@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Wallet non connesso",
   "Deposited CAKE will be locked for 10 weeks": "Il CAKE depositato sarà bloccato per 10 settimane",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Il deposito dei CAKE sarà trasferito al pool di staking a scadenza fissa. Nota che i CAKE depositati possono essere ritirati SOLO dopo 10 settimane.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Le estrazioni della Lotteria di Staking avvengono ogni venerdì alle 12:00 UTC!",
-  "Next draw date": "Prossima data di estrazione",
-  "Locked date": "Data bloccata",
   "in": "tra",
   "Chance of winning next round": "Possibilità di vincere il prossimo round",
   "Your": "Il tuo",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% dai premi di staking dai fondi depositati",
   "Fees (8%)": "Commissioni (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "L'8% del montepremi distribuito ogni settimana verrà addebitato come commissioni",
-  "until the next draw": "alla prossima estrazione",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "La tua possibilità di vincita è proporzionale ai CAKE che depositi rispetto al deposito totale dei CAKE per la Lotteria di Staking. Attualmente, c'è un limite alla dimensione totale del deposito CAKE durante il rilascio della versione beta.",
   "winning chance": "probabilità di vincita",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

@@ -1799,9 +1799,6 @@
   "Wallet not connected": "ウォレットが接続されていません",
   "Deposited CAKE will be locked for 10 weeks": "入金されたCAKEは10週間ロックされます",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "CAKE掛け金は、定期ステーキングプールに充てられます。入金されたCAKEの引き出しは10週間後に可能となることに注意してください。",
-  "Pottery draws on each Friday at 12 PM UTC!": "ポタリー抽選は毎週金曜日午後12時（世界標準時）に開催！",
-  "Next draw date": "次の抽選日",
-  "Locked date": "ロック日",
   "in": "残り",
   "Chance of winning next round": "次回ラウンドの当選確率",
   "Your": "あなたの",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "入金された資金からのステーキング報酬の 20%",
   "Fees (8%)": "手数料（8%）",
   "8% of the prize pot distributed each week will be charged as fees": "毎週分配される賞金総額の 8% が手数料として請求されます",
-  "until the next draw": "次の抽選までの残り時間",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "あなたの当選確率は、ポタリーの合計CAKE掛け金に対するあなたのCAKE掛け金に比例します。現在のBetaリリース期間には、合計CAKE入金サイズに上限が設けられています。",
   "winning chance": "当選確率",
   "TVL": "TVL",
@@ -2714,7 +2710,7 @@
   "approving": "approving",
   "this?": "this?",
   "Pancakeswap AMM includes V3, V2 and stable swap.": "PancakeSwap AMMにはV3、V2、およびステーブルスワップが含まれます。",
-  "Swapping thru:": "スワップ期限:",
+  "Swapping thru:": "スワップ経路:",
   "Pancakeswap MM": "Pancakeswap MM",
   "Pancakeswap AMM": "Pancakeswap AMM",
   "Why resetting approval": "承認をリセットする理由",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

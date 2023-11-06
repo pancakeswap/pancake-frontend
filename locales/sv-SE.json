@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Plånbok inte ansluten",
   "Deposited CAKE will be locked for 10 weeks": "Insatta CAKE-tokens låses i 10 veckor",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Insättningar av CAKE-tokens dirigeras om till den tidsbestämda insatspoolen. Observera att insatta CAKE-tokens ENDAST kan hämtas ut efter 10 veckor.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Dragning i insatslotteriet sker varje fredag kl. 12 UTC!",
-  "Next draw date": "Nästa dragningsdatum",
-  "Locked date": "Låst datum",
   "in": "om",
   "Chance of winning next round": "Vinstchans i nästa omgång",
   "Your": "Din",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20 % av insatsbelöningarna från insatta medel",
   "Fees (8%)": "Avgifter (8 %)",
   "8% of the prize pot distributed each week will be charged as fees": "8 % av utdelad prispott varje vecka debiteras som avgifter",
-  "until the next draw": "tills nästa dragning",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Dina vinstchanser står i proportion till antal CAKE-tokens du sätter in i förhållande till den totala insättningen av CAKE-tokens i insatslotteriet. I betareleasen finns det just nu en gräns på det totala antal CAKE-tokens som kan sättas in.",
   "winning chance": "vinstchans",
   "TVL": "Totalt låst värde",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

@@ -1799,9 +1799,6 @@
   "Wallet not connected": "வாலெட் இணைக்கப்படவில்லை",
   "Deposited CAKE will be locked for 10 weeks": "டெபாசிட் செய்த CAKE 10 வாரங்களுக்குப் பூட்டப்பட்டிருக்கும்",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "CAKE டெபாசிட், நிலையான கால ஸ்டேக்கிங் பூலுக்கு மாற்றப்படும். டெபாசிட் செய்த CAKEகை 10 வாரங்களுக்குப் பிறகு மட்டுமே வித்டிரா செய்ய முடியும் என்பதை நினைவில் கொள்ளவும்.",
-  "Pottery draws on each Friday at 12 PM UTC!": "பாட்டரி குலுக்கல் வெள்ளிக்கிழமை தோறும் UTC நேரப்படி மதியம் 12 மணிக்கு நடைபெறுகிறது!",
-  "Next draw date": "அடுத்த குலுக்கல் தேதி",
-  "Locked date": "பூட்டிய தேதி",
   "in": "இதில்",
   "Chance of winning next round": "அடுத்த சுற்றில் வெற்றி பெறும் வாய்ப்பு",
   "Your": "உங்கள்",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "டெபாசிட் செய்த நிதியிலிருந்து ஸ்டேக்கிங் வெகுமதிகளில் 20%",
   "Fees (8%)": "கட்டணம் (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "ஒவ்வொரு வாரமும் விநியோகிக்கப்படும் பரிசுப் பானையின் 8% கட்டணமாக வசூலிக்கப்படும்",
-  "until the next draw": "அடுத்த குலுக்கல் வரை",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "பாட்டரிக்கான மொத்த CAKE டெபாசிட்டுடன் ஒப்பிடுகையில், நீங்கள் டெபாசிட் செய்யும் CAKEற்கு விகிதாசாரமாக உங்கள் வெற்றி வாய்ப்பு உள்ளது. தற்போது, பீட்டா வெளியீட்டின் போது மொத்த CAKE டெபாசிட் அளவிற்கு ஒரு வரம்பு உள்ளது.",
   "winning chance": "வெற்றி வாய்ப்பு",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Monedero desconectado",
   "Deposited CAKE will be locked for 10 weeks": "El CAKE depositado estará bloqueado durante 10 semanas",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "El depósito de CAKE se dirigirá al pool de inversiones a plazo fijo. Ten en cuenta que el CAKE depositado SOLO puede retirarse después de 10 semanas.",
-  "Pottery draws on each Friday at 12 PM UTC!": "¡Los sorteos de Pottery se realizan cada viernes a las 12 PM UTC!",
-  "Next draw date": "Fecha del siguiente sorteo",
-  "Locked date": "Fecha bloqueada",
   "in": "en",
   "Chance of winning next round": "Posibilidad de ganar la siguiente ronda",
   "Your": "Tu",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% de las recompensas de las inversiones se realizan con los fondos depositados",
   "Fees (8%)": "Comisiones (8 %)",
   "8% of the prize pot distributed each week will be charged as fees": "El 8% del bote de premios que se distribuye cada semana se cobrará en forma de comisiones",
-  "until the next draw": "hasta el siguiente sorteo",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Tus posibilidades de ganar son proporcionales a la cantidad de CAKE que hayas depositado con respecto al total de CAKE depositado en la Pottery. Actualmente, el importe total de los depósitos de CAKE está limitado durante la versión beta.",
   "winning chance": "oportunidad de ganar",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

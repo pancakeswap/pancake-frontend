@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Tárca nem csatlakozik",
   "Deposited CAKE will be locked for 10 weeks": "A letétbe helyezett CAKE-et 10 hétre zárolják",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "A CAKE betétet a határozott idejű tétgyűjtő alapba irányítják át. Felhívjuk figyelmét, hogy a CAKE letétet CSAK 10 hét után lehet kivenni.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Pottery sorsolás minden pénteken 12: 00-kor UTC!",
-  "Next draw date": "Következő sorsolás időpontja",
-  "Locked date": "Zárolt dátum",
   "in": "ekkor",
   "Chance of winning next round": "A következő forduló nyerési esélye",
   "Your": "Az Öné",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "A tétjuttatások 20%-a a befizetett pénzeszközökből",
   "Fees (8%)": "Díjak (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "A hetente felosztott nyereményalap 8%-át díjak formájában számítják fel",
-  "until the next draw": "a következő sorsolásig",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Az Ön nyerési esélye arányos az Ön által letétbe helyezett CAKE összegével a Cerépedény (Pottery) teljes CAKE letétjéhez képest. Jelenleg a béta-verzió alatt a teljes CAKE befizetést felső határérték korlátozza.",
   "winning chance": "nyerési esély",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }

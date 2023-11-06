@@ -1799,9 +1799,6 @@
   "Wallet not connected": "Portfel niepodłączony",
   "Deposited CAKE will be locked for 10 weeks": "Wpłacone CAKE zostaną zablokowane na 10 tygodni",
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Wpłata CAKE zostanie skierowana do puli stakowania terminowego. Pamiętaj, że wpłacone CAKE można wycofać DOPIERO po 10 tygodniach.",
-  "Pottery draws on each Friday at 12 PM UTC!": "Losowanie Puloloterii odbywa się w każdy piątek o 12:00 UTC!",
-  "Next draw date": "Data następnego losowania",
-  "Locked date": "Data zablokowania",
   "in": "za",
   "Chance of winning next round": "Szansa na wygranie następnej rundy",
   "Your": "Twój",
@@ -1817,7 +1814,6 @@
   "20% of the staking rewards from the funds deposited": "20% nagród za stakowanie wpłaconych środków",
   "Fees (8%)": "Prowizje (8%)",
   "8% of the prize pot distributed each week will be charged as fees": "8% puli nagród rozdzielane co tydzień będzie pobierane jako prowizje",
-  "until the next draw": "do następnego losowania",
   "Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.": "Twoja szansa na wygraną jest proporcjonalna do wpłaty CAKE w stosunku do całkowitej wpłaty CAKE na Puloloterię. Obecnie w wersji beta obowiązuje limit wpłat CAKE.",
   "winning chance": "szansa na wygraną",
   "TVL": "TVL",
@@ -2830,5 +2826,7 @@
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
-  "Removing Liquidity": "Removing Liquidity"
+  "Removing Liquidity": "Removing Liquidity",
+  "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer": "Pancakeswap Pottery (BETA) is indefinitely halted. Please refer",
+  "for more details": "for more details"
 }
