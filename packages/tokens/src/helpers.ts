@@ -24,7 +24,7 @@ export function serializeTokens(unserializedTokens: any) {
   return serializedTokens
 }
 
-export function unwrappedToken(token: Token): Currency {
+export function unwrappedToken(token?: Token): Currency | undefined {
   if (token && token.equals(WNATIVE[token.chainId as keyof typeof WNATIVE])) return Native.onChain(token.chainId)
   return token
 }

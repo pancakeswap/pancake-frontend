@@ -33,8 +33,8 @@ import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 
 interface Props {
-  baseCurrency: Currency
-  quoteCurrency: Currency
+  baseCurrency?: Currency
+  quoteCurrency?: Currency
   feeAmount: number
   showTitle?: boolean
   showQuestion?: boolean
@@ -114,15 +114,21 @@ export function AprCalculator({
     () =>
       baseUSDPrice
         ? parseFloat(formatPrice(baseUSDPrice, 6) || '0')
-        : deriveUSDPrice(quoteUSDPrice, price?.baseCurrency.equals(quoteCurrency?.wrapped) ? price : price?.invert()),
-    [baseUSDPrice, quoteUSDPrice, price, quoteCurrency?.wrapped],
+        : deriveUSDPrice(
+            quoteUSDPrice,
+            quoteCurrency && price?.baseCurrency.equals(quoteCurrency?.wrapped) ? price : price?.invert(),
+          ),
+    [baseUSDPrice, quoteUSDPrice, price, quoteCurrency],
   )
   const currencyBUsdPrice = useMemo(
     () =>
       baseUSDPrice &&
-      (deriveUSDPrice(baseUSDPrice, price?.baseCurrency.equals(baseCurrency?.wrapped) ? price : price?.invert()) ||
+      (deriveUSDPrice(
+        baseUSDPrice,
+        baseCurrency && price?.baseCurrency.equals(baseCurrency?.wrapped) ? price : price?.invert(),
+      ) ||
         parseFloat(formatPrice(quoteUSDPrice, 6) || '0')),
-    [baseUSDPrice, quoteUSDPrice, price, baseCurrency?.wrapped],
+    [baseUSDPrice, quoteUSDPrice, price, baseCurrency],
   )
 
   const depositUsd = useMemo(

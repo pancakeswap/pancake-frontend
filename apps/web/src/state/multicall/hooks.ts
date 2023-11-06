@@ -7,7 +7,7 @@ import {
   Abi,
   Address,
   ContractFunctionResult,
-  DecodeFunctionDataParameters,
+  DecodeFunctionResultParameters,
   decodeFunctionResult,
   encodeFunctionData,
   EncodeFunctionDataParameters,
@@ -121,7 +121,7 @@ function toCallState<
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
 >(
   callResult: CallResult | undefined,
-  abi: TAbi,
+  abi: TAbi | undefined,
   functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>,
   latestBlockNumber: number | undefined,
 ): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
@@ -139,7 +139,7 @@ function toCallState<
         abi,
         data,
         functionName,
-      } as unknown as DecodeFunctionDataParameters)
+      } as unknown as DecodeFunctionResultParameters<TAbi, TFunctionName>)
     } catch (error) {
       console.debug('Result data parsing failed', abi, data)
       return {
@@ -235,16 +235,19 @@ export function useSingleContractMultipleData<TAbi extends Abi | readonly unknow
   const calls = useMemo(
     () =>
       contract && contract.abi && contract.address && args && args.length > 0
-        ? args.map<Call>((inputs) => {
-            return {
-              address: contract.address,
-              callData: encodeFunctionData({
-                abi: contract.abi,
-                functionName,
-                args: inputs,
-              } as unknown as EncodeFunctionDataParameters),
-            }
-          })
+        ? args
+            .map((inputs) => {
+              if (!contract.address) return undefined
+              return {
+                address: contract.address,
+                callData: encodeFunctionData({
+                  abi: contract.abi,
+                  functionName,
+                  args: inputs,
+                } as unknown as EncodeFunctionDataParameters),
+              }
+            })
+            .filter(Boolean)
         : [],
     [args, contract, functionName],
   )
@@ -325,7 +328,7 @@ export type SingleCallParameters<
   TFunctionName extends string = string,
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
 > = {
-  contract: {
+  contract?: {
     abi?: TAbi
     address?: Address
   }

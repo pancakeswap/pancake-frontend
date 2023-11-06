@@ -15,7 +15,7 @@ import { RangePriceSection } from 'components/RangePriceSection'
 import { formatPrice } from 'utils/formatCurrencyAmount'
 import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 
-import { RangeTag } from '../../../../../components/RangeTag'
+import { RangeTag } from 'components/RangeTag'
 import RateToggle from './RateToggle'
 
 export const PositionPreview = ({

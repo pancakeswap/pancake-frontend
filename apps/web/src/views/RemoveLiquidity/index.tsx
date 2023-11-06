@@ -142,11 +142,12 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const { approvalState, approveCallback } = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
-    V2_ROUTER_ADDRESS[chainId],
+    chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
   )
 
   async function onAttemptToApprove() {
-    if (!pairContractRead || !pair || !signTypedDataAsync || !deadline) throw new Error('missing dependencies')
+    if (!pairContractRead || !pair || !signTypedDataAsync || !deadline || !account)
+      throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) {
       toastError(t('Error'), t('Missing liquidity amount'))
@@ -177,7 +178,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     ]
     const message = {
       owner: account,
-      spender: V2_ROUTER_ADDRESS[chainId],
+      spender: chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
       value: liquidityAmount.quotient.toString(),
       nonce,
       deadline: Number(deadline),
@@ -329,7 +330,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       throw new Error('Attempting to confirm without approval or a signature')
     }
 
-    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint }
+    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint } | undefined
     for (let i = 0; i < methodNames.length; i++) {
       let safeGasEstimate
       try {
