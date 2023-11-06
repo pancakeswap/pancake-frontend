@@ -1,5 +1,5 @@
-import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Skeleton } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
+import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Skeleton, Box } from '@pancakeswap/uikit'
+import { Pool, FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
@@ -11,6 +11,8 @@ import { styled } from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
+
+const { BoostedTag } = FarmWidget.Tags
 
 interface NameCellProps {
   pool: Pool.DeserializedPool<Token>
@@ -30,11 +32,9 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey, totalStaked } = pool
-  const vaultData = useVaultPoolByKey(pool.vaultKey)
-  const {
-    userData: { userShares },
-    totalCakeInVault,
-  } = vaultData
+  const vaultData = useVaultPoolByKey(pool?.vaultKey || VaultKey.CakeVault)
+  const { totalCakeInVault } = vaultData
+  const userShares = vaultData?.userData?.userShares ?? BIG_ZERO
   const hasVaultShares = userShares.gt(0)
 
   const stakingTokenSymbol = stakingToken.symbol
@@ -88,8 +88,8 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
               (vaultKey === VaultKey.CakeVault ? (
                 <StakedCakeStatus
                   userShares={userShares}
-                  locked={(vaultData as DeserializedLockedCakeVault).userData.locked}
-                  lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
+                  locked={(vaultData as DeserializedLockedCakeVault)?.userData?.locked}
+                  lockEndTime={(vaultData as DeserializedLockedCakeVault)?.userData?.lockEndTime}
                 />
               ) : (
                 <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
@@ -104,6 +104,9 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
                 {subtitle}
               </Text>
             )}
+            <Box width="fit-content">
+              <BoostedTag mt="4px" />
+            </Box>
           </Pool.CellContent>
         </>
       ) : (

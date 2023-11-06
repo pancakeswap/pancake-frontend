@@ -20,6 +20,8 @@ export function PoolCard<T>({ pool, cardContent, aprRow, isStaked, cardFooter, t
 
   const isCakePool = earningToken?.symbol === "CAKE" && stakingToken?.symbol === "CAKE";
 
+  const boostedApr = 1233; // TODO
+
   return (
     <StyledCard
       isActive={isCakePool}
@@ -34,6 +36,7 @@ export function PoolCard<T>({ pool, cardContent, aprRow, isStaked, cardFooter, t
               subTitle={
                 isCakePool ? t("Earn CAKE, stake CAKE") : t("Stake %symbol%", { symbol: stakingToken?.symbol || "" })
               }
+              showBoostedTag={boostedApr > 0}
             />
             {tokenPairImage}
           </>
