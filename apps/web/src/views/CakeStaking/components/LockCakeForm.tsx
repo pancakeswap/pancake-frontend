@@ -12,15 +12,12 @@ import {
   FlexGap,
   Text,
   TokenImage,
-  TooltipText,
 } from '@pancakeswap/uikit'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useMemo, useState } from 'react'
-import { DataBox, DataHeader, DataRow } from './DataSet/DataBox'
-import { Tooltips } from './Tooltips'
 import { LockCakeDataSet } from './DataSet'
 
 const percentShortcuts = [25, 50, 75]
