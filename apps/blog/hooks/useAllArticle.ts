@@ -2,6 +2,7 @@ import qs from 'qs'
 import { ResponseArticleType, ResponseArticleDataType } from 'types'
 import { transformArticle, ArticleType } from 'utils/transformArticle'
 import { useQuery } from '@tanstack/react-query'
+import { filterTagArray } from 'utils/filterTagArray'
 
 interface UseAllArticleProps {
   query: string
@@ -30,13 +31,16 @@ const useAllArticle = ({
         const urlParamsObject = {
           ...(query && { _q: query }),
           filters: {
-            ...(selectedCategories && {
-              categories: {
+            categories: {
+              name: {
+                $notIn: filterTagArray,
+              },
+              ...(selectedCategories && {
                 id: {
                   $eq: selectedCategories,
                 },
-              },
-            }),
+              }),
+            },
           },
           locale: languageOption,
           populate: 'categories,image',
