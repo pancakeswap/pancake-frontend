@@ -5,6 +5,7 @@ import Image from 'next/image'
 import GradientLogo from 'components/Game/GradientLogoSvg'
 import { LIGHT_BG, DARK_BG } from 'components/Game/pageSectionStyles'
 import { Decorations } from 'components/Game/Developers/Decorations'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 const StyledContainer = styled(PageSection)`
   padding: 0px 16px 24px 16px;
@@ -83,22 +84,22 @@ const GameBenefitsList = [
   {
     title: <Trans>Connect with a 1.5 Million Ready-to-Play Community</Trans>,
     desc: <Trans>Join the community and create games with infinite possibilities</Trans>,
-    imgUrl: '/images/game/developers/bring-your-game-1-1.png',
+    imgUrl: `${ASSET_CDN}/web/game/developers/bring-your-game-1-1.png`,
   },
   {
     title: <Trans>Elevate Your Games with Real Utility</Trans>,
     desc: <Trans>Integrate CAKE tokens and NFTs to enrich the gaming experience</Trans>,
-    imgUrl: '/images/game/developers/bring-your-game-2-1.png',
+    imgUrl: `${ASSET_CDN}/web/game/developers/bring-your-game-2-1.png`,
   },
   {
     title: <Trans>Partner with the Leading Brand in the Industry</Trans>,
     desc: <Trans>Build Games with the most reputable global brand in the industry</Trans>,
-    imgUrl: '/images/game/developers/bring-your-game-3-1.png',
+    imgUrl: `${ASSET_CDN}/web/game/developers/bring-your-game-3-1.png`,
   },
   {
     title: <Trans>Explore Top Blockchains</Trans>,
     desc: <Trans>PancakeSwap operates on 10 popular blockchains, welcoming developers from diverse ecosystems</Trans>,
-    imgUrl: '/images/game/developers/bring-your-game-4-1.png',
+    imgUrl: `${ASSET_CDN}/web/game/developers/bring-your-game-4-1.png`,
   },
 ]
 

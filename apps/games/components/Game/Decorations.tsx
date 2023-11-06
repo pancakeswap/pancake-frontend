@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
 import { Box } from '@pancakeswap/uikit'
 import { floatingStarsLeft, floatingStarsRight } from 'components/Game/DecorationsAnimation'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 const StyledDecorations = styled(Box)`
   display: none;
@@ -55,11 +56,11 @@ const StyledDecorations = styled(Box)`
 export const Decorations = () => {
   return (
     <StyledDecorations>
-      <img src="/images/game/developers/left-1.png" width="79px" height="207px" alt="left1" />
-      <img src="/images/game/developers/star.png" width="49px" height="43px" alt="star" />
-      <img src="/images/game/developers/right-1.png" width="80px" height="150px" alt="right1" />
-      <img src="/images/game/developers/right-2.png" width="109px" height="123px" alt="right2" />
-      <img src="/images/game/developers/star.png" width="67px" height="59px" alt="star2" />
+      <img src={`${ASSET_CDN}/web/game/developers/left-1.png`} width="79px" height="207px" alt="left1" />
+      <img src={`${ASSET_CDN}/web/game/developers/star.png`} width="49px" height="43px" alt="star" />
+      <img src={`${ASSET_CDN}/web/game/developers/right-1.png`} width="80px" height="150px" alt="right1" />
+      <img src={`${ASSET_CDN}/web/game/developers/right-2.png`} width="109px" height="123px" alt="right2" />
+      <img src={`${ASSET_CDN}/web/game/developers/star.png`} width="67px" height="59px" alt="star2" />
     </StyledDecorations>
   )
 }
