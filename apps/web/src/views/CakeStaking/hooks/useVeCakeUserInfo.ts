@@ -3,6 +3,7 @@ import { SLOW_INTERVAL } from 'config/constants'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
 import { Address } from 'viem'
+import { CakeStakingStatus } from '../types'
 
 export type VeCakeUserInfo = {
   amount: bigint
@@ -45,4 +46,8 @@ export const useVeCakeUserInfo = (): VeCakeUserInfo | undefined => {
   )
 
   return data
+}
+
+export const useCakeStakingStatus = (): CakeStakingStatus => {
+  const userStakingInfo = useVeCakeUserInfo()
 }
