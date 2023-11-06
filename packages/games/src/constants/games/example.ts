@@ -1,6 +1,6 @@
 import { GameType, PostersLayout, PostersItemDataType } from '../../types'
 
-export const pancakeProtectors: GameType = {
+export const example: GameType = {
   id: 'pancake-protectors',
   projectName: 'Mobox',
   title: 'Pancake Protector',
@@ -60,9 +60,17 @@ export const pancakeProtectors: GameType = {
       videoId: '3gbxF8-eBAg',
       title: 'Pancake Protectors Explained in 2 Minutes For BEGINNERS | EP 1: From Connection to Conquest',
     },
+    {
+      videoId: '--UcFQ64sjY',
+      title: 'Pancake Protectors is here! Discover the power of CAKE and perks for Pancake Squads and Bunnies',
+    },
+    {
+      videoId: 'w72vcEV1pcE',
+      title: 'Pancake Protectors Explained in 2 Minutes For BEGINNERS | EP 1.1: From Connection to Conquest',
+    },
   ],
   socialMedia: {
-    telegram: 'https://t.me/pancakeswap',
-    discord: 'https://discord.com/invite/pancakeswap',
+    telegram: 'https://t.me/PancakeSwap/2991960',
+    discord: 'https://discord.gg/pancakeswap',
   },
 }

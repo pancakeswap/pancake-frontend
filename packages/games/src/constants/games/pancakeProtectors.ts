@@ -70,7 +70,7 @@ export const pancakeProtectors: GameType = {
     },
   ],
   socialMedia: {
-    telegram: 'https://t.me/pancakeswap',
-    discord: 'https://discord.com/invite/pancakeswap',
+    telegram: 'https://t.me/PancakeSwap/2991960',
+    discord: 'https://discord.gg/pancakeswap',
   },
 }
