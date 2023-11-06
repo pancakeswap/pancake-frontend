@@ -16,6 +16,29 @@ import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 
 import useMerkl from '../../hooks/useMerkl'
 
+function TextWaning({ tokenAmount }) {
+  const { t } = useTranslation()
+
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(
+    t(
+      `Combined number of rewards in ${tokenAmount.currency.symbol} from ALL your positions which are eligible for Merkl rewards.`,
+    ),
+    {
+      placement: 'top',
+      trigger: 'hover',
+    },
+  )
+
+  return (
+    <>
+      <TooltipText ref={targetRef} small>
+        {tokenAmount.toSignificant(6)}
+      </TooltipText>
+      {tooltipVisible && tooltip}
+    </>
+  )
+}
+
 export function MerklSection({
   poolAddress,
   notEnoughLiquidity,
@@ -30,14 +53,6 @@ export function MerklSection({
   const { t } = useTranslation()
 
   const { claimTokenReward, isClaiming, rewardsPerToken } = useMerkl(poolAddress)
-
-  const { tooltip, tooltipVisible, targetRef } = useTooltip(
-    t('Combined number of Merkl rewards from all the positions under this trading pair.'),
-    {
-      placement: 'top',
-      trigger: 'hover',
-    },
-  )
 
   if (!rewardsPerToken.length) return null
 
@@ -68,7 +83,6 @@ export function MerklSection({
         </Button>
       </AutoRow>
       <LightGreyCard
-        ref={targetRef}
         mr="4px"
         style={{
           padding: '16px 8px',
@@ -84,11 +98,10 @@ export function MerklSection({
               </Text>
             </Flex>
             <Flex justifyContent="center">
-              <TooltipText small>{tokenAmount.toSignificant(6)}</TooltipText>
+              <TextWaning tokenAmount={tokenAmount} />
             </Flex>
           </AutoRow>
         ))}
-        {tooltipVisible && tooltip}
       </LightGreyCard>
 
       {isStakedInMCv3 ? (
