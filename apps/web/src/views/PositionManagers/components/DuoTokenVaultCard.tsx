@@ -157,6 +157,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           autoCompound={autoCompound}
           withCakeReward={withCakeReward}
           totalAssetsInUsd={totalAssetsInUsd}
+          totalStakedInUsd={totalStakedInUsd}
           lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
           totalSupplyAmounts={totalSupplyAmounts}
           userLpAmounts={userLpAmounts}
