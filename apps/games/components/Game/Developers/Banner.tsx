@@ -4,6 +4,7 @@ import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import { floatingStarsLeft } from 'components/Game/DecorationsAnimation'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 const StyledPageSection = styled(PageSection)`
   padding: 32px 0;
@@ -70,7 +71,7 @@ export const Banner = () => {
       background={theme.colors.gradientBubblegum}
     >
       <Decorations>
-        <img src="/images/game/developers/piezas-1.png" width="66.5px" height="72px" alt="piezas1" />
+        <img src={`${ASSET_CDN}/web/game/developers/piezas-1.png`} width="66.5px" height="72px" alt="piezas1" />
       </Decorations>
       <Flex
         position="relative"
@@ -138,7 +139,7 @@ export const Banner = () => {
               zIndex: 0,
               minWidth: isXxl ? 533 : 323,
             }}
-            src="/images/game/developers/game-banner-bunny.png"
+            src={`${ASSET_CDN}/web/game/developers/game-banner-bunny.png`}
           />
         </StyledBunny>
       </Flex>
