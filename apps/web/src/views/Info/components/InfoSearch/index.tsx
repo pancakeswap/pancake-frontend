@@ -330,8 +330,8 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${checksummedAddress ? subgraphTokenName[checksummedAddress] : token.name} (${
-                          checksummedAddress ? subgraphTokenSymbol[checksummedAddress] : token.symbol
+                        <Text>{`${(checksummedAddress && subgraphTokenName[checksummedAddress]) || token.name} (${
+                          (checksummedAddress && subgraphTokenSymbol[checksummedAddress]) || token.symbol
                         })`}</Text>
                       </Text>
                       <SaveIcon

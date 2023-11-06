@@ -179,10 +179,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     fontSize={isXs || isSm ? '24px' : '40px'}
                     id="info-token-name-title"
                   >
-                    {checksummedAddress ? subgraphTokenName[checksummedAddress] : tokenData.name}
+                    {(checksummedAddress && subgraphTokenName[checksummedAddress]) || tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                    ({checksummedAddress ? subgraphTokenSymbol[checksummedAddress] : tokenData.symbol})
+                    ({(checksummedAddress && subgraphTokenSymbol[checksummedAddress]) || tokenData.symbol})
                   </Text>
                 </Flex>
                 <Flex mt="8px" ml="46px" alignItems="center">

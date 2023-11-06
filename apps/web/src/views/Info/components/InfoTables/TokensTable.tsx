@@ -116,8 +116,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
-              <Text>{checksummedAddress ? subgraphTokenName[checksummedAddress] : tokenData.name}</Text>
-              <Text ml="8px">({checksummedAddress ? subgraphTokenSymbol[checksummedAddress] : tokenData.symbol})</Text>
+              <Text>{(checksummedAddress && subgraphTokenName[checksummedAddress]) || tokenData.name}</Text>
+              <Text ml="8px">
+                {(checksummedAddress && subgraphTokenSymbol[checksummedAddress]) || tokenData.symbol})
+              </Text>
             </Flex>
           )}
         </Flex>
