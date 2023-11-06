@@ -56,8 +56,8 @@ interface PricesResponse {
 }
 
 export async function fetchEthPrices(
-  blocks: Block[],
   dataClient: GraphQLClient,
+  blocks?: Block[],
 ): Promise<{ data: EthPrices | undefined; error: boolean }> {
   try {
     const [block24, block48, blockWeek] = blocks ?? []

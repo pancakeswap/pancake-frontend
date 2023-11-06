@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { multiChainId, multiChainName, MultiChainNameExtend } from 'state/info/constant'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 
 /**
@@ -48,7 +48,7 @@ export const useBlocksFromTimestamps = (
   }
 }
 
-export const useBlockFromTimeStampSWR = (
+export const useBlockFromTimeStampQuery = (
   timestamps: number[],
   sortDirection: 'asc' | 'desc' | undefined = 'desc',
   skipCount: number | undefined = 1000,
@@ -59,9 +59,14 @@ export const useBlockFromTimeStampSWR = (
   const chainId = multiChainId[chainName]
   const timestampsString = JSON.stringify(timestamps)
   const timestampsArray = JSON.parse(timestampsString)
-  const { data } = useSWRImmutable(
+  const { data } = useQuery(
     [`info/blocks/${timestampsString}/${chainId}`, multiChainName[chainId] ?? chainName],
     () => getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount, chainName),
+    {
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
   )
   return { blocks: data }
 }
