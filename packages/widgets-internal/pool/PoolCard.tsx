@@ -1,6 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { ReactElement } from "react";
+import { ReactElement, useMemo } from "react";
 import { Flex, CardBody, CardRibbon, Skeleton } from "@pancakeswap/uikit";
+import { isBoostedPool } from "@pancakeswap/pools";
 import { PoolCardHeader, PoolCardHeaderTitle } from "./PoolCardHeader";
 import { StyledCard } from "./StyledCard";
 import { DeserializedPool } from "./types";
@@ -20,7 +21,10 @@ export function PoolCard<T>({ pool, cardContent, aprRow, isStaked, cardFooter, t
 
   const isCakePool = earningToken?.symbol === "CAKE" && stakingToken?.symbol === "CAKE";
 
-  const boostedApr = 1233; // TODO
+  const showBoostedTag = useMemo(
+    () => isBoostedPool(pool.contractAddress, (pool?.stakingToken as any)?.chainId),
+    [pool]
+  );
 
   return (
     <StyledCard
@@ -36,7 +40,7 @@ export function PoolCard<T>({ pool, cardContent, aprRow, isStaked, cardFooter, t
               subTitle={
                 isCakePool ? t("Earn CAKE, stake CAKE") : t("Stake %symbol%", { symbol: stakingToken?.symbol || "" })
               }
-              showBoostedTag={boostedApr > 0}
+              showBoostedTag={showBoostedTag}
             />
             {tokenPairImage}
           </>
