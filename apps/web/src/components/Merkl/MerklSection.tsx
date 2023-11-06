@@ -40,8 +40,10 @@ export function MerklSection({
   notEnoughLiquidity,
   isStakedInMCv3,
   outRange,
+  disabled,
 }: {
   outRange: boolean
+  disabled: boolean
   poolAddress: string | null
   notEnoughLiquidity: boolean
   isStakedInMCv3: boolean
@@ -71,7 +73,7 @@ export function MerklSection({
           {t('Merkl Rewards')}
         </Text>
         <Button
-          disabled={isClaiming || rewardsPerToken.every((r) => r.equalTo('0'))}
+          disabled={disabled || isClaiming || rewardsPerToken.every((r) => r.equalTo('0'))}
           scale="sm"
           onClick={claimTokenReward}
         >

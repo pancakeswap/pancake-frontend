@@ -794,6 +794,7 @@ export default function PoolPage() {
                 </Box>
 
                 <MerklSection
+                  disabled={!isOwnNFT}
                   outRange={!inRange}
                   isStakedInMCv3={Boolean(isStakedInMCv3)}
                   notEnoughLiquidity={Boolean(
