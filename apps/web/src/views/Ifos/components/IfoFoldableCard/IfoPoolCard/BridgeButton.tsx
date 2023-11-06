@@ -26,7 +26,7 @@ type Props = {
 
 export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true, ifoId, ...props }: Props) {
   const { chainId } = useActiveChainId()
-  const sourceChain = useIfoSourceChain()
+  const sourceChain = useIfoSourceChain(ifoChainId)
   const isCurrentChainSourceChain = chainId === sourceChain
   const [isSwitching, setIsSwitching] = useState(false)
   const { switchNetworkAsync } = useSwitchNetwork()

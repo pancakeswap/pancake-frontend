@@ -8,8 +8,8 @@ import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { getLivePoolsConfig, CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
-import { isIfoSupported } from '@pancakeswap/ifos'
+import { getLivePoolsConfig } from '@pancakeswap/pools'
+import { isIfoSupported, getSourceChain } from '@pancakeswap/ifos'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -40,8 +40,6 @@ import {
   ifoCeilingSelector,
   makeVaultPoolWithKeySelector,
 } from './selectors'
-
-const defaultCakeVaultChain = CAKE_VAULT_SUPPORTED_CHAINS[0] || ChainId.BSC
 
 // Only fetch farms for live pools
 const getActiveFarms = async (chainId: number) => {
@@ -168,9 +166,14 @@ export const useCakeVaultPublicData = () => {
   }, [dispatch, chainId])
 }
 
+const useCakeVaultChain = (chainId?: ChainId) => {
+  return useMemo(() => getSourceChain(chainId) || ChainId.BSC, [chainId])
+}
+
 export const useFetchIfo = () => {
   const { account, chainId } = useAccountActiveChain()
   const ifoSupported = useMemo(() => isIfoSupported(chainId), [chainId])
+  const cakeVaultChain = useCakeVaultChain(chainId)
   const dispatch = useAppDispatch()
 
   usePoolsConfigInitialize()
@@ -178,13 +181,13 @@ export const useFetchIfo = () => {
   useQuery(
     ['fetchIfoPublicData', chainId],
     async () => {
-      batch(() => {
-        if (chainId) {
+      if (chainId && cakeVaultChain) {
+        batch(() => {
           dispatch(fetchCakePoolPublicDataAsync())
-          dispatch(fetchCakeVaultPublicData(defaultCakeVaultChain))
+          dispatch(fetchCakeVaultPublicData(cakeVaultChain))
           dispatch(fetchIfoPublicDataAsync(chainId))
-        }
-      })
+        })
+      }
     },
     {
       enabled: Boolean(chainId && ifoSupported),
@@ -198,16 +201,16 @@ export const useFetchIfo = () => {
   useQuery(
     ['fetchIfoUserData', account, chainId],
     async () => {
-      batch(() => {
-        if (account && chainId) {
-          dispatch(fetchCakePoolUserDataAsync({ account, chainId: defaultCakeVaultChain }))
-          dispatch(fetchCakeVaultUserData({ account, chainId: defaultCakeVaultChain }))
+      if (chainId && cakeVaultChain && account) {
+        batch(() => {
+          dispatch(fetchCakePoolUserDataAsync({ account, chainId: cakeVaultChain }))
+          dispatch(fetchCakeVaultUserData({ account, chainId: cakeVaultChain }))
           dispatch(fetchUserIfoCreditDataAsync({ account, chainId }))
-        }
-      })
+        })
+      }
     },
     {
-      enabled: Boolean(account && chainId && ifoSupported),
+      enabled: Boolean(account && chainId && cakeVaultChain && ifoSupported),
       refetchInterval: FAST_INTERVAL,
       refetchOnMount: false,
       refetchOnWindowFocus: false,
@@ -216,14 +219,14 @@ export const useFetchIfo = () => {
   )
 
   useQuery(
-    ['fetchCakeVaultFees', chainId],
+    ['fetchCakeVaultFees', cakeVaultChain],
     async () => {
-      if (chainId) {
-        dispatch(fetchCakeVaultFees(defaultCakeVaultChain))
+      if (cakeVaultChain) {
+        dispatch(fetchCakeVaultFees(cakeVaultChain))
       }
     },
     {
-      enabled: Boolean(chainId && ifoSupported),
+      enabled: Boolean(cakeVaultChain && ifoSupported),
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,

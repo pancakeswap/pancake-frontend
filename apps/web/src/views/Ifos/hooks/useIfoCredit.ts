@@ -35,6 +35,7 @@ export function useIfoCredit({ chainId, ifoCredit }: IfoCreditParams) {
   )
   return useMemo(
     () =>
+      chainId &&
       CAKE[chainId] &&
       (shouldUseCreditFromCurrentChain
         ? ifoCredit && CurrencyAmount.fromRawAmount(CAKE[chainId], ifoCredit.toString())
@@ -47,7 +48,7 @@ export function useIfoCeiling({ chainId }: { chainId?: ChainId }): BigNumber | u
   const { data } = useQuery([chainId, 'ifo-ceiling'], () => fetchPublicIfoData(chainId, getViemClients), {
     enabled: !!chainId,
   })
-  return useMemo(() => data?.ceiling && new BigNumber(data.ceiling), [data])
+  return useMemo(() => (data?.ceiling ? new BigNumber(data.ceiling) : undefined), [data])
 }
 
 type ICakeStatusParams = {
@@ -58,7 +59,7 @@ type ICakeStatusParams = {
 }
 
 export function useICakeBridgeStatus({ ifoChainId, ifoCredit }: ICakeStatusParams) {
-  const srcChainId = useIfoSourceChain()
+  const srcChainId = useIfoSourceChain(ifoChainId)
   const destChainCredit = useIfoCredit({ chainId: ifoChainId, ifoCredit })
   const sourceChainCredit = useIfoCredit({ chainId: srcChainId, ifoCredit })
   const noICake = useMemo(() => !sourceChainCredit || sourceChainCredit.quotient === 0n, [sourceChainCredit])
