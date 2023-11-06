@@ -43,13 +43,17 @@ export function useMerklInfo(poolAddress: string | null): {
 
       const { pools } = merklData
 
-      const merklPoolData = first(
+      const hasLive = first(
         Object.keys(pools)
           .filter((poolId) => poolId === poolAddress && pools[poolId].meanAPR !== 0)
           .map((poolId) => pools[poolId]),
       )
 
-      if (!merklPoolData) return null
+      const merklPoolData = first(
+        Object.keys(pools)
+          .filter((poolId) => poolId === poolAddress)
+          .map((poolId) => pools[poolId]),
+      )
 
       const rewardsPerTokenObject = merklPoolData?.rewardsPerToken
 
@@ -64,7 +68,7 @@ export function useMerklInfo(poolAddress: string | null): {
         : []
 
       return {
-        hasMerkl: Boolean(merklPoolData),
+        hasMerkl: Boolean(hasLive),
         rewardsPerToken,
         rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
         transactionData: merklData.transactionData,
@@ -116,7 +120,7 @@ export default function useMerkl(poolAddress: string | null) {
 
   const { data: signer } = useWalletClient()
 
-  const { transactionData, rewardsPerToken, refreshData } = useMerklInfo(poolAddress)
+  const { transactionData, rewardsPerToken, refreshData, hasMerkl } = useMerklInfo(poolAddress)
 
   const { callWithGasPrice } = useCallWithGasPrice()
   const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()
@@ -187,10 +191,11 @@ export default function useMerkl(poolAddress: string | null) {
 
   return useMemo(
     () => ({
+      hasMerkl,
       rewardsPerToken,
       claimTokenReward,
       isClaiming: isTxPending,
     }),
-    [claimTokenReward, isTxPending, rewardsPerToken],
+    [claimTokenReward, hasMerkl, isTxPending, rewardsPerToken],
   )
 }

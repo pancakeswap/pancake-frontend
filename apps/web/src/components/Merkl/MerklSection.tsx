@@ -17,12 +17,8 @@ import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import useMerkl from '../../hooks/useMerkl'
 
 function TextWaning({ tokenAmount }) {
-  const { t } = useTranslation()
-
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
-    t(
-      `Combined number of rewards in ${tokenAmount.currency.symbol} from ALL your positions which are eligible for Merkl rewards.`,
-    ),
+    `Combined number of rewards in ${tokenAmount.currency.symbol} from ALL your positions which are eligible for Merkl rewards.`,
     {
       placement: 'top',
       trigger: 'hover',
@@ -52,7 +48,7 @@ export function MerklSection({
 }) {
   const { t } = useTranslation()
 
-  const { claimTokenReward, isClaiming, rewardsPerToken } = useMerkl(poolAddress)
+  const { claimTokenReward, isClaiming, rewardsPerToken, hasMerkl } = useMerkl(poolAddress)
 
   if (!rewardsPerToken.length) return null
 
@@ -120,7 +116,7 @@ export function MerklSection({
             {learnMoreComp}
           </MessageText>
         </Message>
-      ) : (
+      ) : hasMerkl ? (
         <Message variant={notEnoughLiquidity ? 'warning' : 'primary'}>
           <MessageText color={notEnoughLiquidity ? 'textSubtle' : ''}>
             {notEnoughLiquidity
@@ -140,7 +136,7 @@ export function MerklSection({
             {learnMoreComp}
           </MessageText>
         </Message>
-      )}
+      ) : null}
     </Box>
   )
 }
