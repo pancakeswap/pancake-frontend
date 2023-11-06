@@ -94,7 +94,6 @@ export const useFarmsV3Public = () => {
     {
       enabled: Boolean(farmFetcherV3.isChainSupported(chainId)),
       refetchInterval: FAST_INTERVAL * 3,
-      keepPreviousData: true,
       initialData: fallback,
     },
   )
