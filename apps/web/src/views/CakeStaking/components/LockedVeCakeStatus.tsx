@@ -1,20 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  AtomBox,
   AutoColumn,
   Balance,
   Box,
   Button,
   Card,
   CardHeader,
-  ErrorIcon,
   Flex,
   FlexGap,
-  Grid,
   Heading,
   InfoFilledIcon,
   Message,
-  Row,
   RowBetween,
   Tag,
   Text,
@@ -27,40 +23,40 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { formatTime } from 'utils/formatTime'
+import { CakeStakingStatus } from 'views/CakeStaking/types'
 
 dayjs.extend(relativeTime)
 
-export enum StatingStatus {
-  NotStaking = 'NotStaking',
-  Staking = 'Staking',
-  Expired = 'Expired',
-  Migrate = 'Migrate',
-}
-
-export const MyVeCakeCard = () => {
+export const LockedVeCakeStatus: React.FC<{
+  status: CakeStakingStatus
+}> = ({ status }) => {
   // @todo @ChefJerry useHook
   // const balance = 1253.48
   const balance = 0
 
+  if (status === CakeStakingStatus.NotStaking) return null
+
   return (
-    <Card isActive>
-      <CardHeader>
-        <RowBetween>
-          <AutoColumn>
-            <Heading color="text">My VeCAKE</Heading>
-            <Balance
-              fontSize="20px"
-              bold
-              color={balance < 0.01 ? 'failure' : 'secondary'}
-              value={balance}
-              decimals={2}
-            />
-          </AutoColumn>
-          <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="token-vecake" />
-        </RowBetween>
-      </CardHeader>
-      <LockedInfo />
-    </Card>
+    <Box maxWidth={['100%', '369px']}>
+      <Card isActive>
+        <CardHeader>
+          <RowBetween>
+            <AutoColumn>
+              <Heading color="text">My VeCAKE</Heading>
+              <Balance
+                fontSize="20px"
+                bold
+                color={balance < 0.01 ? 'failure' : 'secondary'}
+                value={balance}
+                decimals={2}
+              />
+            </AutoColumn>
+            <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="token-vecake" />
+          </RowBetween>
+        </CardHeader>
+        <LockedInfo />
+      </Card>
+    </Box>
   )
 }
 
