@@ -26,6 +26,7 @@ import {
   isLegacyPool,
   getPoolAprByTokenPerSecond,
   getPoolAprByTokenPerBlock,
+  checkIsBoostedPool,
 } from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/chains'
 import { fetchPublicIfoData, fetchUserIfoCredit } from '@pancakeswap/ifos'
@@ -243,6 +244,8 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
             )
         : 0
 
+      const isBoostedPool = checkIsBoostedPool(pool.contractAddress, chainId)
+
       const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
 
       liveData.push({
@@ -252,6 +255,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         stakingTokenPrice,
         earningTokenPrice,
         apr,
+        isBoostedPool,
         isFinished: isPoolFinished,
       })
     }

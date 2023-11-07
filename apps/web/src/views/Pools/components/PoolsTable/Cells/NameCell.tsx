@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from '@pancakeswap/localization'
-import { isBoostedPool } from '@pancakeswap/pools'
 import { memo, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
@@ -12,7 +11,6 @@ import { styled } from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const { BoostedTag } = FarmWidget.Tags
 
@@ -32,7 +30,6 @@ export const StyledCell = styled(Pool.BaseCell)`
 
 const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveChainId()
   const { isMobile } = useMatchBreakpoints()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey, totalStaked } = pool
   const vaultData = useVaultPoolByKey(pool?.vaultKey || VaultKey.CakeVault)
@@ -63,8 +60,6 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
     }
     return totalStaked && totalStaked.gte(0)
   }, [pool.vaultKey, totalCakeInVault, totalStaked])
-
-  const showBoostedTag = useMemo(() => chainId && isBoostedPool(pool.contractAddress, chainId), [pool, chainId])
 
   return (
     <StyledCell role="cell">
@@ -109,7 +104,7 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
                 {subtitle}
               </Text>
             )}
-            {showBoostedTag && (
+            {pool?.isBoostedPool && (
               <Box width="fit-content" mt="4px">
                 <BoostedTag />
               </Box>
