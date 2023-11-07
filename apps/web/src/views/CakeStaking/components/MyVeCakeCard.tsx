@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, AutoRow, Balance, Box, Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
+import BN from 'bignumber.js'
 import styled from 'styled-components'
 
 const StyledBox = styled(Box)`
@@ -15,7 +16,8 @@ const StyledBox = styled(Box)`
 
 export const MyVeCakeCard: React.FC<{
   type?: 'row' | 'column'
-}> = ({ type = 'column' }) => {
+  value?: string
+}> = ({ type = 'column', value }) => {
   const { t } = useTranslation()
   const { balance } = useVeCakeBalance()
 
@@ -27,14 +29,9 @@ export const MyVeCakeCard: React.FC<{
           <Text fontSize="12px" bold color="white" lineHeight="120%">
             {t('MY veCAKE')}
           </Text>
-          <Balance
-            fontSize="24px"
-            bold
-            color="white"
-            lineHeight="110%"
-            value={getBalanceNumber(balance)}
-            decimals={3}
-          />
+          <Text fontSize="24px" bold color="white" lineHeight="110%">
+            {value ?? getBalanceNumber(balance)}
+          </Text>
         </AutoColumn>
       ) : null}
       {type === 'row' ? (
@@ -43,14 +40,9 @@ export const MyVeCakeCard: React.FC<{
             {t('MY veCAKE')}
           </Text>
 
-          <Balance
-            fontSize="20px"
-            bold
-            color="white"
-            lineHeight="110%"
-            value={getBalanceNumber(balance)}
-            decimals={3}
-          />
+          <Text fontSize="20px" bold color="white" lineHeight="110%">
+            {value ?? getBalanceNumber(balance)}
+          </Text>
         </AutoRow>
       ) : null}
     </StyledBox>

@@ -31,10 +31,10 @@ export const LockCake = () => {
         mx="auto"
       >
         <LockedVeCakeStatus status={status} />
-        {status === CakeStakingStatus.Migrate ? <Migrate /> : null}
         {status === CakeStakingStatus.NotStaking ? <NotStaking /> : null}
         {status === CakeStakingStatus.Staking ? <Staking /> : null}
         {status === CakeStakingStatus.Expired ? <Expired /> : null}
+        {status === CakeStakingStatus.Migrate ? <Migrate /> : null}
       </Grid>
     </>
   )
