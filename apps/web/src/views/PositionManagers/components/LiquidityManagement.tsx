@@ -121,6 +121,8 @@ export const LiquidityManagement = memo(function LiquidityManagement({
     token1Balance: relevantTokenBalances[1],
   }
 
+  const isSingleDepositToken0 = isSingleDepositToken && allowDepositToken0
+
   return (
     <>
       {hasStaked ? (
@@ -136,8 +138,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
               onRemove={showRemoveLiquidityModal}
               token0PriceUSD={token0PriceUSD}
               token1PriceUSD={token1PriceUSD}
-              isSingleDepositToken={isSingleDepositToken}
-              allowDepositToken0={allowDepositToken0}
+              isSingleDepositToken0={isSingleDepositToken0}
             />
           </InnerCard>
           <RewardAssets

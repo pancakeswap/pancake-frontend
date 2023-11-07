@@ -25,8 +25,7 @@ interface StakedAssetsProps {
   staked1Amount?: CurrencyAmount<Currency>
   token0PriceUSD?: number
   token1PriceUSD?: number
-  isSingleDepositToken?: boolean
-  allowDepositToken0?: boolean
+  isSingleDepositToken0?: boolean
   price?: Price<Currency, Currency>
   onAdd?: () => void
   onRemove?: () => void
@@ -41,14 +40,11 @@ export const StakedAssets = memo(function StakedAssets({
   staked1Amount,
   token0PriceUSD,
   token1PriceUSD,
-  isSingleDepositToken,
-  allowDepositToken0,
+  isSingleDepositToken0,
 }: StakedAssetsProps) {
   const { t } = useTranslation()
 
   const totalAssetsInUsd = useTotalAssetInUsd(staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD)
-
-  const isSingleDepositToken0 = isSingleDepositToken && allowDepositToken0
 
   const singleDepositTokenAmount = isSingleDepositToken0 ? staked0Amount : staked1Amount
   const singleDepositTokenPriceUSD = isSingleDepositToken0 ? token0PriceUSD : token1PriceUSD
