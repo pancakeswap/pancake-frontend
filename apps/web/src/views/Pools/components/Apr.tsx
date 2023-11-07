@@ -14,15 +14,12 @@ const withShownApr = (AprComp) => (props) => {
 
   const autoCompoundFrequency = vaultPoolConfig[props.pool.vaultKey]?.autoCompoundFrequency ?? 0
 
-  const boostedApr: number = 1.2 // TODO
-
   return (
     <AprComp
       {...props}
       shouldShowApr={hasPoolStarted || !shouldShowBlockCountdown}
       account={account}
       autoCompoundFrequency={autoCompoundFrequency}
-      boostedApr={boostedApr}
     />
   )
 }

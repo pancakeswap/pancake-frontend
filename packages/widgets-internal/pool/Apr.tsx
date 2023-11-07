@@ -43,7 +43,6 @@ interface AprProps<T> extends FlexProps {
   shouldShowApr: boolean;
   account: string;
   autoCompoundFrequency: number;
-  boostedApr: number;
 }
 
 export function Apr<T>({
@@ -55,7 +54,6 @@ export function Apr<T>({
   shouldShowApr,
   account,
   autoCompoundFrequency,
-  boostedApr,
   ...props
 }: AprProps<T>) {
   const {
@@ -116,8 +114,8 @@ export function Apr<T>({
 
   const aprWithBoosted = useMemo(() => {
     const currentApr = vaultKey ? rawApr : apr;
-    return new BigNumber(currentApr ?? 0).plus(boostedApr).toNumber();
-  }, [apr, boostedApr, rawApr, vaultKey]);
+    return new BigNumber(currentApr ?? 0).plus(pool.boostedApr).toNumber();
+  }, [apr, pool, rawApr, vaultKey]);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -135,7 +133,7 @@ export function Apr<T>({
             {t("Fee APY:")}
           </Text>
           <Text bold as="span" ml="4px">
-            {`${boostedApr.toFixed(2)}%`}
+            {`${pool?.boostedApr?.toFixed(2)}%`}
           </Text>
         </Box>
         <Box>
@@ -164,7 +162,7 @@ export function Apr<T>({
         <>
           {shouldShowApr ? (
             <Flex ref={targetRef}>
-              {!isFinished && boostedApr > 0 && (
+              {!isFinished && pool.isBoostedPool && (
                 <>
                   {tooltipVisible && tooltip}
                   <Flex m="0 4px 0 0" alignSelf="center">
@@ -173,7 +171,7 @@ export function Apr<T>({
                   </Flex>
                 </>
               )}
-              {((isDesktop && boostedApr > 0) || boostedApr === 0) && (
+              {((isDesktop && pool.isBoostedPool) || !pool.isBoostedPool) && (
                 <BalanceWithLoading
                   onClick={(event) => {
                     if (!showIcon || isFinished) return;
@@ -181,7 +179,7 @@ export function Apr<T>({
                   }}
                   fontSize={fontSize}
                   isDisabled={isFinished}
-                  strikeThrough={boostedApr > 0}
+                  strikeThrough={pool.boostedApr > 0}
                   value={isFinished ? 0 : apr ?? 0}
                   decimals={2}
                   unit="%"

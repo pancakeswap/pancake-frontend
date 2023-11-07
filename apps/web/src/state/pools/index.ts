@@ -245,6 +245,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         : 0
 
       const isBoostedPool = checkIsBoostedPool(pool.contractAddress, chainId)
+      const boostedApr = isBoostedPool ? 1 : 0 // TODO
 
       const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
 
@@ -255,6 +256,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         stakingTokenPrice,
         earningTokenPrice,
         apr,
+        boostedApr,
         isBoostedPool,
         isFinished: isPoolFinished,
       })

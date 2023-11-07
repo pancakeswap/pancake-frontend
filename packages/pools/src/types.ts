@@ -25,7 +25,8 @@ export interface LegacyPoolConfigBaseProps {
   poolCategory: PoolCategory
   tokenPerBlock: string
   isFinished?: boolean
-  isBoostedPool?: boolean
+  boostedApr: number
+  isBoostedPool: boolean
   enableEmergencyWithdraw?: boolean
   version?: number
 }
@@ -36,7 +37,8 @@ export interface PoolConfigBaseProps {
   poolCategory: PoolCategory
   tokenPerSecond: string
   isFinished?: boolean
-  isBoostedPool?: boolean
+  boostedApr: number
+  isBoostedPool: boolean
   enableEmergencyWithdraw?: boolean
 }
 
