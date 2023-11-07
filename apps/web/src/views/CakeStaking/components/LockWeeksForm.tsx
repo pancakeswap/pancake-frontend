@@ -102,3 +102,47 @@ export const LockWeeksForm: React.FC<{
     </AutoRow>
   )
 }
+export const LockWeeksFormV2: React.FC<{
+  fieldOnly?: boolean
+  expired?: boolean
+  value: string
+  onChange: (value: string) => void
+}> = ({ fieldOnly, expired, value, onChange }) => {
+  const { t } = useTranslation()
+  return (
+    <AutoRow alignSelf="start" gap="16px">
+      <FlexGap gap="8px" alignItems="center">
+        <Box width={40}>
+          <Image src="/images/cake-staking/lock.png" height={40} width={40} />
+        </Box>
+        <FlexGap gap="4px">
+          <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
+            {t('add')}
+          </Text>
+          <Text color="secondary" textTransform="uppercase" fontSize={16} bold>
+            {t('duration')}
+          </Text>
+        </FlexGap>
+      </FlexGap>
+
+      <WeekInput value={value} onUserInput={onChange} />
+
+      {fieldOnly ? null : (
+        <>
+          <LockWeeksDataSet />
+
+          {expired ? (
+            <Grid gridTemplateColumns="1fr 1fr" width="100%" gridGap="16px">
+              <Button variant="secondary"> {t('Unlock')} </Button>
+              <Button disabled={!value || Number(value) <= 0}> {t('Renew Lock')} </Button>
+            </Grid>
+          ) : (
+            <Button disabled width="100%">
+              {t('Extend Lock')}
+            </Button>
+          )}
+        </>
+      )}
+    </AutoRow>
+  )
+}
