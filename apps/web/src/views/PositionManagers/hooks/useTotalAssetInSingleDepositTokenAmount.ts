@@ -8,11 +8,11 @@ export const useTotalAssetInSingleDepositTokenAmount = (
   singleDepositTokenPriceUSD?: number,
   ohterTokenPriceUSD?: number,
 ) => {
-  const totalAssetInStaked1TokenAmount = useMemo(() => {
+  const totalAssetInSingleDepositTokenAmount = useMemo(() => {
     return (
       Number(formatAmount(singleDepositTokenAmount) ?? 0) +
       (Number(formatAmount(ohterTokenAmount) ?? 0) * (ohterTokenPriceUSD ?? 0)) / (singleDepositTokenPriceUSD ?? 0)
     )
   }, [ohterTokenAmount, singleDepositTokenAmount, ohterTokenPriceUSD, singleDepositTokenPriceUSD])
-  return totalAssetInStaked1TokenAmount
+  return totalAssetInSingleDepositTokenAmount
 }
