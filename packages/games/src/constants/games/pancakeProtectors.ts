@@ -61,10 +61,6 @@ export const pancakeProtectors: GameType = {
       title: 'Pancake Protectors Explained in 2 Minutes For BEGINNERS | EP 1: From Connection to Conquest',
     },
     {
-      videoId: '--UcFQ64sjY',
-      title: 'Pancake Protectors is here! Discover the power of CAKE and perks for Pancake Squads and Bunnies',
-    },
-    {
       videoId: 'w72vcEV1pcE',
       title: 'Pancake Protectors Explained in 2 Minutes For BEGINNERS | EP 1.1: From Connection to Conquest',
     },
