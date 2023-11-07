@@ -28,7 +28,7 @@ import {
 } from '@pancakeswap/uikit'
 import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 
-import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
+import { MasterChefV3, NonfungiblePositionManager, Pool, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import { useFarm } from 'hooks/useFarm'
@@ -77,6 +77,9 @@ import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { ChainLinkSupportChains } from 'state/info/constant'
+import { MerklSection } from 'components/Merkl/MerklSection'
+import { MerklTag } from 'components/Merkl/MerklTag'
+import { useMerklInfo } from 'hooks/useMerkl'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -111,35 +114,64 @@ const useInverter = ({
   }
 }
 
-// function getRatio(
-//   lower: Price<Currency, Currency>,
-//   current: Price<Currency, Currency>,
-//   upper: Price<Currency, Currency>,
-// ) {
-//   try {
-//     if (!current.greaterThan(lower)) {
-//       return 100
-//     }
+function PositionPriceSection({
+  priceUpper,
+  currencyQuote,
+  currencyBase,
+  isMobile,
+  priceLower,
+  inverted,
+  pool,
+  tickAtLimit,
+  setManuallyInverted,
+  manuallyInverted,
+}) {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
-//     if (!current.lessThan(upper)) {
-//       return 0
-//     }
-
-//     const a = Number.parseFloat(lower.toSignificant(15))
-//     const b = Number.parseFloat(upper.toSignificant(15))
-//     const c = Number.parseFloat(current.toSignificant(15))
-
-//     const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
-
-//     if (ratio < 0 || ratio > 100) {
-//       throw Error('Out of range')
-//     }
-
-//     return ratio
-//   } catch {
-//     return undefined
-//   }
-// }
+  return (
+    <>
+      <AutoRow justifyContent="space-between" mb="16px" mt="24px">
+        <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
+          {t('Price Range')}
+        </Text>
+        {currencyBase && currencyQuote && (
+          <RateToggle currencyA={currencyBase} handleRateToggle={() => setManuallyInverted(!manuallyInverted)} />
+        )}
+      </AutoRow>
+      <AutoRow mb="8px">
+        <Flex alignItems="center" justifyContent="space-between" width="100%" flexWrap={['wrap', 'wrap', 'nowrap']}>
+          <RangePriceSection
+            mr={['0', '0', '16px']}
+            mb={['8px', '8px', '0']}
+            title={t('Min Price')}
+            price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
+            currency0={currencyQuote}
+            currency1={currencyBase}
+          />
+          {isMobile ? null : <SyncAltIcon width="24px" mx="16px" />}
+          <RangePriceSection
+            ml={['0', '0', '16px']}
+            title={t('Max Price')}
+            price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
+            currency0={currencyQuote}
+            currency1={currencyBase}
+          />
+        </Flex>
+      </AutoRow>
+      {pool && currencyQuote && currencyBase ? (
+        <RangePriceSection
+          title={t('Current Price')}
+          currency0={currencyQuote}
+          currency1={currencyBase}
+          price={formatPrice(inverted ? pool.token1Price : pool.token0Price, 6, locale)}
+        />
+      ) : null}
+    </>
+  )
+}
 
 export default function PoolPage() {
   const {
@@ -196,6 +228,8 @@ export default function PoolPage() {
     }
     return undefined
   }, [liquidity, pool, tickLower, tickUpper])
+
+  const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
 
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
@@ -446,6 +480,8 @@ export default function PoolPage() {
 
   const isOwnNFT = isStakedInMCv3 || ownsNFT
 
+  const { hasMerkl } = useMerklInfo(poolAddress)
+
   if (!isLoading && poolState === PoolState.NOT_EXISTS) {
     return (
       <NotFound>
@@ -455,7 +491,7 @@ export default function PoolPage() {
   }
 
   const farmingTips =
-    inRange && ownsNFT && hasActiveFarm && !isStakedInMCv3 ? (
+    inRange && ownsNFT && hasActiveFarm && !isStakedInMCv3 && !hasMerkl ? (
       <Message variant="primary" mb="2em">
         <Box>
           <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
@@ -501,6 +537,7 @@ export default function PoolPage() {
                         <RangeTag ml="8px" removed={removed} outOfRange={!inRange} />
                       </>
                     )}
+                    <MerklTag poolAddress={poolAddress} />
                   </Flex>
                   <RowBetween gap="16px" flexWrap="nowrap">
                     <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
@@ -509,11 +546,11 @@ export default function PoolPage() {
                     </Text>
                     {isMobile && (
                       <Flex>
-                        {isStakedInMCv3 && (
+                        {isStakedInMCv3 ? (
                           <Tag mr="8px" outline variant="warning">
                             {t('Farming')}
                           </Tag>
-                        )}
+                        ) : null}
                         <RangeTag removed={removed} outOfRange={!inRange} />
                       </Flex>
                     )}
@@ -740,50 +777,40 @@ export default function PoolPage() {
                   </Flex>
                 </Flex>
               )}
-              <AutoRow justifyContent="space-between" mb="16px" mt="24px">
-                <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                  {t('Price Range')}
-                </Text>
-                {currencyBase && currencyQuote && (
-                  <RateToggle
-                    currencyA={currencyBase}
-                    handleRateToggle={() => setManuallyInverted(!manuallyInverted)}
+              <Flex flexWrap={['wrap', 'wrap', 'wrap', 'nowrap']}>
+                <Box width="100%">
+                  <PositionPriceSection
+                    manuallyInverted={manuallyInverted}
+                    setManuallyInverted={setManuallyInverted}
+                    currencyQuote={currencyQuote}
+                    currencyBase={currencyBase}
+                    isMobile={isMobile}
+                    priceLower={priceLower}
+                    inverted={inverted}
+                    pool={pool}
+                    priceUpper={priceUpper}
+                    tickAtLimit={tickAtLimit}
                   />
-                )}
-              </AutoRow>
-              <AutoRow mb="8px">
-                <Flex
-                  alignItems="center"
-                  justifyContent="space-between"
-                  width="100%"
-                  flexWrap={['wrap', 'wrap', 'nowrap']}
-                >
-                  <RangePriceSection
-                    mr={['0', '0', '16px']}
-                    mb={['8px', '8px', '0']}
-                    title={t('Min Price')}
-                    price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
-                    currency0={currencyQuote}
-                    currency1={currencyBase}
-                  />
-                  {isMobile ? null : <SyncAltIcon width="24px" mx="16px" />}
-                  <RangePriceSection
-                    ml={['0', '0', '16px']}
-                    title={t('Max Price')}
-                    price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
-                    currency0={currencyQuote}
-                    currency1={currencyBase}
-                  />
-                </Flex>
-              </AutoRow>
-              {pool && currencyQuote && currencyBase ? (
-                <RangePriceSection
-                  title={t('Current Price')}
-                  currency0={currencyQuote}
-                  currency1={currencyBase}
-                  price={formatPrice(inverted ? pool.token1Price : pool.token0Price, 6, locale)}
+                </Box>
+
+                <MerklSection
+                  disabled={!isOwnNFT}
+                  outRange={!inRange}
+                  isStakedInMCv3={Boolean(isStakedInMCv3)}
+                  notEnoughLiquidity={Boolean(
+                    fiatValueOfLiquidity
+                      ? fiatValueOfLiquidity.lessThan(
+                          // NOTE: if Liquidity is lessage 20$, can't participate in Merkl
+                          new Fraction(
+                            BigInt(20) * fiatValueOfLiquidity.decimalScale * fiatValueOfLiquidity.denominator,
+                            fiatValueOfLiquidity?.denominator,
+                          ),
+                        )
+                      : false,
+                  )}
+                  poolAddress={poolAddress}
                 />
-              ) : null}
+              </Flex>
               {positionDetails && currency0 && currency1 && (
                 <PositionHistory
                   tokenId={positionDetails.tokenId.toString()}

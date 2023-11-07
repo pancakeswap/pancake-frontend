@@ -1,9 +1,12 @@
 import { Text, Card, Flex, Tag, SyncAltIcon } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import { styled } from 'styled-components'
+import { useMemo } from 'react'
+import { Pool } from '@pancakeswap/v3-sdk'
 
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { Percent, Currency } from '@pancakeswap/sdk'
+import { MerklRewardsTag } from 'components/Merkl/MerklTag'
 
 const TagCell = styled(Flex)`
   padding: 8px 0;
@@ -11,7 +14,7 @@ const TagCell = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.sm} {
     position: absolute;
     right: 16px;
-    top: 30%;
+    top: 45%;
   }
 `
 
@@ -21,6 +24,7 @@ interface LiquidityCardRowProps {
   currency1: Currency
   pairText: string | React.ReactElement
   feeAmount?: number
+  hasMerkl?: boolean
   tokenId?: bigint
   tags: React.ReactElement
   subtitle: string
@@ -37,7 +41,14 @@ export const LiquidityCardRow = ({
   subtitle,
   tokenId,
   onSwitch,
+  hasMerkl,
 }: LiquidityCardRowProps) => {
+  const poolAddress = useMemo(
+    () =>
+      currency0 && currency0 && feeAmount ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount) : null,
+    [currency0, currency1, feeAmount],
+  )
+
   const content = (
     <Flex justifyContent="space-between" p="16px">
       <Flex flexDirection="column">
@@ -54,6 +65,7 @@ export const LiquidityCardRow = ({
               {new Percent(feeAmount, 1_000_000).toSignificant()}%
             </Tag>
           )}
+          {!hasMerkl && <MerklRewardsTag poolAddress={poolAddress} />}
           <TagCell>{tags}</TagCell>
         </Flex>
         <Flex>

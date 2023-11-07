@@ -2,7 +2,7 @@ import { Tag } from '@pancakeswap/uikit'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import { LPStablePair } from 'views/Swap/hooks/useStableConfig'
-import { LiquidityCardRow } from 'components/LiquidityCardRow'
+import { LiquidityCardRow } from 'views/AddLiquidity/components/LiquidityCardRow'
 
 export function StablePairCard({ pair, account }: { pair: LPStablePair; account: string | undefined }) {
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
