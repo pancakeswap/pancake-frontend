@@ -2,27 +2,15 @@ import { formatEther } from 'viem'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
-import { SWRConfig } from 'swr'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { getCakeContract } from 'utils/contractHelpers'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
 import Home from '../views/Home'
 
-const IndexPage = ({ totalTx30Days, addressCount30Days, tvl }) => {
-  return (
-    <SWRConfig
-      value={{
-        fallback: {
-          totalTx30Days,
-          addressCount30Days,
-          tvl,
-        },
-      }}
-    >
-      <Home />
-    </SWRConfig>
-  )
+const IndexPage = () => {
+  return <Home />
 }
 
 // Values fetched from TheGraph and BitQuery jan 24, 2022
@@ -32,6 +20,8 @@ const addressCount = 4425459
 const tvl = 6082955532.115718
 
 export const getStaticProps: GetStaticProps = async () => {
+  const queryClient = new QueryClient()
+
   const totalTxQuery = gql`
     query TotalTransactions($block: Block_height) {
       pancakeFactory(block: $block) {
@@ -122,8 +112,14 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   }
 
+  queryClient.setQueryData(['totalTx30Days'], results.totalTx30Days)
+  queryClient.setQueryData(['tvl'], results.tvl)
+  queryClient.setQueryData(['addressCount30Days'], results.addressCount30Days)
+
   return {
-    props: results,
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
     revalidate: 60 * 60 * 24 * 30, // 30 days
   }
 }
