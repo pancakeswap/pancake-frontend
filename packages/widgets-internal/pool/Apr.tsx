@@ -112,10 +112,12 @@ export function Apr<T>({
     return `${currentApr?.toFixed(2)}%` ?? "0%";
   }, [vaultKey, rawApr, apr]);
 
+  const boostedApr = pool?.boostedApr ?? 0;
+
   const aprWithBoosted = useMemo(() => {
     const currentApr = vaultKey ? rawApr : apr;
-    return new BigNumber(currentApr ?? 0).plus(pool.boostedApr).toNumber();
-  }, [apr, pool, rawApr, vaultKey]);
+    return new BigNumber(currentApr ?? 0).plus(boostedApr).toNumber();
+  }, [apr, boostedApr, rawApr, vaultKey]);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -133,7 +135,7 @@ export function Apr<T>({
             {t("Fee APY:")}
           </Text>
           <Text bold as="span" ml="4px">
-            {`${pool?.boostedApr?.toFixed(2)}%`}
+            {`${boostedApr?.toFixed(2)}%`}
           </Text>
         </Box>
         <Box>
@@ -162,7 +164,7 @@ export function Apr<T>({
         <>
           {shouldShowApr ? (
             <Flex ref={targetRef}>
-              {!isFinished && pool.boostedApr > 0 && (
+              {!isFinished && boostedApr > 0 && (
                 <>
                   {tooltipVisible && tooltip}
                   <Flex m="0 4px 0 0" alignSelf="center">
@@ -171,7 +173,7 @@ export function Apr<T>({
                   </Flex>
                 </>
               )}
-              {((isDesktop && pool.boostedApr > 0) || pool.boostedApr === 0) && (
+              {((isDesktop && boostedApr > 0) || boostedApr === 0) && (
                 <BalanceWithLoading
                   onClick={(event) => {
                     if (!showIcon || isFinished) return;
@@ -179,7 +181,7 @@ export function Apr<T>({
                   }}
                   fontSize={fontSize}
                   isDisabled={isFinished}
-                  strikeThrough={pool.boostedApr > 0}
+                  strikeThrough={boostedApr > 0}
                   value={isFinished ? 0 : apr ?? 0}
                   decimals={2}
                   unit="%"
