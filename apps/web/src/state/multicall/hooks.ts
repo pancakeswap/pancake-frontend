@@ -235,19 +235,17 @@ export function useSingleContractMultipleData<TAbi extends Abi | readonly unknow
   const calls = useMemo(
     () =>
       contract && contract.abi && contract.address && args && args.length > 0
-        ? args
-            .map((inputs) => {
-              if (!contract.address) return undefined
-              return {
-                address: contract.address,
-                callData: encodeFunctionData({
-                  abi: contract.abi,
-                  functionName,
-                  args: inputs,
-                } as unknown as EncodeFunctionDataParameters),
-              }
-            })
-            .filter(Boolean)
+        ? args.map((inputs) => {
+            if (!contract.address) return undefined
+            return {
+              address: contract.address,
+              callData: encodeFunctionData({
+                abi: contract.abi,
+                functionName,
+                args: inputs,
+              } as unknown as EncodeFunctionDataParameters),
+            }
+          })
         : [],
     [args, contract, functionName],
   )
