@@ -27,6 +27,7 @@ import {
   getPoolAprByTokenPerSecond,
   getPoolAprByTokenPerBlock,
   checkIsBoostedPool,
+  fetchAlpBoostedPoolApr,
 } from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/chains'
 import { fetchPublicIfoData, fetchUserIfoCredit } from '@pancakeswap/ifos'
@@ -245,7 +246,15 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         : 0
 
       const isBoostedPool = checkIsBoostedPool(pool.contractAddress, chainId)
-      const boostedApr = isBoostedPool ? 1 : 0 // TODO
+      const boostedApr =
+        isBoostedPool &&
+        !isPoolFinished &&
+        !isLegacyPool(pool) &&
+        pool.stakingToken.chainId === ChainId.ARBITRUM_ONE &&
+        pool.stakingToken.address === arbitrumTokens.alp.address
+          ? // eslint-disable-next-line no-await-in-loop
+            await fetchAlpBoostedPoolApr({ totalStaked, stakingTokenPrice })
+          : 0
 
       const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
 

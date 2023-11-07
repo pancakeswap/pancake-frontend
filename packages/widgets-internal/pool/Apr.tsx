@@ -162,7 +162,7 @@ export function Apr<T>({
         <>
           {shouldShowApr ? (
             <Flex ref={targetRef}>
-              {!isFinished && pool.isBoostedPool && (
+              {!isFinished && pool.boostedApr > 0 && (
                 <>
                   {tooltipVisible && tooltip}
                   <Flex m="0 4px 0 0" alignSelf="center">
@@ -171,7 +171,7 @@ export function Apr<T>({
                   </Flex>
                 </>
               )}
-              {((isDesktop && pool.isBoostedPool) || !pool.isBoostedPool) && (
+              {((isDesktop && pool.boostedApr > 0) || pool.boostedApr === 0) && (
                 <BalanceWithLoading
                   onClick={(event) => {
                     if (!showIcon || isFinished) return;
