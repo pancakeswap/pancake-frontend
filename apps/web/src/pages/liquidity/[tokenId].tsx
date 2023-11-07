@@ -1014,7 +1014,7 @@ function PositionHistoryRow({
   currency0,
   currency1,
 }: {
-  chainId: ChainId | undefined
+  chainId?: ChainId
   positionTx: PositionTX
   type: PositionHistoryType
   currency0: Currency
