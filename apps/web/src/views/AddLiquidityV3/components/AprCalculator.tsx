@@ -116,7 +116,7 @@ export function AprCalculator({
         ? parseFloat(formatPrice(baseUSDPrice, 6) || '0')
         : deriveUSDPrice(
             quoteUSDPrice,
-            quoteCurrency && price?.baseCurrency.equals(quoteCurrency?.wrapped) ? price : price?.invert(),
+            quoteCurrency && price?.baseCurrency.equals(quoteCurrency.wrapped) ? price : price?.invert(),
           ),
     [baseUSDPrice, quoteUSDPrice, price, quoteCurrency],
   )
