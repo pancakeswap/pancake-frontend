@@ -125,7 +125,7 @@ export function AprCalculator({
       baseUSDPrice &&
       (deriveUSDPrice(
         baseUSDPrice,
-        baseCurrency && price?.baseCurrency.equals(baseCurrency?.wrapped) ? price : price?.invert(),
+        baseCurrency && price?.baseCurrency.equals(baseCurrency.wrapped) ? price : price?.invert(),
       ) ||
         parseFloat(formatPrice(quoteUSDPrice, 6) || '0')),
     [baseUSDPrice, quoteUSDPrice, price, baseCurrency],
