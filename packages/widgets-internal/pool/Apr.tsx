@@ -43,6 +43,7 @@ interface AprProps<T> extends FlexProps {
   shouldShowApr: boolean;
   account: string;
   autoCompoundFrequency: number;
+  boostedApr: number;
 }
 
 export function Apr<T>({
@@ -54,6 +55,7 @@ export function Apr<T>({
   shouldShowApr,
   account,
   autoCompoundFrequency,
+  boostedApr,
   ...props
 }: AprProps<T>) {
   const {
@@ -107,7 +109,15 @@ export function Apr<T>({
 
   const isValidate = apr !== undefined && !Number.isNaN(apr);
 
-  const boostedApr: number = 17.889; // TODO
+  const tooltipStakeApy = useMemo(() => {
+    const currentApr = vaultKey ? rawApr : apr;
+    return `${currentApr?.toFixed(2)}%` ?? "0%";
+  }, [vaultKey, rawApr, apr]);
+
+  const aprWithBoosted = useMemo(() => {
+    const currentApr = vaultKey ? rawApr : apr;
+    return new BigNumber(currentApr ?? 0).plus(boostedApr).toNumber();
+  }, [apr, boostedApr, rawApr, vaultKey]);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -125,7 +135,7 @@ export function Apr<T>({
             {t("Fee APY:")}
           </Text>
           <Text bold as="span" ml="4px">
-            13.78%
+            {`${boostedApr.toFixed(2)}%`}
           </Text>
         </Box>
         <Box>
@@ -133,7 +143,7 @@ export function Apr<T>({
             {t("Stake APY:")}
           </Text>
           <Text bold as="span" ml="4px">
-            13.78%
+            {tooltipStakeApy}
           </Text>
         </Box>
       </Box>
@@ -159,7 +169,7 @@ export function Apr<T>({
                   {tooltipVisible && tooltip}
                   <Flex m="0 4px 0 0" alignSelf="center">
                     <RocketIcon color="success" />
-                    <Balance bold unit="%" color="success" decimals={2} value={boostedApr} />
+                    <Balance bold unit="%" color="success" decimals={2} value={aprWithBoosted} />
                   </Flex>
                 </>
               )}
