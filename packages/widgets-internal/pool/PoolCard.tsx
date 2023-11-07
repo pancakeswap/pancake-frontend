@@ -22,8 +22,8 @@ export function PoolCard<T>({ pool, cardContent, aprRow, isStaked, cardFooter, t
   const isCakePool = earningToken?.symbol === "CAKE" && stakingToken?.symbol === "CAKE";
 
   const showBoostedTag = useMemo(
-    () => isBoostedPool(pool.contractAddress, (pool?.stakingToken as any)?.chainId),
-    [pool]
+    () => !isFinished && isBoostedPool(pool.contractAddress, (pool?.stakingToken as any)?.chainId),
+    [isFinished, pool]
   );
 
   return (
