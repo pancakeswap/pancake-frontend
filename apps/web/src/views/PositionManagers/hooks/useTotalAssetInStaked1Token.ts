@@ -2,17 +2,17 @@ import { useMemo } from 'react'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 
-export const useTotalAssetInStaked1TokenAmount = (
-  staked0Amount?: CurrencyAmount<Currency>,
-  staked1Amount?: CurrencyAmount<Currency>,
-  token0PriceUSD?: number,
-  token1PriceUSD?: number,
+export const useTotalAssetInSingleDepositTokenAmount = (
+  singleDepositTokenAmount?: CurrencyAmount<Currency>,
+  ohterTokenAmount?: CurrencyAmount<Currency>,
+  singleDepositTokenPriceUSD?: number,
+  ohterTokenPriceUSD?: number,
 ) => {
   const totalAssetInStaked1TokenAmount = useMemo(() => {
     return (
-      Number(formatAmount(staked1Amount) ?? 0) +
-      (Number(formatAmount(staked0Amount) ?? 0) * (token0PriceUSD ?? 0)) / (token1PriceUSD ?? 0)
+      Number(formatAmount(singleDepositTokenAmount) ?? 0) +
+      (Number(formatAmount(ohterTokenAmount) ?? 0) * (ohterTokenPriceUSD ?? 0)) / (singleDepositTokenPriceUSD ?? 0)
     )
-  }, [staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD])
+  }, [ohterTokenAmount, singleDepositTokenAmount, ohterTokenPriceUSD, singleDepositTokenPriceUSD])
   return totalAssetInStaked1TokenAmount
 }

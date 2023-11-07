@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
 import { styled } from 'styled-components'
-import { useTotalAssetInUsd, useTotalAssetInStaked1TokenAmount } from '../hooks'
+import { useTotalAssetInUsd, useTotalAssetInSingleDepositTokenAmount } from '../hooks'
 
 const Title = styled(Text).attrs({
   bold: true,
@@ -25,6 +25,8 @@ interface StakedAssetsProps {
   staked1Amount?: CurrencyAmount<Currency>
   token0PriceUSD?: number
   token1PriceUSD?: number
+  isSingleDepositToken?: boolean
+  allowDepositToken0?: boolean
   price?: Price<Currency, Currency>
   onAdd?: () => void
   onRemove?: () => void
@@ -39,15 +41,25 @@ export const StakedAssets = memo(function StakedAssets({
   staked1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  isSingleDepositToken,
+  allowDepositToken0,
 }: StakedAssetsProps) {
   const { t } = useTranslation()
 
   const totalAssetsInUsd = useTotalAssetInUsd(staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD)
-  const totalStakedTokenAmount = useTotalAssetInStaked1TokenAmount(
-    staked0Amount,
-    staked1Amount,
-    token0PriceUSD,
-    token1PriceUSD,
+
+  const isSingleDepositToken0 = isSingleDepositToken && allowDepositToken0
+
+  const singleDepositTokenAmount = isSingleDepositToken0 ? staked0Amount : staked1Amount
+  const singleDepositTokenPriceUSD = isSingleDepositToken0 ? token0PriceUSD : token1PriceUSD
+  const otherTokenAmount = isSingleDepositToken0 ? staked1Amount : staked0Amount
+  const otherTokenPriceUSD = isSingleDepositToken0 ? token1PriceUSD : token0PriceUSD
+
+  const totalStakedTokenAmount = useTotalAssetInSingleDepositTokenAmount(
+    singleDepositTokenAmount,
+    otherTokenAmount,
+    singleDepositTokenPriceUSD,
+    otherTokenPriceUSD,
   )
 
   return (
@@ -64,7 +76,7 @@ export const StakedAssets = memo(function StakedAssets({
             ~${totalAssetsInUsd.toFixed(2)}
           </Text>
           <Text color="textSubtle" fontSize="0.75em">
-            (~{totalStakedTokenAmount.toFixed(6)} {currencyB.symbol})
+            (~{totalStakedTokenAmount.toFixed(6)} {isSingleDepositToken0 ? currencyA.symbol : currencyB.symbol})
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end">
