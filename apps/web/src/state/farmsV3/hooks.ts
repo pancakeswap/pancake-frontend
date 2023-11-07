@@ -366,7 +366,6 @@ const useV3BoostedFarm = (pids?: number[]) => {
       enabled: Boolean(chainId && pids && pids.length > 0 && bCakeSupportedChainId.includes(chainId)),
       retry: 3,
       retryDelay: 3000,
-      keepPreviousData: true,
     },
   )
 
