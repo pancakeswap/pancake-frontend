@@ -11,6 +11,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import Notifications from 'views/Notifications'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import { useMenuItems } from './hooks/useMenuItems'
@@ -55,6 +56,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
+            <Notifications />
             <NetworkSwitcher />
             <UserMenu />
           </>

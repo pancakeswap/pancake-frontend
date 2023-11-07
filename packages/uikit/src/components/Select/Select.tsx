@@ -19,7 +19,7 @@ const DropDownHeader = styled.div`
 `;
 
 const DropDownListContainer = styled.div`
-  min-width: 136px;
+  min-width: 100px;
   height: 0;
   position: absolute;
   overflow: hidden;
@@ -30,10 +30,6 @@ const DropDownListContainer = styled.div`
   transform-origin: top;
   opacity: 0;
   width: 100%;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 168px;
-  }
 `;
 
 const DropDownContainer = styled(Box)<{ isOpen: boolean }>`
@@ -43,13 +39,9 @@ const DropDownContainer = styled(Box)<{ isOpen: boolean }>`
   background: ${({ theme }) => theme.colors.input};
   border-radius: 16px;
   height: 40px;
-  min-width: 136px;
+  min-width: 125px;
   user-select: none;
   z-index: 20;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 168px;
-  }
 
   ${(props) =>
     props.isOpen &&
@@ -122,7 +114,8 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
     event.stopPropagation();
   };
 
-  const onOptionClicked = (selectedIndex: number) => () => {
+  const onOptionClicked = (selectedIndex: number) => (e: React.MouseEvent) => {
+    e.stopPropagation();
     setSelectedOptionIndex(selectedIndex);
     setIsOpen(false);
     setOptionSelected(true);
