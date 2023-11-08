@@ -188,6 +188,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
       precision={info?.precision}
       totalStakedInUsd={totalStakedInUsd}
       learnMoreAboutUrl={learnMoreAboutUrl}
+      lpTokenDecimals={info?.lpTokenDecimals}
     >
       {id}
     </DuoTokenVaultCard>

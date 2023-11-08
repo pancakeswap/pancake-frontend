@@ -73,6 +73,7 @@ interface Props {
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
+  lpTokenDecimals?: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -114,6 +115,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   managerAddress,
   totalStakedInUsd,
   learnMoreAboutUrl,
+  lpTokenDecimals,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -162,6 +164,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           totalSupplyAmounts={totalSupplyAmounts}
           userLpAmounts={userLpAmounts}
           precision={precision}
+          lpTokenDecimals={lpTokenDecimals}
         />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement
@@ -198,6 +201,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           totalStakedInUsd={totalStakedInUsd}
           strategyInfoUrl={strategyInfoUrl}
           learnMoreAboutUrl={learnMoreAboutUrl}
+          lpTokenDecimals={lpTokenDecimals}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

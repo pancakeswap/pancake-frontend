@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers'
-import { usePositionManagerWrapperContract } from 'hooks/useContract'
+import { usePositionManagerWrapperContract, useContract } from 'hooks/useContract'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Percent } from '@pancakeswap/sdk'
+import { erc20ABI } from 'wagmi'
 
 export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   token0Amounts: bigint
@@ -138,11 +139,25 @@ export const useWrapperStaticData = (wrapperAddress: Address) => {
   return { data, refetch }
 }
 
+export const useVaultStaticData = (vaultAddress?: Address) => {
+  const { chainId } = useActiveChainId()
+  const vaultContract = useContract(vaultAddress, erc20ABI)
+  const { data, refetch } = useQuery(
+    ['useVaultStaticData', vaultAddress, chainId],
+    () => vaultContract?.read.decimals(),
+    {
+      enabled: !!vaultAddress && !!chainId,
+    },
+  )
+  return { data, refetch }
+}
+
 export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address) => {
   const { data: userAmounts, refetch: refetchUserAmounts } = useUserAmounts(wrapperAddress)
   const { data: poolAmounts, refetch: refetchPoolAmounts } = useAdapterTokensAmounts(adapterAddress)
   const { data: pendingReward, refetch: refetchPendingReward } = useUserPendingRewardAmounts(wrapperAddress)
   const { data: staticData } = useWrapperStaticData(wrapperAddress)
+  const { data: lpTokenDecimals } = useVaultStaticData(poolAmounts?.vaultAddress)
 
   const poolAndUserAmountsReady = userAmounts && poolAmounts
 
@@ -174,6 +189,7 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
     vaultAddress: poolAmounts?.vaultAddress,
     managerFeePercentage: poolAmounts?.managerFeePercentage,
     managerAddress: poolAmounts?.managerAddress,
+    lpTokenDecimals,
   }
 }
 
