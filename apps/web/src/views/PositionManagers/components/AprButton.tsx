@@ -25,7 +25,7 @@ const AprText = styled(Text)`
   cursor: pointer;
 `
 
-const lpTokenDecimals = 8 // the vault ABI from different 3 party is difference, so we need to hardcode this, just for user can input the decimal points
+const lpTokenDecimals = 8 // the vault ABI from 3 party is difference, so we need to hardcode this, just for user can input the decimal points
 const tokenBalanceMultiplier = new BigNumber(10).pow(lpTokenDecimals)
 
 export const AprButton = memo(function YieldInfo({
