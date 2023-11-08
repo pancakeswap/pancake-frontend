@@ -1109,6 +1109,9 @@ importers:
       '@blocto/sdk':
         specifier: ^0.5.4
         version: 0.5.4(aptos@1.3.16)
+      '@msafe/aptos-wallet':
+        specifier: ^3.0.6
+        version: 3.0.6
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -1124,9 +1127,6 @@ importers:
       aptos:
         specifier: ^1.3.16
         version: 1.3.16
-      msafe-wallet:
-        specifier: ^2.1.5
-        version: 2.1.5
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.29)(typescript@5.1.3)
@@ -8480,6 +8480,13 @@ packages:
     dependencies:
       '@motionone/dom': 10.16.2
       tslib: 2.6.2
+
+  /@msafe/aptos-wallet@3.0.6:
+    resolution: {integrity: sha512-qKqpTffCY3d+6vRcPioGTfcTeziCRm1HqQSDRST8eKNhOBjb9jfDdy920vNTwKM+guguIlrL/pEws4zO8EWkDQ==}
+    dependencies:
+      buffer: 6.0.3
+      json-rpc-protocol: 0.13.2
+    dev: true
 
   /@ndelangen/get-tarball@3.0.7:
     resolution: {integrity: sha512-NqGfTZIZpRFef1GoVaShSSRwDC3vde3ThtTeqFdcYd6ipKqnfEVhjK2hUeHjCQUcptyZr2TONqcloFXM+5QBrQ==}
@@ -21961,13 +21968,6 @@ packages:
 
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
-
-  /msafe-wallet@2.1.5:
-    resolution: {integrity: sha512-azUF0o96WTYh6jJCwVG9FQ4erRlScvEn0z5+l7WNCbqP9oPKUCR2ySttDjaMa0cO06wz5huk3bW59ND7swiH6Q==}
-    dependencies:
-      buffer: 6.0.3
-      json-rpc-protocol: 0.13.2
-    dev: true
 
   /muggle-string@0.3.1:
     resolution: {integrity: sha512-ckmWDJjphvd/FvZawgygcUeQCxzvohjFO5RxTjj4eq8kw359gFF3E1brjfI+viLMxss5JrHTDRHZvu2/tuy0Qg==}
