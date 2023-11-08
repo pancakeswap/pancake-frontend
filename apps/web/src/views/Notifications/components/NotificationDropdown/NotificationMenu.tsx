@@ -2,6 +2,7 @@ import { Box, Flex, ModalV2, ModalWrapper, UserMenuProps, useMatchBreakpoints } 
 import Image from 'next/image'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
+import { PAGE_VIEW } from 'views/Notifications/types'
 import useUnreadNotifications from '../../hooks/useUnreadNotifications'
 
 interface InotificationBellProps {
@@ -24,8 +25,9 @@ const NotificationMenu: React.FC<
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
     isRegistered: boolean
     handleRegistration: () => Promise<void>
+    viewIndex: PAGE_VIEW
   }
-> = ({ children, isMenuOpen, setIsMenuOpen, isRegistered, handleRegistration }) => {
+> = ({ children, isMenuOpen, setIsMenuOpen, isRegistered, handleRegistration, viewIndex }) => {
   const { unread, setUnread } = useUnreadNotifications()
 
   const ref = useRef<HTMLDivElement>(null)
@@ -63,7 +65,11 @@ const NotificationMenu: React.FC<
   return (
     <Flex alignItems="center" justifyContent="center" height="100%" ref={ref} tabIndex={-1}>
       <NotificationBell unread={unread} toggleMenu={toggleMenu} />
-      <Menu isOpen={isMenuOpen} style={{ top: '100%', position: 'fixed' }}>
+      <Menu
+        isOpen={isMenuOpen}
+        style={{ top: '100%', position: 'fixed' }}
+        overrideHeight={viewIndex === PAGE_VIEW.OnboardView}
+      >
         <Box>{children?.({ isOpen: isMenuOpen })}</Box>
       </Menu>
     </Flex>

@@ -88,17 +88,10 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
   const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(identityKey), t)
 
   return (
-    <Box width="100%">
+    <Box width="100%" maxHeight="400px">
       <div style={{ padding: '24px' }}>
-        <Box display="flex">
-          <LogoRoundIcon width="40px" mr="12px" />
-          <Heading fontSize="24px" padding="0px" textAlign="left" mr="8px">
-            {t('PancakeSwap would like to send you notifications')}
-          </Heading>
-        </Box>
-
-        <Box pl="24px" pt="24px">
-          <Image src="/images/notifications/notification-bell-check.png" alt="#" height={185} width={270} />
+        <Box pl="40px" pb="24px" pt="48px">
+          <Image src="/images/notifications/welcome-notification-bell.png" alt="#" height={185} width={270} />
         </Box>
         <FlexGap rowGap="12px" flexDirection="column" justifyContent="center" alignItems="center">
           <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">

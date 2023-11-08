@@ -35,7 +35,7 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
 
   return (
     <AutoColumn>
-      <CommitButton onClick={handleSubscriptionAction} isLoading={isUnsubscribing} marginBottom="12px">
+      <CommitButton onClick={handleSubscriptionAction} isLoading={isUnsubscribing}>
         <FlexGap alignItems="center" gap="6px">
           <Text fontWeight="bold" color="white">
             {buttonText}
@@ -125,7 +125,7 @@ const NotificationSettingsView = ({
       />
       <ScrollableContainer>
         <SettingsContainer scopes={scopes} setScopes={setScopes} />
-        <Box paddingX="24px" paddingTop="4px">
+        <Box padding="20px">
           <NotificationActionButton
             isUnsubscribing={isUnsubscribing}
             handleSubscriptionAction={handleAction}

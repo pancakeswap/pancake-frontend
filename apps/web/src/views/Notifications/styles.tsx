@@ -1,16 +1,15 @@
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Colors, Flex, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import styled, { keyframes, css } from 'styled-components'
 
 // Notification View styles
-export const Menu = styled.div<{ isOpen: boolean }>`
+export const Menu = styled.div<{ isOpen: boolean; overrideHeight: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: 24px;
   // padding-bottom: 4px;
   pointer-events: auto;
   width: 400px;
-  max-height: 510px;
   overflow: hidden;
   position: relative;
   visibility: visible;
@@ -21,6 +20,11 @@ export const Menu = styled.div<{ isOpen: boolean }>`
     `
     pointer-events: none;
     visibility: hidden;
+  `}
+  ${({ overrideHeight }) =>
+    overrideHeight &&
+    `
+    height: 520px;
   `}
 `
 
@@ -99,6 +103,10 @@ export const openLeft = keyframes`
 export const NoNotificationsWrapper = styled.div`
   animation-fill-mode: forwards;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 390px;
   animation: ${() => openLeft} 0.65s;
 `
 
@@ -112,13 +120,12 @@ export const NotificationsWrapper = styled.div<{ isClosing: boolean }>`
     `}
 `
 
-export const NotificationContainerStyled = styled.div`
-  max-height: 370px;
-  margin-top: 8px;
+export const NotificationContainerStyled = styled.div<{ maxHeight: string }>`
+  height: ${({ maxHeight }) => maxHeight};
+  max-height: ${({ maxHeight }) => maxHeight};
   overflow-x: hidden;
+  //   border-bottom: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
   overflow-y: auto;
-  border-top: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
-  padding-top: 8px;
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -137,39 +144,37 @@ export const StyledNotificationWrapper = styled.div`
   display: flex;
   position: relative;
   overflow: hidden;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 20px 24px 20px 24px;
   animation: ${() => openRight} 0.65s;
-`
 
-export const ContentsContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  padding: 8px;
-  border-bottom: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 12px;
-
-  overflow: hidden;
   transition: transform 0.3s;
   background-color: transparent;
   width: 100%;
 
   &:hover {
     cursor: pointer;
-    transform: scale(1.01);
     background-color: ${({ theme }) => (theme.isDark ? '#372F46' : '#EDEAF4')};
   }
 
   transition: background-color 0.15s ease;
+  border-bottom: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
+`
+
+export const ContentsContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+
+  overflow: hidden;
+  width: 100%;
 `
 
 export const Description = styled.div<{ show: boolean; elementHeight: number }>`
-  margin-bottom: 5px 0;
   overflow: hidden;
   max-width: 100%;
+  margin-top: 8px;
   word-break: break-word;
   transition: max-height 0.33s ease-in-out;
-  max-height: ${({ show, elementHeight }) => (show ? `${elementHeight}px` : '32px')};
+  max-height: ${({ show, elementHeight }) => (show ? `${elementHeight}px` : '37px')};
 `
 
 export const ExpandButton = styled(Text)`
@@ -179,12 +184,13 @@ export const ExpandButton = styled(Text)`
 `
 
 export const StyledLink = styled(Link)<{ hidden: boolean }>`
-  max-height: 35px;
-  height: 35px;
+  max-height: 40px;
+  height: 40px;
   width: 100%;
-  border: ${({ theme }) => `2px solid ${theme.colors.primary}`};
+  //   border: ${({ theme }) => `2px solid ${theme.colors.primary}`};
   border-radius: 12px;
-  color: ${({ theme }) => `${theme.colors.primary}`};
+  background: ${({ theme }) => `${theme.colors.primary}`};
+  color: ${({ theme }) => `${theme.colors.background}`};
   font-weight: bold;
   display: ${({ hidden }) => `${hidden ? 'flex' : 'none'}`};
   margin-top: 17px;
@@ -219,4 +225,18 @@ export const BellIconContainer = styled(Flex)`
     color: white;
     font-weight: bold;
   }
+`
+
+export const Dot = styled('span').withConfig({
+  shouldForwardProp: (props) => !['show'].includes(props),
+})<{
+  show: boolean
+  color: keyof Colors
+}>`
+  display: ${({ show }) => (show ? 'inline-flex' : 'none')};
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  border-radius: 50%;
+  background-color: ${({ theme, color }) => theme.colors[color]};
 `

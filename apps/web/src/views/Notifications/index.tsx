@@ -1,5 +1,5 @@
 import { Box } from '@pancakeswap/uikit'
-import { useManageSubscription } from '@web3inbox/widget-react'
+import { useManageSubscription, useSubscription } from '@web3inbox/widget-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
@@ -8,12 +8,16 @@ import NotificationView from './containers/NotificationView'
 import useRegistration from './hooks/useRegistration'
 import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
+import { clearArchivedTransactions } from 'state/notifications/actions'
+import { useAppDispatch } from 'state'
 
 const Notifications = () => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { account, identityKey, handleRegistration, address, isW3iInitialized } = useRegistration()
+  const dispatch = useAppDispatch()
   const { isSubscribed } = useManageSubscription(account)
+  const { subscription } = useSubscription(account)
 
   const isReady = Boolean(isSubscribed && address && isW3iInitialized)
   const isRegistered = Boolean(!identityKey && isSubscribed)
@@ -35,12 +39,23 @@ const Notifications = () => {
     if (isReady) setViewIndex(PAGE_VIEW.NotificationView)
   }, [address, isReady])
 
+  useEffect(() => {
+    if (!subscription?.topic) return () => null
+
+    const deleteInterval = setInterval(() => {
+      dispatch(clearArchivedTransactions({ subscriptionId: subscription.topic }))
+    }, 360000)
+
+    return () => clearInterval(deleteInterval)
+  }, [subscription?.topic, dispatch])
+
   return (
     <NotificationMenu
       isMenuOpen={isMenuOpen}
       setIsMenuOpen={setIsMenuOpen}
       isRegistered={isRegistered}
       handleRegistration={handleRegistration}
+      viewIndex={viewIndex}
     >
       {() => (
         <Box tabIndex={-1}>

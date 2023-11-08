@@ -30,3 +30,22 @@ export const getSettingsButtonText = (isUnsubscribing: boolean, objectsAreEqual:
 
   return buttonText
 }
+
+export const removeTokensFromAPRString = (aprString: string): string => {
+  const removedString = aprString.replace(/-.*$/, '')
+  return removedString
+}
+
+export const extractPercentageFromString = (inputString: string): number | null => {
+  const percentageMatch = inputString.match(/(\d+(\.\d*)?)%/)
+  if (percentageMatch) return parseFloat(percentageMatch[1])
+  return null
+}
+
+export const extractTokensFromAPRString = (aprString: string): { token1: string; token2: string } => {
+  const match = aprString.match(/-(.*):(.*)$/)
+  if (!match) return { token1: '', token2: '' }
+  const token1 = match[1]
+  const token2 = match[2]
+  return { token1, token2 }
+}

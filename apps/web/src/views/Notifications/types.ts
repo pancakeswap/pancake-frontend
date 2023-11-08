@@ -14,7 +14,7 @@ enum ScopeIdsToName {
   Liquidity = 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
   Farms = '7b43cae7-6e49-4644-aa3f-fb28883c9576',
   PriceUpdates = 'ad885f1d-3f25-46ea-916a-7ebe630b6f98',
-  Promotional = ' 5e0b7598-7fbe-4695-8a3c-b14cb4b78a11',
+  Promotional = '5e0b7598-7fbe-4695-8a3c-b14cb4b78a11',
   Alerts = 'bf991425-0c3e-448c-87f9-b116decea164',
 }
 
