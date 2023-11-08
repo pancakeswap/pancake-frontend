@@ -20,7 +20,7 @@ export const ScopeIcon: React.FC<
       <Image src="/images/notifications/liquidity-scope.svg" alt="liquidity-scope" width={40} height={40} />
     ),
     [SubsctiptionType.Lottery]: (
-      <Image src="/images/notifications/lottery-scope.svg" alt="lottery-scope" width={40} height={40} />
+      <Image src="/images/notifications/lotto-scope.svg" alt="lottery-scope" width={40} height={40} />
     ),
     [SubsctiptionType.Prediction]: (
       <Image src="/images/notifications/predictions-scope.svg" alt="prediction-scope" width={40} height={40} />
@@ -61,9 +61,9 @@ const Settingsitem = ({ scope, id, setScopes, index }: ISettingsprops) => {
 
   return (
     <Box paddingLeft="24px" paddingRight="16px" paddingBottom="16px">
-      <FlexGap gap="12px" alignItems="center">
+      <FlexGap alignItems="center">
         <ScopeIcon scope={id as SubsctiptionType} />
-        <Text fontWeight={600} fontSize="17px" textAlign="center" lineHeight="16px">
+        <Text fontWeight={600} paddingX="12px" fontSize="17px" textAlign="center" lineHeight="16px">
           {scope.name}
         </Text>
       </FlexGap>
