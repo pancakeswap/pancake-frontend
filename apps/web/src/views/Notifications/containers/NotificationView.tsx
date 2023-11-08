@@ -94,25 +94,23 @@ const NotificationView = ({
 
   const removeAllNotifications = useCallback(async () => {
     if (!subscription?.topic) return
-    setIsClosing(true)
+
+    for (const notification of notifications) {
+      dispatch(
+        addArchivedNotification({
+          timestamp: Date.now() / 1000,
+          notification,
+          subscriptionId: subscription.topic,
+          notificationId: notification.id.toString(),
+        }),
+      )
+    }
     const deletePromises = notifications.map((notification) => {
-      return Promise.all([
-        dispatch(
-          addArchivedNotification({
-            timestamp: Date.now() / 1000,
-            notification,
-            subscriptionId: subscription.topic,
-            notificationId: notification.id.toString(),
-          }),
-        ),
-        deleteMessage(notification.id),
-      ])
+      return deleteMessage(notification.id)
     })
 
-    setTimeout(async () => {
-      await Promise.all(deletePromises)
-      setIsClosing(false)
-    }, 400)
+    await Promise.all(deletePromises)
+    setIsClosing(false)
   }, [notifications, deleteMessage, dispatch, subscription?.topic])
 
   const filteredNotifications: any = useMemo(() => {
