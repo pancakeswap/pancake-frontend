@@ -15,7 +15,7 @@ export const GamePageLayout: React.FC<React.PropsWithChildren<GamePageLayoutProp
   const subMenuItems = useMemo(
     () => [
       {
-        label: t('Game'),
+        label: t('Games'),
         href: '/',
       },
       {

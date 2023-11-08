@@ -51,7 +51,7 @@ interface MenuConfigType {
 }
 
 const MenuConfig: MenuConfigType[] = [
-  { title: <Trans>Game</Trans>, href: '/' },
+  { title: <Trans>Games</Trans>, href: '/' },
   { title: <Trans>Developers</Trans>, href: '/developers' },
   { title: <Trans>Community</Trans>, href: '/community' },
 ]
