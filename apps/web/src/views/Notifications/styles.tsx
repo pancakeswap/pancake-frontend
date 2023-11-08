@@ -152,7 +152,7 @@ export const StyledNotificationWrapper = styled.div`
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => (theme.isDark ? '#372F46' : '#EDEAF4')};
+    background-color: ${({ theme }) => (theme.isDark ? '#372F46' : theme.colors.background)};
   }
 
   transition: background-color 0.15s ease;
