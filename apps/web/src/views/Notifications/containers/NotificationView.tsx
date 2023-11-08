@@ -176,7 +176,7 @@ const NotificationView = ({
         </>
       ) : null}
 
-      <NotificationContainerStyled maxHeight={viewMode === ViewMode.Latest ? '360px' : '400px'}>
+      <NotificationContainerStyled maxHeight={viewMode === ViewMode.Archived ? '350px' : '400px'}>
         <NotificationItem
           notifications={viewMode === ViewMode.Latest ? filteredNotifications : archivedNotifications}
           isClosing={isClosing}
