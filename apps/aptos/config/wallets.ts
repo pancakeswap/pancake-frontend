@@ -119,6 +119,10 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
         window?.parent.window !== window
       )
     },
+    downloadLink: {
+      desktop:
+        'https://aptos.m-safe.io/store/pancake?msafe=0x1e11086cc1155114db0215203b37e894bf666bcf291a647a88313095508c8558',
+    },
     connectorId: ConnectorNames.Msafe,
   },
 ]
