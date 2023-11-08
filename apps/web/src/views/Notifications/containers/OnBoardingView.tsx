@@ -1,23 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AutoColumn,
-  Box,
-  CircleLoader,
-  Flex,
-  FlexGap,
-  Heading,
-  LogoRoundIcon,
-  Text,
-  useToast,
-} from '@pancakeswap/uikit'
+import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
 import { useManageSubscription } from '@web3inbox/widget-react'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/image'
 import { useCallback } from 'react'
 import { useAccount } from 'wagmi'
-import useSendPushNotification from '../hooks/sendPushNotification'
 import { Events } from '../constants'
+import useSendPushNotification from '../hooks/sendPushNotification'
 import { BuilderNames } from '../types'
 import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
 
