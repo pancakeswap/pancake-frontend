@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/chains'
 import { getViemClients } from 'utils/viem'
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { CONTRACT_ADDRESS, TOKEN_DECIMALS } from './fetchTokenAplPrice'
+import { CONTRACT_ADDRESS } from './fetchTokenAplPrice'
 
 const API_URL = 'https://perp.pancakeswap.finance/bapi/futures/v1/public/future/apx/fee/info?chain=ARB'
 
@@ -46,13 +45,13 @@ export const fetchAlpBoostedPoolApr = async () => {
     })
 
     const sumTotalValue = totalValue.map((i) => i.valueUsd).reduce((a, b) => a + b, 0n)
-    const usdPrice = getBalanceAmount(new BigNumber(sumTotalValue.toString()), TOKEN_DECIMALS)
 
     const response = await fetch(API_URL)
     const result = await response.json()
+
     const { alpFundingFee, alpTradingFee, alpLipFee } = result.data
     const fee = new BigNumber(alpFundingFee).plus(alpTradingFee).plus(alpLipFee)
-    const feeApr = fee.div(new BigNumber(usdPrice))
+    const feeApr = fee.div(sumTotalValue.toString())
 
     return feeApr.toNumber()
   } catch (error) {
