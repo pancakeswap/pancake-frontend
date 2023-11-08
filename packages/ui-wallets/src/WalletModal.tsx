@@ -51,6 +51,7 @@ export type WalletConfigV2<T = unknown> = {
   downloadLink?: LinkOfDevice
   mobileOnly?: boolean
   qrCode?: () => Promise<string>
+  isNotExtension?: boolean
 }
 
 interface WalletModalV2Props<T = unknown> extends ModalV2Props {
@@ -480,7 +481,7 @@ const NotInstalled = ({ wallet, qrCode }: { wallet: WalletConfigV2; qrCode?: str
           </AtomBox>
         </Suspense>
       )}
-      {!qrCode && (
+      {!qrCode && !wallet.isNotExtension && (
         <Text maxWidth="246px" m="auto">
           {t('Please install the %wallet% browser extension to connect the %wallet% wallet.', {
             wallet: wallet.title,

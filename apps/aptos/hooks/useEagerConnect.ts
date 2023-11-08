@@ -1,6 +1,6 @@
 import { useClient, useConnect } from '@pancakeswap/awgmi'
 import { useEffect } from 'react'
-import { chains } from 'config/chains'
+import { msafeConnector } from 'client'
 
 const useEagerConnect = () => {
   const config = useClient()
@@ -12,11 +12,8 @@ const useEagerConnect = () => {
       // @ts-ignore
       !window.cy
     ) {
-      import('@pancakeswap/awgmi/connectors/msafe').then(({ MsafeConnector }) => {
-        const msafe = new MsafeConnector({ chains })
-        connectAsync({ connector: msafe }).catch(() => {
-          config.autoConnect()
-        })
+      connectAsync({ connector: msafeConnector }).catch(() => {
+        config.autoConnect()
       })
     } else {
       config.autoConnect()
