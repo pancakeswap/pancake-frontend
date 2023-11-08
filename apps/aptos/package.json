@@ -11,6 +11,9 @@
     "test": "vitest --run",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next"
   },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@ethersproject/keccak256": "^5.7.0",
