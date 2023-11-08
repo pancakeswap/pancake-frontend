@@ -7,6 +7,9 @@ import {
   pushNotification,
 } from './types'
 
+export const ONE_DAY_MILLISECONDS = 86400000
+export const ONE_HOUR_MILLISECONDS = 3600000
+
 export const NotificationFilterTypes: OptionProps[] = [
   {
     label: 'All',

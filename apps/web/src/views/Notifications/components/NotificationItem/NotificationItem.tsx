@@ -17,6 +17,7 @@ import { formatTime } from 'views/Notifications/utils/date'
 import {
   extractPercentageFromString,
   extractTokensFromAPRString,
+  getLinkText,
   removeTokensFromAPRString,
 } from 'views/Notifications/utils/textHelpers'
 import AlertIcon from '../../../../../public/images/notifications/alert-icon.svg'
@@ -35,44 +36,46 @@ interface INotificationContainerProps {
   isClosing: boolean
 }
 
-const BottomRow = ({ show, elementHeight }: { show: boolean; elementHeight: number }) => {
+const BottomRow = ({ show }: { show: boolean }) => {
   const { t } = useTranslation()
   return (
-    <>
-      {elementHeight > 35 ? (
-        <Flex alignItems="flex-start">
-          <ExpandButton color="primary" fontSize="14px" fontWeight={600}>
-            {show ? t('LESS') : t('MORE')}
-          </ExpandButton>
-          <Flex alignItems="flex-start">
-            {show ? <ChevronUpIcon color="primary" /> : <ChevronDownIcon color="primary" />}
-          </Flex>
-        </Flex>
-      ) : null}
-    </>
+    <Flex alignItems="flex-start">
+      <Text color="primary" fontWeight={600} fontSize="14px">
+        {show ? t('LESS') : t('MORE')}
+      </Text>
+      <ExpandButton>{show ? <ChevronUpIcon color="primary" /> : <ChevronDownIcon color="primary" />}</ExpandButton>
+    </Flex>
   )
 }
 
-const NotificationImage = ({ image, title, message }) => {
+const NotificationImage = ({
+  image,
+  title,
+  message,
+}: {
+  image: string | undefined
+  title: string
+  message: string
+}) => {
   if (title.includes('APR Update')) {
     const { token1, token2 } = extractTokensFromAPRString(message)
     return (
       <Box position="relative" minWidth="40px" minHeight="40px">
-        <Box marginRight="8px" display="flex" paddingY="4px" position="absolute" top={0} left={0}>
+        <Box marginRight="8px" position="absolute" top={0} left={0}>
           <Image
             src={`https://tokens.pancakeswap.finance/images/${token1}.png`}
             alt="Notification Image"
-            height={22}
-            width={23}
+            height={24}
+            width={24}
             unoptimized
           />
         </Box>
-        <Box marginRight="8px" display="flex" paddingY="4px" position="absolute" bottom={0} right={0}>
+        <Box marginRight="8px" position="absolute" bottom={0} right={0}>
           <Image
             src={`https://tokens.pancakeswap.finance/images/${token2}.png`}
             alt="Notification Image"
-            height={27}
-            width={27}
+            height={28}
+            width={28}
             unoptimized
           />
         </Box>
@@ -80,13 +83,13 @@ const NotificationImage = ({ image, title, message }) => {
     )
   }
   return (
-    <Box marginRight="8px" display="flex" paddingY="4px" minWidth="40px">
+    <Box marginRight="8px" paddingY="4px" minWidth="40px">
       <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={40} width={40} unoptimized />
     </Box>
   )
 }
 
-const NotificationBadge = ({ title, message }) => {
+const NotificationBadge = ({ title, message }: { title: string; message: string }) => {
   const { t } = useTranslation()
   if (title.includes('Balance')) {
     return (
@@ -127,7 +130,9 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
+
   const formatedDescription = formatStringWithNewlines(description)
+  const linkText = getLinkText(title, t)
 
   const handleExpandClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -136,12 +141,6 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
     },
     [show],
   )
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const getLinkText = (title: string) => {
-    if (title.includes('APR Update')) return t('View Farm')
-    if (title.includes('Balance')) return t('Buy Crypto')
-    return t('View Link')
-  }
 
   useEffect(() => {
     if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
@@ -163,15 +162,15 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
                 <NotificationBadge title={title} message={description} />
               </FlexGap>
             </Flex>
-            <BottomRow show={show} elementHeight={elementHeight} />
+            <BottomRow show={show} />
           </Flex>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
             <Text>{formatedDescription}</Text>
-            {url !== '' ? (
-              <StyledLink hidden href={url} target="_blank" rel="noreferrer noopener">
-                {getLinkText(title)}
+            {url !== '' && (
+              <StyledLink href={url} target="_blank">
+                {linkText}
               </StyledLink>
-            ) : null}
+            )}
           </Description>
         </Flex>
       </ContentsContainer>

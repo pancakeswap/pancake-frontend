@@ -1,6 +1,6 @@
-import { Colors, Flex, Text } from '@pancakeswap/uikit'
+import { Colors, Flex } from '@pancakeswap/uikit'
 import Link from 'next/link'
-import styled, { keyframes, css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 // Notification View styles
 export const Menu = styled.div<{ isOpen: boolean; overrideHeight: boolean }>`
@@ -124,7 +124,6 @@ export const NotificationContainerStyled = styled.div<{ maxHeight: string }>`
   height: ${({ maxHeight }) => maxHeight};
   max-height: ${({ maxHeight }) => maxHeight};
   overflow-x: hidden;
-  //   border-bottom: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 6px;
@@ -177,22 +176,19 @@ export const Description = styled.div<{ show: boolean; elementHeight: number }>`
   max-height: ${({ show, elementHeight }) => (show ? `${elementHeight}px` : '37px')};
 `
 
-export const ExpandButton = styled(Text)`
-  &:hover {
-    cursor: pointer;
-  }
+export const ExpandButton = styled.div`
+  pointer-events: none;
 `
 
-export const StyledLink = styled(Link)<{ hidden: boolean }>`
+export const StyledLink = styled(Link)<{ hidden?: boolean }>`
   max-height: 40px;
   height: 40px;
   width: 100%;
-  //   border: ${({ theme }) => `2px solid ${theme.colors.primary}`};
   border-radius: 12px;
   background: ${({ theme }) => `${theme.colors.primary}`};
   color: ${({ theme }) => `${theme.colors.background}`};
   font-weight: bold;
-  display: ${({ hidden }) => `${hidden ? 'flex' : 'none'}`};
+  display: ${({ hidden }) => `${hidden ? 'none' : 'flex'}`};
   margin-top: 17px;
   margin-bottom: 6px;
   justify-content: center;
