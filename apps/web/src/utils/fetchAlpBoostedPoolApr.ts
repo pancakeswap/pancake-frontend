@@ -44,14 +44,16 @@ export const fetchAlpBoostedPoolApr = async () => {
       allowFailure: false,
     })
 
-    const sumTotalValue = totalValue.map((i) => i.valueUsd).reduce((a, b) => a + b, 0n)
+    const totalValueUsd = totalValue
+      .map((i) => new BigNumber(i.valueUsd.toString()).div(10 ** i.decimals).toNumber())
+      .reduce((a, b) => a + b, 0)
 
     const response = await fetch(API_URL)
     const result = await response.json()
 
     const { alpFundingFee, alpTradingFee, alpLipFee } = result.data
     const fee = new BigNumber(alpFundingFee).plus(alpTradingFee).plus(alpLipFee)
-    const feeApr = fee.div(sumTotalValue.toString())
+    const feeApr = fee.div(totalValueUsd.toString())
 
     return feeApr.toNumber()
   } catch (error) {
