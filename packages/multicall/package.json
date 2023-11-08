@@ -23,9 +23,7 @@
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "tsup": "^6.7.0",
-    "typescript": "^5.1.3",
-    "vitest": "^0.27.2"
+    "tsup": "^6.7.0"
   },
   "exports": {
     "./package.json": "./package.json",
