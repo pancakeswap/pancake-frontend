@@ -139,7 +139,7 @@ export const AllArticle = () => {
         mb={['12px', '12px', '12px', '35px']}
         fontSize={['24px', '24px', '24px', '40px']}
       >
-        {t('Games Announcements')}
+        {t('Gaming Announcements')}
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
         <StyledTagContainer>
