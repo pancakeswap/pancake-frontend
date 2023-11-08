@@ -200,19 +200,21 @@ const NotificationContainer = ({ notifications, isClosing }: INotificationContai
   }
   return (
     <NotificationsWrapper isClosing={isClosing}>
-      {notifications.map((notification: NotifyClientTypes.NotifyMessageRecord) => {
-        return (
-          <NotificationItem
-            key={notification.id}
-            title={notification.message.title}
-            description={notification.message.body}
-            date={notification.publishedAt}
-            url={notification.message.url}
-            image={notification.message.icon}
-            id={notification.id}
-          />
-        )
-      })}
+      {notifications
+        .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1))
+        .map((notification: NotifyClientTypes.NotifyMessageRecord) => {
+          return (
+            <NotificationItem
+              key={notification.id}
+              title={notification.message.title}
+              description={notification.message.body}
+              date={notification.publishedAt}
+              url={notification.message.url}
+              image={notification.message.icon}
+              id={notification.id}
+            />
+          )
+        })}
     </NotificationsWrapper>
   )
 }
