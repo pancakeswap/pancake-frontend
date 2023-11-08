@@ -16,8 +16,8 @@ import {
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
-import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useMemo, useState } from 'react'
+import { useBSCCakeBalance } from '../hooks/useBSCCakeBalance'
 import { LockCakeDataSet } from './DataSet'
 
 const percentShortcuts = [25, 50, 75]
@@ -33,14 +33,13 @@ const CakeInput: React.FC<{
     return cakeUsdPrice ? cakeUsdPrice.times(value).toNumber() : 0
   }, [cakeUsdPrice, value])
   const [percent, setPercent] = useState<number | null>(null)
-  // const { balance: cakeBalance } = useBSCCakeBalance()
-  const { balance: _cakeBalance } = useTokenBalance(CAKE[ChainId.BSC_TESTNET].address)
+  const _cakeBalance = useBSCCakeBalance()
   const cakeBalance = BigInt(_cakeBalance.toString())
 
   const handlePercentChange = useCallback(
     (p: number) => {
       if (p > 0) {
-        onUserInput(getFullDisplayBalance(new BN(cakeBalance.toString()).multipliedBy(p).dividedBy(100)))
+        onUserInput(getFullDisplayBalance(new BN(cakeBalance.toString()).multipliedBy(p).dividedBy(100), 18, 18))
       } else {
         onUserInput('')
       }
@@ -49,13 +48,13 @@ const CakeInput: React.FC<{
     [cakeBalance, onUserInput, setPercent],
   )
 
-  const balance = cakeBalance ? (
+  const balance = (
     <Flex>
       <Text textAlign="left" color="textSubtle" ml="4px">
         {t('Balance: %balance%', { balance: formatBigInt(cakeBalance, 2) })}
       </Text>
     </Flex>
-  ) : null
+  )
 
   const usdValue = (
     <Flex>
