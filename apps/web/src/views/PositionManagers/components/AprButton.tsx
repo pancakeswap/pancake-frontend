@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, RoiCalculatorModal, Skeleton, Text, useModal, useTooltip } from '@pancakeswap/uikit'
+import {
+  Flex,
+  RoiCalculatorModal,
+  Skeleton,
+  Text,
+  useModal,
+  useTooltip,
+  IconButton,
+  CalculateIcon,
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { memo, useMemo } from 'react'
@@ -107,12 +116,17 @@ export const AprButton = memo(function YieldInfo({
   )
 
   return (
-    <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
+    <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {apr && !isAprLoading ? (
-        <AprText color="success" ref={targetRef} bold onClick={onPresentApyModal}>
-          {`${apr.combinedApr}%`}
-          {tooltipVisible && tooltip}
-        </AprText>
+        <>
+          <AprText color="success" ref={targetRef} bold onClick={onPresentApyModal}>
+            {`${apr.combinedApr}%`}
+            {tooltipVisible && tooltip}
+          </AprText>
+          <IconButton variant="text" scale="sm" onClick={onPresentApyModal}>
+            <CalculateIcon mt="3px" color="textSubtle" ml="3px" width="20px" />
+          </IconButton>
+        </>
       ) : (
         <Skeleton width={50} height={20} />
       )}
