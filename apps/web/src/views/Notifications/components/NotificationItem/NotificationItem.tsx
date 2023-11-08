@@ -59,25 +59,17 @@ const NotificationImage = ({
 }) => {
   if (title.includes('APR Update')) {
     const { token1, token2 } = extractTokensFromAPRString(message)
+    let baseUrl
+    if (message.includes('base')) baseUrl = `https://tokens.pancakeswap.finance/images/base/`
+    if (message.includes('arbitrum')) baseUrl = `https://tokens.pancakeswap.finance/images/arbitrum/`
+    else baseUrl = `https://tokens.pancakeswap.finance/images/`
     return (
       <Box position="relative" minWidth="40px" minHeight="40px">
         <Box marginRight="8px" position="absolute" top={0} left={0}>
-          <Image
-            src={`https://tokens.pancakeswap.finance/images/${token1}.png`}
-            alt="Notification Image"
-            height={24}
-            width={24}
-            unoptimized
-          />
+          <Image src={`${baseUrl}${token1}.png`} alt="apr img" height={24} width={24} unoptimized />
         </Box>
         <Box marginRight="8px" position="absolute" bottom={0} right={0}>
-          <Image
-            src={`https://tokens.pancakeswap.finance/images/${token2}.png`}
-            alt="Notification Image"
-            height={28}
-            width={28}
-            unoptimized
-          />
+          <Image src={`${baseUrl}${token2}.png`} alt="apr img" height={28} width={28} unoptimized />
         </Box>
       </Box>
     )
