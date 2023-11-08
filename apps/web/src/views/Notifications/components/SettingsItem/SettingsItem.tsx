@@ -1,9 +1,9 @@
-import { Box, Flex, FlexGap, Row, Text, Toggle } from '@pancakeswap/uikit'
+import { Box, Flex, FlexGap, Text, Toggle } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
+import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
 import { Scope, SubsctiptionType } from 'views/Notifications/types'
-import Image from 'next/image'
 
 export const ScopeIcon: React.FC<
   { scope: SubsctiptionType } & (React.SVGProps<SVGSVGElement> &

@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from 'state'
 import { NotificationDetails } from './reducer'

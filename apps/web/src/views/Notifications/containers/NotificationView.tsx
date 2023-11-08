@@ -177,11 +177,10 @@ const NotificationView = ({
       ) : null}
 
       <NotificationContainerStyled maxHeight="400px">
-        {viewMode === ViewMode.Latest ? (
-          <NotificationItem notifications={filteredNotifications} isClosing={isClosing} />
-        ) : (
-          <NotificationItem notifications={archivedNotifications} isClosing={isClosing} />
-        )}
+        <NotificationItem
+          notifications={viewMode === ViewMode.Latest ? filteredNotifications : archivedNotifications}
+          isClosing={isClosing}
+        />
       </NotificationContainerStyled>
       <Flex padding="20px" paddingY="18px" width="100%" alignItems="flex-end" justifyContent="flex-end">
         {notifications.length > 0 && viewMode === ViewMode.Latest ? (
