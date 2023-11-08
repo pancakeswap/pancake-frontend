@@ -70,6 +70,7 @@ interface Props {
   precision?: bigint
   strategyInfoUrl?: string
   learnMoreAboutUrl?: string
+  lpTokenDecimals?: number
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -108,6 +109,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   totalStakedInUsd,
   strategyInfoUrl,
   learnMoreAboutUrl,
+  lpTokenDecimals,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -350,6 +352,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                   userLpAmounts={userLpAmounts}
                   totalSupplyAmounts={totalSupplyAmounts}
                   precision={precision}
+                  lpTokenDecimals={lpTokenDecimals}
                 />
               </RowBetween>
             </Flex>

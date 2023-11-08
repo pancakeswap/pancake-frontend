@@ -63,6 +63,7 @@ interface Props {
   isInCakeRewardDateRange: boolean
   strategyInfoUrl?: string
   learnMoreAboutUrl?: string
+  lpTokenDecimals?: number
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -100,6 +101,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   totalStakedInUsd,
   strategyInfoUrl,
   learnMoreAboutUrl,
+  lpTokenDecimals,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -188,6 +190,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         totalStakedInUsd={totalStakedInUsd}
         strategyInfoUrl={strategyInfoUrl}
         learnMoreAboutUrl={learnMoreAboutUrl}
+        lpTokenDecimals={lpTokenDecimals}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

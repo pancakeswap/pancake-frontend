@@ -17,6 +17,7 @@ interface Props {
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
+  lpTokenDecimals?: number
 }
 
 const AprText = styled(Text)`
@@ -24,9 +25,6 @@ const AprText = styled(Text)`
   text-decoration: dotted underline;
   cursor: pointer;
 `
-
-const lpTokenDecimals = 8 // the vault ABI from 3 party is difference, so we need to hardcode this, just for user can input the decimal points
-const tokenBalanceMultiplier = new BigNumber(10).pow(lpTokenDecimals)
 
 export const AprButton = memo(function YieldInfo({
   id,
@@ -37,17 +35,19 @@ export const AprButton = memo(function YieldInfo({
   userLpAmounts,
   totalSupplyAmounts,
   precision,
+  lpTokenDecimals = 0,
 }: Props) {
   const { t } = useTranslation()
 
   const { address: account } = useAccount()
   const cakePriceBusd = useCakePrice()
+  const tokenBalanceMultiplier = useMemo(() => new BigNumber(10).pow(lpTokenDecimals), [lpTokenDecimals])
   const tokenBalance = useMemo(
     () =>
       new BigNumber(Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0).times(
         tokenBalanceMultiplier,
       ),
-    [userLpAmounts, precision],
+    [userLpAmounts, precision, tokenBalanceMultiplier],
   )
 
   const tokenPrice = useMemo(
