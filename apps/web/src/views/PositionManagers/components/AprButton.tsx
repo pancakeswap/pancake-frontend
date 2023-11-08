@@ -25,6 +25,9 @@ const AprText = styled(Text)`
   cursor: pointer;
 `
 
+const lpTokenDecimals = 8
+const tokenBalanceMuitplier = new BigNumber(10).pow(lpTokenDecimals)
+
 export const AprButton = memo(function YieldInfo({
   id,
   apr,
@@ -40,7 +43,10 @@ export const AprButton = memo(function YieldInfo({
   const { address: account } = useAccount()
   const cakePriceBusd = useCakePrice()
   const tokenBalance = useMemo(
-    () => new BigNumber(Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
+    () =>
+      new BigNumber(Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0).times(
+        tokenBalanceMuitplier,
+      ),
     [userLpAmounts, precision],
   )
 
@@ -87,7 +93,7 @@ export const AprButton = memo(function YieldInfo({
       pid={Number(id)}
       linkLabel=""
       stakingTokenBalance={tokenBalance}
-      stakingTokenDecimals={0}
+      stakingTokenDecimals={lpTokenDecimals}
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={tokenPrice}
       earningTokenPrice={cakePriceBusd.toNumber()}
