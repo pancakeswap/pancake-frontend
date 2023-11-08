@@ -1,6 +1,8 @@
 import { Box } from '@pancakeswap/uikit'
 import { useManageSubscription, useSubscription } from '@web3inbox/widget-react'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { clearArchivedTransactions } from 'state/notifications/actions'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import NotificationSettingsView from './containers/NotificationSettings'
@@ -8,8 +10,6 @@ import NotificationView from './containers/NotificationView'
 import useRegistration from './hooks/useRegistration'
 import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
-import { clearArchivedTransactions } from 'state/notifications/actions'
-import { useAppDispatch } from 'state'
 
 const Notifications = () => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
@@ -24,6 +24,7 @@ const Notifications = () => {
 
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
   const toggleOnboardView = useCallback(() => setViewIndex(PAGE_VIEW.OnboardView), [setViewIndex])
+
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()

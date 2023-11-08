@@ -9,7 +9,6 @@ import {
   IconButton,
   ModalCloseButton,
   OptionProps,
-  Row,
   Select,
   Text,
 } from '@pancakeswap/uikit'
@@ -18,14 +17,14 @@ import { useMessages, useSubscription } from '@web3inbox/widget-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { addArchivedNotification } from 'state/notifications/actions'
+import { useAllNotifications } from 'state/notifications/hooks'
 import { styled } from 'styled-components'
 import { NotificationFilterTypes } from 'views/Notifications/constants'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
 import { useAccount } from 'wagmi'
 import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
-import { SubsctiptionType, pushNotification } from '../types'
-import { useAllNotifications } from 'state/notifications/hooks'
+import { SubsctiptionType } from '../types'
 
 const Wrapper = styled.div`
   display: flex;
@@ -87,7 +86,6 @@ const NotificationView = ({
   const { subscription } = useSubscription(`eip155:1:${account}`)
   const archivedNotifications = useAllNotifications(subscription?.topic)
 
-  console.log(archivedNotifications)
   const { t } = useTranslation()
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {

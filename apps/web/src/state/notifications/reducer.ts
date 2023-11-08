@@ -10,9 +10,7 @@ export interface NotificationState {
   }
 }
 
-export const initialState: NotificationState = {
-  ['test']: {},
-}
+export const initialState: NotificationState = {}
 
 export default createReducer(initialState, (builder) =>
   builder
