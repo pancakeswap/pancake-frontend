@@ -46,6 +46,7 @@ export const StakedAssets = memo(function StakedAssets({
 
   const totalAssetsInUsd = useTotalAssetInUsd(staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD)
 
+  const singleDepositSymbol = isSingleDepositToken0 ? currencyA.symbol : currencyB.symbol
   const singleDepositTokenAmount = isSingleDepositToken0 ? staked0Amount : staked1Amount
   const singleDepositTokenPriceUSD = isSingleDepositToken0 ? token0PriceUSD : token1PriceUSD
   const otherTokenAmount = isSingleDepositToken0 ? staked1Amount : staked0Amount
@@ -72,8 +73,7 @@ export const StakedAssets = memo(function StakedAssets({
             ~${totalAssetsInUsd.toFixed(2)}
           </Text>
           <Text color="textSubtle" fontSize="0.75em">
-            (~{totalAssetInSingleDepositTokenAmount.toFixed(6)}{' '}
-            {isSingleDepositToken0 ? currencyA.symbol : currencyB.symbol})
+            (~{totalAssetInSingleDepositTokenAmount.toFixed(6)} {singleDepositSymbol})
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end">
