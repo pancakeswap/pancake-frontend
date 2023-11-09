@@ -1,9 +1,15 @@
+import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
 import { useEffect, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useContractRead } from 'wagmi'
 import { CakeLockStatus } from '../types'
+
+export enum CakePoolLockStatus {
+  LOCKING = 0,
+  WITHDRAW = 1,
+}
 
 export type VeCakeUserInfo = {
   // cake amount locked by user
@@ -26,7 +32,7 @@ export type VeCakeUserInfo = {
   // withdraw flag of cake pool proxy
   // 0: not withdraw
   // 1: already withdraw
-  withdrawFlag: 0 | 1
+  withdrawFlag: CakePoolLockStatus
 }
 
 export const useVeCakeUserInfo = (): {
@@ -68,14 +74,39 @@ export const useVeCakeUserInfo = (): {
   }
 }
 
-export const useCakeLockStatus = (): CakeLockStatus => {
+export const useCakeLockStatus = (): {
+  status: CakeLockStatus
+  noCakeLocked: boolean
+  cakeLockExpired: boolean
+  cakePoolLocked: boolean
+  cakePoolLockExpired: boolean
+} => {
   const { data: userInfo } = useVeCakeUserInfo()
   const [status, setStatus] = useState<CakeLockStatus>(CakeLockStatus.NotLocked)
+  const noCakeLocked = useMemo(() => !userInfo || !userInfo.amount, [userInfo])
+  const cakeLockExpired = useMemo(() => {
+    if (noCakeLocked) return false
+    return userInfo!.end > dayjs().unix()
+  }, [noCakeLocked, userInfo])
+  const cakePoolLocked = useMemo(
+    () => Boolean(userInfo?.cakeAmount) && userInfo?.withdrawFlag !== CakePoolLockStatus.WITHDRAW,
+    [userInfo],
+  )
+  const cakePoolLockExpired = useMemo(() => {
+    if (!cakePoolLocked) return false
+    return userInfo!.lockEndTime > dayjs().unix()
+  }, [userInfo, cakePoolLocked])
 
   useEffect(() => {
     if (!userInfo || !userInfo.amount) setStatus(CakeLockStatus.NotLocked)
     if (userInfo?.amount && userInfo.end) setStatus(CakeLockStatus.Locking)
   }, [userInfo])
 
-  return status
+  return {
+    status,
+    noCakeLocked,
+    cakeLockExpired,
+    cakePoolLocked,
+    cakePoolLockExpired,
+  }
 }

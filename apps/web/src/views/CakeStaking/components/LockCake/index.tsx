@@ -16,7 +16,7 @@ const customCols = {
 
 export const LockCake = () => {
   const { data: veCakeUserInfo } = useVeCakeUserInfo()
-  const status = useCakeLockStatus()
+  const { status } = useCakeLockStatus()
   return (
     <>
       <pre>{stringify(veCakeUserInfo, null, 2)}</pre>
