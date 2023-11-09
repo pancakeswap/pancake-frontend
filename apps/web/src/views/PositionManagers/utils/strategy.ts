@@ -9,6 +9,10 @@ export function getStrategyName(t: TranslateFunction, strategy: Strategy) {
       return t('Yield IQ')
     case Strategy.ACTIVE:
       return t('Active')
+    case Strategy.PASSIVE:
+      return t('Passive')
+    case Strategy.PEGGED:
+      return t('Pegged')
     default:
       return ''
   }
