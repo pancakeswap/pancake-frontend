@@ -167,37 +167,39 @@ export function Apr<T>({
       {isValidate || isFinished ? (
         <>
           {shouldShowApr ? (
-            <Flex ref={targetRef}>
-              {!isFinished && boostedApr > 0 && (
-                <>
-                  {tooltipVisible && tooltip}
-                  <Flex
-                    m="0 4px 0 0"
-                    alignSelf="center"
-                    flexDirection={showIcon ? ["row"] : ["column", "column", "row"]}
-                  >
-                    {isDesktop && <RocketIcon color="success" />}
-                    <Text color="success" bold mr="2px">
-                      {t("Up to")}
-                    </Text>
-                    <Balance bold unit="%" color="success" decimals={2} value={poolApr} />
-                  </Flex>
-                </>
-              )}
-              {((isDesktop && boostedApr > 0) || boostedApr === 0 || showIcon) && (
-                <BalanceWithLoading
-                  onClick={(event) => {
-                    if (!showIcon || isFinished) return;
-                    openRoiModal(event);
-                  }}
-                  fontSize={fontSize}
-                  isDisabled={isFinished}
-                  strikeThrough={boostedApr > 0}
-                  value={isFinished ? 0 : apr ?? 0}
-                  decimals={2}
-                  unit="%"
-                />
-              )}
+            <Flex>
+              <Flex ref={targetRef}>
+                {!isFinished && boostedApr > 0 && (
+                  <>
+                    {tooltipVisible && tooltip}
+                    <Flex
+                      m="0 4px 0 0"
+                      alignSelf="center"
+                      flexDirection={showIcon ? ["row"] : ["column", "column", "row"]}
+                    >
+                      {isDesktop && <RocketIcon color="success" />}
+                      <Text color="success" bold mr="2px">
+                        {t("Up to")}
+                      </Text>
+                      <Balance bold unit="%" color="success" decimals={2} value={poolApr} />
+                    </Flex>
+                  </>
+                )}
+                {((isDesktop && boostedApr > 0) || boostedApr === 0 || showIcon) && (
+                  <BalanceWithLoading
+                    onClick={(event) => {
+                      if (!showIcon || isFinished) return;
+                      openRoiModal(event);
+                    }}
+                    fontSize={fontSize}
+                    isDisabled={isFinished}
+                    strikeThrough={boostedApr > 0}
+                    value={isFinished ? 0 : apr ?? 0}
+                    decimals={2}
+                    unit="%"
+                  />
+                )}
+              </Flex>
               {!isFinished && showIcon && (
                 <Button onClick={openRoiModal} variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
                   <CalculateIcon color="textSubtle" width="20px" />
