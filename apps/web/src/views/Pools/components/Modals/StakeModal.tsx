@@ -131,7 +131,14 @@ const StakeModalContainer = ({
     dispatch(updateUserAllowance({ sousId, account, chainId }))
   }
 
-  const totalApr = useMemo(() => (boostedApr ? new BigNumber(boostedApr).plus(apr ?? 0) : apr), [boostedApr, apr])
+  const totalApr = useMemo(() => {
+    let finalApr = apr ?? 0
+    if (boostedApr) {
+      finalApr = new BigNumber(boostedApr).plus(apr ?? 0).toNumber() ?? 0
+    }
+
+    return finalApr
+  }, [boostedApr, apr])
 
   return (
     <Pool.StakeModal
