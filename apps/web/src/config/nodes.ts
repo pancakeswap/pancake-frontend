@@ -46,6 +46,7 @@ export const SERVER_NODES = {
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: [
     'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+    process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
     getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
     ...polygonZkEvm.rpcUrls.public.http,
   ],
@@ -110,8 +111,9 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: [
-    getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+    process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
     'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+    getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
     ...polygonZkEvm.rpcUrls.public.http,
     getNodeRealUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
   ],
