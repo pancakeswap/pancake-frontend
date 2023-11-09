@@ -37,6 +37,7 @@ const StakeModalContainer = ({
     stakingToken,
     earningTokenPrice,
     apr,
+    boostedApr,
     userData,
     stakingLimit,
     enableEmergencyWithdraw,
@@ -130,6 +131,8 @@ const StakeModalContainer = ({
     dispatch(updateUserAllowance({ sousId, account, chainId }))
   }
 
+  const totalApr = useMemo(() => (boostedApr ? new BigNumber(boostedApr).plus(apr ?? 0) : apr), [boostedApr, apr])
+
   return (
     <Pool.StakeModal
       enableEmergencyWithdraw={enableEmergencyWithdraw}
@@ -141,7 +144,7 @@ const StakeModalContainer = ({
       stakingTokenSymbol={stakingToken.symbol}
       stakingTokenAddress={stakingToken.address}
       stakingTokenBalance={stakingTokenBalance}
-      apr={apr}
+      apr={totalApr}
       userDataStakedBalance={userData?.stakedBalance}
       userDataStakingTokenBalance={userData?.stakingTokenBalance}
       onDismiss={onDismiss}
