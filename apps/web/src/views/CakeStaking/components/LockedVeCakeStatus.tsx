@@ -23,18 +23,18 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { formatTime } from 'utils/formatTime'
-import { CakeStakingStatus } from 'views/CakeStaking/types'
+import { CakeLockStatus } from 'views/CakeStaking/types'
 
 dayjs.extend(relativeTime)
 
 export const LockedVeCakeStatus: React.FC<{
-  status: CakeStakingStatus
+  status: CakeLockStatus
 }> = ({ status }) => {
   // @todo @ChefJerry useHook
   // const balance = 1253.48
   const balance = 0
 
-  if (status === CakeStakingStatus.NotStaking) return null
+  if (status === CakeLockStatus.NotLocked) return null
 
   return (
     <Box maxWidth={['100%', '369px']}>

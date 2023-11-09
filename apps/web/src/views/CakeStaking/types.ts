@@ -1,6 +1,6 @@
-export enum CakeStakingStatus {
-  NotStaking = 'NotStaking',
-  Staking = 'Staking',
+export enum CakeLockStatus {
+  NotLocked = 'NotLocked',
+  Locking = 'Locking',
   Expired = 'Expired',
   Migrate = 'Migrate',
 }
