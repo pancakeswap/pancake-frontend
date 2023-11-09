@@ -27,15 +27,15 @@ const STEPS = [
     status: ApproveAndLockStatus.APPROVING_TOKEN,
   },
   {
-    status: ApproveAndLockStatus.APPROVE_PENDING,
-  },
-  {
-    status: ApproveAndLockStatus.PENDING_CONFIRMATION,
+    status: ApproveAndLockStatus.LOCK_CAKE,
   },
 ]
 
 export const StepsIndicator = ({ currentStep }) => {
   const { t } = useTranslation()
+
+  if (currentStep < STEPS[0].status || currentStep > STEPS[STEPS.length - 1].status) return null
+
   return (
     <Box mt="32px">
       <Text fontSize="12px" textAlign="center" color="textSubtle">
