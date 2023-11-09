@@ -184,7 +184,7 @@ export function Apr<T>({
                   </Flex>
                 </>
               )}
-              {((isDesktop && boostedApr > 0) || boostedApr === 0) && (
+              {((isDesktop && boostedApr > 0) || boostedApr === 0 || showIcon) && (
                 <BalanceWithLoading
                   onClick={(event) => {
                     if (!showIcon || isFinished) return;
