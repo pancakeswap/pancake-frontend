@@ -80,6 +80,17 @@ export function Apr<T>({
     [stakingToken]
   );
 
+  const boostedApr = pool?.boostedApr ?? 0;
+
+  const poolApr = useMemo(() => {
+    const currentApr = vaultKey ? rawApr : apr;
+    if (boostedApr) {
+      return new BigNumber(currentApr ?? 0).plus(boostedApr).toNumber();
+    }
+
+    return currentApr ?? 0;
+  }, [apr, boostedApr, rawApr, vaultKey]);
+
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
       account={account}
@@ -87,7 +98,7 @@ export function Apr<T>({
       stakingTokenPrice={stakingTokenPrice || 0}
       stakingTokenBalance={stakedBalance.plus(stakingTokenBalance)}
       stakingTokenDecimals={stakingToken.decimals}
-      apr={vaultKey ? rawApr : apr}
+      apr={poolApr}
       stakingTokenSymbol={stakingToken?.symbol || ""}
       linkLabel={t("Get %symbol%", { symbol: stakingToken?.symbol || "" })}
       linkHref={apyModalLink}
@@ -111,13 +122,6 @@ export function Apr<T>({
     const currentApr = vaultKey ? rawApr : apr;
     return `${currentApr?.toFixed(2)}%` ?? "0%";
   }, [vaultKey, rawApr, apr]);
-
-  const boostedApr = pool?.boostedApr ?? 0;
-
-  const aprWithBoosted = useMemo(() => {
-    const currentApr = vaultKey ? rawApr : apr;
-    return new BigNumber(currentApr ?? 0).plus(boostedApr).toNumber();
-  }, [apr, boostedApr, rawApr, vaultKey]);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -176,7 +180,7 @@ export function Apr<T>({
                     <Text color="success" bold mr="2px">
                       {t("Up to")}
                     </Text>
-                    <Balance bold unit="%" color="success" decimals={2} value={aprWithBoosted} />
+                    <Balance bold unit="%" color="success" decimals={2} value={poolApr} />
                   </Flex>
                 </>
               )}
