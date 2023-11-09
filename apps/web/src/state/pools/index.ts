@@ -58,36 +58,35 @@ import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
 
 export const initialPoolVaultState = Object.freeze({
-  totalShares: null,
-  totalLockedAmount: null,
-  pricePerFullShare: null,
-  totalCakeInVault: null,
+  totalShares: '0',
+  totalLockedAmount: '0',
+  pricePerFullShare: '0',
+  totalCakeInVault: '0',
   fees: {
-    performanceFee: null,
-    withdrawalFee: null,
-    withdrawalFeePeriod: null,
+    performanceFee: 0,
+    withdrawalFee: 0,
+    withdrawalFeePeriod: 0,
   },
   userData: {
     isLoading: true,
-    userShares: null,
-    cakeAtLastUserAction: null,
-    lastDepositedTime: null,
-    lastUserActionTime: null,
-    credit: null,
-    locked: null,
-    lockStartTime: null,
-    lockEndTime: null,
-    userBoostedShare: null,
-    lockedAmount: null,
-    currentOverdueFee: null,
-    currentPerformanceFee: null,
+    userShares: '0',
+    cakeAtLastUserAction: '0',
+    lastDepositedTime: '0',
+    lastUserActionTime: '0',
+    credit: '0',
+    locked: false,
+    lockStartTime: '0',
+    lockEndTime: '0',
+    userBoostedShare: '0',
+    lockedAmount: '0',
+    currentOverdueFee: '0',
+    currentPerformanceFee: '0',
   },
-  creditStartBlock: null,
 })
 
 export const initialIfoState = Object.freeze({
-  credit: null,
-  ceiling: null,
+  credit: '0',
+  ceiling: '0',
 })
 
 const initialState: PoolsState = {
