@@ -1,9 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
-import { SLOW_INTERVAL } from 'config/constants'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Address } from 'viem'
+import { useContractRead } from 'wagmi'
 import { CakeLockStatus } from '../types'
 
 export type VeCakeUserInfo = {
@@ -30,46 +29,53 @@ export type VeCakeUserInfo = {
   withdrawFlag: 0 | 1
 }
 
-export const useVeCakeUserInfo = (): VeCakeUserInfo | undefined => {
+export const useVeCakeUserInfo = (): {
+  data?: VeCakeUserInfo
+  refetch: () => void
+} => {
   const veCakeContract = useVeCakeContract()
   const { account } = useAccountActiveChain()
 
-  const { data } = useQuery(
-    ['veCakeUserInfo', veCakeContract?.address, account],
-    async () => {
-      if (!account) return undefined
+  const { data, refetch } = useContractRead({
+    chainId: veCakeContract?.chain?.id,
+    ...veCakeContract,
+    functionName: 'getUserInfo',
+    enabled: Boolean(veCakeContract?.address && account),
+    args: [account!],
+    watch: true,
+  })
 
-      const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] =
-        await veCakeContract.read.getUserInfo([account])
-      return {
-        amount,
-        end,
-        cakePoolProxy,
-        cakeAmount,
-        lockEndTime,
-        migrationTime,
-        cakePoolType,
-        withdrawFlag,
-      } as VeCakeUserInfo
-    },
-    {
-      enabled: Boolean(veCakeContract?.address && account),
-      refetchInterval: SLOW_INTERVAL,
-      keepPreviousData: true,
-    },
-  )
+  const userInfo = useMemo(() => {
+    if (!data) return undefined
 
-  return data
+    const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = data
+
+    return {
+      amount,
+      end,
+      cakePoolProxy,
+      cakeAmount,
+      lockEndTime,
+      migrationTime,
+      cakePoolType,
+      withdrawFlag,
+    } as VeCakeUserInfo
+  }, [data])
+
+  return {
+    data: userInfo,
+    refetch,
+  }
 }
 
 export const useCakeLockStatus = (): CakeLockStatus => {
-  const userStakingInfo = useVeCakeUserInfo()
+  const { data: userInfo } = useVeCakeUserInfo()
   const [status, setStatus] = useState<CakeLockStatus>(CakeLockStatus.NotLocked)
 
   useEffect(() => {
-    if (!userStakingInfo || !userStakingInfo.amount) setStatus(CakeLockStatus.NotLocked)
-    if (userStakingInfo?.amount && userStakingInfo.end) setStatus(CakeLockStatus.Locking)
-  }, [userStakingInfo])
+    if (!userInfo || !userInfo.amount) setStatus(CakeLockStatus.NotLocked)
+    if (userInfo?.amount && userInfo.end) setStatus(CakeLockStatus.Locking)
+  }, [userInfo])
 
   return status
 }
