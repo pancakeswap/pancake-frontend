@@ -49,7 +49,7 @@ export const SERVER_NODES = {
     process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
     getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
     ...polygonZkEvm.rpcUrls.public.http,
-  ],
+  ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,
@@ -116,7 +116,7 @@ export const PUBLIC_NODES = {
     getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
     ...polygonZkEvm.rpcUrls.public.http,
     getNodeRealUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
-  ],
+  ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     ...polygonZkEvmTestnet.rpcUrls.public.http,
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
