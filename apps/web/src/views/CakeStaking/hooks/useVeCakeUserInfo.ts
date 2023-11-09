@@ -76,10 +76,13 @@ export const useVeCakeUserInfo = (): {
 
 export const useCakeLockStatus = (): {
   status: CakeLockStatus
+  cakeLockedAmount: bigint
   noCakeLocked: boolean
   cakeLockExpired: boolean
   cakePoolLocked: boolean
   cakePoolLockExpired: boolean
+  cakeUnlockTime?: number
+  cakePoolUnlockTime?: number
 } => {
   const { data: userInfo } = useVeCakeUserInfo()
   const [status, setStatus] = useState<CakeLockStatus>(CakeLockStatus.NotLocked)
@@ -97,6 +100,30 @@ export const useCakeLockStatus = (): {
     return userInfo!.lockEndTime > dayjs().unix()
   }, [userInfo, cakePoolLocked])
 
+  const cakeLockedAmountDirectly = useMemo(() => {
+    if (!userInfo) return BigInt(0)
+    return userInfo.amount ?? 0n
+  }, [userInfo])
+  const cakeLockedAmountCakePool = useMemo(() => {
+    if (!cakePoolLocked) return 0n
+
+    return userInfo!.cakeAmount ?? 0n
+  }, [userInfo, cakePoolLocked])
+
+  const cakeLockedAmount = useMemo(() => {
+    return cakeLockedAmountDirectly + cakeLockedAmountCakePool
+  }, [cakeLockedAmountDirectly, cakeLockedAmountCakePool])
+
+  const cakeUnlockTime = useMemo(() => {
+    if (!userInfo) return 0
+    return Number(userInfo.end)
+  }, [userInfo])
+
+  const cakePoolUnlockTime = useMemo(() => {
+    if (!cakePoolLocked) return 0
+    return Number(userInfo!.lockEndTime)
+  }, [userInfo, cakePoolLocked])
+
   useEffect(() => {
     if (!userInfo || !userInfo.amount) setStatus(CakeLockStatus.NotLocked)
     if (userInfo?.amount && userInfo.end) setStatus(CakeLockStatus.Locking)
@@ -104,9 +131,12 @@ export const useCakeLockStatus = (): {
 
   return {
     status,
+    cakeLockedAmount,
     noCakeLocked,
     cakeLockExpired,
     cakePoolLocked,
     cakePoolLockExpired,
+    cakeUnlockTime,
+    cakePoolUnlockTime,
   }
 }

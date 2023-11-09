@@ -16,24 +16,25 @@ import {
   Text,
   WarningIcon,
 } from '@pancakeswap/uikit'
+import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { formatTime } from 'utils/formatTime'
+import { stringify } from 'viem'
 import { CakeLockStatus } from 'views/CakeStaking/types'
+import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
 
 dayjs.extend(relativeTime)
 
 export const LockedVeCakeStatus: React.FC<{
   status: CakeLockStatus
 }> = ({ status }) => {
-  // @todo @ChefJerry useHook
-  // const balance = 1253.48
-  const balance = 0
-
+  const { balance } = useVeCakeBalance()
   if (status === CakeLockStatus.NotLocked) return null
 
   return (
@@ -46,8 +47,8 @@ export const LockedVeCakeStatus: React.FC<{
               <Balance
                 fontSize="20px"
                 bold
-                color={balance < 0.01 ? 'failure' : 'secondary'}
-                value={balance}
+                color={balance.eq(0) ? 'failure' : 'secondary'}
+                value={getBalanceNumber(balance)}
                 decimals={2}
               />
             </AutoColumn>
@@ -71,22 +72,24 @@ const CUSTOM_WARNING_COLOR = '#D67E0A'
 
 const LockedInfo = () => {
   const { t } = useTranslation()
+  const cakePrice = useCakePrice()
+  const { cakeLockedAmount, cakeUnlockTime } = useCakeLockStatus()
+  const status = useCakeLockStatus()
+  const cakeLocked = useMemo(() => Number(formatBigInt(cakeLockedAmount, 18)), [cakeLockedAmount])
+  const cakeLockedUsdValue: number = useMemo(() => {
+    return cakePrice.times(cakeLocked).toNumber()
+  }, [cakePrice, cakeLocked])
 
-  const cakePriceBusd = useCakePrice()
-  // @todo @ChefJerry useHook
-  const cakeLocked = 1557.75
-
-  const cakeLockedUsdValue = useMemo(() => {
-    return new BigNumber(cakeLocked).times(cakePriceBusd).toNumber()
-  }, [cakePriceBusd, cakeLocked])
-
-  const needMigrate = true
-  const unlockTime = dayjs().add(2, 'weeks')
-  const unlocked = dayjs().isBefore(unlockTime)
-  const unlockTimeToNow = dayjs(unlockTime).fromNow(true)
+  // @todo ust status
+  const needMigrate = false
+  const unlocked = dayjs().isBefore(cakeUnlockTime)
+  const unlockTimeToNow = cakeUnlockTime ? dayjs.unix(cakeUnlockTime).fromNow(true) : ''
 
   return (
     <FlexGap flexDirection="column" gap="24px" margin={24}>
+      <pre>
+        <code>{stringify(status, null, 2)}</code>
+      </pre>
       {needMigrate ? (
         <RowBetween>
           <Text color="textSubtle" bold fontSize={12} textTransform="uppercase">
@@ -120,11 +123,11 @@ const LockedInfo = () => {
               </Text>
             )}
             <Text fontSize={12} color={unlocked ? CUSTOM_WARNING_COLOR : undefined}>
-              {t('on')} {formatTime(Number(unlockTime))}
+              {t('on')} {cakeUnlockTime ? formatTime(Number(dayjs.unix(cakeUnlockTime))) : null}
             </Text>
           </AutoColumn>
         </RowBetween>
-        <Button width="100%">{t('Migrate to veCAKE')}</Button>
+        {needMigrate ? <Button width="100%">{t('Migrate to veCAKE')}</Button> : null}
       </StyledLockedCard>
       {unlocked ? (
         <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
