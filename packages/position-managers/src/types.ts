@@ -14,6 +14,8 @@ export enum Strategy {
   TYPICAL_WIDE,
   YIELD_IQ,
   ACTIVE,
+  PASSIVE,
+  PEGGED,
 }
 
 export interface OnChainActionResponse {
