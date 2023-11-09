@@ -120,7 +120,7 @@ export function Apr<T>({
 
   const tooltipStakeApy = useMemo(() => {
     const currentApr = vaultKey ? rawApr : apr;
-    return `${currentApr?.toFixed(2)}%` ?? "0%";
+    return `${currentApr?.toLocaleString("en-US", { maximumFractionDigits: 2 })}%` ?? "0%";
   }, [vaultKey, rawApr, apr]);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -131,7 +131,7 @@ export function Apr<T>({
             {t("Total APY:")}
           </Text>
           <Text bold as="span" ml="4px">
-            {`${poolApr?.toFixed(2)}%`}
+            {`${poolApr?.toLocaleString("en-US", { maximumFractionDigits: 2 })}%`}
           </Text>
         </Box>
         <Box>
@@ -139,7 +139,7 @@ export function Apr<T>({
             {t("Fee APY:")}
           </Text>
           <Text bold as="span" ml="4px">
-            {`${boostedApr?.toFixed(2)}%`}
+            {`${boostedApr?.toLocaleString("en-US", { maximumFractionDigits: 2 })}%`}
           </Text>
         </Box>
         <Box>
