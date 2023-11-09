@@ -118,7 +118,7 @@ export const vaults: VaultConfig[] = [
     learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',
   },
   {
-    id: 1,
+    id: 7,
     name: 'RANGE',
     address: '0xe60613521d0b9807553355Ebfa80E4FE4829cb1a',
     adapterAddress: '0x7e9a3b91Dd4234E0dDE7fC7a15Ef7751010E8787',
