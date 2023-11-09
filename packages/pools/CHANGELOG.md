@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 4.0.21
+
+### Patch Changes
+
+- 58eb44136: Move USH and DCK to finished pools
+
 ## 4.0.20
 
 ### Patch Changes
