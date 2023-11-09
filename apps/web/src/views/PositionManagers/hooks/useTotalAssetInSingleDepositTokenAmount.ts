@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 export const useTotalAssetInSingleDepositTokenAmount = (
   singleDepositTokenAmount?: CurrencyAmount<Currency>,
@@ -10,15 +9,30 @@ export const useTotalAssetInSingleDepositTokenAmount = (
   singleDepositTokenPriceUSD?: number,
   ohterTokenPriceUSD?: number,
 ) => {
-  const totalAssetInSingleDepositTokenAmount = useMemo(() => {
-    const singleDepositTokenAmountBigNum = new BigNumber(formatAmount(singleDepositTokenAmount) ?? BIG_ZERO)
-    const singleDepositTokenPriceUSDBigNum = new BigNumber(singleDepositTokenPriceUSD ?? BIG_ZERO)
-    const otherTokenAmountBigNum = new BigNumber(formatAmount(ohterTokenAmount) ?? BIG_ZERO)
-    const ohterTokenPriceUSDBigNum = new BigNumber(ohterTokenPriceUSD ?? BIG_ZERO)
+  const singleDepositTokenInfo = useMemo(() => {
+    const tokenAmount = new BigNumber(formatAmount(singleDepositTokenAmount) ?? 0)
+    const tokenPriceUSD = new BigNumber(singleDepositTokenPriceUSD ?? 0)
 
-    return singleDepositTokenAmountBigNum.plus(
-      otherTokenAmountBigNum.times(ohterTokenPriceUSDBigNum).div(singleDepositTokenPriceUSDBigNum),
+    return {
+      tokenAmount,
+      tokenPriceUSD,
+    }
+  }, [singleDepositTokenAmount, singleDepositTokenPriceUSD])
+
+  const otherTokenInfo = useMemo(() => {
+    const tokenAmount = new BigNumber(formatAmount(ohterTokenAmount) ?? 0)
+    const tokenPriceUSD = new BigNumber(ohterTokenPriceUSD ?? 0)
+
+    return {
+      tokenAmount,
+      tokenPriceUSD,
+    }
+  }, [ohterTokenAmount, ohterTokenPriceUSD])
+
+  const totalAssetInSingleDepositTokenAmount = useMemo(() => {
+    return singleDepositTokenInfo.tokenAmount.plus(
+      otherTokenInfo.tokenAmount.times(otherTokenInfo.tokenPriceUSD).div(singleDepositTokenInfo.tokenPriceUSD),
     )
-  }, [ohterTokenAmount, singleDepositTokenAmount, ohterTokenPriceUSD, singleDepositTokenPriceUSD])
+  }, [singleDepositTokenInfo, otherTokenInfo])
   return totalAssetInSingleDepositTokenAmount
 }
