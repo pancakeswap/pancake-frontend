@@ -8,6 +8,8 @@ import { useMemo } from 'react'
 import { isIfoSupported } from '@pancakeswap/ifos'
 import { ChainId } from '@pancakeswap/sdk'
 
+import { getChainBasedImageUrl } from '../helpers'
+
 const StyledHero = styled(Box)`
   position: relative;
   overflow: hidden;
@@ -113,7 +115,7 @@ function HeaderBunny() {
   const { isDesktop } = useMatchBreakpoints()
   const bunnyImageUrl = useMemo(() => {
     const chainId = isIfoSupported(currentChainId) ? currentChainId : ChainId.BSC
-    return `/images/ifos/header-bunny/${chainId}.png`
+    return getChainBasedImageUrl({ chainId, name: 'header-bunny' })
   }, [currentChainId])
 
   return (

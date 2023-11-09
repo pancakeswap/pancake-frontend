@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import Image from 'next/image'
 import { memo, useMemo } from 'react'
 import { Box, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
@@ -6,11 +6,14 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { useChainName } from '../hooks/useChainNames'
+import { getChainBasedImageUrl } from '../helpers'
 
 const BACKGROUND = {
   [ChainId.POLYGON_ZKEVM]: 'linear-gradient(180deg, #9132D2 0%, #803DE1 100%)',
   [ChainId.BSC]: '#D8A70A',
+  [ChainId.BSC_TESTNET]: '#D8A70A',
   [ChainId.ETHEREUM]: '#627AD8',
+  [ChainId.GOERLI]: '#627AD8',
 }
 
 const Container = styled(Box)`
@@ -39,7 +42,7 @@ type Props = {
 export const IfoChainBoard = memo(function IfoChainBoard({ chainId }: Props) {
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
-  const boardImageUrl = useMemo(() => `/images/ifos/chain-board/${chainId}.png`, [chainId])
+  const boardImageUrl = useMemo(() => getChainBasedImageUrl({ chainId, name: 'chain-board' }), [chainId])
   const chainName = useChainName(chainId, { shortName: true })
 
   if (!chainId) {

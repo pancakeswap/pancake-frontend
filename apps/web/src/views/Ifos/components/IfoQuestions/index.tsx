@@ -8,6 +8,8 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isIfoSupported } from '@pancakeswap/ifos'
 import { ChainId } from '@pancakeswap/sdk'
 
+import { getChainBasedImageUrl } from 'views/Ifos/helpers'
+
 import config from './config'
 
 const ImageWrapper = styled.div`
@@ -38,7 +40,7 @@ const IfoQuestions = () => {
   const { chainId: currentChainId } = useActiveChainId()
   const bunnyImageUrl = useMemo(() => {
     const chainId = isIfoSupported(currentChainId) ? currentChainId : ChainId.BSC
-    return `/images/ifos/faq-bunny/${chainId}.png`
+    return getChainBasedImageUrl({ chainId, name: 'faq-bunny' })
   }, [currentChainId])
 
   return (
