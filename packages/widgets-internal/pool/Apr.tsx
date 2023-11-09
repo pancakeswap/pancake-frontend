@@ -130,8 +130,8 @@ export function Apr<T>({
           <Text bold as="span">
             {t("Total APY:")}
           </Text>
-          <Text as="span" ml="4px">
-            {t("is the sum of Fee APY and Stake APY.")}
+          <Text bold as="span" ml="4px">
+            {`${poolApr?.toFixed(2)}%`}
           </Text>
         </Box>
         <Box>

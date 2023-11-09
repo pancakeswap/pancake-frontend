@@ -2909,7 +2909,6 @@
   "Pegged": "Pegged",
   "Supplying %amount% %symbol%": "Supplying %amount% %symbol%",
   "Total APY:": "Total APY:",
-  "is the sum of Fee APY and Stake APY.": "is the sum of Fee APY and Stake APY.",
   "Fee APY:": "Fee APY:",
   "Stake APY:": "Stake APY:",
   "Fee APY include the transaction fees shared in the ALP pool, funding rates for positions held, and liquidation income, and will be reflected in the growth of the ALP price. Stake APY is the return for staking ALP. Both Annualized using compound interest, for reference purposes only.": "Fee APY include the transaction fees shared in the ALP pool, funding rates for positions held, and liquidation income, and will be reflected in the growth of the ALP price. Stake APY is the return for staking ALP. Both Annualized using compound interest, for reference purposes only."
