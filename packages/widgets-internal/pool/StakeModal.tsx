@@ -96,7 +96,6 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   imageUrl = "/images/tokens/",
   warning,
 }) => {
-  console.log("apr", apr);
   const { t } = useTranslation();
   const theme = useTheme();
   const [stakeAmount, setStakeAmount] = useState("");
