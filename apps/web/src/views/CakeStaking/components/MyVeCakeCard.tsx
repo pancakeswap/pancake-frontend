@@ -1,8 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, AutoRow, Balance, Box, Text } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Box, Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
-import BN from 'bignumber.js'
 import styled from 'styled-components'
 
 const StyledBox = styled(Box)`
