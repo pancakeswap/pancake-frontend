@@ -3,6 +3,7 @@ import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useApproveCallback } from 'hooks/useApproveCallback'
 import useTokenAllowance from 'hooks/useTokenAllowance'
+import { useMemo } from 'react'
 import { getVeCakeContract } from 'utils/contractHelpers'
 import { useAccount } from 'wagmi'
 import { useBSCCakeToken } from './useBSCCakeToken'
@@ -23,7 +24,10 @@ export const useShouldGrantAllowance = (targetAmount: bigint) => {
 export const useLockApproveCallback = (amount: string) => {
   const cakeToken = useBSCCakeToken()
   const veCakeContract = getVeCakeContract()
-  const rawAmount = getDecimalAmount(new BN(amount), cakeToken?.decimals)
+  const rawAmount = useMemo(
+    () => getDecimalAmount(new BN(amount || 0), cakeToken?.decimals),
+    [amount, cakeToken?.decimals],
+  )
 
   const currencyAmount = CurrencyAmount.fromRawAmount<Token>(cakeToken!, rawAmount.toString())
 
