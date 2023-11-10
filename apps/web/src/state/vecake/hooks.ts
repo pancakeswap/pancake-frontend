@@ -1,7 +1,6 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import {
-  ApproveAndLockStatus,
   approveAndLockStatusAtom,
   cakeLockAmountAtom,
   cakeLockApprovedAtom,
@@ -32,13 +31,9 @@ export const useLockCakeData = () => {
 export const useLockCakeDataResetCallback = () => {
   const setCakeLockAmount = useSetAtom(cakeLockAmountAtom)
   const setCakeLockWeeks = useSetAtom(cakeLockWeeksAtom)
-  const setCakeLockTxHash = useSetAtom(cakeLockTxHashAtom)
-  const setApproveAndLockStatus = useSetAtom(approveAndLockStatusAtom)
 
   return useCallback(() => {
     setCakeLockAmount('0')
-    setCakeLockWeeks('1')
-    setCakeLockTxHash(undefined)
-    setApproveAndLockStatus(ApproveAndLockStatus.IDLE)
-  }, [setApproveAndLockStatus, setCakeLockAmount, setCakeLockTxHash, setCakeLockWeeks])
+    setCakeLockWeeks('10')
+  }, [setCakeLockAmount, setCakeLockWeeks])
 }

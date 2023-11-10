@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Grid, Image, Text } from '@pancakeswap/uikit'
-import { useAtom } from 'jotai'
-import { useCallback } from 'react'
+import { useAtom, useAtomValue } from 'jotai'
+import { useCallback, useMemo } from 'react'
 import { cakeLockWeeksAtom } from 'state/vecake/atoms'
 import { LockWeeksDataSet } from './DataSet'
+import { useWriteIncreaseLockWeeksCallback } from '../hooks/useContractWrite'
 
 const weeks = [1, 5, 10, 25, 52]
 const WeekInput: React.FC<{
@@ -83,12 +84,23 @@ export const LockWeeksForm: React.FC<{
               <Button disabled={!value || Number(value) <= 0}> {t('Renew Lock')} </Button>
             </Grid>
           ) : (
-            <Button disabled width="100%">
-              {t('Extend Lock')}
-            </Button>
+            <SubmitLockButton />
           )}
         </>
       )}
     </AutoRow>
+  )
+}
+
+const SubmitLockButton = () => {
+  const { t } = useTranslation()
+  const cakeLockWeeks = useAtomValue(cakeLockWeeksAtom)
+  const disabled = useMemo(() => !cakeLockWeeks || cakeLockWeeks === '0', [cakeLockWeeks])
+  const increaseLockWeeks = useWriteIncreaseLockWeeksCallback()
+
+  return (
+    <Button disabled={disabled} width="100%" onClick={increaseLockWeeks}>
+      {t('Extend Lock')}
+    </Button>
   )
 }
