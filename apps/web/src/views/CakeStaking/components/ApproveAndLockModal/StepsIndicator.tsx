@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { ApproveAndLockStatus } from 'state/vecake/atoms'
 import styled from 'styled-components'
-import { ApproveAndLockStatus } from 'views/CakeStaking/types'
 
 const StepsContainer = styled(Flex)`
   width: 100px;
