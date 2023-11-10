@@ -1,5 +1,13 @@
 # @pancakeswap/localization
 
+## 5.0.7
+
+### Patch Changes
+
+- f71904c26: fix: Add undefined type to value
+  - @pancakeswap/utils@5.0.7
+  - @pancakeswap/hooks@0.0.20
+
 ## 5.0.6
 
 ### Patch Changes
