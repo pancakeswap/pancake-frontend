@@ -36,6 +36,14 @@ const CakeInput: React.FC<{
   const _cakeBalance = useBSCCakeBalance()
   const cakeBalance = BigInt(_cakeBalance.toString())
 
+  const onInput = useCallback(
+    (input: string) => {
+      setPercent(null)
+      onUserInput(input)
+    },
+    [onUserInput],
+  )
+
   const handlePercentChange = useCallback(
     (p: number) => {
       if (p > 0) {
@@ -67,7 +75,7 @@ const CakeInput: React.FC<{
       <BalanceInput
         width="100%"
         value={value}
-        onUserInput={onUserInput}
+        onUserInput={onInput}
         inputProps={{ style: { textAlign: 'left', height: '20px' }, disabled }}
         currencyValue={usdValue}
         unit={balance}
