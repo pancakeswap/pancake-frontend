@@ -88,8 +88,6 @@ export const useCakeLockStatus = (): {
   const [status, setStatus] = useState<CakeLockStatus>(CakeLockStatus.NotLocked)
   const noCakeLocked = useMemo(() => !userInfo || !userInfo.amount, [userInfo])
   const cakeLockExpired = useMemo(() => {
-    // @fixme
-    return true
     if (noCakeLocked) return false
     return userInfo!.end > dayjs().unix()
   }, [noCakeLocked, userInfo])
