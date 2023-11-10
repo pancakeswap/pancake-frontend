@@ -1,18 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AutoColumn,
-  AutoRow,
-  BalanceInput,
-  BalanceInputProps,
-  Box,
-  Button,
-  Flex,
-  FlexGap,
-  Grid,
-  Image,
-  Text,
-} from '@pancakeswap/uikit'
-import { useCallback, useState } from 'react'
+import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Grid, Image, Text } from '@pancakeswap/uikit'
+import { useAtom } from 'jotai'
+import { useCallback } from 'react'
+import { cakeLockWeeksAtom } from 'state/vecake/atoms'
 import { LockWeeksDataSet } from './DataSet'
 
 const weeks = [1, 5, 10, 25, 52]
@@ -64,51 +54,7 @@ export const LockWeeksForm: React.FC<{
   expired?: boolean
 }> = ({ fieldOnly, expired }) => {
   const { t } = useTranslation()
-  const [duration, setDuration] = useState('0')
-  return (
-    <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
-        <Box width={40}>
-          <Image src="/images/cake-staking/lock.png" height={40} width={40} />
-        </Box>
-        <FlexGap gap="4px">
-          <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
-            {t('add')}
-          </Text>
-          <Text color="secondary" textTransform="uppercase" fontSize={16} bold>
-            {t('duration')}
-          </Text>
-        </FlexGap>
-      </FlexGap>
-
-      <WeekInput value={duration} onUserInput={setDuration} />
-
-      {fieldOnly ? null : (
-        <>
-          <LockWeeksDataSet />
-
-          {expired ? (
-            <Grid gridTemplateColumns="1fr 1fr" width="100%" gridGap="16px">
-              <Button variant="secondary"> {t('Unlock')} </Button>
-              <Button disabled={!duration || Number(duration) <= 0}> {t('Renew Lock')} </Button>
-            </Grid>
-          ) : (
-            <Button disabled width="100%">
-              {t('Extend Lock')}
-            </Button>
-          )}
-        </>
-      )}
-    </AutoRow>
-  )
-}
-export const LockWeeksFormV2: React.FC<{
-  fieldOnly?: boolean
-  expired?: boolean
-  value: string
-  onChange: (value: string) => void
-}> = ({ fieldOnly, expired, value, onChange }) => {
-  const { t } = useTranslation()
+  const [value, onChange] = useAtom(cakeLockWeeksAtom)
   return (
     <AutoRow alignSelf="start" gap="16px">
       <FlexGap gap="8px" alignItems="center">

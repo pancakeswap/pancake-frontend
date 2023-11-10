@@ -1,14 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, ColumnCenter, Grid, Heading } from '@pancakeswap/uikit'
-import { useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { cakeLockAmountAtom, cakeLockWeeksAtom } from 'state/vecake/atoms'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
 import { useWriteApproveAndLockCallback } from 'views/CakeStaking/hooks/useContractWrite/useWriteApproveAndLockCallback'
 import { NewStakingDataSet } from '../DataSet'
-import { LockCakeFormV2 } from '../LockCakeForm'
-import { LockWeeksFormV2 } from '../LockWeeksForm'
+import { LockCakeForm } from '../LockCakeForm'
+import { LockWeeksForm } from '../LockWeeksForm'
 import { StyledCard } from './styled'
 
 export const NotLocking = () => {
@@ -20,9 +18,6 @@ export const NotLocking = () => {
     [cakeLockAmount, cakeLockWeeks],
   )
 
-  const setCakeLockAmount = useSetAtom(cakeLockAmountAtom)
-  const setCakeLockWeeks = useSetAtom(cakeLockWeeksAtom)
-
   const handleModalOpen = useWriteApproveAndLockCallback()
 
   return (
@@ -31,8 +26,8 @@ export const NotLocking = () => {
         <StyledCard innerCardProps={{ padding: '24px' }}>
           <Heading scale="md">{t('Lock CAKE to get veCAKE')}</Heading>
           <Grid gridTemplateColumns="1fr 1fr" mt={32} gridColumnGap="24px" padding={12} mb={32}>
-            <LockCakeFormV2 fieldOnly value={cakeLockAmount} onChange={setCakeLockAmount} />
-            <LockWeeksFormV2 fieldOnly value={cakeLockWeeks} onChange={setCakeLockWeeks} />
+            <LockCakeForm fieldOnly />
+            <LockWeeksForm fieldOnly />
           </Grid>
           <NewStakingDataSet
             veCakeAmount={getVeCakeAmount(cakeLockAmount, cakeLockWeeks)}
