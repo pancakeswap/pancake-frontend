@@ -12,8 +12,8 @@ import { getViemClients } from 'utils/viem'
 const farmFetcherV3 = createFarmFetcherV3(getViemClients)
 
 interface FarmParams {
-  currencyA?: Currency
-  currencyB?: Currency
+  currencyA?: Currency | null
+  currencyB?: Currency | null
   feeAmount?: FeeAmount
 }
 
