@@ -1,13 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { TooltipText } from '@pancakeswap/uikit'
+import { FlexGap, Text, TooltipText } from '@pancakeswap/uikit'
+import BN from 'bignumber.js'
+import dayjs from 'dayjs'
+import { useMemo } from 'react'
+import { useLockCakeData } from 'state/vecake/hooks'
+import { getVeCakeAmount } from 'utils/getVeCakeAmount'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Tooltips } from '../Tooltips'
 import { DataBox, DataHeader, DataRow } from './DataBox'
 
-export const LockWeeksDataSet = () => {
+export const LockWeeksDataSet: React.FC<{
+  unlockTime?: string
+}> = ({ unlockTime }) => {
   const { t } = useTranslation()
+  const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
+  const { cakeLockExpired, cakeUnlockTime } = useCakeLockStatus()
+  const veCakeAmount = useMemo(() => getVeCakeAmount(cakeLockAmount, cakeLockWeeks), [cakeLockAmount, cakeLockWeeks])
+  const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeLockAmount).toPrecision(2)}x` : '0.00x'
+
   return (
     <DataBox gap="8px">
-      <DataHeader />
+      <DataHeader value={String(veCakeAmount)} />
       <DataRow
         label={
           <Tooltips content={t('@todo')}>
@@ -16,7 +29,7 @@ export const LockWeeksDataSet = () => {
             </TooltipText>
           </Tooltips>
         }
-        value="1,438.45"
+        value={factor}
       />
       <DataRow
         label={
@@ -26,8 +39,22 @@ export const LockWeeksDataSet = () => {
             </TooltipText>
           </Tooltips>
         }
-        value="1,438.45"
+        value={cakeLockExpired ? <ExpiredUnlockTime time={cakeUnlockTime!} /> : unlockTime}
       />
     </DataBox>
+  )
+}
+
+const ExpiredUnlockTime: React.FC<{
+  time: number
+}> = ({ time }) => {
+  const { t } = useTranslation()
+  return (
+    <FlexGap gap="2px" alignItems="baseline">
+      <Text fontSize={12}>{dayjs.unix(time).format('MMM D YYYY HH:mm')}</Text>
+      <Text fontWeight={700} fontSize={16} color="#D67E0A">
+        {t('Unlocked')}
+      </Text>
+    </FlexGap>
   )
 }

@@ -25,7 +25,9 @@ export const DataRow: React.FC<{
   )
 }
 
-export const DataHeader = () => {
+export const DataHeader: React.FC<{
+  value?: string
+}> = ({ value }) => {
   return (
     <DataRow
       label={
@@ -38,7 +40,7 @@ export const DataHeader = () => {
       }
       value={
         <Text fontSize="14px" bold>
-          276.625
+          {value}
         </Text>
       }
     />
