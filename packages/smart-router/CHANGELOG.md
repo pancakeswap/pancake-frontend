@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.9.7
+
+### Patch Changes
+
+- a890b2bc0: Add smart-router exports default path
+
 ## 4.9.6
 
 ### Patch Changes
