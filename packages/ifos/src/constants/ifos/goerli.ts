@@ -1,5 +1,6 @@
 import { ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { goerliTestnetTokens } from '@pancakeswap/tokens'
 
 import { BaseIfoConfig } from '../../types'
 
@@ -12,29 +13,20 @@ export const OFFERING_TOKEN = new ERC20Token(
   'https://pancakeswap.finance/',
 )
 
-export const LP_TOKEN = new ERC20Token(
-  ChainId.GOERLI,
-  '0xE64894594AfA6a6266aB5Dc792ed52F071Ab950b',
-  18,
-  'MLP',
-  'MOCK LP Token',
-  'https://pancakeswap.finance/',
-)
-
 export const ifos: BaseIfoConfig[] = [
   {
     id: '1101-test-3',
-    address: '0xba53A2C1dED1e77744878d91603c931E9EAC6E5D',
+    address: '0x6A70E184cb070df1F68c15934fC3C8B2EbDBAc29',
     isActive: true,
     name: 'USDT',
-    plannedStartTime: 1699520400,
+    plannedStartTime: 1699531200,
     poolBasic: {
       raiseAmount: '$0.4',
     },
     poolUnlimited: {
       raiseAmount: '$1.6',
     },
-    currency: LP_TOKEN,
+    currency: goerliTestnetTokens.cake,
     token: OFFERING_TOKEN,
     campaignId: '512200000',
     articleUrl: 'https://pancakeswap.finance/voting/',
