@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
+import shuffle from 'lodash/shuffle'
 import {
   arbitrum,
   polygonZkEvm,
@@ -111,9 +112,8 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: [
+    ...shuffle([process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '', ...polygonZkEvm.rpcUrls.public.http]),
     'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
-    process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
-    ...polygonZkEvm.rpcUrls.public.http,
     getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
   ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
