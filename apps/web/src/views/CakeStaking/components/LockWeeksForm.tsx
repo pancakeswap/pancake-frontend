@@ -3,10 +3,18 @@ import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Grid, I
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { cakeLockWeeksAtom } from 'state/vecake/atoms'
-import { LockWeeksDataSet } from './DataSet'
+import styled from 'styled-components'
 import { useWriteIncreaseLockWeeksCallback } from '../hooks/useContractWrite'
+import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWithdrawCallback'
+import { LockWeeksDataSet } from './DataSet'
+import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
 
 const weeks = [1, 5, 10, 25, 52]
+
+const ButtonBlocked = styled(Button)`
+  flex: 1;
+`
+
 const WeekInput: React.FC<{
   value: BalanceInputProps['value']
   onUserInput: BalanceInputProps['onUserInput']
@@ -79,10 +87,10 @@ export const LockWeeksForm: React.FC<{
           <LockWeeksDataSet />
 
           {expired ? (
-            <Grid gridTemplateColumns="1fr 1fr" width="100%" gridGap="16px">
-              <Button variant="secondary"> {t('Unlock')} </Button>
-              <Button disabled={!value || Number(value) <= 0}> {t('Renew Lock')} </Button>
-            </Grid>
+            <FlexGap width="100%" gap="16px">
+              <SubmitUnlockButton />
+              <SubmitRenewButton />
+            </FlexGap>
           ) : (
             <SubmitLockButton />
           )}
@@ -102,5 +110,36 @@ const SubmitLockButton = () => {
     <Button disabled={disabled} width="100%" onClick={increaseLockWeeks}>
       {t('Extend Lock')}
     </Button>
+  )
+}
+
+const SubmitUnlockButton = () => {
+  const { t } = useTranslation()
+  const unlock = useWriteWithdrawCallback()
+  const { cakeLockedAmount } = useCakeLockStatus()
+
+  if (!cakeLockedAmount) {
+    return null
+  }
+
+  return (
+    <ButtonBlocked variant="secondary" onClick={unlock}>
+      {t('Unlock')}
+    </ButtonBlocked>
+  )
+}
+
+const SubmitRenewButton = () => {
+  const { t } = useTranslation()
+  const cakeLockWeeks = useAtomValue(cakeLockWeeksAtom)
+  const disabled = useMemo(() => !cakeLockWeeks || Number(cakeLockWeeks) <= 0, [cakeLockWeeks])
+
+  const renew = useWriteIncreaseLockWeeksCallback()
+
+  return (
+    <ButtonBlocked disabled={disabled} onClick={renew}>
+      {' '}
+      {t('Renew Lock')}{' '}
+    </ButtonBlocked>
   )
 }
