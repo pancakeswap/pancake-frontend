@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BscScanIcon, Modal, ModalProps, ModalV2, ScanLink, UseModalV2Props } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { ApproveAndLockStatus } from 'state/vecake/atoms'
 import { getBlockExploreLink } from 'utils'
-import { ApproveAndLockStatus } from 'views/CakeStaking/types'
 import { LockInfo } from './LockInfo'
 import { PendingModalContent } from './PendingModalContent'
 import { StepsIndicator } from './StepsIndicator'
@@ -28,34 +28,33 @@ const SeamlessModal: React.FC<React.PropsWithChildren<Omit<ModalProps, 'title'> 
     </Modal>
   )
 }
-
 type ApproveAndLockModalProps = UseModalV2Props & {
   status: ApproveAndLockStatus
-  lockCakeAmount: string
-  lockWeeks: string
-  hash?: string
-  approved?: boolean
+  cakeLockAmount: string
+  cakeLockWeeks: string
+  cakeLockTxHash?: string
+  cakeLockApproved?: boolean
 }
 
 export const ApproveAndLockModal: React.FC<ApproveAndLockModalProps> = ({
   status,
-  lockCakeAmount,
-  lockWeeks,
-  hash,
-  approved,
+  cakeLockAmount,
+  cakeLockWeeks,
+  cakeLockTxHash,
+  cakeLockApproved,
   // modal props
   isOpen,
   onDismiss,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const lockInfo = <LockInfo amount={lockCakeAmount} week={lockWeeks} />
-  const scanLink = hash ? (
-    <ScanLink small icon={<BscScanIcon />} href={getBlockExploreLink(hash, 'transaction', chainId)}>
+  const lockInfo = <LockInfo amount={cakeLockAmount} week={cakeLockWeeks} />
+  const scanLink = cakeLockTxHash ? (
+    <ScanLink small icon={<BscScanIcon />} href={getBlockExploreLink(cakeLockTxHash, 'transaction', chainId)}>
       {t('View on %site%', {
         site: t('Explorer'),
       })}
-      {` ${hash.slice(0, 8)}...`}
+      {` ${cakeLockTxHash.slice(0, 8)}...`}
     </ScanLink>
   ) : null
   return (
@@ -67,7 +66,7 @@ export const ApproveAndLockModal: React.FC<ApproveAndLockModalProps> = ({
               title={status === ApproveAndLockStatus.APPROVING_TOKEN ? t('Approve CAKE spending') : t('Confirm Lock')}
               subTitle={status === ApproveAndLockStatus.APPROVING_TOKEN ? null : lockInfo}
             />
-            {!approved ? <StepsIndicator currentStep={status} /> : null}
+            {!cakeLockApproved ? <StepsIndicator currentStep={status} /> : null}
           </>
         ) : null}
 

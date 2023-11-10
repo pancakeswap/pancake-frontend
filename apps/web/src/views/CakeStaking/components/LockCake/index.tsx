@@ -1,12 +1,13 @@
-// import { useTranslation } from '@pancakeswap/localization'
 import { Grid } from '@pancakeswap/uikit'
 import { stringify } from 'viem'
+import { useLockModal } from 'views/CakeStaking/hooks/useLockModal'
 import { useCakeLockStatus, useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from '../../types'
+import { ApproveAndLockModal } from '../ApproveAndLockModal'
 import { LockedVeCakeStatus } from '../LockedVeCakeStatus'
 import { Expired } from './Expired'
 import { Migrate } from './Migrate'
-import { NotStaking } from './NotStaking'
+import { NotLocking } from './NotLocking'
 import { Staking } from './Staking'
 
 const customCols = {
@@ -17,9 +18,13 @@ const customCols = {
 export const LockCake = () => {
   const { data: veCakeUserInfo } = useVeCakeUserInfo()
   const { status } = useCakeLockStatus()
+
+  const { modal, modalData } = useLockModal()
+
   return (
     <>
       <pre>{stringify(veCakeUserInfo, null, 2)}</pre>
+      <ApproveAndLockModal {...modal} {...modalData} />
       <Grid
         gridGap="24px"
         gridTemplateColumns={customCols[status] ?? '1fr 2fr'}
@@ -28,7 +33,7 @@ export const LockCake = () => {
         mx="auto"
       >
         <LockedVeCakeStatus status={status} />
-        {status === CakeLockStatus.NotLocked ? <NotStaking /> : null}
+        {status === CakeLockStatus.NotLocked ? <NotLocking /> : null}
         {status === CakeLockStatus.Locking ? <Staking /> : null}
         {status === CakeLockStatus.Expired ? <Expired /> : null}
         {status === CakeLockStatus.Migrate ? <Migrate /> : null}
