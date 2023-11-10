@@ -16,7 +16,9 @@ import {
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useAtom } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
+import { cakeLockAmountAtom } from 'state/vecake/atoms'
 import { useBSCCakeBalance } from '../hooks/useBSCCakeBalance'
 import { LockCakeDataSet } from './DataSet'
 
@@ -113,52 +115,7 @@ export const LockCakeForm: React.FC<{
   fieldOnly?: boolean
 }> = ({ fieldOnly }) => {
   const { t } = useTranslation()
-  const [cakeValue, setCakeValue] = useState('0')
-  const onCakeCurrencyChange = useCallback((value: string) => {
-    setCakeValue(value)
-  }, [])
-  return (
-    <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
-        <Box width={40}>
-          <TokenImage
-            src={`https://pancakeswap.finance/images/tokens/${CAKE[ChainId.BSC].address}.png`}
-            height={40}
-            width={40}
-            title={CAKE[ChainId.BSC].symbol}
-          />
-        </Box>
-        <FlexGap gap="4px">
-          <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
-            {t('add')}
-          </Text>
-          <Text color="secondary" textTransform="uppercase" fontSize={16} bold>
-            {t('stake')}
-          </Text>
-        </FlexGap>
-      </FlexGap>
-      <CakeInput value={cakeValue} onUserInput={onCakeCurrencyChange} />
-
-      {fieldOnly ? null : (
-        <>
-          <LockCakeDataSet />
-
-          <Button disabled width="100%">
-            {t('Add CAKE')}
-          </Button>
-        </>
-      )}
-    </AutoRow>
-  )
-}
-
-export const LockCakeFormV2: React.FC<{
-  // show input field only
-  fieldOnly?: boolean
-  value: string
-  onChange: (value: string) => void
-}> = ({ fieldOnly, value, onChange }) => {
-  const { t } = useTranslation()
+  const [value, onChange] = useAtom(cakeLockAmountAtom)
 
   return (
     <AutoRow alignSelf="start" gap="16px">
