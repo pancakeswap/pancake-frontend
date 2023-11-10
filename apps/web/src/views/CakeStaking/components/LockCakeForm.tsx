@@ -16,11 +16,12 @@ import {
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
 import { cakeLockAmountAtom } from 'state/vecake/atoms'
 import { useBSCCakeBalance } from '../hooks/useBSCCakeBalance'
 import { LockCakeDataSet } from './DataSet'
+import { useWriteApproveAndIncreaseLockAmountCallback } from '../hooks/useContractWrite'
 
 const percentShortcuts = [25, 50, 75]
 
@@ -143,11 +144,22 @@ export const LockCakeForm: React.FC<{
         <>
           <LockCakeDataSet />
 
-          <Button disabled width="100%">
-            {t('Add CAKE')}
-          </Button>
+          <SubmitLockButton />
         </>
       )}
     </AutoRow>
+  )
+}
+
+const SubmitLockButton = () => {
+  const { t } = useTranslation()
+  const cakeLockAmount = useAtomValue(cakeLockAmountAtom)
+  const disabled = useMemo(() => !cakeLockAmount || cakeLockAmount === '0', [cakeLockAmount])
+  const increaseLockAmount = useWriteApproveAndIncreaseLockAmountCallback()
+
+  return (
+    <Button disabled={disabled} width="100%" onClick={increaseLockAmount}>
+      {t('Add CAKE')}
+    </Button>
   )
 }

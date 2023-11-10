@@ -18,6 +18,6 @@ export enum ApproveAndLockStatus {
 
 export const approveAndLockStatusAtom = atom<ApproveAndLockStatus>(ApproveAndLockStatus.IDLE)
 export const cakeLockAmountAtom = atom<string>('0')
-export const cakeLockWeeksAtom = atom<string>('1')
+export const cakeLockWeeksAtom = atom<string>('10')
 export const cakeLockTxHashAtom = atom<Hex | undefined>(undefined)
 export const cakeLockApprovedAtom = atom<boolean>(false)
