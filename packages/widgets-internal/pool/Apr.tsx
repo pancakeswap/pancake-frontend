@@ -168,7 +168,7 @@ export function Apr<T>({
         <>
           {shouldShowApr ? (
             <Flex>
-              <Flex ref={targetRef}>
+              <Flex position="relative" zIndex={0} ref={targetRef}>
                 {!isFinished && boostedApr > 0 && (
                   <>
                     {tooltipVisible && tooltip}
@@ -178,10 +178,10 @@ export function Apr<T>({
                       flexDirection={showIcon ? ["row"] : ["column", "column", "row"]}
                     >
                       {isDesktop && <RocketIcon color="success" />}
-                      <Text color="success" bold mr="2px">
+                      <Text fontSize={fontSize} color="success" bold mr="2px">
                         {t("Up to")}
                       </Text>
-                      <Balance bold unit="%" color="success" decimals={2} value={poolApr} />
+                      <Balance fontSize={fontSize} bold unit="%" color="success" decimals={2} value={poolApr} />
                     </Flex>
                   </>
                 )}
@@ -201,7 +201,15 @@ export function Apr<T>({
                 )}
               </Flex>
               {!isFinished && showIcon && (
-                <Button onClick={openRoiModal} variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
+                <Button
+                  variant="text"
+                  width="20px"
+                  height="20px"
+                  padding="0px"
+                  marginLeft="4px"
+                  style={{ position: "relative", zIndex: 1 }}
+                  onClick={openRoiModal}
+                >
                   <CalculateIcon color="textSubtle" width="20px" />
                 </Button>
               )}
