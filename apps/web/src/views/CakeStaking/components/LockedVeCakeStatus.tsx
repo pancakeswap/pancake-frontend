@@ -82,7 +82,7 @@ const LockedInfo = () => {
 
   // @todo ust status
   const needMigrate = false
-  const unlocked = dayjs().isBefore(cakeUnlockTime)
+  const unlocked = dayjs().isAfter(cakeUnlockTime)
   const unlockTimeToNow = cakeUnlockTime ? dayjs.unix(cakeUnlockTime).fromNow(true) : ''
 
   return (
