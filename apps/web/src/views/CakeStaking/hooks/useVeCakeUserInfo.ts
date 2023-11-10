@@ -88,6 +88,8 @@ export const useCakeLockStatus = (): {
   const [status, setStatus] = useState<CakeLockStatus>(CakeLockStatus.NotLocked)
   const noCakeLocked = useMemo(() => !userInfo || !userInfo.amount, [userInfo])
   const cakeLockExpired = useMemo(() => {
+    // @fixme
+    return true
     if (noCakeLocked) return false
     return userInfo!.end > dayjs().unix()
   }, [noCakeLocked, userInfo])
@@ -116,7 +118,7 @@ export const useCakeLockStatus = (): {
 
   const cakeUnlockTime = useMemo(() => {
     if (!userInfo) return 0
-    return Number(userInfo.end)
+    return dayjs.unix(Number(userInfo.end)).subtract(50, 'days').unix()
   }, [userInfo])
 
   const cakePoolUnlockTime = useMemo(() => {
@@ -127,7 +129,8 @@ export const useCakeLockStatus = (): {
   useEffect(() => {
     if (!userInfo || !userInfo.amount) setStatus(CakeLockStatus.NotLocked)
     if (userInfo?.amount && userInfo.end) setStatus(CakeLockStatus.Locking)
-  }, [userInfo])
+    if (cakeLockExpired) setStatus(CakeLockStatus.Expired)
+  }, [userInfo, cakeLockExpired])
 
   return {
     status,
