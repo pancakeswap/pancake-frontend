@@ -69,8 +69,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
           </Flex>
           <Balance lineHeight="1" bold fontSize="20px" decimals={3} value={earningsBalance} />
           <Balance
-            prefix="~"
-            unit=" USD"
+            prefix="~$"
             decimals={2}
             fontSize="12px"
             display="inline"

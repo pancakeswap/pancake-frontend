@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
 import { styled } from 'styled-components'
-import { useTotalAssetInUsd } from '../hooks'
+import { useTotalAssetInUsd, useTotalAssetInSingleDepositTokenAmount } from '../hooks'
 
 const Title = styled(Text).attrs({
   bold: true,
@@ -25,6 +25,7 @@ interface StakedAssetsProps {
   staked1Amount?: CurrencyAmount<Currency>
   token0PriceUSD?: number
   token1PriceUSD?: number
+  isSingleDepositToken0?: boolean
   price?: Price<Currency, Currency>
   onAdd?: () => void
   onRemove?: () => void
@@ -39,10 +40,24 @@ export const StakedAssets = memo(function StakedAssets({
   staked1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  isSingleDepositToken0,
 }: StakedAssetsProps) {
   const { t } = useTranslation()
 
   const totalAssetsInUsd = useTotalAssetInUsd(staked0Amount, staked1Amount, token0PriceUSD, token1PriceUSD)
+
+  const singleDepositSymbol = isSingleDepositToken0 ? currencyA.symbol : currencyB.symbol
+  const singleDepositTokenAmount = isSingleDepositToken0 ? staked0Amount : staked1Amount
+  const singleDepositTokenPriceUSD = isSingleDepositToken0 ? token0PriceUSD : token1PriceUSD
+  const otherTokenAmount = isSingleDepositToken0 ? staked1Amount : staked0Amount
+  const otherTokenPriceUSD = isSingleDepositToken0 ? token1PriceUSD : token0PriceUSD
+
+  const totalAssetInSingleDepositTokenAmount = useTotalAssetInSingleDepositTokenAmount(
+    singleDepositTokenAmount,
+    otherTokenAmount,
+    singleDepositTokenPriceUSD,
+    otherTokenPriceUSD,
+  )
 
   return (
     <>
@@ -56,6 +71,9 @@ export const StakedAssets = memo(function StakedAssets({
           </Row>
           <Text color="text" fontSize="1.5em" bold>
             ~${totalAssetsInUsd.toFixed(2)}
+          </Text>
+          <Text color="textSubtle" fontSize="0.75em">
+            (~{totalAssetInSingleDepositTokenAmount.toFixed(6)} {singleDepositSymbol})
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end">
