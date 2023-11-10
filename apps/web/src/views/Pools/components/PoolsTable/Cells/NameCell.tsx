@@ -104,9 +104,9 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
                 {subtitle}
               </Text>
             )}
-            {pool?.isBoostedPool && (
+            {!isMobile && pool?.isBoostedPool && (
               <Box width="fit-content" mt="4px">
-                <BoostedTag />
+                <BoostedTag scale="sm" />
               </Box>
             )}
           </Pool.CellContent>

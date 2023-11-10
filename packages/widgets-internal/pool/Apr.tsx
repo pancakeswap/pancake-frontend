@@ -172,11 +172,7 @@ export function Apr<T>({
                 {!isFinished && boostedApr > 0 && (
                   <>
                     {tooltipVisible && tooltip}
-                    <Flex
-                      m="0 4px 0 0"
-                      alignSelf="center"
-                      flexDirection={showIcon ? ["row"] : ["column", "column", "row"]}
-                    >
+                    <Flex m="0 4px 0 0" flexDirection={showIcon ? ["row"] : ["column", "column", "row"]}>
                       {isDesktop && <RocketIcon color="success" />}
                       <Text fontSize={fontSize} color="success" bold mr="2px">
                         {t("Up to")}

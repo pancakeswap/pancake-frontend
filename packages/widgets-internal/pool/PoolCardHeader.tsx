@@ -46,7 +46,7 @@ export const PoolCardHeaderTitle: React.FC<
         <Text style={{ alignSelf: "flex-end" }} fontSize="14px" color={isFinished ? "textDisabled" : "textSubtle"}>
           {subTitle}
         </Text>
-        {showBoostedTag && <BoostedTag m="4px 0 0 4px" />}
+        {showBoostedTag && <BoostedTag scale="sm" m="4px 0 0 4px" />}
       </Flex>
     </Flex>
   );
