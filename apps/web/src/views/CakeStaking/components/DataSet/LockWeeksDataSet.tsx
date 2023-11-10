@@ -9,9 +9,9 @@ import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Tooltips } from '../Tooltips'
 import { DataBox, DataHeader, DataRow } from './DataBox'
 
-export const LockWeeksDataSet: React.FC<{
-  unlockTime?: string
-}> = ({ unlockTime }) => {
+const formatUnixDate = (time: number) => dayjs.unix(time).format('MMM D YYYY HH:mm')
+
+export const LockWeeksDataSet = () => {
   const { t } = useTranslation()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
   const { cakeLockExpired, cakeUnlockTime } = useCakeLockStatus()
@@ -39,7 +39,13 @@ export const LockWeeksDataSet: React.FC<{
             </TooltipText>
           </Tooltips>
         }
-        value={cakeLockExpired ? <ExpiredUnlockTime time={cakeUnlockTime!} /> : unlockTime}
+        value={
+          cakeLockExpired && !cakeLockWeeks ? (
+            <ExpiredUnlockTime time={cakeUnlockTime!} />
+          ) : (
+            formatUnixDate(dayjs().add(cakeLockWeeks, 'weeks').unix())
+          )
+        }
       />
     </DataBox>
   )
@@ -51,7 +57,7 @@ const ExpiredUnlockTime: React.FC<{
   const { t } = useTranslation()
   return (
     <FlexGap gap="2px" alignItems="baseline">
-      <Text fontSize={12}>{dayjs.unix(time).format('MMM D YYYY HH:mm')}</Text>
+      <Text fontSize={12}>{formatUnixDate(time)}</Text>
       <Text fontWeight={700} fontSize={16} color="#D67E0A">
         {t('Unlocked')}
       </Text>

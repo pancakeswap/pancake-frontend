@@ -11,6 +11,8 @@ export enum ApproveAndLockStatus {
   // lock pending, wait for lock confirmation
   LOCK_CAKE_PENDING,
   // lock confirmed, wait for migrate confirmation
+  UNLOCK_CAKE,
+  UNLOCK_CAKE_PENDING,
   CONFIRMED,
   // any user rejection
   REJECT,
