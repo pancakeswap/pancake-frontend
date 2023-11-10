@@ -16,6 +16,7 @@ import { useApprovePool } from 'views/Pools/hooks/useApprove'
 import { tokenImageChainNameMapping } from 'components/TokenImage'
 import { usePool } from 'state/pools/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import ZkSyncWarning from './ZkSyncWarning'
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
@@ -60,14 +61,16 @@ const StakeModalContainer = ({
   )
 
   const tokenImageUrl = useMemo(
-    () => `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[chainId]}`,
+    () => (chainId ? `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[chainId]}` : ''),
     [chainId],
   )
 
   const onDone = useCallback(() => {
-    dispatch(updateUserStakedBalance({ sousId, account, chainId }))
-    dispatch(updateUserPendingReward({ sousId, account, chainId }))
-    dispatch(updateUserBalance({ sousId, account, chainId }))
+    if (account && chainId) {
+      dispatch(updateUserStakedBalance({ sousId, account, chainId }))
+      dispatch(updateUserPendingReward({ sousId, account, chainId }))
+      dispatch(updateUserBalance({ sousId, account, chainId }))
+    }
   }, [dispatch, sousId, account, chainId])
 
   const handleConfirmClick = useCallback(
@@ -121,14 +124,16 @@ const StakeModalContainer = ({
   const needEnable = useMemo(() => {
     if (!isRemovingStake && !pendingTx) {
       const stakeAmount = getDecimalAmount(new BigNumber(amount), stakingToken.decimals)
-      return stakeAmount.gt(singlePool.userData.allowance)
+      return stakeAmount.gt(singlePool?.userData?.allowance ?? 0)
     }
     return false
   }, [singlePool, amount, pendingTx, isRemovingStake, stakingToken.decimals])
 
   const handleEnableApprove = async () => {
-    await handleApprove()
-    dispatch(updateUserAllowance({ sousId, account, chainId }))
+    if (account && chainId) {
+      await handleApprove()
+      dispatch(updateUserAllowance({ sousId, account, chainId }))
+    }
   }
 
   const totalApr = useMemo(() => {
@@ -142,21 +147,21 @@ const StakeModalContainer = ({
 
   return (
     <Pool.StakeModal
-      enableEmergencyWithdraw={enableEmergencyWithdraw}
-      stakingLimit={stakingLimit}
+      enableEmergencyWithdraw={enableEmergencyWithdraw ?? false}
+      stakingLimit={stakingLimit ?? BIG_ZERO}
       stakingTokenPrice={stakingTokenPrice}
-      earningTokenPrice={earningTokenPrice}
+      earningTokenPrice={earningTokenPrice ?? 0}
       stakingTokenDecimals={stakingToken.decimals}
       earningTokenSymbol={earningToken.symbol}
       stakingTokenSymbol={stakingToken.symbol}
       stakingTokenAddress={stakingToken.address}
       stakingTokenBalance={stakingTokenBalance}
       apr={totalApr}
-      userDataStakedBalance={userData?.stakedBalance}
-      userDataStakingTokenBalance={userData?.stakingTokenBalance}
+      userDataStakedBalance={userData?.stakedBalance ?? BIG_ZERO}
+      userDataStakingTokenBalance={userData?.stakingTokenBalance ?? BIG_ZERO}
       onDismiss={onDismiss}
       pendingTx={pendingTx}
-      account={account}
+      account={account ?? ''}
       needEnable={needEnable}
       enablePendingTx={enablePendingTx}
       handleEnableApprove={handleEnableApprove}

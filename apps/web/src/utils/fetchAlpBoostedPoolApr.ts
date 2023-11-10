@@ -49,8 +49,7 @@ export const fetchAlpBoostedPoolApr = async () => {
     const totalValueUsd = totalValue
       .map((i) => new BigNumber(i.valueUsd.toString()).div(1e18).toNumber())
       .reduce((a, b) => a + b, 0)
-    console.log('totalValue from API', totalValue)
-    console.log('totalValue sum and /1e18', totalValueUsd.toString())
+
     const response = await fetch(API_URL)
     const result = await response.json()
 
