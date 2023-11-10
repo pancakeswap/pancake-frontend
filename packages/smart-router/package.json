@@ -51,6 +51,11 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/evm/index.d.ts",
+      "import": "./dist/evm.mjs",
+      "require": "./dist/evm.js"
+    },
     "./evm": {
       "types": "./dist/evm/index.d.ts",
       "import": "./dist/evm.mjs",
