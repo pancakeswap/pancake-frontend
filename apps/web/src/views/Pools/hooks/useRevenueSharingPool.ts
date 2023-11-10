@@ -1,4 +1,3 @@
-import useSWR from 'swr'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { publicClient } from 'utils/wagmi'
 import { useRevenueSharingPoolContract } from 'hooks/useContract'
@@ -8,6 +7,7 @@ import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import BigNumber from 'bignumber.js'
 import { useInitialBlockTimestamp } from 'state/block/hooks'
+import { useQuery } from '@tanstack/react-query'
 
 interface RevenueSharingPool {
   balanceOfAt: string
@@ -31,49 +31,56 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
   const contractAddress = getRevenueSharingPoolAddress(chainId)
   const blockTimestamp = useInitialBlockTimestamp()
 
-  const { data } = useSWR(account && chainId && ['/revenue-sharing-pool', account, chainId], async () => {
-    try {
-      const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
-      const lastTokenTimestamp = Math.floor(new Date().getTime() / 1000 / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
+  const { data } = useQuery(
+    ['/revenue-sharing-pool', account, chainId],
+    async () => {
+      if (!account) return undefined
+      try {
+        const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
+        const lastTokenTimestamp = Math.floor(new Date().getTime() / 1000 / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
 
-      const revenueCalls = [
-        {
-          functionName: 'balanceOfAt',
-          address: contractAddress as Address,
-          abi: revenueSharingPoolABI,
-          args: [account, now],
-        },
-        {
-          functionName: 'totalSupplyAt',
-          address: contractAddress as Address,
-          abi: revenueSharingPoolABI,
-          args: [now],
-        },
-      ]
+        const revenueCalls = [
+          {
+            functionName: 'balanceOfAt',
+            address: contractAddress as Address,
+            abi: revenueSharingPoolABI,
+            args: [account, now],
+          },
+          {
+            functionName: 'totalSupplyAt',
+            address: contractAddress as Address,
+            abi: revenueSharingPoolABI,
+            args: [now],
+          },
+        ]
 
-      const client = publicClient({ chainId })
-      const [revenueResult, claimResult] = await Promise.all([
-        client.multicall({
-          contracts: revenueCalls,
-          allowFailure: true,
-        }),
-        contract.simulate.claim([account]),
-      ])
+        const client = publicClient({ chainId })
+        const [revenueResult, claimResult] = await Promise.all([
+          client.multicall({
+            contracts: revenueCalls,
+            allowFailure: true,
+          }),
+          contract.simulate.claim([account]),
+        ])
 
-      const nextDistributionTimestamp = new BigNumber(lastTokenTimestamp).plus(ONE_WEEK_DEFAULT).toNumber()
+        const nextDistributionTimestamp = new BigNumber(lastTokenTimestamp).plus(ONE_WEEK_DEFAULT).toNumber()
 
-      return {
-        balanceOfAt: revenueResult[0].result.toString(),
-        totalSupplyAt: revenueResult[1].result.toString(),
-        nextDistributionTimestamp,
-        lastTokenTimestamp,
-        availableClaim: claimResult.result.toString(),
+        return {
+          balanceOfAt: (revenueResult[0].result as any).toString(),
+          totalSupplyAt: (revenueResult[1].result as any).toString(),
+          nextDistributionTimestamp,
+          lastTokenTimestamp,
+          availableClaim: claimResult.result.toString(),
+        }
+      } catch (error) {
+        console.error('[ERROR] Fetching Revenue Sharing Pool', error)
+        return initialData
       }
-    } catch (error) {
-      console.error('[ERROR] Fetching Revenue Sharing Pool', error)
-      return initialData
-    }
-  })
+    },
+    {
+      enabled: Boolean(account && chainId),
+    },
+  )
 
   return data ?? initialData
 }
