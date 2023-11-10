@@ -11,7 +11,7 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
       transport: fallback(
         (PUBLIC_NODES[cur.id] as string[]).map((url) =>
           http(url, {
-            timeout: 15_000,
+            timeout: 10_000,
           }),
         ),
         {

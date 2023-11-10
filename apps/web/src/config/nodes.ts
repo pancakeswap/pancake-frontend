@@ -14,12 +14,6 @@ import { getNodeRealUrl } from 'utils/node/nodeReal'
 import { getPoktUrl } from 'utils/node/pokt'
 import { opbnbTestnet, linea, opbnb } from './chains'
 
-const POLYGON_ZKEVM_NODES = [
-  'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
-  getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
-  ...polygonZkEvm.rpcUrls.public.http,
-]
-
 const ARBITRUM_NODES = [
   ...arbitrum.rpcUrls.public.http,
   'https://arbitrum-one.publicnode.com',
@@ -50,7 +44,12 @@ export const SERVER_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: ARBITRUM_NODES,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_NODES,
+  [ChainId.POLYGON_ZKEVM]: [
+    'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+    process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
+    ...polygonZkEvm.rpcUrls.public.http,
+    getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+  ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,
@@ -112,9 +111,11 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: [
-    ...POLYGON_ZKEVM_NODES,
-    getNodeRealUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
-  ],
+    'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+    process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
+    ...polygonZkEvm.rpcUrls.public.http,
+    getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+  ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     ...polygonZkEvmTestnet.rpcUrls.public.http,
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
