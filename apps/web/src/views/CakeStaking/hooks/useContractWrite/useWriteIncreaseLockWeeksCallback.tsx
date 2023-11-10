@@ -6,11 +6,11 @@ import dayjs from 'dayjs'
 import { useSetAtom } from 'jotai'
 import { approveAndLockStatusAtom, cakeLockTxHashAtom, ApproveAndLockStatus } from 'state/vecake/atoms'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
-import { useVeCakeUserInfo } from '../useVeCakeUserInfo'
+import { useCakeLockStatus } from '../useVeCakeUserInfo'
 
 export const useWriteIncreaseLockWeeksCallback = () => {
   const veCakeContract = useVeCakeContract()
-  const { end } = useVeCakeUserInfo().data ?? {}
+  const { cakeUnlockTime } = useCakeLockStatus()
   const { address: account } = useAccount()
   const { cakeLockWeeks } = useLockCakeData()
   const setStatus = useSetAtom(approveAndLockStatusAtom)
@@ -19,7 +19,7 @@ export const useWriteIncreaseLockWeeksCallback = () => {
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
   const increaseLockWeeks = useCallback(async () => {
-    const startTime = end ? dayjs.unix(Number(end)) : dayjs()
+    const startTime = cakeUnlockTime ? dayjs.unix(Number(cakeUnlockTime)) : dayjs()
 
     const { request } = await veCakeContract.simulate.increaseUnlockTime(
       [BigInt(startTime.add(Number(cakeLockWeeks), 'week').unix())],
@@ -39,7 +39,7 @@ export const useWriteIncreaseLockWeeksCallback = () => {
     }
     setStatus(ApproveAndLockStatus.CONFIRMED)
   }, [
-    end,
+    cakeUnlockTime,
     veCakeContract.simulate,
     veCakeContract.chain,
     cakeLockWeeks,
