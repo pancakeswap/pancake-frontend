@@ -48,7 +48,7 @@ export function useStablecoinPrice(
       if (!currency) {
         return undefined
       }
-      const tokenAddress = currency.isNative ? currency.wrapped.address : currency.address
+      const tokenAddress = currency.wrapped.address
       const result = await fetchTokenUSDValue(currency.chainId, [tokenAddress])
       return result[tokenAddress]
     },
