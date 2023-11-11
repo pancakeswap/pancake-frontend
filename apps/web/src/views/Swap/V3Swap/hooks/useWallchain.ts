@@ -6,7 +6,7 @@ import { Token, TradeType, Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useWalletClient } from 'wagmi'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
@@ -89,19 +89,23 @@ const extractTokensFromTrade = (trade: SmartRouterTrade<TradeType> | undefined |
 function useWallchainSDK() {
   const { data: walletClient } = useWalletClient()
   const { chainId } = useActiveChainId()
-  const { data: wallchainSDK } = useSWRImmutable(
-    chainId === ChainId.BSC &&
-      walletClient &&
-      WALLCHAIN_ENABLED && ['wallchainSDK', walletClient.account, walletClient.chain],
+  const { data: wallchainSDK } = useQuery(
+    ['wallchainSDK', walletClient?.account, walletClient?.chain],
     async () => {
       const WallchainSDK = (await import('@wallchain/sdk')).default
       return new WallchainSDK({
-        keys: WallchainKeys,
+        keys: WallchainKeys as { [key: string]: string },
         provider: walletClient?.transport as TOptions['provider'],
         addresses,
         permitAddresses,
         originators,
       })
+    },
+    {
+      enabled: Boolean(chainId === ChainId.BSC && walletClient && WALLCHAIN_ENABLED),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
     },
   )
 
@@ -117,10 +121,12 @@ export function useWallchainApi(
   trade?: SmartRouterTrade<TradeType>,
   deadline?: bigint,
   feeOptions?: FeeOptions,
-): [WallchainStatus, string | undefined, [TMEVFoundResponse['searcherRequest'], string] | undefined] {
+): [WallchainStatus, string | undefined, [TMEVFoundResponse['searcherRequest'], string | undefined] | undefined] {
   const [approvalAddress, setApprovalAddress] = useState<undefined | string>(undefined)
   const [status, setStatus] = useWallchainStatus()
-  const [masterInput, setMasterInput] = useState<undefined | [TMEVFoundResponse['searcherRequest'], string]>(undefined)
+  const [masterInput, setMasterInput] = useState<
+    undefined | [TMEVFoundResponse['searcherRequest'], string | undefined]
+  >(undefined)
   const { data: walletClient } = useWalletClient()
   const { account } = useAccountActiveChain()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
