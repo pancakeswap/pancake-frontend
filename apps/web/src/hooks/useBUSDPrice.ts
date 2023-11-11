@@ -42,7 +42,7 @@ export function useStablecoinPrice(
     (currency?.chainId === ChainId.ETHEREUM || currency?.chainId === ChainId.POLYGON_ZKEVM) && shouldEnabled
 
   // we don't have too many AMM pools on ethereum yet, try to get it from api
-  const { data: priceFromLlama, isLoading } = useSWRImmutable<string>(
+  const { data: priceFromLlama, isLoading } = useSWRImmutable<string | undefined>(
     currency && enableLlama && ['fiat-price-llama', currency],
     async () => {
       if (!currency) {
@@ -50,7 +50,7 @@ export function useStablecoinPrice(
       }
       const tokenAddress = currency.wrapped.address
       const result = await fetchTokenUSDValue(currency.chainId, [tokenAddress])
-      return result[tokenAddress]
+      return result.get(tokenAddress)
     },
     {
       dedupingInterval: 30_000,
