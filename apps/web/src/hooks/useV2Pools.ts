@@ -1,7 +1,7 @@
 import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V2Pool } from '@pancakeswap/smart-router/evm'
 import { useMemo, useRef } from 'react'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 
 import { infoClientWithChain, v3Clients } from 'utils/graphql'
 import { getViemClients } from 'utils/viem'
@@ -45,14 +45,15 @@ export function useV2CandidatePools(
     return [...symbols, currencyA.chainId].join('_')
   }, [currencyA, currencyB])
 
-  const fetchingBlock = useRef<string | null>(null)
+  const fetchingBlock = useRef<string | undefined>(undefined)
   const queryEnabled = Boolean(options?.enabled && key)
-  const result = useSWR<{
+
+  const result = useQuery<{
     pools: V2Pool[]
     key?: string
     blockNumber?: number
   }>(
-    queryEnabled && key && ['V2_Candidate_Pools', key],
+    ['V2_Candidate_Pools', key],
     async () => {
       fetchingBlock.current = options?.blockNumber?.toString()
       try {
@@ -60,7 +61,7 @@ export function useV2CandidatePools(
           currencyA,
           currencyB,
           v2SubgraphProvider: ({ chainId }) => infoClientWithChain(chainId),
-          v3SubgraphProvider: ({ chainId }) => v3Clients[chainId],
+          v3SubgraphProvider: ({ chainId }) => (chainId ? v3Clients[chainId] : undefined),
           onChainProvider: getViemClients,
         })
         return {
@@ -69,23 +70,24 @@ export function useV2CandidatePools(
           blockNumber: options?.blockNumber,
         }
       } finally {
-        fetchingBlock.current = null
+        fetchingBlock.current = undefined
       }
     },
     {
-      refreshInterval,
-      errorRetryCount: 3,
-      revalidateOnFocus: false,
+      enabled: Boolean(queryEnabled && key),
+      refetchInterval: refreshInterval,
+      refetchOnWindowFocus: false,
+      retry: 3,
     },
   )
 
-  const { mutate, data, isLoading, isValidating } = result
+  const { refetch, data, isLoading, isFetching } = result
 
   return {
     pools: data?.pools ?? null,
     loading: isLoading,
-    syncing: isValidating,
+    syncing: isFetching,
     blockNumber: data?.blockNumber,
-    refresh: mutate,
+    refresh: refetch,
   }
 }
