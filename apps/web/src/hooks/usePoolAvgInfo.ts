@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { ChainId } from '@pancakeswap/chains'
 import { gql } from 'graphql-request'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 
 import { v3Clients } from 'utils/graphql'
 
@@ -34,9 +34,10 @@ const defaultInfo: Info = {
 }
 
 export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UsePoolAvgInfoParams) {
-  const { data } = useSWR<Info>(
-    address && chainId && [address, chainId],
+  const { data } = useQuery(
+    [address, chainId],
     async () => {
+      if (!chainId) return undefined
       const client = v3Clients[chainId]
       if (!client) {
         console.log('[Failed] Trading volume', address, chainId)
@@ -68,7 +69,8 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
       }
     },
     {
-      revalidateOnFocus: false,
+      enabled: Boolean(address && chainId),
+      refetchOnWindowFocus: false,
     },
   )
 
