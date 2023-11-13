@@ -24,7 +24,7 @@ export const useWriteWithApproveCallback = () => {
 
   return useCallback(
     async (write: () => Promise<unknown>) => {
-      setTxHash(undefined)
+      setTxHash('')
       try {
         if (approvalState === ApprovalState.NOT_APPROVED) {
           setStatus(ApproveAndLockStatus.APPROVING_TOKEN)
