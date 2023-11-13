@@ -21,8 +21,8 @@
     "@pancakeswap/chains": "workspace:*",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
-    "viem": "^1.15.1",
-    "wagmi": "^1.4.3"
+    "viem": "1.15.1",
+    "wagmi": "1.4.3"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",
