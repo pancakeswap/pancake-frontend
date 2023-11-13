@@ -136,7 +136,7 @@ export const AddLiquidity = memo(function AddLiquidity({
       isToken0: boolean
     }) => {
       setValue(value)
-      setOtherValue((Number(value) * (isToken0 ? 1 / ratio : ratio)).toString())
+      setOtherValue(new BigNumber(value).times(new BigNumber(isToken0 ? 1 / ratio : ratio)).toString())
     },
     [ratio],
   )
