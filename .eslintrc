@@ -19,6 +19,8 @@
     "lodash/import-scope": [2, "method"],
     "@next/next/no-img-element": 0,
     "no-sparse-arrays": 0,
+    "react/no-unknown-property": 0,
+    "jsx-a11y/control-has-associated-label": 0,
     "react-hooks/exhaustive-deps": [
       "warn",
       {
