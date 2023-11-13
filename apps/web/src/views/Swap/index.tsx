@@ -59,7 +59,13 @@ export default function Swap() {
     [Field.OUTPUT]: outputCurrency ?? undefined,
   }
 
-  const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
+  const singleTokenPrice = useSingleTokenSwapInfo(
+    inputCurrencyId,
+    inputCurrency,
+    outputCurrencyId,
+    outputCurrency,
+    isChartSupported,
+  )
   const warningSwapHandler = useWarningImport()
   useDefaultsFromURLSearch()
   const { onCurrencySelection } = useSwapActionHandlers()

@@ -52,9 +52,10 @@ function involvesAddress(trade: Trade<Currency, Currency, TradeType>, checksumme
 // Get swap price for single token disregarding slippage and price impact
 export function useSingleTokenSwapInfo(
   inputCurrencyId: string | undefined,
-  inputCurrency: Currency | undefined,
+  inputCurrency: Currency | undefined | null,
   outputCurrencyId: string | undefined,
-  outputCurrency: Currency | undefined,
+  outputCurrency: Currency | undefined | null,
+  enabled = true,
 ): { [key: string]: number } {
   const { chainId } = useActiveChainId()
   const token0Address = useMemo(() => getTokenAddress(chainId, inputCurrencyId), [chainId, inputCurrencyId])
@@ -73,6 +74,7 @@ export function useSingleTokenSwapInfo(
     stableSwap: true,
     type: 'api',
     autoRevalidate: false,
+    enabled,
   })
   if (!inputCurrency || !outputCurrency || !bestTradeExactIn) {
     return null

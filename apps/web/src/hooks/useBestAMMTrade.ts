@@ -1,12 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
-import {
-  SmartRouter,
-  PoolType,
-  QuoteProvider,
-  SmartRouterTrade,
-  BATCH_MULTICALL_CONFIGS,
-} from '@pancakeswap/smart-router/evm'
+import { SmartRouter, PoolType, QuoteProvider, BATCH_MULTICALL_CONFIGS } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
@@ -161,7 +155,7 @@ function bestTradeHookFactory({
       fetchStatus,
       isPreviousData,
       error,
-    } = useQuery<SmartRouterTrade<TradeType>, Error>({
+    } = useQuery({
       queryKey: [
         key,
         currency?.chainId,
@@ -216,8 +210,9 @@ function bestTradeHookFactory({
       refetchOnWindowFocus: false,
       keepPreviousData: keepPreviousDataRef.current,
       retry: false,
-      staleTime: autoRevalidate ? POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId] : 0,
-      refetchInterval: autoRevalidate && POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId],
+      staleTime: autoRevalidate && amount?.currency.chainId ? POOLS_NORMAL_REVALIDATE[amount.currency.chainId] : 0,
+      refetchInterval:
+        autoRevalidate && amount?.currency.chainId ? POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId] : 0,
     })
 
     useEffect(() => {
@@ -314,13 +309,16 @@ const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRoute
     tradeType,
     { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei, quoteProvider },
   ) => {
+    if (!quoteWorker) {
+      throw new Error('Quote worker not initialized')
+    }
     const candidatePools = await poolProvider.getCandidatePools({
       currencyA: amount.currency,
       currencyB: currency,
       protocols: allowedPoolTypes,
     })
 
-    const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig()
+    const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig?.()
     const result = await quoteWorker.getBestTrade({
       chainId: currency.chainId,
       currency: SmartRouter.Transformer.serializeCurrency(currency),

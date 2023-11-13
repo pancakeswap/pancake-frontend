@@ -20,7 +20,7 @@ export interface V3PoolsHookParams {
 
 export interface V3PoolsResult {
   refresh: () => void
-  pools: V3Pool[] | null
+  pools: V3Pool[] | undefined
   loading: boolean
   syncing: boolean
   blockNumber?: number
@@ -52,7 +52,7 @@ export function useV3CandidatePools(
     enabled: options?.enabled,
   })
 
-  const candidatePools = data?.pools ?? null
+  const candidatePools = data?.pools
 
   return {
     refresh,
@@ -98,7 +98,7 @@ export function useV3CandidatePoolsWithoutTicks(
       const pools = await SmartRouter.getV3CandidatePools({
         currencyA,
         currencyB,
-        subgraphProvider: ({ chainId }) => v3Clients[chainId],
+        subgraphProvider: ({ chainId }) => (chainId ? v3Clients[chainId] : undefined),
         onChainProvider: getViemClients,
         blockNumber: options?.blockNumber,
       })
@@ -115,11 +115,11 @@ export function useV3CandidatePoolsWithoutTicks(
     enabled: Boolean(currencyA && currencyB && key && options?.enabled),
   })
 
-  const error = useMemo(() => errorMsg && new Error(errorMsg as string), [errorMsg])
+  const error = useMemo(() => (errorMsg ? (new Error(errorMsg as string) as Error) : undefined), [errorMsg])
 
   return {
     refresh: refetch,
-    pools: data?.pools ?? null,
+    pools: data?.pools,
     loading: isLoading,
     syncing: isFetching,
     blockNumber: data?.blockNumber,
