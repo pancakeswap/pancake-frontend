@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedLockedCakeVault, ONE_WEEK_DEFAULT, VaultKey } from '@pancakeswap/pools'
+import { DeserializedLockedCakeVault, VaultKey } from '@pancakeswap/pools'
 import {
   AtomBox,
   Balance,

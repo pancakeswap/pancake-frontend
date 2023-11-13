@@ -17,7 +17,6 @@ import {
   WarningIcon,
 } from '@pancakeswap/uikit'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useCakePrice } from 'hooks/useCakePrice'

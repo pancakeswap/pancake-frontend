@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Grid, Image, Text } from '@pancakeswap/uikit'
+import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Image, Text } from '@pancakeswap/uikit'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { cakeLockWeeksAtom } from 'state/vecake/atoms'
