@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { space, variant as StyledSystemVariant } from "styled-system";
 import { styleVariants, styleScales } from "./themes";
 import { ProgressProps, variants } from "./types";
-import { lightColors } from "../..";
+import { lightColors } from "../../tokens";
 
 interface ProgressBarProps {
   primary?: boolean;
