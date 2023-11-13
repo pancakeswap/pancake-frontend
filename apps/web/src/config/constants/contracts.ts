@@ -269,6 +269,6 @@ export default {
     [ChainId.BSC_TESTNET]: '0xD512FDe5b20B136Ffd8E0087194BEf8537dc88AE',
   },
   gaugesVoting: {
-    [ChainId.BSC_TESTNET]: '0x575Cd08d493B8b65d82A5d3c5e8Ce57D3724191f',
+    [ChainId.BSC_TESTNET]: '0xc2206a6aF51FD9ee574d017F62c0F820Ccaa2Ea2',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
