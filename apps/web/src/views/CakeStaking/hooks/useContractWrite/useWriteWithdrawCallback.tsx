@@ -28,8 +28,11 @@ export const useWriteWithdrawCallback = () => {
 
     setStatus(ApproveAndLockStatus.UNLOCK_CAKE)
 
-    const hash = await walletClient?.writeContract(request)
-    setTxHash(hash)
+    const hash = await walletClient?.writeContract({
+      ...request,
+      account,
+    })
+    setTxHash(hash ?? '')
     setStatus(ApproveAndLockStatus.UNLOCK_CAKE_PENDING)
     if (hash) {
       await waitForTransaction({ hash })

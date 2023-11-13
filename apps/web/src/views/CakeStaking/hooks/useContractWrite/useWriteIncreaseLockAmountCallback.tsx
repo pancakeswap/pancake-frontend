@@ -12,8 +12,8 @@ export const useWriteIncreaseLockAmountCallback = () => {
   const veCakeContract = useVeCakeContract()
   const { address: account } = useAccount()
   const { cakeLockAmount } = useLockCakeData()
-  const setStatus = useSetAtom(approveAndLockStatusAtom)
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
+  const setStatus = useSetAtom(approveAndLockStatusAtom)
   const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
@@ -28,8 +28,11 @@ export const useWriteIncreaseLockAmountCallback = () => {
 
     setStatus(ApproveAndLockStatus.LOCK_CAKE)
 
-    const hash = await walletClient?.writeContract(request)
-    setTxHash(hash)
+    const hash = await walletClient?.writeContract({
+      ...request,
+      account,
+    })
+    setTxHash(hash ?? '')
     setStatus(ApproveAndLockStatus.LOCK_CAKE_PENDING)
     if (hash) {
       await waitForTransaction({ hash })

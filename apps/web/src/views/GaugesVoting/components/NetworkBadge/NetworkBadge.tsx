@@ -44,18 +44,20 @@ const NETWORK_COLOR: Record<NetworkLogoTheme, string | { [chainId: number]: stri
   'pure-black': NETWORK_COLOR_PURE_BLACK,
 }
 
-export enum Scale {
-  SM = 'sm',
-  MD = 'md',
-}
+const SCALE = {
+  SM: 'sm',
+  MD: 'md',
+} as const
+
+type Scale = (typeof SCALE)[keyof typeof SCALE]
 
 const Badge = styled.div.withConfig({ shouldForwardProp: (prop) => prop !== 'scale' })<{ scale?: Scale }>`
   display: inline-flex;
   align-items: center;
-  border-radius: ${({ scale }) => (scale === Scale.SM ? '12px' : '16px')};
-  padding: ${({ scale }) => (scale === Scale.SM ? '0 8px 0 2px' : '0 12px 0 8px')};
-  height: ${({ scale }) => (scale === Scale.SM ? '24px' : '32px')};
-  gap: ${({ scale }) => (scale === Scale.SM ? '4px' : '8px')};
+  border-radius: ${({ scale }) => (scale === 'sm' ? '12px' : '16px')};
+  padding: ${({ scale }) => (scale === 'sm' ? '0 8px 0 2px' : '0 12px 0 8px')};
+  height: ${({ scale }) => (scale === 'sm' ? '24px' : '32px')};
+  gap: ${({ scale }) => (scale === 'sm' ? '4px' : '8px')};
 `
 
 export const NetworkBadge: React.FC<{

@@ -15,9 +15,9 @@ import { useCakeLockStatus } from '../useVeCakeUserInfo'
 
 export const useWriteIncreaseLockWeeksCallback = () => {
   const veCakeContract = useVeCakeContract()
-  const { cakeUnlockTime } = useCakeLockStatus()
+  const { cakeUnlockTime, cakeLockExpired } = useCakeLockStatus()
   const { address: account } = useAccount()
-  const { cakeLockWeeks, cakeLockExpired } = useLockCakeData()
+  const { cakeLockWeeks } = useLockCakeData()
   const setStatus = useSetAtom(approveAndLockStatusAtom)
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
   const setCakeLockWeeks = useSetAtom(cakeLockWeeksAtom)
@@ -25,7 +25,7 @@ export const useWriteIncreaseLockWeeksCallback = () => {
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
   const increaseLockWeeks = useCallback(async () => {
-    const startTime = cakeLockExpired ? dayjs.unix() : dayjs.unix(Number(cakeUnlockTime))
+    const startTime = cakeLockExpired ? dayjs() : dayjs.unix(Number(cakeUnlockTime))
 
     const { request } = await veCakeContract.simulate.increaseUnlockTime(
       [BigInt(startTime.add(Number(cakeLockWeeks), 'week').unix())],
@@ -37,12 +37,15 @@ export const useWriteIncreaseLockWeeksCallback = () => {
 
     setStatus(ApproveAndLockStatus.LOCK_CAKE)
 
-    const hash = await walletClient?.writeContract(request)
-    setTxHash(hash)
+    const hash = await walletClient?.writeContract({
+      ...request,
+      account,
+    })
+    setTxHash(hash ?? '')
     setStatus(ApproveAndLockStatus.LOCK_CAKE_PENDING)
     if (hash) {
       await waitForTransaction({ hash })
-      setCakeLockWeeks(undefined)
+      setCakeLockWeeks('')
     }
     setStatus(ApproveAndLockStatus.CONFIRMED)
   }, [

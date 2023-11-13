@@ -1,5 +1,4 @@
 import { atom } from 'jotai'
-import { Hex } from 'viem'
 
 export enum ApproveAndLockStatus {
   // no modal
@@ -21,5 +20,5 @@ export enum ApproveAndLockStatus {
 export const approveAndLockStatusAtom = atom<ApproveAndLockStatus>(ApproveAndLockStatus.IDLE)
 export const cakeLockAmountAtom = atom<string>('0')
 export const cakeLockWeeksAtom = atom<string>('10')
-export const cakeLockTxHashAtom = atom<Hex | undefined>(undefined)
+export const cakeLockTxHashAtom = atom<`0x${string}` | ''>('')
 export const cakeLockApprovedAtom = atom<boolean>(false)

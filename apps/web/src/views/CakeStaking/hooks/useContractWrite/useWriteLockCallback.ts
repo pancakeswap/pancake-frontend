@@ -33,8 +33,11 @@ export const useWriteLockCallback = () => {
 
     setStatus(ApproveAndLockStatus.LOCK_CAKE)
 
-    const hash = await walletClient?.writeContract(request)
-    setTxHash(hash)
+    const hash = await walletClient?.writeContract({
+      ...request,
+      account,
+    })
+    setTxHash(hash ?? '')
     setStatus(ApproveAndLockStatus.LOCK_CAKE_PENDING)
     if (hash) {
       await waitForTransaction({ hash })
