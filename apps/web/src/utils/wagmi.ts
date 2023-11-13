@@ -26,7 +26,7 @@ export const { publicClient, chains } = configureChains(
       return jsonRpcProvider({
         rpc: (chain) => {
           if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id && i === 0) {
-            return { http: 'https://eth.llamarpc.com' }
+            return { http: 'https://ethereum.publicnode.com' }
           }
           return PUBLIC_NODES[chain.id]?.[i]
             ? {
