@@ -1,6 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
-import { SmartRouter, PoolType, QuoteProvider, BATCH_MULTICALL_CONFIGS } from '@pancakeswap/smart-router/evm'
+import {
+  SmartRouter,
+  PoolType,
+  QuoteProvider,
+  BATCH_MULTICALL_CONFIGS,
+  SmartRouterTrade,
+} from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
@@ -35,8 +41,8 @@ interface FactoryOptions {
 
 interface Options {
   amount?: CurrencyAmount<Currency>
-  baseCurrency?: Currency
-  currency?: Currency
+  baseCurrency?: Currency | null
+  currency?: Currency | null
   tradeType?: TradeType
   maxHops?: number
   maxSplits?: number
@@ -169,7 +175,7 @@ function bestTradeHookFactory({
       ],
       queryFn: async () => {
         if (!amount || !amount.currency || !currency || !deferQuotient) {
-          return null
+          return undefined
         }
         const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
         const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
@@ -189,22 +195,23 @@ function bestTradeHookFactory({
           allowedPoolTypes: poolTypes,
           quoterOptimization,
         })
-        if (res) {
-          SmartRouter.metric(
-            label,
-            res.inputAmount.toExact(),
-            res.inputAmount.currency.symbol,
-            '->',
-            res.outputAmount.toExact(),
-            res.outputAmount.currency.symbol,
-            res.routes,
-          )
+        if (!res) {
+          return undefined
         }
+        SmartRouter.metric(
+          label,
+          res.inputAmount.toExact(),
+          res.inputAmount.currency.symbol,
+          '->',
+          res.outputAmount.toExact(),
+          res.outputAmount.currency.symbol,
+          res.routes,
+        )
         SmartRouter.log(label, res)
         return {
           ...res,
           blockNumber,
-        }
+        } as SmartRouterTrade<TradeType>
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
       refetchOnWindowFocus: false,
@@ -229,7 +236,7 @@ function bestTradeHookFactory({
       trade,
       isLoading: isLoading || loading,
       isStale: trade?.blockNumber !== blockNumber,
-      error,
+      error: error as Error | undefined,
       syncing:
         syncing || isValidating || (amount?.quotient?.toString() !== deferQuotient && deferQuotient !== undefined),
     }
