@@ -2,5 +2,5 @@
   "deno.enablePaths": ["./cli/aptos-codegen"],
   "deno.config": "./cli/aptos-codegen/deno.jsonc",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["ARBITRUM", "LINEA", "Merkl", "pancakeswap", "vecake", "wagmi", "ZKSYNC"]
+  "cSpell.words": ["ARBITRUM", "bignumber", "LINEA", "Merkl", "pancakeswap", "vecake", "wagmi", "ZKSYNC"]
 }

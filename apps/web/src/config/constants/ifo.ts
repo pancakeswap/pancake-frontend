@@ -660,7 +660,7 @@ const ifos: Ifo[] = [
 
 export const getTotalIFOSold = () => {
   const unwrap = (usd: string) => {
-    return Number(usd.replace('$', '').replaceAll(',', ''))
+    return Number(usd.replace(/$/g, '').replaceAll(',', ''))
   }
   return ifos.reduce((accum, current) => {
     if (current.poolBasic?.raiseAmount) {
