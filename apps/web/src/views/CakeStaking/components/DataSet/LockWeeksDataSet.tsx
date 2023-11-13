@@ -43,7 +43,7 @@ export const LockWeeksDataSet = () => {
           cakeLockExpired && !cakeLockWeeks ? (
             <ExpiredUnlockTime time={cakeUnlockTime!} />
           ) : (
-            formatUnixDate(dayjs().add(cakeLockWeeks, 'weeks').unix())
+            formatUnixDate(dayjs().add(Number(cakeLockWeeks), 'weeks').unix())
           )
         }
       />
