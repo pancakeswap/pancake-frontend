@@ -18,7 +18,7 @@ import { atom, useAtom } from 'jotai'
 
 import Bottleneck from 'bottleneck'
 import { Address, Hex } from 'viem'
-import { WALLCHAIN_ENABLED, WallchainKeys, WallchainPairs } from 'config/wallchain'
+import { WALLCHAIN_ENABLED, WallchainKeys, WallchainTokens } from 'config/wallchain'
 import { useSwapCallArguments } from './useSwapCallArguments'
 
 interface SwapCall {
@@ -132,20 +132,21 @@ export function useWallchainApi(
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, deadline, feeOptions)
 
   useEffect(() => {
-    if (!sdk || !walletClient || !trade) {
+    if (!sdk || !walletClient || !trade || !account) {
       setStatus('not-found')
       return
     }
     if (trade.routes.length === 0 || trade.inputAmount.currency.chainId !== ChainId.BSC) return
     if (lastUpdate > Date.now() - 2000) return
-    const includesPair = trade.routes.some(
-      (route) =>
-        (route.inputAmount.wrapped.currency.equals(WallchainPairs[0]) &&
-          route.outputAmount.wrapped.currency.equals(WallchainPairs[1])) ||
-        (route.inputAmount.wrapped.currency.equals(WallchainPairs[1]) &&
-          route.outputAmount.wrapped.currency.equals(WallchainPairs[0])),
-    )
-    if (includesPair) {
+    const includesToken = trade.routes.some((route) => {
+      const goodSrc =
+        route.inputAmount.currency.isToken && WallchainTokens.some((token) => route.inputAmount.currency.equals(token))
+      const goodDst =
+        route.outputAmount.currency.isToken &&
+        WallchainTokens.some((token) => route.outputAmount.currency.equals(token))
+      return goodSrc || goodDst
+    })
+    if (includesToken) {
       if (status !== 'found') {
         // we need status only for the first time, to ensure that first response is loaded, but then we expect to reuse response for 2 seconds (line 135)
         setStatus('pending')
@@ -154,7 +155,7 @@ export function useWallchainApi(
         .then(([reqStatus, address, searcherRequest, searcherSignature]) => {
           setStatus(reqStatus as WallchainStatus)
           setApprovalAddress(address)
-          setMasterInput([searcherRequest as TMEVFoundResponse['searcherRequest'], searcherSignature])
+          setMasterInput([searcherRequest as TMEVFoundResponse['searcherRequest'], searcherSignature as string])
           setLastUpdate(Date.now())
         })
         .catch((e) => {
