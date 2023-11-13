@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Balance, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Balance } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useCakePrice } from 'hooks/useCakePrice'

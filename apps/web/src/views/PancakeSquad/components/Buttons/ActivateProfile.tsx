@@ -1,4 +1,6 @@
-import { Button, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Button } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { ContextApi } from '@pancakeswap/localization'
 import { UserStatusEnum } from 'views/PancakeSquad/types'
 

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Heading, Flex, Button, Grid, ChevronRightIcon, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'

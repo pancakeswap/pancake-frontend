@@ -9,9 +9,10 @@ import {
   TooltipText,
   Skeleton,
   Text,
-  NextLinkFromReactRouter,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { VaultPosition } from 'utils/cakePool'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'

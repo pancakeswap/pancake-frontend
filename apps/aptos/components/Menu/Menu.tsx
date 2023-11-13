@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { languageList, useTranslation } from '@pancakeswap/localization'
-import { Menu as UIMenu, NextLinkFromReactRouter, footerLinks } from '@pancakeswap/uikit'
+import { Menu as UIMenu, footerLinks } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { useCakePrice } from 'hooks/useStablePrice'

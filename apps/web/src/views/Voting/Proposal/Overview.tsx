@@ -50,7 +50,7 @@ const Overview = () => {
 
   if (!proposal && error) {
     return (
-      <NotFound>
+      <NotFound LinkComp={Link}>
         <NextSeo title="404" />
       </NotFound>
     )

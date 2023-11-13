@@ -8,7 +8,6 @@ import {
   Flex,
   Heading,
   Image,
-  NextLinkFromReactRouter,
   Spinner,
   Text,
   useMatchBreakpoints,
@@ -16,6 +15,8 @@ import {
   MessageText,
   ScanLink,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'

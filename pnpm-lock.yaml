@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -1747,9 +1747,6 @@ importers:
       js-cookie:
         specifier: '*'
         version: 3.0.5
-      next:
-        specifier: '*'
-        version: 13.4.2(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)

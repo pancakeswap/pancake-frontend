@@ -1,4 +1,6 @@
-import { Button, ChevronRightIcon, Flex, Grid, Heading, Text, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { Collection } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'

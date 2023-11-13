@@ -1,5 +1,6 @@
-import { Box, Message, MessageText, NextLinkFromReactRouter } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
+import { Box, Message, MessageText } from '@pancakeswap/uikit'
+
+import { Pool, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'

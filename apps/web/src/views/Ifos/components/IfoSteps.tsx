@@ -13,7 +13,6 @@ import {
   Heading,
   Link,
   LogoRoundIcon,
-  NextLinkFromReactRouter as RouterLink,
   Skeleton,
   Step,
   StepStatus,
@@ -22,6 +21,8 @@ import {
   TooltipText,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter as RouterLink } from '@pancakeswap/widgets-internal'
+
 import { Address, useAccount } from 'wagmi'
 
 import { useTranslation } from '@pancakeswap/localization'

@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, NextLinkFromReactRouter, IfoSkeletonCardActions } from '@pancakeswap/uikit'
+import { Button, IfoSkeletonCardActions } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'

@@ -12,7 +12,6 @@ import {
   ExpandableLabel,
   Flex,
   Heading,
-  NextLinkFromReactRouter,
   NotFound,
   PreTitle,
   RowBetween,
@@ -26,7 +25,8 @@ import {
   useModal,
   ScanLink,
 } from '@pancakeswap/uikit'
-import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
+
+import { ConfirmationModalContent, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { MasterChefV3, NonfungiblePositionManager, Pool, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -80,6 +80,7 @@ import { ChainLinkSupportChains } from 'state/info/constant'
 import { MerklSection } from 'components/Merkl/MerklSection'
 import { MerklTag } from 'components/Merkl/MerklTag'
 import { useMerklInfo } from 'hooks/useMerkl'
+import Link from 'next/link'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -484,7 +485,7 @@ export default function PoolPage() {
 
   if (!isLoading && poolState === PoolState.NOT_EXISTS) {
     return (
-      <NotFound>
+      <NotFound LinkComp={Link}>
         <NextSeo title="404" />
       </NotFound>
     )
