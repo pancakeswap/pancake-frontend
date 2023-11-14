@@ -16,8 +16,10 @@ import {
 import Page from 'components/Layout/Page'
 import styled from 'styled-components'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
+import { RemainVeCakeBalance } from './components/RemainVeCakeBalance'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { WeightsPieChart } from './components/WeightsPieChart'
+import { GaugesTable } from './components/GaugesTable'
 
 const InlineLink = styled(LinkExternal)`
   display: inline-flex;
@@ -74,7 +76,7 @@ const GaugesVoting = () => {
         </Flex>
       </StyledPageHeader>
       <Page style={{ paddingTop: 0, marginTop: '-18px' }}>
-        <Card innerCardProps={{ padding: '32px' }}>
+        <Card innerCardProps={{ padding: '32px 32px 0 32px' }}>
           <Grid gridTemplateColumns="2fr 3fr">
             <FlexGap flexDirection="column" gap="24px">
               <MyVeCakeBalance />
@@ -87,15 +89,13 @@ const GaugesVoting = () => {
               <WeightsPieChart />
             </div>
           </Grid>
+          <GaugesTable />
         </Card>
         <Box mt="80px">
           <Heading as="h2" scale="xl" mb="24px">
             {t('My votes')}
           </Heading>
-          <Box>
-            Remaining veCake: <Text bold>0</Text>
-          </Box>
-
+          <RemainVeCakeBalance />
           <Card innerCardProps={{ padding: '32px' }}>table</Card>
         </Box>
       </Page>
