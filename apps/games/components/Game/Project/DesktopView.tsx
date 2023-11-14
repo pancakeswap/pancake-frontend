@@ -12,25 +12,25 @@ import { YoutubeList } from 'components/Game/Project/YoutubeList'
 import { TextProjectBy } from 'components/Game/Project/TextProjectBy'
 import { QuickAccess } from 'components/Game/Project/QuickAccess'
 
-const Gutter = styled.div<{ isPaneOpen?: boolean; hasPlayList?: boolean }>`
+const Gutter = styled.div`
   position: relative;
   width: 100%;
   background: ${({ theme }) => theme.card.background};
-  cursor: ${({ isPaneOpen }) => (isPaneOpen ? 'row-resize' : 'pointer')};
   height: 24px;
+`
 
-  &:before {
-    display: ${({ hasPlayList }) => (hasPlayList ? 'block' : 'none')};
-    background-color: ${({ theme }) => theme.colors.textSubtle};
-    border-radius: 8px;
-    content: '';
-    height: 4px;
-    left: 50%;
-    margin-left: -32px;
-    position: absolute;
-    top: 10px;
-    width: 64px;
-  }
+const GrabLine = styled.div<{ isPaneOpen?: boolean; hasPlayList?: boolean }>`
+  display: ${({ hasPlayList }) => (hasPlayList ? 'block' : 'none')};
+  background-color: ${({ theme }) => theme.colors.textSubtle};
+  border-radius: 8px;
+  content: '';
+  height: 4px;
+  left: 50%;
+  margin-left: -32px;
+  position: absolute;
+  top: 10px;
+  width: 64px;
+  cursor: ${({ isPaneOpen }) => (isPaneOpen ? 'row-resize' : 'pointer')};
 `
 
 const ExpandButtonGroup = styled(Flex)`
@@ -137,7 +137,8 @@ export const DesktopView: React.FC<React.PropsWithChildren<DesktopViewProps>> = 
 
   return (
     <>
-      <Gutter ref={gutterRef} isPaneOpen={isPaneOpen} hasPlayList={hasPlayList} onClick={openPane}>
+      <Gutter ref={gutterRef}>
+        <GrabLine isPaneOpen={isPaneOpen} hasPlayList={hasPlayList} onClick={openPane} />
         <ExpandButtonGroup>
           {hasPlayList && (
             <>

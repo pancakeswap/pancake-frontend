@@ -45,6 +45,10 @@ export const pancakeProtectors: GameType = {
   },
   playlist: [
     {
+      videoId: '80j7QpNqKcI',
+      title: 'Unleashing the Power of Pancake Protectors: A Web3 Gaming Adventure on PancakeSwap',
+    },
+    {
       videoId: '--UcFQ64sjY',
       title: 'Pancake Protectors is here! Discover the power of CAKE and perks for Pancake Squads and Bunnies',
     },
