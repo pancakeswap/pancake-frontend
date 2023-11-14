@@ -10,12 +10,14 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
   height: ${({ expanded }) => (expanded ? 'auto' : '192px')};
 `
 
-export const GaugesTable = () => {
+export const GaugesTable: React.FC<{
+  scrollStyle?: React.CSSProperties
+}> = ({ scrollStyle }) => {
   const [expanded, setExpanded] = useState(false)
   return (
     <>
       <TableHeader />
-      <Scrollable expanded={expanded}>
+      <Scrollable expanded={expanded} style={scrollStyle}>
         {new Array(15).fill(0).map((i) => (
           <TableRow key={i} />
         ))}
