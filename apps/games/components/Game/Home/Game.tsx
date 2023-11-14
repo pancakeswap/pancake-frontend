@@ -157,7 +157,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                     />
                   )}
                 </Box>
-                {!isXxl && <TrendingTags />}
+                {!isXxl && <TrendingTags trendingTags={game.trendingTags} />}
               </StyledLeftContainer>
               <StyledGameInformation>
                 <Text bold lineHeight="110%" fontSize={['32px', '32px', '32px', '32px', '32px', '40px']}>
@@ -183,10 +183,10 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                 <Flex justifyContent="space-between" mb={['32px', '32px', '32px', '32px', '32px', '24px']}>
                   <StyledTag scale="xs" isPurple style={{ alignSelf: 'center' }}>
                     <Text fontSize={14} color="white">
-                      Genre:
+                      {t('Genre:')}
                     </Text>
                     <Text fontSize={14} bold ml="4px" color="white">
-                      Defense
+                      {game.genre}
                     </Text>
                   </StyledTag>
                   <Flex>
@@ -240,7 +240,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                   />
                 )}
 
-                {isXxl && <TrendingTags />}
+                {isXxl && <TrendingTags trendingTags={game.trendingTags} />}
               </StyledGameInformation>
             </Flex>
           </StyledGameInfoContainer>

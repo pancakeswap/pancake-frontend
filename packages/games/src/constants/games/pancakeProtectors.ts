@@ -1,4 +1,4 @@
-import { GameType, PostersLayout, PostersItemDataType } from '../../types'
+import { GameType, PostersLayout, PostersItemDataType, GenreType, TrendingTagType } from '../../types'
 
 export const pancakeProtectors: GameType = {
   id: 'pancake-protectors',
@@ -8,6 +8,15 @@ export const pancakeProtectors: GameType = {
   description:
     'PancakeSwap and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players, as well as CAKE, Pancake Squad, and Bunnies holders.',
   publishDate: 1698044972,
+  genre: GenreType.TowerDefense,
+  trendingTags: [
+    TrendingTagType.Strategy,
+    TrendingTagType.PancakeSquadNFT,
+    TrendingTagType.PancakeBunniesNFT,
+    TrendingTagType.TowerDefense,
+    TrendingTagType.Multiplayer,
+    TrendingTagType.CakeToken,
+  ],
   headerImage: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/header.jpeg',
   headerIconImage: {
     desktop: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/desktop-header-icon.png',
@@ -36,10 +45,6 @@ export const pancakeProtectors: GameType = {
       {
         type: PostersItemDataType.Image,
         image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/3.png',
-      },
-      {
-        type: PostersItemDataType.Image,
-        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/4.png',
       },
     ],
   },

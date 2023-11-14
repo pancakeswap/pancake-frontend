@@ -149,7 +149,7 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
                   </Text>
                   <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
                     <ProjectLogo imgUrl={isDark ? game.projectLogo.darkTheme : game.projectLogo.lightTheme} />
-                    <StyledTag scale="xs">Casual</StyledTag>
+                    <StyledTag scale="xs">{game.genre}</StyledTag>
                   </Flex>
                 </Box>
               </Box>

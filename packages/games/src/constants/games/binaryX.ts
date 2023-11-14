@@ -1,4 +1,4 @@
-import { GameType, PostersLayout, PostersItemDataType } from '../../types'
+import { GameType, PostersLayout, PostersItemDataType, GenreType, TrendingTagType } from '../../types'
 
 export const binaryX: GameType = {
   id: 'binary-x',
@@ -8,6 +8,15 @@ export const binaryX: GameType = {
   description:
     'BinaryX aims to introduce high quality games to Web3 and the metaverse. We develop our own games such as CyberChess and CyberLand. We are constantly re-assessing and optimising the tokenomic models of our games to provide a good gaming experience for our users.',
   publishDate: 1698044972,
+  genre: GenreType.Casual,
+  trendingTags: [
+    TrendingTagType.Strategy,
+    TrendingTagType.PancakeSquadNFT,
+    TrendingTagType.PancakeBunniesNFT,
+    TrendingTagType.BaseBuilding,
+    TrendingTagType.Multiplayer,
+    TrendingTagType.CakeToken,
+  ],
   headerImage:
     'https://s3.ap-northeast-1.amazonaws.com/binaryx-game/t-temp/8c50cf73-3fb4-442b-af79-af83e35f48523500085818638126305.jpg',
   projectLogo: {
