@@ -30,7 +30,7 @@ export default function useWarningImport() {
   const [loadedInputCurrency, loadedOutputCurrency] = [useCurrency(inputCurrencyId), useCurrency(outputCurrencyId)]
 
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => (c ? c.isToken : false)) ?? [],
+    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => Boolean(c?.isToken)) ?? [],
     [loadedInputCurrency, loadedOutputCurrency],
   )
 
@@ -62,7 +62,7 @@ export default function useWarningImport() {
 
   const swapWarningHandler = useCallback(
     (currencyInput) => {
-      const showSwapWarning = shouldShowSwapWarning(currencyInput, chainId)
+      const showSwapWarning = shouldShowSwapWarning(chainId, currencyInput)
       if (showSwapWarning) {
         setSwapWarningCurrency(currencyInput)
       } else {

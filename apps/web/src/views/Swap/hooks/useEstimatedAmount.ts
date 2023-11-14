@@ -19,6 +19,6 @@ export function useEstimatedAmount({ estimatedCurrency, stableSwapConfig, quotie
     {
       enabled: Boolean(stableSwapConfig?.stableSwapAddress && estimatedCurrency && !!deferQuotient),
       keepPreviousData: true,
-    }, // 20sec
+    },
   )
 }
