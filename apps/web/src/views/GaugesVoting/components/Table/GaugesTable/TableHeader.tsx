@@ -3,7 +3,7 @@ import { SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { SortButton } from 'views/V3Info/components/SortButton'
-import { THeader } from './styled'
+import { THeader } from '../styled'
 
 const Touchable = styled.div`
   cursor: pointer;

@@ -13,6 +13,7 @@ export const Row = css`
 
   & :nth-child(4) {
     text-align: right;
+    justify-content: flex-end;
   }
 `
 

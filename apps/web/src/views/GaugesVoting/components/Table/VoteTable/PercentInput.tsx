@@ -1,0 +1,64 @@
+import { BalanceInputProps, Box, Button, Flex, Text } from '@pancakeswap/uikit'
+import { StyledBalanceInput, StyledInput as UIKitStyledInput } from '@pancakeswap/uikit/components/BalanceInput/styles'
+import styled from 'styled-components'
+
+export type PercentInputProps = Omit<BalanceInputProps, 'unit' | 'switchEditingUnits'>
+
+const StyledInput = styled(UIKitStyledInput)`
+  height: 20px;
+  width: 20px;
+`
+
+const StyledPercentInput = styled(StyledBalanceInput)`
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: fit-content;
+  gap: 12px;
+`
+
+const MaxButton = styled(Button)`
+  border-radius: 8px;
+`
+
+export const PercentInput: React.FC<PercentInputProps> = ({
+  isWarning = false,
+  decimals = 2,
+  value,
+  placeholder = '0',
+  inputProps,
+  innerRef,
+  onUserInput,
+  ...props
+}) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.validity.valid) {
+      onUserInput(e.currentTarget.value.replace(/,/g, '.'))
+    }
+  }
+  return (
+    <StyledPercentInput isWarning={isWarning} {...props}>
+      <Box>
+        <Flex alignItems="center">
+          <StyledInput
+            pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
+            inputMode="decimal"
+            min="0"
+            value={value}
+            onChange={handleOnChange}
+            placeholder={placeholder}
+            ref={innerRef}
+            {...inputProps}
+          />
+          <Text color="textSubtle" ml={2}>
+            %
+          </Text>
+        </Flex>
+      </Box>
+      <MaxButton variant="secondary" scale="xs">
+        MAX
+      </MaxButton>
+    </StyledPercentInput>
+  )
+}

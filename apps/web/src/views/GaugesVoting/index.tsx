@@ -19,7 +19,7 @@ import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { RemainVeCakeBalance } from './components/RemainVeCakeBalance'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { WeightsPieChart } from './components/WeightsPieChart'
-import { GaugesTable } from './components/GaugesTable'
+import { GaugesTable, VoteTable } from './components/Table'
 
 const InlineLink = styled(LinkExternal)`
   display: inline-flex;
@@ -96,7 +96,7 @@ const GaugesVoting = () => {
             {t('My votes')}
           </Heading>
           <RemainVeCakeBalance />
-          <Card innerCardProps={{ padding: '32px' }}>table</Card>
+          <VoteTable />
         </Box>
       </Page>
     </StyledGaugesVotingPage>
