@@ -9,10 +9,12 @@ import {
   baseGoerli,
   scrollSepolia,
   base,
+  linea,
+  opBNB,
+  opBNBTestnet,
 } from 'wagmi/chains'
 import { getNodeRealUrl } from 'utils/node/nodeReal'
 import { getPoktUrl } from 'utils/node/pokt'
-import { opbnbTestnet, linea, opbnb } from './chains'
 
 const ARBITRUM_NODES = [
   ...arbitrum.rpcUrls.public.http,
@@ -65,9 +67,9 @@ export const SERVER_NODES = {
     'https://linea-testnet.rpc.thirdweb.com',
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
-  [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
+  [ChainId.OPBNB_TESTNET]: opBNBTestnet.rpcUrls.public.http,
   [ChainId.OPBNB]: [
-    ...opbnb.rpcUrls.public.http,
+    ...opBNB.rpcUrls.public.http,
     getNodeRealUrl(ChainId.OPBNB, process.env.SERVER_NODE_REAL_API_ETH) || '',
   ],
   [ChainId.BASE]: [
@@ -131,9 +133,9 @@ export const PUBLIC_NODES = {
     'https://linea-testnet.rpc.thirdweb.com',
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
-  [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
+  [ChainId.OPBNB_TESTNET]: opBNBTestnet.rpcUrls.public.http,
   [ChainId.OPBNB]: [
-    ...opbnb.rpcUrls.public.http,
+    ...opBNB.rpcUrls.public.http,
     getNodeRealUrl(ChainId.OPBNB, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     'https://opbnb.publicnode.com',
   ],
