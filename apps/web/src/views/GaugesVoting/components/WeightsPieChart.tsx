@@ -1,11 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import type { ChartData, TooltipModel } from 'chart.js'
-import { Doughnut } from 'react-chartjs-2'
 import { Box } from '@pancakeswap/uikit'
+import type { ChartData, TooltipModel } from 'chart.js'
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
+import { useCallback, useRef, useState } from 'react'
+import { Doughnut } from 'react-chartjs-2'
+import styled from 'styled-components'
+import { ChartLabel } from './ChartLabel'
 import { ChartTooltip } from './ChartTooltip'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
+
+const Center = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`
 
 export const data: ChartData<'doughnut', number[], string> = {
   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -26,6 +35,7 @@ export const WeightsPieChart = () => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
+  const [color, setColor] = useState<string>('')
   const externalTooltipHandler = useCallback(
     ({ tooltip, chart }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
       console.debug('debug tooltip', tooltip)
@@ -45,6 +55,7 @@ export const WeightsPieChart = () => {
 
       // set tooltip visible
       tooltipRef.current = `${tooltip.x},${tooltip.y}`
+      setColor(tooltip.labelColors[0].backgroundColor as string)
       setTooltipVisible(true)
       setTooltipPosition({
         // left: tooltip.caretX,
@@ -57,17 +68,23 @@ export const WeightsPieChart = () => {
   )
   return (
     <Box position="relative">
-      {/* <ChartTooltip /> */}
+      <Center>
+        <ChartLabel />
+      </Center>
       {tooltipVisible ? (
         <Box position="absolute" left={tooltipPosition.left} top={tooltipPosition.top}>
-          <ChartTooltip />
+          <ChartTooltip color={color} />
         </Box>
       ) : null}
       <Doughnut
+        style={{
+          marginTop: '-120px',
+          marginBottom: '-120px',
+        }}
         data={data}
         options={{
           cutout: '80%',
-          radius: '60%',
+          radius: '50%',
           plugins: {
             legend: {
               display: false,
