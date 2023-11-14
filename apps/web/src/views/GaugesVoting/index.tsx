@@ -75,13 +75,13 @@ const GaugesVoting = () => {
       </StyledPageHeader>
       <Page style={{ paddingTop: 0, marginTop: '-18px' }}>
         <Card innerCardProps={{ padding: '32px' }}>
-          <Grid gridTemplateColumns="2fr 3fr" gridGap="90px">
+          <Grid gridTemplateColumns="2fr 3fr">
             <FlexGap flexDirection="column" gap="24px">
               <MyVeCakeBalance />
               <CurrentEpoch />
             </FlexGap>
             <div>
-              <Text color="secondary" textTransform="uppercase" bold>
+              <Text color="secondary" textTransform="uppercase" bold ml="60px">
                 Proposed weights
               </Text>
               <WeightsPieChart />
