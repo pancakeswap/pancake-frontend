@@ -5,6 +5,8 @@ import {
   Button,
   Card,
   Flex,
+  FlexGap,
+  Grid,
   Heading,
   LinkExternal,
   NextLinkFromReactRouter,
@@ -13,6 +15,9 @@ import {
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import styled from 'styled-components'
+import { MyVeCakeBalance } from './components/MyVeCakeBalance'
+import { CurrentEpoch } from './components/CurrentEpoch'
+import { WeightsPieChart } from './components/WeightsPieChart'
 
 const InlineLink = styled(LinkExternal)`
   display: inline-flex;
@@ -68,8 +73,21 @@ const GaugesVoting = () => {
           </Box>
         </Flex>
       </StyledPageHeader>
-      <Page style={{ paddingTop: 0, marginTop: '-18px' }} title={t('Gauges Voting')}>
-        <Card innerCardProps={{ padding: '32px' }}>1</Card>
+      <Page style={{ paddingTop: 0, marginTop: '-18px' }}>
+        <Card innerCardProps={{ padding: '32px' }}>
+          <Grid gridTemplateColumns="2fr 3fr" gridGap="90px">
+            <FlexGap flexDirection="column" gap="24px">
+              <MyVeCakeBalance />
+              <CurrentEpoch />
+            </FlexGap>
+            <div>
+              <Text color="secondary" textTransform="uppercase" bold>
+                Proposed weights
+              </Text>
+              <WeightsPieChart />
+            </div>
+          </Grid>
+        </Card>
         <Box mt="80px">
           <Heading as="h2" scale="xl" mb="24px">
             {t('My votes')}
