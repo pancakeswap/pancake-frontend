@@ -8,6 +8,7 @@ import LiquidStakingBanner from '../LiquidStakingBanner'
 import { OpBnbBanner } from '../OpBnbBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import TradingRewardBanner from '../TradingRewardBanner'
+import GameBanner from '../GameBanner'
 import UserBanner from '../UserBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
@@ -38,6 +39,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <GameBanner /> },
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
