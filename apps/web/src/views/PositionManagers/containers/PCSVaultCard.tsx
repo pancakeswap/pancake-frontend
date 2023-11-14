@@ -1,21 +1,22 @@
-import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
-import { usePositionManagerAdepterContract } from 'hooks/useContract'
-import { memo, useMemo, useEffect } from 'react'
 import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
-import { useQuery } from '@tanstack/react-query'
+import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
 import { CurrencyAmount } from '@pancakeswap/sdk'
+import { useQuery } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
+import { usePositionManagerAdepterContract } from 'hooks/useContract'
+import { memo, useEffect, useMemo } from 'react'
 import { DuoTokenVaultCard } from '../components'
 import {
-  usePCSVault,
   AprData,
   AprDataInfo,
   PositionManagerDetailsData,
-  useEarningTokenPriceInfo,
-  useTotalStakedInUsd,
-  usePositionInfo,
   useApr,
-  useTotalAssetInUsd,
+  useEarningTokenPriceInfo,
+  usePCSVault,
+  usePositionInfo,
   useTokenPriceFromSubgraph,
+  useTotalAssetInUsd,
+  useTotalStakedInUsd,
 } from '../hooks'
 
 interface Props {
@@ -59,7 +60,10 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     ['adapterAddress', adapterAddress, id],
     async () => {
       const result = await adapterContract.read.tokenPerShare()
-      return Number((result[0] * 1000000n) / result[1]) / 1000000
+      return new BigNumber(result[0].toString())
+        .div(new BigNumber(10).pow(currencyA.decimals))
+        .div(new BigNumber(result[1].toString()).div(new BigNumber(10).pow(currencyB.decimals)))
+        .toNumber()
     },
     {
       enabled: !!adapterContract,
