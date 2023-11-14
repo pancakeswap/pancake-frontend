@@ -135,15 +135,11 @@ export const AddLiquidity = memo(function AddLiquidity({
       setOtherValue: (value: string) => void
       isToken0: boolean
     }) => {
+      const ratioValue = new BigNumber(value).times(new BigNumber(isToken0 ? 1 / ratio : ratio)).toNumber()
+      const finalFormat =
+        ratioValue > 0 ? ratioValue.toFixed(6) : ratioValue.toFixed(isToken0 ? currencyB.decimals : currencyA.decimals)
       setValue(value)
-
-      setOtherValue(
-        value
-          ? new BigNumber(value)
-              .times(new BigNumber(isToken0 ? 1 / ratio : ratio))
-              .toFixed(isToken0 ? currencyA.decimals : currencyB.decimals)
-          : '0.0',
-      )
+      setOtherValue(value ? finalFormat : '0.0')
     },
     [ratio, currencyA, currencyB],
   )
