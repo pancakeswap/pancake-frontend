@@ -35,6 +35,11 @@ export const pancakeProtectors: GameType = {
     layout: PostersLayout.Vertical,
     items: [
       {
+        type: PostersItemDataType.Video,
+        video: 'https://img.soulchainz.com/mbox_1699953536560.mp4',
+        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/5.png',
+      },
+      {
         type: PostersItemDataType.Image,
         image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/1.png',
       },
@@ -45,6 +50,10 @@ export const pancakeProtectors: GameType = {
       {
         type: PostersItemDataType.Image,
         image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/3.png',
+      },
+      {
+        type: PostersItemDataType.Image,
+        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/4.png',
       },
     ],
   },
