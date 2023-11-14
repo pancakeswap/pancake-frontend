@@ -1,5 +1,16 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.0
+
+### Minor Changes
+
+- 19eff8951: Remove wagmi and NextLink dependency
+
+### Patch Changes
+
+- Updated dependencies [19eff8951]
+  - @pancakeswap/uikit@0.65.0
+
 ## 0.0.16
 
 ### Patch Changes
