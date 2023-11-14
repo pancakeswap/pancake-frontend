@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { Flex, Box, Button } from '@pancakeswap/uikit'
 import { TabToggle } from 'components/TabToggle'
 import { useTranslation } from '@pancakeswap/localization'
+import { YoutubeList } from 'views/Game/components/Project/YoutubeList'
 
 const StyledDesktop = styled.div`
   display: flex;
@@ -70,7 +71,7 @@ const VideoPane = styled.div`
   background: ${({ theme }) => theme.colors.background};
 `
 
-const GRID_TEMPLATE_ROW = '1.2fr 24px 0.8fr'
+const GRID_TEMPLATE_ROW = '1.2fr 24px 0.55fr'
 
 export const GameProject = () => {
   const { t } = useTranslation()
@@ -180,7 +181,7 @@ export const GameProject = () => {
             </TabToggle>
           </ExpandButtonGroup>
         </Gutter>
-        <VideoPane ref={videoRef}>{isPaneOpen && <Box>123123</Box>}</VideoPane>
+        <VideoPane ref={videoRef}>{isPaneOpen && <YoutubeList />}</VideoPane>
       </SplitWrapper>
     </StyledDesktop>
   )
