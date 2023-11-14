@@ -14,7 +14,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { safeGetAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
@@ -77,7 +77,7 @@ export function useSingleTokenSwapInfo(
     enabled,
   })
   if (!inputCurrency || !outputCurrency || !bestTradeExactIn) {
-    return null
+    return {}
   }
 
   let inputTokenPrice = 0
@@ -92,7 +92,7 @@ export function useSingleTokenSwapInfo(
     //
   }
   if (!inputTokenPrice) {
-    return null
+    return {}
   }
   const outputTokenPrice = 1 / inputTokenPrice
 
@@ -299,16 +299,30 @@ export const useFetchPairPricesV3 = ({
   currentSwapPrice,
 }: useFetchPairPricesParams) => {
   const { chainId } = useActiveChainId()
-  const { data: protocol0 } = useSWRImmutable(
-    token0Address && chainId && ['protocol', token0Address, chainId],
+  const { data: protocol0 } = useQuery(
+    ['protocol', token0Address, chainId],
     async () => {
+      if (!chainId) return undefined
       return getTokenBestTvlProtocol(token0Address, chainId)
     },
+    {
+      enabled: Boolean(token0Address && chainId),
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
   )
-  const { data: protocol1 } = useSWRImmutable(
-    token1Address && chainId && ['protocol', token1Address, chainId],
+  const { data: protocol1 } = useQuery(
+    ['protocol', token1Address, chainId],
     async () => {
+      if (!chainId) return undefined
       return getTokenBestTvlProtocol(token1Address, chainId)
+    },
+    {
+      enabled: Boolean(token1Address && chainId),
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     },
   )
 
@@ -316,13 +330,10 @@ export const useFetchPairPricesV3 = ({
     data: normalizedDerivedPairData,
     error,
     isLoading,
-  } = useSWRImmutable(
-    protocol0 &&
-      protocol1 &&
-      token0Address &&
-      chainId &&
-      token1Address && ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1, timeWindow }],
+  } = useQuery(
+    ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1, timeWindow }],
     async () => {
+      if (!chainId) return undefined
       const data = await fetchDerivedPriceData(
         token0Address,
         token1Address,
@@ -337,15 +348,19 @@ export const useFetchPairPricesV3 = ({
       })
     },
     {
-      dedupingInterval: SLOW_INTERVAL,
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(protocol0 && protocol1 && token0Address && chainId && token1Address),
+      refetchInterval: SLOW_INTERVAL,
+      staleTime: SLOW_INTERVAL,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     },
   )
 
   const hasSwapPrice = currentSwapPrice && currentSwapPrice[token0Address] > 0
   const normalizedDerivedPairDataWithCurrentSwapPrice = useMemo(
     () =>
-      normalizedDerivedPairData?.length > 0 && hasSwapPrice
+      normalizedDerivedPairData && normalizedDerivedPairData?.length > 0 && hasSwapPrice
         ? [...normalizedDerivedPairData, { time: new Date(), value: currentSwapPrice[token0Address] }]
         : normalizedDerivedPairData,
     [currentSwapPrice, hasSwapPrice, normalizedDerivedPairData, token0Address],

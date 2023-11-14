@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import { Pair } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
@@ -23,8 +23,8 @@ interface PoolReserveVolumeResponse {
 }
 
 export const useLPApr = (pair?: Pair | null) => {
-  const { data: poolData } = useSWRImmutable(
-    pair && pair.chainId === ChainId.BSC ? ['LP7dApr', pair.liquidityToken.address] : null,
+  const { data: poolData } = useQuery(
+    ['LP7dApr', pair?.liquidityToken.address],
     async () => {
       if (!pair) return undefined
       const timestampsArray = getDeltaTimestamps()
@@ -45,7 +45,11 @@ export const useLPApr = (pair?: Pair | null) => {
       return lpApr7d ? { lpApr7d } : undefined
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(pair && pair.chainId === ChainId.BSC),
+      refetchInterval: SLOW_INTERVAL,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     },
   )
 
