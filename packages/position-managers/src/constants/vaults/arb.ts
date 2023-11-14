@@ -14,7 +14,7 @@ export const vaults: VaultConfig[] = [
     currencyB: arbitrumTokens.arb,
     earningToken: arbitrumTokens.cake,
     feeTier: FeeAmount.LOW,
-    strategy: Strategy.ACTIVE,
+    strategy: Strategy.GENERIC,
     manager: MANAGER.DEFIEDGE,
     isSingleDepositToken: false,
     allowDepositToken0: true,

@@ -13,6 +13,8 @@ export function getStrategyName(t: TranslateFunction, strategy: Strategy) {
       return t('Passive')
     case Strategy.PEGGED:
       return t('Pegged')
+    case Strategy.GENERIC:
+      return t('Generic')
     default:
       return ''
   }
