@@ -6,6 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Carousel } from 'views/Game/components/Home/Carousel'
 import { CarouselView } from 'views/Game/components/Home/CarouselView'
 import { TrendingTags, StyledTag } from 'views/Game/components/Home/TrendingTags'
+import { StyledTextLineClamp } from 'views/Game/components/StyledTextLineClamp'
 import { carouselData } from '../mockData'
 
 const StyledGameContainer = styled(Flex)<{ isHorizontal: boolean }>`
@@ -54,13 +55,6 @@ const StyledLeftContainer = styled(Box)<{ isHorizontal: boolean }>`
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: ${({ isHorizontal }) => (isHorizontal ? '671px' : '392px')};
   }
-`
-
-const StyledTextLineClamp = styled(Text)<{ lineClamp: number }>`
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${({ lineClamp }) => lineClamp};
 `
 
 interface GameProps {

@@ -2,6 +2,7 @@ import { styled } from 'styled-components'
 import { useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text, Button, CardHeader, Card } from '@pancakeswap/uikit'
+import { StyledTextLineClamp } from 'views/Game/components/StyledTextLineClamp'
 
 import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -90,13 +91,6 @@ const StyledTag = styled(Button)`
     margin-top: 0px;
     align-self: center;
   }
-`
-
-const StyledTextLineClamp = styled(Text)<{ lineClamp: number }>`
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${({ lineClamp }) => lineClamp};
 `
 
 export const Games = () => {
