@@ -29,9 +29,7 @@ export const TrendingTags = () => {
       <StyledTagContainer>
         <StyledTag scale="sm">PvP</StyledTag>
         <StyledTag scale="sm">Strategy</StyledTag>
-        <StyledTag scale="sm">Pancake Squad</StyledTag>
-        <StyledTag scale="sm">Pancake Bunnies</StyledTag>
-        <StyledTag scale="sm">Tower Defense</StyledTag>
+        <StyledTag scale="sm">City Building</StyledTag>
       </StyledTagContainer>
     </Box>
   )
