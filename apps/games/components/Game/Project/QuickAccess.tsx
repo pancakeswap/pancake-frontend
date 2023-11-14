@@ -72,9 +72,9 @@ export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = 
       {isExpanded && (
         <Box>
           {LIST.map((i) => (
-            <StyledLink key={i.url} href={i.url} padding="9px 0" onMouseDown={(e) => handleClick(e, i.url)}>
-              <Text>{i.title}</Text>
-            </StyledLink>
+            <Text key={i.url} padding="9px 0" onMouseDown={(e) => handleClick(e, i.url)}>
+              {i.title}
+            </Text>
           ))}
           <>
             {telegram || discord ? (
