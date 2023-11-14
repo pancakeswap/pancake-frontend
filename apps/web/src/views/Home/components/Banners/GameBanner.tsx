@@ -5,7 +5,7 @@ import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled, keyframes } from 'styled-components'
 import * as S from './Styled'
-import { gameDesktopBg, gameMobileBunny, gameDesktopBunny, gameCube } from './images'
+import { gameDesktopBg, gameMobileBunny, gameDesktopBunny, gameCube, gameText, gameMobileText } from './images'
 
 const flyingAnim = keyframes`
   from {
@@ -117,7 +117,7 @@ const GradientText = styled(Text)<{ backgroundColor?: string }>`
 `
 
 const GameBanner = () => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { isMobile, isDesktop } = useMatchBreakpoints()
 
   return (
@@ -143,20 +143,37 @@ const GameBanner = () => {
           <Box>
             {isDesktop ? (
               <Flex mt="8px">
-                <GradientText backgroundColor="linear-gradient(90deg, #34FBA6 3.2%, #88FF5C 120%)">
-                  {t('Explore Your GameFi Spirit')}
+                <GradientText backgroundColor="#34FBA6" mr="4px">
+                  {t('Explore Your')}
                 </GradientText>
-                <Text as="span" m="0 2px">
-                  💚
-                </Text>
+                {currentLanguage.code === 'en' ? (
+                  <Box m="4px 4px 0 0">
+                    <Image src={gameText} alt="gameText" width={177} height={19} placeholder="blur" />
+                  </Box>
+                ) : (
+                  <>
+                    <GradientText backgroundColor="#88FF5C 120%">{t('GameFi Spirit')}</GradientText>
+                    <Text as="span" m="0 2px">
+                      💚
+                    </Text>
+                  </>
+                )}
                 <GradientText backgroundColor="linear-gradient(90deg, #88FF5C 10.97%, #F4E23B 27.39%, #FFDF38 99.79%)">
                   {t('1.5M Monthly Players Await!')}
                 </GradientText>
               </Flex>
             ) : (
-              <Text fontSize={20} bold color="#05FFC3">
-                {t('is Live')}
-              </Text>
+              <>
+                {currentLanguage.code === 'en' ? (
+                  <Box mt="8px">
+                    <Image src={gameMobileText} alt="gameMobileText" width={84} height={20} placeholder="blur" />
+                  </Box>
+                ) : (
+                  <Text fontSize={20} bold color="#05FFC3">
+                    {t('is Live')}
+                  </Text>
+                )}
+              </>
             )}
           </Box>
           <Link style={{ textDecoration: 'none' }} external href="https://pancakeswap.games/">
