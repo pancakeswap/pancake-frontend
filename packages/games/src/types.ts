@@ -24,6 +24,21 @@ export interface Logo {
   darkTheme: string
 }
 
+export enum GenreType {
+  TowerDefense = 'Tower Defense',
+  Casual = 'Casual',
+}
+
+export enum TrendingTagType {
+  Strategy = 'Strategy',
+  PancakeSquadNFT = 'PancakeSquad NFT',
+  PancakeBunniesNFT = 'Pancake Bunnies NFT',
+  TowerDefense = 'Tower Defense',
+  Multiplayer = 'Multiplayer',
+  CakeToken = 'CAKE token',
+  BaseBuilding = 'Base Building',
+}
+
 export interface GameType {
   id: string
   projectName: string
@@ -48,4 +63,6 @@ export interface GameType {
     telegram?: string
     discord?: string
   }
+  genre: GenreType
+  trendingTags: TrendingTagType[]
 }

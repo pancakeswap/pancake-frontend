@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
+import { TrendingTagType } from '@pancakeswap/games'
 
 export const StyledTag = styled(Button)<{ isPurple?: boolean }>`
   padding: 4px 8px;
@@ -19,7 +20,11 @@ const StyledTagContainer = styled(Flex)`
   }
 `
 
-export const TrendingTags = () => {
+interface TrendingTags {
+  trendingTags: TrendingTagType[]
+}
+
+export const TrendingTags: React.FC<React.PropsWithChildren<TrendingTags>> = ({ trendingTags }) => {
   const { t } = useTranslation()
   return (
     <Box>
@@ -27,9 +32,11 @@ export const TrendingTags = () => {
         {t('trending tags for this game:')}
       </Text>
       <StyledTagContainer>
-        <StyledTag scale="sm">PvP</StyledTag>
-        <StyledTag scale="sm">Strategy</StyledTag>
-        <StyledTag scale="sm">City Building</StyledTag>
+        {trendingTags.map((tag) => (
+          <StyledTag key={tag} scale="sm">
+            {tag}
+          </StyledTag>
+        ))}
       </StyledTagContainer>
     </Box>
   )
