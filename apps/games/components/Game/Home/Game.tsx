@@ -8,6 +8,7 @@ import { Carousel } from 'components/Game/Home/Carousel'
 import { CarouselView } from 'components/Game/Home/CarouselView'
 import { TrendingTags, StyledTag } from 'components/Game/Home/TrendingTags'
 import { StyledTextLineClamp } from 'components/Game/StyledTextLineClamp'
+import { useGameLink } from 'hooks/useGameLink'
 
 const StyledGameContainer = styled(Flex)<{ isHorizontal: boolean }>`
   width: 100%;
@@ -97,11 +98,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
   const previewCarouseData: PostersItemData = useMemo(() => carouselData[carouselId], [carouselId, carouselData])
 
   const isHorizontal: boolean = useMemo(() => game.posters.layout === PostersLayout.Horizontal, [game])
-  const gameLink = useMemo(
-    () =>
-      game.id === 'pancake-protectors' && !isDesktop ? 'https://protectors.pancakeswap.finance' : `/project/${game.id}`,
-    [isDesktop, game.id],
-  )
+  const gameLink = useGameLink(game.id)
 
   return (
     <StyledGameContainer isHorizontal={isHorizontal}>
