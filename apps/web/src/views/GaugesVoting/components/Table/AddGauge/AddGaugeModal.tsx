@@ -99,7 +99,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss }) => {
               </AutoColumn>
             </Grid>
             <Box>
-              <GaugesTable scrollStyle={{ maxHeight: '40vh' }} />
+              <GaugesTable totalGauges={1} scrollStyle={{ maxHeight: '40vh' }} />
             </Box>
             <ColumnCenter style={{ marginTop: 'auto' }}>
               <Button width="50%">{t('Finish')}</Button>
