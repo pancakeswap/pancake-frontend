@@ -1,9 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRow, Card, FlexGap, Text, TooltipText } from '@pancakeswap/uikit'
+import { AutoRow, Balance, Card, FlexGap, Text, TooltipText } from '@pancakeswap/uikit'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BN from 'bignumber.js'
+import dayjs from 'dayjs'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
+import { useEpochRewards } from '../hooks/useEpochRewards'
+import { useGaugeEpochEnd } from '../hooks/useGaugeEpochEnd'
+import { useGaugesTotalWeight } from '../hooks/useGaugesTotalWeight'
 
 export const CurrentEpoch = () => {
   const { t } = useTranslation()
+  const totalWeight = useGaugesTotalWeight()
+  const weeklyRewards = useEpochRewards()
+  const epochEnd = useGaugeEpochEnd()
+
   return (
     <Card isActive innerCardProps={{ padding: 24 }}>
       <FlexGap gap="8px" flexDirection="column">
@@ -20,9 +30,9 @@ export const CurrentEpoch = () => {
             </Tooltips>
             <FlexGap alignItems="baseline" gap="2px">
               <Text bold fontSize={16}>
-                7 days
+                {dayjs.unix(epochEnd).fromNow()}
               </Text>
-              <Text fontSize={14}>(16 Jul 2042) </Text>
+              <Text fontSize={14}>({dayjs.unix(epochEnd).format('DD MMM YYYY')}) </Text>
             </FlexGap>
           </FlexGap>
         </AutoRow>
@@ -35,9 +45,11 @@ export const CurrentEpoch = () => {
 
           <FlexGap alignItems="baseline" gap="2px">
             <Text bold fontSize={16}>
-              321,321.33
+              {getFullDisplayBalance(new BN(weeklyRewards))}
             </Text>
-            <Text fontSize={14}>(1.32 CAKE/sec) </Text>
+            <Text fontSize={14}>
+              ({getFullDisplayBalance(new BN(weeklyRewards).div(1 * 7 * 24 * 60 * 60), 18, 3)} CAKE/sec){' '}
+            </Text>
           </FlexGap>
         </AutoRow>
         <AutoRow justifyContent="space-between">
@@ -47,9 +59,7 @@ export const CurrentEpoch = () => {
             </TooltipText>
           </Tooltips>
 
-          <Text bold fontSize={16}>
-            312,312,132 veCAKE
-          </Text>
+          <Balance bold fontSize={16} value={Number(totalWeight)} unit=" veCAKE" decimals={0} />
         </AutoRow>
       </FlexGap>
     </Card>
