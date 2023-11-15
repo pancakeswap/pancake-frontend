@@ -11,16 +11,18 @@ import {
   PageHeader,
   Text,
 } from '@pancakeswap/uikit'
+import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import Page from 'components/Layout/Page'
 import { getTotalIFOSold } from 'config/constants/ifo'
+import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import { useState } from 'react'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
+import { LockCake } from './components/LockCake'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 import { useSnapshotVotingCount } from './hooks/useSnapshotVotingCount'
-import { LockCake } from './components/LockCake'
 
 const totalIFOSold = getTotalIFOSold()
 
@@ -28,6 +30,7 @@ const CakeStaking = () => {
   const { t } = useTranslation()
   const gaugesVotingCount = useGaugesVotingCount()
   const snapshotVotingCount = useSnapshotVotingCount()
+  const totalCakeDistributed = useCakeDistributed()
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
 
   return (
@@ -70,7 +73,7 @@ const CakeStaking = () => {
         <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="repeat(2, 1fr)" alignItems="center" mx="auto">
           <BenefitCard
             type="earnCake"
-            dataText="123,456,789 CAKE"
+            dataText={`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} CAKE`}
             onClick={() => {
               setCakeRewardModalVisible(true)
             }}
