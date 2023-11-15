@@ -1,12 +1,11 @@
-import { ChainId } from '@pancakeswap/chains'
 import { Percent } from '@pancakeswap/swap-sdk-core'
-import { USDC } from '@pancakeswap/tokens'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { zeroAddress } from 'viem'
+import { Address } from 'viem'
 import { TripleLogo } from './TripleLogo'
 import { GaugeVoting } from '../hooks/useGaugesVoting'
+import { useV2PairData, useV3PoolData } from '../hooks/useGaugePair'
 
 const Indicator = styled.div`
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), #8051d6;
@@ -65,6 +64,33 @@ export const ChartTooltip: React.FC<{
     return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
   }, [total, gauge?.weight])
 
+  const v2PoolData = useV2PairData(gauge?.pairAddress.toLowerCase(), Number(gauge?.chainId || undefined))
+
+  const v3PoolData = useV3PoolData(gauge?.pairAddress.toLowerCase(), Number(gauge?.chainId || undefined))
+
+  console.debug('debug poolData', {
+    pairAddress: gauge?.pairAddress,
+    chainId: Number(gauge?.chainId),
+    v2PoolData,
+    v3PoolData,
+  })
+
+  const token0 = useMemo(() => {
+    if (v2PoolData) return v2PoolData.token0
+    if (v3PoolData) return v3PoolData.token0
+    return undefined
+  }, [v2PoolData, v3PoolData])
+
+  const token1 = useMemo(() => {
+    if (v2PoolData) return v2PoolData.token1
+    if (v3PoolData) return v3PoolData.token1
+    return undefined
+  }, [v2PoolData, v3PoolData])
+
+  const pairName = useMemo(() => {
+    return `${token0?.symbol}-${token1?.symbol}`
+  }, [token0, token1])
+
   if (!visible) return null
 
   return (
@@ -78,10 +104,14 @@ export const ChartTooltip: React.FC<{
         </Text>
       </Indicator>
       <Content>
-        <TripleLogo address0={zeroAddress} address1={USDC[ChainId.ZKSYNC].address} chainId={ChainId.ZKSYNC} />
+        <TripleLogo
+          address0={token0?.address as Address}
+          address1={token1?.address as Address}
+          chainId={Number(gauge?.chainId)}
+        />
         <Flex flexDirection="column">
           <Text fontSize={18} bold>
-            ETH-USDC
+            {pairName}
           </Text>
           <Flex alignItems="center">
             <Text fontSize={12} color="textSubtle">
