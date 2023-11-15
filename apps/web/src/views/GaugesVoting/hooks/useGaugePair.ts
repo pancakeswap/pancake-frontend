@@ -6,7 +6,6 @@ import { PoolData as V2PoolData } from 'state/info/types'
 import { fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
 import { MultiChainName, multiChainName } from 'state/info/constant'
 
-const refreshIntervalForInfo = 15000 // 15s
 const QUERY_SETTINGS_IMMUTABLE = {
   retry: 3,
   retryDelay: 3000,
@@ -14,15 +13,6 @@ const QUERY_SETTINGS_IMMUTABLE = {
   refetchOnMount: false,
   refetchOnReconnect: false,
   refetchOnWindowFocus: false,
-}
-const QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH = {
-  retry: 3,
-  retryDelay: 3000,
-}
-const QUERY_SETTINGS_INTERVAL_REFETCH = {
-  refetchInterval: refreshIntervalForInfo,
-  keepPreviousData: true,
-  ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
 }
 
 export const useV3PoolData = (address?: string, chainId?: number): V3PoolData | undefined => {
@@ -50,7 +40,7 @@ export const useV2PairData = (address?: string, chainId?: number): V2PoolData | 
     {
       enabled: Boolean(chainId) && Boolean(address),
       ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_INTERVAL_REFETCH,
+      // ...QUERY_SETTINGS_INTERVAL_REFETCH,
     },
   )
   if (!address) return undefined
