@@ -140,6 +140,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
               onRemove={showRemoveLiquidityModal}
               token0PriceUSD={token0PriceUSD}
               token1PriceUSD={token1PriceUSD}
+              isSingleDepositToken={isSingleDepositToken}
               isSingleDepositToken0={isSingleDepositToken0}
             />
           </InnerCard>
