@@ -5,7 +5,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import styled from 'styled-components'
 import { useGaugesTotalWeight } from '../hooks/useGaugesTotalWeight'
-import { useGaugesVoting } from '../hooks/useGaugesVoting'
+import { GaugeVoting, useGaugesVoting } from '../hooks/useGaugesVoting'
 import { ChartLabel } from './ChartLabel'
 import { ChartTooltip } from './ChartTooltip'
 
@@ -40,16 +40,16 @@ export const WeightsPieChart = () => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
-  const [tooltipValue, setTooltipValue] = useState<number>()
+  const [selectedGauge, setSelectedGauge] = useState<GaugeVoting>()
   const [color, setColor] = useState<string>('')
 
   const data = useMemo<ChartData<'doughnut'>>(() => {
     return {
-      labels: gauges?.map(Number) as number[],
+      labels: gauges?.map((gauge) => gauge.hash) ?? [],
       datasets: [
         {
           ...chartDataOption,
-          data: gauges?.map(Number) as number[],
+          data: gauges?.map((gauge) => gauge.weight) ?? [],
         },
       ],
     }
@@ -57,13 +57,13 @@ export const WeightsPieChart = () => {
 
   const externalTooltipHandler = useCallback(
     ({ tooltip, chart }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
-      // console.debug('debug tooltip', tooltip)
-      // console.debug('debug tooltip opacity', tooltip.opacity)
-      // console.debug('debug tooltip title', tooltip.title)
+      console.debug('debug tooltip', tooltip)
+      console.debug('debug tooltip opacity', tooltip.opacity)
+      console.debug('debug tooltip title', tooltip.title)
       // hide tooltip
       if (tooltip.opacity === 0) {
         setTooltipVisible(false)
-        setTooltipValue(0)
+        setSelectedGauge(undefined)
         tooltipRef.current = null
         return
       }
@@ -74,7 +74,7 @@ export const WeightsPieChart = () => {
 
       // set tooltip visible
       tooltipRef.current = `${tooltip.x},${tooltip.y}`
-      setTooltipValue(Number(tooltip.title[0]))
+      setSelectedGauge(gauges?.find((gauge) => gauge.hash === tooltip.title[0]))
       setColor(tooltip.labelColors[0].backgroundColor as string)
       setTooltipVisible(true)
       setTooltipPosition({
@@ -84,20 +84,20 @@ export const WeightsPieChart = () => {
         top: tooltip.y + 20,
       })
     },
-    [setTooltipVisible, setTooltipPosition],
+    [gauges],
   )
   return (
     <Box position="relative" pr="90px">
       <Center style={{ marginLeft: '-45px' }}>
-        <ChartLabel total={Number(totalGaugesWeight)} value={tooltipValue} />
+        <ChartLabel total={Number(totalGaugesWeight)} gauge={selectedGauge} />
       </Center>
       <Absolute left={tooltipPosition.left} top={tooltipPosition.top}>
         <ChartTooltip
           visible={tooltipVisible}
           total={Number(totalGaugesWeight)}
           color={color}
-          value={tooltipValue}
-          gauges={gauges}
+          gauge={selectedGauge}
+          allGauges={gauges}
         />
       </Absolute>
       <Doughnut
