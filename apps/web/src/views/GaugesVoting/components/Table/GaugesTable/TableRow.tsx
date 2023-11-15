@@ -19,7 +19,7 @@ export const TableRow: React.FC<{
     return new Percent(data?.weight, totalGauges || 1).toFixed(2)
   }, [data?.weight, totalGauges])
   const percentCaps = useMemo(() => {
-    return new Percent(data?.maxVoteCap, 10000).toFixed(0)
+    return new Percent(data?.maxVoteCap, 10000).toSignificant(2)
   }, [data?.maxVoteCap])
   const v2PoolData = useV2PairData(data?.pairAddress.toLowerCase(), Number(data?.chainId || undefined))
   const v3PoolData = useV3PoolData(data?.pairAddress.toLowerCase(), Number(data?.chainId || undefined))
