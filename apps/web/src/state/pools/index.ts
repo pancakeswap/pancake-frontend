@@ -72,7 +72,7 @@ export const initialPoolVaultState = Object.freeze({
     lastDepositedTime: null,
     lastUserActionTime: null,
     credit: null,
-    locked: false,
+    locked: null,
     lockStartTime: null,
     lockEndTime: null,
     userBoostedShare: null,
@@ -80,6 +80,7 @@ export const initialPoolVaultState = Object.freeze({
     currentOverdueFee: null,
     currentPerformanceFee: null,
   },
+  creditStartBlock: null,
 })
 
 export const initialIfoState = Object.freeze({
