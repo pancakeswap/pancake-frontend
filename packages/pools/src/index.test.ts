@@ -55,6 +55,7 @@ test('exports', () => {
       "getPoolContractBySousId",
       "checkIsBoostedPool",
       "isBoostedPoolsSupported",
+      "getBoostedPoolApr",
       "iCakeABI",
       "cakeFlexibleSideVaultV2ABI",
       "cakeVaultV2ABI",
