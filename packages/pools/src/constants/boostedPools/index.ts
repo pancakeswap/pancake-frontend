@@ -3,10 +3,11 @@ import { ChainId } from '@pancakeswap/chains'
 import { arbBoostedPools } from './42161'
 
 import { BoostedPoolsSupportedChainId } from '../boostedPoolsSupportedChains'
-import { isBoostedPoolsSupported } from '../../utils/isBoostedPoolsSupported'
+import { isBoostedPoolsSupported } from '../../utils/boosted/isBoostedPoolsSupported'
+import { BoosterConfig } from '../../utils/boosted/types'
 
 export type BoostedPoolsConfigByChain<TChainId extends ChainId> = {
-  [chainId in TChainId]: any[]
+  [chainId in TChainId]: BoosterConfig[]
 }
 
 export const BOOSTED_POOLS_CONFIG_BY_CHAIN = {

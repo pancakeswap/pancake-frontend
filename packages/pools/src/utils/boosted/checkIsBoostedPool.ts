@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { getBoostedPoolsConfig } from '../constants/boostedPools'
+import { getBoostedPoolsConfig } from '../../constants/boostedPools'
 
 export const checkIsBoostedPool = (contract: string, chainId: ChainId): boolean => {
   const list = getBoostedPoolsConfig(chainId)
