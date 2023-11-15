@@ -15,7 +15,7 @@ const withShownApr = (AprComp) => (props) => {
 
   const autoCompoundFrequency = vaultPoolConfig[props.pool.vaultKey]?.autoCompoundFrequency ?? 0
 
-  const boostedApr = 1.2
+  const boostedApr = 1.2 // TODO
   // await fetchAlpBoostedPoolApr()
 
   return (
