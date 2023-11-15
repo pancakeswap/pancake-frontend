@@ -36,7 +36,7 @@ export const pancakeProtectors: GameType = {
     items: [
       {
         type: PostersItemDataType.Video,
-        video: 'https://img.soulchainz.com/mbox_1699953536560.mp4',
+        video: 'https://www.mobox.io/download/Pancake_Protectors_Video.mp4',
         image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/5.png',
       },
       {
