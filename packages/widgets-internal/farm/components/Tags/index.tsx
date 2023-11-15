@@ -273,12 +273,7 @@ const LineaTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const AlpBoostedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag
-      outline
-      {...props}
-      style={{ borderColor: "#9C3FFD", color: "#C040FC" }}
-      startIcon={<AlpIcon width="18px" color="#4B3CFF" m="-3px 3px 0 0" />}
-    >
+    <Tag outline {...props} variant="secondary" startIcon={<AlpIcon width="18px" color="#4B3CFF" m="-3px 3px 0 0" />}>
       {t("Boosted")}
     </Tag>
   );
