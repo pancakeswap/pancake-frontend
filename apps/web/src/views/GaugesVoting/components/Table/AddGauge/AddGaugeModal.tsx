@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoColumn,
@@ -14,11 +13,10 @@ import {
   ModalWrapper,
   Text,
 } from '@pancakeswap/uikit'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { GaugesTable } from '../GaugesTable'
-import { Filter, GaugesType, OptionsModal, OptionsType } from './OptionsModal'
+import { Filter, FilterValue, OptionsModal, OptionsType } from './OptionsModal'
 
 const FilterButton = styled(Button)`
   height: 35px;
@@ -35,8 +33,18 @@ export const AddGaugeModal = ({ isOpen, onDismiss }) => {
     byType: [],
   })
 
-  const onFilterChange = (type: OptionsType, value: GaugesType | ChainId | FeeAmount) => {
+  const onFilterChange = (type: OptionsType, value: FilterValue) => {
     const opts = filter[type] as Array<unknown>
+
+    // select all
+    if (Array.isArray(value)) {
+      setFilter((prev) => ({
+        ...prev,
+        [type]: value.length === opts.length ? [] : value,
+      }))
+      return
+    }
+    // select one
     if (opts.includes(value)) {
       setFilter((prev) => ({
         ...prev,
