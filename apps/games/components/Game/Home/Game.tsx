@@ -8,6 +8,7 @@ import { Carousel } from 'components/Game/Home/Carousel'
 import { CarouselView } from 'components/Game/Home/CarouselView'
 import { TrendingTags, StyledTag } from 'components/Game/Home/TrendingTags'
 import { StyledTextLineClamp } from 'components/Game/StyledTextLineClamp'
+import { useGameLink } from 'hooks/useGameLink'
 
 const StyledGameContainer = styled(Flex)<{ isHorizontal: boolean }>`
   width: 100%;
@@ -97,6 +98,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
   const previewCarouseData: PostersItemData = useMemo(() => carouselData[carouselId], [carouselId, carouselData])
 
   const isHorizontal: boolean = useMemo(() => game.posters.layout === PostersLayout.Horizontal, [game])
+  const gameLink = useGameLink(game.id)
 
   return (
     <StyledGameContainer isHorizontal={isHorizontal}>
@@ -219,11 +221,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                     )}
                   </Flex>
                 </Flex>
-                <Link
-                  width="100% !important"
-                  href={`/project/${game.id}`}
-                  mb={['32px', '32px', '32px', '32px', '32px', '49px']}
-                >
+                <Link width="100% !important" href={gameLink} mb={['32px', '32px', '32px', '32px', '32px', '49px']}>
                   <Button width="100%">
                     <Text bold color="white">
                       {t('Play Now')}

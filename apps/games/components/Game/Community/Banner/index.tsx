@@ -13,6 +13,7 @@ import { Autoplay, Navigation } from 'swiper/modules'
 import { GameCard } from 'components/Game/Community/Banner/GameCard'
 import { Decorations } from 'components/Game/Decorations'
 import { useGamesConfig } from 'hooks/useGamesConfig'
+import { getGameLink } from 'utils/getGameLink'
 
 const StyledBackground = styled(Box)`
   position: relative;
@@ -77,7 +78,7 @@ const StyledSwiperContainer = styled(Box)`
 export const Banner = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
   const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
   const config = useGamesConfig()
@@ -139,7 +140,7 @@ export const Banner = () => {
                 >
                   {games.map((game) => (
                     <SwiperSlide key={game.id}>
-                      <NextLink passHref href={`/project/${game.id}`}>
+                      <NextLink passHref href={getGameLink({ gameId: game.id, isMobile })}>
                         <GameCard game={game} />
                       </NextLink>
                     </SwiperSlide>
