@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { zeroAddress } from 'viem'
 import { TripleLogo } from './TripleLogo'
+import { GaugeVoting } from '../hooks/useGaugesVoting'
 
 const Indicator = styled.div`
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), #8051d6;
@@ -47,23 +48,22 @@ const Tooltip = styled.div.withConfig({ shouldForwardProp: (prop) => prop !== 's
 export const ChartTooltip: React.FC<{
   color: string
   visible: boolean
-  value?: number
+  gauge?: GaugeVoting
   total?: number
-  gauges?: bigint[]
-}> = ({ color, gauges, value, visible, total }) => {
+  allGauges?: GaugeVoting[]
+}> = ({ color, allGauges, gauge, visible, total }) => {
   const sortedGauges = useMemo(() => {
-    return gauges?.sort((a, b) => (a > b ? 1 : -1))
-  }, [gauges])
+    return allGauges?.sort((a, b) => (a.weight > b.weight ? 1 : -1))
+  }, [allGauges])
   const sort = useMemo(() => {
-    if (!value) return '0'
-    const index = sortedGauges?.indexOf(BigInt(value)) ?? 0
+    if (!gauge?.weight) return '0'
+    const index = sortedGauges?.findIndex((g) => g.hash === gauge.hash) ?? 0
     if (index < 10) return `0${index + 1}`
     return index
-  }, [sortedGauges, value])
+  }, [gauge?.hash, gauge?.weight, sortedGauges])
   const percent = useMemo(() => {
-    console.debug('debug, total', total)
-    return new Percent(value ?? 0, total || 1).toFixed(2)
-  }, [value, total])
+    return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
+  }, [total, gauge?.weight])
 
   if (!visible) return null
 

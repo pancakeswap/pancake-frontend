@@ -4,7 +4,11 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { ContractFunctionConfig, ContractFunctionResult, MulticallContracts } from 'viem'
 import { usePublicClient } from 'wagmi'
-import { useGauges } from './useGauges'
+import { GaugeInfo, useGauges } from './useGauges'
+
+export type GaugeVoting = GaugeInfo & {
+  weight: number
+}
 
 export const useGaugesVoting = () => {
   const gauges = useGauges()
@@ -12,7 +16,7 @@ export const useGaugesVoting = () => {
   const { chainId } = useActiveChainId()
   const publicClient = usePublicClient({ chainId })
 
-  const { data } = useQuery(['gaugesVoting', gaugesVotingContract.address], async () => {
+  const { data } = useQuery(['gaugesVoting', gaugesVotingContract.address], async (): Promise<GaugeVoting[]> => {
     if (!gauges || gauges.length === 0) return []
 
     const contracts: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'getGaugeWeight'>[]> =
@@ -29,7 +33,10 @@ export const useGaugesVoting = () => {
       allowFailure: false,
     })) as ContractFunctionResult<typeof gaugesVotingABI, 'getGaugeWeight'>[]
 
-    return response
+    return gauges.map((gauge, index) => ({
+      ...gauge,
+      weight: Number(response[index] ?? 0),
+    }))
   })
 
   return data

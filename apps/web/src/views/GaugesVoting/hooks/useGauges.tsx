@@ -5,8 +5,10 @@ import { useGaugesVotingContract } from 'hooks/useContract'
 import { Address, ContractFunctionConfig, ContractFunctionResult, MulticallContracts } from 'viem'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { usePublicClient } from 'wagmi'
+import { getGaugeHash } from '../utils'
 
 export type GaugeInfo = {
+  hash: string
   pairAddress: Address
   masterChef: Address
   pid: bigint
@@ -78,6 +80,7 @@ export const useGauges = () => {
             pairAddress,
             boostMultiplier,
             maxVoteCap,
+            hash: getGaugeHash(pairAddress, Number(_chainId)),
           },
         ]
       }, [] as GaugeInfo[])
