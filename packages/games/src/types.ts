@@ -39,6 +39,11 @@ export enum TrendingTagType {
   BaseBuilding = 'Base Building',
 }
 
+export type Article = {
+  title: string
+  link: string
+}
+
 export interface GameType {
   id: string
   projectName: string
@@ -65,4 +70,5 @@ export interface GameType {
   }
   genre: GenreType
   trendingTags: TrendingTagType[]
+  articles?: Article[]
 }

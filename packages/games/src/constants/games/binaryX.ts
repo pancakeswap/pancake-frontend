@@ -69,4 +69,14 @@ export const binaryX: GameType = {
     telegram: 'https://t.me/binaryxGlobal',
     discord: 'https://discord.com/invite/binaryx',
   },
+  articles: [
+    {
+      title: 'Introduction to Pancake Mayor',
+      link: 'https://binary-x.medium.com/introduction-to-pancake-mayor-binaryxs-newest-hyper-game-764173a4c56b',
+    },
+    {
+      title: 'Pancake Mayor Wiki',
+      link: 'https://lightning-mole-a4a.notion.site/Pancake-Mayor-Wiki-d60046e1b95d433196e51cbb716eef28',
+    },
+  ],
 }

@@ -61,6 +61,12 @@ export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = 
     window.open(url, '_blank', 'noopener noreferrer')
   }
 
+  const articles = game?.articles?.map(({ title, link }) => (
+    <Text key={link} padding="9px 0" onMouseDown={(e) => handleClick(e, link)}>
+      {title}
+    </Text>
+  ))
+
   return (
     <StyledQuickAccess isOpen={isOpen}>
       <Flex padding="9px 0" justifyContent="space-between" onMouseDown={toggleExpand}>
@@ -76,6 +82,7 @@ export const QuickAccess: React.FC<React.PropsWithChildren<QuickAccessProps>> = 
               {i.title}
             </Text>
           ))}
+          {articles}
           <>
             {telegram || discord ? (
               <Flex padding="16px 0">
