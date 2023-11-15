@@ -15,7 +15,7 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 
 export const VoteTable = () => {
   const { t } = useTranslation()
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [expanded, setExpanded] = useState(false)
 
   return (
