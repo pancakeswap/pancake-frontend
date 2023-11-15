@@ -5,7 +5,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 
 // Contract will return price with 10^8, although ALP token decimals is 18.
 const TOKEN_DECIMALS = 8
-export const CONTRACT_ADDRESS = '0xB3879E95a4B8e3eE570c232B19d520821F540E48'
+const CONTRACT_ADDRESS = '0xB3879E95a4B8e3eE570c232B19d520821F540E48'
 
 export const fetchTokenAplPrice = async () => {
   const client = getViemClients({ chainId: ChainId.ARBITRUM_ONE })

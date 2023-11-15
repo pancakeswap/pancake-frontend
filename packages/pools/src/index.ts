@@ -2,6 +2,7 @@ export * from './constants'
 export * from './types'
 export * from './queries'
 export * from './utils'
+export * from './hooks'
 
 // abi
 export * from './abis/ICakeFlexibleSideVaultV2'

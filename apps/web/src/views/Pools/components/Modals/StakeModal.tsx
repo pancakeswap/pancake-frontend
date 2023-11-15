@@ -1,5 +1,6 @@
 import { useToast } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { useBoostedPoolApr } from '@pancakeswap/pools'
 
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -31,7 +32,7 @@ const StakeModalContainer = ({
 }: Pool.StakeModalPropsType<Token>) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const boostedApr = 1.2 // TODO
+  const boostedApr = useBoostedPoolApr({ contractAddress: pool.contractAddress, chainId })
 
   const {
     sousId,

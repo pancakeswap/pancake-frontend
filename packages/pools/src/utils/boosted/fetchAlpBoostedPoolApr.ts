@@ -1,17 +1,18 @@
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/chains'
-import { getViemClients } from 'utils/viem'
-import { CONTRACT_ADDRESS } from './fetchTokenAplPrice'
+import { PublicClient } from 'viem'
+// import { getViemClients } from 'utils/viem'
 
 const WEEK = 7
 const YEAR = 365
+const CONTRACT_ADDRESS = '0xB3879E95a4B8e3eE570c232B19d520821F540E48'
 const API_URL = 'https://perp.pancakeswap.finance/bapi/futures/v1/public/future/apx/fee/info?chain=ARB'
 
-export const fetchAlpBoostedPoolApr = async () => {
-  const client = getViemClients({ chainId: ChainId.ARBITRUM_ONE })
+export const fetchAlpBoostedPoolApr = async (client: Record<ChainId, PublicClient>) => {
+  // const client = getViemClients({ chainId: ChainId.ARBITRUM_ONE })
 
   try {
-    const [totalValue] = await client.multicall({
+    const [totalValue] = await client?.multicall({
       contracts: [
         {
           abi: [
