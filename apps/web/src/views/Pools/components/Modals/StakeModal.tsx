@@ -1,6 +1,6 @@
 import { useToast } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
-import { useBoostedPoolApr } from '@pancakeswap/pools'
+import { useBoostedPoolApr } from 'views/Pools/hooks/useBoostedPoolApr'
 
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -18,6 +18,7 @@ import { tokenImageChainNameMapping } from 'components/TokenImage'
 import { usePool } from 'state/pools/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getViemClients } from 'utils/viem'
 import ZkSyncWarning from './ZkSyncWarning'
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
@@ -32,7 +33,14 @@ const StakeModalContainer = ({
 }: Pool.StakeModalPropsType<Token>) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const boostedApr = useBoostedPoolApr({ contractAddress: pool.contractAddress, chainId })
+  const client = getViemClients({ chainId })
+
+  const boostedApr = useBoostedPoolApr({
+    client,
+    chainId,
+    sousId: pool.sousId,
+    contractAddress: pool.contractAddress,
+  })
 
   const {
     sousId,
