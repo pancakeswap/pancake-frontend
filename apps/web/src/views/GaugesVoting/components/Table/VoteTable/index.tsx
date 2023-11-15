@@ -24,7 +24,7 @@ export const VoteTable = () => {
       <Card innerCardProps={{ padding: '32px' }} mt={32}>
         <TableHeader />
         <Scrollable expanded={expanded}>
-          {new Array(15).fill(0).map((i) => (
+          {new Array(1).fill(0).map((i) => (
             <TableRow key={i} />
           ))}
         </Scrollable>
