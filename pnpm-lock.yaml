@@ -1140,9 +1140,6 @@ importers:
       '@types/qs':
         specifier: ^6.0.0
         version: 6.9.10
-      typescript:
-        specifier: ^5.1.3
-        version: 5.2.2
 
   packages/chains:
     devDependencies:
@@ -1244,9 +1241,6 @@ importers:
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.201
-      typescript:
-        specifier: ^5.1.3
-        version: 5.2.2
 
   packages/hooks:
     dependencies:

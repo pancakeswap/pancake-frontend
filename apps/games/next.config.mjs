@@ -15,7 +15,6 @@ const nextConfig = {
     '@pancakeswap/utils',
     '@pancakeswap/games',
     '@pancakeswap/blog',
-    '@pancakeswap/chains',
   ],
   images: {
     contentDispositionType: 'attachment',
