@@ -20,6 +20,8 @@ import { RemainVeCakeBalance } from './components/RemainVeCakeBalance'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { WeightsPieChart } from './components/WeightsPieChart'
 import { GaugesTable, VoteTable } from './components/Table'
+import { useGaugesVoting } from './hooks/useGaugesVoting'
+import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
 
 const InlineLink = styled(LinkExternal)`
   display: inline-flex;
@@ -38,6 +40,8 @@ const StyledPageHeader = styled(PageHeader)`
 
 const GaugesVoting = () => {
   const { t } = useTranslation()
+  const totalGaugesWeight = useGaugesTotalWeight()
+  const gauges = useGaugesVoting()
   return (
     <StyledGaugesVotingPage>
       <StyledPageHeader background="transparent">
@@ -86,10 +90,10 @@ const GaugesVoting = () => {
               <Text color="secondary" textTransform="uppercase" bold ml="60px">
                 Proposed weights
               </Text>
-              <WeightsPieChart />
+              <WeightsPieChart totalGauges={Number(totalGaugesWeight)} data={gauges} />
             </div>
           </Grid>
-          <GaugesTable />
+          <GaugesTable data={gauges} totalGauges={Number(totalGaugesWeight)} />
         </Card>
         <Box mt="80px">
           <Heading as="h2" scale="xl" mb="24px">

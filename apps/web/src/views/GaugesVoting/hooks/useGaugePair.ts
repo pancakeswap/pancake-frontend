@@ -5,6 +5,8 @@ import { v3InfoClients } from 'utils/graphql'
 import { PoolData as V2PoolData } from 'state/info/types'
 import { fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
 import { MultiChainName, multiChainName } from 'state/info/constant'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 const QUERY_SETTINGS_IMMUTABLE = {
   retry: 3,
@@ -33,10 +35,12 @@ export const useV3PoolData = (address?: string, chainId?: number): V3PoolData | 
 }
 
 export const useV2PairData = (address?: string, chainId?: number): V2PoolData | undefined => {
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const { data } = useQuery(
     // @fixme support stableswap
     [`info/pool/data/${address}/swap`, chainId],
-    () => fetchAllPoolDataWithAddress([], multiChainName[chainId!] as MultiChainName, [address!]),
+    () => fetchAllPoolDataWithAddress(blocks ?? [], multiChainName[chainId!] as MultiChainName, [address!]),
     {
       enabled: Boolean(chainId) && Boolean(address),
       ...QUERY_SETTINGS_IMMUTABLE,
@@ -45,5 +49,5 @@ export const useV2PairData = (address?: string, chainId?: number): V2PoolData | 
   )
   if (!address) return undefined
   console.debug('debug poolData v2', data)
-  return data?.[address].data
+  return data?.[address]?.data
 }

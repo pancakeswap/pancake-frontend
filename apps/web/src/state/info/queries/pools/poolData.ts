@@ -190,7 +190,7 @@ export const fetchAllPoolDataWithAddress = async (
 
     const liquidityToken0 = current ? current.reserve0 : 0
     const liquidityToken1 = current ? current.reserve1 : 0
-    const timestamp = current.timestamp ?? 0
+    const timestamp = current?.timestamp ?? 0
 
     const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
       volumeUSD,
