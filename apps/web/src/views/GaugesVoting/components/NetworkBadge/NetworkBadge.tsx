@@ -13,11 +13,12 @@ const SHORT_NAME = {
   [ChainId.ARBITRUM_ONE]: 'ARB',
   [ChainId.LINEA]: 'LINEA',
   [ChainId.BASE]: 'BASE',
-  // [ChainId]: 'OPBNB',
+  [ChainId.OPBNB]: 'opBNB',
 }
 
 const NETWORK_COLOR_DEFAULT = {
   [ChainId.BSC]: '#1E1E1E',
+  [ChainId.OPBNB]: '#1E1E1E',
   [ChainId.ETHEREUM]: '#627EEA',
   [ChainId.POLYGON_ZKEVM]: 'linear-gradient(180deg, #9132D2 0%, #803DE1 100%)',
   [ChainId.ZKSYNC]: '#1E1E1E',
@@ -28,6 +29,7 @@ const NETWORK_COLOR_DEFAULT = {
 
 const NETWORK_COLOR_COLORED = {
   [ChainId.BSC]: '#F0B90B',
+  [ChainId.OPBNB]: '#1E1E1E',
   [ChainId.ETHEREUM]: '#627EEA',
   [ChainId.POLYGON_ZKEVM]: 'linear-gradient(180deg, #9132D2 0%, #803DE1 100%)',
   [ChainId.ZKSYNC]: '#3567F6',
