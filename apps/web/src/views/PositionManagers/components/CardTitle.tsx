@@ -50,7 +50,7 @@ export const CardTitle = memo(function CardTitle({
       <TokenPairLogos currencyA={displayCurrencyA} currencyB={displayCurrencyB} autoMark={autoCompound} />
       <Flex flexDirection="column" justifyContent="flex-start">
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-          <Text fontSize="1.3em" bold>
+          <Text fontSize="1.3em" bold style={{ whiteSpace: 'nowrap' }}>
             {tokenPairName}
           </Text>
           <Text ml="0.25em" fontSize="1.2em">
