@@ -1362,9 +1362,6 @@ importers:
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
-      '@pancakeswap/swap-sdk-core':
-        specifier: workspace:*
-        version: link:../swap-sdk-core
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
