@@ -137,8 +137,14 @@ const config: (
       label: t('Game'),
       icon: PancakeProtectorIcon,
       hideSubNav: true,
-      href: 'https://protectors.pancakeswap.finance',
+      href: 'https://pancakeswap.games/',
       items: [
+        {
+          label: t('Gaming Marketplace'),
+          href: 'https://pancakeswap.games/',
+          status: { text: t('New'), color: 'success' },
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
         {
           label: t('Prediction (BETA)'),
           href: '/prediction',
@@ -154,12 +160,7 @@ const config: (
           href: '/pottery',
           image: '/images/decorations/lottery.png',
         },
-        {
-          label: t('Pancake Protectors'),
-          href: 'https://protectors.pancakeswap.finance',
-          type: DropdownMenuItemType.EXTERNAL_LINK,
-        },
-      ],
+      ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
       label: t('NFT'),

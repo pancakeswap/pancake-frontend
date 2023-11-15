@@ -13,7 +13,19 @@ const nextConfig = {
     '@pancakeswap/hooks',
     '@pancakeswap/localization',
     '@pancakeswap/utils',
+    '@pancakeswap/games',
+    '@pancakeswap/blog',
   ],
+  images: {
+    contentDispositionType: 'attachment',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'assets.pancakeswap.finance',
+        pathname: '/web/**',
+      },
+    ],
+  },
   compiler: {
     styledComponents: true,
   },
