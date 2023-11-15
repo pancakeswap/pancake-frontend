@@ -97,6 +97,11 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
   const previewCarouseData: PostersItemData = useMemo(() => carouselData[carouselId], [carouselId, carouselData])
 
   const isHorizontal: boolean = useMemo(() => game.posters.layout === PostersLayout.Horizontal, [game])
+  const gameLink = useMemo(
+    () =>
+      game.id === 'pancake-protectors' && !isDesktop ? 'https://protectors.pancakeswap.finance' : `/project/${game.id}`,
+    [isDesktop, game.id],
+  )
 
   return (
     <StyledGameContainer isHorizontal={isHorizontal}>
@@ -219,11 +224,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                     )}
                   </Flex>
                 </Flex>
-                <Link
-                  width="100% !important"
-                  href={`/project/${game.id}`}
-                  mb={['32px', '32px', '32px', '32px', '32px', '49px']}
-                >
+                <Link width="100% !important" href={gameLink} mb={['32px', '32px', '32px', '32px', '32px', '49px']}>
                   <Button width="100%">
                     <Text bold color="white">
                       {t('Play Now')}
