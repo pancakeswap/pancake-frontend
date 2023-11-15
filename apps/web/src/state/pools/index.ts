@@ -49,7 +49,6 @@ import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 import { fetchTokenAplPrice } from 'utils/fetchTokenAplPrice'
-import { fetchAlpBoostedPoolApr } from 'utils/fetchAlpBoostedPoolApr'
 
 import fetchFarms from '../farms/fetchFarms'
 import { nativeStableLpMap } from '../farms/getFarmsPrices'
@@ -243,17 +242,6 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
             )
         : 0
 
-      const boostedApr = 0
-      // const boostedApr =
-      //   isBoostedPool &&
-      //   !isPoolFinished &&
-      //   !isLegacyPool(pool) &&
-      //   pool.stakingToken.chainId === ChainId.ARBITRUM_ONE &&
-      //   pool.stakingToken.address === arbitrumTokens.alp.address
-      //     ? // eslint-disable-next-line no-await-in-loop
-      //       await fetchAlpBoostedPoolApr()
-      //     : 0
-
       const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
 
       liveData.push({
@@ -263,7 +251,6 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         stakingTokenPrice,
         earningTokenPrice,
         apr,
-        boostedApr,
         isFinished: isPoolFinished,
       })
     }

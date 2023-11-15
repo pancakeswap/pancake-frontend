@@ -50,6 +50,7 @@ interface AprProps<T> extends FlexProps {
   shouldShowApr: boolean;
   account: string;
   autoCompoundFrequency: number;
+  boostedApr?: number;
 }
 
 export function Apr<T>({
@@ -61,6 +62,7 @@ export function Apr<T>({
   shouldShowApr,
   account,
   autoCompoundFrequency,
+  boostedApr,
   ...props
 }: AprProps<T>) {
   const {
@@ -86,8 +88,6 @@ export function Apr<T>({
     () => (stakingToken?.address ? `/swap?outputCurrency=${stakingToken.address}` : "/swap"),
     [stakingToken]
   );
-
-  const boostedApr = pool?.boostedApr ?? 0;
 
   const poolApr = useMemo(() => {
     const currentApr = vaultKey ? rawApr : apr;
@@ -129,6 +129,8 @@ export function Apr<T>({
     const currentApr = vaultKey ? rawApr : apr;
     return `${currentApr?.toLocaleString("en-US", { maximumFractionDigits: 2 })}%` ?? "0%";
   }, [vaultKey, rawApr, apr]);
+
+  const boostedAprGreaterThanZero = useMemo(() => new BigNumber(boostedApr ?? 0).isGreaterThan(0), [boostedApr]);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -176,7 +178,7 @@ export function Apr<T>({
           {shouldShowApr ? (
             <Flex>
               <Flex position="relative" zIndex={0} ref={targetRef}>
-                {!isFinished && boostedApr > 0 && (
+                {!isFinished && boostedAprGreaterThanZero && (
                   <>
                     {tooltipVisible && tooltip}
                     <Flex m="0 4px 0 0" flexDirection={showIcon ? ["row"] : ["column", "column", "row"]}>
@@ -188,7 +190,7 @@ export function Apr<T>({
                     </Flex>
                   </>
                 )}
-                {((isDesktop && boostedApr > 0) || boostedApr === 0 || showIcon) && (
+                {((isDesktop && boostedAprGreaterThanZero) || boostedApr === 0 || showIcon) && (
                   <BalanceWithLoading
                     onClick={(event) => {
                       if (!showIcon || isFinished) return;
@@ -196,7 +198,7 @@ export function Apr<T>({
                     }}
                     fontSize={fontSize}
                     isDisabled={isFinished}
-                    strikeThrough={boostedApr > 0}
+                    strikeThrough={boostedAprGreaterThanZero}
                     value={isFinished ? 0 : apr ?? 0}
                     decimals={2}
                     unit="%"

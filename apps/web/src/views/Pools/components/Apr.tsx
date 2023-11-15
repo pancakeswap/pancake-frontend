@@ -4,6 +4,7 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import { Token } from '@pancakeswap/sdk'
 import { useAccount } from 'wagmi'
+// import { fetchAlpBoostedPoolApr } from 'utils/fetchAlpBoostedPoolApr'
 
 const withShownApr = (AprComp) => (props) => {
   const { address: account } = useAccount()
@@ -14,11 +15,15 @@ const withShownApr = (AprComp) => (props) => {
 
   const autoCompoundFrequency = vaultPoolConfig[props.pool.vaultKey]?.autoCompoundFrequency ?? 0
 
+  const boostedApr = 1.2
+  // await fetchAlpBoostedPoolApr()
+
   return (
     <AprComp
       {...props}
       shouldShowApr={hasPoolStarted || !shouldShowBlockCountdown}
       account={account}
+      boostedApr={boostedApr}
       autoCompoundFrequency={autoCompoundFrequency}
     />
   )

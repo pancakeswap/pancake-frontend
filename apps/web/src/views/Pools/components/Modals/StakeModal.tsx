@@ -21,6 +21,10 @@ import ZkSyncWarning from './ZkSyncWarning'
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
 
+interface Props extends Pool.StakeModalPropsType<Token> {
+  boostedApr: number
+}
+
 const StakeModalContainer = ({
   isBnbPool,
   pool,
@@ -28,7 +32,8 @@ const StakeModalContainer = ({
   onDismiss,
   stakingTokenBalance,
   stakingTokenPrice,
-}: Pool.StakeModalPropsType<Token>) => {
+  boostedApr,
+}: Props) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
 
@@ -38,7 +43,6 @@ const StakeModalContainer = ({
     stakingToken,
     earningTokenPrice,
     apr,
-    boostedApr,
     userData,
     stakingLimit,
     enableEmergencyWithdraw,
