@@ -63,6 +63,7 @@ export const WeightsPieChart = () => {
       // hide tooltip
       if (tooltip.opacity === 0) {
         setTooltipVisible(false)
+        setTooltipValue(0)
         tooltipRef.current = null
         return
       }
@@ -88,7 +89,7 @@ export const WeightsPieChart = () => {
   return (
     <Box position="relative" pr="90px">
       <Center style={{ marginLeft: '-45px' }}>
-        <ChartLabel />
+        <ChartLabel total={Number(totalGaugesWeight)} value={tooltipValue} />
       </Center>
       <Absolute left={tooltipPosition.left} top={tooltipPosition.top}>
         <ChartTooltip
