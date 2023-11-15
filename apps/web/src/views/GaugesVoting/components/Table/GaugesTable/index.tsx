@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
 
@@ -12,14 +13,17 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 
 export const GaugesTable: React.FC<{
   scrollStyle?: React.CSSProperties
-}> = ({ scrollStyle }) => {
+  totalGauges: number
+  data?: GaugeVoting[]
+}> = ({ scrollStyle, data, totalGauges }) => {
   const [expanded, setExpanded] = useState(false)
+  console.debug('debug table', data)
   return (
     <>
       <TableHeader />
       <Scrollable expanded={expanded} style={scrollStyle}>
-        {new Array(15).fill(0).map((i) => (
-          <TableRow key={i} />
+        {data?.map((row) => (
+          <TableRow key={row.hash} data={row} totalGauges={totalGauges} />
         ))}
       </Scrollable>
       <ExpandRow onCollapse={() => setExpanded(!expanded)} />

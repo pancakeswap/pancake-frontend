@@ -1,11 +1,11 @@
 import { Box } from '@pancakeswap/uikit'
 import type { ChartData, ChartDataset, TooltipModel } from 'chart.js'
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import styled from 'styled-components'
 import { useGaugesTotalWeight } from '../hooks/useGaugesTotalWeight'
-import { GaugeVoting, useGaugesVoting } from '../hooks/useGaugesVoting'
+import { GaugeVoting } from '../hooks/useGaugesVoting'
 import { ChartLabel } from './ChartLabel'
 import { ChartTooltip } from './ChartTooltip'
 
@@ -34,26 +34,27 @@ export const chartDataOption: ChartDataset<'doughnut', number[]> = {
   spacing: 20,
   borderWidth: 0,
 }
-export const WeightsPieChart = () => {
-  const gauges = useGaugesVoting()
-  const totalGaugesWeight = useGaugesTotalWeight()
+export const WeightsPieChart: React.FC<{
+  data?: GaugeVoting[]
+  totalGauges: number
+}> = ({ data, totalGauges }) => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
   const [selectedGauge, setSelectedGauge] = useState<GaugeVoting>()
   const [color, setColor] = useState<string>('')
 
-  const data = useMemo<ChartData<'doughnut'>>(() => {
+  const gauges = useMemo<ChartData<'doughnut'>>(() => {
     return {
-      labels: gauges?.map((gauge) => gauge.hash) ?? [],
+      labels: data?.map((gauge) => gauge.hash) ?? [],
       datasets: [
         {
           ...chartDataOption,
-          data: gauges?.map((gauge) => gauge.weight) ?? [],
+          data: data?.map((gauge) => gauge.weight) ?? [],
         },
       ],
     }
-  }, [gauges])
+  }, [data])
 
   const externalTooltipHandler = useCallback(
     ({ tooltip }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
@@ -74,7 +75,7 @@ export const WeightsPieChart = () => {
 
       // set tooltip visible
       tooltipRef.current = `${tooltip.x},${tooltip.y}`
-      setSelectedGauge(gauges?.find((gauge) => gauge.hash === tooltip.title[0]))
+      setSelectedGauge(data?.find((gauge) => gauge.hash === tooltip.title[0]))
       setColor(tooltip.labelColors[0].backgroundColor as string)
       setTooltipVisible(true)
       setTooltipPosition({
@@ -84,20 +85,20 @@ export const WeightsPieChart = () => {
         top: tooltip.y + 20,
       })
     },
-    [gauges],
+    [data],
   )
   return (
     <Box position="relative" pr="90px">
       <Center style={{ marginLeft: '-45px' }}>
-        <ChartLabel total={Number(totalGaugesWeight)} gauge={selectedGauge} />
+        <ChartLabel total={totalGauges} gauge={selectedGauge} />
       </Center>
       <Absolute left={tooltipPosition.left} top={tooltipPosition.top}>
         <ChartTooltip
           visible={tooltipVisible}
-          total={Number(totalGaugesWeight)}
+          total={totalGauges}
           color={color}
           gauge={selectedGauge}
-          allGauges={gauges}
+          allGauges={data}
         />
       </Absolute>
       <Doughnut
@@ -105,7 +106,7 @@ export const WeightsPieChart = () => {
           marginTop: '-120px',
           marginBottom: '-120px',
         }}
-        data={data}
+        data={gauges}
         options={{
           cutout: '80%',
           radius: '50%',
