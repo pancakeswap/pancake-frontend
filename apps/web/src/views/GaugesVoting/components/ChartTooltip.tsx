@@ -1,6 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
+import { Percent } from '@pancakeswap/swap-sdk-core'
 import { USDC } from '@pancakeswap/tokens'
 import { Flex, Text } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { zeroAddress } from 'viem'
 import { TripleLogo } from './TripleLogo'
@@ -28,31 +30,51 @@ const Content = styled.div`
 
 const Tooltip = styled.div.withConfig({ shouldForwardProp: (prop) => prop !== 'string' })<{ color?: string }>`
   display: inline-flex;
-  pointer-events: none;
 
   ${Indicator} {
+    transition: all 0.25s ease-in-out;
     border-color: ${({ color }) => color || '#8051d6'};
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%),
       ${({ color }) => color || '#8051d6'};
   }
 
   ${Content} {
+    transition: border-color 0.25s ease-in-out;
     border-color: ${({ color }) => color || '#8051d6'};
   }
 `
 
 export const ChartTooltip: React.FC<{
   color: string
-}> = ({ color }) => {
+  visible: boolean
+  value?: number
+  total?: number
+  gauges?: bigint[]
+}> = ({ color, gauges, value, visible, total }) => {
+  const sortedGauges = useMemo(() => {
+    return gauges?.sort((a, b) => (a > b ? 1 : -1))
+  }, [gauges])
+  const sort = useMemo(() => {
+    if (!value) return '0'
+    const index = sortedGauges?.indexOf(BigInt(value)) ?? 0
+    if (index < 10) return `0${index + 1}`
+    return index
+  }, [sortedGauges, value])
+  const percent = useMemo(() => {
+    console.debug('debug, total', total)
+    return new Percent(value ?? 0, total || 1).toFixed(2)
+  }, [value, total])
+
+  if (!visible) return null
+
   return (
     <Tooltip color={color}>
       <Indicator>
         <Text color="white" mb="4px">
-          {' '}
-          #01{' '}
+          #{sort}{' '}
         </Text>
         <Text color="white" fontSize={18} bold>
-          8.54%
+          {percent}%
         </Text>
       </Indicator>
       <Content>
