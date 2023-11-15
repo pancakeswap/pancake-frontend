@@ -56,7 +56,7 @@ export const WeightsPieChart = () => {
   }, [gauges])
 
   const externalTooltipHandler = useCallback(
-    ({ tooltip, chart }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
+    ({ tooltip }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
       console.debug('debug tooltip', tooltip)
       console.debug('debug tooltip opacity', tooltip.opacity)
       console.debug('debug tooltip title', tooltip.title)

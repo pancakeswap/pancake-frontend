@@ -40,7 +40,6 @@ export const useWriteWithApproveCallback = () => {
         if (approvalState === ApprovalState.APPROVED) {
           await write()
           resetData()
-          return
         }
       } catch (error) {
         console.error(error)

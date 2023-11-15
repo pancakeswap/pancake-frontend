@@ -35,7 +35,7 @@ export const TableRow = () => {
         <Text>10 veCAKE</Text>
       </Flex>
       <Flex>
-        <PercentInput value={99} onUserInput={console.log} />
+        <PercentInput value={99} onUserInput={console.debug} />
       </Flex>
     </TRow>
   )
