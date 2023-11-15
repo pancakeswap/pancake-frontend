@@ -43,6 +43,8 @@ debug.log*
 **/packages/smart-router/evm/abis/types
 **/packages/pools/src/abis/types
 
+vite.config.ts.timestamp-*.mjs
+
 # Sentry
 .sentryclirc
 
