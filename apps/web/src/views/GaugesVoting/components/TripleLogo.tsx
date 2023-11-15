@@ -19,11 +19,6 @@ export const TripleLogo: React.FC<{
   address1?: Address
   chainId?: number
 }> = ({ address0, address1, chainId }) => {
-  console.debug('debug', {
-    address0: safeGetAddress(address0),
-    address1: safeGetAddress(address1),
-    chainId,
-  })
   const currency0 = useMemo(() => {
     return chainId && safeGetAddress(address0) ? new Token(chainId, safeGetAddress(address0)!, 18, '') : undefined
   }, [address0, chainId])
