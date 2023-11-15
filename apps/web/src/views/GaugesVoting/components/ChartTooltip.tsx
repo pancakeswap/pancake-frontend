@@ -3,9 +3,10 @@ import { Flex, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Address } from 'viem'
-import { TripleLogo } from './TripleLogo'
-import { GaugeVoting } from '../hooks/useGaugesVoting'
+import { feeTierPercent } from 'views/V3Info/utils'
 import { useV2PairData, useV3PoolData } from '../hooks/useGaugePair'
+import { GaugeVoting } from '../hooks/useGaugesVoting'
+import { TripleLogo } from './TripleLogo'
 
 const Indicator = styled.div`
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), #8051d6;
@@ -114,14 +115,19 @@ export const ChartTooltip: React.FC<{
             {pairName}
           </Text>
           <Flex alignItems="center">
+            {v3PoolData?.feeTier ? (
+              <>
+                <Text fontSize={12} color="textSubtle">
+                  {feeTierPercent(v3PoolData?.feeTier)}
+                </Text>
+                <Text color="rgba(40, 13, 95, 0.20)" mx="6px">
+                  |
+                </Text>
+              </>
+            ) : null}
             <Text fontSize={12} color="textSubtle">
-              0.25%
-            </Text>
-            <Text color="rgba(40, 13, 95, 0.20)" mx="6px">
-              |
-            </Text>
-            <Text fontSize={12} color="textSubtle">
-              V3
+              {/* @fixme @ChefJerry use query result type */}
+              {v3PoolData ? 'V3' : 'V2'}
             </Text>
           </Flex>
         </Flex>
