@@ -11,7 +11,7 @@ export const ChartLabel: React.FC<{
 }> = ({ total = 1, gauge }) => {
   const { t } = useTranslation()
   const percent = useMemo(() => {
-    return new Percent(gauge?.weight ?? 0, total).toFixed(2)
+    return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
   }, [total, gauge])
   return (
     <AutoColumn alignItems="center" justifyContent="center" textAlign="center">
