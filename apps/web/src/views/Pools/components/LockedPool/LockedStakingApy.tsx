@@ -19,6 +19,7 @@ import { LockedStakingApyPropsType } from './types'
 import LockedAprTooltipContent from './Common/LockedAprTooltipContent'
 import AutoEarningsBreakdown from '../AutoEarningsBreakdown'
 import LockedStaking from './LockedStaking'
+import { VeCakeMigrateCard } from 'views/CakeStaking/components/SyrupPool'
 
 interface LockedStakingApyProps extends LockedStakingApyPropsType {
   showICake?: boolean
@@ -76,8 +77,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
   return (
     <LightGreyCard>
       <LockedStaking pool={pool} userData={userData} />
-      <Divider />
-      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
+      {/* {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
         <Flex alignItems="center" justifyContent="space-between">
           {tooltipVisible && tooltip}
           <TooltipText>
@@ -87,9 +87,9 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
           </TooltipText>
           <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
         </Flex>
-      )}
+      )} */}
       <LockDurationRow weekDuration={weekDuration} />
-      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
+      {/* {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
         <YieldBoostRow secondDuration={secondDuration} />
       )}
       <Flex alignItems="center" justifyContent="space-between">
@@ -129,7 +129,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
         </Text>
         <BalanceWithLoading color="text" bold fontSize="16px" value={originalLockedAmount} decimals={2} />
       </Flex>
-      {showICake && <IfoCakeRow />}
+      {showICake && <IfoCakeRow />} */}
     </LightGreyCard>
   )
 }

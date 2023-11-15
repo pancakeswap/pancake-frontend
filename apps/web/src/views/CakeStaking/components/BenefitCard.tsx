@@ -13,7 +13,7 @@ type BenefitItem = {
   link?: string
 }
 
-const BENEFITS: Record<BenefitCardType, BenefitItem> = {
+export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
   earnCake: {
     headImg: '/images/cake-staking/benefit-earn-cake.png',
     title: 'Earn CAKE',

@@ -1,36 +1,37 @@
 import {
   Box,
+  Button,
   CardBody,
   CardProps,
-  Button,
   Flex,
-  Text,
-  TokenPairImage,
   FlexGap,
   Skeleton,
+  Text,
+  TokenPairImage,
   useModal,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
-import { useAccount } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
+import { DeserializedCakeVault, DeserializedLockedCakeVault, VaultKey } from 'state/types'
 import { styled } from 'styled-components'
-import { Token } from '@pancakeswap/sdk'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import BenefitsModal from 'views/Pools/components/RevenueSharing/BenefitsModal'
-import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import useVCake from 'views/Pools/hooks/useVCake'
+import { useAccount } from 'wagmi'
 
+import { VeCakeCard, VeCakeUpdateCard } from 'views/CakeStaking/components/SyrupPool'
+import LockedStakingApy from '../LockedPool/LockedStakingApy'
 import CardFooter from '../PoolCard/CardFooter'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
-import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
 import { StakingApy } from './StakingApy'
+import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 import VaultCardActions from './VaultCardActions'
-import LockedStakingApy from '../LockedPool/LockedStakingApy'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
@@ -84,6 +85,8 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
   return (
     <>
       <StyledCardBody isLoading={isLoading}>
+        {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCard />}
+
         {account && pool.vaultKey === VaultKey.CakeVault && (
           <VaultPositionTagWithLabel userData={(vaultPool as DeserializedLockedCakeVault)?.userData} />
         )}
@@ -103,8 +106,9 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
           </>
         ) : (
           <>
-            <StakingApy pool={pool} />
-            <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
+            <VeCakeCard />
+            {/* <StakingApy pool={pool} /> */}
+            {/* <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
               <Box>
                 {account && (
                   <Box mb="8px">
@@ -130,11 +134,13 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
                   </>
                 )}
               </Flex>
-            </FlexGap>
+            </FlexGap> */}
           </>
         )}
       </StyledCardBody>
-      <CardFooter isLocked={isLocked} defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
+      {account && (
+        <CardFooter isLocked={isLocked} defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
+      )}
     </>
   )
 }
