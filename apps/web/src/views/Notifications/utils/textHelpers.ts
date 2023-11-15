@@ -32,8 +32,8 @@ export const getSettingsButtonText = (isUnsubscribing: boolean, objectsAreEqual:
 }
 
 export const removeTokensFromAPRString = (aprString: string): string => {
-  const removedString = aprString.replace(/-.*$/, '')
-  return removedString
+  if (aprString.includes('LP position')) return aprString.replace(/-1:.*$/, '')
+  return aprString.replace(/-.*$/, '')
 }
 
 export const extractPercentageFromString = (inputString: string): number | null => {
@@ -42,12 +42,14 @@ export const extractPercentageFromString = (inputString: string): number | null 
   return null
 }
 
-export const extractTokensFromAPRString = (aprString: string): { token1: string; token2: string } => {
-  const match = aprString.match(/-(.*):(.*)$/)
-  if (!match) return { token1: '', token2: '' }
+export const extractTokensFromAPRString = (aprString: string): { token1: string; token2: string; chainId: number } => {
+  const regex = /-([^:]+):([^:]+):(\d+)/
+  const match = aprString.match(regex)
+  if (!match) return { token1: '', token2: '', chainId: 56 }
   const token1 = match[1]
   const token2 = match[2]
-  return { token1, token2 }
+  const chain = parseInt(match[3], 10)
+  return { token1, token2, chainId: chain }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow

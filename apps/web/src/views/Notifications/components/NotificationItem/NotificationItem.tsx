@@ -1,6 +1,20 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
+import {
+  arbitrumTokens,
+  baseTokens,
+  bscTestnetTokens,
+  bscTokens,
+  ethereumTokens,
+  goerliTestnetTokens,
+  lineaTokens,
+  polygonZkEvmTokens,
+  zksyncTokens,
+} from '@pancakeswap/tokens'
 import { ArrowDropDownIcon, Box, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Text } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
+import { CurrencyLogo } from 'components/Logo'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -48,6 +62,30 @@ const BottomRow = ({ show }: { show: boolean }) => {
   )
 }
 
+const tokensSet = {
+  [ChainId.BSC]: bscTokens,
+  [ChainId.ETHEREUM]: ethereumTokens,
+  [ChainId.GOERLI]: goerliTestnetTokens,
+  [ChainId.BSC_TESTNET]: bscTestnetTokens,
+  [ChainId.POLYGON_ZKEVM]: polygonZkEvmTokens,
+  [ChainId.ZKSYNC]: zksyncTokens,
+  [ChainId.ARBITRUM_ONE]: arbitrumTokens,
+  [ChainId.LINEA]: lineaTokens,
+  [ChainId.BASE]: baseTokens,
+}
+export const tokenImageChainNameMapping = {
+  [ChainId.BSC]: '',
+  [ChainId.ETHEREUM]: 'eth/',
+  [ChainId.POLYGON_ZKEVM]: 'polygon-zkevm/',
+  [ChainId.ZKSYNC]: 'zksync/',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum/',
+  [ChainId.LINEA]: 'linea/',
+  [ChainId.BASE]: 'base/',
+}
+
+const getImageUrlFromToken = (chainId: number, address: string) => {
+  return `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[chainId]}${address}.png`
+}
 const NotificationImage = ({
   image,
   title,
@@ -58,19 +96,33 @@ const NotificationImage = ({
   message: string
 }) => {
   if (title.includes('APR Update')) {
-    const { token1, token2 } = extractTokensFromAPRString(message)
-    let baseUrl
-    if (message.includes('base')) baseUrl = `https://tokens.pancakeswap.finance/images/base/`
-    if (message.includes('arbitrum')) baseUrl = `https://tokens.pancakeswap.finance/images/arbitrum/`
-    else baseUrl = `https://tokens.pancakeswap.finance/images/`
+    const { token1, token2, chainId } = extractTokensFromAPRString(message)
+    const baseUrl0 = getImageUrlFromToken(chainId, token1)
+    const baseUrl1 = getImageUrlFromToken(chainId, token2)
+    console.log(token1, token2)
+
     return (
       <Box position="relative" minWidth="40px" minHeight="40px">
         <Box marginRight="8px" position="absolute" top={0} left={0}>
-          <Image src={`${baseUrl}${token1}.png`} alt="apr img" height={24} width={24} unoptimized />
+          <Image src={baseUrl0} alt="apr img" height={28} width={28} unoptimized />
         </Box>
         <Box marginRight="8px" position="absolute" bottom={0} right={0}>
-          <Image src={`${baseUrl}${token2}.png`} alt="apr img" height={28} width={28} unoptimized />
+          <Image src={baseUrl1} alt="apr img" height={24} width={24} unoptimized />
         </Box>
+      </Box>
+    )
+  }
+  if (title.includes('LP position')) {
+    const { chainId } = extractTokensFromAPRString(message)
+    return (
+      <Box marginRight="8px" paddingY="4px" minWidth="40px">
+        <Image
+          src={`${ASSET_CDN}/web/native/${chainId}.png`}
+          alt="Notification Image"
+          height={40}
+          width={40}
+          unoptimized
+        />
       </Box>
     )
   }
