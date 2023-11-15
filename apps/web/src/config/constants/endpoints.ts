@@ -14,6 +14,8 @@ export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancak
 export const ONRAMP_API_BASE_URL = 'https://pcs-on-ramp-api.com'
 export const TRANSAK_API_BASE_URL = 'https://api-stg.transak.com/api/v1'
 export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
+// @todo @ChefJerry replace with production endpoint
+export const GRAPH_API_GAUGES = 'https://api.thegraph.com/subgraphs/name/chef-huan/gauge-voting-chapel'
 /**
  * V1 will be deprecated but is still used to claim old rounds
  */
