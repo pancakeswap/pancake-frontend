@@ -271,4 +271,7 @@ export default {
   gaugesVoting: {
     [ChainId.BSC_TESTNET]: '0xc2206a6aF51FD9ee574d017F62c0F820Ccaa2Ea2',
   },
+  revenueSharingPoolForCake: {
+    [ChainId.BSC_TESTNET]: '0x881Ed694980A03EE653508aeb9EF3ffD9f56aC99',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
