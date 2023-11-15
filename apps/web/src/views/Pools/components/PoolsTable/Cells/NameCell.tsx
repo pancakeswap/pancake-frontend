@@ -12,7 +12,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
 
-const { BoostedTag } = FarmWidget.Tags
+const { AlpBoostedTag } = FarmWidget.Tags
 
 interface NameCellProps {
   pool: Pool.DeserializedPool<Token>
@@ -106,7 +106,7 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
             )}
             {!isMobile && pool?.isBoostedPool && (
               <Box width="fit-content" mt="4px">
-                <BoostedTag scale="sm" />
+                <AlpBoostedTag scale="sm" />
               </Box>
             )}
           </Pool.CellContent>

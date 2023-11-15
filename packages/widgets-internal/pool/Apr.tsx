@@ -16,7 +16,7 @@ import {
   BalanceWithLoading,
   useModal,
   Flex,
-  RocketIcon,
+  AlpIcon,
   useMatchBreakpoints,
   useTooltip,
 } from "@pancakeswap/uikit";
@@ -32,6 +32,13 @@ const AprLabelContainer = styled(Flex)<{ enableHover: boolean }>`
           }
         `
       : null}
+`;
+
+const GradientText = styled(Text)`
+  background-clip: text;
+  background: linear-gradient(115deg, #c040fc -17.9%, #4b3cff 100.68%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
 interface AprProps<T> extends FlexProps {
@@ -173,11 +180,11 @@ export function Apr<T>({
                   <>
                     {tooltipVisible && tooltip}
                     <Flex m="0 4px 0 0" flexDirection={showIcon ? ["row"] : ["column", "column", "row"]}>
-                      {isDesktop && <RocketIcon color="success" />}
-                      <Text fontSize={fontSize} color="success" bold mr="2px">
+                      {isDesktop && <AlpIcon m="-4px 3px 0 0" />}
+                      <GradientText fontSize={fontSize} bold mr="2px">
                         {t("Up to")}
-                      </Text>
-                      <Balance fontSize={fontSize} bold unit="%" color="success" decimals={2} value={poolApr} />
+                      </GradientText>
+                      <Balance fontSize={fontSize} bold unit="%" color="#4B3CFF" decimals={2} value={poolApr} />
                     </Flex>
                   </>
                 )}
