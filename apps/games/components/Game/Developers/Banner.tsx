@@ -71,7 +71,7 @@ export const Banner = () => {
       background={theme.colors.gradientBubblegum}
     >
       <Decorations>
-        <img src={`${ASSET_CDN}/web/game/developers/piezas-1.png`} width="66.5px" height="72px" alt="piezas1" />
+        <Image src={`${ASSET_CDN}/web/game/developers/piezas-1.png`} width="66.5" height="72" alt="piezas1" />
       </Decorations>
       <Flex
         position="relative"
@@ -123,7 +123,7 @@ export const Banner = () => {
             <Link external href="https://t.me/ChefMochi">
               <Button>{t('Start Building')}</Button>
             </Link>
-            <Link external href="https://t.me/ChefMochi">
+            <Link external href="https://docs.pancakeswap.finance/products/gaming-platform">
               <Button ml="12px" variant="secondary">
                 {`${t('Learn More')}`}
               </Button>
