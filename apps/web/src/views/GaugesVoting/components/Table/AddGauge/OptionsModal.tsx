@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import {
   AutoRow,
-  Box,
+  Button,
   Checkbox,
   FlexGap,
   GroupsIcon,
@@ -22,6 +22,7 @@ import { NetworkBadge } from '../../NetworkBadge'
 const Label = styled.label`
   cursor: pointer;
   padding: 8px 32px;
+  padding-right: 42px;
   margin: 0 -32px;
   transition: background-color 200ms ease-in-out;
 
@@ -38,7 +39,11 @@ export enum OptionsType {
 
 export const GAUGES_TYPE = ['Regular Gauges', 'Boosted Gauges', 'Capped Gauges'] as const
 
-export type GaugesType = keyof typeof GAUGES_TYPE
+const enum Gauges {
+  Regular = 'Regular Gauges',
+  Boosted = 'Boosted Gauges',
+  Capped = 'Capped Gauges',
+}
 
 const GaugesIcon = {
   [GAUGES_TYPE[0]]: <VoteIcon color="textSubtle" />,
@@ -68,7 +73,7 @@ const OPTIONS = {
   [OptionsType.ByType]: {
     key: OptionsType.ByType,
     title: <Trans>Filter By Type</Trans>,
-    options: GAUGES_TYPE,
+    options: [Gauges.Regular, Gauges.Boosted, Gauges.Capped] as Gauges[],
   },
 }
 
@@ -108,9 +113,9 @@ const ByFeeTierOption: React.FC<{
 }
 
 const ByTypeOption: React.FC<{
-  option: GaugesType
+  option: Gauges
   checked: boolean
-  onChange: (type: GaugesType) => void
+  onChange: (type: Gauges) => void
 }> = ({ checked, option, onChange }) => {
   const id = `option-by-fee-tier-${String(option)}`
   const { t } = useTranslation()
@@ -133,9 +138,9 @@ const ByTypeOption: React.FC<{
 
 const Option: React.FC<{
   type: OptionsType
-  option: GaugesType | ChainId | FeeAmount
+  option: Gauges | ChainId | FeeAmount
   checked: boolean
-  onChange: (type: OptionsType, value: GaugesType | ChainId | FeeAmount) => void
+  onChange: (type: OptionsType, value: Gauges | ChainId | FeeAmount) => void
 }> = ({ type, option, checked, onChange }) => {
   switch (type) {
     case OptionsType.ByChain:
@@ -158,7 +163,7 @@ const Option: React.FC<{
       return (
         <ByTypeOption
           checked={checked}
-          option={option as GaugesType}
+          option={option as Gauges}
           onChange={(value) => onChange(OptionsType.ByType, value)}
         />
       )
@@ -170,16 +175,19 @@ const Option: React.FC<{
 export type Filter = {
   [OptionsType.ByChain]: ChainId[]
   [OptionsType.ByFeeTier]: FeeAmount[]
-  [OptionsType.ByType]: GaugesType[]
+  [OptionsType.ByType]: Gauges[]
 }
+
+export type FilterValue = Gauges[] | ChainId[] | FeeAmount[] | Gauges | ChainId | FeeAmount
 
 export const OptionsModal: React.FC<{
   isOpen: boolean
   onDismiss: () => void
   type: OptionsType | null
   options: Filter
-  onChange: (type: OptionsType, value: GaugesType | ChainId | FeeAmount) => void
+  onChange: (type: OptionsType, value: FilterValue) => void
 }> = ({ isOpen, type, onDismiss, options, onChange }) => {
+  const { t } = useTranslation()
   if (!type) return null
   const allChecks = options[type] as Array<unknown>
 
@@ -191,6 +199,14 @@ export const OptionsModal: React.FC<{
             const checked = allChecks.includes(option)
             return <Option type={type} key={OPTIONS[type].key} option={option} checked={checked} onChange={onChange} />
           })}
+          <Button
+            variant="text"
+            onClick={() => {
+              onChange(type, OPTIONS[type].options)
+            }}
+          >
+            {t('Select All')}
+          </Button>
         </FlexGap>
       </Modal>
     </ModalV2>
