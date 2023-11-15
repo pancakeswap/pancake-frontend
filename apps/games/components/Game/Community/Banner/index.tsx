@@ -139,7 +139,10 @@ export const Banner = () => {
                 >
                   {games.map((game) => (
                     <SwiperSlide key={game.id}>
-                      <NextLink passHref href={`/project/${game.id}`}>
+                      <NextLink
+                        passHref
+                        href={`https://games-git-pan-2039-game-landing-page.pancake.run/project/${game.id}`}
+                      >
                         <GameCard game={game} />
                       </NextLink>
                     </SwiperSlide>

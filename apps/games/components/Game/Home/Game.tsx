@@ -221,7 +221,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                 </Flex>
                 <Link
                   width="100% !important"
-                  href={`/project/${game.id}`}
+                  href={`https://games-git-pan-2039-game-landing-page.pancake.run/project/${game.id}`}
                   mb={['32px', '32px', '32px', '32px', '32px', '49px']}
                 >
                   <Button width="100%">
