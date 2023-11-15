@@ -25,6 +25,7 @@ interface StakedAssetsProps {
   staked1Amount?: CurrencyAmount<Currency>
   token0PriceUSD?: number
   token1PriceUSD?: number
+  isSingleDepositToken?: boolean
   isSingleDepositToken0?: boolean
   price?: Price<Currency, Currency>
   onAdd?: () => void
@@ -41,6 +42,7 @@ export const StakedAssets = memo(function StakedAssets({
   token0PriceUSD,
   token1PriceUSD,
   isSingleDepositToken0,
+  isSingleDepositToken,
 }: StakedAssetsProps) {
   const { t } = useTranslation()
 
@@ -72,9 +74,11 @@ export const StakedAssets = memo(function StakedAssets({
           <Text color="text" fontSize="1.5em" bold>
             ~${totalAssetsInUsd.toFixed(2)}
           </Text>
-          <Text color="textSubtle" fontSize="0.75em">
-            (~{totalAssetInSingleDepositTokenAmount.toFixed(6)} {singleDepositSymbol})
-          </Text>
+          {isSingleDepositToken && (
+            <Text color="textSubtle" fontSize="0.75em">
+              (~{totalAssetInSingleDepositTokenAmount.toFixed(6)} {singleDepositSymbol})
+            </Text>
+          )}
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end">
           <ActionButton scale="md" onClick={onRemove}>
