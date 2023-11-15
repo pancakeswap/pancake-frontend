@@ -26,7 +26,6 @@ export interface LegacyPoolConfigBaseProps {
   tokenPerBlock: string
   isFinished?: boolean
   boostedApr?: number
-  isBoostedPool?: boolean
   enableEmergencyWithdraw?: boolean
   version?: number
 }
@@ -38,7 +37,6 @@ export interface PoolConfigBaseProps {
   tokenPerSecond: string
   isFinished?: boolean
   boostedApr?: number
-  isBoostedPool?: boolean
   enableEmergencyWithdraw?: boolean
 }
 
