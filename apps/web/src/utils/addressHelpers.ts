@@ -164,3 +164,7 @@ export const getVeCakeAddress = (chainId?: number) => {
 export const getGaugesVotingAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.gaugesVoting, chainId)
 }
+
+export const getRevenueSharingPoolForCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.revenueSharingPoolForCake, chainId)
+}

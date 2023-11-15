@@ -24,7 +24,6 @@ import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { formatTime } from 'utils/formatTime'
-import { stringify } from 'viem'
 import { CakeLockStatus } from 'views/CakeStaking/types'
 import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
 
@@ -73,7 +72,6 @@ const LockedInfo = () => {
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
   const { cakeLockedAmount, cakeUnlockTime } = useCakeLockStatus()
-  const status = useCakeLockStatus()
   const cakeLocked = useMemo(() => Number(formatBigInt(cakeLockedAmount, 18)), [cakeLockedAmount])
   const cakeLockedUsdValue: number = useMemo(() => {
     return cakePrice.times(cakeLocked).toNumber()
@@ -86,9 +84,6 @@ const LockedInfo = () => {
 
   return (
     <FlexGap flexDirection="column" gap="24px" margin={24}>
-      <pre>
-        <code>{stringify(status, null, 2)}</code>
-      </pre>
       {needMigrate ? (
         <RowBetween>
           <Text color="textSubtle" bold fontSize={12} textTransform="uppercase">
