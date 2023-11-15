@@ -56,35 +56,35 @@ import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
 
 export const initialPoolVaultState = Object.freeze({
-  totalShares: '0',
-  totalLockedAmount: '0',
-  pricePerFullShare: '0',
-  totalCakeInVault: '0',
+  totalShares: null,
+  totalLockedAmount: null,
+  pricePerFullShare: null,
+  totalCakeInVault: null,
   fees: {
-    performanceFee: 0,
-    withdrawalFee: 0,
-    withdrawalFeePeriod: 0,
+    performanceFee: null,
+    withdrawalFee: null,
+    withdrawalFeePeriod: null,
   },
   userData: {
     isLoading: true,
-    userShares: '0',
-    cakeAtLastUserAction: '0',
-    lastDepositedTime: '0',
-    lastUserActionTime: '0',
-    credit: '0',
+    userShares: null,
+    cakeAtLastUserAction: null,
+    lastDepositedTime: null,
+    lastUserActionTime: null,
+    credit: null,
     locked: false,
-    lockStartTime: '0',
-    lockEndTime: '0',
-    userBoostedShare: '0',
-    lockedAmount: '0',
-    currentOverdueFee: '0',
-    currentPerformanceFee: '0',
+    lockStartTime: null,
+    lockEndTime: null,
+    userBoostedShare: null,
+    lockedAmount: null,
+    currentOverdueFee: null,
+    currentPerformanceFee: null,
   },
 })
 
 export const initialIfoState = Object.freeze({
-  credit: '0',
-  ceiling: '0',
+  credit: null,
+  ceiling: null,
 })
 
 const initialState: PoolsState = {
@@ -298,7 +298,11 @@ export const fetchPoolsUserDataAsync = createAsyncThunk<
     account: string
     chainId: ChainId
   }
+<<<<<<< HEAD
 >('pool/fetchPoolsUserData', async ({ account, chainId }: any, { rejectWithValue }: any) => {
+=======
+>('pool/fetchPoolsUserData', async ({ account, chainId }, { rejectWithValue }) => {
+>>>>>>> bbcaccaff (revert: Pool state change)
   try {
     const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
       fetchPoolsAllowance({ account, chainId, provider: getViemClients }),
@@ -550,10 +554,7 @@ export const PoolsSlice = createSlice({
         const index = state.data.findIndex((p) => p.sousId === sousId)
 
         if (index >= 0) {
-          state.data[index] = {
-            ...state.data[index],
-            userData: { ...state.data[index].userData, [field]: value } as any,
-          }
+          state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
         }
       },
     )

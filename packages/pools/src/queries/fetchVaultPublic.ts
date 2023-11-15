@@ -76,10 +76,10 @@ export const fetchPublicVaultData = async ({
     }
   } catch (error) {
     return {
-      totalShares: '0',
-      totalLockedAmount: '0',
-      pricePerFullShare: '0',
-      totalCakeInVault: '0',
+      totalShares: null,
+      totalLockedAmount: null,
+      pricePerFullShare: null,
+      totalCakeInVault: null,
     }
   }
 }
@@ -124,9 +124,9 @@ export const fetchPublicFlexibleSideVaultData = async ({
     }
   } catch (error) {
     return {
-      totalShares: '0',
-      pricePerFullShare: '0',
-      totalCakeInVault: '0',
+      totalShares: null,
+      pricePerFullShare: null,
+      totalCakeInVault: null,
     }
   }
 }
@@ -167,9 +167,9 @@ export const fetchVaultFees = async ({
     }
   } catch (error) {
     return {
-      performanceFee: 0,
-      withdrawalFee: 0,
-      withdrawalFeePeriod: 0,
+      performanceFee: null,
+      withdrawalFee: null,
+      withdrawalFeePeriod: null,
     }
   }
 }
