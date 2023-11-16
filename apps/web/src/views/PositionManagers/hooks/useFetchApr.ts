@@ -41,7 +41,7 @@ export const useFetchApr = (): AprData => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            avgFeeCalculationDays: '1',
+            avgFeeCalculationDays: 1,
           }),
         })
 
@@ -69,7 +69,7 @@ export const useFetchApr = (): AprData => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            avgFeeCalculationDays: '0',
+            avgFeeCalculationDays: 0,
           }),
         })
 
@@ -86,5 +86,6 @@ export const useFetchApr = (): AprData => {
     },
   )
 
+  console.log(fallbackData, 'fallbackData????')
   return { data: data ?? [], isLoading: isLoading || isFallbackLoading, refetch, fallbackData: fallbackData ?? [] }
 }
