@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { ifosConfig } from 'config/constants'
 import { styled, keyframes, css } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
-import { PoolIds } from 'config/constants/types'
+import { PoolIds } from '@pancakeswap/ifos'
+import { useIfoConfigAcrossChainsById } from 'hooks/useIfoConfig'
+
 import Info from './Info'
 
 const expandAnimation = keyframes`
@@ -15,14 +16,14 @@ const expandAnimation = keyframes`
   }
   to {
     opacity: 1;
-    max-height: 484px;
+    max-height: 548px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
     opacity: 1;
-    max-height: 484px;
+    max-height: 548px;
   }
   to {
     opacity: 0;
@@ -42,7 +43,7 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
       : css`
           ${collapseAnimation} 300ms linear forwards
         `};
-  overflow: hidden;
+  overflow: ${({ expanded }) => (expanded ? 'auto' : 'hidden')};
   margin: 0 -24px;
   padding: 24px;
   background: ${({ theme }) => theme.colors.dropdown};
@@ -52,12 +53,19 @@ interface ExpandProps {
   data: VestingData
   expanded: boolean
   fetchUserVestingData: () => void
+  ifoBasicSaleType?: number
 }
 
-const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({ data, expanded, fetchUserVestingData }) => {
+const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({
+  data,
+  expanded,
+  fetchUserVestingData,
+  ifoBasicSaleType,
+}) => {
   const { t } = useTranslation()
   const { id, token } = data.ifo
-  const ifoIsActive = useMemo(() => ifosConfig.find((ifo) => ifo.isActive && ifo.id === id), [id])
+  const ifoConfig = useIfoConfigAcrossChainsById(id)
+  const ifoIsActive = useMemo(() => ifoConfig?.isActive, [ifoConfig])
   const router = useRouter()
 
   const handleViewIfo = () => {
@@ -67,7 +75,12 @@ const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({ data, expanded
   return (
     <StyledExpand expanded={expanded}>
       <Info poolId={PoolIds.poolUnlimited} data={data} fetchUserVestingData={fetchUserVestingData} />
-      <Info poolId={PoolIds.poolBasic} data={data} fetchUserVestingData={fetchUserVestingData} />
+      <Info
+        poolId={PoolIds.poolBasic}
+        data={data}
+        fetchUserVestingData={fetchUserVestingData}
+        ifoBasicSaleType={ifoBasicSaleType}
+      />
       {!ifoIsActive && (
         <Text bold color="primary" textAlign="center" style={{ cursor: 'pointer' }} onClick={handleViewIfo}>
           {t('View IFO')}

@@ -1,12 +1,9 @@
-import { ERC20Token } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { bscTokens } from '@pancakeswap/tokens'
-import { CAKE_BNB_LP_MAINNET } from './lp'
-import { Ifo } from './types'
 
-export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'CAKE-BNB LP')
+import { BaseIfoConfig } from '../../types'
+import { cakeBnbLpToken } from '../lpTokens'
 
-const ifos: Ifo[] = [
+export const ifos: BaseIfoConfig[] = [
   {
     id: 'sable',
     address: '0xD247FFf8005917aDc02f59Ba8F2Dde02c13ee92d',
@@ -657,5 +654,3 @@ const ifos: Ifo[] = [
     version: 1,
   },
 ]
-
-export default ifos

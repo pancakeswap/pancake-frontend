@@ -8,8 +8,8 @@ import { BaseError, Hash, UnknownRpcError } from 'viem'
 import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
 
 export type CatchTxErrorReturn = {
-  fetchWithCatchTxError: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<WaitForTransactionResult>
-  fetchTxResponse: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<SendTransactionResult>
+  fetchWithCatchTxError: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<WaitForTransactionResult | null>
+  fetchTxResponse: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<SendTransactionResult | null>
   loading: boolean
   txResponseLoading: boolean
 }
@@ -30,7 +30,12 @@ export function parseError<TError>(err: TError): BaseError | null {
 
 const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
 
-export default function useCatchTxError(): CatchTxErrorReturn {
+type Params = {
+  throwUserRejectError?: boolean
+}
+
+export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
+  const { throwUserRejectError = false } = params || {}
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const [loading, setLoading] = useState(false)
@@ -75,7 +80,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
   const fetchWithCatchTxError = useCallback(
     async (callTx: () => Promise<SendTransactionResult | Hash>): Promise<WaitForTransactionResult | null> => {
-      let tx: SendTransactionResult | Hash = null
+      let tx: SendTransactionResult | Hash | null = null
 
       try {
         setLoading(true)
@@ -103,18 +108,21 @@ export default function useCatchTxError(): CatchTxErrorReturn {
             handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
           }
         }
+        if (throwUserRejectError) {
+          throw error
+        }
       } finally {
         setLoading(false)
       }
 
       return null
     },
-    [toastSuccess, t, waitForTransaction, handleNormalError, handleTxError],
+    [throwUserRejectError, toastSuccess, t, waitForTransaction, handleNormalError, handleTxError],
   )
 
   const fetchTxResponse = useCallback(
-    async (callTx: () => Promise<SendTransactionResult | Hash>): Promise<SendTransactionResult> => {
-      let tx: SendTransactionResult | Hash = null
+    async (callTx: () => Promise<SendTransactionResult | Hash>): Promise<SendTransactionResult | null> => {
+      let tx: SendTransactionResult | Hash | null = null
 
       try {
         setTxResponseLoading(true)

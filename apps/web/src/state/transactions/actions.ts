@@ -17,6 +17,7 @@ export type TransactionType =
   | 'limit-order-approval'
   | 'non-bsc-farm'
   | 'migrate-v3'
+  | 'bridge-icake'
 
 export interface SerializableTransactionReceipt {
   to: string

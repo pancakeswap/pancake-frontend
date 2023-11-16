@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -662,6 +662,9 @@ importers:
       '@pancakeswap/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
+      '@pancakeswap/ifos':
+        specifier: workspace:*
+        version: link:../../packages/ifos
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../../packages/localization
@@ -1269,6 +1272,37 @@ importers:
       styled-components:
         specifier: 6.0.7
         version: 6.0.7(babel-plugin-styled-components@1.13.3)(react-dom@18.2.0)(react@18.2.0)
+
+  packages/ifos:
+    dependencies:
+      '@layerzerolabs/scan-client':
+        specifier: ^0.0.6
+        version: 0.0.6(axios@0.27.2)
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      bignumber.js:
+        specifier: ^9.0.0
+        version: 9.1.2
+    devDependencies:
+      '@pancakeswap/sdk':
+        specifier: workspace:*
+        version: link:../swap-sdk
+      '@pancakeswap/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
+      viem:
+        specifier: 1.15.1
+        version: 1.15.1(typescript@5.2.2)(zod@3.22.4)
+      wagmi:
+        specifier: 1.4.3
+        version: 1.4.3(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(viem@1.15.1)(zod@3.22.4)
 
   packages/localization:
     dependencies:
@@ -4112,7 +4146,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm64@0.17.6:
@@ -4146,7 +4179,6 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm@0.17.6:
@@ -4180,7 +4212,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-x64@0.17.6:
@@ -4214,7 +4245,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-arm64@0.17.6:
@@ -4248,7 +4278,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-x64@0.17.6:
@@ -4282,7 +4311,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-arm64@0.17.6:
@@ -4316,7 +4344,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-x64@0.17.6:
@@ -4350,7 +4377,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm64@0.17.6:
@@ -4384,7 +4410,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm@0.17.6:
@@ -4418,7 +4443,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ia32@0.17.6:
@@ -4452,7 +4476,6 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-loong64@0.17.6:
@@ -4486,7 +4509,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-mips64el@0.17.6:
@@ -4520,7 +4542,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ppc64@0.17.6:
@@ -4554,7 +4575,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-riscv64@0.17.6:
@@ -4588,7 +4608,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-s390x@0.17.6:
@@ -4622,7 +4641,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-x64@0.17.6:
@@ -4656,7 +4674,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/netbsd-x64@0.17.6:
@@ -4690,7 +4707,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/openbsd-x64@0.17.6:
@@ -4724,7 +4740,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/sunos-x64@0.17.6:
@@ -4758,7 +4773,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-arm64@0.17.6:
@@ -4792,7 +4806,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-ia32@0.17.6:
@@ -4826,7 +4839,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-x64@0.17.6:
@@ -5900,6 +5912,14 @@ packages:
     resolution: {integrity: sha512-fo6b8j9EXnJukGvZorifJWEm1BPIrvaTLuu5PqaU5k1ANDasm/FL1NaUuaTBVvhRjINtvVXqYpW/rVUinA9MBA==}
     dependencies:
       long: 4.0.0
+    dev: false
+
+  /@layerzerolabs/scan-client@0.0.6(axios@0.27.2):
+    resolution: {integrity: sha512-K6Dpktj8bsPK/bE4DjgPclWn/mOZm/zm6lwRaaZvPkfPhmLQx43j5voBod9hqT2hSh26lC7ZkFAb+8aVUpPISQ==}
+    peerDependencies:
+      axios: '*'
+    dependencies:
+      axios: 0.27.2(debug@4.3.4)
     dev: false
 
   /@ledgerhq/connect-kit-loader@1.1.2:
@@ -10257,7 +10277,7 @@ packages:
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.5.7
+      '@types/node': 18.18.9
     dev: true
     optional: true
 
@@ -15208,7 +15228,6 @@ packages:
       '@esbuild/win32-arm64': 0.17.19
       '@esbuild/win32-ia32': 0.17.19
       '@esbuild/win32-x64': 0.17.19
-    dev: true
 
   /esbuild@0.17.6:
     resolution: {integrity: sha512-TKFRp9TxrJDdRWfSsSERKEovm6v30iHnrjlcGhLBOtReE28Yp1VSBRfO3GTaOFMoxsNerx4TjrhzSuma9ha83Q==}
@@ -21130,7 +21149,7 @@ packages:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.5.7
+      '@types/node': 18.18.9
       long: 5.2.3
     dev: false
 
@@ -24956,7 +24975,7 @@ packages:
         optional: true
     dependencies:
       '@types/node': 13.13.52
-      esbuild: 0.17.6
+      esbuild: 0.17.19
       postcss: 8.4.31
       rollup: 3.29.4
     optionalDependencies:
@@ -24988,7 +25007,7 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.0.4
-      esbuild: 0.17.6
+      esbuild: 0.17.19
       postcss: 8.4.31
       rollup: 3.29.4
     optionalDependencies:
@@ -25020,7 +25039,7 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.18.9
-      esbuild: 0.17.6
+      esbuild: 0.17.19
       postcss: 8.4.31
       rollup: 3.29.4
     optionalDependencies:

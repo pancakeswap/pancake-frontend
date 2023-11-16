@@ -8,15 +8,19 @@ import { Address, erc20ABI, useAccount, useBalance, useContractRead } from 'wagm
 import { useActiveChainId } from './useActiveChainId'
 
 const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
+  return useTokenBalanceByChain(tokenAddress, forceBSC ? ChainId.BSC : undefined)
+}
+
+export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: ChainId) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
   const { data, status, ...rest } = useContractRead({
-    chainId: forceBSC ? ChainId.BSC : chainId,
+    chainId: chainIdOverride || chainId,
     abi: erc20ABI,
     address: tokenAddress,
     functionName: 'balanceOf',
-    args: [account],
+    args: [account || '0x'],
     enabled: !!account,
     watch: true,
   })

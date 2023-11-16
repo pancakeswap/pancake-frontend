@@ -2,6 +2,8 @@ import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
+import { ICAKE } from '@pancakeswap/ifos'
+import { CAKE_VAULT } from '@pancakeswap/pools'
 
 export default {
   masterChef: {
@@ -81,10 +83,7 @@ export default {
     [ChainId.BSC]: '0x23c41D28A239dDCAABd1bb1deF8d057189510066',
     [ChainId.BSC_TESTNET]: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
-  cakeVault: {
-    [ChainId.BSC]: '0x45c54210128a065de780C4B0Df3d16664f7f859e',
-    [ChainId.BSC_TESTNET]: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
-  },
+  cakeVault: CAKE_VAULT,
   cakeFlexibleSideVault: {
     [ChainId.BSC]: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
     [ChainId.BSC_TESTNET]: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
@@ -153,10 +152,7 @@ export default {
     [ChainId.BSC]: '0x52E5D1e24A4308ef1A221C949cb2F7cbbAFEE090',
     [ChainId.BSC_TESTNET]: '0x6e4B1D7C65E86f1723720a5fE8993f0908108b64',
   },
-  iCake: {
-    [ChainId.BSC]: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
-    [ChainId.BSC_TESTNET]: '0x',
-  },
+  iCake: ICAKE,
   bCakeFarmBooster: {
     [ChainId.BSC]: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
     [ChainId.BSC_TESTNET]: '0x',

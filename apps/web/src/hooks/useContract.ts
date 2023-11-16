@@ -56,6 +56,7 @@ import {
 
 import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ifoV7ABI } from '@pancakeswap/ifos'
 import { CAKE } from '@pancakeswap/tokens'
 import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import { multicallABI } from 'config/abi/Multicall'
@@ -88,8 +89,12 @@ export const useIfoV3Contract = (address: Address) => {
   return useContract(address, ifoV3ABI)
 }
 
-export const useERC20 = (address: Address) => {
-  return useContract(address, erc20ABI)
+export const useIfoV7Contract = (address: Address, options?: UseContractOptions) => {
+  return useContract(address, ifoV7ABI, options)
+}
+
+export const useERC20 = (address: Address, options?: UseContractOptions) => {
+  return useContract(address, erc20ABI, options)
 }
 
 export const useCake = () => {
@@ -228,12 +233,18 @@ export const useErc721CollectionContract = (collectionAddress: Address) => {
 
 // Code below migrated from Exchange useContract.ts
 
+type UseContractOptions = {
+  chainId?: ChainId
+}
+
 // returns null on errors
 export function useContract<TAbi extends Abi>(
   addressOrAddressMap?: Address | { [chainId: number]: Address },
   abi?: TAbi,
+  options?: UseContractOptions,
 ) {
-  const { chainId } = useActiveChainId()
+  const { chainId: currentChainId } = useActiveChainId()
+  const chainId = options?.chainId || currentChainId
   const { data: walletClient } = useWalletClient()
 
   return useMemo(() => {
@@ -280,8 +291,8 @@ export function useBytes32TokenContract(tokenAddress?: Address) {
   return useContract(tokenAddress, erc20Bytes32ABI)
 }
 
-export function usePairContract(pairAddress?: Address) {
-  return useContract(pairAddress, pancakePairV2ABI)
+export function usePairContract(pairAddress?: Address, options?: UseContractOptions) {
+  return useContract(pairAddress, pancakePairV2ABI, options)
 }
 
 export function useMulticallContract() {
