@@ -119,7 +119,6 @@ const config: (
           label: t('Position Manager'),
           href: '/position-managers',
           supportChainIds: POSITION_MANAGERS_SUPPORTED_CHAINS,
-          status: { text: t('New'), color: 'success' },
         },
         {
           label: t('Liquid Staking'),
