@@ -5,26 +5,30 @@ import { cakeBnbLpToken } from '../lpTokens'
 
 export const ifos: BaseIfoConfig[] = [
   {
-    id: 'test',
-    address: '0x3d8C7E2273A3d80f15743964f4d8219401c398B9',
+    id: 'sable',
+    address: '0xD247FFf8005917aDc02f59Ba8F2Dde02c13ee92d',
     isActive: false,
-    name: 'USDT',
-    plannedStartTime: 1690430400, // Thursday, 27 July 2023 12:00:00 GMT+08:00
+    cIFO: true,
+    name: 'SABLE',
+    plannedStartTime: 1690372800, // Wed Jul 26 2023 12:00:00 UTC
     poolBasic: {
-      raiseAmount: '$0.8',
+      raiseAmount: '$156,000',
     },
     poolUnlimited: {
-      raiseAmount: '$3.2',
+      raiseAmount: '$624,000',
     },
     currency: bscTokens.cake,
-    token: bscTokens.usdt,
+    token: bscTokens.sable,
     campaignId: '512200000',
-    articleUrl: 'https://pancakeswap.finance/voting/',
-    tokenOfferingPrice: 1.0,
-    version: 7,
-    twitterUrl: 'https://twitter.com/pancakeswap',
-    description: 'Spend CAKE, buy USDT, but on vesting',
-    vestingTitle: 'Use CAKE to buy USDT',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/0x01ced179a39d30bc11436fd7f578ae45089bacaace57caa47881146fce7586ba',
+    tokenOfferingPrice: 0.06,
+    version: 3.2,
+    twitterUrl: 'https://twitter.com/SableFinance',
+    description:
+      'Sable Finance is a decentralized stablecoin protocol that allows users to draw interest-free loans, minting USDS, a USD-pegged stablecoin.',
+    vestingTitle:
+      '$SABLE is the secondary token issued by Sable Finance, enabling users to capture fee revenue and participate in governance. $SABLE will also be emitted to Stability Providers and Frontend Operators.',
   },
   {
     id: 'arena',

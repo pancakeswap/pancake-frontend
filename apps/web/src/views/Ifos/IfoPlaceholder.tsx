@@ -12,6 +12,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { PoolIds } from '@pancakeswap/ifos'
 
+import { useFetchIfo } from 'state/pools/hooks'
+
 import { CardsWrapper } from './components/IfoCardStyles'
 import { StyledCardBody } from './components/IfoFoldableCard/index'
 import IfoContainer from './components/IfoContainer'
@@ -86,6 +88,7 @@ function Placeholder() {
 }
 
 export function IfoPlaceholder() {
+  useFetchIfo()
   return (
     <IfoContainer
       ifoSection={<Placeholder />}

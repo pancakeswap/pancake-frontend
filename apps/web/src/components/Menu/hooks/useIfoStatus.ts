@@ -6,7 +6,7 @@ import { publicClient } from 'utils/wagmi'
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 
 export const useIfoStatus = () => {
-  const activeIfo = useActiveIfoConfig()
+  const { activeIfo } = useActiveIfoConfig()
 
   const { data = { startTime: 0, endTime: 0 } } = useSWRImmutable(
     activeIfo ? ['ifo', 'currentIfo_timestamps', activeIfo.chainId] : null,

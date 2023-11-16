@@ -1,7 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
 
 // Chains that only support cross chain ifo
-export const CROSS_CHAIN_ONLY_SUPPORTED_CHAIN_IDS = [ChainId.POLYGON_ZKEVM, ChainId.GOERLI] as const
+export const CROSS_CHAIN_ONLY_SUPPORTED_CHAIN_IDS = [
+  // ChainId.POLYGON_ZKEVM,
+  ChainId.GOERLI,
+] as const
 
 // Chains that support native ifo. Shouldn't overlap with cross chain only chains
 export const PROFILE_SUPPORTED_CHAIN_IDS = [ChainId.BSC, ChainId.BSC_TESTNET] as const
@@ -17,7 +20,7 @@ export type CrossChainOnlySupportedChainId = (typeof CROSS_CHAIN_ONLY_SUPPORTED_
 
 // A mapping of destination chain to the source chain
 export const SOURCE_CHAIN_MAP: Record<CrossChainOnlySupportedChainId, ProfileSupportedChainId> = {
-  [ChainId.POLYGON_ZKEVM]: ChainId.BSC,
+  // [ChainId.POLYGON_ZKEVM]: ChainId.BSC,
   [ChainId.GOERLI]: ChainId.BSC_TESTNET,
 }
 

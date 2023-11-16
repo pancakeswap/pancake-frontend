@@ -210,7 +210,7 @@ export const useFetchIfo = () => {
       }
     },
     {
-      enabled: Boolean(account && chainId && cakeVaultChain && ifoSupported),
+      enabled: Boolean(account && chainId && cakeVaultChain),
       refetchInterval: FAST_INTERVAL,
       refetchOnMount: false,
       refetchOnWindowFocus: false,

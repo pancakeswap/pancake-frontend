@@ -21,8 +21,11 @@ export function useIfoConfigsAcrossChains() {
 
 export function useActiveIfoConfig() {
   const { chainId } = useActiveChainId()
-  const { data } = useQuery([chainId, 'active-ifo'], () => getActiveIfo(chainId))
-  return data
+  const { data, isLoading } = useQuery([chainId, 'active-ifo'], () => getActiveIfo(chainId))
+  return {
+    activeIfo: data,
+    isLoading,
+  }
 }
 
 export function useInActiveIfoConfigs() {
