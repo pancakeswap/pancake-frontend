@@ -182,17 +182,23 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                 >
                   {game.description}
                 </StyledTextLineClamp>
-                <Flex justifyContent="space-between" mb={['32px', '32px', '32px', '32px', '32px', '24px']}>
-                  <StyledTag scale="xs" isPurple style={{ alignSelf: 'center' }}>
-                    <Text fontSize={14} color="white">
-                      {t('Genre:')}
-                    </Text>
-                    <Text fontSize={14} bold ml="4px" color="white">
-                      {game.genre}
-                    </Text>
-                  </StyledTag>
-                  <Flex>
-                    <Flex flexDirection="column" mr="4px">
+                <Flex
+                  flexDirection={['column', 'row']}
+                  justifyContent={['flex-start', 'space-between']}
+                  mb={['32px', '32px', '32px', '32px', '32px', '24px']}
+                >
+                  <Flex alignSelf={['flex-start', 'center']}>
+                    <StyledTag scale="xs" isPurple style={{ width: 'fit-content' }}>
+                      <Text fontSize={14} color="white">
+                        {t('Genre:')}
+                      </Text>
+                      <Text fontSize={14} bold ml="4px" color="white">
+                        {game.genre}
+                      </Text>
+                    </StyledTag>
+                  </Flex>
+                  <Flex mt={['10px', '0']}>
+                    <Flex alignSelf={['center']} flexDirection={['row', 'column']} mr="4px">
                       <Text
                         bold
                         fontSize={12}
@@ -210,6 +216,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                         lineHeight="120%"
                         textTransform="uppercase"
                         textAlign="right"
+                        ml={['4px', '0']}
                       >
                         {game.projectName}
                       </Text>

@@ -72,7 +72,7 @@ const StyledSwiperContainer = styled(Box)<{ isHorizontal: boolean }>`
   border-radius: 0;
   background: rgba(39, 38, 44, 0.8);
   width: calc(100% + 40px);
-  padding: ${({ isHorizontal }) => (isHorizontal ? '16px 6px 8px 11px' : '16px 6px 8px 16px')};
+  padding: ${({ isHorizontal }) => (isHorizontal ? '16px 16px 8px 11px' : '16px 16px 8px 16px')};
   margin: ${({ isHorizontal }) => (isHorizontal ? '0 0 0 -20px' : '0 0px 24px -20px')};
 
   &:before {
@@ -94,6 +94,7 @@ const StyledSwiperContainer = styled(Box)<{ isHorizontal: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     width: calc(100% + 64px);
+    padding: ${({ isHorizontal }) => (isHorizontal ? '16px 6px 8px 11px' : '16px 6px 8px 16px')};
     margin: ${({ isHorizontal }) => (isHorizontal ? '0px 0 0 -32px' : '0 0px 24px -32px')};
   }
 
