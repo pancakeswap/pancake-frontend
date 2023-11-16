@@ -98,7 +98,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
   const previewCarouseData: PostersItemData = useMemo(() => carouselData[carouselId], [carouselId, carouselData])
 
   const isHorizontal: boolean = useMemo(() => game.posters.layout === PostersLayout.Horizontal, [game])
-  const gameLink = useGameLink(game.id)
+  const gameLink = useGameLink(game.id, game.gameLink)
 
   return (
     <StyledGameContainer isHorizontal={isHorizontal}>

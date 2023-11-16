@@ -140,7 +140,7 @@ export const Banner = () => {
                 >
                   {games.map((game) => (
                     <SwiperSlide key={game.id}>
-                      <NextLink passHref href={getGameLink({ gameId: game.id, isMobile })}>
+                      <NextLink passHref href={getGameLink({ gameId: game.id, isMobile, gameLink: game.gameLink })}>
                         <GameCard game={game} />
                       </NextLink>
                     </SwiperSlide>

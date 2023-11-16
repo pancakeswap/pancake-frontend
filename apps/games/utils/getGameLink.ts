@@ -1,3 +1,3 @@
-export function getGameLink({ gameId, isMobile }: { gameId: string; isMobile?: boolean }) {
-  return gameId === 'pancake-protectors' && isMobile ? 'https://protectors.pancakeswap.finance' : `/project/${gameId}`
+export function getGameLink({ gameId, gameLink, isMobile }: { gameId: string; gameLink: string; isMobile?: boolean }) {
+  return isMobile ? gameLink : `/project/${gameId}`
 }
