@@ -39,6 +39,7 @@ import {
   getVeCakeAddress,
   getGaugesVotingAddress,
   getRevenueSharingPoolForCakeAddress,
+  getRevenueSharingPoolGatewayAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -96,6 +97,7 @@ import { fixedStakingABI } from 'config/abi/fixedStaking'
 import { veCakeABI } from 'config/abi/veCake'
 import { gaugesVotingABI } from 'config/abi/gaugesVoting'
 import { revenueSharingPoolForCakeABI } from 'config/abi/revenueSharingPoolForCake'
+import { revenueSharingPoolGatewayABI } from 'config/abi/revenueSharingPoolGateway'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -478,6 +480,15 @@ export const getRevenueSharingPoolForCakeContract = (signer?: WalletClient, chai
   return getContract({
     abi: revenueSharingPoolForCakeABI,
     address: getRevenueSharingPoolForCakeAddress(chainId) ?? getRevenueSharingPoolForCakeAddress(ChainId.BSC_TESTNET),
+    signer,
+    chainId,
+  })
+}
+
+export const getRevenueSharingPoolGatewayContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: revenueSharingPoolGatewayABI,
+    address: getRevenueSharingPoolGatewayAddress(chainId) ?? getRevenueSharingPoolGatewayAddress(ChainId.BSC_TESTNET),
     signer,
     chainId,
   })

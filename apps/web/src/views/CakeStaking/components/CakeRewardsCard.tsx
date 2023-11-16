@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedLockedCakeVault, VaultKey } from '@pancakeswap/pools'
+import { DeserializedLockedCakeVault, ONE_WEEK_DEFAULT, VaultKey } from '@pancakeswap/pools'
 import {
   AtomBox,
   Balance,
   Box,
+  Button,
   Card,
   Flex,
   Heading,
@@ -19,18 +20,23 @@ import {
   Row,
   Text,
   WarningIcon,
+  useToast,
 } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import BigNumber from 'bignumber.js'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { useMemo } from 'react'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useRevenueSharingPoolGatewayContract } from 'hooks/useContract'
+import { useCallback, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import styled from 'styled-components'
+import { getRevenueSharingPoolForCakeAddress } from 'utils/addressHelpers'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
-import ClaimButton from 'views/Pools/components/RevenueSharing/BenefitsModal/ClaimButton'
-import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
+import { useRevenueSharingPoolForCake } from '../hooks/useRevenueSharingPoolForCake'
 import { MyVeCakeCard } from './MyVeCakeCard'
 
 const StyledModalHeader = styled(ModalHeader)`
@@ -47,38 +53,42 @@ export const CakeRewardsCard = ({ onDismiss }) => {
   } = useTranslation()
   const cakePriceBusd = useCakePrice()
   const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
-  const {
-    balanceOfAt,
-    // totalSupplyAt,
-    nextDistributionTimestamp,
-    lastTokenTimestamp,
-    availableClaim,
-  } = useRevenueSharingPool()
+  const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
+    useRevenueSharingPoolForCake()
   const yourShare = useMemo(() => getBalanceAmount(new BigNumber(balanceOfAt)).toNumber(), [balanceOfAt])
-  // const showYourSharePercentage = useMemo(() => new BigNumber(totalSupplyAt).gt(0), [totalSupplyAt])
-  const showYourSharePercentage = true
-  const availableCake = useMemo(() => getBalanceAmount(new BigNumber(availableClaim)).toNumber(), [availableClaim])
-  const availableCakeUsdValue = useMemo(
-    () => new BigNumber(availableCake).times(cakePriceBusd).toNumber(),
-    [availableCake, cakePriceBusd],
+  const yourSharePercentage = useMemo(
+    () => new BigNumber(balanceOfAt).div(totalSupplyAt).times(100).toNumber() || 0,
+    [balanceOfAt, totalSupplyAt],
   )
 
-  // const yourSharePercentage = useMemo(
-  //   () => new BigNumber(balanceOfAt).div(totalSupplyAt).times(100).toNumber() || 0,
-  //   [balanceOfAt, totalSupplyAt],
-  // )
-  const yourSharePercentage = 12
-  // const showExpireSoonWarning = useMemo(() => {
-  //   const endTime = new BigNumber(nextDistributionTimestamp).plus(ONE_WEEK_DEFAULT)
-  //   return new BigNumber(userData?.lockEndTime ?? '0').lt(endTime)
-  // }, [nextDistributionTimestamp, userData?.lockEndTime])
+  const showYourSharePercentage = useMemo(() => new BigNumber(totalSupplyAt).gt(0), [totalSupplyAt])
+
+  // @todo @ChefJerry update cake pool reward amount
+  // const availableCakePoolCake = useMemo(() => getBalanceAmount(new BigNumber(availableClaim)).toNumber(), [availableClaim])
+
+  const availableRevenueSharingCake = useMemo(
+    () => getBalanceAmount(new BigNumber(availableClaim)).toNumber(),
+    [availableClaim],
+  )
+  const availableRevenueSharingCakeUsdValue = useMemo(
+    () => new BigNumber(availableRevenueSharingCake).times(cakePriceBusd).toNumber(),
+    [availableRevenueSharingCake, cakePriceBusd],
+  )
+
+  const showExpireSoonWarning = useMemo(() => {
+    const endTime = new BigNumber(nextDistributionTimestamp).plus(ONE_WEEK_DEFAULT)
+    return new BigNumber(userData?.lockEndTime ?? '0').lt(endTime)
+  }, [nextDistributionTimestamp, userData?.lockEndTime])
+
   const showNoCakeAmountWarning = useMemo(
     () => new BigNumber(userData?.lockedAmount ?? '0').lte(0),
     [userData?.lockedAmount],
   )
+
   const currentDate = Date.now() / 1000
   const timeRemaining = nextDistributionTimestamp - currentDate
   const { days, hours, minutes, seconds } = getTimePeriods(timeRemaining)
+
   const nextDistributionTime = useMemo(() => {
     if (!days && hours && minutes && seconds) {
       return `< 1 ${t('day')}`
@@ -86,10 +96,11 @@ export const CakeRewardsCard = ({ onDismiss }) => {
 
     return t('in %day% days', { day: days })
   }, [days, hours, minutes, seconds, t])
+
   return (
     <ModalContainer
       title={t('CAKE Reward / Yield')}
-      style={{ minWidth: '375px', maxHeight: '90vh', overflow: 'hidden', padding: '24px' }}
+      style={{ minWidth: '375px', maxHeight: '90vh', overflowY: 'auto', padding: '24px' }}
     >
       <AtomBox
         justifyContent="space-between"
@@ -195,10 +206,24 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                       <Text>{t('Time remaining until the next revenue distribution and share updates.')}</Text>
                     }
                   />
-                  <Text color="text" bold>
+                  <Text color={showExpireSoonWarning ? 'failure' : 'text'} bold>
                     {nextDistributionTime}
                   </Text>
                 </Flex>
+                {showExpireSoonWarning && (
+                  <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
+                    <MessageText lineHeight="120%">
+                      <Text fontSize="14px" color="failure">
+                        {t(
+                          'Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution.',
+                        )}
+                      </Text>
+                      <Text fontSize="14px" color="failure" mt="4px">
+                        {t('Extend your stakings to receive shares in the next distribution.')}
+                      </Text>
+                    </MessageText>
+                  </Message>
+                )}
 
                 <Flex mt="8px" flexDirection="row" alignItems="center">
                   <BenefitsTooltipsText
@@ -217,10 +242,10 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                       tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
                     />
                     <Box>
-                      {availableCake > 0 && availableCake <= 0.01 ? (
+                      {availableRevenueSharingCake > 0 && availableRevenueSharingCake <= 0.01 ? (
                         <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
                       ) : (
-                        <Balance unit=" CAKE" textAlign="right" bold value={availableCake} decimals={2} />
+                        <Balance unit=" CAKE" textAlign="right" bold value={availableRevenueSharingCake} decimals={2} />
                       )}
                       <Balance
                         ml="4px"
@@ -230,36 +255,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                         lineHeight="110%"
                         prefix="(~ $"
                         unit=")"
-                        value={availableCakeUsdValue}
-                        decimals={2}
-                      />
-                    </Box>
-                  </Flex>
-                </Box>
-                <Box mt="16px">
-                  <Text fontSize={12} bold color="secondary" textTransform="uppercase">
-                    {t('total')}
-                  </Text>
-                  <Flex mt="8px" flexDirection="row" alignItems="start">
-                    <BenefitsTooltipsText
-                      title={t('Reward amount')}
-                      tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
-                    />
-                    <Box>
-                      {availableCake > 0 && availableCake <= 0.01 ? (
-                        <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
-                      ) : (
-                        <Balance unit=" CAKE" textAlign="right" bold value={availableCake} decimals={2} />
-                      )}
-                      <Balance
-                        ml="4px"
-                        color="textSubtle"
-                        fontSize={12}
-                        textAlign="right"
-                        lineHeight="110%"
-                        prefix="(~ $"
-                        unit=")"
-                        value={availableCakeUsdValue}
+                        value={availableRevenueSharingCakeUsdValue}
                         decimals={2}
                       />
                     </Box>
@@ -271,14 +267,14 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                   </Text>
                   <Flex mt="8px" flexDirection="row" alignItems="start">
                     <BenefitsTooltipsText
-                      title={t('Available for claiming')}
+                      title={t('Reward amount')}
                       tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
                     />
                     <Box>
-                      {availableCake > 0 && availableCake <= 0.01 ? (
+                      {availableRevenueSharingCake > 0 && availableRevenueSharingCake <= 0.01 ? (
                         <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
                       ) : (
-                        <Balance unit=" CAKE" textAlign="right" bold value={availableCake} decimals={2} />
+                        <Balance unit=" CAKE" textAlign="right" bold value={availableRevenueSharingCake} decimals={2} />
                       )}
                       <Balance
                         ml="4px"
@@ -288,7 +284,36 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                         lineHeight="110%"
                         prefix="(~ $"
                         unit=")"
-                        value={availableCakeUsdValue}
+                        value={availableRevenueSharingCakeUsdValue}
+                        decimals={2}
+                      />
+                    </Box>
+                  </Flex>
+                </Box>
+                <Box mt="16px">
+                  <Text fontSize={12} bold color="secondary" textTransform="uppercase">
+                    {t('total')}
+                  </Text>
+                  <Flex mt="8px" flexDirection="row" alignItems="start">
+                    <BenefitsTooltipsText
+                      title={t('Available for claiming')}
+                      tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
+                    />
+                    <Box>
+                      {availableRevenueSharingCake > 0 && availableRevenueSharingCake <= 0.01 ? (
+                        <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
+                      ) : (
+                        <Balance unit=" CAKE" textAlign="right" bold value={availableRevenueSharingCake} decimals={2} />
+                      )}
+                      <Balance
+                        ml="4px"
+                        color="textSubtle"
+                        fontSize={12}
+                        textAlign="right"
+                        lineHeight="110%"
+                        prefix="(~ $"
+                        unit=")"
+                        value={availableRevenueSharingCakeUsdValue}
                         decimals={2}
                       />
                     </Box>
@@ -315,5 +340,49 @@ export const CakeRewardsCard = ({ onDismiss }) => {
         </ModalBody>
       </AtomBox>
     </ModalContainer>
+  )
+}
+
+const ClaimButton: React.FC<{
+  availableClaim: string
+  onDismiss?: () => void
+}> = ({ availableClaim, onDismiss }) => {
+  const { t } = useTranslation()
+  const { toastSuccess } = useToast()
+  const { account, chainId } = useAccountActiveChain()
+  const contract = useRevenueSharingPoolGatewayContract()
+  // @todo @ChefJerry update revenueSharingPools
+  const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
+
+  const isReady = useMemo(() => new BigNumber(availableClaim).gt(0) && !isPending, [availableClaim, isPending])
+
+  const handleClaim = useCallback(async () => {
+    try {
+      if (!account || !chainId) return
+
+      const revenueSharingPools = [getRevenueSharingPoolForCakeAddress(chainId)]
+      const receipt = await fetchWithCatchTxError(() =>
+        contract.write.claimMultiple([revenueSharingPools, account], { account, chain: contract.chain }),
+      )
+
+      if (receipt?.status) {
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('You have successfully claimed your rewards.')}
+          </ToastDescriptionWithTx>,
+        )
+
+        onDismiss?.()
+      }
+    } catch (error) {
+      console.error('[ERROR] Submit Revenue Claim Button', error)
+    }
+  }, [account, chainId, contract.chain, contract.write, fetchWithCatchTxError, onDismiss, t, toastSuccess])
+
+  return (
+    <Button mt="24px" width="100%" variant="subtle" disabled={!isReady} onClick={handleClaim}>
+      {t('Claim All')}
+    </Button>
   )
 }

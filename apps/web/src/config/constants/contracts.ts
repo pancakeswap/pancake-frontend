@@ -274,4 +274,7 @@ export default {
   revenueSharingPoolForCake: {
     [ChainId.BSC_TESTNET]: '0x881Ed694980A03EE653508aeb9EF3ffD9f56aC99',
   },
+  revenueSharingPoolGateway: {
+    [ChainId.BSC_TESTNET]: '0x946273012ED616410F698536F1BF2513417BF8Ec',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
