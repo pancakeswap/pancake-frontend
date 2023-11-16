@@ -1,7 +1,7 @@
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useAccount, useQuery } from 'wagmi'
 
-export const useVotePower = () => {
+export const useVotedPower = () => {
   const { address: account } = useAccount()
   const contract = useGaugesVotingContract()
   const { data } = useQuery(
