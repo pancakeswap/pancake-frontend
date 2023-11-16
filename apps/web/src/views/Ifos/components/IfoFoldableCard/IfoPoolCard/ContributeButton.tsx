@@ -21,8 +21,9 @@ interface Props {
 const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
-  const { isPendingTx, amountTokenCommittedInLP } = userPoolCharacteristics
-  const { limitPerUserInLP } = publicPoolCharacteristics
+  const isPendingTx = userPoolCharacteristics?.isPendingTx
+  const amountTokenCommittedInLP = userPoolCharacteristics?.amountTokenCommittedInLP
+  const limitPerUserInLP = publicPoolCharacteristics?.limitPerUserInLP
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const currentBlock = useCurrentBlock()
@@ -48,7 +49,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
   const [onPresentContributeModal] = useModal(
     <ContributeModal
       poolId={poolId}
-      creditLeft={walletIfoData.ifoCredit?.creditLeft}
+      creditLeft={walletIfoData.ifoCredit?.creditLeft || new BigNumber(0)}
       ifo={ifo}
       publicIfoData={publicIfoData}
       walletIfoData={walletIfoData}
@@ -59,7 +60,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
   )
 
   const [onPresentGetTokenModal] = useModal(
-    <IfoGetTokenModal symbol={ifo.currency.symbol} address={ifo.currency.address} imageSrc={currencyImageUrl} />,
+    <IfoGetTokenModal symbol={ifo.currency.symbol} address={ifo.currency.address} imageSrc={currencyImageUrl || ''} />,
     false,
   )
 
@@ -69,7 +70,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     (!noNeedCredit &&
       walletIfoData.ifoCredit?.creditLeft &&
       walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
-    (limitPerUserInLP.isGreaterThan(0) && amountTokenCommittedInLP.isGreaterThanOrEqualTo(limitPerUserInLP))
+    (limitPerUserInLP?.isGreaterThan(0) && amountTokenCommittedInLP?.isGreaterThanOrEqualTo(limitPerUserInLP))
 
   const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
 

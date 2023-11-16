@@ -24,6 +24,9 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
   const handleClaim = async () => {
     const receipt = await fetchWithCatchTxError(() => {
       setPendingTx(true)
+      if (!walletIfoData?.contract || !account) {
+        throw new Error('Invalid wallet ifo data contract or account')
+      }
       if (ifoVersion === 1 && walletIfoData.version === 1) {
         return walletIfoData.contract.write.harvest({ account, chain })
       }
@@ -33,7 +36,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
       if (walletIfoData.version === 7) {
         return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
       }
-      return undefined
+      throw new Error('Invalid wallet ifo data version')
     })
     if (receipt?.status) {
       walletIfoData.setIsClaimed(poolId)
@@ -50,10 +53,10 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
   return (
     <Button
       onClick={handleClaim}
-      disabled={userPoolCharacteristics.isPendingTx}
+      disabled={userPoolCharacteristics?.isPendingTx}
       width="100%"
-      isLoading={userPoolCharacteristics.isPendingTx}
-      endIcon={userPoolCharacteristics.isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+      isLoading={userPoolCharacteristics?.isPendingTx}
+      endIcon={userPoolCharacteristics?.isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
     >
       {t('Claim')}
     </Button>

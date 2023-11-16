@@ -11,8 +11,8 @@ export const useIfoStatus = () => {
   const { data = { startTime: 0, endTime: 0 } } = useSWRImmutable(
     activeIfo ? ['ifo', 'currentIfo_timestamps', activeIfo.chainId] : null,
     async () => {
-      const client = publicClient({ chainId: activeIfo.chainId })
-      if (!client) {
+      const client = publicClient({ chainId: activeIfo?.chainId })
+      if (!client || !activeIfo?.chainId) {
         return {
           startTime: 0,
           endTime: 0,

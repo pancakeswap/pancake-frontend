@@ -20,7 +20,7 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
     abi: erc20ABI,
     address: tokenAddress,
     functionName: 'balanceOf',
-    args: [account],
+    args: [account || '0x'],
     enabled: !!account,
     watch: true,
   })

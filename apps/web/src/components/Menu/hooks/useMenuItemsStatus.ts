@@ -17,8 +17,8 @@ export const useMenuItemsStatus = (): Record<string, string> => {
 
   return useMemo(() => {
     return {
-      '/competition': competitionStatus,
-      '/ifo': ifoStatus,
+      '/competition': competitionStatus || '',
+      '/ifo': ifoStatus || '',
       ...(potteryStatus === PotteryDepositStatus.BEFORE_LOCK && {
         '/pottery': 'pot_open',
       }),

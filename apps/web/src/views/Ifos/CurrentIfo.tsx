@@ -28,13 +28,13 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
 
   const isCommitted = useMemo(
     () =>
-      poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0),
-    [poolBasic.amountTokenCommittedInLP, poolUnlimited.amountTokenCommittedInLP],
+      poolBasic?.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0),
+    [poolBasic?.amountTokenCommittedInLP, poolUnlimited.amountTokenCommittedInLP],
   )
 
   return (
     <IfoContainer
-      ifoBasicSaleType={publicIfoData.poolBasic.saleType}
+      ifoBasicSaleType={publicIfoData?.poolBasic?.saleType}
       ifoSection={<IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />}
       ifoSteps={
         <IfoSteps
@@ -44,7 +44,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
           ifoChainId={activeIfo.chainId}
           isLive={publicIfoData.status === 'live'}
           isFinished={publicIfoData.status === 'finished'}
-          hasClaimed={poolBasic.hasClaimed || poolUnlimited.hasClaimed}
+          hasClaimed={poolBasic?.hasClaimed || poolUnlimited.hasClaimed}
           isCommitted={isCommitted}
           ifoCurrencyAddress={activeIfo.currency.address}
           isCrossChainIfo={isCrossChainIfo}

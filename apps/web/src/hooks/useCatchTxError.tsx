@@ -8,8 +8,8 @@ import { BaseError, Hash, UnknownRpcError } from 'viem'
 import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
 
 export type CatchTxErrorReturn = {
-  fetchWithCatchTxError: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<WaitForTransactionResult>
-  fetchTxResponse: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<SendTransactionResult>
+  fetchWithCatchTxError: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<WaitForTransactionResult | null>
+  fetchTxResponse: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<SendTransactionResult | null>
   loading: boolean
   txResponseLoading: boolean
 }
@@ -121,7 +121,7 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
   )
 
   const fetchTxResponse = useCallback(
-    async (callTx: () => Promise<SendTransactionResult | Hash>): Promise<SendTransactionResult> => {
+    async (callTx: () => Promise<SendTransactionResult | Hash>): Promise<SendTransactionResult | null> => {
       let tx: SendTransactionResult | Hash | null = null
 
       try {

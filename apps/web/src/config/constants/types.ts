@@ -20,7 +20,6 @@ export type TranslatableText =
       }
     }
 export interface Addresses {
-  97?: Address
   56: Address
   [chainId: number]: Address
 }

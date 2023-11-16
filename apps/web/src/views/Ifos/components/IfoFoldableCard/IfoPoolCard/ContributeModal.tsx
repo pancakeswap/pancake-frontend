@@ -58,8 +58,9 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   const { currency, articleUrl } = ifo
   const { toastSuccess } = useToast()
-  const { limitPerUserInLP, vestingInformation } = publicPoolCharacteristics
-  const { amountTokenCommittedInLP } = userPoolCharacteristics
+  const limitPerUserInLP = publicPoolCharacteristics?.limitPerUserInLP
+  const vestingInformation = publicPoolCharacteristics?.vestingInformation
+  const amountTokenCommittedInLP = userPoolCharacteristics?.amountTokenCommittedInLP
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -72,7 +73,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       token: currency,
-      spender: contract.address,
+      spender: contract?.address,
       minAmount: value ? parseUnits(value as `${number}`, currency.decimals) : undefined,
       onApproveSuccess: ({ receipt }) => {
         toastSuccess(
@@ -101,11 +102,11 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   // in v3 max token entry is based on ifo credit and hard cap limit per user minus amount already committed
   const maximumTokenEntry = useMemo(() => {
     if (!creditLeft || (ifo.version >= 3.1 && poolId === PoolIds.poolBasic)) {
-      return limitPerUserInLP.minus(amountTokenCommittedInLP)
+      return limitPerUserInLP?.minus(amountTokenCommittedInLP || new BigNumber(0))
     }
-    if (limitPerUserInLP.isGreaterThan(0)) {
-      return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(creditLeft)
-        ? limitPerUserInLP.minus(amountTokenCommittedInLP)
+    if (limitPerUserInLP?.isGreaterThan(0)) {
+      return limitPerUserInLP.minus(amountTokenCommittedInLP || new BigNumber(0)).isLessThanOrEqualTo(creditLeft)
+        ? limitPerUserInLP.minus(amountTokenCommittedInLP || new BigNumber(0))
         : creditLeft
     }
     return creditLeft
@@ -113,7 +114,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   // include user balance for input
   const maximumTokenCommittable = useMemo(() => {
-    return maximumTokenEntry.isLessThanOrEqualTo(userCurrencyBalance) ? maximumTokenEntry : userCurrencyBalance
+    return maximumTokenEntry?.isLessThanOrEqualTo(userCurrencyBalance) ? maximumTokenEntry : userCurrencyBalance
   }, [maximumTokenEntry, userCurrencyBalance])
 
   const basicTooltipContent = t(
@@ -138,7 +139,8 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   )
 
   const isWarning =
-    valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) || valueWithTokenDecimals.isGreaterThan(maximumTokenEntry)
+    valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) ||
+    valueWithTokenDecimals.isGreaterThan(maximumTokenEntry || new BigNumber(0))
 
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
@@ -147,9 +149,11 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
           <Flex justifyContent="space-between" mb="16px">
             {tooltipVisible && tooltip}
             <TooltipText ref={targetRef}>{label}:</TooltipText>
-            <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
-              ifo.currency.symbol
-            }`}</Text>
+            <Text>{`${formatNumber(
+              getBalanceAmount(maximumTokenEntry || new BigNumber(0), currency.decimals).toNumber(),
+              3,
+              3,
+            )} ${ifo.currency.symbol}`}</Text>
           </Flex>
           <Flex justifyContent="space-between" mb="8px">
             <Text>{t('Commit')}:</Text>
@@ -210,7 +214,9 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
               </Button>
             ))}
           </Flex>
-          {vestingInformation.percentage > 0 && <IfoHasVestingNotice url={articleUrl} />}
+          {vestingInformation?.percentage && vestingInformation.percentage > 0 && (
+            <IfoHasVestingNotice url={articleUrl} />
+          )}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
               'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
