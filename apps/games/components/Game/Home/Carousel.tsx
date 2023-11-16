@@ -1,5 +1,4 @@
-import { useState, useCallback } from 'react'
-import uniqueId from 'lodash/uniqueId'
+import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 import { PostersItemDataType, PostersItemData } from '@pancakeswap/games'
 import { Flex, Box, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit'
@@ -8,7 +7,6 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper/types'
-import { Navigation } from 'swiper/modules'
 
 const StyledCarouselImage = styled(Box)<{
   imgUrl: string
@@ -127,40 +125,52 @@ interface CarouselProps {
   setCarouselId: (index: number) => void
 }
 
+const breakPoints: { [index: number]: { slidesPerView: number } } = {
+  370: {
+    slidesPerView: 3,
+  },
+  920: {
+    slidesPerView: 4,
+  },
+}
+
 export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
   carouselId,
   isHorizontal,
   carouselData,
   setCarouselId,
 }) => {
-  const [prevClass] = useState(() => uniqueId('prev-'))
-  const [nextClass] = useState(() => uniqueId('next-'))
+  const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
-  const handleRealIndexChange = useCallback(
-    (swiperInstance: SwiperClass) => {
-      setCarouselId(swiperInstance.realIndex)
-    },
-    [setCarouselId],
-  )
+  const handlePrev = useCallback(() => {
+    const slideLength = swiper?.slides?.length
+    if (slideLength && carouselId > 0) {
+      setCarouselId(carouselId - 1)
+      if (carouselId === swiper?.activeIndex) {
+        swiper?.slidePrev()
+      }
+    }
+  }, [carouselId, setCarouselId, swiper])
+
+  const handleNext = useCallback(() => {
+    const slideLength = swiper?.slides?.length
+    if (slideLength && carouselId < slideLength - 1) {
+      const currentBreakpoint: number = swiper?.currentBreakpoint
+      setCarouselId(carouselId + 1)
+      const breakPoint = breakPoints[currentBreakpoint]
+      if (carouselId === breakPoint.slidesPerView - 1) {
+        swiper?.slideNext()
+      }
+    }
+  }, [carouselId, setCarouselId, swiper])
 
   return (
     <StyledSwiperContainer isHorizontal={isHorizontal}>
       <Swiper
         spaceBetween={10}
-        modules={[Navigation]}
-        onRealIndexChange={handleRealIndexChange}
-        navigation={{
-          prevEl: `.${prevClass}`,
-          nextEl: `.${nextClass}`,
-        }}
-        breakpoints={{
-          370: {
-            slidesPerView: 3,
-          },
-          920: {
-            slidesPerView: 4,
-          },
-        }}
+        onSwiper={setSwiper}
+        onBeforeDestroy={() => setSwiper(undefined)}
+        breakpoints={breakPoints}
       >
         {carouselData.map((carousel, index) => (
           <SwiperSlide key={carousel.image}>
@@ -175,8 +185,8 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
         ))}
       </Swiper>
       <StyledSwiperNavigation justifyContent="space-between" mt="10px">
-        <ChevronLeftIcon className={prevClass} color="white" width={24} height={24} />
-        <ChevronRightIcon className={nextClass} color="white" width={24} height={24} />
+        <ChevronLeftIcon color="white" width={24} height={24} onClick={handlePrev} />
+        <ChevronRightIcon color="white" width={24} height={24} onClick={handleNext} />
       </StyledSwiperNavigation>
     </StyledSwiperContainer>
   )

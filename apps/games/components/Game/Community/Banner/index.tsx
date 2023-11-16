@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import NextLink from 'next/link'
 import { styled } from 'styled-components'
 import { useTheme } from '@pancakeswap/hooks'
@@ -8,7 +8,6 @@ import { Box, Flex, Text, ChevronLeftIcon, ChevronRightIcon, useMatchBreakpoints
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import type { Swiper as SwiperClass } from 'swiper/types'
 import { Autoplay, Navigation } from 'swiper/modules'
 import { GameCard } from 'components/Game/Community/Banner/GameCard'
 import { Decorations } from 'components/Game/Decorations'
@@ -79,7 +78,6 @@ export const Banner = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isDesktop, isMobile } = useMatchBreakpoints()
-  const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
   const config = useGamesConfig()
   const games: GameType[] = useMemo(() => config.slice(0, 6), [config])
@@ -113,7 +111,6 @@ export const Banner = () => {
                   resizeObserver
                   slidesPerView={1}
                   spaceBetween={16}
-                  onSwiper={setSwiper}
                   modules={[Autoplay, Navigation]}
                   autoplay={{
                     delay: 2500,
