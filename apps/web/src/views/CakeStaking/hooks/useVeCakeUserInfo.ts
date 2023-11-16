@@ -81,16 +81,20 @@ export const useCakeLockStatus = (): {
   cakeLockExpired: boolean
   cakePoolLocked: boolean
   cakePoolLockExpired: boolean
-  cakeUnlockTime?: number
+  cakeUnlockTime: number
   cakePoolUnlockTime?: number
 } => {
   const { data: userInfo } = useVeCakeUserInfo()
   const [status, setStatus] = useState<CakeLockStatus>(CakeLockStatus.NotLocked)
   const noCakeLocked = useMemo(() => !userInfo || !userInfo.amount, [userInfo])
+  const cakeUnlockTime = useMemo(() => {
+    if (!userInfo) return 0
+    return Number(userInfo.end)
+  }, [userInfo])
   const cakeLockExpired = useMemo(() => {
     if (noCakeLocked) return false
-    return userInfo!.end > dayjs().unix()
-  }, [noCakeLocked, userInfo])
+    return dayjs.unix(cakeUnlockTime).isBefore(dayjs())
+  }, [noCakeLocked, cakeUnlockTime])
   const cakePoolLocked = useMemo(
     () => Boolean(userInfo?.cakeAmount) && userInfo?.withdrawFlag !== CakePoolLockStatus.WITHDRAW,
     [userInfo],
@@ -113,11 +117,6 @@ export const useCakeLockStatus = (): {
   const cakeLockedAmount = useMemo(() => {
     return cakeLockedAmountDirectly + cakeLockedAmountCakePool
   }, [cakeLockedAmountDirectly, cakeLockedAmountCakePool])
-
-  const cakeUnlockTime = useMemo(() => {
-    if (!userInfo) return 0
-    return dayjs.unix(Number(userInfo.end)).subtract(50, 'days').unix()
-  }, [userInfo])
 
   const cakePoolUnlockTime = useMemo(() => {
     if (!cakePoolLocked) return 0
