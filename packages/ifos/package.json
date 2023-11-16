@@ -24,8 +24,7 @@
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "typescript": "^5.1.3",
-    "viem": "^1.15.1",
-    "wagmi": "^1.4.3"
+    "viem": "1.15.1",
+    "wagmi": "1.4.3"
   }
 }
