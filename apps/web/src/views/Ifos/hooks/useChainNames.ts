@@ -13,7 +13,7 @@ type ChainNameOptions = {
 
 export function useChainName(chainId?: ChainId, options?: ChainNameOptions) {
   const name = useMemo(() => chains.find((chain) => chain.id === chainId)?.name || '', [chainId])
-  const shortName = SHORT_NAME[chainId] || name
+  const shortName = (chainId && SHORT_NAME[chainId]) || name
   return options?.shortName ? shortName : name
 }
 

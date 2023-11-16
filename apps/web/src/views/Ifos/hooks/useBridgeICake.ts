@@ -231,7 +231,7 @@ export function useLatestBridgeTx(ifoId: string, chainId?: ChainId) {
     }
 
     try {
-      const lastTx: Hash = await localforage.getItem(storageKey)
+      const lastTx: Hash | null = await localforage.getItem(storageKey)
       if (lastTx) {
         setTx(lastTx)
       }
@@ -258,7 +258,7 @@ export function useLatestBridgeTx(ifoId: string, chainId?: ChainId) {
 
   const { data: receipt } = useQuery(
     [tx, 'bridge-icake-tx-receipt'],
-    () => getViemClients({ chainId })?.waitForTransactionReceipt({ hash: tx }),
+    () => tx && getViemClients({ chainId })?.waitForTransactionReceipt({ hash: tx }),
     {
       enabled: Boolean(tx && chainId),
     },
@@ -285,11 +285,16 @@ type CrossChainMeesageParams = {
 export function useCrossChainMessage({ txHash, srcChainId }: CrossChainMeesageParams) {
   const { data: message } = useQuery(
     [txHash, srcChainId, 'ifo-cross-chain-sync-message'],
-    () =>
-      getCrossChainMessage({
+    () => {
+      if (!srcChainId || !txHash) {
+        throw new Error('Invalid srcChainId or tx hash')
+      }
+
+      return getCrossChainMessage({
         chainId: srcChainId,
         txHash,
-      }),
+      })
+    },
     {
       enabled: Boolean(txHash && srcChainId),
       refetchInterval: 5 * 1000,

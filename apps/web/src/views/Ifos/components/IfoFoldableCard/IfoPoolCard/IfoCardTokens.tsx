@@ -28,6 +28,7 @@ import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 import { EnableStatus } from '../types'
 import IFORequirements from './IFORequirements'
@@ -144,20 +145,22 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   )
 
   const publicPoolCharacteristics = publicIfoData[poolId]
-  const isPublicPoolBasicSale = isBasicSale(publicPoolCharacteristics.saleType)
+  const isPublicPoolBasicSale = isBasicSale(publicPoolCharacteristics?.saleType)
   const userPoolCharacteristics = walletIfoData[poolId]
-  const { offeringAmountInToken, amountTokenCommittedInLP, refundingAmountInLP } = userPoolCharacteristics
-  const spentAmount = amountTokenCommittedInLP.minus(refundingAmountInLP)
+  const offeringAmountInToken = userPoolCharacteristics?.offeringAmountInToken
+  const amountTokenCommittedInLP = userPoolCharacteristics?.amountTokenCommittedInLP
+  const refundingAmountInLP = userPoolCharacteristics?.refundingAmountInLP
+  const spentAmount = amountTokenCommittedInLP?.minus(refundingAmountInLP || BIG_ZERO)
 
   const { currency, token, version } = ifo
-  const { hasClaimed } = userPoolCharacteristics
+  const hasClaimed = userPoolCharacteristics?.hasClaimed
   const distributionRatio =
-    (ifo.version >= 3 ? publicIfoData[poolId]?.distributionRatio : ifo[poolId]?.distributionRatio) * 100
+    (ifo.version >= 3 ? publicIfoData[poolId]?.distributionRatio ?? 0 : ifo[poolId]?.distributionRatio ?? 0) * 100
 
   const tooltipContentOfSpent = t(
     'Based on "overflow" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.',
     {
-      refundingAmount: getBalanceNumber(refundingAmountInLP, ifo.currency.decimals).toFixed(4),
+      refundingAmount: getBalanceNumber(refundingAmountInLP || BIG_ZERO, ifo.currency.decimals).toFixed(4),
       spentToken: ifo.currency.symbol,
     },
   )
@@ -247,7 +250,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('On sale')}</Label>
             <Value>{`${formatNumber(
-              getBalanceNumber(publicIfoData[poolId].offeringAmountPool, ifo.token.decimals),
+              getBalanceNumber(publicIfoData[poolId]?.offeringAmountPool, ifo.token.decimals),
               0,
               1,
             )} ${token.symbol}`}</Value>
@@ -277,8 +280,8 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             <Label>{t('Your %symbol% committed', { symbol: currency.symbol })}</Label>
             <Value>{getBalanceNumber(amountTokenCommittedInLP, currency.decimals)}</Value>
             <IfoPercentageOfTotal
-              userAmount={amountTokenCommittedInLP}
-              totalAmount={publicPoolCharacteristics.totalAmountPool}
+              userAmount={amountTokenCommittedInLP || BIG_ZERO}
+              totalAmount={publicPoolCharacteristics?.totalAmountPool || BIG_ZERO}
             />
             <Flex>
               <Box>
@@ -301,14 +304,16 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             <Value>{getBalanceNumber(offeringAmountInToken, token.decimals)}</Value>
-            {version >= 3.2 && publicPoolCharacteristics.vestingInformation.percentage > 0 && (
-              <IfoVestingAvailableToClaim
-                amountToReceive={offeringAmountInToken}
-                percentage={publicPoolCharacteristics.vestingInformation.percentage}
-                decimals={token.decimals}
-                displayDecimals={2}
-              />
-            )}
+            {version >= 3.2 &&
+              publicPoolCharacteristics?.vestingInformation?.percentage &&
+              publicPoolCharacteristics.vestingInformation.percentage > 0 && (
+                <IfoVestingAvailableToClaim
+                  amountToReceive={offeringAmountInToken || BIG_ZERO}
+                  percentage={publicPoolCharacteristics.vestingInformation.percentage}
+                  decimals={token.decimals}
+                  displayDecimals={2}
+                />
+              )}
           </TokenSection>
           {message}
         </>
@@ -316,7 +321,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
     }
 
     if (publicIfoData.status === 'finished') {
-      return amountTokenCommittedInLP.isEqualTo(0) ? (
+      return amountTokenCommittedInLP?.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />
           <Text fontWeight={600}>{t('You didn’t participate in this sale!')}</Text>
@@ -346,8 +351,8 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
               {hasClaimed && <CheckmarkCircleIcon color="success" ml="8px" />}
             </Flex>
             <IfoPercentageOfTotal
-              userAmount={amountTokenCommittedInLP}
-              totalAmount={publicPoolCharacteristics.totalAmountPool}
+              userAmount={amountTokenCommittedInLP || BIG_ZERO}
+              totalAmount={publicPoolCharacteristics?.totalAmountPool || BIG_ZERO}
             />
           </CommitTokenSection>
           <TokenSection primaryToken={ifo.token}>
@@ -359,7 +364,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             </Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(offeringAmountInToken, token.decimals)}</Value>
-              {!hasClaimed && offeringAmountInToken.isEqualTo(0) && (
+              {!hasClaimed && offeringAmountInToken?.isEqualTo(0) && (
                 <div ref={targetRef} style={{ display: 'flex', marginLeft: '8px' }}>
                   <HelpIcon />
                 </div>

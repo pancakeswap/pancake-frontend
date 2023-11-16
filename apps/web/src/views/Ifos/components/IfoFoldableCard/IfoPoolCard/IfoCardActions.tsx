@@ -46,7 +46,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
     return <ConnectWalletButton width="100%" />
   }
 
-  if (!hasProfile && !isBasicSale(publicIfoData[poolId].saleType)) {
+  if (!hasProfile && !isBasicSale(publicIfoData[poolId]?.saleType)) {
     return <ActivateProfileButton saleFinished={publicIfoData.status === 'finished'} />
   }
 
@@ -56,9 +56,9 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
 
   const needClaim =
     publicIfoData.status === 'finished' &&
-    !userPoolCharacteristics.hasClaimed &&
-    (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
-      userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0))
+    !userPoolCharacteristics?.hasClaimed &&
+    (userPoolCharacteristics?.offeringAmountInToken.isGreaterThan(0) ||
+      userPoolCharacteristics?.refundingAmountInLP.isGreaterThan(0))
 
   if (needClaim) {
     return <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />

@@ -62,13 +62,13 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({
   const publicIfoData = useGetPublicIfoV3Data(data.ifo)
   const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized } = publicIfoData
   useSWRImmutable(
-    !isPublicIfoDataInitialized && currentBlock && ['fetchPublicIfoData', currentBlock, data.ifo.id],
+    !isPublicIfoDataInitialized && currentBlock ? ['fetchPublicIfoData', currentBlock, data.ifo.id] : null,
     async () => fetchPublicIfoData(currentBlock),
   )
 
   const { cliff } = publicIfoData[poolId]?.vestingInformation || {}
   const currentTimeStamp = Date.now()
-  const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000
+  const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + (cliff ?? 0)) * 1000
   const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
   const isVestingOver = currentTimeStamp > timeVestingEnd
 

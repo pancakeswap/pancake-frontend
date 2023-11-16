@@ -7,6 +7,7 @@ import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useIfoVesting from 'views/Ifos/hooks/useIfoVesting'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
@@ -35,7 +36,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   const { token } = ifo
   const { vestingStartTime } = publicIfoData
   const userPool = walletIfoData[poolId]
-  const { vestingInformation } = publicIfoData[poolId]
+  const vestingInformation = publicIfoData[poolId]?.vestingInformation
 
   const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed, isVestingOver } =
     useIfoVesting({
@@ -54,15 +55,19 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   }, [])
 
   const releaseRate = useMemo(() => {
-    const rate = new BigNumber(userPool?.vestingAmountTotal).div(vestingInformation.duration)
+    const rate = new BigNumber(userPool?.vestingAmountTotal || BIG_ZERO).div(vestingInformation?.duration || BIG_ONE)
     const rateBalance = getFullDisplayBalance(rate, token.decimals, 5)
     return new BigNumber(rateBalance).gte(0.00001) ? rateBalance : '< 0.00001'
   }, [vestingInformation, userPool, token])
 
-  const claimButton = !userPool.isVestingInitialized ? (
+  const claimButton = !userPool?.isVestingInitialized ? (
     <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
   ) : (
-    <VestingClaimButton poolId={poolId} amountAvailableToClaim={amountAvailableToClaim} walletIfoData={walletIfoData} />
+    <VestingClaimButton
+      poolId={poolId}
+      amountAvailableToClaim={amountAvailableToClaim || BIG_ZERO}
+      walletIfoData={walletIfoData}
+    />
   )
 
   const claimAction = ifo.chainId === chainId ? claimButton : <SwitchNetworkTips ifoChainId={ifo.chainId} />
@@ -84,7 +89,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
           isVestingOver={isVestingOver}
         />
         <Divider />
-        <TotalAvailableClaim ifo={ifo} amountAvailableToClaim={amountAvailableToClaim} />
+        <TotalAvailableClaim ifo={ifo} amountAvailableToClaim={amountAvailableToClaim || BIG_ZERO} />
         <Text mb="24px" color="textSubtle" fontSize="14px">
           {t('You’ve already claimed %amount% %symbol%', { symbol: token.symbol, amount: amountClaimed })}
         </Text>

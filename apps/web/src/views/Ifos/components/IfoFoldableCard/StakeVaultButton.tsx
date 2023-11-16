@@ -15,7 +15,7 @@ const StakeVaultButton = (props) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const router = useRouter()
-  const { isExpanded, setIsExpanded } = useConfig()
+  const { isExpanded, setIsExpanded } = useConfig() as any
   const isFinishedPage = router.pathname.includes('history')
   const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
   const chainNames = useChainNames(CAKE_VAULT_SUPPORTED_CHAINS)

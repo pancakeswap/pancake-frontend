@@ -61,6 +61,10 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   }
 
   const fetchIfoData = useCallback(async () => {
+    if (!account) {
+      return
+    }
+
     const [offeringAmount, userInfoResponse, refundingAmount] = await publicClient({ chainId: ChainId.BSC }).multicall({
       contracts: [
         {

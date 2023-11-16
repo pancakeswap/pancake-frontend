@@ -210,49 +210,53 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
       const totalOfferingAmount = poolBasicFormatted.offeringAmountPool.plus(poolUnlimitedFormatted.offeringAmountPool)
 
-      setState((prev) => ({
-        ...prev,
-        isInitialized: true,
-        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
-        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        poolBasic: {
-          ...poolBasicFormatted,
-          taxRate: privateSaleTaxRateNum,
-          distributionRatio: round(
-            poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
-            ROUND_DIGIT,
-          ),
-          pointThreshold: pointThreshold.result ? Number(pointThreshold.result) : 0,
-          admissionProfile:
-            Boolean(admissionProfile && admissionProfile.result) && admissionProfile.result !== NO_QUALIFIED_NFT_ADDRESS
-              ? admissionProfile.result
-              : undefined,
-          vestingInformation: formatVestingInfo(basicVestingInformation.result),
-        },
-        poolUnlimited: {
-          ...poolUnlimitedFormatted,
-          taxRate: taxRateNum,
-          distributionRatio: round(
-            poolUnlimitedFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
-            ROUND_DIGIT,
-          ),
-          vestingInformation: formatVestingInfo(unlimitedVestingInformation.result),
-        },
-        status,
-        progress,
-        blocksRemaining,
-        startBlockNum,
-        endBlockNum,
-        thresholdPoints,
-        numberPoints: numberPoints ? Number(numberPoints) : 0,
-        plannedStartTime: plannedStartTime ?? 0,
-        vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,
-      }))
+      setState(
+        (prev) =>
+          ({
+            ...prev,
+            isInitialized: true,
+            secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
+            secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+            poolBasic: {
+              ...poolBasicFormatted,
+              taxRate: privateSaleTaxRateNum,
+              distributionRatio: round(
+                poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
+                ROUND_DIGIT,
+              ),
+              pointThreshold: pointThreshold.result ? Number(pointThreshold.result) : 0,
+              admissionProfile:
+                Boolean(admissionProfile && admissionProfile.result) &&
+                admissionProfile.result !== NO_QUALIFIED_NFT_ADDRESS
+                  ? admissionProfile.result
+                  : undefined,
+              vestingInformation: formatVestingInfo(basicVestingInformation.result),
+            },
+            poolUnlimited: {
+              ...poolUnlimitedFormatted,
+              taxRate: taxRateNum,
+              distributionRatio: round(
+                poolUnlimitedFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
+                ROUND_DIGIT,
+              ),
+              vestingInformation: formatVestingInfo(unlimitedVestingInformation.result),
+            },
+            status,
+            progress,
+            blocksRemaining,
+            startBlockNum,
+            endBlockNum,
+            thresholdPoints,
+            numberPoints: numberPoints ? Number(numberPoints) : 0,
+            plannedStartTime: plannedStartTime ?? 0,
+            vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,
+          } as any),
+      )
     },
     [plannedStartTime, address],
   )
 
-  return { ...state, currencyPriceInUSD, fetchIfoData }
+  return { ...state, currencyPriceInUSD, fetchIfoData } as any
 }
 
 export default useGetPublicIfoData

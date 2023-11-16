@@ -25,6 +25,7 @@ import { NextLinkFromReactRouter as RouterLink } from '@pancakeswap/widgets-inte
 import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Address, useAccount } from 'wagmi'
 import { useMemo, ReactNode } from 'react'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { useProfile } from 'state/profile/hooks'
@@ -95,7 +96,7 @@ function ICakeCard({
             <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
               {title}
             </Text>
-            <Balance fontSize="20px" bold decimals={5} value={balanceNumber} />
+            <Balance fontSize="20px" bold decimals={5} value={balanceNumber ?? 0} />
             {more}
           </Box>
         </Flex>
@@ -121,8 +122,8 @@ const Step1 = ({
     [sourceChainIfoCredit],
   )
   const ceiling = useIfoCeiling({ chainId: srcChainId })
-  const creditDollarValue = cakePrice.multipliedBy(balanceNumber).toNumber()
-  const weeksDisplay = getICakeWeekDisplay(ceiling)
+  const creditDollarValue = cakePrice.multipliedBy(balanceNumber ?? 1).toNumber()
+  const weeksDisplay = getICakeWeekDisplay(ceiling ?? BIG_ZERO)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -269,7 +270,9 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
       )
     }
 
-    const renderCommitCakeStep = () => <Step2 hasProfile={hasActiveProfile} isLive={isLive} isCommitted={isCommitted} />
+    const renderCommitCakeStep = () => (
+      <Step2 hasProfile={hasActiveProfile} isLive={Boolean(isLive)} isCommitted={isCommitted} />
+    )
     const renderClaimStep = () => (
       <CardBody>
         <Heading as="h4" color="secondary" mb="16px">

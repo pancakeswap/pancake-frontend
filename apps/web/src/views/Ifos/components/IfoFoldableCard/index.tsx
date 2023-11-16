@@ -217,10 +217,10 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
       (publicIfoData.status === 'finished' && secondsUntilEnd >= -120) ||
       (publicIfoData.status === 'finished' &&
         ifo.version >= 3.2 &&
-        (publicIfoData[PoolIds.poolBasic].vestingInformation.percentage > 0 ||
-          publicIfoData[PoolIds.poolUnlimited].vestingInformation.percentage > 0))) &&
+        ((publicIfoData[PoolIds.poolBasic]?.vestingInformation?.percentage ?? 0) > 0 ||
+          (publicIfoData[PoolIds.poolUnlimited]?.vestingInformation?.percentage ?? 0) > 0))) &&
     ifo.isActive
-  const onApprove = useIfoApprove(ifo, contract.address)
+  const onApprove = useIfoApprove(ifo, contract?.address)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const isWindowVisible = useIsWindowVisible()
@@ -230,20 +230,21 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
       account &&
       ifo.version >= 3.2 &&
       publicIfoData.status === 'finished' &&
-      (publicIfoData[PoolIds.poolBasic].vestingInformation.percentage > 0 ||
-        publicIfoData[PoolIds.poolUnlimited].vestingInformation.percentage > 0) &&
-      (walletIfoData[PoolIds.poolBasic].amountTokenCommittedInLP.gt(0) ||
+      ((publicIfoData[PoolIds.poolBasic]?.vestingInformation?.percentage ?? 0) > 0 ||
+        (publicIfoData[PoolIds.poolUnlimited]?.vestingInformation?.percentage ?? 0) > 0) &&
+      (walletIfoData[PoolIds.poolBasic]?.amountTokenCommittedInLP.gt(0) ||
         walletIfoData[PoolIds.poolUnlimited].amountTokenCommittedInLP.gt(0))
     )
   }, [account, ifo, publicIfoData, walletIfoData])
 
   useSWRImmutable(
-    currentBlock &&
-      (isRecentlyActive
+    currentBlock
+      ? isRecentlyActive
         ? ['fetchPublicIfoData', currentBlock, ifo.id]
         : !isPublicIfoDataInitialized
         ? ['fetchPublicIfoData', ifo.id]
-        : null),
+        : null
+      : null,
     async () => fetchPublicIfoData(currentBlock),
   )
 
@@ -268,7 +269,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
   const handleApprove = async () => {
     const receipt = await fetchWithCatchTxError(() => {
       setEnableStatus(EnableStatus.IS_ENABLING)
-      return onApprove()
+      return onApprove() as any
     })
     if (receipt?.status) {
       toastSuccess(
@@ -285,7 +286,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
 
   useEffect(() => {
     const checkAllowance = async () => {
-      const approvalRequired = await requiresApproval(raisingTokenContract, account, contract.address)
+      const approvalRequired = await requiresApproval(raisingTokenContract, account || '0x', contract?.address || '0x')
       setEnableStatus(approvalRequired ? EnableStatus.DISABLED : EnableStatus.ENABLED)
     }
 

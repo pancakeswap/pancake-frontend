@@ -83,6 +83,10 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const fetchIfoData = useCallback(async () => {
     const bscClient = publicClient({ chainId: ChainId.BSC })
 
+    if (!account) {
+      return
+    }
+
     const [userInfo, amounts] = await bscClient.multicall({
       contracts: [
         {
@@ -121,8 +125,8 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         ],
       })
 
-      basicId = basicIdDataResult.result
-      unlimitedId = unlimitedIdDataResult.result
+      basicId = basicIdDataResult.result as any
+      unlimitedId = unlimitedIdDataResult.result as any
     }
 
     let [
@@ -160,76 +164,85 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
             abi: ifoV3ABI,
             address,
             functionName: 'getVestingSchedule',
-            args: [basicId],
+            args: [basicId as any],
           },
           {
             abi: ifoV3ABI,
             address,
             functionName: 'getVestingSchedule',
-            args: [unlimitedId],
+            args: [unlimitedId as any],
           },
           {
             abi: ifoV3ABI,
             address,
             functionName: 'computeReleasableAmount',
-            args: [basicId],
+            args: [basicId as any],
           },
           {
             abi: ifoV3ABI,
             address,
             functionName: 'computeReleasableAmount',
-            args: [unlimitedId],
+            args: [unlimitedId as any],
           },
         ],
         allowFailure: true,
       })
 
-      isQualifiedNFT = isQualifiedNFTResult.result
-      isQualifiedPoints = isQualifiedPointsResult.result
-      basicSchedule = basicScheduleResult.result
-      unlimitedSchedule = unlimitedScheduleResult.result
-      basicReleasableAmount = basicReleasableAmountResult.result
-      unlimitedReleasableAmount = unlimitedReleasableAmountResult.result
+      isQualifiedNFT = isQualifiedNFTResult.result as any
+      isQualifiedPoints = isQualifiedPointsResult.result as any
+      basicSchedule = basicScheduleResult.result as any
+      unlimitedSchedule = unlimitedScheduleResult.result as any
+      basicReleasableAmount = basicReleasableAmountResult.result as any
+      unlimitedReleasableAmount = unlimitedReleasableAmountResult.result as any
     }
 
-    dispatch(fetchCakeVaultUserData({ account, chainId }))
+    if (chainId) {
+      dispatch(fetchCakeVaultUserData({ account, chainId }))
+    }
 
-    setState((prevState) => ({
-      ...prevState,
-      isInitialized: true,
-      poolBasic: {
-        ...prevState.poolBasic,
-        amountTokenCommittedInLP: new BigNumber(userInfo[0][0].toString()),
-        offeringAmountInToken: new BigNumber(amounts[0][0].toString()),
-        refundingAmountInLP: new BigNumber(amounts[0][1].toString()),
-        taxAmountInLP: new BigNumber(amounts[0][2].toString()),
-        hasClaimed: userInfo[1][0],
-        isQualifiedNFT,
-        isQualifiedPoints,
-        vestingReleased: basicSchedule ? new BigNumber(basicSchedule.released.toString()) : BIG_ZERO,
-        vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule.amountTotal.toString()) : BIG_ZERO,
-        isVestingInitialized: basicSchedule ? basicSchedule.isVestingInitialized : false,
-        vestingId: basicId ? basicId.toString() : '0',
-        vestingComputeReleasableAmount: basicReleasableAmount
-          ? new BigNumber(basicReleasableAmount.toString())
-          : BIG_ZERO,
-      },
-      poolUnlimited: {
-        ...prevState.poolUnlimited,
-        amountTokenCommittedInLP: new BigNumber(userInfo[0][1].toString()),
-        offeringAmountInToken: new BigNumber(amounts[1][0].toString()),
-        refundingAmountInLP: new BigNumber(amounts[1][1].toString()),
-        taxAmountInLP: new BigNumber(amounts[1][2].toString()),
-        hasClaimed: userInfo[1][1],
-        vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule.released.toString()) : BIG_ZERO,
-        vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule.amountTotal.toString()) : BIG_ZERO,
-        isVestingInitialized: unlimitedSchedule ? unlimitedSchedule.isVestingInitialized : false,
-        vestingId: unlimitedId ? unlimitedId.toString() : '0',
-        vestingComputeReleasableAmount: unlimitedReleasableAmount
-          ? new BigNumber(unlimitedReleasableAmount.toString())
-          : BIG_ZERO,
-      },
-    }))
+    setState(
+      (prevState) =>
+        ({
+          ...prevState,
+          isInitialized: true,
+          poolBasic: {
+            ...prevState.poolBasic,
+            amountTokenCommittedInLP: new BigNumber(userInfo[0][0].toString()),
+            offeringAmountInToken: new BigNumber(amounts[0][0].toString()),
+            refundingAmountInLP: new BigNumber(amounts[0][1].toString()),
+            taxAmountInLP: new BigNumber(amounts[0][2].toString()),
+            hasClaimed: userInfo[1][0],
+            isQualifiedNFT,
+            isQualifiedPoints,
+            vestingReleased: basicSchedule ? new BigNumber((basicSchedule as any).released.toString()) : BIG_ZERO,
+            vestingAmountTotal: basicSchedule ? new BigNumber((basicSchedule as any).amountTotal.toString()) : BIG_ZERO,
+            isVestingInitialized: basicSchedule ? (basicSchedule as any).isVestingInitialized : false,
+            vestingId: basicId ? (basicId as any).toString() : '0',
+            vestingComputeReleasableAmount: basicReleasableAmount
+              ? new BigNumber((basicReleasableAmount as any).toString())
+              : BIG_ZERO,
+          },
+          poolUnlimited: {
+            ...prevState.poolUnlimited,
+            amountTokenCommittedInLP: new BigNumber(userInfo[0][1].toString()),
+            offeringAmountInToken: new BigNumber(amounts[1][0].toString()),
+            refundingAmountInLP: new BigNumber(amounts[1][1].toString()),
+            taxAmountInLP: new BigNumber(amounts[1][2].toString()),
+            hasClaimed: userInfo[1][1],
+            vestingReleased: unlimitedSchedule
+              ? new BigNumber((unlimitedSchedule as any).released.toString())
+              : BIG_ZERO,
+            vestingAmountTotal: unlimitedSchedule
+              ? new BigNumber((unlimitedSchedule as any).amountTotal.toString())
+              : BIG_ZERO,
+            isVestingInitialized: unlimitedSchedule ? (unlimitedSchedule as any).isVestingInitialized : false,
+            vestingId: unlimitedId ? (unlimitedId as any).toString() : '0',
+            vestingComputeReleasableAmount: unlimitedReleasableAmount
+              ? new BigNumber((unlimitedReleasableAmount as any).toString())
+              : BIG_ZERO,
+          },
+        } as any),
+    )
   }, [account, address, dispatch, version, chainId])
 
   const resetIfoData = useCallback(() => {

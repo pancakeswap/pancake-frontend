@@ -126,29 +126,32 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       // Calculate the total progress until finished or until start
       const progress = status === 'live' ? ((currentBlock - startBlockNum) / totalBlocks) * 100 : null
 
-      setState((prev) => ({
-        ...prev,
-        isInitialized: true,
-        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
-        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        poolBasic: {
-          ...poolBasicFormatted,
-          taxRate: 0,
-        },
-        poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
-        status,
-        progress,
-        blocksRemaining,
-        startBlockNum,
-        endBlockNum,
-        thresholdPoints,
-        numberPoints: numberPoints ? Number(numberPoints) : 0,
-      }))
+      setState(
+        (prev) =>
+          ({
+            ...prev,
+            isInitialized: true,
+            secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
+            secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+            poolBasic: {
+              ...poolBasicFormatted,
+              taxRate: 0,
+            },
+            poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
+            status,
+            progress,
+            blocksRemaining,
+            startBlockNum,
+            endBlockNum,
+            thresholdPoints,
+            numberPoints: numberPoints ? Number(numberPoints) : 0,
+          } as any),
+      )
     },
     [address],
   )
 
-  return { ...state, currencyPriceInUSD, fetchIfoData }
+  return { ...state, currencyPriceInUSD, fetchIfoData } as any
 }
 
 export default useGetPublicIfoData

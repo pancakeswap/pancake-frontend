@@ -87,7 +87,9 @@ export const cardConfig = (
                 </Text>
               ))}
             </>
-          ) : null,
+          ) : (
+            <></>
+          ),
         }
       }
 
@@ -121,7 +123,10 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
   const { t } = useTranslation()
   const { address: account } = useAccount()
 
-  const { admissionProfile, pointThreshold, vestingInformation, saleType } = publicIfoData[poolId]
+  const admissionProfile = publicIfoData[poolId]?.admissionProfile
+  const pointThreshold = publicIfoData[poolId]?.pointThreshold
+  const vestingInformation = publicIfoData[poolId]?.vestingInformation
+  const saleType = publicIfoData[poolId]?.saleType
 
   const { needQualifiedNFT, needQualifiedPoints } = useMemo(() => {
     return ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isBasicSale(saleType)
@@ -153,9 +158,10 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
     return (
       account &&
       ifo.version >= 3.2 &&
+      vestingInformation?.percentage &&
       vestingInformation.percentage > 0 &&
       publicIfoData.status === 'finished' &&
-      walletIfoData[poolId].amountTokenCommittedInLP.gt(0)
+      walletIfoData[poolId]?.amountTokenCommittedInLP.gt(0)
     )
   }, [account, ifo, poolId, publicIfoData, vestingInformation, walletIfoData])
 

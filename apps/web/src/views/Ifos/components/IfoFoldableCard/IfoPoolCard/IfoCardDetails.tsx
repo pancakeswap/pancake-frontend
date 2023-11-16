@@ -1,4 +1,5 @@
 import { useMemo, ReactNode } from 'react'
+import BigNumber from 'bignumber.js'
 import { styled } from 'styled-components'
 import { CAKE } from '@pancakeswap/tokens'
 import { Text, Flex, Box, Skeleton, TooltipText, useTooltip, IfoSkeletonCardDetails } from '@pancakeswap/uikit'
@@ -11,6 +12,9 @@ import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { DAY_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
+
+const ZERO = new BigNumber(0)
+const ONE = new BigNumber(1)
 
 export interface IfoCardDetailsProps {
   poolId: PoolIds
@@ -146,14 +150,14 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
   const walletCharacteristic = walletIfoData[poolId]
-  const { hasTax } = poolCharacteristic
+  const hasTax = poolCharacteristic?.hasTax
 
   let version3MaxTokens = walletIfoData.ifoCredit?.creditLeft
     ? // if creditLeft > limit show limit else show creditLeft
       walletIfoData.ifoCredit.creditLeft.gt(
-        poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP),
+        poolCharacteristic?.limitPerUserInLP.minus(walletCharacteristic?.amountTokenCommittedInLP || ZERO) || ZERO,
       )
-      ? poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP)
+      ? poolCharacteristic?.limitPerUserInLP.minus(walletCharacteristic?.amountTokenCommittedInLP || ZERO)
       : walletIfoData.ifoCredit.creditLeft
     : null
 
@@ -166,42 +170,44 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
       ? version3MaxTokens
         ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
         : 0
-      : getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
-  const taxRate = `${poolCharacteristic.taxRate}%`
+      : getBalanceNumber(poolCharacteristic?.limitPerUserInLP || ZERO, ifo.currency.decimals)
+  const taxRate = `${poolCharacteristic?.taxRate || 0}%`
 
-  const totalCommittedPercent = poolCharacteristic.totalAmountPool
-    .div(poolCharacteristic.raisingAmountPool)
+  const totalCommittedPercent = poolCharacteristic?.totalAmountPool
+    .div(poolCharacteristic?.raisingAmountPool)
     .times(100)
     .toFixed(2)
-  const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)
+  const totalLPCommitted = getBalanceNumber(poolCharacteristic?.totalAmountPool || ZERO, ifo.currency.decimals)
   const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
 
-  const sumTaxesOverflow = poolCharacteristic.totalAmountPool.times(poolCharacteristic.taxRate).times(0.01)
-  const sumTaxesOverflowInUSD = currencyPriceInUSD.times(sumTaxesOverflow)
+  const sumTaxesOverflow = poolCharacteristic?.totalAmountPool.times(poolCharacteristic.taxRate).times(0.01)
+  const sumTaxesOverflowInUSD = currencyPriceInUSD.times(sumTaxesOverflow || ZERO)
   const pricePerTokenWithFeeToOriginalRatio = sumTaxesOverflow
-    .plus(poolCharacteristic.raisingAmountPool)
-    .div(poolCharacteristic.offeringAmountPool)
-    .div(poolCharacteristic.raisingAmountPool.div(poolCharacteristic.offeringAmountPool))
-  const pricePerTokenWithFeeNumber = pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber()
-  const maxPrecision = ifo.tokenOfferingPrice < 1 ? 4 : 2
+    ?.plus(poolCharacteristic?.raisingAmountPool || ZERO)
+    .div(poolCharacteristic?.offeringAmountPool || ONE)
+    .div(poolCharacteristic?.raisingAmountPool.div(poolCharacteristic.offeringAmountPool) || ONE)
+  const pricePerTokenWithFeeNumber = pricePerTokenWithFeeToOriginalRatio
+    ?.times(ifo.tokenOfferingPrice || ONE)
+    .toNumber()
+  const maxPrecision = ifo.tokenOfferingPrice && ifo.tokenOfferingPrice < 1 ? 4 : 2
 
-  const pricePerTokenWithFee = `~$${formatNumber(pricePerTokenWithFeeNumber, 0, maxPrecision)}`
+  const pricePerTokenWithFee = `~$${formatNumber(pricePerTokenWithFeeNumber || 0, 0, maxPrecision)}`
   const raisingTokenToBurn =
     ifo[poolId]?.cakeToBurn ||
     (sumTaxesOverflowInUSD.gt(0) &&
-      `${formatNumber(getBalanceNumber(sumTaxesOverflow), 0, 2)} (~$${formatNumber(
+      `${formatNumber(getBalanceNumber(sumTaxesOverflow || ZERO), 0, 2)} (~$${formatNumber(
         getBalanceNumber(sumTaxesOverflowInUSD),
         0,
         2,
       )})`)
 
   const maxToken = ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
-  const basicSale = useMemo(() => isBasicSale(poolCharacteristic.saleType), [poolCharacteristic.saleType])
+  const basicSale = useMemo(() => isBasicSale(poolCharacteristic?.saleType), [poolCharacteristic?.saleType])
 
   const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} basicSale={basicSale} />
 
-  const durationInSeconds = ifo.version >= 3.2 ? poolCharacteristic.vestingInformation.duration : 0
+  const durationInSeconds = ifo.version >= 3.2 ? poolCharacteristic?.vestingInformation?.duration ?? 0 : 0
   const vestingDays = Math.ceil(durationInSeconds / DAY_IN_SECONDS)
 
   /* Format end */
@@ -239,30 +245,32 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId]?.raiseAmount} />
           {raisingTokenToBurn && <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} />}
-          {ifo.version >= 3.2 && poolCharacteristic.vestingInformation.percentage > 0 && (
-            <>
-              <FooterEntry
-                label={t('Vested percentage:')}
-                value={`${poolCharacteristic.vestingInformation.percentage}%`}
-                tooltipContent={t(
-                  '%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.',
-                  {
-                    percentageVested: poolCharacteristic.vestingInformation.percentage,
-                    percentageTgeRelease: BIG_ONE_HUNDRED.minus(
-                      poolCharacteristic.vestingInformation.percentage,
-                    ).toString(),
-                  },
-                )}
-              />
-              <FooterEntry
-                label={t('Vesting schedule:')}
-                value={`${vestingDays} days`}
-                tooltipContent={t('The vested tokens will be released linearly over a period of %days% days.', {
-                  days: vestingDays,
-                })}
-              />
-            </>
-          )}
+          {ifo.version >= 3.2 &&
+            poolCharacteristic?.vestingInformation?.percentage &&
+            poolCharacteristic.vestingInformation.percentage > 0 && (
+              <>
+                <FooterEntry
+                  label={t('Vested percentage:')}
+                  value={`${poolCharacteristic.vestingInformation.percentage}%`}
+                  tooltipContent={t(
+                    '%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.',
+                    {
+                      percentageVested: poolCharacteristic.vestingInformation.percentage,
+                      percentageTgeRelease: BIG_ONE_HUNDRED.minus(
+                        poolCharacteristic.vestingInformation.percentage,
+                      ).toString(),
+                    },
+                  )}
+                />
+                <FooterEntry
+                  label={t('Vesting schedule:')}
+                  value={`${vestingDays} days`}
+                  tooltipContent={t('The vested tokens will be released linearly over a period of %days% days.', {
+                    days: vestingDays,
+                  })}
+                />
+              </>
+            )}
         </>
       )
     }

@@ -70,27 +70,30 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       // Calculate the total progress until finished or until start
       const progress = status === 'live' ? ((currentBlock - startBlockNum) / totalBlocks) * 100 : null
 
-      setState((prev) => ({
-        ...prev,
-        isInitialized: true,
-        status,
-        blocksRemaining,
-        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        progress,
-        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
-        startBlockNum,
-        endBlockNum,
-        [PoolIds.poolUnlimited]: {
-          ...prev.poolUnlimited,
-          raisingAmountPool: raisingAmount ? new BigNumber(raisingAmount.toString()) : BIG_ZERO,
-          totalAmountPool: totalAmount ? new BigNumber(totalAmount.toString()) : BIG_ZERO,
-        },
-      }))
+      setState(
+        (prev) =>
+          ({
+            ...prev,
+            isInitialized: true,
+            status,
+            blocksRemaining,
+            secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+            progress,
+            secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
+            startBlockNum,
+            endBlockNum,
+            [PoolIds.poolUnlimited]: {
+              ...prev.poolUnlimited,
+              raisingAmountPool: raisingAmount ? new BigNumber(raisingAmount.toString()) : BIG_ZERO,
+              totalAmountPool: totalAmount ? new BigNumber(totalAmount.toString()) : BIG_ZERO,
+            },
+          } as any),
+      )
     },
     [address],
   )
 
-  return { ...state, currencyPriceInUSD: lpTokenPriceInUsd, fetchIfoData }
+  return { ...state, currencyPriceInUSD: lpTokenPriceInUsd, fetchIfoData } as any
 }
 
 export default useGetPublicIfoData
