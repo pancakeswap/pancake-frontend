@@ -31,8 +31,9 @@ const getSortClassName = (sortBy: SortBy | undefined): string | undefined => {
 }
 
 export const TableHeader: React.FC<{
+  selectable?: boolean
   onSort?: (field: SortField, sortBy: SortBy) => void
-}> = ({ onSort }) => {
+}> = ({ onSort, selectable }) => {
   const { t } = useTranslation()
   const [voteSort, setVoteSort] = useState<SortBy | undefined>()
   const [boostSort, setBoostSort] = useState<SortBy | undefined>()
@@ -54,7 +55,7 @@ export const TableHeader: React.FC<{
 
   return (
     <THeader>
-      <Text color="secondary" textTransform="uppercase" fontWeight={600}>
+      <Text color="secondary" textTransform="uppercase" fontWeight={600} ml={selectable ? 44 : 0}>
         {t('gauges')}
       </Text>
       <Touchable>

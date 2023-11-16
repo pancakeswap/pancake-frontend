@@ -15,6 +15,8 @@ import {
 } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import styled from 'styled-components'
+import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
+import { useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { GaugesTable } from '../GaugesTable'
 import { Filter, FilterValue, OptionsModal, OptionsType } from './OptionsModal'
 
@@ -24,8 +26,10 @@ const FilterButton = styled(Button)`
   padding: 0 12px;
 `
 
-export const AddGaugeModal = ({ isOpen, onDismiss }) => {
+export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => {
   const { t } = useTranslation()
+  const totalGauges = useGaugesVotingCount()
+  const gauges = useGaugesVoting()
   const [option, setOption] = useState<OptionsType | null>(null)
   const [filter, setFilter] = useState<Filter>({
     byChain: [],
@@ -99,9 +103,16 @@ export const AddGaugeModal = ({ isOpen, onDismiss }) => {
               </AutoColumn>
             </Grid>
             <Box>
-              <GaugesTable totalGauges={1} scrollStyle={{ maxHeight: '40vh' }} />
+              <GaugesTable
+                selectable
+                selectRows={selectRows}
+                onRowSelect={onGaugeAdd}
+                totalGauges={Number(totalGauges)}
+                data={gauges}
+                scrollStyle={{ maxHeight: '40vh' }}
+              />
             </Box>
-            <ColumnCenter style={{ marginTop: 'auto' }}>
+            <ColumnCenter style={{ marginTop: 'auto' }} onClick={onDismiss}>
               <Button width="50%">{t('Finish')}</Button>
             </ColumnCenter>
           </FlexGap>
