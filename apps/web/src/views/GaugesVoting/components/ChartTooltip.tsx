@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Address } from 'viem'
 import { feeTierPercent } from 'views/V3Info/utils'
-import { useV2PairData, useV3PoolData } from '../hooks/useGaugePair'
+import { useGaugePair, useV2PairData, useV3PoolData } from '../hooks/useGaugePair'
 import { GaugeVoting } from '../hooks/useGaugesVoting'
 import { TripleLogo } from './TripleLogo'
 
@@ -65,33 +65,8 @@ export const ChartTooltip: React.FC<{
     return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
   }, [total, gauge?.weight])
 
-  const v2PoolData = useV2PairData(gauge?.pairAddress.toLowerCase(), Number(gauge?.chainId || undefined))
-
-  const v3PoolData = useV3PoolData(gauge?.pairAddress.toLowerCase(), Number(gauge?.chainId || undefined))
-
-  console.debug('debug poolData', {
-    pairAddress: gauge?.pairAddress,
-    chainId: Number(gauge?.chainId),
-    v2PoolData,
-    v3PoolData,
-  })
-
-  const token0 = useMemo(() => {
-    if (v2PoolData) return v2PoolData.token0
-    if (v3PoolData) return v3PoolData.token0
-    return undefined
-  }, [v2PoolData, v3PoolData])
-
-  const token1 = useMemo(() => {
-    if (v2PoolData) return v2PoolData.token1
-    if (v3PoolData) return v3PoolData.token1
-    return undefined
-  }, [v2PoolData, v3PoolData])
-
-  const pairName = useMemo(() => {
-    return `${token0?.symbol}-${token1?.symbol}`
-  }, [token0, token1])
-
+  const pool = useGaugePair(gauge?.pairAddress?.toLowerCase(), Number(gauge?.chainId || undefined))
+  const { token0, token1, pairName } = pool
   if (!visible) return null
 
   return (
@@ -115,10 +90,10 @@ export const ChartTooltip: React.FC<{
             {pairName}
           </Text>
           <Flex alignItems="center">
-            {v3PoolData?.feeTier ? (
+            {pool.feeTier ? (
               <>
                 <Text fontSize={12} color="textSubtle">
-                  {feeTierPercent(v3PoolData?.feeTier)}
+                  {pool.feeTier}
                 </Text>
                 <Text color="rgba(40, 13, 95, 0.20)" mx="6px">
                   |
@@ -127,7 +102,7 @@ export const ChartTooltip: React.FC<{
             ) : null}
             <Text fontSize={12} color="textSubtle">
               {/* @fixme @ChefJerry use query result type */}
-              {v3PoolData ? 'V3' : 'V2'}
+              {pool.v3 ? 'V3' : 'V2'}
             </Text>
           </Flex>
         </Flex>
