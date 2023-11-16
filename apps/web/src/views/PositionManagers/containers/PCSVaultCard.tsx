@@ -99,12 +99,19 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   )
 
   const aprDataInfo = useMemo(() => {
-    const { isLoading, data } = aprDataList
+    const { isLoading, data, fallbackData } = aprDataList
+    let aprInfo = data?.length
+      ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
+      : undefined
+
+    if (aprInfo?.token0 === 0 || aprInfo?.token1 === 0) {
+      aprInfo = fallbackData?.length
+        ? fallbackData?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
+        : undefined
+    }
     return {
       isLoading,
-      info: data?.length
-        ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
-        : undefined,
+      info: aprInfo,
     }
   }, [info.vaultAddress, aprDataList])
 
