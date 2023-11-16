@@ -17,7 +17,10 @@ export const GaugesTable: React.FC<{
   scrollStyle?: React.CSSProperties
   totalGauges: number
   data?: GaugeVoting[]
-}> = ({ scrollStyle, data, totalGauges }) => {
+  selectable?: boolean
+  selectRows?: GaugeVoting['hash'][]
+  onRowSelect?: (hash: GaugeVoting['hash']) => void
+}> = ({ scrollStyle, data, totalGauges, selectable, selectRows, onRowSelect }) => {
   const [expanded, setExpanded] = useState(false)
   const [sortKey, setSortKey] = useState<SortField | undefined>()
   const [sortBy, setSortBy] = useState<SortBy | undefined>()
@@ -35,10 +38,17 @@ export const GaugesTable: React.FC<{
 
   return (
     <>
-      <TableHeader onSort={handleSort} />
+      <TableHeader onSort={handleSort} selectable={selectable} />
       <Scrollable expanded={expanded} style={scrollStyle}>
         {sortedData?.map((row) => (
-          <TableRow key={`${row.hash}-${row.pid}`} data={row} totalGauges={totalGauges} />
+          <TableRow
+            key={`${row.hash}-${row.pid}`}
+            data={row}
+            selectable={selectable}
+            selected={selectRows?.includes(row.hash)}
+            onSelect={onRowSelect}
+            totalGauges={totalGauges}
+          />
         ))}
       </Scrollable>
       <ExpandRow onCollapse={() => setExpanded(!expanded)} />
