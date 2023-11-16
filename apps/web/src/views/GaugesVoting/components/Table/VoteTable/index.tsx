@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Card, FlexGap } from '@pancakeswap/uikit'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { GaugeVoting, useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
 import { TableHeader } from './TableHeader'
@@ -26,7 +27,7 @@ export const VoteTable = () => {
     return gauges?.filter((gauge) => selectRows.includes(gauge.hash))
   }, [gauges, selectRows])
   const [expanded, setExpanded] = useState(false)
-  const [votes, setVotes] = useState<number[]>([])
+  const [votes, setVotes] = useState<string[]>([])
 
   const onGaugeAdd = (hash: GaugeVoting['hash']) => {
     if (selectRows.includes(hash)) {
@@ -35,6 +36,38 @@ export const VoteTable = () => {
       setSelectRows((prev) => [...prev, hash])
     }
   }
+
+  const onVoteChange = (index: number, value: string) => {
+    const newVotes = [...votes]
+    if (value === '100') {
+      newVotes.fill('0')
+    }
+    newVotes[index] = value
+    setVotes(newVotes)
+  }
+
+  const { writeVote, isPending } = useWriteGaugesVoteCallback()
+
+  const disabled = useMemo(() => {
+    const sum = votes.reduce((acc, cur) => acc + Number(cur), 0)
+    return sum > 100 || sum < 0 || isPending
+  }, [isPending, votes])
+
+  const submitVote = useCallback(async () => {
+    const voteGauges = votes
+      .map((v, i) => {
+        if (v && v !== '0') {
+          return {
+            ...selectGauges?.[i],
+            weight: Number(v) * 100,
+          }
+        }
+        return undefined
+      })
+      .filter(Boolean) as GaugeVoting[]
+    await writeVote(voteGauges)
+  }, [selectGauges, votes, writeVote])
+
   return (
     <>
       <AddGaugeModal
@@ -49,8 +82,8 @@ export const VoteTable = () => {
         {selectGauges?.length ? (
           <>
             <Scrollable expanded={expanded}>
-              {selectGauges.map((row) => (
-                <TableRow key={row.hash} data={row} />
+              {selectGauges.map((row, index) => (
+                <TableRow key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
               ))}
             </Scrollable>
             {selectGauges?.length > 3 ? (
@@ -65,7 +98,9 @@ export const VoteTable = () => {
           <Button width="100%" onClick={() => setIsOpen(true)}>
             + Add Gauges ({gaugesCount?.toString()})
           </Button>
-          <Button width="100%">Submit vote</Button>
+          <Button width="100%" disabled={disabled} onClick={submitVote}>
+            Submit vote
+          </Button>
         </FlexGap>
       </Card>
     </>

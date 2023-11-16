@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
-import formatLocalisedCompactNumber, { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import formatLocalisedCompactNumber, { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useMemo, useState } from 'react'
@@ -16,8 +16,9 @@ import { PercentInput } from './PercentInput'
 
 export const TableRow: React.FC<{
   data: GaugeVoting
-  onMax?: () => void
-}> = ({ data }) => {
+  value: string
+  onChange: (value: string) => void
+}> = ({ data, value, onChange }) => {
   const votedPower = useVotedPower() ?? 0
   const { balance: veCake } = useVeCakeBalance()
   const votePower = useMemo(() => {
@@ -41,10 +42,13 @@ export const TableRow: React.FC<{
     return userVote?.slope ? new Percent(userVote?.slope, 10000).toFixed(2) : undefined
   }, [userVote?.slope])
 
-  const [input, setInput] = useState('')
+  // const [input, setInput] = useState('')
   const votesAmount = useMemo(() => {
-    return votePower.times(input || 0).div(100)
-  }, [input, votePower])
+    return votePower.times(value || 0).div(100)
+  }, [value, votePower])
+  const onMax = () => {
+    onChange('100')
+  }
 
   return (
     <TRow>
@@ -72,7 +76,7 @@ export const TableRow: React.FC<{
         <Text>{getBalanceAmount(votesAmount).toFixed(2)} veCAKE</Text>
       </Flex>
       <Flex>
-        <PercentInput onMax={() => setInput('100')} value={input} onUserInput={setInput} />
+        <PercentInput onMax={onMax} value={value} onUserInput={onChange} />
       </Flex>
     </TRow>
   )

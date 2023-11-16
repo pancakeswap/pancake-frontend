@@ -48,6 +48,7 @@ export const PercentInput: React.FC<PercentInputProps> = ({
             pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
             inputMode="decimal"
             min="0"
+            max="100"
             value={value}
             onChange={handleOnChange}
             placeholder={placeholder}
