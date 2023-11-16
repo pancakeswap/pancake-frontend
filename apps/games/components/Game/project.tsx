@@ -44,7 +44,6 @@ const SplitWrapper = styled(Box)`
 const StyledIframe = styled.iframe`
   width: 100%;
   height: 100%;
-  min-height: 500px;
 `
 
 export const GameProject = () => {
