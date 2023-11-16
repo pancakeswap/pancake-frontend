@@ -111,11 +111,6 @@ const StyledSwiperNavigation = styled(Flex)`
   svg {
     cursor: pointer;
   }
-
-  svg.swiper-button-disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 `
 
 interface CarouselProps {
