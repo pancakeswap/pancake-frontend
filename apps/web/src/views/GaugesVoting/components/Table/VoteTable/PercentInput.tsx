@@ -2,11 +2,13 @@ import { BalanceInputProps, Box, Button, Flex, Text } from '@pancakeswap/uikit'
 import { StyledBalanceInput, StyledInput as UIKitStyledInput } from '@pancakeswap/uikit/components/BalanceInput/styles'
 import styled from 'styled-components'
 
-export type PercentInputProps = Omit<BalanceInputProps, 'unit' | 'switchEditingUnits'>
+export type PercentInputProps = Omit<BalanceInputProps, 'unit' | 'switchEditingUnits'> & {
+  onMax?: () => void
+}
 
 const StyledInput = styled(UIKitStyledInput)`
   height: 20px;
-  width: 20px;
+  width: 25px;
 `
 
 const StyledPercentInput = styled(StyledBalanceInput)`
@@ -30,6 +32,7 @@ export const PercentInput: React.FC<PercentInputProps> = ({
   inputProps,
   innerRef,
   onUserInput,
+  onMax,
   ...props
 }) => {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +59,7 @@ export const PercentInput: React.FC<PercentInputProps> = ({
           </Text>
         </Flex>
       </Box>
-      <MaxButton variant="secondary" scale="xs">
+      <MaxButton variant="secondary" scale="xs" onClick={onMax}>
         MAX
       </MaxButton>
     </StyledPercentInput>

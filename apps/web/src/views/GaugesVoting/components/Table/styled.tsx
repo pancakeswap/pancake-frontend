@@ -5,7 +5,7 @@ export const Row = css`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   display: grid;
   grid-template-columns: 3fr repeat(3, 1fr);
-  padding: 16px 24px 16px 16px;
+  padding: 10px 24px 16px 10px;
 
   & :nth-child(3) {
     justify-content: center;
