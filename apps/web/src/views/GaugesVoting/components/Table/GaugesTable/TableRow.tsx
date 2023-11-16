@@ -49,6 +49,7 @@ export const TableRow: React.FC<{
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
+        {data?.pid.toString()}
         <DoubleCurrencyLogo size={32} currency0={currency0} currency1={currency1} />
         <Text fontWeight={600} fontSize={16}>
           {pairName}
