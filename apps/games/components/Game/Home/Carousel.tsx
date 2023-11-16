@@ -185,12 +185,7 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
         ))}
       </Swiper>
       <StyledSwiperNavigation justifyContent="space-between" mt="10px">
-        <ChevronLeftIcon
-          color={swiper && swiper?.activeIndex > 0 ? 'white' : 'gray'}
-          width={24}
-          height={24}
-          onClick={handlePrev}
-        />
+        <ChevronLeftIcon color={carouselId > 0 ? 'white' : 'gray'} width={24} height={24} onClick={handlePrev} />
         <ChevronRightIcon
           color={swiper && carouselId < swiper?.slides?.length - 1 ? 'white' : 'gray'}
           width={24}
