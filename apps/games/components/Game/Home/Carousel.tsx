@@ -150,10 +150,10 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
   const handleNext = useCallback(() => {
     const slideLength = swiper?.slides?.length
     if (slideLength && carouselId < slideLength - 1) {
-      const currentBreakpoint: number = swiper?.currentBreakpoint
+      const currentBreakpoint: number | string = swiper?.currentBreakpoint
       setCarouselId(carouselId + 1)
-      const breakPoint = breakPoints[currentBreakpoint]
-      if (carouselId >= breakPoint.slidesPerView - 1) {
+      const breakPoint = currentBreakpoint !== 'max' ? breakPoints[currentBreakpoint as number].slidesPerView : 1
+      if (carouselId >= breakPoint - 1) {
         swiper?.slideNext()
       }
     }
