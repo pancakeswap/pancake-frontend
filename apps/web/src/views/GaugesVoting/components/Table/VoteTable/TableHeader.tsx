@@ -14,7 +14,7 @@ export const TableHeader = () => {
       </Text>
 
       <Text color="secondary" textTransform="uppercase" fontWeight={600}>
-        {t('previous votes')}
+        {t('preview votes')}
       </Text>
 
       <Text color="secondary" textTransform="uppercase" fontWeight={600} textAlign="right">
