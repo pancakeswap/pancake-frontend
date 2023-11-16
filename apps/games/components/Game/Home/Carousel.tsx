@@ -158,7 +158,7 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
       const currentBreakpoint: number = swiper?.currentBreakpoint
       setCarouselId(carouselId + 1)
       const breakPoint = breakPoints[currentBreakpoint]
-      if (carouselId === breakPoint.slidesPerView - 1) {
+      if (carouselId >= breakPoint.slidesPerView - 1) {
         swiper?.slideNext()
       }
     }
@@ -185,8 +185,18 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
         ))}
       </Swiper>
       <StyledSwiperNavigation justifyContent="space-between" mt="10px">
-        <ChevronLeftIcon color="white" width={24} height={24} onClick={handlePrev} />
-        <ChevronRightIcon color="white" width={24} height={24} onClick={handleNext} />
+        <ChevronLeftIcon
+          color={swiper && swiper?.activeIndex > 0 ? 'white' : 'gray'}
+          width={24}
+          height={24}
+          onClick={handlePrev}
+        />
+        <ChevronRightIcon
+          color={swiper && carouselId < swiper?.slides?.length - 1 ? 'white' : 'gray'}
+          width={24}
+          height={24}
+          onClick={handleNext}
+        />
       </StyledSwiperNavigation>
     </StyledSwiperContainer>
   )
