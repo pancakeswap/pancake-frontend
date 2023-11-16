@@ -1,68 +1,70 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
+import {
+  AddCircleIcon,
+  Button,
+  CheckmarkCircleFillIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  Flex,
+  FlexGap,
+  Tag,
+  Text,
+} from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber from '@pancakeswap/utils/formatBalance'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
-import { useV2PairData, useV3PoolData } from 'views/GaugesVoting/hooks/useGaugePair'
+import { useGaugePair } from 'views/GaugesVoting/hooks/useGaugePair'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
-import { feeTierPercent } from 'views/V3Info/utils'
 import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
 
 export const TableRow: React.FC<{
   data: GaugeVoting
+  selectable?: boolean
+  selected?: boolean
+  onSelect?: (hash: GaugeVoting['hash']) => void
   totalGauges?: number
-}> = ({ data, totalGauges }) => {
+}> = ({ data, totalGauges, selected, selectable, onSelect }) => {
   const percentWeight = useMemo(() => {
     return new Percent(data?.weight, totalGauges || 1).toFixed(2)
   }, [data?.weight, totalGauges])
   const percentCaps = useMemo(() => {
     return new Percent(data?.maxVoteCap, 10000).toSignificant(2)
   }, [data?.maxVoteCap])
-  const v2PoolData = useV2PairData(data?.pairAddress.toLowerCase(), Number(data?.chainId || undefined))
-  const v3PoolData = useV3PoolData(data?.pairAddress.toLowerCase(), Number(data?.chainId || undefined))
+  const pool = useGaugePair(data?.pairAddress.toLowerCase(), Number(data?.chainId || undefined))
 
-  const token0 = useMemo(() => {
-    if (v2PoolData) return v2PoolData.token0
-    if (v3PoolData) return v3PoolData.token0
-    return undefined
-  }, [v2PoolData, v3PoolData])
-
-  const token1 = useMemo(() => {
-    if (v2PoolData) return v2PoolData.token1
-    if (v3PoolData) return v3PoolData.token1
-    return undefined
-  }, [v2PoolData, v3PoolData])
   const currency0 = useMemo<Token | undefined>(() => {
-    if (token0?.address) return new Token(Number(data?.chainId), token0.address as Address, 18, '', '')
+    if (pool.token0?.address) return new Token(Number(data?.chainId), pool.token0.address as Address, 18, '', '')
     return undefined
-  }, [data?.chainId, token0?.address])
+  }, [data?.chainId, pool.token0?.address])
   const currency1 = useMemo((): Token | undefined => {
-    if (token1?.address) return new Token(Number(data?.chainId), token1.address as Address, 18, '', '')
+    if (pool.token1?.address) return new Token(Number(data?.chainId), pool.token1.address as Address, 18, '', '')
     return undefined
-  }, [data?.chainId, token1?.address])
-  const pairName = useMemo(() => {
-    return `${token0?.symbol}-${token1?.symbol}`
-  }, [token0?.symbol, token1?.symbol])
+  }, [data?.chainId, pool.token1?.address])
+
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
-        {data?.pid.toString()}
+        {selectable ? (
+          <Button variant="text" height={24} p={0} mr="8px" onClick={() => onSelect?.(data.hash)}>
+            {selected ? <CheckmarkCircleFillIcon color="disabled" /> : <AddCircleIcon color="primary" />}
+          </Button>
+        ) : null}
         <DoubleCurrencyLogo size={32} currency0={currency0} currency1={currency1} />
         <Text fontWeight={600} fontSize={16}>
-          {pairName}
+          {pool.pairName}
         </Text>
         <FlexGap gap="5px" alignItems="center">
           <NetworkBadge chainId={Number(data?.chainId)} />
-          {v3PoolData?.feeTier ? (
+          {pool.feeTier ? (
             <Tag outline variant="secondary">
-              {feeTierPercent(v3PoolData?.feeTier)}
+              {pool.feeTier}
             </Tag>
           ) : null}
 
-          <Tag variant="secondary">{v3PoolData ? 'V3' : 'V2'}</Tag>
+          <Tag variant="secondary">{pool.v3 ? 'V3' : 'V2'}</Tag>
         </FlexGap>
       </FlexGap>
       <Flex alignItems="center">
