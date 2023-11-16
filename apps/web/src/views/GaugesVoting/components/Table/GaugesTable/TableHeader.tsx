@@ -13,8 +13,8 @@ const Touchable = styled.div`
 `
 
 export enum SortField {
-  Votes = 'votes',
-  Boost = 'boost',
+  Votes = 'weight',
+  Boost = 'boostMultiplier',
 }
 
 export enum SortBy {
@@ -39,21 +39,17 @@ export const TableHeader: React.FC<{
 
   const onVoteSort = () => {
     setBoostSort(undefined)
-    if (!voteSort) {
-      setVoteSort(SortBy.Asc)
-    } else {
-      setVoteSort((prev) => (prev === SortBy.Asc ? SortBy.Desc : SortBy.Asc))
-    }
-    onSort?.(SortField.Votes, voteSort!)
+    const newSort = !voteSort ? SortBy.Desc : voteSort === SortBy.Asc ? SortBy.Desc : SortBy.Asc
+
+    setVoteSort(newSort)
+    onSort?.(SortField.Votes, newSort)
   }
   const onBoostSort = () => {
     setVoteSort(undefined)
-    if (!boostSort) {
-      setBoostSort(SortBy.Asc)
-    } else {
-      setBoostSort((prev) => (prev === SortBy.Asc ? SortBy.Desc : SortBy.Asc))
-    }
-    onSort?.(SortField.Votes, boostSort!)
+    const newSort = !boostSort ? SortBy.Desc : boostSort === SortBy.Asc ? SortBy.Desc : SortBy.Asc
+
+    setBoostSort(newSort)
+    onSort?.(SortField.Boost, newSort)
   }
 
   return (
