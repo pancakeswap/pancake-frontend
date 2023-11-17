@@ -2906,5 +2906,6 @@
   "Activate PancakeSwap Profile to take part in next IFO.": "Activate PancakeSwap Profile to take part in next IFO.",
   "You need to create a profile to participate in the IFO.": "You need to create a profile to participate in the IFO.",
   "Passive": "Passive",
-  "Pegged": "Pegged"
+  "Pegged": "Pegged",
+  "Supplying %amount% %symbol%": "Supplying %amount% %symbol%"
 }
