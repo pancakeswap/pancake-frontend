@@ -2824,7 +2824,7 @@
   "Pending Confirm": "Pending Confirm",
   "CAKE APR": "CAKE APR",
   "LP APR": "LP APR",
-  "Calculated based on previous 1 days average data.": "Calculated based on previous 1 days average data.",
+  "Calculated based on previous %days% days average data.": "Calculated based on previous %days% days average data.",
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
