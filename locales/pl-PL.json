@@ -2824,7 +2824,7 @@
   "Pending Confirm": "Pending Confirm",
   "CAKE APR": "CAKE APR",
   "LP APR": "LP APR",
-  "Calculated based on previous 7 days average data.": "Calculated based on previous 7 days average data.",
+  "Calculated based on previous %days% days average data.": "Calculated based on previous %days% days average data.",
   "Farming Rewards": "Farming Rewards",
   "second": "second",
   "Manager Fee": "Manager Fee",
@@ -2904,5 +2904,8 @@
   "Bridge CAKE": "Bridge CAKE",
   "How to Take Part": "How to Take Part",
   "Activate PancakeSwap Profile to take part in next IFO.": "Activate PancakeSwap Profile to take part in next IFO.",
-  "You need to create a profile to participate in the IFO.": "You need to create a profile to participate in the IFO."
+  "You need to create a profile to participate in the IFO.": "You need to create a profile to participate in the IFO.",
+  "Passive": "Passive",
+  "Pegged": "Pegged",
+  "Supplying %amount% %symbol%": "Supplying %amount% %symbol%"
 }
