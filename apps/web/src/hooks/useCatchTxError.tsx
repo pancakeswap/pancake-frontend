@@ -32,6 +32,7 @@ const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
 
 type Params = {
   throwUserRejectError?: boolean
+  waitForTransactionTimeout?: number
 }
 
 export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
@@ -91,13 +92,12 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
          * wait for useSWRMutation finished, so we could apply SWR in case manually trigger tx call
          */
         tx = await callTx()
-
         const hash = typeof tx === 'string' ? tx : tx.hash
-
         toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={hash} />)
 
         const receipt = await waitForTransaction({
           hash,
+          timeout: params?.waitForTransactionTimeout,
         })
         return receipt
       } catch (error: any) {
@@ -117,7 +117,15 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
 
       return null
     },
-    [throwUserRejectError, toastSuccess, t, waitForTransaction, handleNormalError, handleTxError],
+    [
+      throwUserRejectError,
+      toastSuccess,
+      t,
+      waitForTransaction,
+      handleNormalError,
+      handleTxError,
+      params?.waitForTransactionTimeout,
+    ],
   )
 
   const fetchTxResponse = useCallback(
@@ -140,6 +148,7 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
 
         return { hash }
       } catch (error: any) {
+        console.log(error, 'error?')
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
