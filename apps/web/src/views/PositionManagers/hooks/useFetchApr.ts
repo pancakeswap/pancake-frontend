@@ -85,7 +85,5 @@ export const useFetchApr = (): AprData => {
       refetchOnWindowFocus: false,
     },
   )
-
-  console.log(fallbackData, 'fallbackData????')
   return { data: data ?? [], isLoading: isLoading || isFallbackLoading, refetch, fallbackData: fallbackData ?? [] }
 }
