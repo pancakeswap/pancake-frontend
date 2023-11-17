@@ -35,6 +35,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   const { vault } = usePCSVault({ config })
   const {
     id,
+    idByManager,
     currencyA,
     currencyB,
     earningToken,
@@ -165,6 +166,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   return (
     <DuoTokenVaultCard
       id={id}
+      idByManager={idByManager}
       currencyA={currencyA}
       currencyB={currencyB}
       earningToken={earningToken}

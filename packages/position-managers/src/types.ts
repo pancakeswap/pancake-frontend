@@ -101,6 +101,7 @@ export interface DuoTokenVault {
   // The unique id of the vault
   // It can be used to sort the managed positions on fe
   id: number
+  idByManager: number
   name: string
   adapterAddress: Address
   currencyA: Currency

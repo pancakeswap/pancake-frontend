@@ -61,7 +61,7 @@ export const VaultCards = memo(function VaultCards() {
       if (sortBy === 'latest') {
         return b.id - a.id
       }
-      return a.id - b.id
+      return a.id // default sort by sequence of configs
     })
     .map((config) => {
       if (isThirdPartyVaultConfig(config)) {
