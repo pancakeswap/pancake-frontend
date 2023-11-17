@@ -106,35 +106,32 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
           </>
         ) : (
           <>
-            <VeCakeCard />
-            {/* <StakingApy pool={pool} /> */}
-            {/* <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
+            {account && vaultPosition === VaultPosition.Flexible ? (
+              <VeCakeUpdateCard isFlexibleStake />
+            ) : (
+              <VeCakeCard />
+            )}
+            {/* {<StakingApy pool={pool} />} */}
+            <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
               <Box>
                 {account && (
                   <Box mb="8px">
                     <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />
                   </Box>
                 )}
-                <RecentCakeProfitRow pool={pool} />
+                {/* <RecentCakeProfitRow pool={pool} /> */}
               </Box>
               <Flex flexDirection="column">
-                {account ? (
+                {account && (
                   <VaultCardActions
                     pool={pool}
                     accountHasSharesStaked={accountHasSharesStaked}
                     isLoading={isLoading}
                     performanceFee={performanceFeeAsDecimal}
                   />
-                ) : (
-                  <>
-                    <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                      {t('Start earning')}
-                    </Text>
-                    <ConnectWalletButton />
-                  </>
                 )}
               </Flex>
-            </FlexGap> */}
+            </FlexGap>
           </>
         )}
       </StyledCardBody>
