@@ -135,13 +135,10 @@ export const AddLiquidity = memo(function AddLiquidity({
       setOtherValue: (value: string) => void
       isToken0: boolean
     }) => {
-      const ratioValue = new BigNumber(value).times(new BigNumber(isToken0 ? 1 / ratio : ratio)).toNumber()
-      const finalFormat =
-        ratioValue > 0 ? ratioValue.toFixed(6) : ratioValue.toFixed(isToken0 ? currencyB.decimals : currencyA.decimals)
       setValue(value)
-      setOtherValue(value ? finalFormat : '0.0')
+      setOtherValue((Number(value) * (isToken0 ? 1 / ratio : ratio)).toString())
     },
-    [ratio, currencyA, currencyB],
+    [ratio],
   )
 
   const onCurrencyAChange = useCallback(
@@ -281,10 +278,10 @@ export const AddLiquidity = memo(function AddLiquidity({
 
   const translationData = useMemo(
     () => ({
-      amountA: allowDepositToken0 ? formatCurrencyAmount(amountA, 4, locale) : '',
-      symbolA: allowDepositToken0 ? currencyA.symbol : '',
-      amountB: allowDepositToken1 ? formatCurrencyAmount(amountB, 4, locale) : '',
-      symbolB: allowDepositToken1 ? currencyB.symbol : '',
+      amountA: allowDepositToken0 ? formatCurrencyAmount(amountA, 4, locale) : undefined,
+      symbolA: allowDepositToken0 ? currencyA.symbol : undefined,
+      amountB: allowDepositToken1 ? formatCurrencyAmount(amountB, 4, locale) : undefined,
+      symbolB: allowDepositToken1 ? currencyB.symbol : undefined,
     }),
     [allowDepositToken0, allowDepositToken1, amountA, amountB, currencyA.symbol, currencyB.symbol, locale],
   )
