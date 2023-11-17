@@ -1,21 +1,22 @@
-import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
-import { usePositionManagerAdepterContract } from 'hooks/useContract'
-import { memo, useMemo, useEffect } from 'react'
 import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
-import { useQuery } from '@tanstack/react-query'
+import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
 import { CurrencyAmount } from '@pancakeswap/sdk'
+import { useQuery } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
+import { usePositionManagerAdepterContract } from 'hooks/useContract'
+import { memo, useEffect, useMemo } from 'react'
 import { DuoTokenVaultCard } from '../components'
 import {
-  usePCSVault,
   AprData,
   AprDataInfo,
   PositionManagerDetailsData,
-  useEarningTokenPriceInfo,
-  useTotalStakedInUsd,
-  usePositionInfo,
   useApr,
-  useTotalAssetInUsd,
+  useEarningTokenPriceInfo,
+  usePCSVault,
+  usePositionInfo,
   useTokenPriceFromSubgraph,
+  useTotalAssetInUsd,
+  useTotalStakedInUsd,
 } from '../hooks'
 
 interface Props {
@@ -25,7 +26,7 @@ interface Props {
   updatePositionMangerDetailsData: (id: number, newData: PositionManagerDetailsData) => void
 }
 
-export const PCSVaultCard = memo(function PCSVaultCard({
+export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   config,
   farmsV3,
   aprDataList,
@@ -34,6 +35,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
   const { vault } = usePCSVault({ config })
   const {
     id,
+    idByManager,
     currencyA,
     currencyB,
     earningToken,
@@ -56,13 +58,19 @@ export const PCSVaultCard = memo(function PCSVaultCard({
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery(
-    ['adapterAddress', adapterAddress],
+    ['adapterAddress', adapterAddress, id],
     async () => {
       const result = await adapterContract.read.tokenPerShare()
-      return Number((result[0] * 100n) / result[1]) / 100
+      return new BigNumber(result[0].toString())
+        .div(new BigNumber(10).pow(currencyA.decimals))
+        .div(new BigNumber(result[1].toString()).div(new BigNumber(10).pow(currencyB.decimals)))
+        .toNumber()
     },
     {
       enabled: !!adapterContract,
+      refetchInterval: 6000,
+      staleTime: 6000,
+      cacheTime: 6000,
     },
   ).data
   const priceFromSubgraph = useTokenPriceFromSubgraph(
@@ -92,12 +100,19 @@ export const PCSVaultCard = memo(function PCSVaultCard({
   )
 
   const aprDataInfo = useMemo(() => {
-    const { isLoading, data } = aprDataList
+    const { isLoading, data, fallbackData } = aprDataList
+    let aprInfo = data?.length
+      ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
+      : undefined
+
+    if (aprInfo?.token0 === 0 || aprInfo?.token1 === 0) {
+      aprInfo = fallbackData?.length
+        ? fallbackData?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
+        : undefined
+    }
     return {
       isLoading,
-      info: data?.length
-        ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
-        : undefined,
+      info: aprInfo,
     }
   }, [info.vaultAddress, aprDataList])
 
@@ -151,6 +166,7 @@ export const PCSVaultCard = memo(function PCSVaultCard({
   return (
     <DuoTokenVaultCard
       id={id}
+      idByManager={idByManager}
       currencyA={currencyA}
       currencyB={currencyB}
       earningToken={earningToken}

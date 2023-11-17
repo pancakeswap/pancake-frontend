@@ -88,7 +88,7 @@ export const AprButton = memo(function YieldInfo({
         </li>
       </ul>
       <Text lineHeight="120%" mt="20px">
-        {t('Calculated based on previous 7 days average data.')}
+        {t(`Calculated based on previous %days% days average data.`, { days: 1 })}
       </Text>
     </>,
     {

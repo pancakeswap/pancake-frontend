@@ -32,6 +32,7 @@ interface Props {
   earningToken: Currency
   name: string
   id: string | number
+  idByManager: string | number
   feeTier: FeeAmount
   ratio: number
   strategy: Strategy
@@ -82,6 +83,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   earningToken,
   name,
   id,
+  idByManager,
   feeTier,
   autoFarm,
   autoCompound,
@@ -133,7 +135,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   })
 
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
-  const vaultName = useMemo(() => getVaultName(id, name), [name, id])
+  const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
   const staked1Amount = stakedToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, stakedToken1Amount) : undefined
 
