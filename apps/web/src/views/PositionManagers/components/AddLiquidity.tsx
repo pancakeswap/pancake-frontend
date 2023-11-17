@@ -277,20 +277,28 @@ export const AddLiquidity = memo(function AddLiquidity({
   ])
 
   const translationData = useMemo(
-    () => ({
-      amountA: allowDepositToken0 ? formatCurrencyAmount(amountA, 4, locale) : undefined,
-      symbolA: allowDepositToken0 ? currencyA.symbol : undefined,
-      amountB: allowDepositToken1 ? formatCurrencyAmount(amountB, 4, locale) : undefined,
-      symbolB: allowDepositToken1 ? currencyB.symbol : undefined,
-    }),
-    [allowDepositToken0, allowDepositToken1, amountA, amountB, currencyA.symbol, currencyB.symbol, locale],
+    () =>
+      isSingleDepositToken
+        ? {
+            amount: allowDepositToken0
+              ? formatCurrencyAmount(amountA, 4, locale)
+              : formatCurrencyAmount(amountB, 4, locale),
+            symbol: allowDepositToken0 ? currencyA.symbol : currencyB.symbol,
+          }
+        : {
+            amountA: formatCurrencyAmount(amountA, 4, locale),
+            symbolA: currencyA.symbol,
+            amountB: formatCurrencyAmount(amountB, 4, locale),
+            symbolB: currencyB.symbol,
+          },
+    [allowDepositToken0, amountA, amountB, currencyA.symbol, currencyB.symbol, locale, isSingleDepositToken],
   )
 
   const pendingText = useMemo(
     () =>
-      !isSingleDepositToken
-        ? t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData)
-        : t('Supplying %amountA% %symbolA% %amountB% %symbolB%', translationData),
+      isSingleDepositToken
+        ? t('Supplying %amount% %symbol%', translationData)
+        : t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData),
     [t, isSingleDepositToken, translationData],
   )
 
