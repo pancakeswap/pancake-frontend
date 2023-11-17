@@ -148,7 +148,6 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
 
         return { hash }
       } catch (error: any) {
-        console.log(error, 'error?')
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
