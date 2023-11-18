@@ -4,7 +4,6 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import styled from 'styled-components'
-import { useGaugesTotalWeight } from '../hooks/useGaugesTotalWeight'
 import { GaugeVoting } from '../hooks/useGaugesVoting'
 import { ChartLabel } from './ChartLabel'
 import { ChartTooltip } from './ChartTooltip'
@@ -36,8 +35,8 @@ export const chartDataOption: ChartDataset<'doughnut', number[]> = {
 }
 export const WeightsPieChart: React.FC<{
   data?: GaugeVoting[]
-  totalGauges: number
-}> = ({ data, totalGauges }) => {
+  totalGaugesWeight: number
+}> = ({ data, totalGaugesWeight }) => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
@@ -90,12 +89,12 @@ export const WeightsPieChart: React.FC<{
   return (
     <Box position="relative" pr="90px">
       <Center style={{ marginLeft: '-45px' }}>
-        <ChartLabel total={totalGauges} gauge={selectedGauge} />
+        <ChartLabel total={totalGaugesWeight} gauge={selectedGauge} />
       </Center>
       <Absolute left={tooltipPosition.left} top={tooltipPosition.top}>
         <ChartTooltip
           visible={tooltipVisible}
-          total={totalGauges}
+          total={totalGaugesWeight}
           color={color}
           gauge={selectedGauge}
           allGauges={data}

@@ -15,12 +15,12 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 
 export const GaugesTable: React.FC<{
   scrollStyle?: React.CSSProperties
-  totalGauges: number
+  totalGaugesWeight: number
   data?: GaugeVoting[]
   selectable?: boolean
   selectRows?: GaugeVoting[]
   onRowSelect?: (hash: GaugeVoting['hash']) => void
-}> = ({ scrollStyle, data, totalGauges, selectable, selectRows, onRowSelect }) => {
+}> = ({ scrollStyle, data, totalGaugesWeight, selectable, selectRows, onRowSelect }) => {
   const [expanded, setExpanded] = useState(false)
   const [sortKey, setSortKey] = useState<SortField | undefined>()
   const [sortBy, setSortBy] = useState<SortBy | undefined>()
@@ -47,7 +47,7 @@ export const GaugesTable: React.FC<{
             selectable={selectable}
             selected={selectRows?.some((r) => r.hash === row.hash)}
             onSelect={onRowSelect}
-            totalGauges={totalGauges}
+            totalGaugesWeight={totalGaugesWeight}
           />
         ))}
       </Scrollable>
