@@ -3,11 +3,13 @@ import { gaugesVotingABI } from 'config/abi/gaugesVoting'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { ContractFunctionConfig, ContractFunctionResult, Hex, MulticallContracts } from 'viem'
+import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { usePublicClient } from 'wagmi'
 import { GaugeVoting, useGaugesVoting } from './useGaugesVoting'
 
 export const useUserVoteGauges = () => {
   const gauges = useGaugesVoting()
+  const { data: userInfo } = useVeCakeUserInfo()
   const gaugesVotingContract = useGaugesVotingContract()
   const { account, chainId } = useAccountActiveChain()
   const publicClient = usePublicClient({ chainId })
@@ -25,6 +27,16 @@ export const useUserVoteGauges = () => {
             args: [account, gauge.hash as Hex],
           } as const
         })
+
+      if (userInfo?.cakePoolProxy) {
+        gauges.forEach((gauge) => {
+          contracts.push({
+            ...gaugesVotingContract,
+            functionName: 'voteUserSlopes',
+            args: [userInfo.cakePoolProxy, gauge.hash as Hex],
+          } as const)
+        })
+      }
 
       const response = (await publicClient.multicall({
         contracts,
