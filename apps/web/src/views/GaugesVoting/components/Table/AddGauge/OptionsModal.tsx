@@ -39,7 +39,7 @@ export enum OptionsType {
 
 export const GAUGES_TYPE = ['Regular Gauges', 'Boosted Gauges', 'Capped Gauges'] as const
 
-const enum Gauges {
+export const enum Gauges {
   Regular = 'Regular Gauges',
   Boosted = 'Boosted Gauges',
   Capped = 'Capped Gauges',
