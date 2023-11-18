@@ -4,6 +4,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import BigNumber from 'bignumber.js'
 import { Address } from 'wagmi'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 // a list of tokens by chain
 export type ChainMap<T> = {
   readonly [chainId in ChainId]: T
@@ -186,3 +187,39 @@ export enum Bound {
   LOWER = 'LOWER',
   UPPER = 'UPPER',
 }
+
+export enum GaugeType {
+  V2 = 0,
+  V3 = 1,
+  ALM = 2,
+  VeCakePool = 3,
+  Aptos = 4,
+}
+
+export interface GaugeBaseConfig {
+  gid: number
+  chainId: ChainId
+  type: GaugeType
+  address: Address
+}
+
+export interface GaugeV2Config extends GaugeBaseConfig {
+  type: GaugeType.V2
+}
+export interface GaugeV3Config extends GaugeBaseConfig {
+  type: GaugeType.V3
+}
+
+export interface GaugeALMConfig extends GaugeBaseConfig {
+  type: GaugeType.ALM
+  token0Address: Address
+  token1Address: Address
+  pairName: string
+}
+
+export interface GaugeVeCakePoolConfig extends GaugeBaseConfig {
+  type: GaugeType.VeCakePool
+  pairName: string
+}
+
+export type GaugeConfig = GaugeV2Config | GaugeV3Config | GaugeALMConfig | GaugeVeCakePoolConfig
