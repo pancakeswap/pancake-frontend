@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
+import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
 import { useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { GaugesTable } from '../GaugesTable'
 import { Filter, FilterValue, OptionsModal, OptionsType } from './OptionsModal'
@@ -28,7 +28,7 @@ const FilterButton = styled(Button)`
 
 export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => {
   const { t } = useTranslation()
-  const totalGauges = useGaugesVotingCount()
+  const totalGaugesWeight = useGaugesTotalWeight()
   const gauges = useGaugesVoting()
   const [option, setOption] = useState<OptionsType | null>(null)
   const [filter, setFilter] = useState<Filter>({
@@ -107,7 +107,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                 selectable
                 selectRows={selectRows}
                 onRowSelect={onGaugeAdd}
-                totalGauges={Number(totalGauges)}
+                totalGaugesWeight={Number(totalGaugesWeight)}
                 data={gauges}
                 scrollStyle={{ maxHeight: '40vh' }}
               />
