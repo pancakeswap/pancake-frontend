@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Percent } from '@pancakeswap/swap-sdk-core'
 import {
   AutoColumn,
   Box,
@@ -13,12 +14,15 @@ import {
   ModalWrapper,
   Text,
 } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { GAUGES } from 'config/constants/gauges'
+import { GaugeType } from 'config/constants/types'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
 import { useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { getGaugeHash } from 'views/GaugesVoting/utils'
 import { GaugesTable } from '../GaugesTable'
-import { Filter, FilterValue, OptionsModal, OptionsType } from './OptionsModal'
+import { Filter, FilterValue, Gauges, OptionsModal, OptionsType } from './OptionsModal'
 
 const FilterButton = styled(Button)`
   height: 35px;
@@ -36,6 +40,29 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
     byFeeTier: [],
     byType: [],
   })
+
+  const filterRows = useMemo(() => {
+    const { byChain, byFeeTier, byType } = filter
+    const rows = gauges?.filter((gauge) => {
+      const gaugeConfig = GAUGES.find((g) => gauge.hash === getGaugeHash(g.address, g.chainId))
+      const feeTier = gaugeConfig?.type === GaugeType.V3 ? gaugeConfig?.feeTier : undefined
+      const chain = gaugeConfig?.chainId
+      const boosted = gauge.boostMultiplier > 100
+      const capPercent = new Percent(gauge.maxVoteCap, 10000)
+      const currentPercent = new Percent(gauge.weight, totalGaugesWeight)
+      const capped = !currentPercent.lessThan(capPercent) && gauge.weight > 0
+      const types = [boosted ? Gauges.Boosted : Gauges.Regular]
+      if (capped) {
+        types.push(Gauges.Capped)
+      }
+      return (
+        (byChain.length === 0 || (chain && byChain.includes(chain))) &&
+        (byFeeTier.length === 0 || (feeTier && byFeeTier.includes(feeTier))) &&
+        (byType.length === 0 || byType.some((bt) => types.includes(bt)))
+      )
+    })
+    return rows
+  }, [filter, gauges, totalGaugesWeight])
 
   const onFilterChange = (type: OptionsType, value: FilterValue) => {
     const opts = filter[type] as Array<unknown>
@@ -108,7 +135,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                 selectRows={selectRows}
                 onRowSelect={onGaugeAdd}
                 totalGaugesWeight={Number(totalGaugesWeight)}
-                data={gauges}
+                data={filterRows}
                 scrollStyle={{ maxHeight: '40vh' }}
               />
             </Box>
