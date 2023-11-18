@@ -1,11 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
-import formatLocalisedCompactNumber, { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
+import formatLocalisedCompactNumber, { getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { DoubleCurrencyLogo } from 'components/Logo'
+import dayjs from 'dayjs'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
+import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useGaugePair } from 'views/GaugesVoting/hooks/useGaugePair'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
@@ -19,6 +21,7 @@ export const TableRow: React.FC<{
   value: string
   onChange: (value: string) => void
 }> = ({ data, value, onChange }) => {
+  const { t } = useTranslation()
   const votedPower = useVotedPower() ?? 0
   const { balance: veCake } = useVeCakeBalance()
   const votePower = useMemo(() => {
@@ -38,9 +41,15 @@ export const TableRow: React.FC<{
 
   const userVote = useUserVote(data)
 
-  const slopePercent = useMemo(() => {
-    return userVote?.slope ? new Percent(userVote?.slope, 10000).toFixed(2) : undefined
-  }, [userVote?.slope])
+  const powerPercent = useMemo(() => {
+    return userVote?.power ? new Percent(userVote?.power, 10000).toSignificant(2) : undefined
+  }, [userVote?.power])
+  const power = useMemo(() => {
+    if (veCake && userVote?.power) {
+      return formatLocalisedCompactNumber(getBalanceNumber(veCake.times(userVote?.power).div(10000)), true)
+    }
+    return 0
+  }, [userVote?.power, veCake])
 
   // const [input, setInput] = useState('')
   const votesAmount = useMemo(() => {
@@ -55,7 +64,7 @@ export const TableRow: React.FC<{
       <FlexGap alignItems="center" gap="13px">
         <DoubleCurrencyLogo size={32} currency0={currency0} currency1={currency1} />
         <Text fontWeight={600} fontSize={16}>
-          {pairName} {votePower.toString()}
+          {pairName}
         </Text>
         <FlexGap gap="5px" alignItems="center">
           <NetworkBadge chainId={Number(data?.chainId)} />
@@ -68,15 +77,33 @@ export const TableRow: React.FC<{
           <Tag variant="secondary">{pool.v3 ? 'V3' : 'V2'}</Tag>
         </FlexGap>
       </FlexGap>
-      <Flex alignItems="center" justifyContent="center">
-        <Text bold>{userVote?.power ? formatLocalisedCompactNumber(userVote?.power, true) : '0'}</Text>
-        <Text>{slopePercent ? `(${slopePercent})` : null}</Text>
-      </Flex>
+      <FlexGap alignItems="center" justifyContent="center" gap="4px">
+        <Text bold>{power}</Text>
+        <Text>{powerPercent ? ` (${powerPercent}%)` : null}</Text>
+      </FlexGap>
       <Flex alignItems="center" pr="25px">
-        <Text>{getBalanceAmount(votesAmount).toFixed(2)} veCAKE</Text>
+        <Tooltips
+          content={t(
+            'Gauge’s vote can not be changed more frequent than 10 days. You can update your vote for this gauge in: %distance%',
+            {
+              distance: userVote?.lastVoteTime ? dayjs.unix(userVote?.lastVoteTime).add(10, 'day').fromNow() : '',
+            },
+          )}
+        >
+          <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
+        </Tooltips>
+        <Text color={userVote?.voteLocked ? 'textDisabled' : ''}>
+          {getBalanceAmount(votesAmount).toFixed(2)} veCAKE
+        </Text>
       </Flex>
       <Flex>
-        <PercentInput onMax={onMax} value={value} onUserInput={onChange} />
+        <PercentInput
+          disabled={userVote?.voteLocked}
+          inputProps={{ disabled: userVote?.voteLocked }}
+          onMax={onMax}
+          value={value}
+          onUserInput={onChange}
+        />
       </Flex>
     </TRow>
   )
