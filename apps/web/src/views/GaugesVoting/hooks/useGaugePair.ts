@@ -1,14 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
-import { PoolData as V3PoolData } from 'views/V3Info/types'
-import { fetchPoolDatas } from 'views/V3Info/data/pool/poolData'
-import { v3InfoClients } from 'utils/graphql'
-import { PoolData as V2PoolData } from 'state/info/types'
-import { fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
-import { MultiChainName, multiChainName } from 'state/info/constant'
-import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { GAUGES } from 'config/constants/gauges'
 import { useMemo } from 'react'
+import { MultiChainName, multiChainName } from 'state/info/constant'
+import { fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
+import { PoolData as V2PoolData } from 'state/info/types'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { v3InfoClients } from 'utils/graphql'
+import { Address } from 'viem'
+import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { fetchPoolDatas } from 'views/V3Info/data/pool/poolData'
+import { PoolData as V3PoolData } from 'views/V3Info/types'
 import { feeTierPercent } from 'views/V3Info/utils'
+import { getGaugeHash } from '../utils'
+import { useGauges } from './useGauges'
 
 const QUERY_SETTINGS_IMMUTABLE = {
   retry: 3,
@@ -83,4 +87,17 @@ export const useGaugePair = (address?: string, chainId?: number) => {
     pairName,
     feeTier,
   }
+}
+
+export const useGaugeConfig = (address?: Address, chainId?: number) => {
+  const gauges = useGauges()
+  const published = gauges?.some((gauge) => gauge.hash === getGaugeHash(address, chainId))
+  const config = GAUGES.find((gauge) => gauge.chainId === chainId && gauge.address === address)
+
+  // only on-chain gauges will show up
+  if (!published) return undefined
+
+  if (!config) throw new Error(`Gauge config not found for ${address} on chain ${chainId}`)
+
+  return config
 }

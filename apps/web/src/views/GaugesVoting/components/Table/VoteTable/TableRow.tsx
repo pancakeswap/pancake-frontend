@@ -1,17 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent, Token } from '@pancakeswap/sdk'
+import { Percent } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { DoubleCurrencyLogo } from 'components/Logo'
+import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import dayjs from 'dayjs'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
-import { useGaugePair } from 'views/GaugesVoting/hooks/useGaugePair'
+import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { useVotedPower } from 'views/GaugesVoting/hooks/useVotedPower'
+import { feeTierPercent } from 'views/V3Info/utils'
+import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
 import { PercentInput } from './PercentInput'
@@ -28,16 +30,7 @@ export const TableRow: React.FC<{
     return veCake.minus(votedPower)
   }, [veCake, votedPower])
 
-  const pool = useGaugePair(data?.pairAddress.toLowerCase(), Number(data?.chainId || undefined))
-  const { token0, token1, pairName } = pool
-  const currency0 = useMemo<Token | undefined>(() => {
-    if (token0?.address) return new Token(Number(data?.chainId), token0.address as Address, 18, '', '')
-    return undefined
-  }, [data?.chainId, token0?.address])
-  const currency1 = useMemo((): Token | undefined => {
-    if (token1?.address) return new Token(Number(data?.chainId), token1.address as Address, 18, '', '')
-    return undefined
-  }, [data?.chainId, token1?.address])
+  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
 
   const userVote = useUserVote(data)
   const voteDisabled = userVote?.voteLocked
@@ -67,19 +60,19 @@ export const TableRow: React.FC<{
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
-        <DoubleCurrencyLogo size={32} currency0={currency0} currency1={currency1} />
+        <GaugeTokenImage gauge={pool} />
         <Text fontWeight={600} fontSize={16}>
-          {pairName}
+          {pool?.pairName}
         </Text>
         <FlexGap gap="5px" alignItems="center">
           <NetworkBadge chainId={Number(data?.chainId)} />
-          {pool.feeTier ? (
+          {pool?.type === GaugeType.V3 ? (
             <Tag outline variant="secondary">
-              {pool.feeTier}
+              {feeTierPercent(pool.feeTier)}
             </Tag>
           ) : null}
 
-          <Tag variant="secondary">{pool.v3 ? 'V3' : 'V2'}</Tag>
+          <Tag variant="secondary">{pool ? GAUGE_TYPE_NAMES[pool.type] : ''}</Tag>
         </FlexGap>
       </FlexGap>
       <FlexGap alignItems="center" justifyContent="center" gap="4px">
