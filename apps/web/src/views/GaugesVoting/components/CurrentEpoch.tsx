@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, Balance, Card, FlexGap, Text, TooltipText } from '@pancakeswap/uikit'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
@@ -59,7 +59,7 @@ export const CurrentEpoch = () => {
             </TooltipText>
           </Tooltips>
 
-          <Balance bold fontSize={16} value={Number(totalWeight)} unit=" veCAKE" decimals={0} />
+          <Balance bold fontSize={16} value={getBalanceNumber(new BN(totalWeight.toString()))} unit=" veCAKE" />
         </AutoRow>
       </FlexGap>
     </Card>

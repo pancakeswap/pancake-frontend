@@ -11,7 +11,8 @@ import {
   Tag,
   Text,
 } from '@pancakeswap/uikit'
-import formatLocalisedCompactNumber from '@pancakeswap/utils/formatBalance'
+import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BN from 'bignumber.js'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
@@ -28,7 +29,7 @@ export const TableRow: React.FC<{
   totalGauges?: number
 }> = ({ data, totalGauges, selected, selectable, onSelect }) => {
   const percentWeight = useMemo(() => {
-    return new Percent(data?.weight, totalGauges || 1).toFixed(2)
+    return new Percent(data?.weight, totalGauges || 1).toSignificant(2)
   }, [data?.weight, totalGauges])
   const percentCaps = useMemo(() => {
     return new Percent(data?.maxVoteCap, 10000).toSignificant(2)
@@ -43,6 +44,10 @@ export const TableRow: React.FC<{
     if (pool.token1?.address) return new Token(Number(data?.chainId), pool.token1.address as Address, 18, '', '')
     return undefined
   }, [data?.chainId, pool.token1?.address])
+
+  const weight = useMemo(() => {
+    return getBalanceNumber(new BN(data?.weight || 0))
+  }, [data?.weight])
 
   return (
     <TRow>
@@ -68,7 +73,7 @@ export const TableRow: React.FC<{
         </FlexGap>
       </FlexGap>
       <Flex alignItems="center">
-        <Text bold>{formatLocalisedCompactNumber(data?.weight, true)}</Text>
+        <Text bold>{formatLocalisedCompactNumber(weight, true)}</Text>
         <Text>({percentWeight}%)</Text>
       </Flex>
       <Flex alignItems="center" pr="25px">
