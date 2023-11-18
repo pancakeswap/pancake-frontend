@@ -18,7 +18,7 @@ export const GaugesTable: React.FC<{
   totalGauges: number
   data?: GaugeVoting[]
   selectable?: boolean
-  selectRows?: GaugeVoting['hash'][]
+  selectRows?: GaugeVoting[]
   onRowSelect?: (hash: GaugeVoting['hash']) => void
 }> = ({ scrollStyle, data, totalGauges, selectable, selectRows, onRowSelect }) => {
   const [expanded, setExpanded] = useState(false)
@@ -45,7 +45,7 @@ export const GaugesTable: React.FC<{
             key={`${row.hash}-${row.pid}`}
             data={row}
             selectable={selectable}
-            selected={selectRows?.includes(row.hash)}
+            selected={selectRows?.some((r) => r.hash === row.hash)}
             onSelect={onRowSelect}
             totalGauges={totalGauges}
           />
