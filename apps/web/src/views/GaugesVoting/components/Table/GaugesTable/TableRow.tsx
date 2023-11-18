@@ -26,11 +26,11 @@ export const TableRow: React.FC<{
   selectable?: boolean
   selected?: boolean
   onSelect?: (hash: GaugeVoting['hash']) => void
-  totalGauges?: number
-}> = ({ data, totalGauges, selected, selectable, onSelect }) => {
+  totalGaugesWeight?: number
+}> = ({ data, totalGaugesWeight, selected, selectable, onSelect }) => {
   const percentWeight = useMemo(() => {
-    return new Percent(data?.weight, totalGauges || 1).toSignificant(2)
-  }, [data?.weight, totalGauges])
+    return new Percent(data?.weight, totalGaugesWeight || 1).toSignificant(2)
+  }, [data?.weight, totalGaugesWeight])
   const percentCaps = useMemo(() => {
     return new Percent(data?.maxVoteCap, 10000).toSignificant(2)
   }, [data?.maxVoteCap])

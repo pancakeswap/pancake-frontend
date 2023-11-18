@@ -90,10 +90,10 @@ const GaugesVoting = () => {
               <Text color="secondary" textTransform="uppercase" bold ml="60px">
                 Proposed weights
               </Text>
-              <WeightsPieChart totalGauges={Number(totalGaugesWeight)} data={gauges} />
+              <WeightsPieChart totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
             </div>
           </Grid>
-          <GaugesTable data={gauges} totalGauges={Number(totalGaugesWeight)} />
+          <GaugesTable data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
         </Card>
         <Box mt="80px">
           <Heading as="h2" scale="xl" mb="24px">

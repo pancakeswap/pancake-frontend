@@ -41,6 +41,9 @@ export const VoteTable = () => {
     const sum = votes.reduce((acc, cur) => acc + Number(cur), 0)
     return sum > 100 || sum < 0 || isPending
   }, [isPending, votes])
+  const leftGaugesCanAdd = useMemo(() => {
+    return Number(gaugesCount) - (rows?.length || 0)
+  }, [gaugesCount, rows])
 
   const submitVote = useCallback(async () => {
     const voteGauges = votes
@@ -78,7 +81,7 @@ export const VoteTable = () => {
 
         <FlexGap gap="12px" style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}>
           <Button width="100%" onClick={() => setIsOpen(true)}>
-            + Add Gauges ({gaugesCount?.toString()})
+            + Add Gauges ({leftGaugesCanAdd})
           </Button>
           <Button width="100%" disabled={disabled} onClick={submitVote}>
             Submit vote
