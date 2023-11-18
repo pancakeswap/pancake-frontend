@@ -1,10 +1,11 @@
 import { Percent } from '@pancakeswap/swap-sdk-core'
 import { Flex, Text } from '@pancakeswap/uikit'
+import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Address } from 'viem'
 import { feeTierPercent } from 'views/V3Info/utils'
-import { useGaugePair, useV2PairData, useV3PoolData } from '../hooks/useGaugePair'
+import { useGaugeConfig } from '../hooks/useGaugePair'
 import { GaugeVoting } from '../hooks/useGaugesVoting'
 import { TripleLogo } from './TripleLogo'
 
@@ -53,20 +54,20 @@ export const ChartTooltip: React.FC<{
   allGauges?: GaugeVoting[]
 }> = ({ color, allGauges, gauge, visible, total }) => {
   const sortedGauges = useMemo(() => {
-    return allGauges?.sort((a, b) => (a.weight > b.weight ? 1 : -1))
+    return allGauges?.filter((x) => x.weight > 0).sort((a, b) => (a.weight < b.weight ? 1 : -1))
   }, [allGauges])
   const sort = useMemo(() => {
     if (!gauge?.weight) return '0'
-    const index = sortedGauges?.findIndex((g) => g.hash === gauge.hash) ?? 0
-    if (index < 10) return `0${index + 1}`
+    const index = (sortedGauges?.findIndex((g) => g.hash === gauge.hash) ?? 0) + 1
+    if (index < 10) return `0${index}`
     return index
   }, [gauge?.hash, gauge?.weight, sortedGauges])
   const percent = useMemo(() => {
     return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
   }, [total, gauge?.weight])
 
-  const pool = useGaugePair(gauge?.pairAddress?.toLowerCase(), Number(gauge?.chainId || undefined))
-  const { token0, token1, pairName } = pool
+  const pool = useGaugeConfig(gauge?.pairAddress as Address, Number(gauge?.chainId || undefined))
+
   if (!visible) return null
 
   return (
@@ -80,20 +81,16 @@ export const ChartTooltip: React.FC<{
         </Text>
       </Indicator>
       <Content>
-        <TripleLogo
-          address0={token0?.address as Address}
-          address1={token1?.address as Address}
-          chainId={Number(gauge?.chainId)}
-        />
+        <TripleLogo gaugeConfig={pool} chainId={Number(gauge?.chainId)} />
         <Flex flexDirection="column">
           <Text fontSize={18} bold>
-            {pairName}
+            {pool?.pairName}
           </Text>
           <Flex alignItems="center">
-            {pool.feeTier ? (
+            {pool?.type === GaugeType.V3 ? (
               <>
                 <Text fontSize={12} color="textSubtle">
-                  {pool.feeTier}
+                  {feeTierPercent(pool.feeTier)}
                 </Text>
                 <Text color="rgba(40, 13, 95, 0.20)" mx="6px">
                   |
@@ -101,8 +98,7 @@ export const ChartTooltip: React.FC<{
               </>
             ) : null}
             <Text fontSize={12} color="textSubtle">
-              {/* @fixme @ChefJerry use query result type */}
-              {pool.v3 ? 'V3' : 'V2'}
+              {pool ? GAUGE_TYPE_NAMES[pool.type] : ''}
             </Text>
           </Flex>
         </Flex>

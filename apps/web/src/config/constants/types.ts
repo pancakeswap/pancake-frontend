@@ -232,6 +232,14 @@ export enum GaugeType {
   Aptos = 4,
 }
 
+export const GAUGE_TYPE_NAMES = {
+  [GaugeType.V2]: 'V2',
+  [GaugeType.V3]: 'V3',
+  [GaugeType.ALM]: 'ALM',
+  [GaugeType.VeCakePool]: 'VeCakePool',
+  [GaugeType.Aptos]: 'Aptos',
+}
+
 export interface GaugeBaseConfig {
   gid: number
   chainId: ChainId
@@ -240,10 +248,17 @@ export interface GaugeBaseConfig {
 }
 
 export interface GaugeV2Config extends GaugeBaseConfig {
+  token0Address: Address
+  token1Address: Address
   type: GaugeType.V2
+  pairName: string
 }
 export interface GaugeV3Config extends GaugeBaseConfig {
+  token0Address: Address
+  token1Address: Address
   type: GaugeType.V3
+  feeTier: FeeAmount
+  pairName: string
 }
 
 export interface GaugeALMConfig extends GaugeBaseConfig {

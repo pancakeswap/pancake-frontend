@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent, Token } from '@pancakeswap/sdk'
+import { Percent } from '@pancakeswap/sdk'
 import {
   AddCircleIcon,
   Button,
@@ -13,13 +13,15 @@ import {
 } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
-import { DoubleCurrencyLogo } from 'components/Logo'
+import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
-import { useGaugePair } from 'views/GaugesVoting/hooks/useGaugePair'
+import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { feeTierPercent } from 'views/V3Info/utils'
 import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
+import { GaugeTokenImage } from '../../GaugeTokenImage'
 
 export const TableRow: React.FC<{
   data: GaugeVoting
@@ -34,16 +36,7 @@ export const TableRow: React.FC<{
   const percentCaps = useMemo(() => {
     return new Percent(data?.maxVoteCap, 10000).toSignificant(2)
   }, [data?.maxVoteCap])
-  const pool = useGaugePair(data?.pairAddress.toLowerCase(), Number(data?.chainId || undefined))
-
-  const currency0 = useMemo<Token | undefined>(() => {
-    if (pool.token0?.address) return new Token(Number(data?.chainId), pool.token0.address as Address, 18, '', '')
-    return undefined
-  }, [data?.chainId, pool.token0?.address])
-  const currency1 = useMemo((): Token | undefined => {
-    if (pool.token1?.address) return new Token(Number(data?.chainId), pool.token1.address as Address, 18, '', '')
-    return undefined
-  }, [data?.chainId, pool.token1?.address])
+  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
 
   const weight = useMemo(() => {
     return getBalanceNumber(new BN(data?.weight || 0))
@@ -57,19 +50,19 @@ export const TableRow: React.FC<{
             {selected ? <CheckmarkCircleFillIcon color="disabled" /> : <AddCircleIcon color="primary" />}
           </Button>
         ) : null}
-        <DoubleCurrencyLogo size={32} currency0={currency0} currency1={currency1} />
+        <GaugeTokenImage gauge={pool} />
         <Text fontWeight={600} fontSize={16}>
-          {pool.pairName}
+          {pool?.pairName}
         </Text>
         <FlexGap gap="5px" alignItems="center">
           <NetworkBadge chainId={Number(data?.chainId)} />
-          {pool.feeTier ? (
+          {pool?.type === GaugeType.V3 ? (
             <Tag outline variant="secondary">
-              {pool.feeTier}
+              {feeTierPercent(pool.feeTier)}
             </Tag>
           ) : null}
 
-          <Tag variant="secondary">{pool.v3 ? 'V3' : 'V2'}</Tag>
+          <Tag variant="secondary">{pool ? GAUGE_TYPE_NAMES[pool.type] : ''}</Tag>
         </FlexGap>
       </FlexGap>
       <Flex alignItems="center">
