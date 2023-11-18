@@ -44,7 +44,7 @@ export const useUserVote = (gauge?: GaugeVoting) => {
         power: Number(power),
         end: Number(end),
         lastVoteTime: Number(lastVoteTime),
-        voteLocked: dayjs.unix(Number(lastVoteTime)).add(7, 'day').isBefore(dayjs()),
+        voteLocked: dayjs.unix(Number(lastVoteTime)).add(10, 'day').isAfter(dayjs()),
       }
     },
     {
