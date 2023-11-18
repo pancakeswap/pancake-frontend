@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Card, FlexGap } from '@pancakeswap/uikit'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
-import { GaugeVoting, useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGuages'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
@@ -22,7 +23,7 @@ export const VoteTable = () => {
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
   const [selectRows, setSelectRows] = useState<GaugeVoting['hash'][]>([])
-  const gauges = useGaugesVoting()
+  const { data: gauges, refetch } = useUserVoteGauges()
   const selectGauges = useMemo(() => {
     return gauges?.filter((gauge) => selectRows.includes(gauge.hash))
   }, [gauges, selectRows])
@@ -66,7 +67,14 @@ export const VoteTable = () => {
       })
       .filter(Boolean) as GaugeVoting[]
     await writeVote(voteGauges)
-  }, [selectGauges, votes, writeVote])
+    await refetch()
+  }, [refetch, selectGauges, votes, writeVote])
+
+  useEffect(() => {
+    if (!selectRows.length && gauges.length) {
+      setSelectRows(gauges.map((gauge) => gauge.hash))
+    }
+  }, [gauges, selectRows])
 
   return (
     <>

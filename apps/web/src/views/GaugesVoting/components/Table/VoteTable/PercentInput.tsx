@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 export type PercentInputProps = Omit<BalanceInputProps, 'unit' | 'switchEditingUnits'> & {
   onMax?: () => void
+  disabled?: boolean
 }
 
 const StyledInput = styled(UIKitStyledInput)`
@@ -33,6 +34,7 @@ export const PercentInput: React.FC<PercentInputProps> = ({
   innerRef,
   onUserInput,
   onMax,
+  disabled,
   ...props
 }) => {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +62,7 @@ export const PercentInput: React.FC<PercentInputProps> = ({
           </Text>
         </Flex>
       </Box>
-      <MaxButton variant="secondary" scale="xs" onClick={onMax}>
+      <MaxButton disabled={disabled} variant="secondary" scale="xs" onClick={onMax}>
         MAX
       </MaxButton>
     </StyledPercentInput>
