@@ -40,7 +40,7 @@ export const TableRow: React.FC<{
   }, [data?.chainId, token1?.address])
 
   const userVote = useUserVote(data)
-
+  const voteDisabled = userVote?.voteLocked
   const powerPercent = useMemo(() => {
     return userVote?.power ? new Percent(userVote?.power, 10000).toSignificant(2) : undefined
   }, [userVote?.power])
@@ -52,13 +52,18 @@ export const TableRow: React.FC<{
   }, [userVote?.power, veCake])
 
   // const [input, setInput] = useState('')
-  const votesAmount = useMemo(() => {
-    return votePower.times(value || 0).div(100)
-  }, [value, votePower])
+
   const onMax = () => {
     onChange('100')
   }
 
+  const voteValue = useMemo(() => {
+    if (voteDisabled) return powerPercent ?? ''
+    return value ?? ''
+  }, [voteDisabled, powerPercent, value])
+  const votesAmount = useMemo(() => {
+    return votePower.times(voteValue || 0).div(100)
+  }, [voteValue, votePower])
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
@@ -82,26 +87,28 @@ export const TableRow: React.FC<{
         <Text>{powerPercent ? ` (${powerPercent}%)` : null}</Text>
       </FlexGap>
       <Flex alignItems="center" pr="25px">
-        <Tooltips
-          content={t(
-            'Gauge’s vote can not be changed more frequent than 10 days. You can update your vote for this gauge in: %distance%',
-            {
-              distance: userVote?.lastVoteTime ? dayjs.unix(userVote?.lastVoteTime).add(10, 'day').fromNow() : '',
-            },
-          )}
-        >
-          <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
-        </Tooltips>
+        {userVote?.voteLocked ? (
+          <Tooltips
+            content={t(
+              'Gauge’s vote can not be changed more frequent than 10 days. You can update your vote for this gauge in: %distance%',
+              {
+                distance: userVote?.lastVoteTime ? dayjs.unix(userVote?.lastVoteTime).add(10, 'day').fromNow() : '',
+              },
+            )}
+          >
+            <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
+          </Tooltips>
+        ) : null}
         <Text color={userVote?.voteLocked ? 'textDisabled' : ''}>
           {getBalanceAmount(votesAmount).toFixed(2)} veCAKE
         </Text>
       </Flex>
       <Flex>
         <PercentInput
-          disabled={userVote?.voteLocked}
-          inputProps={{ disabled: userVote?.voteLocked }}
+          disabled={voteDisabled}
+          inputProps={{ disabled: voteDisabled }}
           onMax={onMax}
-          value={value}
+          value={voteValue}
           onUserInput={onChange}
         />
       </Flex>
