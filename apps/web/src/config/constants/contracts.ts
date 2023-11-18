@@ -266,10 +266,10 @@ export default {
     [ChainId.BSC_TESTNET]: '0x',
   },
   veCake: {
-    [ChainId.BSC_TESTNET]: '0xD512FDe5b20B136Ffd8E0087194BEf8537dc88AE',
+    [ChainId.BSC_TESTNET]: '0x279957513FC505F8Cb16f4b6783D170C9BEcE322',
   },
   gaugesVoting: {
-    [ChainId.BSC_TESTNET]: '0xc2206a6aF51FD9ee574d017F62c0F820Ccaa2Ea2',
+    [ChainId.BSC_TESTNET]: '0x357b01894b21787B41A8FA4DCaFE92293470FaD9',
   },
   revenueSharingPoolForCake: {
     [ChainId.BSC_TESTNET]: '0x881Ed694980A03EE653508aeb9EF3ffD9f56aC99',
