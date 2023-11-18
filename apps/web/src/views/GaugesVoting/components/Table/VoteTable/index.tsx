@@ -1,15 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Card, FlexGap } from '@pancakeswap/uikit'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
-import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGuages'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
 import { TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
+import { useGaugeRows } from './hooks/useGaugeRows'
 
 const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expanded'].includes(prop) })<{
   expanded: boolean
@@ -22,21 +22,9 @@ export const VoteTable = () => {
   const { t } = useTranslation()
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
-  const [selectRows, setSelectRows] = useState<GaugeVoting['hash'][]>([])
-  const { data: gauges, refetch } = useUserVoteGauges()
-  const selectGauges = useMemo(() => {
-    return gauges?.filter((gauge) => selectRows.includes(gauge.hash))
-  }, [gauges, selectRows])
   const [expanded, setExpanded] = useState(false)
   const [votes, setVotes] = useState<string[]>([])
-
-  const onGaugeAdd = (hash: GaugeVoting['hash']) => {
-    if (selectRows.includes(hash)) {
-      setSelectRows((prev) => prev.filter((v) => v !== hash))
-    } else {
-      setSelectRows((prev) => [...prev, hash])
-    }
-  }
+  const { rows, onRowAdd, refetch } = useGaugeRows()
 
   const onVoteChange = (index: number, value: string) => {
     const newVotes = [...votes]
@@ -59,7 +47,7 @@ export const VoteTable = () => {
       .map((v, i) => {
         if (v && v !== '0') {
           return {
-            ...selectGauges?.[i],
+            ...rows?.[i],
             weight: Number(v) * 100,
           }
         }
@@ -68,41 +56,27 @@ export const VoteTable = () => {
       .filter(Boolean) as GaugeVoting[]
     await writeVote(voteGauges)
     await refetch()
-  }, [refetch, selectGauges, votes, writeVote])
-
-  useEffect(() => {
-    if (!selectRows.length && gauges.length) {
-      setSelectRows(gauges.map((gauge) => gauge.hash))
-    }
-  }, [gauges, selectRows])
-
+  }, [refetch, rows, votes, writeVote])
   return (
     <>
-      <AddGaugeModal
-        selectRows={selectRows}
-        onGaugeAdd={onGaugeAdd}
-        isOpen={isOpen}
-        onDismiss={() => setIsOpen(false)}
-      />
+      <AddGaugeModal selectRows={rows} onGaugeAdd={onRowAdd} isOpen={isOpen} onDismiss={() => setIsOpen(false)} />
       <Card innerCardProps={{ padding: '32px', paddingTop: '16px' }} mt={32}>
-        <TableHeader count={selectGauges?.length} />
+        <TableHeader count={rows?.length} />
 
-        {selectGauges?.length ? (
+        {rows?.length ? (
           <>
             <Scrollable expanded={expanded}>
-              {selectGauges.map((row, index) => (
+              {rows.map((row, index) => (
                 <TableRow key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
               ))}
             </Scrollable>
-            {selectGauges?.length > 3 ? (
-              <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} />
-            ) : null}
+            {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
           </>
         ) : (
           <EmptyTable />
         )}
 
-        <FlexGap gap="12px" style={{ marginTop: selectGauges && selectGauges?.length > 3 ? 0 : '8px' }}>
+        <FlexGap gap="12px" style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}>
           <Button width="100%" onClick={() => setIsOpen(true)}>
             + Add Gauges ({gaugesCount?.toString()})
           </Button>
