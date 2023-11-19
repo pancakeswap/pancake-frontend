@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowDropDownIcon, Box, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Text } from '@pancakeswap/uikit'
+import {
+  ArrowDropDownIcon,
+  ArrowDropUpIcon,
+  Box,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  Flex,
+  FlexGap,
+  Text,
+} from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
@@ -91,10 +100,13 @@ const NotificationBadge = ({ title, message }: { title: string; message: string 
     const hasFallen = message.includes('fallen')
     const isAPR = title.includes('APR')
     const badgeString = getBadgeString(isAPR, hasFallen, percentageChange ?? 0.0)
+    const textColor = badgeString.includes('+') ? 'success' : badgeString.includes('-') ? 'failure' : 'text'
     return (
       <FlexGap borderRadius={16} backgroundColor="tertiary" paddingY="2px" paddingX="6px" alignItems="center" gap="2px">
-        <ArrowDropDownIcon color="text" />
-        <Text fontSize="12px">{badgeString}</Text>
+        {hasFallen ? <ArrowDropDownIcon color={textColor} /> : <ArrowDropUpIcon color={textColor} />}
+        <Text fontSize="12px" pr="6px" color={textColor}>
+          {badgeString}
+        </Text>
       </FlexGap>
     )
   }
@@ -149,14 +161,16 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
                 <NotificationBadge title={title} message={description} />
               </FlexGap>
             </Flex>
-            <Flex alignItems="flex-start">
-              <Text color="primary" fontWeight={600} fontSize="14px">
-                {show ? t('LESS') : t('MORE')}
-              </Text>
-              <ExpandButton>
-                {show ? <ChevronUpIcon color="primary" /> : <ChevronDownIcon color="primary" />}
-              </ExpandButton>
-            </Flex>
+            {url ? (
+              <Flex alignItems="flex-start">
+                <Text color="primary" fontWeight={600} fontSize="14px">
+                  {show ? t('LESS') : t('MORE')}
+                </Text>
+                <ExpandButton>
+                  {show ? <ChevronUpIcon color="primary" /> : <ChevronDownIcon color="primary" />}
+                </ExpandButton>
+              </Flex>
+            ) : null}
           </Flex>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
             <Text>{formatedDescription}</Text>

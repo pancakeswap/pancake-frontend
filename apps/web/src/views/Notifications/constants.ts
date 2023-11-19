@@ -48,6 +48,9 @@ export const NotificationFilterTypes: OptionProps[] = [
 
 export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_DEFAULT_PROJECT_ID ?? ''
 export const SECURE_TOKEN = process.env.NEXT_PUBLIC_SECURE_TOKEN ?? ''
+export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY ?? ''
+export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
+export const PUBLIC_VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_KEY ?? ''
 
 export const PancakeNotifications: {
   [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(args: T[]) => pushNotification
@@ -57,7 +60,6 @@ export const PancakeNotifications: {
       title: 'Welcome Aboard',
       body: 'You have successfully subscribed to Pancake Notifications Wooo!',
       icon: `https://pancakeswap.finance/logo.png`,
-      url: '',
       type: 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
     }
   },

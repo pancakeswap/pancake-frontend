@@ -55,24 +55,26 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { subscribe, isSubscribing } = useManageSubscription(`eip155:1:${account}`)
-  const { sendPushNotification } = useSendPushNotification()
+  const { sendPushNotification, requestNotificationPermission, subscribeToPushNotifications } =
+    useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {
     try {
       await subscribe()
-      setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`), 1000)
+      await subscribeToPushNotifications()
+      setTimeout(() => sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`), 2000)
     } catch (error) {
       toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
     }
-  }, [account, toast, sendPushNotification, subscribe])
+  }, [account, toast, sendPushNotification, subscribe, subscribeToPushNotifications])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
       if (!identityKey) handleRegistration()
-      else handleSubscribe()
+      else requestNotificationPermission().then(() => handleSubscribe())
     },
-    [handleRegistration, handleSubscribe, identityKey],
+    [handleRegistration, handleSubscribe, identityKey, requestNotificationPermission],
   )
 
   const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(identityKey), t)

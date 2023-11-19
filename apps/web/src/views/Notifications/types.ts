@@ -69,7 +69,7 @@ export type pushNotification = {
   title: string
   body: string
   icon: string
-  url: string
+  url?: string
   type: string
 }
 

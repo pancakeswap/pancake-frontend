@@ -27,7 +27,7 @@ export default createReducer(initialState, (builder) =>
     )
     .addCase(clearArchivedTransactions, (notifications, { payload: { subscriptionId } }) => {
       const txs = notifications[subscriptionId] ?? {}
-      const twentyFourHoursAgo = Date.now() - 24 * 60 * 60 * 1000
+      const twentyFourHoursAgo = Math.floor(new Date().getTime() / 1000) - 3600 * 24
 
       const filteredNotifications = Object.keys(txs).reduce((filtered, notificationId) => {
         const notification = txs[notificationId]

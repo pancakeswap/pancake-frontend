@@ -70,5 +70,7 @@ export const extractChainIdFromMessage = (inputString: string) => {
 }
 
 export const getBadgeString = (isAPR: boolean, hasFallen: boolean, percentageChange: number) => {
-  return isAPR ? `${percentageChange}$ APR change` : `${hasFallen ? 'Down' : 'Up'} ${percentageChange}%`
+  return isAPR
+    ? `${percentageChange}% APR change `
+    : `${hasFallen ? 'Down' : 'Up'} ${hasFallen ? '-' : '+'}${percentageChange}%`
 }
