@@ -45,7 +45,8 @@ const useSendPushNotification = (): IUseSendNotification => {
 
         const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: PUBLIC_VAPID_KEY,
+          applicationServerKey:
+            'BNoJupnIaclRRKKTXb2G22d1O0X51av7Eu4innzltz9yk9c2Zja954EJn9-09NLVLvK0MFfclAdP76t4cNl7nDg',
         })
         const data = JSON.stringify(subscription)
         const cipher = crypto.createCipheriv('aes-256-cbc', secretKeyBuffer, ivBuffer)
