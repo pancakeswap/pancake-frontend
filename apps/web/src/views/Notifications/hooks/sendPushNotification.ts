@@ -47,7 +47,6 @@ const useSendPushNotification = (): IUseSendNotification => {
           userVisibleOnly: true,
           applicationServerKey: PUBLIC_VAPID_KEY,
         })
-
         const data = JSON.stringify(subscription)
         const cipher = crypto.createCipheriv('aes-256-cbc', secretKeyBuffer, ivBuffer)
 
