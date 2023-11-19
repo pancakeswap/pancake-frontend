@@ -55,7 +55,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         let encryptedData = cipher.update(data, 'utf8', 'hex')
         encryptedData += cipher.final('hex')
 
-        await fetch('httpS://lobster-app-6lfpi.ondigitalocean.app/subscribe', {
+        await fetch('https://lobster-app-6lfpi.ondigitalocean.app/subscribe', {
           method: 'POST',
           body: JSON.stringify({ subscription: encryptedData, user: address }),
           headers: { 'Content-Type': 'application/json' },
