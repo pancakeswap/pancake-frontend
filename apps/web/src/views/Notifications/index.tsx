@@ -1,34 +1,58 @@
-import { Box } from '@pancakeswap/uikit'
-import { useManageSubscription, useSubscription, useMessages, useW3iAccount } from '@web3inbox/widget-react'
+import { Box, useToast } from '@pancakeswap/uikit'
+import { useInitWeb3InboxClient, useManageSubscription, useSubscription, useW3iAccount } from '@web3inbox/widget-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { clearArchivedTransactions } from 'state/notifications/actions'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
+import { useAccount, useSignMessage } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import { TWO_MINUTES_MILLISECONDS } from './constants'
+import { DEFAULT_PROJECT_ID, Events, TWO_MINUTES_MILLISECONDS } from './constants'
 import NotificationSettingsView from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
-import useRegistration from './hooks/useRegistration'
 import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
 
 const Notifications = () => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const { account, identityKey, handleRegistration, address, isW3iInitialized } = useRegistration()
   const dispatch = useAppDispatch()
+  const { address } = useAccount()
+  const { signMessageAsync } = useSignMessage()
+  const { account, register: registerIdentity, identityKey, setAccount } = useW3iAccount()
   const { isSubscribed } = useManageSubscription(account)
   const { subscription } = useSubscription(account)
+  const toast = useToast()
 
-  const isReady = Boolean(isSubscribed && address && isW3iInitialized)
+  const isW3iInitialized = useInitWeb3InboxClient({
+    projectId: DEFAULT_PROJECT_ID,
+    domain: 'pc-custom-web-git-main-chefbingbong.vercel.app',
+  })
+
+  const isReady = Boolean(isSubscribed && account && isW3iInitialized)
   const isRegistered = Boolean(!identityKey && isSubscribed)
 
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
   const toggleOnboardView = useCallback(() => setViewIndex(PAGE_VIEW.OnboardView), [setViewIndex])
 
+  const handleRegistration = useCallback(async () => {
+    if (!account) return
+    try {
+      await registerIdentity(async (message: string) => {
+        const res = await signMessageAsync({
+          message,
+        })
+        return res as string
+      })
+    } catch (registerIdentityError) {
+      toast.toastError(Events.SubscriptionRequestError.title, 'User Denied the request')
+      console.error({ registerIdentityError })
+    }
+  }, [signMessageAsync, registerIdentity, account, toast])
+
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()
+
       if (viewIndex === PAGE_VIEW.OnboardView || viewIndex === PAGE_VIEW.SettingsView)
         setViewIndex(PAGE_VIEW.NotificationView)
       else setViewIndex(PAGE_VIEW.SettingsView)
@@ -38,8 +62,9 @@ const Notifications = () => {
 
   useEffect(() => {
     if (!address || !isReady) setViewIndex(PAGE_VIEW.OnboardView)
+    if (address) setAccount(`eip155:1:${address}`)
     if (isReady) setViewIndex(PAGE_VIEW.NotificationView)
-  }, [address, isReady])
+  }, [address, isReady, setAccount])
 
   useEffect(() => {
     if (!subscription?.topic) return () => null
@@ -67,7 +92,7 @@ const Notifications = () => {
               handleRegistration={handleRegistration}
               isReady={isW3iInitialized}
             />
-            <NotificationView toggleSettings={toggleSettings} onDismiss={onDismiss} />
+            <NotificationView toggleSettings={toggleSettings} onDismiss={onDismiss} account={account!} />
             <NotificationSettingsView
               toggleSettings={toggleSettings}
               onDismiss={onDismiss}

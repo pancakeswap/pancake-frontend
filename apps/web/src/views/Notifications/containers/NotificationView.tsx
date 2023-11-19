@@ -73,14 +73,15 @@ export const NotificationsTabButton: React.FC<React.PropsWithChildren<FarmTabBut
 const NotificationView = ({
   toggleSettings,
   onDismiss,
+  account,
 }: {
   toggleSettings: (e: React.MouseEvent<HTMLButtonElement>) => void
   onDismiss: () => void
+  account: string
 }) => {
   const [notificationType, setNotificationType] = useState<string>('All')
   const [isClosing, setIsClosing] = useState<boolean>(false)
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Latest)
-  const { account } = useW3iAccount()
   const dispatch = useAppDispatch()
   const { messages: notifications, deleteMessage } = useMessages(account)
   const { subscription } = useSubscription(account)
