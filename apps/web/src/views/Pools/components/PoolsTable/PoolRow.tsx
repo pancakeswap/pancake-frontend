@@ -1,19 +1,17 @@
-import { memo, useCallback, useMemo } from 'react'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { memo, useCallback, useMemo } from 'react'
 
-import { usePool, useDeserializedPoolByVaultKey, useVaultPoolByKey } from 'state/pools/hooks'
-import { VaultKey } from 'state/types'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { useDeserializedPoolByVaultKey, usePool, useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
 
-import NameCell from './Cells/NameCell'
-import EarningsCell from './Cells/EarningsCell'
-import AprCell from './Cells/AprCell'
-import TotalStakedCell from './Cells/TotalStakedCell'
+import { VeCakeBenefitCard } from 'views/CakeStaking/components/SyrupPool/VeCakeCard'
 import ActionPanel from './ActionPanel/ActionPanel'
-import AutoEarningsCell from './Cells/AutoEarningsCell'
-import AutoAprCell from './Cells/AutoAprCell'
-import StakedCell from './Cells/StakedCell'
+import AprCell from './Cells/AprCell'
+import EarningsCell from './Cells/EarningsCell'
+import NameCell from './Cells/NameCell'
+import TotalStakedCell from './Cells/TotalStakedCell'
 
 export const VaultPoolRow: React.FC<
   React.PropsWithChildren<{ vaultKey: VaultKey; account: string; initialActivity?: boolean }>
@@ -33,7 +31,10 @@ export const VaultPoolRow: React.FC<
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <NameCell pool={pool} />
-      {isXLargerScreen && <AutoEarningsCell pool={pool} account={account} />}
+      <Pool.BaseCell style={{ padding: 0, justifyContent: 'center', flexGrow: 1 }}>
+        <VeCakeBenefitCard isTableView />
+      </Pool.BaseCell>
+      {/* {isXLargerScreen && <AutoEarningsCell pool={pool} account={account} />}
       {isXLargerScreen ? <StakedCell pool={pool} account={account} /> : null}
       <AutoAprCell pool={pool} />
       {isLargerScreen && (
@@ -42,7 +43,7 @@ export const VaultPoolRow: React.FC<
           totalStaked={totalStaked}
           totalStakedBalance={totalStakedBalance}
         />
-      )}
+      )} */}
     </Pool.ExpandRow>
   )
 })

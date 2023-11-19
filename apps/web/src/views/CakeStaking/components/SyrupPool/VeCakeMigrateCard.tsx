@@ -6,7 +6,7 @@ import { VeCakeButton } from './VeCakeButton'
 import {} from 'styled-components'
 import { useIsMigratedToVeCake } from '../../hooks/useIsMigratedToVeCake'
 
-export const VeCakeMigrateCard = memo(() => {
+export const VeCakeMigrateCard: React.FC<{ isTableView?: boolean }> = memo(({ isTableView }) => {
   const { t } = useTranslation()
   const isMigratedToVeCake = useIsMigratedToVeCake()
   return (
@@ -28,7 +28,7 @@ export const VeCakeMigrateCard = memo(() => {
           )}
         </Box>
       </Flex>
-      <VeCakeButton type="migrate" />
+      {!isTableView && <VeCakeButton type="migrate" />}
     </StyledBox>
   )
 })

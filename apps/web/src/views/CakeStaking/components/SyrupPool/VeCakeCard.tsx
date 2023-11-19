@@ -40,16 +40,32 @@ const ImageBox = styled.div`
   justify-content: center;
 `
 
+export const VeCakeBenefitCard: React.FC<{ isTableView: boolean }> = memo(({ isTableView }) => {
+  const { t } = useTranslation()
+  return (
+    <StyledBox
+      p="10px"
+      style={{
+        alignItems: 'center',
+        gap: 10,
+        height: isTableView ? '56px' : undefined,
+        display: isTableView ? 'inline-flex' : 'flex',
+        width: isTableView ? 'fit-content' : '100%',
+      }}
+    >
+      <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
+      <Text color="white" bold fontSize={14}>
+        {t('Stake & Lock for veCAKE, to enjoy more rewards & benefit!')}
+      </Text>
+    </StyledBox>
+  )
+})
+
 export const VeCakeCard = memo(() => {
   const { t } = useTranslation()
   return (
     <Flex flexDirection="column" style={{ gap: 10 }}>
-      <StyledBox p="10px" style={{ alignItems: 'center', gap: 10 }}>
-        <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
-        <Text color="white" bold fontSize={14}>
-          {t('Stake & Lock for veCAKE, to enjoy more rewards & benefit!')}
-        </Text>
-      </StyledBox>
+      <VeCakeBenefitCard />
       <Text bold>{t('Explore veCAKE Benefits')}:</Text>
       <LightGreyCard style={{ padding: '8px 12px', marginBottom: 10 }}>
         <StyledFlex>
