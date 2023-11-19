@@ -19,7 +19,12 @@ import BigNumber from 'bignumber.js'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedLockedCakeVault, DeserializedLockedVaultUser, VaultKey } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import { VeCakeButton, VeCakeUpdateCardTableView, VeCakeMigrateCard } from 'views/CakeStaking/components/SyrupPool'
+import {
+  VeCakeButton,
+  VeCakeUpdateCardTableView,
+  VeCakeMigrateCard,
+  VeCakeUpdateCard,
+} from 'views/CakeStaking/components/SyrupPool'
 import ConvertToFlexibleButton from '../../LockedPool/Buttons/ConvertToFlexibleButton'
 import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
 import YieldBoostRow from '../../LockedPool/Common/YieldBoostRow'
@@ -195,13 +200,14 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             <Stake pool={pool} />
           </ActionContainer>
         </Box>
-        <Flex>
+        <Flex width="100%">
           <Message
             variant="warning"
             style={{ width: '100%', marginTop: '16px' }}
             action={
               <Flex alignItems="center" style={{ gap: 24 }}>
                 {vaultPosition === VaultPosition.Locked && <VeCakeMigrateCard isTableView />}
+                {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake />}
                 {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCardTableView />}
                 {vaultPosition >= VaultPosition.LockedEnd && <ConvertToFlexibleButton />}
                 <VeCakeButton type="get" />
@@ -211,7 +217,9 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           >
             {vaultPosition !== VaultPosition.Locked && (
               <MessageText>
-                {vaultPosition === VaultPosition.LockedEnd
+                {vaultPosition === VaultPosition.Flexible
+                  ? t('Flexible CAKE pool is discontinued and no longer distributing rewards.  Learn more »')
+                  : vaultPosition === VaultPosition.LockedEnd
                   ? t('The lock period has ended. Convert to flexible staking.')
                   : t('The lock period has ended. To avoid more rewards being burned, convert to flexible staking.')}
               </MessageText>
