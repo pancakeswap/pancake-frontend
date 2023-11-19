@@ -69,7 +69,7 @@ const VaultPositionTag: React.FC<React.PropsWithChildren<{ position: VaultPositi
   )
 }
 
-const VeCakeVaultPositionTag: React.FC = ({}) => {
+const VeCakeVaultPositionTag: React.FC = () => {
   const isMigratedToVeCake = useIsMigratedToVeCake()
   return (
     <Tag variant={isMigratedToVeCake ? 'success' : 'failure'}>
