@@ -13,7 +13,7 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
-import { useMessages, useSubscription } from '@web3inbox/widget-react'
+import { useMessages, useSubscription, useW3iAccount } from '@web3inbox/widget-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { addArchivedNotification } from 'state/notifications/actions'
@@ -80,10 +80,10 @@ const NotificationView = ({
   const [notificationType, setNotificationType] = useState<string>('All')
   const [isClosing, setIsClosing] = useState<boolean>(false)
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Latest)
-  const { address: account } = useAccount()
+  const { account } = useW3iAccount()
   const dispatch = useAppDispatch()
-  const { messages: notifications, deleteMessage } = useMessages(`eip155:1:${account}`)
-  const { subscription } = useSubscription(`eip155:1:${account}`)
+  const { messages: notifications, deleteMessage } = useMessages(account)
+  const { subscription } = useSubscription(account)
   const archivedNotifications = useAllNotifications(subscription?.topic)
 
   const { t } = useTranslation()

@@ -3,6 +3,8 @@ import Image from 'next/image'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
 import { PAGE_VIEW } from 'views/Notifications/types'
+import { useAccount } from 'wagmi'
+import { NotifyClientTypes } from '@walletconnect/notify-client'
 import useUnreadNotifications from '../../hooks/useUnreadNotifications'
 
 interface InotificationBellProps {
@@ -28,6 +30,7 @@ const NotificationMenu: React.FC<
     viewIndex: PAGE_VIEW
   }
 > = ({ children, isMenuOpen, setIsMenuOpen, isRegistered, handleRegistration, viewIndex }) => {
+  const { address } = useAccount()
   const { unread, setUnread } = useUnreadNotifications()
 
   const ref = useRef<HTMLDivElement>(null)
@@ -36,21 +39,21 @@ const NotificationMenu: React.FC<
   const toggleMenu = useCallback(() => {
     if (isRegistered) handleRegistration()
     setUnread(0)
-    localStorage.setItem('unread', '0')
+    localStorage.setItem(`eip155:1:${address}-unread`, '0')
     setIsMenuOpen(!isMenuOpen)
-  }, [setIsMenuOpen, isMenuOpen, setUnread, isRegistered, handleRegistration])
+  }, [setIsMenuOpen, isMenuOpen, setUnread, isRegistered, handleRegistration, address])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setIsMenuOpen(false)
-        localStorage.setItem('unread', '0')
+        localStorage.setItem(`eip155:1:${address}-unread`, '0')
         setUnread(0)
       }
     }
     document.addEventListener('click', checkIfClickedOutside)
     return () => document.removeEventListener('click', checkIfClickedOutside)
-  }, [isMenuOpen, setIsMenuOpen, setUnread])
+  }, [isMenuOpen, setIsMenuOpen, setUnread, address])
 
   if (isMobile) {
     return (

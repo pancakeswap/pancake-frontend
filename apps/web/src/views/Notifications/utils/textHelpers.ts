@@ -58,3 +58,17 @@ export const getLinkText = (title: string, t: TranslateFunction) => {
   if (title.includes('Balance')) return t('Buy Crypto')
   return t('View Link')
 }
+
+export const extractWordBeforeFullStop = (inputString: string) => {
+  const match = inputString.match(/(\S+)\s*\./)
+  return match ? match[1] : 'bsc'
+}
+
+export const extractChainIdFromMessage = (inputString: string) => {
+  const match = inputString.match(/on (\$\{chainId\})/)
+  return match ? match[1] : 'bsc'
+}
+
+export const getBadgeString = (isAPR: boolean, hasFallen: boolean, percentageChange: number) => {
+  return isAPR ? `${percentageChange}$ APR change` : `${hasFallen ? 'Down' : 'Up'} ${percentageChange}%`
+}

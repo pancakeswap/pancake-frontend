@@ -1,11 +1,11 @@
 import { Box } from '@pancakeswap/uikit'
-import { useManageSubscription, useSubscription } from '@web3inbox/widget-react'
+import { useManageSubscription, useSubscription, useMessages, useW3iAccount } from '@web3inbox/widget-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { clearArchivedTransactions } from 'state/notifications/actions'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import { ONE_HOUR_MILLISECONDS } from './constants'
+import { TWO_MINUTES_MILLISECONDS } from './constants'
 import NotificationSettingsView from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
 import useRegistration from './hooks/useRegistration'
@@ -46,7 +46,7 @@ const Notifications = () => {
 
     const deleteInterval = setInterval(() => {
       dispatch(clearArchivedTransactions({ subscriptionId: subscription.topic }))
-    }, ONE_HOUR_MILLISECONDS) // 1DAY
+    }, TWO_MINUTES_MILLISECONDS) // 1DAY
 
     return () => clearInterval(deleteInterval)
   }, [subscription?.topic, dispatch])

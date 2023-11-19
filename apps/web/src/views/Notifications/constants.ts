@@ -1,4 +1,5 @@
 import { OptionProps } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/chains'
 import {
   EventInformation,
   PancakeNotificationBuilders,
@@ -8,7 +9,7 @@ import {
 } from './types'
 
 export const ONE_DAY_MILLISECONDS = 86400000
-export const ONE_HOUR_MILLISECONDS = 3600000
+export const TWO_MINUTES_MILLISECONDS = 120000
 
 export const NotificationFilterTypes: OptionProps[] = [
   {
@@ -100,4 +101,14 @@ export const Events: { [event in keyof typeof ResponseEvents]: EventInformation 
     title: 'Update',
     message: 'You sucessfully unsubsrcibed from notifications. You can re-subscribe any time',
   },
+}
+
+export const CHAIN_NAME_TO_CHAIN_ID = {
+  bsc: ChainId.BSC,
+  ethereum: ChainId.ETHEREUM,
+  polygon_zkevm: ChainId.POLYGON_ZKEVM,
+  era: ChainId.ZKSYNC,
+  arbitrum: ChainId.ARBITRUM_ONE,
+  linea: ChainId.LINEA,
+  base: ChainId.BASE,
 }
