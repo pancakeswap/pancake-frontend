@@ -97,6 +97,7 @@ const Notifications = () => {
               toggleSettings={toggleSettings}
               onDismiss={onDismiss}
               toggleOnboardView={toggleOnboardView}
+              account={account!}
             />
           </ViewContainer>
         </Box>

@@ -16,7 +16,6 @@ import _isEqual from 'lodash/isEqual'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useManageSubscription, useSubscriptionScopes } from '@web3inbox/widget-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useAccount } from 'wagmi'
 import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import SettingsContainer from '../components/SettingsItem/SettingsItem'
 import { Events } from '../constants'
@@ -51,12 +50,13 @@ const NotificationSettingsView = ({
   toggleSettings,
   onDismiss,
   toggleOnboardView,
+  account,
 }: {
   toggleSettings: (e: React.MouseEvent<HTMLButtonElement>) => void
   onDismiss: () => void
   toggleOnboardView: () => void
+  account: string
 }) => {
-  const { address: account } = useAccount()
   const { unsubscribe, isUnsubscribing } = useManageSubscription(`eip155:1:${account}`)
   const { scopes: currentScopes, updateScopes } = useSubscriptionScopes(`eip155:1:${account}`)
   const [scopes, setScopes] = useState<NotifyClientTypes.ScopeMap>({})
