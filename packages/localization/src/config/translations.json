@@ -2907,5 +2907,8 @@
   "You need to create a profile to participate in the IFO.": "You need to create a profile to participate in the IFO.",
   "Passive": "Passive",
   "Pegged": "Pegged",
-  "Supplying %amount% %symbol%": "Supplying %amount% %symbol%"
+  "Supplying %amount% %symbol%": "Supplying %amount% %symbol%",
+  "Total APY:": "Total APY:",
+  "Fee APY:": "Fee APY:",
+  "Stake APY:": "Stake APY:"
 }

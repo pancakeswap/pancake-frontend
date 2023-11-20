@@ -189,4 +189,5 @@ export { FavoriteBorderIcon } from "./Icons/FavoriteBorder";
 export { BarChartIcon } from "./Icons/BarChart";
 export { StoreIcon } from "./Icons/Store";
 export { default as StarCircle } from "./Icons/StarCircle";
+export { AlpIcon } from "./Icons/AlpIcon";
 export type { SvgProps } from "./types";

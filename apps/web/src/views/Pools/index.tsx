@@ -3,6 +3,7 @@ import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { Heading, Flex, Image, Text, Link, FlexLayout, PageHeader, Loading, ViewMode } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { checkIsBoostedPool } from '@pancakeswap/pools'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
@@ -98,6 +99,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                       <Pool.PoolCard<Token>
                         key={pool.sousId}
                         pool={pool}
+                        isBoostedPool={Boolean(chainId && checkIsBoostedPool(pool.contractAddress, chainId))}
                         isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
                         cardContent={
                           account ? (
@@ -119,7 +121,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                             height={64}
                           />
                         }
-                        cardFooter={<CardFooter pool={pool} account={account} />}
+                        cardFooter={<CardFooter pool={pool} account={account ?? ''} />}
                         aprRow={<AprRow pool={pool} stakedBalance={pool?.userData?.stakedBalance} />}
                       />
                     ),
@@ -133,14 +135,14 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                         initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
                         key={pool.vaultKey}
                         vaultKey={pool.vaultKey}
-                        account={account}
+                        account={account ?? ''}
                       />
                     ) : (
                       <PoolRow
                         initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
                         key={pool.sousId}
                         sousId={pool.sousId}
-                        account={account}
+                        account={account ?? ''}
                       />
                     ),
                   )}
