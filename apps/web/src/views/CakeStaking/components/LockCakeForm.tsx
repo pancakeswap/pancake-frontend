@@ -33,7 +33,7 @@ const CakeInput: React.FC<{
   const { t } = useTranslation()
   const cakeUsdPrice = useCakePrice()
   const cakeUsdValue = useMemo(() => {
-    return cakeUsdPrice ? cakeUsdPrice.times(value).toNumber() : 0
+    return cakeUsdPrice && value ? cakeUsdPrice.times(value).toNumber() : 0
   }, [cakeUsdPrice, value])
   const [percent, setPercent] = useState<number | null>(null)
   const _cakeBalance = useBSCCakeBalance()
