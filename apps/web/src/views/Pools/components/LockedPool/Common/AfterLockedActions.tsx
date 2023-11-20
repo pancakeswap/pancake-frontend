@@ -1,11 +1,9 @@
-import { memo, ReactNode } from 'react'
-import { Message, MessageText, Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Message, MessageText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
+import { ReactNode, memo } from 'react'
 import { VaultPosition } from 'utils/cakePool'
 
 import ConvertToFlexibleButton from '../Buttons/ConvertToFlexibleButton'
-import ExtendButton from '../Buttons/ExtendDurationButton'
 import { AfterLockedActionsPropsType } from '../types'
 
 const msg: Record<VaultPosition, ReactNode> = {
@@ -14,28 +12,18 @@ const msg: Record<VaultPosition, ReactNode> = {
   [VaultPosition.Locked]: null,
   [VaultPosition.LockedEnd]: (
     <Trans>
-      Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs,
-      voting power boosts, and so much more!
+      Extending or adding CAKE is not available for migrated positions. To get more veCAKE, convert to Flexible staking,
+      withdraw CAKE and add them to veCAKE.
     </Trans>
   ),
-  [VaultPosition.AfterBurning]: (
-    <Trans>
-      The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying
-      the benefits from locked staking.
-    </Trans>
-  ),
+  [VaultPosition.AfterBurning]: <Trans>The lock period has ended. Convert to flexible staking to withdraw.</Trans>,
 }
 
 const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPropsType>> = ({
-  currentLockedAmount,
-  stakingToken,
-  stakingTokenPrice,
   position,
   isInline,
   hideConvertToFlexibleButton,
-  customLockWeekInSeconds,
 }) => {
-  const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const isDesktopView = isInline && isDesktop
   const Container = isDesktopView ? Flex : Box
@@ -46,7 +34,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
       mb="16px"
       action={
         <Container mt={!isDesktopView && '8px'} ml="10px">
-          <ExtendButton
+          {/* <ExtendButton
             modalTitle={t('Renew')}
             lockEndTime="0"
             lockStartTime="0"
@@ -61,7 +49,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
             customLockWeekInSeconds={customLockWeekInSeconds}
           >
             {t('Renew')}
-          </ExtendButton>
+          </ExtendButton> */}
           {!hideConvertToFlexibleButton && <ConvertToFlexibleButton minWidth={isDesktopView && '200px'} />}
         </Container>
       }

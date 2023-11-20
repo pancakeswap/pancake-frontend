@@ -1,15 +1,29 @@
-import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box, Balance } from '@pancakeswap/uikit'
+import {
+  AddIcon,
+  Balance,
+  Box,
+  Flex,
+  IconButton,
+  MinusIcon,
+  Skeleton,
+  Text,
+  useModal,
+  Message,
+  MessageText,
+} from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { useTranslation } from '@pancakeswap/localization'
 
-import BigNumber from 'bignumber.js'
+import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { VaultKey } from 'state/types'
+import BigNumber from 'bignumber.js'
+import { LightGreyCard } from 'components/Card'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { Token } from '@pancakeswap/sdk'
+import { VaultKey } from 'state/types'
+import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
-import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 
 interface HasStakeActionProps {
   pool: Pool.DeserializedPool<Token>
@@ -29,7 +43,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
   } = useVaultPoolByKey(pool.vaultKey)
 
   const { stakingToken, stakingTokenPrice } = pool
-
+  const { t } = useTranslation()
   const cakePriceBusd = useCakePrice()
   const stakedDollarValue = cakePriceBusd.gt(0)
     ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), stakingToken.decimals)
@@ -47,7 +61,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
   )
 
   return (
-    <>
+    <LightGreyCard>
       <Flex mb="16px" justifyContent="space-between" alignItems="center">
         <Flex flexDirection="column">
           <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
@@ -76,7 +90,11 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
           >
             <MinusIcon color="primary" width="24px" />
           </IconButton>
-          <IconButton variant="secondary" onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
+          <IconButton
+            disabled
+            variant="secondary"
+            onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}
+          >
             <AddIcon color="primary" width="24px" height="24px" />
           </IconButton>
         </Flex>
@@ -90,7 +108,14 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
           />
         </Box>
       )}
-    </>
+      <Message variant="warning" mb="16px">
+        <MessageText>
+          {t(
+            'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, convert to Flexible staking, withdraw CAKE and add them to veCAKE.',
+          )}
+        </MessageText>
+      </Message>
+    </LightGreyCard>
   )
 }
 

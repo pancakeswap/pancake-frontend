@@ -4,7 +4,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import styled from 'styled-components'
 
-const StyledBox = styled(Box)`
+export const StyledBox = styled(Box)`
   border-radius: 16px;
   background: linear-gradient(229deg, #1fc7d4 -13.69%, #7645d9 91.33%);
   padding-top: 16px;

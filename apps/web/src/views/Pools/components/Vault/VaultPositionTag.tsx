@@ -9,12 +9,15 @@ import {
   Box,
   FlexGap,
   FlexGapProps,
+  CheckmarkCircleIcon,
+  PauseCircleIcon,
 } from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
 import { useTranslation } from '@pancakeswap/localization'
 import { ReactNode, useMemo } from 'react'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'
+import { useIsMigratedToVeCake } from 'views/CakeStaking/hooks/useIsMigratedToVeCake'
 
 const tagConfig: Record<VaultPosition, TagProps> = {
   [VaultPosition.None]: {},
@@ -66,6 +69,16 @@ const VaultPositionTag: React.FC<React.PropsWithChildren<{ position: VaultPositi
   )
 }
 
+const VeCakeVaultPositionTag: React.FC = () => {
+  const isMigratedToVeCake = useIsMigratedToVeCake()
+  return (
+    <Tag variant={isMigratedToVeCake ? 'success' : 'failure'}>
+      <Box as={isMigratedToVeCake ? CheckmarkCircleIcon : PauseCircleIcon} mr="4px" color="white" />
+      <Trans>{isMigratedToVeCake ? 'Migrated' : 'Reward pause'}</Trans>
+    </Tag>
+  )
+}
+
 export const VaultPositionTagWithLabel: React.FC<
   React.PropsWithChildren<{ userData: DeserializedLockedVaultUser } & FlexGapProps>
 > = ({ userData, ...props }) => {
@@ -79,7 +92,7 @@ export const VaultPositionTagWithLabel: React.FC<
         <Text fontSize="12px" color="secondary" textTransform="uppercase" bold>
           {t('My Position')}
         </Text>
-        <VaultPositionTag position={position} />
+        {position < VaultPosition.LockedEnd ? <VeCakeVaultPositionTag /> : <VaultPositionTag position={position} />}
       </FlexGap>
     )
   }
