@@ -5,7 +5,7 @@ import formatLocalisedCompactNumber, { getBalanceAmount, getBalanceNumber } from
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import dayjs from 'dayjs'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
@@ -57,6 +57,13 @@ export const TableRow: React.FC<{
   const votesAmount = useMemo(() => {
     return votePower.times(voteValue || 0).div(100)
   }, [voteValue, votePower])
+
+  useEffect(() => {
+    if (voteDisabled && !value) {
+      onChange(voteValue)
+    }
+  }, [onChange, value, voteDisabled, voteValue])
+
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
