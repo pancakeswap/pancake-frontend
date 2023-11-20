@@ -86,6 +86,12 @@ export const veCakeABI = [
   },
   {
     anonymous: false,
+    inputs: [{ indexed: true, internalType: 'address', name: 'farmBooster', type: 'address' }],
+    name: 'NewFarmBooster',
+    type: 'event',
+  },
+  {
+    anonymous: false,
     inputs: [
       { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
       { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' },
@@ -266,6 +272,13 @@ export const veCakeABI = [
   },
   {
     inputs: [],
+    name: 'FarmBooster',
+    outputs: [{ internalType: 'contract IFarmBooster', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'MAX_LOCK',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
@@ -355,8 +368,25 @@ export const veCakeABI = [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'address', name: '_user', type: 'address' },
+      { internalType: 'uint256', name: '_blockNumber', type: 'uint256' },
+    ],
+    name: 'balanceOfAtUser',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
     name: 'balanceOfForProxy',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
+    name: 'balanceOfUser',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
@@ -472,6 +502,13 @@ export const veCakeABI = [
     inputs: [],
     name: 'epoch',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'everEmergencyWithdraw',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -633,6 +670,13 @@ export const veCakeABI = [
   {
     inputs: [{ internalType: 'bool', name: '_emergencyWithdrawSwitch', type: 'bool' }],
     name: 'setEmergencyWithdrawSwitch',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_farmBooster', type: 'address' }],
+    name: 'setFarmBooster',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
