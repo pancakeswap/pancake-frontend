@@ -36,7 +36,7 @@ export function useHandleWithdrawSubmission({
         t('Learn more'),
       )
 
-      toastInfo('Withdawal approval is pending', [
+      toastInfo(t('Withdawal approval is pending'), [
         t('Please come back to check later at a certain amount of time'),
         linkElement,
       ])
