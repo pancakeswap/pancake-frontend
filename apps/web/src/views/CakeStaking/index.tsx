@@ -14,7 +14,6 @@ import {
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import Page from 'components/Layout/Page'
-import { getTotalIFOSold } from 'config/constants/ifo'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import { useState } from 'react'
 import { BenefitCard } from './components/BenefitCard'
@@ -23,8 +22,7 @@ import { LockCake } from './components/LockCake'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 import { useSnapshotVotingCount } from './hooks/useSnapshotVotingCount'
-
-const totalIFOSold = getTotalIFOSold()
+import { useTotalIFOSold } from './hooks/useTotalIFOSold'
 
 const CakeStaking = () => {
   const { t } = useTranslation()
@@ -32,6 +30,7 @@ const CakeStaking = () => {
   const snapshotVotingCount = useSnapshotVotingCount()
   const totalCakeDistributed = useCakeDistributed()
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
+  const totalIFOSold = useTotalIFOSold()
 
   return (
     <>

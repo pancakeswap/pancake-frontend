@@ -1,5 +1,4 @@
 import { ChainId, getChainName } from '@pancakeswap/chains'
-
 import { BaseIfoConfig, Ifo } from '../types'
 import { isCrossChainIfoSupportedOnly, isIfoSupported } from './isIfoSupported'
 import { getDestChains } from './getDestChains'
@@ -56,4 +55,20 @@ export async function getInActiveIfos(chainId?: ChainId): Promise<Ifo[]> {
 
   const configs = await getIfoConfig(chainId)
   return configs.filter(({ isActive }) => !isActive)
+}
+
+export async function getTotalIFOSold(chainId?: ChainId): Promise<number> {
+  const ifos = await getIfoConfig(chainId)
+  const unwrap = (usd: string) => {
+    return Number(usd.replace('/$/', '').replace('/,/g', ''))
+  }
+  return ifos.reduce((acc, current) => {
+    if (current.poolBasic?.raiseAmount) {
+      return acc + unwrap(current.poolBasic.raiseAmount)
+    }
+    if (current.poolUnlimited?.raiseAmount) {
+      return acc + unwrap(current.poolUnlimited.raiseAmount)
+    }
+    return acc
+  }, 0)
 }
