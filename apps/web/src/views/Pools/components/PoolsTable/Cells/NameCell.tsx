@@ -25,7 +25,7 @@ export const StyledCell = styled(Pool.BaseCell)`
   flex-direction: row;
   padding-left: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    flex: 1 0 150px;
+    flex: 0 0 210px;
     padding-left: 32px;
   }
 `

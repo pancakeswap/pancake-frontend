@@ -1,17 +1,18 @@
-import { styled } from 'styled-components'
 import { useMemo } from 'react'
+import { styled } from 'styled-components'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
-import { Flex, Text, Box, useTooltip, HelpIcon, BalanceWithLoading, ButtonVariant } from '@pancakeswap/uikit'
+import { BalanceWithLoading, Box, ButtonVariant, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { DeserializedLockedVaultUser } from 'state/types'
-import LockedActions from './Common/LockedActions'
-import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
+import { VeCakeMigrateCard } from 'views/CakeStaking/components/SyrupPool'
 import OriginalLockedInfo from '../OriginalLockedInfo'
+import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
+import LockedActions from './Common/LockedActions'
 
 const HelpIconWrapper = styled.div`
   align-self: center;
@@ -27,6 +28,7 @@ const LockedStaking: React.FC<React.PropsWithChildren<LockedStakingProps>> = ({ 
   const { t } = useTranslation()
 
   const position = useMemo(
+    // () => VaultPosition.LockedEnd,
     () =>
       getVaultPosition({
         userShares: userData?.userShares,
@@ -122,17 +124,21 @@ const LockedStaking: React.FC<React.PropsWithChildren<LockedStakingProps>> = ({ 
         </Box>
       </Flex>
       <Box mb="16px">
-        <LockedActions
-          userShares={userData?.userShares}
-          locked={userData?.locked}
-          lockEndTime={userData?.lockEndTime}
-          lockStartTime={userData?.lockStartTime}
-          stakingToken={stakingToken}
-          stakingTokenBalance={stakingTokenBalance}
-          stakingTokenPrice={pool?.stakingTokenPrice}
-          lockedAmount={currentLockedAmountAsBigNumber}
-          variant={buttonVariant}
-        />
+        {position < VaultPosition.LockedEnd ? (
+          <VeCakeMigrateCard />
+        ) : (
+          <LockedActions
+            userShares={userData?.userShares}
+            locked={userData?.locked}
+            lockEndTime={userData?.lockEndTime}
+            lockStartTime={userData?.lockStartTime}
+            stakingToken={stakingToken}
+            stakingTokenBalance={stakingTokenBalance}
+            stakingTokenPrice={pool?.stakingTokenPrice}
+            lockedAmount={currentLockedAmountAsBigNumber}
+            variant={buttonVariant}
+          />
+        )}
       </Box>
     </Box>
   )

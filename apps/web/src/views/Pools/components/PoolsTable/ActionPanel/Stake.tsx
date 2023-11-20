@@ -1,53 +1,51 @@
 import {
   AddIcon,
+  Balance,
+  Box,
   Button,
   Flex,
+  HelpIcon,
   IconButton,
   MinusIcon,
-  HelpIcon,
   Skeleton,
+  SkeletonV2,
   Text,
+  useMatchBreakpoints,
   useModal,
   useTooltip,
-  Box,
-  SkeletonV2,
-  useMatchBreakpoints,
-  Balance,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
-import { useAccount } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
-import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
+import { useAccount } from 'wagmi'
 
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
-import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import { styled } from 'styled-components'
+import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { DeserializedLockedCakeVault, VaultKey } from 'state/types'
+import { styled } from 'styled-components'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
-import { Token } from '@pancakeswap/sdk'
+import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 
+import { VeCakeButton } from 'views/CakeStaking/components/SyrupPool/VeCakeButton'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
+import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
+import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
+import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import StakeModal from '../../Modals/StakeModal'
-import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
-import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
-import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
-import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
-import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
-import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
-import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
-import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 import OriginalLockedInfo from '../../OriginalLockedInfo'
+import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
+import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -211,11 +209,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       <ActionContainer>
         <ActionTitles>
           <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-            {t('Start staking')}
+            {vaultKey === VaultKey.CakeVault
+              ? t('Stake & Lock for veCAKE, to enjoy more rewards & benefit!')
+              : t('Start staking')}
           </Text>
         </ActionTitles>
         <ActionContent>
-          <ConnectWalletButton width="100%" />
+          {vaultKey === VaultKey.CakeVault ? <VeCakeButton type="get" /> : <ConnectWalletButton width="100%" />}
         </ActionContent>
       </ActionContainer>
     )
@@ -322,7 +322,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                   </SkeletonV2>
                 </Box>
               </Flex>
-              {vaultPosition === VaultPosition.Locked && (
+              {/* {vaultPosition === VaultPosition.Locked && (
                 <Box mt="16px">
                   <AddCakeButton
                     lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
@@ -334,7 +334,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                     stakingTokenBalance={stakingTokenBalance}
                   />
                 </Box>
-              )}
+              )} */}
             </Flex>
             {vaultPosition >= VaultPosition.Locked && (
               <Flex flex="1" ml="20px" flexDirection="column" alignSelf="flex-start">
@@ -363,7 +363,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                 >
                   {t('On %date%', { date: lockEndDate })}
                 </Text>
-                {vaultPosition === VaultPosition.Locked && (
+                {/* {vaultPosition === VaultPosition.Locked && (
                   <Box mt="16px">
                     <ExtendButton
                       lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
@@ -376,7 +376,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                       {t('Extend')}
                     </ExtendButton>
                   </Box>
-                )}
+                )} */}
               </Flex>
             )}
             {(vaultPosition === VaultPosition.Flexible || !vaultKey) && (
@@ -394,7 +394,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                   <IconButton
                     variant="secondary"
                     onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-                    disabled={isFinished}
+                    disabled
                   >
                     <AddIcon color="primary" width="14px" />
                   </IconButton>
@@ -452,7 +452,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
             </Text>
           </Flex>
         )}
-        {[VaultPosition.AfterBurning, VaultPosition.LockedEnd].includes(vaultPosition) && (
+        {/* {[VaultPosition.AfterBurning, VaultPosition.LockedEnd].includes(vaultPosition) && (
           <Box
             width="100%"
             mt={['0', '0', '24px', '24px', '24px']}
@@ -469,7 +469,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               lockStartTime="0"
             />
           </Box>
-        )}
+        )} */}
         {vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.Flexible && (
           <Box
             width="100%"

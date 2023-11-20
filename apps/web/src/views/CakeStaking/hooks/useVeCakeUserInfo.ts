@@ -55,7 +55,6 @@ export const useVeCakeUserInfo = (): {
     if (!data) return undefined
 
     const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = data
-
     return {
       amount,
       end,

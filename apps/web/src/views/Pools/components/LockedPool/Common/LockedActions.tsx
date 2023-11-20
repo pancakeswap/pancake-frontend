@@ -22,6 +22,7 @@ const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType & B
   variant,
 }) => {
   const position = useMemo(
+    // () => VaultPosition.LockedEnd,
     () =>
       getVaultPosition({
         userShares,

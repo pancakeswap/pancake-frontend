@@ -55,6 +55,7 @@ const Message: React.FC<React.PropsWithChildren<MessageProps>> = ({
   icon,
   action,
   actionInline,
+  hideIcon,
   ...props
 }) => {
   const Icon = Icons[variant];
@@ -63,7 +64,7 @@ const Message: React.FC<React.PropsWithChildren<MessageProps>> = ({
     <MessageContext.Provider value={providerValue}>
       <MessageContainer variant={variant} {...props}>
         <Flex>
-          <Box mr="12px">{icon ?? <Icon color={variants[variant].borderColor} width="24px" />}</Box>
+          {!hideIcon && <Box mr="12px">{icon ?? <Icon color={variants[variant].borderColor} width="24px" />}</Box>}
           {children}
           {actionInline && action}
         </Flex>
