@@ -15,7 +15,7 @@ const StyledFlex = styled(Flex)`
 
 const StyledTableViewFlex = styled(Flex)`
   align-items: center;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   border-radius: 16px;
   padding: 8px;
   border: 1px solid ${({ theme }) => theme.colors.tertiary};
