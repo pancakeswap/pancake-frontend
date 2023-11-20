@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { WEEK } from 'config/constants/veCake'
 import { useRevenueSharingPoolForCakeContract } from 'hooks/useContract'
 
-const WEEK = 3600 * 24 * 7
 export const useGaugeEpochEnd = (): number => {
   const revenueSharingPoolContract = useRevenueSharingPoolForCakeContract()
 
