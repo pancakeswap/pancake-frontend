@@ -40,7 +40,7 @@ const ImageBox = styled.div`
   justify-content: center;
 `
 
-export const VeCakeBenefitCard: React.FC<{ isTableView: boolean }> = memo(({ isTableView }) => {
+export const VeCakeBenefitCard: React.FC<{ isTableView?: boolean }> = memo(({ isTableView }) => {
   const { t } = useTranslation()
   return (
     <StyledBox

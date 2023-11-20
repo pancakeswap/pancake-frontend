@@ -24,6 +24,8 @@ import {
   VeCakeUpdateCardTableView,
   VeCakeMigrateCard,
   VeCakeUpdateCard,
+  VeCakeCard,
+  VeCakeBunny,
 } from 'views/CakeStaking/components/SyrupPool'
 import ConvertToFlexibleButton from '../../LockedPool/Buttons/ConvertToFlexibleButton'
 import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
@@ -171,16 +173,24 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           </Box>
         )}
         <Flex flexDirection="column" mb="8px">
-          <PoolStatsInfo pool={pool} account={account} showTotalStaked={isMobile} alignLinksToRight={isMobile} />
+          <>
+            {vaultKey === VaultKey.CakeVault && !account ? (
+              <VeCakeBunny />
+            ) : (
+              <PoolStatsInfo pool={pool} account={account} showTotalStaked={isMobile} alignLinksToRight={isMobile} />
+            )}
+          </>
         </Flex>
         <Flex alignItems="center">
-          <PoolTypeTag vaultKey={vaultKey} isLocked={isLocked} account={account}>
-            {(tagTargetRef) => (
-              <Flex ref={tagTargetRef}>
-                <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
-              </Flex>
-            )}
-          </PoolTypeTag>
+          {vaultKey !== VaultKey.CakeVault && (
+            <PoolTypeTag vaultKey={vaultKey} isLocked={isLocked} account={account}>
+              {(tagTargetRef) => (
+                <Flex ref={tagTargetRef}>
+                  <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                </Flex>
+              )}
+            </PoolTypeTag>
+          )}
         </Flex>
       </InfoSection>
       <ActionContainer>
@@ -196,7 +206,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             />
           )}
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            {pool.vaultKey ? <AutoHarvest pool={pool} /> : <Harvest {...pool} />}
+            {pool.vaultKey ? <>{account ? <AutoHarvest pool={pool} /> : <VeCakeCard />}</> : <Harvest {...pool} />}
             <Stake pool={pool} />
           </ActionContainer>
         </Box>
