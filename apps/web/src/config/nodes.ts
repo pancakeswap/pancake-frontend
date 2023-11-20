@@ -93,7 +93,7 @@ export const PUBLIC_NODES = {
     'https://bsc-dataseed1.defibit.io',
     'https://bsc-dataseed1.binance.org',
   ].filter(Boolean),
-  [ChainId.BSC_TESTNET]: ['http://178.128.17.220:8545'],
+  [ChainId.BSC_TESTNET]: ['https://devnet_1.pancakeswap.ai'],
   [ChainId.ETHEREUM]: [
     getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_ETH || '',
