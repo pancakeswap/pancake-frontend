@@ -214,7 +214,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                     {nextDistributionTime}
                   </Text>
                 </Flex>
-                {showExpireSoonWarning && (
+                {/* {showExpireSoonWarning && (
                   <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
                     <MessageText lineHeight="120%">
                       <Text fontSize="14px" color="failure">
@@ -227,7 +227,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                       </Text>
                     </MessageText>
                   </Message>
-                )}
+                )} */}
 
                 <Flex mt="8px" flexDirection="row" alignItems="center">
                   <BenefitsTooltipsText
