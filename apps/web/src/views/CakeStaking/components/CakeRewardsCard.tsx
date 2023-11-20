@@ -23,7 +23,6 @@ import {
 } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
