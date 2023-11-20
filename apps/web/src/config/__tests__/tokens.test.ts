@@ -1,11 +1,10 @@
-import { Token } from '@pancakeswap/sdk'
+import { ERC20Token, Token } from '@pancakeswap/sdk'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { erc20ABI } from 'wagmi'
-import map from 'lodash/map'
 import slice from 'lodash/slice'
 import omitBy from 'lodash/omitBy'
 import { describe, it } from 'vitest'
-import { publicClient } from 'utils/wagmi'
+import { publicClient } from 'utils/client'
 
 const whitelist = ['deprecated_tusd', 'deprecated_rpg', 'deprecated_mix']
 
@@ -22,11 +21,11 @@ const bscTokensToTest = omitBy(
     token.symbol.toLowerCase() === 'abnbc' ||
     token.symbol.toLowerCase() === 'hero',
 )
-const tokenListsToTest = [bscTokensToTest, ethereumTokens]
+const tokenListsToTest: [Record<string, ERC20Token>, Record<string, ERC20Token>] = [bscTokensToTest, ethereumTokens]
 
-const tokenTables: [string, Token][] = tokenListsToTest.reduce(
-  (acc, cur) => [...acc, ...map(cur, (token, key) => [key, token])],
-  [],
+const tokenTables: [string, ERC20Token][] = tokenListsToTest.reduce(
+  (acc, cur) => [...acc, ...Object.entries(cur)],
+  [] as [string, ERC20Token][],
 )
 
 describe.concurrent(

@@ -1,14 +1,14 @@
-import { formatUnits } from 'viem'
+import { Address, formatUnits } from 'viem'
 import { getPoolsConfig, getPoolContractBySousId, SUPPORTED_CHAIN_IDS, isLegacyPool } from '@pancakeswap/pools'
 import { describe, it } from 'vitest'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { publicClient } from 'utils/client'
 
 describe.concurrent(
   'Config pools',
   () => {
     for (const chainId of SUPPORTED_CHAIN_IDS) {
-      const pools = getPoolsConfig(chainId)
+      const pools = getPoolsConfig(chainId) ?? []
       // Pool 0 is special (cake pool)
       // Pool 78 is a broken pool, not used, and break the tests
       const idsToRemove = chainId === ChainId.BSC ? [0, 78] : []
@@ -42,7 +42,7 @@ describe.concurrent(
       it.each(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
         'Pool %p has the correct staking token',
         async (pool) => {
-          let stakingTokenAddress = null
+          let stakingTokenAddress: null | Address = null
           try {
             const contract = getPoolContractBySousId({
               sousId: pool.sousId,
@@ -58,8 +58,8 @@ describe.concurrent(
             })
             stakingTokenAddress = await contract.read.syrup()
           }
-
-          expect(stakingTokenAddress.toLowerCase()).toBe(pool.stakingToken.address.toLowerCase())
+          expect(stakingTokenAddress).toBeDefined()
+          expect(stakingTokenAddress?.toLowerCase()).toBe(pool.stakingToken.address.toLowerCase())
         },
         10000,
       )
