@@ -1,4 +1,4 @@
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useApproveCallback } from 'hooks/useApproveCallback'
@@ -29,7 +29,7 @@ export const useLockApproveCallback = (amount: string) => {
     [amount, cakeToken?.decimals],
   )
 
-  const currencyAmount = CurrencyAmount.fromRawAmount<Token>(cakeToken!, rawAmount.toString())
+  const currencyAmount = cakeToken ? CurrencyAmount.fromRawAmount<Currency>(cakeToken, rawAmount.toString()) : undefined
 
   const { approvalState, approveCallback, currentAllowance } = useApproveCallback(
     currencyAmount,

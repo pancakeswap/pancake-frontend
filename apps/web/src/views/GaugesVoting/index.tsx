@@ -50,8 +50,8 @@ const GaugesVoting = () => {
             <Link href="/cake-staking">
               <Button p="0" variant="text">
                 <ArrowBackIcon color="primary" />
-                <Text color="primary" bold fontSize="16px" mr="4px">
-                  {t('CAKE STAKING')}
+                <Text color="primary" bold fontSize="16px" mr="4px" textTransform="uppercase">
+                  {t('cake staking')}
                 </Text>
               </Button>
             </Link>
