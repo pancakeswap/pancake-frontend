@@ -458,6 +458,7 @@ export const getFixedStakingContract = (signer?: WalletClient, chainId?: number)
 export const getVeCakeContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: veCakeABI,
+    // @todo @ChefJerry update default address
     address: getVeCakeAddress(chainId) ?? getVeCakeAddress(ChainId.BSC_TESTNET),
     signer,
     chainId,
