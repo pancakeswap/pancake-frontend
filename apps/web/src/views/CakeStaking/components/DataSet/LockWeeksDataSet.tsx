@@ -8,8 +8,7 @@ import { getVeCakeAmount } from 'utils/getVeCakeAmount'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Tooltips } from '../Tooltips'
 import { DataBox, DataHeader, DataRow } from './DataBox'
-
-const formatUnixDate = (time: number) => dayjs.unix(time).format('MMM D YYYY HH:mm')
+import { formatDate } from './format'
 
 export const LockWeeksDataSet = () => {
   const { t } = useTranslation()
@@ -17,10 +16,13 @@ export const LockWeeksDataSet = () => {
   const { cakeLockExpired, cakeUnlockTime } = useCakeLockStatus()
   const veCakeAmount = useMemo(() => getVeCakeAmount(cakeLockAmount, cakeLockWeeks), [cakeLockAmount, cakeLockWeeks])
   const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeLockAmount).toPrecision(2)}x` : '0.00x'
+  const newUnlockTime = useMemo(() => {
+    return formatDate(dayjs.unix(cakeUnlockTime).add(Number(cakeLockWeeks), 'weeks'))
+  }, [cakeLockWeeks, cakeUnlockTime])
 
   return (
     <DataBox gap="8px">
-      <DataHeader value={String(veCakeAmount)} />
+      <DataHeader value={String(veCakeAmount.toFixed(2))} />
       <DataRow
         label={
           <Tooltips content={t('@todo')}>
@@ -39,13 +41,7 @@ export const LockWeeksDataSet = () => {
             </TooltipText>
           </Tooltips>
         }
-        value={
-          cakeLockExpired && !cakeLockWeeks ? (
-            <ExpiredUnlockTime time={cakeUnlockTime!} />
-          ) : (
-            formatUnixDate(dayjs().add(Number(cakeLockWeeks), 'weeks').unix())
-          )
-        }
+        value={cakeLockExpired && !cakeLockWeeks ? <ExpiredUnlockTime time={cakeUnlockTime!} /> : newUnlockTime}
       />
     </DataBox>
   )
