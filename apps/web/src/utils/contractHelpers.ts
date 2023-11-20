@@ -468,6 +468,7 @@ export const getVeCakeContract = (signer?: WalletClient, chainId?: number) => {
 export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: gaugesVotingABI,
+    // @todo @ChefJerry update default address
     address: getGaugesVotingAddress(chainId) ?? getGaugesVotingAddress(ChainId.BSC_TESTNET),
     signer,
     chainId,
@@ -477,6 +478,7 @@ export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number)
 export const getRevenueSharingPoolForCakeContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: revenueSharingPoolForCakeABI,
+    // @todo @ChefJerry update default address
     address: getRevenueSharingPoolForCakeAddress(chainId) ?? getRevenueSharingPoolForCakeAddress(ChainId.BSC_TESTNET),
     signer,
     chainId,
@@ -486,6 +488,7 @@ export const getRevenueSharingPoolForCakeContract = (signer?: WalletClient, chai
 export const getRevenueSharingPoolGatewayContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: revenueSharingPoolGatewayABI,
+    // @todo @ChefJerry update default address
     address: getRevenueSharingPoolGatewayAddress(chainId) ?? getRevenueSharingPoolGatewayAddress(ChainId.BSC_TESTNET),
     signer,
     chainId,

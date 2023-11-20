@@ -654,5 +654,3 @@ export const ifos: BaseIfoConfig[] = [
     version: 1,
   },
 ]
-
-export default ifos
