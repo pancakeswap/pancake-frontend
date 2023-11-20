@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.9.8
+
+### Patch Changes
+
+- 63bb02a04: refactor: Add undefined type to subgraph provider
+
 ## 4.9.7
 
 ### Patch Changes
