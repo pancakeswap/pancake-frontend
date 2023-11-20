@@ -35,6 +35,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import styled from 'styled-components'
 import { getRevenueSharingPoolForCakeAddress } from 'utils/addressHelpers'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
+import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { useRevenueSharingPoolForCake } from '../hooks/useRevenueSharingPoolForCake'
 import { MyVeCakeCard } from './MyVeCakeCard'
@@ -63,8 +64,15 @@ export const CakeRewardsCard = ({ onDismiss }) => {
 
   const showYourSharePercentage = useMemo(() => new BigNumber(totalSupplyAt).gt(0), [totalSupplyAt])
 
-  // @todo @ChefJerry update cake pool reward amount
-  // const availableCakePoolCake = useMemo(() => getBalanceAmount(new BigNumber(availableClaim)).toNumber(), [availableClaim])
+  const { availableClaim: availableClaimFromCakePool } = useRevenueSharingPool()
+  const availableCakePoolCake = useMemo(
+    () => getBalanceAmount(new BigNumber(availableClaimFromCakePool)).toNumber(),
+    [availableClaimFromCakePool],
+  )
+  const availableCakePoolCakeUsdValue = useMemo(
+    () => new BigNumber(availableCakePoolCake).times(cakePriceBusd).toNumber(),
+    [availableCakePoolCake, cakePriceBusd],
+  )
 
   const availableRevenueSharingCake = useMemo(
     () => getBalanceAmount(new BigNumber(availableClaim)).toNumber(),
@@ -215,7 +223,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                     <MessageText lineHeight="120%">
                       <Text fontSize="14px" color="failure">
                         {t(
-                          'Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution.',
+                          'Your CAKE staking position will have less than 1 week in remaining duration upon the next distribution.',
                         )}
                       </Text>
                       <Text fontSize="14px" color="failure" mt="4px">
@@ -242,10 +250,10 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                       tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
                     />
                     <Box>
-                      {availableRevenueSharingCake > 0 && availableRevenueSharingCake <= 0.01 ? (
+                      {availableCakePoolCake > 0 && availableCakePoolCake <= 0.01 ? (
                         <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
                       ) : (
-                        <Balance unit=" CAKE" textAlign="right" bold value={availableRevenueSharingCake} decimals={2} />
+                        <Balance unit=" CAKE" textAlign="right" bold value={availableCakePoolCake} decimals={2} />
                       )}
                       <Balance
                         ml="4px"
@@ -255,7 +263,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                         lineHeight="110%"
                         prefix="(~ $"
                         unit=")"
-                        value={availableRevenueSharingCakeUsdValue}
+                        value={availableCakePoolCakeUsdValue}
                         decimals={2}
                       />
                     </Box>
