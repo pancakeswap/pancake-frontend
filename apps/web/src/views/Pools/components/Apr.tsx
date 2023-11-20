@@ -19,7 +19,6 @@ const withShownApr = (AprComp) => (props) => {
 
   const boostedApr = useBoostedPoolApr({
     chainId,
-    sousId: props.pool.sousId,
     contractAddress: props.pool.contractAddress,
   })
 

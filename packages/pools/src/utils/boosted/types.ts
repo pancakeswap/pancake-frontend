@@ -1,6 +1,10 @@
 import { Address } from 'viem'
 
+export enum BoosterType {
+  ALP,
+}
+
 export type BoosterConfig = {
-  sousId: number
+  boosterType: BoosterType
   contractAddress: Address
 }

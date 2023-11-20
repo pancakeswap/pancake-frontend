@@ -1,29 +1,24 @@
 import { Address, PublicClient } from 'viem'
-import { ChainId } from '@pancakeswap/chains'
-import { checkIsBoostedPool } from '../checkIsBoostedPool'
+import { BoosterType } from '../types'
 import { fetchAlpBoostedPoolApr } from './fetchAlpBoostedPoolApr'
+import { getBoostedPoolsConfig } from '../../../constants/boostedPools'
 
 interface GetBoostedPoolApr {
   client: PublicClient
-  sousId: number
   contractAddress: Address
   chainId: number | undefined
 }
 
-export const getBoostedPoolApr = async ({
-  client,
-  sousId,
-  contractAddress,
-  chainId,
-}: GetBoostedPoolApr): Promise<number> => {
-  const isBoostedPool = Boolean(chainId && checkIsBoostedPool(contractAddress, chainId))
+export const getBoostedPoolApr = async ({ client, contractAddress, chainId }: GetBoostedPoolApr): Promise<number> => {
+  const list = chainId && getBoostedPoolsConfig(chainId)
 
-  if (!contractAddress || !chainId || !isBoostedPool) {
+  if (!contractAddress || !chainId || !list) {
     return 0
   }
 
+  const pool = list?.find((i) => i?.contractAddress?.toLowerCase() === contractAddress.toLowerCase())
   // Arbitrum ALP pools
-  if (chainId === ChainId.ARBITRUM_ONE && sousId === 2) {
+  if (pool?.boosterType === BoosterType.ALP) {
     const result = await fetchAlpBoostedPoolApr(client)
     return result
   }

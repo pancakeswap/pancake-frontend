@@ -4,12 +4,11 @@ import { getViemClients } from 'utils/viem'
 import { getBoostedPoolApr } from '@pancakeswap/pools'
 
 interface UseBoostedPoolApr {
-  sousId: number
   contractAddress: Address
   chainId: number | undefined
 }
 
-export const useBoostedPoolApr = ({ sousId, contractAddress, chainId }: UseBoostedPoolApr): number => {
+export const useBoostedPoolApr = ({ contractAddress, chainId }: UseBoostedPoolApr): number => {
   const client = getViemClients({ chainId })
 
   const { data } = useQuery(
@@ -19,7 +18,6 @@ export const useBoostedPoolApr = ({ sousId, contractAddress, chainId }: UseBoost
         return getBoostedPoolApr({
           client,
           chainId,
-          sousId,
           contractAddress,
         })
       }
@@ -27,7 +25,7 @@ export const useBoostedPoolApr = ({ sousId, contractAddress, chainId }: UseBoost
       return 0
     },
     {
-      enabled: Boolean(client && sousId && contractAddress && chainId),
+      enabled: Boolean(client && contractAddress && chainId),
     },
   )
 
