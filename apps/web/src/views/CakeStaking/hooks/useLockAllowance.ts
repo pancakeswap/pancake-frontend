@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useApproveCallback } from 'hooks/useApproveCallback'
