@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Card, Flex, FlexGap, Heading, NextLinkFromReactRouter, Text } from '@pancakeswap/uikit'
+import { Button, Card, Flex, FlexGap, Heading, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 type BenefitCardType = 'earnCake' | 'gaugesVoting' | 'farmBoost' | 'snapshotVoting' | 'ifo' | 'more'
 
