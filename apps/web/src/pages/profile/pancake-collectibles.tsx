@@ -1,6 +1,5 @@
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import { GetStaticProps } from 'next'
 // eslint-disable-next-line camelcase
-import { unstable_serialize, SWRConfig } from 'swr'
 import { getCollections } from 'state/nftMarket/helpers'
 import PancakeCollectiblesPageRouter from 'views/Profile/components/PancakeCollectiblesPageRouter'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
@@ -9,25 +8,20 @@ import { viemServerClients } from 'utils/viem.server'
 import { ChainId } from '@pancakeswap/chains'
 import { ContractFunctionResult } from 'viem'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 
-const PancakeCollectiblesPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return (
-    <SWRConfig
-      value={{
-        fallback,
-      }}
-    >
-      <PancakeCollectiblesPageRouter />
-    </SWRConfig>
-  )
+const PancakeCollectiblesPage = () => {
+  return <PancakeCollectiblesPageRouter />
 }
 
 export const getStaticProps: GetStaticProps = async () => {
+  const queryClient = new QueryClient()
+
   const fetchedCollections = await getCollections()
   if (!fetchedCollections || !Object.keys(fetchedCollections).length) {
     return {
       props: {
-        fallback: {},
+        dehydratedState: dehydrate(queryClient),
       },
       revalidate: 60,
     }
@@ -53,18 +47,18 @@ export const getStaticProps: GetStaticProps = async () => {
       return collectionRoles[index]
     })
 
+    queryClient.setQueryData(['pancakeCollectibles'], pancakeCollectibles)
+
     return {
       props: {
-        fallback: {
-          [unstable_serialize(['pancakeCollectibles'])]: pancakeCollectibles,
-        },
+        dehydratedState: dehydrate(queryClient),
       },
       revalidate: 60 * 60 * 12, // 12 hours
     }
   } catch (error) {
     return {
       props: {
-        fallback: {},
+        dehydratedState: dehydrate(queryClient),
       },
       revalidate: 60,
     }
