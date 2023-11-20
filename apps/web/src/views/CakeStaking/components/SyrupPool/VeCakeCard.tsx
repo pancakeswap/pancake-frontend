@@ -26,12 +26,14 @@ const StyledTableViewFlex = styled(Flex)`
 const StyledMiniTableViewFlex = styled(Flex)`
   align-items: center;
   justify-content: center;
-  flex-basis: 50%;
   gap: 10px;
   padding-left: 10px;
-  flex-grow: 0;
+  flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 40%;
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-grow: 0;
+  }
 `
 
 const StyledMiniFlex = styled(Flex)`
@@ -170,7 +172,7 @@ export const VeCakeCardTableView = memo(() => {
     <LightGreyCard
       style={{
         padding: '16px',
-        gap: 8,
+        gap: isMobile ? 12 : 8,
         display: 'flex',
         maxWidth: isMobile ? '100%' : '60%',
         flexGrow: 0,
@@ -218,7 +220,11 @@ export const VeCakeCardTableView = memo(() => {
           </Text>
         </Box>
       </StyledTableViewFlex>
-      <StyledTableViewFlex alignItems="center" justifyContent="center" flexBasis="calc(60% - 4px)">
+      <StyledTableViewFlex
+        alignItems="center"
+        justifyContent="center"
+        flexBasis={isMobile ? '100%' : 'calc(60% - 4px)'}
+      >
         <StyledMiniTableViewFlex justifyContent="flex-end">
           <ImageBox>
             <img src={BENEFITS.snapshotVoting.headImg} alt="earn-cake" width="38px" />
