@@ -74,9 +74,7 @@ const LockedInfo = () => {
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
   const migrate = useWriteMigrateCallback()
-  // const { cakeLockedAmount, cakeUnlockTime, shouldMigrate, cakePoolLockExpired } = useCakeLockStatus()
-  const { cakeLockedAmount, cakeUnlockTime, shouldMigrate } = useCakeLockStatus()
-  const cakePoolLockExpired = true
+  const { cakeLockedAmount, cakeUnlockTime, shouldMigrate, cakePoolLockExpired } = useCakeLockStatus()
   const cakeLocked = useMemo(() => Number(formatBigInt(cakeLockedAmount, 18)), [cakeLockedAmount])
   const cakeLockedUsdValue: number = useMemo(() => {
     return cakePrice.times(cakeLocked).toNumber()
