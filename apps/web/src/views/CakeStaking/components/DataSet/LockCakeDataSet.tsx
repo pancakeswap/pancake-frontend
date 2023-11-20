@@ -3,6 +3,7 @@ import { TooltipText } from '@pancakeswap/uikit'
 import { getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
+import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
@@ -13,15 +14,17 @@ import { formatDate } from './format'
 
 export const LockCakeDataSet = () => {
   const { t } = useTranslation()
-  const { cakeUnlockTime } = useCakeLockStatus()
+  const { balance: veCakeBalance } = useVeCakeBalance()
+  const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
-
+  const amountInputBN = useMemo(() => getDecimalAmount(new BN(cakeLockAmount || 0)), [cakeLockAmount])
+  const amountLockedBN = useMemo(() => getBalanceAmount(new BN(cakeLockedAmount.toString() || '0')), [cakeLockedAmount])
   const amount = useMemo(() => {
-    return getBalanceAmount(getDecimalAmount(new BN(cakeLockAmount || 0)))
-  }, [cakeLockAmount])
+    return getBalanceAmount(amountInputBN.plus(amountLockedBN))
+  }, [amountInputBN, amountLockedBN])
   const veCakeAmount = useMemo(
-    () => getVeCakeAmount(cakeLockAmount, cakeLockWeeks) || 0,
-    [cakeLockAmount, cakeLockWeeks],
+    () => getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, cakeLockWeeks)),
+    [cakeLockAmount, cakeLockWeeks, veCakeBalance],
   )
 
   const newUnlockTime = useMemo(() => {
