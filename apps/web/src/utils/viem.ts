@@ -29,6 +29,6 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
   }
 }, {} as Record<ChainId, PublicClient>)
 
-export const getViemClients = ({ chainId }: { chainId?: ChainId }): PublicClient => {
+export const getViemClients = ({ chainId }: { chainId?: ChainId }): PublicClient | undefined => {
   return viemClients[chainId as ChainId]
 }

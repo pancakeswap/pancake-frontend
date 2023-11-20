@@ -18,7 +18,6 @@ import { tokenImageChainNameMapping } from 'components/TokenImage'
 import { usePool } from 'state/pools/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { getViemClients } from 'utils/viem'
 import ZkSyncWarning from './ZkSyncWarning'
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
@@ -33,10 +32,8 @@ const StakeModalContainer = ({
 }: Pool.StakeModalPropsType<Token>) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const client = getViemClients({ chainId })
 
   const boostedApr = useBoostedPoolApr({
-    client,
     chainId,
     sousId: pool.sousId,
     contractAddress: pool.contractAddress,

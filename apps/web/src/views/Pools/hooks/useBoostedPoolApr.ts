@@ -1,24 +1,31 @@
-import { Address, PublicClient } from 'viem'
+import { Address } from 'viem'
 import { useQuery } from '@tanstack/react-query'
+import { getViemClients } from 'utils/viem'
 import { getBoostedPoolApr } from '@pancakeswap/pools'
 
 interface UseBoostedPoolApr {
-  client: PublicClient
   sousId: number
   contractAddress: Address
   chainId: number | undefined
 }
 
-export const useBoostedPoolApr = ({ client, sousId, contractAddress, chainId }: UseBoostedPoolApr): number => {
+export const useBoostedPoolApr = ({ sousId, contractAddress, chainId }: UseBoostedPoolApr): number => {
+  const client = getViemClients({ chainId })
+
   const { data } = useQuery(
     ['boostedPoolsApr'],
-    () =>
-      getBoostedPoolApr({
-        client,
-        chainId,
-        sousId,
-        contractAddress,
-      }),
+    () => {
+      if (client) {
+        return getBoostedPoolApr({
+          client,
+          chainId,
+          sousId,
+          contractAddress,
+        })
+      }
+
+      return 0
+    },
     {
       enabled: Boolean(client && sousId && contractAddress && chainId),
     },

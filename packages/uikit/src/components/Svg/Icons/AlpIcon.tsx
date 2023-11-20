@@ -2,7 +2,7 @@ import React from "react";
 import Svg from "../Svg";
 import { SvgProps } from "../types";
 
-const Alp: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
+export const AlpIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg width={15} height={16} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <g clip-path="url(#clip0_5853_692)">
@@ -37,5 +37,3 @@ const Alp: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
     </Svg>
   );
 };
-
-export default Alp;

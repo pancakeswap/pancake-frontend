@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 
-import { arbBoostedPools } from './42161'
+import { arbBoostedPools } from './arb'
 
 import { BoostedPoolsSupportedChainId } from '../boostedPoolsSupportedChains'
 import { isBoostedPoolsSupported } from '../../utils/boosted/isBoostedPoolsSupported'
