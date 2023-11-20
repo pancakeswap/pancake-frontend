@@ -1,20 +1,8 @@
-import {
-  Box,
-  Button,
-  CardBody,
-  CardProps,
-  Flex,
-  FlexGap,
-  Skeleton,
-  Text,
-  TokenPairImage,
-  useModal,
-} from '@pancakeswap/uikit'
+import { Box, Button, CardBody, CardProps, Flex, FlexGap, Skeleton, TokenPairImage, useModal } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedCakeVault, DeserializedLockedCakeVault, VaultKey } from 'state/types'
@@ -28,8 +16,6 @@ import { VeCakeCard, VeCakeUpdateCard } from 'views/CakeStaking/components/Syrup
 import LockedStakingApy from '../LockedPool/LockedStakingApy'
 import CardFooter from '../PoolCard/CardFooter'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
-import RecentCakeProfitRow from './RecentCakeProfitRow'
-import { StakingApy } from './StakingApy'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 import VaultCardActions from './VaultCardActions'
 

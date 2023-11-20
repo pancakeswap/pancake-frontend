@@ -167,7 +167,7 @@ export const VeCakeCardTableView = memo(() => {
   return (
     <LightGreyCard
       style={{
-        padding: '8px 12px',
+        padding: '16px',
         gap: 8,
         display: 'flex',
         maxWidth: '60%',

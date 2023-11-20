@@ -30,8 +30,6 @@ export const VaultPoolRow: React.FC<
     return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
   }, [stakingToken.decimals, totalCakeInVault])
 
-  const vaultData = useVaultPoolByKey(vaultKey)
-
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <NameCell pool={pool} />

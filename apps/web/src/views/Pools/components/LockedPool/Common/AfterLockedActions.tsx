@@ -1,11 +1,9 @@
-import { memo, ReactNode } from 'react'
-import { Message, MessageText, Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Message, MessageText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
+import { ReactNode, memo } from 'react'
 import { VaultPosition } from 'utils/cakePool'
 
 import ConvertToFlexibleButton from '../Buttons/ConvertToFlexibleButton'
-import ExtendButton from '../Buttons/ExtendDurationButton'
 import { AfterLockedActionsPropsType } from '../types'
 
 const msg: Record<VaultPosition, ReactNode> = {
@@ -22,15 +20,10 @@ const msg: Record<VaultPosition, ReactNode> = {
 }
 
 const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPropsType>> = ({
-  currentLockedAmount,
-  stakingToken,
-  stakingTokenPrice,
   position,
   isInline,
   hideConvertToFlexibleButton,
-  customLockWeekInSeconds,
 }) => {
-  const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const isDesktopView = isInline && isDesktop
   const Container = isDesktopView ? Flex : Box

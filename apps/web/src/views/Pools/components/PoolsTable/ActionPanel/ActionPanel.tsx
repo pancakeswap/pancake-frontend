@@ -24,7 +24,6 @@ import {
   VeCakeUpdateCardTableView,
   VeCakeMigrateCard,
   VeCakeUpdateCard,
-  VeCakeCard,
   VeCakeBunny,
   VeCakeCardTableView,
 } from 'views/CakeStaking/components/SyrupPool'
