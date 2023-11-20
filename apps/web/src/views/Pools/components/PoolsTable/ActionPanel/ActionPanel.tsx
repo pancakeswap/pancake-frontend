@@ -26,6 +26,7 @@ import {
   VeCakeUpdateCard,
   VeCakeCard,
   VeCakeBunny,
+  VeCakeCardTableView,
 } from 'views/CakeStaking/components/SyrupPool'
 import ConvertToFlexibleButton from '../../LockedPool/Buttons/ConvertToFlexibleButton'
 import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
@@ -206,7 +207,11 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             />
           )}
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            {pool.vaultKey ? <>{account ? <AutoHarvest pool={pool} /> : <VeCakeCard />}</> : <Harvest {...pool} />}
+            {pool.vaultKey ? (
+              <>{account ? <AutoHarvest pool={pool} /> : <VeCakeCardTableView />}</>
+            ) : (
+              <Harvest {...pool} />
+            )}
             <Stake pool={pool} />
           </ActionContainer>
         </Box>
