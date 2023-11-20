@@ -228,7 +228,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                   <VeCakeButton type="get" />
                 </Flex>
               }
-              hideIcon={vaultPosition === VaultPosition.Locked}
+              showIcon={vaultPosition !== VaultPosition.Locked}
             >
               {vaultPosition !== VaultPosition.Locked && (
                 <MessageText>
