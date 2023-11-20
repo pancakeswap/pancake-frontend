@@ -50,26 +50,24 @@ export const useVeCakeUserInfo = (): {
     enabled: Boolean(veCakeContract?.address && account),
     args: [account!],
     watch: true,
+    select: (d) => {
+      if (!d) return undefined
+
+      const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = d
+      return {
+        amount,
+        end,
+        cakePoolProxy,
+        cakeAmount,
+        lockEndTime,
+        migrationTime,
+        cakePoolType,
+        withdrawFlag,
+      } as VeCakeUserInfo
+    },
   })
-
-  const userInfo = useMemo(() => {
-    if (!data) return undefined
-
-    const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = data
-    return {
-      amount,
-      end,
-      cakePoolProxy,
-      cakeAmount,
-      lockEndTime,
-      migrationTime,
-      cakePoolType,
-      withdrawFlag,
-    } as VeCakeUserInfo
-  }, [data])
-
   return {
-    data: userInfo,
+    data,
     refetch,
   }
 }
