@@ -9,7 +9,7 @@ import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWith
 import { LockWeeksDataSet } from './DataSet'
 import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
 
-const weeks = [1, 5, 10, 25, 52]
+const weeks = [4, 20, 40, 100, 208]
 
 const ButtonBlocked = styled(Button)`
   flex: 1;

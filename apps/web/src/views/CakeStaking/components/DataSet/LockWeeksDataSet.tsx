@@ -59,7 +59,7 @@ const ExpiredUnlockTime: React.FC<{
   const { t } = useTranslation()
   return (
     <FlexGap gap="2px" alignItems="baseline">
-      <Text fontSize={12}>{formatUnixDate(time)}</Text>
+      <Text fontSize={12}>{formatDate(dayjs.unix(time))}</Text>
       <Text fontWeight={700} fontSize={16} color="#D67E0A">
         {t('Unlocked')}
       </Text>
