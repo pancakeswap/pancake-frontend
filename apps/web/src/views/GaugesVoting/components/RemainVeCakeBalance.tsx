@@ -1,8 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Box, Balance, Flex } from '@pancakeswap/uikit'
+import { Percent } from '@pancakeswap/swap-sdk-core'
+import { Balance, Box, Flex, Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BN from 'bignumber.js'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
+import { useMemo } from 'react'
 import styled from 'styled-components'
+import { useVotedPower } from '../hooks/useVotedPower'
 
 const StyledBox = styled(Box)`
   border-radius: 16px;
@@ -20,7 +24,11 @@ const StyledBox = styled(Box)`
 
 export const RemainVeCakeBalance = () => {
   const { t } = useTranslation()
-  const { balance } = useVeCakeBalance()
+  const votedPower = useVotedPower() ?? 0
+  const { balance: veCake } = useVeCakeBalance()
+  const votePower = useMemo(() => {
+    return new BN(new Percent(10000 - (Number(votedPower) || 0), 10000).multiply(veCake.toString()).toString())
+  }, [veCake, votedPower])
 
   return (
     <StyledBox>
@@ -29,7 +37,14 @@ export const RemainVeCakeBalance = () => {
         <Text fontSize="20px" bold color="white" lineHeight="120%">
           {t('Remaining veCAKE')}
         </Text>
-        <Balance fontSize="24px" bold color="white" lineHeight="110%" value={getBalanceNumber(balance)} decimals={2} />
+        <Balance
+          fontSize="24px"
+          bold
+          color="white"
+          lineHeight="110%"
+          value={getBalanceNumber(votePower) || 0}
+          decimals={2}
+        />
       </Flex>
     </StyledBox>
   )
