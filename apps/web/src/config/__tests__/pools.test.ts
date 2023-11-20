@@ -1,5 +1,11 @@
 import { Address, formatUnits } from 'viem'
-import { getPoolsConfig, getPoolContractBySousId, SUPPORTED_CHAIN_IDS, isLegacyPool } from '@pancakeswap/pools'
+import {
+  getPoolsConfig,
+  getPoolContractBySousId,
+  SUPPORTED_CHAIN_IDS,
+  isLegacyPool,
+  SerializedPool,
+} from '@pancakeswap/pools'
 import { describe, it } from 'vitest'
 import { ChainId } from '@pancakeswap/chains'
 import { publicClient } from 'utils/client'
@@ -15,18 +21,18 @@ describe.concurrent(
       // Test only against the last 10 pools, for performance concern
       const poolsToTest = pools.filter((pool) => !idsToRemove.includes(pool.sousId)).slice(0, 10)
 
-      it.each(pools.map((pool) => pool.sousId))('Pool #%d has an unique sousId', (sousId) => {
+      it.each<number>(pools.map((pool) => pool.sousId))('Pool #%d has an unique sousId', (sousId) => {
         const duplicates = pools.filter((p) => sousId === p.sousId)
         expect(duplicates).toHaveLength(1)
       })
-      it.each(pools.map((pool) => [pool.sousId, pool.contractAddress]))(
+      it.each<[number, Address]>(pools.map((pool) => [pool.sousId, pool.contractAddress]))(
         'Pool #%d has an unique contract address',
         (_, contractAddress) => {
           const duplicates = pools.filter((p) => contractAddress === p.contractAddress)
           expect(duplicates).toHaveLength(1)
         },
       )
-      it.each(poolsToTest.filter((pool) => pool.earningToken.symbol !== 'BNB'))(
+      it.each<SerializedPool>(poolsToTest.filter((pool) => pool.earningToken.symbol !== 'BNB'))(
         'Pool %p has the correct earning token',
         async (pool) => {
           const contract = getPoolContractBySousId({
@@ -39,7 +45,7 @@ describe.concurrent(
         },
         10000,
       )
-      it.each(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
+      it.each<SerializedPool>(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
         'Pool %p has the correct staking token',
         async (pool) => {
           let stakingTokenAddress: null | Address = null
@@ -58,13 +64,14 @@ describe.concurrent(
             })
             stakingTokenAddress = await contract.read.syrup()
           }
+
           expect(stakingTokenAddress).toBeDefined()
           expect(stakingTokenAddress?.toLowerCase()).toBe(pool.stakingToken.address.toLowerCase())
         },
         10000,
       )
 
-      it.each(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
+      it.each<SerializedPool>(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
         'Pool %p has the correct tokenPerBlock',
         async (pool) => {
           const contract = getPoolContractBySousId({
