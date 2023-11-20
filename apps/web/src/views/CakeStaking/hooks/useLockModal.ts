@@ -51,7 +51,7 @@ export const useLockModal = () => {
   // when current allowance < lock amount, set approved to false
   useEffect(() => {
     if (!modal.isOpen) {
-      const cakeLockAmountBN = getDecimalAmount(new BN(cakeLockAmount ?? 0)).toString()
+      const cakeLockAmountBN = getDecimalAmount(new BN(cakeLockAmount || 0)).toString()
 
       if (currentAllowance?.lessThan(cakeLockAmountBN)) {
         setCakeLockApproved(false)
