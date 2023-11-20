@@ -3,7 +3,6 @@ import { Text, Flex, Box } from '@pancakeswap/uikit'
 import { memo } from 'react'
 import { StyledBox } from '../MyVeCakeCard'
 import { VeCakeButton } from './VeCakeButton'
-import {} from 'styled-components'
 import { useIsMigratedToVeCake } from '../../hooks/useIsMigratedToVeCake'
 
 export const VeCakeMigrateCard: React.FC<{ isTableView?: boolean }> = memo(({ isTableView }) => {

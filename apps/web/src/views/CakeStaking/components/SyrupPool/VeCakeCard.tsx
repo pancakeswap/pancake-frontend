@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
@@ -64,6 +64,7 @@ const ImageBox = styled.div`
 
 export const VeCakeBenefitCard: React.FC<{ isTableView?: boolean }> = memo(({ isTableView }) => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   return (
     <StyledBox
       p="10px"
@@ -76,7 +77,7 @@ export const VeCakeBenefitCard: React.FC<{ isTableView?: boolean }> = memo(({ is
       }}
     >
       <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
-      <Text color="white" bold fontSize={14}>
+      <Text color="white" bold fontSize={isMobile && isTableView ? 11 : 14}>
         {t('Stake & Lock for veCAKE, to enjoy more rewards & benefit!')}
       </Text>
     </StyledBox>
@@ -164,19 +165,21 @@ export const VeCakeCard = memo(() => {
 export const VeCakeCardTableView = memo(() => {
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
   return (
     <LightGreyCard
       style={{
         padding: '16px',
         gap: 8,
         display: 'flex',
-        maxWidth: '60%',
+        maxWidth: isMobile ? '100%' : '60%',
         flexGrow: 0,
         flexWrap: 'wrap',
         border: `2px solid ${theme.colors.input}`,
+        marginBottom: isMobile ? 14 : undefined,
       }}
     >
-      <StyledTableViewFlex flexBasis="calc(50% - 4px)">
+      <StyledTableViewFlex flexBasis={isMobile ? '100%' : 'calc(50% - 4px)'}>
         <ImageBox>
           <img src={BENEFITS.earnCake.headImg} alt="earn-cake" width="38px" />
         </ImageBox>
@@ -189,7 +192,7 @@ export const VeCakeCardTableView = memo(() => {
           </Text>
         </Box>
       </StyledTableViewFlex>
-      <StyledTableViewFlex flexBasis="calc(50% - 4px)">
+      <StyledTableViewFlex flexBasis={isMobile ? '100%' : 'calc(50% - 4px)'}>
         <ImageBox>
           <img src={BENEFITS.gaugesVoting.headImg} alt="earn-cake" width="48px" />
         </ImageBox>
@@ -202,7 +205,7 @@ export const VeCakeCardTableView = memo(() => {
           </Text>
         </Box>
       </StyledTableViewFlex>
-      <StyledTableViewFlex flexBasis="calc(40% - 4px)">
+      <StyledTableViewFlex flexBasis={isMobile ? '100%' : 'calc(40% - 4px)'}>
         <ImageBox>
           <img src={BENEFITS.farmBoost.headImg} alt="earn-cake" width="38px" />
         </ImageBox>

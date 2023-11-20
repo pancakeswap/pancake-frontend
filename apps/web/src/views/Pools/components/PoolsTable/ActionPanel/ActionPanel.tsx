@@ -10,6 +10,7 @@ import {
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { css, keyframes, styled } from 'styled-components'
+import { useMemo } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
@@ -155,6 +156,11 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
 
   const originalLockedAmount = getBalanceNumber(vaultData.userData?.lockedAmount)
 
+  const isCakePool = useMemo(
+    () => pool.vaultKey === VaultKey.CakeVault || pool.vaultKey === VaultKey.CakeFlexibleSideVault,
+    [pool.vaultKey],
+  )
+
   return (
     <StyledActionPanel expanded={expanded}>
       <InfoSection>
@@ -214,15 +220,18 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             <Stake pool={pool} />
           </ActionContainer>
         </Box>
-        {account && (
+        {isCakePool && account && (
           <Flex width="100%">
             <Message
               variant="warning"
-              style={{ width: '100%', marginTop: '16px' }}
+              style={{ width: '100%', marginTop: '16px', flexWrap: 'wrap' }}
               action={
-                <Flex alignItems="center" style={{ gap: 24 }}>
+                <Flex
+                  alignItems="center"
+                  style={{ gap: isMobile ? 15 : 24, flexDirection: isMobile ? 'column' : 'row' }}
+                >
                   {vaultPosition === VaultPosition.Locked && <VeCakeMigrateCard isTableView />}
-                  {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake />}
+                  {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake isTableView />}
                   {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCardTableView />}
                   {vaultPosition >= VaultPosition.LockedEnd && <ConvertToFlexibleButton />}
                   <VeCakeButton type="get" />
@@ -231,7 +240,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
               showIcon={vaultPosition !== VaultPosition.Locked}
             >
               {vaultPosition !== VaultPosition.Locked && (
-                <MessageText>
+                <MessageText marginBottom="10px">
                   {vaultPosition === VaultPosition.Flexible
                     ? t('Flexible CAKE pool is discontinued and no longer distributing rewards.  Learn more »')
                     : vaultPosition === VaultPosition.LockedEnd
