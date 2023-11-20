@@ -10,6 +10,7 @@ import {
   FlexGap,
   Heading,
   InfoFilledIcon,
+  Link,
   Message,
   RowBetween,
   Tag,
@@ -73,7 +74,9 @@ const LockedInfo = () => {
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
   const migrate = useWriteMigrateCallback()
+  // const { cakeLockedAmount, cakeUnlockTime, shouldMigrate, cakePoolLockExpired } = useCakeLockStatus()
   const { cakeLockedAmount, cakeUnlockTime, shouldMigrate } = useCakeLockStatus()
+  const cakePoolLockExpired = true
   const cakeLocked = useMemo(() => Number(formatBigInt(cakeLockedAmount, 18)), [cakeLockedAmount])
   const cakeLockedUsdValue: number = useMemo(() => {
     return cakePrice.times(cakeLocked).toNumber()
@@ -130,6 +133,27 @@ const LockedInfo = () => {
           </Button>
         ) : null}
       </StyledLockedCard>
+      {cakePoolLockExpired ? (
+        <>
+          <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
+            <AutoColumn gap="8px">
+              <Text as="p">
+                {t(
+                  'Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.',
+                )}
+              </Text>
+              <Link href="https://@todo" color="text">
+                {t('Learn More >>')}
+              </Link>
+            </AutoColumn>
+          </Message>
+          <Link external style={{ textDecoration: 'none', width: '100%' }} href="https://@todo">
+            <Button width="100%" variant="secondary">
+              {t('View CAKE Pool Position')}
+            </Button>
+          </Link>
+        </>
+      ) : null}
       {unlocked ? (
         <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
           <Text as="p" color={CUSTOM_WARNING_COLOR}>
