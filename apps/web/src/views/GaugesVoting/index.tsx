@@ -8,8 +8,8 @@ import {
   FlexGap,
   Grid,
   Heading,
+  Link,
   LinkExternal,
-  NextLinkFromReactRouter,
   PageHeader,
   Text,
 } from '@pancakeswap/uikit'
@@ -47,14 +47,14 @@ const GaugesVoting = () => {
       <StyledPageHeader background="transparent">
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <NextLinkFromReactRouter to="/cake-staking" prefetch={false}>
+            <Link href="/cake-staking">
               <Button p="0" variant="text">
                 <ArrowBackIcon color="primary" />
                 <Text color="primary" bold fontSize="16px" mr="4px">
                   {t('CAKE STAKING')}
                 </Text>
               </Button>
-            </NextLinkFromReactRouter>
+            </Link>
             <Heading as="h1" scale="xxl" color="secondary" mb="24px">
               {t('Gauges Voting')}
             </Heading>

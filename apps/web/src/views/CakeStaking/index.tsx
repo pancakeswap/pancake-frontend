@@ -1,18 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  ArrowForwardIcon,
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  ModalV2,
-  NextLinkFromReactRouter,
-  PageHeader,
-  Text,
-} from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, Button, Flex, Grid, Heading, ModalV2, PageHeader, Text } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import Page from 'components/Layout/Page'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import { useState } from 'react'
