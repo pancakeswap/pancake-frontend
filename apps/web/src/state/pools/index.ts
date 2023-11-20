@@ -551,7 +551,10 @@ export const PoolsSlice = createSlice({
         const index = state.data.findIndex((p) => p.sousId === sousId)
 
         if (index >= 0) {
-          state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+          state.data[index] = {
+            ...state.data[index],
+            userData: { ...state.data[index].userData, [field]: value } as any,
+          }
         }
       },
     )
