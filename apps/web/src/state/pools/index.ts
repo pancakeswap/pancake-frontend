@@ -299,11 +299,7 @@ export const fetchPoolsUserDataAsync = createAsyncThunk<
     account: string
     chainId: ChainId
   }
-<<<<<<< HEAD
 >('pool/fetchPoolsUserData', async ({ account, chainId }: any, { rejectWithValue }: any) => {
-=======
->('pool/fetchPoolsUserData', async ({ account, chainId }, { rejectWithValue }) => {
->>>>>>> bbcaccaff (revert: Pool state change)
   try {
     const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
       fetchPoolsAllowance({ account, chainId, provider: getViemClients }),
