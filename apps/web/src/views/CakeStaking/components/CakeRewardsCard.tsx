@@ -157,14 +157,11 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                             'Please note that after locking or updating, your shares will only update upon revenue distributions.',
                           )}
                         </Text>
-                        <NextLinkFromReactRouter
-                          target="_blank"
-                          to="https://docs.pancakeswap.finance/products/revenue-sharing/faq#50b7c683-feb0-47f6-809f-39c1a0976bb5"
-                        >
+                        <LinkExternal href="https://docs.pancakeswap.finance/products/revenue-sharing/faq#50b7c683-feb0-47f6-809f-39c1a0976bb5">
                           <Text bold color="primary">
                             {t('Learn More')}
                           </Text>
-                        </NextLinkFromReactRouter>
+                        </LinkExternal>
                       </>
                     }
                   />
