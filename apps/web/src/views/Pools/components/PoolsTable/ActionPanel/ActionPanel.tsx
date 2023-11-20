@@ -200,32 +200,34 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             <Stake pool={pool} />
           </ActionContainer>
         </Box>
-        <Flex width="100%">
-          <Message
-            variant="warning"
-            style={{ width: '100%', marginTop: '16px' }}
-            action={
-              <Flex alignItems="center" style={{ gap: 24 }}>
-                {vaultPosition === VaultPosition.Locked && <VeCakeMigrateCard isTableView />}
-                {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake />}
-                {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCardTableView />}
-                {vaultPosition >= VaultPosition.LockedEnd && <ConvertToFlexibleButton />}
-                <VeCakeButton type="get" />
-              </Flex>
-            }
-            hideIcon={vaultPosition === VaultPosition.Locked}
-          >
-            {vaultPosition !== VaultPosition.Locked && (
-              <MessageText>
-                {vaultPosition === VaultPosition.Flexible
-                  ? t('Flexible CAKE pool is discontinued and no longer distributing rewards.  Learn more »')
-                  : vaultPosition === VaultPosition.LockedEnd
-                  ? t('The lock period has ended. Convert to flexible staking.')
-                  : t('The lock period has ended. To avoid more rewards being burned, convert to flexible staking.')}
-              </MessageText>
-            )}
-          </Message>
-        </Flex>
+        {account && (
+          <Flex width="100%">
+            <Message
+              variant="warning"
+              style={{ width: '100%', marginTop: '16px' }}
+              action={
+                <Flex alignItems="center" style={{ gap: 24 }}>
+                  {vaultPosition === VaultPosition.Locked && <VeCakeMigrateCard isTableView />}
+                  {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake />}
+                  {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCardTableView />}
+                  {vaultPosition >= VaultPosition.LockedEnd && <ConvertToFlexibleButton />}
+                  <VeCakeButton type="get" />
+                </Flex>
+              }
+              hideIcon={vaultPosition === VaultPosition.Locked}
+            >
+              {vaultPosition !== VaultPosition.Locked && (
+                <MessageText>
+                  {vaultPosition === VaultPosition.Flexible
+                    ? t('Flexible CAKE pool is discontinued and no longer distributing rewards.  Learn more »')
+                    : vaultPosition === VaultPosition.LockedEnd
+                    ? t('The lock period has ended. Convert to flexible staking.')
+                    : t('The lock period has ended. To avoid more rewards being burned, convert to flexible staking.')}
+                </MessageText>
+              )}
+            </Message>
+          </Flex>
+        )}
       </ActionContainer>
     </StyledActionPanel>
   )
