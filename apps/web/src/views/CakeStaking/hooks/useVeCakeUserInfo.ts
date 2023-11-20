@@ -78,25 +78,31 @@ export const useCakeLockStatus = (): {
   status: CakeLockStatus
   shouldMigrate: boolean
   cakeLockedAmount: bigint
-  noCakeLocked: boolean
+  nativeCakeLockedAmount: bigint
+  proxyCakeLockedAmount: bigint
+  cakeLocked: boolean
   cakeLockExpired: boolean
   cakePoolLocked: boolean
   cakePoolLockExpired: boolean
   cakeUnlockTime: number
-  cakePoolUnlockTime?: number
+  cakePoolUnlockTime: number
 } => {
   const { data: userInfo } = useVeCakeUserInfo()
   // if user locked at cakePool before, should migrate
-  const shouldMigrate = useCakePoolLocked()
-  const noCakeLocked = useMemo(() => !userInfo || !userInfo.amount, [userInfo])
+  const proxyLocked = useCakePoolLocked()
+  const shouldMigrate = useMemo(() => {
+    return proxyLocked && userInfo?.cakePoolType !== 1
+  }, [proxyLocked, userInfo?.cakePoolType])
+
+  const cakeLocked = useMemo(() => userInfo && userInfo.amount > 0n, [userInfo])
   const cakeUnlockTime = useMemo(() => {
     if (!userInfo) return 0
     return Number(userInfo.end)
   }, [userInfo])
   const cakeLockExpired = useMemo(() => {
-    if (noCakeLocked) return false
+    if (!cakeLocked) return false
     return dayjs.unix(cakeUnlockTime).isBefore(dayjs())
-  }, [noCakeLocked, cakeUnlockTime])
+  }, [cakeLocked, cakeUnlockTime])
   const cakePoolLocked = useMemo(
     () => Boolean(userInfo?.cakeAmount) && userInfo?.withdrawFlag !== CakePoolLockStatus.WITHDRAW,
     [userInfo],
@@ -106,19 +112,19 @@ export const useCakeLockStatus = (): {
     return userInfo!.lockEndTime > dayjs().unix()
   }, [userInfo, cakePoolLocked])
 
-  const cakeLockedAmountDirectly = useMemo(() => {
+  const nativeCakeLockedAmount = useMemo(() => {
     if (!userInfo) return BigInt(0)
     return userInfo.amount ?? 0n
   }, [userInfo])
-  const cakeLockedAmountCakePool = useMemo(() => {
+  const proxyCakeLockedAmount = useMemo(() => {
     if (!cakePoolLocked) return 0n
 
     return userInfo!.cakeAmount ?? 0n
   }, [userInfo, cakePoolLocked])
 
   const cakeLockedAmount = useMemo(() => {
-    return cakeLockedAmountDirectly + cakeLockedAmountCakePool
-  }, [cakeLockedAmountDirectly, cakeLockedAmountCakePool])
+    return nativeCakeLockedAmount + proxyCakeLockedAmount
+  }, [nativeCakeLockedAmount, proxyCakeLockedAmount])
 
   const cakePoolUnlockTime = useMemo(() => {
     if (!cakePoolLocked) return 0
@@ -126,18 +132,20 @@ export const useCakeLockStatus = (): {
   }, [userInfo, cakePoolLocked])
 
   const status = useMemo(() => {
-    if ((!userInfo || !userInfo.amount) && !shouldMigrate) return CakeLockStatus.NotLocked
-    if (userInfo?.amount && userInfo.end) return CakeLockStatus.Locking
+    if ((!userInfo || !userInfo.amount) && !cakePoolLocked && !shouldMigrate) return CakeLockStatus.NotLocked
+    if ((userInfo?.amount && userInfo.end) || cakePoolLocked) return CakeLockStatus.Locking
     if (cakeLockExpired) return CakeLockStatus.Expired
     if (shouldMigrate) return CakeLockStatus.Migrate
     return CakeLockStatus.NotLocked
-  }, [userInfo, shouldMigrate, cakeLockExpired])
+  }, [userInfo, shouldMigrate, cakePoolLocked, cakeLockExpired])
 
   return {
     status,
     shouldMigrate,
     cakeLockedAmount,
-    noCakeLocked,
+    nativeCakeLockedAmount,
+    proxyCakeLockedAmount,
+    cakeLocked,
     cakeLockExpired,
     cakePoolLocked,
     cakePoolLockExpired,
