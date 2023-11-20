@@ -70,13 +70,17 @@ export const ApproveAndLockModal: React.FC<ApproveAndLockModalProps> = ({
           </>
         ) : null}
 
-        {status === ApproveAndLockStatus.UNLOCK_CAKE ? <PendingModalContent title={t('Confirm unlock')} /> : null}
-
         {status === ApproveAndLockStatus.LOCK_CAKE_PENDING ? (
           <TxSubmittedModalContent title={t('Transaction Submitted')} subTitle={lockInfo} />
         ) : null}
 
+        {status === ApproveAndLockStatus.UNLOCK_CAKE ? <PendingModalContent title={t('Confirm unlock')} /> : null}
         {status === ApproveAndLockStatus.UNLOCK_CAKE_PENDING ? (
+          <TxSubmittedModalContent title={t('Transaction Submitted')} />
+        ) : null}
+
+        {status === ApproveAndLockStatus.MIGRATE ? <PendingModalContent title={t('Confirm migrate')} /> : null}
+        {status === ApproveAndLockStatus.MIGRATE_PENDING ? (
           <TxSubmittedModalContent title={t('Transaction Submitted')} />
         ) : null}
 

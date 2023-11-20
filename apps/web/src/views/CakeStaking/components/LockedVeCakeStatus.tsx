@@ -26,6 +26,7 @@ import styled from 'styled-components'
 import { formatTime } from 'utils/formatTime'
 import { CakeLockStatus } from 'views/CakeStaking/types'
 import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
+import { useWriteMigrateCallback } from '../hooks/useContractWrite/useWriteMigrateCallback'
 
 dayjs.extend(relativeTime)
 
@@ -71,6 +72,7 @@ const CUSTOM_WARNING_COLOR = '#D67E0A'
 const LockedInfo = () => {
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
+  const migrate = useWriteMigrateCallback()
   const { cakeLockedAmount, cakeUnlockTime, shouldMigrate } = useCakeLockStatus()
   const cakeLocked = useMemo(() => Number(formatBigInt(cakeLockedAmount, 18)), [cakeLockedAmount])
   const cakeLockedUsdValue: number = useMemo(() => {
@@ -122,7 +124,11 @@ const LockedInfo = () => {
             ) : null}
           </AutoColumn>
         </RowBetween>
-        {shouldMigrate ? <Button width="100%">{t('Migrate to veCAKE')}</Button> : null}
+        {shouldMigrate ? (
+          <Button width="100%" onClick={migrate}>
+            {t('Migrate to veCAKE')}
+          </Button>
+        ) : null}
       </StyledLockedCard>
       {unlocked ? (
         <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
