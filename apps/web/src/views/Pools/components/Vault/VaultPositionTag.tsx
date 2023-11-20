@@ -71,10 +71,11 @@ const VaultPositionTag: React.FC<React.PropsWithChildren<{ position: VaultPositi
 
 const VeCakeVaultPositionTag: React.FC = () => {
   const isMigratedToVeCake = useIsMigratedToVeCake()
+  const { t } = useTranslation()
   return (
     <Tag variant={isMigratedToVeCake ? 'success' : 'failure'}>
       <Box as={isMigratedToVeCake ? CheckmarkCircleIcon : PauseCircleIcon} mr="4px" color="white" />
-      <Trans>{isMigratedToVeCake ? 'Migrated' : 'Reward pause'}</Trans>
+      {isMigratedToVeCake ? t('Migrated') : t('Reward pause')}
     </Tag>
   )
 }
