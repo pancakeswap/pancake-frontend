@@ -5,7 +5,7 @@ export const useCakeDistributed = (): bigint => {
   const revenueSharingPoolContract = useRevenueSharingPoolForCakeContract()
 
   const { data } = useQuery(
-    ['cakeDistributed', revenueSharingPoolContract.address],
+    ['cakeDistributed', revenueSharingPoolContract.address, revenueSharingPoolContract.chain?.id],
     async () => {
       const amount = (await revenueSharingPoolContract.read.totalDistributed()) ?? 0n
       return amount

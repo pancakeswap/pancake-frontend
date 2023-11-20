@@ -1,4 +1,4 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { Button, Card, Flex, FlexGap, Heading, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
@@ -7,57 +7,57 @@ type BenefitCardType = 'earnCake' | 'gaugesVoting' | 'farmBoost' | 'snapshotVoti
 
 type BenefitItem = {
   headImg: string
-  title: string
-  subTitle?: string
+  title: React.ReactNode
+  subTitle?: React.ReactNode
   desc: string[]
-  btnText?: string
+  btnText?: React.ReactNode
   link?: string
 }
 
 export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
   earnCake: {
     headImg: '/images/cake-staking/benefit-earn-cake.png',
-    title: 'Earn CAKE',
-    subTitle: 'Total Distributed',
-    btnText: 'Check Reward',
+    title: <Trans>Earn CAKE</Trans>,
+    subTitle: <Trans>Total Distributed</Trans>,
+    btnText: <Trans>Check Reward</Trans>,
     desc: ['Weekly revenue sharing', 'Weekly CAKE pool rewards'],
   },
   gaugesVoting: {
     headImg: '/images/cake-staking/benefit-gauges-voting.png',
-    title: 'Gauges Voting',
-    subTitle: 'Number of Gauges to Vote',
-    btnText: 'Check Gauges',
+    title: <Trans>Gauges Voting</Trans>,
+    subTitle: <Trans>Number of Gauges to Vote</Trans>,
+    btnText: <Trans>Check Gauges</Trans>,
     link: '/gauges-voting',
     desc: ['Boost rewards on your favorite farms', 'Claim additional incentives from other protocols'],
   },
   farmBoost: {
     headImg: '/images/cake-staking/benefit-farm-boost.png',
-    title: 'Farm Boost',
-    subTitle: 'Farming Boost Up To',
-    btnText: 'Check Farms',
+    title: <Trans>Farm Boost</Trans>,
+    subTitle: <Trans>Farming Boost Up To</Trans>,
+    btnText: <Trans>Check Farms</Trans>,
     link: '/farms',
     desc: ['Boost your farm earnings', 'Supports multi-chain boosts'],
   },
   snapshotVoting: {
     headImg: '/images/cake-staking/benefit-snapshot-voting.png',
-    title: 'Snapshot Voting',
-    subTitle: 'Number of Proposals',
-    btnText: 'Check Snapshot Voting',
+    title: <Trans>Snapshot Voting</Trans>,
+    subTitle: <Trans>Number of Proposals</Trans>,
+    btnText: <Trans>Check Snapshot Voting</Trans>,
     link: '/voting',
     desc: ['Use your veCAKE to vote on important governance proposals'],
   },
   ifo: {
     headImg: '/images/cake-staking/benefit-ifo.png',
-    title: 'IFO',
-    subTitle: 'Tokens Sold Through IFOs',
-    btnText: 'Check IFOs',
+    title: <Trans>IFO</Trans>,
+    subTitle: <Trans>Tokens Sold Through IFOs</Trans>,
+    btnText: <Trans>Check IFOs</Trans>,
     link: '/ifo',
     desc: ['Participate in IFO public sales', 'Supports multi-chain IFOs'],
   },
   more: {
     headImg: '/images/cake-staking/benefit-more.png',
-    title: 'And So Much More...',
-    btnText: 'Learn more',
+    title: <Trans>And So Much More...</Trans>,
+    btnText: <Trans>Learn more</Trans>,
     desc: [
       'Boost your winning in Trading Rewards campaigns. Regardless which chain you are trading on.',
       'Boost your earnings in fixed staking.',
@@ -81,7 +81,7 @@ export const BenefitCard: React.FC<{
 
   const button = info.btnText ? (
     <Button width="100%" mt="auto" variant={onClick ? 'primary' : 'secondary'} onClick={onClick}>
-      {t(info.btnText)}
+      {info.btnText}
     </Button>
   ) : null
 
@@ -92,12 +92,12 @@ export const BenefitCard: React.FC<{
           <img srcSet={`${info.headImg} 2x`} alt="earn-cake" />
           <FlexGap flexDirection="column" gap="8px">
             <Heading as="h3" scale="lg" color="secondary">
-              {t(info.title)}
+              {info.title}
             </Heading>
             {info.subTitle ? (
               <Flex flexDirection="column">
                 <Text fontSize="12px" color="textSubtle" lineHeight="120%">
-                  {t(info.subTitle)}
+                  {info.subTitle}
                 </Text>
                 <Text fontSize="16px" bold lineHeight="120%">
                   {dataText}

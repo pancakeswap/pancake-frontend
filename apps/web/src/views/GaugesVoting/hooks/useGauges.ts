@@ -17,35 +17,6 @@ export type GaugeInfo = {
   maxVoteCap: bigint
 }
 
-// @fixme: GraphQL query Gauge type ID has wrong type
-// type GaugeQueryResponse = {
-//   gauges: {
-//     id: string
-//     pid: bigint
-//     chainId: bigint
-//     boostMultiplier: bigint
-//     maxVoteCap: bigint
-//   }[]
-// }
-
-// const queryAllGauges = async () => {
-//   const response: GaugeQueryResponse = await request(
-//     GRAPH_API_GAUGES,
-//     gql`
-//       query Gauges {
-//         gauges {
-//           id
-//           pid
-//           chainId
-//           boostMultiplier
-//           maxVoteCap
-//         }
-//       }
-//     `,
-//   )
-//   return response.gauges ?? []
-// }
-
 export const useGauges = () => {
   const gaugesVotingContract = useGaugesVotingContract()
   const gaugesCount = useGaugesVotingCount()

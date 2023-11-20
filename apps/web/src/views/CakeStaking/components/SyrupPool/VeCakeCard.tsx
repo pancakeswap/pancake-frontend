@@ -99,10 +99,10 @@ export const VeCakeCard = memo(() => {
           </ImageBox>
           <Box>
             <Text color="body" bold>
-              {t(BENEFITS.earnCake.title)}
+              {BENEFITS.earnCake.title}
             </Text>
             <Text fontSize={14} color="text">
-              {t(BENEFITS?.earnCake?.subTitle ?? '')}
+              {BENEFITS?.earnCake?.subTitle}
             </Text>
           </Box>
         </StyledFlex>
@@ -113,10 +113,10 @@ export const VeCakeCard = memo(() => {
           </ImageBox>
           <Box>
             <Text color="body" bold>
-              {t(BENEFITS.gaugesVoting.title)}
+              {BENEFITS.gaugesVoting.title}
             </Text>
             <Text fontSize={14} color="text">
-              {t(BENEFITS?.gaugesVoting?.subTitle ?? '')}
+              {BENEFITS?.gaugesVoting?.subTitle}
             </Text>
           </Box>
         </StyledFlex>
@@ -127,10 +127,10 @@ export const VeCakeCard = memo(() => {
           </ImageBox>
           <Box>
             <Text color="body" bold>
-              {t(BENEFITS.farmBoost.title)}
+              {BENEFITS.farmBoost.title}
             </Text>
             <Text fontSize={14} color="text">
-              {t(BENEFITS?.farmBoost?.subTitle ?? '')}
+              {BENEFITS?.farmBoost?.subTitle}
             </Text>
           </Box>
         </StyledFlex>
@@ -142,7 +142,7 @@ export const VeCakeCard = memo(() => {
             </ImageBox>
             <Box>
               <Text color="body" bold lineHeight="16px">
-                {t(BENEFITS.snapshotVoting.title)}
+                {BENEFITS.snapshotVoting.title}
               </Text>
             </Box>
           </StyledMiniFlex>
@@ -187,10 +187,10 @@ export const VeCakeCardTableView = memo(() => {
         </ImageBox>
         <Box>
           <Text color="secondary" bold>
-            {t(BENEFITS.earnCake.title)}
+            {BENEFITS.earnCake.title}
           </Text>
           <Text fontSize={14} color="text">
-            {t(BENEFITS?.earnCake?.subTitle ?? '')}
+            {BENEFITS?.earnCake?.subTitle}
           </Text>
         </Box>
       </StyledTableViewFlex>
@@ -200,10 +200,10 @@ export const VeCakeCardTableView = memo(() => {
         </ImageBox>
         <Box>
           <Text color="secondary" bold>
-            {t(BENEFITS.gaugesVoting.title)}
+            {BENEFITS.gaugesVoting.title}
           </Text>
           <Text fontSize={14} color="text">
-            {t(BENEFITS?.gaugesVoting?.subTitle ?? '')}
+            {BENEFITS?.gaugesVoting?.subTitle}
           </Text>
         </Box>
       </StyledTableViewFlex>
@@ -213,10 +213,10 @@ export const VeCakeCardTableView = memo(() => {
         </ImageBox>
         <Box>
           <Text color="secondary" bold>
-            {t(BENEFITS.farmBoost.title)}
+            {BENEFITS.farmBoost.title}
           </Text>
           <Text fontSize={14} color="text">
-            {t(BENEFITS?.farmBoost?.subTitle ?? '')}
+            {BENEFITS?.farmBoost?.subTitle}
           </Text>
         </Box>
       </StyledTableViewFlex>
@@ -231,7 +231,7 @@ export const VeCakeCardTableView = memo(() => {
           </ImageBox>
           <Box>
             <Text color="secondary" bold lineHeight="16px">
-              {t(BENEFITS.snapshotVoting.title)}
+              {BENEFITS.snapshotVoting.title}
             </Text>
           </Box>
         </StyledMiniTableViewFlex>
