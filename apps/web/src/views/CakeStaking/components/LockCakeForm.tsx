@@ -114,7 +114,8 @@ const CakeInput: React.FC<{
 export const LockCakeForm: React.FC<{
   // show input field only
   fieldOnly?: boolean
-}> = ({ fieldOnly }) => {
+  disabled?: boolean
+}> = ({ fieldOnly, disabled }) => {
   const { t } = useTranslation()
   const [value, onChange] = useAtom(cakeLockAmountAtom)
 
@@ -138,11 +139,11 @@ export const LockCakeForm: React.FC<{
           </Text>
         </FlexGap>
       </FlexGap>
-      <CakeInput value={value} onUserInput={onChange} />
+      <CakeInput value={value} onUserInput={onChange} disabled={disabled} />
 
       {fieldOnly ? null : (
         <>
-          <LockCakeDataSet />
+          {disabled ? null : <LockCakeDataSet />}
 
           <SubmitLockButton />
         </>

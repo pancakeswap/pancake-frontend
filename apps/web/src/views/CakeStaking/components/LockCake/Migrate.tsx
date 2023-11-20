@@ -11,8 +11,8 @@ export const Migrate = () => {
       <Heading scale="md">{t('Migrate to get veCAKE')}</Heading>
 
       <Grid gridTemplateColumns="1fr 1fr" mt={32} gridColumnGap="24px">
-        <LockCakeForm />
-        <LockWeeksForm />
+        <LockCakeForm disabled />
+        <LockWeeksForm disabled />
       </Grid>
     </StyledCard>
   )
