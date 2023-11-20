@@ -33,6 +33,7 @@ const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
 type Params = {
   throwUserRejectError?: boolean
   waitForTransactionTimeout?: number
+  throwCustomeError?: () => void
 }
 
 export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
@@ -104,6 +105,8 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
+          } else if (params?.throwCustomeError) {
+            params?.throwCustomeError()
           } else {
             handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
           }
@@ -117,15 +120,7 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
 
       return null
     },
-    [
-      throwUserRejectError,
-      toastSuccess,
-      t,
-      waitForTransaction,
-      handleNormalError,
-      handleTxError,
-      params?.waitForTransactionTimeout,
-    ],
+    [toastSuccess, t, waitForTransaction, params, throwUserRejectError, handleNormalError, handleTxError],
   )
 
   const fetchTxResponse = useCallback(
