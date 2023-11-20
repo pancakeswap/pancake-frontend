@@ -1,7 +1,6 @@
 import { Pool } from '@pancakeswap/widgets-internal'
 import { memo } from 'react'
 
-import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
 import LockDurationRow from './Common/LockDurationRow'
@@ -15,8 +14,7 @@ interface LockedStakingApyProps extends LockedStakingApyPropsType {
   account?: string
 }
 
-const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>> = ({ userData, pool, account }) => {
-  const { t } = useTranslation()
+const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>> = ({ userData, pool }) => {
   // const position = useMemo(
   //   () =>
   //     getVaultPosition({
