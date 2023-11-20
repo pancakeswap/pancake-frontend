@@ -1,10 +1,11 @@
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Address } from 'viem'
 import { useContractRead } from 'wagmi'
 import { CakeLockStatus } from '../types'
+import { useCakePoolLocked } from './useCakePoolLocked'
 
 export enum CakePoolLockStatus {
   LOCKING = 0,
@@ -75,6 +76,7 @@ export const useVeCakeUserInfo = (): {
 
 export const useCakeLockStatus = (): {
   status: CakeLockStatus
+  shouldMigrate: boolean
   cakeLockedAmount: bigint
   noCakeLocked: boolean
   cakeLockExpired: boolean
@@ -84,7 +86,8 @@ export const useCakeLockStatus = (): {
   cakePoolUnlockTime?: number
 } => {
   const { data: userInfo } = useVeCakeUserInfo()
-  const [status, setStatus] = useState<CakeLockStatus>(CakeLockStatus.NotLocked)
+  // if user locked at cakePool before, should migrate
+  const shouldMigrate = useCakePoolLocked()
   const noCakeLocked = useMemo(() => !userInfo || !userInfo.amount, [userInfo])
   const cakeUnlockTime = useMemo(() => {
     if (!userInfo) return 0
@@ -122,14 +125,17 @@ export const useCakeLockStatus = (): {
     return Number(userInfo!.lockEndTime)
   }, [userInfo, cakePoolLocked])
 
-  useEffect(() => {
-    if (!userInfo || !userInfo.amount) setStatus(CakeLockStatus.NotLocked)
-    if (userInfo?.amount && userInfo.end) setStatus(CakeLockStatus.Locking)
-    if (cakeLockExpired) setStatus(CakeLockStatus.Expired)
-  }, [userInfo, cakeLockExpired])
+  const status = useMemo(() => {
+    if ((!userInfo || !userInfo.amount) && !shouldMigrate) return CakeLockStatus.NotLocked
+    if (userInfo?.amount && userInfo.end) return CakeLockStatus.Locking
+    if (cakeLockExpired) return CakeLockStatus.Expired
+    if (shouldMigrate) return CakeLockStatus.Migrate
+    return CakeLockStatus.NotLocked
+  }, [userInfo, shouldMigrate, cakeLockExpired])
 
   return {
     status,
+    shouldMigrate,
     cakeLockedAmount,
     noCakeLocked,
     cakeLockExpired,

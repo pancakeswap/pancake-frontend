@@ -71,20 +71,18 @@ const CUSTOM_WARNING_COLOR = '#D67E0A'
 const LockedInfo = () => {
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
-  const { cakeLockedAmount, cakeUnlockTime } = useCakeLockStatus()
+  const { cakeLockedAmount, cakeUnlockTime, shouldMigrate } = useCakeLockStatus()
   const cakeLocked = useMemo(() => Number(formatBigInt(cakeLockedAmount, 18)), [cakeLockedAmount])
   const cakeLockedUsdValue: number = useMemo(() => {
     return cakePrice.times(cakeLocked).toNumber()
   }, [cakePrice, cakeLocked])
 
-  // @todo ust status
-  const needMigrate = false
-  const unlocked = dayjs().isAfter(dayjs.unix(cakeUnlockTime))
+  const unlocked = cakeUnlockTime > 0 && dayjs().isAfter(dayjs.unix(cakeUnlockTime))
   const unlockTimeToNow = cakeUnlockTime ? dayjs.unix(cakeUnlockTime).fromNow(true) : ''
 
   return (
     <FlexGap flexDirection="column" gap="24px" margin={24}>
-      {needMigrate ? (
+      {shouldMigrate ? (
         <RowBetween>
           <Text color="textSubtle" bold fontSize={12} textTransform="uppercase">
             {t('my cake staking')}
@@ -116,12 +114,15 @@ const LockedInfo = () => {
                 {unlockTimeToNow}
               </Text>
             )}
-            <Text fontSize={12} color={unlocked ? CUSTOM_WARNING_COLOR : undefined}>
-              {t('on')} {cakeUnlockTime ? formatTime(Number(dayjs.unix(cakeUnlockTime))) : null}
-            </Text>
+
+            {cakeUnlockTime ? (
+              <Text fontSize={12} color={unlocked ? CUSTOM_WARNING_COLOR : undefined}>
+                {t('on')} {formatTime(Number(dayjs.unix(cakeUnlockTime)))}
+              </Text>
+            ) : null}
           </AutoColumn>
         </RowBetween>
-        {needMigrate ? <Button width="100%">{t('Migrate to veCAKE')}</Button> : null}
+        {shouldMigrate ? <Button width="100%">{t('Migrate to veCAKE')}</Button> : null}
       </StyledLockedCard>
       {unlocked ? (
         <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
@@ -131,11 +132,21 @@ const LockedInfo = () => {
             )}
           </Text>
         </Message>
-      ) : (
+      ) : null}
+      {shouldMigrate ? (
+        <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
+          <Text as="p" color={CUSTOM_WARNING_COLOR}>
+            {t(
+              'Migrate your CAKE staking position to veCAKE and enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
+            )}
+          </Text>
+        </Message>
+      ) : null}
+      {!unlocked && !shouldMigrate ? (
         <Flex justifyContent="center">
           <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
         </Flex>
-      )}
+      ) : null}
     </FlexGap>
   )
 }
