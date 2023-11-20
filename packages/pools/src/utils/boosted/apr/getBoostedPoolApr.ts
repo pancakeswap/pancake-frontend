@@ -1,7 +1,7 @@
 import { Address, PublicClient } from 'viem'
 import { BoosterType } from '../types'
 import { fetchAlpBoostedPoolApr } from './fetchAlpBoostedPoolApr'
-import { getBoostedPoolsConfig } from '../../../constants/boostedPools'
+import { getBoostedPoolConfig } from '../../../constants/boostedPools'
 
 interface GetBoostedPoolApr {
   client: PublicClient
@@ -10,13 +10,12 @@ interface GetBoostedPoolApr {
 }
 
 export const getBoostedPoolApr = async ({ client, contractAddress, chainId }: GetBoostedPoolApr): Promise<number> => {
-  const list = chainId && getBoostedPoolsConfig(chainId)
+  const pool = chainId && getBoostedPoolConfig(chainId, contractAddress)
 
-  if (!contractAddress || !chainId || !list) {
+  if (!contractAddress || !chainId || !pool) {
     return 0
   }
 
-  const pool = list?.find((i) => i?.contractAddress?.toLowerCase() === contractAddress.toLowerCase())
   // Arbitrum ALP pools
   if (pool?.boosterType === BoosterType.ALP) {
     const result = await fetchAlpBoostedPoolApr(client)

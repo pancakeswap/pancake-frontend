@@ -7,4 +7,5 @@ export enum BoosterType {
 export type BoosterConfig = {
   boosterType: BoosterType
   contractAddress: Address
+  tooltipsText?: string
 }

@@ -15,6 +15,7 @@ test('exports', () => {
       "DURATION_FACTOR",
       "BOOSTED_POOLS_CONFIG_BY_CHAIN",
       "getBoostedPoolsConfig",
+      "getBoostedPoolConfig",
       "ICAKE",
       "CAKE_VAULT",
       "CAKE_FLEXIBLE_SIDE_VAULT",

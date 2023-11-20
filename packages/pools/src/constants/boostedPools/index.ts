@@ -13,3 +13,8 @@ export const BOOSTED_POOLS_CONFIG_BY_CHAIN = {
 export const getBoostedPoolsConfig = (chainId: ChainId) => {
   return BOOSTED_POOLS_CONFIG_BY_CHAIN[chainId]
 }
+
+export const getBoostedPoolConfig = (chainId: ChainId, contractAddress: string): BoosterConfig | undefined => {
+  const pool = getBoostedPoolsConfig(chainId)
+  return pool?.find((i) => i?.contractAddress?.toLowerCase() === contractAddress.toLowerCase())
+}

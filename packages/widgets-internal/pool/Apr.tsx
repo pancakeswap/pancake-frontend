@@ -51,6 +51,7 @@ interface AprProps<T> extends FlexProps {
   account: string;
   autoCompoundFrequency: number;
   boostedApr?: number;
+  boostedTooltipsText?: string;
 }
 
 export function Apr<T>({
@@ -63,6 +64,7 @@ export function Apr<T>({
   account,
   autoCompoundFrequency,
   boostedApr,
+  boostedTooltipsText,
   ...props
 }: AprProps<T>) {
   const {
@@ -160,11 +162,11 @@ export function Apr<T>({
           </Text>
         </Box>
       </Box>
-      <Text mt="10px" lineHeight="120%">
-        {t(
-          "Fee APY include the transaction fees shared in the ALP pool, funding rates for positions held, and liquidation income, and will be reflected in the growth of the ALP price. Stake APY is the return for staking ALP. Both Annualized using compound interest, for reference purposes only."
-        )}
-      </Text>
+      {boostedTooltipsText && (
+        <Text mt="10px" lineHeight="120%">
+          {boostedTooltipsText}
+        </Text>
+      )}
     </Box>,
     {
       placement: "top",

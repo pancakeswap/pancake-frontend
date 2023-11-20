@@ -1,13 +1,16 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCurrentBlock } from 'state/block/hooks'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import { Token } from '@pancakeswap/sdk'
 import { useAccount } from 'wagmi'
+import { getBoostedPoolConfig } from '@pancakeswap/pools'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useBoostedPoolApr } from 'views/Pools/hooks/useBoostedPoolApr'
 
 const withShownApr = (AprComp) => (props) => {
+  const { t } = useTranslation()
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
@@ -22,12 +25,15 @@ const withShownApr = (AprComp) => (props) => {
     contractAddress: props.pool.contractAddress,
   })
 
+  const boostedPoolConfig = chainId && getBoostedPoolConfig(chainId, props.pool.contractAddress)
+
   return (
     <AprComp
       {...props}
       shouldShowApr={hasPoolStarted || !shouldShowBlockCountdown}
       account={account}
       boostedApr={boostedApr}
+      boostedTooltipsText={boostedPoolConfig ? t(`${boostedPoolConfig.tooltipsText}`) : ''}
       autoCompoundFrequency={autoCompoundFrequency}
     />
   )
