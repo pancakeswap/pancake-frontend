@@ -24,11 +24,7 @@ export const TableRow: React.FC<{
   onChange: (value: string) => void
 }> = ({ data, value, onChange }) => {
   const { t } = useTranslation()
-  const votedPower = useVotedPower() ?? 0
   const { balance: veCake } = useVeCakeBalance()
-  const votePower = useMemo(() => {
-    return veCake.minus(votedPower)
-  }, [veCake, votedPower])
 
   const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
 
@@ -39,7 +35,8 @@ export const TableRow: React.FC<{
   }, [userVote?.power])
   const power = useMemo(() => {
     if (veCake && userVote?.power) {
-      return formatLocalisedCompactNumber(getBalanceNumber(veCake.times(userVote?.power).div(10000)), true)
+      const amount = getBalanceNumber(veCake.times(userVote?.power).div(10000))
+      return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
     }
     return 0
   }, [userVote?.power, veCake])
@@ -55,8 +52,10 @@ export const TableRow: React.FC<{
     return value ?? ''
   }, [voteDisabled, powerPercent, value])
   const votesAmount = useMemo(() => {
-    return votePower.times(voteValue || 0).div(100)
-  }, [voteValue, votePower])
+    const p = Number(voteValue || 0) * 100
+    const amount = getBalanceNumber(veCake.times(p).div(10000))
+    return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
+  }, [veCake, voteValue])
 
   useEffect(() => {
     if (voteDisabled && !value) {
@@ -99,9 +98,7 @@ export const TableRow: React.FC<{
             <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
           </Tooltips>
         ) : null}
-        <Text color={userVote?.voteLocked ? 'textDisabled' : ''}>
-          {getBalanceAmount(votesAmount).toFixed(2)} veCAKE
-        </Text>
+        <Text color={userVote?.voteLocked ? 'textDisabled' : ''}>{votesAmount} veCAKE</Text>
       </Flex>
       <Flex>
         <PercentInput
