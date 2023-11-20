@@ -39,7 +39,7 @@ export const VoteTable = () => {
 
   const disabled = useMemo(() => {
     const sum = votes.reduce((acc, cur) => acc + Number(cur), 0)
-    return sum > 100 || sum < 0 || isPending
+    return sum >= 100 || sum < 0 || isPending
   }, [isPending, votes])
   const leftGaugesCanAdd = useMemo(() => {
     return Number(gaugesCount) - (rows?.length || 0)
