@@ -39,21 +39,23 @@ const WeekInput: React.FC<{
         onUserInput={onUserInput}
         unit={t('Weeks')}
       />
-      <FlexGap justifyContent="space-between" gap="4px" width="100%">
-        {weeks.map((week) => (
-          <Button
-            key={week}
-            data-week={week}
-            disabled={disabled}
-            onClick={handleWeekSelect}
-            scale="sm"
-            style={{ flex: 1 }}
-            variant={String(week) === value ? 'subtle' : 'light'}
-          >
-            {t('%week%W', { week })}
-          </Button>
-        ))}
-      </FlexGap>
+      {disabled ? null : (
+        <FlexGap justifyContent="space-between" gap="4px" width="100%">
+          {weeks.map((week) => (
+            <Button
+              key={week}
+              data-week={week}
+              disabled={disabled}
+              onClick={handleWeekSelect}
+              scale="sm"
+              style={{ flex: 1 }}
+              variant={String(week) === value ? 'subtle' : 'light'}
+            >
+              {t('%week%W', { week })}
+            </Button>
+          ))}
+        </FlexGap>
+      )}
     </>
   )
 }
@@ -61,7 +63,8 @@ const WeekInput: React.FC<{
 export const LockWeeksForm: React.FC<{
   fieldOnly?: boolean
   expired?: boolean
-}> = ({ fieldOnly, expired }) => {
+  disabled?: boolean
+}> = ({ fieldOnly, expired, disabled }) => {
   const { t } = useTranslation()
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
   return (
@@ -80,11 +83,11 @@ export const LockWeeksForm: React.FC<{
         </FlexGap>
       </FlexGap>
 
-      <WeekInput value={value} onUserInput={onChange} />
+      <WeekInput value={value} onUserInput={onChange} disabled={disabled} />
 
       {fieldOnly ? null : (
         <>
-          <LockWeeksDataSet />
+          {disabled ? null : <LockWeeksDataSet />}
 
           {expired ? (
             <FlexGap width="100%" gap="16px">
@@ -92,7 +95,7 @@ export const LockWeeksForm: React.FC<{
               <SubmitRenewButton />
             </FlexGap>
           ) : (
-            <SubmitLockButton />
+            <SubmitLockButton disabled={disabled} />
           )}
         </>
       )}
@@ -100,14 +103,14 @@ export const LockWeeksForm: React.FC<{
   )
 }
 
-const SubmitLockButton = () => {
+const SubmitLockButton = ({ disabled }) => {
   const { t } = useTranslation()
   const cakeLockWeeks = useAtomValue(cakeLockWeeksAtom)
-  const disabled = useMemo(() => !cakeLockWeeks || cakeLockWeeks === '0', [cakeLockWeeks])
+  const _disabled = useMemo(() => !cakeLockWeeks || cakeLockWeeks === '0' || disabled, [cakeLockWeeks, disabled])
   const increaseLockWeeks = useWriteIncreaseLockWeeksCallback()
 
   return (
-    <Button disabled={disabled} width="100%" onClick={increaseLockWeeks}>
+    <Button disabled={_disabled} width="100%" onClick={increaseLockWeeks}>
       {t('Extend Lock')}
     </Button>
   )
