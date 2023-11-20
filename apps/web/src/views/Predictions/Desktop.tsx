@@ -114,9 +114,9 @@ const PowerLinkStyle = styled(Link)`
 `
 
 const Desktop: React.FC<React.PropsWithChildren> = () => {
-  const splitWrapperRef = useRef<HTMLDivElement>()
-  const chartRef = useRef<HTMLDivElement>()
-  const gutterRef = useRef<HTMLDivElement>()
+  const splitWrapperRef = useRef<HTMLDivElement>(null)
+  const chartRef = useRef<HTMLDivElement>(null)
+  const gutterRef = useRef<HTMLDivElement>(null)
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const chartView = useChartView()
@@ -126,13 +126,17 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   const { token } = useConfig()
 
   const openChartPane = () => {
-    splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
-    splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
+    if (splitWrapperRef.current) {
+      splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
+      splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
+    }
 
     // Purely comedic: We only want to animate if we are clicking the open chart button
     // If we keep the transition on the resizing becomes very choppy
     delay(() => {
-      splitWrapperRef.current.style.transition = ''
+      if (splitWrapperRef.current) {
+        splitWrapperRef.current.style.transition = ''
+      }
     }, 150)
 
     dispatch(setChartPaneState(true))
@@ -141,10 +145,12 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   const splitInstance = useRef<SplitInstance>()
 
   useEffect(() => {
-    const { height } = chartRef.current.getBoundingClientRect()
+    if (chartRef.current) {
+      const { height } = chartRef.current.getBoundingClientRect()
 
-    if (height > 0 && !isChartPaneOpen) {
-      dispatch(setChartPaneState(true))
+      if (height > 0 && !isChartPaneOpen) {
+        dispatch(setChartPaneState(true))
+      }
     }
   }, [isChartPaneOpen, dispatch])
 
@@ -158,13 +164,15 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   useEffect(() => {
     const threshold = 100
     const handleDrag = debounce(() => {
-      const { height } = chartRef.current.getBoundingClientRect()
+      if (chartRef.current) {
+        const { height } = chartRef.current.getBoundingClientRect()
 
-      // If the height of the chart pane goes below the "snapOffset" threshold mark the chart pane as closed
-      dispatch(setChartPaneState(height > threshold))
+        // If the height of the chart pane goes below the "snapOffset" threshold mark the chart pane as closed
+        dispatch(setChartPaneState(height > threshold))
+      }
     }, 50)
 
-    if (isChartPaneOpen && !splitInstance.current) {
+    if (isChartPaneOpen && !splitInstance.current && gutterRef?.current) {
       splitInstance.current = Split({
         dragInterval: 1,
         snapOffset: threshold,
@@ -202,13 +210,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             )}
           </PositionPane>
 
-          <Gutter
-            ref={gutterRef}
-            isChartPaneOpen={isChartPaneOpen}
-            onClick={() => {
-              openChartPane()
-            }}
-          >
+          <Gutter ref={gutterRef} isChartPaneOpen={isChartPaneOpen} onClick={() => openChartPane()}>
             <PowerLinkStyle href="https://chain.link/" external>
               <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
             </PowerLinkStyle>
