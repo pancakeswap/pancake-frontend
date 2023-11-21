@@ -59,7 +59,7 @@ export const LockedVeCakeStatus: React.FC<{
       />
     )
   return (
-    <Box maxWidth={['100%', '369px']}>
+    <Box maxWidth={['100%', '100%', '369px']} width="100%">
       <Card isActive>
         <CardHeader>
           <RowBetween>

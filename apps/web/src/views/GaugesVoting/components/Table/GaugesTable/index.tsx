@@ -2,6 +2,7 @@ import orderBy from 'lodash/orderBy'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { space, SpaceProps } from 'styled-system'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { SortBy, SortField, TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
@@ -13,14 +14,22 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
   height: ${({ expanded }) => (expanded ? 'auto' : '192px')};
 `
 
-export const GaugesTable: React.FC<{
-  scrollStyle?: React.CSSProperties
-  totalGaugesWeight: number
-  data?: GaugeVoting[]
-  selectable?: boolean
-  selectRows?: GaugeVoting[]
-  onRowSelect?: (hash: GaugeVoting['hash']) => void
-}> = ({ scrollStyle, data, totalGaugesWeight, selectable, selectRows, onRowSelect }) => {
+const Table = styled.table`
+  width: 100%;
+
+  ${space}
+`
+
+export const GaugesTable: React.FC<
+  {
+    scrollStyle?: React.CSSProperties
+    totalGaugesWeight: number
+    data?: GaugeVoting[]
+    selectable?: boolean
+    selectRows?: GaugeVoting[]
+    onRowSelect?: (hash: GaugeVoting['hash']) => void
+  } & SpaceProps
+> = ({ scrollStyle, data, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
   const [expanded, setExpanded] = useState(false)
   const [sortKey, setSortKey] = useState<SortField | undefined>()
   const [sortBy, setSortBy] = useState<SortBy | undefined>()
@@ -37,7 +46,7 @@ export const GaugesTable: React.FC<{
   }
 
   return (
-    <>
+    <Table {...props}>
       <TableHeader onSort={handleSort} selectable={selectable} />
       <Scrollable expanded={expanded} style={scrollStyle}>
         {sortedData?.map((row) => (
@@ -52,6 +61,6 @@ export const GaugesTable: React.FC<{
         ))}
       </Scrollable>
       <ExpandRow onCollapse={() => setExpanded(!expanded)} />
-    </>
+    </Table>
   )
 }
