@@ -35,8 +35,6 @@ export const useV3PoolData = (address?: string, chainId?: number): V3PoolData | 
 
   if (!address) return undefined
 
-  console.debug('debug poolData v3', data, { chainId, address })
-
   return data?.data?.[address] ?? undefined
 }
 
@@ -54,7 +52,6 @@ export const useV2PairData = (address?: string, chainId?: number): V2PoolData | 
     },
   )
   if (!address) return undefined
-  console.debug('debug poolData v2', data)
   return data?.[address]?.data
 }
 

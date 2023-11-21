@@ -104,7 +104,6 @@ export const CakeRewardsCard = ({ onDismiss }) => {
   )
   const currentDate = useCurrentBlockTimestamp()
   // const currentDate = Date.now() / 1000
-  console.debug('debug currentDate', currentDate, nextDistributionTimestamp)
   const timeRemaining = nextDistributionTimestamp - Number(currentDate || 0)
   const { days, hours, minutes, seconds } = getTimePeriods(timeRemaining)
 
