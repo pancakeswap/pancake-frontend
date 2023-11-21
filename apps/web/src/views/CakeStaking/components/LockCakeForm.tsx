@@ -12,6 +12,7 @@ import {
   FlexGap,
   Text,
   TokenImage,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
@@ -38,6 +39,7 @@ const CakeInput: React.FC<{
   const [percent, setPercent] = useState<number | null>(null)
   const _cakeBalance = useBSCCakeBalance()
   const cakeBalance = BigInt(_cakeBalance.toString())
+  const { isDesktop } = useMatchBreakpoints()
 
   const onInput = useCallback(
     (input: string) => {
@@ -84,12 +86,12 @@ const CakeInput: React.FC<{
         unit={balance}
       />
       {!disabled && balance ? (
-        <FlexGap justifyContent="space-between" gap="4px" width="100%">
+        <FlexGap justifyContent="space-between" flexWrap={isDesktop ? 'nowrap' : 'wrap'} gap="4px" width="100%">
           {percentShortcuts.map((p) => {
             return (
               <Button
                 style={{ flex: 1 }}
-                scale="sm"
+                scale={isDesktop ? 'sm' : 'xs'}
                 variant={p === percent ? 'primary' : 'tertiary'}
                 onClick={() => handlePercentChange(p)}
               >
@@ -98,7 +100,7 @@ const CakeInput: React.FC<{
             )
           })}
           <Button
-            scale="sm"
+            scale={isDesktop ? 'sm' : 'xs'}
             style={{ flex: 1 }}
             variant={percent === 100 ? 'primary' : 'tertiary'}
             onClick={() => handlePercentChange(100)}
