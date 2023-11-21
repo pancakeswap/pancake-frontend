@@ -43,7 +43,11 @@ export const NewStakingDataSet: React.FC<{
           />
           <DataRow
             label={
-              <Tooltips content={t('@todo')}>
+              <Tooltips
+                content={t(
+                  'The ratio factor between the amount of CAKE locked and the final veCAKE number. Extend your lock duration for a higher ratio factor.',
+                )}
+              >
                 <TooltipText fontSize={14} fontWeight={400} color="textSubtle">
                   {t('Factor')}
                 </TooltipText>
@@ -61,7 +65,11 @@ export const NewStakingDataSet: React.FC<{
           />
           <DataRow
             label={
-              <Tooltips content={t('@todo')}>
+              <Tooltips
+                content={t(
+                  'Once locked, your CAKE will be staked in veCAKE contract until this date. Early withdrawal is not available.',
+                )}
+              >
                 <TooltipText fontSize={14} fontWeight={400} color="textSubtle">
                   {t('Unlock on')}
                 </TooltipText>

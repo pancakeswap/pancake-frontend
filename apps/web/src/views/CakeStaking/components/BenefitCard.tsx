@@ -75,7 +75,8 @@ export const BenefitCard: React.FC<{
   type: BenefitCardType
   dataText?: string
   onClick?: () => void
-}> = ({ type, onClick, dataText }) => {
+  headSlot?: React.ReactNode
+}> = ({ type, onClick, dataText, headSlot }) => {
   const { t } = useTranslation()
   const info = BENEFITS[type] as BenefitItem
 
@@ -91,9 +92,12 @@ export const BenefitCard: React.FC<{
         <FlexGap gap="16px" alignItems="center">
           <img srcSet={`${info.headImg} 2x`} alt="earn-cake" />
           <FlexGap flexDirection="column" gap="8px">
-            <Heading as="h3" scale="lg" color="secondary">
-              {info.title}
-            </Heading>
+            <Flex>
+              <Heading as="h3" scale="lg" color="secondary">
+                {info.title}
+              </Heading>
+              {headSlot}
+            </Flex>
             {info.subTitle ? (
               <Flex flexDirection="column">
                 <Text fontSize="12px" color="textSubtle" lineHeight="120%">

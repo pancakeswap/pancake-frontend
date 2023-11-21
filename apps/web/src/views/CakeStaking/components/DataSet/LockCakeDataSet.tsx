@@ -38,7 +38,11 @@ export const LockCakeDataSet = () => {
       <DataRow label={t('CAKE to be locked')} value={amount.toFixed(2)} />
       <DataRow
         label={
-          <Tooltips content={t('@todo')}>
+          <Tooltips
+            content={t(
+              'Once locked, your CAKE will be staked in veCAKE contract until this date. Early withdrawal is not available.',
+            )}
+          >
             <TooltipText fontSize={12} bold color="textSubtle" textTransform="uppercase">
               {t('Unlock on')}
             </TooltipText>

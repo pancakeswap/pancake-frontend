@@ -8,6 +8,7 @@ import {
   Heading,
   ModalV2,
   PageHeader,
+  QuestionHelper,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
@@ -82,12 +83,36 @@ const CakeStaking = () => {
         >
           <BenefitCard
             type="earnCake"
+            headSlot={
+              <QuestionHelper
+                size="20px"
+                text={t(
+                  'Claim freshly cooked CAKE rewards weekly on Thursday from veCAKE gauge emission as well as trading revenue sharing.',
+                )}
+                placement="top"
+                ml="4px"
+              />
+            }
             dataText={`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} CAKE`}
             onClick={() => {
               setCakeRewardModalVisible(true)
             }}
           />
-          <BenefitCard type="gaugesVoting" dataText={`${gaugesVotingCount ?? 0}`} onClick={() => {}} />
+          <BenefitCard
+            headSlot={
+              <QuestionHelper
+                size="20px"
+                text={t(
+                  'Use your veCAKE to vote on your favourite farms, position managers, reward pools, and any CAKE emission products, increase their allocations, and get more CAKE rewards.',
+                )}
+                placement="top"
+                ml="4px"
+              />
+            }
+            type="gaugesVoting"
+            dataText={`${gaugesVotingCount ?? 0}`}
+            onClick={() => {}}
+          />
         </Grid>
       </PageHeader>
       <Page title={t('Cake staking')}>
@@ -101,9 +126,48 @@ const CakeStaking = () => {
           alignItems="center"
           mx="auto"
         >
-          <BenefitCard type="farmBoost" dataText="3x" />
-          <BenefitCard type="snapshotVoting" dataText={`${snapshotVotingCount}`} />
-          <BenefitCard type="ifo" dataText={`$${formatAmount(totalIFOSold, { notation: 'standard' })}`} />
+          <BenefitCard
+            type="farmBoost"
+            headSlot={
+              <QuestionHelper
+                size="20px"
+                text={t(
+                  'Boost your PancakeSwap farming APR by up to 2.5x. Aquire more veCAKE to receive a higher boost.',
+                )}
+                placement="top"
+                ml="4px"
+              />
+            }
+            dataText="3x"
+          />
+          <BenefitCard
+            type="snapshotVoting"
+            headSlot={
+              <QuestionHelper
+                size="20px"
+                text={t(
+                  'Use veCAKE as your Snapshot voting power to vote on governance proposals. Including important protocol decisions, and adding new farming gauges.',
+                )}
+                placement="top"
+                ml="4px"
+              />
+            }
+            dataText={`${snapshotVotingCount}`}
+          />
+          <BenefitCard
+            type="ifo"
+            headSlot={
+              <QuestionHelper
+                size="20px"
+                text={t(
+                  'Use your veCAKE as your IFO Public Sales commit credits. Aquire more veCAKE to commit more in the next PancakeSwap IFOs.',
+                )}
+                placement="top"
+                ml="4px"
+              />
+            }
+            dataText={`$${formatAmount(totalIFOSold, { notation: 'standard' })}`}
+          />
           <BenefitCard type="more" />
         </Grid>
       </Page>

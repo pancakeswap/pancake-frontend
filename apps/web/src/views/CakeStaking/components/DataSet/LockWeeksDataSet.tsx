@@ -36,7 +36,11 @@ export const LockWeeksDataSet = () => {
       <DataHeader value={String(getBalanceAmount(veCakeAmountBN).toFixed(2))} />
       <DataRow
         label={
-          <Tooltips content={t('@todo')}>
+          <Tooltips
+            content={t(
+              'The ratio factor between the amount of CAKE locked and the final veCAKE number. Extend your lock duration for a higher ratio factor.',
+            )}
+          >
             <TooltipText fontSize={12} bold color="textSubtle" textTransform="uppercase">
               {t('factor')}
             </TooltipText>
@@ -46,7 +50,11 @@ export const LockWeeksDataSet = () => {
       />
       <DataRow
         label={
-          <Tooltips content={t('@todo')}>
+          <Tooltips
+            content={t(
+              'Once locked, your CAKE will be staked in veCAKE contract until this date. Early withdrawal is not available.',
+            )}
+          >
             <TooltipText fontSize={12} bold color="textSubtle" textTransform="uppercase">
               {t('unlock on')}
             </TooltipText>

@@ -25,7 +25,7 @@ export const CurrentEpoch = () => {
           </Text>
 
           <FlexGap gap="8px" alignItems="baseline">
-            <Tooltips content={t('@todo')}>
+            <Tooltips content={t('The voting results will be tallied and applied after the current epoch is ended.')}>
               <TooltipText fontSize={14} color="textSubtle">
                 {t('Ends in')}
               </TooltipText>
@@ -39,7 +39,11 @@ export const CurrentEpoch = () => {
           </FlexGap>
         </AutoRow>
         <AutoRow justifyContent="space-between">
-          <Tooltips content={t('@todo')}>
+          <Tooltips
+            content={t(
+              'The total amount of CAKE rewards to distribute to all the gauges according to the final vote results.',
+            )}
+          >
             <TooltipText fontSize={14} color="textSubtle">
               {t('CAKE rewards')}
             </TooltipText>
@@ -55,7 +59,7 @@ export const CurrentEpoch = () => {
           </FlexGap>
         </AutoRow>
         <AutoRow justifyContent="space-between">
-          <Tooltips content={t('@todo')}>
+          <Tooltips content={t('The total number of veCAKE votes being casted.')}>
             <TooltipText fontSize={14} color="textSubtle">
               {t('Total votes')}
             </TooltipText>
