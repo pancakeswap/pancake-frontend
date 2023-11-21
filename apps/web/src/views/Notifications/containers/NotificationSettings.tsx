@@ -57,8 +57,8 @@ const NotificationSettingsView = ({
   toggleOnboardView: () => void
   account: string
 }) => {
-  const { unsubscribe, isUnsubscribing } = useManageSubscription(`eip155:1:${account}`)
-  const { scopes: currentScopes, updateScopes } = useSubscriptionScopes(`eip155:1:${account}`)
+  const { unsubscribe, isUnsubscribing } = useManageSubscription(account)
+  const { scopes: currentScopes, updateScopes } = useSubscriptionScopes(account)
   const [scopes, setScopes] = useState<NotifyClientTypes.ScopeMap>({})
   const prevScopesRef = useRef<NotifyClientTypes.ScopeMap>(currentScopes)
   const toast = useToast()
@@ -91,7 +91,7 @@ const NotificationSettingsView = ({
 
   const handleUnSubscribe = useCallback(async () => {
     try {
-      toggleOnboardView()
+      // toggleOnboardView()
       await unsubscribe()
       toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message)
     } catch (error: any) {
