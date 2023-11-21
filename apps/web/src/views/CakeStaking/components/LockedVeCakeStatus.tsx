@@ -13,9 +13,7 @@ import {
   Link,
   Message,
   RowBetween,
-  Tag,
   Text,
-  WarningIcon,
 } from '@pancakeswap/uikit'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
@@ -26,12 +24,12 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { formatTime } from 'utils/formatTime'
 import { CakeLockStatus } from 'views/CakeStaking/types'
-import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
-import { useWriteMigrateCallback } from '../hooks/useContractWrite/useWriteMigrateCallback'
-import { Tooltips } from './Tooltips'
-import { useProxyVeCakeBalance } from '../hooks/useProxyVeCakeBalance'
-import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
 import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWithdrawCallback'
+import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
+import { useProxyVeCakeBalance } from '../hooks/useProxyVeCakeBalance'
+import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
+import { Tooltips } from './Tooltips'
+import { StyledLockedCard } from './styled'
 
 dayjs.extend(relativeTime)
 
@@ -82,21 +80,12 @@ export const LockedVeCakeStatus: React.FC<{
   )
 }
 
-export const StyledLockedCard = styled(AutoColumn)`
-  padding: 12px;
-  border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.background};
-`
-
 const CUSTOM_WARNING_COLOR = '#D67E0A'
 
 const LockedInfo = () => {
   const { t } = useTranslation()
-  const migrate = useWriteMigrateCallback()
   const {
     cakeUnlockTime,
-    shouldMigrate,
     nativeCakeLockedAmount,
     proxyCakeLockedAmount,
     cakePoolLocked,
@@ -107,16 +96,6 @@ const LockedInfo = () => {
   } = useCakeLockStatus()
   return (
     <FlexGap flexDirection="column" gap="24px" margin={24}>
-      {shouldMigrate ? (
-        <RowBetween>
-          <Text color="textSubtle" bold fontSize={12} textTransform="uppercase">
-            {t('my cake staking')}
-          </Text>
-          <Tag variant="failure" scale="sm" startIcon={<WarningIcon color="white" />} px="8px">
-            {t('Migration Needed')}
-          </Tag>
-        </RowBetween>
-      ) : null}
       <StyledLockedCard gap="16px">
         <RowBetween>
           <AutoColumn>
@@ -140,11 +119,6 @@ const LockedInfo = () => {
             />
           </AutoColumn>
         </RowBetween>
-        {shouldMigrate ? (
-          <Button width="100%" onClick={migrate}>
-            {t('Migrate to veCAKE')}
-          </Button>
-        ) : null}
       </StyledLockedCard>
       {cakePoolLocked ? (
         <>
@@ -186,16 +160,7 @@ const LockedInfo = () => {
           </Text>
         </Message>
       ) : null}
-      {shouldMigrate ? (
-        <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
-          <Text as="p" color={CUSTOM_WARNING_COLOR}>
-            {t(
-              'Migrate your CAKE staking position to veCAKE and enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
-            )}
-          </Text>
-        </Message>
-      ) : null}
-      {!cakeLockExpired && !shouldMigrate ? (
+      {!cakeLockExpired ? (
         <Flex justifyContent="center">
           <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
         </Flex>
