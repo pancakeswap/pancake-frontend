@@ -217,7 +217,7 @@ const NotificationView = ({
         </Box>
         <NotificationsTabButton activeIndex={viewMode} setActiveIndex={setViewMode} />
       </Flex>
-      <Flex paddingX="24px" alignItems="center" paddingTop="12px">
+      <Flex paddingX="24px" alignItems="center" paddingTop="16px" paddingBottom="16px">
         {scopes && (
           <Toggle
             id="toggle-expert-mode-button"
