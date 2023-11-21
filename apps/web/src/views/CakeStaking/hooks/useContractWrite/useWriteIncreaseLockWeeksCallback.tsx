@@ -1,18 +1,19 @@
-import { useVeCakeContract } from 'hooks/useContract'
-import { useCallback } from 'react'
-import { useAccount, useWalletClient } from 'wagmi'
-import { useLockCakeData } from 'state/vecake/hooks'
+import { MAX_VECAKE_LOCK_WEEKS } from 'config/constants/veCake'
 import dayjs from 'dayjs'
+import { useVeCakeContract } from 'hooks/useContract'
+import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { useSetAtom } from 'jotai'
+import { useCallback } from 'react'
 import {
+  ApproveAndLockStatus,
   approveAndLockStatusAtom,
   cakeLockTxHashAtom,
   cakeLockWeeksAtom,
-  ApproveAndLockStatus,
 } from 'state/vecake/atoms'
-import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
-import { useCakeLockStatus } from '../useVeCakeUserInfo'
+import { useLockCakeData } from 'state/vecake/hooks'
+import { useAccount, useWalletClient } from 'wagmi'
 import { useCurrentBlockTimestamp } from '../useCurrentBlockTimestamp'
+import { useCakeLockStatus } from '../useVeCakeUserInfo'
 
 export const useWriteIncreaseLockWeeksCallback = () => {
   const veCakeContract = useVeCakeContract()
@@ -28,14 +29,13 @@ export const useWriteIncreaseLockWeeksCallback = () => {
 
   const increaseLockWeeks = useCallback(async () => {
     const startTime = cakeLockExpired ? dayjs.unix(currentTimestamp) : dayjs.unix(Number(cakeUnlockTime))
-
-    const { request } = await veCakeContract.simulate.increaseUnlockTime(
-      [BigInt(startTime.add(Number(cakeLockWeeks), 'week').unix())],
-      {
-        account: account!,
-        chain: veCakeContract.chain,
-      },
-    )
+    const maxUnlockTime = dayjs.unix(currentTimestamp).add(MAX_VECAKE_LOCK_WEEKS, 'weeks')
+    const userUnlockTime = startTime.add(Number(cakeLockWeeks), 'weeks')
+    const unlockTime = userUnlockTime.isAfter(maxUnlockTime) ? maxUnlockTime : userUnlockTime
+    const { request } = await veCakeContract.simulate.increaseUnlockTime([BigInt(unlockTime.unix())], {
+      account: account!,
+      chain: veCakeContract.chain,
+    })
 
     setStatus(ApproveAndLockStatus.INCREASE_WEEKS)
 
