@@ -104,12 +104,37 @@ type ListItemProps = {
   totalGaugesWeight?: number
 } & ListDisplayProps
 
+export function GaugeIdentifierDetails({ data }: ListItemProps) {
+  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
+
+  return (
+    <Flex justifyContent="space-between" flex="1">
+      <FlexGap gap="0.25em" flexWrap="wrap">
+        <GaugeTokenImage gauge={pool} size={24} />
+        <Text fontWeight={600} fontSize={16}>
+          {pool?.pairName}
+        </Text>
+      </FlexGap>
+      <FlexGap gap="0.25em" justifyContent="flex-end" flexWrap="wrap">
+        <NetworkBadge chainId={Number(data?.chainId)} scale="sm" />
+        {pool?.type === GaugeType.V3 ? (
+          <Tag outline variant="secondary" scale="sm">
+            {feeTierPercent(pool.feeTier)}
+          </Tag>
+        ) : null}
+        <Tag variant="secondary" scale="sm">
+          {pool ? GAUGE_TYPE_NAMES[pool.type] : ''}
+        </Tag>
+      </FlexGap>
+    </Flex>
+  )
+}
+
 export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
   const { t } = useTranslation()
   const percentWeight = useMemo(() => {
     return new Percent(data?.weight, totalGaugesWeight || 1).toSignificant(2)
   }, [data?.weight, totalGaugesWeight])
-  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
   const percentCaps = useMemo(() => {
     return new Percent(data?.maxVoteCap, 10000).toSignificant(2)
   }, [data?.maxVoteCap])
@@ -120,25 +145,7 @@ export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
 
   return (
     <FlexGap gap="1em" flexDirection="column">
-      <Flex justifyContent="space-between" flex="1">
-        <FlexGap gap="0.25em" flexWrap="wrap">
-          <GaugeTokenImage gauge={pool} size={24} />
-          <Text fontWeight={600} fontSize={16}>
-            {pool?.pairName}
-          </Text>
-        </FlexGap>
-        <FlexGap gap="0.25em" justifyContent="flex-end" flexWrap="wrap">
-          <NetworkBadge chainId={Number(data?.chainId)} scale="sm" />
-          {pool?.type === GaugeType.V3 ? (
-            <Tag outline variant="secondary" scale="sm">
-              {feeTierPercent(pool.feeTier)}
-            </Tag>
-          ) : null}
-          <Tag variant="secondary" scale="sm">
-            {pool ? GAUGE_TYPE_NAMES[pool.type] : ''}
-          </Tag>
-        </FlexGap>
-      </Flex>
+      <GaugeIdentifierDetails data={data} />
       <FlexGap flexDirection="column" alignSelf="stretch" gap="0.5em">
         <Flex justifyContent="space-between" alignSelf="stretch">
           <Text>{t('Votes')}</Text>
