@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Card, FlexGap } from '@pancakeswap/uikit'
+import { Button, Card, FlexGap, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
@@ -25,6 +25,7 @@ export const VoteTable = () => {
   const [expanded, setExpanded] = useState(false)
   const [votes, setVotes] = useState<string[]>([])
   const { rows, onRowAdd, refetch } = useGaugeRows()
+  const { isDesktop } = useMatchBreakpoints()
 
   const onVoteChange = (index: number, value: string) => {
     const newVotes = [...votes]
@@ -79,7 +80,11 @@ export const VoteTable = () => {
           <EmptyTable />
         )}
 
-        <FlexGap gap="12px" style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}>
+        <FlexGap
+          flexDirection={isDesktop ? 'row' : 'column'}
+          gap="12px"
+          style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}
+        >
           <Button width="100%" onClick={() => setIsOpen(true)}>
             + Add Gauges ({leftGaugesCanAdd})
           </Button>
