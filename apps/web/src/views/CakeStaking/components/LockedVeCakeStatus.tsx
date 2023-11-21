@@ -146,21 +146,31 @@ const LockedInfo = () => {
           </Button>
         ) : null}
       </StyledLockedCard>
-      {cakePoolLockExpired ? (
+      {cakePoolLocked ? (
         <>
-          <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
-            <AutoColumn gap="8px">
+          {cakePoolLockExpired ? (
+            <Message variant="warning" icon={<InfoFilledIcon color="warning" />}>
               <Text as="p">
                 {t(
-                  'Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.',
+                  'CAKE Pool migrated position has unlocked. Go to the pool page to withdraw, add CAKE into veCAKE to increase your veCAKE benefits.',
                 )}
               </Text>
-              <Link href="https://@todo" color="text">
-                {t('Learn More >>')}
-              </Link>
-            </AutoColumn>
-          </Message>
-          <Link external style={{ textDecoration: 'none', width: '100%' }} href="https://@todo">
+            </Message>
+          ) : (
+            <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
+              <AutoColumn gap="8px">
+                <Text as="p">
+                  {t(
+                    'Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.',
+                  )}
+                </Text>
+                <Link href="https://@todo" color="text">
+                  {t('Learn More >>')}
+                </Link>
+              </AutoColumn>
+            </Message>
+          )}
+          <Link external style={{ textDecoration: 'none', width: '100%' }} href="/pools">
             <Button width="100%" variant="secondary">
               {t('View CAKE Pool Position')}
             </Button>
