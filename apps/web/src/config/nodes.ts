@@ -94,7 +94,7 @@ export const PUBLIC_NODES = {
     'https://bsc-dataseed1.binance.org',
   ].filter(Boolean),
   [ChainId.BSC_TESTNET]: [
-    process.env.VITEST ? 'https://data-seed-prebsc-1-s1.binance.org:8545' : 'https://devnet_2.pancakeswap.ai',
+    process.env.VITEST ? 'https://data-seed-prebsc-1-s1.binance.org:8545' : 'https://devnet_1.pancakeswap.ai',
   ],
   [ChainId.ETHEREUM]: [
     getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
