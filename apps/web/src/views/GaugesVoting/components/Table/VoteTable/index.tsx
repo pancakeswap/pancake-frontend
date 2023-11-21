@@ -63,24 +63,31 @@ export const VoteTable = () => {
     await writeVote(voteGauges)
     await refetch()
   }, [refetch, rows, votes, writeVote])
+
+  const gauges = isDesktop ? (
+    <>
+      <TableHeader count={rows?.length} />
+
+      {rows?.length ? (
+        <>
+          <Scrollable expanded={expanded}>
+            {rows.map((row, index) => (
+              <TableRow key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
+            ))}
+          </Scrollable>
+          {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
+        </>
+      ) : (
+        <EmptyTable />
+      )}
+    </>
+  ) : null
+
   return (
     <>
       <AddGaugeModal selectRows={rows} onGaugeAdd={onRowAdd} isOpen={isOpen} onDismiss={() => setIsOpen(false)} />
       <Card innerCardProps={{ padding: '32px', paddingTop: '16px' }} mt={32}>
-        <TableHeader count={rows?.length} />
-
-        {rows?.length ? (
-          <>
-            <Scrollable expanded={expanded}>
-              {rows.map((row, index) => (
-                <TableRow key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
-              ))}
-            </Scrollable>
-            {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
-          </>
-        ) : (
-          <EmptyTable />
-        )}
+        {gauges}
 
         <FlexGap
           flexDirection={isDesktop ? 'row' : 'column'}
