@@ -59,7 +59,7 @@ const WeekInput: React.FC<{
               disabled={disabled}
               onClick={handleWeekSelect}
               scale={isDesktop ? 'sm' : 'xs'}
-              style={{ flex: 1 }}
+              style={{ flex: 1, fontSize: 14 }}
               variant={String(week) === value ? 'subtle' : 'light'}
             >
               {t('%week%W', { week })}
