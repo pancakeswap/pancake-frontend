@@ -20,6 +20,8 @@ const Table = styled.table`
   ${space}
 `
 
+export * from './List'
+
 export const GaugesTable: React.FC<
   {
     scrollStyle?: React.CSSProperties
