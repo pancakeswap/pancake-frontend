@@ -262,18 +262,23 @@ export default {
     [ChainId.BSC_TESTNET]: '0x',
   },
   veCake: {
+    [ChainId.BSC]: '0x5692DB8177a81A6c6afc8084C2976C9933EC1bAB',
     [ChainId.BSC_TESTNET]: '0x279957513FC505F8Cb16f4b6783D170C9BEcE322',
   },
   gaugesVoting: {
+    [ChainId.BSC]: '0xD6f7C34e2FfBE1b8bFD40f5960aE269C596fF893',
     [ChainId.BSC_TESTNET]: '0x357b01894b21787B41A8FA4DCaFE92293470FaD9',
   },
   revenueSharingVeCake: {
+    [ChainId.BSC]: '0x9cac9745731d1Cf2B483f257745A512f0938DD01',
     [ChainId.BSC_TESTNET]: '0x482a401D57C9892D6d6BD6A4A976CfDDeD83BF11',
   },
   revenueSharingCakePool: {
+    [ChainId.BSC]: '0xCaF4e48a4Cb930060D0c3409F40Ae7b34d2AbE2D',
     [ChainId.BSC_TESTNET]: '0x58fde4bf684B631363640808F452952D8c14084b',
   },
   revenueSharingPoolGateway: {
+    [ChainId.BSC]: '0x011f2a82846a4E9c62C2FC4Fd6fDbad19147D94A',
     [ChainId.BSC_TESTNET]: '0x946273012ED616410F698536F1BF2513417BF8Ec',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
