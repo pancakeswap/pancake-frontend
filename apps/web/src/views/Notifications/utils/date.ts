@@ -18,5 +18,5 @@ export const formatTime = (unix: string, buffer?: number) => {
   if (inSeconds >= 60) {
     return `${inMinutes}m ago`
   }
-  return `${inSeconds}s ago`
+  return `less than 1m ago`
 }
