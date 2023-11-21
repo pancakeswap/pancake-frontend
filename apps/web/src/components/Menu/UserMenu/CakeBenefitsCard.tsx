@@ -14,7 +14,6 @@ import {
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { VaultPosition } from 'utils/cakePool'
-import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import useCakeBenefits from './hooks/useCakeBenefits'
@@ -146,9 +145,9 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
     },
   )
 
-  return cakeBenefitsFetchStatus === FetchStatus.Fetched ? (
+  return cakeBenefitsFetchStatus === 'success' ? (
     <>
-      {[VaultPosition.None, VaultPosition.Flexible].includes(cakeBenefits?.lockPosition) ? (
+      {cakeBenefits && [VaultPosition.None, VaultPosition.Flexible].includes(cakeBenefits?.lockPosition) ? (
         <>
           <Flex flexDirection="row" alignItems="center">
             <Tag variant="secondary" mr="auto">
@@ -174,7 +173,7 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
             </MessageText>
           </Message>
         </>
-      ) : [VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(cakeBenefits?.lockPosition) ? (
+      ) : cakeBenefits && [VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(cakeBenefits?.lockPosition) ? (
         <>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Tag variant="failure" mr="auto">
