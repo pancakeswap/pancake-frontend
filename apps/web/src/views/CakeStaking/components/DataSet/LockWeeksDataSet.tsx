@@ -21,7 +21,9 @@ export const LockWeeksDataSet = () => {
     () => getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, cakeLockWeeks)),
     [cakeLockAmount, cakeLockWeeks, veCakeBalance],
   )
-  const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeLockAmount).toPrecision(2)}x` : '0.00x'
+
+  const factor =
+    veCakeAmount.gt(0) && veCakeAmount ? `${new BN(veCakeAmount).div(cakeLockAmount).toPrecision(2)}x` : '0.00x'
   const newUnlockTime = useMemo(() => {
     return formatDate(dayjs.unix(cakeUnlockTime).add(Number(cakeLockWeeks), 'weeks'))
   }, [cakeLockWeeks, cakeUnlockTime])
