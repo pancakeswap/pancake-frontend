@@ -6,9 +6,8 @@ import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
-import useSWRImmutable from 'swr/immutable'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { safeGetAddress } from 'utils'
 import { useFeeData, useWalletClient } from 'wagmi'
@@ -288,9 +287,9 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
   }
 
   return {
-    gasPrice: data?.gasPrice ?? undefined,
-    maxFeePerGas: data?.maxFeePerGas ?? undefined,
-    maxPriorityFeePerGas: data?.maxPriorityFeePerGas ?? undefined,
+    gasPrice: data?.gasPrice || undefined,
+    maxFeePerGas: data?.maxFeePerGas || undefined,
+    maxPriorityFeePerGas: data?.maxPriorityFeePerGas || undefined,
   }
 }
 
@@ -304,8 +303,8 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
   const chainId = chainIdOverride ?? chainId_
   const { data: signer } = useWalletClient({ chainId })
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useSWR(
-    signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
+  const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useQuery(
+    ['bscProviderGasPrice', signer],
     async () => {
       // @ts-ignore
       const gasPrice = await signer?.request({
@@ -314,8 +313,9 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
       return hexToBigInt(gasPrice as Hex)
     },
     {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
+      enabled: Boolean(signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault),
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   )
   if (chainId === ChainId.BSC) {
@@ -378,15 +378,24 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
-  const { data: farmPairs = [] } = useSWRImmutable(chainId ? ['track-farms-pairs', chainId] : null, async () => {
-    const farms = await getFarmConfig(chainId)
+  const { data: farmPairs = [] } = useQuery(
+    ['track-farms-pairs', chainId],
+    async () => {
+      const farms = await getFarmConfig(chainId)
 
-    const fPairs: [ERC20Token, ERC20Token][] | undefined = farms
-      ?.filter((farm) => farm.pid !== 0)
-      ?.map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
+      const fPairs: [ERC20Token, ERC20Token][] | undefined = farms
+        ?.filter((farm) => farm.pid !== 0)
+        ?.map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
 
-    return fPairs
-  })
+      return fPairs
+    },
+    {
+      enabled: Boolean(chainId),
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  )
 
   // pairs for every token against every base
   const generatedPairs: [ERC20Token, ERC20Token][] = useMemo(
