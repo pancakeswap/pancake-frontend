@@ -1,4 +1,4 @@
-import { Grid } from '@pancakeswap/uikit'
+import { Grid, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useLockModal } from 'views/CakeStaking/hooks/useLockModal'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from '../../types'
@@ -16,6 +16,7 @@ const customCols = {
 
 export const LockCake = () => {
   const { status } = useCakeLockStatus()
+  const { isMobile } = useMatchBreakpoints()
 
   const { modal, modalData } = useLockModal()
 
@@ -24,7 +25,7 @@ export const LockCake = () => {
       <ApproveAndLockModal {...modal} {...modalData} />
       <Grid
         gridGap="24px"
-        gridTemplateColumns={customCols[status] ?? '1fr 2fr'}
+        gridTemplateColumns={isMobile ? '1fr' : customCols[status] ?? '1fr 2fr'}
         maxWidth={status === CakeLockStatus.Expired ? '78%' : '100%'}
         justifyItems={status === CakeLockStatus.Expired ? 'end' : 'start'}
         mx="auto"

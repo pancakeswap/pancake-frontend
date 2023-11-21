@@ -1,5 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Button, Flex, Grid, Heading, ModalV2, PageHeader, Text } from '@pancakeswap/uikit'
+import {
+  ArrowForwardIcon,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  ModalV2,
+  PageHeader,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
@@ -21,6 +32,7 @@ const CakeStaking = () => {
   const totalCakeDistributed = useCakeDistributed()
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
   const totalIFOSold = useTotalIFOSold()
+  const { isDesktop } = useMatchBreakpoints()
 
   return (
     <>
@@ -59,7 +71,13 @@ const CakeStaking = () => {
         <Text fontSize="40px" bold color="secondary" lineHeight="110%" mt="45px" mb="48px">
           {t('Benefits of veCAKE')}
         </Text>
-        <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="repeat(2, 1fr)" alignItems="center" mx="auto">
+        <Grid
+          maxWidth="820px"
+          gridGap="24px"
+          gridTemplateColumns={isDesktop ? 'repeat(2, 1fr)' : '1fr'}
+          alignItems="center"
+          mx="auto"
+        >
           <BenefitCard
             type="earnCake"
             dataText={`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} CAKE`}
@@ -74,7 +92,13 @@ const CakeStaking = () => {
         <Heading scale="xl" mb="48px">
           {t('And So Much More...')}
         </Heading>
-        <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="repeat(2, 1fr)" alignItems="center" mx="auto">
+        <Grid
+          maxWidth="820px"
+          gridGap="24px"
+          gridTemplateColumns={isDesktop ? 'repeat(2, 1fr)' : '1fr'}
+          alignItems="center"
+          mx="auto"
+        >
           <BenefitCard type="farmBoost" dataText="3x" />
           <BenefitCard type="snapshotVoting" dataText={`${snapshotVotingCount}`} />
           <BenefitCard type="ifo" dataText={`$${formatAmount(totalIFOSold, { notation: 'standard' })}`} />
