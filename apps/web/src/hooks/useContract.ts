@@ -54,8 +54,9 @@ import {
   getFixedStakingContract,
   getVeCakeContract,
   getGaugesVotingContract,
-  getRevenueSharingPoolForCakeContract,
   getRevenueSharingPoolGatewayContract,
+  getRevenueSharingVeCakeContract,
+  getRevenueSharingCakePoolContract,
 } from 'utils/contractHelpers'
 
 import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -487,11 +488,18 @@ export const useGaugesVotingContract = () => {
   return useMemo(() => getGaugesVotingContract(signer ?? undefined, chainId), [chainId, signer])
 }
 
-export const useRevenueSharingPoolForCakeContract = () => {
+export const useRevenueSharingCakePoolContract = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
 
-  return useMemo(() => getRevenueSharingPoolForCakeContract(signer ?? undefined, chainId), [signer, chainId])
+  return useMemo(() => getRevenueSharingCakePoolContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useRevenueSharingVeCakeContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getRevenueSharingVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
 }
 
 export const useRevenueSharingPoolGatewayContract = () => {

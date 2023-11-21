@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { WEEK } from 'config/constants/veCake'
-import { useRevenueSharingPoolForCakeContract } from 'hooks/useContract'
+import { useRevenueSharingVeCakeContract } from 'hooks/useContract'
 
 export const useGaugeEpochEnd = (): number => {
-  const revenueSharingPoolContract = useRevenueSharingPoolForCakeContract()
+  const revenueSharingPoolContract = useRevenueSharingVeCakeContract()
 
   const { data } = useQuery(
     ['gaugeEpochEnd', revenueSharingPoolContract.address],

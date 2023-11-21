@@ -1,14 +1,30 @@
 import { useQuery } from '@tanstack/react-query'
-import { useRevenueSharingPoolForCakeContract } from './useContract'
+import { useRevenueSharingCakePoolContract, useRevenueSharingVeCakeContract } from './useContract'
 
 export const useCakeDistributed = (): bigint => {
-  const revenueSharingPoolContract = useRevenueSharingPoolForCakeContract()
+  const cakePool = useRevenueSharingCakePoolContract()
+  const veCake = useRevenueSharingVeCakeContract()
 
-  const { data } = useQuery(
-    ['cakeDistributed', revenueSharingPoolContract.address, revenueSharingPoolContract.chain?.id],
+  const { data: fromCakePool = 0n } = useQuery(
+    ['cakeDistributed/cakePool', cakePool.address, cakePool.chain?.id],
     async () => {
       try {
-        const amount = (await revenueSharingPoolContract.read.totalDistributed()) ?? 0n
+        const amount = (await cakePool.read.totalDistributed()) ?? 0n
+        return amount
+      } catch (error) {
+        console.warn(error)
+        return 0n
+      }
+    },
+    {
+      keepPreviousData: true,
+    },
+  )
+  const { data: fromVeCake = 0n } = useQuery(
+    ['cakeDistributed/veCake', veCake.address, veCake.chain?.id],
+    async () => {
+      try {
+        const amount = (await veCake.read.totalDistributed()) ?? 0n
         return amount
       } catch (error) {
         console.warn(error)
@@ -20,5 +36,5 @@ export const useCakeDistributed = (): bigint => {
     },
   )
 
-  return data ?? 0n
+  return fromCakePool + fromVeCake
 }

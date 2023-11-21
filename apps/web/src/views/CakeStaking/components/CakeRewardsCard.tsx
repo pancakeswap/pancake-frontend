@@ -33,13 +33,12 @@ import { useRevenueSharingPoolGatewayContract } from 'hooks/useContract'
 import { useCallback, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import styled from 'styled-components'
-import { getRevenueSharingPoolForCakeAddress } from 'utils/addressHelpers'
+import { getRevenueSharingCakePoolAddress, getRevenueSharingVeCakeAddress } from 'utils/addressHelpers'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
-import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { useRevenueSharingPoolForCake } from '../hooks/useRevenueSharingPoolForCake'
-import { MyVeCakeCard } from './MyVeCakeCard'
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
+import { MyVeCakeCard } from './MyVeCakeCard'
+import { useRevenueSharingCakePool, useRevenueSharingVeCake } from '../hooks/useRevenueSharingProxy'
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
@@ -57,7 +56,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
   const cakePriceBusd = useCakePrice()
   const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
   const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
-    useRevenueSharingPoolForCake()
+    useRevenueSharingVeCake()
   const yourShare = useMemo(() => getBalanceAmount(new BigNumber(balanceOfAt)).toNumber(), [balanceOfAt])
   const yourSharePercentage = useMemo(
     () => new BigNumber(balanceOfAt).div(totalSupplyAt).times(100).toNumber() || 0,
@@ -66,7 +65,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
 
   const showYourSharePercentage = useMemo(() => new BigNumber(totalSupplyAt).gt(0), [totalSupplyAt])
 
-  const { availableClaim: availableClaimFromCakePool } = useRevenueSharingPool()
+  const { availableClaim: availableClaimFromCakePool } = useRevenueSharingCakePool()
   const availableCakePoolCake = useMemo(
     () => getBalanceAmount(new BigNumber(availableClaimFromCakePool)).toNumber(),
     [availableClaimFromCakePool],
@@ -83,6 +82,15 @@ export const CakeRewardsCard = ({ onDismiss }) => {
   const availableRevenueSharingCakeUsdValue = useMemo(
     () => new BigNumber(availableRevenueSharingCake).times(cakePriceBusd).toNumber(),
     [availableRevenueSharingCake, cakePriceBusd],
+  )
+
+  const totalAvailableClaim = useMemo(
+    () => getBalanceAmount(new BigNumber(availableClaim).plus(availableClaimFromCakePool)).toNumber(),
+    [availableClaim, availableClaimFromCakePool],
+  )
+  const totalAvailableClaimUsdValue = useMemo(
+    () => new BigNumber(availableClaim).times(cakePriceBusd).toNumber(),
+    [availableClaim, cakePriceBusd],
   )
 
   const showExpireSoonWarning = useMemo(() => {
@@ -308,10 +316,10 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                       tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
                     />
                     <Box>
-                      {availableRevenueSharingCake > 0 && availableRevenueSharingCake <= 0.01 ? (
+                      {totalAvailableClaim > 0 && totalAvailableClaim <= 0.01 ? (
                         <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
                       ) : (
-                        <Balance unit=" CAKE" textAlign="right" bold value={availableRevenueSharingCake} decimals={2} />
+                        <Balance unit=" CAKE" textAlign="right" bold value={totalAvailableClaim} decimals={2} />
                       )}
                       <Balance
                         ml="4px"
@@ -321,7 +329,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                         lineHeight="110%"
                         prefix="(~ $"
                         unit=")"
-                        value={availableRevenueSharingCakeUsdValue}
+                        value={totalAvailableClaimUsdValue}
                         decimals={2}
                       />
                     </Box>
@@ -359,7 +367,6 @@ const ClaimButton: React.FC<{
   const { toastSuccess } = useToast()
   const { account, chainId } = useAccountActiveChain()
   const contract = useRevenueSharingPoolGatewayContract()
-  // @todo @ChefJerry update revenueSharingPools
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const isReady = useMemo(() => new BigNumber(availableClaim).gt(0) && !isPending, [availableClaim, isPending])
@@ -368,7 +375,7 @@ const ClaimButton: React.FC<{
     try {
       if (!account || !chainId) return
 
-      const revenueSharingPools = [getRevenueSharingPoolForCakeAddress(chainId)]
+      const revenueSharingPools = [getRevenueSharingCakePoolAddress(chainId), getRevenueSharingVeCakeAddress(chainId)]
       const receipt = await fetchWithCatchTxError(() =>
         contract.write.claimMultiple([revenueSharingPools, account], { account, chain: contract.chain }),
       )

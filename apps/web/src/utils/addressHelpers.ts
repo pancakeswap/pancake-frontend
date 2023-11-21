@@ -165,8 +165,12 @@ export const getGaugesVotingAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.gaugesVoting, chainId)
 }
 
-export const getRevenueSharingPoolForCakeAddress = (chainId?: number) => {
-  return getAddressFromMap(addresses.revenueSharingPoolForCake, chainId)
+export const getRevenueSharingCakePoolAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.revenueSharingCakePool, chainId)
+}
+
+export const getRevenueSharingVeCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.revenueSharingVeCake, chainId)
 }
 
 export const getRevenueSharingPoolGatewayAddress = (chainId?: number) => {
