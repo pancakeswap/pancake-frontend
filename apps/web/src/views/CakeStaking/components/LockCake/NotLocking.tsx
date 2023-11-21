@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, ColumnCenter, Grid, Heading } from '@pancakeswap/uikit'
+import { Box, Button, ColumnCenter, Grid, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
@@ -12,6 +12,7 @@ import { StyledCard } from './styled'
 export const NotLocking = () => {
   const { t } = useTranslation()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
+  const { isDesktop } = useMatchBreakpoints()
 
   const disabled = useMemo(
     () => Boolean(!Number(cakeLockAmount) || !Number(cakeLockWeeks)),
@@ -22,10 +23,17 @@ export const NotLocking = () => {
 
   return (
     <>
-      <Box maxWidth={['100%', '72%']} mx="auto">
+      <Box maxWidth={['100%', '100%', '72%']} mx="auto">
         <StyledCard innerCardProps={{ padding: '24px' }}>
           <Heading scale="md">{t('Lock CAKE to get veCAKE')}</Heading>
-          <Grid gridTemplateColumns="1fr 1fr" mt={32} gridColumnGap="24px" padding={12} mb={32}>
+          <Grid
+            gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'}
+            mt={32}
+            gridColumnGap="24px"
+            gridRowGap={isDesktop ? '0' : '24px'}
+            padding={12}
+            mb={32}
+          >
             <LockCakeForm fieldOnly />
             <LockWeeksForm fieldOnly />
           </Grid>

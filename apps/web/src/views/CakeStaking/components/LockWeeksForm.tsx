@@ -1,5 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Image, Text } from '@pancakeswap/uikit'
+import {
+  AutoRow,
+  BalanceInput,
+  BalanceInputProps,
+  Box,
+  Button,
+  FlexGap,
+  Image,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { cakeLockWeeksAtom } from 'state/vecake/atoms'
@@ -21,6 +31,7 @@ const WeekInput: React.FC<{
   disabled?: boolean
 }> = ({ value, onUserInput, disabled }) => {
   const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
   const handleWeekSelect = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       const { week } = e.currentTarget.dataset
@@ -40,14 +51,14 @@ const WeekInput: React.FC<{
         unit={t('Weeks')}
       />
       {disabled ? null : (
-        <FlexGap justifyContent="space-between" gap="4px" width="100%">
+        <FlexGap justifyContent="space-between" flexWrap={isDesktop ? 'nowrap' : 'wrap'} gap="4px" width="100%">
           {weeks.map((week) => (
             <Button
               key={week}
               data-week={week}
               disabled={disabled}
               onClick={handleWeekSelect}
-              scale="sm"
+              scale={isDesktop ? 'sm' : 'xs'}
               style={{ flex: 1 }}
               variant={String(week) === value ? 'subtle' : 'light'}
             >
