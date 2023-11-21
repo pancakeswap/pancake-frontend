@@ -100,8 +100,9 @@ export const WeightsPieChart: React.FC<{
       </Absolute>
       <Doughnut
         style={{
-          marginTop: '-120px',
-          marginBottom: '-120px',
+          width: isDesktop ? 'auto' : '100%',
+          marginTop: isDesktop ? '-120px' : '0',
+          marginBottom: isDesktop ? '-120px' : '0',
         }}
         data={gauges}
         options={{
