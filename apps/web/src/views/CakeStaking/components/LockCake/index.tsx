@@ -3,6 +3,7 @@ import { useLockModal } from 'views/CakeStaking/hooks/useLockModal'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from '../../types'
 import { ApproveAndLockModal } from '../ApproveAndLockModal'
+import { CakePoolLockStatus } from '../CakePoolLockStatus'
 import { LockedVeCakeStatus } from '../LockedVeCakeStatus'
 import { Expired } from './Expired'
 import { Migrate } from './Migrate'
@@ -29,7 +30,7 @@ export const LockCake = () => {
         justifyItems={status === CakeLockStatus.Expired ? 'end' : 'start'}
         mx="auto"
       >
-        <LockedVeCakeStatus status={status} />
+        {status === CakeLockStatus.Migrate ? <CakePoolLockStatus /> : <LockedVeCakeStatus status={status} />}
         {status === CakeLockStatus.NotLocked ? <NotLocking /> : null}
         {status === CakeLockStatus.Locking ? <Staking /> : null}
         {status === CakeLockStatus.Expired ? <Expired /> : null}
