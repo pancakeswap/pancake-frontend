@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { Address } from 'viem'
 import { useContractRead } from 'wagmi'
 import { CakeLockStatus } from '../types'
-import { useCakePoolLocked } from './useCakePoolLocked'
+import { useCakePoolLockInfo } from './useCakePoolLockInfo'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 
 export enum CakePoolLockStatus {
@@ -89,10 +89,10 @@ export const useCakeLockStatus = (): {
   const currentTimestamp = useCurrentBlockTimestamp()
   const { data: userInfo } = useVeCakeUserInfo()
   // if user locked at cakePool before, should migrate
-  const proxyLocked = useCakePoolLocked()
+  const cakePoolLockInfo = useCakePoolLockInfo()
   const shouldMigrate = useMemo(() => {
-    return proxyLocked && userInfo?.cakePoolType !== 1
-  }, [proxyLocked, userInfo?.cakePoolType])
+    return cakePoolLockInfo?.locked && userInfo?.cakePoolType !== 1
+  }, [cakePoolLockInfo, userInfo?.cakePoolType])
   const now = useMemo(() => dayjs.unix(currentTimestamp), [currentTimestamp])
   const cakeLocked = useMemo(() => Boolean(userInfo && userInfo.amount > 0n), [userInfo])
   const cakeUnlockTime = useMemo(() => {
