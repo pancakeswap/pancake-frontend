@@ -1,16 +1,16 @@
+import { SUPPORTED_CHAIN_IDS as IFO_SUPPORTED_CHAINS } from '@pancakeswap/ifos'
 import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS } from '@pancakeswap/position-managers'
-import { SUPPORTED_CHAIN_IDS as IFO_SUPPORTED_CHAINS } from '@pancakeswap/ifos'
 import {
-  NftIcon,
-  NftFillIcon,
   DropdownMenuItemType,
   DropdownMenuItems,
   EarnFillIcon,
   EarnIcon,
   MenuItemsType,
   MoreIcon,
+  NftFillIcon,
+  NftIcon,
   PancakeProtectorIcon,
   SwapFillIcon,
   SwapIcon,
@@ -113,6 +113,12 @@ const config: (
           supportChainIds: SUPPORT_FARMS,
         },
         {
+          label: t('CAKE Staking'),
+          href: '/cake-staking',
+          supportChainIds: SUPPORT_CAKE_STAKING,
+          status: { text: t('New'), color: 'success' },
+        },
+        {
           label: t('Pools'),
           href: '/pools',
           supportChainIds: POOL_SUPPORTED_CHAINS,
@@ -131,12 +137,6 @@ const config: (
           label: t('Simple Staking'),
           href: '/simple-staking',
           supportChainIds: FIXED_STAKING_SUPPORTED_CHAINS,
-        },
-        {
-          label: t('CAKE Staking'),
-          href: '/cake-staking',
-          supportChainIds: SUPPORT_CAKE_STAKING,
-          status: { text: t('New'), color: 'success' },
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
