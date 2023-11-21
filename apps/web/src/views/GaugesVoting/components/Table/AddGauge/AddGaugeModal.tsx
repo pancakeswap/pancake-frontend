@@ -13,6 +13,7 @@ import {
   ModalV2,
   ModalWrapper,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { GAUGES } from 'config/constants/gauges'
 import { GaugeType } from 'config/constants/types'
@@ -32,6 +33,7 @@ const FilterButton = styled(Button)`
 
 export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => {
   const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
   const totalGaugesWeight = useGaugesTotalWeight()
   const gauges = useGaugesVoting()
   const [option, setOption] = useState<OptionsType | null>(null)
@@ -105,7 +107,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                 <CloseIcon color="textSubtle" />
               </Button>
             </FlexGap>
-            <Grid gridTemplateColumns="1fr 1fr" gridGap="32px">
+            <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} gridGap={isDesktop ? '32px' : '1em'}>
               <AutoColumn gap="4px">
                 <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
                   {t('filter')}
