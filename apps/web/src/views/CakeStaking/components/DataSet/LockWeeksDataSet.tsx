@@ -3,7 +3,6 @@ import { FlexGap, Text, TooltipText } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
-import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
@@ -14,23 +13,24 @@ import { formatDate } from './format'
 
 export const LockWeeksDataSet = () => {
   const { t } = useTranslation()
-  const { balance: veCakeBalance } = useVeCakeBalance()
-  const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
-  const { cakeLockExpired, cakeUnlockTime } = useCakeLockStatus()
-  const veCakeAmount = useMemo(
-    () => getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, cakeLockWeeks)),
-    [cakeLockAmount, cakeLockWeeks, veCakeBalance],
+  const { cakeLockWeeks } = useLockCakeData()
+  const { cakeLockExpired, cakeUnlockTime, nativeCakeLockedAmount } = useCakeLockStatus()
+  const veCakeAmountBN = useMemo(
+    () => new BN(getVeCakeAmount(nativeCakeLockedAmount.toString(), cakeLockWeeks)),
+    [cakeLockWeeks, nativeCakeLockedAmount],
   )
 
   const factor =
-    veCakeAmount.gt(0) && veCakeAmount ? `${new BN(veCakeAmount).div(cakeLockAmount).toPrecision(2)}x` : '0.00x'
+    veCakeAmountBN && veCakeAmountBN.gt(0)
+      ? `${veCakeAmountBN.div(nativeCakeLockedAmount.toString()).toPrecision(2)}x`
+      : '0.00x'
   const newUnlockTime = useMemo(() => {
     return formatDate(dayjs.unix(cakeUnlockTime).add(Number(cakeLockWeeks), 'weeks'))
   }, [cakeLockWeeks, cakeUnlockTime])
 
   return (
     <DataBox gap="8px">
-      <DataHeader value={String(veCakeAmount.toFixed(2))} />
+      <DataHeader value={String(getBalanceAmount(veCakeAmountBN).toFixed(2))} />
       <DataRow
         label={
           <Tooltips content={t('@todo')}>
