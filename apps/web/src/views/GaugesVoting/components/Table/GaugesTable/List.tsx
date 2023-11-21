@@ -1,7 +1,7 @@
 import { SpaceProps } from 'styled-system'
 import { Text, Flex, FlexGap, Tag, PaginationButton, Box, Card, CardBody } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/sdk'
@@ -66,11 +66,11 @@ export function GaugesList({
     if (pagination && maxPage > page) {
       setPage(1)
     }
-  }, [pagination, maxPage])
+  }, [pagination, maxPage, page])
 
   const dataDisplay = useMemo(
     () => (pagination ? data?.slice((page - 1) * pageSize, page * pageSize) : data),
-    [data, page, pagination],
+    [data, page, pageSize, pagination],
   )
   const list = dataDisplay?.map((item) => (
     <GaugeListItem

@@ -45,7 +45,18 @@ export const useWriteLockCallback = () => {
       await waitForTransaction({ hash })
     }
     setStatus(ApproveAndLockStatus.CONFIRMED)
-  }, [veCakeContract, cakeLockAmount, cakeLockWeeks, account, setStatus, setTxHash, waitForTransaction, walletClient])
+  }, [
+    veCakeContract.simulate,
+    veCakeContract.chain,
+    cakeLockAmount,
+    currentTimestamp,
+    cakeLockWeeks,
+    account,
+    setStatus,
+    walletClient,
+    setTxHash,
+    waitForTransaction,
+  ])
 
   return lockCake
 }

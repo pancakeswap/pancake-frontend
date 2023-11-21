@@ -2,9 +2,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Percent } from '@pancakeswap/sdk'
 import { SpaceProps } from 'styled-system'
-import { ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
-import formatLocalisedCompactNumber, { getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
+import { ErrorIcon, Flex, FlexGap, Text } from '@pancakeswap/uikit'
+import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useMemo, CSSProperties } from 'react'
@@ -13,11 +12,7 @@ import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
-import { feeTierPercent } from 'views/V3Info/utils'
 
-import { GaugeTokenImage } from '../../GaugeTokenImage'
-import { NetworkBadge } from '../../NetworkBadge'
-import { TRow } from '../styled'
 import { PercentInput } from './PercentInput'
 import { GaugeIdentifierDetails } from '../GaugesTable/List'
 
@@ -37,22 +32,11 @@ export function VoteListItem({ style, data, value, onChange, ...props }: Props &
   const { t } = useTranslation()
   const { balance: veCake } = useVeCakeBalance()
 
-  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
-
   const userVote = useUserVote(data)
   const voteDisabled = userVote?.voteLocked
   const powerPercent = useMemo(() => {
     return userVote?.power ? new Percent(userVote?.power, 10000).toSignificant(2) : undefined
   }, [userVote?.power])
-  const power = useMemo(() => {
-    if (veCake && userVote?.power) {
-      const amount = getBalanceNumber(veCake.times(userVote?.power).div(10000))
-      return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-    }
-    return 0
-  }, [userVote?.power, veCake])
-
-  // const [input, setInput] = useState('')
 
   const onMax = () => {
     onChange('100')

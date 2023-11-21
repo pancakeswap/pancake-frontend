@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent } from '@pancakeswap/swap-sdk-core'
 import {
   AutoColumn,
   Box,
