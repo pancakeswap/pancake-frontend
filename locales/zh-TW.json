@@ -177,7 +177,7 @@
   "Collecting fees": "收集費用",
   "Claim fees": "領取已累積手續費",
   "Unclaimed Fees": "待領取的手續費",
-  "Your share in pool": "您在流動性池中的持份",
+  "Your share in pool": "流動性池中的持份",
   "Collecting fees will withdraw currently available fees for you": "收集費用將為您提取目前可用的費用",
   "Harvesting": "正在收割中",
   "Buy CAKE": "購買 CAKE",
@@ -2824,7 +2824,7 @@
   "Pending Confirm": "Pending Confirm",
   "CAKE APR": "CAKE APR",
   "LP APR": "LP 手續費 APR",
-  "Calculated based on previous %days% days average data.": "Calculated based on previous %days% days average data.",
+  "Calculated based on previous %days% days average data.": "根據前 24 小時內的數據平均計算後得出。",
   "Farming Rewards": "Farming Rewards",
   "second": "秒",
   "Manager Fee": "管理費",
@@ -2844,7 +2844,7 @@
   "Build Games with PancakeSwap Now": "Build Games with PancakeSwap Now",
   "Bring Your Game to Life on PancakeSwap": "Bring Your Game to Life on PancakeSwap",
   "Your Complete Developer Infrastructure": "Your Complete Developer Infrastructure",
-  "Connect with a 1.5 Million Ready-to-Play Community": "聯繫擁有 150 萬潛在玩家的社區",
+  "Connect with a 1.5 Million Ready-to-Play Community": "連結擁有 150 萬潛在玩家的社區",
   "Join the community and create games with infinite possibilities": "Join the community and create games with infinite possibilities",
   "Elevate Your Games with Real Utility": "Elevate Your Games with Real Utility",
   "Integrate CAKE tokens and NFTs to enrich the gaming experience": "整合 CAKE 代幣和 NFT 以豐富遊戲體驗",
@@ -2907,5 +2907,8 @@
   "You need to create a profile to participate in the IFO.": "You need to create a profile to participate in the IFO.",
   "Passive": "Passive",
   "Pegged": "Pegged",
-  "Supplying %amount% %symbol%": "Supplying %amount% %symbol%"
+  "Supplying %amount% %symbol%": "Supplying %amount% %symbol%",
+  "Total APY:": "Total APY:",
+  "Fee APY:": "Fee APY:",
+  "Stake APY:": "Stake APY:"
 }
