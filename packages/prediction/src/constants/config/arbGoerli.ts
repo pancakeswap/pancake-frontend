@@ -1,1 +1,1 @@
-export const predictions = []
+export const predictions = {}

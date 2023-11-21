@@ -2,7 +2,7 @@ import { ChainId, getChainName } from '@pancakeswap/chains'
 
 export const getPredictionConfig = async (chainId?: ChainId): Promise<any> => {
   if (!chainId) {
-    return []
+    return {}
   }
 
   try {
@@ -10,6 +10,6 @@ export const getPredictionConfig = async (chainId?: ChainId): Promise<any> => {
     return predictions
   } catch (e) {
     console.error(e)
-    return []
+    return {}
   }
 }
