@@ -10,14 +10,15 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { MAX_VECAKE_LOCK_WEEKS } from 'config/constants/veCake'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { cakeLockWeeksAtom } from 'state/vecake/atoms'
 import styled from 'styled-components'
 import { useWriteIncreaseLockWeeksCallback } from '../hooks/useContractWrite'
 import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWithdrawCallback'
-import { LockWeeksDataSet } from './DataSet'
 import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
+import { LockWeeksDataSet } from './DataSet'
 
 const weeks = [4, 20, 40, 100, 208]
 
@@ -32,22 +33,37 @@ const WeekInput: React.FC<{
 }> = ({ value, onUserInput, disabled }) => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const onInput = useCallback(
+    (v: string) => {
+      if (Number(v) > MAX_VECAKE_LOCK_WEEKS) {
+        onUserInput(String(MAX_VECAKE_LOCK_WEEKS))
+      } else {
+        onUserInput(v)
+      }
+    },
+    [onUserInput],
+  )
   const handleWeekSelect = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       const { week } = e.currentTarget.dataset
       if (week) {
-        onUserInput(week)
+        onInput(week)
       }
     },
-    [onUserInput],
+    [onInput],
   )
   return (
     <>
       <BalanceInput
         width="100%"
-        inputProps={{ style: { textAlign: 'left', marginTop: '1px', marginBottom: '1px' }, disabled }}
+        inputProps={{
+          style: { textAlign: 'left', marginTop: '1px', marginBottom: '1px' },
+          disabled,
+          max: MAX_VECAKE_LOCK_WEEKS,
+          pattern: '^[0-9]*$',
+        }}
         value={value}
-        onUserInput={onUserInput}
+        onUserInput={onInput}
         unit={t('Weeks')}
       />
       {disabled ? null : (

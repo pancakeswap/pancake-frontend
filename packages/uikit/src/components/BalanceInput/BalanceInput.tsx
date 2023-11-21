@@ -1,4 +1,3 @@
-import { MAX_VECAKE_LOCK_WEEKS } from "config/constants/veCake";
 import React from "react";
 import { Box, Flex } from "../Box";
 import { SwapVertIcon } from "../Svg";
@@ -34,7 +33,6 @@ const BalanceInput: React.FC<React.PropsWithChildren<BalanceInputProps>> = ({
               pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
               inputMode="decimal"
               min="0"
-              max={MAX_VECAKE_LOCK_WEEKS}
               value={value}
               onChange={handleOnChange}
               placeholder={placeholder}
