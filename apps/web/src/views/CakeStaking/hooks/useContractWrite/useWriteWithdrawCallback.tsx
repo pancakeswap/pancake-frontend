@@ -16,12 +16,7 @@ export const useWriteWithdrawCallback = () => {
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
   const withdraw = useCallback(async () => {
-    // @fixme @ChefJerry
-    // const { request } = await veCakeContract.simulate.withdrawAll([zeroAddress], {
-    //   account: account!,
-    //   chain: veCakeContract.chain,
-    // })
-    const { request } = await veCakeContract.simulate.earlyWithdraw([zeroAddress, BigInt(1e18)], {
+    const { request } = await veCakeContract.simulate.withdrawAll([zeroAddress], {
       account: account!,
       chain: veCakeContract.chain,
     })
