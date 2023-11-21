@@ -41,17 +41,9 @@ const PredictionConfigProviders = ({ children }) => {
         }),
       } as Record<ChainId, PredictionSupportedSymbol>
       setPrevSelectedToken(newData)
-      // console.log('initToken', data)
-      // const stringify = JSON.parse(initToken)
-
-      // console.log('newData', stringify.replaceAll('\\', ''))
-      // localStorage?.setItem(PREDICTION_TOKEN_KEY, JSON.stringify({
-      //   ...(chainId && {
-      //     [chainId]: upperToken
-      //   })
-      // }))
     }
-  }, [chainId, prevSelectedToken, setPrevSelectedToken, supportedSymbol, token])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId, supportedSymbol, token, setPrevSelectedToken])
 
   const config = useMemo(() => {
     return predictionConfigs?.[selectedToken]
@@ -60,6 +52,10 @@ const PredictionConfigProviders = ({ children }) => {
   const store = useMemo(() => {
     return makeStore(reducers, initialState, config)
   }, [config])
+
+  if (!config) {
+    return null
+  }
 
   return (
     <ConfigProvider config={config}>
