@@ -5,6 +5,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useRevenueSharingPoolForCakeContract } from 'hooks/useContract'
 import { useInitialBlockTimestamp } from 'state/block/hooks'
 import { publicClient } from 'utils/wagmi'
+import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 
 interface RevenueSharingPool {
   balanceOfAt: string
@@ -26,6 +27,7 @@ export const useRevenueSharingPoolForCake = () => {
   const { account, chainId } = useAccountActiveChain()
   const contract = useRevenueSharingPoolForCakeContract()
   const blockTimestamp = useInitialBlockTimestamp()
+  const currencyBlockTimestamp = useCurrentBlockTimestamp()
 
   const { data } = useQuery(
     ['/revenue-sharing-pool-for-cake', contract.address, contract.chain?.id, account],
@@ -33,7 +35,7 @@ export const useRevenueSharingPoolForCake = () => {
       if (!account) return undefined
       try {
         const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
-        const lastTokenTimestamp = Math.floor(new Date().getTime() / 1000 / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
+        const lastTokenTimestamp = Math.floor(currencyBlockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
 
         const revenueCalls = [
           {

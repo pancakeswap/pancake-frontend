@@ -7,8 +7,13 @@ export const useGaugesVotingCount = (): bigint | undefined => {
   const { data } = useQuery(
     ['gaugesVotingCount'],
     async () => {
-      const count = (await gaugesVotingContract.read.gaugeCount()) ?? 0n
-      return count
+      try {
+        const count = (await gaugesVotingContract.read.gaugeCount()) ?? 0n
+        return count
+      } catch (error) {
+        console.warn(error)
+        return 0n
+      }
     },
     {
       keepPreviousData: true,
