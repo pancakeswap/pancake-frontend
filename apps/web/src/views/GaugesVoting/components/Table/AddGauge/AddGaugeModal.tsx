@@ -50,9 +50,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       const feeTier = gaugeConfig?.type === GaugeType.V3 ? gaugeConfig?.feeTier : undefined
       const chain = gaugeConfig?.chainId
       const boosted = gauge.boostMultiplier > 100
-      const capPercent = new Percent(gauge.maxVoteCap, 10000)
-      const currentPercent = new Percent(gauge.weight, totalGaugesWeight)
-      const capped = !currentPercent.lessThan(capPercent) && gauge.weight > 0
+      const capped = gauge.maxVoteCap > 0
       const types = [boosted ? Gauges.Boosted : Gauges.Regular]
       if (capped) {
         types.push(Gauges.Capped)
@@ -64,7 +62,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       )
     })
     return rows
-  }, [filter, gauges, totalGaugesWeight])
+  }, [filter, gauges])
 
   const onFilterChange = (type: OptionsType, value: FilterValue) => {
     const opts = filter[type] as Array<unknown>
