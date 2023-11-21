@@ -23,7 +23,7 @@ export const NewStakingDataSet: React.FC<{
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const veCake = veCakeAmount ? getFullDisplayBalance(new BN(veCakeAmount), 0, 3) : '0'
-  const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeAmount).toPrecision(2)}x` : ''
+  const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeAmount).toPrecision(2)}x` : '0x'
   const unlockOn = duration ? dayjs.unix(currentTimestamp).add(duration, 'week').format('MMM D YYYY HH:mm') : ''
   return (
     <>
