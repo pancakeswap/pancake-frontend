@@ -1,7 +1,7 @@
 import { SpaceProps } from 'styled-system'
-import { Text, Flex, FlexGap, Tag, PaginationButton } from '@pancakeswap/uikit'
+import { Text, Flex, FlexGap, Tag, PaginationButton, Box, Card, CardBody } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { CSSProperties, useEffect, useMemo, useState } from 'react'
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/sdk'
@@ -21,10 +21,19 @@ const ListContainer = styled(Flex)`
   margin-right: -32px;
 `
 
-const ListItemContainer = styled(FlexGap)`
+const ListItemContainer = styled(Box)`
   padding: 0.875em;
   border-bottom: 1px solid ${(props) => props.theme.colors.cardBorder};
 `
+
+const CardItemContainer = styled(ListItemContainer)`
+  padding: 0 1em 1em;
+  border: none;
+`
+
+type ListDisplayProps = {
+  listDisplay?: 'row' | 'card'
+}
 
 type PaginationProps = {
   pagination?: boolean
@@ -40,6 +49,7 @@ type ListProps = {
 } & SpaceProps
 
 export function GaugesList({
+  listDisplay,
   pagination = true,
   pageSize = 5,
   data,
@@ -48,7 +58,7 @@ export function GaugesList({
   selectRows,
   onRowSelect,
   ...props
-}: ListProps & PaginationProps) {
+}: ListProps & ListDisplayProps & PaginationProps) {
   const [page, setPage] = useState(1)
   const maxPage = useMemo(() => (data && data.length ? Math.ceil(data.length / pageSize) : 1), [data, pageSize])
 
@@ -63,7 +73,15 @@ export function GaugesList({
     [data, page, pagination],
   )
   const list = dataDisplay?.map((item) => (
-    <GaugeListItem key={`${item.hash}-${item.pid}`} data={item} totalGaugesWeight={totalGaugesWeight} />
+    <GaugeListItem
+      key={`${item.hash}-${item.pid}`}
+      data={item}
+      selectable={selectable}
+      selected={selectRows?.some((r) => r.hash === item.hash)}
+      onSelect={onRowSelect}
+      totalGaugesWeight={totalGaugesWeight}
+      listDisplay={listDisplay}
+    />
   ))
 
   const paginationButton = pagination ? (
@@ -79,22 +97,14 @@ export function GaugesList({
 }
 
 type ListItemProps = {
-  display?: 'row' | 'card'
   data: GaugeVoting
   selectable?: boolean
   selected?: boolean
   onSelect?: (hash: GaugeVoting['hash']) => void
   totalGaugesWeight?: number
-}
+} & ListDisplayProps
 
-export function GaugeListItem({
-  display = 'row',
-  data,
-  totalGaugesWeight,
-  selected,
-  selectable,
-  onSelect,
-}: ListItemProps) {
+export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
   const { t } = useTranslation()
   const percentWeight = useMemo(() => {
     return new Percent(data?.weight, totalGaugesWeight || 1).toSignificant(2)
@@ -109,7 +119,7 @@ export function GaugeListItem({
   }, [data?.weight])
 
   return (
-    <ListItemContainer gap="1em" flexDirection="column">
+    <FlexGap gap="1em" flexDirection="column">
       <Flex justifyContent="space-between" flex="1">
         <FlexGap gap="0.25em" flexWrap="wrap">
           <GaugeTokenImage gauge={pool} size={24} />
@@ -145,6 +155,35 @@ export function GaugeListItem({
           <Text>{percentCaps}%</Text>
         </Flex>
       </FlexGap>
+    </FlexGap>
+  )
+}
+
+export function GaugeListItem({ listDisplay = 'row', ...props }: ListItemProps) {
+  if (listDisplay === 'row') {
+    return <GaugeRowItem {...props} />
+  }
+  return <GaugeCardItem {...props} />
+}
+
+export function GaugeRowItem({ data, totalGaugesWeight }: ListItemProps) {
+  return (
+    <ListItemContainer>
+      <GaugeItemDetails data={data} totalGaugesWeight={totalGaugesWeight} />
     </ListItemContainer>
+  )
+}
+
+export function GaugeCardItem({ data, totalGaugesWeight, selected, selectable, onSelect }: ListItemProps) {
+  const onSelectClick = useCallback(() => selectable && onSelect?.(data?.hash), [data?.hash, onSelect, selectable])
+
+  return (
+    <CardItemContainer>
+      <Card isSuccess={selectable && selected} onClick={onSelectClick}>
+        <CardBody>
+          <GaugeItemDetails data={data} totalGaugesWeight={totalGaugesWeight} />
+        </CardBody>
+      </Card>
+    </CardItemContainer>
   )
 }

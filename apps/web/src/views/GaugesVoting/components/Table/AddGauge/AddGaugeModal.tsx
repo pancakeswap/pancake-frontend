@@ -110,6 +110,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       onRowSelect={onGaugeAdd}
       totalGaugesWeight={Number(totalGaugesWeight)}
       data={filterRows}
+      listDisplay="card"
     />
   )
 
