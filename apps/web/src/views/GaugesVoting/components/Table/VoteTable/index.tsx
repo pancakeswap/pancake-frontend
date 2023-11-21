@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { useVotedPower } from 'views/GaugesVoting/hooks/useVotedPower'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
@@ -24,6 +25,7 @@ export const VoteTable = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [expanded, setExpanded] = useState(false)
   const [votes, setVotes] = useState<string[]>([])
+  const votedPower = useVotedPower()
   const { rows, onRowAdd, refetch } = useGaugeRows()
   const { isDesktop } = useMatchBreakpoints()
 
@@ -40,8 +42,8 @@ export const VoteTable = () => {
 
   const disabled = useMemo(() => {
     const sum = votes.reduce((acc, cur) => acc + Number(cur), 0)
-    return sum > 100 || sum < 0 || isPending
-  }, [isPending, votes])
+    return sum > 100 || sum < 0 || isPending || votedPower === 10000
+  }, [isPending, votedPower, votes])
   const leftGaugesCanAdd = useMemo(() => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])
