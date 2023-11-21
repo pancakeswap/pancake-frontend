@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, ColumnCenter, Grid, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { WEEK } from 'config/constants/veCake'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
@@ -38,7 +39,7 @@ export const NotLocking = () => {
             <LockWeeksForm fieldOnly />
           </Grid>
           <NewStakingDataSet
-            veCakeAmount={getVeCakeAmount(cakeLockAmount, cakeLockWeeks)}
+            veCakeAmount={getVeCakeAmount(cakeLockAmount, Number(cakeLockWeeks || 0) * WEEK)}
             cakeAmount={Number(cakeLockAmount)}
             duration={Number(cakeLockWeeks)}
           />

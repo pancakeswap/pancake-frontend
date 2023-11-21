@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { FlexGap, Text, TooltipText } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
+import { WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
@@ -16,7 +17,7 @@ export const LockWeeksDataSet = () => {
   const { cakeLockWeeks } = useLockCakeData()
   const { cakeLockExpired, cakeUnlockTime, nativeCakeLockedAmount } = useCakeLockStatus()
   const veCakeAmountBN = useMemo(
-    () => new BN(getVeCakeAmount(nativeCakeLockedAmount.toString(), cakeLockWeeks)),
+    () => new BN(getVeCakeAmount(nativeCakeLockedAmount.toString(), Number(cakeLockWeeks || 0) * WEEK)),
     [cakeLockWeeks, nativeCakeLockedAmount],
   )
 
