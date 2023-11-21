@@ -9,8 +9,8 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
-import { css, keyframes, styled } from 'styled-components'
 import { useMemo } from 'react'
+import { css, keyframes, styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
@@ -19,16 +19,16 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedLockedCakeVault, DeserializedLockedVaultUser, VaultKey } from 'state/types'
-import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import {
+  VeCakeBunny,
   VeCakeButton,
-  VeCakeUpdateCardTableView,
+  VeCakeCardTableView,
   VeCakeMigrateCard,
   VeCakeUpdateCard,
-  VeCakeBunny,
-  VeCakeCardTableView,
+  VeCakeUpdateCardTableView,
 } from 'views/CakeStaking/components/SyrupPool'
-import ConvertToFlexibleButton from '../../LockedPool/Buttons/ConvertToFlexibleButton'
+import WithdrawAllButton from '../../LockedPool/Buttons/WithdrawAllButton'
 import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
 import YieldBoostRow from '../../LockedPool/Common/YieldBoostRow'
 import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'
@@ -233,7 +233,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                   {vaultPosition === VaultPosition.Locked && <VeCakeMigrateCard isTableView />}
                   {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake isTableView />}
                   {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCardTableView />}
-                  {vaultPosition >= VaultPosition.LockedEnd && <ConvertToFlexibleButton />}
+                  {vaultPosition >= VaultPosition.LockedEnd && <WithdrawAllButton />}
                   <VeCakeButton type="get" />
                 </Flex>
               }
@@ -243,9 +243,11 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                 <MessageText marginBottom="10px">
                   {vaultPosition === VaultPosition.Flexible
                     ? t('Flexible CAKE pool is discontinued and no longer distributing rewards.  Learn more »')
-                    : vaultPosition === VaultPosition.LockedEnd
-                    ? t('The lock period has ended. Convert to flexible staking.')
-                    : t('The lock period has ended. To avoid more rewards being burned, convert to flexible staking.')}
+                    : vaultPosition >= VaultPosition.LockedEnd
+                    ? t(
+                        'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+                      )
+                    : null}
                 </MessageText>
               )}
             </Message>
