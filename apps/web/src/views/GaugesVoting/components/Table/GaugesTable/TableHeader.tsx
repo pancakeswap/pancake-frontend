@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { SortArrowIcon, Text } from '@pancakeswap/uikit'
+import { SortArrowIcon, Text, Th } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { SortButton } from 'views/V3Info/components/SortButton'
@@ -55,28 +55,36 @@ export const TableHeader: React.FC<{
 
   return (
     <THeader>
-      <Text color="secondary" textTransform="uppercase" fontWeight={600} ml={selectable ? 44 : 0}>
-        {t('gauges')}
-      </Text>
-      <Touchable>
-        <Text color="secondary" textTransform="uppercase" fontWeight={600}>
-          {t('votes')}
+      <Th style={{ textAlign: 'left' }}>
+        <Text color="secondary" textTransform="uppercase" fontWeight={600} ml={selectable ? 44 : 0}>
+          {t('gauges')}
         </Text>
-        <SortButton scale="sm" variant="subtle" onClick={onVoteSort} className={getSortClassName(voteSort)}>
-          <SortArrowIcon />
-        </SortButton>
-      </Touchable>
-      <Touchable>
-        <Text color="secondary" textTransform="uppercase" fontWeight={600}>
-          {t('boost')}
+      </Th>
+      <Th>
+        <Touchable>
+          <Text color="secondary" textTransform="uppercase" fontWeight={600}>
+            {t('votes')}
+          </Text>
+          <SortButton scale="sm" variant="subtle" onClick={onVoteSort} className={getSortClassName(voteSort)}>
+            <SortArrowIcon />
+          </SortButton>
+        </Touchable>
+      </Th>
+      <Th>
+        <Touchable>
+          <Text color="secondary" textTransform="uppercase" fontWeight={600}>
+            {t('boost')}
+          </Text>
+          <SortButton scale="sm" variant="subtle" onClick={onBoostSort} className={getSortClassName(boostSort)}>
+            <SortArrowIcon />
+          </SortButton>
+        </Touchable>
+      </Th>
+      <Th>
+        <Text color="secondary" textTransform="uppercase" fontWeight={600} textAlign="right">
+          {t('caps')}
         </Text>
-        <SortButton scale="sm" variant="subtle" onClick={onBoostSort} className={getSortClassName(boostSort)}>
-          <SortArrowIcon />
-        </SortButton>
-      </Touchable>
-      <Text color="secondary" textTransform="uppercase" fontWeight={600} textAlign="right">
-        {t('caps')}
-      </Text>
+      </Th>
     </THeader>
   )
 }

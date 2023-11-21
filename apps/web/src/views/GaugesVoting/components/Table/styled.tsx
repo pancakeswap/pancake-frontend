@@ -19,6 +19,8 @@ export const Row = css`
 
 export const THeader = styled.thead`
   ${Row}
+
+  padding: 0;
 `
 
 export const TRow = styled.tr`

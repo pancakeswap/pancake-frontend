@@ -86,10 +86,11 @@ const CakeInput: React.FC<{
         unit={balance}
       />
       {!disabled && balance ? (
-        <FlexGap justifyContent="space-between" flexWrap={isDesktop ? 'nowrap' : 'wrap'} gap="4px" width="100%">
+        <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {percentShortcuts.map((p) => {
             return (
               <Button
+                key={p}
                 style={{ flex: 1 }}
                 scale={isDesktop ? 'sm' : 'xs'}
                 variant={p === percent ? 'primary' : 'tertiary'}

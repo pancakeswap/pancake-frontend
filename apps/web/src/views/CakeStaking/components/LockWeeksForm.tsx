@@ -51,7 +51,7 @@ const WeekInput: React.FC<{
         unit={t('Weeks')}
       />
       {disabled ? null : (
-        <FlexGap justifyContent="space-between" flexWrap={isDesktop ? 'nowrap' : 'wrap'} gap="4px" width="100%">
+        <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {weeks.map((week) => (
             <Button
               key={week}
