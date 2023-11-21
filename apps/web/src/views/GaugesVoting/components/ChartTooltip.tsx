@@ -83,7 +83,7 @@ export const ChartTooltip: React.FC<{
       <Content>
         <TripleLogo gaugeConfig={pool} chainId={Number(gauge?.chainId)} />
         <Flex flexDirection="column">
-          <Text fontSize={18} bold>
+          <Text fontSize={18} bold color="#280D5F">
             {pool?.pairName}
           </Text>
           <Flex alignItems="center">
