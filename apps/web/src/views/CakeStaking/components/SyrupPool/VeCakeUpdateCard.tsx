@@ -1,14 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Text, Flex, Box } from '@pancakeswap/uikit'
 import { memo } from 'react'
-import { StyledBox } from '../MyVeCakeCard'
+import { ShineStyledBox } from './VeCakeCard'
 import { VeCakeButton } from './VeCakeButton'
 
 export const VeCakeUpdateCard: React.FC<{ isFlexibleStake?: boolean; isTableView?: boolean }> = memo(
   ({ isFlexibleStake, isTableView }) => {
     const { t } = useTranslation()
     return (
-      <StyledBox
+      <ShineStyledBox
         mb={isTableView ? undefined : '15px'}
         p="10px"
         style={{ alignItems: 'center', gap: 10, flexDirection: 'column' }}
@@ -26,7 +26,7 @@ export const VeCakeUpdateCard: React.FC<{ isFlexibleStake?: boolean; isTableView
           </Box>
         </Flex>
         {!isFlexibleStake && <VeCakeButton type="migrate" />}
-      </StyledBox>
+      </ShineStyledBox>
     )
   },
 )
@@ -34,7 +34,7 @@ export const VeCakeUpdateCard: React.FC<{ isFlexibleStake?: boolean; isTableView
 export const VeCakeUpdateCardTableView: React.FC = memo(() => {
   const { t } = useTranslation()
   return (
-    <StyledBox mb="15px" p="10px" style={{ alignItems: 'center', gap: 10, flexDirection: 'column' }}>
+    <ShineStyledBox mb="15px" p="10px" style={{ alignItems: 'center', gap: 10, flexDirection: 'column' }}>
       <Flex alignItems="center" style={{ gap: 10 }}>
         <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
         <Box>
@@ -45,6 +45,6 @@ export const VeCakeUpdateCardTableView: React.FC = memo(() => {
           </Text>
         </Box>
       </Flex>
-    </StyledBox>
+    </ShineStyledBox>
   )
 })

@@ -3,10 +3,38 @@ import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
-import { styled } from 'styled-components'
+import { styled, keyframes } from 'styled-components'
 import { BENEFITS } from '../BenefitCard'
 import { StyledBox } from '../MyVeCakeCard'
 import { VeCakeButton } from './VeCakeButton'
+
+const shineAnimation = keyframes`
+	0% {transform:translateX(-100%);}
+  7% {transform:translateX(100%);}
+	100% {transform:translateX(100%);}
+`
+
+export const ShineStyledBox = styled(StyledBox)`
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: '';
+    top: 0;
+    transform: translateX(100%);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    animation: ${shineAnimation} 15s infinite 2s;
+    background: -webkit-linear-gradient(
+      left,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(128, 186, 232, 0) 99%,
+      rgba(125, 185, 232, 0) 100%
+    );
+  }
+`
 
 const StyledFlex = styled(Flex)`
   gap: 4px;
@@ -68,7 +96,7 @@ export const VeCakeBenefitCard: React.FC<{ isTableView?: boolean }> = memo(({ is
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   return (
-    <StyledBox
+    <ShineStyledBox
       p="10px"
       style={{
         alignItems: 'center',
@@ -82,7 +110,7 @@ export const VeCakeBenefitCard: React.FC<{ isTableView?: boolean }> = memo(({ is
       <Text color="white" bold fontSize={isMobile && isTableView ? 11 : 14}>
         {t('Stake & Lock for veCAKE, to enjoy more rewards & benefit!')}
       </Text>
-    </StyledBox>
+    </ShineStyledBox>
   )
 })
 
