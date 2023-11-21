@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Grid, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { StyledCard } from './styled'
-import { LockWeeksForm } from '../LockWeeksForm'
 import { LockCakeForm } from '../LockCakeForm'
+import { LockWeeksForm } from '../LockWeeksForm'
+import { StyledCard } from './styled'
 
 export const Expired = () => {
   const { t } = useTranslation()
@@ -10,7 +10,7 @@ export const Expired = () => {
 
   return (
     <StyledCard innerCardProps={{ padding: '24px' }}>
-      <Heading scale="md">{t('Renew to get veCAKE')}</Heading>
+      <Heading scale="md">{t('Unlock to create a new lock position')}</Heading>
       <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} mt={32} gridColumnGap="24px" gridRowGap="24px">
         <LockCakeForm disabled />
         <LockWeeksForm disabled />
