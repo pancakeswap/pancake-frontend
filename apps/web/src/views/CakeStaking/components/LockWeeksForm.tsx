@@ -26,6 +26,16 @@ const ButtonBlocked = styled(Button)`
   flex: 1;
 `
 
+const WeekButton = styled(Button)`
+  flex: 1;
+  fontsize: 12;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    fontsize: 14;
+    padding: 0 10px;
+  }
+`
+
 const WeekInput: React.FC<{
   value: BalanceInputProps['value']
   onUserInput: BalanceInputProps['onUserInput']
@@ -69,17 +79,16 @@ const WeekInput: React.FC<{
       {disabled ? null : (
         <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {weeks.map((week) => (
-            <Button
+            <WeekButton
               key={week}
               data-week={week}
               disabled={disabled}
               onClick={handleWeekSelect}
               scale={isDesktop ? 'sm' : 'xs'}
-              style={{ flex: 1, fontSize: 14 }}
               variant={String(week) === value ? 'subtle' : 'light'}
             >
               {t('%week%W', { week })}
-            </Button>
+            </WeekButton>
           ))}
         </FlexGap>
       )}

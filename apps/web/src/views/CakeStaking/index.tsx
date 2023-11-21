@@ -52,8 +52,10 @@ const CakeStaking = () => {
                 )}
               </Text>
             </Box>
-            {/* @todo: @ChefJerry add link */}
-            <NextLinkFromReactRouter to="/tbd" prefetch={false}>
+            <NextLinkFromReactRouter
+              to="/swap?chain=bsc&inputCurrency=BNB&outputCurrency=0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
+              prefetch={false}
+            >
               <Button p="0" variant="text">
                 <Text color="primary" bold fontSize="16px" mr="4px">
                   {t('Get CAKE')}

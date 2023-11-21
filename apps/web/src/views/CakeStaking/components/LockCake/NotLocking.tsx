@@ -11,6 +11,16 @@ import { LockWeeksForm } from '../LockWeeksForm'
 import { StyledCard } from './styled'
 
 export const NotLocking = () => {
+  return (
+    <>
+      <Box maxWidth={['100%', '100%', '72%']} mx="auto">
+        <NotLockingCard />
+      </Box>
+    </>
+  )
+}
+
+export const NotLockingCard = () => {
   const { t } = useTranslation()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
   const { isDesktop } = useMatchBreakpoints()
@@ -23,33 +33,29 @@ export const NotLocking = () => {
   const handleModalOpen = useWriteApproveAndLockCallback()
 
   return (
-    <>
-      <Box maxWidth={['100%', '100%', '72%']} mx="auto">
-        <StyledCard innerCardProps={{ padding: '24px' }}>
-          <Heading scale="md">{t('Lock CAKE to get veCAKE')}</Heading>
-          <Grid
-            gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'}
-            mt={32}
-            gridColumnGap="24px"
-            gridRowGap={isDesktop ? '0' : '24px'}
-            padding={12}
-            mb={32}
-          >
-            <LockCakeForm fieldOnly />
-            <LockWeeksForm fieldOnly />
-          </Grid>
-          <NewStakingDataSet
-            veCakeAmount={getVeCakeAmount(cakeLockAmount, Number(cakeLockWeeks || 0) * WEEK)}
-            cakeAmount={Number(cakeLockAmount)}
-            duration={Number(cakeLockWeeks)}
-          />
-          <ColumnCenter>
-            <Button disabled={disabled} width="50%" onClick={handleModalOpen}>
-              {t('Lock CAKE')}
-            </Button>
-          </ColumnCenter>
-        </StyledCard>
-      </Box>
-    </>
+    <StyledCard innerCardProps={{ padding: '24px' }}>
+      <Heading scale="md">{t('Lock CAKE to get veCAKE')}</Heading>
+      <Grid
+        gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'}
+        mt={32}
+        gridColumnGap="24px"
+        gridRowGap={isDesktop ? '0' : '24px'}
+        padding={12}
+        mb={32}
+      >
+        <LockCakeForm fieldOnly />
+        <LockWeeksForm fieldOnly />
+      </Grid>
+      <NewStakingDataSet
+        veCakeAmount={getVeCakeAmount(cakeLockAmount, Number(cakeLockWeeks || 0) * WEEK)}
+        cakeAmount={Number(cakeLockAmount)}
+        duration={Number(cakeLockWeeks)}
+      />
+      <ColumnCenter>
+        <Button disabled={disabled} width="50%" onClick={handleModalOpen}>
+          {t('Lock CAKE')}
+        </Button>
+      </ColumnCenter>
+    </StyledCard>
   )
 }
