@@ -83,6 +83,7 @@ const Notifications = () => {
       isRegistered={isRegistered}
       handleRegistration={handleRegistration}
       viewIndex={viewIndex}
+      subscriptionId={subscription?.topic}
     >
       {() => (
         <Box tabIndex={-1}>

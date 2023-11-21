@@ -181,16 +181,15 @@ export const ExpandButton = styled.div`
 `
 
 export const StyledLink = styled(Link)<{ hidden?: boolean }>`
-  max-height: 40px;
-  height: 40px;
+  max-height: 45px;
+  height: 45px;
   width: 100%;
-  border-radius: 12px;
+  border-radius: 16px;
   background: ${({ theme }) => `${theme.colors.primary}`};
   color: ${({ theme }) => `${theme.colors.background}`};
   font-weight: bold;
   display: ${({ hidden }) => `${hidden ? 'none' : 'flex'}`};
-  margin-top: 17px;
-  margin-bottom: 6px;
+  margin-top: 12px;
   justify-content: center;
   align-items: center;
 `
@@ -211,10 +210,11 @@ export const BellIconContainer = styled(Flex)`
     position: absolute;
     bottom: 60%;
     left: 45%;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
+    border: 3px solid ${({ theme }) => theme.colors.backgroundAlt};
     border-radius: 50%;
-    background: red;
+    background: ${({ theme }) => theme.colors.success};
     display: flex;
     align-items: center;
     justify-content: center;

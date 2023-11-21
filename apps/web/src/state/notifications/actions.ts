@@ -11,3 +11,9 @@ export const addArchivedNotification = createAction<{
 export const clearArchivedTransactions = createAction<{
   subscriptionId: string
 }>('notifications/clearArchivedTransactions')
+
+export const setHasUnread = createAction<{
+  subscriptionId: string
+  notificationId: number
+  hasUnread: boolean
+}>('notifications/setHasUnread')

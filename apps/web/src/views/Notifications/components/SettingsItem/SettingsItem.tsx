@@ -86,10 +86,16 @@ const Settingsitem = ({ scope, id, setScopes, index }: ISettingsprops) => {
 
 const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
   return (
-    <NotificationContainerStyled maxHeight="450px">
-      {Object.entries(scopes).map(([id, scope], index) => {
-        return <Settingsitem key={id} id={id} scope={scope} setScopes={setScopes} index={index} />
-      })}
+    <NotificationContainerStyled maxHeight="490px">
+      {Object.entries(scopes)
+        .sort(([, scopeA], [, scopeB]) => {
+          if (scopeA.name === 'alerts') return -1
+          if (scopeB.name === 'alerts') return 1
+          return 0
+        })
+        .map(([id, scope], index) => {
+          return <Settingsitem key={id} id={id} scope={scope} setScopes={setScopes} index={index} />
+        })}
     </NotificationContainerStyled>
   )
 }

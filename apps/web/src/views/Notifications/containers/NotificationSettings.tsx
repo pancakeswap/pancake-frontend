@@ -49,7 +49,6 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
 const NotificationSettingsView = ({
   toggleSettings,
   onDismiss,
-  toggleOnboardView,
   account,
 }: {
   toggleSettings: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -91,13 +90,12 @@ const NotificationSettingsView = ({
 
   const handleUnSubscribe = useCallback(async () => {
     try {
-      // toggleOnboardView()
       await unsubscribe()
       toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message)
     } catch (error: any) {
       toast.toastWarning(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }
-  }, [unsubscribe, toast, toggleOnboardView])
+  }, [unsubscribe, toast])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {

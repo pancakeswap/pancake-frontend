@@ -13,6 +13,9 @@ import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { setHasUnread } from 'state/notifications/actions'
+import { useHasUnreadNotification } from 'state/notifications/hooks'
 import { CHAIN_NAME_TO_CHAIN_ID } from 'views/Notifications/constants'
 import {
   ContentsContainer,
@@ -40,12 +43,14 @@ interface INotificationprops {
   date: number
   url: string
   id: number
+  subscriptionId: string
   image?: string | undefined
 }
 
 interface INotificationContainerProps {
   notifications: NotifyClientTypes.NotifyMessageRecord[]
   isClosing: boolean
+  subscriptionId: string
 }
 
 const getNotificationPairlogo = (title: string, message: string) => {
@@ -122,9 +127,11 @@ const formatStringWithNewlines = (inputString: string) => {
   ))
 }
 
-const NotificationItem = ({ title, description, date, image, url }: INotificationprops) => {
+const NotificationItem = ({ title, description, date, image, url, subscriptionId, id }: INotificationprops) => {
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
+  const dispatch = useAppDispatch()
+  const hasUnread = useHasUnreadNotification(subscriptionId, id)
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -143,10 +150,15 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
 
   useEffect(() => {
     if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
+    if (!hasUnread) dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: false }))
   }, [])
 
   return (
-    <StyledNotificationWrapper ref={containerRef} onClick={handleExpandClick}>
+    <StyledNotificationWrapper
+      ref={containerRef}
+      onClick={handleExpandClick}
+      onMouseEnter={() => dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: true }))}
+    >
       <ContentsContainer>
         <Flex flexDirection="column" width="100%">
           <Flex justifyContent="space-between" width="100%">
@@ -154,7 +166,7 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
             <Flex flexDirection="column" width="100%">
               <Text fontWeight={600}>{title}</Text>
               <FlexGap alignItems="center" gap="6px">
-                <Dot show color="success" />
+                {!hasUnread && <Dot show color="success" className="dot" />}
                 <Text fontSize="13px" color="textSubtle">
                   {formattedDate}
                 </Text>
@@ -186,7 +198,7 @@ const NotificationItem = ({ title, description, date, image, url }: INotificatio
   )
 }
 
-const NotificationContainer = ({ notifications, isClosing }: INotificationContainerProps) => {
+const NotificationContainer = ({ notifications, isClosing, subscriptionId }: INotificationContainerProps) => {
   const { t } = useTranslation()
   if (notifications.length === 0) {
     return (
@@ -228,6 +240,7 @@ const NotificationContainer = ({ notifications, isClosing }: INotificationContai
               url={notification.message.url}
               image={notification.message.icon}
               id={notification.id}
+              subscriptionId={subscriptionId}
             />
           )
         })}

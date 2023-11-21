@@ -1,12 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
-import { addArchivedNotification, clearArchivedTransactions } from './actions'
+import { addArchivedNotification, clearArchivedTransactions, setHasUnread } from './actions'
 
 export type NotificationDetails = NotifyClientTypes.NotifyMessageRecord & { timestamp: number }
 export interface NotificationState {
   [subscriptionId: string]: {
-    [notificationId: string]: NotificationDetails
+    notifications: { [notificationId: string]: NotificationDetails }
+    unread: { [notificationId: string]: boolean }
   }
 }
 
@@ -20,13 +21,25 @@ export default createReducer(initialState, (builder) =>
         if (notifications[subscriptionId]?.[notificationId]) {
           throw Error('Attempted to add existing transaction.')
         }
-        const txs = notifications[subscriptionId] ?? {}
+        const txs = notifications[subscriptionId].notifications ?? {}
         txs[notificationId] = { ...notification, timestamp }
-        notifications[subscriptionId] = txs
+        notifications[subscriptionId].notifications = txs
       },
     )
+    .addCase(setHasUnread, (notifications, { payload: { subscriptionId, notificationId, hasUnread } }) => {
+      return {
+        ...notifications,
+        [subscriptionId]: {
+          ...notifications[subscriptionId],
+          unread: {
+            ...(notifications[subscriptionId]?.unread ?? {}),
+            [notificationId]: hasUnread,
+          },
+        },
+      }
+    })
     .addCase(clearArchivedTransactions, (notifications, { payload: { subscriptionId } }) => {
-      const txs = notifications[subscriptionId] ?? {}
+      const txs = notifications[subscriptionId]?.notifications ?? {}
       const twentyFourHoursAgo = Math.floor(new Date().getTime() / 1000) - 3600 * 24
 
       const filteredNotifications = Object.keys(txs).reduce((filtered, notificationId) => {
@@ -39,7 +52,10 @@ export default createReducer(initialState, (builder) =>
 
       return {
         ...notifications,
-        [subscriptionId]: filteredNotifications,
+        [subscriptionId]: {
+          ...notifications[subscriptionId],
+          notifications: filteredNotifications,
+        },
       }
     }),
 )
