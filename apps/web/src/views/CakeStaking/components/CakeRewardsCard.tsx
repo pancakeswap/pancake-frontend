@@ -19,6 +19,7 @@ import {
   Row,
   Text,
   WarningIcon,
+  useMatchBreakpoints,
   useToast,
 } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -51,6 +52,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
     t,
     currentLanguage: { locale },
   } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
   const cakePriceBusd = useCakePrice()
   const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
   const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
@@ -107,7 +109,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
   return (
     <ModalContainer
       title={t('CAKE Reward / Yield')}
-      style={{ minWidth: '375px', maxHeight: '90vh', overflowY: 'auto', padding: '24px' }}
+      style={{ minWidth: '375px', padding: isDesktop ? '24px' : '24px 24px 0 24px' }}
     >
       <AtomBox
         justifyContent="space-between"
@@ -137,7 +139,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
             {t('From CAKE pool rewards and revenue sharing!')}
           </Text>
           <MyVeCakeCard />
-          <Card mt="16px">
+          <Card mt="16px" style={{ overflow: 'unset' }} mb={isDesktop ? '0' : '24px'}>
             <Box padding={16}>
               {/* <Text fontSize={12} bold color="secondary" textTransform="uppercase">
                 {t('revenue sharing')}
