@@ -6,6 +6,7 @@ import { Address } from 'viem'
 import { useContractRead } from 'wagmi'
 import { CakeLockStatus } from '../types'
 import { useCakePoolLocked } from './useCakePoolLocked'
+import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 
 export enum CakePoolLockStatus {
   LOCKING = 0,
@@ -85,30 +86,31 @@ export const useCakeLockStatus = (): {
   cakeUnlockTime: number
   cakePoolUnlockTime: number
 } => {
+  const currentTimestamp = useCurrentBlockTimestamp()
   const { data: userInfo } = useVeCakeUserInfo()
   // if user locked at cakePool before, should migrate
   const proxyLocked = useCakePoolLocked()
   const shouldMigrate = useMemo(() => {
     return proxyLocked && userInfo?.cakePoolType !== 1
   }, [proxyLocked, userInfo?.cakePoolType])
-
-  const cakeLocked = useMemo(() => userInfo && userInfo.amount > 0n, [userInfo])
+  const now = useMemo(() => dayjs.unix(currentTimestamp), [currentTimestamp])
+  const cakeLocked = useMemo(() => Boolean(userInfo && userInfo.amount > 0n), [userInfo])
   const cakeUnlockTime = useMemo(() => {
     if (!userInfo) return 0
     return Number(userInfo.end)
   }, [userInfo])
   const cakeLockExpired = useMemo(() => {
     if (!cakeLocked) return false
-    return dayjs.unix(cakeUnlockTime).isBefore(dayjs())
-  }, [cakeLocked, cakeUnlockTime])
+    return dayjs.unix(cakeUnlockTime).isBefore(now)
+  }, [cakeLocked, cakeUnlockTime, now])
   const cakePoolLocked = useMemo(
     () => Boolean(userInfo?.cakeAmount) && userInfo?.withdrawFlag !== CakePoolLockStatus.WITHDRAW,
     [userInfo],
   )
   const cakePoolLockExpired = useMemo(() => {
     if (!cakePoolLocked) return false
-    return userInfo!.lockEndTime > dayjs().unix()
-  }, [userInfo, cakePoolLocked])
+    return now.isBefore(userInfo!.lockEndTime)
+  }, [cakePoolLocked, now, userInfo])
 
   const nativeCakeLockedAmount = useMemo(() => {
     if (!userInfo) return BigInt(0)

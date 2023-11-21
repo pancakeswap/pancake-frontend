@@ -39,6 +39,7 @@ import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { useRevenueSharingPoolForCake } from '../hooks/useRevenueSharingPoolForCake'
 import { MyVeCakeCard } from './MyVeCakeCard'
+import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
@@ -93,9 +94,10 @@ export const CakeRewardsCard = ({ onDismiss }) => {
     () => new BigNumber(userData?.lockedAmount ?? '0').lte(0),
     [userData?.lockedAmount],
   )
-
-  const currentDate = Date.now() / 1000
-  const timeRemaining = nextDistributionTimestamp - currentDate
+  const currentDate = useCurrentBlockTimestamp()
+  // const currentDate = Date.now() / 1000
+  console.debug('debug currentDate', currentDate, nextDistributionTimestamp)
+  const timeRemaining = nextDistributionTimestamp - Number(currentDate || 0)
   const { days, hours, minutes, seconds } = getTimePeriods(timeRemaining)
 
   const nextDistributionTime = useMemo(() => {

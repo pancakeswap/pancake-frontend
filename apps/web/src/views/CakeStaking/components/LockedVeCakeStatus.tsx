@@ -30,6 +30,7 @@ import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
 import { useWriteMigrateCallback } from '../hooks/useContractWrite/useWriteMigrateCallback'
 import { Tooltips } from './Tooltips'
 import { useProxyVeCakeBalance } from '../hooks/useProxyVeCakeBalance'
+import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
 
 dayjs.extend(relativeTime)
 
@@ -287,13 +288,14 @@ const CakeUnlockAt: React.FC<{
 }) => {
   const { t } = useTranslation()
   const proxyCake = useMemo(() => Number(formatBigInt(proxyCakeLocked, 18)), [proxyCakeLocked])
-
+  const now = useCurrentBlockTimestamp()
   const [unlocked, unlockTime, unlockTimeToNow] = useMemo(() => {
+    const nowDay = dayjs.unix(Number(now || 0))
     if (!nativeLocked && proxyLocked) {
-      return [proxyExpired, proxyUnlockTime, proxyUnlockTime ? dayjs.unix(proxyUnlockTime).fromNow(true) : '']
+      return [proxyExpired, proxyUnlockTime, proxyUnlockTime ? dayjs.unix(proxyUnlockTime).from(nowDay, true) : '']
     }
-    return [nativeExpired, nativeUnlockTime, nativeUnlockTime ? dayjs.unix(nativeUnlockTime).fromNow(true) : '']
-  }, [nativeExpired, nativeLocked, nativeUnlockTime, proxyExpired, proxyLocked, proxyUnlockTime])
+    return [nativeExpired, nativeUnlockTime, nativeUnlockTime ? dayjs.unix(nativeUnlockTime).from(nowDay, true) : '']
+  }, [nativeExpired, nativeLocked, nativeUnlockTime, now, proxyExpired, proxyLocked, proxyUnlockTime])
 
   const TextComp = proxyLocked ? UnderlineText : Text
 
