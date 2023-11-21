@@ -22,13 +22,18 @@ import styled from 'styled-components'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
 import { useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { getGaugeHash } from 'views/GaugesVoting/utils'
-import { GaugesTable } from '../GaugesTable'
+import { GaugesTable, GaugesList } from '../GaugesTable'
 import { Filter, FilterValue, Gauges, OptionsModal, OptionsType } from './OptionsModal'
 
 const FilterButton = styled(Button)`
   height: 35px;
   border-radius: 18px;
   padding: 0 12px;
+`
+
+const ScrollableGaugesList = styled(GaugesList).attrs({ pagination: false })`
+  max-height: calc(90vh - 390px);
+  overflow-y: auto;
 `
 
 export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => {
@@ -89,6 +94,26 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
     }
   }
 
+  const gaugesTable = isDesktop ? (
+    <GaugesTable
+      selectable
+      selectRows={selectRows}
+      onRowSelect={onGaugeAdd}
+      totalGaugesWeight={Number(totalGaugesWeight)}
+      data={filterRows}
+      scrollStyle={{ maxHeight: '40vh' }}
+    />
+  ) : (
+    <ScrollableGaugesList
+      selectable
+      selectRows={selectRows}
+      onRowSelect={onGaugeAdd}
+      totalGaugesWeight={Number(totalGaugesWeight)}
+      data={filterRows}
+      listDisplay="card"
+    />
+  )
+
   return (
     <>
       <ModalV2 isOpen={isOpen} onDismiss={onDismiss}>
@@ -129,16 +154,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                 <Input placeholder={t('Search gauges')} />
               </AutoColumn>
             </Grid>
-            <Box>
-              <GaugesTable
-                selectable
-                selectRows={selectRows}
-                onRowSelect={onGaugeAdd}
-                totalGaugesWeight={Number(totalGaugesWeight)}
-                data={filterRows}
-                scrollStyle={{ maxHeight: '40vh' }}
-              />
-            </Box>
+            <Box>{gaugesTable}</Box>
             <ColumnCenter style={{ marginTop: 'auto' }} onClick={onDismiss}>
               <Button width="50%">{t('Finish')}</Button>
             </ColumnCenter>

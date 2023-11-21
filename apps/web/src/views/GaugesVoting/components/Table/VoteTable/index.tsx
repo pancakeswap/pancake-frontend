@@ -11,6 +11,7 @@ import { EmptyTable } from './EmptyTable'
 import { TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
 import { useGaugeRows } from './hooks/useGaugeRows'
+import { VoteListItem } from './List'
 
 const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expanded'].includes(prop) })<{
   expanded: boolean
@@ -63,28 +64,45 @@ export const VoteTable = () => {
     await writeVote(voteGauges)
     await refetch()
   }, [refetch, rows, votes, writeVote])
+
+  const gauges = isDesktop ? (
+    <>
+      <TableHeader count={rows?.length} />
+
+      {rows?.length ? (
+        <>
+          <Scrollable expanded={expanded}>
+            {rows.map((row, index) => (
+              <TableRow key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
+            ))}
+          </Scrollable>
+          {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
+        </>
+      ) : (
+        <EmptyTable />
+      )}
+    </>
+  ) : (
+    <>
+      {rows?.length ? (
+        rows.map((row, index) => (
+          <VoteListItem key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
+        ))
+      ) : (
+        <EmptyTable />
+      )}
+    </>
+  )
+
   return (
     <>
       <AddGaugeModal selectRows={rows} onGaugeAdd={onRowAdd} isOpen={isOpen} onDismiss={() => setIsOpen(false)} />
-      <Card innerCardProps={{ padding: '32px', paddingTop: '16px' }} mt={32}>
-        <TableHeader count={rows?.length} />
-
-        {rows?.length ? (
-          <>
-            <Scrollable expanded={expanded}>
-              {rows.map((row, index) => (
-                <TableRow key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
-              ))}
-            </Scrollable>
-            {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
-          </>
-        ) : (
-          <EmptyTable />
-        )}
+      <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
+        {gauges}
 
         <FlexGap
-          flexDirection={isDesktop ? 'row' : 'column'}
           gap="12px"
+          padding={isDesktop ? '2em' : '1em'}
           style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}
         >
           <Button width="100%" onClick={() => setIsOpen(true)}>
