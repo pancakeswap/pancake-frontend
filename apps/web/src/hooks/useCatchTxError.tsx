@@ -37,7 +37,7 @@ type Params = {
 }
 
 export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
-  const { throwUserRejectError = false } = params || {}
+  const { throwUserRejectError = false, throwCustomeError, waitForTransactionTimeout } = params || {}
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const [loading, setLoading] = useState(false)
@@ -98,15 +98,15 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
 
         const receipt = await waitForTransaction({
           hash,
-          timeout: params?.waitForTransactionTimeout,
+          timeout: waitForTransactionTimeout,
         })
         return receipt
       } catch (error: any) {
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
-          } else if (params?.throwCustomeError) {
-            params?.throwCustomeError()
+          } else if (throwCustomeError) {
+            throwCustomeError()
           } else {
             handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
           }
@@ -120,7 +120,16 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
 
       return null
     },
-    [toastSuccess, t, waitForTransaction, params, throwUserRejectError, handleNormalError, handleTxError],
+    [
+      toastSuccess,
+      t,
+      waitForTransaction,
+      waitForTransactionTimeout,
+      throwUserRejectError,
+      throwCustomeError,
+      handleNormalError,
+      handleTxError,
+    ],
   )
 
   const fetchTxResponse = useCallback(

@@ -25,22 +25,24 @@ export function useHandleWithdrawSubmission({
   const { t } = useTranslation()
   const { toastSuccess, toastInfo } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({
-    throwCustomeError: () => {
-      const linkElement = createElement(
-        Link,
-        {
-          href: 'https://docs.pancakeswap.finance/products/simple-staking/faq#what-happens-in-the-withdrawal-process-when-withdrawal-approval-is-pending',
-          target: '_blank',
-        },
-        t('Learn more'),
-      )
 
-      toastInfo(t('Withdawal approval is pending'), [
-        t('Please come back to check later at a certain amount of time'),
-        linkElement,
-      ])
-    },
+  const throwCustomeError = useCallback(() => {
+    toastInfo(
+      t('Withdawal approval is pending'),
+      <>
+        {t('Please come back to check later at a certain amount of time')}
+        <Link
+          href="https://docs.pancakeswap.finance/products/simple-staking/faq#what-happens-in-the-withdrawal-process-when-withdrawal-approval-is-pending"
+          target="_blank"
+        >
+          {t('Learn more')}
+        </Link>
+      </>,
+    )
+  }, [t, toastInfo])
+
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({
+    throwCustomeError,
   })
   const fixedStakingContract = useFixedStakingContract()
   const { chainId } = useAccountActiveChain()
