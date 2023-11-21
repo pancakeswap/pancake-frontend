@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
+import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Tooltips } from '../Tooltips'
 import { DataBox, DataHeader, DataRow } from './DataBox'
@@ -16,10 +17,11 @@ export const LockWeeksDataSet = () => {
   const { t } = useTranslation()
   const { cakeLockWeeks } = useLockCakeData()
   const { cakeLockExpired, cakeUnlockTime, nativeCakeLockedAmount } = useCakeLockStatus()
-  const veCakeAmountBN = useMemo(
-    () => new BN(getVeCakeAmount(nativeCakeLockedAmount.toString(), Number(cakeLockWeeks || 0) * WEEK)),
-    [cakeLockWeeks, nativeCakeLockedAmount],
-  )
+  const currentTimestamp = useCurrentBlockTimestamp()
+  const veCakeAmountBN = useMemo(() => {
+    const duration = cakeUnlockTime - currentTimestamp + Number(cakeLockWeeks || 0) * WEEK
+    return new BN(getVeCakeAmount(nativeCakeLockedAmount.toString(), duration))
+  }, [cakeLockWeeks, cakeUnlockTime, currentTimestamp, nativeCakeLockedAmount])
 
   const factor =
     veCakeAmountBN && veCakeAmountBN.gt(0)

@@ -38,10 +38,12 @@ dayjs.extend(relativeTime)
 export const LockedVeCakeStatus: React.FC<{
   status: CakeLockStatus
 }> = ({ status }) => {
+  const { t } = useTranslation()
   const { balance } = useVeCakeBalance()
   const { balance: proxyBalance } = useProxyVeCakeBalance()
   const balanceBN = useMemo(() => getBalanceNumber(balance), [balance])
   const proxyCake = useMemo(() => getBalanceNumber(proxyBalance), [proxyBalance])
+
   if (status === CakeLockStatus.NotLocked) return null
 
   const balanceText =
@@ -64,7 +66,7 @@ export const LockedVeCakeStatus: React.FC<{
         <CardHeader>
           <RowBetween>
             <AutoColumn>
-              <Heading color="text">My VeCAKE</Heading>
+              <Heading color="text">{t('My VeCAKE')}</Heading>
               {proxyBalance.gt(0) ? (
                 <Tooltips content={<FromProxyTooltip proxyCake={proxyCake} />}>{balanceText}</Tooltips>
               ) : (
