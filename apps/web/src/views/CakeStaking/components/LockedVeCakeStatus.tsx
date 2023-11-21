@@ -31,6 +31,7 @@ import { useWriteMigrateCallback } from '../hooks/useContractWrite/useWriteMigra
 import { Tooltips } from './Tooltips'
 import { useProxyVeCakeBalance } from '../hooks/useProxyVeCakeBalance'
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
+import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWithdrawCallback'
 
 dayjs.extend(relativeTime)
 
@@ -187,6 +188,7 @@ const LockedInfo = () => {
           <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
         </Flex>
       ) : null}
+      <SubmitUnlockButton />
     </FlexGap>
   )
 }
@@ -342,3 +344,19 @@ const UnderlineText = styled(Text)`
   text-decoration-color: currentColor;
   text-underline-offset: 0.1em;
 `
+
+const SubmitUnlockButton = () => {
+  const { t } = useTranslation()
+  const unlock = useWriteWithdrawCallback()
+  const { cakeLockedAmount } = useCakeLockStatus()
+
+  if (!cakeLockedAmount) {
+    return null
+  }
+
+  return (
+    <Button variant="secondary" onClick={unlock}>
+      {t('Unlock')}
+    </Button>
+  )
+}
