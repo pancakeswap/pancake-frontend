@@ -1,4 +1,4 @@
-import { Box } from '@pancakeswap/uikit'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import type { ChartData, ChartDataset, TooltipModel } from 'chart.js'
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
@@ -42,6 +42,7 @@ export const WeightsPieChart: React.FC<{
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
   const [selectedGauge, setSelectedGauge] = useState<GaugeVoting>()
   const [color, setColor] = useState<string>('')
+  const { isDesktop } = useMatchBreakpoints()
 
   const gauges = useMemo<ChartData<'doughnut'>>(() => {
     return {
@@ -87,7 +88,7 @@ export const WeightsPieChart: React.FC<{
     [data],
   )
   return (
-    <Box position="relative" pr="90px">
+    <Box position="relative" pr={isDesktop ? '90px' : '0'}>
       <Center style={{ marginLeft: '-45px' }}>
         <ChartLabel total={totalGaugesWeight} gauge={selectedGauge} />
       </Center>
