@@ -26,7 +26,6 @@ export const LockCake = () => {
       <Grid
         gridGap="24px"
         gridTemplateColumns={isMobile ? '1fr' : customCols[status] ?? '1fr 2fr'}
-        maxWidth={status === CakeLockStatus.Expired ? '78%' : '100%'}
         justifyItems={status === CakeLockStatus.Expired ? 'end' : 'start'}
         mx="auto"
       >

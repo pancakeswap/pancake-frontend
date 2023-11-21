@@ -133,8 +133,8 @@ export const useCakeLockStatus = (): {
 
   const status = useMemo(() => {
     if ((!userInfo || !userInfo.amount) && !cakePoolLocked && !shouldMigrate) return CakeLockStatus.NotLocked
-    if ((userInfo?.amount && userInfo.end) || cakePoolLocked) return CakeLockStatus.Locking
     if (cakeLockExpired) return CakeLockStatus.Expired
+    if ((userInfo?.amount && userInfo.end) || cakePoolLocked) return CakeLockStatus.Locking
     if (shouldMigrate) return CakeLockStatus.Migrate
     return CakeLockStatus.NotLocked
   }, [userInfo, shouldMigrate, cakePoolLocked, cakeLockExpired])
