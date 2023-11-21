@@ -15,6 +15,7 @@ import {
   Toggle,
   TooltipText,
   useMatchBreakpoints,
+  useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
@@ -24,7 +25,7 @@ import { useAppDispatch } from 'state'
 import { addArchivedNotification, setImportantAlerts } from 'state/notifications/actions'
 import { useAllNotifications, useImportantNotificationsOnly } from 'state/notifications/hooks'
 import { styled } from 'styled-components'
-import { DISABLE_ALL_SCOPES, ENABLE_ALL_SCOPES, NotificationFilterTypes } from 'views/Notifications/constants'
+import { DISABLE_ALL_SCOPES, ENABLE_ALL_SCOPES, Events, NotificationFilterTypes } from 'views/Notifications/constants'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
 import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
@@ -88,6 +89,7 @@ const NotificationView = ({
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Latest)
   const dispatch = useAppDispatch()
   const { isMobile } = useMatchBreakpoints()
+  const toast = useToast()
 
   const { messages: notifications, deleteMessage } = useMessages(account)
   const { scopes, updateScopes } = useSubscriptionScopes(account)
@@ -161,9 +163,14 @@ const NotificationView = ({
 
   const toggleImportantOnlyAlerts = useCallback(async () => {
     if (!subscription?.topic) return
-    dispatch(setImportantAlerts({ subscriptionId: subscription?.topic, importantOnly: !importantAlertsOnly }))
-    await updateScopes(!importantAlertsOnly ? DISABLE_ALL_SCOPES : ENABLE_ALL_SCOPES)
-  }, [updateScopes, importantAlertsOnly, dispatch, subscription?.topic])
+    try {
+      dispatch(setImportantAlerts({ subscriptionId: subscription?.topic, importantOnly: !importantAlertsOnly }))
+      await updateScopes(!importantAlertsOnly ? DISABLE_ALL_SCOPES : ENABLE_ALL_SCOPES)
+      toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
+    } catch (error: any) {
+      toast.toastError(Events.PreferencesError.title, Events.PreferencesError.message)
+    }
+  }, [updateScopes, importantAlertsOnly, dispatch, subscription?.topic, toast])
 
   const {
     tooltip: importantAlertsTooltip,
