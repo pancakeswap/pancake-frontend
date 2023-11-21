@@ -8,6 +8,7 @@ import { useLockCakeData } from 'state/vecake/hooks'
 import { useSetAtom } from 'jotai'
 import { approveAndLockStatusAtom, cakeLockTxHashAtom, ApproveAndLockStatus } from 'state/vecake/atoms'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
+import { useCurrentBlockTimestamp } from '../useCurrentBlockTimestamp'
 
 // invoke the lock function on the vecake contract
 export const useWriteLockCallback = () => {
@@ -18,12 +19,13 @@ export const useWriteLockCallback = () => {
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
   const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
+  const currentTimestamp = useCurrentBlockTimestamp()
 
   const lockCake = useCallback(async () => {
     const { request } = await veCakeContract.simulate.createLock(
       [
         BigInt(getDecimalAmount(new BN(cakeLockAmount), 18).toString()),
-        BigInt(dayjs().add(Number(cakeLockWeeks), 'week').unix()),
+        BigInt(dayjs.unix(currentTimestamp).add(Number(cakeLockWeeks), 'week').unix()),
       ],
       {
         account: account!,
