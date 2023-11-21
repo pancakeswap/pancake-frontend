@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { useRevenueSharingCakePoolContract, useRevenueSharingVeCakeContract } from './useContract'
 
+const INITIAL_INCENTIVE = 0n
+
 export const useCakeDistributed = (): bigint => {
   const cakePool = useRevenueSharingCakePoolContract()
   const veCake = useRevenueSharingVeCakeContract()
@@ -36,5 +38,5 @@ export const useCakeDistributed = (): bigint => {
     },
   )
 
-  return fromCakePool + fromVeCake
+  return INITIAL_INCENTIVE + fromCakePool + fromVeCake
 }
