@@ -188,7 +188,7 @@ const LockedInfo = () => {
           <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
         </Flex>
       ) : null}
-      <SubmitUnlockButton />
+      {cakeLockExpired ? <SubmitUnlockButton /> : null}
     </FlexGap>
   )
 }
