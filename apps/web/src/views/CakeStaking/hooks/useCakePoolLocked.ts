@@ -3,10 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import dayjs from 'dayjs'
+import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 
 export const useCakePoolLocked = () => {
   const { chainId, account } = useAccountActiveChain()
   const cakeVaultContract = useCakeVaultContract()
+  const currentTimestamp = useCurrentBlockTimestamp()
 
   const { data: locked = false } = useQuery(
     ['cakePoolLocked', chainId, account],
@@ -15,7 +17,11 @@ export const useCakePoolLocked = () => {
       const [, , , , , lockEndTime, , _locked] = await cakeVaultContract.read.userInfo([account])
       const lockEndTimeStr = lockEndTime.toString()
 
-      return _locked && lockEndTimeStr !== '0' && dayjs.unix(parseInt(lockEndTimeStr, 10)).isAfter(dayjs())
+      return (
+        _locked &&
+        lockEndTimeStr !== '0' &&
+        dayjs.unix(parseInt(lockEndTimeStr, 10)).isAfter(dayjs.unix(currentTimestamp))
+      )
     },
     {
       enabled: Boolean(account) && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET),

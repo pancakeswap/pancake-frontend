@@ -12,6 +12,7 @@ import {
 } from 'state/vecake/atoms'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { useCakeLockStatus } from '../useVeCakeUserInfo'
+import { useCurrentBlockTimestamp } from '../useCurrentBlockTimestamp'
 
 export const useWriteIncreaseLockWeeksCallback = () => {
   const veCakeContract = useVeCakeContract()
@@ -23,9 +24,10 @@ export const useWriteIncreaseLockWeeksCallback = () => {
   const setCakeLockWeeks = useSetAtom(cakeLockWeeksAtom)
   const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
+  const currentTimestamp = useCurrentBlockTimestamp()
 
   const increaseLockWeeks = useCallback(async () => {
-    const startTime = cakeLockExpired ? dayjs() : dayjs.unix(Number(cakeUnlockTime))
+    const startTime = cakeLockExpired ? dayjs.unix(currentTimestamp) : dayjs.unix(Number(cakeUnlockTime))
 
     const { request } = await veCakeContract.simulate.increaseUnlockTime(
       [BigInt(startTime.add(Number(cakeLockWeeks), 'week').unix())],
@@ -50,6 +52,7 @@ export const useWriteIncreaseLockWeeksCallback = () => {
     setStatus(ApproveAndLockStatus.CONFIRMED)
   }, [
     cakeLockExpired,
+    currentTimestamp,
     cakeUnlockTime,
     veCakeContract.simulate,
     veCakeContract.chain,

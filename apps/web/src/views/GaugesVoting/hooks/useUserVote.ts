@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { Hex } from 'viem'
+import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { usePublicClient } from 'wagmi'
 import { GaugeVoting } from './useGaugesVoting'
 
@@ -18,6 +19,7 @@ export const useUserVote = (gauge?: GaugeVoting) => {
   const contract = useGaugesVotingContract()
   const { account, chainId } = useAccountActiveChain()
   const publicClient = usePublicClient({ chainId })
+  const currentTimestamp = useCurrentBlockTimestamp()
 
   const { data } = useQuery(
     ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
@@ -44,7 +46,7 @@ export const useUserVote = (gauge?: GaugeVoting) => {
         power: Number(power),
         end: Number(end),
         lastVoteTime: Number(lastVoteTime),
-        voteLocked: dayjs.unix(Number(lastVoteTime)).add(10, 'day').isAfter(dayjs()),
+        voteLocked: dayjs.unix(Number(lastVoteTime)).add(10, 'day').isAfter(dayjs(currentTimestamp)),
       }
     },
     {

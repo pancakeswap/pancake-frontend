@@ -4,6 +4,7 @@ import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/form
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
+import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useEpochRewards } from '../hooks/useEpochRewards'
 import { useGaugeEpochEnd } from '../hooks/useGaugeEpochEnd'
 import { useGaugesTotalWeight } from '../hooks/useGaugesTotalWeight'
@@ -13,6 +14,7 @@ export const CurrentEpoch = () => {
   const totalWeight = useGaugesTotalWeight()
   const weeklyRewards = useEpochRewards()
   const epochEnd = useGaugeEpochEnd()
+  const currentTimestamp = useCurrentBlockTimestamp()
 
   return (
     <Card isActive innerCardProps={{ padding: 24 }}>
@@ -30,7 +32,7 @@ export const CurrentEpoch = () => {
             </Tooltips>
             <FlexGap alignItems="baseline" gap="2px">
               <Text bold fontSize={16}>
-                {dayjs.unix(epochEnd).fromNow()}
+                {dayjs.unix(epochEnd).from(currentTimestamp)}
               </Text>
               <Text fontSize={14}>({dayjs.unix(epochEnd).format('DD MMM YYYY')}) </Text>
             </FlexGap>

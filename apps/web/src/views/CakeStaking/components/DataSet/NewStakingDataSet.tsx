@@ -5,6 +5,7 @@ import BN from 'bignumber.js'
 import dayjs from 'dayjs'
 import React from 'react'
 import styled from 'styled-components'
+import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { MyVeCakeCard } from '../MyVeCakeCard'
 import { Tooltips } from '../Tooltips'
 import { DataRow } from './DataBox'
@@ -20,9 +21,10 @@ export const NewStakingDataSet: React.FC<{
   duration?: number
 }> = ({ veCakeAmount = 0, cakeAmount = 0, duration = 0 }) => {
   const { t } = useTranslation()
+  const currentTimestamp = useCurrentBlockTimestamp()
   const veCake = veCakeAmount ? getFullDisplayBalance(new BN(veCakeAmount), 0, 3) : '0'
   const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeAmount).toPrecision(2)}x` : ''
-  const unlockOn = duration ? dayjs().add(duration, 'week').format('MMM D YYYY HH:mm') : ''
+  const unlockOn = duration ? dayjs.unix(currentTimestamp).add(duration, 'week').format('MMM D YYYY HH:mm') : ''
   return (
     <>
       <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
