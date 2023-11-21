@@ -17,3 +17,8 @@ export const setHasUnread = createAction<{
   notificationId: number
   hasUnread: boolean
 }>('notifications/setHasUnread')
+
+export const setImportantAlerts = createAction<{
+  subscriptionId: string
+  importantOnly: boolean
+}>('notifications/setImportantAlerts')

@@ -114,3 +114,14 @@ export const CHAIN_NAME_TO_CHAIN_ID = {
   linea: ChainId.LINEA,
   base: ChainId.BASE,
 }
+
+export const ENABLE_ALL_SCOPES = [
+  SubsctiptionType.Alerts,
+  SubsctiptionType.Farms,
+  SubsctiptionType.Liquidity,
+  SubsctiptionType.Lottery,
+  SubsctiptionType.Prediction,
+  SubsctiptionType.PriceUpdates,
+  SubsctiptionType.Promotional,
+]
+export const DISABLE_ALL_SCOPES = [SubsctiptionType.Alerts, SubsctiptionType.Liquidity]

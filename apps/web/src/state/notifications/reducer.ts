@@ -1,13 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
-import { addArchivedNotification, clearArchivedTransactions, setHasUnread } from './actions'
+import { addArchivedNotification, clearArchivedTransactions, setHasUnread, setImportantAlerts } from './actions'
 
 export type NotificationDetails = NotifyClientTypes.NotifyMessageRecord & { timestamp: number }
 export interface NotificationState {
   [subscriptionId: string]: {
     notifications: { [notificationId: string]: NotificationDetails }
     unread: { [notificationId: string]: boolean }
+    importantAlertsOnly: boolean
   }
 }
 
@@ -35,6 +36,15 @@ export default createReducer(initialState, (builder) =>
             ...(notifications[subscriptionId]?.unread ?? {}),
             [notificationId]: hasUnread,
           },
+        },
+      }
+    })
+    .addCase(setImportantAlerts, (notifications, { payload: { subscriptionId, importantOnly } }) => {
+      return {
+        ...notifications,
+        [subscriptionId]: {
+          ...notifications[subscriptionId],
+          importantAlertsOnly: importantOnly,
         },
       }
     })

@@ -7,19 +7,24 @@ import {
   CogIcon,
   Flex,
   IconButton,
+  InfoFilledIcon,
   ModalCloseButton,
   OptionProps,
   Select,
   Text,
+  Toggle,
+  TooltipText,
+  useMatchBreakpoints,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useMessages, useSubscription, useSubscriptionScopes } from '@web3inbox/widget-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
-import { addArchivedNotification } from 'state/notifications/actions'
-import { useAllNotifications } from 'state/notifications/hooks'
+import { addArchivedNotification, setImportantAlerts } from 'state/notifications/actions'
+import { useAllNotifications, useImportantNotificationsOnly } from 'state/notifications/hooks'
 import { styled } from 'styled-components'
-import { NotificationFilterTypes } from 'views/Notifications/constants'
+import { DISABLE_ALL_SCOPES, ENABLE_ALL_SCOPES, NotificationFilterTypes } from 'views/Notifications/constants'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
 import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
@@ -82,11 +87,13 @@ const NotificationView = ({
   const [isClosing, setIsClosing] = useState<boolean>(false)
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Latest)
   const dispatch = useAppDispatch()
+  const { isMobile } = useMatchBreakpoints()
+
   const { messages: notifications, deleteMessage } = useMessages(account)
-  const { scopes: currentScopes, updateScopes } = useSubscriptionScopes(account)
-  const [scopes, setScopes] = useState<NotifyClientTypes.ScopeMap>(currentScopes)
+  const { scopes, updateScopes } = useSubscriptionScopes(account)
   const { subscription } = useSubscription(account)
   const archivedNotifications = useAllNotifications(subscription?.topic)
+  const importantAlertsOnly = useImportantNotificationsOnly(subscription?.topic)
 
   const { t } = useTranslation()
 
@@ -152,6 +159,29 @@ const NotificationView = ({
     setIsClosing(false)
   }, [notifications, deleteMessage, dispatch, subscription?.topic, filteredNotifications])
 
+  const toggleImportantOnlyAlerts = useCallback(async () => {
+    if (!subscription?.topic) return
+    dispatch(setImportantAlerts({ subscriptionId: subscription?.topic, importantOnly: !importantAlertsOnly }))
+    await updateScopes(!importantAlertsOnly ? DISABLE_ALL_SCOPES : ENABLE_ALL_SCOPES)
+  }, [updateScopes, importantAlertsOnly, dispatch, subscription?.topic])
+
+  const {
+    tooltip: importantAlertsTooltip,
+    tooltipVisible: importantAlertsTooltipVisible,
+    targetRef: buyCryptoTargetRef,
+  } = useTooltip(
+    <Box maxWidth="160px">
+      <Text as="p">{t('Show only the notifications that belong to your wallet or LP positions')}</Text>
+      <br />
+      <Text>{t('(Not reccommended)')}</Text>
+    </Box>,
+    {
+      isInPortal: false,
+      placement: isMobile ? 'top' : 'bottom',
+      trigger: isMobile ? 'focus' : 'hover',
+    },
+  )
+
   return (
     <Box width="100%">
       <NotificationHeader
@@ -180,18 +210,22 @@ const NotificationView = ({
         </Box>
         <NotificationsTabButton activeIndex={viewMode} setActiveIndex={setViewMode} />
       </Flex>
-      {/* <Flex paddingX="24px" alignItems="center" paddingY="12px">
+      <Flex paddingX="24px" alignItems="center" paddingTop="12px">
         {scopes && (
           <Toggle
             id="toggle-expert-mode-button"
             scale="sm"
-            checked={scopes['81be3ea1-c562-433d-9dfe-d709ce7d3719']?.enabled}
-            onChange={toggleScopeEnabled}
+            checked={importantAlertsOnly}
+            onChange={toggleImportantOnlyAlerts}
           />
         )}
         <Text paddingX="8px">{t('Important only')}</Text>
-        <InfoIcon width="16px" height="16px" color="textSubtle" paddingTop="2px" />
-      </Flex> */}
+        <TooltipText ref={buyCryptoTargetRef} display="flex" style={{ justifyContent: 'center' }}>
+          <InfoFilledIcon pt="2px" fill="#000" color="textSubtle" width="16px" />
+        </TooltipText>
+
+        {importantAlertsTooltipVisible && !isMobile && importantAlertsTooltip}
+      </Flex>
       {viewMode === ViewMode.Archived ? (
         <>
           <Flex justifyContent="center" pt="12px" pb="16px" borderBottom="1px solid" borderBottomColor="cardBorder">
@@ -203,7 +237,7 @@ const NotificationView = ({
         </>
       ) : null}
 
-      <NotificationContainerStyled maxHeight={viewMode === ViewMode.Archived ? '350px' : '450px'}>
+      <NotificationContainerStyled maxHeight={viewMode === ViewMode.Archived ? '350px' : isMobile ? '405px' : '450px'}>
         {subscription?.topic && (
           <NotificationItem
             notifications={viewMode === ViewMode.Latest ? filteredNotifications.active : filteredNotifications.archived}

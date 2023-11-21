@@ -7,6 +7,7 @@ export function useAllNotifications(subscription: string | undefined): Notificat
     [subscriptionId: string]: {
       notifications: { [notificationId: string]: NotificationDetails }
       unread: { [notificationId: string]: boolean }
+      importantAlertsOnly: boolean
     }
   } = useSelector<AppState, AppState['notifications']>((s) => s.notifications)
   if (!subscription) return []
@@ -20,6 +21,7 @@ export function useHasUnreadNotifications(subscription: string | undefined): boo
     [subscriptionId: string]: {
       notifications: { [notificationId: string]: NotificationDetails }
       unread: { [notificationId: string]: boolean }
+      importantAlertsOnly: boolean
     }
   } = useSelector<AppState, AppState['notifications']>((s) => s.notifications)
   if (!subscription) return false
@@ -33,10 +35,24 @@ export function useHasUnreadNotification(subscription: string | undefined, notif
     [subscriptionId: string]: {
       notifications: { [notificationId: string]: NotificationDetails }
       unread: { [notificationId: string]: boolean }
+      importantAlertsOnly: boolean
     }
   } = useSelector<AppState, AppState['notifications']>((s) => s.notifications)
   if (!subscription) return false
   if (!state[subscription]?.unread) return false
   const unreadNotifications = state[subscription].unread
   return unreadNotifications[notificationId]
+}
+
+export function useImportantNotificationsOnly(subscription: string | undefined): boolean {
+  const state: {
+    [subscriptionId: string]: {
+      notifications: { [notificationId: string]: NotificationDetails }
+      unread: { [notificationId: string]: boolean }
+      importantAlertsOnly: boolean
+    }
+  } = useSelector<AppState, AppState['notifications']>((s) => s.notifications)
+  if (!subscription) return false
+  if (!state[subscription]?.importantAlertsOnly) return false
+  return state[subscription].importantAlertsOnly
 }

@@ -1,4 +1,4 @@
-import { Box, Flex, FlexGap, Text, Toggle } from '@pancakeswap/uikit'
+import { Box, Flex, FlexGap, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback } from 'react'
@@ -85,12 +85,14 @@ const Settingsitem = ({ scope, id, setScopes, index }: ISettingsprops) => {
 }
 
 const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
+  const { isMobile } = useMatchBreakpoints()
+
   return (
-    <NotificationContainerStyled maxHeight="490px">
+    <NotificationContainerStyled maxHeight={isMobile ? '490px' : '530px'}>
       {Object.entries(scopes)
         .sort(([, scopeA], [, scopeB]) => {
-          if (scopeA.name === 'alerts') return -1
-          if (scopeB.name === 'alerts') return 1
+          if (scopeA.name === 'alerts' || scopeA.name === 'Liquidity') return -1
+          if (scopeB.name === 'alerts' || scopeB.name === 'Liquidity') return 1
           return 0
         })
         .map(([id, scope], index) => {
