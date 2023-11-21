@@ -20,7 +20,7 @@ import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { RemainVeCakeBalance } from './components/RemainVeCakeBalance'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { WeightsPieChart } from './components/WeightsPieChart'
-import { GaugesTable, VoteTable } from './components/Table'
+import { GaugesTable, VoteTable, GaugesList } from './components/Table'
 import { useGaugesVoting } from './hooks/useGaugesVoting'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
 
@@ -96,7 +96,11 @@ const GaugesVoting = () => {
               <WeightsPieChart totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
             </div>
           </Grid>
-          <GaugesTable mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
+          {isDesktop ? (
+            <GaugesTable mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
+          ) : (
+            <GaugesList mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
+          )}
         </Card>
         <Box mt="80px">
           <Heading as="h2" scale="xl" mb="24px">
