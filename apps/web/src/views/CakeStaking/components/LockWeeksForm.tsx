@@ -20,7 +20,28 @@ import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWith
 import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
 import { LockWeeksDataSet } from './DataSet'
 
-const weeks = [4, 20, 40, 100, 208]
+const weeks = [
+  {
+    value: 1,
+    label: '1W',
+  },
+  {
+    value: 4,
+    label: '1M',
+  },
+  {
+    value: 26,
+    label: '6M',
+  },
+  {
+    value: 52,
+    label: '1Y',
+  },
+  {
+    value: 208,
+    label: '4Y',
+  },
+]
 
 const ButtonBlocked = styled(Button)`
   flex: 1;
@@ -78,16 +99,16 @@ const WeekInput: React.FC<{
       />
       {disabled ? null : (
         <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
-          {weeks.map((week) => (
+          {weeks.map(({ value: v, label }) => (
             <WeekButton
-              key={week}
-              data-week={week}
+              key={v}
+              data-week={v}
               disabled={disabled}
               onClick={handleWeekSelect}
               scale={isDesktop ? 'sm' : 'xs'}
-              variant={String(week) === value ? 'subtle' : 'light'}
+              variant={Number(value) === v ? 'subtle' : 'light'}
             >
-              {t('%week%W', { week })}
+              {label}
             </WeekButton>
           ))}
         </FlexGap>
