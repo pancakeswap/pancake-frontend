@@ -1,4 +1,4 @@
-export const revenueSharingPoolForCakeABI = [
+export const revenueSharingPoolProxyABI = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
   {
     anonymous: false,

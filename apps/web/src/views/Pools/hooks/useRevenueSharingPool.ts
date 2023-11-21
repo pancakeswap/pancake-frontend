@@ -8,6 +8,7 @@ import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import BigNumber from 'bignumber.js'
 import { useInitialBlockTimestamp } from 'state/block/hooks'
 import { useQuery } from '@tanstack/react-query'
+import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 
 interface RevenueSharingPool {
   balanceOfAt: string
@@ -30,6 +31,7 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
   const contract = useRevenueSharingPoolContract({ chainId })
   const contractAddress = getRevenueSharingPoolAddress(chainId)
   const blockTimestamp = useInitialBlockTimestamp()
+  const currencyBlockTimestamp = useCurrentBlockTimestamp()
 
   const { data } = useQuery(
     ['/revenue-sharing-pool', account, chainId],
@@ -37,7 +39,7 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
       if (!account) return undefined
       try {
         const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
-        const lastTokenTimestamp = Math.floor(new Date().getTime() / 1000 / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
+        const lastTokenTimestamp = Math.floor(currencyBlockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
 
         const revenueCalls = [
           {

@@ -267,8 +267,11 @@ export default {
   gaugesVoting: {
     [ChainId.BSC_TESTNET]: '0x357b01894b21787B41A8FA4DCaFE92293470FaD9',
   },
-  revenueSharingPoolForCake: {
+  revenueSharingVeCake: {
     [ChainId.BSC_TESTNET]: '0x482a401D57C9892D6d6BD6A4A976CfDDeD83BF11',
+  },
+  revenueSharingCakePool: {
+    [ChainId.BSC_TESTNET]: '0x58fde4bf684B631363640808F452952D8c14084b',
   },
   revenueSharingPoolGateway: {
     [ChainId.BSC_TESTNET]: '0x946273012ED616410F698536F1BF2513417BF8Ec',

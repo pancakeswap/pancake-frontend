@@ -38,8 +38,9 @@ import {
   getFixedStakingAddress,
   getVeCakeAddress,
   getGaugesVotingAddress,
-  getRevenueSharingPoolForCakeAddress,
   getRevenueSharingPoolGatewayAddress,
+  getRevenueSharingVeCakeAddress,
+  getRevenueSharingCakePoolAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -93,7 +94,7 @@ import { Address, erc20ABI, erc721ABI } from 'wagmi'
 import { fixedStakingABI } from 'config/abi/fixedStaking'
 import { veCakeABI } from 'config/abi/veCake'
 import { gaugesVotingABI } from 'config/abi/gaugesVoting'
-import { revenueSharingPoolForCakeABI } from 'config/abi/revenueSharingPoolForCake'
+import { revenueSharingPoolProxyABI } from 'config/abi/revenueSharingPoolProxy'
 import { revenueSharingPoolGatewayABI } from 'config/abi/revenueSharingPoolGateway'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
@@ -475,11 +476,21 @@ export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number)
   })
 }
 
-export const getRevenueSharingPoolForCakeContract = (signer?: WalletClient, chainId?: number) => {
+export const getRevenueSharingCakePoolContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
-    abi: revenueSharingPoolForCakeABI,
+    abi: revenueSharingPoolProxyABI,
     // @todo @ChefJerry update default address
-    address: getRevenueSharingPoolForCakeAddress(chainId) ?? getRevenueSharingPoolForCakeAddress(ChainId.BSC_TESTNET),
+    address: getRevenueSharingCakePoolAddress(chainId) ?? getRevenueSharingCakePoolAddress(ChainId.BSC_TESTNET),
+    signer,
+    chainId,
+  })
+}
+
+export const getRevenueSharingVeCakeContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: revenueSharingPoolProxyABI,
+    // @todo @ChefJerry update default address
+    address: getRevenueSharingVeCakeAddress(chainId) ?? getRevenueSharingVeCakeAddress(ChainId.BSC_TESTNET),
     signer,
     chainId,
   })
