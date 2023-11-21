@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
-import { FlexGap, Text, TokenImage } from '@pancakeswap/uikit'
+import { Flex, FlexGap, Text, TokenImage } from '@pancakeswap/uikit'
 import { getBalanceNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { useMemo } from 'react'
 import { ApproveAndLockStatus } from 'state/vecake/atoms'
@@ -40,17 +40,20 @@ export const LockInfo: React.FC<LockInfoProps> = ({ amount, week, status }) => {
 
   const { t } = useTranslation()
   return (
-    <FlexGap gap="4px" width="100%" alignItems="center" justifyContent="center">
-      <TokenImage
-        src={`https://pancakeswap.finance/images/tokens/${CAKE[ChainId.BSC].address}.png`}
-        height={20}
-        width={20}
-        title={CAKE[ChainId.BSC].symbol}
-      />
-      <Text fontSize="14px">{`${txAmount} CAKE`}</Text>
+    <FlexGap flexDirection="column" gap="4px" mt="4px" width="100%" alignItems="center" justifyContent="center">
+      <Flex alignItems="center" width="100%" justifyContent="center">
+        <TokenImage
+          src={`https://pancakeswap.finance/images/tokens/${CAKE[ChainId.BSC].address}.png`}
+          height={20}
+          width={20}
+          mr="4px"
+          title={CAKE[ChainId.BSC].symbol}
+        />
+        <Text fontSize="14px">{`${txAmount} CAKE`}</Text>
+      </Flex>
 
       <Text fontSize={12} color="textSubtle">
-        {t('to be locked')}
+        {t('to be locked until')}
       </Text>
 
       <Text fontSize="14px">{dayjs.unix(txUnlock).format('DD MMM YYYY')}</Text>
