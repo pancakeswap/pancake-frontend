@@ -1,20 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
 import { Percent } from '@pancakeswap/sdk'
-import { SpaceProps } from 'styled-system'
 import { ErrorIcon, Flex, FlexGap, Text } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
-import { useEffect, useMemo, CSSProperties } from 'react'
-import { Address } from 'viem'
+import { CSSProperties, useEffect, useMemo } from 'react'
+import styled from 'styled-components'
+import { SpaceProps } from 'styled-system'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
-import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
-import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 
-import { PercentInput } from './PercentInput'
+import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { GaugeIdentifierDetails } from '../GaugesTable/List'
+import { PercentInput } from './PercentInput'
 
 const ListItemContainer = styled(FlexGap)<{ borderBottom?: boolean }>`
   border-bottom: ${({ borderBottom = true, theme }) =>
@@ -30,6 +29,7 @@ type Props = {
 
 export function VoteListItem({ style, data, value, onChange, ...props }: Props & SpaceProps) {
   const { t } = useTranslation()
+  const currentTimestamp = useCurrentBlockTimestamp()
   const { balance: veCake } = useVeCakeBalance()
 
   const userVote = useUserVote(data)
@@ -69,7 +69,9 @@ export function VoteListItem({ style, data, value, onChange, ...props }: Props &
               content={t(
                 'Gauge’s vote can not be changed more frequent than 10 days. You can update your vote for this gauge in: %distance%',
                 {
-                  distance: userVote?.lastVoteTime ? dayjs.unix(userVote?.lastVoteTime).add(10, 'day').fromNow() : '',
+                  distance: userVote?.lastVoteTime
+                    ? dayjs.unix(userVote?.lastVoteTime).add(10, 'day').from(currentTimestamp, true)
+                    : '',
                 },
               )}
             >
