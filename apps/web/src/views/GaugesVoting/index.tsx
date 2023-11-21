@@ -90,7 +90,13 @@ const GaugesVoting = () => {
               <CurrentEpoch />
             </FlexGap>
             <div>
-              <Text color="secondary" textTransform="uppercase" bold ml="60px">
+              <Text
+                color="secondary"
+                textTransform="uppercase"
+                bold
+                mt={isDesktop ? '0' : '1em'}
+                ml={isDesktop ? '60px' : '0'}
+              >
                 Proposed weights
               </Text>
               <WeightsPieChart totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
