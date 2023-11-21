@@ -16,28 +16,34 @@ export const useGaugesVoting = () => {
   const { chainId } = useActiveChainId()
   const publicClient = usePublicClient({ chainId })
 
-  const { data } = useQuery(['gaugesVoting', gaugesVotingContract.address], async (): Promise<GaugeVoting[]> => {
-    if (!gauges || gauges.length === 0) return []
+  const { data } = useQuery(
+    ['gaugesVoting', gaugesVotingContract.address, gaugesVotingContract.chain?.id],
+    async (): Promise<GaugeVoting[]> => {
+      if (!gauges || gauges.length === 0) return []
 
-    const contracts: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'getGaugeWeight'>[]> =
-      gauges.map((gauge) => {
-        return {
-          ...gaugesVotingContract,
-          functionName: 'getGaugeWeight',
-          args: [gauge.pairAddress, BigInt(gauge.chainId), true],
-        } as const
-      })
+      const contracts: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'getGaugeWeight'>[]> =
+        gauges.map((gauge) => {
+          return {
+            ...gaugesVotingContract,
+            functionName: 'getGaugeWeight',
+            args: [gauge.pairAddress, BigInt(gauge.chainId), true],
+          } as const
+        })
 
-    const response = (await publicClient.multicall({
-      contracts,
-      allowFailure: false,
-    })) as ContractFunctionResult<typeof gaugesVotingABI, 'getGaugeWeight'>[]
+      const response = (await publicClient.multicall({
+        contracts,
+        allowFailure: false,
+      })) as ContractFunctionResult<typeof gaugesVotingABI, 'getGaugeWeight'>[]
 
-    return gauges.map((gauge, index) => ({
-      ...gauge,
-      weight: Number(response[index] ?? 0),
-    }))
-  })
+      return gauges.map((gauge, index) => ({
+        ...gauge,
+        weight: Number(response[index] ?? 0),
+      }))
+    },
+    {
+      enabled: gauges && gauges?.length > 0,
+    },
+  )
 
   return data
 }

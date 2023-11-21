@@ -23,7 +23,7 @@ export const useGauges = () => {
   const { chainId } = useActiveChainId()
   const publicClient = usePublicClient({ chainId })
   const { data } = useQuery(
-    ['gauges', Number(gaugesCount), gaugesVotingContract.address],
+    ['gauges', Number(gaugesCount), gaugesVotingContract.address, gaugesVotingContract.chain?.id],
     async (): Promise<GaugeInfo[]> => {
       if (!gaugesCount) return []
       const contracts: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'gauges'>[]> = []
@@ -60,6 +60,7 @@ export const useGauges = () => {
     },
     {
       enabled: !!gaugesVotingContract,
+      keepPreviousData: true,
     },
   )
 

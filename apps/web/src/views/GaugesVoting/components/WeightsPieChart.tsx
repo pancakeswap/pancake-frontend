@@ -58,9 +58,6 @@ export const WeightsPieChart: React.FC<{
 
   const externalTooltipHandler = useCallback(
     ({ tooltip }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
-      console.debug('debug tooltip', tooltip)
-      console.debug('debug tooltip opacity', tooltip.opacity)
-      console.debug('debug tooltip title', tooltip.title)
       // hide tooltip
       if (tooltip.opacity === 0) {
         setTooltipVisible(false)

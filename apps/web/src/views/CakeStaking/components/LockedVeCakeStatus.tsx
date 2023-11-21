@@ -43,7 +43,6 @@ export const LockedVeCakeStatus: React.FC<{
   const proxyCake = useMemo(() => getBalanceNumber(proxyBalance), [proxyBalance])
   if (status === CakeLockStatus.NotLocked) return null
 
-  console.debug('debug balance', getBalanceNumber(proxyBalance))
   const balanceText =
     balanceBN < 0.01 ? (
       <UnderlineText fontSize="20px" bold color={balance.eq(0) ? 'failure' : 'secondary'}>
