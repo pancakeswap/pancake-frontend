@@ -1,5 +1,5 @@
 import { styled, useTheme } from 'styled-components'
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import dayjs from 'dayjs'
 import { GameType } from '@pancakeswap/games'
 import { useTranslation } from '@pancakeswap/localization'
@@ -8,7 +8,6 @@ import { StyledTextLineClamp } from 'components/Game/StyledTextLineClamp'
 
 import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import type { Swiper as SwiperClass } from 'swiper/types'
 
 const StyledCard = styled(Box)<{ picked?: boolean }>`
   position: relative;
@@ -104,7 +103,6 @@ interface GamesProps {
 export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGames, pickedGameId, setPickedGameId }) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const [_, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
   const getTime = useCallback((timestamp: number) => {
     const timeToMilliseconds = timestamp * 1000
@@ -115,7 +113,6 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
     <StyledSwiper
       slidesPerView={1}
       spaceBetween={10}
-      onSwiper={setSwiper}
       navigation={{
         prevEl: '.prev',
         nextEl: '.next',
