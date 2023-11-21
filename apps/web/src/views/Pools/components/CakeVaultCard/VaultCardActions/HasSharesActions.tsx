@@ -103,7 +103,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
         <Box mb="16px">
           <ConvertToLock
             stakingToken={stakingToken}
-            stakingTokenPrice={stakingTokenPrice}
+            stakingTokenPrice={stakingTokenPrice ?? 0}
             currentStakedAmount={cakeAsNumberBalance}
           />
         </Box>
@@ -111,7 +111,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
       <Message variant="warning" mb="16px">
         <MessageText>
           {t(
-            'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, convert to Flexible staking, withdraw CAKE and add them to veCAKE.',
+            'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
           )}
         </MessageText>
       </Message>

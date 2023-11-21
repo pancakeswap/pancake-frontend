@@ -2,9 +2,8 @@ import { Box, Flex, Message, MessageText, useMatchBreakpoints } from '@pancakesw
 import Trans from 'components/Trans'
 import { ReactNode, memo } from 'react'
 import { VaultPosition } from 'utils/cakePool'
-
-import ConvertToFlexibleButton from '../Buttons/ConvertToFlexibleButton'
 import { AfterLockedActionsPropsType } from '../types'
+import WithdrawAllButton from '../Buttons/WithdrawAllButton'
 
 const msg: Record<VaultPosition, ReactNode> = {
   [VaultPosition.None]: null,
@@ -12,11 +11,16 @@ const msg: Record<VaultPosition, ReactNode> = {
   [VaultPosition.Locked]: null,
   [VaultPosition.LockedEnd]: (
     <Trans>
-      Extending or adding CAKE is not available for migrated positions. To get more veCAKE, convert to Flexible staking,
-      withdraw CAKE and add them to veCAKE.
+      Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked
+      CAKE pool position, and add CAKE to veCAKE.
     </Trans>
   ),
-  [VaultPosition.AfterBurning]: <Trans>The lock period has ended. Convert to flexible staking to withdraw.</Trans>,
+  [VaultPosition.AfterBurning]: (
+    <Trans>
+      Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked
+      CAKE pool position, and add CAKE to veCAKE.
+    </Trans>
+  ),
 }
 
 const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPropsType>> = ({
@@ -33,7 +37,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
       variant="warning"
       mb="16px"
       action={
-        <Container mt={!isDesktopView && '8px'} ml="10px">
+        <Container mt={!isDesktopView ? '8px' : undefined} ml="10px">
           {/* <ExtendButton
             modalTitle={t('Renew')}
             lockEndTime="0"
@@ -50,7 +54,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
           >
             {t('Renew')}
           </ExtendButton> */}
-          {!hideConvertToFlexibleButton && <ConvertToFlexibleButton minWidth={isDesktopView && '200px'} />}
+          {!hideConvertToFlexibleButton && <WithdrawAllButton minWidth={isDesktopView ? '200px' : undefined} />}
         </Container>
       }
       actionInline={isDesktopView}
