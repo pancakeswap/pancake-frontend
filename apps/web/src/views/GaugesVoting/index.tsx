@@ -12,6 +12,7 @@ import {
   LinkExternal,
   PageHeader,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import styled from 'styled-components'
@@ -42,6 +43,8 @@ const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
   const gauges = useGaugesVoting()
+  const { isDesktop } = useMatchBreakpoints()
+
   return (
     <StyledGaugesVotingPage>
       <StyledPageHeader background="transparent">
@@ -81,7 +84,7 @@ const GaugesVoting = () => {
       </StyledPageHeader>
       <Page style={{ paddingTop: 0, marginTop: '-18px' }}>
         <Card innerCardProps={{ padding: '32px 32px 0 32px' }}>
-          <Grid gridTemplateColumns="2fr 3fr">
+          <Grid gridTemplateColumns={isDesktop ? '2fr 3fr' : '1fr'}>
             <FlexGap flexDirection="column" gap="24px">
               <MyVeCakeBalance />
               <CurrentEpoch />
