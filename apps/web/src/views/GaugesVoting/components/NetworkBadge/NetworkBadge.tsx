@@ -62,6 +62,10 @@ const Badge = styled.div.withConfig({ shouldForwardProp: (prop) => prop !== 'sca
   gap: ${({ scale }) => (scale === 'sm' ? '4px' : '8px')};
 `
 
+const BadgeText = styled(Text)<{ scale?: Scale }>`
+  font-size: ${({ scale }) => (scale === 'sm' ? '14px' : '16px')};
+`
+
 export const NetworkBadge: React.FC<{
   color?: NetworkLogoTheme
   chainId?: number
@@ -85,9 +89,9 @@ export const NetworkBadge: React.FC<{
       }}
     >
       <NetworkLogo type={color} chainId={chainId} />
-      <Text color={textColor} bold>
+      <BadgeText color={textColor} bold scale={scale}>
         {short ? shortName : longName}
-      </Text>
+      </BadgeText>
     </Badge>
   )
 }

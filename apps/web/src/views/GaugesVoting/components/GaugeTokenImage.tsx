@@ -4,12 +4,17 @@ import { GaugeALMConfig, GaugeConfig, GaugeType, GaugeV2Config, GaugeV3Config } 
 import { useMemo } from 'react'
 import { Address } from 'viem'
 
-const GaugeSingleTokenImage = () => {
-  return <img src="/images/cake-staking/token-vecake.png" alt="ve-cake" width="32px" height="32px" />
+type Props = {
+  size?: number
 }
 
-const GaugeDoubleTokenImage: React.FC<{ gaugeConfig: GaugeV2Config | GaugeV3Config | GaugeALMConfig }> = ({
+const GaugeSingleTokenImage = ({ size = 32 }: Props) => {
+  return <img src="/images/cake-staking/token-vecake.png" alt="ve-cake" width={size} height={size} />
+}
+
+const GaugeDoubleTokenImage: React.FC<{ gaugeConfig: GaugeV2Config | GaugeV3Config | GaugeALMConfig } & Props> = ({
   gaugeConfig,
+  size = 32,
 }) => {
   const currency0 = useMemo<Token | undefined>(() => {
     if (gaugeConfig.token0Address)
@@ -22,17 +27,19 @@ const GaugeDoubleTokenImage: React.FC<{ gaugeConfig: GaugeV2Config | GaugeV3Conf
     return undefined
   }, [gaugeConfig.chainId, gaugeConfig.token1Address])
 
-  return <DoubleCurrencyLogo size={32} currency0={currency0} currency1={currency1} />
+  return <DoubleCurrencyLogo size={size} currency0={currency0} currency1={currency1} />
 }
 
-export const GaugeTokenImage: React.FC<{
-  gauge?: GaugeConfig
-}> = ({ gauge }) => {
+export const GaugeTokenImage: React.FC<
+  {
+    gauge?: GaugeConfig
+  } & Props
+> = ({ gauge, size }) => {
   if (!gauge) return null
 
   if (gauge?.type === GaugeType.VeCakePool) {
-    return <GaugeSingleTokenImage />
+    return <GaugeSingleTokenImage size={size} />
   }
 
-  return <GaugeDoubleTokenImage gaugeConfig={gauge} />
+  return <GaugeDoubleTokenImage gaugeConfig={gauge} size={size} />
 }
