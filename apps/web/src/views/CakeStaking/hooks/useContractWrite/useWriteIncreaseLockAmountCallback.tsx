@@ -26,14 +26,14 @@ export const useWriteIncreaseLockAmountCallback = () => {
       },
     )
 
-    setStatus(ApproveAndLockStatus.LOCK_CAKE)
+    setStatus(ApproveAndLockStatus.INCREASE_AMOUNT)
 
     const hash = await walletClient?.writeContract({
       ...request,
       account,
     })
     setTxHash(hash ?? '')
-    setStatus(ApproveAndLockStatus.LOCK_CAKE_PENDING)
+    setStatus(ApproveAndLockStatus.INCREASE_AMOUNT_PENDING)
     if (hash) {
       await waitForTransaction({ hash })
     }

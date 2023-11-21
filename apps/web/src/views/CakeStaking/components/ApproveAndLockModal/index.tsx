@@ -48,7 +48,7 @@ export const ApproveAndLockModal: React.FC<ApproveAndLockModalProps> = ({
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const lockInfo = <LockInfo amount={cakeLockAmount} week={cakeLockWeeks} />
+  const lockInfo = <LockInfo status={status} amount={cakeLockAmount} week={cakeLockWeeks} />
   const scanLink = cakeLockTxHash ? (
     <ScanLink small icon={<BscScanIcon />} href={getBlockExploreLink(cakeLockTxHash, 'transaction', chainId)}>
       {t('View on %site%', {
@@ -70,17 +70,26 @@ export const ApproveAndLockModal: React.FC<ApproveAndLockModalProps> = ({
           </>
         ) : null}
 
-        {status === ApproveAndLockStatus.LOCK_CAKE_PENDING ? (
+        {[
+          ApproveAndLockStatus.LOCK_CAKE_PENDING,
+          ApproveAndLockStatus.INCREASE_WEEKS_PENDING,
+          ApproveAndLockStatus.INCREASE_AMOUNT_PENDING,
+        ].includes(status) ? (
           <TxSubmittedModalContent title={t('Transaction Submitted')} subTitle={lockInfo} />
         ) : null}
 
-        {status === ApproveAndLockStatus.UNLOCK_CAKE ? <PendingModalContent title={t('Confirm unlock')} /> : null}
-        {status === ApproveAndLockStatus.UNLOCK_CAKE_PENDING ? (
-          <TxSubmittedModalContent title={t('Transaction Submitted')} />
+        {status === ApproveAndLockStatus.INCREASE_AMOUNT ? (
+          <PendingModalContent title={t('Confirm Lock')} subTitle={lockInfo} />
+        ) : null}
+        {status === ApproveAndLockStatus.INCREASE_WEEKS ? (
+          <PendingModalContent title={t('Confirm Lock')} subTitle={lockInfo} />
         ) : null}
 
+        {status === ApproveAndLockStatus.UNLOCK_CAKE ? <PendingModalContent title={t('Confirm unlock')} /> : null}
+
         {status === ApproveAndLockStatus.MIGRATE ? <PendingModalContent title={t('Confirm migrate')} /> : null}
-        {status === ApproveAndLockStatus.MIGRATE_PENDING ? (
+
+        {[ApproveAndLockStatus.UNLOCK_CAKE_PENDING, ApproveAndLockStatus.MIGRATE_PENDING].includes(status) ? (
           <TxSubmittedModalContent title={t('Transaction Submitted')} />
         ) : null}
 

@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
+import { getVeCakeAmount } from 'utils/getVeCakeAmount'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Tooltips } from '../Tooltips'
@@ -24,13 +25,6 @@ export const LockCakeDataSet = () => {
   }, [amountInputBN, amountLockedBN])
   const currentTimestamp = useCurrentBlockTimestamp()
   const veCakeAmount = useMemo(() => {
-    console.debug('debug', {
-      cakeLockAmount,
-      cakeUnlockTime,
-      currentTimestamp,
-      veCakeBalance: veCakeBalance?.toString(),
-    })
-
     return getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, cakeUnlockTime - currentTimestamp))
   }, [cakeLockAmount, cakeUnlockTime, currentTimestamp, veCakeBalance])
 

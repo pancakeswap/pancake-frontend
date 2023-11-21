@@ -25,13 +25,6 @@ export const LockCakeDataSet = () => {
   }, [amountInputBN, amountLockedBN])
   const currentTimestamp = useCurrentBlockTimestamp()
   const veCakeAmount = useMemo(() => {
-    console.debug('debug', {
-      cakeLockAmount,
-      cakeUnlockTime,
-      currentTimestamp,
-      veCakeBalance: veCakeBalance?.toString(),
-    })
-
     return getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, cakeUnlockTime - currentTimestamp))
   }, [cakeLockAmount, cakeUnlockTime, currentTimestamp, veCakeBalance])
 
