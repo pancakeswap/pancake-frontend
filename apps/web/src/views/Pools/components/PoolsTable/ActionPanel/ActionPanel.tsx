@@ -22,6 +22,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedLockedCakeVault, DeserializedLockedVaultUser, VaultKey } from 'state/types'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import {
+  LearnMoreLink,
   VeCakeBunny,
   VeCakeButton,
   VeCakeCardTableView,
@@ -254,17 +255,22 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             >
               {vaultPosition !== VaultPosition.Locked && (
                 <MessageText marginBottom="10px">
-                  {vaultPosition === VaultPosition.Flexible
-                    ? t('Flexible CAKE pool is discontinued and no longer distributing rewards.  Learn more »')
-                    : vaultPosition >= VaultPosition.LockedEnd
-                    ? isMigratedToVeCake
-                      ? t(
-                          'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
-                        )
-                      : t(
-                          'The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
-                        )
-                    : null}
+                  {vaultPosition === VaultPosition.Flexible ? (
+                    <>
+                      {t('Flexible CAKE pool is discontinued and no longer distributing rewards.')}
+                      <LearnMoreLink withArrow />
+                    </>
+                  ) : vaultPosition >= VaultPosition.LockedEnd ? (
+                    isMigratedToVeCake ? (
+                      t(
+                        'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+                      )
+                    ) : (
+                      t(
+                        'The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+                      )
+                    )
+                  ) : null}
                 </MessageText>
               )}
             </Message>
