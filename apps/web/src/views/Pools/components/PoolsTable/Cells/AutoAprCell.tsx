@@ -16,9 +16,7 @@ import { Pool } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import { Token } from '@pancakeswap/sdk'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedLockedVaultUser, VaultKey } from 'state/types'
 import { styled } from 'styled-components'
@@ -62,11 +60,7 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
     pool.vaultKey === VaultKey.CakeVault ? 'LockedVaultRoiCalculatorModal' : 'FlexibleSideVaultRoiCalculatorModal',
   )
 
-  const boostedYieldAmount = useMemo(() => {
-    return isLock ? getFullDisplayBalance(userData?.cakeAtLastUserAction, 18, 5) : 0
-  }, [isLock, userData?.cakeAtLastUserAction])
-
-  const tooltipContent = <LockedAprTooltipContent boostedYieldAmount={boostedYieldAmount} />
+  const tooltipContent = <LockedAprTooltipContent />
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
   if (pool.vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None) {
