@@ -33,6 +33,18 @@ import { StyledLockedCard } from './styled'
 
 dayjs.extend(relativeTime)
 
+const LearnMore = () => {
+  const { t } = useTranslation()
+  return (
+    <Link
+      href="https://docs.pancakeswap.finance/products/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42"
+      color="text"
+    >
+      {t('Learn More >>')}
+    </Link>
+  )
+}
+
 export const LockedVeCakeStatus: React.FC<{
   status: CakeLockStatus
 }> = ({ status }) => {
@@ -145,12 +157,7 @@ const LockedInfo = () => {
                     'Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.',
                   )}
                 </Text>
-                <Link
-                  href="https://docs.pancakeswap.finance/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42"
-                  color="text"
-                >
-                  {t('Learn More >>')}
-                </Link>
+                <LearnMore />
               </AutoColumn>
             </Message>
           )}
@@ -190,9 +197,7 @@ const FromProxyTooltip: React.FC<{
   return (
     <>
       {t('%amount% veCAKE from CAKE Pool migrated position.', { amount: proxyCake })}
-      <Link href="https://docs.pancakeswap.finance/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42">
-        {t('Learn More')} {'>>'}
-      </Link>
+      <LearnMore />
     </>
   )
 }
@@ -215,9 +220,7 @@ const ProxyUnlockTooltip: React.FC<{
           expiredAt: formatTime(Number(dayjs.unix(proxyUnlockTime))),
         },
       )}
-      <Link href="https://docs.pancakeswap.finance/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42">
-        {t('Learn More')} {'>>'}
-      </Link>
+      <LearnMore />
     </>
   )
 }
