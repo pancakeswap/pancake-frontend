@@ -91,6 +91,12 @@ import gameMobileBunny from './game-mobile-bunny.png'
 import gameCube from './game-cube.png'
 import gameText from './game-text.png'
 import gameMobileText from './game-mobile-text.png'
+import vecakeBg from './vecake-bg.png'
+import vecakeMobileBg from './vecake-mobile-bg.png'
+import vecakeDesktopBunny from './vecake-desktop-bunny.png'
+import vecakeMobileBunny from './vecake-mobile-bunny.png'
+import vecakeRuby from './vecake-ruby.png'
+import vecakeTitle from './vecake-title.png'
 
 export {
   lotteryImage,
@@ -185,4 +191,10 @@ export {
   gameCube,
   gameText,
   gameMobileText,
+  vecakeBg,
+  vecakeMobileBg,
+  vecakeDesktopBunny,
+  vecakeMobileBunny,
+  vecakeRuby,
+  vecakeTitle,
 }
