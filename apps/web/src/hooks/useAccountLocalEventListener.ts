@@ -10,7 +10,9 @@ export const useAccountLocalEventListener = () => {
   useEffect(() => {
     if (account && connector) {
       const handleEvent = () => {
-        dispatch(resetUserState({ chainId }))
+        if (chainId) {
+          dispatch(resetUserState({ chainId }))
+        }
       }
 
       connector.addListener('disconnect', handleEvent)
