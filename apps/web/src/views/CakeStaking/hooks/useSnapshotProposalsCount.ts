@@ -3,7 +3,7 @@ import { SNAPSHOT_API } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
 
 const getSnapshotCount = async (space: string) => {
-  const response: { space: { proposalsCount: number } } = await request(
+  const response: { space?: { proposalsCount: number } } = await request(
     SNAPSHOT_API,
     gql`
       query ProposalsCount {
@@ -13,7 +13,7 @@ const getSnapshotCount = async (space: string) => {
       }
     `,
   )
-  return response.space.proposalsCount ?? 0
+  return response.space?.proposalsCount ?? 0
 }
 
 const SPACE_ID = 'cakevote.eth'
