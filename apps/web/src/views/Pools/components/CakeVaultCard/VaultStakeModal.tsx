@@ -1,50 +1,48 @@
-import { useState, useCallback, useMemo } from 'react'
-import { styled } from 'styled-components'
 import {
-  Modal,
-  Text,
-  Flex,
-  Image,
-  Button,
-  Slider,
-  BalanceInput,
   AutoRenewIcon,
+  BalanceInput,
+  Button,
   CalculateIcon,
+  Flex,
   IconButton,
+  Image,
+  Modal,
   Skeleton,
-  Box,
+  Slider,
+  Text,
   useToast,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { useCallback, useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
+import { useAccount } from 'wagmi'
 
-import { useCakePrice } from 'hooks/useCakePrice'
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { useVaultApy } from 'hooks/useVaultApy'
-import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
-import { useVaultPoolContract } from 'hooks/useContract'
-import useTheme from 'hooks/useTheme'
-import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
-import BigNumber from 'bignumber.js'
-import { getFullDisplayBalance, formatNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { fetchCakeVaultUserData } from 'state/pools'
-import { VaultKey } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 import { getInterestBreakdown } from '@pancakeswap/utils/compoundApyHelpers'
+import { formatNumber, getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
+import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
-import { Token } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useVaultPoolContract } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { fetchCakeVaultUserData } from 'state/pools'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
+import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
+import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 
-import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
-import ConvertToLock from '../LockedPool/Common/ConvertToLock'
-import FeeSummary from './FeeSummary'
 import { MIN_LOCK_AMOUNT, convertCakeToShares } from '../../helpers'
+import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
+import FeeSummary from './FeeSummary'
 
 interface VaultStakeModalProps {
   pool: Pool.DeserializedPool<Token>
@@ -316,15 +314,6 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
           )}
         </Flex>
       )}
-      {pool.vaultKey === VaultKey.CakeVault && cakeAsNumberBalance ? (
-        <Box mt="8px" maxWidth="370px">
-          <ConvertToLock
-            stakingToken={stakingToken}
-            stakingTokenPrice={stakingTokenPrice}
-            currentStakedAmount={cakeAsNumberBalance}
-          />
-        </Box>
-      ) : null}
       {needEnable ? (
         <Button
           isLoading={cakePendingTx}

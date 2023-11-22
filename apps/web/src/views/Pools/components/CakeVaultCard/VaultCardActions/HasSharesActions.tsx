@@ -1,18 +1,17 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   AddIcon,
   Balance,
-  Box,
   Flex,
   IconButton,
+  Message,
+  MessageText,
   MinusIcon,
   Skeleton,
   Text,
   useModal,
-  Message,
-  MessageText,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
-import { useTranslation } from '@pancakeswap/localization'
 
 import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -20,8 +19,6 @@ import BigNumber from 'bignumber.js'
 import { LightGreyCard } from 'components/Card'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { VaultKey } from 'state/types'
-import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
 
@@ -99,15 +96,6 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
           </IconButton>
         </Flex>
       </Flex>
-      {pool.vaultKey === VaultKey.CakeVault && (
-        <Box mb="16px">
-          <ConvertToLock
-            stakingToken={stakingToken}
-            stakingTokenPrice={stakingTokenPrice ?? 0}
-            currentStakedAmount={cakeAsNumberBalance}
-          />
-        </Box>
-      )}
       <Message variant="warning" mb="16px">
         <MessageText>
           {t(

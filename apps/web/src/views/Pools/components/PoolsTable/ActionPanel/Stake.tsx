@@ -38,7 +38,6 @@ import { VeCakeButton } from 'views/CakeStaking/components/SyrupPool/VeCakeButto
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
-import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import StakeModal from '../../Modals/StakeModal'
@@ -470,21 +469,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
             />
           </Box>
         )} */}
-        {vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.Flexible && (
-          <Box
-            width="100%"
-            mt={['0', '0', '24px', '24px', '24px']}
-            ml={['0', '0', '12px', '12px', '32px']}
-            mr={['0', '0', '12px', '12px', '0']}
-          >
-            <ConvertToLock
-              stakingToken={stakingToken}
-              stakingTokenPrice={stakingTokenPrice}
-              currentStakedAmount={cakeAsNumberBalance}
-              isInline
-            />
-          </Box>
-        )}
       </>
     )
   }
