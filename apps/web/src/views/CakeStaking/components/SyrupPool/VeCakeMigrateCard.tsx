@@ -33,7 +33,7 @@ export const VeCakeMigrateCard: React.FC<{ isTableView?: boolean; lockEndTime?: 
             )}
           </Box>
         </Flex>
-        {!isTableView && <VeCakeButton type="migrate" />}
+        {!isTableView && !isMigratedToVeCake && <VeCakeButton type="migrate" />}
       </ShineStyledBox>
     )
   },
