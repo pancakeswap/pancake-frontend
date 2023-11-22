@@ -51,6 +51,7 @@ const RightWrapper = styled.div`
 
     ${({ theme }) => theme.mediaQueries.lg} {
       left: 58%;
+      display: inline-block !important;
     }
   }
 
