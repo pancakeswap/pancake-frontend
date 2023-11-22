@@ -63,7 +63,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
       'Boost your earnings in fixed staking.',
       'More to come...',
     ],
-    link: 'blog/@todo',
+    link: 'https://docs.pancakeswap.finance/products',
   },
 }
 
