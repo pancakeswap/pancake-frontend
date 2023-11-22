@@ -3,11 +3,11 @@ import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTrans
 import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { ApproveAndLockStatus, approveAndLockStatusAtom, cakeLockTxHashAtom } from 'state/vecake/atoms'
-import { useLockCakeData, useLockCakeDataResetCallback } from 'state/vecake/hooks'
+import { useLockCakeData } from 'state/vecake/hooks'
 import { isUserRejected } from 'utils/sentry'
 import { useLockApproveCallback } from '../useLockAllowance'
-import { useWriteLockCallback } from './useWriteLockCallback'
 import { useWriteIncreaseLockAmountCallback } from './useWriteIncreaseLockAmountCallback'
+import { useWriteLockCallback } from './useWriteLockCallback'
 
 export const useWriteWithApproveCallback = () => {
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
@@ -16,7 +16,6 @@ export const useWriteWithApproveCallback = () => {
 
   const { approvalState, approveCallback } = useLockApproveCallback(cakeLockAmount)
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
-  const resetData = useLockCakeDataResetCallback()
 
   const handleCancel = useCallback(() => {
     setStatus(ApproveAndLockStatus.IDLE)
@@ -34,12 +33,10 @@ export const useWriteWithApproveCallback = () => {
           }
           setStatus(ApproveAndLockStatus.LOCK_CAKE)
           await write()
-          resetData()
           return
         }
         if (approvalState === ApprovalState.APPROVED) {
           await write()
-          resetData()
         }
       } catch (error) {
         console.error(error)
@@ -48,7 +45,7 @@ export const useWriteWithApproveCallback = () => {
         }
       }
     },
-    [approvalState, approveCallback, handleCancel, resetData, setStatus, setTxHash, waitForTransaction],
+    [approvalState, approveCallback, handleCancel, setStatus, setTxHash, waitForTransaction],
   )
 }
 

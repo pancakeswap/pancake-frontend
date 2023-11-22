@@ -7,8 +7,7 @@ export const useRoundedUnlockTimestamp = (startTimestamp?: number): bigint | und
   const { cakeLockWeeks } = useLockCakeData()
   const currentTimestamp = useCurrentBlockTimestamp()
 
-  const week = Number(cakeLockWeeks)
-  if (!week) return startTimestamp ? BigInt(startTimestamp) : BigInt(currentTimestamp)
+  const week = Number(cakeLockWeeks) || 0
 
   const maxUnlockTimestamp = dayjs.unix(currentTimestamp).add(MAX_VECAKE_LOCK_WEEKS, 'weeks').unix()
   const userUnlockTimestamp = dayjs
