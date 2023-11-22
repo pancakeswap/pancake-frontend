@@ -177,7 +177,7 @@ export const VeCakeCard = memo(() => {
                 {BENEFITS?.farmBoost?.subTitle}
               </Text>
               <Text fontSize={14} color="text" bold>
-                3X
+                2.5X
               </Text>
             </Flex>
           </Box>
@@ -274,7 +274,7 @@ export const VeCakeCardTableView = memo(() => {
           <Text fontSize={14} color="text">
             {BENEFITS?.farmBoost?.subTitle}
             <Text fontSize={14} color="text" ml="3px" bold display="inline-block">
-              3X
+              2.5X
             </Text>
           </Text>
         </Box>

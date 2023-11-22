@@ -138,7 +138,7 @@ const CakeStaking = () => {
                 ml="4px"
               />
             }
-            dataText="3x"
+            dataText="2.5x"
           />
           <BenefitCard
             type="snapshotVoting"
