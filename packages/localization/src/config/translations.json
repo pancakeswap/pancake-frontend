@@ -392,7 +392,6 @@
   "Reclaim": "Reclaim",
   "Locked APR": "Locked APR",
   "Calculated based on current rates and subject to change based on various external variables. It is a rough estimate provided for convenience only, and by no means represents guaranteed returns.": "Calculated based on current rates and subject to change based on various external variables. It is a rough estimate provided for convenience only, and by no means represents guaranteed returns.",
-  "Boosted yield applies to the original locked amount: %boostedYieldAmount%": "Boosted yield applies to the original locked amount: %boostedYieldAmount%",
   "This page can’t be displayed right now due to an error. Please check back soon.": "This page can’t be displayed right now due to an error. Please check back soon.",
   "Round Cancelled": "Round Cancelled",
   "Learn More": "Learn More",
@@ -3010,7 +3009,7 @@
   "Migrated": "Migrated",
   "Reward pause": "Reward pause",
   "The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.": "The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.",
-  "This product have been upgraded!": "This product have been upgraded!",
+  "This product has been upgraded": "This product has been upgraded",
   "Reward paused for this position": "Reward paused for this position",
   "to be locked until": "to be locked until",
   "My VeCAKE": "My VeCAKE",
@@ -3037,5 +3036,6 @@
   "Your CAKE, Your Voice": "Your CAKE, Your Voice",
   "Introducing": "Introducing",
   "veCAKE": "veCAKE",
-  "get started": "get started"
+  "get started": "get started",
+  "To continue receiving CAKE rewards, please migrate your Fixed-Term Staking CAKE Balance to veCAKE": "To continue receiving CAKE rewards, please migrate your Fixed-Term Staking CAKE Balance to veCAKE"
 }
