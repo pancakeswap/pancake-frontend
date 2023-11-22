@@ -209,13 +209,17 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       <ActionContainer>
         <ActionTitles>
           <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-            {vaultKey === VaultKey.CakeVault
+            {vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault
               ? t('Stake & Lock for veCAKE, to enjoy more rewards & benefit!')
               : t('Start staking')}
           </Text>
         </ActionTitles>
         <ActionContent>
-          {vaultKey === VaultKey.CakeVault ? <VeCakeButton type="get" /> : <ConnectWalletButton width="100%" />}
+          {vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault ? (
+            <VeCakeButton type="get" />
+          ) : (
+            <ConnectWalletButton width="100%" />
+          )}
         </ActionContent>
       </ActionContainer>
     )
