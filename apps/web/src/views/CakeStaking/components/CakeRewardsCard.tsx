@@ -37,8 +37,8 @@ import { getRevenueSharingCakePoolAddress, getRevenueSharingVeCakeAddress } from
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
-import { MyVeCakeCard } from './MyVeCakeCard'
 import { useRevenueSharingCakePool, useRevenueSharingVeCake } from '../hooks/useRevenueSharingProxy'
+import { MyVeCakeCard } from './MyVeCakeCard'
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
@@ -89,8 +89,8 @@ export const CakeRewardsCard = ({ onDismiss }) => {
     [availableClaim, availableClaimFromCakePool],
   )
   const totalAvailableClaimUsdValue = useMemo(
-    () => new BigNumber(availableClaim).times(cakePriceBusd).toNumber(),
-    [availableClaim, cakePriceBusd],
+    () => new BigNumber(totalAvailableClaim).times(cakePriceBusd).toNumber(),
+    [totalAvailableClaim, cakePriceBusd],
   )
 
   const showExpireSoonWarning = useMemo(() => {
