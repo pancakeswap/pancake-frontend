@@ -213,14 +213,20 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           )}
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
             {pool.vaultKey ? (
-              <>{account ? <AutoHarvest pool={pool} /> : <VeCakeCardTableView />}</>
+              <>
+                {account && vaultPosition !== VaultPosition.None ? (
+                  <AutoHarvest pool={pool} />
+                ) : (
+                  <VeCakeCardTableView />
+                )}
+              </>
             ) : (
               <Harvest {...pool} />
             )}
             <Stake pool={pool} />
           </ActionContainer>
         </Box>
-        {isCakePool && account && (
+        {isCakePool && account && vaultPosition !== VaultPosition.None && (
           <Flex width="100%">
             <Message
               variant="warning"

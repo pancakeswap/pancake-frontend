@@ -101,6 +101,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     : 0
 
   const vaultData = useVaultPoolByKey(pool.vaultKey)
+
   const {
     userData: {
       userShares,
@@ -202,8 +203,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const reachStakingLimit = stakingLimit?.gt(0) && userData?.stakedBalance?.gte(stakingLimit)
   const isLocked = vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked
-
-  if (!account) {
+  const vaultPosition = getVaultPosition(vaultData.userData)
+  if (!account || (account && vaultPosition === VaultPosition.None)) {
     return (
       <ActionContainer>
         <ActionTitles>
@@ -269,7 +270,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   // Wallet connected, user data loaded and approved
   if (isNotVaultAndHasStake || isVaultWithShares) {
-    const vaultPosition = getVaultPosition(vaultData.userData)
     return (
       <>
         <ActionContainer flex={vaultPosition > 1 ? 1.5 : 1}>
