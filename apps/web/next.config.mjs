@@ -132,6 +132,7 @@ const config = {
       {
         source: '/gauges-voting',
         destination: '/404',
+        permanent: false
       },
       {
         source: '/send',
