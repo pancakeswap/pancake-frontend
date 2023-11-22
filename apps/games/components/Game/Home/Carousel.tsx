@@ -57,7 +57,7 @@ const StyledCarouselImage = styled(Box)<{
 
   ${({ theme }) => theme.mediaQueries.xl} {
     margin-top: 0;
-    width: ${({ isHorizontal }) => (isHorizontal ? '157px' : '96px')};
+    width: ${({ isHorizontal }) => (isHorizontal ? '157px' : '93%')};
 
     &:after {
       display: none;
@@ -168,7 +168,7 @@ export const Carousel: React.FC<React.PropsWithChildren<CarouselProps>> = ({
         breakpoints={breakPoints}
       >
         {carouselData.map((carousel, index) => (
-          <SwiperSlide key={carousel.image}>
+          <SwiperSlide key={carousel.image} style={{ width: '100%' }}>
             <StyledCarouselImage
               isActive={carouselId === index}
               imgUrl={carousel.image}
