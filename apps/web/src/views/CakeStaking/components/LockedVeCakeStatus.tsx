@@ -21,7 +21,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { formatTime } from 'utils/formatTime'
 import { CakeLockStatus } from 'views/CakeStaking/types'
 import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWithdrawCallback'
@@ -44,13 +44,15 @@ export const LockedVeCakeStatus: React.FC<{
 
   if (status === CakeLockStatus.NotLocked) return null
 
+  const TextComp = proxyBalance.gt(0) ? UnderlineText : Text
   const balanceText =
-    balanceBN < 0.01 ? (
-      <UnderlineText fontSize="20px" bold color={balance.eq(0) ? 'failure' : 'secondary'}>
+    balanceBN > 0 && balanceBN < 0.01 ? (
+      <TextComp fontSize="20px" bold color={balance.eq(0) ? 'failure' : 'secondary'}>
         {`< 0.01`}
-      </UnderlineText>
+      </TextComp>
     ) : (
       <UnderlinedBalance
+        underlined={proxyBalance.gt(0)}
         fontSize="20px"
         bold
         color={balance.eq(0) ? 'failure' : 'secondary'}
@@ -240,7 +242,7 @@ export const CakeLocked: React.FC<{
   return (
     <>
       <Tooltips content={<FromProxyTooltip proxyCake={proxyCake} />}>
-        <UnderlinedBalance value={totalCake} decimals={2} fontWeight={600} fontSize={20} />
+        <UnderlinedBalance value={totalCake} decimals={2} fontWeight={600} fontSize={20} underlined />
       </Tooltips>
       <Balance prefix="~" value={totalCakeUsdValue} decimals={2} unit="USD" fontSize={12} />
     </>
@@ -310,10 +312,17 @@ const CakeUnlockAt: React.FC<{
   )
 }
 
-const UnderlinedBalance = styled(Balance)`
-  text-decoration: underline dotted;
-  text-decoration-color: ${({ theme }) => theme.colors.textSubtle};
-  text-underline-offset: 0.1em;
+const UnderlinedBalance = styled(Balance).withConfig({ shouldForwardProp: (prop) => prop !== 'underlined' })<{
+  underlined?: boolean
+}>`
+  ${({ underlined }) =>
+    underlined
+      ? css`
+          text-decoration: underline dotted;
+          text-decoration-color: ${({ theme }) => theme.colors.textSubtle};
+          text-underline-offset: 0.1em;
+        `
+      : ''}
 `
 
 const UnderlineText = styled(Text)`

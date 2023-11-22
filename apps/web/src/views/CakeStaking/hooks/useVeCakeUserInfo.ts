@@ -109,8 +109,8 @@ export const useCakeLockStatus = (): {
   )
   const cakePoolLockExpired = useMemo(() => {
     if (!cakePoolLocked) return false
-    return now.isBefore(userInfo!.lockEndTime)
-  }, [cakePoolLocked, now, userInfo])
+    return currentTimestamp > userInfo!.lockEndTime
+  }, [cakePoolLocked, currentTimestamp, userInfo])
 
   const nativeCakeLockedAmount = useMemo(() => {
     if (!userInfo) return BigInt(0)
