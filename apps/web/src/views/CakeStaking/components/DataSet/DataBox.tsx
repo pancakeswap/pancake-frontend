@@ -15,7 +15,7 @@ export const DataRow: React.FC<{
 }> = ({ label, value }) => {
   return (
     <Flex justifyContent="space-between" width="100%" alignItems="center">
-      <Text fontSize={12} bold color="textSubtle">
+      <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
         {label}
       </Text>
       <Text fontSize={16} textAlign="right">

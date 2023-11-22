@@ -39,7 +39,7 @@ export const NewStakingDataSet: React.FC<{
         <AutoRow px="16px" py="12px" gap="8px">
           <DataRow
             label={
-              <Text fontSize={14} color="textSubtle">
+              <Text fontSize={14} color="textSubtle" textTransform="uppercase">
                 {t('CAKE to be locked')}
               </Text>
             }
