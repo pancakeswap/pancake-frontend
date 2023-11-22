@@ -15,17 +15,20 @@ import {
   Toggle,
   TooltipText,
   useMatchBreakpoints,
-  useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
-import { useMessages, useSubscription, useSubscriptionScopes } from '@web3inbox/widget-react'
+import { useMessages, useSubscription } from '@web3inbox/widget-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { addArchivedNotification, setHasUnread, setImportantAlerts } from 'state/notifications/actions'
-import { useAllNotifications, useImportantNotificationsOnly } from 'state/notifications/hooks'
+import {
+  useAllNotifications,
+  useHasUnreadNotifications,
+  useImportantNotificationsOnly,
+} from 'state/notifications/hooks'
 import { styled } from 'styled-components'
-import { DISABLE_ALL_SCOPES, ENABLE_ALL_SCOPES, Events, NotificationFilterTypes } from 'views/Notifications/constants'
+import { NotificationFilterTypes } from 'views/Notifications/constants'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
 import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
@@ -89,12 +92,11 @@ const NotificationView = ({
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Latest)
   const dispatch = useAppDispatch()
   const { isMobile } = useMatchBreakpoints()
-  const toast = useToast()
 
   const { messages: notifications, deleteMessage } = useMessages(account)
-  const { scopes, updateScopes } = useSubscriptionScopes(account)
   const { subscription } = useSubscription(account)
   const archivedNotifications = useAllNotifications(subscription?.topic)
+  const hasUnreadNotifications = useHasUnreadNotifications(subscription?.topic)
   const importantAlertsOnly = useImportantNotificationsOnly(subscription?.topic)
 
   const { t } = useTranslation()
@@ -164,14 +166,17 @@ const NotificationView = ({
 
   const toggleImportantOnlyAlerts = useCallback(async () => {
     if (!subscription?.topic) return
-    try {
-      dispatch(setImportantAlerts({ subscriptionId: subscription?.topic, importantOnly: !importantAlertsOnly }))
-      await updateScopes(!importantAlertsOnly ? DISABLE_ALL_SCOPES : ENABLE_ALL_SCOPES)
-      toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
-    } catch (error: any) {
-      toast.toastError(Events.PreferencesError.title, Events.PreferencesError.message)
+    dispatch(setImportantAlerts({ subscriptionId: subscription?.topic, importantOnly: !importantAlertsOnly }))
+  }, [importantAlertsOnly, subscription?.topic, dispatch])
+
+  const markAllNotificationsAsRead = useCallback(() => {
+    if (!subscription?.topic) return
+    for (const unreadNotification of notifications) {
+      dispatch(
+        setHasUnread({ subscriptionId: subscription.topic, notificationId: unreadNotification.id, hasUnread: true }),
+      )
     }
-  }, [updateScopes, importantAlertsOnly, dispatch, subscription?.topic, toast])
+  }, [dispatch, notifications, subscription?.topic])
 
   const {
     tooltip: importantAlertsTooltip,
@@ -218,21 +223,30 @@ const NotificationView = ({
         </Box>
         <NotificationsTabButton activeIndex={viewMode} setActiveIndex={setViewMode} />
       </Flex>
-      <Flex paddingX="24px" alignItems="center" paddingTop="16px" paddingBottom="16px">
-        {scopes && (
+      <Flex paddingX="24px" alignItems="center" justifyContent="space-between" paddingTop="16px" paddingBottom="16px">
+        <Flex>
           <Toggle
             id="toggle-expert-mode-button"
             scale="sm"
             checked={importantAlertsOnly}
             onChange={toggleImportantOnlyAlerts}
           />
-        )}
-        <Text paddingX="8px">{t('Important only')}</Text>
-        <TooltipText ref={buyCryptoTargetRef} display="flex" style={{ justifyContent: 'center' }}>
-          <InfoFilledIcon pt="2px" fill="#000" color="textSubtle" width="16px" />
-        </TooltipText>
+          <Text paddingX="8px">{t('Important only')}</Text>
+          <TooltipText ref={buyCryptoTargetRef} display="flex" style={{ justifyContent: 'center' }}>
+            <InfoFilledIcon pt="2px" fill="#000" color="textSubtle" width="16px" />
+          </TooltipText>
 
-        {importantAlertsTooltipVisible && !isMobile && importantAlertsTooltip}
+          {importantAlertsTooltipVisible && !isMobile && importantAlertsTooltip}
+        </Flex>
+        <Button
+          variant="secondary"
+          height="25px"
+          paddingX="14px"
+          disabled={!hasUnreadNotifications}
+          onClick={markAllNotificationsAsRead}
+        >
+          {t('Mark as all read')}
+        </Button>
       </Flex>
       {viewMode === ViewMode.Archived ? (
         <>
@@ -251,6 +265,7 @@ const NotificationView = ({
             notifications={viewMode === ViewMode.Latest ? filteredNotifications.active : filteredNotifications.archived}
             isClosing={isClosing}
             subscriptionId={subscription.topic}
+            importantAlertsOnly={importantAlertsOnly}
           />
         )}
       </NotificationContainerStyled>

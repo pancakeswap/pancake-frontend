@@ -27,6 +27,7 @@ import {
   StyledLink,
   StyledNotificationWrapper,
 } from 'views/Notifications/styles'
+import { SubsctiptionType } from 'views/Notifications/types'
 import { formatTime } from 'views/Notifications/utils/date'
 import {
   extractChainIdFromMessage,
@@ -51,14 +52,17 @@ interface INotificationContainerProps {
   notifications: NotifyClientTypes.NotifyMessageRecord[]
   isClosing: boolean
   subscriptionId: string
+  importantAlertsOnly: boolean
 }
 
 const getNotificationPairlogo = (title: string, message: string) => {
   const isAprNotification = title.includes('APR')
   const chainName = isAprNotification ? extractWordBeforeFullStop(message) : extractChainIdFromMessage(message)
-  const chainId = CHAIN_NAME_TO_CHAIN_ID[chainName]
+  const chainId = CHAIN_NAME_TO_CHAIN_ID[chainName === 'polygon_zkevm.' ? 'polygon_zkevm' : chainName]
+
   const image1 = isAprNotification ? '/images/notifications/farms-scope.svg' : '/logo.png'
   const image2 = `${ASSET_CDN}/web/chains/${chainId}.png`
+
   return { image1, image2 }
 }
 const NotificationImage = ({
@@ -198,7 +202,12 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
   )
 }
 
-const NotificationContainer = ({ notifications, isClosing, subscriptionId }: INotificationContainerProps) => {
+const NotificationContainer = ({
+  notifications,
+  isClosing,
+  subscriptionId,
+  importantAlertsOnly,
+}: INotificationContainerProps) => {
   const { t } = useTranslation()
   if (notifications.length === 0) {
     return (
@@ -230,6 +239,14 @@ const NotificationContainer = ({ notifications, isClosing, subscriptionId }: INo
     <NotificationsWrapper isClosing={isClosing}>
       {notifications
         .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1))
+        .filter((notification: NotifyClientTypes.NotifyMessageRecord) => {
+          if (importantAlertsOnly)
+            return (
+              notification.message.type === SubsctiptionType.Alerts ||
+              notification.message.type === SubsctiptionType.Liquidity
+            )
+          return true
+        })
         .map((notification: NotifyClientTypes.NotifyMessageRecord) => {
           return (
             <NotificationItem
