@@ -1,5 +1,11 @@
 # @pancakeswap/multicall
 
+## 3.3.0
+
+### Minor Changes
+
+- fd7a96a36: Add multicall3 contract addresses
+
 ## 3.2.3
 
 ### Patch Changes

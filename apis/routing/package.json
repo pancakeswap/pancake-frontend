@@ -1,6 +1,6 @@
 {
   "name": "routing-api",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "dependencies": {
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
