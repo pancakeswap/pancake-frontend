@@ -91,7 +91,7 @@ export const useCakeLockStatus = (): {
   const { data: userInfo } = useVeCakeUserInfo()
   // if user locked at cakePool before, should migrate
   const cakePoolLockInfo = useCakePoolLockInfo()
-  const isAllowMigrate = useCheckIsUserAllowMigrate(String(userInfo?.lockEndTime))
+  const isAllowMigrate = useCheckIsUserAllowMigrate(String(cakePoolLockInfo.lockEndTime))
   const shouldMigrate = useMemo(() => {
     return cakePoolLockInfo?.locked && userInfo?.cakePoolType !== 1 && isAllowMigrate
   }, [cakePoolLockInfo?.locked, isAllowMigrate, userInfo?.cakePoolType])
