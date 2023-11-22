@@ -58,10 +58,15 @@ const StyledCarouselImage = styled(Box)<{
   ${({ theme }) => theme.mediaQueries.xl} {
     margin-top: 0;
     width: ${({ isHorizontal }) => (isHorizontal ? '157px' : '93%')};
+    height: ${({ isHorizontal }) => (isHorizontal ? '104px' : '210px')};
 
     &:after {
       display: none;
     }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({ isHorizontal }) => (isHorizontal ? '104px' : '143px')};
   }
 `
 
