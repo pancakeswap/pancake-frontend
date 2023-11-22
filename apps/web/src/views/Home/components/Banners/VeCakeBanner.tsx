@@ -214,11 +214,7 @@ const VeCakeBanner = () => {
               </Link>
             </Flex>
           ) : (
-            <Link
-              href="https://blog.pancakeswap.finance/articles/liquid-staking-integration-with-binance-earn-stake-eth-and-receive-wbeth-to-earn-eth-staking-rewards"
-              external
-              style={{ textDecoration: 'none' }}
-            >
+            <Link href="/cake-staking" external style={{ textDecoration: 'none' }}>
               <StyledButton>
                 <Text
                   bold
