@@ -60,7 +60,6 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
     true,
     `withdraw-vault-${pool.sousId}-${pool.vaultKey}`,
   )
-  console.log(lockPosition, 'lockPosition?????')
   return (
     <LightGreyCard>
       <Flex mb="16px" justifyContent="space-between" alignItems="center">
