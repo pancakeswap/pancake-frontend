@@ -1,7 +1,6 @@
-import { Token } from '@pancakeswap/sdk'
-import { Box } from '@pancakeswap/uikit'
-import { CurrencyLogo } from 'components/Logo'
-import { ChainLogo } from 'components/Logo/ChainLogo'
+import { Token, WNATIVE, Native } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
+import { CurrencyLogo, ChainLogo } from '@pancakeswap/widgets-internal'
 import { GaugeALMConfig, GaugeConfig, GaugeType, GaugeV2Config, GaugeV3Config } from 'config/constants/types'
 import { useMemo } from 'react'
 import styled from 'styled-components'
@@ -11,35 +10,44 @@ const StyledDualLogo = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  justify-content: center;
+  justify-content: flex-start;
 `
+
+const StyledChainLogo = styled(ChainLogo)`
+  margin-left: -0.5em;
+`
+
+function getCurrency(chainId: ChainId, address?: Address) {
+  if (!address) {
+    return undefined
+  }
+  if (WNATIVE[chainId].address === address) {
+    return Native.onChain(chainId)
+  }
+  return new Token(Number(chainId), address, 18, '', '')
+}
 
 const SingleLogo = ({ size = 32 }: { size?: number }) => {
   return <img src="/images/cake-staking/token-vecake.png" alt="ve-cake" width={size} height={size} />
 }
+
 const DoubleLogo: React.FC<{ gaugeConfig: GaugeV2Config | GaugeV3Config | GaugeALMConfig; size?: number }> = ({
   gaugeConfig,
   size = 36,
 }) => {
-  const currency0 = useMemo<Token | undefined>(() => {
-    if (gaugeConfig.token0Address)
-      return new Token(Number(gaugeConfig.chainId), gaugeConfig.token0Address as Address, 18, '', '')
-    return undefined
-  }, [gaugeConfig.chainId, gaugeConfig.token0Address])
-  const currency1 = useMemo((): Token | undefined => {
-    if (gaugeConfig.token1Address)
-      return new Token(Number(gaugeConfig.chainId), gaugeConfig.token1Address as Address, 18, '', '')
-    return undefined
-  }, [gaugeConfig.chainId, gaugeConfig.token1Address])
+  const currency0 = useMemo(
+    () => getCurrency(gaugeConfig.chainId, gaugeConfig.token0Address),
+    [gaugeConfig.chainId, gaugeConfig.token0Address],
+  )
+  const currency1 = useMemo(
+    () => getCurrency(gaugeConfig.chainId, gaugeConfig.token1Address),
+    [gaugeConfig.chainId, gaugeConfig.token1Address],
+  )
 
   return (
     <>
-      {currency0 ? (
-        <Box mr="-5.62px">
-          <CurrencyLogo currency={currency0} size={`${size}px`} />
-        </Box>
-      ) : null}
-      {currency1 ? <CurrencyLogo currency={currency1} size={`${size}px`} /> : null}
+      {currency0 ? <CurrencyLogo currency={currency0} size={`${size}px`} /> : null}
+      {currency1 ? <CurrencyLogo ml="-0.5em" currency={currency1} size={`${size}px`} /> : null}
     </>
   )
 }
@@ -59,14 +67,12 @@ export const TripleLogo: React.FC<{
   chainId?: number
   size?: number
 }> = ({ gaugeConfig, chainId, size }) => {
+  const chainLogoSize = useMemo(() => size && size * 0.48, [size])
+
   return (
     <StyledDualLogo>
       <TokensLogo gaugeConfig={gaugeConfig} size={size} />
-      {chainId ? (
-        <Box ml="-9px">
-          <ChainLogo chainId={chainId} width={size} height={size} />
-        </Box>
-      ) : null}
+      {chainId ? <StyledChainLogo chainId={chainId} width={chainLogoSize} height={chainLogoSize} /> : null}
     </StyledDualLogo>
   )
 }
