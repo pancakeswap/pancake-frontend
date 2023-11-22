@@ -6,6 +6,7 @@ import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { ApproveAndLockStatus, approveAndLockStatusAtom, cakeLockTxHashAtom } from 'state/vecake/atoms'
 import { useLockCakeData } from 'state/vecake/hooks'
+import { calculateGasMargin } from 'utils'
 import { useAccount, useWalletClient } from 'wagmi'
 import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 
@@ -36,6 +37,7 @@ export const useWriteLockCallback = () => {
 
     const hash = await walletClient?.writeContract({
       ...request,
+      gas: request.gas ? calculateGasMargin(request.gas) : undefined,
       account,
     })
     setTxHash(hash ?? '')
