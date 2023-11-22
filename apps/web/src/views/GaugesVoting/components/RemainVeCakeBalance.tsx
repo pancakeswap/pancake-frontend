@@ -1,12 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent } from '@pancakeswap/swap-sdk-core'
 import { Balance, Box, Flex, Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import BN from 'bignumber.js'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { useVotedPower } from '../hooks/useVotedPower'
+import { useUserVoteSlopes } from '../hooks/useUserVoteGuages'
 
 const StyledBox = styled(Box)`
   border-radius: 16px;
@@ -24,11 +22,17 @@ const StyledBox = styled(Box)`
 
 export const RemainVeCakeBalance = () => {
   const { t } = useTranslation()
-  const votedPower = useVotedPower() ?? 0
+
   const { balance: veCake } = useVeCakeBalance()
+  const { data: votedGauges } = useUserVoteSlopes()
+  const votedPercent = useMemo(() => {
+    return votedGauges?.reduce((prev, cur) => {
+      return prev + cur.slope
+    }, 0)
+  }, [votedGauges])
   const votePower = useMemo(() => {
-    return new BN(new Percent(10000 - (Number(votedPower) || 0), 10000).multiply(veCake.toString()).toString())
-  }, [veCake, votedPower])
+    return veCake.times(votedPercent).dividedBy(10000)
+  }, [veCake, votedPercent])
 
   return (
     <StyledBox>
