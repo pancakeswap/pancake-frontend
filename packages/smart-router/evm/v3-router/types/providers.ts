@@ -44,6 +44,6 @@ export interface QuoteProvider<C = any> {
   getConfig?: () => C
 }
 
-export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient
+export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient | undefined
 
 export type SubgraphProvider = ({ chainId }: { chainId?: ChainId }) => GraphQLClient | undefined

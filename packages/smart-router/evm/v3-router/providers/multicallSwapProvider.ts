@@ -37,7 +37,11 @@ export type PancakeMulticallConfig = {
 export class PancakeMulticallProvider extends IMulticallProvider<PancakeMulticallConfig> {
   static abi = IMulticallABI
 
-  constructor(protected chainId: ChainId, protected provider: PublicClient, protected gasLimitPerCall = 1_000_000) {
+  constructor(
+    protected chainId: ChainId,
+    protected provider: PublicClient | undefined,
+    protected gasLimitPerCall = 1_000_000,
+  ) {
     super()
     this.provider = provider
   }

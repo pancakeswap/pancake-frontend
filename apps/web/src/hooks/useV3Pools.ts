@@ -3,7 +3,7 @@ import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
 import { Tick } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 
 import { POOLS_FAST_REVALIDATE, POOLS_SLOW_REVALIDATE } from 'config/pools'
 import { v3Clients } from 'utils/graphql'
@@ -45,7 +45,7 @@ export function useV3CandidatePools(
   const {
     data,
     isLoading: ticksLoading,
-    isValidating: ticksValidating,
+    isFetching: ticksValidating,
   } = useV3PoolsWithTicks(candidatePoolsWithoutTicks, {
     key,
     blockNumber,
@@ -140,8 +140,8 @@ export function useV3PoolsWithTicks(
     return POOLS_SLOW_REVALIDATE[chainId] || 0
   }, [pools])
 
-  const poolsWithTicks = useSWRImmutable(
-    key && pools && enabled ? ['v3_pool_ticks', key] : null,
+  const poolsWithTicks = useQuery(
+    ['v3_pool_ticks', key],
     async () => {
       if (!pools) {
         throw new Error('Invalid pools to get ticks')
@@ -170,9 +170,12 @@ export function useV3PoolsWithTicks(
       }
     },
     {
-      refreshInterval,
-      errorRetryCount: 3,
-      revalidateOnFocus: false,
+      enabled: Boolean(key && pools && enabled),
+      refetchInterval: refreshInterval,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      retry: 3,
     },
   )
 
