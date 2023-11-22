@@ -77,7 +77,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
 }) => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveChainId()
-  const { stakingToken, stakingTokenPrice, earningTokenPrice, vaultKey } = pool
+  const { stakingToken, earningTokenPrice, vaultKey } = pool
   const { address: account } = useAccount()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey) as any
@@ -87,7 +87,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
     userData: {
       lastDepositedTime,
       userShares,
-      balance: { cakeAsBigNumber, cakeAsNumberBalance },
+      balance: { cakeAsBigNumber },
     },
   } = useVaultPoolByKey(pool.vaultKey)
 

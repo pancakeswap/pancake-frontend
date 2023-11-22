@@ -43,7 +43,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
 
   const lockPosition = getVaultPosition(userData)
 
-  const { stakingToken, stakingTokenPrice } = pool
+  const { stakingToken } = pool
   const { t } = useTranslation()
   const cakePriceBusd = useCakePrice()
   const stakedDollarValue = cakePriceBusd.gt(0)
