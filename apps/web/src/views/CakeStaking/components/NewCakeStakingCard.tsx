@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox, Box, Button, HelpIcon, Svg, SvgProps } from '@pancakeswap/uikit'
+import { AtomBox, Box, Button, HelpIcon, Link, Svg, SvgProps } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 const SPEECH_BUBBLE_ID = 'cake-staking__speech-bubble'
@@ -31,13 +31,14 @@ export const NewCakeStakingCard: React.FC = () => {
   const { t } = useTranslation()
   return (
     <AtomBox display="flex" alignItems="center">
-      <SpeechBubbleBox>
-        {/* @todo: @ChefJerry add link */}
-        <Button variant="subtle" endIcon={<HelpIcon color="white" width="24px" />}>
-          {t('New to CAKE Staking')}
-        </Button>
-        <SpeechBubble width="16px" height="16px" />
-      </SpeechBubbleBox>
+      <Link href="https://docs.pancakeswap.finance/vecake/how-to-get-vecake">
+        <SpeechBubbleBox>
+          <Button variant="subtle" endIcon={<HelpIcon color="white" width="24px" />}>
+            {t('New to CAKE Staking')}
+          </Button>
+          <SpeechBubble width="16px" height="16px" />
+        </SpeechBubbleBox>
+      </Link>
       <img src="/images/cake-staking/new-staking-bunny.png" alt="new-staking-bunny" width="138px" />
     </AtomBox>
   )

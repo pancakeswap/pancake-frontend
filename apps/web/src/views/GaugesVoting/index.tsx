@@ -16,13 +16,13 @@ import {
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import styled from 'styled-components'
+import { CurrentEpoch } from './components/CurrentEpoch'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { RemainVeCakeBalance } from './components/RemainVeCakeBalance'
-import { CurrentEpoch } from './components/CurrentEpoch'
+import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
-import { GaugesTable, VoteTable, GaugesList } from './components/Table'
-import { useGaugesVoting } from './hooks/useGaugesVoting'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
+import { useGaugesVoting } from './hooks/useGaugesVoting'
 
 const InlineLink = styled(LinkExternal)`
   display: inline-flex;
@@ -68,8 +68,7 @@ const GaugesVoting = () => {
                   external
                   showExternalIcon
                   color="textSubtle"
-                  // @todo @ChefJerry update link
-                  href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#why-do-i-need-to-reset-approval-on-usdt-before-enabling-approving"
+                  href="https://docs.pancakeswap.finance/products/vecake"
                 >
                   {t('Learn More')}
                 </InlineLink>
