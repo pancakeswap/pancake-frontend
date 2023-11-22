@@ -1,9 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { LightGreyCard } from 'components/Card'
+import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
-import { styled, keyframes } from 'styled-components'
+import { keyframes, styled } from 'styled-components'
+import { useGaugesVotingCount } from '../../hooks/useGaugesVotingCount'
 import { BENEFITS } from '../BenefitCard'
 import { StyledBox } from '../MyVeCakeCard'
 import { VeCakeButton } from './VeCakeButton'
@@ -116,6 +119,8 @@ export const VeCakeBenefitCard: React.FC<{ isTableView?: boolean }> = memo(({ is
 
 export const VeCakeCard = memo(() => {
   const { t } = useTranslation()
+  const gaugesVotingCount = useGaugesVotingCount()
+  const totalCakeDistributed = useCakeDistributed()
   return (
     <Flex flexDirection="column" style={{ gap: 10 }}>
       <VeCakeBenefitCard />
@@ -129,9 +134,14 @@ export const VeCakeCard = memo(() => {
             <Text color="body" bold>
               {BENEFITS.earnCake.title}
             </Text>
-            <Text fontSize={14} color="text">
-              {BENEFITS?.earnCake?.subTitle}
-            </Text>
+            <Flex style={{ gap: 5 }}>
+              <Text fontSize={14} color="text">
+                {BENEFITS?.earnCake?.subTitle}
+              </Text>
+              <Text fontSize={14} color="text" bold>
+                {`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} CAKE`}
+              </Text>
+            </Flex>
           </Box>
         </StyledFlex>
         <Divider />
@@ -143,9 +153,14 @@ export const VeCakeCard = memo(() => {
             <Text color="body" bold>
               {BENEFITS.gaugesVoting.title}
             </Text>
-            <Text fontSize={14} color="text">
-              {BENEFITS?.gaugesVoting?.subTitle}
-            </Text>
+            <Flex style={{ gap: 5 }}>
+              <Text fontSize={14} color="text">
+                {BENEFITS?.gaugesVoting?.subTitle}
+              </Text>
+              <Text fontSize={14} color="text" bold>
+                {gaugesVotingCount?.toString() ?? 0}
+              </Text>
+            </Flex>
           </Box>
         </StyledFlex>
         <Divider />
@@ -157,9 +172,14 @@ export const VeCakeCard = memo(() => {
             <Text color="body" bold>
               {BENEFITS.farmBoost.title}
             </Text>
-            <Text fontSize={14} color="text">
-              {BENEFITS?.farmBoost?.subTitle}
-            </Text>
+            <Flex style={{ gap: 5 }}>
+              <Text fontSize={14} color="text">
+                {BENEFITS?.farmBoost?.subTitle}
+              </Text>
+              <Text fontSize={14} color="text" bold>
+                3X
+              </Text>
+            </Flex>
           </Box>
         </StyledFlex>
         <Divider />
@@ -196,6 +216,8 @@ export const VeCakeCardTableView = memo(() => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
+  const gaugesVotingCount = useGaugesVotingCount()
+  const totalCakeDistributed = useCakeDistributed()
   return (
     <LightGreyCard
       style={{
@@ -217,9 +239,14 @@ export const VeCakeCardTableView = memo(() => {
           <Text color="secondary" bold>
             {BENEFITS.earnCake.title}
           </Text>
-          <Text fontSize={14} color="text">
-            {BENEFITS?.earnCake?.subTitle}
-          </Text>
+          <Flex style={{ gap: 5 }}>
+            <Text fontSize={14} color="text">
+              {BENEFITS?.earnCake?.subTitle}
+            </Text>
+            <Text fontSize={14} color="text" bold>
+              {`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} CAKE`}
+            </Text>
+          </Flex>
         </Box>
       </StyledTableViewFlex>
       <StyledTableViewFlex flexBasis={isMobile ? '100%' : 'calc(50% - 4px)'}>
@@ -230,9 +257,14 @@ export const VeCakeCardTableView = memo(() => {
           <Text color="secondary" bold>
             {BENEFITS.gaugesVoting.title}
           </Text>
-          <Text fontSize={14} color="text">
-            {BENEFITS?.gaugesVoting?.subTitle}
-          </Text>
+          <Flex style={{ gap: 5 }}>
+            <Text fontSize={14} color="text">
+              {BENEFITS?.gaugesVoting?.subTitle}
+            </Text>
+            <Text fontSize={14} color="text" bold>
+              {gaugesVotingCount?.toString() ?? 0}
+            </Text>
+          </Flex>
         </Box>
       </StyledTableViewFlex>
       <StyledTableViewFlex flexBasis={isMobile ? '100%' : 'calc(40% - 4px)'}>
@@ -243,9 +275,14 @@ export const VeCakeCardTableView = memo(() => {
           <Text color="secondary" bold>
             {BENEFITS.farmBoost.title}
           </Text>
-          <Text fontSize={14} color="text">
-            {BENEFITS?.farmBoost?.subTitle}
-          </Text>
+          <Flex style={{ gap: 5 }}>
+            <Text fontSize={14} color="text">
+              {BENEFITS?.farmBoost?.subTitle}
+            </Text>
+            <Text fontSize={14} color="text" bold>
+              3X
+            </Text>
+          </Flex>
         </Box>
       </StyledTableViewFlex>
       <StyledTableViewFlex
