@@ -3019,5 +3019,6 @@
   "The lock period has ended. To avoid more rewards being burned, convert to flexible staking.": "The lock period has ended. To avoid more rewards being burned, convert to flexible staking.",
   "Migrated": "Migrated",
   "Reward pause": "Reward pause",
-  "@todo": "@todo"
+  "@todo": "@todo",
+  "The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.": "The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE."
 }

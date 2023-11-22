@@ -11,6 +11,7 @@ import {
 import { Pool } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { css, keyframes, styled } from 'styled-components'
+import { useIsMigratedToVeCake } from 'views/CakeStaking/hooks/useIsMigratedToVeCake'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
@@ -160,6 +161,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
     () => pool.vaultKey === VaultKey.CakeVault || pool.vaultKey === VaultKey.CakeFlexibleSideVault,
     [pool.vaultKey],
   )
+  const isMigratedToVeCake = useIsMigratedToVeCake()
 
   return (
     <StyledActionPanel expanded={expanded}>
@@ -255,9 +257,13 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                   {vaultPosition === VaultPosition.Flexible
                     ? t('Flexible CAKE pool is discontinued and no longer distributing rewards.  Learn more »')
                     : vaultPosition >= VaultPosition.LockedEnd
-                    ? t(
-                        'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
-                      )
+                    ? isMigratedToVeCake
+                      ? t(
+                          'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+                        )
+                      : t(
+                          'The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+                        )
                     : null}
                 </MessageText>
               )}

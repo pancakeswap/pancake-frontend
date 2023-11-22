@@ -12,6 +12,7 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { useIsMigratedToVeCake } from 'views/CakeStaking/hooks/useIsMigratedToVeCake'
 
 import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -38,6 +39,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
     },
   } = useVaultPoolByKey(pool.vaultKey)
+  const isMigratedToVeCake = useIsMigratedToVeCake()
 
   const { stakingToken, stakingTokenPrice } = pool
   const { t } = useTranslation()
@@ -98,9 +100,13 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
       </Flex>
       <Message variant="warning" mb="16px">
         <MessageText>
-          {t(
-            'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
-          )}
+          {isMigratedToVeCake
+            ? t(
+                'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+              )
+            : t(
+                'The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+              )}
         </MessageText>
       </Message>
     </LightGreyCard>
