@@ -17,8 +17,8 @@ import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 
 const ListContainer = styled(Flex)`
-  margin-left: -32px;
-  margin-right: -32px;
+  margin-left: -1em;
+  margin-right: -1em;
 `
 
 const ListItemContainer = styled(Box)`
@@ -63,7 +63,7 @@ export function GaugesList({
   const maxPage = useMemo(() => (data && data.length ? Math.ceil(data.length / pageSize) : 1), [data, pageSize])
 
   useEffect(() => {
-    if (pagination && maxPage > page) {
+    if (pagination && page > maxPage) {
       setPage(1)
     }
   }, [pagination, maxPage, page])

@@ -83,7 +83,7 @@ const GaugesVoting = () => {
         </Flex>
       </StyledPageHeader>
       <Page style={{ paddingTop: 0, marginTop: '-18px' }}>
-        <Card innerCardProps={{ padding: '32px 32px 0 32px' }}>
+        <Card innerCardProps={{ padding: isDesktop ? '2em 2em 0 2em' : '1em 1em 0 1em' }}>
           <Grid gridTemplateColumns={isDesktop ? '2fr 3fr' : '1fr'}>
             <FlexGap flexDirection="column" gap="24px">
               <MyVeCakeBalance />

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRow, Balance, Card, FlexGap, Text, TooltipText } from '@pancakeswap/uikit'
+import { AutoRow, Balance, Card, FlexGap, Text, TooltipText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
@@ -15,16 +15,17 @@ export const CurrentEpoch = () => {
   const weeklyRewards = useEpochRewards()
   const epochEnd = useGaugeEpochEnd()
   const currentTimestamp = useCurrentBlockTimestamp()
+  const { isDesktop } = useMatchBreakpoints()
 
   return (
-    <Card isActive innerCardProps={{ padding: 24 }}>
+    <Card isActive innerCardProps={{ padding: isDesktop ? '1.5em' : '1em' }}>
       <FlexGap gap="8px" flexDirection="column">
         <AutoRow justifyContent="space-between">
           <Text bold fontSize={20}>
             {t('Current Epoch')}
           </Text>
 
-          <FlexGap gap="8px" alignItems="baseline">
+          <FlexGap gap="8px" alignItems="baseline" justifyContent="space-between" width="100%">
             <Tooltips content={t('The voting results will be tallied and applied after the current epoch is ended.')}>
               <TooltipText fontSize={14} color="textSubtle">
                 {t('Ends in')}
