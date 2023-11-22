@@ -63,7 +63,7 @@ const CakeInput: React.FC<{
 
   const balance = (
     <Flex>
-      <Text textAlign="left" color="textSubtle" ml="4px">
+      <Text textAlign="left" color="textSubtle" ml="4px" fontSize="12px">
         {t('Balance: %balance%', { balance: formatBigInt(cakeBalance, 2) })}
       </Text>
     </Flex>

@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
+import { SUPPORT_CAKE_STAKING } from 'config/constants/supportChains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useGaugesVotingContract } from 'hooks/useContract'
 
 export const useGaugesVotingCount = (): bigint | undefined => {
+  const { chainId } = useActiveChainId()
   const gaugesVotingContract = useGaugesVotingContract()
 
   const { data } = useQuery(
@@ -16,6 +19,7 @@ export const useGaugesVotingCount = (): bigint | undefined => {
       }
     },
     {
+      enabled: Boolean(gaugesVotingContract && chainId && SUPPORT_CAKE_STAKING.includes(chainId)),
       keepPreviousData: true,
     },
   )

@@ -7,6 +7,7 @@ export const useTotalIFOSold = () => {
   const [sold, setSold] = useState(0)
 
   useEffect(() => {
+    // FIXME: gauges ifo should totally of mainnet
     getTotalIFOSold(chainId).then(setSold)
   }, [chainId])
 
