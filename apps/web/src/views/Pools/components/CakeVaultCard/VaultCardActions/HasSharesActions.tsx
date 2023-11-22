@@ -20,6 +20,7 @@ import BigNumber from 'bignumber.js'
 import { LightGreyCard } from 'components/Card'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useVaultPoolByKey } from 'state/pools/hooks'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
 
@@ -34,12 +35,13 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
   stakingTokenBalance,
   performanceFee,
 }) => {
+  const { userData } = useVaultPoolByKey(pool.vaultKey)
   const {
-    userData: {
-      balance: { cakeAsBigNumber, cakeAsNumberBalance },
-    },
-  } = useVaultPoolByKey(pool.vaultKey)
+    balance: { cakeAsBigNumber, cakeAsNumberBalance },
+  } = userData
   const isMigratedToVeCake = useIsMigratedToVeCake()
+
+  const lockPosition = getVaultPosition(userData)
 
   const { stakingToken, stakingTokenPrice } = pool
   const { t } = useTranslation()
@@ -58,7 +60,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
     true,
     `withdraw-vault-${pool.sousId}-${pool.vaultKey}`,
   )
-
+  console.log(lockPosition, 'lockPosition?????')
   return (
     <LightGreyCard>
       <Flex mb="16px" justifyContent="space-between" alignItems="center">
@@ -100,7 +102,9 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
       </Flex>
       <Message variant="warning" mb="16px">
         <MessageText>
-          {isMigratedToVeCake
+          {lockPosition === VaultPosition.Flexible
+            ? t('Flexible CAKE pool is discontinued and no longer distributing rewards.  Learn more »')
+            : isMigratedToVeCake
             ? t(
                 'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
               )
