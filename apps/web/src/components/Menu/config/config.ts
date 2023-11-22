@@ -1,16 +1,16 @@
+import { SUPPORTED_CHAIN_IDS as IFO_SUPPORTED_CHAINS } from '@pancakeswap/ifos'
 import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS } from '@pancakeswap/position-managers'
-import { SUPPORTED_CHAIN_IDS as IFO_SUPPORTED_CHAINS } from '@pancakeswap/ifos'
 import {
-  NftIcon,
-  NftFillIcon,
   DropdownMenuItemType,
   DropdownMenuItems,
   EarnFillIcon,
   EarnIcon,
   MenuItemsType,
   MoreIcon,
+  NftFillIcon,
+  NftIcon,
   PancakeProtectorIcon,
   SwapFillIcon,
   SwapIcon,
@@ -19,6 +19,7 @@ import {
   FIXED_STAKING_SUPPORTED_CHAINS,
   LIQUID_STAKING_SUPPORTED_CHAINS,
   SUPPORT_BUY_CRYPTO,
+  SUPPORT_CAKE_STAKING,
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
 } from 'config/constants/supportChains'
@@ -110,6 +111,12 @@ const config: (
           label: t('Farms'),
           href: '/farms',
           supportChainIds: SUPPORT_FARMS,
+        },
+        {
+          label: t('CAKE Staking'),
+          href: '/cake-staking',
+          supportChainIds: SUPPORT_CAKE_STAKING,
+          status: { text: t('New'), color: 'success' },
         },
         {
           label: t('Pools'),

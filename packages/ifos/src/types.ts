@@ -1,8 +1,8 @@
-import type { Address } from 'wagmi'
-import { ChainId, Token } from '@pancakeswap/sdk'
-import { PublicClient } from 'viem'
 import { MessageStatus } from '@layerzerolabs/scan-client'
+import { ChainId, Token } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
+import { PublicClient } from 'viem'
+import type { Address } from 'wagmi'
 
 export enum PoolIds {
   poolBasic = 'poolBasic',
@@ -43,7 +43,7 @@ export type Ifo = {
   chainId: ChainId
 } & BaseIfoConfig
 
-export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient
+export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient | undefined
 
 export type CrossChainMessage = {
   srcUaAddress: Address

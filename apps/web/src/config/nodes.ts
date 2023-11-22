@@ -1,20 +1,20 @@
 import { ChainId } from '@pancakeswap/chains'
+import { getNodeRealUrl } from 'utils/node/nodeReal'
+import { getPoktUrl } from 'utils/node/pokt'
 import {
   arbitrum,
-  polygonZkEvm,
-  zkSync,
-  zkSyncTestnet,
-  polygonZkEvmTestnet,
   arbitrumGoerli,
-  baseGoerli,
-  scrollSepolia,
   base,
+  baseGoerli,
   linea,
   opBNB,
   opBNBTestnet,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
+  scrollSepolia,
+  zkSync,
+  zkSyncTestnet,
 } from 'wagmi/chains'
-import { getNodeRealUrl } from 'utils/node/nodeReal'
-import { getPoktUrl } from 'utils/node/pokt'
 
 const ARBITRUM_NODES = [
   ...arbitrum.rpcUrls.public.http,

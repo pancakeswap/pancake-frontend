@@ -7,11 +7,11 @@ export interface Addresses {
 }
 
 export const getAddressFromMap = (address: Addresses, chainId?: number): `0x${string}` => {
-  return address[chainId] ? address[chainId] : address[ChainId.BSC]
+  return chainId && address[chainId] ? address[chainId] : address[ChainId.BSC]
 }
 
 export const getAddressFromMapNoFallback = (address: Addresses, chainId?: number): `0x${string}` | null => {
-  return address[chainId]
+  return chainId ? address[chainId] : null
 }
 
 export const getMasterChefV2Address = (chainId?: number) => {
@@ -155,4 +155,24 @@ export const getAnniversaryAchievementAddress = (chainId?: number) => {
 
 export const getFixedStakingAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.fixedStaking, chainId)
+}
+
+export const getVeCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.veCake, chainId)
+}
+
+export const getGaugesVotingAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.gaugesVoting, chainId)
+}
+
+export const getRevenueSharingCakePoolAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.revenueSharingCakePool, chainId)
+}
+
+export const getRevenueSharingVeCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.revenueSharingVeCake, chainId)
+}
+
+export const getRevenueSharingPoolGatewayAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.revenueSharingPoolGateway, chainId)
 }

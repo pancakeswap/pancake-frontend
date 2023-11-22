@@ -1,25 +1,24 @@
 import { styled } from 'styled-components'
 
-import { useAccount } from 'wagmi'
-import { Heading, Flex, Image, Text, Link, FlexLayout, PageHeader, Loading, ViewMode } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
 import { checkIsBoostedPool } from '@pancakeswap/pools'
+import { Flex, FlexLayout, Heading, Image, Link, Loading, PageHeader, Text, ViewMode } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+import { useAccount } from 'wagmi'
 
-import { useTranslation } from '@pancakeswap/localization'
-import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
-import Page from 'components/Layout/Page'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import Page from 'components/Layout/Page'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { TokenPairImage } from 'components/TokenImage'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
-import VCakeModal from 'views/Pools/components/RevenueSharing/JoinRevenueModal/VCakeModal'
+import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
 
-import CardActions from './components/PoolCard/CardActions'
-import AprRow from './components/PoolCard/AprRow'
-import CardFooter from './components/PoolCard/CardFooter'
 import CakeVaultCard from './components/CakeVaultCard'
+import AprRow from './components/PoolCard/AprRow'
+import CardActions from './components/PoolCard/CardActions'
+import CardFooter from './components/PoolCard/CardFooter'
 import PoolControls from './components/PoolControls'
 import PoolRow, { VaultPoolRow } from './components/PoolsTable/PoolRow'
 
@@ -51,7 +50,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <>
-      <VCakeModal />
+      {/* <VCakeModal /> */}
       <PageHeader>
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>

@@ -1,6 +1,6 @@
+import { bscTokens } from '@pancakeswap/tokens'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
-import { bscTokens } from '@pancakeswap/tokens'
 
 export const vaultPoolConfig = {
   [VaultKey.CakeVaultV1]: {
@@ -15,22 +15,22 @@ export const vaultPoolConfig = {
   },
   [VaultKey.CakeVault]: {
     name: <Trans>Stake CAKE</Trans>,
-    description: <Trans>Stake, Earn – And more!</Trans>,
+    description: <Trans>This product have been upgraded!</Trans>,
     autoCompoundFrequency: 5000,
     gasLimit: 1100000n,
     tokenImage: {
-      primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
-      secondarySrc: '/images/autorenew.svg',
+      primarySrc: `/images/cakeGrey.png`,
+      secondarySrc: '/images/autorenew-disabled.png',
     },
   },
   [VaultKey.CakeFlexibleSideVault]: {
     name: <Trans>Flexible CAKE</Trans>,
-    description: <Trans>Flexible staking on the side.</Trans>,
+    description: <Trans>Reward paused for this position</Trans>,
     autoCompoundFrequency: 5000,
     gasLimit: 500000n,
     tokenImage: {
-      primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
-      secondarySrc: '/images/autorenew.svg',
+      primarySrc: `/images/cakeGrey.png`,
+      secondarySrc: '/images/autorenew-disabled.png',
     },
   },
   [VaultKey.IfoPool]: {

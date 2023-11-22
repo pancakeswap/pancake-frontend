@@ -52,6 +52,11 @@ import {
   getRevenueSharingPoolContract,
   getAnniversaryAchievementContract,
   getFixedStakingContract,
+  getVeCakeContract,
+  getGaugesVotingContract,
+  getRevenueSharingPoolGatewayContract,
+  getRevenueSharingVeCakeContract,
+  getRevenueSharingCakePoolContract,
 } from 'utils/contractHelpers'
 
 import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -465,4 +470,41 @@ export const useFixedStakingContract = () => {
   const { data: signer } = useWalletClient()
 
   return useMemo(() => getFixedStakingContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useVeCakeContract = () => {
+  const { chainId } = useActiveChainId()
+
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getVeCakeContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useGaugesVotingContract = () => {
+  const { chainId } = useActiveChainId()
+
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getGaugesVotingContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useRevenueSharingCakePoolContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getRevenueSharingCakePoolContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useRevenueSharingVeCakeContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getRevenueSharingVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useRevenueSharingPoolGatewayContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getRevenueSharingPoolGatewayContract(signer ?? undefined, chainId), [signer, chainId])
 }

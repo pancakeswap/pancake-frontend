@@ -1,16 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Percent, Currency } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/swap-sdk-core'
 import { Box, Button, Flex, Message, MessageText, Modal, ModalV2, PreTitle, Text, useModalV2 } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { ReactNode, useMemo } from 'react'
 
-import { FixedStakingPool, StakePositionUserInfo, UnstakeType } from '../type'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
-import FixedStakingOverview from './FixedStakingOverview'
+import { useShouldNotAllowWithdraw } from '../hooks/useStakedPools'
+import { FixedStakingPool, StakePositionUserInfo, UnstakeType } from '../type'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
+import FixedStakingOverview from './FixedStakingOverview'
 import { ModalTitle } from './ModalTitle'
-import { useShouldNotAllowWithdraw } from '../hooks/useStakedPools'
 
 export function UnstakeBeforeEnededModal({
   token,
@@ -54,7 +54,7 @@ export function UnstakeBeforeEnededModal({
     [stakePositionUserInfo.accrueInterest, token],
   )
 
-  const feePercent = useMemo(() => new Percent(withdrawalFee, 10000), [withdrawalFee])
+  const feePercent = useMemo(() => new Percent(withdrawalFee ?? 0, 10000), [withdrawalFee])
 
   const withdrawFee = useMemo(
     () => amountDeposit.multiply(feePercent).add(accrueInterest),

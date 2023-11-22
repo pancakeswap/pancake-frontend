@@ -29,6 +29,7 @@ test('exports', () => {
       "getIfoConfig",
       "getActiveIfo",
       "getInActiveIfos",
+      "getTotalIFOSold",
       "getIfoCreditAddressContract",
       "fetchPublicIfoData",
       "fetchUserIfoCredit",

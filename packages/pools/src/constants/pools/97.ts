@@ -4,15 +4,15 @@ import { getAddress } from 'viem'
 import { PoolCategory, SerializedPool } from '../../types'
 
 export const livePools: SerializedPool[] = [
-  // {
-  //   sousId: 0,
-  //   stakingToken: bscTestnetTokens.cake2,
-  //   earningToken: bscTestnetTokens.cake2,
-  //   contractAddress: '0x4c650FB471fe4e0f476fD3437C3411B1122c4e3B',
-  //   poolCategory: PoolCategory.CORE,
-  //   tokenPerBlock: '0.01',
-  //   isFinished: false,
-  // },
+  {
+    sousId: 0,
+    stakingToken: bscTestnetTokens.cake2,
+    earningToken: bscTestnetTokens.cake2,
+    contractAddress: '0xf6B427A2Df6E24600e3e3c62634B7c478826619D',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.01',
+    isFinished: false,
+  },
   {
     sousId: 1,
     stakingToken: bscTestnetTokens.cake2,

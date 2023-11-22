@@ -1,12 +1,12 @@
-import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ChainId } from '@pancakeswap/chains'
-import { Address, getContract, WalletClient, GetContractReturnType, PublicClient } from 'viem'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BigNumber from 'bignumber.js'
+import { Address, GetContractReturnType, PublicClient, WalletClient, getContract } from 'viem'
 
 import { iCakeABI } from '../abis/ICake'
 import { ifoV7ABI } from '../abis/IfoV7'
 import { ICAKE } from '../constants/contracts'
-import { OnChainProvider, UserVestingData, PoolIds } from '../types'
+import { OnChainProvider, PoolIds, UserVestingData } from '../types'
 import { getContractAddress } from '../utils'
 
 export const getIfoCreditAddressContract = (
@@ -18,8 +18,9 @@ export const getIfoCreditAddressContract = (
   if (!address || address === '0x') {
     throw new Error(`ICAKE not supported on chain ${chainId}`)
   }
+  const publicClient = provider({ chainId })
 
-  return getContract({ abi: iCakeABI, address, publicClient: provider({ chainId }), walletClient })
+  return getContract({ abi: iCakeABI, address, publicClient, walletClient })
 }
 
 export const fetchPublicIfoData = async (chainId: ChainId | undefined, provider: OnChainProvider) => {
