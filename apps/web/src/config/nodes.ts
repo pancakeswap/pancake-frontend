@@ -1,20 +1,20 @@
 import { ChainId } from '@pancakeswap/chains'
+import { getNodeRealUrl } from 'utils/node/nodeReal'
+import { getPoktUrl } from 'utils/node/pokt'
 import {
   arbitrum,
-  polygonZkEvm,
-  zkSync,
-  zkSyncTestnet,
-  polygonZkEvmTestnet,
   arbitrumGoerli,
-  baseGoerli,
-  scrollSepolia,
   base,
+  baseGoerli,
   linea,
   opBNB,
   opBNBTestnet,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
+  scrollSepolia,
+  zkSync,
+  zkSyncTestnet,
 } from 'wagmi/chains'
-import { getNodeRealUrl } from 'utils/node/nodeReal'
-import { getPoktUrl } from 'utils/node/pokt'
 
 const ARBITRUM_NODES = [
   ...arbitrum.rpcUrls.public.http,
@@ -83,19 +83,17 @@ export const SERVER_NODES = {
 } satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
-  // @fixme @ChefJerry revert this after test
-  // [ChainId.BSC]: [
-  //   process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
-  //   getNodeRealUrl(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
-  //   process.env.NEXT_PUBLIC_NODIES_BSC || '',
-  //   getPoktUrl(ChainId.BSC, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
-  //   'https://bsc.publicnode.com',
-  //   'https://binance.llamarpc.com',
-  //   'https://bsc-dataseed1.defibit.io',
-  //   'https://bsc-dataseed1.binance.org',
-  // ].filter(Boolean),
-  [ChainId.BSC_TESTNET]: ['https://devnet_1.pancakeswap.ai'],
-  [ChainId.BSC]: ['https://devnet_2.pancakeswap.ai'],
+  [ChainId.BSC]: [
+    process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
+    getNodeRealUrl(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
+    process.env.NEXT_PUBLIC_NODIES_BSC || '',
+    getPoktUrl(ChainId.BSC, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+    'https://bsc.publicnode.com',
+    'https://binance.llamarpc.com',
+    'https://bsc-dataseed1.defibit.io',
+    'https://bsc-dataseed1.binance.org',
+  ].filter(Boolean),
+  [ChainId.BSC_TESTNET]: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
   [ChainId.ETHEREUM]: [
     getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_ETH || '',
