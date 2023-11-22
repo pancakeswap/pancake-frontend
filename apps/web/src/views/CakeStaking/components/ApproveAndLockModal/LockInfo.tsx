@@ -3,12 +3,12 @@ import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
 import { Flex, FlexGap, Text, TokenImage } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useMemo } from 'react'
-import { ApproveAndLockStatus } from 'state/vecake/atoms'
-import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
-import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useMemo } from 'react'
+import { ApproveAndLockStatus } from 'state/vecake/atoms'
+import { useRoundedUnlockTimestamp } from 'views/CakeStaking/hooks/useRoundedUnlockTimestamp'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 
 type LockInfoProps = {
   amount: string
@@ -16,9 +16,8 @@ type LockInfoProps = {
   status: ApproveAndLockStatus
 }
 
-export const LockInfo: React.FC<LockInfoProps> = ({ amount, week, status }) => {
+export const LockInfo: React.FC<LockInfoProps> = ({ amount, status }) => {
   const { cakeUnlockTime, nativeCakeLockedAmount } = useCakeLockStatus()
-  const currentTimestamp = useCurrentBlockTimestamp()
 
   const txAmount = useMemo(() => {
     if ([ApproveAndLockStatus.INCREASE_WEEKS, ApproveAndLockStatus.INCREASE_WEEKS_PENDING].includes(status)) {
@@ -27,16 +26,15 @@ export const LockInfo: React.FC<LockInfoProps> = ({ amount, week, status }) => {
     return amount
   }, [status, nativeCakeLockedAmount, amount])
 
+  const roundedUnlockTimestamp = useRoundedUnlockTimestamp()
+
   const txUnlock = useMemo(() => {
     if ([ApproveAndLockStatus.INCREASE_AMOUNT, ApproveAndLockStatus.INCREASE_AMOUNT_PENDING].includes(status)) {
       return cakeUnlockTime
     }
 
-    return dayjs
-      .unix(cakeUnlockTime || currentTimestamp)
-      .add(Number(week), 'weeks')
-      .unix()
-  }, [status, currentTimestamp, week, cakeUnlockTime])
+    return Number(roundedUnlockTimestamp)
+  }, [status, roundedUnlockTimestamp, cakeUnlockTime])
 
   const { t } = useTranslation()
   return (
