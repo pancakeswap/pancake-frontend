@@ -12,7 +12,6 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
-import { useEffect } from 'react'
 import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
@@ -82,9 +81,6 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHar
   } = useTooltip(<AutoEarningsBreakdown pool={pool} account={account} />, {
     placement: 'bottom',
   })
-  useEffect(() => {
-    onPresentViewBenefitsModal()
-  }, [])
 
   const [onPresentViewBenefitsModal] = useModal(
     <BenefitsModal pool={pool} userData={(vaultData as DeserializedLockedCakeVault)?.userData} />,
