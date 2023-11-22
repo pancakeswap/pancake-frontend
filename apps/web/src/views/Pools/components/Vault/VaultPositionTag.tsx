@@ -81,7 +81,7 @@ const VeCakeVaultPositionTag: React.FC = () => {
 }
 
 export const VaultPositionTagWithLabel: React.FC<
-  React.PropsWithChildren<{ userData: DeserializedLockedVaultUser } & FlexGapProps>
+  React.PropsWithChildren<{ userData?: DeserializedLockedVaultUser } & FlexGapProps>
 > = ({ userData, ...props }) => {
   const { t } = useTranslation()
 

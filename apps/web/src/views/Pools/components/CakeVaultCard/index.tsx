@@ -33,7 +33,7 @@ interface CakeVaultProps extends CardProps {
 
 interface CakeVaultDetailProps {
   isLoading?: boolean
-  account: string
+  account?: string
   pool: Pool.DeserializedPool<Token>
   vaultPool: DeserializedCakeVault
   accountHasSharesStaked: boolean

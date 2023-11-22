@@ -1,25 +1,26 @@
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  ModalContainer,
-  ModalCloseButton,
-  Text,
-  RowBetween,
-  ModalBody,
+  AtomBox,
+  AutoColumn,
   Flex,
   ModalActions,
-  AutoColumn,
-  AtomBox,
+  ModalBody,
+  ModalCloseButton,
+  ModalContainer,
+  RowBetween,
+  Text,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 
-import { useAccount } from 'wagmi'
+import { Token } from '@pancakeswap/sdk'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { DeserializedLockedVaultUser } from 'state/types'
+import LockedActions from 'views/Pools/components/LockedPool/Common/LockedActions'
 import LockedBenefits from 'views/Pools/components/RevenueSharing/BenefitsModal/LockedBenefits'
 import RevenueSharing from 'views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing'
 import SharingPoolNameCell from 'views/Pools/components/RevenueSharing/BenefitsModal/SharingPoolNameCell'
-import { Token } from '@pancakeswap/sdk'
-import LockedActions from 'views/Pools/components/LockedPool/Common/LockedActions'
-import { DeserializedLockedVaultUser } from 'state/types'
+import { useAccount } from 'wagmi'
 
 const Container = styled(ModalContainer)`
   width: 100%;
@@ -44,7 +45,7 @@ const ScrollableContainer = styled(Flex)`
 
 interface BenefitsModalProps {
   pool: Pool.DeserializedPool<Token>
-  userData: DeserializedLockedVaultUser
+  userData?: DeserializedLockedVaultUser
   onDismiss?: () => void
 }
 
@@ -84,11 +85,11 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
               userShares={userData?.userShares}
               locked={userData?.locked}
               lockEndTime={userData?.lockEndTime}
-              lockStartTime={userData?.lockStartTime}
+              lockStartTime={userData?.lockStartTime || '0'}
               stakingToken={pool?.stakingToken}
-              stakingTokenPrice={pool?.stakingTokenPrice}
-              stakingTokenBalance={pool?.userData?.stakingTokenBalance}
-              lockedAmount={userData?.balance?.cakeAsBigNumber}
+              stakingTokenPrice={pool?.stakingTokenPrice || 0}
+              stakingTokenBalance={pool?.userData?.stakingTokenBalance || BIG_ZERO}
+              lockedAmount={userData?.balance?.cakeAsBigNumber || BIG_ZERO}
             />
           </ModalActions>
         </AutoColumn>
