@@ -4,7 +4,6 @@ import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, 
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
-import { MAX_VECAKE_LOCK_WEEKS, WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -37,14 +36,12 @@ export const TableRow: React.FC<{
     return userVote?.power ? new Percent(userVote?.power, 10000).toSignificant(2) : undefined
   }, [userVote?.power])
   const power = useMemo(() => {
-    if (userVote?.slope && userVote?.power) {
-      const amount = getBalanceNumber(
-        new BN(userVote.slope).times(userVote.end - currentTimestamp).dividedBy(MAX_VECAKE_LOCK_WEEKS * WEEK),
-      )
+    if (userVote?.slope) {
+      const amount = getBalanceNumber(new BN(userVote.slope))
       return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
     }
     return 0
-  }, [currentTimestamp, userVote?.end, userVote?.power, userVote?.slope])
+  }, [userVote?.slope])
 
   const onMax = () => {
     onChange('100')
