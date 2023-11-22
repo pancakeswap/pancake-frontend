@@ -76,49 +76,50 @@ type PredictionInitialization = Pick<
   PredictionsState,
   'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'rounds' | 'ledgers' | 'claimableStatuses'
 >
-export const fetchPredictionData = createAsyncThunk<PredictionInitialization, Address, { extra: PredictionConfig }>(
-  'predictions/fetchPredictionData',
-  async (account: Address, { extra }) => {
-    // Static values
-    const marketData = await getPredictionData(extra.address)
-    const epochs =
-      marketData.currentEpoch > PAST_ROUND_COUNT
-        ? range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
-        : [marketData.currentEpoch]
+export const fetchPredictionData = createAsyncThunk<
+  PredictionInitialization,
+  Address | undefined,
+  { extra: PredictionConfig }
+>('predictions/fetchPredictionData', async (account: Address | undefined, { extra }) => {
+  // Static values
+  const marketData = await getPredictionData(extra.address)
+  const epochs =
+    marketData.currentEpoch > PAST_ROUND_COUNT
+      ? range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
+      : [marketData.currentEpoch]
 
-    // Round data
-    const roundsResponse = await getRoundsData(epochs, extra.address)
-    const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
-      const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
+  // Round data
+  const roundsResponse = await getRoundsData(epochs, extra.address)
+  const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
+    const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
 
-      return {
-        ...accum,
-        [roundResponse.epoch.toString()]: reduxNodeRound,
-      }
-    }, {})
-
-    const initializedData = {
-      ...marketData,
-      rounds: initialRoundData,
-      ledgers: {},
-      claimableStatuses: {},
+    return {
+      ...accum,
+      [roundResponse.epoch.toString()]: reduxNodeRound,
     }
+  }, {})
 
-    if (!account) {
-      return initializedData
-    }
+  const initializedData = {
+    ...marketData,
+    rounds: initialRoundData,
+    ledgers: {},
+    claimableStatuses: {},
+  }
 
-    const [ledgerResponses, claimableStatuses] = await Promise.all([
-      getLedgerData(account, epochs, extra.address), // Bet data
-      getClaimStatuses(account, epochs, extra.address), // Claim statuses
-    ])
+  if (!account) {
+    return initializedData
+  }
 
-    return merge({}, initializedData, {
-      ledgers: makeLedgerData(account, ledgerResponses, epochs),
-      claimableStatuses,
-    })
-  },
-)
+  const [ledgerResponses, claimableStatuses] = await Promise.all([
+    getLedgerData(account, epochs, extra.address), // Bet data
+    getClaimStatuses(account, epochs, extra.address), // Claim statuses
+  ])
+
+  return merge({}, initializedData, {
+    ledgers: makeLedgerData(account, ledgerResponses, epochs),
+    claimableStatuses,
+  })
+})
 
 export const fetchLedgerData = createAsyncThunk<
   LedgerData,

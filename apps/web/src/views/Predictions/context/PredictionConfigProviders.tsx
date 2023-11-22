@@ -45,13 +45,9 @@ const PredictionConfigProviders = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId, supportedSymbol, token, setPrevSelectedToken])
 
-  const config = useMemo(() => {
-    return predictionConfigs?.[selectedToken]
-  }, [predictionConfigs, selectedToken])
+  const config = useMemo(() => predictionConfigs?.[selectedToken], [predictionConfigs, selectedToken])
 
-  const store = useMemo(() => {
-    return makeStore(reducers, initialState, config)
-  }, [config])
+  const store = useMemo(() => makeStore(reducers, initialState, config), [config])
 
   if (!config) {
     return null

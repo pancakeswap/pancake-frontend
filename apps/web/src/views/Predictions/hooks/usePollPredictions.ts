@@ -11,17 +11,16 @@ const usePollPredictions = () => {
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
   const initialBlock = useInitialBlock()
-  const { address: predictionsAddress } = useConfig()
+  const config = useConfig()
+  const predictionsAddress = config?.address
 
   useQuery(
     ['predictions', account, predictionsAddress],
     () => {
-      if (account) {
-        dispatch(fetchPredictionData(account))
-      }
+      dispatch(fetchPredictionData(account))
     },
     {
-      enabled: Boolean(initialBlock > 0 && predictionsAddress && account),
+      enabled: Boolean(initialBlock > 0 && config?.address),
       refetchInterval: POLL_TIME_IN_SECONDS * 1000,
       refetchIntervalInBackground: true,
     },

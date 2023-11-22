@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from 'react'
+import { memo, useEffect, useRef, useMemo } from 'react'
 import { styled } from 'styled-components'
 import Split, { SplitInstance } from 'split-grid'
 import { Button, ChartIcon, Flex, Box, Link } from '@pancakeswap/uikit'
@@ -57,13 +57,13 @@ const ChartPane = styled.div`
   background: ${({ theme }) => theme.colors.background};
 `
 
-const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean; isChartPaneOpen: boolean }>`
+const HistoryPane = styled.div<{ $isHistoryPaneOpen: boolean; $isChartPaneOpen: boolean }>`
   flex: none;
   overflow: hidden;
   transition: width 200ms ease-in-out;
   background: ${({ theme }) => theme.card.background};
-  padding-bottom: ${({ isChartPaneOpen }) => (isChartPaneOpen ? 0 : '24px')};
-  width: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '384px' : 0)};
+  padding-bottom: ${({ $isChartPaneOpen }) => ($isChartPaneOpen ? 0 : '24px')};
+  width: ${({ $isHistoryPaneOpen }) => ($isHistoryPaneOpen ? '384px' : 0)};
 `
 
 const StyledDesktop = styled.div`
@@ -88,9 +88,9 @@ const PositionPane = styled.div`
   }
 `
 
-const Gutter = styled.div<{ isChartPaneOpen?: boolean }>`
+const Gutter = styled.div<{ $isChartPaneOpen?: boolean }>`
   background: ${({ theme }) => theme.card.background};
-  cursor: ${({ isChartPaneOpen }) => (isChartPaneOpen ? 'row-resize' : 'pointer')};
+  cursor: ${({ $isChartPaneOpen }) => ($isChartPaneOpen ? 'row-resize' : 'pointer')};
   height: 24px;
   position: relative;
 
@@ -123,7 +123,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   const dispatch = useLocalDispatch()
   const { t } = useTranslation()
   const status = useGetPredictionsStatus()
-  const { token } = useConfig()
+  const config = useConfig()
 
   const openChartPane = () => {
     if (splitWrapperRef.current) {
@@ -143,6 +143,8 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   }
 
   const splitInstance = useRef<SplitInstance>()
+
+  const tokenSymbol = useMemo(() => config?.token.symbol ?? '', [config])
 
   useEffect(() => {
     if (chartRef.current) {
@@ -210,7 +212,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             )}
           </PositionPane>
 
-          <Gutter ref={gutterRef} isChartPaneOpen={isChartPaneOpen} onClick={() => openChartPane()}>
+          <Gutter ref={gutterRef} $isChartPaneOpen={isChartPaneOpen} onClick={() => openChartPane()}>
             <PowerLinkStyle href="https://chain.link/" external>
               <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
             </PowerLinkStyle>
@@ -245,13 +247,13 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             {isChartPaneOpen && (
               <ChartByLabel
                 justifyContent="flex-end"
-                symbol={`${token.symbol}/USD`}
+                symbol={`${tokenSymbol}/USD`}
                 by={chartView}
                 linkProps={{
                   onMouseDown: (e) => {
                     window.open(
                       chartView === PredictionsChartView.TradingView
-                        ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${token.symbol}USD`
+                        ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
                         : 'https://chain.link/data-feeds',
                       '_blank',
                       'noopener noreferrer',
@@ -262,7 +264,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
                 }}
                 link={
                   chartView === PredictionsChartView.TradingView
-                    ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${token.symbol}USD`
+                    ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
                     : 'https://chain.link/data-feeds'
                 }
               />
@@ -272,7 +274,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             {isChartPaneOpen && (chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart />)}
           </ChartPane>
         </SplitWrapper>
-        <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen} isChartPaneOpen={isChartPaneOpen}>
+        <HistoryPane $isHistoryPaneOpen={isHistoryPaneOpen} $isChartPaneOpen={isChartPaneOpen}>
           <History />
         </HistoryPane>
       </StyledDesktop>
