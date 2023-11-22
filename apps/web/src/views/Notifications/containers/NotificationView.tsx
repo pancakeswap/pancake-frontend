@@ -244,7 +244,7 @@ const NotificationView = ({
         </>
       ) : null}
 
-      <NotificationContainerStyled maxHeight={viewMode === ViewMode.Archived ? '350px' : isMobile ? '405px' : '450px'}>
+      <NotificationContainerStyled maxHeight={viewMode === ViewMode.Archived ? '400px' : isMobile ? '405px' : '450px'}>
         {subscription?.topic && (
           <NotificationItem
             notifications={viewMode === ViewMode.Latest ? filteredNotifications.active : filteredNotifications.archived}

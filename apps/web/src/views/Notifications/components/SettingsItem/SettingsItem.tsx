@@ -88,7 +88,7 @@ const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
   const { isMobile } = useMatchBreakpoints()
 
   return (
-    <NotificationContainerStyled maxHeight={isMobile ? '490px' : '530px'}>
+    <NotificationContainerStyled maxHeight={isMobile ? '490px' : '550px'}>
       {Object.entries(scopes)
         .sort(([, scopeA], [, scopeB]) => {
           if (scopeA.name === 'alerts' || scopeA.name === 'Liquidity') return -1
