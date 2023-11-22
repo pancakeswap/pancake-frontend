@@ -1,5 +1,12 @@
 # @pancakeswap/smart-router
 
+## 4.9.9
+
+### Patch Changes
+
+- Updated dependencies [fd7a96a36]
+  - @pancakeswap/multicall@3.3.0
+
 ## 4.9.8
 
 ### Patch Changes
