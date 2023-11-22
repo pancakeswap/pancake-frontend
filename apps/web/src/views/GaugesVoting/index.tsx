@@ -89,18 +89,12 @@ const GaugesVoting = () => {
               <MyVeCakeBalance />
               <CurrentEpoch />
             </FlexGap>
-            <div>
-              <Text
-                color="secondary"
-                textTransform="uppercase"
-                bold
-                mt={isDesktop ? '0' : '1em'}
-                ml={isDesktop ? '60px' : '0'}
-              >
+            <Box ml={isDesktop ? '60px' : '0'} mt={isDesktop ? '0' : '1em'}>
+              <Text color="secondary" textTransform="uppercase" bold>
                 Proposed weights
               </Text>
               <WeightsPieChart totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
-            </div>
+            </Box>
           </Grid>
           {isDesktop ? (
             <GaugesTable mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />

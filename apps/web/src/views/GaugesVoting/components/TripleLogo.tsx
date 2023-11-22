@@ -67,7 +67,7 @@ export const TripleLogo: React.FC<{
   chainId?: number
   size?: number
 }> = ({ gaugeConfig, chainId, size }) => {
-  const chainLogoSize = useMemo(() => size && size * 0.48, [size])
+  const chainLogoSize = useMemo(() => size && size * 0.5, [size])
 
   return (
     <StyledDualLogo>

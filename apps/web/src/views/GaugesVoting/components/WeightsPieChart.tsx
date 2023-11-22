@@ -1,4 +1,4 @@
-import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import type { ChartData, ChartDataset, TooltipModel } from 'chart.js'
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
@@ -9,6 +9,11 @@ import { ChartLabel } from './ChartLabel'
 import { ChartTooltip } from './ChartTooltip'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
+
+const Container = styled(Box)`
+  position: relative;
+  margin-top: 0.5em;
+`
 
 const Center = styled.div`
   position: absolute;
@@ -84,41 +89,66 @@ export const WeightsPieChart: React.FC<{
     },
     [data],
   )
-  return (
-    <Box position="relative" pr={isDesktop ? '90px' : '0'}>
-      <Center style={{ marginLeft: '-45px' }}>
-        <ChartLabel total={totalGaugesWeight} gauge={selectedGauge} />
-      </Center>
-      <Absolute left={tooltipPosition.left} top={tooltipPosition.top}>
-        <ChartTooltip
-          visible={tooltipVisible}
-          total={totalGaugesWeight}
-          color={color}
-          gauge={selectedGauge}
-          allGauges={data}
-        />
-      </Absolute>
-      <Doughnut
-        style={{
-          width: isDesktop ? 'auto' : '100%',
-          marginTop: isDesktop ? '-120px' : '0',
-          marginBottom: isDesktop ? '-120px' : '0',
-        }}
-        data={gauges}
-        options={{
-          cutout: '80%',
-          radius: '50%',
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              enabled: false,
-              external: externalTooltipHandler,
-            },
+
+  const tooltipComp = (
+    <ChartTooltip
+      visible={tooltipVisible}
+      total={totalGaugesWeight}
+      color={color}
+      gauge={selectedGauge}
+      allGauges={data}
+    />
+  )
+  const tooltipNode = isDesktop ? (
+    <Absolute left={tooltipPosition.left} top={tooltipPosition.top}>
+      {tooltipComp}
+    </Absolute>
+  ) : (
+    <Flex alignItems="center" flexDirection="column" mt="0.5em">
+      {tooltipComp}
+    </Flex>
+  )
+  const label = (
+    <Center>
+      <ChartLabel total={totalGaugesWeight} gauge={selectedGauge} />
+    </Center>
+  )
+  const chart = (
+    <Doughnut
+      data={gauges}
+      options={{
+        cutout: '80%',
+        radius: '95%',
+        plugins: {
+          legend: {
+            display: false,
           },
-        }}
-      />
-    </Box>
+          tooltip: {
+            enabled: false,
+            external: externalTooltipHandler,
+          },
+        },
+      }}
+    />
+  )
+
+  if (isDesktop) {
+    return (
+      <Container width="330px">
+        {label}
+        {chart}
+        {tooltipNode}
+      </Container>
+    )
+  }
+
+  return (
+    <>
+      <Container width="100%">
+        {label}
+        {chart}
+      </Container>
+      {tooltipNode}
+    </>
   )
 }
