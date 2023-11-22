@@ -236,7 +236,12 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                   alignItems="center"
                   style={{ gap: isMobile ? 15 : 24, flexDirection: isMobile ? 'column' : 'row' }}
                 >
-                  {vaultPosition === VaultPosition.Locked && <VeCakeMigrateCard isTableView />}
+                  {vaultPosition === VaultPosition.Locked && (
+                    <VeCakeMigrateCard
+                      isTableView
+                      lockEndTime={(vaultData?.userData as DeserializedLockedVaultUser)?.lockEndTime}
+                    />
+                  )}
                   {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake isTableView />}
                   {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCardTableView />}
                   {vaultPosition >= VaultPosition.LockedEnd && <WithdrawAllButton />}

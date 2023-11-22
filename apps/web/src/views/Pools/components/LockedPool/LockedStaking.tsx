@@ -11,8 +11,8 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { VeCakeMigrateCard } from 'views/CakeStaking/components/SyrupPool'
 import OriginalLockedInfo from '../OriginalLockedInfo'
-import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
 import LockedActions from './Common/LockedActions'
+import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
 
 const HelpIconWrapper = styled.div`
   align-self: center;
@@ -125,7 +125,7 @@ const LockedStaking: React.FC<React.PropsWithChildren<LockedStakingProps>> = ({ 
       </Flex>
       <Box mb="16px">
         {position < VaultPosition.LockedEnd ? (
-          <VeCakeMigrateCard />
+          <VeCakeMigrateCard lockEndTime={userData?.lockEndTime} />
         ) : (
           <LockedActions
             userShares={userData?.userShares}
