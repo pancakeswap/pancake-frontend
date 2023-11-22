@@ -4,6 +4,6 @@ import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 export const useIsMigratedToVeCake = () => {
   const { data } = useVeCakeUserInfo()
   if (!data) return false
-  if (isAddressEqual(data.cakePoolProxy, zeroAddress)) return true
-  return false
+  if (isAddressEqual(data.cakePoolProxy, zeroAddress)) return false
+  return true
 }

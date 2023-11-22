@@ -1,19 +1,19 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  Box,
+  CheckmarkCircleIcon,
+  FlexGap,
+  FlexGapProps,
+  HotIcon,
+  LockIcon,
+  PauseCircleIcon,
+  SplitIcon,
   Tag,
   TagProps,
   Text,
-  SplitIcon,
-  LockIcon,
   UnlockIcon,
-  HotIcon,
-  Box,
-  FlexGap,
-  FlexGapProps,
-  CheckmarkCircleIcon,
-  PauseCircleIcon,
 } from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
-import { useTranslation } from '@pancakeswap/localization'
 import { ReactNode, useMemo } from 'react'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'
