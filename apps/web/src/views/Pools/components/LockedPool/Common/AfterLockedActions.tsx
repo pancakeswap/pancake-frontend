@@ -1,9 +1,11 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Message, MessageText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
 import { ReactNode, memo } from 'react'
 import { VaultPosition } from 'utils/cakePool'
-import { AfterLockedActionsPropsType } from '../types'
+import { useIsMigratedToVeCake } from 'views/CakeStaking/hooks/useIsMigratedToVeCake'
 import WithdrawAllButton from '../Buttons/WithdrawAllButton'
+import { AfterLockedActionsPropsType } from '../types'
 
 const msg: Record<VaultPosition, ReactNode> = {
   [VaultPosition.None]: null,
@@ -31,6 +33,8 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
   const { isDesktop } = useMatchBreakpoints()
   const isDesktopView = isInline && isDesktop
   const Container = isDesktopView ? Flex : Box
+  const isMigratedToVeCake = useIsMigratedToVeCake()
+  const { t } = useTranslation()
 
   return (
     <Message
@@ -59,7 +63,13 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
       }
       actionInline={isDesktopView}
     >
-      <MessageText>{msg[position]}</MessageText>
+      <MessageText>
+        {isMigratedToVeCake
+          ? msg[position]
+          : t(
+              'The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+            )}
+      </MessageText>
     </Message>
   )
 }
