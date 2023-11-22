@@ -104,7 +104,12 @@ const LockedInfo = () => {
             <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
               {t('cake locked')}
             </Text>
-            <CakeLocked nativeCakeLocked={nativeCakeLockedAmount} proxyCakeLocked={proxyCakeLockedAmount} />
+            <CakeLocked
+              proxyExpired={cakePoolLockExpired}
+              proxyUnlockTime={cakePoolUnlockTime}
+              nativeCakeLocked={nativeCakeLockedAmount}
+              proxyCakeLocked={proxyCakeLockedAmount}
+            />
           </AutoColumn>
           <AutoColumn>
             <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
@@ -220,7 +225,9 @@ const ProxyUnlockTooltip: React.FC<{
 export const CakeLocked: React.FC<{
   nativeCakeLocked: bigint
   proxyCakeLocked: bigint
-}> = ({ nativeCakeLocked, proxyCakeLocked }) => {
+  proxyExpired: boolean
+  proxyUnlockTime: number
+}> = ({ nativeCakeLocked, proxyCakeLocked, proxyExpired, proxyUnlockTime }) => {
   const cakePrice = useCakePrice()
   const nativeCake = useMemo(() => Number(formatBigInt(nativeCakeLocked, 18)), [nativeCakeLocked])
   const nativeCakeUsdValue: number = useMemo(() => {
@@ -246,7 +253,11 @@ export const CakeLocked: React.FC<{
 
   return (
     <>
-      <Tooltips content={<FromProxyTooltip proxyCake={proxyCake} />}>
+      <Tooltips
+        content={
+          <ProxyUnlockTooltip proxyExpired={proxyExpired} proxyCake={proxyCake} proxyUnlockTime={proxyUnlockTime} />
+        }
+      >
         <UnderlinedBalance value={totalCake} decimals={2} fontWeight={600} fontSize={20} underlined />
       </Tooltips>
       <Balance prefix="~" value={totalCakeUsdValue} decimals={2} unit="USD" fontSize={12} />
