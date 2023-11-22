@@ -22,7 +22,7 @@ import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useMessages, useSubscription, useSubscriptionScopes } from '@web3inbox/widget-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
-import { addArchivedNotification, setImportantAlerts } from 'state/notifications/actions'
+import { addArchivedNotification, setHasUnread, setImportantAlerts } from 'state/notifications/actions'
 import { useAllNotifications, useImportantNotificationsOnly } from 'state/notifications/hooks'
 import { styled } from 'styled-components'
 import { DISABLE_ALL_SCOPES, ENABLE_ALL_SCOPES, Events, NotificationFilterTypes } from 'views/Notifications/constants'
@@ -152,6 +152,7 @@ const NotificationView = ({
           notificationId: notification.id.toString(),
         }),
       )
+      dispatch(setHasUnread({ subscriptionId: subscription.topic, notificationId: notification.id, hasUnread: true }))
     }
     const deletePromises = notifications
       .filter((notification) => filteredNotifications.active.includes(notification))
