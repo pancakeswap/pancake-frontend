@@ -11,6 +11,7 @@ const StyledDualLogo = styled.div`
   flex-direction: row;
   align-items: baseline;
   justify-content: flex-start;
+  flex-shrink: 0;
 `
 
 const StyledChainLogo = styled(ChainLogo)`

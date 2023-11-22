@@ -1,5 +1,5 @@
 import { Percent } from '@pancakeswap/swap-sdk-core'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import { useMemo } from 'react'
 import styled from 'styled-components'
@@ -20,14 +20,13 @@ const Indicator = styled.div`
   padding: 0.625em;
 `
 
-const Content = styled.div`
+const Content = styled(Flex).attrs({ alignItems: 'center' })`
   border-radius: 0px 30px 30px 0px;
   border: 2px solid #8051d6;
   padding: 0.625em;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-  display: flex;
-  align-items: center;
   gap: 0.25em;
+  overflow: hidden;
 `
 
 const Tooltip = styled.div.withConfig({ shouldForwardProp: (prop) => prop !== 'string' })<{ color?: string }>`
@@ -53,6 +52,7 @@ export const ChartTooltip: React.FC<{
   total?: number
   allGauges?: GaugeVoting[]
 }> = ({ color, allGauges, gauge, visible, total }) => {
+  const { isDesktop } = useMatchBreakpoints()
   const sortedGauges = useMemo(() => {
     return allGauges?.filter((x) => x.weight > 0).sort((a, b) => (a.weight < b.weight ? 1 : -1))
   }, [allGauges])
@@ -80,7 +80,7 @@ export const ChartTooltip: React.FC<{
           {percent}%
         </Text>
       </Indicator>
-      <Content>
+      <Content flexShrink={isDesktop ? 0 : 1}>
         <TripleLogo gaugeConfig={pool} chainId={Number(gauge?.chainId)} size={36} />
         <Flex flexDirection="column">
           <Text fontSize={18} bold lineHeight={1.2} color="text">
