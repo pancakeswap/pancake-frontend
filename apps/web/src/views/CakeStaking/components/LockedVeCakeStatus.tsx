@@ -153,7 +153,8 @@ const LockedInfo = () => {
           </Link>
         </>
       ) : null}
-      {cakeLockExpired ? (
+      {/* if both veCake and cakePool expired, user should deal with cake pool first */}
+      {cakeLockExpired && !cakePoolLockExpired ? (
         <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
           <Text as="p" color={CUSTOM_WARNING_COLOR}>
             {t(
@@ -167,7 +168,8 @@ const LockedInfo = () => {
           <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
         </Flex>
       ) : null}
-      {cakeLockExpired ? <SubmitUnlockButton /> : null}
+      {/* if both veCake and cakePool expired, user should deal with cake pool first */}
+      {cakeLockExpired && !cakePoolLockExpired ? <SubmitUnlockButton /> : null}
     </FlexGap>
   )
 }
