@@ -3,6 +3,7 @@ import { safeGetAddress } from 'utils'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import useSelector from 'contexts/LocalRedux/useSelector'
 import { TFetchStatus } from 'config/constants/types'
+import { Address } from 'viem'
 
 import { PredictionsState, PredictionUser } from '../types'
 import { fetchAddressResult } from '.'
@@ -28,7 +29,7 @@ export const useGetSortedRoundsCurrentEpoch = () => {
   return useSelector(getSortedRoundsCurrentEpochSelector)
 }
 
-export const useGetBetByEpoch = (account: string, epoch: number) => {
+export const useGetBetByEpoch = (account: Address, epoch: number) => {
   const getBetByEpochSelector = useMemo(() => makeGetBetByEpochSelector(account, epoch), [account, epoch])
   return useSelector(getBetByEpochSelector)
 }

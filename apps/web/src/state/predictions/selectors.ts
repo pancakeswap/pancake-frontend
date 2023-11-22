@@ -1,5 +1,6 @@
 import orderBy from 'lodash/orderBy'
 import { createSelector } from '@reduxjs/toolkit'
+import { Address } from 'wagmi'
 import { PredictionsState, NodeRound, NodeLedger } from '../types'
 import { deserializeRound } from './helpers'
 
@@ -10,9 +11,9 @@ const selectClaimableStatuses = (state: PredictionsState) => state.claimableStat
 const selectMinBetAmount = (state: PredictionsState) => state.minBetAmount
 const selectIntervalSeconds = (state: PredictionsState) => state.intervalSeconds
 
-export const makeGetBetByEpochSelector = (account: string, epoch: number) =>
-  createSelector([selectLedgers], (bets): NodeLedger => {
-    if (!bets[account]) {
+export const makeGetBetByEpochSelector = (account: Address, epoch: number) =>
+  createSelector([selectLedgers], (bets): null | NodeLedger => {
+    if (!bets?.[account]) {
       return null
     }
 
@@ -33,26 +34,34 @@ export const makeGetIsClaimableSelector = (epoch: number) =>
   })
 
 export const getRoundsByCloseOracleIdSelector = createSelector([selectRounds], (rounds) => {
-  return Object.keys(rounds).reduce((accum, epoch) => {
-    const parsed = deserializeRound(rounds[epoch])
-    return {
-      ...accum,
-      [parsed.closeOracleId]: parsed,
-    }
-  }, {}) as { [key: string]: NodeRound }
+  return (
+    rounds &&
+    (Object.keys(rounds).reduce((accum, epoch) => {
+      const parsed = deserializeRound(rounds[epoch])
+      return {
+        ...accum,
+        ...(parsed.closeOracleId && {
+          [parsed.closeOracleId]: parsed,
+        }),
+      }
+    }, {}) as { [key: string]: NodeRound })
+  )
 })
 
 export const getBigNumberRounds = createSelector([selectRounds], (rounds) => {
-  return Object.keys(rounds).reduce((accum, epoch) => {
-    return {
-      ...accum,
-      [epoch]: deserializeRound(rounds[epoch]),
-    }
-  }, {}) as { [key: string]: NodeRound }
+  return (
+    rounds &&
+    (Object.keys(rounds).reduce((accum, epoch) => {
+      return {
+        ...accum,
+        [epoch]: deserializeRound(rounds[epoch]),
+      }
+    }, {}) as { [key: string]: NodeRound })
+  )
 })
 
 export const getSortedRoundsSelector = createSelector([getBigNumberRounds], (rounds) => {
-  return orderBy(Object.values(rounds), ['epoch'], ['asc'])
+  return rounds && orderBy(Object.values(rounds), ['epoch'], ['asc'])
 })
 
 export const getSortedRoundsCurrentEpochSelector = createSelector(
@@ -74,14 +83,14 @@ export const getCurrentRoundCloseTimestampSelector = createSelector(
       return undefined
     }
 
-    const currentRound = rounds[currentEpoch - 1]
+    const currentRound = rounds?.[currentEpoch - 1]
 
     if (!currentRound) {
       return undefined
     }
 
     if (!currentRound.closeTimestamp) {
-      return currentRound.lockTimestamp + intervalSeconds
+      return Number(currentRound.lockTimestamp) + intervalSeconds
     }
     return currentRound.closeTimestamp
   },
