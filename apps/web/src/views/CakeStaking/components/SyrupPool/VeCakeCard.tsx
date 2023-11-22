@@ -239,14 +239,12 @@ export const VeCakeCardTableView = memo(() => {
           <Text color="secondary" bold>
             {BENEFITS.earnCake.title}
           </Text>
-          <Flex style={{ gap: 5 }}>
-            <Text fontSize={14} color="text">
-              {BENEFITS?.earnCake?.subTitle}
-            </Text>
-            <Text fontSize={14} color="text" bold>
+          <Text fontSize={14} color="text">
+            {BENEFITS?.earnCake?.subTitle}
+            <Text fontSize={14} color="text" ml="3px" bold display="inline-block">
               {`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} CAKE`}
             </Text>
-          </Flex>
+          </Text>
         </Box>
       </StyledTableViewFlex>
       <StyledTableViewFlex flexBasis={isMobile ? '100%' : 'calc(50% - 4px)'}>
@@ -257,14 +255,12 @@ export const VeCakeCardTableView = memo(() => {
           <Text color="secondary" bold>
             {BENEFITS.gaugesVoting.title}
           </Text>
-          <Flex style={{ gap: 5 }}>
-            <Text fontSize={14} color="text">
-              {BENEFITS?.gaugesVoting?.subTitle}
-            </Text>
-            <Text fontSize={14} color="text" bold>
+          <Text fontSize={14} color="text">
+            {BENEFITS?.gaugesVoting?.subTitle}
+            <Text fontSize={14} color="text" ml="3px" bold display="inline-block">
               {gaugesVotingCount?.toString() ?? 0}
             </Text>
-          </Flex>
+          </Text>
         </Box>
       </StyledTableViewFlex>
       <StyledTableViewFlex flexBasis={isMobile ? '100%' : 'calc(40% - 4px)'}>
@@ -275,14 +271,12 @@ export const VeCakeCardTableView = memo(() => {
           <Text color="secondary" bold>
             {BENEFITS.farmBoost.title}
           </Text>
-          <Flex style={{ gap: 5 }}>
-            <Text fontSize={14} color="text">
-              {BENEFITS?.farmBoost?.subTitle}
-            </Text>
-            <Text fontSize={14} color="text" bold>
+          <Text fontSize={14} color="text">
+            {BENEFITS?.farmBoost?.subTitle}
+            <Text fontSize={14} color="text" ml="3px" bold display="inline-block">
               3X
             </Text>
-          </Flex>
+          </Text>
         </Box>
       </StyledTableViewFlex>
       <StyledTableViewFlex
