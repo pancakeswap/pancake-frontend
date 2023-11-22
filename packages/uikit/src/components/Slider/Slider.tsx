@@ -57,7 +57,7 @@ const Slider: React.FC<React.PropsWithChildren<SliderProps>> = ({
           value={value}
           step={step}
           onChange={handleChange}
-          isMax={isMax}
+          $isMax={isMax}
           disabled={disabled}
         />
       </BunnySlider>
