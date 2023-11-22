@@ -1,18 +1,16 @@
 import { useMemo } from 'react'
-import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 
 export const useCheckIsUserAllowMigrate = (lockEndTime?: string) => {
-  const currentTimestamp = useCurrentBlockTimestamp()
   const lockEndTimeAsNumber = useMemo(() => {
     return lockEndTime ? parseInt(lockEndTime) : 0
   }, [lockEndTime])
-  const nextUTCThursdayTimeStamp = getNextUTCThursday(currentTimestamp)
+  const nextUTCThursdayTimeStamp = getNextUTCThursday()
 
   return lockEndTimeAsNumber > nextUTCThursdayTimeStamp
 }
 
-const getNextUTCThursday = (timestamp: number) => {
-  const d = new Date(timestamp * 1000)
+const getNextUTCThursday = () => {
+  const d = new Date()
   d.setUTCDate(d.getUTCDate() + ((4 + 7 - d.getUTCDay()) % 7 || 7))
   d.setUTCHours(0)
   d.setUTCMinutes(0)
