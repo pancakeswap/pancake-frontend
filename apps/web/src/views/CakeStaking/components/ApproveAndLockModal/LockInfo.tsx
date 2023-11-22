@@ -17,7 +17,7 @@ type LockInfoProps = {
 }
 
 export const LockInfo: React.FC<LockInfoProps> = ({ amount, status }) => {
-  const { cakeUnlockTime, nativeCakeLockedAmount } = useCakeLockStatus()
+  const { cakeUnlockTime, nativeCakeLockedAmount, cakeLockExpired } = useCakeLockStatus()
 
   const txAmount = useMemo(() => {
     if ([ApproveAndLockStatus.INCREASE_WEEKS, ApproveAndLockStatus.INCREASE_WEEKS_PENDING].includes(status)) {
@@ -26,7 +26,7 @@ export const LockInfo: React.FC<LockInfoProps> = ({ amount, status }) => {
     return amount
   }, [status, nativeCakeLockedAmount, amount])
 
-  const roundedUnlockTimestamp = useRoundedUnlockTimestamp()
+  const roundedUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? undefined : Number(cakeUnlockTime))
 
   const txUnlock = useMemo(() => {
     if ([ApproveAndLockStatus.INCREASE_AMOUNT, ApproveAndLockStatus.INCREASE_AMOUNT_PENDING].includes(status)) {

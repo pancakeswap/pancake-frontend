@@ -23,7 +23,7 @@ export const useWriteIncreaseLockWeeksCallback = () => {
   const setCakeLockWeeks = useSetAtom(cakeLockWeeksAtom)
   const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
-  const roundedUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? Number(cakeUnlockTime) : undefined)
+  const roundedUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? undefined : Number(cakeUnlockTime))
 
   const increaseLockWeeks = useCallback(async () => {
     const week = Number(cakeLockWeeks)

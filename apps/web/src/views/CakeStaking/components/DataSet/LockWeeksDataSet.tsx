@@ -28,7 +28,8 @@ export const LockWeeksDataSet = () => {
     veCakeAmountBN && veCakeAmountBN.gt(0)
       ? `${veCakeAmountBN.div(nativeCakeLockedAmount.toString()).toPrecision(2)}x`
       : '0.00x'
-  const newUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? Number(cakeUnlockTime) : undefined)
+
+  const newUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? undefined : Number(cakeUnlockTime))
   const newUnlockTime = useMemo(() => {
     return formatDate(dayjs.unix(Number(newUnlockTimestamp)))
   }, [newUnlockTimestamp])
