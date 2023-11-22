@@ -1,6 +1,6 @@
+import { bscTokens } from '@pancakeswap/tokens'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
-import { bscTokens } from '@pancakeswap/tokens'
 
 export const vaultPoolConfig = {
   [VaultKey.CakeVaultV1]: {
@@ -20,7 +20,7 @@ export const vaultPoolConfig = {
     gasLimit: 1100000n,
     tokenImage: {
       primarySrc: `/images/cakeGrey.png`,
-      secondarySrc: '/images/autorenewGrey.svg',
+      secondarySrc: '/images/autorenew.svg',
     },
   },
   [VaultKey.CakeFlexibleSideVault]: {
@@ -30,7 +30,7 @@ export const vaultPoolConfig = {
     gasLimit: 500000n,
     tokenImage: {
       primarySrc: `/images/cakeGrey.png`,
-      secondarySrc: '/images/autorenewGrey.svg',
+      secondarySrc: '/images/autorenew.svg',
     },
   },
   [VaultKey.IfoPool]: {
