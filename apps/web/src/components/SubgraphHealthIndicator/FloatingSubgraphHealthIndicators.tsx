@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { V3_SUBGRAPH_URLS, GRAPH_API_LOTTERY, GRAPH_API_PREDICTION_BNB } from 'config/constants/endpoints'
-
+import { V3_SUBGRAPH_URLS, GRAPH_API_LOTTERY } from 'config/constants/endpoints'
+import { GRAPH_API_PREDICTION_BNB } from '@pancakeswap/prediction'
 import { SubgraphHealthIndicator, SubgraphHealthIndicatorProps } from './SubgraphHealthIndicator'
 
 interface FactoryParams {
@@ -17,7 +17,11 @@ type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 export function subgraphHealthIndicatorFactory({ getSubgraphName }: FactoryParams) {
   return function Indicator(props: PartialBy<SubgraphHealthIndicatorProps, 'subgraphName'>) {
     const { chainId } = useActiveChainId()
-    const subgraphName = useMemo(() => getSubgraphName(chainId), [chainId])
+    const subgraphName = useMemo(() => chainId && getSubgraphName(chainId), [chainId])
+
+    if (!subgraphName) {
+      return null
+    }
 
     return createPortal(<SubgraphHealthIndicator subgraphName={subgraphName} {...props} />, document.body)
   }
@@ -26,7 +30,7 @@ export function subgraphHealthIndicatorFactory({ getSubgraphName }: FactoryParam
 export const V3SubgraphHealthIndicator = subgraphHealthIndicatorFactory({
   getSubgraphName: (chainId) => {
     if (V3_SUBGRAPH_URLS[chainId]?.startsWith('https://api.thegraph.com/subgraphs/name/')) {
-      return V3_SUBGRAPH_URLS[chainId].replace('https://api.thegraph.com/subgraphs/name/', '') || ''
+      return V3_SUBGRAPH_URLS?.[chainId]?.replace('https://api.thegraph.com/subgraphs/name/', '') || ''
     }
     return ''
   },
@@ -37,5 +41,6 @@ export const LotterySubgraphHealthIndicator = subgraphHealthIndicatorFactory({
 })
 
 export const PredictionSubgraphHealthIndicator = subgraphHealthIndicatorFactory({
-  getSubgraphName: () => GRAPH_API_PREDICTION_BNB.replace('https://api.thegraph.com/subgraphs/name/', ''),
+  getSubgraphName: (chainId) =>
+    GRAPH_API_PREDICTION_BNB[chainId].replace('https://api.thegraph.com/subgraphs/name/', ''),
 })

@@ -1,5 +1,4 @@
 import { request, gql } from 'graphql-request'
-import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_CAKE } from 'config/constants/endpoints'
 import {
   Bet,
   LedgerData,
@@ -10,7 +9,12 @@ import {
   ReduxNodeRound,
   NodeRound,
 } from 'state/types'
-import { BetPosition, PredictionStatus } from '@pancakeswap/prediction'
+import {
+  BetPosition,
+  PredictionStatus,
+  GRAPH_API_PREDICTION_BNB,
+  GRAPH_API_PREDICTION_CAKE,
+} from '@pancakeswap/prediction'
 import { Address } from 'wagmi'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
@@ -95,10 +99,10 @@ const getTotalWonMarket = (market, tokenSymbol) => {
   return Math.max(total - totalTreasury, 0)
 }
 
-export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE: number }> => {
+export const getTotalWon = async (chainId: number): Promise<{ totalWonBNB: number; totalWonCAKE: number }> => {
   const [{ market: BNBMarket, market: CAKEMarket }] = await Promise.all([
     request(
-      GRAPH_API_PREDICTION_BNB,
+      GRAPH_API_PREDICTION_BNB[chainId],
       gql`
         query getTotalWonData {
           market(id: 1) {
@@ -109,7 +113,7 @@ export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE
       `,
     ),
     request(
-      GRAPH_API_PREDICTION_CAKE,
+      GRAPH_API_PREDICTION_CAKE[chainId],
       gql`
         query getTotalWonData {
           market(id: 1) {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { ArrowForwardIcon, Button, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { formatLocalisedCompactNumber } from '@pancakeswap/utils/formatBalance'
@@ -30,15 +31,28 @@ const PredictionCardHeader: React.FC<React.PropsWithChildren<{ preText: string; 
 
 const PredictionCardContent = () => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const bnbBusdPrice = useBNBPrice({ enabled: loadData })
   const cakePrice = useCakePrice({ enabled: loadData })
 
-  const { data } = useQuery(['prediction', 'tokenWon'], getTotalWon, {
-    enabled: Boolean(loadData),
-    refetchInterval: SLOW_INTERVAL,
-  })
+  const { data } = useQuery(
+    ['prediction', 'tokenWon'],
+    () => {
+      if (chainId) {
+        return getTotalWon(chainId)
+      }
+      return {
+        totalWonBNB: 0,
+        totalWonCAKE: 0,
+      }
+    },
+    {
+      enabled: Boolean(loadData && chainId),
+      refetchInterval: SLOW_INTERVAL,
+    },
+  )
 
   const bnbWonInUsd = bnbBusdPrice.multipliedBy(data?.totalWonBNB || 0).toNumber()
   const cakeWonInUsd = cakePrice.multipliedBy(data?.totalWonCAKE || 0).toNumber()
