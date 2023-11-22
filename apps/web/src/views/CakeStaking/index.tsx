@@ -23,13 +23,13 @@ import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
-import { useSnapshotVotingCount } from './hooks/useSnapshotVotingCount'
+import { useSnapshotProposalsCount } from './hooks/useSnapshotProposalsCount'
 import { useTotalIFOSold } from './hooks/useTotalIFOSold'
 
 const CakeStaking = () => {
   const { t } = useTranslation()
   const gaugesVotingCount = useGaugesVotingCount()
-  const snapshotVotingCount = useSnapshotVotingCount()
+  const snapshotProposalsCount = useSnapshotProposalsCount()
   const totalCakeDistributed = useCakeDistributed()
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
   const totalIFOSold = useTotalIFOSold()
@@ -152,7 +152,7 @@ const CakeStaking = () => {
                 ml="4px"
               />
             }
-            dataText={`${snapshotVotingCount}`}
+            dataText={`${snapshotProposalsCount}`}
           />
           <BenefitCard
             type="ifo"

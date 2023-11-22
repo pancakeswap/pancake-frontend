@@ -29,7 +29,10 @@ export const useLockApproveCallback = (amount: string) => {
     [amount, cakeToken?.decimals],
   )
 
-  const currencyAmount = cakeToken ? CurrencyAmount.fromRawAmount<Currency>(cakeToken, rawAmount.toString()) : undefined
+  const currencyAmount = useMemo(
+    () => (cakeToken ? CurrencyAmount.fromRawAmount<Currency>(cakeToken, rawAmount.toString()) : undefined),
+    [cakeToken, rawAmount],
+  )
 
   const { approvalState, approveCallback, currentAllowance } = useApproveCallback(
     currencyAmount,
