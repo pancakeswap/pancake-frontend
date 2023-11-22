@@ -9,7 +9,10 @@ test('exports', () => {
       "getGasLimitOnChain",
       "getGasLimit",
       "iMulticallABI",
+      "multicall3ABI",
       "MULTICALL_ADDRESS",
+      "MULTICALL3_ADDRESS",
+      "MULTICALL3_ADDRESSES",
       "DEFAULT_BLOCK_CONFLICT_TOLERANCE",
       "BLOCK_CONFLICT_TOLERANCE",
       "DEFAULT_GAS_LIMIT",
@@ -17,6 +20,7 @@ test('exports', () => {
       "DEFAULT_GAS_BUFFER",
       "DEFAULT_GAS_BUFFER_BY_CHAIN",
       "getMulticallContract",
+      "getMulticall3ContractAddress",
       "multicallByGasLimit",
       "getBlockConflictTolerance",
     ]
