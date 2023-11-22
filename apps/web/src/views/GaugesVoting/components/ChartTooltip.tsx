@@ -17,17 +17,17 @@ const Indicator = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 0.625em;
 `
 
 const Content = styled.div`
   border-radius: 0px 30px 30px 0px;
   border: 2px solid #8051d6;
-  padding: 12px;
-  background: #fff;
+  padding: 0.625em;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.25em;
 `
 
 const Tooltip = styled.div.withConfig({ shouldForwardProp: (prop) => prop !== 'string' })<{ color?: string }>`
@@ -73,31 +73,31 @@ export const ChartTooltip: React.FC<{
   return (
     <Tooltip color={color}>
       <Indicator>
-        <Text color="white" mb="4px">
-          #{sort}{' '}
+        <Text color="white" fontSize={12} lineHeight="1.4">
+          # {sort}{' '}
         </Text>
-        <Text color="white" fontSize={18} bold>
+        <Text color="white" fontSize={18} lineHeight="1.4" bold>
           {percent}%
         </Text>
       </Indicator>
       <Content>
-        <TripleLogo gaugeConfig={pool} chainId={Number(gauge?.chainId)} />
+        <TripleLogo gaugeConfig={pool} chainId={Number(gauge?.chainId)} size={36} />
         <Flex flexDirection="column">
-          <Text fontSize={18} bold color="#280D5F">
+          <Text fontSize={18} bold lineHeight={1.2} color="text">
             {pool?.pairName}
           </Text>
           <Flex alignItems="center">
             {pool?.type === GaugeType.V3 ? (
               <>
-                <Text fontSize={12} color="textSubtle">
+                <Text fontSize={12} lineHeight={1.2} color="textSubtle">
                   {feeTierPercent(pool.feeTier)}
                 </Text>
-                <Text color="rgba(40, 13, 95, 0.20)" mx="6px">
+                <Text color="textSubtle" mx="0.375em" style={{ opacity: 0.2 }}>
                   |
                 </Text>
               </>
             ) : null}
-            <Text fontSize={12} color="textSubtle">
+            <Text fontSize={12} color="textSubtle" lineHeight={1.2}>
               {pool ? GAUGE_TYPE_NAMES[pool.type] : ''}
             </Text>
           </Flex>
