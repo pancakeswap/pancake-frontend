@@ -8,6 +8,7 @@ import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useRoundedUnlockTimestamp } from 'views/CakeStaking/hooks/useRoundedUnlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Tooltips } from '../Tooltips'
 import { DataBox, DataHeader, DataRow } from './DataBox'
@@ -27,9 +28,10 @@ export const LockWeeksDataSet = () => {
     veCakeAmountBN && veCakeAmountBN.gt(0)
       ? `${veCakeAmountBN.div(nativeCakeLockedAmount.toString()).toPrecision(2)}x`
       : '0.00x'
+  const newUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? Number(cakeUnlockTime) : undefined)
   const newUnlockTime = useMemo(() => {
-    return formatDate(dayjs.unix(cakeUnlockTime).add(Number(cakeLockWeeks), 'weeks'))
-  }, [cakeLockWeeks, cakeUnlockTime])
+    return formatDate(dayjs.unix(Number(newUnlockTimestamp)))
+  }, [newUnlockTimestamp])
 
   return (
     <DataBox gap="8px">

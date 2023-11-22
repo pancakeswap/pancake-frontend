@@ -49,7 +49,6 @@ export const NotLockingCard = () => {
       <NewStakingDataSet
         veCakeAmount={getVeCakeAmount(cakeLockAmount, Number(cakeLockWeeks || 0) * WEEK)}
         cakeAmount={Number(cakeLockAmount)}
-        duration={Number(cakeLockWeeks)}
       />
       <ColumnCenter>
         <Button disabled={disabled} width="50%" onClick={handleModalOpen}>

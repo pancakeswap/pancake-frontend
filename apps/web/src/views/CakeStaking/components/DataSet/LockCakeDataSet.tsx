@@ -28,7 +28,7 @@ export const LockCakeDataSet = () => {
     return getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, cakeUnlockTime - currentTimestamp))
   }, [cakeLockAmount, cakeUnlockTime, currentTimestamp, veCakeBalance])
 
-  const newUnlockTime = useMemo(() => {
+  const unlockTime = useMemo(() => {
     return formatDate(dayjs.unix(Number(cakeUnlockTime)))
   }, [cakeUnlockTime])
 
@@ -48,7 +48,7 @@ export const LockCakeDataSet = () => {
             </TooltipText>
           </Tooltips>
         }
-        value={newUnlockTime}
+        value={unlockTime}
       />
     </DataBox>
   )

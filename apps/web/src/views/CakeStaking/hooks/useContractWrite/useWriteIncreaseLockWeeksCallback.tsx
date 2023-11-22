@@ -1,5 +1,3 @@
-import { MAX_VECAKE_LOCK_WEEKS } from 'config/constants/veCake'
-import dayjs from 'dayjs'
 import { useVeCakeContract } from 'hooks/useContract'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { useSetAtom } from 'jotai'
@@ -12,7 +10,7 @@ import {
 } from 'state/vecake/atoms'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { useAccount, useWalletClient } from 'wagmi'
-import { useCurrentBlockTimestamp } from '../useCurrentBlockTimestamp'
+import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 import { useCakeLockStatus } from '../useVeCakeUserInfo'
 
 export const useWriteIncreaseLockWeeksCallback = () => {
@@ -25,14 +23,13 @@ export const useWriteIncreaseLockWeeksCallback = () => {
   const setCakeLockWeeks = useSetAtom(cakeLockWeeksAtom)
   const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
-  const currentTimestamp = useCurrentBlockTimestamp()
+  const roundedUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? Number(cakeUnlockTime) : undefined)
 
   const increaseLockWeeks = useCallback(async () => {
-    const startTime = cakeLockExpired ? dayjs.unix(currentTimestamp) : dayjs.unix(Number(cakeUnlockTime))
-    const maxUnlockTime = dayjs.unix(currentTimestamp).add(MAX_VECAKE_LOCK_WEEKS, 'weeks')
-    const userUnlockTime = startTime.add(Number(cakeLockWeeks), 'weeks')
-    const unlockTime = userUnlockTime.isAfter(maxUnlockTime) ? maxUnlockTime : userUnlockTime
-    const { request } = await veCakeContract.simulate.increaseUnlockTime([BigInt(unlockTime.unix())], {
+    const week = Number(cakeLockWeeks)
+    if (!week || !roundedUnlockTimestamp) return
+
+    const { request } = await veCakeContract.simulate.increaseUnlockTime([roundedUnlockTimestamp], {
       account: account!,
       chain: veCakeContract.chain,
     })
@@ -51,12 +48,10 @@ export const useWriteIncreaseLockWeeksCallback = () => {
     }
     setStatus(ApproveAndLockStatus.CONFIRMED)
   }, [
-    cakeLockExpired,
-    currentTimestamp,
-    cakeUnlockTime,
+    cakeLockWeeks,
     veCakeContract.simulate,
     veCakeContract.chain,
-    cakeLockWeeks,
+    roundedUnlockTimestamp,
     account,
     setStatus,
     walletClient,

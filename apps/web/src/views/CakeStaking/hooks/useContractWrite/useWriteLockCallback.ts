@@ -1,14 +1,13 @@
-import { useVeCakeContract } from 'hooks/useContract'
-import { useCallback } from 'react'
-import BN from 'bignumber.js'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
-import dayjs from 'dayjs'
-import { useAccount, useWalletClient } from 'wagmi'
-import { useLockCakeData } from 'state/vecake/hooks'
-import { useSetAtom } from 'jotai'
-import { approveAndLockStatusAtom, cakeLockTxHashAtom, ApproveAndLockStatus } from 'state/vecake/atoms'
+import BN from 'bignumber.js'
+import { useVeCakeContract } from 'hooks/useContract'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
-import { useCurrentBlockTimestamp } from '../useCurrentBlockTimestamp'
+import { useSetAtom } from 'jotai'
+import { useCallback } from 'react'
+import { ApproveAndLockStatus, approveAndLockStatusAtom, cakeLockTxHashAtom } from 'state/vecake/atoms'
+import { useLockCakeData } from 'state/vecake/hooks'
+import { useAccount, useWalletClient } from 'wagmi'
+import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 
 // invoke the lock function on the vecake contract
 export const useWriteLockCallback = () => {
@@ -19,14 +18,14 @@ export const useWriteLockCallback = () => {
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
   const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
-  const currentTimestamp = useCurrentBlockTimestamp()
+  const roundedUnlockTimestamp = useRoundedUnlockTimestamp()
 
   const lockCake = useCallback(async () => {
+    const week = Number(cakeLockWeeks)
+    if (!week || !cakeLockAmount || !roundedUnlockTimestamp) return
+
     const { request } = await veCakeContract.simulate.createLock(
-      [
-        BigInt(getDecimalAmount(new BN(cakeLockAmount), 18).toString()),
-        BigInt(dayjs.unix(currentTimestamp).add(Number(cakeLockWeeks), 'week').unix()),
-      ],
+      [BigInt(getDecimalAmount(new BN(cakeLockAmount), 18).toString()), roundedUnlockTimestamp],
       {
         account: account!,
         chain: veCakeContract.chain,
@@ -46,11 +45,11 @@ export const useWriteLockCallback = () => {
     }
     setStatus(ApproveAndLockStatus.CONFIRMED)
   }, [
+    cakeLockWeeks,
+    cakeLockAmount,
+    roundedUnlockTimestamp,
     veCakeContract.simulate,
     veCakeContract.chain,
-    cakeLockAmount,
-    currentTimestamp,
-    cakeLockWeeks,
     account,
     setStatus,
     walletClient,

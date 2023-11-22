@@ -3,12 +3,14 @@ import { AutoRow, Box, Text, TooltipText } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useLockCakeData } from 'state/vecake/hooks'
 import styled from 'styled-components'
-import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useRoundedUnlockTimestamp } from 'views/CakeStaking/hooks/useRoundedUnlockTimestamp'
 import { MyVeCakeCard } from '../MyVeCakeCard'
 import { Tooltips } from '../Tooltips'
 import { DataRow } from './DataBox'
+import { formatDate } from './format'
 
 const ValueText = styled(Text)`
   fontsize: 16px;
@@ -18,13 +20,15 @@ const ValueText = styled(Text)`
 export const NewStakingDataSet: React.FC<{
   veCakeAmount?: number
   cakeAmount?: number
-  duration?: number
-}> = ({ veCakeAmount = 0, cakeAmount = 0, duration = 0 }) => {
+}> = ({ veCakeAmount = 0, cakeAmount = 0 }) => {
   const { t } = useTranslation()
-  const currentTimestamp = useCurrentBlockTimestamp()
   const veCake = veCakeAmount ? getFullDisplayBalance(new BN(veCakeAmount), 0, 3) : '0'
   const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeAmount).toPrecision(2)}x` : '0x'
-  const unlockOn = duration ? dayjs.unix(currentTimestamp).add(duration, 'week').format('MMM D YYYY HH:mm') : ''
+  const { cakeLockWeeks } = useLockCakeData()
+  const unlockTimestamp = useRoundedUnlockTimestamp()
+  const unlockOn = useMemo(() => {
+    return formatDate(dayjs.unix(Number(unlockTimestamp)))
+  }, [unlockTimestamp])
   return (
     <>
       <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
@@ -61,7 +65,7 @@ export const NewStakingDataSet: React.FC<{
                 {t('Duration')}
               </Text>
             }
-            value={<ValueText>{duration} weeks</ValueText>}
+            value={<ValueText>{cakeLockWeeks} weeks</ValueText>}
           />
           <DataRow
             label={
