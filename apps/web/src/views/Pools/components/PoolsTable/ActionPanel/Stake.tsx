@@ -204,7 +204,12 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const reachStakingLimit = stakingLimit?.gt(0) && userData?.stakedBalance?.gte(stakingLimit)
   const isLocked = vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked
   const vaultPosition = getVaultPosition(vaultData.userData)
-  if (!account || (account && vaultPosition === VaultPosition.None)) {
+  if (
+    !account ||
+    (account &&
+      vaultPosition === VaultPosition.None &&
+      (vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault))
+  ) {
     return (
       <ActionContainer>
         <ActionTitles>
