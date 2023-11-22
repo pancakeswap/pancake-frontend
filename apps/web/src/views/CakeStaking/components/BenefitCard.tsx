@@ -75,12 +75,21 @@ export const BenefitCard: React.FC<{
   type: BenefitCardType
   dataText?: string
   onClick?: () => void
+  comingSoon?: boolean
   headSlot?: React.ReactNode
-}> = ({ type, onClick, dataText, headSlot }) => {
+}> = ({ type, onClick, dataText, headSlot, comingSoon }) => {
   const { t } = useTranslation()
   const info = BENEFITS[type] as BenefitItem
 
-  const button = info.btnText ? (
+  const comingSoonButton = (
+    <Button width="100%" mt="auto" disabled>
+      {t('Coming Soon')}
+    </Button>
+  )
+
+  const button = comingSoon ? (
+    comingSoonButton
+  ) : info.btnText ? (
     <Button width="100%" mt="auto" variant={onClick ? 'primary' : 'secondary'} onClick={onClick}>
       {info.btnText}
     </Button>
