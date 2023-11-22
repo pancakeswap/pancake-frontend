@@ -5,7 +5,6 @@ import { PoolCategory, SerializedPool } from '../../types'
 
 export const livePools: SerializedPool[] = [
   {
-    // TODO: comment it before merge
     sousId: 0,
     stakingToken: bscTestnetTokens.cake2,
     earningToken: bscTestnetTokens.cake2,

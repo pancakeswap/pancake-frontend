@@ -1,14 +1,14 @@
-import { Address, formatUnits } from 'viem'
-import {
-  getPoolsConfig,
-  getPoolContractBySousId,
-  SUPPORTED_CHAIN_IDS,
-  isLegacyPool,
-  SerializedPool,
-} from '@pancakeswap/pools'
-import { describe, it } from 'vitest'
 import { ChainId } from '@pancakeswap/chains'
+import {
+  SUPPORTED_CHAIN_IDS,
+  SerializedPool,
+  getPoolContractBySousId,
+  getPoolsConfig,
+  isLegacyPool,
+} from '@pancakeswap/pools'
 import { publicClient } from 'utils/client'
+import { Address, formatUnits } from 'viem'
+import { describe, it } from 'vitest'
 
 describe.concurrent(
   'Config pools',
@@ -17,7 +17,7 @@ describe.concurrent(
       const pools = getPoolsConfig(chainId) ?? []
       // Pool 0 is special (cake pool)
       // Pool 78 is a broken pool, not used, and break the tests
-      const idsToRemove = chainId === ChainId.BSC ? [0, 78] : []
+      const idsToRemove = chainId === ChainId.BSC ? [0, 78] : chainId === ChainId.BSC_TESTNET ? [0] : []
       // Test only against the last 10 pools, for performance concern
       const poolsToTest = pools.filter((pool) => !idsToRemove.includes(pool.sousId)).slice(0, 10)
 
