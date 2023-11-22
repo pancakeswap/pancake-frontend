@@ -16,14 +16,12 @@ import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import Page from 'components/Layout/Page'
-import dayjs from 'dayjs'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import { useState } from 'react'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
 import { NewCakeStakingCard } from './components/NewCakeStakingCard'
-import { useCurrentBlockTimestamp } from './hooks/useCurrentBlockTimestamp'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 import { useSnapshotProposalsCount } from './hooks/useSnapshotProposalsCount'
 import { useTotalIFOSold } from './hooks/useTotalIFOSold'
@@ -36,7 +34,6 @@ const CakeStaking = () => {
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
   const totalIFOSold = useTotalIFOSold()
   const { isDesktop } = useMatchBreakpoints()
-  const currentTimestamp = useCurrentBlockTimestamp()
 
   return (
     <>
@@ -113,7 +110,8 @@ const CakeStaking = () => {
               />
             }
             type="gaugesVoting"
-            comingSoon={dayjs.unix(currentTimestamp).isBefore(dayjs('2023-11-22T20:00:00+08:00').unix())}
+            // comingSoon={dayjs.unix(currentTimestamp).isBefore(dayjs('2023-11-22T20:00:00+08:00').unix())}
+            comingSoon
             dataText={`${gaugesVotingCount ?? 0}`}
             onClick={() => {}}
           />
