@@ -1,23 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AtomBox,
-  AutoColumn,
-  Flex,
-  ModalActions,
-  ModalBody,
-  ModalCloseButton,
-  ModalContainer,
-  RowBetween,
-  Text,
-} from '@pancakeswap/uikit'
+import { AtomBox, Flex, ModalBody, ModalCloseButton, ModalContainer, RowBetween, Text } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 
 import { Token } from '@pancakeswap/sdk'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { DeserializedLockedVaultUser } from 'state/types'
-import LockedActions from 'views/Pools/components/LockedPool/Common/LockedActions'
-import LockedBenefits from 'views/Pools/components/RevenueSharing/BenefitsModal/LockedBenefits'
 import RevenueSharing from 'views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing'
 import SharingPoolNameCell from 'views/Pools/components/RevenueSharing/BenefitsModal/SharingPoolNameCell'
 import { useAccount } from 'wagmi'
@@ -49,11 +36,7 @@ interface BenefitsModalProps {
   onDismiss?: () => void
 }
 
-const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsModalProps>> = ({
-  pool,
-  userData,
-  onDismiss,
-}) => {
+const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsModalProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
 
   useAccount({
@@ -75,24 +58,9 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
         <ModalBody mt="16px" width="100%" style={{ maxHeight: 'calc(100vh - 260px)' }}>
           <ScrollableContainer px="24px">
             <SharingPoolNameCell />
-            <LockedBenefits />
             <RevenueSharing onDismiss={onDismiss} />
           </ScrollableContainer>
         </ModalBody>
-        <AutoColumn px="24px" gap="16px">
-          <ModalActions>
-            <LockedActions
-              userShares={userData?.userShares}
-              locked={userData?.locked}
-              lockEndTime={userData?.lockEndTime}
-              lockStartTime={userData?.lockStartTime || '0'}
-              stakingToken={pool?.stakingToken}
-              stakingTokenPrice={pool?.stakingTokenPrice || 0}
-              stakingTokenBalance={pool?.userData?.stakingTokenBalance || BIG_ZERO}
-              lockedAmount={userData?.balance?.cakeAsBigNumber || BIG_ZERO}
-            />
-          </ModalActions>
-        </AutoColumn>
       </AtomBox>
     </Container>
   )

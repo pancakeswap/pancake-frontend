@@ -1,34 +1,34 @@
-import { styled } from 'styled-components'
 import {
-  Text,
-  Flex,
-  Skeleton,
-  Heading,
-  Box,
-  useMatchBreakpoints,
   BalanceWithLoading,
-  useTooltip,
-  HelpIcon,
+  Box,
   Button,
+  Flex,
+  Heading,
+  HelpIcon,
+  Skeleton,
+  Text,
+  useMatchBreakpoints,
   useModal,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 
-import { useAccount } from 'wagmi'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from '@pancakeswap/localization'
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
-import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import { useVaultApy } from 'hooks/useVaultApy'
 import { Token } from '@pancakeswap/sdk'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { DeserializedLockedCakeVault, VaultKey } from 'state/types'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import BenefitsModal from 'views/Pools/components/RevenueSharing/BenefitsModal'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import useVCake from 'views/Pools/hooks/useVCake'
+import { useAccount } from 'wagmi'
 
-import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from './styles'
+import AutoEarningsBreakdown from '../../AutoEarningsBreakdown'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
 import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'
-import AutoEarningsBreakdown from '../../AutoEarningsBreakdown'
+import { ActionContainer, ActionContent, ActionTitles, RowActionContainer } from './styles'
 
 const HelpIconWrapper = styled.div`
   align-self: center;
