@@ -6,6 +6,7 @@ import { Address } from 'viem'
 import { useContractRead } from 'wagmi'
 import { CakeLockStatus } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
+import { useCheckIsUserAllowMigrate } from './useCheckIsUserAllowMigrate'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 
 export enum CakePoolLockStatus {
@@ -90,9 +91,10 @@ export const useCakeLockStatus = (): {
   const { data: userInfo } = useVeCakeUserInfo()
   // if user locked at cakePool before, should migrate
   const cakePoolLockInfo = useCakePoolLockInfo()
+  const isAllowMigrate = useCheckIsUserAllowMigrate(String(userInfo?.lockEndTime))
   const shouldMigrate = useMemo(() => {
-    return cakePoolLockInfo?.locked && userInfo?.cakePoolType !== 1
-  }, [cakePoolLockInfo, userInfo?.cakePoolType])
+    return cakePoolLockInfo?.locked && userInfo?.cakePoolType !== 1 && isAllowMigrate
+  }, [cakePoolLockInfo?.locked, isAllowMigrate, userInfo?.cakePoolType])
   const now = useMemo(() => dayjs.unix(currentTimestamp), [currentTimestamp])
   const cakeLocked = useMemo(() => Boolean(userInfo && userInfo.amount > 0n), [userInfo])
   const cakeUnlockTime = useMemo(() => {
