@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
-import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
-import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
 import { ICAKE } from '@pancakeswap/ifos'
 import { CAKE_VAULT } from '@pancakeswap/pools'
+import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
+import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 
 export default {
   masterChef: {
@@ -266,7 +266,7 @@ export default {
     [ChainId.BSC_TESTNET]: '0x279957513FC505F8Cb16f4b6783D170C9BEcE322',
   },
   gaugesVoting: {
-    [ChainId.BSC]: '0xD6f7C34e2FfBE1b8bFD40f5960aE269C596fF893',
+    [ChainId.BSC]: '0x26F4dcd64434CCA69F7E94fB1001E22a1EB51526',
     [ChainId.BSC_TESTNET]: '0x357b01894b21787B41A8FA4DCaFE92293470FaD9',
   },
   revenueSharingVeCake: {
