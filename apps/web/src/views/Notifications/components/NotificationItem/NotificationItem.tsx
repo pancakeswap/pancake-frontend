@@ -187,7 +187,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
             <NotificationImage image={image} title={title} message={description} />
             <Flex flexDirection="column" width="100%">
               <Text fontWeight={600} marginBottom="4px">
-                {title}
+                {title.includes('Update POLYGON_ZKEVM') ? 'Farms APR Update ZKEVM' : title}
               </Text>
               <FlexGap alignItems="center" gap="6px" width="100%">
                 {!hasUnread && <Dot show color="success" className="dot" />}
