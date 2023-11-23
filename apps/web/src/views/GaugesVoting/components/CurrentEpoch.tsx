@@ -17,6 +17,11 @@ export const CurrentEpoch = () => {
   const currentTimestamp = useCurrentBlockTimestamp()
   const { isDesktop } = useMatchBreakpoints()
 
+  console.debug('debug', {
+    epochEnd,
+    currentTimestamp,
+  })
+
   return (
     <Card isActive innerCardProps={{ padding: isDesktop ? '1.5em' : '1em' }}>
       <FlexGap gap="8px" flexDirection="column">
@@ -33,7 +38,7 @@ export const CurrentEpoch = () => {
             </Tooltips>
             <FlexGap alignItems="baseline" gap="2px">
               <Text bold fontSize={16}>
-                {dayjs.unix(epochEnd).from(currentTimestamp)}
+                {dayjs.unix(epochEnd).from(dayjs.unix(currentTimestamp))}
               </Text>
               <Text fontSize={14}>({dayjs.unix(epochEnd).format('DD MMM YYYY')}) </Text>
             </FlexGap>
