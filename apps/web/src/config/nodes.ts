@@ -94,7 +94,8 @@ export const PUBLIC_NODES = {
   //   'https://bsc-dataseed1.defibit.io',
   //   'https://bsc-dataseed1.binance.org',
   // ].filter(Boolean),
-  [ChainId.BSC]: ['https://devnet_2.pancakeswap.ai'],
+  // [ChainId.BSC]: ['https://devnet_2.pancakeswap.ai'],
+  [ChainId.BSC]: ['https://rpc.tenderly.co/fork/1819af84-9fac-49c6-a853-8a7866af540a'],
   [ChainId.BSC_TESTNET]: ['https://devnet_1.pancakeswap.ai'],
   [ChainId.ETHEREUM]: [
     getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
