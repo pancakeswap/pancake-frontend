@@ -266,7 +266,7 @@ export default {
     [ChainId.BSC_TESTNET]: '0x279957513FC505F8Cb16f4b6783D170C9BEcE322',
   },
   gaugesVoting: {
-    [ChainId.BSC]: '0x26F4dcd64434CCA69F7E94fB1001E22a1EB51526',
+    [ChainId.BSC]: '0xffdcDD4cF85Ba1b51D7aB498208C0EC7E1910e3b',
     [ChainId.BSC_TESTNET]: '0x357b01894b21787B41A8FA4DCaFE92293470FaD9',
   },
   revenueSharingVeCake: {
