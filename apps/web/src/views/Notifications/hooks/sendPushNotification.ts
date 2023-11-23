@@ -40,13 +40,18 @@ const useSendPushNotification = (): IUseSendNotification => {
         const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
         await navigator.serviceWorker.ready
 
+        const existingSubscription = await registration.pushManager.getSubscription()
+        if (existingSubscription) {
+          return
+        }
+
         const secretKeyBuffer = Buffer.from(WEB_PUSH_ENCRYPTION_KEY, 'hex')
         const ivBuffer = Buffer.from(WEB_PUSH_IV, 'hex')
 
         const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey:
-            'BNoJupnIaclRRKKTXb2G22d1O0X51av7Eu4innzltz9yk9c2Zja954EJn9-09NLVLvK0MFfclAdP76t4cNl7nDg',
+            'BMqr9OUv0dxUll4al_WO0EGFf87hkxrIrQik_fv_rkX7Mtr7irwOnaw8egvgYFQqsi3_rbsoY4TzjfrqUL1sA44',
         })
         const data = JSON.stringify(subscription)
         const cipher = crypto.createCipheriv('aes-256-cbc', secretKeyBuffer, ivBuffer)
