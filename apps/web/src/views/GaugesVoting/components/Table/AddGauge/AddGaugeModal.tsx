@@ -14,14 +14,14 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { GAUGES } from 'config/constants/gauges'
 import { GaugeType } from 'config/constants/types'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { useGaugesPresets } from 'views/GaugesVoting/hooks/useGaugesPresets'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
 import { useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { getGaugeHash } from 'views/GaugesVoting/utils'
-import { GaugesTable, GaugesList } from '../GaugesTable'
+import { GaugesList, GaugesTable } from '../GaugesTable'
 import { Filter, FilterValue, Gauges, OptionsModal, OptionsType } from './OptionsModal'
 
 const FilterButton = styled(Button)`
@@ -40,6 +40,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const { isDesktop } = useMatchBreakpoints()
   const totalGaugesWeight = useGaugesTotalWeight()
   const gauges = useGaugesVoting()
+  const presets = useGaugesPresets()
   const [option, setOption] = useState<OptionsType | null>(null)
   const [filter, setFilter] = useState<Filter>({
     byChain: [],
@@ -50,9 +51,9 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const filterRows = useMemo(() => {
     const { byChain, byFeeTier, byType } = filter
     const rows = gauges?.filter((gauge) => {
-      const gaugeConfig = GAUGES.find((g) => gauge.hash === getGaugeHash(g.address, g.chainId))
-      const feeTier = gaugeConfig?.type === GaugeType.V3 ? gaugeConfig?.feeTier : undefined
-      const chain = gaugeConfig?.chainId
+      const config = presets.find((g) => gauge.hash === getGaugeHash(g.address, g.chainId))
+      const feeTier = config?.type === GaugeType.V3 ? config?.feeTier : undefined
+      const chain = config?.chainId
       const boosted = gauge.boostMultiplier > 100
       const capped = gauge.maxVoteCap > 0
       const types = [boosted ? Gauges.Boosted : Gauges.Regular]
@@ -66,7 +67,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       )
     })
     return rows
-  }, [filter, gauges])
+  }, [filter, gauges, presets])
 
   const onFilterChange = (type: OptionsType, value: FilterValue) => {
     const opts = filter[type] as Array<unknown>
