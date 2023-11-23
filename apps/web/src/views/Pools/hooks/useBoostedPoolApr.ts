@@ -12,7 +12,7 @@ export const useBoostedPoolApr = ({ contractAddress, chainId }: UseBoostedPoolAp
   const client = getViemClients({ chainId })
 
   const { data } = useQuery(
-    ['boostedPoolsApr', chainId],
+    ['boostedPoolsApr', client, contractAddress, chainId],
     () => {
       if (client) {
         return getBoostedPoolApr({
