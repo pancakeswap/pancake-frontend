@@ -32,9 +32,9 @@ import usePollOraclePrice from '../hooks/usePollOraclePrice'
 import useSwiper from '../hooks/useSwiper'
 
 function useChainlinkLatestRound() {
-  const { chainlinkOracleAddress } = useConfig()
+  const config = useConfig()
   const { chainId } = useActiveChainId()
-  const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress)
+  const chainlinkOracleContract = useChainlinkOracleContract(config?.chainlinkOracleAddress)
   return useContractRead({
     abi: chainlinkOracleABI,
     address: chainlinkOracleContract.address,
@@ -48,21 +48,23 @@ function useChainlinkLatestRound() {
 function useChainlinkRoundDataSet() {
   const { chainId } = useActiveChainId()
   const lastRound = useChainlinkLatestRound()
-  const { chainlinkOracleAddress } = useConfig()
+  const config = useConfig()
+  const chainlinkOracleAddress = config?.chainlinkOracleAddress
 
   const { data, error } = useContractReads({
-    contracts:
-      lastRound?.data &&
-      Array.from({ length: 50 }).map(
-        (_, i) =>
-          ({
-            chainId,
-            abi: chainlinkOracleABI,
-            address: chainlinkOracleAddress,
-            functionName: 'getRoundData',
-            args: [(lastRound?.data ?? 0n) - BigInt(i)] as const,
-          } as const),
-      ),
+    ...(lastRound?.data &&
+      chainlinkOracleAddress && {
+        contracts: Array.from({ length: 50 }).map(
+          (_, i) =>
+            ({
+              chainId,
+              abi: chainlinkOracleABI,
+              address: chainlinkOracleAddress,
+              functionName: 'getRoundData',
+              args: [(lastRound?.data ?? 0n) - BigInt(i)] as const,
+            } as const),
+        ),
+      }),
     enabled: !!lastRound.data,
     keepPreviousData: true,
   })
@@ -132,13 +134,13 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { token } = useConfig()
+  const config = useConfig()
 
   return (
     <PairPriceDisplay
       width="100%"
       value={hoverData ? hoverData.answer : formatBigIntToFixed(answerAsBigNumber, 4, 8)}
-      inputSymbol={token.symbol}
+      inputSymbol={config?.token?.symbol}
       outputSymbol="USD"
       format={false}
       flexWrap="wrap"
@@ -184,13 +186,11 @@ const ChainLinkChart = (props: FlexProps & { isMobile?: boolean }) => {
         alignItems="center"
         flexWrap="wrap"
         columnGap="12px"
-        height={['56px', , , , '44px']}
+        height={['56px', '0', '0', '0', '44px']}
       >
-        <HoverData rounds={rounds} />
+        {rounds && <HoverData rounds={rounds} />}
       </FlexGap>
-      <Flex height={[`calc(100% - 56px)`]}>
-        <Chart rounds={rounds} data={data} />
-      </Flex>
+      <Flex height={[`calc(100% - 56px)`]}>{rounds && <Chart rounds={rounds} data={data} />}</Flex>
     </ChainlinkChartWrapper>
   )
 }
@@ -325,9 +325,9 @@ const Chart = ({
     const clickHandler = (param) => {
       if (param.hoveredSeries) {
         const marker = param.hoveredSeries.markers().find((hoveredMarker) => hoveredMarker.time === param.time)
-        const roundIndex = sortedRounds.findIndex((round) =>
-          'roundId' in marker ? round.closeOracleId === marker.roundId : false,
-        )
+        const roundIndex =
+          sortedRounds?.findIndex((round) => ('roundId' in marker ? round.closeOracleId === marker.roundId : false)) ??
+          0
         if (roundIndex >= 0 && swiper) {
           swiper.slideTo(roundIndex)
           swiper.el.dispatchEvent(new Event(CHART_DOT_CLICK_EVENT))

@@ -30,7 +30,7 @@ export interface PredictionConfig {
   isNativeToken: boolean
   address: Address
   api: string
-  chainlinkOracleAddress: string
+  chainlinkOracleAddress: Address
   displayedDecimals: number
   token: Token
 }
