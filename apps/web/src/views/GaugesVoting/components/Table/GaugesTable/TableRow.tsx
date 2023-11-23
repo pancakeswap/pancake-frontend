@@ -19,9 +19,9 @@ import { Address } from 'viem'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { feeTierPercent } from 'views/V3Info/utils'
+import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
-import { GaugeTokenImage } from '../../GaugeTokenImage'
 
 export const TableRow: React.FC<{
   data: GaugeVoting
@@ -56,7 +56,7 @@ export const TableRow: React.FC<{
         </Text>
         <FlexGap gap="5px" alignItems="center">
           <NetworkBadge chainId={Number(data?.chainId)} />
-          {pool?.type === GaugeType.V3 ? (
+          {[GaugeType.V3, GaugeType.V2].includes(pool?.type) ? (
             <Tag outline variant="secondary">
               {feeTierPercent(pool.feeTier)}
             </Tag>

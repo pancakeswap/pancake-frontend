@@ -72,7 +72,7 @@ export const TableRow: React.FC<{
         </Text>
         <FlexGap gap="5px" alignItems="center">
           <NetworkBadge chainId={Number(data?.chainId)} />
-          {pool?.type === GaugeType.V3 ? (
+          {[GaugeType.V3, GaugeType.V2].includes(pool?.type) ? (
             <Tag outline variant="secondary">
               {feeTierPercent(pool.feeTier)}
             </Tag>

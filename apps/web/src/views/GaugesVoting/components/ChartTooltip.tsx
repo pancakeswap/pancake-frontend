@@ -87,7 +87,7 @@ export const ChartTooltip: React.FC<{
             {pool?.pairName}
           </Text>
           <Flex alignItems="center">
-            {pool?.type === GaugeType.V3 ? (
+            {[GaugeType.V3, GaugeType.V2].includes(pool?.type) ? (
               <>
                 <Text fontSize={12} lineHeight={1.2} color="textSubtle">
                   {feeTierPercent(pool.feeTier)}
