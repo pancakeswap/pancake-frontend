@@ -3,6 +3,7 @@ import { Button, Card, FlexGap, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
+import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { RemainVeCakeBalance } from '../../RemainVeCakeBalance'
@@ -25,6 +26,7 @@ export const VoteTable = () => {
   const { t } = useTranslation()
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
+  const epochPower = useEpochVotePower()
   const [expanded, setExpanded] = useState(false)
   const [votes, setVotes] = useState<UserVote[]>([])
   const voteSum = useMemo(() => {
@@ -47,7 +49,8 @@ export const VoteTable = () => {
     }
     if (value === 'MAX_VOTE') {
       const sum = voteSum - Number(newVotes[index].power || 0)
-      newVotes[index].power = 100 - sum > 0 ? String(100 - sum) : '0'
+
+      newVotes[index].power = 100 - sum > 0 && epochPower > 0n ? String(100 - sum) : '0'
     } else {
       newVotes[index] = value
     }

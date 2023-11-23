@@ -1,22 +1,22 @@
 import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
-import { useCurrentEpochEnd } from './useEpochTime'
+import { useNextEpochStart } from './useEpochTime'
 
 export const useEpochVotePower = () => {
-  const epochEnd = useCurrentEpochEnd()
+  const nextEpoch = useNextEpochStart()
   const contract = useVeCakeContract()
   const { account } = useAccountActiveChain()
 
   const { data } = useQuery(
-    ['epochVotePower', epochEnd, contract.address, contract.chain?.id],
+    ['epochVotePower', nextEpoch, contract.address, contract.chain?.id],
     async () => {
-      if (!contract || !epochEnd) return 0n
-      const votePower = await contract.read.balanceOfAtTime([account!, BigInt(epochEnd)])
+      if (!contract || !nextEpoch) return 0n
+      const votePower = await contract.read.balanceOfAtTime([account!, BigInt(nextEpoch)])
       return votePower
     },
     {
-      enabled: !!epochEnd && !!contract.address && !!account,
+      enabled: !!nextEpoch && !!contract.address && !!account,
     },
   )
 
