@@ -1,77 +1,35 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
-import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import BN from 'bignumber.js'
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import dayjs from 'dayjs'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Address } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
-import { useNextEpochStart } from 'views/GaugesVoting/hooks/useEpochTime'
-import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
-import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
 import { PercentInput } from './PercentInput'
-import { MaxVote, UserVote } from './types'
+import { useRowVoteState } from './hooks/useRowVoteState'
+import { RowProps } from './types'
 
-export const TableRow: React.FC<{
-  data: GaugeVoting
-  vote?: UserVote
-  onChange: (value: MaxVote | UserVote) => void
-}> = ({ data, vote, onChange }) => {
+export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
-  // const { balance: veCake } = useVeCakeBalance()
-  const epochVotePower = useEpochVotePower()
-  const nextEpochStart = useNextEpochStart()
   const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
   const userVote = useUserVote(data)
-
-  const voteDisabled = userVote?.voteLocked
-  const powerPercent = useMemo(() => {
-    return userVote?.power ? new Percent(userVote?.power, 10000).toSignificant(2) : undefined
-  }, [userVote?.power])
-  const power = useMemo(() => {
-    if (userVote?.slope && userVote?.power) {
-      const amount = getBalanceNumber(new BN(userVote.slope).times(userVote.end - nextEpochStart))
-      if (amount < 1) return amount.toPrecision(2)
-      return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-    }
-    return 0
-  }, [nextEpochStart, userVote?.end, userVote?.power, userVote?.slope])
+  const { currentVoteWeight, currentVotePercent, previewVoteWeight, voteValue, voteLocked } = useRowVoteState({
+    data,
+    vote,
+    onChange,
+  })
 
   const onMax = () => {
     onChange('MAX_VOTE')
   }
-
-  const voteValue = useMemo(() => {
-    if (voteDisabled) return powerPercent ?? ''
-    return vote?.power ?? ''
-  }, [voteDisabled, powerPercent, vote?.power])
-  const votesAmount = useMemo(() => {
-    const p = Number(voteValue || 0) * 100
-    const powerBN = new BN(epochVotePower.toString())
-    const amount = getBalanceNumber(powerBN.times(p).div(10000))
-    if (amount < 1) return amount.toPrecision(2)
-    return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-  }, [epochVotePower, voteValue])
-
-  // reinit vote value if user vote locked
-  useEffect(() => {
-    if (voteDisabled && !vote?.power) {
-      onChange({
-        power: voteValue,
-        locked: true,
-      })
-    }
-  }, [onChange, vote?.power, voteDisabled, voteValue])
 
   return (
     <TRow>
@@ -92,11 +50,11 @@ export const TableRow: React.FC<{
         </FlexGap>
       </FlexGap>
       <FlexGap alignItems="center" justifyContent="center" gap="4px">
-        <Text bold>{power}</Text>
-        <Text>{powerPercent ? ` (${powerPercent}%)` : null}</Text>
+        <Text bold>{currentVoteWeight}</Text>
+        <Text>{currentVotePercent ? ` (${currentVotePercent}%)` : null}</Text>
       </FlexGap>
       <Flex alignItems="center" pr="25px">
-        {userVote?.voteLocked ? (
+        {voteLocked ? (
           <Tooltips
             content={t(
               'Gauge’s vote can not be changed more frequent than 10 days. You can update your vote for this gauge in: %distance%',
@@ -110,12 +68,12 @@ export const TableRow: React.FC<{
             <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
           </Tooltips>
         ) : null}
-        <Text color={userVote?.voteLocked ? 'textDisabled' : ''}>{votesAmount} veCAKE</Text>
+        <Text color={userVote?.voteLocked ? 'textDisabled' : ''}>{previewVoteWeight} veCAKE</Text>
       </Flex>
       <Flex>
         <PercentInput
-          disabled={voteDisabled}
-          inputProps={{ disabled: voteDisabled }}
+          disabled={voteLocked}
+          inputProps={{ disabled: voteLocked }}
           onMax={onMax}
           value={voteValue}
           onUserInput={(v) => onChange({ ...vote, power: v })}
