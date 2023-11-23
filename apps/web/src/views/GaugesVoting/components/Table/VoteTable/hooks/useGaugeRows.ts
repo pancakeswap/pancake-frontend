@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
-import { useGaugesVoting, GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { GaugeVoting, useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGuages'
 
 export const useGaugeRows = () => {
