@@ -38,6 +38,14 @@ export const VoteTable = () => {
 
   const { rows, onRowAdd, refetch } = useGaugeRows()
   const { isDesktop } = useMatchBreakpoints()
+  const rowsWithLock = useMemo(() => {
+    return rows?.map((row, index) => {
+      return {
+        ...row,
+        locked: votes[index]?.locked,
+      }
+    })
+  }, [votes, rows])
 
   const onVoteChange = (index: number, value: MaxVote | UserVote) => {
     const newVotes = [...votes]
@@ -135,7 +143,12 @@ export const VoteTable = () => {
   return (
     <>
       <RemainVeCakeBalance votedPercent={lockedPowerPercent} />
-      <AddGaugeModal selectRows={rows} onGaugeAdd={onRowAdd} isOpen={isOpen} onDismiss={() => setIsOpen(false)} />
+      <AddGaugeModal
+        selectRows={rowsWithLock}
+        onGaugeAdd={onRowAdd}
+        isOpen={isOpen}
+        onDismiss={() => setIsOpen(false)}
+      />
       <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
         {gauges}
 

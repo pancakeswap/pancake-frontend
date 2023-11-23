@@ -44,7 +44,7 @@ type ListProps = {
   totalGaugesWeight: number
   data?: GaugeVoting[]
   selectable?: boolean
-  selectRows?: GaugeVoting[]
+  selectRows?: Array<GaugeVoting & { locked?: boolean }>
   onRowSelect?: (hash: GaugeVoting['hash']) => void
 } & SpaceProps
 
@@ -77,6 +77,7 @@ export function GaugesList({
       key={`${item.hash}-${item.pid}`}
       data={item}
       selectable={selectable}
+      locked={selectRows?.find((r) => r.hash === item.hash)?.locked}
       selected={selectRows?.some((r) => r.hash === item.hash)}
       onSelect={onRowSelect}
       totalGaugesWeight={totalGaugesWeight}
@@ -98,6 +99,7 @@ export function GaugesList({
 
 type ListItemProps = {
   data: GaugeVoting
+  locked?: boolean
   selectable?: boolean
   selected?: boolean
   onSelect?: (hash: GaugeVoting['hash']) => void
@@ -173,20 +175,41 @@ export function GaugeListItem({ listDisplay = 'row', ...props }: ListItemProps) 
   return <GaugeCardItem {...props} />
 }
 
-export function GaugeRowItem({ data, totalGaugesWeight }: ListItemProps) {
+export function GaugeRowItem({ data, totalGaugesWeight, locked }: ListItemProps) {
   return (
     <ListItemContainer>
-      <GaugeItemDetails data={data} totalGaugesWeight={totalGaugesWeight} />
+      <GaugeItemDetails locked={locked} data={data} totalGaugesWeight={totalGaugesWeight} />
     </ListItemContainer>
   )
 }
 
-export function GaugeCardItem({ data, totalGaugesWeight, selected, selectable, onSelect }: ListItemProps) {
-  const onSelectClick = useCallback(() => selectable && onSelect?.(data?.hash), [data?.hash, onSelect, selectable])
+const SelectedCornerMark = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+`
+
+export function GaugeCardItem({ data, locked, totalGaugesWeight, selected, selectable, onSelect }: ListItemProps) {
+  const onSelectClick = useCallback(
+    () => selectable && !locked && onSelect?.(data?.hash),
+    [data?.hash, locked, onSelect, selectable],
+  )
 
   return (
     <CardItemContainer>
-      <Card isSuccess={selectable && selected} onClick={onSelectClick}>
+      <Card isSuccess={selectable && selected} onClick={onSelectClick} style={{ overflow: 'visible' }}>
+        {selectable && selected ? (
+          <SelectedCornerMark>
+            <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0H19C27.8366 0 35 7.16344 35 16V35L0 0Z" fill="#31D0AA" />
+              <circle cx="24" cy="11" r="8" fill="#FAF9FA" />
+              <path
+                d="M24.0001 2.66699C19.4001 2.66699 15.6667 6.40033 15.6667 11.0003C15.6667 15.6003 19.4001 19.3337 24.0001 19.3337C28.6001 19.3337 32.3334 15.6003 32.3334 11.0003C32.3334 6.40033 28.6001 2.66699 24.0001 2.66699ZM21.7417 14.5753L18.7501 11.5837C18.4251 11.2587 18.4251 10.7337 18.7501 10.4087C19.0751 10.0837 19.6001 10.0837 19.9251 10.4087L22.3334 12.8087L28.0667 7.07533C28.3917 6.75033 28.9167 6.75033 29.2417 7.07533C29.5667 7.40033 29.5667 7.92533 29.2417 8.25033L22.9167 14.5753C22.6001 14.9003 22.0667 14.9003 21.7417 14.5753Z"
+                fill="#31D0AA"
+              />
+            </svg>
+          </SelectedCornerMark>
+        ) : null}
         <CardBody>
           <GaugeItemDetails data={data} totalGaugesWeight={totalGaugesWeight} />
         </CardBody>

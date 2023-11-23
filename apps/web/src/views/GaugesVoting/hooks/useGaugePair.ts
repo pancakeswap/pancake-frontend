@@ -95,7 +95,5 @@ export const useGaugeConfig = (address?: Address, chainId?: number) => {
   // only on-chain gauges will show up
   if (!published) return undefined
 
-  if (!config) throw new Error(`Gauge config not found for ${address} on chain ${chainId}`)
-
   return config
 }

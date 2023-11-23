@@ -2,7 +2,7 @@ import orderBy from 'lodash/orderBy'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { space, SpaceProps } from 'styled-system'
+import { SpaceProps, space } from 'styled-system'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { SortBy, SortField, TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
@@ -28,7 +28,7 @@ export const GaugesTable: React.FC<
     totalGaugesWeight: number
     data?: GaugeVoting[]
     selectable?: boolean
-    selectRows?: GaugeVoting[]
+    selectRows?: Array<GaugeVoting & { locked?: boolean }>
     onRowSelect?: (hash: GaugeVoting['hash']) => void
   } & SpaceProps
 > = ({ scrollStyle, data, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
@@ -55,6 +55,7 @@ export const GaugesTable: React.FC<
           <TableRow
             key={`${row.hash}-${row.pid}`}
             data={row}
+            locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
             selectable={selectable}
             selected={selectRows?.some((r) => r.hash === row.hash)}
             onSelect={onRowSelect}

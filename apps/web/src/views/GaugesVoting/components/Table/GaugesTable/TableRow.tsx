@@ -3,9 +3,9 @@ import { Percent } from '@pancakeswap/sdk'
 import {
   AddCircleIcon,
   Button,
+  CheckmarkCircleFillIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  CheckmarkCircleFillIcon,
   CrossIcon,
   Flex,
   FlexGap,
@@ -17,6 +17,7 @@ import BN from 'bignumber.js'
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import { useHover } from 'hooks/useHover'
 import { useCallback, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { Address } from 'viem'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
@@ -24,14 +25,22 @@ import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
+import { RowData } from './types'
+
+const SelectButton = styled(Button)`
+  &:disabled {
+    background-color: transparent;
+  }
+`
 
 export const TableRow: React.FC<{
-  data: GaugeVoting
+  data: RowData
   selectable?: boolean
+  locked?: boolean
   selected?: boolean
   onSelect?: (hash: GaugeVoting['hash']) => void
   totalGaugesWeight?: number
-}> = ({ data, totalGaugesWeight, selected, selectable, onSelect }) => {
+}> = ({ data, locked, totalGaugesWeight, selected, selectable, onSelect }) => {
   const percentWeight = useMemo(() => {
     return new Percent(data?.weight, totalGaugesWeight || 1).toSignificant(2)
   }, [data?.weight, totalGaugesWeight])
@@ -50,7 +59,14 @@ export const TableRow: React.FC<{
       <FlexGap alignItems="center" gap="13px">
         {selectable ? (
           <span ref={ref}>
-            <Button variant="text" height={24} p={0} mr="8px" onClick={() => onSelect?.(data.hash)}>
+            <SelectButton
+              variant="text"
+              height={24}
+              disabled={locked}
+              p={0}
+              mr="8px"
+              onClick={() => onSelect?.(data.hash)}
+            >
               {selected ? (
                 isHover ? (
                   <CrossIcon color="#ED4B9E" />
@@ -60,7 +76,7 @@ export const TableRow: React.FC<{
               ) : (
                 <AddCircleIcon color="primary" />
               )}
-            </Button>
+            </SelectButton>
           </span>
         ) : null}
         <GaugeTokenImage gauge={pool} />
