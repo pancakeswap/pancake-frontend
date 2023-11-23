@@ -3,6 +3,7 @@ import { WalletFilledIcon } from '@pancakeswap/uikit'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
+import { isCyberWallet, isChainUnsupported } from '@cyberlab/cyber-app-sdk'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
@@ -16,6 +17,7 @@ export enum ConnectorNames {
   WalletLink = 'coinbaseWallet',
   Ledger = 'ledger',
   TrustWallet = 'trustWallet',
+  CyberWallet = 'cyberwallet',
 }
 
 const createQrCode = (chainId: number, connect) => async () => {
@@ -201,6 +203,23 @@ const walletsConfig = ({
         return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto)
           ? true
           : undefined // undefined to show SDK
+      },
+    },
+    {
+      id: 'cyberwallet',
+      title: 'CyberWallet',
+      icon: `${ASSET_CDN}/web/wallets/cyberwallet.png`,
+      connectorId: ConnectorNames.CyberWallet,
+      get installed() {
+        if (typeof window === 'undefined' || !isCyberWallet()) {
+          return false
+        }
+        const chainNumber = Number((window.ethereum as any)?.networkVersion)
+        return !isChainUnsupported(chainNumber)
+      },
+      isNotExtension: true,
+      guide: {
+        desktop: 'https://docs.cyber.co/sdk/cyber-account#supported-chains',
       },
     },
     {
