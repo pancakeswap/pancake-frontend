@@ -65,5 +65,6 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     previewVoteWeight,
     voteValue,
     voteLocked,
+    willUnlock: epochVotePower === 0n && Boolean(userVote?.slope && userVote?.slope > 0),
   }
 }

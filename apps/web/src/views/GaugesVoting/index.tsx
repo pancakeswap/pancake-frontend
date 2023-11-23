@@ -86,6 +86,11 @@ const GaugesVoting = () => {
             <FlexGap flexDirection="column" gap="24px">
               <MyVeCakeBalance />
               <CurrentEpoch />
+              <Text color="textSubtle" fontSize={12}>
+                {t(
+                  'Results are updated weekly. Vote numbers are estimations based on the veCAKE balance at 00:00 UTC on the upcoming Thursday.',
+                )}
+              </Text>
             </FlexGap>
             <Box ml={isDesktop ? '60px' : '0'} mt={isDesktop ? '0' : '1em'}>
               <Text color="secondary" textTransform="uppercase" bold>

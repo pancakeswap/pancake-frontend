@@ -21,11 +21,12 @@ export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
   const currentTimestamp = useCurrentBlockTimestamp()
   const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
   const userVote = useUserVote(data)
-  const { currentVoteWeight, currentVotePercent, previewVoteWeight, voteValue, voteLocked } = useRowVoteState({
-    data,
-    vote,
-    onChange,
-  })
+  const { currentVoteWeight, currentVotePercent, previewVoteWeight, voteValue, voteLocked, willUnlock } =
+    useRowVoteState({
+      data,
+      vote,
+      onChange,
+    })
 
   const onMax = () => {
     onChange('MAX_VOTE')
@@ -68,12 +69,12 @@ export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
             <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
           </Tooltips>
         ) : null}
-        <Text color={userVote?.voteLocked ? 'textDisabled' : ''}>{previewVoteWeight} veCAKE</Text>
+        <Text color={voteLocked || willUnlock ? 'textDisabled' : ''}>{previewVoteWeight} veCAKE</Text>
       </Flex>
       <Flex>
         <PercentInput
-          disabled={voteLocked}
-          inputProps={{ disabled: voteLocked }}
+          disabled={voteLocked || willUnlock}
+          inputProps={{ disabled: voteLocked || willUnlock }}
           onMax={onMax}
           value={voteValue}
           onUserInput={(v) => onChange({ ...vote, power: v })}

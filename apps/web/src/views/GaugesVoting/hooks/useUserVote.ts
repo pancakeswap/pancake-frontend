@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { Hex } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { usePublicClient } from 'wagmi'
-import { useNextEpochStart } from './useEpochTime'
 import { GaugeVoting } from './useGaugesVoting'
 
 export type VotedSlope = {
@@ -20,7 +20,7 @@ export const useUserVote = (gauge?: GaugeVoting) => {
   const { account, chainId } = useAccountActiveChain()
   const publicClient = usePublicClient({ chainId })
   const currentTimestamp = useCurrentBlockTimestamp()
-  const nextEpochStart = useNextEpochStart()
+  // const nextEpochStart = useNextEpochStart()
 
   const { data } = useQuery(
     ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
@@ -47,9 +47,9 @@ export const useUserVote = (gauge?: GaugeVoting) => {
         power: Number(power),
         end: Number(end),
         lastVoteTime: Number(lastVoteTime),
-        voteLocked: false,
-        // Number(end) > nextEpochStart &&
-        // dayjs.unix(Number(lastVoteTime)).add(10, 'day').isAfter(dayjs.unix(currentTimestamp)),
+        voteLocked:
+          // Number(end) > nextEpochStart &&
+          dayjs.unix(Number(lastVoteTime)).add(10, 'day').isAfter(dayjs.unix(currentTimestamp)),
       }
     },
     {
