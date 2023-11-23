@@ -110,8 +110,6 @@ const CakeStaking = () => {
               />
             }
             type="gaugesVoting"
-            // comingSoon={dayjs.unix(currentTimestamp).isBefore(dayjs('2023-11-22T20:00:00+08:00').unix())}
-            comingSoon
             dataText={`${gaugesVotingCount ?? 0}`}
             onClick={() => {}}
           />
