@@ -54,7 +54,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const filterRows = useMemo(() => {
     if (!gauges || !gauges.length) return []
     const { byChain, byFeeTier, byType } = filter
-    let rows: GaugeVoting[] = []
+    let rows: GaugeVoting[] = gauges
 
     if (debouncedSearchText?.length > 0) {
       rows = gauges.filter((gauge) => {
