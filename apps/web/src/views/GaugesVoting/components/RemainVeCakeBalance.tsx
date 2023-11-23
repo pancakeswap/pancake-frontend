@@ -31,7 +31,7 @@ export const RemainVeCakeBalance = () => {
     }, 0)
   }, [votedGauges])
   const votePower = useMemo(() => {
-    return veCake.times(votedPercent).dividedBy(10000)
+    return veCake.times(10000 - votedPercent).dividedBy(10000)
   }, [veCake, votedPercent])
 
   return (

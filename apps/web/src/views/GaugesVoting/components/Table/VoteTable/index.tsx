@@ -4,14 +4,14 @@ import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
-import { useVotedPower } from 'views/GaugesVoting/hooks/useVotedPower'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
+import { VoteListItem } from './List'
 import { TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
 import { useGaugeRows } from './hooks/useGaugeRows'
-import { VoteListItem } from './List'
+import { MaxVote, UserVote } from './types'
 
 const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expanded'].includes(prop) })<{
   expanded: boolean
@@ -25,37 +25,47 @@ export const VoteTable = () => {
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
   const [expanded, setExpanded] = useState(false)
-  const [votes, setVotes] = useState<string[]>([])
-  const votedPower = useVotedPower()
+  const [votes, setVotes] = useState<UserVote[]>([])
+  const voteSum = useMemo(() => {
+    return votes.reduce((acc, cur) => acc + Number(cur?.power), 0)
+  }, [votes])
+
   const { rows, onRowAdd, refetch } = useGaugeRows()
   const { isDesktop } = useMatchBreakpoints()
 
-  const onVoteChange = (index: number, value: string) => {
+  const onVoteChange = (index: number, value: MaxVote | UserVote) => {
     const newVotes = [...votes]
-    if (value === '100') {
-      newVotes.fill('0')
+    if (!newVotes[index]) {
+      newVotes[index] = {
+        power: '',
+        locked: false,
+      }
     }
-    newVotes[index] = value
+    if (value === 'MAX_VOTE') {
+      const sum = voteSum - Number(newVotes[index].power || 0)
+      newVotes[index].power = 100 - sum > 0 ? String(100 - sum) : '0'
+    } else {
+      newVotes[index] = value
+    }
     setVotes(newVotes)
   }
 
   const { writeVote, isPending } = useWriteGaugesVoteCallback()
 
   const disabled = useMemo(() => {
-    const sum = votes.reduce((acc, cur) => acc + Number(cur), 0)
-    return sum > 100 || sum < 0 || isPending || votedPower === 10000
-  }, [isPending, votedPower, votes])
+    return voteSum > 100 || voteSum < 0 || isPending
+  }, [isPending, voteSum])
   const leftGaugesCanAdd = useMemo(() => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])
 
   const submitVote = useCallback(async () => {
     const voteGauges = votes
-      .map((v, i) => {
-        if (v && v !== '0') {
+      .map((vote, i) => {
+        if (!vote.locked && Number(vote.power)) {
           return {
             ...rows?.[i],
-            weight: Number(v) * 100,
+            weight: Number(vote.power) * 100,
           }
         }
         return undefined
@@ -73,7 +83,7 @@ export const VoteTable = () => {
         <>
           <Scrollable expanded={expanded}>
             {rows.map((row, index) => (
-              <TableRow key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
+              <TableRow key={row.hash} data={row} vote={votes[index]} onChange={(v) => onVoteChange(index, v)} />
             ))}
           </Scrollable>
           {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
@@ -86,7 +96,7 @@ export const VoteTable = () => {
     <>
       {rows?.length ? (
         rows.map((row, index) => (
-          <VoteListItem key={row.hash} data={row} value={votes[index]} onChange={(v) => onVoteChange(index, v)} />
+          <VoteListItem key={row.hash} data={row} vote={votes[index]} onChange={(v) => onVoteChange(index, v)} />
         ))
       ) : (
         <EmptyTable />

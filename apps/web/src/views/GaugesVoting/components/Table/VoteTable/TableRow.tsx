@@ -18,12 +18,13 @@ import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
 import { PercentInput } from './PercentInput'
+import { MaxVote, UserVote } from './types'
 
 export const TableRow: React.FC<{
   data: GaugeVoting
-  value: string
-  onChange: (value: string) => void
-}> = ({ data, value, onChange }) => {
+  vote?: UserVote
+  onChange: (value: MaxVote | UserVote) => void
+}> = ({ data, vote, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const { balance: veCake } = useVeCakeBalance()
@@ -44,24 +45,28 @@ export const TableRow: React.FC<{
   }, [userVote?.slope])
 
   const onMax = () => {
-    onChange('100')
+    onChange('MAX_VOTE')
   }
 
   const voteValue = useMemo(() => {
     if (voteDisabled) return powerPercent ?? ''
-    return value ?? ''
-  }, [voteDisabled, powerPercent, value])
+    return vote?.power ?? ''
+  }, [voteDisabled, powerPercent, vote?.power])
   const votesAmount = useMemo(() => {
     const p = Number(voteValue || 0) * 100
     const amount = getBalanceNumber(veCake.times(p).div(10000))
     return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
   }, [veCake, voteValue])
 
+  // reinit vote value if user vote locked
   useEffect(() => {
-    if (voteDisabled && !value) {
-      onChange(voteValue)
+    if (voteDisabled && !vote?.power) {
+      onChange({
+        power: voteValue,
+        locked: true,
+      })
     }
-  }, [onChange, value, voteDisabled, voteValue])
+  }, [onChange, vote?.power, voteDisabled, voteValue])
 
   return (
     <TRow>
@@ -108,7 +113,7 @@ export const TableRow: React.FC<{
           inputProps={{ disabled: voteDisabled }}
           onMax={onMax}
           value={voteValue}
-          onUserInput={onChange}
+          onUserInput={(v) => onChange({ ...vote, power: v })}
         />
       </Flex>
     </TRow>

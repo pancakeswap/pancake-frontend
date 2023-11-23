@@ -14,6 +14,7 @@ import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { GaugeIdentifierDetails } from '../GaugesTable/List'
 import { PercentInput } from './PercentInput'
+import { MaxVote, UserVote } from './types'
 
 const ListItemContainer = styled(FlexGap)<{ borderBottom?: boolean }>`
   border-bottom: ${({ borderBottom = true, theme }) =>
@@ -23,11 +24,11 @@ const ListItemContainer = styled(FlexGap)<{ borderBottom?: boolean }>`
 type Props = {
   style?: CSSProperties
   data: GaugeVoting
-  value: string
-  onChange: (value: string) => void
+  vote?: UserVote
+  onChange: (value: MaxVote | UserVote) => void
 }
 
-export function VoteListItem({ style, data, value, onChange, ...props }: Props & SpaceProps) {
+export function VoteListItem({ style, data, vote, onChange, ...props }: Props & SpaceProps) {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const { balance: veCake } = useVeCakeBalance()
@@ -39,13 +40,13 @@ export function VoteListItem({ style, data, value, onChange, ...props }: Props &
   }, [userVote?.power])
 
   const onMax = () => {
-    onChange('100')
+    onChange('MAX_VOTE')
   }
 
   const voteValue = useMemo(() => {
     if (voteDisabled) return powerPercent ?? ''
-    return value ?? ''
-  }, [voteDisabled, powerPercent, value])
+    return vote?.power ?? ''
+  }, [voteDisabled, powerPercent, vote?.power])
   const votesAmount = useMemo(() => {
     const p = Number(voteValue || 0) * 100
     const amount = getBalanceNumber(veCake.times(p).div(10000))
@@ -53,10 +54,13 @@ export function VoteListItem({ style, data, value, onChange, ...props }: Props &
   }, [veCake, voteValue])
 
   useEffect(() => {
-    if (voteDisabled && !value) {
-      onChange(voteValue)
+    if (voteDisabled && !vote?.power) {
+      onChange({
+        power: voteValue,
+        locked: true,
+      })
     }
-  }, [onChange, value, voteDisabled, voteValue])
+  }, [onChange, vote?.power, voteDisabled, voteValue])
 
   return (
     <ListItemContainer gap="1em" flexDirection="column" padding="1em" style={style} {...props}>
@@ -88,7 +92,7 @@ export function VoteListItem({ style, data, value, onChange, ...props }: Props &
           inputProps={{ disabled: voteDisabled }}
           onMax={onMax}
           value={voteValue}
-          onUserInput={onChange}
+          onUserInput={(v) => onChange({ ...vote, power: v })}
         />
       </Flex>
     </ListItemContainer>
