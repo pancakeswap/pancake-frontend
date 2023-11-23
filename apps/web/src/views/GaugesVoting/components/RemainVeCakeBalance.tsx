@@ -4,7 +4,6 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { useUserVoteSlopes } from '../hooks/useUserVoteGuages'
 
 const StyledBox = styled(Box)`
   border-radius: 16px;
@@ -20,18 +19,14 @@ const StyledBox = styled(Box)`
   }
 `
 
-export const RemainVeCakeBalance = () => {
+export const RemainVeCakeBalance: React.FC<{
+  votedPercent: number
+}> = ({ votedPercent }) => {
   const { t } = useTranslation()
 
   const { balance: veCake } = useVeCakeBalance()
-  const { data: votedGauges } = useUserVoteSlopes()
-  const votedPercent = useMemo(() => {
-    return votedGauges?.reduce((prev, cur) => {
-      return prev + cur.slope
-    }, 0)
-  }, [votedGauges])
   const votePower = useMemo(() => {
-    return veCake.times(10000 - votedPercent).dividedBy(10000)
+    return veCake.times(10000 - votedPercent * 100).dividedBy(10000)
   }, [veCake, votedPercent])
 
   return (

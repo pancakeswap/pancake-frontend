@@ -18,7 +18,6 @@ import Page from 'components/Layout/Page'
 import styled from 'styled-components'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
-import { RemainVeCakeBalance } from './components/RemainVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
@@ -105,7 +104,6 @@ const GaugesVoting = () => {
           <Heading as="h2" scale="xl" mb="24px">
             {t('My votes')}
           </Heading>
-          <RemainVeCakeBalance />
           <VoteTable />
         </Box>
       </Page>

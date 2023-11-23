@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
+import { RemainVeCakeBalance } from '../../RemainVeCakeBalance'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
 import { VoteListItem } from './List'
@@ -28,6 +29,9 @@ export const VoteTable = () => {
   const [votes, setVotes] = useState<UserVote[]>([])
   const voteSum = useMemo(() => {
     return votes.reduce((acc, cur) => acc + Number(cur?.power), 0)
+  }, [votes])
+  const lockedPowerPercent = useMemo(() => {
+    return votes.reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
   }, [votes])
 
   const { rows, onRowAdd, refetch } = useGaugeRows()
@@ -113,6 +117,7 @@ export const VoteTable = () => {
 
   return (
     <>
+      <RemainVeCakeBalance votedPercent={lockedPowerPercent} />
       <AddGaugeModal selectRows={rows} onGaugeAdd={onRowAdd} isOpen={isOpen} onDismiss={() => setIsOpen(false)} />
       <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
         {gauges}
