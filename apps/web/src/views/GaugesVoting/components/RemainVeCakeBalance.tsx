@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Balance, Box, Flex, Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useVeCakeBalance } from 'hooks/useTokenBalance'
+import BN from 'bignumber.js'
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import { useEpochVotePower } from '../hooks/useEpochVotePower'
 
 const StyledBox = styled(Box)`
   border-radius: 16px;
@@ -24,10 +25,11 @@ export const RemainVeCakeBalance: React.FC<{
 }> = ({ votedPercent }) => {
   const { t } = useTranslation()
 
-  const { balance: veCake } = useVeCakeBalance()
+  const totalPower = useEpochVotePower()
+
   const votePower = useMemo(() => {
-    return veCake.times(10000 - votedPercent * 100).dividedBy(10000)
-  }, [veCake, votedPercent])
+    return new BN(totalPower.toString()).times(10000 - votedPercent * 100).dividedBy(10000)
+  }, [totalPower, votedPercent])
 
   return (
     <StyledBox>

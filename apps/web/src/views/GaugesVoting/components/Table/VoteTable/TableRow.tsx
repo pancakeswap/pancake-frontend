@@ -5,11 +5,12 @@ import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/uti
 import BN from 'bignumber.js'
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import dayjs from 'dayjs'
-import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useNextEpochStart } from 'views/GaugesVoting/hooks/useEpochTime'
+import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
@@ -27,22 +28,24 @@ export const TableRow: React.FC<{
 }> = ({ data, vote, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const { balance: veCake } = useVeCakeBalance()
-
+  // const { balance: veCake } = useVeCakeBalance()
+  const epochVotePower = useEpochVotePower()
+  const nextEpochStart = useNextEpochStart()
   const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
-
   const userVote = useUserVote(data)
+
   const voteDisabled = userVote?.voteLocked
   const powerPercent = useMemo(() => {
     return userVote?.power ? new Percent(userVote?.power, 10000).toSignificant(2) : undefined
   }, [userVote?.power])
   const power = useMemo(() => {
-    if (userVote?.slope) {
-      const amount = getBalanceNumber(new BN(userVote.slope))
+    if (userVote?.slope && userVote?.power) {
+      const amount = getBalanceNumber(new BN(userVote.slope).times(userVote.end - nextEpochStart))
+      if (amount < 1) return amount.toPrecision(2)
       return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
     }
     return 0
-  }, [userVote?.slope])
+  }, [nextEpochStart, userVote?.end, userVote?.power, userVote?.slope])
 
   const onMax = () => {
     onChange('MAX_VOTE')
@@ -54,9 +57,11 @@ export const TableRow: React.FC<{
   }, [voteDisabled, powerPercent, vote?.power])
   const votesAmount = useMemo(() => {
     const p = Number(voteValue || 0) * 100
-    const amount = getBalanceNumber(veCake.times(p).div(10000))
+    const powerBN = new BN(epochVotePower.toString())
+    const amount = getBalanceNumber(powerBN.times(p).div(10000))
+    if (amount < 1) return amount.toPrecision(2)
     return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-  }, [veCake, voteValue])
+  }, [epochVotePower, voteValue])
 
   // reinit vote value if user vote locked
   useEffect(() => {

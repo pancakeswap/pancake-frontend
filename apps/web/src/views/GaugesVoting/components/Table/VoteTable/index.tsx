@@ -60,6 +60,8 @@ export const VoteTable = () => {
     const lockedSum = votes.reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
     const newAddSum = votes.reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
 
+    // no new votes
+    if (newAddSum === 0) return true
     // voted reached 100% or submitting
     if (lockedSum >= 100 || isPending) return true
     // should allow summed votes to be 100%, if new vote added

@@ -6,21 +6,16 @@ import dayjs from 'dayjs'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useEpochRewards } from '../hooks/useEpochRewards'
-import { useGaugeEpochEnd } from '../hooks/useGaugeEpochEnd'
+import { useCurrentEpochEnd } from '../hooks/useEpochTime'
 import { useGaugesTotalWeight } from '../hooks/useGaugesTotalWeight'
 
 export const CurrentEpoch = () => {
   const { t } = useTranslation()
   const totalWeight = useGaugesTotalWeight()
   const weeklyRewards = useEpochRewards()
-  const epochEnd = useGaugeEpochEnd()
+  const epochEnd = useCurrentEpochEnd()
   const currentTimestamp = useCurrentBlockTimestamp()
   const { isDesktop } = useMatchBreakpoints()
-
-  console.debug('debug', {
-    epochEnd,
-    currentTimestamp,
-  })
 
   return (
     <Card isActive innerCardProps={{ padding: isDesktop ? '1.5em' : '1em' }}>
