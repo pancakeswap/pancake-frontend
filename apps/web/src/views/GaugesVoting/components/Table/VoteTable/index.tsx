@@ -1,6 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, Button, Card, FlexGap, Link, Message, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import dayjs from 'dayjs'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
@@ -25,6 +27,7 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 `
 
 export const VoteTable = () => {
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { cakeUnlockTime } = useCakeLockStatus()
   const gaugesCount = useGaugesVotingCount()
@@ -186,9 +189,13 @@ export const VoteTable = () => {
           <Button width="100%" onClick={() => setIsOpen(true)}>
             + Add Gauges ({leftGaugesCanAdd || 0})
           </Button>
-          <Button width="100%" disabled={disabled} onClick={submitVote}>
-            Submit vote
-          </Button>
+          {!account ? (
+            <ConnectWalletButton width="100%" />
+          ) : (
+            <Button width="100%" disabled={disabled} onClick={submitVote}>
+              Submit vote
+            </Button>
+          )}
         </FlexGap>
       </Card>
     </>
