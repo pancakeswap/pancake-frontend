@@ -1,9 +1,10 @@
 import { useVeCakeContract } from 'hooks/useContract'
-import { useCallback } from 'react'
-import { useAccount, useWalletClient } from 'wagmi'
-import { useSetAtom } from 'jotai'
-import { approveAndLockStatusAtom, cakeLockTxHashAtom, ApproveAndLockStatus } from 'state/vecake/atoms'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
+import { useSetAtom } from 'jotai'
+import { useCallback } from 'react'
+import { ApproveAndLockStatus, approveAndLockStatusAtom, cakeLockTxHashAtom } from 'state/vecake/atoms'
+import { calculateGasMargin } from 'utils'
+import { useAccount, useWalletClient } from 'wagmi'
 
 export const useWriteMigrateCallback = () => {
   const veCakeContract = useVeCakeContract()
@@ -23,6 +24,7 @@ export const useWriteMigrateCallback = () => {
 
     const hash = await walletClient?.writeContract({
       ...request,
+      gas: request.gas ? calculateGasMargin(request.gas) : undefined,
       account,
     })
     setTxHash(hash ?? '')

@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { memo } from 'react'
+import { LearnMoreLink } from './LearnMoreLink'
 import { VeCakeButton } from './VeCakeButton'
 import { ShineStyledBox } from './VeCakeCard'
 
@@ -20,11 +21,14 @@ export const VeCakeUpdateCard: React.FC<{
         <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
         <Box>
           <Text color="white" bold fontSize={14} pr="20px">
-            {isFlexibleStake
-              ? t('This product have been upgraded to CAKE staking page.')
-              : t(
-                  'This product have been upgraded. Check out the brand new veCAKE for more CAKE staking benefits. Learn more',
-                )}
+            {isFlexibleStake ? (
+              t('This product have been upgraded to CAKE staking page.')
+            ) : (
+              <>
+                {t('This product have been upgraded. Check out the brand new veCAKE for more CAKE staking benefits.')}
+                <LearnMoreLink />
+              </>
+            )}
           </Text>
         </Box>
       </Flex>
@@ -41,9 +45,8 @@ export const VeCakeUpdateCardTableView: React.FC = memo(() => {
         <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
         <Box>
           <Text color="white" bold fontSize={14} pr="20px">
-            {t(
-              'This product have been upgraded. Check out the brand new veCAKE for more CAKE staking benefits. Learn more',
-            )}
+            {t('This product have been upgraded. Check out the brand new veCAKE for more CAKE staking benefits.')}
+            <LearnMoreLink />
           </Text>
         </Box>
       </Flex>

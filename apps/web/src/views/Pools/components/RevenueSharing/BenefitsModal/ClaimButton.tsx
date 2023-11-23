@@ -1,11 +1,11 @@
-import { useCallback, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, useToast } from '@pancakeswap/uikit'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { useRevenueSharingPoolContract } from 'hooks/useContract'
+import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useRevenueSharingPoolContract } from 'hooks/useContract'
+import { useCallback, useMemo } from 'react'
 
 interface ClaimButtonProps {
   availableClaim: string
@@ -42,7 +42,7 @@ const ClaimButton: React.FunctionComponent<React.PropsWithChildren<ClaimButtonPr
       console.error('[ERROR] Submit Revenue Claim Button', error)
     }
   }, [account, chainId, contract, fetchWithCatchTxError, onDismiss, t, toastSuccess])
-
+  if (!isReady) return null
   return (
     <Button mt="24px" width="100%" variant="subtle" disabled={!isReady} onClick={handleClaim}>
       {t('Claim')}

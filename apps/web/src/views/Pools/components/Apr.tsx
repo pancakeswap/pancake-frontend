@@ -1,12 +1,12 @@
+import { getBoostedPoolConfig } from '@pancakeswap/pools'
+import { Token } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { vaultPoolConfig } from 'config/constants/pools'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCurrentBlock } from 'state/block/hooks'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
-import { Token } from '@pancakeswap/sdk'
-import { useAccount } from 'wagmi'
-import { getBoostedPoolConfig } from '@pancakeswap/pools'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useBoostedPoolApr } from 'views/Pools/hooks/useBoostedPoolApr'
+import { useAccount } from 'wagmi'
 
 const withShownApr = (AprComp) => (props) => {
   const { address: account } = useAccount()
@@ -24,7 +24,6 @@ const withShownApr = (AprComp) => (props) => {
   })
 
   const boostedPoolConfig = chainId && getBoostedPoolConfig(chainId, props.pool.contractAddress)
-
   return (
     <AprComp
       {...props}

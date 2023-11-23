@@ -15,7 +15,7 @@ export const vaultPoolConfig = {
   },
   [VaultKey.CakeVault]: {
     name: <Trans>Stake CAKE</Trans>,
-    description: <Trans>This product have been upgraded!</Trans>,
+    description: <Trans>This product has been upgraded</Trans>,
     autoCompoundFrequency: 5000,
     gasLimit: 1100000n,
     tokenImage: {
