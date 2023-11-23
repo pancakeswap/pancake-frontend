@@ -78,7 +78,6 @@ export const VoteTable = () => {
   }, [gaugesCount, rows])
 
   const submitVote = useCallback(async () => {
-    console.debug('debug votes', votes)
     const voteGauges = votes
       .map((vote, i) => {
         if (!vote.locked && Number(vote.power)) {

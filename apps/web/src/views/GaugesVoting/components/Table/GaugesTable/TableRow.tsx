@@ -3,9 +3,10 @@ import { Percent } from '@pancakeswap/sdk'
 import {
   AddCircleIcon,
   Button,
-  CheckmarkCircleFillIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  CheckmarkCircleFillIcon,
+  CrossIcon,
   Flex,
   FlexGap,
   Tag,
@@ -14,6 +15,7 @@ import {
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
+import { useHover } from 'hooks/useHover'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
@@ -41,14 +43,25 @@ export const TableRow: React.FC<{
   const weight = useMemo(() => {
     return getBalanceNumber(new BN(data?.weight || 0))
   }, [data?.weight])
+  const [ref, isHover] = useHover<HTMLButtonElement>()
 
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
         {selectable ? (
-          <Button variant="text" height={24} p={0} mr="8px" onClick={() => onSelect?.(data.hash)}>
-            {selected ? <CheckmarkCircleFillIcon color="disabled" /> : <AddCircleIcon color="primary" />}
-          </Button>
+          <span ref={ref}>
+            <Button variant="text" height={24} p={0} mr="8px" onClick={() => onSelect?.(data.hash)}>
+              {selected ? (
+                isHover ? (
+                  <CrossIcon color="#ED4B9E" />
+                ) : (
+                  <CheckmarkCircleFillIcon color="disabled" />
+                )
+              ) : (
+                <AddCircleIcon color="primary" />
+              )}
+            </Button>
+          </span>
         ) : null}
         <GaugeTokenImage gauge={pool} />
         <Text fontWeight={600} fontSize={16}>
