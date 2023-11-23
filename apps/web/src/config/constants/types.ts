@@ -1,10 +1,10 @@
+import { ChainId } from '@pancakeswap/chains'
 import type { FarmConfigBaseProps, SerializedFarmConfig } from '@pancakeswap/farms'
 import { Currency, CurrencyAmount, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { Address } from 'wagmi'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
 // a list of tokens by chain
 export type ChainMap<T> = {
   readonly [chainId in ChainId]: T
@@ -32,7 +32,7 @@ export enum PoolCategory {
   'AUTO' = 'Auto',
 }
 
-export type { SerializedFarmConfig, FarmConfigBaseProps }
+export type { FarmConfigBaseProps, SerializedFarmConfig }
 
 export type Images = {
   lg: string
@@ -189,6 +189,10 @@ export enum Bound {
 }
 
 export enum GaugeType {
+  // @note: this is a hack
+  // on SC StableSwap & V2 are same value,
+  // just use -1 for StableSwap as id on FE
+  StableSwap = -1,
   V2 = 0,
   V3 = 1,
   ALM = 2,
@@ -216,6 +220,13 @@ export interface GaugeV2Config extends GaugeBaseConfig {
   token1Address: Address
   type: GaugeType.V2
   pairName: string
+  feeTier: FeeAmount
+}
+
+export interface GaugeStableSwapConfig extends GaugeBaseConfig {
+  type: GaugeType.StableSwap
+  pairName: string
+  tokenAddresses: Array<Address>
 }
 export interface GaugeV3Config extends GaugeBaseConfig {
   token0Address: Address
@@ -237,4 +248,4 @@ export interface GaugeVeCakePoolConfig extends GaugeBaseConfig {
   pairName: string
 }
 
-export type GaugeConfig = GaugeV2Config | GaugeV3Config | GaugeALMConfig | GaugeVeCakePoolConfig
+export type GaugeConfig = GaugeV2Config | GaugeStableSwapConfig | GaugeV3Config | GaugeALMConfig | GaugeVeCakePoolConfig
