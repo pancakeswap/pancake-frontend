@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Card, FlexGap, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
@@ -63,6 +63,8 @@ export const VoteTable = () => {
     const lockedSum = votes.reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
     const newAddSum = votes.reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
 
+    // no epoch power
+    if (epochPower === 0n) return true
     // no new votes
     if (newAddSum === 0) return true
     // voted reached 100% or submitting
@@ -70,12 +72,13 @@ export const VoteTable = () => {
     // should allow summed votes to be 100%, if new vote added
     if (newAddSum + lockedSum > 100) return true
     return false
-  }, [isPending, votes])
+  }, [epochPower, isPending, votes])
   const leftGaugesCanAdd = useMemo(() => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])
 
   const submitVote = useCallback(async () => {
+    console.debug('debug votes', votes)
     const voteGauges = votes
       .map((vote, i) => {
         if (!vote.locked && Number(vote.power)) {
@@ -120,6 +123,15 @@ export const VoteTable = () => {
       )}
     </>
   )
+
+  // user unselect row
+  useEffect(() => {
+    if (rows?.length) {
+      if (rows.length < votes.length) {
+        setVotes(votes.slice(0, rows.length))
+      }
+    }
+  }, [rows, rows?.length, votes, votes.length])
 
   return (
     <>
