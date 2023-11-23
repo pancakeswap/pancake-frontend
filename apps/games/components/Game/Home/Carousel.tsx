@@ -126,7 +126,7 @@ interface CarouselProps {
 }
 
 const breakPoints: { [index: number]: { slidesPerView: number } } = {
-  370: {
+  320: {
     slidesPerView: 3,
   },
   920: {
