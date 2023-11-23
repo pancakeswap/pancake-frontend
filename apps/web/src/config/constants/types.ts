@@ -5,6 +5,7 @@ import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/s
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { Address } from 'wagmi'
+
 // a list of tokens by chain
 export type ChainMap<T> = {
   readonly [chainId in ChainId]: T
@@ -200,7 +201,8 @@ export enum GaugeType {
   Aptos = 4,
 }
 
-export const GAUGE_TYPE_NAMES = {
+export const GAUGE_TYPE_NAMES: Record<GaugeType, string> = {
+  [GaugeType.StableSwap]: 'StableSwap',
   [GaugeType.V2]: 'V2',
   [GaugeType.V3]: 'V3',
   [GaugeType.ALM]: 'ALM',
