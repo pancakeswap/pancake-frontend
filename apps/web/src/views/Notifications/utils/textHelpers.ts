@@ -74,3 +74,8 @@ export const getBadgeString = (isAPR: boolean, hasFallen: boolean, percentageCha
     ? `${percentageChange}% APR change `
     : `${hasFallen ? 'Down' : 'Up'} ${hasFallen ? '-' : '+'}${percentageChange}%`
 }
+
+export const hasSingleFarm = (inputString: string) => {
+  const pattern = /[a-zA-Z]+-[a-zA-Z]+ LP,/
+  return !pattern.test(inputString)
+}

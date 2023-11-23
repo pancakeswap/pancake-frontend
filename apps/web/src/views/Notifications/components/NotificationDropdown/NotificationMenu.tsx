@@ -1,5 +1,12 @@
-import { Box, Flex, ModalV2, ModalWrapper, UserMenuProps, useMatchBreakpoints } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import {
+  Box,
+  Flex,
+  ModalV2,
+  ModalWrapper,
+  UserMenuProps,
+  NotificationBell as BellIcon,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { useHasUnreadNotifications } from 'state/notifications/hooks'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
@@ -13,7 +20,7 @@ interface InotificationBellProps {
 const NotificationBell = ({ unread, toggleMenu }: InotificationBellProps) => {
   return (
     <BellIconContainer onClick={toggleMenu}>
-      <Image src="/images/notifications/notifications.svg" alt="notifications" width={26} height={26} />
+      <BellIcon height={24} width={24} color="textSubtle" />
       {unread ? <div className="notification-badge">{unread}</div> : null}
     </BellIconContainer>
   )
@@ -51,10 +58,12 @@ const NotificationMenu: React.FC<
 
   if (isMobile) {
     return (
-      <Flex alignItems="center" justifyContent="center" height="100%" tabIndex={-1}>
+      <Flex alignItems="center" justifyContent="center" height="100vh" tabIndex={-1}>
         <NotificationBell unread={hasUnread} toggleMenu={toggleMenu} />
         <ModalV2 isOpen={isMenuOpen} onDismiss={toggleMenu} closeOnOverlayClick>
-          <ModalWrapper minWidth="320px">{children?.({ isOpen: isMenuOpen })}</ModalWrapper>
+          <ModalWrapper height="100vh" minWidth="320px">
+            {children?.({ isOpen: isMenuOpen })}
+          </ModalWrapper>
         </ModalV2>
       </Flex>
     )

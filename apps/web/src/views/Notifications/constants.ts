@@ -44,6 +44,10 @@ export const NotificationFilterTypes: OptionProps[] = [
     label: 'Alerts',
     value: SubsctiptionType.Alerts,
   },
+  {
+    label: 'Archived',
+    value: 'Archived',
+  },
 ]
 
 export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_DEFAULT_PROJECT_ID ?? ''

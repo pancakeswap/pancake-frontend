@@ -8,6 +8,7 @@ import {
   Flex,
   FlexGap,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { ASSET_CDN } from 'config/constants/endpoints'
@@ -35,6 +36,7 @@ import {
   extractWordBeforeFullStop,
   getBadgeString,
   getLinkText,
+  hasSingleFarm,
 } from 'views/Notifications/utils/textHelpers'
 import AlertIcon from '../../../../../public/images/notifications/alert-icon.svg'
 
@@ -76,13 +78,21 @@ const NotificationImage = ({
 }) => {
   if (title.includes('APR Update') || title.includes('LP position')) {
     const { image1, image2 } = getNotificationPairlogo(title, message)
+    const hasOnlyOneItem = hasSingleFarm(message)
+    if (hasOnlyOneItem) {
+      return (
+        <Box marginRight="8px" paddingY="4px" minWidth="40px">
+          <Image src={image2} alt="apr Image" height={40} width={40} unoptimized />
+        </Box>
+      )
+    }
     return (
       <Box position="relative" minWidth="40px" minHeight="40px">
         <Box marginRight="8px" position="absolute" top={0} left={0}>
-          <Image src={image1} alt="apr img" height={28} width={28} unoptimized />
+          <Image src={image1} alt="apr img" height={30} width={30} unoptimized />
         </Box>
         <Box marginRight="8px" position="absolute" bottom={0} right={0}>
-          <Image src={image2} alt="apr img" height={24} width={24} unoptimized />
+          <Image src={image2} alt="apr img" height={26} width={26} unoptimized />
         </Box>
       </Box>
     )
@@ -109,11 +119,11 @@ const NotificationBadge = ({ title, message }: { title: string; message: string 
     const hasFallen = message.includes('fallen')
     const isAPR = title.includes('APR')
     const badgeString = getBadgeString(isAPR, hasFallen, percentageChange ?? 0.0)
-    const textColor = badgeString.includes('+') ? 'success' : badgeString.includes('-') ? 'failure' : 'text'
+
     return (
       <FlexGap borderRadius={16} backgroundColor="tertiary" paddingY="2px" paddingX="6px" alignItems="center" gap="2px">
-        {hasFallen ? <ArrowDropDownIcon color={textColor} /> : <ArrowDropUpIcon color={textColor} />}
-        <Text fontSize="12px" pr="6px" color={textColor}>
+        {hasFallen ? <ArrowDropDownIcon color="text" /> : <ArrowDropUpIcon color="text" />}
+        <Text fontSize="12px" pr="6px" color="text">
           {badgeString}
         </Text>
       </FlexGap>
@@ -122,10 +132,16 @@ const NotificationBadge = ({ title, message }: { title: string; message: string 
   return <></>
 }
 
-const formatStringWithNewlines = (inputString: string) => {
+const formatStringWithNewlines = (inputString: string, isMobile: boolean) => {
   return inputString.split('\n').map((line: string, index: number) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <Text key={`message-line-${index}`} lineHeight="20px" fontWeight={400} color="textSubtle">
+    <Text
+      // eslint-disable-next-line react/no-array-index-key
+      key={`message-line-${index}`}
+      fontSize={isMobile ? '14px' : '16px'}
+      lineHeight="20px"
+      fontWeight={400}
+      color="textSubtle"
+    >
       {line}
     </Text>
   ))
@@ -135,13 +151,15 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
   const dispatch = useAppDispatch()
+  const { isMobile } = useMatchBreakpoints()
+
   const hasUnread = useHasUnreadNotification(subscriptionId, id)
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
 
-  const formatedDescription = formatStringWithNewlines(description)
+  const formatedDescription = formatStringWithNewlines(description, isMobile)
   const linkText = getLinkText(title, t)
 
   const handleExpandClick = useCallback(
@@ -168,8 +186,10 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
           <Flex justifyContent="space-between" width="100%">
             <NotificationImage image={image} title={title} message={description} />
             <Flex flexDirection="column" width="100%">
-              <Text fontWeight={600}>{title}</Text>
-              <FlexGap alignItems="center" gap="6px">
+              <Text fontWeight={600} marginBottom="4px">
+                {title}
+              </Text>
+              <FlexGap alignItems="center" gap="6px" width="100%">
                 {!hasUnread && <Dot show color="success" className="dot" />}
                 <Text fontSize="13px" color="textSubtle">
                   {formattedDate}
@@ -179,9 +199,11 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
             </Flex>
             {url ? (
               <Flex alignItems="flex-start">
-                <Text color="primary" fontWeight={600} fontSize="14px">
-                  {show ? t('LESS') : t('MORE')}
-                </Text>
+                {!isMobile && (
+                  <Text color="primary" fontWeight={600} fontSize="14px">
+                    {show ? t('LESS') : t('MORE')}
+                  </Text>
+                )}
                 <ExpandButton>
                   {show ? <ChevronUpIcon color="primary" /> : <ChevronDownIcon color="primary" />}
                 </ExpandButton>

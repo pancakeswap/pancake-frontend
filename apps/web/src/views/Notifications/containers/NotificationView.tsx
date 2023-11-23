@@ -92,6 +92,7 @@ const NotificationView = ({
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Latest)
   const dispatch = useAppDispatch()
   const { isMobile } = useMatchBreakpoints()
+  const mobileHeight = window?.innerHeight
 
   const { messages: notifications, deleteMessage } = useMessages(account)
   const { subscription } = useSubscription(account)
@@ -102,6 +103,8 @@ const NotificationView = ({
   const { t } = useTranslation()
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
+    if (option.value === 'Archived') setViewMode(ViewMode.Archived)
+    if (option.value === 'All') setViewMode(ViewMode.Latest)
     setNotificationType(option.value)
   }, [])
 
@@ -185,8 +188,6 @@ const NotificationView = ({
   } = useTooltip(
     <Box maxWidth="160px">
       <Text as="p">{t('Show only the notifications that belong to your wallet or LP positions')}</Text>
-      <br />
-      <Text>{t('(Not reccommended)')}</Text>
     </Box>,
     {
       isInPortal: false,
@@ -221,32 +222,30 @@ const NotificationView = ({
             }).map((type) => type)}
           />
         </Box>
-        <NotificationsTabButton activeIndex={viewMode} setActiveIndex={setViewMode} />
-      </Flex>
-      <Flex paddingX="24px" alignItems="center" justifyContent="space-between" paddingTop="16px" paddingBottom="16px">
-        <Flex alignItems="center">
-          <Toggle
-            id="toggle-expert-mode-button"
-            scale="sm"
-            checked={importantAlertsOnly}
-            onChange={toggleImportantOnlyAlerts}
-          />
-          <Text paddingX="8px">{t('Important only')}</Text>
-          <TooltipText ref={buyCryptoTargetRef} display="flex" style={{ justifyContent: 'center' }}>
-            <InfoFilledIcon pt="2px" fill="#000" color="textSubtle" width="16px" />
-          </TooltipText>
-
-          {importantAlertsTooltipVisible && !isMobile && importantAlertsTooltip}
-        </Flex>
+        {/* <NotificationsTabButton activeIndex={viewMode} setActiveIndex={setViewMode} /> */}
         <Button
           variant="secondary"
-          height="25px"
+          height="35px"
           paddingX="14px"
           disabled={!hasUnreadNotifications}
           onClick={markAllNotificationsAsRead}
         >
           {t('Mark as all read')}
         </Button>
+      </Flex>
+      <Flex paddingX="24px" alignItems="center" paddingTop="10px" paddingBottom="16px">
+        <Toggle
+          id="toggle-expert-mode-button"
+          scale="sm"
+          checked={importantAlertsOnly}
+          onChange={toggleImportantOnlyAlerts}
+        />
+        <Text paddingX="8px">{t('Important only')}</Text>
+        <TooltipText ref={buyCryptoTargetRef} display="flex" style={{ justifyContent: 'center' }}>
+          <InfoFilledIcon pt="2px" fill="#000" color="textSubtle" width="16px" />
+        </TooltipText>
+
+        {importantAlertsTooltipVisible && !isMobile && importantAlertsTooltip}
       </Flex>
       {viewMode === ViewMode.Archived ? (
         <>
@@ -259,7 +258,9 @@ const NotificationView = ({
         </>
       ) : null}
 
-      <NotificationContainerStyled maxHeight={viewMode === ViewMode.Archived ? '400px' : isMobile ? '405px' : '450px'}>
+      <NotificationContainerStyled
+        maxHeight={viewMode === ViewMode.Archived ? '400px' : isMobile ? `${mobileHeight - 250}px` : '450px'}
+      >
         {subscription?.topic && (
           <NotificationItem
             notifications={viewMode === ViewMode.Latest ? filteredNotifications.active : filteredNotifications.archived}
