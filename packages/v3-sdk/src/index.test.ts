@@ -47,6 +47,7 @@ test('exports', () => {
       "getLiquidityFromTick",
       "parseProtocolFees",
       "sqrtRatioX96ToPrice",
+      "isPoolTickInRange",
       "FACTORY_ADDRESSES",
       "DEPLOYER_ADDRESSES",
       "ADDRESS_ZERO",
