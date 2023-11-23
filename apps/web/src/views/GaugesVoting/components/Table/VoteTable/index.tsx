@@ -8,7 +8,7 @@ import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
-import { RemainVeCakeBalance } from '../../RemainVeCakeBalance'
+import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
 import { VoteListItem } from './List'
@@ -148,7 +148,7 @@ export const VoteTable = () => {
 
   return (
     <>
-      <RemainVeCakeBalance votedPercent={lockedPowerPercent} />
+      <RemainingVotePower votedPercent={lockedPowerPercent} />
       <AddGaugeModal
         selectRows={rowsWithLock}
         onGaugeAdd={onRowAdd}
