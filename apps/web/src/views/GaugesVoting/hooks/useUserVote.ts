@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { Hex } from 'viem'
@@ -48,9 +47,9 @@ export const useUserVote = (gauge?: GaugeVoting) => {
         power: Number(power),
         end: Number(end),
         lastVoteTime: Number(lastVoteTime),
-        voteLocked:
-          Number(end) > nextEpochStart &&
-          dayjs.unix(Number(lastVoteTime)).add(10, 'day').isAfter(dayjs.unix(currentTimestamp)),
+        voteLocked: false,
+        // Number(end) > nextEpochStart &&
+        // dayjs.unix(Number(lastVoteTime)).add(10, 'day').isAfter(dayjs.unix(currentTimestamp)),
       }
     },
     {

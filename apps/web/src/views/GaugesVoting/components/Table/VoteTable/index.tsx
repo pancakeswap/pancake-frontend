@@ -1,8 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Card, FlexGap, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, Card, FlexGap, Link, Message, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import dayjs from 'dayjs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
@@ -24,6 +26,7 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 
 export const VoteTable = () => {
   const { t } = useTranslation()
+  const { cakeUnlockTime } = useCakeLockStatus()
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
   const epochPower = useEpochVotePower()
@@ -58,7 +61,10 @@ export const VoteTable = () => {
     if (value === 'MAX_VOTE') {
       const sum = voteSum - Number(newVotes[index].power || 0)
 
-      newVotes[index].power = 100 - sum > 0 && epochPower > 0n ? String(100 - sum) : '0'
+      // @note: if epoch power is 0, the vote action will not works to the final result
+      // open it just for better UX understanding vote power is linear changed
+      // newVotes[index].power = 100 - sum > 0 && epochPower > 0n ? String(100 - sum) : '0'
+      newVotes[index].power = 100 - sum > 0 ? String(100 - sum) : '0'
     } else {
       newVotes[index] = value
     }
@@ -152,6 +158,26 @@ export const VoteTable = () => {
       <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
         {gauges}
 
+        <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+          <Message variant="warning" showIcon>
+            <AutoColumn gap="8px">
+              <Text>
+                {t('Your positions are unlocking on %date%.', {
+                  date: dayjs.unix(cakeUnlockTime).format('DD MMM YYYY'),
+                })}
+                {t(
+                  'Therefore, you have no veCAKE balance at the end of the current voting epoch while votes are being tallied.',
+                )}
+              </Text>
+              <FlexGap alignItems="center" gap="0.2em">
+                {t('To cast your vote, ')}
+                <Link href="/cake-staking">
+                  <Text bold>{t('extend your lock >>')}</Text>
+                </Link>
+              </FlexGap>
+            </AutoColumn>
+          </Message>
+        </Box>
         <FlexGap
           gap="12px"
           padding={isDesktop ? '2em' : '1em'}
