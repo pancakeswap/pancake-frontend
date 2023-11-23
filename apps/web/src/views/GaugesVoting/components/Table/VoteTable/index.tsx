@@ -53,8 +53,15 @@ export const VoteTable = () => {
   const { writeVote, isPending } = useWriteGaugesVoteCallback()
 
   const disabled = useMemo(() => {
-    return voteSum > 100 || voteSum < 0 || isPending
-  }, [isPending, voteSum])
+    const lockedSum = votes.reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
+    const newAddSum = votes.reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
+
+    // voted reached 100% or submitting
+    if (lockedSum >= 100 || isPending) return true
+    // should allow summed votes to be 100%, if new vote added
+    if (newAddSum + lockedSum > 100) return true
+    return false
+  }, [isPending, votes])
   const leftGaugesCanAdd = useMemo(() => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])
