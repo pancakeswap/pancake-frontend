@@ -68,7 +68,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
 }
 
 const StyledCard = styled(Card)`
-  height: 283px;
+  height: 100%;
 `
 
 export const BenefitCard: React.FC<{
