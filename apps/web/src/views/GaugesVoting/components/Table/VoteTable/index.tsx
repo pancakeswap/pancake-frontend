@@ -129,7 +129,7 @@ export const VoteTable = () => {
           style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}
         >
           <Button width="100%" onClick={() => setIsOpen(true)}>
-            + Add Gauges ({leftGaugesCanAdd})
+            + Add Gauges ({leftGaugesCanAdd || 0})
           </Button>
           <Button width="100%" disabled={disabled} onClick={submitVote}>
             Submit vote
