@@ -76,12 +76,13 @@ export const VoteTable = () => {
         if (!vote.locked && Number(vote.power)) {
           return {
             ...rows?.[i],
-            weight: Number(vote.power) * 100,
+            weight: Number((Number(vote.power) * 100).toFixed(0)),
           }
         }
         return undefined
       })
       .filter(Boolean) as GaugeVoting[]
+
     await writeVote(voteGauges)
     await refetch()
   }, [refetch, rows, votes, writeVote])
