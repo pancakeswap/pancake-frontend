@@ -71,7 +71,7 @@ export const TableRow: React.FC<{
       </Flex>
       <Flex alignItems="center" pr="25px">
         <Text bold fontSize={16} color={data?.boostMultiplier > 100n ? '#1BC59C' : undefined}>
-          {Number(data?.boostMultiplier / 100n)}x
+          {Number(data?.boostMultiplier) / 100}x
         </Text>
       </Flex>
 

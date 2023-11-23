@@ -1,16 +1,16 @@
-import { SpaceProps } from 'styled-system'
-import { Text, Flex, FlexGap, Tag, PaginationButton, Box, Card, CardBody } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Address } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/sdk'
+import { Box, Card, CardBody, Flex, FlexGap, PaginationButton, Tag, Text } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
+import { SpaceProps } from 'styled-system'
+import { Address } from 'viem'
 
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
-import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
+import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { feeTierPercent } from 'views/V3Info/utils'
 
 import { GaugeTokenImage } from '../../GaugeTokenImage'
@@ -155,7 +155,7 @@ export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
         </Flex>
         <Flex justifyContent="space-between" alignSelf="stretch">
           <Text>{t('Boost')}</Text>
-          <Text>{Number(data?.boostMultiplier / 100n)}x</Text>
+          <Text>{Number(data?.boostMultiplier) / 100}x</Text>
         </Flex>
         <Flex justifyContent="space-between" alignSelf="stretch">
           <Text>{t('Caps')}</Text>

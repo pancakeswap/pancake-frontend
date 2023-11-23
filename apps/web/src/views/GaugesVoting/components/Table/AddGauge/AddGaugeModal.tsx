@@ -54,8 +54,8 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       const config = presets.find((g) => gauge.hash === getGaugeHash(g.address, g.chainId))
       const feeTier = config?.type === GaugeType.V3 ? config?.feeTier : undefined
       const chain = config?.chainId
-      const boosted = gauge.boostMultiplier > 100
-      const capped = gauge.maxVoteCap > 0
+      const boosted = gauge.boostMultiplier > 100n
+      const capped = gauge.maxVoteCap > 0n
       const types = [boosted ? Gauges.Boosted : Gauges.Regular]
       if (capped) {
         types.push(Gauges.Capped)
