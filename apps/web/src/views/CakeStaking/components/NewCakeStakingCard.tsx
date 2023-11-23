@@ -35,7 +35,10 @@ export const NewCakeStakingCard: React.FC = () => {
 
   return (
     <AtomBox display="flex" alignItems="center">
-      <Link href="https://docs.pancakeswap.finance/products/vecake/how-to-get-vecake">
+      <Link
+        href="https://docs.pancakeswap.finance/products/vecake/how-to-get-vecake"
+        style={{ textDecoration: 'none' }}
+      >
         <SpeechBubbleBox display="flex">
           <Button variant="subtle" endIcon={<HelpIcon color="invertedContrast" width="24px" />}>
             {t('New to CAKE Staking')}
