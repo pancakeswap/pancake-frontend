@@ -65,7 +65,7 @@ export const TableRow: React.FC<{
           <Tag variant="secondary">{pool ? GAUGE_TYPE_NAMES[pool.type] : ''}</Tag>
         </FlexGap>
       </FlexGap>
-      <Flex alignItems="center">
+      <Flex alignItems="center" pl="32px">
         <Text bold>{formatLocalisedCompactNumber(weight, true)}</Text>
         <Text>({percentWeight}%)</Text>
       </Flex>
