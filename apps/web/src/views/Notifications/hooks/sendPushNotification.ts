@@ -41,8 +41,6 @@ const useSendPushNotification = (): IUseSendNotification => {
         await navigator.serviceWorker.ready
 
         const existingSubscription = await registration.pushManager.getSubscription()
-        await existingSubscription?.unsubscribe()
-        return
 
         const secretKeyBuffer = Buffer.from(WEB_PUSH_ENCRYPTION_KEY, 'hex')
         const ivBuffer = Buffer.from(WEB_PUSH_IV, 'hex')
@@ -54,6 +52,7 @@ const useSendPushNotification = (): IUseSendNotification => {
             applicationServerKey:
               'BMqr9OUv0dxUll4al_WO0EGFf87hkxrIrQik_fv_rkX7Mtr7irwOnaw8egvgYFQqsi3_rbsoY4TzjfrqUL1sA44',
           }))
+
         const data = JSON.stringify(subscription)
         const cipher = crypto.createCipheriv('aes-256-cbc', secretKeyBuffer, ivBuffer)
 
