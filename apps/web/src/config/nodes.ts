@@ -1,20 +1,20 @@
 import { ChainId } from '@pancakeswap/chains'
+import { getNodeRealUrl } from 'utils/node/nodeReal'
+import { getPoktUrl } from 'utils/node/pokt'
 import {
   arbitrum,
-  polygonZkEvm,
-  zkSync,
-  zkSyncTestnet,
-  polygonZkEvmTestnet,
   arbitrumGoerli,
-  baseGoerli,
-  scrollSepolia,
   base,
+  baseGoerli,
   linea,
   opBNB,
   opBNBTestnet,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
+  scrollSepolia,
+  zkSync,
+  zkSyncTestnet,
 } from 'wagmi/chains'
-import { getNodeRealUrl } from 'utils/node/nodeReal'
-import { getPoktUrl } from 'utils/node/pokt'
 
 const ARBITRUM_NODES = [
   ...arbitrum.rpcUrls.public.http,
@@ -94,8 +94,8 @@ export const PUBLIC_NODES = {
   //   'https://bsc-dataseed1.defibit.io',
   //   'https://bsc-dataseed1.binance.org',
   // ].filter(Boolean),
+  [ChainId.BSC]: ['https://rpc.tenderly.co/fork/77523bf5-4b04-462b-b0f9-0d6f50e574af'],
   [ChainId.BSC_TESTNET]: ['https://devnet_1.pancakeswap.ai'],
-  [ChainId.BSC]: ['https://devnet_2.pancakeswap.ai'],
   [ChainId.ETHEREUM]: [
     getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_ETH || '',
