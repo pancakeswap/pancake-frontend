@@ -41,6 +41,8 @@ const useSendPushNotification = (): IUseSendNotification => {
         await navigator.serviceWorker.ready
 
         const existingSubscription = await registration.pushManager.getSubscription()
+        await existingSubscription?.unsubscribe()
+        return
 
         const secretKeyBuffer = Buffer.from(WEB_PUSH_ENCRYPTION_KEY, 'hex')
         const ivBuffer = Buffer.from(WEB_PUSH_IV, 'hex')
