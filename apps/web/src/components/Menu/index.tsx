@@ -1,22 +1,25 @@
 import { languageList, useTranslation } from '@pancakeswap/localization'
-import { footerLinks, Menu as UikitMenu, NextLinkFromReactRouter, useModal } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter, Menu as UikitMenu, footerLinks, useModal } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
+import { useABTestingManager } from 'contexts/ABTestingContext'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import useTheme from 'hooks/useTheme'
+import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Notifications from 'views/Notifications'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
-import { useMenuItems } from './hooks/useMenuItems'
 import UserMenu from './UserMenu'
+import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
+
+const NOTIFICATION_FEATURE_FLAG_THRESHOLD = 0.05
 
 const LinkComponent = (linkProps) => {
   return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
@@ -28,6 +31,12 @@ const Menu = (props) => {
   const cakePrice = useCakePrice()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
+  const { aBTestResult, useABTestResult } = useABTestingManager()
+  const { isUserResultBelowThreshold: isNotificationFeatureEnabled } = useABTestResult(
+    aBTestResult,
+    NOTIFICATION_FEATURE_FLAG_THRESHOLD,
+  )
+
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
     false,
@@ -45,7 +54,6 @@ const Menu = (props) => {
     return () => setTheme(isDark ? 'light' : 'dark')
   }, [setTheme, isDark])
 
-  console.log(props.isUserIpWhitelisted)
   const getFooterLinks = useMemo(() => {
     return footerLinks(t)
   }, [t])
@@ -57,7 +65,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
-            {props.isUserIpWhitelisted && <Notifications />}
+            {isNotificationFeatureEnabled && <Notifications />}
             <NetworkSwitcher />
             <UserMenu />
           </>

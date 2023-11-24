@@ -16,7 +16,9 @@ import useUserAgent from 'hooks/useUserAgent'
 import { NextPage } from 'next'
 import { DefaultSeo } from 'next-seo'
 import type { AppContext, AppProps } from 'next/app'
-import App from 'next/app'
+import { ABTestingManagerProvider } from 'contexts/ABTestingContext'
+// eslint-disable-next-line import/no-named-default
+import { default as MainApp } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
@@ -61,10 +63,10 @@ function MPGlobalHooks() {
 
 function MyApp(
   props: AppProps<{ initialReduxState: any; dehydratedState: any }> & {
-    isUserIpWhitelisted: boolean
+    userABTestResult: string | undefined
   },
 ) {
-  const { pageProps, Component, isUserIpWhitelisted } = props
+  const { pageProps, Component, userABTestResult } = props
   const store = useStore(pageProps.initialReduxState)
 
   return (
@@ -85,23 +87,25 @@ function MyApp(
         )}
       </Head>
       <DefaultSeo {...SEO} />
-      <Providers store={store} dehydratedState={pageProps.dehydratedState}>
-        <PageMeta />
-        {(Component as NextPageWithLayout).Meta && (
-          // @ts-ignore
-          <Component.Meta {...pageProps} />
-        )}
-        <Blocklist>
-          {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
-          <ResetCSS />
-          <GlobalStyle />
-          <GlobalCheckClaimStatus excludeLocations={[]} />
-          <PersistGate loading={null} persistor={persistor}>
-            <Updaters />
-            <InnerApp {...props} isUserIpWhitelisted={isUserIpWhitelisted} />
-          </PersistGate>
-        </Blocklist>
-      </Providers>
+      <ABTestingManagerProvider useDeterministicResult={userABTestResult}>
+        <Providers store={store} dehydratedState={pageProps.dehydratedState}>
+          <PageMeta />
+          {(Component as NextPageWithLayout).Meta && (
+            // @ts-ignore
+            <Component.Meta {...pageProps} />
+          )}
+          <Blocklist>
+            {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
+            <ResetCSS />
+            <GlobalStyle />
+            <GlobalCheckClaimStatus excludeLocations={[]} />
+            <PersistGate loading={null} persistor={persistor}>
+              <Updaters />
+              <App {...props} />
+            </PersistGate>
+          </Blocklist>
+        </Providers>
+      </ABTestingManagerProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"
@@ -139,24 +143,23 @@ type NextPageWithLayout = NextPage & {
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
-  isUserIpWhitelisted: boolean
 }
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? SentryErrorBoundary : Fragment
 
-const InnerApp = ({ Component, pageProps, isUserIpWhitelisted }: AppPropsWithLayout) => {
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   if (Component.pure) {
     return <Component {...pageProps} />
   }
 
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
-  const ShowMenu = Component.mp ? Fragment : (Menu as any)
+  const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
 
   return (
     <ProductionErrorBoundary>
-      <ShowMenu isUserIpWhitelisted={isUserIpWhitelisted}>
+      <ShowMenu>
         <Layout>
           <Component {...pageProps} />
         </Layout>
@@ -172,19 +175,9 @@ const InnerApp = ({ Component, pageProps, isUserIpWhitelisted }: AppPropsWithLay
 }
 
 MyApp.getInitialProps = async (context: AppContext) => {
-  const ctx = await App.getInitialProps(context)
-  const userIp = context.ctx.req?.headers['ctx-userip'] as string
-
-  const msgBuffer = new TextEncoder().encode(userIp)
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
-
-  const lastByteValue = parseInt(hashHex.slice(-2), 16) / 255
-  console.log(lastByteValue)
-  const showFeature = lastByteValue < 0.6 // 5% of user base
-
-  return { ...ctx, isUserIpWhitelisted: showFeature }
+  const ctx = await MainApp.getInitialProps(context)
+  const userABTestResult = context.ctx.req?.headers['ctx-user-ab-test-deterministic-result']
+  return { ...ctx, userABTestResult }
 }
 
 export default MyApp

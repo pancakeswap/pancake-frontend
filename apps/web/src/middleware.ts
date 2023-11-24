@@ -1,21 +1,12 @@
+// middleware.ts
+import { withABHeaders } from 'middleware/ab-test-middleware'
+import { withGeoBlock } from 'middleware/geo-block-middleware'
 import { NextResponse } from 'next/server'
-import { shouldGeoBlock } from '@pancakeswap/utils/geoBlock'
-import { withContext } from './context'
 
-export default withContext('userIp', (setContext, req) => {
-  let ip = req.ip ?? req.headers.get('x-real-ip')
-  const forwardedFor = req.headers.get('x-forwarded-for')
-  if (!ip && forwardedFor) {
-    ip = forwardedFor.split(',').at(0) ?? 'Unknown'
-  }
-
-  // determine if user should see feature
-  setContext('userIp', ip ?? 'ip-unavailable')
-  if (shouldGeoBlock(req.geo)) {
-    return NextResponse.redirect(new URL('/451', req.url))
-  }
+export function defaultMiddleware() {
   return NextResponse.next()
-})
+}
+export default withGeoBlock(withABHeaders(defaultMiddleware))
 
 export const config = {
   matcher: [
