@@ -16,6 +16,11 @@ import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
 import { RowProps } from './types'
 
+const debugFormat = (unix?: bigint | number) => {
+  if (!unix) return ''
+  return dayjs.unix(Number(unix)).format('YYYY-MM-DD HH:mm:ss')
+}
+
 export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
@@ -35,7 +40,27 @@ export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
-        <Tooltips content={<pre>{stringify(userVote, undefined, 2)}</pre>}>
+        <Tooltips
+          disabled={process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'}
+          content={
+            <pre>
+              {stringify(
+                {
+                  ...userVote,
+                  currentTimestamp: debugFormat(currentTimestamp),
+                  nativeLasVoteTime: debugFormat(userVote?.lastVoteTime),
+                  proxyLastVoteTime: debugFormat(userVote?.proxyLastVoteTime),
+                  lastVoteTime: debugFormat(userVote?.lastVoteTime),
+                  end: debugFormat(userVote?.end),
+                  proxyEnd: debugFormat(userVote?.proxyEnd),
+                  nativeEnd: debugFormat(userVote?.nativeEnd),
+                },
+                undefined,
+                2,
+              )}
+            </pre>
+          }
+        >
           <GaugeTokenImage gauge={pool} />
         </Tooltips>
         <Text fontWeight={600} fontSize={16}>
