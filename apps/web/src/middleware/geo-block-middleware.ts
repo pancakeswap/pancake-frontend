@@ -1,4 +1,3 @@
-// middlewares/withHeaders.ts
 import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from 'next/server'
 import { shouldGeoBlock } from '@pancakeswap/utils/geoBlock'
 import { MiddlewareFactory } from './types'

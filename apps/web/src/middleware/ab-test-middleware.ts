@@ -1,4 +1,3 @@
-// middlewares/withHeaders.ts
 import { AB_TESTING_FEATURE_FLAG_MAP } from 'contexts/ABTestingContext/config'
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 import { FeatureFlagInfo, MiddlewareFactory } from './types'
@@ -52,16 +51,17 @@ export const withABHeaders: MiddlewareFactory = () => {
       const normalizedHeaderKey = ctxKey(featureFlagKeys[i])
       ABUserTestHeaderdata[normalizedHeaderKey] = userWhitelistResults[i].hasAccess
     }
-    const responseHeaderKeys = Object.keys(ABUserTestHeaderdata)
+    const requestHeaderKeys = Object.keys(ABUserTestHeaderdata)
     const requestHeaders = new Headers(request.headers)
     const response = NextResponse.next({ request: { headers: requestHeaders } })
-    for (let i = 0; i < responseHeaderKeys.length; i++) {
-      if (request.headers.get(responseHeaderKeys[i])) {
-        throw new Error(`Key ${responseHeaderKeys[i].substring(4)} is being spoofed. Blocking this request.`)
+
+    for (let i = 0; i < requestHeaderKeys.length; i++) {
+      if (request.headers.get(requestHeaderKeys[i])) {
+        throw new Error(`Key ${requestHeaderKeys[i].substring(4)} is being spoofed. Blocking this request.`)
       }
       // set both response and request headers
-      requestHeaders.set(responseHeaderKeys[i], userWhitelistResults[i].hasAccess.toString())
-      response.headers.set(`${responseHeaderKeys[i]}`, userWhitelistResults[i].scaledValue.toString())
+      requestHeaders.set(requestHeaderKeys[i], userWhitelistResults[i].hasAccess.toString())
+      response.headers.set(`${requestHeaderKeys[i]}`, userWhitelistResults[i].scaledValue.toString())
     }
 
     return response
