@@ -1,12 +1,9 @@
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
-import { PageMeta } from 'components/Layout/Page'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
 import TransactionsDetailModal from 'components/TransactionDetailModal'
-import { ABTestingManagerProvider } from 'contexts/ABTestingContext'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
@@ -15,22 +12,25 @@ import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
 import useUserAgent from 'hooks/useUserAgent'
 import { NextPage } from 'next'
-import { DefaultSeo } from 'next-seo'
-import type { AppContext, AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
+import Head from 'next/head'
+import { ABTestingManagerProvider } from 'contexts/ABTestingContext'
 import { FEATURE_FLAGS } from 'middleware/types'
 // eslint-disable-next-line import/no-named-default
 import { default as MainApp } from 'next/app'
-import dynamic from 'next/dynamic'
-import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
+import { DefaultSeo } from 'next-seo'
+import { PageMeta } from 'components/Layout/Page'
+import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
-import Providers from '../Providers'
 import Menu from '../components/Menu'
+import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
@@ -64,10 +64,10 @@ function MPGlobalHooks() {
 
 function MyApp(
   props: AppProps<{ initialReduxState: any; dehydratedState: any }> & {
-    userFeatureFlagABTestResults: { [flag in FEATURE_FLAGS]: boolean }
+    ABTestUserResults: { [flag in FEATURE_FLAGS]: boolean }
   },
 ) {
-  const { pageProps, Component, userFeatureFlagABTestResults } = props
+  const { pageProps, Component, ABTestUserResults } = props
   const store = useStore(pageProps.initialReduxState)
 
   return (
@@ -88,7 +88,7 @@ function MyApp(
         )}
       </Head>
       <DefaultSeo {...SEO} />
-      <ABTestingManagerProvider userFeatureFlagABTestResults={userFeatureFlagABTestResults}>
+      <ABTestingManagerProvider ABTestUserResults={ABTestUserResults}>
         <Providers store={store} dehydratedState={pageProps.dehydratedState}>
           <PageMeta />
           {(Component as NextPageWithLayout).Meta && (
@@ -180,14 +180,14 @@ MyApp.getInitialProps = async (context: AppContext) => {
 
   // get the middleware feature flag headers
   const featureFlagHeaders = context.ctx.req?.headers
-  const userFeatureFlagABTestResults: { [flag: string]: boolean } = {}
+  const ABTestUserResults: { [flag: string]: boolean } = {}
 
   // for each header result store it in map for client to consume
   Object.values(FEATURE_FLAGS).forEach((flag) => {
     const flagHeader = featureFlagHeaders?.[`ctx-${flag}`]
-    userFeatureFlagABTestResults[flag] = flagHeader === 'true'
+    ABTestUserResults[flag] = flagHeader === 'true'
   })
-  return { ...ctx, userFeatureFlagABTestResults }
+  return { ...ctx, ABTestUserResults }
 }
 
 export default MyApp

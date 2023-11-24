@@ -3,7 +3,7 @@ import { createContext, useCallback, useContext, useState } from 'react'
 
 interface ABTestingProviderProps {
   children: React.ReactNode
-  userFeatureFlagABTestResults: { [flag in FEATURE_FLAGS]: boolean }
+  ABTestUserResults: { [flag in FEATURE_FLAGS]: boolean }
 }
 
 type ABTestingContextType = {
@@ -13,8 +13,8 @@ type ABTestingContextType = {
 
 const ABTestingContextManager = createContext({} as ABTestingContextType)
 
-function ABTestingManagerProvider({ userFeatureFlagABTestResults, children }: ABTestingProviderProps) {
-  const [featureFlagResults] = useState<{ [flag in FEATURE_FLAGS]: boolean }>(userFeatureFlagABTestResults)
+function ABTestingManagerProvider({ ABTestUserResults, children }: ABTestingProviderProps) {
+  const [featureFlagResults] = useState<{ [flag in FEATURE_FLAGS]: boolean }>(ABTestUserResults)
 
   const selectUserfeatureABResult = useCallback(
     (flagKey: FEATURE_FLAGS) => {
