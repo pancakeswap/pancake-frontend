@@ -38,6 +38,7 @@ const ClaimCheck = () => {
       history={history}
       isLoadingHistory={isFetching}
       isV1Claim
+      isNativeToken
     />,
     false,
     true,
@@ -49,7 +50,7 @@ const ClaimCheck = () => {
   const handleClick = async () => {
     try {
       setIsFetching(true)
-      const betHistory = await getAllV1History({ user: account.toLowerCase(), claimed: false })
+      const betHistory = await getAllV1History({ user: account?.toLowerCase(), claimed: false })
 
       // Filter out bets that can be claimed
       const unclaimedBets = betHistory.filter((bet) => {
