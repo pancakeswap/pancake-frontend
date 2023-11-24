@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { vaultsConfigChainMap } from '@pancakeswap/position-managers/constants'
-import { positionManagerWrapperABI } from '@pancakeswap/position-managers/src/abi'
+import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers/src/abi'
+import { pancakeV3PoolABI } from '@pancakeswap/smart-router/evm/abis/IPancakeV3Pool'
 import { publicClient } from 'utils/client'
 import { describe, expect, it } from 'vitest'
 
@@ -25,9 +26,9 @@ describe('Config position manger Vault', () => {
   })
 
   describe.concurrent(
-    'Config tokens',
+    'Config check adapter address & fee tier',
     () => {
-      it.each(mainnetVaults)('vault has the correct key,', async (vault) => {
+      it.each(mainnetVaults.flat())('vault has the correct key,', async (vault) => {
         const client = publicClient({ chainId: vault.currencyA.chainId })
         const [adapterAddress] = await client.multicall({
           contracts: [
@@ -39,7 +40,29 @@ describe('Config position manger Vault', () => {
           ],
           allowFailure: false,
         })
+        const [poolAddress] = await client.multicall({
+          contracts: [
+            {
+              abi: positionManagerAdapterABI,
+              address: adapterAddress,
+              functionName: 'pool',
+            },
+          ],
+          allowFailure: false,
+        })
+        const [fee] = await client.multicall({
+          contracts: [
+            {
+              abi: pancakeV3PoolABI,
+              address: poolAddress,
+              functionName: 'fee',
+            },
+          ],
+          allowFailure: false,
+        })
+
         expect(vault.adapterAddress).toBe(adapterAddress)
+        expect(vault.feeTier).toBe(fee)
       })
     },
     {
