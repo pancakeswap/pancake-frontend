@@ -32,5 +32,5 @@ export const config = {
     '/nfts',
     '/info/:path*',
   ],
-  runtime: 'nodejs',
+  runtime: 'experimental-edge',
 }

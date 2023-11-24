@@ -5,7 +5,7 @@ const ctxKey = (key: string): string => `ctx-${key.toLowerCase()}`
 export const getContext = (req: NextRequest, rawKey: string): string | null => {
   const key = ctxKey(rawKey)
 
-  let headerValue = req.headers[key]
+  let headerValue = req.headers.get(key)
 
   // Necessary for node in development environment
   if (!headerValue) {

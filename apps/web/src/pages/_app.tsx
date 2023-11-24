@@ -176,7 +176,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
 }
 
 export const config = {
-  runtime: 'nodejs',
+  runtime: 'experimental-edge',
 }
 
 export default MyApp
