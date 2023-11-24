@@ -1,5 +1,11 @@
 # @pancakeswap/v3-sdk
 
+## 3.6.0
+
+### Minor Changes
+
+- be74f8b0d: fix: Return 0 when current tick equals to upper bound
+
 ## 3.5.4
 
 ### Patch Changes
