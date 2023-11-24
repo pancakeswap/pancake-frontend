@@ -181,7 +181,8 @@ MyApp.getInitialProps = async (context: AppContext) => {
   const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
 
   const lastByteValue = parseInt(hashHex.slice(-2), 16) / 255
-  const showFeature = lastByteValue < 0.05 // 5% of user base
+  console.log(lastByteValue)
+  const showFeature = lastByteValue < 0.6 // 5% of user base
 
   return { ...ctx, isUserIpWhitelisted: showFeature }
 }
