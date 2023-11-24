@@ -33,10 +33,11 @@ const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
 type Params = {
   throwUserRejectError?: boolean
   waitForTransactionTimeout?: number
+  throwCustomeError?: () => void
 }
 
 export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
-  const { throwUserRejectError = false } = params || {}
+  const { throwUserRejectError = false, throwCustomeError, waitForTransactionTimeout } = params || {}
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const [loading, setLoading] = useState(false)
@@ -97,13 +98,15 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
 
         const receipt = await waitForTransaction({
           hash,
-          timeout: params?.waitForTransactionTimeout,
+          timeout: waitForTransactionTimeout,
         })
         return receipt
       } catch (error: any) {
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
+          } else if (throwCustomeError) {
+            throwCustomeError()
           } else {
             handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
           }
@@ -118,13 +121,14 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
       return null
     },
     [
-      throwUserRejectError,
       toastSuccess,
       t,
       waitForTransaction,
+      waitForTransactionTimeout,
+      throwUserRejectError,
+      throwCustomeError,
       handleNormalError,
       handleTxError,
-      params?.waitForTransactionTimeout,
     ],
   )
 

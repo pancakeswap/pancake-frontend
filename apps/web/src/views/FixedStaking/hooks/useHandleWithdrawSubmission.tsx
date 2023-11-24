@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { useToast, Link } from '@pancakeswap/uikit'
+import { Link, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -25,7 +25,25 @@ export function useHandleWithdrawSubmission({
   const { t } = useTranslation()
   const { toastSuccess, toastInfo } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+
+  const throwCustomeError = useCallback(() => {
+    toastInfo(
+      t('Withdawal approval is pending'),
+      <>
+        {t('Please come back to check later at a certain amount of time')}
+        <Link
+          href="https://docs.pancakeswap.finance/products/simple-staking/faq#what-happens-in-the-withdrawal-process-when-withdrawal-approval-is-pending"
+          target="_blank"
+        >
+          {t('Learn more')}
+        </Link>
+      </>,
+    )
+  }, [t, toastInfo])
+
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({
+    throwCustomeError,
+  })
   const fixedStakingContract = useFixedStakingContract()
   const { chainId } = useAccountActiveChain()
 
@@ -43,40 +61,26 @@ export function useHandleWithdrawSubmission({
 
   const handleSubmission = useCallback(
     async (type: UnstakeType, totalGetAmount: CurrencyAmount<Currency>) => {
-      if (totalGetAmount.greaterThan(stakingTokenBalanceInPool)) {
-        const linkElement = createElement(
-          Link,
-          {
-            href: 'https://docs.pancakeswap.finance/products/simple-staking/faq#what-happens-in-the-withdrawal-process-when-withdrawal-approval-is-pending',
-            target: '_blank',
-          },
-          t('Learn more'),
-        )
+      const receipt = await fetchWithCatchTxError(() => {
+        const methodArgs = [poolIndex]
 
-        toastInfo('Withdawal approval is pending', [
-          t('Please come back to check later at a certain amount of time'),
-          linkElement,
-        ])
-      } else {
-        const receipt = await fetchWithCatchTxError(() => {
-          const methodArgs = [poolIndex]
+        return callWithGasPrice(fixedStakingContract, type, methodArgs)
+      })
 
-          return callWithGasPrice(fixedStakingContract, type, methodArgs)
-        })
+      if (receipt?.status) {
+        const msg = totalGetAmount.greaterThan(stakingTokenBalanceInPool)
+          ? t(
+              'Your action has been requested and we are processing the funds. Please check back in a couple of hours to request withdrawal of funds.',
+            )
+          : type === UnstakeType.HARVEST
+          ? t('Your harvest request has been submitted.')
+          : t('Your funds have been restaked in the pool')
 
-        if (receipt?.status) {
-          const successComp = createElement(
-            ToastDescriptionWithTx,
-            { txHash: receipt.transactionHash },
-            type === UnstakeType.HARVEST
-              ? t('Your harvest request has been submitted.')
-              : t('Your funds have been restaked in the pool'),
-          )
+        const successComp = createElement(ToastDescriptionWithTx, { txHash: receipt.transactionHash }, msg)
 
-          toastSuccess(t('Successfully submitted!'), successComp)
+        toastSuccess(t('Successfully submitted!'), successComp)
 
-          if (onSuccess) onSuccess()
-        }
+        if (onSuccess) onSuccess()
       }
     },
     [
@@ -87,7 +91,6 @@ export function useHandleWithdrawSubmission({
       poolIndex,
       stakingTokenBalanceInPool,
       t,
-      toastInfo,
       toastSuccess,
     ],
   )
