@@ -61,11 +61,13 @@ function MPGlobalHooks() {
 }
 
 function MyApp(
-  props: AppProps<{ initialReduxState: any; dehydratedState: any }> & { userIp: string | undefined | null },
+  props: AppProps<{ initialReduxState: any; dehydratedState: any }> & {
+    isUserIpWhitelisted: boolean
+  },
 ) {
-  const { pageProps, Component, userIp } = props
+  const { pageProps, Component, isUserIpWhitelisted } = props
   const store = useStore(pageProps.initialReduxState)
-  console.log(userIp)
+
   return (
     <>
       <Head>
@@ -97,7 +99,7 @@ function MyApp(
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
             <Updaters />
-            <InnerApp {...props} />
+            <InnerApp {...props} isUserIpWhitelisted={isUserIpWhitelisted} />
           </PersistGate>
         </Blocklist>
       </Providers>
@@ -138,24 +140,24 @@ type NextPageWithLayout = NextPage & {
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
-  userIp: string | null | undefined
+  isUserIpWhitelisted: boolean
 }
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? SentryErrorBoundary : Fragment
 
-const InnerApp = ({ Component, pageProps, userIp }: AppPropsWithLayout) => {
+const InnerApp = ({ Component, pageProps, isUserIpWhitelisted }: AppPropsWithLayout) => {
   if (Component.pure) {
     return <Component {...pageProps} />
   }
 
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
-  const ShowMenu = Component.mp ? Fragment : Menu
+  const ShowMenu = Component.mp ? Fragment : (Menu as any)
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
 
   return (
     <ProductionErrorBoundary>
-      <ShowMenu userIp={userIp}>
+      <ShowMenu isUserIpWhitelisted={isUserIpWhitelisted}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
@@ -172,11 +174,21 @@ const InnerApp = ({ Component, pageProps, userIp }: AppPropsWithLayout) => {
 
 MyApp.getInitialProps = async (context: AppContext) => {
   const ctx = await App.getInitialProps(context)
-  return { ...ctx, userIp: context.router.query['ctx-userip'] }
+  const userIp = context.ctx.req?.headers['ctx-userip'] as string
+
+  const msgBuffer = new TextEncoder().encode(userIp)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+
+  const lastByteValue = parseInt(hashHex.slice(-2), 16) / 255
+  const showFeature = lastByteValue < 0.05 // 5% of user base
+
+  return { ...ctx, isUserIpWhitelisted: showFeature }
 }
 
 export const config = {
-  runtime: 'experimental-edge',
+  runtime: 'nodejs',
 }
 
 export default MyApp

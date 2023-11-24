@@ -8,7 +8,9 @@ export default withContext('userIp', (setContext, req) => {
   if (!ip && forwardedFor) {
     ip = forwardedFor.split(',').at(0) ?? 'Unknown'
   }
-  setContext('userIp', ip ?? 'test')
+
+  // determine if user should see feature
+  setContext('userIp', ip ?? 'ip-unavailable')
   if (shouldGeoBlock(req.geo)) {
     return NextResponse.redirect(new URL('/451', req.url))
   }
