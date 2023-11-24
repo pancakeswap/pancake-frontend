@@ -38,7 +38,6 @@ const Menu = (props) => {
 
   const menuItems = useMenuItems(onUSCitizenModalPresent)
 
-  console.log(props.isUserIpWhitelisted)
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
 
