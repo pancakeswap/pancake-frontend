@@ -25,5 +25,4 @@ export const config = {
     '/nfts',
     '/info/:path*',
   ],
-  runtime: 'nodejs',
 }
