@@ -28,7 +28,7 @@ describe('Config position manger Vault', () => {
   describe.concurrent(
     'Config check adapter address & fee tier',
     () => {
-      it.each(mainnetVaults.flat())('vault has the correct key,', async (vault) => {
+      it.each(mainnetVaults.flat())('Config check adapter address & fee tier', async (vault) => {
         const client = publicClient({ chainId: vault.currencyA.chainId })
         const [adapterAddress] = await client.multicall({
           contracts: [
