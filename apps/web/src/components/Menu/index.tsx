@@ -10,6 +10,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import useTheme from 'hooks/useTheme'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { FEATURE_FLAGS } from 'middleware/types'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import Notifications from 'views/Notifications'
@@ -18,8 +19,6 @@ import { SettingsMode } from './GlobalSettings/types'
 import UserMenu from './UserMenu'
 import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
-
-const NOTIFICATION_FEATURE_FLAG_THRESHOLD = 0.05
 
 const LinkComponent = (linkProps) => {
   return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
@@ -31,11 +30,8 @@ const Menu = (props) => {
   const cakePrice = useCakePrice()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const { aBTestResult, useABTestResult } = useABTestingManager()
-  const { isUserResultBelowThreshold: isNotificationFeatureEnabled } = useABTestResult(
-    aBTestResult,
-    NOTIFICATION_FEATURE_FLAG_THRESHOLD,
-  )
+  const { selectUserfeatureABResult } = useABTestingManager()
+  const isNotificationFeatureEnabled = selectUserfeatureABResult(FEATURE_FLAGS.WebNotifications)
 
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
