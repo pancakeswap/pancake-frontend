@@ -45,6 +45,7 @@ const Menu = (props) => {
     return () => setTheme(isDark ? 'light' : 'dark')
   }, [setTheme, isDark])
 
+  console.log(props.isUserIpWhitelisted)
   const getFooterLinks = useMemo(() => {
     return footerLinks(t)
   }, [t])
