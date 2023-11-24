@@ -65,12 +65,11 @@ function MPGlobalHooks() {
 function MyApp(
   props: AppProps<{ initialReduxState: any; dehydratedState: any }> & {
     ABTestUserResults: { [flag in FEATURE_FLAGS]: boolean }
-    x: any
   },
 ) {
-  const { pageProps, Component, ABTestUserResults, x } = props
+  const { pageProps, Component, ABTestUserResults } = props
   const store = useStore(pageProps.initialReduxState)
-  console.log('xxx', x)
+
   return (
     <>
       <Head>
@@ -186,9 +185,9 @@ MyApp.getInitialProps = async (context: AppContext) => {
   // for each header result store it in map for client to consume
   Object.values(FEATURE_FLAGS).forEach((flag) => {
     const flagHeader = featureFlagHeaders?.[`ctx-${flag}`]
-    ABTestUserResults[flag] = true
+    ABTestUserResults[flag] = flagHeader === 'true'
   })
-  return { ...ctx, ABTestUserResults, x: context.ctx.req?.headers['ctx-web-notifications-feature-flag'] }
+  return { ...ctx, ABTestUserResults }
 }
 
 export default MyApp
