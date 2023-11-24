@@ -208,7 +208,7 @@ export const usePredictionsContract = (address: Address, isNativeToken: boolean)
     if (address === getPredictionsV1Address()) {
       return getPredictionsV1Contract(signer ?? undefined)
     }
-    const getPredContract = isNativeToken ? getPredictionsV3Contract : getPredictionsV2Contract
+    const getPredContract = isNativeToken ? getPredictionsV2Contract : getPredictionsV3Contract
 
     return getPredContract(address, signer ?? undefined)
   }, [address, isNativeToken, signer])
