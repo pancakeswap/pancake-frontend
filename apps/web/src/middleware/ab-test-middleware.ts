@@ -10,20 +10,22 @@ import { FeatureFlagInfo, MiddlewareFactory } from './types'
 export const generateUserDeterministicValue = async (
   userIp: string,
   abTestingfeatureFlagInfo: FeatureFlagInfo[],
-): Promise<{ userWhitelistResults: boolean[] }> => {
+): Promise<{ userWhitelistResults: { hasAccess: boolean; scaledValue: number }[] }> => {
   const userWhitelistResults = await Promise.all(
-    abTestingfeatureFlagInfo.map(async (flag: FeatureFlagInfo): Promise<boolean> => {
-      if (flag.whitelistedIps.includes(userIp)) return true
+    abTestingfeatureFlagInfo.map(
+      async (flag: FeatureFlagInfo): Promise<{ hasAccess: boolean; scaledValue: number }> => {
+        if (flag.whitelistedIps.includes(userIp)) return { hasAccess: true, scaledValue: 0 }
 
-      const msgBuffer = new TextEncoder().encode(`${userIp}-${flag.featureFlagKey}-${flag.probabilityThreshold}`)
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+        const msgBuffer = new TextEncoder().encode(`${userIp}-${flag.featureFlagKey}-${flag.probabilityThreshold}`)
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
 
-      const hashArray = Array.from(new Uint8Array(hashBuffer))
-      const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+        const hashArray = Array.from(new Uint8Array(hashBuffer))
+        const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
 
-      const lastByteValue = parseInt(hashHex.slice(-2), 16) / 255
-      return Boolean(lastByteValue < flag.probabilityThreshold)
-    }),
+        const scaledValue = parseInt(hashHex.slice(-2), 16) / 255
+        return { hasAccess: Boolean(scaledValue < flag.probabilityThreshold), scaledValue }
+      },
+    ),
   )
 
   return { userWhitelistResults }
@@ -48,18 +50,20 @@ export const withABHeaders: MiddlewareFactory = () => {
     // set the header keys data map
     for (let i = 0; i < featureFlagKeys.length; i++) {
       const normalizedHeaderKey = ctxKey(featureFlagKeys[i])
-      ABUserTestHeaderdata[normalizedHeaderKey] = userWhitelistResults[i]
+      ABUserTestHeaderdata[normalizedHeaderKey] = userWhitelistResults[i].hasAccess
     }
     const responseHeaderKeys = Object.keys(ABUserTestHeaderdata)
-    const responseHeaders = new Headers(request.headers)
-
+    const requestHeaders = new Headers(request.headers)
+    const response = NextResponse.next({ request: { headers: requestHeaders } })
     for (let i = 0; i < responseHeaderKeys.length; i++) {
       if (request.headers.get(responseHeaderKeys[i])) {
         throw new Error(`Key ${responseHeaderKeys[i].substring(4)} is being spoofed. Blocking this request.`)
       }
-      responseHeaders.set(responseHeaderKeys[i], userWhitelistResults[i].toString())
+      // set both response and request headers
+      requestHeaders.set(responseHeaderKeys[i], userWhitelistResults[i].hasAccess.toString())
+      response.headers.set(`${responseHeaderKeys[i]}`, userWhitelistResults[i].scaledValue.toString())
     }
 
-    return NextResponse.next({ request: { headers: responseHeaders } })
+    return response
   }
 }
