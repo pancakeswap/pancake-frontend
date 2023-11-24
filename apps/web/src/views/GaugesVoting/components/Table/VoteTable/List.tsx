@@ -47,7 +47,7 @@ export function VoteListItem({ style, data, vote, onChange, ...props }: Props) {
                 'Gauge’s vote can not be changed more frequent than 10 days. You can update your vote for this gauge in: %distance%',
                 {
                   distance: userVote?.lastVoteTime
-                    ? dayjs.unix(userVote?.lastVoteTime).add(10, 'day').from(currentTimestamp, true)
+                    ? dayjs.unix(Number(userVote?.lastVoteTime)).add(10, 'day').from(currentTimestamp, true)
                     : '',
                 },
               )}

@@ -16,17 +16,25 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
   const epochVotePower = useEpochVotePower()
   // const nextEpochStart = useNextEpochStart()
   const currentVoteWeight = useMemo(() => {
-    if (userVote?.slope && userVote?.power) {
-      // @note: the real vote weight = slope * (end - nextEpochStart)
-      // here we use slope * (end - nextEpochStart) for better ux show linearly dynamic change
-      // const amount = getBalanceNumber(new BN(userVote.slope).times(userVote.end - nextEpochStart))
-      const amount = getBalanceNumber(new BN(userVote.slope).times(userVote.end - currentTimestamp))
-      if (amount === 0) return 0
-      if (amount < 1) return amount.toPrecision(2)
-      return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
+    const { nativeSlope = 0n, nativeEnd = 0n, proxySlope = 0n, proxyEnd = 0n } = userVote || {}
+    let nativeWeight = 0n
+    let proxyWeight = 0n
+    if (nativeSlope > 0n) {
+      nativeWeight = nativeSlope * (nativeEnd - BigInt(currentTimestamp))
+      nativeWeight = nativeWeight > 0n ? nativeWeight : 0n
     }
-    return 0
-  }, [currentTimestamp, userVote?.end, userVote?.power, userVote?.slope])
+    if (proxySlope > 0n) {
+      proxyWeight = proxySlope * (proxyEnd - BigInt(currentTimestamp))
+      proxyWeight = proxyWeight > 0n ? proxyWeight : 0n
+    }
+
+    const amountInt = nativeWeight + proxyWeight
+
+    const amount = getBalanceNumber(new BN(amountInt.toString()))
+    if (amount === 0) return 0
+    if (amount < 1) return amount.toPrecision(2)
+    return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
+  }, [currentTimestamp, userVote])
 
   const currentVotePercent = useMemo(() => {
     return userVote?.power && Number(currentVoteWeight) > 0

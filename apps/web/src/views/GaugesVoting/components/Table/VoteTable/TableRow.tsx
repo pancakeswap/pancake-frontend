@@ -3,7 +3,7 @@ import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, 
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import dayjs from 'dayjs'
 import { useCallback, useState } from 'react'
-import { Address } from 'viem'
+import { Address, stringify } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
@@ -35,7 +35,9 @@ export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
-        <GaugeTokenImage gauge={pool} />
+        <Tooltips content={<pre>{stringify(userVote, undefined, 2)}</pre>}>
+          <GaugeTokenImage gauge={pool} />
+        </Tooltips>
         <Text fontWeight={600} fontSize={16}>
           {pool?.pairName}
         </Text>
@@ -61,7 +63,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
               'Gauge’s vote can not be changed more frequent than 10 days. You can update your vote for this gauge in: %distance%',
               {
                 distance: userVote?.lastVoteTime
-                  ? dayjs.unix(userVote?.lastVoteTime).add(10, 'day').from(dayjs.unix(currentTimestamp), true)
+                  ? dayjs.unix(Number(userVote?.lastVoteTime)).add(10, 'day').from(dayjs.unix(currentTimestamp), true)
                   : '',
               },
             )}
