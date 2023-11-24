@@ -22,7 +22,7 @@ const LinkComponent = (linkProps) => {
   return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
 }
 
-const Menu = (props) => {
+const Menu = (props, { userIp }: { userIp: any }) => {
   const { chainId } = useActiveChainId()
   const { isDark, setTheme } = useTheme()
   const cakePrice = useCakePrice()
@@ -36,6 +36,8 @@ const Menu = (props) => {
   )
   const [showPhishingWarningBanner] = usePhishingBanner()
 
+  const uip = props.userIp
+  console.log(uip)
   const menuItems = useMenuItems(onUSCitizenModalPresent)
 
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })

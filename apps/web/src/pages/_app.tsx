@@ -12,7 +12,7 @@ import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
 import useUserAgent from 'hooks/useUserAgent'
 import { NextPage } from 'next'
-import type { AppProps } from 'next/app'
+import type { AppContext, AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
@@ -23,6 +23,8 @@ import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
+import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import App from 'next/app'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import Menu from '../components/Menu'
@@ -58,10 +60,12 @@ function MPGlobalHooks() {
   return null
 }
 
-function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>) {
-  const { pageProps, Component } = props
+function MyApp(
+  props: AppProps<{ initialReduxState: any; dehydratedState: any }> & { userIp: string | undefined | null },
+) {
+  const { pageProps, Component, userIp } = props
   const store = useStore(pageProps.initialReduxState)
-
+  console.log(userIp)
   return (
     <>
       <Head>
@@ -93,7 +97,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
             <Updaters />
-            <App {...props} />
+            <Ap {...props} />
           </PersistGate>
         </Blocklist>
       </Providers>
@@ -134,11 +138,12 @@ type NextPageWithLayout = NextPage & {
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
+  userIp: string | null | undefined
 }
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? SentryErrorBoundary : Fragment
 
-const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+const Ap = ({ Component, pageProps, userIp }: AppPropsWithLayout) => {
   if (Component.pure) {
     return <Component {...pageProps} />
   }
@@ -150,7 +155,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return (
     <ProductionErrorBoundary>
-      <ShowMenu>
+      <ShowMenu userIp={userIp}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
@@ -163,6 +168,15 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
     </ProductionErrorBoundary>
   )
+}
+
+MyApp.getInitialProps = async (context: AppContext) => {
+  const ctx = await App.getInitialProps(context)
+  return { ...ctx, userIp: context.router.query['ctx-userip'] }
+}
+
+export const config = {
+  runtime: 'nodejs',
 }
 
 export default MyApp

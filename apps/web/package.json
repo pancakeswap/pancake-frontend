@@ -78,6 +78,7 @@
     "fast-json-stable-stringify": "^2.1.0",
     "graphql": "^16.8.1",
     "graphql-request": "^5.0.0",
+    "ip": "^1.1.8",
     "jotai": "^2.4.3",
     "js-cookie": "^3.0.1",
     "lightweight-charts": "^4.0.1",

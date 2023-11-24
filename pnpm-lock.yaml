@@ -776,6 +776,9 @@ importers:
       graphql-request:
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
+      ip:
+        specifier: ^1.1.8
+        version: 1.1.8
       jotai:
         specifier: ^2.4.3
         version: 2.4.3(@types/react@18.2.21)(react@18.2.0)
@@ -19463,6 +19466,10 @@ packages:
     resolution: {integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==}
     engines: {node: '>= 0.10'}
     dev: true
+
+  /ip@1.1.8:
+    resolution: {integrity: sha512-PuExPYUiu6qMBQb4l06ecm6T6ujzhmh+MeJcW9wa89PoAz5pvd4zPgN5WJV104mb6S2T1AwNIAaB70JNrLQWhg==}
+    dev: false
 
   /ip@2.0.0:
     resolution: {integrity: sha512-WKa+XuLG1A1R0UWhl2+1XQSi+fZWMsYKffMZTTYsiZaUD8k2yDAj5atimTUD2TZkyCkNEeYE5NhFZmupOGtjYQ==}

@@ -1,15 +1,15 @@
+import { NextResponse } from 'next/server'
 import { shouldGeoBlock } from '@pancakeswap/utils/geoBlock'
-import { NextRequest, NextResponse } from 'next/server'
+import { withContext } from './context'
 
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-
+export default withContext('userIp', (setContext, req) => {
+  // const userIp = ip.address()
+  setContext('userIp', req.ip ?? 'test')
   if (shouldGeoBlock(req.geo)) {
     return NextResponse.redirect(new URL('/451', req.url))
   }
-
-  return res
-}
+  return NextResponse.next()
+})
 
 export const config = {
   matcher: [
@@ -28,4 +28,5 @@ export const config = {
     '/nfts',
     '/info/:path*',
   ],
+  runtime: 'nodejs',
 }
