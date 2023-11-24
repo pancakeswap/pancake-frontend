@@ -1,6 +1,8 @@
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
+import { PageMeta } from 'components/Layout/Page'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
 import TransactionsDetailModal from 'components/TransactionDetailModal'
@@ -12,23 +14,20 @@ import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
 import useUserAgent from 'hooks/useUserAgent'
 import { NextPage } from 'next'
+import { DefaultSeo } from 'next-seo'
 import type { AppContext, AppProps } from 'next/app'
+import App from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
-import { DefaultSeo } from 'next-seo'
-import { PageMeta } from 'components/Layout/Page'
-import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import App from 'next/app'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
-import Menu from '../components/Menu'
 import Providers from '../Providers'
+import Menu from '../components/Menu'
 import GlobalStyle from '../style/Global'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
@@ -185,10 +184,6 @@ MyApp.getInitialProps = async (context: AppContext) => {
   const showFeature = lastByteValue < 0.05 // 5% of user base
 
   return { ...ctx, isUserIpWhitelisted: showFeature }
-}
-
-export const config = {
-  runtime: 'nodejs',
 }
 
 export default MyApp
