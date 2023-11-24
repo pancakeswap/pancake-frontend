@@ -41,7 +41,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
     <TRow>
       <FlexGap alignItems="center" gap="13px">
         <Tooltips
-          disabled={process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'}
+          disabled={!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')}
           content={
             <pre>
               {stringify(

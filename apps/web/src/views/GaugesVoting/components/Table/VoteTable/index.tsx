@@ -161,7 +161,7 @@ export const VoteTable = () => {
       <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
         {gauges}
 
-        {epochPower <= 0n ? (
+        {rowsWithLock?.length && epochPower <= 0n ? (
           <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">

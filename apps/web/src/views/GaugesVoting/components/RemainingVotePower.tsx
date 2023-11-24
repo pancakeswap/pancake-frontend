@@ -28,7 +28,7 @@ export const RemainingVotePower: React.FC<{
   const { t } = useTranslation()
 
   const { balance: veCakeBalance } = useVeCakeBalance()
-  const totalPower = useEpochVotePower()
+  const epochPower = useEpochVotePower()
 
   // @note: real power is EpochEndPower * (10000 - PercentVoted)
   // use veCakeBalance as cardinal number for better UX understanding
@@ -37,26 +37,23 @@ export const RemainingVotePower: React.FC<{
   }, [veCakeBalance, votedPercent])
 
   const realPower = useMemo(() => {
-    return new BN(totalPower.toString()).times(10000 - votedPercent * 100).dividedBy(10000)
-  }, [totalPower, votedPercent])
+    return new BN(epochPower.toString()).times(10000 - votedPercent * 100).dividedBy(10000)
+  }, [epochPower, votedPercent])
 
   return (
     <StyledBox>
       <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="58px" />
-      <Flex flexDirection={['column', 'column', 'row']} justifyContent="space-between" width="100%" ml="4px">
+      <Flex
+        flexDirection={['column', 'column', 'row']}
+        justifyContent="space-between"
+        width="100%"
+        ml="4px"
+        alignItems={['flex-start', 'flex-start', 'center']}
+      >
         <Text fontSize="20px" bold color="white" lineHeight="2">
           {t('Remaining veCAKE')}
         </Text>
-        {realPower.gt(0) ? (
-          <Balance
-            fontSize="24px"
-            bold
-            color="white"
-            lineHeight="110%"
-            value={getBalanceNumber(votePower) || 0}
-            decimals={2}
-          />
-        ) : (
+        {epochPower === 0n && realPower.gt(0) ? (
           <FlexGap gap="4px" alignItems="center">
             <Text textTransform="uppercase" color="warning" bold fontSize={24}>
               {t('unlocking')}
@@ -76,6 +73,15 @@ export const RemainingVotePower: React.FC<{
               <ErrorIcon color="warning" style={{ marginBottom: '-2.5px' }} />
             </Tooltips>
           </FlexGap>
+        ) : (
+          <Balance
+            fontSize="24px"
+            bold
+            color="white"
+            lineHeight="110%"
+            value={getBalanceNumber(votePower) || 0}
+            decimals={2}
+          />
         )}
       </Flex>
     </StyledBox>
