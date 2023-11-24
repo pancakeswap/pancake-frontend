@@ -161,26 +161,28 @@ export const VoteTable = () => {
       <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
         {gauges}
 
-        <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
-          <Message variant="warning" showIcon>
-            <AutoColumn gap="8px">
-              <Text>
-                {t('Your positions are unlocking on %date%.', {
-                  date: dayjs.unix(cakeUnlockTime).format('DD MMM YYYY'),
-                })}
-                {t(
-                  'Therefore, you have no veCAKE balance at the end of the current voting epoch while votes are being tallied.',
-                )}
-              </Text>
-              <FlexGap alignItems="center" gap="0.2em">
-                {t('To cast your vote, ')}
-                <Link href="/cake-staking">
-                  <Text bold>{t('extend your lock >>')}</Text>
-                </Link>
-              </FlexGap>
-            </AutoColumn>
-          </Message>
-        </Box>
+        {epochPower <= 0n ? (
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+            <Message variant="warning" showIcon>
+              <AutoColumn gap="8px">
+                <Text>
+                  {t('Your positions are unlocking on %date%.', {
+                    date: dayjs.unix(cakeUnlockTime).format('DD MMM YYYY'),
+                  })}
+                  {t(
+                    'Therefore, you have no veCAKE balance at the end of the current voting epoch while votes are being tallied.',
+                  )}
+                </Text>
+                <FlexGap alignItems="center" gap="0.2em">
+                  {t('To cast your vote, ')}
+                  <Link href="/cake-staking">
+                    <Text bold>{t('extend your lock >>')}</Text>
+                  </Link>
+                </FlexGap>
+              </AutoColumn>
+            </Message>
+          </Box>
+        ) : null}
         <FlexGap
           gap="12px"
           padding={isDesktop ? '2em' : '1em'}
