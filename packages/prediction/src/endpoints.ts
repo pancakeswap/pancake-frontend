@@ -7,3 +7,7 @@ export const GRAPH_API_PREDICTION_BNB = {
 export const GRAPH_API_PREDICTION_CAKE = {
   [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-cake',
 }
+
+export const GRAPH_API_PREDICTION_ETH = {
+  [ChainId.ARBITRUM_GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-cake',
+}

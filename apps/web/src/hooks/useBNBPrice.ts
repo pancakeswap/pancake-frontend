@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { chainlinkOracleBNB } from '@pancakeswap/prediction'
 import BigNumber from 'bignumber.js'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
-import contracts from 'config/constants/contracts'
 import { publicClient } from 'utils/wagmi'
 import { formatUnits } from 'viem'
 import { FAST_INTERVAL } from 'config/constants'
@@ -23,7 +23,7 @@ export const useBNBPrice = ({ enabled = true } = {}) => {
 export const getBNBPriceFromOracle = async () => {
   const data = await publicClient({ chainId: ChainId.BSC }).readContract({
     abi: chainlinkOracleABI,
-    address: contracts.chainlinkOracleBNB[ChainId.BSC],
+    address: chainlinkOracleBNB[ChainId.BSC],
     functionName: 'latestAnswer',
   })
 

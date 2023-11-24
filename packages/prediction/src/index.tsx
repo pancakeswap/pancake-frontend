@@ -2,6 +2,7 @@ export * from './constants'
 export * from './utils'
 export * from './type'
 export * from './endpoints'
+export * from './chainlinkOracleContract'
 
 // abi
 export * from './abis/predictionsV1'
