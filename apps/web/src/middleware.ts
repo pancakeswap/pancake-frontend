@@ -3,8 +3,12 @@ import { shouldGeoBlock } from '@pancakeswap/utils/geoBlock'
 import { withContext } from './context'
 
 export default withContext('userIp', (setContext, req) => {
-  // const userIp = ip.address()
-  setContext('userIp', req.ip ?? 'test')
+  let ip = req.ip ?? req.headers.get('x-real-ip')
+  const forwardedFor = req.headers.get('x-forwarded-for')
+  if (!ip && forwardedFor) {
+    ip = forwardedFor.split(',').at(0) ?? 'Unknown'
+  }
+  setContext('userIp', ip ?? 'test')
   if (shouldGeoBlock(req.geo)) {
     return NextResponse.redirect(new URL('/451', req.url))
   }

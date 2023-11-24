@@ -1,24 +1,19 @@
-import { createHash } from 'crypto'
-import ip from 'ip'
-import { NextRequest } from 'next/server'
+import { NextApiRequest, NextApiResponse } from 'next'
+import requestIp from 'request-ip'
 
-export default async function handler(req: NextRequest, res) {
-  try {
-    // Get the user's real IP address using the ip package
-    const userIp = req.ip
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Use the requestIp.mw middleware to add the client's IP address to req.clientIp
+  requestIp.mw()(req)
 
-    // Hash the user's IP address
-    const hashedIp = createHash('md5').update('userIp').digest('hex')
+  // @ts-ignore
+  const clientIp = req.clientIp || null
 
-    // Get the last byte's value
-    const lastByteValue = parseInt(hashedIp.slice(-2), 16) / 255
-
-    // Check if the last byte's value is less than 0.05 (5%)
-    const showFeature = lastByteValue < 0.05
-
-    res.status(200).json({ showFeature: userIp })
-  } catch (error) {
-    console.error('Error in feature API:', error)
-    res.status(500).json({ error: 'Internal Server Error' })
+  if (clientIp) {
+    console.log(`Client IP: ${clientIp}`)
+  } else {
+    console.warn('Unable to determine client IP')
   }
+
+  // Rest of your API route logic
+  res.status(200).json({ clientIp })
 }

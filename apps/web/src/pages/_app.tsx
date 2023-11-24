@@ -97,7 +97,7 @@ function MyApp(
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
             <Updaters />
-            <Ap {...props} />
+            <InnerApp {...props} />
           </PersistGate>
         </Blocklist>
       </Providers>
@@ -143,7 +143,7 @@ type AppPropsWithLayout = AppProps & {
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? SentryErrorBoundary : Fragment
 
-const Ap = ({ Component, pageProps, userIp }: AppPropsWithLayout) => {
+const InnerApp = ({ Component, pageProps, userIp }: AppPropsWithLayout) => {
   if (Component.pure) {
     return <Component {...pageProps} />
   }
