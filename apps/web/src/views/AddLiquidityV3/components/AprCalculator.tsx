@@ -7,7 +7,7 @@ import {
   useAmountsByUsdValue,
 } from '@pancakeswap/widgets-internal/roi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
+import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator, isPoolTickInRange } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -26,7 +26,6 @@ import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { batch } from 'react-redux'
 import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 import currencyId from 'utils/currencyId'
-import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { useFarm } from 'hooks/useFarm'
 
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
@@ -163,8 +162,6 @@ export function AprCalculator({
 
   const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0) || (inverted ? aprAmountB : aprAmountA)
   const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1) || (inverted ? aprAmountA : aprAmountB)
-  const [amount0, amount1] = inverted ? [validAmountB, validAmountA] : [validAmountA, validAmountB]
-  const inRange = isPoolTickInRange(pool ?? undefined, tickLower ?? undefined, tickUpper ?? undefined)
   const { apr } = useRoi({
     tickLower,
     tickUpper,
@@ -198,6 +195,8 @@ export function AprCalculator({
         })),
     [existingPosition, validAmountA, validAmountB, tickUpper, tickLower, sqrtRatioX96],
   )
+  const [amount0, amount1] = inverted ? [validAmountB, validAmountA] : [validAmountA, validAmountB]
+  const inRange = useMemo(() => isPoolTickInRange(pool, tickLower, tickUpper), [pool, tickLower, tickUpper])
   const { positionFarmApr, positionFarmAprFactor } = useMemo(() => {
     if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1 || !inRange) {
       return {

@@ -28,7 +28,7 @@ import {
 
 import { ConfirmationModalContent, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import { MasterChefV3, NonfungiblePositionManager, Pool, Position } from '@pancakeswap/v3-sdk'
+import { MasterChefV3, NonfungiblePositionManager, Pool, Position, isPoolTickInRange } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import { useFarm } from 'hooks/useFarm'
@@ -75,7 +75,6 @@ import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
-import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { ChainLinkSupportChains } from 'state/info/constant'
 import { MerklSection } from 'components/Merkl/MerklSection'
 import { MerklTag } from 'components/Merkl/MerklTag'
@@ -350,7 +349,7 @@ export default function PoolPage() {
     }
 
     getViemClients({ chainId })
-      .estimateGas(txn)
+      ?.estimateGas(txn)
       .then((estimate) => {
         const newTxn = {
           ...txn,
