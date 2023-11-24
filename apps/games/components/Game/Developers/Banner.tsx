@@ -1,10 +1,10 @@
-import { Box, Flex, Text, Button, Link, PageSection, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTheme } from '@pancakeswap/hooks'
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/image'
+import { Box, Button, Flex, Link, PageSection, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { floatingStarsLeft } from 'components/Game/DecorationsAnimation'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import Image from 'next/image'
+import { styled } from 'styled-components'
 
 const StyledPageSection = styled(PageSection)`
   padding: 32px 0;
@@ -71,7 +71,7 @@ export const Banner = () => {
       background={theme.colors.gradientBubblegum}
     >
       <Decorations>
-        <Image src={`${ASSET_CDN}/web/game/developers/piezas-1.png`} width="66.5" height="72" alt="piezas1" />
+        <Image src={`${ASSET_CDN}/web/game/developers/piezas-1.png`} width={66.5} height={72} alt="piezas1" />
       </Decorations>
       <Flex
         position="relative"
@@ -120,7 +120,7 @@ export const Banner = () => {
             {t('Design Games to Captivate 1.5 Million Potential Players')}
           </Text>
           <Flex alignSelf={['flex-start', 'flex-start', 'flex-start', 'auto']}>
-            <Link external href="https://t.me/ChefMochi">
+            <Link external href="https://forms.gle/WXDhmbfRhQtz4eSt7">
               <Button>{t('Start Building')}</Button>
             </Link>
             <Link external href="https://docs.pancakeswap.finance/products/gaming-platform">

@@ -1,12 +1,12 @@
-import { keyframes, styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, useMatchBreakpoints, Button, Link } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { Box, Button, Flex, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import SunburstSvg from 'components/Game/Developers/SunburstSvg'
 import ctaPancakeBig from 'components/Game/Developers/images/cta-pancake-big.png'
 import ctaPancake from 'components/Game/Developers/images/cta-pancake.png'
 import ctaRock2 from 'components/Game/Developers/images/cta-rock-2.png'
 import ctaRock from 'components/Game/Developers/images/cta-rock.png'
+import Image from 'next/image'
+import { keyframes, styled } from 'styled-components'
 
 const floatingAnim = (x: string, y: string) => keyframes`
   from {
@@ -141,7 +141,7 @@ export const Footer = () => {
         <Text mb="24px" fontWeight={600} color="#F4EEFF" textAlign="center" fontSize={isMobile ? 32 : 40}>
           {t('Build Games with PancakeSwap Now')}
         </Text>
-        <Link external href="https://t.me/ChefMochi">
+        <Link external href="https://forms.gle/WXDhmbfRhQtz4eSt7">
           <Button mt="24px">{t('Start Building')}</Button>
         </Link>
       </Wrapper>

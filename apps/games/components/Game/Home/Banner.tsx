@@ -1,6 +1,6 @@
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, LinkExternal, ArrowForwardIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, Flex, LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
 
 const StyledContainer = styled(Box)`
   width: 100%;
@@ -34,7 +34,7 @@ export const Banner = () => {
           {t('Play, Build and Connect on PancakeSwap')}
         </Text>
         <Flex mt="16px">
-          <StyledLinkExternal href="https://t.me/ChefMochi" showExternalIcon={false}>
+          <StyledLinkExternal href="https://forms.gle/WXDhmbfRhQtz4eSt7" showExternalIcon={false}>
             <Text bold color="primary">
               {t('Start Building')}
             </Text>
