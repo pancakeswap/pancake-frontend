@@ -1,4 +1,4 @@
-import { FEATURE_FLAGS } from 'middleware/types'
+import { FEATURE_FLAGS } from 'contexts/ABTestingContext/config'
 import { createContext, useCallback, useContext, useState } from 'react'
 
 interface ABTestingProviderProps {

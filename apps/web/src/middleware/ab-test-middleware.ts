@@ -1,21 +1,20 @@
 // middlewares/withHeaders.ts
+import { AB_TESTING_FEATURE_FLAG_MAP } from 'contexts/ABTestingContext/config'
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
-import { AbTestingMap, FEATURE_FLAGS, FeatureFlagInfo, MiddlewareFactory } from './types'
+import { FeatureFlagInfo, MiddlewareFactory } from './types'
 
-// Add new AB TESTS here aswell as their config
-export const AB_TESTING_FEATURE_FLAG_MAP: AbTestingMap = {
-  [FEATURE_FLAGS.WebNotifications]: {
-    featureFlagKey: FEATURE_FLAGS.WebNotifications,
-    probabilityThreshold: 0.05,
-  },
-}
-
+// this function generates a deterministic result for a user for a given feature
+// it hashes a concatination of the users ip together with the features identifier and
+// probanility value. this allows us to ensure that a users probability result is different
+// for each feature gauranteeing a better distribution
 export const generateUserDeterministicValue = async (
   userIp: string,
   abTestingfeatureFlagInfo: FeatureFlagInfo[],
 ): Promise<{ userWhitelistResults: boolean[] }> => {
   const userWhitelistResults = await Promise.all(
     abTestingfeatureFlagInfo.map(async (flag: FeatureFlagInfo): Promise<boolean> => {
+      if (flag.whitelistedIps.includes(userIp)) return true
+
       const msgBuffer = new TextEncoder().encode(`${userIp}-${flag.featureFlagKey}-${flag.probabilityThreshold}`)
       const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
 
