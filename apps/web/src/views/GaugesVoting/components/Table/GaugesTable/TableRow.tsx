@@ -7,6 +7,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   CrossIcon,
+  ErrorIcon,
   Flex,
   FlexGap,
   Tag,
@@ -19,6 +20,7 @@ import { useHover } from 'hooks/useHover'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Address } from 'viem'
+import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { feeTierPercent } from 'views/V3Info/utils'
@@ -41,17 +43,25 @@ export const TableRow: React.FC<{
   onSelect?: (hash: GaugeVoting['hash']) => void
   totalGaugesWeight?: number
 }> = ({ data, locked, totalGaugesWeight, selected, selectable, onSelect }) => {
-  const percentWeight = useMemo(() => {
-    return new Percent(data?.weight, totalGaugesWeight || 1).toSignificant(2)
-  }, [data?.weight, totalGaugesWeight])
-  const percentCaps = useMemo(() => {
-    return new Percent(data?.maxVoteCap, 10000).toSignificant(2)
-  }, [data?.maxVoteCap])
+  const { t } = useTranslation()
   const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
 
-  const weight = useMemo(() => {
+  const maxCapPercent = useMemo(() => {
+    return new Percent(data?.maxVoteCap, 10000)
+  }, [data?.maxVoteCap])
+
+  const currentWeightPercent = useMemo(() => {
+    return new Percent(data?.weight, totalGaugesWeight || 1)
+  }, [data?.weight, totalGaugesWeight])
+
+  const hitMaxCap = useMemo(() => {
+    return maxCapPercent.greaterThan(0) && currentWeightPercent.greaterThan(maxCapPercent)
+  }, [maxCapPercent, currentWeightPercent])
+
+  const currentWeight = useMemo(() => {
     return getBalanceNumber(new BN(data?.weight || 0))
   }, [data?.weight])
+
   const [ref, isHover] = useHover<HTMLButtonElement>()
 
   return (
@@ -95,8 +105,22 @@ export const TableRow: React.FC<{
         </FlexGap>
       </FlexGap>
       <Flex alignItems="center" pl="32px">
-        <Text bold>{formatLocalisedCompactNumber(weight, true)}</Text>
-        <Text>({percentWeight}%)</Text>
+        <Tooltips
+          disabled={!hitMaxCap}
+          content={t(
+            'This gauge has hit its voting cap. It can continue to receive votes, however, the vote numbers and allocation % will not increase until other gauges gain more votes.',
+          )}
+        >
+          <Flex flexWrap="nowrap">
+            <Text color={hitMaxCap ? 'failure' : ''} bold>
+              {formatLocalisedCompactNumber(currentWeight, true)}
+            </Text>
+            <Text color={hitMaxCap ? 'failure' : ''}>
+              ({hitMaxCap ? maxCapPercent.toSignificant(2) : currentWeightPercent.toSignificant(2)}%)
+            </Text>
+            {hitMaxCap ? <ErrorIcon color="failure" style={{ marginBottom: '-2px' }} /> : null}
+          </Flex>
+        </Tooltips>
       </Flex>
       <Flex alignItems="center" pr="25px">
         <Text bold fontSize={16} color={data?.boostMultiplier > 100n ? '#1BC59C' : undefined}>
@@ -104,7 +128,10 @@ export const TableRow: React.FC<{
         </Text>
       </Flex>
 
-      <Text bold>{percentCaps}%</Text>
+      <Text bold={hitMaxCap}>
+        {hitMaxCap ? 'MAX ' : ''}
+        {maxCapPercent.toSignificant(2)}%
+      </Text>
     </TRow>
   )
 }
