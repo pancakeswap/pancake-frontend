@@ -14,6 +14,10 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
   const { balance: veCakeBalance } = useVeCakeBalance()
   const currentTimestamp = useCurrentBlockTimestamp()
   const epochVotePower = useEpochVotePower()
+  const willUnlock = useMemo(
+    () => epochVotePower === 0n && Boolean(userVote?.slope && userVote?.slope > 0),
+    [userVote?.slope, epochVotePower],
+  )
   // const nextEpochStart = useNextEpochStart()
   const currentVoteWeight = useMemo(() => {
     const { nativeSlope = 0n, nativeEnd = 0n, proxySlope = 0n, proxyEnd = 0n } = userVote || {}
@@ -44,8 +48,8 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
 
   const voteValue = useMemo(() => {
     if (voteLocked) return currentVotePercent ?? ''
-    return vote?.power ?? ''
-  }, [voteLocked, currentVotePercent, vote?.power])
+    return willUnlock ? '0' : vote?.power ?? ''
+  }, [voteLocked, currentVotePercent, willUnlock, vote?.power])
 
   const previewVoteWeight = useMemo(() => {
     const p = Number(voteValue || 0) * 100
@@ -73,6 +77,6 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     previewVoteWeight,
     voteValue,
     voteLocked,
-    willUnlock: epochVotePower === 0n && Boolean(userVote?.slope && userVote?.slope > 0),
+    willUnlock,
   }
 }
