@@ -43,7 +43,7 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
       {({ countUpRef }) => (
         <Text
           color={isDisabled ? "textDisabled" : color}
-          style={{ textDecoration: strikeThrough ? "line-through" : "none" }}
+          style={strikeThrough ? { textDecoration: "line-through" } : undefined}
           onClick={onClick}
           {...props}
         >

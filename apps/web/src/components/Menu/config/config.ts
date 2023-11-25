@@ -1,15 +1,16 @@
+import { SUPPORTED_CHAIN_IDS as IFO_SUPPORTED_CHAINS } from '@pancakeswap/ifos'
 import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS } from '@pancakeswap/position-managers'
 import {
-  NftIcon,
-  NftFillIcon,
   DropdownMenuItemType,
   DropdownMenuItems,
   EarnFillIcon,
   EarnIcon,
   MenuItemsType,
   MoreIcon,
+  NftFillIcon,
+  NftIcon,
   PancakeProtectorIcon,
   SwapFillIcon,
   SwapIcon,
@@ -18,6 +19,7 @@ import {
   FIXED_STAKING_SUPPORTED_CHAINS,
   LIQUID_STAKING_SUPPORTED_CHAINS,
   SUPPORT_BUY_CRYPTO,
+  SUPPORT_CAKE_STAKING,
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
 } from 'config/constants/supportChains'
@@ -111,6 +113,12 @@ const config: (
           supportChainIds: SUPPORT_FARMS,
         },
         {
+          label: t('CAKE Staking'),
+          href: '/cake-staking',
+          supportChainIds: SUPPORT_CAKE_STAKING,
+          status: { text: t('New'), color: 'success' },
+        },
+        {
           label: t('Pools'),
           href: '/pools',
           supportChainIds: POOL_SUPPORTED_CHAINS,
@@ -119,7 +127,6 @@ const config: (
           label: t('Position Manager'),
           href: '/position-managers',
           supportChainIds: POSITION_MANAGERS_SUPPORTED_CHAINS,
-          status: { text: t('New'), color: 'success' },
         },
         {
           label: t('Liquid Staking'),
@@ -137,8 +144,14 @@ const config: (
       label: t('Game'),
       icon: PancakeProtectorIcon,
       hideSubNav: true,
-      href: 'https://protectors.pancakeswap.finance',
+      href: 'https://pancakeswap.games/',
       items: [
+        {
+          label: t('Gaming Marketplace'),
+          href: 'https://pancakeswap.games/',
+          status: { text: t('New'), color: 'success' },
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
         {
           label: t('Prediction (BETA)'),
           href: '/prediction',
@@ -154,12 +167,7 @@ const config: (
           href: '/pottery',
           image: '/images/decorations/lottery.png',
         },
-        {
-          label: t('Pancake Protectors'),
-          href: 'https://protectors.pancakeswap.finance',
-          type: DropdownMenuItemType.EXTERNAL_LINK,
-        },
-      ],
+      ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
       label: t('NFT'),
@@ -196,7 +204,7 @@ const config: (
         {
           label: t('IFO'),
           href: '/ifo',
-          supportChainIds: SUPPORT_ONLY_BSC,
+          supportChainIds: IFO_SUPPORTED_CHAINS,
           image: '/images/ifos/ifo-bunny.png',
         },
         {

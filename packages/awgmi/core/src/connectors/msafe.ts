@@ -1,4 +1,4 @@
-import type { MSafeWallet } from 'msafe-wallet'
+import type { MSafeWallet } from '@msafe/aptos-wallet'
 import { HexString, Types } from 'aptos'
 import {
   ChainNotConfiguredError,
@@ -43,11 +43,9 @@ export class MsafeConnector extends Connector<MSafeWallet, MSafeWalletOptions> {
 
   async getProvider() {
     if (!this.provider) {
-      const { MSafeWallet } = await import('msafe-wallet')
+      const { MSafeWallet } = await import('@msafe/aptos-wallet')
       // @ts-ignore
-      this.provider = MSafeWallet.new(
-        this.options?.origins ?? ['https://app.m-safe.io', 'https://testnet.m-safe.io', 'https://partner.m-safe.io'],
-      )
+      this.provider = MSafeWallet.new(this.options?.origins)
 
       if (!this.provider) throw new ConnectorNotFoundError()
       return this.provider

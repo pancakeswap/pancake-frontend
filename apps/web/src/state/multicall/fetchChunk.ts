@@ -1,7 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
+import { getMulticall3ContractAddress, multicall3ABI } from '@pancakeswap/multicall'
 import { getViemClients } from 'utils/viem'
-import { multicallABI } from 'config/abi/Multicall'
-import { getMulticallAddress } from 'utils/addressHelpers'
 import { Call } from './actions'
 import { RetryableError } from './retry'
 
@@ -34,8 +33,8 @@ export async function fetchChunk(
   try {
     // prettier-ignore
     [resultsBlockNumber, , returnData] = await client.readContract({
-      abi: multicallABI,
-      address: getMulticallAddress(chainId),
+      abi: multicall3ABI,
+      address: getMulticall3ContractAddress(chainId),
       functionName: 'tryBlockAndAggregate',
       args: [false, chunk.map((obj) => ({ callData: obj.callData, target: obj.address }))],
       blockNumber: BigInt(minBlockNumber),

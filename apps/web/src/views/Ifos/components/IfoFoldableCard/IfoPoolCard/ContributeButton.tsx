@@ -1,12 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { useMemo } from 'react'
 import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit'
+import { getTokenListTokenUrl, getTokenLogoURLByAddress } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { Ifo, PoolIds } from 'config/constants/types'
-import useTokenBalance from 'hooks/useTokenBalance'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
+import { useTokenBalanceByChain } from 'hooks/useTokenBalance'
 import { useCurrentBlock } from 'state/block/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+
 import ContributeModal from './ContributeModal'
 
 interface Props {
@@ -18,12 +21,17 @@ interface Props {
 const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
-  const { isPendingTx, amountTokenCommittedInLP } = userPoolCharacteristics
-  const { limitPerUserInLP } = publicPoolCharacteristics
+  const isPendingTx = userPoolCharacteristics?.isPendingTx
+  const amountTokenCommittedInLP = userPoolCharacteristics?.amountTokenCommittedInLP
+  const limitPerUserInLP = publicPoolCharacteristics?.limitPerUserInLP
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const currentBlock = useCurrentBlock()
-  const { balance: userCurrencyBalance } = useTokenBalance(ifo.currency.address)
+  const { balance: userCurrencyBalance } = useTokenBalanceByChain(ifo.currency.address, ifo.chainId)
+  const currencyImageUrl = useMemo(
+    () => getTokenListTokenUrl(ifo.currency) || getTokenLogoURLByAddress(ifo.currency.address, ifo.currency.chainId),
+    [ifo.currency],
+  )
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
@@ -41,7 +49,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
   const [onPresentContributeModal] = useModal(
     <ContributeModal
       poolId={poolId}
-      creditLeft={walletIfoData.ifoCredit?.creditLeft}
+      creditLeft={walletIfoData.ifoCredit?.creditLeft || new BigNumber(0)}
       ifo={ifo}
       publicIfoData={publicIfoData}
       walletIfoData={walletIfoData}
@@ -52,11 +60,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
   )
 
   const [onPresentGetTokenModal] = useModal(
-    <IfoGetTokenModal
-      symbol={ifo.currency.symbol}
-      address={ifo.currency.address}
-      imageSrc={`/images/tokens/${ifo.currency.address}.png`}
-    />,
+    <IfoGetTokenModal symbol={ifo.currency.symbol} address={ifo.currency.address} imageSrc={currencyImageUrl || ''} />,
     false,
   )
 
@@ -66,7 +70,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     (!noNeedCredit &&
       walletIfoData.ifoCredit?.creditLeft &&
       walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
-    (limitPerUserInLP.isGreaterThan(0) && amountTokenCommittedInLP.isGreaterThanOrEqualTo(limitPerUserInLP))
+    (limitPerUserInLP?.isGreaterThan(0) && amountTokenCommittedInLP?.isGreaterThanOrEqualTo(limitPerUserInLP))
 
   const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
 

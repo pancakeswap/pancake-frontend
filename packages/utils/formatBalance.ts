@@ -3,6 +3,7 @@ import { getLanguageCodeFromLS } from '@pancakeswap/localization'
 import _trimEnd from 'lodash/trimEnd'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 import { formatUnits } from './viem/formatUnits'
+import { BIG_ZERO } from './bigNumber'
 
 /**
  * Take a formatted amount, e.g. 15 BNB and convert it to full decimal value, e.g. 15000000000000000
@@ -18,8 +19,8 @@ export const getBalanceAmount = (amount: BigNumber, decimals: number | undefined
 /**
  * This function is not really necessary but is used throughout the site.
  */
-export const getBalanceNumber = (balance: BigNumber, decimals = 18) => {
-  return getBalanceAmount(balance, decimals).toNumber()
+export const getBalanceNumber = (balance: BigNumber | undefined, decimals = 18) => {
+  return getBalanceAmount(balance || BIG_ZERO, decimals).toNumber()
 }
 
 export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, displayDecimals?: number): string => {

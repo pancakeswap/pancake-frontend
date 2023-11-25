@@ -16,7 +16,7 @@ interface FactoryOptions {
 
 export interface PoolsWithState {
   refresh: () => void
-  pools: Pool[] | null
+  pools: Pool[] | undefined
   loading: boolean
   syncing: boolean
   blockNumber?: number
@@ -64,7 +64,7 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
         v2BlockNumber === stableBlockNumber &&
         stableBlockNumber === v3BlockNumber
           ? v2BlockNumber
-          : null,
+          : undefined,
       [v2BlockNumber, v3BlockNumber, stableBlockNumber],
     )
     // FIXME: allow inconsistent block not working as expected

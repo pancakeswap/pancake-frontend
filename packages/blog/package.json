@@ -1,0 +1,19 @@
+{
+  "name": "@pancakeswap/blog",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "type": "module",
+  "dependencies": {
+    "qs": "^6.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@types/lodash": "^4.14.168",
+    "@types/qs": "^6.0.0"
+  }
+}

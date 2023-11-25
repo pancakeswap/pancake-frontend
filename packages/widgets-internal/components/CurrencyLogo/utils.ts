@@ -85,11 +85,18 @@ export const getCommonCurrencyUrlBySymbol = memoize(
   (symbol?: string) => `logoUrls#symbol#${symbol}`
 );
 
+type GetLogoUrlsOptions = {
+  useTrustWallet?: boolean;
+};
+
 export const getCurrencyLogoUrls = memoize(
-  (currency?: Currency): string[] => {
+  (currency: Currency | undefined, { useTrustWallet = true }: GetLogoUrlsOptions = {}): string[] => {
     const trustWalletLogo = getTokenLogoURL(currency?.wrapped);
     const logoUrl = currency ? getTokenListTokenUrl(currency.wrapped) : null;
-    return [getCommonCurrencyUrl(currency), trustWalletLogo, logoUrl].filter((url): url is string => !!url);
+    return [getCommonCurrencyUrl(currency), useTrustWallet ? trustWalletLogo : undefined, logoUrl].filter(
+      (url): url is string => !!url
+    );
   },
-  (currency?: Currency) => `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}`
+  (currency: Currency | undefined, options?: GetLogoUrlsOptions) =>
+    `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}#${options ? JSON.stringify(options) : ""}`
 );

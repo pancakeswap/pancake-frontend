@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { ArrowForwardIcon, Button, Flex, Heading, Skeleton, Text, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { formatLocalisedCompactNumber } from '@pancakeswap/utils/formatBalance'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { getTotalWon } from 'state/predictions/helpers'
 import { useCakePrice } from 'hooks/useCakePrice'
-import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useBNBPrice } from 'hooks/useBNBPrice'
+import { useQuery } from '@tanstack/react-query'
 
 const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
@@ -33,8 +35,9 @@ const PredictionCardContent = () => {
   const bnbBusdPrice = useBNBPrice({ enabled: loadData })
   const cakePrice = useCakePrice({ enabled: loadData })
 
-  const { data } = useSWR(loadData ? ['prediction', 'tokenWon'] : null, getTotalWon, {
-    refreshInterval: SLOW_INTERVAL,
+  const { data } = useQuery(['prediction', 'tokenWon'], getTotalWon, {
+    enabled: Boolean(loadData),
+    refetchInterval: SLOW_INTERVAL,
   })
 
   const bnbWonInUsd = bnbBusdPrice.multipliedBy(data?.totalWonBNB || 0).toNumber()

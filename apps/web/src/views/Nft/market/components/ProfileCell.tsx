@@ -1,5 +1,7 @@
 import { styled } from 'styled-components'
-import { Box, Flex, Skeleton, Text, ProfileAvatar, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, Text, ProfileAvatar } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { useDomainNameForAddress } from 'hooks/useDomain'

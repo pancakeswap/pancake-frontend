@@ -15,4 +15,6 @@ export interface MessageProps extends SpaceProps {
   icon?: React.ReactNode;
   action?: React.ReactNode;
   actionInline?: boolean;
+  style?: React.CSSProperties;
+  showIcon?: boolean;
 }

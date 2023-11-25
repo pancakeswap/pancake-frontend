@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
 import { styled } from 'styled-components'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import aptosBallRocket from '../../images/aptos-ball-rocket.png'
 import bnbBallRocket from '../../images/bnb-ball-rocket.png'
 import ethBallRocket from '../../images/eth-ball-rocket.png'
@@ -52,9 +52,9 @@ const AptosBallRocket = styled.div`
 
 const Stats = () => {
   const { t } = useTranslation()
-  const { data: tvl } = useSWRImmutable('tvl')
-  const { data: txCount } = useSWRImmutable('totalTx30Days')
-  const { data: addressCount } = useSWRImmutable('addressCount30Days')
+  const { data: tvl = 0 } = useQuery<number>(['tvl'], { enabled: false })
+  const { data: txCount = 0 } = useQuery<number>(['totalTx30Days'], { enabled: false })
+  const { data: addressCount = 0 } = useQuery<number>(['addressCount30Days'], { enabled: false })
   const { isMobile, isSm, isMd, isXxl } = useMatchBreakpoints()
 
   return (

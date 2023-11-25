@@ -1,4 +1,6 @@
-import { Box, Flex, Text, Button, Link, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Button, Link } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useTheme } from '@pancakeswap/hooks'
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'

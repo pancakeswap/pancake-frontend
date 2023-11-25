@@ -1,14 +1,5 @@
-import {
-  AutoRow,
-  Button,
-  Card,
-  CardBody,
-  Flex,
-  NextLinkFromReactRouter,
-  Text,
-  Box,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { AutoRow, Button, Card, CardBody, Flex, Text, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { AppHeader } from 'components/App'
 import { useMemo } from 'react'
 

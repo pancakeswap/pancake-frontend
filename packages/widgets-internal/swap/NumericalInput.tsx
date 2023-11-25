@@ -7,7 +7,7 @@ import { SwapCSS } from "@pancakeswap/uikit";
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`); // match escaped "." characters via in a non-capturing group
 
 export type NumericalInputProps = {
-  value: string | number;
+  value: string | number | undefined;
   onUserInput: (input: string) => void;
   fontSize?: string;
 } & SwapCSS.InputVariants &

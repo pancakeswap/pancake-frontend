@@ -1,5 +1,52 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [2be330fd1]
+  - @pancakeswap/pools@4.0.22
+
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [be74f8b0d]
+  - @pancakeswap/v3-sdk@3.6.0
+  - @pancakeswap/farms@1.0.25
+
+## 0.1.0
+
+### Minor Changes
+
+- 19eff8951: Remove wagmi and NextLink dependency
+
+### Patch Changes
+
+- Updated dependencies [19eff8951]
+  - @pancakeswap/uikit@0.65.0
+
+## 0.0.16
+
+### Patch Changes
+
+- Updated dependencies [f71904c26]
+  - @pancakeswap/localization@5.0.7
+  - @pancakeswap/uikit@0.64.3
+  - @pancakeswap/utils@5.0.7
+  - @pancakeswap/farms@1.0.24
+  - @pancakeswap/hooks@0.0.20
+  - @pancakeswap/pools@4.0.21
+  - @pancakeswap/tokens@0.5.4
+  - @pancakeswap/v3-sdk@3.5.4
+
+## 0.0.15
+
+### Patch Changes
+
+- Updated dependencies [58eb44136]
+  - @pancakeswap/pools@4.0.21
+
 ## 0.0.14
 
 ### Patch Changes

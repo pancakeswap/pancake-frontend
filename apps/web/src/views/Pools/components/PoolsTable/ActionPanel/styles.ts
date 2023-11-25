@@ -3,6 +3,7 @@ import { Flex } from '@pancakeswap/uikit'
 
 export const ActionContainer = styled(Flex)`
   flex-direction: column;
+  justify-content: center;
   padding: 16px;
   border: 2px solid ${({ theme }) => theme.colors.input};
   border-radius: 16px;

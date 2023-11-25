@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import BundleAnalyzer from '@next/bundle-analyzer'
+import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
+import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
 import { withSentryConfig } from '@sentry/nextjs'
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 import { withAxiom } from 'next-axiom'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import BundleAnalyzer from '@next/bundle-analyzer'
-import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
-import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
-import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -61,6 +61,7 @@ const config = {
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
     '@pancakeswap/widgets-internal',
+    '@pancakeswap/ifos',
   ],
   reactStrictMode: true,
   swcMinify: true,
@@ -128,6 +129,11 @@ const config = {
   },
   async redirects() {
     return [
+      {
+        source: '/gauges-voting',
+        destination: '/404',
+        permanent: false
+      },
       {
         source: '/send',
         destination: '/swap',

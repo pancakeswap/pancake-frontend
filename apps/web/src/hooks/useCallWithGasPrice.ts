@@ -68,11 +68,14 @@ export function useCallWithGasPrice() {
         ? GetFunctionArgs<TAbi, _FunctionName>['args']
         : never,
     >(
-      contract: { abi: TAbi; account: Account; chain: Chain; address: Address },
+      contract: { abi: TAbi; account: Account | undefined; chain: Chain | undefined; address: Address } | null,
       methodName: InferFunctionName<TAbi, TFunctionName>,
       methodArgs?: Args extends never ? undefined : Args,
       overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
     ): Promise<SendTransactionResult> => {
+      if (!contract) {
+        throw new Error('No valid contract')
+      }
       if (!walletClient) {
         throw new Error('No valid wallet connect')
       }

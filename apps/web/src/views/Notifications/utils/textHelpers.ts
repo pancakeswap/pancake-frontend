@@ -55,7 +55,7 @@ export const extractTokensFromAPRString = (aprString: string): { token1: string;
 // eslint-disable-next-line @typescript-eslint/no-shadow
 export const getLinkText = (title: string, t: TranslateFunction) => {
   if (title.includes('APR Update')) return t('View Farm')
-  if (title.includes('Balance')) return t('Buy Crypto')
+  if (title.includes('Balance') || title.includes('Purchase')) return t('Buy Crypto')
   return t('View Link')
 }
 

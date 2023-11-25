@@ -9,6 +9,7 @@ import PageMeta from 'components/PageMeta'
 import { filterTagArray } from 'utils/filterTagArray'
 import { NextSeo } from 'next-seo'
 import { dehydrate, Hydrate, QueryClient } from '@tanstack/react-query'
+import Link from 'next/link'
 
 export async function getStaticPaths() {
   return {
@@ -93,7 +94,7 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const router = useRouter()
   if (!router.isFallback && !fallback?.['/article']?.title) {
     return (
-      <NotFound>
+      <NotFound LinkComp={Link}>
         <NextSeo title="404" />
       </NotFound>
     )
