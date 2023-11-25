@@ -1,5 +1,5 @@
-import { OptionProps } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
+import { OptionProps } from '@pancakeswap/uikit'
 import {
   EventInformation,
   PancakeNotificationBuilders,
@@ -54,7 +54,6 @@ export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_DEFAULT_PROJECT_ID ?? 
 export const SECURE_TOKEN = process.env.NEXT_PUBLIC_SECURE_TOKEN ?? ''
 export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY ?? ''
 export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
-export const PUBLIC_VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_KEY ?? ''
 
 export const PancakeNotifications: {
   [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(args: T[]) => pushNotification
@@ -78,6 +77,9 @@ export const PancakeNotifications: {
     // ... add more as we create use cases
   },
 }
+
+export const PUBLIC_VAPID_KEY =
+  'BMqr9OUv0dxUll4al_WO0EGFf87hkxrIrQik_fv_rkX7Mtr7irwOnaw8egvgYFQqsi3_rbsoY4TzjfrqUL1sA44'
 
 export const Events: { [event in keyof typeof ResponseEvents]: EventInformation } = {
   [ResponseEvents.NotificationsEnabled]: {

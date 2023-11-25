@@ -49,8 +49,7 @@ const useSendPushNotification = (): IUseSendNotification => {
           existingSubscription ||
           (await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey:
-              'BMqr9OUv0dxUll4al_WO0EGFf87hkxrIrQik_fv_rkX7Mtr7irwOnaw8egvgYFQqsi3_rbsoY4TzjfrqUL1sA44',
+            applicationServerKey: PUBLIC_VAPID_KEY,
           }))
 
         const data = JSON.stringify(subscription)

@@ -173,6 +173,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
   useEffect(() => {
     if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
     if (!hasUnread) dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: false }))
+    // @ts-ignore
   }, [])
 
   return (

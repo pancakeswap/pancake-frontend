@@ -7,7 +7,6 @@ import {
   CloseIcon,
   FlexGap,
   IconButton,
-  ModalCloseButton,
   Text,
   useToast,
 } from '@pancakeswap/uikit'
@@ -21,8 +20,8 @@ import { NotificationHeader } from '../components/NotificationHeader/Notificatio
 import SettingsContainer from '../components/SettingsItem/SettingsItem'
 import { Events } from '../constants'
 import { ScrollableContainer } from '../styles'
-import { getSettingsButtonText } from '../utils/textHelpers'
 import { errorBuilder } from '../utils/errorBuilder'
+import { getSettingsButtonText } from '../utils/textHelpers'
 
 interface PushSubButtonProps {
   isUnsubscribing: boolean
