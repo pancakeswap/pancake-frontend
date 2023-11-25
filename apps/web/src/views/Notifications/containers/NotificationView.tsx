@@ -4,6 +4,7 @@ import {
   Button,
   ButtonMenu,
   ButtonMenuItem,
+  CloseIcon,
   CogIcon,
   Flex,
   IconButton,
@@ -206,7 +207,7 @@ const NotificationView = ({
         }
         rightIcon={
           <IconButton tabIndex={-1} variant="text" onClick={onDismiss}>
-            <ModalCloseButton onDismiss={onDismiss} />
+            <CloseIcon color="primary" />
           </IconButton>
         }
         text={t('Notifications')}
@@ -226,7 +227,7 @@ const NotificationView = ({
         <Button
           variant="secondary"
           height="35px"
-          paddingX="14px"
+          pl="14px"
           disabled={!hasUnreadNotifications}
           onClick={markAllNotificationsAsRead}
         >
@@ -259,7 +260,7 @@ const NotificationView = ({
       ) : null}
 
       <NotificationContainerStyled
-        maxHeight={viewMode === ViewMode.Archived ? '400px' : isMobile ? `${mobileHeight - 250}px` : '450px'}
+        $maxHeight={viewMode === ViewMode.Archived ? '400px' : isMobile ? `${mobileHeight - 250}px` : '450px'}
       >
         {subscription?.topic && (
           <NotificationItem

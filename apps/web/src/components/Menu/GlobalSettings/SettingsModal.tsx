@@ -21,6 +21,7 @@ import {
   Checkbox,
   AutoRow,
   RowFixed,
+  useToast,
 } from '@pancakeswap/uikit'
 import { ExpertModal } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -43,6 +44,10 @@ import {
   useUserV3SwapEnable,
   useRoutingSettingChanged,
 } from 'state/user/smartRouter'
+import { useAllowNotifications } from 'state/notifications/hooks'
+import { useManageSubscription, useW3iAccount } from '@web3inbox/widget-react'
+import { Events } from 'views/Notifications/constants'
+import { errorBuilder } from 'views/Notifications/utils/errorBuilder'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import { styled } from 'styled-components'
 import { TOKEN_RISK } from 'components/AccessRisk'
@@ -91,6 +96,11 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, setAudioMode] = useAudioPlay()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
+  const [allowNotifications, setAllowNotifications] = useAllowNotifications()
+  const { account } = useW3iAccount()
+  const { unsubscribe, isSubscribed } = useManageSubscription(account)
+  const toast = useToast()
+
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
   const [tokenRisk, setTokenRisk] = useUserTokenRisk()
@@ -115,6 +125,27 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
       setExpertMode((s) => !s)
     } else {
       setShowConfirmExpertModal(true)
+    }
+  }
+
+  const handleDiableNotifications = async () => {
+    try {
+      if (isSubscribed) await unsubscribe()
+      setAllowNotifications(false)
+      toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message?.())
+    } catch (error) {
+      const errMessage = errorBuilder(Events.UnsubscribeError, error)
+      toast.toastWarning(Events.UnsubscribeError.title, errMessage)
+    }
+  }
+
+  const handleEnableNotifications = async () => {
+    try {
+      setAllowNotifications(true)
+      toast.toastSuccess(Events.NotificationsEnabled.title, Events.NotificationsEnabled.message?.())
+    } catch (error) {
+      const errMessage = errorBuilder(Events.NotificationsEnabledError, error)
+      toast.toastWarning(Events.NotificationsEnabledError.title, errMessage)
     }
   }
 
@@ -161,6 +192,24 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   onChange={() => {
                     setUserUsernameVisibility(!userUsernameVisibility)
                   }}
+                />
+              </Flex>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Allow notifications')}</Text>
+                  <QuestionHelper
+                    text={t(
+                      'Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible',
+                    )}
+                    placement="top"
+                    ml="4px"
+                  />
+                </Flex>
+                <Toggle
+                  id="toggle-username-visibility"
+                  checked={allowNotifications}
+                  scale="md"
+                  onChange={allowNotifications ? handleDiableNotifications : handleEnableNotifications}
                 />
               </Flex>
               {chainId === ChainId.BSC && (

@@ -1,6 +1,6 @@
 export enum ResponseEvents {
-  SignatureRequest = 'SignatureRequest',
-  SignatureRequestError = 'SignatureRequestError',
+  NotificationsEnabled = 'NotificationsEnabled',
+  NotificationsEnabledError = 'NotificationsEnabledError',
   SubscriptionRequestError = 'SubscriptionRequestError',
   PreferencesUpdated = 'PreferencesUpdated',
   PreferencesError = 'PreferencesError',
@@ -36,7 +36,7 @@ export enum PAGE_VIEW {
 
 export type EventInformation = {
   title: string
-  message?: string
+  message?: (error?: any) => string
 }
 
 export type Scope = {

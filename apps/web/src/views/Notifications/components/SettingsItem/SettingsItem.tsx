@@ -88,7 +88,7 @@ const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
   const { isMobile } = useMatchBreakpoints()
   const mobileHeight = window?.innerHeight
   return (
-    <NotificationContainerStyled maxHeight={isMobile ? `${mobileHeight - 150}px` : '550px'}>
+    <NotificationContainerStyled $maxHeight={isMobile ? `${mobileHeight - 150}px` : '550px'}>
       {Object.entries(scopes)
         .sort(([, scopeA], [, scopeB]) => {
           if (scopeA.name === 'alerts' || scopeA.name === 'Liquidity') return -1

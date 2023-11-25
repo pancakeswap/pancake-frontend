@@ -3,7 +3,7 @@ import Link from 'next/link'
 import styled, { css, keyframes } from 'styled-components'
 
 // Notification View styles
-export const Menu = styled.div<{ isOpen: boolean; overrideHeight: boolean }>`
+export const Menu = styled.div<{ $isOpen: boolean; $overrideHeight: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: 24px;
@@ -15,14 +15,14 @@ export const Menu = styled.div<{ isOpen: boolean; overrideHeight: boolean }>`
   visibility: visible;
   z-index: 1001;
 
-  ${({ isOpen }) =>
-    !isOpen &&
+  ${({ $isOpen }) =>
+    !$isOpen &&
     `
     pointer-events: none;
     visibility: hidden;
   `}
-  ${({ overrideHeight }) =>
-    overrideHeight &&
+  ${({ $overrideHeight }) =>
+    $overrideHeight &&
     `
     height: 520px;
   `}
@@ -62,11 +62,11 @@ export const StyledInputCurrencyWrapper = styled.div`
   height: 200%; /* Specify the height of the container */
   min-height: 450px;
 `
-export const ViewContainer = styled.div<{ viewIndex: number }>`
+export const ViewContainer = styled.div<{ $viewIndex: number }>`
   display: flex;
   width: 300%;
   transition: transform 300ms ease-in-out;
-  transform: translateX(${({ viewIndex }) => (viewIndex === 0 ? '0%' : viewIndex === 1 ? '-33.33%' : '-66.66%')});
+  transform: translateX(${({ $viewIndex }) => ($viewIndex === 0 ? '0%' : $viewIndex === 1 ? '-33.33%' : '-66.66%')});
 `
 
 export const ModalTitle = styled(Flex)`
@@ -120,9 +120,9 @@ export const NotificationsWrapper = styled.div<{ isClosing: boolean }>`
     `}
 `
 
-export const NotificationContainerStyled = styled.div<{ maxHeight: string }>`
-  height: ${({ maxHeight }) => maxHeight};
-  max-height: ${({ maxHeight }) => maxHeight};
+export const NotificationContainerStyled = styled.div<{ $maxHeight: string }>`
+  height: ${({ $maxHeight }) => $maxHeight};
+  max-height: ${({ $maxHeight }) => $maxHeight};
   overflow-x: hidden;
   overflow-y: auto;
   &::-webkit-scrollbar {

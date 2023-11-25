@@ -80,32 +80,32 @@ export const PancakeNotifications: {
 }
 
 export const Events: { [event in keyof typeof ResponseEvents]: EventInformation } = {
-  [ResponseEvents.SignatureRequest]: {
-    title: 'Request Sent',
-    message: 'Please sign the subscription request sent to your wallet',
+  [ResponseEvents.NotificationsEnabled]: {
+    title: 'Notifications Enabled',
+    message: () => 'You can now opt-in to pancakeswap web notifications',
   },
-  [ResponseEvents.SignatureRequestError]: {
-    title: 'Request Error',
-    message: 'User rejected the signature request',
+  [ResponseEvents.NotificationsEnabledError]: {
+    title: 'Error Enabling Notifications',
+    message: (error) => `Something went wrong when trying to enable notifications ${error}`,
   },
   [ResponseEvents.SubscriptionRequestError]: {
     title: 'Subscription Error',
   },
   [ResponseEvents.PreferencesUpdated]: {
     title: 'Success',
-    message: 'your notification preferences have been updated.',
+    message: () => 'your notification preferences have been updated.',
   },
   [ResponseEvents.PreferencesError]: {
     title: 'Something went wrong',
-    message: 'Unable to update your preferences',
+    message: (error) => `Unable to update your preferences ${error}`,
   },
   [ResponseEvents.UnsubscribeError]: {
-    title: 'Error',
-    message: 'Unable to unsubscribe.',
+    title: 'Error Unsubscribing',
+    message: (error) => `Unable to unsubscribe ${error}`,
   },
   [ResponseEvents.Unsubscribed]: {
     title: 'Update',
-    message: 'You sucessfully unsubsrcibed from notifications. You can re-subscribe any time',
+    message: () => 'You sucessfully unsubsrcibed from notifications. You can re-subscribe any time',
   },
 }
 

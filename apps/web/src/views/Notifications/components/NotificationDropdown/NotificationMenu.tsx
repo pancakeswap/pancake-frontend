@@ -72,9 +72,9 @@ const NotificationMenu: React.FC<
     <Flex alignItems="center" justifyContent="center" height="100%" ref={ref} tabIndex={-1}>
       <NotificationBell unread={hasUnread} toggleMenu={toggleMenu} />
       <Menu
-        isOpen={isMenuOpen}
+        $isOpen={isMenuOpen}
         style={{ top: '100%', position: 'fixed' }}
-        overrideHeight={viewIndex === PAGE_VIEW.OnboardView}
+        $overrideHeight={viewIndex === PAGE_VIEW.OnboardView}
       >
         <Box>{children?.({ isOpen: isMenuOpen })}</Box>
       </Menu>

@@ -10,6 +10,7 @@ import { Events } from '../constants'
 import useSendPushNotification from '../hooks/sendPushNotification'
 import { BuilderNames } from '../types'
 import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
+import { errorBuilder } from '../utils/errorBuilder'
 
 interface IOnboardingButtonProps {
   onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
@@ -67,7 +68,8 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
         await requestNotificationPermission()
       }, 1000)
     } catch (error) {
-      toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
+      const errMessage = errorBuilder(Events.SubscriptionRequestError, error)
+      toast.toastError(Events.SubscriptionRequestError.title, errMessage)
     }
   }, [account, toast, sendPushNotification, subscribe, subscribeToPushNotifications, requestNotificationPermission])
 

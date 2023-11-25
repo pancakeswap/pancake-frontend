@@ -11,6 +11,7 @@ import NotificationSettingsView from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
 import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
+import { errorBuilder } from './utils/errorBuilder'
 
 const Notifications = () => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
@@ -43,9 +44,9 @@ const Notifications = () => {
         })
         return res as string
       })
-    } catch (registerIdentityError) {
-      toast.toastError(Events.SubscriptionRequestError.title, 'User Denied the request')
-      console.error({ registerIdentityError })
+    } catch (error) {
+      const errMessage = errorBuilder(Events.SubscriptionRequestError, error)
+      toast.toastError(Events.SubscriptionRequestError.title, errMessage)
     }
   }, [signMessageAsync, registerIdentity, account, toast])
 
@@ -87,7 +88,7 @@ const Notifications = () => {
     >
       {() => (
         <Box tabIndex={-1}>
-          <ViewContainer viewIndex={viewIndex}>
+          <ViewContainer $viewIndex={viewIndex}>
             <OnBoardingView
               identityKey={identityKey}
               handleRegistration={handleRegistration}

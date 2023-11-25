@@ -4,6 +4,7 @@ import {
   AutoColumn,
   Box,
   CircleLoader,
+  CloseIcon,
   FlexGap,
   IconButton,
   ModalCloseButton,
@@ -21,6 +22,7 @@ import SettingsContainer from '../components/SettingsItem/SettingsItem'
 import { Events } from '../constants'
 import { ScrollableContainer } from '../styles'
 import { getSettingsButtonText } from '../utils/textHelpers'
+import { errorBuilder } from '../utils/errorBuilder'
 
 interface PushSubButtonProps {
   isUnsubscribing: boolean
@@ -82,18 +84,20 @@ const NotificationSettingsView = ({
       await updateScopes(getEnabledScopes(scopes))
       const newScope = currentScopes
       prevScopesRef.current = newScope
-      toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
-    } catch (error: any) {
-      toast.toastError(Events.PreferencesError.title, Events.PreferencesError.message)
+      toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message?.())
+    } catch (error) {
+      const errMessage = errorBuilder(Events.PreferencesError, error)
+      toast.toastError(Events.PreferencesError.title, errMessage)
     }
   }, [currentScopes, toast, scopes, updateScopes])
 
   const handleUnSubscribe = useCallback(async () => {
     try {
       await unsubscribe()
-      toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message)
-    } catch (error: any) {
-      toast.toastWarning(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
+      toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message?.())
+    } catch (error) {
+      const errMessage = errorBuilder(Events.UnsubscribeError, error)
+      toast.toastWarning(Events.UnsubscribeError.title, errMessage)
     }
   }, [unsubscribe, toast])
 
@@ -116,7 +120,7 @@ const NotificationSettingsView = ({
         }
         rightIcon={
           <IconButton tabIndex={-1} variant="text" onClick={onDismiss}>
-            <ModalCloseButton onDismiss={onDismiss} />
+            <CloseIcon color="primary" />
           </IconButton>
         }
         text={t('Settings')}
