@@ -30,8 +30,7 @@ const Menu = (props) => {
   const cakePrice = useCakePrice()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const { selectUserfeatureABResult } = useABTestingManager()
-  const isNotificationFeatureEnabled = selectUserfeatureABResult(FEATURE_FLAGS.WebNotifications)
+  const { featureEnabled } = useABTestingManager(FEATURE_FLAGS.WebNotifications)
 
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
@@ -61,7 +60,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
-            {isNotificationFeatureEnabled && <Notifications />}
+            {featureEnabled && <Notifications />}
             <NetworkSwitcher />
             <UserMenu />
           </>

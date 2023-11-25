@@ -31,8 +31,10 @@ function ABTestingManagerProvider({ ABTestUserResults, children }: ABTestingProv
   )
 }
 
-const useABTestingManager = () => {
-  return useContext(ABTestingContextManager)
+const useABTestingManager = (featureFlag: FEATURE_FLAGS) => {
+  const { selectUserfeatureABResult } = useContext(ABTestingContextManager)
+  const featureEnabled = selectUserfeatureABResult(featureFlag)
+  return { featureEnabled }
 }
 
 export { ABTestingManagerProvider, useABTestingManager }
