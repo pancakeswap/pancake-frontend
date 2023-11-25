@@ -1,13 +1,12 @@
 // middleware.ts
 import { withABHeaders } from 'middleware/ab-test-middleware'
 import { withGeoBlock } from 'middleware/geo-block-middleware'
-import { withUserIp } from 'middleware/user-ip-midleware'
 import { NextResponse } from 'next/server'
 
 export function defaultMiddleware() {
   return NextResponse.next()
 }
-export default withGeoBlock(withUserIp(withABHeaders(defaultMiddleware)))
+export default withGeoBlock(withABHeaders(defaultMiddleware))
 
 export const config = {
   matcher: [

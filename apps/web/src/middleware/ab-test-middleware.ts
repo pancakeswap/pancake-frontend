@@ -53,17 +53,17 @@ export const withABHeaders: MiddlewareFactory = () => {
     }
     const requestHeaderKeys = Object.keys(ABUserTestHeaderdata)
     const requestHeaders = new Headers(request.headers)
-    const response = NextResponse.next({ request: { headers: requestHeaders } })
+    const response = (reqh) => NextResponse.next({ request: { headers: reqh } })
 
     for (let i = 0; i < requestHeaderKeys.length; i++) {
       if (request.headers.get(requestHeaderKeys[i])) {
         throw new Error(`Key ${requestHeaderKeys[i].substring(4)} is being spoofed. Blocking this request.`)
       }
       // set both response and request headers
-      requestHeaders.set(requestHeaderKeys[i], userWhitelistResults[i].hasAccess.toString())
-      response.headers.set(`${requestHeaderKeys[i]}`, userWhitelistResults[i].scaledValue.toString())
+      requestHeaders.set(`${requestHeaderKeys[i]}`, userWhitelistResults[i].hasAccess.toString())
+      response(requestHeaders).headers.set(`${requestHeaderKeys[i]}`, userWhitelistResults[i].scaledValue.toString())
     }
 
-    return response
+    return response(requestHeaders)
   }
 }

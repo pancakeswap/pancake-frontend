@@ -69,7 +69,6 @@ function MyApp(
 ) {
   const { pageProps, Component, ABTestUserResults } = props
   const store = useStore(pageProps.initialReduxState)
-
   return (
     <>
       <Head>
@@ -181,7 +180,6 @@ MyApp.getInitialProps = async (context: AppContext) => {
   // get the middleware feature flag headers
   const featureFlagHeaders = context.ctx.req?.headers
   const ABTestUserResults: { [flag: string]: boolean } = {}
-
   // for each header result store it in map for client to consume
   Object.values(FEATURE_FLAGS).forEach((flag) => {
     const flagHeader = featureFlagHeaders?.[`ctx-${flag}`]
