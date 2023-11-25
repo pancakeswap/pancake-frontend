@@ -77,7 +77,7 @@ export const PancakeNotifications: {
     // ... add more as we create use cases
   },
 }
-
+export const APP_DOMAIN = 'pc-custom-web-git-main-chefbingbong.vercel.app'
 export const PUBLIC_VAPID_KEY =
   'BMqr9OUv0dxUll4al_WO0EGFf87hkxrIrQik_fv_rkX7Mtr7irwOnaw8egvgYFQqsi3_rbsoY4TzjfrqUL1sA44'
 

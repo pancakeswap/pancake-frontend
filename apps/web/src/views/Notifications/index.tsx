@@ -6,12 +6,13 @@ import { clearArchivedTransactions } from 'state/notifications/actions'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import { useAccount, useSignMessage } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import { DEFAULT_PROJECT_ID, Events, TWO_MINUTES_MILLISECONDS } from './constants'
+import { APP_DOMAIN, DEFAULT_PROJECT_ID, Events, TWO_MINUTES_MILLISECONDS } from './constants'
 import NotificationSettingsView from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
 import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
 import { errorBuilder } from './utils/errorBuilder'
+import { disableGlobalScroll, enableGlobalScroll } from './utils/toggleEnableScroll'
 
 const Notifications = () => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
@@ -26,7 +27,7 @@ const Notifications = () => {
 
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId: DEFAULT_PROJECT_ID,
-    domain: 'pc-custom-web-git-main-chefbingbong.vercel.app',
+    domain: APP_DOMAIN,
   })
 
   const isReady = Boolean(isSubscribed && account && isW3iInitialized)
@@ -61,18 +62,6 @@ const Notifications = () => {
     [setViewIndex, viewIndex],
   )
 
-  const handleMouseEnter = () => {
-    document.body.style.overflowY = 'scroll'
-    document.body.style.position = 'fixed'
-    document.body.style.width = '100%'
-  }
-
-  const handleMouseLeave = () => {
-    document.body.style.overflowY = 'auto'
-    document.body.style.position = 'static'
-    document.body.style.width = 'auto'
-  }
-
   useEffect(() => {
     if (!address || !isReady) setViewIndex(PAGE_VIEW.OnboardView)
     if (address) setAccount(`eip155:1:${address}`)
@@ -84,7 +73,7 @@ const Notifications = () => {
 
     const deleteInterval = setInterval(() => {
       dispatch(clearArchivedTransactions({ subscriptionId: subscription.topic }))
-    }, TWO_MINUTES_MILLISECONDS) // 1DAY
+    }, TWO_MINUTES_MILLISECONDS)
 
     return () => clearInterval(deleteInterval)
   }, [subscription?.topic, dispatch])
@@ -99,7 +88,7 @@ const Notifications = () => {
       subscriptionId={subscription?.topic}
     >
       {() => (
-        <Box tabIndex={-1} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <Box tabIndex={-1} onMouseEnter={disableGlobalScroll} onMouseLeave={enableGlobalScroll}>
           <ViewContainer $viewIndex={viewIndex}>
             <OnBoardingView
               identityKey={identityKey}
