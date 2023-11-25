@@ -61,6 +61,18 @@ const Notifications = () => {
     [setViewIndex, viewIndex],
   )
 
+  const handleMouseEnter = () => {
+    document.body.style.overflowY = 'scroll'
+    document.body.style.position = 'fixed'
+    document.body.style.width = '100%'
+  }
+
+  const handleMouseLeave = () => {
+    document.body.style.overflowY = 'auto'
+    document.body.style.position = 'static'
+    document.body.style.width = 'auto'
+  }
+
   useEffect(() => {
     if (!address || !isReady) setViewIndex(PAGE_VIEW.OnboardView)
     if (address) setAccount(`eip155:1:${address}`)
@@ -87,7 +99,7 @@ const Notifications = () => {
       subscriptionId={subscription?.topic}
     >
       {() => (
-        <Box tabIndex={-1}>
+        <Box tabIndex={-1} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <ViewContainer $viewIndex={viewIndex}>
             <OnBoardingView
               identityKey={identityKey}

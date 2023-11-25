@@ -9,7 +9,6 @@ import {
   Flex,
   IconButton,
   InfoFilledIcon,
-  ModalCloseButton,
   OptionProps,
   Select,
   Text,
@@ -100,7 +99,6 @@ const NotificationView = ({
   const archivedNotifications = useAllNotifications(subscription?.topic)
   const hasUnreadNotifications = useHasUnreadNotifications(subscription?.topic)
   const importantAlertsOnly = useImportantNotificationsOnly(subscription?.topic)
-
   const { t } = useTranslation()
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
