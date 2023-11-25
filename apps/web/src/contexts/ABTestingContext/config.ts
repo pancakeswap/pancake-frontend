@@ -1,4 +1,4 @@
-import { AbTestingMap } from 'middleware/types'
+import { AbTestingMap } from 'middlewares/types'
 
 export enum FEATURE_FLAGS {
   WebNotifications = 'web-notifications-feature-flag',

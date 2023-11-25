@@ -1,8 +1,8 @@
 // middleware.ts
-import { withABHeaders } from 'middleware/ab-test-middleware'
-import { withGeoBlock } from 'middleware/geo-block-middleware'
-import { withUserIpHeaders } from 'middleware/ip-address-middleware'
-import { stackMiddlewares } from 'middleware/stack-middleware'
+import { withABHeaders } from 'middlewares/ab-test-middleware'
+import { withGeoBlock } from 'middlewares/geo-block-middleware'
+import { withUserIpHeaders } from 'middlewares/ip-address-middleware'
+import { stackMiddlewares } from 'middlewares/stack-middleware'
 
 const middlewares = [withGeoBlock, withUserIpHeaders, withABHeaders]
 export default stackMiddlewares(middlewares)
