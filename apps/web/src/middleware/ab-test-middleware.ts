@@ -34,12 +34,7 @@ const ctxKey = (key) => `ctx-${key.toLowerCase()}`
 
 export const withABHeaders: MiddlewareFactory = () => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
-    let ip = request.ip ?? request.headers.get('x-real-ip')
-    const forwardedFor = request.headers.get('x-forwarded-for')
-
-    if (!ip && forwardedFor) ip = forwardedFor.split(',').at(0) ?? 'Unknown'
-    if (!ip) return NextResponse.next()
-
+    const ip = request.headers.get('user-ip') as string
     const featureFlagInfo = Object.values(AB_TESTING_FEATURE_FLAG_MAP)
     const featureFlagKeys = Object.keys(AB_TESTING_FEATURE_FLAG_MAP)
 
@@ -53,17 +48,20 @@ export const withABHeaders: MiddlewareFactory = () => {
     }
     const requestHeaderKeys = Object.keys(ABUserTestHeaderdata)
     const requestHeaders = new Headers(request.headers)
-    const response = (reqh) => NextResponse.next({ request: { headers: reqh } })
 
     for (let i = 0; i < requestHeaderKeys.length; i++) {
       if (request.headers.get(requestHeaderKeys[i])) {
         throw new Error(`Key ${requestHeaderKeys[i].substring(4)} is being spoofed. Blocking this request.`)
       }
-      // set both response and request headers
       requestHeaders.set(`${requestHeaderKeys[i]}`, userWhitelistResults[i].hasAccess.toString())
-      response(requestHeaders).headers.set(`${requestHeaderKeys[i]}`, userWhitelistResults[i].scaledValue.toString())
     }
 
-    return response(requestHeaders)
+    const response = NextResponse.next({ request: { headers: requestHeaders } })
+    for (let i = 0; i < requestHeaderKeys.length; i++) {
+      response.headers.set(`${requestHeaderKeys[i]}`, userWhitelistResults[i].scaledValue.toString())
+      response.headers.set(`user-ip`, ip)
+    }
+
+    return response
   }
 }

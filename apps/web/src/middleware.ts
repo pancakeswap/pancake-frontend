@@ -1,12 +1,11 @@
 // middleware.ts
 import { withABHeaders } from 'middleware/ab-test-middleware'
 import { withGeoBlock } from 'middleware/geo-block-middleware'
-import { NextResponse } from 'next/server'
+import { withUserIpHeaders } from 'middleware/ip-address-middleware'
+import { stackMiddlewares } from 'middleware/stack-middleware'
 
-export function defaultMiddleware() {
-  return NextResponse.next()
-}
-export default withGeoBlock(withABHeaders(defaultMiddleware))
+const middlewares = [withGeoBlock, withUserIpHeaders, withABHeaders]
+export default stackMiddlewares(middlewares)
 
 export const config = {
   matcher: [
