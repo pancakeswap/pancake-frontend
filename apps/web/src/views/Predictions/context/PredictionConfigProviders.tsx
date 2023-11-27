@@ -1,14 +1,14 @@
-import { useState, useMemo, useEffect } from 'react'
-import LocalReduxProvider from 'contexts/LocalRedux/Provider'
-import makeStore from 'contexts/LocalRedux/makeStore'
 import { ChainId } from '@pancakeswap/chains'
 import { PredictionSupportedSymbol } from '@pancakeswap/prediction'
-import reducers, { initialState } from 'state/predictions'
-import { useRouter } from 'next/router'
+import LocalReduxProvider from 'contexts/LocalRedux/Provider'
+import makeStore from 'contexts/LocalRedux/makeStore'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import _toUpper from 'lodash/toUpper'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useState } from 'react'
+import reducers, { initialState } from 'state/predictions'
 import { usePredictionConfigs } from 'views/Predictions/hooks/usePredictionConfigs'
 import { usePredictionToken } from 'views/Predictions/hooks/usePredictionToken'
-import _toUpper from 'lodash/toUpper'
 import ConfigProvider from './ConfigProvider'
 
 const PredictionConfigProviders = ({ children }) => {
@@ -16,23 +16,16 @@ const PredictionConfigProviders = ({ children }) => {
   const { token } = query
   const { chainId } = useActiveChainId()
   const predictionConfigs = usePredictionConfigs()
+  const [selectedPickedToken, setSelectedPickedToken] = useState('')
   const [prevSelectedToken, setPrevSelectedToken] = usePredictionToken()
 
   const supportedSymbol = useMemo(() => (predictionConfigs ? Object.keys(predictionConfigs) : []), [predictionConfigs])
-
-  const [selectedToken, setConfig] = useState(() => {
-    if (supportedSymbol.includes(chainId && prevSelectedToken?.[chainId])) {
-      return chainId && prevSelectedToken?.[chainId]
-    }
-
-    return supportedSymbol?.[0]
-  })
 
   useEffect(() => {
     const upperToken = _toUpper(token as string) as PredictionSupportedSymbol
 
     if (supportedSymbol.includes(upperToken)) {
-      setConfig(upperToken)
+      setSelectedPickedToken(upperToken)
 
       const newData = {
         ...prevSelectedToken,
@@ -44,6 +37,14 @@ const PredictionConfigProviders = ({ children }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId, supportedSymbol, token, setPrevSelectedToken])
+
+  const selectedToken = useMemo(() => {
+    if (supportedSymbol.includes(chainId && prevSelectedToken?.[chainId])) {
+      return chainId && prevSelectedToken?.[chainId]
+    }
+
+    return selectedPickedToken || supportedSymbol?.[0]
+  }, [chainId, prevSelectedToken, selectedPickedToken, supportedSymbol])
 
   const config = useMemo(() => predictionConfigs?.[selectedToken], [predictionConfigs, selectedToken])
 
