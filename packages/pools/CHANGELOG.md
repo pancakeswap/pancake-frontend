@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 5.0.0
+
+### Major Changes
+
+- a016ea8ee: List new ALP pool
+
 ## 4.0.22
 
 ### Patch Changes
