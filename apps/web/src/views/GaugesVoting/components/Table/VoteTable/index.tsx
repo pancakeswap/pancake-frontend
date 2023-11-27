@@ -58,15 +58,15 @@ export const VoteTable = () => {
   const onVoteChange = (value: UserVote, isMax?: boolean) => {
     const { hash, power, locked } = value
 
-    if (!hash) return
+    if (!hash || hash === '0x') return
 
     const newVotes = { ...votes }
+    if (!rows?.find((r) => r.hash === hash)) return
     if (!newVotes[hash]) {
       newVotes[hash] = value
     }
+    const sum = voteSum - Number(power || 0)
     if (isMax) {
-      const sum = voteSum - Number(power || 0)
-
       // @note: if epoch power is 0, the vote action will not works to the final result
       // open it just for better UX understanding vote power is linear changed
       // newVotes[index].power = 100 - sum > 0 && epochPower > 0n ? String(100 - sum) : '0'
