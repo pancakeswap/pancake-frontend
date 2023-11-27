@@ -23,11 +23,23 @@ export const CurrentEpoch = () => {
     <Card isActive innerCardProps={{ padding: isDesktop ? '1.5em' : '1em' }}>
       <FlexGap gap="8px" flexDirection="column">
         <AutoRow justifyContent="space-between">
-          <FlexGap gap="8px" alignItems="baseline" justifyContent="space-between" width="100%">
+          <FlexGap
+            flexDirection={['column', 'row', 'row']}
+            gap="8px"
+            flexWrap="wrap"
+            alignItems="baseline"
+            justifyContent="space-between"
+            width="100%"
+          >
             <Text bold fontSize={20}>
               {t('Current EPOCH')}
             </Text>
-            <FlexGap alignItems="baseline" gap="2px">
+            <FlexGap
+              justifyContent={['space-between', 'space-between', 'flex-end']}
+              alignItems="baseline"
+              gap="2px"
+              width={isDesktop ? 'auto' : '100%'}
+            >
               <Tooltips
                 content={t('Results for the current epoch will be snapshotted and tallied at 00:00 UTC on %date%.', {
                   date: dayjs.unix(nextEpochStart).format('DD MMM YYYY'),
@@ -37,10 +49,12 @@ export const CurrentEpoch = () => {
                   {t('snapshots in')}
                 </TooltipText>
               </Tooltips>
-              <Text bold fontSize={16}>
-                {dayjs.unix(nextEpochStart).from(dayjs.unix(currentTimestamp), true)}
-              </Text>
-              <Text fontSize={14}>({dayjs.unix(nextEpochStart).format('DD MMM YYYY')}) </Text>
+              <FlexGap gap="2px" alignItems="baseline">
+                <Text bold fontSize={16}>
+                  {dayjs.unix(nextEpochStart).from(dayjs.unix(currentTimestamp), true)}
+                </Text>
+                <Text fontSize={14}>({dayjs.unix(nextEpochStart).format('DD MMM YYYY')}) </Text>
+              </FlexGap>
             </FlexGap>
           </FlexGap>
 
