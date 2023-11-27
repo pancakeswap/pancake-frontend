@@ -20,7 +20,7 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     [userVote?.slope, epochVotePower],
   )
   // const nextEpochStart = useNextEpochStart()
-  const currentVoteWeight = useMemo(() => {
+  const currentVoteWeightAmount = useMemo(() => {
     const { nativeSlope = 0n, nativeEnd = 0n, proxySlope = 0n, proxyEnd = 0n } = userVote || {}
     let nativeWeight = 0n
     let proxyWeight = 0n
@@ -34,18 +34,21 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     }
 
     const amountInt = nativeWeight + proxyWeight
+    return amountInt
+  }, [currentTimestamp, userVote])
 
-    const amount = getBalanceNumber(new BN(amountInt.toString()))
+  const currentVoteWeight = useMemo(() => {
+    const amount = getBalanceNumber(new BN(currentVoteWeightAmount.toString()))
     if (amount === 0) return 0
     if (amount < 1) return amount.toPrecision(2)
     return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-  }, [currentTimestamp, userVote])
+  }, [currentVoteWeightAmount])
 
   const currentVotePercent = useMemo(() => {
-    return userVote?.power && Number(currentVoteWeight) > 0
+    return userVote?.power && Number(currentVoteWeightAmount) > 0
       ? String(Number(new Percent(userVote?.power, 10000).toFixed(2)))
       : undefined
-  }, [currentVoteWeight, userVote?.power])
+  }, [currentVoteWeightAmount, userVote?.power])
 
   const voteValue = useMemo(() => {
     if (voteLocked) return currentVotePercent ?? ''

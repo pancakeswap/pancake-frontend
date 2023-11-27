@@ -65,7 +65,9 @@ export const HeadImage = () => {
 
   return (
     <Button variant="subtle" endIcon={<HelpIcon color="white" width="24px" />} mt="1em">
-      <Text textTransform="uppercase">{t('help')}</Text>
+      <Text color="white" textTransform="capitalize">
+        {t('help')}
+      </Text>
     </Button>
   )
 }

@@ -1,18 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, Balance, Card, FlexGap, Text, TooltipText, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import {
+  formatNumber,
+  getBalanceNumber,
+  getDecimalAmount,
+  getFullDisplayBalance,
+} from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
-import { useEpochRewards } from '../hooks/useEpochRewards'
 import { useCurrentEpochEnd, useEpochOnTally, useNextEpochStart } from '../hooks/useEpochTime'
 import { useGaugesTotalWeight } from '../hooks/useGaugesTotalWeight'
 
 export const CurrentEpoch = () => {
   const { t } = useTranslation()
   const totalWeight = useGaugesTotalWeight()
-  const weeklyRewards = useEpochRewards()
+  // const weeklyRewards = useEpochRewards()
+  const weeklyRewards = getDecimalAmount(new BN(401644))
   const epochEnd = useCurrentEpochEnd()
   const nextEpochStart = useNextEpochStart()
   const currentTimestamp = useCurrentBlockTimestamp()
@@ -96,10 +101,10 @@ export const CurrentEpoch = () => {
 
           <FlexGap alignItems="baseline" gap="2px">
             <Text bold fontSize={16}>
-              {getFullDisplayBalance(new BN(weeklyRewards))}
+              {formatNumber(getBalanceNumber(new BN(weeklyRewards)), 0)}
             </Text>
             <Text fontSize={14}>
-              ({getFullDisplayBalance(new BN(weeklyRewards).div(1 * 7 * 24 * 60 * 60), 18, 3)} CAKE/sec){' '}
+              ({getFullDisplayBalance(new BN(weeklyRewards).div(2 * 7 * 24 * 60 * 60), 18, 3)} CAKE/sec){' '}
             </Text>
           </FlexGap>
         </AutoRow>
