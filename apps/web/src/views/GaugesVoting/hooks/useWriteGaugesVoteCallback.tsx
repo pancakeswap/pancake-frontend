@@ -39,7 +39,7 @@ export const useWriteGaugesVoteCallback = () => {
         toastSuccess(
           t('Success!'),
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('You have successfully claimed your rewards.')}
+            {t('Your vote has been submitted successfully.')}
           </ToastDescriptionWithTx>,
         )
       }
