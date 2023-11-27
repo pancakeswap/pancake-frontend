@@ -29,6 +29,7 @@ export const RemainingVotePower: React.FC<{
   const { t } = useTranslation()
 
   const { cakeLockedAmount } = useCakeLockStatus()
+  const locked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const { balance: veCakeBalance } = useVeCakeBalance()
   const epochPower = useEpochVotePower()
 
@@ -76,14 +77,26 @@ export const RemainingVotePower: React.FC<{
             </Tooltips>
           </FlexGap>
         ) : (
-          <Balance
-            fontSize="24px"
-            bold
-            color="white"
-            lineHeight="110%"
-            value={getBalanceNumber(votePower) || 0}
-            decimals={2}
-          />
+          <Tooltips
+            disabled={locked}
+            content={
+              <>
+                {t('You have no locked CAKE.')} {t('To cast your vote, lock your CAKE for 3 weeks or more.')}
+              </>
+            }
+          >
+            <FlexGap gap="4px" alignItems="center">
+              <Balance
+                fontSize="24px"
+                bold
+                color={locked ? 'white' : 'warning'}
+                lineHeight="110%"
+                value={getBalanceNumber(votePower) || 0}
+                decimals={2}
+              />
+              {!locked ? <ErrorIcon color="warning" style={{ marginBottom: '-2.5px' }} /> : null}
+            </FlexGap>
+          </Tooltips>
         )}
       </Flex>
     </StyledBox>
