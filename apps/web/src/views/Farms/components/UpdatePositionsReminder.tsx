@@ -10,7 +10,7 @@ import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useMemo, useState } from 'react'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { encodeFunctionData } from 'viem'
-import { useAccount, useContractReads, useSendTransaction } from 'wagmi'
+import { useAccount, useContractReads, useWalletClient } from 'wagmi'
 
 const lmPoolABI = [
   {
@@ -118,7 +118,7 @@ export function UpdatePositionsReminder_() {
       }
     }),
     cacheTime: 0,
-    enabled: isOverRewardGrowthGlobalUserInfos?.length > 0,
+    enabled: isOverRewardGrowthGlobalUserInfos ? isOverRewardGrowthGlobalUserInfos.length > 0 : false,
   })
 
   const needRetrigger = isOverRewardGrowthGlobalUserInfos
@@ -137,7 +137,7 @@ export function UpdatePositionsReminder_() {
 
   const modal = useModalV2()
 
-  const { sendTransactionAsync } = useSendTransaction()
+  const { data: signer } = useWalletClient()
   const { toastSuccess } = useToast()
   const { loading: txLoading, fetchWithCatchTxError } = useCatchTxError()
 
@@ -148,8 +148,8 @@ export function UpdatePositionsReminder_() {
 
   // eslint-disable-next-line consistent-return
   const handleUpdateAll = async () => {
-    if (!needRetrigger || !sendTransactionAsync) return null
-    const calldata = []
+    if (!needRetrigger || !signer || !account || !deadline) return null
+    const calldata: `0x${string}`[] = []
     needRetrigger.forEach((userInfo) => {
       if (userInfo.needReduce) {
         calldata.push(
@@ -169,28 +169,28 @@ export function UpdatePositionsReminder_() {
         )
       }
       calldata.push(
-        MasterChefV3.encodeHarvest({
+        ...MasterChefV3.encodeHarvest({
           to: account,
           tokenId: userInfo.tokenId.toString(),
         }),
       )
     })
 
-    const resp = await fetchWithCatchTxError(() =>
-      sendTransactionAsync({
+    fetchWithCatchTxError(() =>
+      signer.sendTransaction({
         to: masterChefV3Address,
         data: Multicall.encodeMulticall(calldata.flat()),
         value: 0n,
         account,
+        chain: signer.chain,
       }),
-    )
-
-    if (resp?.status) {
-      toastSuccess(`Updated!`)
-
-      stakedUserInfos.refetch()
-      modal.onDismiss()
-    }
+    ).then((response) => {
+      if (response?.status) {
+        toastSuccess(`Updated!`)
+        stakedUserInfos.refetch()
+        modal.onDismiss()
+      }
+    })
   }
 
   if (

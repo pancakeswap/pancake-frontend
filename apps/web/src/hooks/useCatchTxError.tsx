@@ -100,6 +100,9 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
           hash,
           timeout: waitForTransactionTimeout,
         })
+        if (receipt?.status === 'reverted') {
+          throw new Error('Transaction reverted')
+        }
         return receipt
       } catch (error: any) {
         if (!isUserRejected(error)) {

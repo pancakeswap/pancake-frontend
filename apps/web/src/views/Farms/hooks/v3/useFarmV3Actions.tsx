@@ -9,7 +9,7 @@ import { useCallback } from 'react'
 import { calculateGasMargin } from 'utils'
 import { getViemClients, viemClients } from 'utils/viem'
 import { Address, hexToBigInt } from 'viem'
-import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
+import { useAccount, useWalletClient } from 'wagmi'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface FarmV3ActionContainerChildrenProps {
@@ -31,7 +31,6 @@ const useFarmV3Actions = ({
   const { address: account } = useAccount()
   const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
-  const { sendTransactionAsync } = useSendTransaction()
   const queryClient = useQueryClient()
   const publicClient = viemClients[chainId as keyof typeof viemClients]
 
@@ -41,6 +40,8 @@ const useFarmV3Actions = ({
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
 
   const onUnstake = useCallback(async () => {
+    if (!account || !signer || !publicClient) return
+
     const { calldata, value } = MasterChefV3.withdrawCallParameters({ tokenId, to: account })
 
     const txn = {
@@ -48,7 +49,7 @@ const useFarmV3Actions = ({
       to: masterChefV3Address,
       data: calldata,
       value: hexToBigInt(value),
-      chain: signer?.chain,
+      chain: publicClient?.chain,
     }
 
     const resp = await fetchWithCatchTxError(() =>
@@ -56,9 +57,10 @@ const useFarmV3Actions = ({
         const newTxn = {
           ...txn,
           gas: calculateGasMargin(estimate),
+          chain: publicClient?.chain,
         }
 
-        return sendTransactionAsync(newTxn)
+        return signer.sendTransaction(newTxn)
       }),
     )
     if (resp?.status) {
@@ -70,20 +72,11 @@ const useFarmV3Actions = ({
         </ToastDescriptionWithTx>,
       )
     }
-  }, [
-    account,
-    fetchWithCatchTxError,
-    masterChefV3Address,
-    publicClient,
-    sendTransactionAsync,
-    signer,
-    t,
-    toastSuccess,
-    tokenId,
-    onDone,
-  ])
+  }, [account, fetchWithCatchTxError, masterChefV3Address, publicClient, signer, t, toastSuccess, tokenId, onDone])
 
   const onStake = useCallback(async () => {
+    if (!account || !signer || !publicClient) return
+
     const { calldata, value } = NonfungiblePositionManager.safeTransferFromParameters({
       tokenId,
       recipient: masterChefV3Address,
@@ -95,7 +88,7 @@ const useFarmV3Actions = ({
       data: calldata,
       value: hexToBigInt(value),
       account,
-      chain: signer?.chain,
+      chain: publicClient?.chain,
     }
 
     const resp = await fetchWithCatchTxError(() =>
@@ -103,9 +96,10 @@ const useFarmV3Actions = ({
         const newTxn = {
           ...txn,
           gas: calculateGasMargin(estimate),
+          chain: publicClient?.chain,
         }
 
-        return sendTransactionAsync(newTxn)
+        return signer.sendTransaction(newTxn)
       }),
     )
 
@@ -124,7 +118,6 @@ const useFarmV3Actions = ({
     masterChefV3Address,
     nftPositionManagerAddress,
     publicClient,
-    sendTransactionAsync,
     signer,
     t,
     toastSuccess,
@@ -133,6 +126,8 @@ const useFarmV3Actions = ({
   ])
 
   const onHarvest = useCallback(async () => {
+    if (!account || !signer || !publicClient) return
+
     const { calldata } = MasterChefV3.harvestCallParameters({ tokenId, to: account })
 
     const txn = {
@@ -151,11 +146,11 @@ const useFarmV3Actions = ({
           const newTxn = {
             ...txn,
             account,
-            chain: signer?.chain,
+            chain: publicClient?.chain,
             gas: calculateGasMargin(estimate),
           }
 
-          return sendTransactionAsync(newTxn)
+          return signer.sendTransaction(newTxn)
         }),
     )
 
@@ -168,18 +163,7 @@ const useFarmV3Actions = ({
       )
       queryClient.invalidateQueries({ queryKey: ['mcv3-harvest'] })
     }
-  }, [
-    account,
-    fetchWithCatchTxError,
-    masterChefV3Address,
-    publicClient,
-    sendTransactionAsync,
-    signer,
-    t,
-    toastSuccess,
-    tokenId,
-    queryClient,
-  ])
+  }, [account, fetchWithCatchTxError, masterChefV3Address, publicClient, signer, t, toastSuccess, tokenId, queryClient])
 
   return {
     attemptingTxn: loading,
@@ -194,13 +178,14 @@ export function useFarmsV3BatchHarvest() {
   const { data: signer } = useWalletClient()
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
-  const { sendTransactionAsync } = useSendTransaction()
   const { loading, fetchWithCatchTxError } = useCatchTxError()
   const queryClient = useQueryClient()
 
   const masterChefV3Address = useMasterchefV3()?.address
   const onHarvestAll = useCallback(
     async (tokenIds: string[]) => {
+      if (!account || !signer) return
+
       const { calldata, value } = MasterChefV3.batchHarvestCallParameters(
         tokenIds.map((tokenId) => ({ tokenId, to: account })),
       )
@@ -213,28 +198,28 @@ export function useFarmsV3BatchHarvest() {
       }
       const publicClient = getViemClients({ chainId: signer?.chain?.id })
 
-      const resp = await fetchWithCatchTxError(() =>
-        publicClient.estimateGas(txn).then((estimate) => {
+      publicClient?.estimateGas(txn).then((gas) => {
+        fetchWithCatchTxError(() => {
           const newTxn = {
             ...txn,
-            gas: calculateGasMargin(estimate),
+            gas: calculateGasMargin(gas),
+            chain: publicClient?.chain,
           }
-
-          return sendTransactionAsync(newTxn)
-        }),
-      )
-
-      if (resp?.status) {
-        toastSuccess(
-          `${t('Harvested')}!`,
-          <ToastDescriptionWithTx txHash={resp.transactionHash}>
-            {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
-          </ToastDescriptionWithTx>,
-        )
-        queryClient.invalidateQueries({ queryKey: ['mcv3-harvest'] })
-      }
+          return signer.sendTransaction(newTxn)
+        }).then((response) => {
+          if (response?.status) {
+            toastSuccess(
+              `${t('Harvested')}!`,
+              <ToastDescriptionWithTx txHash={response.transactionHash}>
+                {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+              </ToastDescriptionWithTx>,
+            )
+            queryClient.invalidateQueries({ queryKey: ['mcv3-harvest'] })
+          }
+        })
+      })
     },
-    [account, fetchWithCatchTxError, masterChefV3Address, sendTransactionAsync, signer, t, toastSuccess, queryClient],
+    [account, fetchWithCatchTxError, masterChefV3Address, signer, t, toastSuccess, queryClient],
   )
 
   return {

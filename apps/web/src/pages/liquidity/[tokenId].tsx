@@ -70,7 +70,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
-import { useSendTransaction, useWalletClient } from 'wagmi'
+import { useWalletClient } from 'wagmi'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
@@ -80,6 +80,7 @@ import { MerklSection } from 'components/Merkl/MerklSection'
 import { MerklTag } from 'components/Merkl/MerklTag'
 import { useMerklInfo } from 'hooks/useMerkl'
 import Link from 'next/link'
+import useCatchTxError from 'hooks/useCatchTxError'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -184,7 +185,7 @@ export default function PoolPage() {
   const [receiveWNATIVE, setReceiveWNATIVE] = useState(false)
 
   const { data: signer } = useWalletClient()
-  const { sendTransactionAsync } = useSendTransaction()
+  const { fetchWithCatchTxError } = useCatchTxError()
 
   const { account, chainId } = useAccountActiveChain()
 
@@ -325,7 +326,8 @@ export default function PoolPage() {
       !chainId ||
       !manager ||
       !account ||
-      !tokenId
+      !tokenId ||
+      !signer
     )
       return
 
@@ -345,36 +347,41 @@ export default function PoolPage() {
       data: calldata,
       value: hexToBigInt(value),
       account,
-      chain: signer?.chain,
     }
 
-    getViemClients({ chainId })
+    const publicClient = getViemClients({ chainId })
+
+    publicClient
       ?.estimateGas(txn)
       .then((estimate) => {
-        const newTxn = {
-          ...txn,
-          gas: calculateGasMargin(estimate),
-        }
-
-        return sendTransactionAsync(newTxn).then((response) => {
-          setCollectMigrationHash(response.hash)
+        fetchWithCatchTxError(() => {
+          const newTxn = {
+            ...txn,
+            gas: calculateGasMargin(estimate),
+            chain: publicClient?.chain,
+          }
+          return signer.sendTransaction(newTxn)
+        }).then((response) => {
           setCollecting(false)
+          if (response?.status) {
+            setCollectMigrationHash(response.transactionHash)
 
-          const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
-          const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
+            const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
+            const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
 
-          addTransaction(
-            { hash: response.hash },
-            {
-              type: 'collect-fee',
-              summary: `Collect fee ${amount0.toExact()} ${
-                currency0ForFeeCollectionPurposes.symbol
-              } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
-            },
-          )
+            addTransaction(
+              { hash: response.transactionHash },
+              {
+                type: 'collect-fee',
+                summary: `Collect fee ${amount0.toExact()} ${
+                  currency0ForFeeCollectionPurposes.symbol
+                } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
+              },
+            )
+          }
         })
       })
-      ?.catch((error) => {
+      .catch((error) => {
         setCollecting(false)
         console.error(error)
       })
@@ -390,7 +397,7 @@ export default function PoolPage() {
     feeValue0,
     feeValue1,
     signer,
-    sendTransactionAsync,
+    fetchWithCatchTxError,
     addTransaction,
   ])
 

@@ -17,7 +17,7 @@ import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { viemClients } from 'utils/viem'
 import { Address, Hex, hexToBigInt } from 'viem'
-import { useSendTransaction } from 'wagmi'
+import { useWalletClient } from 'wagmi'
 
 import { isZero } from '../utils/isZero'
 
@@ -56,14 +56,14 @@ export default function useSendSwapTransaction(
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
-  const { sendTransactionAsync } = useSendTransaction()
+  const { data: signer } = useWalletClient()
   const publicClient = viemClients[chainId as ChainId]
   const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const { recipient } = useSwapState()
   const recipientAddress = recipient === null ? account : recipient
 
   return useMemo(() => {
-    if (!trade || !sendTransactionAsync || !account || !chainId || !publicClient) {
+    if (!trade || !signer || !account || !chainId || !publicClient) {
       return { callback: null }
     }
     return {
@@ -139,14 +139,15 @@ export default function useSendSwapTransaction(
               : undefined
         }
 
-        return sendTransactionAsync({
-          account,
-          chainId,
-          to: call.address,
-          data: call.calldata,
-          value: call.value && !isZero(call.value) ? hexToBigInt(call.value) : 0n,
-          gas: call.gas,
-        })
+        return signer
+          .sendTransaction({
+            account,
+            chain: publicClient?.chain,
+            to: call.address,
+            data: call.calldata,
+            value: call.value && !isZero(call.value) ? hexToBigInt(call.value) : 0n,
+            gas: call.gas,
+          })
           .then((response) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
@@ -179,32 +180,35 @@ export default function useSendSwapTransaction(
                 : recipient === account
                 ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
                 : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
-            addTransaction(response, {
-              summary: withRecipient,
-              translatableSummary: {
-                text: translatableWithRecipient,
-                data: {
-                  inputAmount,
-                  inputSymbol,
-                  outputAmount,
-                  outputSymbol,
-                  ...(recipient !== account && { recipientAddress: recipientAddressText }),
+            addTransaction(
+              { hash: response },
+              {
+                summary: withRecipient,
+                translatableSummary: {
+                  text: translatableWithRecipient,
+                  data: {
+                    inputAmount,
+                    inputSymbol,
+                    outputAmount,
+                    outputSymbol,
+                    ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                  },
                 },
+                type: 'swap',
               },
-              type: 'swap',
-            })
+            )
             logSwap({
               account,
               chainId,
-              hash: response.hash,
-              inputAmount,
-              outputAmount,
+              hash: response,
+              inputAmount: inputAmount ?? '',
+              outputAmount: outputAmount ?? '',
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
               type: 'V3SmartSwap',
             })
-            logTx({ account, chainId, hash: response.hash })
-            return response
+            logTx({ account, chainId, hash: response })
+            return { hash: response }
           })
           .catch((error) => {
             // if the user rejected the tx, pass this along
@@ -221,7 +225,7 @@ export default function useSendSwapTransaction(
     }
   }, [
     trade,
-    sendTransactionAsync,
+    signer,
     account,
     chainId,
     publicClient,
