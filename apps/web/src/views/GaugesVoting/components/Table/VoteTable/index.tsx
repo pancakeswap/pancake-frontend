@@ -30,7 +30,7 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 export const VoteTable = () => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { cakeUnlockTime } = useCakeLockStatus()
+  const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
   const epochPower = useEpochVotePower()
@@ -46,10 +46,10 @@ export const VoteTable = () => {
   const { rows, onRowSelect, refetch } = useGaugeRows()
   const { isDesktop } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
-    return rows?.map((row, index) => {
+    return rows?.map((row) => {
       return {
         ...row,
-        locked: votes[index]?.locked,
+        locked: votes[row.hash]?.locked,
       }
     })
   }, [votes, rows])
@@ -57,7 +57,7 @@ export const VoteTable = () => {
   const onVoteChange = (value: UserVote, isMax?: boolean) => {
     const { hash, power, locked } = value
 
-    if (locked || !hash) return
+    if (!hash) return
 
     const newVotes = { ...votes }
     if (!newVotes[hash]) {
@@ -155,11 +155,17 @@ export const VoteTable = () => {
   // user unselect row
   useEffect(() => {
     if (rows?.length) {
-      if (rows.length < votes.length) {
-        setVotes(votes.slice(0, rows.length))
+      if (rows.length < Object.values(votes).length) {
+        const newVotes = { ...votes }
+        rows.forEach((row) => {
+          if (!newVotes[row.hash]) {
+            delete newVotes[row.hash]
+          }
+        })
+        setVotes(newVotes)
       }
     }
-  }, [rows, rows?.length, votes, votes.length])
+  }, [rows, rows?.length, votes])
 
   return (
     <>
@@ -173,7 +179,7 @@ export const VoteTable = () => {
       <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
         {gauges}
 
-        {rowsWithLock?.length && epochPower <= 0n ? (
+        {rowsWithLock?.length && epochPower <= 0n && cakeLockedAmount > 0n ? (
           <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">

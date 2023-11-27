@@ -3,6 +3,7 @@ import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/uti
 import BN from 'bignumber.js'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useMemo } from 'react'
+import { Hex } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
@@ -63,9 +64,9 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
 
   // reinit vote value if user vote locked
   useEffect(() => {
-    if (voteLocked && userVote?.hash && !vote) {
+    if (voteLocked && userVote?.hash && (!vote?.hash || vote?.hash === '0x')) {
       onChange({
-        hash: userVote.hash,
+        hash: userVote.hash as Hex,
         power: voteValue,
         locked: true,
       })
