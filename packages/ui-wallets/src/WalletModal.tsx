@@ -419,7 +419,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
             try {
               onWalletConnectCallBack?.(wallet.title)
             } catch (e) {
-              console.error(e)
+              console.error(wallet.title, e)
             }
           }
         })
