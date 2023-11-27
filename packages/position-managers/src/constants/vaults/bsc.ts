@@ -9,7 +9,7 @@ export const vaults: VaultConfig[] = [
     idByManager: 7,
     name: 'BRIL',
     address: '0x1De20A5825ADFc665F634A2A7A3b1c9e3D0d2987',
-    adapterAddress: '0x', // TODO: update adapter address later
+    adapterAddress: '0xD2EE2ed27963E91c0860AbAEfd0590A546342c83',
     currencyA: bscTokens.eth,
     currencyB: bscTokens.usdc,
     earningToken: bscTokens.cake,
