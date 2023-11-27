@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { GAUGES } from 'config/constants/gauges'
 import { useMemo } from 'react'
 import { MultiChainName, multiChainName } from 'state/info/constant'
 import { fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
@@ -13,6 +12,7 @@ import { PoolData as V3PoolData } from 'views/V3Info/types'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { getGaugeHash } from '../utils'
 import { useGauges } from './useGauges'
+import { useGaugesPresets } from './useGaugesPresets'
 
 const QUERY_SETTINGS_IMMUTABLE = {
   retry: 3,
@@ -87,14 +87,13 @@ export const useGaugePair = (address?: string, chainId?: number) => {
 }
 
 export const useGaugeConfig = (address?: Address, chainId?: number) => {
+  const presets = useGaugesPresets()
   const gauges = useGauges()
   const published = gauges?.some((gauge) => gauge.hash === getGaugeHash(address, chainId))
-  const config = GAUGES.find((gauge) => gauge.chainId === chainId && gauge.address === address)
+  const config = presets.find((gauge) => gauge.chainId === chainId && gauge.address === address)
 
   // only on-chain gauges will show up
   if (!published) return undefined
-
-  if (!config) throw new Error(`Gauge config not found for ${address} on chain ${chainId}`)
 
   return config
 }

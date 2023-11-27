@@ -370,6 +370,16 @@ export const veCakeABI = [
   {
     inputs: [
       { internalType: 'address', name: '_user', type: 'address' },
+      { internalType: 'uint256', name: '_timestamp', type: 'uint256' },
+    ],
+    name: 'balanceOfAtTime',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_user', type: 'address' },
       { internalType: 'uint256', name: '_blockNumber', type: 'uint256' },
     ],
     name: 'balanceOfAtUser',
@@ -544,7 +554,7 @@ export const veCakeABI = [
   },
   {
     inputs: [],
-    name: 'inilization',
+    name: 'initialization',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
@@ -756,6 +766,13 @@ export const veCakeABI = [
   {
     inputs: [{ internalType: 'uint256', name: '_blockNumber', type: 'uint256' }],
     name: 'totalSupplyAt',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_timestamp', type: 'uint256' }],
+    name: 'totalSupplyAtTime',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',

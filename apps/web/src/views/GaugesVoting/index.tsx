@@ -18,7 +18,6 @@ import Page from 'components/Layout/Page'
 import styled from 'styled-components'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
-import { RemainVeCakeBalance } from './components/RemainVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
@@ -42,7 +41,7 @@ const StyledPageHeader = styled(PageHeader)`
 const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const gauges = useGaugesVoting()
+  const { data: gauges, isLoading } = useGaugesVoting()
   const { isDesktop } = useMatchBreakpoints()
 
   return (
@@ -87,25 +86,29 @@ const GaugesVoting = () => {
             <FlexGap flexDirection="column" gap="24px">
               <MyVeCakeBalance />
               <CurrentEpoch />
+              <Text color="textSubtle" fontSize={12}>
+                {t(
+                  'Results are updated weekly. Vote numbers are estimations based on the veCAKE balance at 00:00 UTC on the upcoming Thursday.',
+                )}
+              </Text>
             </FlexGap>
             <Box ml={isDesktop ? '60px' : '0'} mt={isDesktop ? '0' : '1em'}>
               <Text color="secondary" textTransform="uppercase" bold>
-                Proposed weights
+                {t('proposed weights')}
               </Text>
-              <WeightsPieChart totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
+              <WeightsPieChart isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
             </Box>
           </Grid>
           {isDesktop ? (
-            <GaugesTable mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
+            <GaugesTable mt="1.5em" data={gauges} isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} />
           ) : (
-            <GaugesList mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
+            <GaugesList mt="1.5em" data={gauges} isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} />
           )}
         </Card>
         <Box mt="80px">
           <Heading as="h2" scale="xl" mb="24px">
             {t('My votes')}
           </Heading>
-          <RemainVeCakeBalance />
           <VoteTable />
         </Box>
       </Page>

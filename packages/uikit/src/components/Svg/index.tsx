@@ -35,6 +35,7 @@ export { default as ChevronLeftIcon } from "./Icons/ChevronLeft";
 export { default as ChevronRightIcon } from "./Icons/ChevronRight";
 export { default as ChevronUpIcon } from "./Icons/ChevronUp";
 export { default as CircleOutlineIcon } from "./Icons/CircleOutline";
+export { default as CrossIcon } from "./Icons/Cross";
 export { default as CloseIcon } from "./Icons/Close";
 export { default as CogIcon } from "./Icons/Cog";
 export { default as Coin98Icon } from "./Icons/Coin98";

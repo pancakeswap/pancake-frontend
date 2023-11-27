@@ -16,7 +16,7 @@ export const useGaugesVoting = () => {
   const { chainId } = useActiveChainId()
   const publicClient = usePublicClient({ chainId })
 
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ['gaugesVoting', gaugesVotingContract.address, gaugesVotingContract.chain?.id],
     async (): Promise<GaugeVoting[]> => {
       if (!gauges || gauges.length === 0) return []
@@ -42,8 +42,14 @@ export const useGaugesVoting = () => {
     },
     {
       enabled: gauges && gauges?.length > 0,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   )
 
-  return data
+  return {
+    data,
+    isLoading: isLoading || data?.length === 0,
+  }
 }

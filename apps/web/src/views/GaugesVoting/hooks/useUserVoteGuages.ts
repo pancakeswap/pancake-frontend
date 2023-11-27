@@ -3,20 +3,30 @@ import { gaugesVotingABI } from 'config/abi/gaugesVoting'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useMemo } from 'react'
-import { ContractFunctionConfig, ContractFunctionResult, Hex, MulticallContracts } from 'viem'
+import {
+  ContractFunctionConfig,
+  ContractFunctionResult,
+  Hex,
+  MulticallContracts,
+  isAddressEqual,
+  zeroAddress,
+} from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { usePublicClient } from 'wagmi'
 import { useGaugesVoting } from './useGaugesVoting'
 
 export type VoteSlope = {
   hash: string
-  power: number
-  slope: number
-  end: number
+  nativePower: number
+  nativeSlope: number
+  nativeEnd: number
+  proxyPower: number
+  proxySlope: number
+  proxyEnd: number
 }
 
 export const useUserVoteSlopes = () => {
-  const gauges = useGaugesVoting()
+  const { data: gauges } = useGaugesVoting()
   const { data: userInfo } = useVeCakeUserInfo()
   const gaugesVotingContract = useGaugesVotingContract()
   const { account, chainId } = useAccountActiveChain()
@@ -27,6 +37,8 @@ export const useUserVoteSlopes = () => {
     async (): Promise<VoteSlope[]> => {
       if (!gauges || gauges.length === 0 || !account) return []
 
+      const hasProxy = userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress)
+
       const contracts: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'voteUserSlopes'>[]> =
         gauges.map((gauge) => {
           return {
@@ -36,7 +48,7 @@ export const useUserVoteSlopes = () => {
           } as const
         })
 
-      if (userInfo?.cakePoolProxy) {
+      if (hasProxy) {
         gauges.forEach((gauge) => {
           contracts.push({
             ...gaugesVotingContract,
@@ -51,12 +63,20 @@ export const useUserVoteSlopes = () => {
         allowFailure: false,
       })) as ContractFunctionResult<typeof gaugesVotingABI, 'voteUserSlopes'>[]
 
-      return response.map(([slope, power, end], index) => ({
-        hash: gauges[index % gauges.length].hash,
-        power: Number(slope),
-        slope: Number(power),
-        end: Number(end),
-      }))
+      const len = gauges.length
+      return gauges.map((gauge, index) => {
+        const [nativeSlope, nativePower, nativeEnd] = response[index] ?? [0n, 0n, 0n]
+        const [proxySlope, proxyPower, proxyEnd] = response[index + len] ?? [0n, 0n, 0n]
+        return {
+          hash: gauge.hash,
+          nativePower: Number(nativePower),
+          nativeSlope: Number(nativeSlope),
+          nativeEnd: Number(nativeEnd),
+          proxyPower: Number(proxyPower),
+          proxySlope: Number(proxySlope),
+          proxyEnd: Number(proxyEnd),
+        }
+      })
     },
     {
       enabled: Boolean(gauges && gauges.length) && account && account !== '0x',
@@ -70,7 +90,7 @@ export const useUserVoteSlopes = () => {
 }
 
 export const useUserVoteGauges = () => {
-  const gauges = useGaugesVoting()
+  const { data: gauges } = useGaugesVoting()
   const { data: slopes, refetch } = useUserVoteSlopes()
 
   const data = useMemo(() => {
@@ -79,7 +99,7 @@ export const useUserVoteGauges = () => {
     return gauges.filter((gauge) => {
       const slope = slopes.find((s) => s.hash === gauge.hash)
 
-      return slope && slope.power > 0
+      return slope && (slope.nativePower > 0 || slope.proxyPower > 0)
     })
   }, [slopes, gauges])
 
