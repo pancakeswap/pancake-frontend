@@ -16,7 +16,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { GaugeType } from 'config/constants/types'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGaugesPresets } from 'views/GaugesVoting/hooks/useGaugesPresets'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
@@ -130,6 +130,17 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       listDisplay="card"
     />
   )
+
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchText('')
+      setFilter({
+        byChain: [],
+        byFeeTier: [],
+        byType: [],
+      })
+    }
+  }, [isOpen])
 
   return (
     <>
