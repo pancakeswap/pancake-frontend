@@ -2,10 +2,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
 import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import dayjs from 'dayjs'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Address, stringify } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { feeTierPercent } from 'views/V3Info/utils'
@@ -24,6 +25,8 @@ const debugFormat = (unix?: bigint | number) => {
 export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE }, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
+  const { cakeLockedAmount } = useCakeLockStatus()
+  const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
   const userVote = useUserVote(data)
   const { currentVoteWeight, currentVotePercent, previewVoteWeight, voteValue, voteLocked, willUnlock } =
@@ -95,12 +98,12 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
             <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
           </Tooltips>
         ) : null}
-        <Text color={voteLocked || willUnlock ? 'textDisabled' : ''}>{previewVoteWeight} veCAKE</Text>
+        <Text color={voteLocked || willUnlock || !cakeLocked ? 'textDisabled' : ''}>{previewVoteWeight} veCAKE</Text>
       </Flex>
       <Flex>
         <PercentInput
-          disabled={voteLocked || willUnlock}
-          inputProps={{ disabled: voteLocked || willUnlock }}
+          disabled={voteLocked || willUnlock || !cakeLocked}
+          inputProps={{ disabled: voteLocked || willUnlock || !cakeLocked }}
           onMax={onMax}
           value={voteValue}
           onUserInput={(v) => onChange({ ...vote!, power: v })}
