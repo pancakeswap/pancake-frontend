@@ -16,6 +16,7 @@ import {
   WarningIcon,
 } from '@pancakeswap/uikit'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
@@ -28,6 +29,9 @@ import { StyledLockedCard } from './styled'
 export const CakePoolLockInfo = () => {
   const { t } = useTranslation()
   const { lockedAmount = 0n, lockEndTime = 0n } = useCakePoolLockInfo()
+  const roundedEndTime = useMemo(() => {
+    return Math.floor(Number(lockEndTime) / WEEK) * WEEK
+  }, [lockEndTime])
   const cakePrice = useCakePrice()
   const cakeAmount = useMemo(() => Number(formatBigInt(lockedAmount)), [lockedAmount])
   const cakeAmountUsdValue = useMemo(() => {
@@ -35,8 +39,8 @@ export const CakePoolLockInfo = () => {
   }, [cakePrice, cakeAmount])
   const now = useCurrentBlockTimestamp()
   const unlockTimeToNow = useMemo(() => {
-    return dayjs.unix(now).from(dayjs.unix(Number(lockEndTime || 0)), true)
-  }, [now, lockEndTime])
+    return dayjs.unix(now).from(dayjs.unix(Number(roundedEndTime || 0)), true)
+  }, [now, roundedEndTime])
   const migrate = useWriteMigrateCallback()
 
   return (
@@ -66,7 +70,7 @@ export const CakePoolLockInfo = () => {
               {unlockTimeToNow}
             </Text>
             <Text fontSize={12}>
-              {t('on')} {formatTime(Number(dayjs.unix(Number(lockEndTime || 0))))}
+              {t('on')} {formatTime(Number(dayjs.unix(Number(roundedEndTime || 0))))}
             </Text>
           </AutoColumn>
         </RowBetween>
