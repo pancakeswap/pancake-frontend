@@ -12,7 +12,7 @@ function hasDuplicates(array: any[]) {
 }
 
 describe('Config position manger Vault', () => {
-  it.each(mainnetVaults)('All farm has an unique pid', (...vaults) => {
+  it.each(mainnetVaults)('All vaults has an unique id', (...vaults) => {
     const ids = vaults.map((vault) => vault.id)
     expect(hasDuplicates(ids)).toBeFalsy()
   })
