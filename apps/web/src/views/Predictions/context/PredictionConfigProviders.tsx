@@ -25,7 +25,7 @@ const PredictionConfigProviders = ({ children }) => {
       return chainId && prevSelectedToken?.[chainId]
     }
 
-    return PredictionSupportedSymbol.CAKE // TODO: Fix if other chains can't find
+    return supportedSymbol?.[0]
   })
 
   useEffect(() => {
