@@ -22,6 +22,7 @@ import {
   SUPPORT_CAKE_STAKING,
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
+  PREDICTION_SUPPORTED_CHAINS,
 } from 'config/constants/supportChains'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
@@ -155,6 +156,7 @@ const config: (
           label: t('Prediction (BETA)'),
           href: '/prediction',
           image: '/images/decorations/prediction.png',
+          supportChainIds: PREDICTION_SUPPORTED_CHAINS,
         },
         {
           label: t('Lottery'),
