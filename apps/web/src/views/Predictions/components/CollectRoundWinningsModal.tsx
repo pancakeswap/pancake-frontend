@@ -19,7 +19,7 @@ import {
 import { AnyAction, AsyncThunkAction } from '@reduxjs/toolkit'
 import { useEffect } from 'react'
 import { styled } from 'styled-components'
-
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAccount } from 'wagmi'
 import { Address } from 'viem'
@@ -96,6 +96,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
   isNativeToken,
 }) => {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
@@ -110,10 +111,10 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
 
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
-    if (history.length === 0 && !isV1Claim && account) {
-      dispatch(fetchNodeHistory({ account }))
+    if (history.length === 0 && !isV1Claim && account && chainId) {
+      dispatch(fetchNodeHistory({ account, chainId }))
     }
-  }, [account, history, dispatch, isV1Claim])
+  }, [account, history, dispatch, isV1Claim, chainId])
 
   const handleClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {

@@ -6,6 +6,7 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useTranslation } from '@pancakeswap/localization'
 import { REWARD_RATE } from 'state/predictions/config'
 import { Bet } from 'state/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BetPosition } from '@pancakeswap/prediction'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
@@ -40,10 +41,11 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
-  const { isRefundable } = useIsRefundable(bet.round.epoch)
-  const canClaim = useGetIsClaimable(bet.round.epoch)
-  const { token, displayedDecimals } = useConfig()
-  const tokenPrice = useTokenPrice(token)
+  const { chainId } = useActiveChainId()
+  const { isRefundable } = useIsRefundable(bet?.round?.epoch ?? 0)
+  const canClaim = useGetIsClaimable(bet?.round?.epoch)
+  const config = useConfig()
+  const tokenPrice = useTokenPrice(config?.token)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
   )
@@ -54,6 +56,9 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   const payout = isWinner ? getNetPayout(bet, REWARD_RATE) : bet.amount
   const totalPayout = tokenPrice.multipliedBy(payout).toNumber()
   const returned = payout + bet.amount
+
+  const tokenSymbol = useMemo(() => config?.token?.symbol ?? '', [config])
+  const displayedDecimals = useMemo(() => config?.displayedDecimals ?? 4, [config])
 
   const headerColor = useMemo(() => {
     switch (result) {
@@ -111,9 +116,11 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   }, [result])
 
   const handleSuccess = async () => {
-    // We have to mark the bet as claimed immediately because it does not update fast enough
-    dispatch(markAsCollected({ [bet.round.epoch]: true }))
-    dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
+    if (account && chainId && bet?.round?.epoch) {
+      // We have to mark the bet as claimed immediately because it does not update fast enough
+      dispatch(markAsCollected({ [bet.round.epoch]: true }))
+      dispatch(fetchLedgerData({ account, chainId, epochs: [bet.round.epoch] }))
+    }
   }
 
   return (
@@ -141,7 +148,7 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
           </Flex>
         )}
         {result === Result.CANCELED && isRefundable && (
-          <ReclaimPositionButton epoch={bet.round.epoch} width="100%" mb="16px" />
+          <ReclaimPositionButton epoch={bet?.round?.epoch ?? 0} width="100%" mb="16px" />
         )}
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text>{t('Your direction')}:</Text>
@@ -151,14 +158,15 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
         </Flex>
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text>{t('Your position')}</Text>
-          <Text>{`${formatBnb(bet.amount, displayedDecimals)} ${token.symbol}`}</Text>
+          <Text>{`${formatBnb(bet.amount, displayedDecimals)} ${tokenSymbol}`}</Text>
         </Flex>
         <Flex alignItems="start" justifyContent="space-between">
           <Text bold>{isWinner ? t('Your winnings') : t('Your Result')}:</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(payout, displayedDecimals)} ${
-              token.symbol
-            }`}</Text>
+            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(
+              payout,
+              displayedDecimals,
+            )} ${tokenSymbol}`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${totalPayout.toFixed(2)}`}
             </Text>
@@ -172,9 +180,10 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
                 {t('Amount to collect')}:
               </Text>
               <Flex justifyContent="end">
-                <Text fontSize="14px" color="textSubtle">{`${formatBnb(returned, displayedDecimals)} ${
-                  token.symbol
-                }`}</Text>
+                <Text fontSize="14px" color="textSubtle">{`${formatBnb(
+                  returned,
+                  displayedDecimals,
+                )} ${tokenSymbol}`}</Text>
                 <span ref={targetRef}>
                   <InfoIcon color="textSubtle" ml="4px" />
                 </span>

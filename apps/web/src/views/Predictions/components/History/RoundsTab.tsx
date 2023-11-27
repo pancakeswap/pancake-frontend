@@ -2,6 +2,7 @@ import { useAccount } from 'wagmi'
 import orderBy from 'lodash/orderBy'
 import { Box, Button, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { Bet } from 'state/types'
 import { fetchNodeHistory } from 'state/predictions'
@@ -19,22 +20,25 @@ const RoundsTab: React.FC<React.PropsWithChildren<RoundsTabProps>> = ({ hasBetHi
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const hasHistoryLoaded = useGetHasHistoryLoaded()
   const currentHistoryPage = useGetCurrentHistoryPage()
   const isFetchingHistory = useGetIsFetchingHistory()
-  const { token } = useConfig()
+  const config = useConfig()
 
   const handleClick = () => {
-    dispatch(fetchNodeHistory({ account, page: currentHistoryPage + 1 }))
+    if (account && chainId) {
+      dispatch(fetchNodeHistory({ account, chainId, page: currentHistoryPage + 1 }))
+    }
   }
 
-  const v1Claim = token.symbol === 'BNB' ? <V1ClaimCheck /> : null
+  const v1Claim = config?.token?.symbol === 'BNB' ? <V1ClaimCheck /> : null
 
   return hasBetHistory ? (
     <>
       {v1Claim}
-      {orderBy(bets, ['round.epoch'], ['desc']).map((bet) => (
-        <HistoricalBet key={bet.round.epoch} bet={bet} />
+      {orderBy(bets, ['round.epoch'], ['desc'])?.map((bet) => (
+        <HistoricalBet key={bet?.round?.epoch} bet={bet} />
       ))}
       {hasBetHistory && !hasHistoryLoaded && (
         <Flex alignItems="center" justifyContent="center" py="24px">

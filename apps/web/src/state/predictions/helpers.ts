@@ -42,9 +42,6 @@ export const deserializeRound = (round: ReduxNodeRound): NodeRound => ({
   rewardAmount: convertBigInt(round.rewardAmount),
 })
 
-// TODO: refactor it when multi-chain
-const bscClient = publicClient({ chainId: ChainId.BSC })
-
 export enum Result {
   WIN = 'win',
   LOSE = 'lose',
@@ -162,10 +159,12 @@ export const getBetHistory = async (
 
 export const getLedgerData = async (
   account: Address,
+  chainId: ChainId,
   epochs: number[],
   address: Address,
 ): Promise<PredictionsLedgerResponse[]> => {
-  const response = await bscClient.multicall({
+  const client = publicClient({ chainId })
+  const response = await client.multicall({
     contracts: epochs.map(
       (epoch) =>
         ({
@@ -256,10 +255,12 @@ export const getPredictionUser = async (
 
 export const getClaimStatuses = async (
   account: Address,
+  chainId: ChainId,
   epochs: number[],
   address: Address,
 ): Promise<PredictionsState['claimableStatuses']> => {
-  const response = await bscClient.multicall({
+  const client = publicClient({ chainId })
+  const response = await client.multicall({
     contracts: epochs.map(
       (epoch) =>
         ({
@@ -283,8 +284,9 @@ export const getClaimStatuses = async (
 }
 
 export type MarketData = Pick<PredictionsState, 'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount'>
-export const getPredictionData = async (address: Address): Promise<MarketData> => {
-  const [currentEpoch, intervalSeconds, minBetAmount, paused] = await bscClient.multicall({
+export const getPredictionData = async (address: Address, chainId: ChainId): Promise<MarketData> => {
+  const client = publicClient({ chainId })
+  const [currentEpoch, intervalSeconds, minBetAmount, paused] = await client.multicall({
     contracts: [
       {
         address,
@@ -318,8 +320,13 @@ export const getPredictionData = async (address: Address): Promise<MarketData> =
   }
 }
 
-export const getRoundsData = async (epochs: number[], address: Address): Promise<PredictionsRoundsResponse[]> => {
-  const response = await bscClient.multicall({
+export const getRoundsData = async (
+  epochs: number[],
+  address: Address,
+  chainId: ChainId,
+): Promise<PredictionsRoundsResponse[]> => {
+  const client = publicClient({ chainId })
+  const response = await client.multicall({
     contracts: epochs.map(
       (epoch) =>
         ({

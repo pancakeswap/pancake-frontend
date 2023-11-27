@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { styled } from 'styled-components'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { Bet } from 'state/types'
 import { PredictionStatus } from '@pancakeswap/prediction'
@@ -61,10 +62,11 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
 
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
-  const canClaim = useGetIsClaimable(bet.round.epoch)
+  const { chainId } = useActiveChainId()
+  const canClaim = useGetIsClaimable(bet?.round?.epoch)
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
-  const { displayedDecimals } = useConfig()
+  const config = useConfig()
 
   const toggleOpen = () => setIsOpen(!isOpen)
 
@@ -98,8 +100,8 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
   const roundResult = getRoundResult(bet, currentEpoch)
   const resultTextColor = getRoundColor(roundResult)
   const resultTextPrefix = getRoundPrefix(roundResult)
-  const isOpenRound = round.epoch === currentEpoch
-  const isLiveRound = status === PredictionStatus.LIVE && round.epoch === currentEpoch - 1
+  const isOpenRound = round?.epoch === currentEpoch
+  const isLiveRound = status === PredictionStatus.LIVE && round?.epoch === currentEpoch - 1
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getNetPayout(bet, REWARD_RATE) : amount
@@ -144,7 +146,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
               </Flex>
             </>
           ) : (
-            `${resultTextPrefix}${formatBnb(payout, displayedDecimals)}`
+            `${resultTextPrefix}${formatBnb(payout, config?.displayedDecimals ?? 4)}`
           )}
         </Text>
       </>
@@ -152,9 +154,11 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
   }
 
   const handleSuccess = async () => {
-    // We have to mark the bet as claimed immediately because it does not update fast enough
-    dispatch(markAsCollected({ [bet.round.epoch]: true }))
-    dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
+    if (account && chainId && bet?.round?.epoch) {
+      // We have to mark the bet as claimed immediately because it does not update fast enough
+      dispatch(markAsCollected({ [bet.round.epoch]: true }))
+      dispatch(fetchLedgerData({ account, chainId, epochs: [bet.round.epoch] }))
+    }
   }
 
   return (
@@ -166,7 +170,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
               {t('Round')}
             </Text>
             <Text bold lineHeight={1}>
-              {round.epoch}
+              {round?.epoch}
             </Text>
           </Text>
         </Box>
@@ -177,7 +181,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
           </CollectWinningsButton>
         )}
         {roundResult === Result.CANCELED && canClaim && (
-          <ReclaimPositionButton epoch={bet.round.epoch} scale="sm" mr="8px">
+          <ReclaimPositionButton epoch={bet?.round?.epoch ?? 0} scale="sm" mr="8px">
             {t('Reclaim')}
           </ReclaimPositionButton>
         )}

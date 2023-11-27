@@ -14,6 +14,7 @@ import {
 } from 'state/types'
 import { BetPosition, PredictionStatus, PredictionsChartView, PredictionConfig } from '@pancakeswap/prediction'
 import { Address } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionsRoundsResponse } from 'utils/types'
 import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUNDS_PER_PAGE, LEADERBOARD_MIN_ROUNDS_PLAYED } from './config'
@@ -77,18 +78,18 @@ type PredictionInitialization = Pick<
 >
 export const fetchPredictionData = createAsyncThunk<
   PredictionInitialization,
-  Address | undefined,
+  { account: Address | undefined; chainId: ChainId },
   { extra: PredictionConfig }
->('predictions/fetchPredictionData', async (account: Address | undefined, { extra }) => {
+>('predictions/fetchPredictionData', async ({ account, chainId }, { extra }) => {
   // Static values
-  const marketData = await getPredictionData(extra.address)
+  const marketData = await getPredictionData(extra.address, chainId)
   const epochs =
     marketData.currentEpoch > PAST_ROUND_COUNT
       ? range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
       : [marketData.currentEpoch]
 
   // Round data
-  const roundsResponse = await getRoundsData(epochs, extra.address)
+  const roundsResponse = await getRoundsData(epochs, extra.address, chainId)
   const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
     const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
 
@@ -110,8 +111,8 @@ export const fetchPredictionData = createAsyncThunk<
   }
 
   const [ledgerResponses, claimableStatuses] = await Promise.all([
-    getLedgerData(account, epochs, extra.address), // Bet data
-    getClaimStatuses(account, epochs, extra.address), // Claim statuses
+    getLedgerData(account, chainId, epochs, extra.address), // Bet data
+    getClaimStatuses(account, chainId, epochs, extra.address), // Claim statuses
   ])
 
   return merge({}, initializedData, {
@@ -122,18 +123,18 @@ export const fetchPredictionData = createAsyncThunk<
 
 export const fetchLedgerData = createAsyncThunk<
   LedgerData,
-  { account: string; epochs: number[] },
+  { account: string; chainId: ChainId; epochs: number[] },
   { extra: PredictionConfig }
->('predictions/fetchLedgerData', async ({ account, epochs }, { extra }) => {
-  const ledgers = await getLedgerData(account as Address, epochs, extra.address)
+>('predictions/fetchLedgerData', async ({ account, chainId, epochs }, { extra }) => {
+  const ledgers = await getLedgerData(account as Address, chainId, epochs, extra.address)
   return makeLedgerData(account, ledgers, epochs)
 })
 
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
-  { account: Address; page?: number },
+  { account: Address; chainId: ChainId; page?: number },
   { state: PredictionsState; extra: PredictionConfig }
->('predictions/fetchNodeHistory', async ({ account, page = 1 }, { getState, extra }) => {
+>('predictions/fetchNodeHistory', async ({ account, chainId, page = 1 }, { getState, extra }) => {
   const userRoundsLength = Number(await fetchUsersRoundsLength(account, extra.address))
   const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength }
   const maxPages = userRoundsLength <= ROUNDS_PER_PAGE ? 1 : Math.ceil(userRoundsLength / ROUNDS_PER_PAGE)
@@ -161,8 +162,8 @@ export const fetchNodeHistory = createAsyncThunk<
 
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
   const [roundData, claimableStatuses] = await Promise.all([
-    getRoundsData(epochs, extra.address),
-    getClaimStatuses(account, epochs, extra.address),
+    getRoundsData(epochs, extra.address, chainId),
+    getClaimStatuses(account, chainId, epochs, extra.address),
   ])
 
   // No need getState().predictions in local redux state

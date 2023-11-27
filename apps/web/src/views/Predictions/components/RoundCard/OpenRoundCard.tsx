@@ -10,6 +10,7 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import useTheme from 'hooks/useTheme'
@@ -57,8 +58,9 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const dispatch = useLocalDispatch()
-  const { token, displayedDecimals } = useConfig()
+  const config = useConfig()
   const { lockTimestamp } = round ?? { lockTimestamp: null }
   const { isSettingPosition, position } = state
   const [isBufferPhase, setIsBufferPhase] = useState(false)
@@ -80,9 +82,11 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
     [hasEnteredUp, hasEnteredDown],
   )
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatTokenv2(betAmount, token.decimals, displayedDecimals)} ${
-      token.symbol
-    }`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatTokenv2(
+      betAmount ?? 0n,
+      config?.token?.decimals,
+      config?.displayedDecimals ?? 4,
+    )} ${config?.token?.symbol}`}</div>,
     { placement: 'top' },
   )
 
@@ -136,18 +140,20 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   }
 
   const handleSuccess = async (hash: string) => {
-    await dispatch(fetchLedgerData({ account, epochs: [round.epoch] }))
+    if (account && chainId) {
+      await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
 
-    handleBack()
+      handleBack()
 
-    toastSuccess(
-      t('Success!'),
-      <ToastDescriptionWithTx txHash={hash}>
-        {t('%position% position entered', {
-          position: positionDisplay,
-        })}
-      </ToastDescriptionWithTx>,
-    )
+      toastSuccess(
+        t('Success!'),
+        <ToastDescriptionWithTx txHash={hash}>
+          {t('%position% position entered', {
+            position: positionDisplay,
+          })}
+        </ToastDescriptionWithTx>,
+      )
+    }
   }
 
   return (
