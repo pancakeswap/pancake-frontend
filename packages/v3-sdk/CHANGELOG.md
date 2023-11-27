@@ -1,5 +1,11 @@
 # @pancakeswap/v3-sdk
 
+## 3.7.0
+
+### Minor Changes
+
+- cd5c4d0ce: export pancakeV3PoolABI from v3-sdk
+
 ## 3.6.0
 
 ### Minor Changes
