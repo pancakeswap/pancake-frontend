@@ -10,7 +10,7 @@ import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBloc
 import { GaugeIdentifierDetails } from '../GaugesTable/List'
 import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
-import { RowProps } from './types'
+import { DEFAULT_VOTE, RowProps } from './types'
 
 const ListItemContainer = styled(FlexGap)<{ borderBottom?: boolean }>`
   border-bottom: ${({ borderBottom = true, theme }) =>
@@ -21,7 +21,7 @@ type Props = {
   style?: CSSProperties
 } & RowProps
 
-export function VoteListItem({ style, data, vote, onChange, ...props }: Props) {
+export function VoteListItem({ style, data, vote = DEFAULT_VOTE, onChange, ...props }: Props) {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const userVote = useUserVote(data)
@@ -32,7 +32,7 @@ export function VoteListItem({ style, data, vote, onChange, ...props }: Props) {
   })
 
   const onMax = () => {
-    onChange('MAX_VOTE')
+    onChange(vote, true)
   }
 
   return (

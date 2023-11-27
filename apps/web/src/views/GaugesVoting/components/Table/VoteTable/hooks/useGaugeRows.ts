@@ -9,39 +9,38 @@ export const useGaugeRows = () => {
   const { account } = useAccountActiveChain()
   const previousAccount = usePreviousValue(account)
   const { data: prevVotedGauges, refetch } = useUserVoteGauges()
-  const [selectRows, setSelectRows] = useState<GaugeVoting['hash'][]>([])
+  const [selectRowsHash, setSelectRowsHash] = useState<GaugeVoting['hash'][]>([])
   const rows = useMemo(() => {
-    return gauges?.filter((gauge) => selectRows.includes(gauge.hash))
-  }, [gauges, selectRows])
+    return gauges?.filter((gauge) => selectRowsHash.includes(gauge.hash))
+  }, [gauges, selectRowsHash])
 
   useEffect(() => {
     if (account !== previousAccount) {
-      setSelectRows([])
+      setSelectRowsHash([])
     }
-  }, [account, previousAccount, selectRows])
+  }, [account, previousAccount, selectRowsHash])
 
   // add all gauges to selectRows when user has voted gauges
   useEffect(() => {
-    if (prevVotedGauges?.length && !selectRows.length) {
-      setSelectRows(prevVotedGauges.map((gauge) => gauge.hash))
+    if (prevVotedGauges?.length && !selectRowsHash.length) {
+      setSelectRowsHash(prevVotedGauges.map((gauge) => gauge.hash))
     }
-  }, [prevVotedGauges, selectRows.length])
+  }, [prevVotedGauges, selectRowsHash.length])
 
-  const onRowAdd = useCallback(
+  const onRowSelect = useCallback(
     (hash: GaugeVoting['hash']) => {
-      if (selectRows.includes(hash)) {
-        setSelectRows((prev) => prev.filter((v) => v !== hash))
+      if (selectRowsHash.includes(hash)) {
+        setSelectRowsHash((prev) => prev.filter((v) => v !== hash))
       } else {
-        setSelectRows((prev) => [...prev, hash])
+        setSelectRowsHash((prev) => [...prev, hash])
       }
     },
-    [selectRows],
+    [selectRowsHash],
   )
 
   return {
     rows,
-    selectRows,
-    onRowAdd,
+    onRowSelect,
     refetch,
   }
 }

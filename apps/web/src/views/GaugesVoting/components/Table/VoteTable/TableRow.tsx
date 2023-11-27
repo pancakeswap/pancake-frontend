@@ -14,14 +14,14 @@ import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
 import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
-import { RowProps } from './types'
+import { DEFAULT_VOTE, RowProps } from './types'
 
 const debugFormat = (unix?: bigint | number) => {
   if (!unix) return ''
   return dayjs.unix(Number(unix)).format('YYYY-MM-DD HH:mm:ss')
 }
 
-export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
+export const TableRow: React.FC<RowProps> = ({ data, vote = DEFAULT_VOTE, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
@@ -34,7 +34,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
     })
 
   const onMax = () => {
-    onChange('MAX_VOTE')
+    onChange(vote, true)
   }
 
   return (
@@ -104,7 +104,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote, onChange }) => {
           inputProps={{ disabled: voteLocked || willUnlock }}
           onMax={onMax}
           value={voteValue}
-          onUserInput={(v) => onChange({ ...vote, power: v })}
+          onUserInput={(v) => onChange({ ...vote!, power: v })}
         />
       </Flex>
     </TRow>

@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { Hex } from 'viem'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
@@ -17,7 +18,7 @@ import { VoteListItem } from './List'
 import { TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
 import { useGaugeRows } from './hooks/useGaugeRows'
-import { MaxVote, UserVote } from './types'
+import { UserVote } from './types'
 
 const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expanded'].includes(prop) })<{
   expanded: boolean
@@ -34,15 +35,15 @@ export const VoteTable = () => {
   const [isOpen, setIsOpen] = useState(false)
   const epochPower = useEpochVotePower()
   const [expanded, setExpanded] = useState(false)
-  const [votes, setVotes] = useState<UserVote[]>([])
+  const [votes, setVotes] = useState<Record<Hex, UserVote>>({})
   const voteSum = useMemo(() => {
-    return votes.reduce((acc, cur) => acc + Number(cur?.power), 0)
+    return Object.values(votes).reduce((acc, cur) => acc + Number(cur?.power), 0)
   }, [votes])
   const lockedPowerPercent = useMemo(() => {
-    return votes.reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
+    return Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
   }, [votes])
 
-  const { rows, onRowAdd, refetch } = useGaugeRows()
+  const { rows, onRowSelect, refetch } = useGaugeRows()
   const { isDesktop } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
     return rows?.map((row, index) => {
@@ -53,23 +54,24 @@ export const VoteTable = () => {
     })
   }, [votes, rows])
 
-  const onVoteChange = (index: number, value: MaxVote | UserVote) => {
-    const newVotes = [...votes]
-    if (!newVotes[index]) {
-      newVotes[index] = {
-        power: '',
-        locked: false,
-      }
+  const onVoteChange = (value: UserVote, isMax?: boolean) => {
+    const { hash, power, locked } = value
+
+    if (locked || !hash) return
+
+    const newVotes = { ...votes }
+    if (!newVotes[hash]) {
+      newVotes[hash] = value
     }
-    if (value === 'MAX_VOTE') {
-      const sum = voteSum - Number(newVotes[index].power || 0)
+    if (isMax) {
+      const sum = voteSum - Number(power || 0)
 
       // @note: if epoch power is 0, the vote action will not works to the final result
       // open it just for better UX understanding vote power is linear changed
       // newVotes[index].power = 100 - sum > 0 && epochPower > 0n ? String(100 - sum) : '0'
-      newVotes[index].power = 100 - sum > 0 ? String(100 - sum) : '0'
+      newVotes[hash].power = 100 - sum > 0 ? String(100 - sum) : '0'
     } else {
-      newVotes[index] = value
+      newVotes[hash] = value
     }
     setVotes(newVotes)
   }
@@ -77,8 +79,8 @@ export const VoteTable = () => {
   const { writeVote, isPending } = useWriteGaugesVoteCallback()
 
   const disabled = useMemo(() => {
-    const lockedSum = votes.reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
-    const newAddSum = votes.reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
+    const lockedSum = Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
+    const newAddSum = Object.values(votes).reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
 
     // no epoch power
     if (epochPower === 0n) return true
@@ -95,7 +97,7 @@ export const VoteTable = () => {
   }, [gaugesCount, rows])
 
   const submitVote = useCallback(async () => {
-    const voteGauges = votes
+    const voteGauges = Object.values(votes)
       .map((vote, i) => {
         if (!vote.locked && Number(vote.power)) {
           return {
@@ -118,8 +120,13 @@ export const VoteTable = () => {
       {rows?.length ? (
         <>
           <Scrollable expanded={expanded}>
-            {rows.map((row, index) => (
-              <TableRow key={row.hash} data={row} vote={votes[index]} onChange={(v) => onVoteChange(index, v)} />
+            {rows.map((row) => (
+              <TableRow
+                key={row.hash}
+                data={row}
+                vote={votes[row.hash]}
+                onChange={(v, isMax) => onVoteChange(v, isMax)}
+              />
             ))}
           </Scrollable>
           {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
@@ -131,8 +138,13 @@ export const VoteTable = () => {
   ) : (
     <>
       {rows?.length ? (
-        rows.map((row, index) => (
-          <VoteListItem key={row.hash} data={row} vote={votes[index]} onChange={(v) => onVoteChange(index, v)} />
+        rows.map((row) => (
+          <VoteListItem
+            key={row.hash}
+            data={row}
+            vote={votes[row.hash]}
+            onChange={(v, isMax) => onVoteChange(v, isMax)}
+          />
         ))
       ) : (
         <EmptyTable />
@@ -154,7 +166,7 @@ export const VoteTable = () => {
       <RemainingVotePower votedPercent={lockedPowerPercent} />
       <AddGaugeModal
         selectRows={rowsWithLock}
-        onGaugeAdd={onRowAdd}
+        onGaugeAdd={onRowSelect}
         isOpen={isOpen}
         onDismiss={() => setIsOpen(false)}
       />

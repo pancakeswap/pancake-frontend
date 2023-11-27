@@ -63,13 +63,14 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
 
   // reinit vote value if user vote locked
   useEffect(() => {
-    if (voteLocked && !vote) {
+    if (voteLocked && userVote?.hash && !vote) {
       onChange({
+        hash: userVote.hash,
         power: voteValue,
         locked: true,
       })
     }
-  }, [onChange, vote, voteLocked, voteValue])
+  }, [onChange, userVote?.hash, vote, voteLocked, voteValue])
 
   return {
     currentVoteWeight,
