@@ -6,6 +6,7 @@ import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochVotePower } from '../hooks/useEpochVotePower'
 
 const StyledBox = styled(Box)`
@@ -27,6 +28,7 @@ export const RemainingVotePower: React.FC<{
 }> = ({ votedPercent }) => {
   const { t } = useTranslation()
 
+  const { cakeLockedAmount } = useCakeLockStatus()
   const { balance: veCakeBalance } = useVeCakeBalance()
   const epochPower = useEpochVotePower()
 
