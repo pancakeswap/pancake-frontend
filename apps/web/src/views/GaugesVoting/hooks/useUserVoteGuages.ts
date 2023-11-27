@@ -26,7 +26,7 @@ export type VoteSlope = {
 }
 
 export const useUserVoteSlopes = () => {
-  const gauges = useGaugesVoting()
+  const { data: gauges } = useGaugesVoting()
   const { data: userInfo } = useVeCakeUserInfo()
   const gaugesVotingContract = useGaugesVotingContract()
   const { account, chainId } = useAccountActiveChain()
@@ -90,7 +90,7 @@ export const useUserVoteSlopes = () => {
 }
 
 export const useUserVoteGauges = () => {
-  const gauges = useGaugesVoting()
+  const { data: gauges } = useGaugesVoting()
   const { data: slopes, refetch } = useUserVoteSlopes()
 
   const data = useMemo(() => {

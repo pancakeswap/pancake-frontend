@@ -40,7 +40,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const gauges = useGaugesVoting()
+  const { data: gauges } = useGaugesVoting()
   const presets = useGaugesPresets()
   const [searchText, setSearchText] = useState<string>('')
   const debouncedSearchText = useDebounce(searchText, 800)

@@ -41,7 +41,7 @@ const StyledPageHeader = styled(PageHeader)`
 const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const gauges = useGaugesVoting()
+  const { data: gauges, isLoading } = useGaugesVoting()
   const { isDesktop } = useMatchBreakpoints()
 
   return (
@@ -94,9 +94,9 @@ const GaugesVoting = () => {
             </FlexGap>
             <Box ml={isDesktop ? '60px' : '0'} mt={isDesktop ? '0' : '1em'}>
               <Text color="secondary" textTransform="uppercase" bold>
-                Proposed weights
+                {t('proposed weights')}
               </Text>
-              <WeightsPieChart totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
+              <WeightsPieChart isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
             </Box>
           </Grid>
           {isDesktop ? (

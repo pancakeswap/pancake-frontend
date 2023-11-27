@@ -3,7 +3,7 @@ import type { ChartData, ChartDataset, TooltipModel } from 'chart.js'
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { GaugeVoting } from '../hooks/useGaugesVoting'
 import { ChartLabel } from './ChartLabel'
 import { ChartTooltip } from './ChartTooltip'
@@ -29,6 +29,20 @@ const Absolute = styled(Box)`
   z-index: 1;
 `
 
+const opacityAnimation = keyframes`
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 0.4;
+  }
+
+`
+
+const Circle = styled.circle`
+  animation: ${opacityAnimation} 1s ease-in-out infinite alternate;
+`
+
 export const chartDataOption: ChartDataset<'doughnut', number[]> = {
   data: [],
   backgroundColor: ['#F35E79', '#27B9C4', '#8051D6', '#129E7D', '#FCC631', '#2882CC', '#3DDBB5'],
@@ -41,7 +55,8 @@ export const chartDataOption: ChartDataset<'doughnut', number[]> = {
 export const WeightsPieChart: React.FC<{
   data?: GaugeVoting[]
   totalGaugesWeight: number
-}> = ({ data, totalGaugesWeight }) => {
+  isLoading?: boolean
+}> = ({ data, totalGaugesWeight, isLoading = true }) => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
@@ -113,7 +128,13 @@ export const WeightsPieChart: React.FC<{
       <ChartLabel total={totalGaugesWeight} gauge={selectedGauge} />
     </Center>
   )
-  const chart = (
+  const chart = isLoading ? (
+    <Box ml="20px">
+      <svg width="293" height="293" viewBox="0 0 293 293" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <Circle cx="146.5" cy="146.5" r="131.5" stroke="#E9EAEB" stroke-width="30" />
+      </svg>
+    </Box>
+  ) : (
     <Doughnut
       data={gauges}
       options={{
