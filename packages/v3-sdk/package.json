@@ -21,6 +21,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest --run",
+    "update:snapshot": "vitest -u",
     "coverage": "vitest run --coverage",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },

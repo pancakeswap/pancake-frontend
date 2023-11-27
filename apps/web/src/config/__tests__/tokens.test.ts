@@ -1,10 +1,10 @@
 import { ERC20Token, Token } from '@pancakeswap/sdk'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
-import { erc20ABI } from 'wagmi'
-import slice from 'lodash/slice'
 import omitBy from 'lodash/omitBy'
-import { describe, it } from 'vitest'
+import slice from 'lodash/slice'
 import { publicClient } from 'utils/client'
+import { describe, it } from 'vitest'
+import { erc20ABI } from 'wagmi'
 
 const whitelist = ['deprecated_tusd', 'deprecated_rpg', 'deprecated_mix']
 

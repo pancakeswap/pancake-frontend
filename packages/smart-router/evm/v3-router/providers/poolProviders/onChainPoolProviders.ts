@@ -1,14 +1,13 @@
-import { Currency, CurrencyAmount, Percent, BigintIsh } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { BigintIsh, Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
-import { Address, ContractFunctionConfig, Abi } from 'viem'
+import { DEPLOYER_ADDRESSES, FeeAmount, pancakeV3PoolABI, parseProtocolFees } from '@pancakeswap/v3-sdk'
+import { Abi, Address, ContractFunctionConfig } from 'viem'
 
-import { OnChainProvider, Pool, PoolType, V2Pool, StablePool, V3Pool } from '../../types'
 import { pancakePairABI } from '../../../abis/IPancakePair'
 import { stableSwapPairABI } from '../../../abis/StableSwapPair'
-import { pancakeV3PoolABI } from '../../../abis/IPancakeV3Pool'
 import { getStableSwapPools } from '../../../constants/stableSwap'
+import { OnChainProvider, Pool, PoolType, StablePool, V2Pool, V3Pool } from '../../types'
 import { computeV2PoolAddress, computeV3PoolAddress } from '../../utils'
 import { PoolMeta, V3PoolMeta } from './internalTypes'
 
