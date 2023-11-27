@@ -1,14 +1,24 @@
+import { usePreviousValue } from '@pancakeswap/hooks'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { GaugeVoting, useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGuages'
 
 export const useGaugeRows = () => {
   const gauges = useGaugesVoting()
+  const { account } = useAccountActiveChain()
+  const previousAccount = usePreviousValue(account)
   const { data: prevVotedGauges, refetch } = useUserVoteGauges()
   const [selectRows, setSelectRows] = useState<GaugeVoting['hash'][]>([])
   const rows = useMemo(() => {
     return gauges?.filter((gauge) => selectRows.includes(gauge.hash))
   }, [gauges, selectRows])
+
+  useEffect(() => {
+    if (account !== previousAccount) {
+      setSelectRows([])
+    }
+  }, [account, previousAccount, selectRows])
 
   // add all gauges to selectRows when user has voted gauges
   useEffect(() => {
