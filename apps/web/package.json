@@ -114,6 +114,8 @@
     "uuid": "^8.0.0",
     "viem": "^1.15.1",
     "wagmi": "^1.4.3",
+    "winston": "^3.11.0",
+    "winston-transport": "^4.6.0",
     "zod": "^3.22.3"
   },
   "devDependencies": {
