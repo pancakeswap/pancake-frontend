@@ -1,17 +1,14 @@
-import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from 'next/server'
-import { shouldGeoBlock } from '@pancakeswap/utils/geoBlock'
-import { MiddlewareFactory } from './types'
+import { NextFetchEvent, NextMiddleware } from 'next/server'
+import { MiddlewareFactory, ModifiedNextReq } from './types'
 
 export const withUserIpHeaders: MiddlewareFactory = (next: NextMiddleware) => {
-  return async (request: NextRequest, _next: NextFetchEvent) => {
+  return async (request: ModifiedNextReq, _next: NextFetchEvent) => {
     let ip = request.ip ?? request.headers.get('x-real-ip')
     const forwardedFor = request.headers.get('x-forwarded-for')
+    if (!ip && forwardedFor) ip = forwardedFor.split(',').at(0) ?? ip
 
-    if (!ip && forwardedFor) ip = forwardedFor.split(',').at(0) ?? 'Unknown'
-    if (!ip) return NextResponse.next()
-
-    request.headers.set('user-ip', ip)
-    const res = await next(request, _next)
-    return res
+    // eslint-disable-next-line no-param-reassign
+    request.userIp = ip
+    return next(request, _next)
   }
 }

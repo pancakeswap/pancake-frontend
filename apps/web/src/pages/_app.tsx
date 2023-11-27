@@ -12,13 +12,9 @@ import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
 import useUserAgent from 'hooks/useUserAgent'
 import { NextPage } from 'next'
-import type { AppContext, AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import { ABTestingManagerProvider } from 'contexts/ABTestingContext/ABTestingContext'
-import { FEATURE_FLAGS } from 'contexts/ABTestingContext/config'
-// eslint-disable-next-line import/no-named-default
-import { default as MainApp } from 'next/app'
 import Script from 'next/script'
 import { Fragment } from 'react'
 import { DefaultSeo } from 'next-seo'
@@ -62,13 +58,10 @@ function MPGlobalHooks() {
   return null
 }
 
-function MyApp(
-  props: AppProps<{ initialReduxState: any; dehydratedState: any }> & {
-    ABTestUserResults: { [flag in FEATURE_FLAGS]: boolean }
-  },
-) {
-  const { pageProps, Component, ABTestUserResults } = props
+function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>) {
+  const { pageProps, Component } = props
   const store = useStore(pageProps.initialReduxState)
+
   return (
     <>
       <Head>
@@ -87,25 +80,23 @@ function MyApp(
         )}
       </Head>
       <DefaultSeo {...SEO} />
-      <ABTestingManagerProvider ABTestUserResults={ABTestUserResults}>
-        <Providers store={store} dehydratedState={pageProps.dehydratedState}>
-          <PageMeta />
-          {(Component as NextPageWithLayout).Meta && (
-            // @ts-ignore
-            <Component.Meta {...pageProps} />
-          )}
-          <Blocklist>
-            {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
-            <ResetCSS />
-            <GlobalStyle />
-            <GlobalCheckClaimStatus excludeLocations={[]} />
-            <PersistGate loading={null} persistor={persistor}>
-              <Updaters />
-              <App {...props} />
-            </PersistGate>
-          </Blocklist>
-        </Providers>
-      </ABTestingManagerProvider>
+      <Providers store={store} dehydratedState={pageProps.dehydratedState}>
+        <PageMeta />
+        {(Component as NextPageWithLayout).Meta && (
+          // @ts-ignore
+          <Component.Meta {...pageProps} />
+        )}
+        <Blocklist>
+          {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
+          <ResetCSS />
+          <GlobalStyle />
+          <GlobalCheckClaimStatus excludeLocations={[]} />
+          <PersistGate loading={null} persistor={persistor}>
+            <Updaters />
+            <App {...props} />
+          </PersistGate>
+        </Blocklist>
+      </Providers>
       <Script
         strategy="afterInteractive"
         id="google-tag"
@@ -172,20 +163,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
     </ProductionErrorBoundary>
   )
-}
-
-MyApp.getInitialProps = async (context: AppContext) => {
-  const ctx = await MainApp.getInitialProps(context)
-
-  // get the middleware feature flag headers
-  const featureFlagHeaders = context.ctx.req?.headers
-  const ABTestUserResults: { [flag: string]: boolean } = {}
-  // for each header result store it in map for client to consume
-  Object.values(FEATURE_FLAGS).forEach((flag) => {
-    const flagHeader = featureFlagHeaders?.[`ctx-${flag}`]
-    ABTestUserResults[flag] = flagHeader === 'true'
-  })
-  return { ...ctx, ABTestUserResults }
 }
 
 export default MyApp

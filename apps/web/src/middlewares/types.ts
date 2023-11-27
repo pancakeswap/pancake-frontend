@@ -1,14 +1,9 @@
-import { FEATURE_FLAGS } from 'contexts/ABTestingContext/config'
-import { NextMiddleware } from 'next/server'
+import { NextMiddleware, NextRequest } from 'next/server'
 
 export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware
 
-export type FeatureFlagInfo = {
-  featureFlagKey: FEATURE_FLAGS
-  probabilityThreshold: number
-  whitelistedIps: string[]
+export interface ModifiedNextReq extends NextRequest {
+  userIp?: string | null
 }
 
-export type AbTestingMap = {
-  [flag in FEATURE_FLAGS]: FeatureFlagInfo
-}
+export type EnumValues<T> = T extends { [key: string]: infer U } ? U : never
