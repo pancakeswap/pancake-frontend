@@ -23,6 +23,7 @@
     "test": "vitest --run",
     "update:snapshot": "vitest -u",
     "coverage": "vitest run --coverage",
+    "changeset": "changeset",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
