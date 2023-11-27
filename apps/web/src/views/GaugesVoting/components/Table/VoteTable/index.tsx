@@ -12,7 +12,6 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import dayjs from 'dayjs'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -42,7 +41,8 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 export const VoteTable = () => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
+  // const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
+  const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
@@ -227,11 +227,8 @@ export const VoteTable = () => {
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
                 <Text>
-                  {t('Your positions are unlocking on %date%.', {
-                    date: dayjs.unix(cakeUnlockTime).format('DD MMM YYYY'),
-                  })}
                   {t(
-                    'Therefore, you have no veCAKE balance at the end of the current voting epoch while votes are being tallied.',
+                    'Your positions are unlocking soon. Therefore, you have no veCAKE balance at the end of the current voting epoch while votes are being tallied. ',
                   )}
                 </Text>
                 <FlexGap alignItems="center" gap="0.2em">
