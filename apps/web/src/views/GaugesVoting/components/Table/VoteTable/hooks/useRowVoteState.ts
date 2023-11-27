@@ -62,13 +62,13 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
   }, [veCakeBalance, voteValue])
 
-  // reinit vote value if user vote locked
+  // init vote value if still default
   useEffect(() => {
-    if (voteLocked && userVote?.hash && (!vote?.hash || vote?.hash === '0x')) {
+    if (userVote?.hash && (!vote?.hash || vote?.hash === '0x')) {
       onChange({
         hash: userVote.hash as Hex,
         power: voteValue,
-        locked: true,
+        locked: voteLocked,
       })
     }
   }, [onChange, userVote?.hash, vote, voteLocked, voteValue])
