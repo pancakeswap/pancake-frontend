@@ -47,6 +47,6 @@ export const useGaugesVoting = () => {
 
   return {
     data,
-    isLoading,
+    isLoading: isLoading || data?.length === 0,
   }
 }
