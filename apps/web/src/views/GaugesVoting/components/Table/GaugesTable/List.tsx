@@ -1,6 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/sdk'
-import { Box, Card, CardBody, ErrorIcon, Flex, FlexGap, PaginationButton, Tag, Text } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  Box,
+  Card,
+  CardBody,
+  ErrorIcon,
+  Flex,
+  FlexGap,
+  PaginationButton,
+  Skeleton,
+  Tag,
+  Text,
+} from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -43,6 +55,7 @@ type PaginationProps = {
 type ListProps = {
   totalGaugesWeight: number
   data?: GaugeVoting[]
+  isLoading?: boolean
   selectable?: boolean
   selectRows?: Array<GaugeVoting & { locked?: boolean }>
   onRowSelect?: (hash: GaugeVoting['hash']) => void
@@ -53,6 +66,7 @@ export function GaugesList({
   pagination = true,
   pageSize = 5,
   data,
+  isLoading = true,
   totalGaugesWeight,
   selectable,
   selectRows,
@@ -85,14 +99,28 @@ export function GaugesList({
     />
   ))
 
+  const Loading = (
+    <AutoColumn gap="16px" py="16px">
+      <Skeleton height={132} />
+      <Skeleton height={132} />
+      <Skeleton height={132} />
+    </AutoColumn>
+  )
+
   const paginationButton = pagination ? (
     <PaginationButton showMaxPageText maxPage={maxPage} currentPage={page} setCurrentPage={setPage} />
   ) : null
 
   return (
     <ListContainer {...props} flexDirection="column">
-      {list}
-      {paginationButton}
+      {isLoading ? (
+        Loading
+      ) : (
+        <>
+          {list}
+          {paginationButton}
+        </>
+      )}
     </ListContainer>
   )
 }

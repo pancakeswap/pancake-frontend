@@ -5,7 +5,7 @@ import { GaugeVoting, useGaugesVoting } from 'views/GaugesVoting/hooks/useGauges
 import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGuages'
 
 export const useGaugeRows = () => {
-  const { data: gauges } = useGaugesVoting()
+  const { data: gauges, isLoading } = useGaugesVoting()
   const { account } = useAccountActiveChain()
   const previousAccount = usePreviousValue(account)
   const { data: prevVotedGauges, refetch } = useUserVoteGauges()
@@ -40,6 +40,7 @@ export const useGaugeRows = () => {
 
   return {
     rows,
+    isLoading,
     onRowSelect,
     refetch,
   }

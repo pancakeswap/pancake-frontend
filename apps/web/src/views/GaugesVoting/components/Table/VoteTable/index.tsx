@@ -1,5 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Button, Card, FlexGap, Link, Message, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  Box,
+  Button,
+  Card,
+  FlexGap,
+  Link,
+  Message,
+  Skeleton,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import dayjs from 'dayjs'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -46,7 +57,7 @@ export const VoteTable = () => {
     return Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
   }, [votes])
 
-  const { rows, onRowSelect, refetch } = useGaugeRows()
+  const { rows, onRowSelect, refetch, isLoading } = useGaugeRows()
   const { isDesktop } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
     return rows?.map((row) => {
@@ -132,38 +143,57 @@ export const VoteTable = () => {
     <>
       <TableHeader count={rows?.length} />
 
-      {rows?.length ? (
-        <>
-          <Scrollable expanded={expanded}>
-            {rows.map((row) => (
-              <TableRow
-                key={row.hash}
-                data={row}
-                vote={votes[row.hash]}
-                onChange={(v, isMax) => onVoteChange(v, isMax)}
-              />
-            ))}
-          </Scrollable>
-          {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
-        </>
-      ) : (
-        <EmptyTable />
-      )}
+      {isLoading ? (
+        <AutoColumn gap="16px" py="16px">
+          <Skeleton height={64} />
+          <Skeleton height={64} />
+          <Skeleton height={64} />
+        </AutoColumn>
+      ) : null}
+
+      {!isLoading ? (
+        rows?.length ? (
+          <>
+            <Scrollable expanded={expanded}>
+              {rows.map((row) => (
+                <TableRow
+                  key={row.hash}
+                  data={row}
+                  vote={votes[row.hash]}
+                  onChange={(v, isMax) => onVoteChange(v, isMax)}
+                />
+              ))}
+            </Scrollable>
+            {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
+          </>
+        ) : (
+          <EmptyTable />
+        )
+      ) : null}
     </>
   ) : (
     <>
-      {rows?.length ? (
-        rows.map((row) => (
-          <VoteListItem
-            key={row.hash}
-            data={row}
-            vote={votes[row.hash]}
-            onChange={(v, isMax) => onVoteChange(v, isMax)}
-          />
-        ))
-      ) : (
-        <EmptyTable />
-      )}
+      {isLoading ? (
+        <AutoColumn gap="16px" py="16px">
+          <Skeleton height={134} />
+          <Skeleton height={134} />
+          <Skeleton height={34} />
+        </AutoColumn>
+      ) : null}
+      {!isLoading ? (
+        rows?.length ? (
+          rows.map((row) => (
+            <VoteListItem
+              key={row.hash}
+              data={row}
+              vote={votes[row.hash]}
+              onChange={(v, isMax) => onVoteChange(v, isMax)}
+            />
+          ))
+        ) : (
+          <EmptyTable />
+        )
+      ) : null}
     </>
   )
 

@@ -100,9 +100,9 @@ const GaugesVoting = () => {
             </Box>
           </Grid>
           {isDesktop ? (
-            <GaugesTable mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
+            <GaugesTable mt="1.5em" data={gauges} isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} />
           ) : (
-            <GaugesList mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
+            <GaugesList mt="1.5em" data={gauges} isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} />
           )}
         </Card>
         <Box mt="80px">

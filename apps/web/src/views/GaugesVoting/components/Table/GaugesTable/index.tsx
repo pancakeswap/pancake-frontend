@@ -1,3 +1,4 @@
+import { AutoColumn, Skeleton } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo, useState } from 'react'
@@ -27,11 +28,12 @@ export const GaugesTable: React.FC<
     scrollStyle?: React.CSSProperties
     totalGaugesWeight: number
     data?: GaugeVoting[]
+    isLoading?: boolean
     selectable?: boolean
     selectRows?: Array<GaugeVoting & { locked?: boolean }>
     onRowSelect?: (hash: GaugeVoting['hash']) => void
   } & SpaceProps
-> = ({ scrollStyle, data, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
+> = ({ scrollStyle, data, isLoading = true, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
   const [expanded, setExpanded] = useState(false)
   const [sortKey, setSortKey] = useState<SortField | undefined>()
   const [sortBy, setSortBy] = useState<SortBy | undefined>()
@@ -50,20 +52,30 @@ export const GaugesTable: React.FC<
   return (
     <Table {...props}>
       <TableHeader onSort={handleSort} selectable={selectable} />
-      <Scrollable expanded={expanded} style={scrollStyle}>
-        {sortedData?.map((row) => (
-          <TableRow
-            key={`${row.hash}-${row.pid}`}
-            data={row}
-            locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
-            selectable={selectable}
-            selected={selectRows?.some((r) => r.hash === row.hash)}
-            onSelect={onRowSelect}
-            totalGaugesWeight={totalGaugesWeight}
-          />
-        ))}
-      </Scrollable>
-      <ExpandRow onCollapse={() => setExpanded(!expanded)} />
+      {isLoading ? (
+        <AutoColumn gap="16px" py="16px">
+          <Skeleton height={64} />
+          <Skeleton height={64} />
+          <Skeleton height={64} />
+        </AutoColumn>
+      ) : (
+        <>
+          <Scrollable expanded={expanded} style={scrollStyle}>
+            {sortedData?.map((row) => (
+              <TableRow
+                key={`${row.hash}-${row.pid}`}
+                data={row}
+                locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
+                selectable={selectable}
+                selected={selectRows?.some((r) => r.hash === row.hash)}
+                onSelect={onRowSelect}
+                totalGaugesWeight={totalGaugesWeight}
+              />
+            ))}
+          </Scrollable>
+          <ExpandRow onCollapse={() => setExpanded(!expanded)} />
+        </>
+      )}
     </Table>
   )
 }
