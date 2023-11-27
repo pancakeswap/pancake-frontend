@@ -28,3 +28,14 @@ export const useNextEpochStart = (): number => {
 
   return useMemo(() => currentEpochStart + TWO_WEEKS, [currentEpochStart])
 }
+
+export const useEpochOnTally = (): boolean => {
+  const epochEnd = useCurrentEpochEnd()
+  const nextEpochStart = useNextEpochStart()
+  const currentTimestamp = useCurrentBlockTimestamp()
+  const onTally = useMemo(() => {
+    return epochEnd < currentTimestamp && currentTimestamp < nextEpochStart
+  }, [epochEnd, nextEpochStart, currentTimestamp])
+
+  return onTally
+}

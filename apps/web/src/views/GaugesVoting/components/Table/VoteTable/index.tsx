@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { Hex } from 'viem'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { useEpochOnTally } from 'views/GaugesVoting/hooks/useEpochTime'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
@@ -35,6 +36,7 @@ export const VoteTable = () => {
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
   const epochPower = useEpochVotePower()
+  const onTally = useEpochOnTally()
   const [expanded, setExpanded] = useState(false)
   const [votes, setVotes] = useState<Record<Hex, UserVote>>({})
   const voteSum = useMemo(() => {
@@ -54,6 +56,14 @@ export const VoteTable = () => {
       }
     })
   }, [votes, rows])
+
+  const showNoCakeLockedWarning = useMemo(() => {
+    return !cakeLocked && rowsWithLock?.length
+  }, [cakeLocked, rowsWithLock])
+
+  const showOnTallyWarning = useMemo(() => {
+    return onTally && rowsWithLock?.length && cakeLocked
+  }, [cakeLocked, onTally, rowsWithLock?.length])
 
   const onVoteChange = (value: UserVote, isMax?: boolean) => {
     const { hash, power, locked } = value
@@ -83,6 +93,8 @@ export const VoteTable = () => {
     const lockedSum = Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
     const newAddSum = Object.values(votes).reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
 
+    // voting ended
+    if (onTally) return true
     // no epoch power
     if (epochPower === 0n) return true
     // no new votes
@@ -92,7 +104,7 @@ export const VoteTable = () => {
     // should allow summed votes to be 100%, if new vote added
     if (newAddSum + lockedSum > 100) return true
     return false
-  }, [epochPower, isPending, votes])
+  }, [epochPower, isPending, onTally, votes])
   const leftGaugesCanAdd = useMemo(() => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])
@@ -202,7 +214,7 @@ export const VoteTable = () => {
             </Message>
           </Box>
         ) : null}
-        {!cakeLocked && rowsWithLock?.length ? (
+        {showNoCakeLockedWarning ? (
           <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
@@ -214,6 +226,15 @@ export const VoteTable = () => {
                   </Link>
                   {t('for 3 weeks or more.')}
                 </FlexGap>
+              </AutoColumn>
+            </Message>
+          </Box>
+        ) : null}
+        {showOnTallyWarning ? (
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+            <Message variant="warning" showIcon>
+              <AutoColumn gap="8px">
+                <Text>{t('Votes are currently being adjusted and tallied. No more votes can be casted.')}</Text>
               </AutoColumn>
             </Message>
           </Box>

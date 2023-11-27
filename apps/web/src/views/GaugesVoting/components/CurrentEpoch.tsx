@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useEpochRewards } from '../hooks/useEpochRewards'
-import { useCurrentEpochEnd } from '../hooks/useEpochTime'
+import { useCurrentEpochEnd, useEpochOnTally, useNextEpochStart } from '../hooks/useEpochTime'
 import { useGaugesTotalWeight } from '../hooks/useGaugesTotalWeight'
 
 export const CurrentEpoch = () => {
@@ -14,28 +14,58 @@ export const CurrentEpoch = () => {
   const totalWeight = useGaugesTotalWeight()
   const weeklyRewards = useEpochRewards()
   const epochEnd = useCurrentEpochEnd()
+  const nextEpochStart = useNextEpochStart()
   const currentTimestamp = useCurrentBlockTimestamp()
+  const onTally = useEpochOnTally()
   const { isDesktop } = useMatchBreakpoints()
 
   return (
     <Card isActive innerCardProps={{ padding: isDesktop ? '1.5em' : '1em' }}>
       <FlexGap gap="8px" flexDirection="column">
         <AutoRow justifyContent="space-between">
-          <Text bold fontSize={20}>
-            {t('Current Epoch')}
-          </Text>
+          <FlexGap gap="8px" alignItems="baseline" justifyContent="space-between" width="100%">
+            <Text bold fontSize={20}>
+              {t('Current EPOCH')}
+            </Text>
+            <FlexGap alignItems="baseline" gap="2px">
+              <Tooltips
+                content={t('Results for the current epoch will be snapshotted and tallied at 00:00 UTC on %date%.', {
+                  date: dayjs.unix(nextEpochStart).format('DD MMM YYYY'),
+                })}
+              >
+                <TooltipText fontSize={14} color="textSubtle">
+                  {t('snapshots in')}
+                </TooltipText>
+              </Tooltips>
+              <Text bold fontSize={16}>
+                {dayjs.unix(nextEpochStart).from(dayjs.unix(currentTimestamp), true)}
+              </Text>
+              <Text fontSize={14}>({dayjs.unix(nextEpochStart).format('DD MMM YYYY')}) </Text>
+            </FlexGap>
+          </FlexGap>
 
           <FlexGap gap="8px" alignItems="baseline" justifyContent="space-between" width="100%">
-            <Tooltips content={t('The voting results will be tallied and applied after the current epoch is ended.')}>
+            <Tooltips
+              content={t(
+                'Cast your vote before 00:00 UTC, %date% on this day to include them into the current epoch.',
+                { date: dayjs.unix(epochEnd).format('DD MMM YYYY') },
+              )}
+            >
               <TooltipText fontSize={14} color="textSubtle">
-                {t('Ends in')}
+                {t('Voting ends in')}
               </TooltipText>
             </Tooltips>
             <FlexGap alignItems="baseline" gap="2px">
               <Text bold fontSize={16}>
-                {dayjs.unix(epochEnd).from(dayjs.unix(currentTimestamp))}
+                {onTally ? t('Ended, ') : dayjs.unix(epochEnd).from(dayjs.unix(currentTimestamp), true)}
               </Text>
-              <Text fontSize={14}>({dayjs.unix(epochEnd).format('DD MMM YYYY')}) </Text>
+              {onTally ? (
+                <Text fontSize={14} bold>
+                  {t('Tallying')}
+                </Text>
+              ) : (
+                <Text fontSize={14}>({dayjs.unix(epochEnd).format('DD MMM YYYY')}) </Text>
+              )}
             </FlexGap>
           </FlexGap>
         </AutoRow>
