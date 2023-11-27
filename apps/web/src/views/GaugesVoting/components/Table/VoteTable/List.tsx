@@ -21,7 +21,7 @@ type Props = {
   style?: CSSProperties
 } & RowProps
 
-export function VoteListItem({ style, data, vote = DEFAULT_VOTE, onChange, ...props }: Props) {
+export function VoteListItem({ style, data, vote = { ...DEFAULT_VOTE }, onChange, ...props }: Props) {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const userVote = useUserVote(data)

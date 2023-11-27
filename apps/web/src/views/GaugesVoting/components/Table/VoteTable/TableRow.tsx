@@ -21,7 +21,7 @@ const debugFormat = (unix?: bigint | number) => {
   return dayjs.unix(Number(unix)).format('YYYY-MM-DD HH:mm:ss')
 }
 
-export const TableRow: React.FC<RowProps> = ({ data, vote = DEFAULT_VOTE, onChange }) => {
+export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE }, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
@@ -32,7 +32,6 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = DEFAULT_VOTE, onChan
       vote,
       onChange,
     })
-
   const onMax = () => {
     onChange(vote, true)
   }

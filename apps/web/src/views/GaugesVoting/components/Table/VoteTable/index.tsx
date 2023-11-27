@@ -31,6 +31,7 @@ export const VoteTable = () => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
+  const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const gaugesCount = useGaugesVotingCount()
   const [isOpen, setIsOpen] = useState(false)
   const epochPower = useEpochVotePower()
@@ -98,10 +99,12 @@ export const VoteTable = () => {
 
   const submitVote = useCallback(async () => {
     const voteGauges = Object.values(votes)
-      .map((vote, i) => {
+      .map((vote) => {
         if (!vote.locked && Number(vote.power)) {
+          const row = rows?.find((r) => r.hash === vote.hash)
+          if (!row) return undefined
           return {
-            ...rows?.[i],
+            ...row,
             weight: Number((Number(vote.power) * 100).toFixed(0)),
           }
         }
@@ -154,16 +157,14 @@ export const VoteTable = () => {
 
   // user unselect row
   useEffect(() => {
-    if (rows?.length) {
-      if (rows.length < Object.values(votes).length) {
-        const newVotes = { ...votes }
-        rows.forEach((row) => {
-          if (!newVotes[row.hash]) {
-            delete newVotes[row.hash]
-          }
-        })
-        setVotes(newVotes)
-      }
+    if (rows && rows?.length < Object.values(votes).length) {
+      const newVotes = { ...votes }
+      Object.values(votes).forEach((v) => {
+        if (!rows?.find((r) => r.hash === v.hash)) {
+          delete newVotes[v.hash]
+        }
+      })
+      setVotes(newVotes)
     }
   }, [rows, rows?.length, votes])
 
@@ -196,6 +197,22 @@ export const VoteTable = () => {
                   <Link href="/cake-staking">
                     <Text bold>{t('extend your lock >>')}</Text>
                   </Link>
+                </FlexGap>
+              </AutoColumn>
+            </Message>
+          </Box>
+        ) : null}
+        {!cakeLocked && rowsWithLock?.length ? (
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+            <Message variant="warning" showIcon>
+              <AutoColumn gap="8px">
+                <Text>{t('You have no locked CAKE.')}</Text>
+                <FlexGap alignItems="center" gap="0.2em">
+                  {t('To cast your vote, ')}
+                  <Link href="/cake-staking">
+                    <Text bold>{t('lock your CAKE')}</Text>
+                  </Link>
+                  {t('for 3 weeks or more.')}
                 </FlexGap>
               </AutoColumn>
             </Message>
