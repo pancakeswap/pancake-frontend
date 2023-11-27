@@ -17,13 +17,13 @@ import {
   WarningIcon,
 } from '@pancakeswap/uikit'
 import { atom, useAtom } from 'jotai'
-import { lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
+import { PropsWithChildren, Suspense, lazy, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
   desktopWalletSelectionClass,
   modalWrapperClass,
-  walletIconClass,
   promotedGradientClass,
+  walletIconClass,
   walletSelectWrapperClass,
 } from './WalletModal.css'
 
@@ -59,7 +59,7 @@ interface WalletModalV2Props<T = unknown> extends ModalV2Props {
   login: (connectorId: T) => Promise<any>
   docLink: string
   docText: string
-  onWalletConnectCallBack?: () => void
+  onWalletConnectCallBack?: (walletTitle?: string) => void
 }
 
 export class WalletConnectorNotFoundError extends Error {}
@@ -416,11 +416,11 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
         .then((v) => {
           if (v) {
             localStorage.setItem(walletLocalStorageKey, wallet.title)
-          }
-          try {
-            onWalletConnectCallBack?.()
-          } catch (e) {
-            console.error(e)
+            try {
+              onWalletConnectCallBack?.(wallet.title)
+            } catch (e) {
+              console.error(e)
+            }
           }
         })
         .catch((err) => {
