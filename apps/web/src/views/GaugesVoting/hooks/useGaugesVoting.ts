@@ -42,9 +42,6 @@ export const useGaugesVoting = () => {
     },
     {
       enabled: gauges && gauges?.length > 0,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
   )
 
