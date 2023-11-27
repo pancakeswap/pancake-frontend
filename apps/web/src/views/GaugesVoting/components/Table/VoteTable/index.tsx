@@ -77,7 +77,7 @@ export const VoteTable = () => {
   }, [cakeLocked, onTally, rowsWithLock?.length])
 
   const onVoteChange = (value: UserVote, isMax?: boolean) => {
-    const { hash, power, locked } = value
+    const { hash, power } = value
 
     if (!hash || hash === '0x') return
 
