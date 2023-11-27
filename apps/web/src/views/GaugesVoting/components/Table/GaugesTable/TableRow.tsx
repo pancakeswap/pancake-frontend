@@ -115,7 +115,7 @@ export const TableRow: React.FC<{
             <Text color={hitMaxCap ? 'failure' : ''} bold>
               {formatLocalisedCompactNumber(currentWeight, true)}
             </Text>
-            <Text color={hitMaxCap ? 'failure' : ''}>
+            <Text color={hitMaxCap ? 'failure' : ''} ml="2px">
               ({hitMaxCap ? maxCapPercent.toSignificant(2) : currentWeightPercent.toSignificant(2)}%)
             </Text>
             {hitMaxCap ? <ErrorIcon color="failure" style={{ marginBottom: '-2px' }} /> : null}

@@ -37,7 +37,7 @@ export const CurrentEpoch = () => {
             <FlexGap
               justifyContent={['space-between', 'space-between', 'flex-end']}
               alignItems="baseline"
-              gap="2px"
+              gap="4px"
               width={isDesktop ? 'auto' : '100%'}
             >
               <Tooltips
