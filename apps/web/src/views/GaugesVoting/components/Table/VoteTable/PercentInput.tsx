@@ -9,7 +9,7 @@ export type PercentInputProps = Omit<BalanceInputProps, 'unit' | 'switchEditingU
 
 const StyledInput = styled(UIKitStyledInput)`
   height: 20px;
-  width: 25px;
+  width: 35px;
 `
 
 const StyledPercentInput = styled(StyledBalanceInput)`

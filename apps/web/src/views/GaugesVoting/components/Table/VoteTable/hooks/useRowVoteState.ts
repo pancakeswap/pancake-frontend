@@ -43,7 +43,7 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
 
   const currentVotePercent = useMemo(() => {
     return userVote?.power && Number(currentVoteWeight) > 0
-      ? new Percent(userVote?.power, 10000).toSignificant(2)
+      ? String(Number(new Percent(userVote?.power, 10000).toFixed(2)))
       : undefined
   }, [currentVoteWeight, userVote?.power])
 

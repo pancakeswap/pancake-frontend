@@ -80,7 +80,7 @@ export const VoteTable = () => {
       // @note: if epoch power is 0, the vote action will not works to the final result
       // open it just for better UX understanding vote power is linear changed
       // newVotes[index].power = 100 - sum > 0 && epochPower > 0n ? String(100 - sum) : '0'
-      newVotes[hash].power = 100 - sum > 0 ? String(100 - sum) : '0'
+      newVotes[hash].power = 100 - sum > 0 ? String(Number((100 - sum).toFixed(2))) : '0'
     } else {
       newVotes[hash] = value
     }
