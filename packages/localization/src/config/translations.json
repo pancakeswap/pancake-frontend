@@ -3054,13 +3054,12 @@
   "You have no locked CAKE.": "You have no locked CAKE.",
   "To cast your vote, lock your CAKE for 3 weeks or more.": "To cast your vote, lock your CAKE for 3 weeks or more.",
   "This gauge has hit its voting cap. It can continue to receive votes, however, the vote numbers and allocation % will not increase until other gauges gain more votes.": "This gauge has hit its voting cap. It can continue to receive votes, however, the vote numbers and allocation % will not increase until other gauges gain more votes.",
-  "Your positions are unlocking on %date%.": "Your positions are unlocking on %date%.",
+
   "To cast your vote, ": "To cast your vote, ",
   "extend your lock >>": "extend your lock >>",
   "lock your CAKE": "lock your CAKE",
   "for 3 weeks or more.": "for 3 weeks or more.",
   "Votes are currently being adjusted and tallied. No more votes can be casted.": "Votes are currently being adjusted and tallied. No more votes can be casted.",
-  "Therefore, you have no veCAKE balance at the end of the current voting epoch while votes are being tallied.": "Therefore, you have no veCAKE balance at the end of the current voting epoch while votes are being tallied.",
   "proposed weights": "proposed weights",
   "Results are updated weekly. Vote numbers are estimations based on the veCAKE balance at 00:00 UTC on the upcoming Thursday.": "Results are updated weekly. Vote numbers are estimations based on the veCAKE balance at 00:00 UTC on the upcoming Thursday.",
   "Your vote has been submitted successfully.": "Your vote has been submitted successfully."
