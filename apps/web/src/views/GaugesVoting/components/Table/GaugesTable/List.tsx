@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/sdk'
-import { Box, Card, CardBody, Flex, FlexGap, PaginationButton, Tag, Text } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, ErrorIcon, Flex, FlexGap, PaginationButton, Tag, Text } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -134,14 +134,19 @@ export function GaugeIdentifierDetails({ data }: ListItemProps) {
 
 export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
   const { t } = useTranslation()
-  const percentWeight = useMemo(() => {
-    return new Percent(data?.weight, totalGaugesWeight || 1).toSignificant(2)
-  }, [data?.weight, totalGaugesWeight])
-  const percentCaps = useMemo(() => {
-    return new Percent(data?.maxVoteCap, 10000).toSignificant(2)
+  const maxCapPercent = useMemo(() => {
+    return new Percent(data?.maxVoteCap, 10000)
   }, [data?.maxVoteCap])
 
-  const weight = useMemo(() => {
+  const currentWeightPercent = useMemo(() => {
+    return new Percent(data?.weight, totalGaugesWeight || 1)
+  }, [data?.weight, totalGaugesWeight])
+
+  const hitMaxCap = useMemo(() => {
+    return maxCapPercent.greaterThan(0) && currentWeightPercent.greaterThan(maxCapPercent)
+  }, [maxCapPercent, currentWeightPercent])
+
+  const currentWeight = useMemo(() => {
     return getBalanceNumber(new BN(data?.weight || 0))
   }, [data?.weight])
 
@@ -151,9 +156,15 @@ export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
       <FlexGap flexDirection="column" alignSelf="stretch" gap="0.5em">
         <Flex justifyContent="space-between" alignSelf="stretch">
           <Text>{t('Votes')}</Text>
-          <Text>
-            {formatLocalisedCompactNumber(weight, true)}({percentWeight}%)
-          </Text>
+          <Flex flexWrap="nowrap">
+            <Text color={hitMaxCap ? 'failure' : ''} bold>
+              {formatLocalisedCompactNumber(currentWeight, true)}
+            </Text>
+            <Text color={hitMaxCap ? 'failure' : ''}>
+              ({hitMaxCap ? maxCapPercent.toSignificant(2) : currentWeightPercent.toSignificant(2)}%)
+            </Text>
+            {hitMaxCap ? <ErrorIcon color="failure" style={{ marginBottom: '-2px' }} /> : null}
+          </Flex>
         </Flex>
         <Flex justifyContent="space-between" alignSelf="stretch">
           <Text>{t('Boost')}</Text>
@@ -161,7 +172,10 @@ export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
         </Flex>
         <Flex justifyContent="space-between" alignSelf="stretch">
           <Text>{t('Caps')}</Text>
-          <Text>{percentCaps}%</Text>
+          <Text bold={hitMaxCap}>
+            {hitMaxCap ? 'MAX ' : ''}
+            {maxCapPercent.toSignificant(2)}%
+          </Text>
         </Flex>
       </FlexGap>
     </FlexGap>
