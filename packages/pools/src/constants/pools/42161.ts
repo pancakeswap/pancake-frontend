@@ -5,12 +5,12 @@ import { PoolCategory, SerializedPool } from '../../types'
 
 export const livePools: SerializedPool[] = [
   {
-    sousId: 2,
+    sousId: 3,
     stakingToken: arbitrumTokens.alp,
     earningToken: arbitrumTokens.cake,
-    contractAddress: '0x0639c5715EC308E16f089c96C0C109302d76FA81',
+    contractAddress: '0x85146C0c5968d9640121eebd13030c99298f87b3',
     poolCategory: PoolCategory.CORE,
-    tokenPerSecond: '0.01177',
+    tokenPerSecond: '0.00615',
     version: 3,
   },
 ].map((p) => ({
@@ -22,6 +22,15 @@ export const livePools: SerializedPool[] = [
 
 // known finished pools
 export const finishedPools: SerializedPool[] = [
+  {
+    sousId: 2,
+    stakingToken: arbitrumTokens.alp,
+    earningToken: arbitrumTokens.cake,
+    contractAddress: '0x0639c5715EC308E16f089c96C0C109302d76FA81',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.01177',
+    version: 3,
+  },
   {
     sousId: 1,
     stakingToken: arbitrumTokens.alp,
