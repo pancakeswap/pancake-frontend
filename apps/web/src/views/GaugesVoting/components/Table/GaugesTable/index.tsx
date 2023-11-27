@@ -33,7 +33,7 @@ export const GaugesTable: React.FC<
     selectRows?: Array<GaugeVoting & { locked?: boolean }>
     onRowSelect?: (hash: GaugeVoting['hash']) => void
   } & SpaceProps
-> = ({ scrollStyle, data, isLoading = true, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
+> = ({ scrollStyle, data, isLoading, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
   const [expanded, setExpanded] = useState(false)
   const [sortKey, setSortKey] = useState<SortField | undefined>()
   const [sortBy, setSortBy] = useState<SortBy | undefined>()

@@ -66,7 +66,7 @@ export function GaugesList({
   pagination = true,
   pageSize = 5,
   data,
-  isLoading = true,
+  isLoading,
   totalGaugesWeight,
   selectable,
   selectRows,

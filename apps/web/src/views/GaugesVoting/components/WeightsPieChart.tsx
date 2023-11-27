@@ -56,7 +56,7 @@ export const WeightsPieChart: React.FC<{
   data?: GaugeVoting[]
   totalGaugesWeight: number
   isLoading?: boolean
-}> = ({ data, totalGaugesWeight, isLoading = true }) => {
+}> = ({ data, totalGaugesWeight, isLoading }) => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
