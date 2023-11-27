@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { vaultsConfigChainMap } from '@pancakeswap/position-managers/constants'
 import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers/src/abi'
-import { pancakeV3PoolABI } from 'config/abi/IPancakeV3Pool'
+import { pancakeV3PoolABI } from '@pancakeswap/v3-sdk'
 import { publicClient } from 'utils/client'
 import { describe, expect, it } from 'vitest'
 
