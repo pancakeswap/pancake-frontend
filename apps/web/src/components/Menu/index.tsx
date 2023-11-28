@@ -30,7 +30,7 @@ const Menu = (props) => {
   const cakePrice = useCakePrice()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const { featureEnabled } = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.WebNotifications)
+  const featureEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.WebNotifications)
 
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
