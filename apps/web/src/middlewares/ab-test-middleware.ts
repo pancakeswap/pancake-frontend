@@ -1,5 +1,6 @@
 import { EXPERIMENTAL_FEATURES, EXPERIMENTAL_FEATURE_FLAG_MAP, FeatureRollOutConfig } from 'config/experminetalFeatures'
 import { NextFetchEvent, NextResponse } from 'next/server'
+import { generateEncodedQueryParams } from 'utils/datadog'
 import { EnumValues, MiddlewareFactory, ModifiedNextReq } from './types'
 
 type FeatureKeys = EnumValues<typeof EXPERIMENTAL_FEATURES>[]
@@ -36,18 +37,31 @@ export const getExperimentalFeatureAccessList = async (
 
 export const withABHeaders: MiddlewareFactory = () => {
   return async (request: ModifiedNextReq, _next: NextFetchEvent) => {
-    const ip = request.userIp
     const response = NextResponse.next()
-    if (!ip) return response
+    try {
+      const ip = request.userIp
+      if (!ip) return response
 
-    const featureFlagInfo = Object.values(EXPERIMENTAL_FEATURE_FLAG_MAP)
-    const featureFlagKeys = Object.keys(EXPERIMENTAL_FEATURE_FLAG_MAP) as FeatureKeys
-    const userWhitelistResults = await getExperimentalFeatureAccessList(ip, featureFlagInfo, response)
+      const featureFlagInfo = Object.values(EXPERIMENTAL_FEATURE_FLAG_MAP)
+      const featureFlagKeys = Object.keys(EXPERIMENTAL_FEATURE_FLAG_MAP) as FeatureKeys
+      const userWhitelistResults = await getExperimentalFeatureAccessList(ip, featureFlagInfo, response)
 
-    for (let i = 0; i < featureFlagKeys.length; i++) {
-      response.cookies.set(ctxKey(featureFlagKeys[i]), userWhitelistResults[i])
-      response.cookies.set(`${ctxKey(featureFlagKeys[i])}-user-ip`, ip)
+      for (let i = 0; i < featureFlagKeys.length; i++) {
+        response.cookies.set(ctxKey(featureFlagKeys[i]), userWhitelistResults[i])
+        response.cookies.set(`${ctxKey(featureFlagKeys[i])}-user-ip`, ip)
+      }
+      await fetch(
+        `http://localhost:3000/api/log?${generateEncodedQueryParams['web-notifications']({
+          ip,
+          userWhitelistResults,
+        })}`,
+      )
+      return response
+    } catch (error) {
+      await fetch(
+        `http://localhost:3000/api/log?datadogData=${generateEncodedQueryParams['web-notifications']({ error })}`,
+      )
+      return response
     }
-    return response
   }
 }
