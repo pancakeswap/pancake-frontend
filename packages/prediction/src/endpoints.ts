@@ -9,5 +9,5 @@ export const GRAPH_API_PREDICTION_CAKE = {
 }
 
 export const GRAPH_API_PREDICTION_ETH = {
-  [ChainId.ARBITRUM_GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-cake',
+  [ChainId.ARBITRUM_GOERLI]: 'https://api.thegraph.com/subgraphs/name/chef-cannoli/prediction-v2-arbitrum-goerli',
 }

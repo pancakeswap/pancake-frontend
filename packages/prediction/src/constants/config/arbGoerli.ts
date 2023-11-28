@@ -1,9 +1,9 @@
-import { arbitrumGoerliTokens } from '@pancakeswap/tokens'
 import { ChainId } from '@pancakeswap/chains'
-import { GRAPH_API_PREDICTION_ETH } from '../../endpoints'
-import { PredictionSupportedSymbol, PredictionConfig } from '../../type'
-import { predictionsETH } from '../../predictionContract'
+import { arbitrumGoerliTokens } from '@pancakeswap/tokens'
 import { chainlinkOracleETH } from '../../chainlinkOracleContract'
+import { GRAPH_API_PREDICTION_ETH } from '../../endpoints'
+import { predictionsETH } from '../../predictionContract'
+import { PredictionConfig, PredictionSupportedSymbol } from '../../type'
 
 export const predictions: Record<string, PredictionConfig> = {
   [PredictionSupportedSymbol.ETH]: {

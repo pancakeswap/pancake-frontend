@@ -2,9 +2,9 @@ import { ChainId } from '@pancakeswap/chains'
 import { useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { V3_SUBGRAPH_URLS, GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { GRAPH_API_PREDICTION_BNB } from '@pancakeswap/prediction'
+import { GRAPH_API_LOTTERY, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { SubgraphHealthIndicator, SubgraphHealthIndicatorProps } from './SubgraphHealthIndicator'
 
 interface FactoryParams {
@@ -42,5 +42,5 @@ export const LotterySubgraphHealthIndicator = subgraphHealthIndicatorFactory({
 
 export const PredictionSubgraphHealthIndicator = subgraphHealthIndicatorFactory({
   getSubgraphName: (chainId) =>
-    GRAPH_API_PREDICTION_BNB[chainId].replace('https://api.thegraph.com/subgraphs/name/', ''),
+    GRAPH_API_PREDICTION_BNB?.[chainId]?.replace('https://api.thegraph.com/subgraphs/name/', ''),
 })
