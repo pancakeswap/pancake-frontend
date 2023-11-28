@@ -1,4 +1,4 @@
-import { ChainId, V3_SUBGRAPHS, V2_SUBGRAPHS } from '@pancakeswap/chains'
+import { ChainId, V2_SUBGRAPHS, V3_SUBGRAPHS } from '@pancakeswap/chains'
 
 export const GRAPH_API_PROFILE = 'https://api.thegraph.com/subgraphs/name/pancakeswap/profile'
 export const GRAPH_API_PREDICTION_BNB = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-v2'
@@ -63,7 +63,7 @@ export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
 export const V3_SUBGRAPH_URLS = V3_SUBGRAPHS
 
-export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancakeswap.com/api/v1'
+export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'
 
 export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 
