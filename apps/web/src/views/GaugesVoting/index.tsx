@@ -74,10 +74,9 @@ const GaugesVoting = () => {
               </Text>
             </Box>
           </Flex>
-
-          <Box>
+          <Flex justifyContent="flex-end">
             <img src="/images/gauges-voting/landing-bunny.png" alt="bunny" width="218px" />
-          </Box>
+          </Flex>
         </Flex>
       </StyledPageHeader>
       <Page style={{ paddingTop: 0, marginTop: '-18px' }}>
