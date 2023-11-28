@@ -1,0 +1,28 @@
+{
+  "@context": ["https://www.w3.org/ns/did/v1", "https://w3id.org/security/suites/jws-2020/v1"],
+  "id": "did:web:pancakeswap.finance",
+  "verificationMethod": [
+    {
+      "id": "did:web:pancakeswap.finance#wc-notify-subscribe-key",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:pancakeswap.finance",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "X25519",
+        "x": "KxjJ6SoCsM4Q_IZSWLvWaP6Ss3uZ2GBuE6v5K3Pe_2E"
+      }
+    },
+    {
+      "id": "did:web:pancakeswap.finance#wc-notify-authentication-key",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:pancakeswap.finance",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "AXXZDrwjTXDQpGeCvj63WM_n7jX3XSDXgaSA6a2NrLk"
+      }
+    }
+  ],
+  "keyAgreement": ["did:web:pancakeswap.finance#wc-notify-subscribe-key"],
+  "authentication": ["did:web:pancakeswap.finance#wc-notify-authentication-key"]
+}
