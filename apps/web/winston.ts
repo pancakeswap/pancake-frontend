@@ -30,11 +30,6 @@ export class WinstonServerLogger {
           format: combine(timestamp(), json(), this.errorsFormat),
         }),
 
-        new transports.File({
-          filename: '/Users/evan/Documents/logs_datadog/app.log',
-          format: combine(timestamp(), json(), this.errorsFormat),
-        }),
-
         new CustomDatadogTransport(this.datadogTransporter),
       ],
     })
