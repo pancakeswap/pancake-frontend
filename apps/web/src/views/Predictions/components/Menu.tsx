@@ -1,12 +1,13 @@
-import { styled } from 'styled-components'
-import Link from 'next/link'
-import { Flex, HelpIcon, Button, PrizeIcon } from '@pancakeswap/uikit'
-import { useGetPredictionsStatus } from 'state/predictions/hooks'
 import { PredictionStatus } from '@pancakeswap/prediction'
+import { Button, Flex, HelpIcon, PrizeIcon } from '@pancakeswap/uikit'
+import Link from 'next/link'
+import { useGetPredictionsStatus } from 'state/predictions/hooks'
+import { styled } from 'styled-components'
+import { TokenSelector } from 'views/Predictions/components/TokenSelector'
 import FlexRow from './FlexRow'
-import { PricePairLabel, TimerLabel } from './Label'
-import PrevNextNav from './PrevNextNav'
 import HistoryButton from './HistoryButton'
+import { TimerLabel } from './Label'
+import PrevNextNav from './PrevNextNav'
 
 const SetCol = styled.div`
   position: relative;
@@ -65,7 +66,7 @@ const Menu = () => {
   return (
     <FlexRow alignItems="center" p="16px" width="100%">
       <SetCol>
-        <PricePairLabel />
+        <TokenSelector />
       </SetCol>
       {status === PredictionStatus.LIVE && (
         <>

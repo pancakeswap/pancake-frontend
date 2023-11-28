@@ -23,7 +23,7 @@ export const tokenImageChainNameMapping = {
   [ChainId.OPBNB]: 'opbnb/',
 }
 
-const getImageUrlFromToken = (token: Token) => {
+export const getImageUrlFromToken = (token: Token) => {
   const address = token?.isNative ? token.wrapped.address : token.address
 
   return `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[token.chainId]}${address}.png`

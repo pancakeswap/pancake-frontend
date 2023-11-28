@@ -1,16 +1,9 @@
-import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, CloseIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
-import { PREDICTION_TOOLTIP_DISMISS_KEY } from 'config/constants'
+import { Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
-import { PredictionSupportedSymbol } from '@pancakeswap/prediction'
-import { styled, keyframes, useTheme } from 'styled-components'
-import { useConfig } from '../context/ConfigProvider'
+import { keyframes, styled } from 'styled-components'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
-import LabelPrice from './LabelPrice'
-import usePollOraclePrice from '../hooks/usePollOraclePrice'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -142,64 +135,6 @@ const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean 
     will-change: background-color;
   }
 `
-
-export const PricePairLabel: React.FC<React.PropsWithChildren> = () => {
-  const { token } = useConfig()
-  const router = useRouter()
-  const { isDark } = useTheme()
-  const { t } = useTranslation()
-  const { price } = usePollOraclePrice()
-  const [dismissTooltip, setDismissTooltip] = useState(() => {
-    if (localStorage?.getItem(PREDICTION_TOOLTIP_DISMISS_KEY)) return true
-    return false
-  })
-
-  const onDismissTooltip = useCallback(() => {
-    localStorage?.setItem(PREDICTION_TOOLTIP_DISMISS_KEY, '1')
-    setDismissTooltip(true)
-  }, [])
-
-  const onTokenSwitch = useCallback(() => {
-    if (router.query.token === PredictionSupportedSymbol.CAKE) {
-      router.query.token = PredictionSupportedSymbol.BNB
-    } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.CAKE) {
-      router.query.token = PredictionSupportedSymbol.BNB
-    } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.BNB) {
-      router.query.token = PredictionSupportedSymbol.CAKE
-    } else if (token.symbol === undefined && router.query.token === undefined) {
-      router.query.token = PredictionSupportedSymbol.BNB
-    } else {
-      router.query.token = PredictionSupportedSymbol.CAKE
-    }
-    if (!dismissTooltip) onDismissTooltip()
-
-    router.replace(router, undefined, { scroll: false })
-  }, [router, token, dismissTooltip, onDismissTooltip])
-  return (
-    <>
-      <Box pl={['20px', '20px', '20px', '20px', '40px']} position="relative" display="inline-block">
-        {!dismissTooltip && (
-          <Tooltip data-theme={isDark ? 'light' : 'dark'}>
-            <Text mr="5px" display="inline-block" verticalAlign="super">
-              {t('Switch pairs here.')}
-            </Text>
-            <CloseIcon cursor="pointer" onClick={onDismissTooltip} />
-          </Tooltip>
-        )}
-        <CoinSwitcher
-          isDefaultBnb={router.query.token === 'BNB' || (router.query.token === undefined && token.symbol === 'BNB')}
-          onTokenSwitch={onTokenSwitch}
-        />
-        <Label dir="left" backgroundOpacity={!dismissTooltip}>
-          <Title bold textTransform="uppercase">
-            {`${token.symbol}USD`}
-          </Title>
-          <LabelPrice price={price} />
-        </Label>
-      </Box>
-    </>
-  )
-}
 
 interface TimerLabelProps {
   interval: string
