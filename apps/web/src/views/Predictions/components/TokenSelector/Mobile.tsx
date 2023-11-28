@@ -40,10 +40,11 @@ export const MobilePredictionTokenSelector: React.FC<React.PropsWithChildren<Des
             <CloseIcon color="primary" />
           </Button>
         </FlexGap>
-        <Flex width="100%" maxHeight={500} overflowY="auto">
+        <Flex width="100%" maxHeight={500} overflowY="auto" flexDirection="column">
           {tokenListData?.map((list) => (
             <Flex
               width="100%"
+              padding="8px 0"
               key={list.address}
               justifyContent="space-between"
               style={{ cursor: 'pointer' }}
