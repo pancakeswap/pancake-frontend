@@ -22,11 +22,7 @@ import { useMessages, useSubscription } from '@web3inbox/widget-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { addArchivedNotification, setHasUnread, setImportantAlerts } from 'state/notifications/actions'
-import {
-  useAllNotifications,
-  useHasUnreadNotifications,
-  useImportantNotificationsOnly,
-} from 'state/notifications/hooks'
+import { useAllNotifications, useImportantNotificationsOnly } from 'state/notifications/hooks'
 import { styled } from 'styled-components'
 import { NotificationFilterTypes } from 'views/Notifications/constants'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
@@ -97,7 +93,6 @@ const NotificationView = ({
   const { messages: notifications, deleteMessage } = useMessages(account)
   const { subscription } = useSubscription(account)
   const archivedNotifications = useAllNotifications(subscription?.topic)
-  const hasUnreadNotifications = useHasUnreadNotifications(subscription?.topic)
   const importantAlertsOnly = useImportantNotificationsOnly(subscription?.topic)
   const { t } = useTranslation()
 
@@ -171,15 +166,6 @@ const NotificationView = ({
     dispatch(setImportantAlerts({ subscriptionId: subscription?.topic, importantOnly: !importantAlertsOnly }))
   }, [importantAlertsOnly, subscription?.topic, dispatch])
 
-  const markAllNotificationsAsRead = useCallback(() => {
-    if (!subscription?.topic) return
-    for (const unreadNotification of notifications) {
-      dispatch(
-        setHasUnread({ subscriptionId: subscription.topic, notificationId: unreadNotification.id, hasUnread: true }),
-      )
-    }
-  }, [dispatch, notifications, subscription?.topic])
-
   const {
     tooltip: importantAlertsTooltip,
     tooltipVisible: importantAlertsTooltipVisible,
@@ -214,23 +200,19 @@ const NotificationView = ({
         <Box width="125px">
           <Select
             onOptionChange={handleNotifyOptionChange}
-            options={NotificationFilterTypes.sort((a, b) => {
-              if (a.label === 'Alerts') return -1
-              if (b.label === 'Alerts') return 1
-              return 0
-            }).map((type) => type)}
+            options={NotificationFilterTypes.filter((option) => {
+              if (!isMobile) return option.label !== 'Archived'
+              return option
+            })
+              .sort((a, b) => {
+                if (a.label === 'Alerts') return -1
+                if (b.label === 'Alerts') return 1
+                return 0
+              })
+              .map((type) => type)}
           />
         </Box>
-        {/* <NotificationsTabButton activeIndex={viewMode} setActiveIndex={setViewMode} /> */}
-        <Button
-          variant="secondary"
-          height="35px"
-          pl="14px"
-          disabled={!hasUnreadNotifications}
-          onClick={markAllNotificationsAsRead}
-        >
-          {t('Mark as all read')}
-        </Button>
+        {!isMobile && <NotificationsTabButton activeIndex={viewMode} setActiveIndex={setViewMode} />}
       </Flex>
       <Flex paddingX="24px" alignItems="center" paddingTop="10px" paddingBottom="16px">
         <Toggle

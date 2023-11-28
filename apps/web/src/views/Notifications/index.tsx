@@ -86,6 +86,7 @@ const Notifications = () => {
       handleRegistration={handleRegistration}
       viewIndex={viewIndex}
       subscriptionId={subscription?.topic}
+      account={account}
     >
       {() => (
         <Box tabIndex={-1} onMouseEnter={disableGlobalScroll} onMouseLeave={enableGlobalScroll}>
