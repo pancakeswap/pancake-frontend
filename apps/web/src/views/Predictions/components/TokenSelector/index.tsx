@@ -1,9 +1,51 @@
-import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useImageColor } from '@pancakeswap/hooks'
+import { Box, ChevronDownIcon, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { TokenImage, getImageUrlFromToken } from 'components/TokenImage'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 import { DesktopPredictionTokenSelector } from 'views/Predictions/components/TokenSelector/Desktop'
+import { Price } from 'views/Predictions/components/TokenSelector/Price'
+import { SvgToken } from 'views/Predictions/components/TokenSelector/SvgToken'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { usePredictionConfigs } from 'views/Predictions/hooks/usePredictionConfigs'
+
+const SelectedToken = styled(Box)`
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  width: 38px;
+  height: 38px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    top: 3px;
+    left: 5px;
+    width: 60px;
+    height: 60px;
+  }
+`
+
+const Selector = styled(Flex)<{ isOpen: boolean; isSingleToken?: boolean }>`
+  flex-direction: column;
+  position: relative;
+  left: -22px;
+  cursor: ${({ isSingleToken }) => (isSingleToken ? 'initial' : 'pointer')};
+  background: ${({ theme }) => theme.colors.input};
+  border: ${({ theme }) => `solid 1px ${theme.colors.cardBorder}`};
+  border-radius: 8px 8px 24px 8px;
+  min-width: auto;
+  margin-top: 5px;
+  user-select: none;
+  height: fit-content;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    left: -9px;
+    margin-top: 15px;
+    border-radius: 16px;
+    min-width: 272px;
+    height: ${({ isOpen }) => (isOpen ? 'auto' : '42px')};
+  }
+`
 
 export const TokenSelector = () => {
   const router = useRouter()
@@ -11,6 +53,19 @@ export const TokenSelector = () => {
   const [isOpen, setIsOpen] = useState(false)
   const config = useConfig()
   const predictionConfigs = usePredictionConfigs()
+
+  const { color: ImageColor } = useImageColor({ url: getImageUrlFromToken(config?.token) }) // TODO: Check with jackson
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setIsOpen(false)
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
 
   const tokenListData = useMemo(() => {
     return predictionConfigs
@@ -33,16 +88,55 @@ export const TokenSelector = () => {
   )
 
   return (
-    <Box>
-      {isDesktop ? (
-        <DesktopPredictionTokenSelector
-          isOpen={isOpen}
-          tokenListData={tokenListData}
-          isTokenListMoreThanOne={isTokenListMoreThanOne}
-          setIsOpen={setIsOpen}
-          onClickSwitchToken={onClickSwitchToken}
-        />
-      ) : null}
-    </Box>
+    <Flex>
+      <Box position="relative" zIndex={11}>
+        <SvgToken width={isDesktop ? 70 : 44} height={isDesktop ? 70 : 44} color={ImageColor} />
+        <SelectedToken>
+          <TokenImage width={isDesktop ? 60 : 38} height={isDesktop ? 60 : 38} token={config?.token} />
+        </SelectedToken>
+      </Box>
+      <Selector isOpen={isOpen && isDesktop} isSingleToken={isTokenListMoreThanOne}>
+        <Flex
+          width="100%"
+          mt={['0', '0', '0', '0', '5px']}
+          flexDirection={['column', 'column', 'column', 'column', 'row']}
+          padding={['0 8px 0 24px', '0 8px 0 24px', '0 8px 0 24px', '0 8px 0 24px', '2px 12px 2px 16px']}
+          justifyContent="space-between"
+          onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+            setIsOpen(!isOpen)
+            event.stopPropagation()
+          }}
+        >
+          <Text
+            bold
+            color="secondary"
+            textTransform="uppercase"
+            fontSize={['16px', '16px', '16px', '16px', '24px']}
+            style={{ alignSelf: isDesktop ? 'center' : 'flex-start' }}
+            lineHeight="110%"
+          >
+            {`${config?.token?.symbol}USD`}
+          </Text>
+          {isTokenListMoreThanOne && (
+            <Flex>
+              {config?.chainlinkOracleAddress && (
+                <Price
+                  fontSize={['12px', '12px', '12px', '12px', '16px']}
+                  chainlinkOracleAddress={config?.chainlinkOracleAddress}
+                />
+              )}
+              <ChevronDownIcon width={isDesktop ? 24 : 16} height={isDesktop ? 24 : 16} ml="4px" color="primary" />
+            </Flex>
+          )}
+        </Flex>
+        {isDesktop && (
+          <DesktopPredictionTokenSelector
+            isOpen={isOpen}
+            tokenListData={tokenListData}
+            onClickSwitchToken={onClickSwitchToken}
+          />
+        )}
+      </Selector>
+    </Flex>
   )
 }
