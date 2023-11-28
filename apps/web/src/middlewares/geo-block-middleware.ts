@@ -1,6 +1,6 @@
-import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from 'next/server'
+import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 import { shouldGeoBlock } from '@pancakeswap/utils/geoBlock'
-import { MiddlewareFactory } from './types'
+import { MiddlewareFactory, NextMiddleware } from './types'
 
 export const withGeoBlock: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {

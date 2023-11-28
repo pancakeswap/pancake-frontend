@@ -1,10 +1,10 @@
 // middleware.ts
 import { withABTesting } from 'middlewares/ab-test-middleware'
 import { withGeoBlock } from 'middlewares/geo-block-middleware'
-import { withUserIpHeaders } from 'middlewares/ip-address-middleware'
+import { withUserIp } from 'middlewares/ip-address-middleware'
 import { stackMiddlewares } from 'middlewares/stack-middleware'
 
-export default stackMiddlewares([withGeoBlock, withUserIpHeaders, withABTesting])
+export default stackMiddlewares([withGeoBlock, withUserIp, withABTesting])
 
 export const config = {
   matcher: [

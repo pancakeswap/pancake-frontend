@@ -1,8 +1,8 @@
-import { NextFetchEvent, NextMiddleware } from 'next/server'
-import { MiddlewareFactory, ModifiedNextReq } from './types'
+import { NextFetchEvent } from 'next/server'
+import { MiddlewareFactory, ExtendedNextReq, NextMiddleware } from './types'
 
-export const withUserIpHeaders: MiddlewareFactory = (next: NextMiddleware) => {
-  return async (request: ModifiedNextReq, _next: NextFetchEvent) => {
+export const withUserIp: MiddlewareFactory = (next: NextMiddleware) => {
+  return async (request: ExtendedNextReq, _next: NextFetchEvent) => {
     let ip = request.ip ?? request.headers.get('x-real-ip')
     const forwardedFor = request.headers.get('x-forwarded-for')
     if (!ip && forwardedFor) ip = forwardedFor.split(',').at(0) ?? ip

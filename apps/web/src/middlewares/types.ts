@@ -1,4 +1,10 @@
-import { NextMiddleware, NextRequest } from 'next/server'
+import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
+
+export type MiddlewareResult = NextResponse | null | undefined | void
+export type NextMiddleware = (
+  request: NextRequest,
+  event: NextFetchEvent,
+) => MiddlewareResult | Promise<MiddlewareResult>
 
 export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware
 

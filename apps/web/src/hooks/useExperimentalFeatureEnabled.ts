@@ -1,17 +1,17 @@
-import { EXPERIMENTAL_FEATURES } from 'config/experminetalFeatures'
+import { EXPERIMENTAL_FEATURES, getCookieKey } from 'config/experminetalFeatures'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 
-const useExperimentalFeatureEnabled = (featureFlag: EXPERIMENTAL_FEATURES) => {
+const isCookieInFeatureFlags = (feature: EXPERIMENTAL_FEATURES) =>
+  Cookies.get(getCookieKey(feature))?.toString() === 'true'
+
+export const useExperimentalFeatureEnabled = (featureFlag: EXPERIMENTAL_FEATURES) => {
   const [featureEnabled, setFeatureEnabled] = useState<boolean | null>(null)
-  const isCookieInFeatureFlags = () => Cookies.get(`ctx-${featureFlag}`)?.toString() === 'true'
 
   useEffect(() => {
-    const cookie = isCookieInFeatureFlags()
+    const cookie = isCookieInFeatureFlags(featureFlag)
     setFeatureEnabled(cookie)
-  }, [isCookieInFeatureFlags])
+  }, [featureFlag])
 
-  return { featureEnabled }
+  return featureEnabled
 }
-
-export { useExperimentalFeatureEnabled }
