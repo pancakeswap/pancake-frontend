@@ -38,6 +38,11 @@ export const getExperimentalFeatureAccessList = async (
 export const withABHeaders: MiddlewareFactory = () => {
   return async (request: ModifiedNextReq, _next: NextFetchEvent) => {
     const response = NextResponse.next()
+
+    const host = request.headers.get('host')
+    const protocol = request.headers.get('x-forwarded-proto') === 'https' ? 'https' : 'http'
+    const baseUrl = `${protocol}://${host}`
+
     try {
       const ip = request.userIp
       if (!ip) return response
@@ -51,16 +56,14 @@ export const withABHeaders: MiddlewareFactory = () => {
         response.cookies.set(`${ctxKey(featureFlagKeys[i])}-user-ip`, ip)
       }
       await fetch(
-        `http://localhost:3000/api/log?${generateEncodedQueryParams['web-notifications']({
+        `${baseUrl}/api/log?${generateEncodedQueryParams['web-notifications']({
           ip,
           userWhitelistResults,
         })}`,
       )
       return response
     } catch (error) {
-      await fetch(
-        `http://localhost:3000/api/log?datadogData=${generateEncodedQueryParams['web-notifications']({ error })}`,
-      )
+      await fetch(`${baseUrl}/api/log?datadogData=${generateEncodedQueryParams['web-notifications']({ error })}`)
       return response
     }
   }
