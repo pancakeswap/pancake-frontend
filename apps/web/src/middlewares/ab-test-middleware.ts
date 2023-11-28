@@ -1,52 +1,45 @@
-import { EXPERIMENTAL_FEATURES, EXPERIMENTAL_FEATURE_FLAG_MAP, FeatureRollOutConfig } from 'config/experminetalFeatures'
-import { NextFetchEvent, NextResponse } from 'next/server'
-import { EnumValues, MiddlewareFactory, ModifiedNextReq } from './types'
-
-type FeatureKeys = EnumValues<typeof EXPERIMENTAL_FEATURES>[]
-
-const ctxKey = (key: EXPERIMENTAL_FEATURES) => `ctx-${key.toLowerCase()}`
+import {
+  EXPERIMENTAL_FEATURE_CONFIGS,
+  FeatureRollOutConfig,
+  ctxKey,
+  ExperimentalFeatureConfigs,
+  EXPERIMENTAL_FEATURES,
+} from 'config/experminetalFeatures'
+import CryptoJS from 'crypto-js'
+import { NextFetchEvent, NextMiddleware, NextResponse } from 'next/server'
+import { MiddlewareFactory, ExtendedNextReq } from './types'
 
 // this function generates a deterministic result for a user for a given feature
 // it hashes a concatination of the users ip together with the features identifier and
 // probanility value. this allows us to ensure that a users probability result is different
 // for each feature gauranteeing a better distribution
-export const getExperimentalFeatureAccessList = async (
+export const getExperimentalFeatureAccessList = (
   userIdentifier: string,
-  abTestingfeatureFlagInfo: FeatureRollOutConfig[],
-  response: NextResponse,
-): Promise<Array<'true' | 'false'>> => {
-  const userWhitelistResults = await Promise.all(
-    abTestingfeatureFlagInfo.map(async (flag: FeatureRollOutConfig): Promise<'true' | 'false'> => {
-      if (flag.whitelist.includes(userIdentifier)) return 'true'
+  abTestingfeatureFlagInfo: ExperimentalFeatureConfigs,
+): Array<{ feature: EXPERIMENTAL_FEATURES; hasAccess: boolean }> => {
+  const userWhitelistResults = abTestingfeatureFlagInfo.map(
+    (flag: FeatureRollOutConfig): { feature: EXPERIMENTAL_FEATURES; hasAccess: boolean } => {
+      if (flag.whitelist.includes(userIdentifier)) return { feature: flag.feature, hasAccess: true }
 
-      const msgBuffer = new TextEncoder().encode(`${userIdentifier}-${flag.feature}-${flag.percentage}`)
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+      const hash = CryptoJS.SHA256(`${userIdentifier}-${flag.feature}-${flag.percentage}`)
+      const hashHex = hash.toString(CryptoJS.enc.Hex)
+      const lastByte = parseInt(hashHex.slice(-2), 16) / 255
 
-      const hashArray = Array.from(new Uint8Array(hashBuffer))
-      const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
-
-      const scaledValue = parseInt(hashHex.slice(-2), 16) / 255
-      response.cookies.set(`${ctxKey(flag.feature)}-user-percent`, scaledValue.toString())
-
-      return scaledValue < flag.percentage ? 'true' : 'false'
-    }),
+      return { feature: flag.feature, hasAccess: lastByte <= flag.percentage }
+    },
   )
   return userWhitelistResults
 }
 
-export const withABHeaders: MiddlewareFactory = () => {
-  return async (request: ModifiedNextReq, _next: NextFetchEvent) => {
+export const withABTesting: MiddlewareFactory = (next: NextMiddleware) => {
+  return async (request: ExtendedNextReq, _next: NextFetchEvent) => {
     const ip = request.userIp
-    const response = NextResponse.next()
+    const response = (await next(request, _next)) as NextResponse
     if (!ip) return response
 
-    const featureFlagInfo = Object.values(EXPERIMENTAL_FEATURE_FLAG_MAP)
-    const featureFlagKeys = Object.keys(EXPERIMENTAL_FEATURE_FLAG_MAP) as FeatureKeys
-    const userWhitelistResults = await getExperimentalFeatureAccessList(ip, featureFlagInfo, response)
-
-    for (let i = 0; i < featureFlagKeys.length; i++) {
-      response.cookies.set(ctxKey(featureFlagKeys[i]), userWhitelistResults[i])
-      response.cookies.set(`${ctxKey(featureFlagKeys[i])}-user-ip`, ip)
+    const accessList = getExperimentalFeatureAccessList(ip, EXPERIMENTAL_FEATURE_CONFIGS)
+    for (const { feature, hasAccess } of accessList) {
+      response.cookies.set(ctxKey(feature), hasAccess.toString())
     }
     return response
   }
