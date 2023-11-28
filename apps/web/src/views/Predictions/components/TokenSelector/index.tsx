@@ -1,10 +1,11 @@
 import { useImageColor } from '@pancakeswap/hooks'
-import { Box, ChevronDownIcon, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, ChevronDownIcon, Flex, ModalV2, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { TokenImage, getImageUrlFromToken } from 'components/TokenImage'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { DesktopPredictionTokenSelector } from 'views/Predictions/components/TokenSelector/Desktop'
+import { MobilePredictionTokenSelector } from 'views/Predictions/components/TokenSelector/Mobile'
 import { Price } from 'views/Predictions/components/TokenSelector/Price'
 import { SvgToken } from 'views/Predictions/components/TokenSelector/SvgToken'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
@@ -39,7 +40,7 @@ const Selector = styled(Flex)<{ isOpen: boolean; isSingleToken?: boolean }>`
   height: fit-content;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    left: -9px;
+    left: -12px;
     margin-top: 15px;
     border-radius: 16px;
     min-width: 272px;
@@ -58,7 +59,7 @@ export const TokenSelector = () => {
 
   useEffect(() => {
     const handleClickOutside = () => {
-      setIsOpen(false)
+      onDismiss()
     }
 
     document.addEventListener('click', handleClickOutside)
@@ -87,6 +88,17 @@ export const TokenSelector = () => {
     [router, isTokenListMoreThanOne],
   )
 
+  const onClickOpenSelector = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (isTokenListMoreThanOne) {
+      setIsOpen(!isOpen)
+      event.stopPropagation()
+    }
+  }
+
+  const onDismiss = () => {
+    setIsOpen(false)
+  }
+
   return (
     <Flex>
       <Box position="relative" zIndex={11}>
@@ -95,17 +107,14 @@ export const TokenSelector = () => {
           <TokenImage width={isDesktop ? 60 : 38} height={isDesktop ? 60 : 38} token={config?.token} />
         </SelectedToken>
       </Box>
-      <Selector isOpen={isOpen && isDesktop} isSingleToken={isTokenListMoreThanOne}>
+      <Selector isOpen={isOpen && isDesktop} isSingleToken={!isTokenListMoreThanOne}>
         <Flex
           width="100%"
           mt={['0', '0', '0', '0', '5px']}
           flexDirection={['column', 'column', 'column', 'column', 'row']}
           padding={['0 8px 0 24px', '0 8px 0 24px', '0 8px 0 24px', '0 8px 0 24px', '2px 12px 2px 16px']}
           justifyContent="space-between"
-          onClick={(event: React.MouseEvent<HTMLDivElement>) => {
-            setIsOpen(!isOpen)
-            event.stopPropagation()
-          }}
+          onClick={onClickOpenSelector}
         >
           <Text
             bold
@@ -129,12 +138,20 @@ export const TokenSelector = () => {
             </Flex>
           )}
         </Flex>
-        {isDesktop && (
+        {isDesktop ? (
           <DesktopPredictionTokenSelector
             isOpen={isOpen}
             tokenListData={tokenListData}
             onClickSwitchToken={onClickSwitchToken}
           />
+        ) : (
+          <ModalV2 isOpen={isOpen} closeOnOverlayClick onDismiss={onDismiss}>
+            <MobilePredictionTokenSelector
+              tokenListData={tokenListData}
+              onDismiss={onDismiss}
+              onClickSwitchToken={onClickSwitchToken}
+            />
+          </ModalV2>
         )}
       </Selector>
     </Flex>
