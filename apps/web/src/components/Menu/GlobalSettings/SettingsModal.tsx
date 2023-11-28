@@ -1,57 +1,54 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   AtomBox,
+  AutoColumn,
+  AutoRow,
+  Button,
+  ButtonProps,
+  Checkbox,
   Flex,
   InjectedModalProps,
+  Message,
+  MessageText,
   Modal,
+  ModalV2,
+  NotificationDot,
   PancakeToggle,
+  PreTitle,
   QuestionHelper,
+  RowFixed,
   Text,
   ThemeSwitcher,
   Toggle,
-  Button,
-  ModalV2,
-  PreTitle,
-  AutoColumn,
-  Message,
-  MessageText,
-  NotificationDot,
-  ButtonProps,
-  Checkbox,
-  AutoRow,
-  RowFixed,
   useToast,
 } from '@pancakeswap/uikit'
-import { ExpertModal } from '@pancakeswap/widgets-internal'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useTheme from 'hooks/useTheme'
-import { ReactNode, useCallback, useState } from 'react'
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import {
   useAudioPlay,
   useExpertMode,
-  useUserSingleHopOnly,
   useUserExpertModeAcknowledgement,
+  useUserSingleHopOnly,
 } from '@pancakeswap/utils/user'
+import { ExpertModal } from '@pancakeswap/widgets-internal'
+import { TOKEN_RISK } from 'components/AccessRisk'
+import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
+import { useTogglenotifications } from 'hooks/v3/useToggleNotifications'
+import { ReactNode, useCallback, useState } from 'react'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
+import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import {
   useOnlyOneAMMSourceEnabled,
+  useRoutingSettingChanged,
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
   useUserV2SwapEnable,
   useUserV3SwapEnable,
-  useRoutingSettingChanged,
 } from 'state/user/smartRouter'
-import { useAllowNotifications } from 'state/notifications/hooks'
-import { useManageSubscription, useW3iAccount } from '@web3inbox/widget-react'
-import { Events } from 'views/Notifications/constants'
-import { errorBuilder } from 'views/Notifications/utils/errorBuilder'
-import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import { styled } from 'styled-components'
-import { TOKEN_RISK } from 'components/AccessRisk'
-import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
 import { SettingsMode } from './types'
@@ -96,9 +93,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, setAudioMode] = useAudioPlay()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
-  const [allowNotifications, setAllowNotifications] = useAllowNotifications()
-  const { account } = useW3iAccount()
-  const { unsubscribe, isSubscribed } = useManageSubscription(account)
+  const { allowNotifications, handleEnableNotifications, handleDiableNotifications } = useTogglenotifications()
   const toast = useToast()
 
   const { onChangeRecipient } = useSwapActionHandlers()
@@ -125,27 +120,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
       setExpertMode((s) => !s)
     } else {
       setShowConfirmExpertModal(true)
-    }
-  }
-
-  const handleDiableNotifications = async () => {
-    try {
-      if (isSubscribed) await unsubscribe()
-      setAllowNotifications(false)
-      toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message?.())
-    } catch (error) {
-      const errMessage = errorBuilder(Events.UnsubscribeError, error)
-      toast.toastWarning(Events.UnsubscribeError.title, errMessage)
-    }
-  }
-
-  const handleEnableNotifications = async () => {
-    try {
-      setAllowNotifications(true)
-      toast.toastSuccess(Events.NotificationsEnabled.title, Events.NotificationsEnabled.message?.())
-    } catch (error) {
-      const errMessage = errorBuilder(Events.NotificationsEnabledError, error)
-      toast.toastWarning(Events.NotificationsEnabledError.title, errMessage)
     }
   }
 

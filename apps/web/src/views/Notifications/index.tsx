@@ -11,7 +11,7 @@ import NotificationSettingsView from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
 import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
-import { errorBuilder } from './utils/errorBuilder'
+import { parseErrorMessage } from './utils/errorBuilder'
 import { disableGlobalScroll, enableGlobalScroll } from './utils/toggleEnableScroll'
 
 const Notifications = () => {
@@ -46,7 +46,7 @@ const Notifications = () => {
         return res as string
       })
     } catch (error) {
-      const errMessage = errorBuilder(Events.SubscriptionRequestError, error)
+      const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
       toast.toastError(Events.SubscriptionRequestError.title, errMessage)
     }
   }, [signMessageAsync, registerIdentity, account, toast])

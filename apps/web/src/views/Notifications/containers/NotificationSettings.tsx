@@ -20,7 +20,7 @@ import { NotificationHeader } from '../components/NotificationHeader/Notificatio
 import SettingsContainer from '../components/SettingsItem/SettingsItem'
 import { Events } from '../constants'
 import { ScrollableContainer } from '../styles'
-import { errorBuilder } from '../utils/errorBuilder'
+import { parseErrorMessage } from '../utils/errorBuilder'
 import { getSettingsButtonText } from '../utils/textHelpers'
 
 interface PushSubButtonProps {
@@ -85,7 +85,7 @@ const NotificationSettingsView = ({
       prevScopesRef.current = newScope
       toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message?.())
     } catch (error) {
-      const errMessage = errorBuilder(Events.PreferencesError, error)
+      const errMessage = parseErrorMessage(Events.PreferencesError, error)
       toast.toastError(Events.PreferencesError.title, errMessage)
     }
   }, [currentScopes, toast, scopes, updateScopes])
@@ -95,7 +95,7 @@ const NotificationSettingsView = ({
       await unsubscribe()
       toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message?.())
     } catch (error) {
-      const errMessage = errorBuilder(Events.UnsubscribeError, error)
+      const errMessage = parseErrorMessage(Events.UnsubscribeError, error)
       toast.toastWarning(Events.UnsubscribeError.title, errMessage)
     }
   }, [unsubscribe, toast])
