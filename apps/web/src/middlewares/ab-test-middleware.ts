@@ -45,9 +45,8 @@ export const withABHeaders: MiddlewareFactory = () => {
     const userWhitelistResults = await getExperimentalFeatureAccessList(ip, featureFlagInfo, response)
 
     for (let i = 0; i < featureFlagKeys.length; i++) {
-      const normalizedHeaderKey = ctxKey(featureFlagKeys[i])
-      response.cookies.set(normalizedHeaderKey, userWhitelistResults[i])
-      response.cookies.set(`${normalizedHeaderKey}-user-ip`, ip)
+      response.cookies.set(ctxKey(featureFlagKeys[i]), userWhitelistResults[i])
+      response.cookies.set(`${ctxKey(featureFlagKeys[i])}-user-ip`, ip)
     }
     return response
   }
