@@ -5,6 +5,11 @@ export interface HttpTransportOptions {
   host: string
   path: string
   ssl: boolean
+  hostname: string
+  service: string
+  ddsource: string
+  ddtags: string
+  enablelogs: boolean
 }
 
 export type DatadogPayload<T extends HttpTransportOptions> = T & { [key: string]: unknown }
@@ -63,6 +68,11 @@ export const httpTransportOptions: HttpTransportOptions = {
   host: 'https://http-intake.logs.datadoghq.eu',
   path: `/api/v2/logs?dd-api-key=${'66733d73f0a92f7104e1721da457afa3'}&ddsource=nodejs&service=${'notifications_service_pcs'}`,
   ssl: true,
+  hostname: 'localhost_DEV',
+  service: 'notifications_service_pcs',
+  ddsource: 'nodejs',
+  ddtags: `env:${'DEV'}`,
+  enablelogs: true,
 }
 
 export const datadogTransporter = async <T extends HttpTransportOptions>(payload: DatadogPayload<T>) => {
