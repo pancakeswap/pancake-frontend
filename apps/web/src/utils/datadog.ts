@@ -1,6 +1,5 @@
 import { datadogLogs, LogsInitConfiguration } from '@datadog/browser-logs'
 import Transport from 'winston-transport'
-import { EXPERIMENTAL_FEATURES } from 'config/experminetalFeatures'
 
 export interface HttpTransportOptions {
   host: string
@@ -9,14 +8,6 @@ export interface HttpTransportOptions {
 }
 
 export type DatadogPayload<T extends HttpTransportOptions> = T & { [key: string]: unknown }
-
-type FeatureFlagArgsMap = {
-  [EXPERIMENTAL_FEATURES.WebNotifications]: { ip?: string; userWhitelistResults?: string[]; error?: any }
-}
-
-type GenerateEncodedQueryParams = {
-  [K in EXPERIMENTAL_FEATURES]: <T extends FeatureFlagArgsMap[K]>(args: T) => string
-}
 
 export interface DDTransporter {
   payload: <T extends HttpTransportOptions>(payload: DatadogPayload<T>) => void
@@ -109,27 +100,33 @@ export const datadogTransporter = async <T extends HttpTransportOptions>(payload
   }
 }
 
-export const generateEncodedQueryParams: GenerateEncodedQueryParams = {
-  [EXPERIMENTAL_FEATURES.WebNotifications]: ({ ip, userWhitelistResults, error }) => {
-    if (error) {
-      const errorData = {
-        datadogData: `Something went wrong Error: ${JSON.stringify(error)}`,
-        status: '[Feature failing]',
-      }
-      return Object.entries(errorData)
-        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-        .join('&')
+export const generateEncodedQueryParams = ({
+  ip,
+  userWhitelistResults,
+  error,
+}: {
+  ip?: string
+  userWhitelistResults?: string[]
+  error?: any
+}) => {
+  if (error) {
+    const errorData = {
+      datadogData: `Something went wrong Error: ${JSON.stringify(error)}`,
+      status: '[Feature failing]',
     }
-
-    const successData = {
-      datadogData: `userIp: ${ip}, userWhitelistResults: ${userWhitelistResults}`,
-      status: '[Feature Running]',
-    }
-    return Object.entries(successData)
+    return Object.entries(errorData)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
       .join('&')
-  },
-  // Add other feature flag functions for encoding message params
+  }
+
+  const successData = {
+    datadogData: `userIp: ${ip}, userWhitelistResults: ${userWhitelistResults}`,
+    status: '[Feature Running]',
+  }
+  return Object.entries(successData)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&')
 }
+// Add other feature flag functions for encoding message params
 
 export const logger = getLogger('main')

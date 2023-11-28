@@ -56,14 +56,18 @@ export const withABHeaders: MiddlewareFactory = () => {
         response.cookies.set(`${ctxKey(featureFlagKeys[i])}-user-ip`, ip)
       }
       await fetch(
-        `${baseUrl}/api/log?${generateEncodedQueryParams['web-notifications']({
+        `https://web-git-fest-datadog-server-logs.pancake.run/api/log?${generateEncodedQueryParams({
           ip,
           userWhitelistResults,
         })}`,
       )
       return response
     } catch (error) {
-      await fetch(`${baseUrl}/api/log?datadogData=${generateEncodedQueryParams['web-notifications']({ error })}`)
+      await fetch(
+        `https://web-git-fest-datadog-server-logs.pancake.run//api/log?datadogData=${generateEncodedQueryParams({
+          error,
+        })}`,
+      )
       return response
     }
   }
