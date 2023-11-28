@@ -7,8 +7,8 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { FEATURE_FLAGS } from 'contexts/ABTestingContext/config'
-import { useABTestingManager } from 'contexts/ABTestingContext/ABTestingContext'
+import { EXPERIMENTAL_FEATURES } from 'config/experminetalFeatures'
+import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
@@ -30,7 +30,7 @@ const Menu = (props) => {
   const cakePrice = useCakePrice()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const { featureEnabled } = useABTestingManager(FEATURE_FLAGS.WebNotifications)
+  const { featureEnabled } = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.WebNotifications)
 
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,

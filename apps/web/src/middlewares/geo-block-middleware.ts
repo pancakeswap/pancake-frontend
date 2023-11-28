@@ -7,8 +7,6 @@ export const withGeoBlock: MiddlewareFactory = (next: NextMiddleware) => {
     if (shouldGeoBlock(request.geo)) {
       return NextResponse.redirect(new URL('/451', request.url))
     }
-
-    const res = await next(request, _next)
-    return res
+    return next(request, _next)
   }
 }
