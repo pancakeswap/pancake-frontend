@@ -59,7 +59,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = contractAddress
-  const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
+  const cakeVaultContractAddress = vaultKey ? getVaultPoolAddress(vaultKey, chainId) : ''
 
   const { shouldShowBlockCountdown, timeUntilStart, timeRemaining, hasPoolStarted } = getPoolBlockInfo(
     pool,
@@ -88,13 +88,15 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       {!vaultKey && <AprInfo pool={pool} stakedBalance={stakedBalance} />}
       {showTotalStaked && (
         <Pool.TotalStaked
-          totalStaked={vaultKey ? totalCakeInVault : totalStaked}
+          totalStaked={(vaultKey ? totalCakeInVault : totalStaked) || BIG_ZERO}
           tokenDecimals={stakingToken.decimals}
           symbol={stakingToken.symbol}
           decimalsToShow={0}
         />
       )}
-      {vaultKey === VaultKey.CakeVault && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
+      {vaultKey === VaultKey.CakeVault && (
+        <TotalLocked totalLocked={totalLockedAmount || BIG_ZERO} lockedToken={stakingToken} />
+      )}
       {vaultKey === VaultKey.CakeVault && <DurationAvg />}
       {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <MaxStakeRow
@@ -102,16 +104,16 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           currentBlock={currentBlock}
           hasPoolStarted={hasPoolStarted}
           stakingLimit={stakingLimit}
-          stakingLimitEndTimestamp={stakingLimitEndTimestamp}
+          stakingLimitEndTimestamp={stakingLimitEndTimestamp || 0}
           stakingToken={stakingToken}
-          endTimestamp={endTimestamp}
+          endTimestamp={endTimestamp || 0}
         />
       )}
       {shouldShowBlockCountdown && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           <Text small>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
           {timeRemaining || timeUntilStart ? (
-            <Pool.TimeCountdownDisplay timestamp={hasPoolStarted ? endTimestamp : startTimestamp} />
+            <Pool.TimeCountdownDisplay timestamp={(hasPoolStarted ? endTimestamp : startTimestamp) || 0} />
           ) : (
             <Skeleton width="54px" height="21px" />
           )}
@@ -119,7 +121,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       )}
       {vaultKey && <PerformanceFee userData={userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />}
       <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-        <LinkExternal href={tokenInfoPath} bold={false} small>
+        <LinkExternal href={tokenInfoPath || undefined} bold={false} small>
           {t('See Token Info')}
         </LinkExternal>
       </Flex>
