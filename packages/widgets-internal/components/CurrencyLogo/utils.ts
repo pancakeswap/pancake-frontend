@@ -43,7 +43,7 @@ const chainName: { [key: number]: string } = {
   [ChainId.BSC]: "",
   [ChainId.ETHEREUM]: "eth",
   [ChainId.POLYGON_ZKEVM]: "polygon-zkevm",
-  [ChainId.ARBITRUM_ONE]: "arb",
+  [ChainId.ARBITRUM_ONE]: "arbitrum",
   [ChainId.ZKSYNC]: "zksync",
   [ChainId.LINEA]: "linea",
   [ChainId.BASE]: "base",
