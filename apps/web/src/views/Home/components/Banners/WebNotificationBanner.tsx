@@ -6,9 +6,10 @@ import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { keyframes, styled } from 'styled-components'
 import * as S from './Styled'
-import { flyingAnim } from './animations'
+import { flyingAnim, flyingVerticalAnim } from './animations'
 import webNotificationBgMobile from './images/web3-notification-bg-mobile.png'
 import webNotificationBg from './images/web3-notification-bg.png'
+import webNotificationBubbleMobile from './images/web3-notification-bubble-mobile.png'
 import webNotificationBubble from './images/web3-notification-bubble.png'
 import webNotificationBunny from './images/web3-notification-bunny.png'
 import webNotificationCheck from './images/web3-notification-check.png'
@@ -40,10 +41,10 @@ const RightWrapper = styled.div`
   bottom: -2px;
   z-index: 1;
   > span:first-child {
-    // liquidStakingBunny
+    // webNotificationBunny
     position: absolute !important;
-    bottom: -10px;
-    right: -3px;
+    bottom: 2px;
+    right: 0px;
     z-index: 2;
     ${({ theme }) => theme.mediaQueries.sm} {
       right: 121px;
@@ -51,26 +52,29 @@ const RightWrapper = styled.div`
     }
   }
   > span:nth-child(2) {
-    // liquidStakingBunnyBg1
+    // webNotificationBubble
     position: absolute !important;
     top: -20px;
-    right: 100px;
+    right: 120px;
     z-index: 1;
+    animation: ${flyingAnim} 5.5s ease-in-out infinite 1s;
     ${({ theme }) => theme.mediaQueries.md} {
       top: -2px;
       right: 40px;
-      animation: ${flyingAnim} 5.5s ease-in-out infinite 1s;
     }
   }
   > span:nth-child(3) {
-    // liquidStakingBunnyBg2
+    // webNotificationBg
     position: absolute !important;
-    bottom: 0px;
-    right: 100px;
+    bottom: 2px;
+    right: -10px;
+    left: -1px;
+    top: 0;
     z-index: 1;
     ${({ theme }) => theme.mediaQueries.sm} {
       bottom: 2px;
       right: 0px;
+      left: auto;
       border-bottom-right-radius: 32px;
       overflow: hidden;
     }
@@ -107,6 +111,7 @@ const RightWrapper = styled.div`
     ${({ theme }) => theme.mediaQueries.md} {
       top: -30px;
       right: 278px;
+      animation: ${flyingVerticalAnim} 3.5s ease-in-out infinite;
     }
   }
 `
@@ -139,6 +144,8 @@ const StyledSubheading = styled.div`
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-left: 3px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   &::after {
     letter-spacing: 0.01em;
     background: linear-gradient(180deg, #ffb237 0%, #ffeb37 100%);
@@ -191,7 +198,7 @@ const WebNotificationBanner = () => {
         <S.LeftWrapper position="relative" style={{ zIndex: 2 }}>
           <Box height={isMobile ? '20px' : '29px'} mt={isMobile ? '-10px' : '0px'}>
             {isMobile ? (
-              <Image src={pancakeSwapLogo} alt="pancakeSwapLogo" width={212} height={20} unoptimized />
+              <Image src={pancakeSwapLogo} alt="pancakeSwapLogo" width={124} height={16} unoptimized />
             ) : (
               <Image src={pancakeSwapLogo} alt="liquidStakingTitle" width={136} height={20} unoptimized />
             )}
@@ -224,12 +231,12 @@ const WebNotificationBanner = () => {
           {isDesktop ? (
             <Image src={webNotificationBunny} alt="webNotificationBunny" width={183} height={231} />
           ) : (
-            <Image src={webNotificationBunny} alt="webNotificationBunny" width={151} height={197} />
+            <Image src={webNotificationBunny} alt="webNotificationBunny" width={151} height={207} />
           )}
           {!isMobile ? (
             <Image src={webNotificationBubble} alt="webNotificationBubble" width={81} height={84} />
           ) : (
-            <Image src={webNotificationBubble} alt="webNotificationBubble" width={61} height={63} unoptimized />
+            <Image src={webNotificationBubbleMobile} alt="webNotificationBubble" width={61} height={63} unoptimized />
           )}
           {!isMobile ? (
             <Image src={webNotificationBg} alt="webNotificationBg" width={515} height={136} unoptimized />
