@@ -5,7 +5,7 @@ import {
   ExperimentalFeatureConfigs,
   EXPERIMENTAL_FEATURES,
 } from 'config/experminetalFeatures'
-import { NextFetchEvent } from 'next/server'
+import { NextFetchEvent, NextResponse } from 'next/server'
 import { MiddlewareFactory, ExtendedNextReq, NextMiddleware } from './types'
 
 // this function generates a deterministic result for a user for a given feature
@@ -35,12 +35,14 @@ export const getExperimentalFeatureAccessList = async (
 export const withABTesting: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: ExtendedNextReq, _next: NextFetchEvent) => {
     const ip = request.userIp
-    const response = await next(request, _next)
-    if (!ip) return response
+
+    if (!ip) return next(request, _next)
+
+    const response = (await next(request, _next)) || NextResponse.next()
 
     const accessList = await getExperimentalFeatureAccessList(ip, EXPERIMENTAL_FEATURE_CONFIGS)
     for (const { feature, hasAccess } of accessList) {
-      response?.cookies.set(getCookieKey(feature), hasAccess.toString())
+      response.cookies.set(getCookieKey(feature), hasAccess.toString())
     }
     return response
   }

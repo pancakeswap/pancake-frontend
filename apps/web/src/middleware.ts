@@ -4,7 +4,7 @@ import { withGeoBlock } from 'middlewares/geo-block-middleware'
 import { withUserIp } from 'middlewares/ip-address-middleware'
 import { stackMiddlewares } from 'middlewares/stack-middleware'
 
-export default stackMiddlewares([withGeoBlock, withUserIp, withABTesting])
+export const middleware = stackMiddlewares([withGeoBlock, withUserIp, withABTesting])
 
 export const config = {
   matcher: [
