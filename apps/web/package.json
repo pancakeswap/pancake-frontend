@@ -34,13 +34,14 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "@datadog/browser-logs": "^5.1.0",
     "@angleprotocol/sdk": "^3.0.121",
+    "@datadog/browser-logs": "^5.1.0",
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
     "@next/bundle-analyzer": "13.0.7",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
+    "@pancakeswap/gauges": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/ifos": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
