@@ -1,10 +1,18 @@
 import { BigintIsh, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { Abi, Address } from 'viem'
-import retry, { Options as RetryOptions } from 'async-retry'
+import retry from 'async-retry'
 // import uniq from 'lodash/uniq.js'
 
-import { GasModel, OnChainProvider, QuoteProvider, QuoterOptions, RouteWithoutQuote, RouteWithQuote } from '../types'
+import {
+  GasModel,
+  OnChainProvider,
+  QuoteProvider,
+  QuoteRetryOptions,
+  QuoterOptions,
+  RouteWithoutQuote,
+  RouteWithQuote,
+} from '../types'
 import { mixedRouteQuoterV1ABI } from '../../abis/IMixedRouteQuoterV1'
 import { quoterV2ABI } from '../../abis/IQuoterV2'
 import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
@@ -31,7 +39,7 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.LINEA_TESTNET]: 0.1,
   [ChainId.OPBNB]: 0.1,
   [ChainId.OPBNB_TESTNET]: 0.1,
-  [ChainId.BASE]: 0.05,
+  [ChainId.BASE]: 0.1,
   [ChainId.BASE_TESTNET]: 0.1,
   [ChainId.SCROLL_SEPOLIA]: 0.1,
 } as const satisfies Record<ChainId, number>
@@ -83,18 +91,18 @@ export class ProviderGasError extends Error {
   public name = 'ProviderGasError'
 }
 
-export type QuoteRetryOptions = RetryOptions
-
 interface GetQuotesConfig {
   gasLimitPerCall: number
 }
 
-const retryControllerFactory = () => {
+const retryControllerFactory = ({ retries }: QuoteRetryOptions) => {
   const errors: Error[] = []
+  let remainingRetries = retries || 0
   return {
-    shouldRetry: (error: Error) => errors.every((err) => err.name !== error.name),
+    shouldRetry: (error: Error) => remainingRetries > 0 && errors.every((err) => err.name !== error.name),
     onRetry: (error: Error) => {
       errors.push(error)
+      remainingRetries -= 1
     },
     getErrorsOnPreviousRetries: () => errors,
   }
@@ -113,7 +121,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
 
       return async function getRoutesWithQuote(
         routes: RouteWithoutQuote[],
-        { blockNumber: blockNumberFromConfig, gasModel }: QuoterOptions,
+        { blockNumber: blockNumberFromConfig, gasModel, retry: retryOptions }: QuoterOptions,
       ): Promise<RouteWithQuote[]> {
         if (!routes.length) {
           return []
@@ -139,7 +147,13 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
         const multicall2Provider = new PancakeMulticallProvider(chainId, chainProvider, defaultGasLimitPerCall)
         const inputs = routes.map<CallInputs>((route) => getCallInputs(route, isExactIn))
 
-        const { shouldRetry, onRetry } = retryControllerFactory()
+        const retryOptionsWithDefault = {
+          retries: DEFAULT_BATCH_RETRIES,
+          minTimeout: 25,
+          maxTimeout: 250,
+          ...retryOptions,
+        }
+        const { shouldRetry, onRetry } = retryControllerFactory(retryOptionsWithDefault)
 
         async function getQuotes({ gasLimitPerCall }: GetQuotesConfig) {
           try {
@@ -192,42 +206,35 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
           }
         }
 
-        const quoteResult = await retry(
-          async (bail) => {
-            try {
-              const quotes = await getQuotes({
-                gasLimitPerCall: defaultGasLimitPerCall,
-              })
-              return quotes
-            } catch (e: unknown) {
-              const error = e instanceof Error ? e : new Error(`Unexpected error type ${e}`)
-              if (!shouldRetry(error)) {
-                // bail is actually rejecting the promise on retry function
-                return bail(error)
-              }
-              if (error instanceof SuccessRateError) {
-                onRetry(error)
-                const { successRateFailureOverrides } = multicallConfigs
-                return getQuotes({
-                  gasLimitPerCall: successRateFailureOverrides.gasLimitPerCall,
-                })
-              }
-              if (error instanceof ProviderGasError) {
-                onRetry(error)
-                const { gasErrorFailureOverride } = multicallConfigs
-                return getQuotes({
-                  gasLimitPerCall: gasErrorFailureOverride.gasLimitPerCall,
-                })
-              }
-              throw error
+        const quoteResult = await retry(async (bail) => {
+          try {
+            const quotes = await getQuotes({
+              gasLimitPerCall: defaultGasLimitPerCall,
+            })
+            return quotes
+          } catch (e: unknown) {
+            const error = e instanceof Error ? e : new Error(`Unexpected error type ${e}`)
+            if (!shouldRetry(error)) {
+              // bail is actually rejecting the promise on retry function
+              return bail(error)
             }
-          },
-          {
-            retries: DEFAULT_BATCH_RETRIES,
-            minTimeout: 25,
-            maxTimeout: 250,
-          },
-        )
+            if (error instanceof SuccessRateError) {
+              onRetry(error)
+              const { successRateFailureOverrides } = multicallConfigs
+              return getQuotes({
+                gasLimitPerCall: successRateFailureOverrides.gasLimitPerCall,
+              })
+            }
+            if (error instanceof ProviderGasError) {
+              onRetry(error)
+              const { gasErrorFailureOverride } = multicallConfigs
+              return getQuotes({
+                gasLimitPerCall: gasErrorFailureOverride.gasLimitPerCall,
+              })
+            }
+            throw error
+          }
+        }, retryOptionsWithDefault)
 
         if (!quoteResult) {
           throw new Error(`Unexpected empty quote result ${quoteResult}`)
