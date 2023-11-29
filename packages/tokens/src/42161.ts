@@ -81,4 +81,12 @@ export const arbitrumTokens = {
     'EQB',
     'Equilibria Token',
   ),
+  grai: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487',
+    18,
+    'GRAI',
+    'Gravita Debt Token',
+  ),
+  swETH: new ERC20Token(ChainId.ARBITRUM_ONE, '0xbc011A12Da28e8F0f528d9eE5E7039E22F91cf18', 18, 'swETH', 'swETH'),
 }
