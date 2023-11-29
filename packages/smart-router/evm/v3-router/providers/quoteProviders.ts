@@ -59,7 +59,7 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
         getOffChainQuotes(routesCanQuoteOffChain, { blockNumber, gasModel }),
         getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber, gasModel, retry: { retries: 0 } }),
         getV3Quotes(v3SingleHopRoutes, { blockNumber, gasModel }),
-        getV3Quotes(v3MultihopRoutes, { blockNumber, gasModel, retry: { retries: 0 } }),
+        getV3Quotes(v3MultihopRoutes, { blockNumber, gasModel, retry: { retries: 1 } }),
       ])
       if (results.every((result) => result.status === 'rejected')) {
         throw new Error(results.map((result) => (result as PromiseRejectedResult).reason).join(','))
