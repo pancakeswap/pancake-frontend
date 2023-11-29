@@ -143,7 +143,9 @@ const VeCakeBanner = () => {
   return (
     <S.Wrapper
       style={{
-        background: `linear-gradient(140deg, #313D5C 0%, #3D2A54 100%)`,
+        background: isMobile
+          ? 'radial-gradient(92.34% 120.46% at -7.78% 8.16%, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.00) 100%), radial-gradient(181.99% 148.11% at 96.81% -4.27%, #9AEDFF 0%, #CCC2FE 73.24%, #C6A3FF 100%)'
+          : 'linear-gradient(285deg, rgba(155, 108, 218, 0.22) 1.42%, rgba(155, 108, 218, 0.00) 49.66%), linear-gradient(239deg, rgba(189, 217, 255, 0.44) 20.76%, rgba(198, 200, 254, 0.44) 82.65%), radial-gradient(321.2% 159.12% at 28.24% 7.18%, #CBEDEF 0%, #A3A9D5 72.82%, #9A9FD0 100%)',
       }}
     >
       <S.Inner>
@@ -187,12 +189,13 @@ const VeCakeBanner = () => {
                   <Text
                     textTransform={isMobile ? 'uppercase' : 'capitalize'}
                     bold
+                    color="invertedContrast"
                     fontSize={isMobile ? '12px' : '16px'}
                     mr="4px"
                   >
                     {t('Get Started')}
                   </Text>
-                  {!isMobile && <ArrowForwardIcon />}
+                  {!isMobile && <ArrowForwardIcon color="invertedContrast" />}
                 </StyledButton>
               </NextLinkFromReactRouter>
               <Link
@@ -218,13 +221,14 @@ const VeCakeBanner = () => {
               <StyledButton>
                 <Text
                   bold
+                  color="invertedContrast"
                   fontSize={isMobile ? '12px' : '16px'}
                   textTransform={isMobile ? 'uppercase' : 'capitalize'}
                   mr="4px"
                 >
                   {t('get started')}
                 </Text>
-                <OpenNewIcon />
+                <OpenNewIcon color="invertedContrast" />
               </StyledButton>
             </Link>
           )}
