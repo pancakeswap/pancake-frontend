@@ -1,39 +1,39 @@
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { BetPosition } from '@pancakeswap/prediction'
 import {
   ArrowBackIcon,
+  AutoRenewIcon,
+  BalanceInput,
+  BinanceIcon,
+  Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
   Flex,
   Heading,
   IconButton,
-  Button,
-  BinanceIcon,
   LogoIcon,
-  Text,
-  BalanceInput,
   Slider,
-  Box,
-  AutoRenewIcon,
+  Text,
 } from '@pancakeswap/uikit'
-import BN from 'bignumber.js'
-import { parseUnits } from 'viem'
-import { useAccount } from 'wagmi'
-import { useGetMinBetAmount } from 'state/predictions/hooks'
-import { useTranslation } from '@pancakeswap/localization'
-import { usePredictionsContract } from 'hooks/useContract'
-import { useGetBnbBalance, useBSCCakeBalance } from 'hooks/useTokenBalance'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { BetPosition } from '@pancakeswap/prediction'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BN from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
 import useCakeApprove from 'hooks/useCakeApprove'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { usePredictionsContract } from 'hooks/useContract'
+import { useGetNativeTokenBalance, useTokenBalanceByChain } from 'hooks/useTokenBalance'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useGetMinBetAmount } from 'state/predictions/hooks'
+import { parseUnits } from 'viem'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { useAccount } from 'wagmi'
 
-import PositionTag from '../PositionTag'
 import FlexRow from '../FlexRow'
+import PositionTag from '../PositionTag'
 
 const LOGOS = {
   BNB: BinanceIcon,
@@ -75,11 +75,6 @@ const getValueAsEthersBn = (value: string) => {
   return Number.isNaN(valueAsFloat) ? 0n : parseUnits(value as `${number}`, 18)
 }
 
-const TOKEN_BALANCE_CONFIG = {
-  BNB: useGetBnbBalance,
-  CAKE: useBSCCakeBalance,
-} as const
-
 const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> = ({
   position,
   togglePosition,
@@ -103,9 +98,6 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   const tokenSymbol = config?.token?.symbol ?? ''
 
   const predictionsContract = usePredictionsContract(predictionsAddress, isNativeToken)
-  const useTokenBalance = useMemo(() => {
-    return TOKEN_BALANCE_CONFIG[tokenSymbol as keyof typeof TOKEN_BALANCE_CONFIG]
-  }, [tokenSymbol])
 
   const { setLastUpdated, allowance } = useCakeApprovalStatus(config?.isNativeToken ? predictionsAddress : null)
   const { handleApprove, pendingTx } = useCakeApprove(
@@ -114,17 +106,23 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     t('You can now start prediction'),
   )
 
-  const { balance: bnbBalance } = useTokenBalance()
+  const { balance: userBalance } = useTokenBalanceByChain(config?.token?.address)
+  const { balance: userNativeTokenBalance } = useGetNativeTokenBalance()
 
-  const maxBalance = useMemo(() => {
-    return bnbBalance > dust ? bnbBalance - dust : 0n
-  }, [bnbBalance])
-  const balanceDisplay = formatBigInt(bnbBalance)
+  const balance = useMemo(() => {
+    if (isNativeToken) {
+      return BigInt(userNativeTokenBalance.toString()) ?? 0n
+    }
+    return BigInt(userBalance.toString()) ?? 0n
+  }, [isNativeToken, userNativeTokenBalance, userBalance])
+
+  const maxBalance = useMemo(() => (balance > dust ? balance - dust : 0n), [balance])
+  const balanceDisplay = formatBigInt(balance)
 
   const valueAsBn = getValueAsEthersBn(value)
   const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
 
-  // BNB prediction doesn't need approval
+  // Native Token prediction doesn't need approval
   const doesCakeApprovePrediction = isNativeToken || allowance.gte(valueAsBn.toString())
 
   const handleInputChange = (input: string) => {
