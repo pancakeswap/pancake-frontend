@@ -61,6 +61,11 @@ const RightWrapper = styled.div`
     z-index: 2;
     bottom: 42px;
 
+    ${({ theme }) => theme.mediaQueries.sm} {
+      right: 10%;
+      bottom: 2px;
+    }
+
     ${({ theme }) => theme.mediaQueries.lg} {
       right: 12%;
       bottom: 2px;
@@ -235,10 +240,10 @@ const VeCakeBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           <Image src={vecakeRuby} alt="vecakeRuby" width={73.52} height={77.7} placeholder="blur" />
-          {isDesktop ? (
-            <Image src={vecakeDesktopBunny} alt="vecakeDesktopBunny" width={234.5} height={257.46} placeholder="blur" />
-          ) : (
+          {isMobile ? (
             <Image src={vecakeMobileBunny} alt="vecakeMobileBunny" width={161} height={177.7} placeholder="blur" />
+          ) : (
+            <Image src={vecakeDesktopBunny} alt="vecakeDesktopBunny" width={234.5} height={257.46} placeholder="blur" />
           )}
           <BgWrapper>
             {isMobile ? (
