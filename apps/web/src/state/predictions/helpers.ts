@@ -1,12 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import {
-  BetPosition,
-  GRAPH_API_PREDICTION_BNB,
-  GRAPH_API_PREDICTION_CAKE,
-  PredictionStatus,
-  PredictionSupportedSymbol,
-  predictionsV2ABI,
-} from '@pancakeswap/prediction'
+import { BetPosition, PredictionStatus, PredictionSupportedSymbol, predictionsV2ABI } from '@pancakeswap/prediction'
 import { gql, request } from 'graphql-request'
 import {
   Bet,
@@ -109,45 +102,6 @@ export const getFilteredBets = (bets: Bet[], filter: HistoryFilter) => {
     default:
       return bets
   }
-}
-
-const getTotalWonMarket = (market, tokenSymbol) => {
-  const total = market[`total${tokenSymbol}`] ? parseFloat(market[`total${tokenSymbol}`]) : 0
-  const totalTreasury = market[`total${tokenSymbol}Treasury`] ? parseFloat(market[`total${tokenSymbol}Treasury`]) : 0
-
-  return Math.max(total - totalTreasury, 0)
-}
-
-export const getTotalWon = async (chainId: number): Promise<{ totalWonBNB: number; totalWonCAKE: number }> => {
-  const [{ market: BNBMarket, market: CAKEMarket }] = await Promise.all([
-    request(
-      GRAPH_API_PREDICTION_BNB[chainId],
-      gql`
-        query getTotalWonData {
-          market(id: 1) {
-            totalBNB
-            totalBNBTreasury
-          }
-        }
-      `,
-    ),
-    request(
-      GRAPH_API_PREDICTION_CAKE[chainId],
-      gql`
-        query getTotalWonData {
-          market(id: 1) {
-            totalCAKE
-            totalCAKETreasury
-          }
-        }
-      `,
-    ),
-  ])
-
-  const totalWonBNB = getTotalWonMarket(BNBMarket, 'BNB')
-  const totalWonCAKE = getTotalWonMarket(CAKEMarket, 'CAKE')
-
-  return { totalWonBNB, totalWonCAKE }
 }
 
 type WhereClause = Record<string, string | number | boolean | string[]>
