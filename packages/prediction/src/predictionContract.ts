@@ -1,5 +1,5 @@
-import { Address } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
+import { Address } from 'viem'
 
 export const predictionsBNB: Record<string, Address> = {
   [ChainId.BSC]: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',

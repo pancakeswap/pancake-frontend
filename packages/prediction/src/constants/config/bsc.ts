@@ -1,9 +1,9 @@
-import { bscTokens } from '@pancakeswap/tokens'
 import { ChainId } from '@pancakeswap/chains'
-import { GRAPH_API_PREDICTION_CAKE, GRAPH_API_PREDICTION_BNB } from '../../endpoints'
-import { PredictionSupportedSymbol, PredictionConfig } from '../../type'
-import { predictionsBNB, predictionsCAKE } from '../../predictionContract'
+import { bscTokens } from '@pancakeswap/tokens'
 import { chainlinkOracleBNB, chainlinkOracleCAKE } from '../../chainlinkOracleContract'
+import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_CAKE } from '../../endpoints'
+import { predictionsBNB, predictionsCAKE } from '../../predictionContract'
+import { PredictionConfig, PredictionSupportedSymbol } from '../../type'
 
 export const predictions: Record<string, PredictionConfig> = {
   [PredictionSupportedSymbol.BNB]: {

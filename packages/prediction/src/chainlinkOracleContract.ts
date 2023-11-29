@@ -1,5 +1,5 @@
-import { Address } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
+import { Address } from 'viem'
 
 export const chainlinkOracleBNB: Record<string, Address> = {
   [ChainId.BSC]: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE',
@@ -14,5 +14,5 @@ export const chainlinkOracleCAKE: Record<string, Address> = {
 export const chainlinkOracleETH: Record<string, Address> = {
   [ChainId.BSC]: '0x',
   [ChainId.BSC_TESTNET]: '0x',
-  [ChainId.ARBITRUM_GOERLI]: '0xd5330586c035a67bd32A6FD8e390c72DB9372861',
+  [ChainId.ARBITRUM_GOERLI]: '0x5A6E20F3AeD66BF0F58F765828164A14D712B877',
 }
