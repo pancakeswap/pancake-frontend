@@ -45,6 +45,10 @@ export const NotificationFilterTypes: OptionProps[] = [
     value: SubsctiptionType.Alerts,
   },
   {
+    label: 'Rewards',
+    value: SubsctiptionType.TradingReward,
+  },
+  {
     label: 'Archived',
     value: 'Archived',
   },
@@ -61,9 +65,9 @@ export const PancakeNotifications: {
   OnBoardNotification: (): pushNotification => {
     return {
       title: 'Welcome Aboard',
-      body: 'You have successfully subscribed to Pancake Notifications Wooo!',
+      body: 'You have successfully subscribed to notifications!',
       icon: `https://pancakeswap.finance/logo.png`,
-      type: 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
+      type: SubsctiptionType.Alerts,
     }
   },
   newLpNotification: (): pushNotification => {
@@ -72,12 +76,13 @@ export const PancakeNotifications: {
       body: `New LP position successfully added. you will be notified on important updates.`,
       icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pc-custom-web.vercel.app',
-      type: 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
+      type: SubsctiptionType.Liquidity,
     }
     // ... add more as we create use cases
   },
 }
-export const APP_DOMAIN = 'pc-custom-web-git-main-chefbingbong.vercel.app'
+export const APP_DOMAIN = 'pancakeswap.finance'
+
 export const PUBLIC_VAPID_KEY =
   'BMqr9OUv0dxUll4al_WO0EGFf87hkxrIrQik_fv_rkX7Mtr7irwOnaw8egvgYFQqsi3_rbsoY4TzjfrqUL1sA44'
 

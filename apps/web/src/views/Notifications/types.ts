@@ -9,13 +9,14 @@ export enum ResponseEvents {
 }
 
 enum ScopeIdsToName {
-  Lottery = '5759ebab-f70c-4f83-9fa0-36b6e6513c94',
-  Prediction = 'bf991425-0c3e-448c-87f9-b116decea164',
-  Liquidity = 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
-  Farms = '7b43cae7-6e49-4644-aa3f-fb28883c9576',
+  Lottery = 'b42403b3-2712-4e1e-8cc7-cb2d9c1350b4',
+  Prediction = '52816341-59cd-49e2-8f3b-d15bf2c107fb',
+  Liquidity = '02879833-eb9c-4cc3-8760-f762ab218ca6',
+  Farms = 'cf41e730-22d8-42d6-a7d5-1e79b6f7820b',
   PriceUpdates = 'ad885f1d-3f25-46ea-916a-7ebe630b6f98',
-  Promotional = '5e0b7598-7fbe-4695-8a3c-b14cb4b78a11',
-  Alerts = '81be3ea1-c562-433d-9dfe-d709ce7d3719',
+  Promotional = '87393202-5cd7-4a0b-a672-bd4eded25e7b',
+  Alerts = '069d1195-50a0-47b0-81a6-2df3024831ba',
+  TradingReward = 'e0a3aeb3-3ec2-496d-b6c7-343185de6aca',
 }
 
 export enum SubsctiptionType {
@@ -26,6 +27,7 @@ export enum SubsctiptionType {
   PriceUpdates = ScopeIdsToName.PriceUpdates,
   Promotional = ScopeIdsToName.Promotional,
   Alerts = ScopeIdsToName.Alerts,
+  TradingReward = ScopeIdsToName.TradingReward,
 }
 
 export enum PAGE_VIEW {

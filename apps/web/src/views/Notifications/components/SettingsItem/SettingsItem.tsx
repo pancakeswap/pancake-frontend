@@ -31,6 +31,9 @@ export const ScopeIcon: React.FC<
     [SubsctiptionType.Promotional]: (
       <Image src="/images/notifications/promotional-scope.svg" alt="promo-scope" width={40} height={40} />
     ),
+    [SubsctiptionType.TradingReward]: (
+      <Image src="/images/notifications/promotional-scope.svg" alt="promo-scope" width={40} height={40} />
+    ),
   }
   const logo = providerToLogo[scope]
   return logo
