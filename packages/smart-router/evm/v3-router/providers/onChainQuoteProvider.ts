@@ -31,7 +31,7 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.LINEA_TESTNET]: 0.1,
   [ChainId.OPBNB]: 0.1,
   [ChainId.OPBNB_TESTNET]: 0.1,
-  [ChainId.BASE]: 0.1,
+  [ChainId.BASE]: 0.05,
   [ChainId.BASE_TESTNET]: 0.1,
   [ChainId.SCROLL_SEPOLIA]: 0.1,
 } as const satisfies Record<ChainId, number>
