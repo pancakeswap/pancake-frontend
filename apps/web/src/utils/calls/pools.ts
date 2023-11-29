@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { getPoolsConfig } from '@pancakeswap/pools'
+import { SerializedPool, getPoolsConfig } from '@pancakeswap/pools'
 
 import chunk from 'lodash/chunk'
 import { publicClient } from 'utils/wagmi'
@@ -36,7 +36,7 @@ const ABI = [
 /**
  * Returns the total number of pools that were active at a given block
  */
-export const getActivePools = async (chainId: ChainId, block?: number) => {
+export const getActivePools = async (chainId: ChainId, block?: number): Promise<SerializedPool[]> => {
   const poolsConfig = getPoolsConfig(chainId)
   const eligiblePools = poolsConfig
     .filter((pool) => pool.sousId !== 0)

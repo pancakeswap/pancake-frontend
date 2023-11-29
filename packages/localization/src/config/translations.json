@@ -3086,6 +3086,8 @@
   "Your vote has been submitted successfully.": "Your vote has been submitted successfully.",
   "BETA": "BETA",
   "All Your DeFi Updates, All in One Place": "All Your DeFi Updates, All in One Place",
+  "Your voting power is determined by the number of veCAKE you have at the block detailed above. CAKE held in other places does NOT contribute to your voting power.": "Your voting power is determined by the number of veCAKE you have at the block detailed above. CAKE held in other places does NOT contribute to your voting power.",
+  "Once confirmed, voting action cannot be undone.": "Once confirmed, voting action cannot be undone.",
   "Web3 Notifications (BETA) trial available": "Web3 Notifications (BETA) trial available",
   "selected": "selected",
   "Collapse": "Collapse",

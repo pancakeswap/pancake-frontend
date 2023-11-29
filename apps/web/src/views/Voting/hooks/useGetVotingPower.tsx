@@ -1,10 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
-import { useAccount, Address } from 'wagmi'
+import { bscTokens } from '@pancakeswap/tokens'
 import { useQuery } from '@tanstack/react-query'
 import { getActivePools } from 'utils/calls'
-import { bscTokens } from '@pancakeswap/tokens'
 import { publicClient } from 'utils/wagmi'
-import { getVotingPower } from '../helpers'
+import { Address, useAccount } from 'wagmi'
+import { VECAKE_VOTING_POWER_BLOCK, getVeVotingPower, getVotingPower } from '../helpers'
 
 interface State {
   cakeBalance?: number
@@ -16,6 +16,7 @@ interface State {
   total: number
   lockedCakeBalance?: number
   lockedEndTime?: number
+  veCakeBalance?: number
 }
 
 const useGetVotingPower = (block?: number): State & { isLoading: boolean; isError: boolean } => {
@@ -23,7 +24,13 @@ const useGetVotingPower = (block?: number): State & { isLoading: boolean; isErro
   const { data, status, error } = useQuery(
     [account, block, 'votingPower'],
     async () => {
+      if (!account) {
+        throw new Error('No account')
+      }
       const blockNumber = block ? BigInt(block) : await publicClient({ chainId: ChainId.BSC }).getBlockNumber()
+      if (blockNumber >= VECAKE_VOTING_POWER_BLOCK) {
+        return getVeVotingPower(account, blockNumber)
+      }
       const eligiblePools = await getActivePools(ChainId.BSC, Number(blockNumber))
       const poolAddresses: Address[] = eligiblePools
         .filter((pair) => pair.stakingToken.address.toLowerCase() === bscTokens.cake.address.toLowerCase())
@@ -61,7 +68,7 @@ const useGetVotingPower = (block?: number): State & { isLoading: boolean; isErro
   )
   if (error) console.error(error)
 
-  return { ...data, isLoading: status !== 'success', isError: status === 'error' }
+  return { total: 0, ...data, isLoading: status !== 'success', isError: status === 'error' }
 }
 
 export default useGetVotingPower
