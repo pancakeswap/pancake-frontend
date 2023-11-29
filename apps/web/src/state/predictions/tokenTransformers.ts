@@ -1,9 +1,10 @@
-import numberOrNull from 'utils/numberOrNull'
 import { BetPosition } from '@pancakeswap/prediction'
-import { Bet, Round, PredictionUser } from '../types'
-import { RoundResponse } from './responseType'
-import { BetResponseCAKE } from './cakeQueries'
+import numberOrNull from 'utils/numberOrNull'
+import { Bet, PredictionUser, Round } from '../types'
 import { BetResponseBNB } from './bnbQueries'
+import { BetResponseCAKE } from './cakeQueries'
+import { NewBetResponse } from './newTokenQueries'
+import { RoundResponse } from './responseType'
 
 const getRoundPosition = (positionResponse: string) => {
   if (positionResponse === 'Bull') {
@@ -22,7 +23,7 @@ const getRoundPosition = (positionResponse: string) => {
 }
 
 export const transformRoundResponseToken = (
-  roundResponse: RoundResponse<BetResponseCAKE | BetResponseBNB>,
+  roundResponse: RoundResponse<BetResponseCAKE | BetResponseBNB | NewBetResponse>,
   transformBetResponse: (betResponse: any) => Bet,
 ): Round => {
   const {
@@ -60,21 +61,21 @@ export const transformRoundResponseToken = (
     lockRoundId,
     closeRoundId,
     closeHash,
-    position: getRoundPosition(position),
-    epoch: numberOrNull(epoch),
-    startAt: numberOrNull(startAt),
-    startBlock: numberOrNull(startBlock),
-    lockAt: numberOrNull(lockAt),
-    lockBlock: numberOrNull(lockBlock),
+    position: getRoundPosition(position) || BetPosition.HOUSE,
+    epoch: numberOrNull(epoch) ?? 0,
+    startAt: numberOrNull(startAt) ?? 0,
+    startBlock: numberOrNull(startBlock) ?? 0,
+    lockAt: numberOrNull(lockAt) ?? 0,
+    lockBlock: numberOrNull(lockBlock) ?? 0,
     lockPrice: lockPrice ? parseFloat(lockPrice) : 0,
-    closeAt: numberOrNull(closeAt),
-    closeBlock: numberOrNull(closeBlock),
+    closeAt: numberOrNull(closeAt) ?? 0,
+    closeBlock: numberOrNull(closeBlock) ?? 0,
     closePrice: closePrice ? parseFloat(closePrice) : 0,
-    totalBets: numberOrNull(totalBets),
+    totalBets: numberOrNull(totalBets) ?? 0,
     totalAmount: totalAmount ? parseFloat(totalAmount) : 0,
-    bullBets: numberOrNull(bullBets),
+    bullBets: numberOrNull(bullBets) ?? 0,
     bullAmount: bullAmount ? parseFloat(bullAmount) : 0,
-    bearBets: numberOrNull(bearBets),
+    bearBets: numberOrNull(bearBets) ?? 0,
     bearAmount: bearAmount ? parseFloat(bearAmount) : 0,
     bets: bets.map(transformBetResponse),
   }
@@ -104,13 +105,13 @@ export const transformUserResponseToken = (userResponse): PredictionUser => {
 
   return {
     id,
-    createdAt: numberOrNull(createdAt),
-    updatedAt: numberOrNull(updatedAt),
-    block: numberOrNull(block),
-    totalBets: numberOrNull(totalBets),
-    totalBetsBull: numberOrNull(totalBetsBull),
-    totalBetsBear: numberOrNull(totalBetsBear),
-    totalBetsClaimed: numberOrNull(totalBetsClaimed),
+    createdAt: numberOrNull(createdAt) ?? 0,
+    updatedAt: numberOrNull(updatedAt) ?? 0,
+    block: numberOrNull(block) ?? 0,
+    totalBets: numberOrNull(totalBets) ?? 0,
+    totalBetsBull: numberOrNull(totalBetsBull) ?? 0,
+    totalBetsBear: numberOrNull(totalBetsBear) ?? 0,
+    totalBetsClaimed: numberOrNull(totalBetsClaimed) ?? 0,
     winRate: winRate ? parseFloat(winRate) : 0,
     totalBNB: 0,
     totalBNBBull: 0,

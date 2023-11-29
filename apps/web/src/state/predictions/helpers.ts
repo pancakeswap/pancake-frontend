@@ -1,33 +1,35 @@
-import { request, gql } from 'graphql-request'
-import {
-  Bet,
-  LedgerData,
-  PredictionsState,
-  ReduxNodeLedger,
-  RoundData,
-  HistoryFilter,
-  ReduxNodeRound,
-  NodeRound,
-} from 'state/types'
+import { ChainId } from '@pancakeswap/chains'
 import {
   BetPosition,
-  PredictionStatus,
   GRAPH_API_PREDICTION_BNB,
   GRAPH_API_PREDICTION_CAKE,
+  PredictionStatus,
+  PredictionSupportedSymbol,
   predictionsV2ABI,
 } from '@pancakeswap/prediction'
-import { Address } from 'wagmi'
+import { gql, request } from 'graphql-request'
+import {
+  Bet,
+  HistoryFilter,
+  LedgerData,
+  NodeRound,
+  PredictionsState,
+  ReduxNodeLedger,
+  ReduxNodeRound,
+  RoundData,
+} from 'state/types'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
-import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/chains'
 import { PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
-import { getRoundBaseFields, getBetBaseFields, getUserBaseFields } from './queries'
-import { ROUNDS_PER_PAGE } from './config'
-import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTransformers'
-import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
-import { BetResponse, UserResponse } from './responseType'
+import { publicClient } from 'utils/wagmi'
+import { Address } from 'wagmi'
 import { BetResponseBNB } from './bnbQueries'
+import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
 import { BetResponseCAKE } from './cakeQueries'
+import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTransformers'
+import { ROUNDS_PER_PAGE } from './config'
+import { newTransformBetResponse, newTransformUserResponse } from './newTransformers'
+import { getBetBaseFields, getRoundBaseFields, getUserBaseFields } from './queries'
+import { BetResponse, UserResponse } from './responseType'
 
 const convertBigInt = (value: string | null): null | bigint => (!value ? null : BigInt(value))
 
@@ -50,11 +52,31 @@ export enum Result {
   LIVE = 'live',
 }
 
-export const transformBetResponse = (tokenSymbol) =>
-  tokenSymbol === 'CAKE' ? transformBetResponseCAKE : transformBetResponseBNB
+export const transformBetResponse = (tokenSymbol) => {
+  // BSC CAKE
+  if (tokenSymbol === PredictionSupportedSymbol.CAKE) {
+    return transformBetResponseCAKE
+  }
+  // BSC BNB
+  if (tokenSymbol === PredictionSupportedSymbol.BNB) {
+    return transformBetResponseBNB
+  }
 
-export const transformUserResponse = (tokenSymbol) =>
-  tokenSymbol === 'CAKE' ? transformUserResponseCAKE : transformUserResponseBNB
+  return newTransformBetResponse
+}
+
+export const transformUserResponse = (tokenSymbol) => {
+  // BSC CAKE
+  if (tokenSymbol === PredictionSupportedSymbol.CAKE) {
+    return transformUserResponseCAKE
+  }
+  // BSC BNB
+  if (tokenSymbol === PredictionSupportedSymbol.BNB) {
+    return transformUserResponseBNB
+  }
+
+  return newTransformUserResponse
+}
 
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   const { round } = bet
@@ -144,7 +166,7 @@ export const getBetHistory = async (
         bets(first: $first, skip: $skip, where: $where, orderBy: createdAt, orderDirection: desc) {
           ${getBetBaseFields(tokenSymbol)}
           round {
-            ${getRoundBaseFields(tokenSymbol)}
+            ${getRoundBaseFields}
           }
           user {
             ${getUserBaseFields(tokenSymbol)}
