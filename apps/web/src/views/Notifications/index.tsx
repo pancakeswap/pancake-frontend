@@ -6,7 +6,7 @@ import { clearArchivedTransactions } from 'state/notifications/actions'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import { useAccount, useSignMessage } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import { APP_DOMAIN, DEFAULT_PROJECT_ID, Events, TWO_MINUTES_MILLISECONDS } from './constants'
+import { APP_DOMAIN, Events, TWO_MINUTES_MILLISECONDS } from './constants'
 import NotificationSettingsView from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
 import { ViewContainer } from './styles'
@@ -26,7 +26,7 @@ const Notifications = () => {
   const toast = useToast()
 
   const isW3iInitialized = useInitWeb3InboxClient({
-    projectId: DEFAULT_PROJECT_ID,
+    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
     domain: APP_DOMAIN,
   })
 

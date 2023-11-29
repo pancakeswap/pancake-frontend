@@ -54,7 +54,6 @@ export const NotificationFilterTypes: OptionProps[] = [
   },
 ]
 
-export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_DEFAULT_PROJECT_ID ?? ''
 export const SECURE_TOKEN = process.env.NEXT_PUBLIC_SECURE_TOKEN ?? ''
 export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY ?? ''
 export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
@@ -84,7 +83,7 @@ export const PancakeNotifications: {
 export const APP_DOMAIN = 'pancakeswap.finance'
 
 export const PUBLIC_VAPID_KEY =
-  'BMqr9OUv0dxUll4al_WO0EGFf87hkxrIrQik_fv_rkX7Mtr7irwOnaw8egvgYFQqsi3_rbsoY4TzjfrqUL1sA44'
+  'BI1vtjF3A-NX4nNyJhWx0Ky--zOTlWBS5cLNQgOzSMElN4I27BgzREPtIZR1poZKjCgjWpS969wGQC8TdlSz1Zk'
 
 export const Events: { [event in keyof typeof ResponseEvents]: EventInformation } = {
   [ResponseEvents.NotificationsEnabled]: {
