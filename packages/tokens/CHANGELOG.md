@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.5.5
+
+### Patch Changes
+
+- 2bb70e602: Add cake sdcake stable pair
+
 ## 0.5.4
 
 ### Patch Changes

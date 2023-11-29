@@ -1,5 +1,14 @@
 # @pancakeswap/smart-router
 
+## 4.10.1
+
+### Patch Changes
+
+- 2bb70e602: Add cake sdcake stable pair
+- Updated dependencies [2bb70e602]
+  - @pancakeswap/tokens@0.5.5
+  - @pancakeswap/v3-sdk@3.7.1
+
 ## 4.10.0
 
 ### Minor Changes
