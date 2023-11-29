@@ -4,7 +4,6 @@ import {
   ArrowBackIcon,
   AutoRenewIcon,
   BalanceInput,
-  BinanceIcon,
   Box,
   Button,
   Card,
@@ -13,13 +12,13 @@ import {
   Flex,
   Heading,
   IconButton,
-  LogoIcon,
   Slider,
   Text,
 } from '@pancakeswap/uikit'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { TokenImage } from 'components/TokenImage'
 import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
 import useCakeApprove from 'hooks/useCakeApprove'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -34,11 +33,6 @@ import { useAccount } from 'wagmi'
 
 import FlexRow from '../FlexRow'
 import PositionTag from '../PositionTag'
-
-const LOGOS = {
-  BNB: BinanceIcon,
-  CAKE: LogoIcon,
-}
 
 interface SetPositionCardProps {
   position: BetPosition
@@ -202,8 +196,6 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     }
   }, [value, maxBalance, minBetAmount, setErrorMessage, t, tokenSymbol])
 
-  const Logo = useMemo(() => LOGOS[tokenSymbol], [tokenSymbol])
-
   return (
     <Card>
       <CardHeader p="16px">
@@ -225,7 +217,9 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
             {t('Commit')}:
           </Text>
           <Flex alignItems="center">
-            <Logo mr="4px" />
+            <Box mr="4px" width={20} height={20}>
+              <TokenImage width={20} height={20} token={config?.token} />
+            </Box>
             <Text bold textTransform="uppercase">
               {tokenSymbol}
             </Text>
