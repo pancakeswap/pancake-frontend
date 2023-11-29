@@ -1,7 +1,7 @@
 import { BigintIsh, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { Abi, Address } from 'viem'
-import retry, { Options as RetryOptions } from 'async-retry'
+import retry from 'async-retry'
 // import uniq from 'lodash/uniq.js'
 
 import {
