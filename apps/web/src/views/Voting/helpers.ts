@@ -6,7 +6,7 @@ import fromPairs from 'lodash/fromPairs'
 import groupBy from 'lodash/groupBy'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
-import { createPublicClient, formatEther, http } from 'viem'
+import { createPublicClient, http } from 'viem'
 import { bsc } from 'viem/chains'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { Address } from 'wagmi'
@@ -130,34 +130,19 @@ const nodeRealProvider = createPublicClient({
 
 export const getVeVotingPower = async (account: Address, blockNumber?: bigint): Promise<GetVeVotingPowerType> => {
   // use getScores veCakeBalanceStrategy after
-  const result1 = await getScores(
+  const scores = await getScores(
     PANCAKE_SPACE,
     [strategies.veCakeBalanceStrategy],
     NETWORK,
     [account],
     Number(blockNumber),
   )
-  // return
-  const result = await nodeRealProvider.readContract({
-    address: strategies.votePowerAddress.veCake,
-    abi: [
-      {
-        inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
-        name: 'getVotingPowerWithoutPool',
-        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    ] as const,
-    functionName: 'getVotingPowerWithoutPool',
-    args: [account],
-    blockNumber,
-  })
+  const result = scores[0][account]
 
   return {
-    total: parseFloat(formatEther(result)),
+    total: result,
     voter: account,
-    veCakeBalance: parseFloat(formatEther(result)),
+    veCakeBalance: result,
   }
 }
 
