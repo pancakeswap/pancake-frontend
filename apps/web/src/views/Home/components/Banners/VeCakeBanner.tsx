@@ -237,10 +237,10 @@ const VeCakeBanner = () => {
             <Image src={vecakeMobileBunny} alt="vecakeMobileBunny" width={161} height={177.7} placeholder="blur" />
           )}
           <BgWrapper>
-            {isDesktop ? (
-              <Image src={vecakeBg} alt="vecakeBg" width={1126} height={192} placeholder="blur" />
-            ) : (
+            {isMobile ? (
               <Image src={vecakeMobileBg} alt="vecakeBg" placeholder="blur" />
+            ) : (
+              <Image src={vecakeBg} alt="vecakeBg" width={1126} height={192} placeholder="blur" />
             )}
           </BgWrapper>
         </RightWrapper>
