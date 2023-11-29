@@ -1,7 +1,7 @@
-import orderBy from 'lodash/orderBy'
 import { createSelector } from '@reduxjs/toolkit'
+import orderBy from 'lodash/orderBy'
 import { Address } from 'wagmi'
-import { PredictionsState, NodeRound, NodeLedger } from '../types'
+import { NodeLedger, NodeRound, PredictionsState } from '../types'
 import { deserializeRound } from './helpers'
 
 const selectCurrentEpoch = (state: PredictionsState) => state.currentEpoch
