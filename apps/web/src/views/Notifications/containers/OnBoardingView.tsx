@@ -66,7 +66,7 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
       setTimeout(async () => {
         await sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`)
         await requestNotificationPermission()
-      }, 500)
+      }, 1500)
     } catch (error) {
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
       toast.toastError(Events.SubscriptionRequestError.title, errMessage)
