@@ -115,15 +115,20 @@ export function useApproveCallback(
       let useExact = false
 
       const estimatedGas = await tokenContract.estimateGas
-        .approve([spender as Address, MaxUint256], {
-          account: tokenContract.account,
-        })
+        .approve(
+          [spender as Address, MaxUint256], // TODO: Fix viem
+          // @ts-ignore
+          {
+            account: tokenContract.account,
+          },
+        )
         .catch(() => {
           // general fallback for tokens who restrict approval amounts
           useExact = true
           return tokenContract.estimateGas
             .approve(
               [spender as Address, overrideAmountApprove ?? amountToApprove?.quotient ?? targetAmount ?? MaxUint256],
+              // @ts-ignore
               {
                 account: tokenContract.account,
               },

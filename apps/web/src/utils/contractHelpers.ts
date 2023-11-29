@@ -113,7 +113,11 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   const c = viemGetContract({
     abi,
     address,
+    // TODO: Fix viem
+    // @ts-ignore
     publicClient: publicClient ?? viemClients[chainId],
+    // TODO: Fix viem
+    // @ts-ignore
     walletClient: signer,
   })
   return {
