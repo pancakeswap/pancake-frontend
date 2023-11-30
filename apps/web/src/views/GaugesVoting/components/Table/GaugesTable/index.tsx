@@ -40,7 +40,7 @@ export const GaugesTable: React.FC<
   const [sortBy, setSortBy] = useState<SortBy | undefined>()
   const sortedData = useMemo(() => {
     if (!data) return []
-    if (!sortKey || !sortBy) return uniqBy(data, 'hash')
+    if (!sortKey || !sortBy) return orderBy(uniqBy(data, 'hash'), ['gid'], ['asc'])
 
     return orderBy(uniqBy(data, 'hash'), [sortKey], [sortBy])
   }, [data, sortBy, sortKey])
