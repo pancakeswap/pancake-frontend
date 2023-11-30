@@ -12,9 +12,12 @@ import {
   LinkExternal,
   PageHeader,
   Text,
+  Toggle,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import { useAtom } from 'jotai'
+import { gaugesInCapAtom } from 'state/vecake/atoms'
 import styled from 'styled-components'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
@@ -43,6 +46,7 @@ const GaugesVoting = () => {
   const totalGaugesWeight = useGaugesTotalWeight()
   const { data: gauges, isLoading } = useGauges()
   const { isDesktop } = useMatchBreakpoints()
+  const [inCap, setInCap] = useAtom(gaugesInCapAtom)
 
   return (
     <StyledGaugesVotingPage>
@@ -95,6 +99,11 @@ const GaugesVoting = () => {
             <Box ml={isDesktop ? '60px' : '0'} mt={isDesktop ? '0' : '1em'}>
               <Text color="secondary" textTransform="uppercase" bold>
                 {t('proposed weights')}
+
+                <Flex>
+                  <Toggle scale="sm" checked={inCap} onChange={() => setInCap(!inCap)} />
+                  <Text>InCap</Text>
+                </Flex>
               </Text>
               <WeightsPieChart
                 data={gauges}

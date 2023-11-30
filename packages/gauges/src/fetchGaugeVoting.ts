@@ -6,6 +6,7 @@ import { GaugeInfo, GaugeVotingInfo } from './types'
 export const fetchAllGaugesVoting = async (
   client: PublicClient,
   gaugeInfos: GaugeInfo[],
+  inCap: boolean = true,
 ): Promise<GaugeVotingInfo[]> => {
   const contract = getContract(client)
 
@@ -14,7 +15,7 @@ export const fetchAllGaugesVoting = async (
       return {
         ...contract,
         functionName: 'getGaugeWeight',
-        args: [gauge.pairAddress, BigInt(gauge.chainId), true],
+        args: [gauge.pairAddress, BigInt(gauge.chainId), inCap],
       }
     })
 

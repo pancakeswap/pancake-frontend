@@ -1,5 +1,6 @@
 import { getAllGauges } from '@pancakeswap/gauges'
 import { NextApiHandler } from 'next'
+import qs from 'qs'
 
 const MAX_CACHE_SECONDS = 60 * 5
 
@@ -19,10 +20,12 @@ const keys = [
 ]
 
 const handler: NextApiHandler = async (req, res) => {
-  const useTestnet = req.query.testnet
+  const queryString = qs.stringify(req.query)
+  const queryParsed = qs.parse(queryString)
   try {
     const gauges = await getAllGauges({
-      testnet: Boolean(useTestnet),
+      testnet: Boolean(queryParsed.testnet),
+      inCap: Boolean(queryParsed.inCap),
     })
 
     res.setHeader('Cache-Control', `max-age=0, s-maxage=${MAX_CACHE_SECONDS}, stale-while-revalidate`)
