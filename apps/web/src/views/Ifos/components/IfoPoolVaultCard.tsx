@@ -10,6 +10,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import IfoPoolVaultCardMobile from './IfoPoolVaultCardMobile'
 import IfoVesting from './IfoVesting/index'
+import { VeCakeCard } from './VeCakeCard'
 
 type Props = {
   ifoBasicSaleType?: number
@@ -26,11 +27,7 @@ const IfoPoolVaultCard = ({ ifoBasicSaleType }: Props) => {
     [pools],
   ) as Pool.DeserializedPool<Token>
 
-  const vault = isSmallerThanXl ? (
-    <IfoPoolVaultCardMobile pool={cakePool} />
-  ) : (
-    <CakeVaultCard pool={cakePool} showSkeleton={false} showStakedOnly={false} showICake />
-  )
+  const vault = isSmallerThanXl ? <IfoPoolVaultCardMobile pool={cakePool} /> : <VeCakeCard />
 
   return (
     <Flex width="100%" maxWidth={400} alignItems="center" flexDirection="column">
