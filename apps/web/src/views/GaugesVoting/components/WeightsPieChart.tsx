@@ -73,7 +73,7 @@ export const WeightsPieChart: React.FC<{
 
   const gauges = useMemo<ChartData<'doughnut'>>(() => {
     return {
-      labels: data?.map((gauge) => gauge.hash) ?? [],
+      labels: maxData?.map((gauge) => gauge.hash) ?? [],
       datasets: [
         {
           ...chartDataOption,
@@ -81,7 +81,7 @@ export const WeightsPieChart: React.FC<{
         },
       ],
     }
-  }, [data])
+  }, [data, sortedGauge])
 
   const externalTooltipHandler = useCallback(
     ({ tooltip }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
