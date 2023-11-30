@@ -17,7 +17,13 @@ export const useGauges = () => {
       const response = await fetch(`/api/gauges/getAllGauges?testnet=${chainId === ChainId.BSC_TESTNET ? 1 : ''}`)
       if (response.ok) {
         const result = (await response.json()) as Response
-        return result.data
+
+        const gauges = result.data.map((gauge) => ({
+          ...gauge,
+          weight: BigInt(gauge.weight),
+        }))
+
+        return gauges
       }
       return [] as Gauge[]
     },
