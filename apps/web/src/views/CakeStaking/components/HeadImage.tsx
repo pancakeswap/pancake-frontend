@@ -42,6 +42,7 @@ export const NewCakeStakingCard: React.FC = () => {
   return (
     <AtomBox display="flex" alignItems="center">
       <Link
+        external
         href="https://docs.pancakeswap.finance/products/vecake/how-to-get-vecake"
         style={{ textDecoration: 'none' }}
       >
@@ -64,10 +65,16 @@ export const HeadImage = () => {
   if (status === CakeLockStatus.NotLocked) return <NewCakeStakingCard />
 
   return (
-    <Button variant="subtle" endIcon={<HelpIcon color="white" width="24px" />} mt="1em">
-      <Text color="white" textTransform="capitalize">
-        {t('help')}
-      </Text>
-    </Button>
+    <Link
+      external
+      href="https://docs.pancakeswap.finance/products/vecake/how-to-get-vecake"
+      style={{ textDecoration: 'none' }}
+    >
+      <Button variant="subtle" endIcon={<HelpIcon color="white" width="24px" />} mt="1em">
+        <Text color="white" textTransform="capitalize">
+          {t('help')}
+        </Text>
+      </Button>
+    </Link>
   )
 }
