@@ -2,6 +2,8 @@ import { ChainId } from '@pancakeswap/chains'
 import { Gauge } from '@pancakeswap/gauges'
 import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useAtomValue } from 'jotai'
+import { gaugesInCapAtom } from 'state/vecake/atoms'
 
 type Response = {
   data: Gauge[]
@@ -10,11 +12,14 @@ type Response = {
 
 export const useGauges = () => {
   const { chainId } = useActiveChainId()
+  const inCap = useAtomValue(gaugesInCapAtom)
 
   const { data, isLoading } = useQuery(
-    ['gaugesVoting', chainId],
+    ['gaugesVoting', chainId, inCap],
     async (): Promise<Gauge[]> => {
-      const response = await fetch(`/api/gauges/getAllGauges?testnet=${chainId === ChainId.BSC_TESTNET ? 1 : ''}`)
+      const response = await fetch(
+        `/api/gauges/getAllGauges?inCap=${inCap}&testnet=${chainId === ChainId.BSC_TESTNET ? 1 : ''}`,
+      )
       if (response.ok) {
         const result = (await response.json()) as Response
 
