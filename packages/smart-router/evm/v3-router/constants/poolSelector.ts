@@ -101,4 +101,11 @@ export const V3_TOKEN_POOL_SELECTOR_CONFIG: TokenPoolSelectorConfigChainMap = {
   },
 }
 
-export const V2_TOKEN_POOL_SELECTOR_CONFIG: TokenPoolSelectorConfigChainMap = {}
+export const V2_TOKEN_POOL_SELECTOR_CONFIG: TokenPoolSelectorConfigChainMap = {
+  [ChainId.BSC]: {
+    // GEM
+    '0x701F1ed50Aa5e784B8Fb89d1Ba05cCCd627839a7': {
+      topNTokenInOut: 4,
+    },
+  },
+}
