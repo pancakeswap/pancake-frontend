@@ -48,9 +48,9 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ token, api }
         </Grid>
       </Container>
       {isDesktop ? (
-        <DesktopResults results={rest} pickedTokenSymbol={token?.symbol} />
+        <DesktopResults results={rest} token={token} api={api} />
       ) : (
-        <MobileResults results={rest} pickedTokenSymbol={token?.symbol} />
+        <MobileResults results={rest} token={token} api={api} />
       )}
       <Flex mb="40px" justifyContent="center">
         {hasMoreResults && (

@@ -6,10 +6,11 @@ import DesktopRow from './DesktopRow'
 
 interface DesktopResultsProps {
   results: PredictionUser[]
-  pickedTokenSymbol: string
+  api
+  token
 }
 
-const DesktopResults: React.FC<React.PropsWithChildren<DesktopResultsProps>> = ({ results, pickedTokenSymbol }) => {
+const DesktopResults: React.FC<React.PropsWithChildren<DesktopResultsProps>> = ({ results, api, token }) => {
   const { t } = useTranslation()
 
   return (
@@ -20,7 +21,7 @@ const DesktopResults: React.FC<React.PropsWithChildren<DesktopResultsProps>> = (
             <tr>
               <Th width="60px">&nbsp;</Th>
               <Th textAlign="left">{t('User')}</Th>
-              <Th textAlign="right">{t('Net Winnings (%symbol%)', { symbol: pickedTokenSymbol })}</Th>
+              <Th textAlign="right">{t('Net Winnings (%symbol%)', { symbol: token?.symbol })}</Th>
               <Th>{t('Win Rate')}</Th>
               <Th>{t('Rounds Won')}</Th>
               <Th>{t('Rounds Played')}</Th>
@@ -28,7 +29,7 @@ const DesktopResults: React.FC<React.PropsWithChildren<DesktopResultsProps>> = (
           </thead>
           <tbody>
             {results.map((result, index) => (
-              <DesktopRow key={result.id} rank={index + 4} user={result} />
+              <DesktopRow key={result.id} rank={index + 4} user={result} token={token} api={api} />
             ))}
           </tbody>
         </Table>
