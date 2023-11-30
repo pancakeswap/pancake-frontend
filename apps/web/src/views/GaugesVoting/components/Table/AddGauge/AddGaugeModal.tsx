@@ -1,3 +1,4 @@
+import { Gauge, GaugeType } from '@pancakeswap/gauges'
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
@@ -15,13 +16,10 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { GaugeType } from 'config/constants/types'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { useGaugesPresets } from 'views/GaugesVoting/hooks/useGaugesPresets'
+import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
-import { GaugeVoting, useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
-import { getGaugeHash } from 'views/GaugesVoting/utils'
 import { GaugesList, GaugesTable } from '../GaugesTable'
 import { Filter, FilterValue, Gauges, OptionsModal, OptionsType } from './OptionsModal'
 
@@ -40,8 +38,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const { data: gauges } = useGaugesVoting()
-  const presets = useGaugesPresets()
+  const { data: gauges } = useGauges()
   const [searchText, setSearchText] = useState<string>('')
   const debouncedSearchText = useDebounce(searchText, 800)
   const [option, setOption] = useState<OptionsType | null>(null)
@@ -54,21 +51,18 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const filterRows = useMemo(() => {
     if (!gauges || !gauges.length) return []
     const { byChain, byFeeTier, byType } = filter
-    let rows: GaugeVoting[] = gauges
+    let rows: Gauge[] = gauges
 
     if (debouncedSearchText?.length > 0) {
       rows = gauges.filter((gauge) => {
-        const config = presets.find((g) => gauge.hash === getGaugeHash(g.address, g.chainId))
-        const pairName = config?.pairName
-        return pairName?.toLowerCase().includes(debouncedSearchText.toLowerCase())
+        return gauge.pairName.toLowerCase().includes(debouncedSearchText.toLowerCase())
       })
     }
 
     if (byChain.length || byFeeTier.length || byType.length) {
-      rows = rows?.filter((gauge: GaugeVoting) => {
-        const config = presets.find((g) => gauge.hash === getGaugeHash(g.address, g.chainId))
-        const feeTier = config?.type === GaugeType.V3 ? config?.feeTier : undefined
-        const chain = config?.chainId
+      rows = rows?.filter((gauge: Gauge) => {
+        const feeTier = gauge.type === GaugeType.V3 ? gauge?.feeTier : undefined
+        const chain = gauge.chainId
         const boosted = gauge.boostMultiplier > 100n
         const capped = gauge.maxVoteCap > 0n
         const types = [boosted ? Gauges.Boosted : Gauges.Regular]
@@ -84,7 +78,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
     }
 
     return rows
-  }, [filter, gauges, presets, debouncedSearchText])
+  }, [filter, gauges, debouncedSearchText])
 
   const onFilterChange = (type: OptionsType, value: FilterValue) => {
     const opts = filter[type] as Array<unknown>

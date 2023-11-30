@@ -1,15 +1,16 @@
+import { Gauge } from '@pancakeswap/gauges'
 import { usePreviousValue } from '@pancakeswap/hooks'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { GaugeVoting, useGaugesVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
-import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGuages'
+import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
+import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 
 export const useGaugeRows = () => {
-  const { data: gauges, isLoading } = useGaugesVoting()
+  const { data: gauges, isLoading } = useGauges()
   const { account } = useAccountActiveChain()
   const previousAccount = usePreviousValue(account)
   const { data: prevVotedGauges, refetch } = useUserVoteGauges()
-  const [selectRowsHash, setSelectRowsHash] = useState<GaugeVoting['hash'][]>([])
+  const [selectRowsHash, setSelectRowsHash] = useState<Gauge['hash'][]>([])
   const rows = useMemo(() => {
     return gauges?.filter((gauge) => selectRowsHash.includes(gauge.hash))
   }, [gauges, selectRowsHash])
@@ -28,7 +29,7 @@ export const useGaugeRows = () => {
   }, [prevVotedGauges, selectRowsHash.length])
 
   const onRowSelect = useCallback(
-    (hash: GaugeVoting['hash']) => {
+    (hash: Gauge['hash']) => {
       if (selectRowsHash.includes(hash)) {
         setSelectRowsHash((prev) => prev.filter((v) => v !== hash))
       } else {

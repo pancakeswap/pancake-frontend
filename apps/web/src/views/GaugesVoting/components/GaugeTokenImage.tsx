@@ -1,5 +1,3 @@
-import { Token } from '@pancakeswap/swap-sdk-core'
-import { DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import {
   GaugeALMConfig,
   GaugeConfig,
@@ -7,7 +5,9 @@ import {
   GaugeType,
   GaugeV2Config,
   GaugeV3Config,
-} from 'config/constants/types'
+} from '@pancakeswap/gauges'
+import { Token } from '@pancakeswap/swap-sdk-core'
+import { DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { Address } from 'viem'
 

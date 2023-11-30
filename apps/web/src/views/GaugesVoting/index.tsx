@@ -20,8 +20,8 @@ import { CurrentEpoch } from './components/CurrentEpoch'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
+import { useGauges } from './hooks/useGauges'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
-import { useGaugesVoting } from './hooks/useGaugesVoting'
 
 const InlineLink = styled(LinkExternal)`
   display: inline-flex;
@@ -41,7 +41,7 @@ const StyledPageHeader = styled(PageHeader)`
 const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const { data: gauges, isLoading } = useGaugesVoting()
+  const { data: gauges, isLoading } = useGauges()
   const { isDesktop } = useMatchBreakpoints()
 
   return (
@@ -96,7 +96,12 @@ const GaugesVoting = () => {
               <Text color="secondary" textTransform="uppercase" bold>
                 {t('proposed weights')}
               </Text>
-              <WeightsPieChart isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
+              <WeightsPieChart
+                data={gauges}
+                totalGaugesWeight={Number(totalGaugesWeight)}
+                maxPiesRender={20}
+                isLoading={isLoading}
+              />
             </Box>
           </Grid>
           {isDesktop ? (

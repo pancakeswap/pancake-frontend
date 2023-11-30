@@ -1,10 +1,10 @@
+import { Gauge } from '@pancakeswap/gauges'
 import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import type { ChartData, ChartDataset, TooltipModel } from 'chart.js'
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import styled, { keyframes } from 'styled-components'
-import { GaugeVoting } from '../hooks/useGaugesVoting'
 import { ChartLabel } from './ChartLabel'
 import { ChartTooltip } from './ChartTooltip'
 
@@ -53,28 +53,38 @@ export const chartDataOption: ChartDataset<'doughnut', number[]> = {
   borderWidth: 0,
 }
 export const WeightsPieChart: React.FC<{
-  data?: GaugeVoting[]
+  data?: Gauge[]
   totalGaugesWeight: number
+  maxPiesRender?: number
   isLoading?: boolean
-}> = ({ data, totalGaugesWeight, isLoading }) => {
+}> = ({ data, totalGaugesWeight, maxPiesRender, isLoading }) => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
-  const [selectedGauge, setSelectedGauge] = useState<GaugeVoting>()
+  const [selectedGauge, setSelectedGauge] = useState<Gauge>()
+  const sortedGauge = useMemo<Gauge[]>(() => data?.sort((a, b) => (a.weight < b.weight ? 1 : -1)) ?? [], [data])
+  const selectedGaugeSort = useMemo(() => {
+    if (!selectedGauge) return ''
+    const index = sortedGauge.findIndex((g) => g.hash === selectedGauge.hash) + 1
+    if (index < 10) return `0${index}`
+    return String(index)
+  }, [selectedGauge, sortedGauge])
   const [color, setColor] = useState<string>('')
   const { isDesktop } = useMatchBreakpoints()
 
   const gauges = useMemo<ChartData<'doughnut'>>(() => {
+    const hasMaxRender = typeof maxPiesRender !== 'undefined' && maxPiesRender > 0
+    const maxData = hasMaxRender ? sortedGauge?.slice(0, maxPiesRender) : data
     return {
-      labels: data?.map((gauge) => gauge.hash) ?? [],
+      labels: maxData?.map((gauge) => gauge.hash) ?? [],
       datasets: [
         {
           ...chartDataOption,
-          data: data?.map((gauge) => gauge.weight) ?? [],
+          data: maxData?.map((gauge) => Number(gauge.weight)) ?? [],
         },
       ],
     }
-  }, [data])
+  }, [data, maxPiesRender, sortedGauge])
 
   const externalTooltipHandler = useCallback(
     ({ tooltip }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
@@ -111,7 +121,7 @@ export const WeightsPieChart: React.FC<{
       total={totalGaugesWeight}
       color={color}
       gauge={selectedGauge}
-      allGauges={data}
+      sort={selectedGaugeSort}
     />
   )
   const tooltipNode = isDesktop ? (

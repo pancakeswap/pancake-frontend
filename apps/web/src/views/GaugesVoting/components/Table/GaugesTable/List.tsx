@@ -1,3 +1,4 @@
+import { GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/sdk'
 import {
@@ -18,15 +19,10 @@ import BN from 'bignumber.js'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
-import { Address } from 'viem'
-
-import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
-import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
-import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { feeTierPercent } from 'views/V3Info/utils'
-
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
+import { RowData } from './types'
 
 const ListContainer = styled(Flex)`
   margin-left: -1em;
@@ -54,11 +50,11 @@ type PaginationProps = {
 
 type ListProps = {
   totalGaugesWeight: number
-  data?: GaugeVoting[]
+  data?: Gauge[]
   isLoading?: boolean
   selectable?: boolean
-  selectRows?: Array<GaugeVoting & { locked?: boolean }>
-  onRowSelect?: (hash: GaugeVoting['hash']) => void
+  selectRows?: Array<RowData>
+  onRowSelect?: (hash: Gauge['hash']) => void
 } & SpaceProps
 
 export function GaugesList({
@@ -126,34 +122,32 @@ export function GaugesList({
 }
 
 type ListItemProps = {
-  data: GaugeVoting
+  data: Gauge
   locked?: boolean
   selectable?: boolean
   selected?: boolean
-  onSelect?: (hash: GaugeVoting['hash']) => void
+  onSelect?: (hash: Gauge['hash']) => void
   totalGaugesWeight?: number
 } & ListDisplayProps
 
 export function GaugeIdentifierDetails({ data }: ListItemProps) {
-  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
-
   return (
     <Flex justifyContent="space-between" flex="1">
       <FlexGap gap="0.25em" flexWrap="wrap">
-        <GaugeTokenImage gauge={pool} size={24} />
+        <GaugeTokenImage gauge={data} size={24} />
         <Text fontWeight={600} fontSize={16}>
-          {pool?.pairName}
+          {data.pairName}
         </Text>
       </FlexGap>
       <FlexGap gap="0.25em" justifyContent="flex-end" flexWrap="wrap">
-        <NetworkBadge chainId={Number(data?.chainId)} scale="sm" />
-        {pool?.type === GaugeType.V3 ? (
+        <NetworkBadge chainId={Number(data.chainId)} scale="sm" />
+        {data.type === GaugeType.V3 ? (
           <Tag outline variant="secondary" scale="sm">
-            {feeTierPercent(pool.feeTier)}
+            {feeTierPercent(data.feeTier)}
           </Tag>
         ) : null}
         <Tag variant="secondary" scale="sm">
-          {pool ? GAUGE_TYPE_NAMES[pool.type] : ''}
+          {data ? GAUGE_TYPE_NAMES[data.type] : ''}
         </Tag>
       </FlexGap>
     </Flex>
@@ -167,16 +161,16 @@ export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
   }, [data?.maxVoteCap])
 
   const currentWeightPercent = useMemo(() => {
-    return new Percent(data?.weight, totalGaugesWeight || 1)
-  }, [data?.weight, totalGaugesWeight])
+    return new Percent(data.weight, totalGaugesWeight || 1)
+  }, [data.weight, totalGaugesWeight])
 
   const hitMaxCap = useMemo(() => {
     return maxCapPercent.greaterThan(0) && currentWeightPercent.greaterThan(maxCapPercent)
   }, [maxCapPercent, currentWeightPercent])
 
   const currentWeight = useMemo(() => {
-    return getBalanceNumber(new BN(data?.weight || 0))
-  }, [data?.weight])
+    return getBalanceNumber(new BN(String(data.weight || 0)))
+  }, [data.weight])
 
   return (
     <FlexGap gap="1em" flexDirection="column">
@@ -196,7 +190,7 @@ export function GaugeItemDetails({ data, totalGaugesWeight }: ListItemProps) {
         </Flex>
         <Flex justifyContent="space-between" alignSelf="stretch">
           <Text>{t('Boost')}</Text>
-          <Text>{Number(data?.boostMultiplier) / 100}x</Text>
+          <Text>{Number(data.boostMultiplier) / 100}x</Text>
         </Flex>
         <Flex justifyContent="space-between" alignSelf="stretch">
           <Text>{t('Caps')}</Text>
@@ -233,8 +227,8 @@ const SelectedCornerMark = styled.div`
 
 export function GaugeCardItem({ data, locked, totalGaugesWeight, selected, selectable, onSelect }: ListItemProps) {
   const onSelectClick = useCallback(
-    () => selectable && !locked && onSelect?.(data?.hash),
-    [data?.hash, locked, onSelect, selectable],
+    () => selectable && !locked && onSelect?.(data.hash),
+    [data.hash, locked, onSelect, selectable],
   )
 
   return (

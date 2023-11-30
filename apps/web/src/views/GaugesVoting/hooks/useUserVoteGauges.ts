@@ -13,7 +13,7 @@ import {
 } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { usePublicClient } from 'wagmi'
-import { useGaugesVoting } from './useGaugesVoting'
+import { useGauges } from './useGauges'
 
 export type VoteSlope = {
   hash: string
@@ -26,7 +26,7 @@ export type VoteSlope = {
 }
 
 export const useUserVoteSlopes = () => {
-  const { data: gauges } = useGaugesVoting()
+  const { data: gauges } = useGauges()
   const { data: userInfo } = useVeCakeUserInfo()
   const gaugesVotingContract = useGaugesVotingContract()
   const { account, chainId } = useAccountActiveChain()
@@ -90,7 +90,7 @@ export const useUserVoteSlopes = () => {
 }
 
 export const useUserVoteGauges = () => {
-  const { data: gauges } = useGaugesVoting()
+  const { data: gauges } = useGauges()
   const { data: slopes, refetch } = useUserVoteSlopes()
 
   const data = useMemo(() => {

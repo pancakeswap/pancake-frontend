@@ -1,13 +1,12 @@
+import { GAUGE_TYPE_NAMES, GaugeType } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
-import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import dayjs from 'dayjs'
 import { useCallback, useMemo, useState } from 'react'
-import { Address, stringify } from 'viem'
+import { stringify } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
-import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
@@ -27,7 +26,6 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
   const currentTimestamp = useCurrentBlockTimestamp()
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
-  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
   const userVote = useUserVote(data)
   const { currentVoteWeight, currentVotePercent, previewVoteWeight, voteValue, voteLocked, willUnlock } =
     useRowVoteState({
@@ -63,20 +61,21 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
             </pre>
           }
         >
-          <GaugeTokenImage gauge={pool} />
+          <GaugeTokenImage gauge={data} />
         </Tooltips>
         <Text fontWeight={600} fontSize={16}>
-          {pool?.pairName}
+          {data.pairName}
         </Text>
         <FlexGap gap="5px" alignItems="center">
-          <NetworkBadge chainId={Number(data?.chainId)} />
-          {[GaugeType.V3, GaugeType.V2].includes(pool?.type) ? (
+          <NetworkBadge chainId={Number(data.chainId)} />
+          {/* {[GaugeType.V3, GaugeType.V2].includes(data.type) ? ( */}
+          {GaugeType.V3 === data.type || GaugeType.V2 === data.type ? (
             <Tag outline variant="secondary">
-              {feeTierPercent(pool.feeTier)}
+              {feeTierPercent(data.feeTier)}
             </Tag>
           ) : null}
 
-          <Tag variant="secondary">{pool ? GAUGE_TYPE_NAMES[pool.type] : ''}</Tag>
+          <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
         </FlexGap>
       </FlexGap>
       <FlexGap alignItems="center" justifyContent="center" gap="4px">

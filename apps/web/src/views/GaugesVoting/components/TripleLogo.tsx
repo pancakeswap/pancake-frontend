@@ -1,6 +1,4 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Native, Token, WNATIVE } from '@pancakeswap/sdk'
-import { ChainLogo, CurrencyLogo } from '@pancakeswap/widgets-internal'
 import {
   GaugeALMConfig,
   GaugeConfig,
@@ -8,7 +6,9 @@ import {
   GaugeType,
   GaugeV2Config,
   GaugeV3Config,
-} from 'config/constants/types'
+} from '@pancakeswap/gauges'
+import { Native, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainLogo, CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Address } from 'viem'
