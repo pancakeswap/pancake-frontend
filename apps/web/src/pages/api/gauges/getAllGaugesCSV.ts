@@ -19,18 +19,27 @@ const keys = [
 ]
 
 const handler: NextApiHandler = async (req, res) => {
-  const gauges = await getAllGauges()
-
-  res.setHeader('Cache-Control', `max-age=0, s-maxage=${MAX_CACHE_SECONDS}, stale-while-revalidate`)
-  const data = [keys.join(',')] as unknown[]
-  gauges.forEach((gauge) => {
-    const row = [] as unknown[]
-    keys.forEach((key) => {
-      row.push(gauge[key])
+  const useTestnet = req.query.testnet
+  try {
+    const gauges = await getAllGauges({
+      testnet: Boolean(useTestnet),
     })
-    data.push(row.join(','))
-  })
-  return res.status(200).write(data.join('\n'))
+
+    res.setHeader('Cache-Control', `max-age=0, s-maxage=${MAX_CACHE_SECONDS}, stale-while-revalidate`)
+    const data = [keys.join(',')] as unknown[]
+    gauges.forEach((gauge) => {
+      const row = [] as unknown[]
+      keys.forEach((key) => {
+        row.push(gauge[key])
+      })
+      data.push(row.join(','))
+    })
+    return res.status(200).send(data.join('\n'))
+  } catch (err) {
+    return res.status(500).json({
+      error: err,
+    })
+  }
 }
 
 export default handler
