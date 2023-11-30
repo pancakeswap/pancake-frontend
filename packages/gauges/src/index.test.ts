@@ -9,6 +9,8 @@ test('exports', () => {
       "CONFIG_PROD",
       "GAUGES_CONFIG",
       "getAllGauges",
+      "GaugeType",
+      "GAUGE_TYPE_NAMES",
     ]
   `)
 })
