@@ -1,25 +1,25 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { multicallReducerAtom } from 'state/multicall/reducer'
-import { useQueryClient } from '@tanstack/react-query'
 import {
   Abi,
   Address,
   ContractFunctionResult,
   DecodeFunctionResultParameters,
-  decodeFunctionResult,
-  encodeFunctionData,
   EncodeFunctionDataParameters,
   GetFunctionArgs,
   Hex,
   InferFunctionName,
+  decodeFunctionResult,
+  encodeFunctionData,
 } from 'viem'
 import {
-  addMulticallListeners,
   Call,
   ListenerOptions,
   ListenerOptionsWithGas,
+  addMulticallListeners,
   parseCallKey,
   removeMulticallListeners,
   toCallKey,

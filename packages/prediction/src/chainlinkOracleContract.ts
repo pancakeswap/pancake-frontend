@@ -14,5 +14,6 @@ export const chainlinkOracleCAKE: Record<string, Address> = {
 export const chainlinkOracleETH: Record<string, Address> = {
   [ChainId.BSC]: '0x',
   [ChainId.BSC_TESTNET]: '0x',
-  [ChainId.ARBITRUM_GOERLI]: '0x5A6E20F3AeD66BF0F58F765828164A14D712B877',
+  [ChainId.ARBITRUM_GOERLI]: '0x', // Chainlink not support testnet ETH/USD price
+  [ChainId.ARBITRUM_ONE]: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
 }

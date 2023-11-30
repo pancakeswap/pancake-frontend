@@ -204,14 +204,15 @@ export const useIfoCreditAddressContract = () => {
 
 export const usePredictionsContract = (address: Address, isNativeToken: boolean) => {
   const { data: signer } = useWalletClient()
+  const { chainId } = useActiveChainId()
   return useMemo(() => {
     if (address === getPredictionsV1Address()) {
       return getPredictionsV1Contract(signer ?? undefined)
     }
     const getPredContract = isNativeToken ? getPredictionsV2Contract : getPredictionsV3Contract
 
-    return getPredContract(address, signer ?? undefined)
-  }, [address, isNativeToken, signer])
+    return getPredContract(address, chainId, signer ?? undefined)
+  }, [address, chainId, isNativeToken, signer])
 }
 
 export const useChainlinkOracleContract = (address) => {

@@ -1,41 +1,41 @@
+import { ChainId } from '@pancakeswap/chains'
+import { BetPosition, PredictionConfig, PredictionsChartView, PredictionStatus } from '@pancakeswap/prediction'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { formatUnits } from 'viem'
+import { FetchStatus } from 'config/constants/types'
 import merge from 'lodash/merge'
-import range from 'lodash/range'
 import pickBy from 'lodash/pickBy'
+import range from 'lodash/range'
 import {
   Bet,
-  LedgerData,
   HistoryFilter,
+  LeaderboardFilter,
+  LedgerData,
   PredictionsState,
   PredictionUser,
-  LeaderboardFilter,
   ReduxNodeRound,
 } from 'state/types'
-import { BetPosition, PredictionStatus, PredictionsChartView, PredictionConfig } from '@pancakeswap/prediction'
-import { Address } from 'wagmi'
-import { ChainId } from '@pancakeswap/chains'
-import { FetchStatus } from 'config/constants/types'
 import { PredictionsRoundsResponse } from 'utils/types'
-import { FUTURE_ROUND_COUNT, PAST_ROUND_COUNT, ROUNDS_PER_PAGE, LEADERBOARD_MIN_ROUNDS_PLAYED } from './config'
-import {
-  makeFutureRoundResponse,
-  makeRoundData,
-  getRoundsData,
-  getPredictionData,
-  getLedgerData,
-  makeLedgerData,
-  serializePredictionsRoundsResponse,
-  getClaimStatuses,
-  fetchUsersRoundsLength,
-  fetchUserRounds,
-  getPredictionUsers,
-  transformUserResponse,
-  LEADERBOARD_RESULTS_PER_PAGE,
-  getPredictionUser,
-  getHasRoundFailed,
-} from './helpers'
+import { formatUnits } from 'viem'
+import { Address } from 'wagmi'
 import { resetUserState } from '../global/actions'
+import { FUTURE_ROUND_COUNT, LEADERBOARD_MIN_ROUNDS_PLAYED, PAST_ROUND_COUNT, ROUNDS_PER_PAGE } from './config'
+import {
+  fetchUserRounds,
+  fetchUsersRoundsLength,
+  getClaimStatuses,
+  getHasRoundFailed,
+  getLedgerData,
+  getPredictionData,
+  getPredictionUser,
+  getPredictionUsers,
+  getRoundsData,
+  LEADERBOARD_RESULTS_PER_PAGE,
+  makeFutureRoundResponse,
+  makeLedgerData,
+  makeRoundData,
+  serializePredictionsRoundsResponse,
+  transformUserResponse,
+} from './helpers'
 
 export const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
@@ -135,7 +135,7 @@ export const fetchNodeHistory = createAsyncThunk<
   { account: Address; chainId: ChainId; page?: number },
   { state: PredictionsState; extra: PredictionConfig }
 >('predictions/fetchNodeHistory', async ({ account, chainId, page = 1 }, { getState, extra }) => {
-  const userRoundsLength = Number(await fetchUsersRoundsLength(account, extra.address))
+  const userRoundsLength = Number(await fetchUsersRoundsLength(account, chainId, extra.address))
   const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength }
   const maxPages = userRoundsLength <= ROUNDS_PER_PAGE ? 1 : Math.ceil(userRoundsLength / ROUNDS_PER_PAGE)
 
@@ -154,7 +154,7 @@ export const fetchNodeHistory = createAsyncThunk<
     maxPages === page
       ? userRoundsLength - ROUNDS_PER_PAGE * (page - 1) // Previous page's cursor
       : ROUNDS_PER_PAGE
-  const userRounds = await fetchUserRounds(account, cursor < 0 ? 0 : cursor, size, extra.address)
+  const userRounds = await fetchUserRounds(account, chainId, cursor < 0 ? 0 : cursor, size, extra.address)
 
   if (!userRounds) {
     return emptyResult

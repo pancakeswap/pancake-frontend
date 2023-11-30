@@ -429,9 +429,9 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
   }
 }
 
-export const fetchUsersRoundsLength = async (account: Address, address: Address) => {
+export const fetchUsersRoundsLength = async (account: Address, chainId: ChainId, address: Address) => {
   try {
-    const contract = getPredictionsV2Contract(address)
+    const contract = getPredictionsV2Contract(address, chainId)
     const length = await contract.read.getUserRoundsLength([account])
     return length
   } catch {
@@ -444,11 +444,12 @@ export const fetchUsersRoundsLength = async (account: Address, address: Address)
  */
 export const fetchUserRounds = async (
   account: Address,
+  chainId: ChainId,
   cursor = 0,
   size = ROUNDS_PER_PAGE,
   address: Address,
 ): Promise<null | { [key: string]: ReduxNodeLedger }> => {
-  const contract = getPredictionsV2Contract(address)
+  const contract = getPredictionsV2Contract(address, chainId)
 
   try {
     const [rounds, ledgers] = await contract.read.getUserRounds([account, BigInt(cursor), BigInt(size)])

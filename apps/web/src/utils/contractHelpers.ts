@@ -209,12 +209,12 @@ export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient, chainI
   })
 }
 
-export const getPredictionsV3Contract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: predictionsV3ABI, address, signer })
+export const getPredictionsV3Contract = (address: Address, chainId?: number, signer?: WalletClient) => {
+  return getContract({ abi: predictionsV3ABI, address, signer, chainId })
 }
 
-export const getPredictionsV2Contract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: predictionsV2ABI, address, signer })
+export const getPredictionsV2Contract = (address: Address, chainId?: number, signer?: WalletClient) => {
+  return getContract({ abi: predictionsV2ABI, address, signer, chainId })
 }
 
 export const getPredictionsV1Contract = (signer?: WalletClient) => {
