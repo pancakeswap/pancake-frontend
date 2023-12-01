@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`renders correctly 1`] = `
 <DocumentFragment>
@@ -889,7 +889,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/swap"
                     >
-                      Exchange
+                      <div
+                        class="c3"
+                      >
+                        Exchange
+                      </div>
                     </a>
                   </div>
                   <div
@@ -899,7 +903,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/liquidity"
                     >
-                      Liquidity
+                      <div
+                        class="c3"
+                      >
+                        Liquidity
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -932,7 +940,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/earn"
                     >
-                      Earn
+                      <div
+                        class="c3"
+                      >
+                        Earn
+                      </div>
                     </a>
                   </div>
                   <div
@@ -942,7 +954,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/farms"
                     >
-                      Yield Farms
+                      <div
+                        class="c3"
+                      >
+                        Yield Farms
+                      </div>
                     </a>
                   </div>
                   <div
@@ -952,7 +968,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/pools"
                     >
-                      Syrup pools
+                      <div
+                        class="c3"
+                      >
+                        Syrup pools
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -985,21 +1005,10 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/"
                     >
-                      Win
-                    </a>
-                  </div>
-                  <div
-                    class="c12"
-                  >
-                    <a
-                      class="c13 c14"
-                      href="/"
-                    >
-                      Predictions
                       <div
-                        class="c16 c17"
+                        class="c3"
                       >
-                        LIVE
+                        Win
                       </div>
                     </a>
                   </div>
@@ -1010,7 +1019,30 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/"
                     >
-                      Lottery
+                      <div
+                        class="c3"
+                      >
+                        Predictions
+                        <div
+                          class="c16 c17"
+                        >
+                          LIVE
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div
+                    class="c12"
+                  >
+                    <a
+                      class="c13 c14"
+                      href="/"
+                    >
+                      <div
+                        class="c3"
+                      >
+                        Lottery
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -1053,7 +1085,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/"
                     >
-                      Info & Analytics
+                      <div
+                        class="c3"
+                      >
+                        Info & Analytics
+                      </div>
                     </a>
                   </div>
                   <div
@@ -1063,11 +1099,15 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/"
                     >
-                      IFO Token Sales
                       <div
-                        class="c20 c21"
+                        class="c3"
                       >
-                        SOON
+                        IFO Token Sales
+                        <div
+                          class="c20 c21"
+                        >
+                          SOON
+                        </div>
                       </div>
                     </a>
                   </div>
@@ -1085,7 +1125,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/"
                     >
-                      NFT Collectibles
+                      <div
+                        class="c3"
+                      >
+                        NFT Collectibles
+                      </div>
                     </a>
                   </div>
                   <div
@@ -1095,7 +1139,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/"
                     >
-                      Team Leaderboard
+                      <div
+                        class="c3"
+                      >
+                        Team Leaderboard
+                      </div>
                     </a>
                   </div>
                   <div
@@ -1112,7 +1160,11 @@ exports[`renders correctly 1`] = `
                       class="c13 c14"
                       href="/"
                     >
-                      Blog
+                      <div
+                        class="c3"
+                      >
+                        Blog
+                      </div>
                     </a>
                   </div>
                   <div
@@ -1126,7 +1178,11 @@ exports[`renders correctly 1`] = `
                       <div
                         class="c23 c24"
                       >
-                        Docs & Guides
+                        <div
+                          class="c3"
+                        >
+                          Docs & Guides
+                        </div>
                         <svg
                           class="c19"
                           color="textSubtle"
@@ -3255,7 +3311,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c18 {
+.c19 {
   color: var(--colors-failure);
   font-weight: 400;
   line-height: 1.5;
@@ -3263,7 +3319,7 @@ exports[`renders correctly 1`] = `
   font-size: 14px;
 }
 
-.c22 {
+.c23 {
   color: var(--colors-warning);
   font-weight: 400;
   line-height: 1.5;
@@ -3279,7 +3335,7 @@ exports[`renders correctly 1`] = `
   font-size: 10px;
 }
 
-.c25 {
+.c26 {
   width: 100%;
 }
 
@@ -3287,7 +3343,11 @@ exports[`renders correctly 1`] = `
   height: 100%;
 }
 
-.c26 {
+.c17 {
+  display: flex;
+}
+
+.c27 {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3335,13 +3395,13 @@ exports[`renders correctly 1`] = `
   transition: height 0.25s ease;
 }
 
-.c20 {
+.c21 {
   position: relative;
   height: 22px;
   width: 21px;
 }
 
-.c20 div:first-child {
+.c21 div:first-child {
   height: 22px;
   width: 21px;
   z-index: 0;
@@ -3431,7 +3491,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
   border-bottom-right-radius: 8px;
 }
 
-.c24 {
+.c25 {
   border-color: var(--colors-cardBorder);
   border-style: solid;
   border-width: 1px 0 0;
@@ -3453,7 +3513,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
   visibility: hidden;
 }
 
-.c19 {
+.c20 {
   border-radius: var(--radii-default);
   padding: 0 8px;
   border: 2px solid;
@@ -3463,7 +3523,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
   margin-left: 8px;
 }
 
-.c23 {
+.c24 {
   border-radius: var(--radii-default);
   padding: 0 8px;
   border: 2px solid;
@@ -3492,7 +3552,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
   background-color: var(--colors-failure);
 }
 
-.c17 {
+.c18 {
   display: inline-flex;
   position: absolute;
   top: 0;
@@ -3505,7 +3565,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
   background-color: var(--colors-failure);
 }
 
-.c21 {
+.c22 {
   display: inline-flex;
   position: absolute;
   top: 0;
@@ -3768,7 +3828,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/swap"
             >
-              Exchange
+              <div
+                class="c17"
+              >
+                Exchange
+              </div>
             </a>
           </div>
           <div
@@ -3778,7 +3842,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/liquidity"
             >
-              Liquidity
+              <div
+                class="c17"
+              >
+                Liquidity
+              </div>
             </a>
           </div>
         </div>
@@ -3883,7 +3951,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/earn"
             >
-              Earn
+              <div
+                class="c17"
+              >
+                Earn
+              </div>
             </a>
           </div>
           <div
@@ -3893,7 +3965,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/farms"
             >
-              Yield Farms
+              <div
+                class="c17"
+              >
+                Yield Farms
+              </div>
             </a>
           </div>
           <div
@@ -3903,7 +3979,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/pools"
             >
-              Syrup pools
+              <div
+                class="c17"
+              >
+                Syrup pools
+              </div>
             </a>
           </div>
         </div>
@@ -3974,7 +4054,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
                 </div>
               </button>
               <span
-                class="c17"
+                class="c18"
                 color="failure"
               />
             </span>
@@ -3991,21 +4071,10 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/"
             >
-              Win
-            </a>
-          </div>
-          <div
-            class="c14"
-          >
-            <a
-              class="c15 c16"
-              href="/"
-            >
-              Predictions
               <div
-                class="c18 c19"
+                class="c17"
               >
-                LIVE
+                Win
               </div>
             </a>
           </div>
@@ -4016,7 +4085,30 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/"
             >
-              Lottery
+              <div
+                class="c17"
+              >
+                Predictions
+                <div
+                  class="c19 c20"
+                >
+                  LIVE
+                </div>
+              </div>
+            </a>
+          </div>
+          <div
+            class="c14"
+          >
+            <a
+              class="c15 c16"
+              href="/"
+            >
+              <div
+                class="c17"
+              >
+                Lottery
+              </div>
             </a>
           </div>
         </div>
@@ -4042,7 +4134,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
                   class="c4 c5"
                 >
                   <div
-                    class="c20"
+                    class="c21"
                     height="22px"
                     width="21px"
                   >
@@ -4068,7 +4160,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
                 </div>
               </button>
               <span
-                class="c21"
+                class="c22"
                 color="warning"
               />
             </span>
@@ -4085,7 +4177,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/"
             >
-              Info & Analytics
+              <div
+                class="c17"
+              >
+                Info & Analytics
+              </div>
             </a>
           </div>
           <div
@@ -4095,11 +4191,15 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/"
             >
-              IFO Token Sales
               <div
-                class="c22 c23"
+                class="c17"
               >
-                SOON
+                IFO Token Sales
+                <div
+                  class="c23 c24"
+                >
+                  SOON
+                </div>
               </div>
             </a>
           </div>
@@ -4107,7 +4207,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
             class="c14"
           >
             <hr
-              class="c24"
+              class="c25"
             />
           </div>
           <div
@@ -4117,7 +4217,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/"
             >
-              NFT Collectibles
+              <div
+                class="c17"
+              >
+                NFT Collectibles
+              </div>
             </a>
           </div>
           <div
@@ -4127,14 +4231,18 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/"
             >
-              Team Leaderboard
+              <div
+                class="c17"
+              >
+                Team Leaderboard
+              </div>
             </a>
           </div>
           <div
             class="c14"
           >
             <hr
-              class="c24"
+              class="c25"
             />
           </div>
           <div
@@ -4144,7 +4252,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               class="c15 c16"
               href="/"
             >
-              Blog
+              <div
+                class="c17"
+              >
+                Blog
+              </div>
             </a>
           </div>
           <div
@@ -4156,9 +4268,13 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
               target="_blank"
             >
               <div
-                class="c25 c26"
+                class="c26 c27"
               >
-                Docs & Guides
+                <div
+                  class="c17"
+                >
+                  Docs & Guides
+                </div>
                 <svg
                   class="c8"
                   color="textSubtle"
