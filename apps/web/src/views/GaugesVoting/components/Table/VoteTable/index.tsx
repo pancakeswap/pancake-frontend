@@ -133,7 +133,7 @@ export const VoteTable = () => {
         }
         return undefined
       })
-      .filter(Boolean) as Gauge[]
+      .filter((gauge: Gauge | undefined): gauge is Gauge => Boolean(gauge))
 
     await writeVote(voteGauges)
     await refetch()
