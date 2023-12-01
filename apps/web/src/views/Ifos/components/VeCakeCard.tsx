@@ -11,6 +11,7 @@ export function VeCakeCard() {
   return (
     <Ifo.VeCakeCard header={header}>
       <Ifo.MyVeCake amount={1000000} />
+      <Ifo.ICakeInfo mt="1.5rem" snapshot={Date.now() / 1000} />
     </Ifo.VeCakeCard>
   )
 }
