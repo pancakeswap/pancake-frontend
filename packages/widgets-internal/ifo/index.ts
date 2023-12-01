@@ -1,4 +1,4 @@
 export * from "./VeCakeCard";
 export * from "./ICakeInfo";
-export * from "./ZeroVeCakeTips";
+export * from "./Tips";
 export * from "./MyVeCake";

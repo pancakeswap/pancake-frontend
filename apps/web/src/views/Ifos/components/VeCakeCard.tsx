@@ -27,6 +27,7 @@ export function VeCakeCard() {
       <Ifo.MyVeCake amount={1000000} />
       <Ifo.ICakeInfo mt="1.5rem" snapshot={Date.now() / 1000} />
       <Ifo.ZeroVeCakeTips mt="1.5rem" />
+      <Ifo.MigrateVeCakeTips mt="1.5rem" />
       <NavigateButton mt="1.5rem" />
     </Ifo.VeCakeCard>
   )
