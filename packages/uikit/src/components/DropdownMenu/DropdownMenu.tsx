@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useContext, useEffect, useState, useCallback } from "react";
-import { usePopper } from "react-popper";
 import debounce from "lodash/debounce";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { usePopper } from "react-popper";
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
 import { Box, Flex } from "../Box";
@@ -9,8 +9,8 @@ import { LogoutIcon } from "../Svg";
 import {
   DropdownMenuDivider,
   DropdownMenuItem,
-  StyledDropdownMenu,
   LinkStatus,
+  StyledDropdownMenu,
   StyledDropdownMenuItemContainer,
 } from "./styles";
 import { DropdownMenuItemType, DropdownMenuProps } from "./types";
@@ -105,14 +105,14 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                 itemItem
               ) => {
                 const MenuItemContent = (
-                  <>
+                  <Flex alignItems="center">
                     {label}
                     {status && (
                       <LinkStatus textTransform="uppercase" color={status.color} fontSize="14px">
                         {status.text}
                       </LinkStatus>
                     )}
-                  </>
+                  </Flex>
                 );
                 const isActive = href === activeItem;
                 return (
@@ -154,7 +154,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                         {...itemProps}
                       >
                         <Flex alignItems="center" justifyContent="space-between" width="100%">
-                          {label}
+                          {MenuItemContent}
                           <LogoutIcon color={disabled ? "textDisabled" : "textSubtle"} />
                         </Flex>
                       </DropdownMenuItem>
