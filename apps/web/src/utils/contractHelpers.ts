@@ -55,6 +55,7 @@ import { predictionsV1ABI } from 'config/abi/predictionsV1'
 import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
 import { ChainId } from '@pancakeswap/chains'
+import { calcGaugesVotingABI, gaugesVotingABI } from '@pancakeswap/gauges'
 import { getIfoCreditAddressContract as getIfoCreditAddressContract_ } from '@pancakeswap/ifos'
 import { cakeFlexibleSideVaultV2ABI, cakeVaultV2ABI } from '@pancakeswap/pools'
 import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers'
@@ -72,7 +73,6 @@ import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 import { fixedStakingABI } from 'config/abi/fixedStaking'
-import { gaugesVotingABI } from 'config/abi/gaugesVoting'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
@@ -477,7 +477,7 @@ export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number)
 
 export const getCalcGaugesVotingContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
-    abi: gaugesVotingABI,
+    abi: calcGaugesVotingABI,
     address: getCalcGaugesVotingAddress(chainId) ?? getCalcGaugesVotingAddress(ChainId.BSC),
     signer,
     chainId,
