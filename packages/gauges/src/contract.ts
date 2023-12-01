@@ -1,5 +1,5 @@
 import { GetContractReturnType, PublicClient, getContract as getContractInstance } from 'viem'
-import { gaugesVotingABI } from './abis/gaugesVoting'
+import { calcGaugesVotingABI, gaugesVotingABI } from './abis'
 import { GAUGES_ADDRESS, GAUGES_CALC_ADDRESS } from './constants/address'
 
 export const getContract = (client: PublicClient): GetContractReturnType<typeof gaugesVotingABI, PublicClient> => {
@@ -16,7 +16,9 @@ export const getContract = (client: PublicClient): GetContractReturnType<typeof 
   })
 }
 
-export const getCalcContract = (client: PublicClient): GetContractReturnType<typeof gaugesVotingABI, PublicClient> => {
+export const getCalcContract = (
+  client: PublicClient,
+): GetContractReturnType<typeof calcGaugesVotingABI, PublicClient> => {
   const chainId = client.chain?.id
 
   if (!chainId || !Object.keys(GAUGES_CALC_ADDRESS).includes(String(chainId))) {
@@ -25,7 +27,7 @@ export const getCalcContract = (client: PublicClient): GetContractReturnType<typ
 
   return getContractInstance({
     address: GAUGES_CALC_ADDRESS[chainId as keyof typeof GAUGES_CALC_ADDRESS],
-    abi: gaugesVotingABI,
+    abi: calcGaugesVotingABI,
     publicClient: client,
   })
 }

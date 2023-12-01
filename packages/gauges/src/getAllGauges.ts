@@ -2,7 +2,7 @@ import { PublicClient } from 'viem'
 import { CONFIG_PROD, CONFIG_TESTNET } from './constants/config'
 import { fetchAllGauges } from './fetchAllGauges'
 import { fetchAllGaugesVoting } from './fetchGaugeVoting'
-import { Gauge } from './types'
+import { Gauge, GaugeInfoConfig } from './types'
 
 export type getAllGaugesOptions = {
   testnet?: boolean
@@ -22,37 +22,34 @@ export const getAllGauges = async (
   const presets = testnet ? CONFIG_TESTNET : CONFIG_PROD
 
   const allGaugeInfos = await fetchAllGauges(client)
+  const allGaugeInfoConfigs = allGaugeInfos.reduce((prev, gauge) => {
+    const preset = presets.find((p) => p.address === gauge.pairAddress && Number(p.chainId) === gauge.chainId)
 
-  if (!bothCap) {
-    const allGaugesVoting = await fetchAllGaugesVoting(client, allGaugeInfos, inCap)
-
-    return allGaugesVoting.reduce((prev, gauge) => {
-      const preset = presets.find((p) => p.address === gauge.pairAddress && Number(p.chainId) === gauge.chainId)
-
-      if (!preset) return prev
-
-      return [
-        ...prev,
-        {
-          ...gauge,
-          ...preset,
-        },
-      ]
-    }, [] as Gauge[])
-  }
-
-  const inCapVoting = await fetchAllGaugesVoting(client, allGaugeInfos, true)
-  const notInCapVoting = await fetchAllGaugesVoting(client, allGaugeInfos, false)
-
-  return inCapVoting.reduce((prev, inCapGauge) => {
-    const preset = presets.find((p) => p.address === inCapGauge.pairAddress && Number(p.chainId) === inCapGauge.chainId)
-    const notInCapGauge = notInCapVoting.find((p) => p.hash === inCapGauge.hash)
     if (!preset) return prev
 
     return [
       ...prev,
       {
         ...preset,
+        ...gauge,
+      },
+    ]
+  }, [] as GaugeInfoConfig[])
+
+  if (!bothCap) {
+    const allGaugesVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, inCap)
+    return allGaugesVoting
+  }
+
+  const inCapVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, true)
+  const notInCapVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, false)
+
+  return inCapVoting.reduce((prev, inCapGauge) => {
+    const notInCapGauge = notInCapVoting.find((p) => p.hash === inCapGauge.hash)
+
+    return [
+      ...prev,
+      {
         ...inCapGauge,
         weight: 0n,
         inCapWeight: inCapGauge.weight,
