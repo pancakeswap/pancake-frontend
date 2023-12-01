@@ -62,6 +62,7 @@ const config = {
     '@pancakeswap/utils',
     '@pancakeswap/widgets-internal',
     '@pancakeswap/ifos',
+    '@pancakeswap/gauges',
   ],
   reactStrictMode: true,
   swcMinify: true,
