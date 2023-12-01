@@ -55,9 +55,8 @@ export const chartDataOption: ChartDataset<'doughnut', number[]> = {
 export const WeightsPieChart: React.FC<{
   data?: Gauge[]
   totalGaugesWeight: number
-  maxPiesRender?: number
   isLoading?: boolean
-}> = ({ data, totalGaugesWeight, maxPiesRender, isLoading }) => {
+}> = ({ data, totalGaugesWeight, isLoading }) => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
@@ -73,18 +72,16 @@ export const WeightsPieChart: React.FC<{
   const { isDesktop } = useMatchBreakpoints()
 
   const gauges = useMemo<ChartData<'doughnut'>>(() => {
-    const hasMaxRender = typeof maxPiesRender !== 'undefined' && maxPiesRender > 0
-    const maxData = hasMaxRender ? sortedGauge?.slice(0, maxPiesRender) : data
     return {
-      labels: maxData?.map((gauge) => gauge.hash) ?? [],
+      labels: data?.map((gauge) => gauge.hash) ?? [],
       datasets: [
         {
           ...chartDataOption,
-          data: maxData?.map((gauge) => Number(gauge.weight)) ?? [],
+          data: data?.map((gauge) => Number(gauge.weight)) ?? [],
         },
       ],
     }
-  }, [data, maxPiesRender, sortedGauge])
+  }, [data])
 
   const externalTooltipHandler = useCallback(
     ({ tooltip }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {

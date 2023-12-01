@@ -96,12 +96,7 @@ const GaugesVoting = () => {
               <Text color="secondary" textTransform="uppercase" bold>
                 {t('proposed weights')}
               </Text>
-              <WeightsPieChart
-                data={gauges}
-                totalGaugesWeight={Number(totalGaugesWeight)}
-                maxPiesRender={20}
-                isLoading={isLoading}
-              />
+              <WeightsPieChart data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} isLoading={isLoading} />
             </Box>
           </Grid>
           {isDesktop ? (
