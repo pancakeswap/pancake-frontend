@@ -25,7 +25,7 @@ export const getCalcContract = (client: PublicClient): GetContractReturnType<typ
   }
 
   return getContractInstance({
-    address: '0xbf9b99071efAb72e6F4a05c626A911F3528e013e',
+    address: '0xa2BAbe69700414BB0342ba0615Ff4B1965d6D36f',
     abi: gaugesVotingABI,
     publicClient: client,
   })

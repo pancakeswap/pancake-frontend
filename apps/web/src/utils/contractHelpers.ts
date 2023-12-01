@@ -477,7 +477,7 @@ export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number)
 export const getCalcGaugesVotingContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: gaugesVotingABI,
-    address: '0xbf9b99071efAb72e6F4a05c626A911F3528e013e',
+    address: '0xa2BAbe69700414BB0342ba0615Ff4B1965d6D36f',
     signer,
     chainId,
   })
