@@ -474,6 +474,15 @@ export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number)
   })
 }
 
+export const getCalcGaugesVotingContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: gaugesVotingABI,
+    address: '0xbf9b99071efAb72e6F4a05c626A911F3528e013e',
+    signer,
+    chainId,
+  })
+}
+
 export const getRevenueSharingCakePoolContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: revenueSharingPoolProxyABI,
