@@ -36,7 +36,7 @@ function InfoItem({ label, value, labelTooltip }: { label?: ReactNode; value?: R
 
 export function ICakeInfo({ snapshot, ratio = 1, ...props }: Props & SpaceProps) {
   const { t } = useTranslation();
-  const timeDisplay = useMemo(() => snapshot && dayjs.unix(snapshot).format("MMM DD YYYY HH:mm"), [snapshot]);
+  const timeDisplay = useMemo(() => snapshot && dayjs.unix(snapshot).format("MMM D YYYY HH:mm"), [snapshot]);
 
   return (
     <FlexGap flexDirection="column" gap="0.5rem" {...props}>
