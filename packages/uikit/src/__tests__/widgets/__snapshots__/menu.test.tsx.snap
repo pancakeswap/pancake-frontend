@@ -890,7 +890,7 @@ exports[`renders correctly 1`] = `
                       href="/swap"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Exchange
                       </div>
@@ -904,7 +904,7 @@ exports[`renders correctly 1`] = `
                       href="/liquidity"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Liquidity
                       </div>
@@ -941,7 +941,7 @@ exports[`renders correctly 1`] = `
                       href="/earn"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Earn
                       </div>
@@ -955,7 +955,7 @@ exports[`renders correctly 1`] = `
                       href="/farms"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Yield Farms
                       </div>
@@ -969,7 +969,7 @@ exports[`renders correctly 1`] = `
                       href="/pools"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Syrup pools
                       </div>
@@ -1006,7 +1006,7 @@ exports[`renders correctly 1`] = `
                       href="/"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Win
                       </div>
@@ -1020,7 +1020,7 @@ exports[`renders correctly 1`] = `
                       href="/"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Predictions
                         <div
@@ -1039,7 +1039,7 @@ exports[`renders correctly 1`] = `
                       href="/"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Lottery
                       </div>
@@ -1086,7 +1086,7 @@ exports[`renders correctly 1`] = `
                       href="/"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Info & Analytics
                       </div>
@@ -1100,7 +1100,7 @@ exports[`renders correctly 1`] = `
                       href="/"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         IFO Token Sales
                         <div
@@ -1126,7 +1126,7 @@ exports[`renders correctly 1`] = `
                       href="/"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         NFT Collectibles
                       </div>
@@ -1140,7 +1140,7 @@ exports[`renders correctly 1`] = `
                       href="/"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Team Leaderboard
                       </div>
@@ -1161,7 +1161,7 @@ exports[`renders correctly 1`] = `
                       href="/"
                     >
                       <div
-                        class="c3"
+                        class="c4"
                       >
                         Blog
                       </div>
@@ -1179,7 +1179,7 @@ exports[`renders correctly 1`] = `
                         class="c23 c24"
                       >
                         <div
-                          class="c3"
+                          class="c4"
                         >
                           Docs & Guides
                         </div>
@@ -3345,6 +3345,7 @@ exports[`renders correctly 1`] = `
 
 .c17 {
   display: flex;
+  align-items: center;
 }
 
 .c27 {
