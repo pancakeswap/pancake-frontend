@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "dev": "tsup --watch",
     "build": "tsup",
     "test": "vitest --run --globals"
   },
