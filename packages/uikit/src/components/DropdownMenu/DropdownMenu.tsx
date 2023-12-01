@@ -105,7 +105,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                 itemItem
               ) => {
                 const MenuItemContent = (
-                  <Flex>
+                  <Flex alignItems="center">
                     {label}
                     {status && (
                       <LinkStatus textTransform="uppercase" color={status.color} fontSize="14px">
