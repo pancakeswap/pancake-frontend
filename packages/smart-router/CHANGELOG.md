@@ -1,5 +1,17 @@
 # @pancakeswap/smart-router
 
+## 4.11.0
+
+### Minor Changes
+
+- 761e8523e: Add retry options to onchain quoter
+
+### Patch Changes
+
+- 95c5fb6cd: Update default configuration on base network
+- Updated dependencies [95c5fb6cd]
+  - @pancakeswap/multicall@3.3.1
+
 ## 4.10.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @pancakeswap/multicall
 
+## 3.3.1
+
+### Patch Changes
+
+- 95c5fb6cd: Update default configuration on base network
+
 ## 3.3.0
 
 ### Minor Changes
