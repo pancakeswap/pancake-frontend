@@ -1,6 +1,8 @@
+import { ChainId } from '@pancakeswap/chains'
 import { getAllGauges } from '@pancakeswap/gauges'
 import { NextApiHandler } from 'next'
 import qs from 'qs'
+import { getViemClients } from 'utils/viem.server'
 
 const MAX_CACHE_SECONDS = 60 * 5
 
@@ -22,11 +24,20 @@ const keys = [
 const handler: NextApiHandler = async (req, res) => {
   const queryString = qs.stringify(req.query)
   const queryParsed = qs.parse(queryString)
+
+  const testnet = Boolean(queryParsed.testnet ?? false)
+  const inCap = Boolean(queryParsed.inCap ?? true)
+
   try {
-    const gauges = await getAllGauges({
-      testnet: Boolean(queryParsed.testnet),
-      inCap: Boolean(queryParsed.inCap),
-    })
+    const gauges = await getAllGauges(
+      getViemClients({
+        chainId: testnet ? ChainId.BSC_TESTNET : ChainId.BSC,
+      }),
+      {
+        testnet,
+        inCap,
+      },
+    )
 
     res.setHeader('Cache-Control', `max-age=0, s-maxage=${MAX_CACHE_SECONDS}, stale-while-revalidate`)
     const data = [keys.join(',')] as unknown[]
