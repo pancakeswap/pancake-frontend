@@ -20,6 +20,8 @@ export const getIfoCreditAddressContract = (
   }
   const publicClient = provider({ chainId })
 
+  // TODO: Fix viem
+  // @ts-ignore
   return getContract({ abi: iCakeABI, address, publicClient, walletClient })
 }
 
@@ -32,6 +34,8 @@ export const fetchPublicIfoData = async (chainId: ChainId | undefined, provider:
 
   try {
     const ifoCreditAddressContract = getIfoCreditAddressContract(chainId, provider)
+    // TODO: Fix viem
+    // @ts-ignore
     const ceiling = await ifoCreditAddressContract.read.ceiling()
     return {
       ceiling: new BigNumber(ceiling.toString()).toJSON(),
@@ -55,6 +59,7 @@ export const fetchUserIfoCredit = async ({ account, chainId, provider }: Params)
   }
   try {
     const ifoCreditAddressContract = getIfoCreditAddressContract(chainId, provider)
+    // @ts-ignore
     const credit = await ifoCreditAddressContract.read.getUserCredit([account])
     return new BigNumber(credit.toString()).toJSON()
   } catch (error) {
