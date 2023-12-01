@@ -1,3 +1,4 @@
+import { Gauge } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoColumn,
@@ -20,7 +21,6 @@ import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCou
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochOnTally } from 'views/GaugesVoting/hooks/useEpochTime'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
-import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
@@ -128,12 +128,12 @@ export const VoteTable = () => {
           if (!row) return undefined
           return {
             ...row,
-            weight: Number((Number(vote.power) * 100).toFixed(0)),
+            weight: BigInt((Number(vote.power) * 100).toFixed(0)),
           }
         }
         return undefined
       })
-      .filter(Boolean) as GaugeVoting[]
+      .filter((gauge: Gauge | undefined): gauge is Gauge => Boolean(gauge))
 
     await writeVote(voteGauges)
     await refetch()
@@ -153,7 +153,7 @@ export const VoteTable = () => {
 
       {!isLoading ? (
         rows?.length ? (
-          <>
+          <tbody>
             <Scrollable expanded={expanded}>
               {rows.map((row) => (
                 <TableRow
@@ -165,7 +165,7 @@ export const VoteTable = () => {
               ))}
             </Scrollable>
             {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
-          </>
+          </tbody>
         ) : (
           <EmptyTable />
         )

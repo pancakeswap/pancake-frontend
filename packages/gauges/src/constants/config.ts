@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { arbitrumTokens, bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { GaugeConfig, GaugeType } from './types'
+import { GaugeConfig, GaugeType } from '../types'
 
-export const GAUGES_TESTNET: GaugeConfig[] = [
+export const CONFIG_TESTNET: GaugeConfig[] = [
   {
     gid: 0,
     address: '0x523405d3072368BEe373F04EE738f2Aa3e3718c6',
@@ -119,7 +119,7 @@ export const GAUGES_TESTNET: GaugeConfig[] = [
   },
 ]
 
-export const GAUGES_PROD: GaugeConfig[] = [
+export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 0,
     address: '0x133B3D95bAD5405d14d53473671200e9342896BF',
@@ -1911,7 +1911,7 @@ export const GAUGES_PROD: GaugeConfig[] = [
   },
 ]
 
-export const GAUGES = {
-  [ChainId.BSC]: GAUGES_PROD,
-  [ChainId.BSC_TESTNET]: GAUGES_TESTNET,
+export const GAUGES_CONFIG = {
+  [ChainId.BSC]: CONFIG_PROD,
+  [ChainId.BSC_TESTNET]: CONFIG_TESTNET,
 }

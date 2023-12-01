@@ -1,3 +1,3 @@
-import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { Gauge } from '@pancakeswap/gauges'
 
-export type RowData = GaugeVoting & { locked?: boolean }
+export type RowData = Gauge & { locked?: boolean }

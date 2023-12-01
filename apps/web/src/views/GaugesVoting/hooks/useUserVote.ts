@@ -1,3 +1,4 @@
+import { Gauge } from '@pancakeswap/gauges'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -6,7 +7,6 @@ import { Address, Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { usePublicClient } from 'wagmi'
-import { GaugeVoting } from './useGaugesVoting'
 
 export type VotedSlope = {
   hash: string
@@ -33,7 +33,7 @@ export type VotedSlope = {
 const max = (a: bigint, b: bigint) => (a > b ? a : b)
 const sum = (a: bigint, b: bigint) => a + b
 
-export const useUserVote = (gauge?: GaugeVoting, useProxyPool: boolean = true) => {
+export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
   const { account, chainId } = useAccountActiveChain()
   const publicClient = usePublicClient({ chainId })
   const contract = useGaugesVotingContract()

@@ -8,7 +8,7 @@ export const useGaugesVotingCount = (): bigint | undefined => {
   const gaugesVotingContract = useGaugesVotingContract()
 
   const { data } = useQuery(
-    ['gaugesVotingCount'],
+    ['gaugesVotingCount', gaugesVotingContract.address],
     async () => {
       try {
         const count = (await gaugesVotingContract.read.gaugeCount()) ?? 0n
@@ -20,7 +20,6 @@ export const useGaugesVotingCount = (): bigint | undefined => {
     },
     {
       enabled: Boolean(gaugesVotingContract && chainId && SUPPORT_CAKE_STAKING.includes(chainId)),
-      keepPreviousData: true,
     },
   )
 

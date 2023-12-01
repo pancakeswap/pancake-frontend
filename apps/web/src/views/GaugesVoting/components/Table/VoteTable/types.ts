@@ -1,6 +1,6 @@
+import { Gauge } from '@pancakeswap/gauges'
 import { SpaceProps } from 'styled-system'
 import { Hex } from 'viem'
-import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 
 export type UserVote = {
   hash: Hex
@@ -9,7 +9,7 @@ export type UserVote = {
 }
 
 export type RowProps = {
-  data: GaugeVoting
+  data: Gauge
   vote?: UserVote
   onChange: (value: UserVote, isMax?: boolean) => void
 } & SpaceProps

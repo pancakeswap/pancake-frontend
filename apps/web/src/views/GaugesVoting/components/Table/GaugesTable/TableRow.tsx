@@ -1,3 +1,4 @@
+import { GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/sdk'
 import {
@@ -15,14 +16,10 @@ import {
 } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
-import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import { useHover } from 'hooks/useHover'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Address } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
-import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
-import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
@@ -40,27 +37,26 @@ export const TableRow: React.FC<{
   selectable?: boolean
   locked?: boolean
   selected?: boolean
-  onSelect?: (hash: GaugeVoting['hash']) => void
+  onSelect?: (hash: Gauge['hash']) => void
   totalGaugesWeight?: number
 }> = ({ data, locked, totalGaugesWeight, selected, selectable, onSelect }) => {
   const { t } = useTranslation()
-  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
 
   const maxCapPercent = useMemo(() => {
     return new Percent(data?.maxVoteCap, 10000)
-  }, [data?.maxVoteCap])
+  }, [data.maxVoteCap])
 
   const currentWeightPercent = useMemo(() => {
-    return new Percent(data?.weight, totalGaugesWeight || 1)
-  }, [data?.weight, totalGaugesWeight])
+    return new Percent(data.weight, totalGaugesWeight || 1)
+  }, [data.weight, totalGaugesWeight])
 
   const hitMaxCap = useMemo(() => {
     return maxCapPercent.greaterThan(0) && currentWeightPercent.greaterThan(maxCapPercent)
   }, [maxCapPercent, currentWeightPercent])
 
   const currentWeight = useMemo(() => {
-    return getBalanceNumber(new BN(data?.weight || 0))
-  }, [data?.weight])
+    return getBalanceNumber(new BN(String(data.weight || 0)))
+  }, [data.weight])
 
   const [ref, isHover] = useHover<HTMLButtonElement>()
 
@@ -89,19 +85,19 @@ export const TableRow: React.FC<{
             </SelectButton>
           </span>
         ) : null}
-        <GaugeTokenImage gauge={pool} />
+        <GaugeTokenImage gauge={data} />
         <Text fontWeight={600} fontSize={16}>
-          {pool?.pairName}
+          {data.pairName}
         </Text>
         <FlexGap gap="5px" alignItems="center">
-          <NetworkBadge chainId={Number(data?.chainId)} />
-          {[GaugeType.V3, GaugeType.V2].includes(pool?.type) ? (
+          <NetworkBadge chainId={Number(data.chainId)} />
+          {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
             <Tag outline variant="secondary">
-              {feeTierPercent(pool.feeTier)}
+              {feeTierPercent(data.feeTier)}
             </Tag>
           ) : null}
 
-          <Tag variant="secondary">{pool ? GAUGE_TYPE_NAMES[pool.type] : ''}</Tag>
+          <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
         </FlexGap>
       </FlexGap>
       <Flex alignItems="center" pl="32px">
@@ -123,8 +119,8 @@ export const TableRow: React.FC<{
         </Tooltips>
       </Flex>
       <Flex alignItems="center" pr="25px">
-        <Text bold fontSize={16} color={data?.boostMultiplier > 100n ? '#1BC59C' : undefined}>
-          {Number(data?.boostMultiplier) / 100}x
+        <Text bold fontSize={16} color={data.boostMultiplier > 100n ? '#1BC59C' : undefined}>
+          {Number(data.boostMultiplier) / 100}x
         </Text>
       </Flex>
 

@@ -1,21 +1,21 @@
+import { Gauge } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Text } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useMemo } from 'react'
-import { GaugeVoting } from '../hooks/useGaugesVoting'
 
 export const ChartLabel: React.FC<{
   total?: number
-  gauge?: GaugeVoting
+  gauge?: Gauge
 }> = ({ total = 1, gauge }) => {
   const { t } = useTranslation()
   const percent = useMemo(() => {
     return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
   }, [total, gauge])
   const weight = useMemo(() => {
-    return getBalanceNumber(new BN(gauge?.weight || total))
+    return getBalanceNumber(new BN(String(gauge?.weight || total)))
   }, [gauge?.weight, total])
 
   return (

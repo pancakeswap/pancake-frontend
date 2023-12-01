@@ -1,3 +1,4 @@
+import { Gauge } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -6,7 +7,6 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { Address } from 'viem'
-import { GaugeVoting } from './useGaugesVoting'
 
 export const useWriteGaugesVoteCallback = () => {
   const { t } = useTranslation()
@@ -16,7 +16,7 @@ export const useWriteGaugesVoteCallback = () => {
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const vote = useCallback(
-    async (gauges: GaugeVoting[]) => {
+    async (gauges: Gauge[]) => {
       if (!account) return
 
       const receipt = await fetchWithCatchTxError(() => {
@@ -24,7 +24,7 @@ export const useWriteGaugesVoteCallback = () => {
           (acc, curr) => {
             acc[0].push(curr.pairAddress)
             acc[1].push(BigInt(curr.weight))
-            acc[2].push(curr.chainId)
+            acc[2].push(BigInt(curr.chainId))
             return acc
           },
           [[], [], [], false, false] as [Address[], bigint[], bigint[], boolean, boolean],

@@ -114,7 +114,6 @@ export const CurrentEpoch = () => {
               {t('Total votes')}
             </TooltipText>
           </Tooltips>
-
           <Balance bold fontSize={16} value={getBalanceNumber(new BN(totalWeight.toString()))} unit=" veCAKE" />
         </AutoRow>
       </FlexGap>
