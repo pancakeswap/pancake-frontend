@@ -10,6 +10,7 @@ import {
   getBunnyFactoryAddress,
   getCakeFlexibleSideVaultAddress,
   getCakeVaultAddress,
+  getCalcGaugesVotingAddress,
   getCrossFarmingReceiverAddress,
   getCrossFarmingSenderAddress,
   getFarmAuctionAddress,
@@ -469,6 +470,15 @@ export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number)
   return getContract({
     abi: gaugesVotingABI,
     address: getGaugesVotingAddress(chainId) ?? getGaugesVotingAddress(ChainId.BSC),
+    signer,
+    chainId,
+  })
+}
+
+export const getCalcGaugesVotingContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: gaugesVotingABI,
+    address: getCalcGaugesVotingAddress(chainId) ?? getCalcGaugesVotingAddress(ChainId.BSC),
     signer,
     chainId,
   })

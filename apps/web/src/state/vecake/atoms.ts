@@ -28,5 +28,3 @@ export const cakeLockAmountAtom = atom<string>('0')
 export const cakeLockWeeksAtom = atom<string>('26')
 export const cakeLockTxHashAtom = atom<`0x${string}` | ''>('')
 export const cakeLockApprovedAtom = atom<boolean>(false)
-
-export const gaugesInCapAtom = atom<boolean>(true)

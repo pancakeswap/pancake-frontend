@@ -7,3 +7,8 @@ export const GAUGES_ADDRESS = {
   [ChainId.BSC]: GAUGES,
   [ChainId.BSC_TESTNET]: GAUGES_TESTNET,
 }
+
+export const GAUGES_CALC_ADDRESS = {
+  [ChainId.BSC]: '0xa2BAbe69700414BB0342ba0615Ff4B1965d6D36f' as const,
+  [ChainId.BSC_TESTNET]: '0xbCe8FDb4aa0e3E7332515abcc6b77f455F9Ff218' as const,
+}
