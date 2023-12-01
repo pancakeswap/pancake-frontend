@@ -9,20 +9,23 @@ import addresses from 'config/constants/contracts'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
+  getAffiliateProgramContract,
+  getAnniversaryAchievementContract,
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
   getBCakeFarmBoosterV3Contract,
-  getPositionManagerWrapperContract,
-  getPositionManagerAdapterContract,
   getBCakeProxyContract,
   getBunnyFactoryContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getCakeVaultV2Contract,
+  getCalcGaugesVotingContract,
   getChainlinkOracleContract,
   getContract,
   getCrossFarmingProxyContract,
   getFarmAuctionContract,
+  getFixedStakingContract,
+  getGaugesVotingContract,
   getIfoCreditAddressContract,
   getLotteryV2Contract,
   getMasterChefContract,
@@ -31,11 +34,17 @@ import {
   getNftSaleContract,
   getNonBscVaultContract,
   getPointCenterIfoContract,
+  getPositionManagerAdapterContract,
+  getPositionManagerWrapperContract,
   getPotteryDrawContract,
   getPotteryVaultContract,
   getPredictionsV1Contract,
   getPredictionsV2Contract,
   getProfileContract,
+  getRevenueSharingCakePoolContract,
+  getRevenueSharingPoolContract,
+  getRevenueSharingPoolGatewayContract,
+  getRevenueSharingVeCakeContract,
   getSidContract,
   getStableSwapNativeHelperContract,
   getTradingCompetitionContractEaster,
@@ -43,25 +52,17 @@ import {
   getTradingCompetitionContractMoD,
   getTradingCompetitionContractMobox,
   getTradingRewardContract,
+  getTradingRewardTopTradesContract,
   getUnsContract,
-  getAffiliateProgramContract,
   getV3AirdropContract,
   getV3MigratorContract,
-  getTradingRewardTopTradesContract,
   getVCakeContract,
-  getRevenueSharingPoolContract,
-  getAnniversaryAchievementContract,
-  getFixedStakingContract,
   getVeCakeContract,
-  getGaugesVotingContract,
-  getRevenueSharingPoolGatewayContract,
-  getRevenueSharingVeCakeContract,
-  getRevenueSharingCakePoolContract,
 } from 'utils/contractHelpers'
 
-import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { ifoV7ABI } from '@pancakeswap/ifos'
+import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import { multicallABI } from 'config/abi/Multicall'
@@ -486,6 +487,14 @@ export const useGaugesVotingContract = () => {
   const { data: signer } = useWalletClient()
 
   return useMemo(() => getGaugesVotingContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useCalcGaugesVotingContract = () => {
+  const { chainId } = useActiveChainId()
+
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getCalcGaugesVotingContract(signer ?? undefined, chainId), [chainId, signer])
 }
 
 export const useRevenueSharingCakePoolContract = () => {

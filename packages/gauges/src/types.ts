@@ -75,8 +75,10 @@ export type GaugeInfo = {
   maxVoteCap: number
 }
 
-export type GaugeVotingInfo = GaugeInfo & {
-  weight: bigint
-}
+export type GaugeInfoConfig = GaugeInfo & GaugeConfig
 
-export type Gauge = GaugeVotingInfo & GaugeConfig
+export type Gauge = GaugeInfoConfig & {
+  weight: bigint
+  inCapWeight?: bigint
+  notInCapWeight?: bigint
+}

@@ -1,5 +1,5 @@
+import { gaugesVotingABI } from '@pancakeswap/gauges'
 import { useQuery } from '@tanstack/react-query'
-import { gaugesVotingABI } from 'config/abi/gaugesVoting'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useMemo } from 'react'

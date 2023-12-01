@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
+import { GAUGES_ADDRESS, GAUGES_CALC_ADDRESS } from '@pancakeswap/gauges'
 import { ICAKE } from '@pancakeswap/ifos'
 import { CAKE_VAULT } from '@pancakeswap/pools'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
@@ -265,10 +266,8 @@ export default {
     [ChainId.BSC]: '0x5692DB8177a81A6c6afc8084C2976C9933EC1bAB',
     [ChainId.BSC_TESTNET]: '0x279957513FC505F8Cb16f4b6783D170C9BEcE322',
   },
-  gaugesVoting: {
-    [ChainId.BSC]: '0xf81953dC234cdEf1D6D0d3ef61b232C6bCbF9aeF',
-    [ChainId.BSC_TESTNET]: '0x357b01894b21787B41A8FA4DCaFE92293470FaD9',
-  },
+  gaugesVoting: GAUGES_ADDRESS,
+  gaugesVotingCalc: GAUGES_CALC_ADDRESS,
   revenueSharingVeCake: {
     [ChainId.BSC]: '0x9cac9745731d1Cf2B483f257745A512f0938DD01',
     [ChainId.BSC_TESTNET]: '0x482a401D57C9892D6d6BD6A4A976CfDDeD83BF11',
