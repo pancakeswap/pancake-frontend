@@ -77,6 +77,8 @@ export type GaugeInfo = {
 
 export type GaugeVotingInfo = GaugeInfo & {
   weight: bigint
+  inCapWeight?: bigint
+  notInCapWeight?: bigint
 }
 
 export type Gauge = GaugeVotingInfo & GaugeConfig
