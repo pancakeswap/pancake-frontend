@@ -10,7 +10,7 @@ export function VeCakeCard() {
 
   return (
     <Ifo.VeCakeCard header={header}>
-      <Ifo.MyVeCake />
+      <Ifo.MyVeCake amount={1000000} />
     </Ifo.VeCakeCard>
   )
 }

@@ -27,6 +27,7 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
 }) => {
   const prefixProp = useMemo(() => (prefix ? { prefix } : {}), [prefix]);
   const suffixProp = useMemo(() => (unit ? { suffix: unit } : {}), [unit]);
+  const showDecimals = useMemo(() => value % 1 !== 0, [value]);
 
   return (
     <CountUp
@@ -36,7 +37,7 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
       end={value}
       {...prefixProp}
       {...suffixProp}
-      decimals={decimals}
+      decimals={showDecimals ? decimals : 0}
       duration={1}
       separator=","
     >

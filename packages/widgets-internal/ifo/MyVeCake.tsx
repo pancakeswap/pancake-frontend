@@ -1,6 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Balance, FlexGap, Text } from "@pancakeswap/uikit";
-import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import { PropsWithChildren, useMemo } from "react";
 import styled from "styled-components";
 import { BigNumber } from "bignumber.js";
@@ -15,7 +14,13 @@ const Container = styled(FlexGap)`
 export function MyVeCake({ amount = 0 }: PropsWithChildren<{ amount?: number | BigNumber }>) {
   const { t } = useTranslation();
   const balanceNumber = useMemo(() => new BigNumber(amount).toNumber(), [amount]);
-  const decimals = useMemo(() => (balanceNumber % 1 === 0 ? 0 : 2), [balanceNumber]);
+  const showLabel = useMemo(() => Math.floor(balanceNumber).toString().length < 9, [balanceNumber]);
+
+  const label = showLabel ? (
+    <Text fontSize="1.25rem" bold lineHeight="1.375rem" color="white">
+      {t("veCAKE")}
+    </Text>
+  ) : null;
 
   return (
     <Container alignItems="center" gap="0.5rem">
@@ -23,14 +28,12 @@ export function MyVeCake({ amount = 0 }: PropsWithChildren<{ amount?: number | B
       <FlexGap
         flex="1"
         flexDirection={["column", "column", "row"]}
-        justifyContent="space-between"
+        justifyContent={showLabel ? "space-between" : "flex-end"}
         gap="0.5rem"
         alignItems="center"
       >
-        <Text fontSize="1.25rem" bold lineHeight="1.375rem" color="white">
-          {t("veCAKE")}
-        </Text>
-        <Balance fontSize="1.25rem" bold color="white" value={balanceNumber} decimals={decimals} />
+        {label}
+        <Balance fontSize="1.25rem" bold color="white" value={balanceNumber} decimals={2} />
       </FlexGap>
     </Container>
   );
