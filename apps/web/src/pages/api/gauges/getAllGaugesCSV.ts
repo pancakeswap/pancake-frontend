@@ -3,6 +3,7 @@ import { getAllGauges } from '@pancakeswap/gauges'
 import { NextApiHandler } from 'next'
 import qs from 'qs'
 import { getViemClients } from 'utils/viem.server'
+import { stringify } from 'viem'
 
 const MAX_CACHE_SECONDS = 60 * 5
 
@@ -14,6 +15,8 @@ const keys = [
   'hash',
   'chainId',
   'weight',
+  'inCapWeight',
+  'notInCapWeight',
   'boostMultiplier',
   'maxVoteCap',
   'type',
@@ -27,6 +30,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const testnet = Boolean(queryParsed.testnet ?? false)
   const inCap = Boolean(queryParsed.inCap ?? true)
+  const bothCap = Boolean(queryParsed.bothCap ?? false)
 
   try {
     const gauges = await getAllGauges(
@@ -36,6 +40,7 @@ const handler: NextApiHandler = async (req, res) => {
       {
         testnet,
         inCap,
+        bothCap,
       },
     )
 
@@ -51,7 +56,7 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(200).send(data.join('\n'))
   } catch (err) {
     return res.status(500).json({
-      error: err,
+      error: JSON.parse(stringify(err)),
     })
   }
 }

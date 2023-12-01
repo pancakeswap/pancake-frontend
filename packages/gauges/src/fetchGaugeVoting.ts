@@ -1,6 +1,6 @@
 import { ContractFunctionConfig, ContractFunctionResult, MulticallContracts, PublicClient } from 'viem'
 import { gaugesVotingABI } from './abis/gaugesVoting'
-import { getContract } from './contract'
+import { getCalcContract } from './contract'
 import { GaugeInfo, GaugeVotingInfo } from './types'
 
 export const fetchAllGaugesVoting = async (
@@ -8,7 +8,7 @@ export const fetchAllGaugesVoting = async (
   gaugeInfos: GaugeInfo[],
   inCap: boolean = true,
 ): Promise<GaugeVotingInfo[]> => {
-  const contract = getContract(client)
+  const contract = getCalcContract(client)
 
   const multicalls: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'getGaugeWeight'>[]> =
     gaugeInfos.map((gauge) => {

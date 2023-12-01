@@ -12,6 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
   const queryParsed = qs.parse(queryString)
   const testnet = Boolean(queryParsed.testnet ?? false)
   const inCap = Boolean(queryParsed.inCap ?? true)
+  const bothCap = Boolean(queryParsed.bothCap ?? false)
 
   try {
     const gauges = await getAllGauges(
@@ -21,6 +22,7 @@ const handler: NextApiHandler = async (req, res) => {
       {
         testnet,
         inCap,
+        bothCap,
       },
     )
 
@@ -31,7 +33,7 @@ const handler: NextApiHandler = async (req, res) => {
     })
   } catch (err) {
     return res.status(500).json({
-      error: err,
+      error: JSON.parse(stringify(err)),
     })
   }
 }
