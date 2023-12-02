@@ -26,26 +26,41 @@ describe('Config position manger Vault', () => {
   })
 
   describe.concurrent(
-    'Config check adapter address & fee tier',
+    'Config check adapter address, fee tier, reward token, token0, token1',
     () => {
       it.each(mainnetVaults.flat())('Config check adapter address & fee tier', async (vault) => {
         const client = publicClient({ chainId: vault.currencyA.chainId })
-        const [adapterAddress] = await client.multicall({
+        const [adapterAddress, rewardTokenAddress] = await client.multicall({
           contracts: [
             {
               abi: positionManagerWrapperABI,
               address: vault.address,
               functionName: 'adapterAddr',
             },
+            {
+              abi: positionManagerWrapperABI,
+              address: vault.address,
+              functionName: 'rewardToken',
+            },
           ],
           allowFailure: false,
         })
-        const [poolAddress] = await client.multicall({
+        const [poolAddress, token0Address, token1Address] = await client.multicall({
           contracts: [
             {
               abi: positionManagerAdapterABI,
               address: adapterAddress,
               functionName: 'pool',
+            },
+            {
+              abi: positionManagerAdapterABI,
+              address: adapterAddress,
+              functionName: 'token0',
+            },
+            {
+              abi: positionManagerAdapterABI,
+              address: adapterAddress,
+              functionName: 'token1',
             },
           ],
           allowFailure: false,
@@ -61,8 +76,23 @@ describe('Config position manger Vault', () => {
           allowFailure: false,
         })
 
-        expect(vault.adapterAddress).toBe(adapterAddress)
-        expect(vault.feeTier).toBe(fee)
+        expect(
+          vault.adapterAddress,
+          "Expected 'adapterAddress' to be the same as the value from the smart contract",
+        ).toBe(adapterAddress)
+        expect(vault.feeTier, "Expected 'feeTier' to be the same as the value from the smart contract").toBe(fee)
+        expect(
+          vault.earningToken.isToken ? vault.earningToken.address : '0x',
+          "Expected 'earningToken' to be the same as the value from the smart contract",
+        ).toBe(rewardTokenAddress)
+        expect(
+          vault.currencyA.isToken ? vault.currencyA.address : '0x',
+          "Expected 'currencyA' address to be the same as the value from the smart contract",
+        ).toBe(token0Address)
+        expect(
+          vault.currencyB.isToken ? vault.currencyB.address : '0x',
+          "Expected 'currencyB' address to be the same as the value from the smart contract",
+        ).toBe(token1Address)
       })
     },
     {
