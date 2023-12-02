@@ -99,7 +99,7 @@ export const Events: { [event in keyof typeof ResponseEvents]: EventInformation 
   },
   [ResponseEvents.PreferencesUpdated]: {
     title: 'Success',
-    message: () => 'your notification preferences have been updated.',
+    message: () => 'Your notification preferences have been updated.',
   },
   [ResponseEvents.PreferencesError]: {
     title: 'Something went wrong',
