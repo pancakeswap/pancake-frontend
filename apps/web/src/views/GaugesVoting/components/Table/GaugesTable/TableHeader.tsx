@@ -61,21 +61,21 @@ export const TableHeader: React.FC<{
         </Text>
       </Th>
       <Th>
-        <Touchable>
+        <Touchable onClick={onVoteSort}>
           <Text color="secondary" textTransform="uppercase" fontWeight={600}>
             {t('votes')}
           </Text>
-          <SortButton scale="sm" variant="subtle" onClick={onVoteSort} className={getSortClassName(voteSort)}>
+          <SortButton scale="sm" variant="subtle" className={getSortClassName(voteSort)}>
             <SortArrowIcon />
           </SortButton>
         </Touchable>
       </Th>
       <Th>
-        <Touchable>
+        <Touchable onClick={onBoostSort}>
           <Text color="secondary" textTransform="uppercase" fontWeight={600}>
             {t('boost')}
           </Text>
-          <SortButton scale="sm" variant="subtle" onClick={onBoostSort} className={getSortClassName(boostSort)}>
+          <SortButton scale="sm" variant="subtle" className={getSortClassName(boostSort)}>
             <SortArrowIcon />
           </SortButton>
         </Touchable>
