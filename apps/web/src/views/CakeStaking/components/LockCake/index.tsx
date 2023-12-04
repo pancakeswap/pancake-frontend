@@ -25,6 +25,7 @@ export const LockCake = () => {
     <>
       <ApproveAndLockModal {...modal} {...modalData} />
       <Grid
+        mt="22px"
         gridGap="24px"
         gridTemplateColumns={isMobile ? '1fr' : customCols[status] ?? '1fr 2fr'}
         justifyItems={status === CakeLockStatus.Expired ? 'end' : 'start'}

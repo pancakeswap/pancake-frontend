@@ -41,13 +41,13 @@ const CakeStaking = () => {
         <CakeRewardsCard onDismiss={() => setCakeRewardModalVisible(false)} />
       </ModalV2>
       <PageHeader>
-        <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
+        <Flex pt="24px" justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('Cake Staking')}
+            <Heading as="h1" scale="xxl" color="secondary" mb="16px">
+              {t('CAKE Staking')}
             </Heading>
-            <Box maxWidth="537px">
-              <Text color="textSubtle">
+            <Box maxWidth="530px">
+              <Text color="textSubtle" lineHeight="120%">
                 {t(
                   'Enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
                 )}
@@ -57,7 +57,7 @@ const CakeStaking = () => {
               to="/swap?chain=bsc&inputCurrency=BNB&outputCurrency=0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
               prefetch={false}
             >
-              <Button p="0" variant="text">
+              <Button p="0" variant="text" mt="4px">
                 <Text color="primary" bold fontSize="16px" mr="4px">
                   {t('Get CAKE')}
                 </Text>
