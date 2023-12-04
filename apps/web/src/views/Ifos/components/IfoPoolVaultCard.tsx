@@ -1,19 +1,18 @@
 import { useMemo } from 'react'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
-import { Token } from '@pancakeswap/sdk'
 import { isCakeVaultSupported } from '@pancakeswap/pools'
+import { Address } from 'viem'
+import { ChainId } from '@pancakeswap/chains'
 
-import CakeVaultCard from 'views/Pools/components/CakeVaultCard'
-import { usePoolsWithVault } from 'state/pools/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
-import IfoPoolVaultCardMobile from './IfoPoolVaultCardMobile'
 import IfoVesting from './IfoVesting/index'
 import { VeCakeCard } from './VeCakeCard'
 
 type Props = {
   ifoBasicSaleType?: number
+  ifoAddress?: Address
+  ifoChainId?: ChainId
 }
 
 const IfoPoolVaultCard = ({ ifoBasicSaleType }: Props) => {
@@ -21,18 +20,13 @@ const IfoPoolVaultCard = ({ ifoBasicSaleType }: Props) => {
   const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
   const { isXl, isLg, isMd, isXs, isSm } = useMatchBreakpoints()
   const isSmallerThanXl = isXl || isLg || isMd || isXs || isSm
-  const { pools } = usePoolsWithVault()
-  const cakePool = useMemo(
-    () => pools.find((pool) => pool.userData && pool.sousId === 0),
-    [pools],
-  ) as Pool.DeserializedPool<Token>
 
-  const vault = isSmallerThanXl ? <IfoPoolVaultCardMobile pool={cakePool} /> : <VeCakeCard />
+  const vault = isSmallerThanXl ? null : <VeCakeCard />
 
   return (
     <Flex width="100%" maxWidth={400} alignItems="center" flexDirection="column">
       {cakeVaultSupported ? vault : null}
-      <IfoVesting pool={cakePool} ifoBasicSaleType={ifoBasicSaleType} />
+      <IfoVesting ifoBasicSaleType={ifoBasicSaleType} />
     </Flex>
   )
 }

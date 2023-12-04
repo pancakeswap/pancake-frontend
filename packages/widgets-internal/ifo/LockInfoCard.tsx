@@ -7,8 +7,8 @@ import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 
 type Props = {
-  amount?: BigNumber | number;
-  usdPrice?: number | BigNumber;
+  amount?: BigNumber | number | string;
+  usdPrice?: number | BigNumber | string;
 
   // Unix timestamp
   unlockAt?: number;

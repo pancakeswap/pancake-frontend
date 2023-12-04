@@ -1,5 +1,25 @@
 export const iCakeABI = [
   {
+    inputs: [{ internalType: 'address', name: '_veCakeAddress', type: 'address' }],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [{ indexed: false, internalType: 'uint256', name: 'newRatio', type: 'uint256' }],
+    name: 'UpdateRatio',
+    type: 'event',
+  },
+  {
     inputs: [],
     name: 'MIN_CEILING_DURATION',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
@@ -8,21 +28,7 @@ export const iCakeABI = [
   },
   {
     inputs: [],
-    name: 'admin',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'cakePool',
-    outputs: [{ internalType: 'contract ICaKePool', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'ceiling',
+    name: 'RATION_PRECISION',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
@@ -35,9 +41,36 @@ export const iCakeABI = [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'address', name: '_user', type: 'address' },
+      { internalType: 'address', name: '_ifo', type: 'address' },
+    ],
+    name: 'getUserCreditWithIfoAddr',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_user', type: 'address' },
+      { internalType: 'uint256', name: '_endTime', type: 'uint256' },
+    ],
+    name: 'getUserCreditWithTime',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'owner',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'ratio',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -50,10 +83,17 @@ export const iCakeABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '_newCeiling', type: 'uint256' }],
-    name: 'updateCeiling',
+    inputs: [{ internalType: 'uint256', name: '_newRatio', type: 'uint256' }],
+    name: 'updateRatio',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'veCakeAddress',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
     type: 'function',
   },
 ] as const
