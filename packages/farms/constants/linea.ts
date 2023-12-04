@@ -1,8 +1,15 @@
 import { lineaTokens } from '@pancakeswap/tokens'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
+  {
+    pid: 6,
+    lpAddress: Pool.getAddress(lineaTokens.wstETH, lineaTokens.weth, FeeAmount.LOWEST),
+    token0: lineaTokens.wstETH,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
   {
     pid: 1,
     lpAddress: '0xd5539D0360438a66661148c633A9F0965E482845',
