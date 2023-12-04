@@ -1,15 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AutoRow,
-  BalanceInput,
-  BalanceInputProps,
-  Box,
-  Button,
-  FlexGap,
-  Image,
-  Text,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Image, Text } from '@pancakeswap/uikit'
 import { MAX_VECAKE_LOCK_WEEKS } from 'config/constants/veCake'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
@@ -49,10 +39,10 @@ const ButtonBlocked = styled(Button)`
 
 const WeekButton = styled(Button)`
   flex: 1;
-  fontsize: 12;
+  font-size: 12px;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    fontsize: 14;
+    font-size: 14px;
     padding: 0 10px;
   }
 `
@@ -63,7 +53,6 @@ const WeekInput: React.FC<{
   disabled?: boolean
 }> = ({ value, onUserInput, disabled }) => {
   const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
   const onInput = useCallback(
     (v: string) => {
       if (Number(v) > MAX_VECAKE_LOCK_WEEKS) {
@@ -100,16 +89,16 @@ const WeekInput: React.FC<{
       {disabled ? null : (
         <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {weeks.map(({ value: v, label }) => (
-            <WeekButton
+            <Button
               key={v}
               data-week={v}
               disabled={disabled}
               onClick={handleWeekSelect}
-              scale={isDesktop ? 'sm' : 'xs'}
+              scale="sm"
               variant={Number(value) === v ? 'subtle' : 'light'}
             >
               {label}
-            </WeekButton>
+            </Button>
           ))}
         </FlexGap>
       )}

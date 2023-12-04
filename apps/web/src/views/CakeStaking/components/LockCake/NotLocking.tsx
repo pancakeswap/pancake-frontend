@@ -36,14 +36,14 @@ export const NotLockingCard = () => {
   const handleModalOpen = useWriteApproveAndLockCallback()
 
   return (
-    <StyledCard innerCardProps={{ padding: '24px' }}>
+    <StyledCard innerCardProps={{ padding: ['24px 16px', '24px 16px', '24px'] }}>
       <Heading scale="md">{t('Lock CAKE to get veCAKE')}</Heading>
       <Grid
         gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'}
-        mt={32}
         gridColumnGap="24px"
         gridRowGap={isDesktop ? '0' : '24px'}
-        padding={12}
+        padding={[0, 0, 12]}
+        mt={32}
         mb={32}
       >
         <LockCakeForm fieldOnly />
@@ -55,7 +55,7 @@ export const NotLockingCard = () => {
       />
       <ColumnCenter>
         {account ? (
-          <Button disabled={disabled} width="50%" onClick={handleModalOpen}>
+          <Button disabled={disabled} width={['100%', '100%', '50%']} onClick={handleModalOpen}>
             {t('Lock CAKE')}
           </Button>
         ) : (

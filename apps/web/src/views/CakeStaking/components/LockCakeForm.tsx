@@ -92,7 +92,7 @@ const CakeInput: React.FC<{
               <Button
                 key={p}
                 style={{ flex: 1 }}
-                scale={isDesktop ? 'sm' : 'xs'}
+                scale="sm"
                 variant={p === percent ? 'primary' : 'tertiary'}
                 onClick={() => handlePercentChange(p)}
               >
@@ -101,7 +101,7 @@ const CakeInput: React.FC<{
             )
           })}
           <Button
-            scale={isDesktop ? 'sm' : 'xs'}
+            scale="sm"
             style={{ flex: 1 }}
             variant={percent === 100 ? 'primary' : 'tertiary'}
             onClick={() => handlePercentChange(100)}
