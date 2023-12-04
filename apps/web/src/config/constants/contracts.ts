@@ -268,11 +268,11 @@ export default {
   },
   gaugesVoting: GAUGES_ADDRESS,
   gaugesVotingCalc: GAUGES_CALC_ADDRESS,
-  revenueSharingVeCake: {
+  revenueSharingCakePool: {
     [ChainId.BSC]: '0x9cac9745731d1Cf2B483f257745A512f0938DD01',
     [ChainId.BSC_TESTNET]: '0x482a401D57C9892D6d6BD6A4A976CfDDeD83BF11',
   },
-  revenueSharingCakePool: {
+  revenueSharingVeCake: {
     [ChainId.BSC]: '0xCaF4e48a4Cb930060D0c3409F40Ae7b34d2AbE2D',
     [ChainId.BSC_TESTNET]: '0x58fde4bf684B631363640808F452952D8c14084b',
   },
