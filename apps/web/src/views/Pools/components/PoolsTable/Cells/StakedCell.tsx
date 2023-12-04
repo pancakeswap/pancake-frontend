@@ -1,15 +1,15 @@
-import { styled } from 'styled-components'
-import { Box, Flex, Skeleton, Text, useMatchBreakpoints, Balance, useTooltip, HelpIcon } from '@pancakeswap/uikit'
+import { Balance, Box, Flex, HelpIcon, Skeleton, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
+import BigNumber from 'bignumber.js'
 
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { VaultKey } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { Token } from '@pancakeswap/sdk'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
 import OriginalLockedInfo from '../../OriginalLockedInfo'
 
 interface StakedCellProps {
@@ -64,16 +64,7 @@ const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool, 
   })
 
   return (
-    <Pool.BaseCell
-      role="cell"
-      flex={
-        pool.vaultKey === VaultKey.CakeFlexibleSideVault
-          ? '1 0 162px'
-          : pool.vaultKey === VaultKey.CakeVault && !hasStaked
-          ? '1 0 120px'
-          : '2 0 100px'
-      }
-    >
+    <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
       <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left" verticalAlign="center">
           {labelText}

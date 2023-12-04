@@ -1,12 +1,12 @@
-import { styled } from 'styled-components'
-import { Skeleton, Text, useTooltip, HelpIcon, Flex, Box, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
+import { Balance, Box, Flex, HelpIcon, Skeleton, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 
-import { VaultKey } from 'state/types'
-import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { Token } from '@pancakeswap/sdk'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import AutoEarningsBreakdown from '../../AutoEarningsBreakdown'
 
 interface AutoEarningsCellProps {
