@@ -51,7 +51,7 @@ const config = {
     scrollRestoration: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
-      '*': [],
+      '*': ['**@swc+core*', '**/@esbuild**'],
     },
   },
   transpilePackages: [
