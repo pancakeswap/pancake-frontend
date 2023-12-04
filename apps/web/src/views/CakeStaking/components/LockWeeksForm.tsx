@@ -126,9 +126,9 @@ export const LockWeeksForm: React.FC<{
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
   return (
     <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
+      <FlexGap gap="8px" alignItems="center" height="40px">
         <Box width={40}>
-          <Image src="/images/cake-staking/lock.png" height={40} width={40} />
+          <Image src="/images/cake-staking/lock.png" height={37} width={34} mx="auto" />
         </Box>
         <FlexGap gap="4px">
           <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>

@@ -124,7 +124,7 @@ export const LockCakeForm: React.FC<{
 
   return (
     <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
+      <FlexGap gap="8px" alignItems="center" height="40px">
         <Box width={40}>
           <TokenImage
             src={`https://pancakeswap.finance/images/tokens/${CAKE[ChainId.BSC].address}.png`}
