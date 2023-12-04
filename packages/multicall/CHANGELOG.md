@@ -1,5 +1,13 @@
 # @pancakeswap/multicall
 
+## 3.3.2
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+- Updated dependencies [2ec03f1b2]
+  - @pancakeswap/sdk@5.7.3
+
 ## 3.3.1
 
 ### Patch Changes

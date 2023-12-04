@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.65.1
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+
 ## 0.65.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # @pancakeswap/pools
 
+## 5.0.2
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+  - @pancakeswap/tokens@0.5.6
+
 ## 5.0.1
 
 ### Patch Changes
