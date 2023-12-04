@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 5.7.3
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+
 ## 5.7.2
 
 ### Patch Changes

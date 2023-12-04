@@ -1,5 +1,16 @@
 # @pancakeswap/smart-router
 
+## 4.11.1
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+- Updated dependencies [2ec03f1b2]
+  - @pancakeswap/multicall@3.3.2
+  - @pancakeswap/sdk@5.7.3
+  - @pancakeswap/v3-sdk@3.7.2
+  - @pancakeswap/tokens@0.5.6
+
 ## 4.11.0
 
 ### Minor Changes

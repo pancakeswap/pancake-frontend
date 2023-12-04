@@ -1,5 +1,18 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.6
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+- Updated dependencies [2ec03f1b2]
+  - @pancakeswap/sdk@5.7.3
+  - @pancakeswap/v3-sdk@3.7.2
+  - @pancakeswap/farms@1.0.28
+  - @pancakeswap/pools@5.0.2
+  - @pancakeswap/uikit@0.65.1
+  - @pancakeswap/tokens@0.5.6
+
 ## 0.1.5
 
 ### Patch Changes
