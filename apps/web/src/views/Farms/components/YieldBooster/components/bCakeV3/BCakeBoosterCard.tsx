@@ -17,9 +17,9 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import { styled, useTheme } from 'styled-components'
+import { useCakePoolLockInfo } from 'views/CakeStaking/hooks/useCakePoolLockInfo'
 import { useAccount } from 'wagmi'
 import boosterCardImage from '../../../../images/boosterCardImage.png'
-import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
 
 export const CardWrapper = styled.div`
   position: relative;
@@ -122,7 +122,7 @@ export const BCakeBoosterCard = () => {
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { locked, isLockEnd, remainingCounts, maxBoostLimit } = useBCakeBoostLimitAndLockInfo()
+  const { locked } = useCakePoolLockInfo()
   const theme = useTheme()
 
   if (!account)
