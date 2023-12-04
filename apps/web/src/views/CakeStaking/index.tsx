@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Grid, Heading, ModalV2, PageHeader, QuestionHelper, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import Page from 'components/Layout/Page'
@@ -37,9 +37,9 @@ const CakeStaking = () => {
       >
         <PageHead />
         <LockCake />
-        <Text fontSize="40px" bold color="secondary" lineHeight="110%" mt="45px" mb="48px">
+        <Heading scale="xl" color="secondary" mt={['40px', '40px', '45px']} mb={['24px', '24px', '48px']}>
           {t('Benefits of veCAKE')}
-        </Text>
+        </Heading>
         <Grid
           maxWidth="820px"
           gridGap="24px"
@@ -82,7 +82,7 @@ const CakeStaking = () => {
         </Grid>
       </StyledPageHeader>
       <Page title={t('Cake staking')}>
-        <Heading scale="xl" mb="48px">
+        <Heading scale="xl" mb={['24px', '24px', '48px']} mt={['16px', '16px', 0]}>
           {t('And So Much More...')}
         </Heading>
         <Grid

@@ -105,10 +105,12 @@ export const BenefitCard: React.FC<{
   ) : null
 
   return (
-    <StyledCard innerCardProps={{ p: '24px' }}>
+    <StyledCard innerCardProps={{ p: ['16px', '16px', '24px'] }}>
       <FlexGap flexDirection="column" gap="16px" height="100%" justifyContent="space-between">
         <FlexGap gap="16px" alignItems="center">
-          <img srcSet={`${info.headImg} 2x`} alt="earn-cake" />
+          <HeadImage>
+            <img srcSet={`${info.headImg} 2x`} alt="earn-cake" />
+          </HeadImage>
           <FlexGap flexDirection="column" gap="8px">
             <Flex>
               <Heading as="h3" scale="lg" color="secondary">
@@ -147,3 +149,20 @@ export const BenefitCard: React.FC<{
     </StyledCard>
   )
 }
+
+const HeadImage = styled.div`
+  width: 68px;
+  height: 68px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 72px;
+    height: 72px;
+  }
+
+  img {
+    height: 100%;
+  }
+`
