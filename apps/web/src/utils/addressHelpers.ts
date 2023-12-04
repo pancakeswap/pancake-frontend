@@ -97,6 +97,10 @@ export const getBCakeFarmBoosterV3Address = (chainId?: number) => {
   return getAddressFromMap(addresses.bCakeFarmBoosterV3, chainId)
 }
 
+export const getBCakeFarmBoosterVeCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.bCakeFarmBoosterVeCake, chainId)
+}
+
 export const getBCakeFarmBoosterProxyFactoryAddress = () => {
   return getAddressFromMap(addresses.bCakeFarmBoosterProxyFactory)
 }

@@ -166,6 +166,10 @@ export default {
     [ChainId.BSC]: '0x695170faE243147b3bEB4C43AA8DE5DcD9202752',
     [ChainId.BSC_TESTNET]: '0x56666300A1E25624489b661f3C6c456c159a109a',
   },
+  bCakeFarmBoosterVeCake: {
+    [ChainId.BSC]: '0x', // TODO: update the address
+    [ChainId.BSC_TESTNET]: '0x1F32591CC45f00BaE3A742Bf2bCAdAe59DbAd228',
+  },
   nonBscVault: {
     [ChainId.ETHEREUM]: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',
     [ChainId.GOERLI]: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841',

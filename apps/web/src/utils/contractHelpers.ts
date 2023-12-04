@@ -7,6 +7,7 @@ import {
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
   getBCakeFarmBoosterV3Address,
+  getBCakeFarmBoosterVeCakeAddress,
   getBunnyFactoryAddress,
   getCakeFlexibleSideVaultAddress,
   getCakeVaultAddress,
@@ -67,6 +68,7 @@ import { anniversaryAchievementABI } from 'config/abi/anniversaryAchievement'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
 import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
+import { bCakeFarmBoosterVeCakeABI } from 'config/abi/bCakeFarmBoosterVeCake'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
@@ -257,6 +259,15 @@ export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
 
 export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: number) => {
   return getContract({ abi: bCakeFarmBoosterV3ABI, address: getBCakeFarmBoosterV3Address(chainId), signer, chainId })
+}
+
+export const getBCakeFarmBoosterVeCakeContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: bCakeFarmBoosterVeCakeABI,
+    address: getBCakeFarmBoosterVeCakeAddress(chainId),
+    signer,
+    chainId,
+  })
 }
 
 export const getPositionManagerWrapperContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {

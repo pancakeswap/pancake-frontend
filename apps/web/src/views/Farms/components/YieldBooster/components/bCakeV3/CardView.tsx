@@ -5,8 +5,8 @@ import NextLink from 'next/link'
 import { useCallback, useMemo } from 'react'
 import {
   useBCakeBoostLimitAndLockInfo,
-  useUserMultiplierBeforeBoosted,
   useUserBoostedPoolsTokenId,
+  useUserMultiplierBeforeBoosted,
   useUserPositionInfo,
 } from '../../hooks/bCakeV3/useBCakeV3Info'
 import { useBoosterFarmV3Handlers } from '../../hooks/bCakeV3/useBoostBcakeV3'
@@ -51,8 +51,8 @@ export const BCakeV3CardView: React.FC<{
       />
       <Box>
         {!lockValidated && (
-          <NextLink href="/pools" passHref>
-            <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Pool')}</Button>
+          <NextLink href="/cake-staking" passHref>
+            <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Lock')}</Button>
           </NextLink>
         )}
         {boostStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && lockValidated && (
