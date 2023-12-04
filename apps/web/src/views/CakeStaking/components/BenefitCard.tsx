@@ -70,6 +70,16 @@ const StyledCard = styled(Card)`
   height: 100%;
 `
 
+const StyleUl = styled.ul`
+  list-style-type: '\u2022';
+  list-style-position: outside;
+  margin-left: 16px;
+
+  li {
+    padding-left: 10px;
+  }
+`
+
 export const BenefitCard: React.FC<{
   type: BenefitCardType
   dataText?: string
@@ -120,11 +130,11 @@ export const BenefitCard: React.FC<{
         </FlexGap>
         <div>
           <Text lineHeight="130%">
-            <ul>
+            <StyleUl>
               {info.desc.map((item) => (
                 <li key={item}>{t(item)}</li>
               ))}
-            </ul>
+            </StyleUl>
           </Text>
         </div>
         {button && info.link ? (
