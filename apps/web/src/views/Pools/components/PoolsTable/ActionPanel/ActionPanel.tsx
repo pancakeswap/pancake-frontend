@@ -78,7 +78,7 @@ export const StyledActionPanel = styled.div<{ expanded: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
+    padding: 16px;
   }
 `
 
@@ -113,6 +113,7 @@ export const InfoSection = styled(Box)`
   ${({ theme }) => theme.mediaQueries.lg} {
     padding: 0;
     flex-basis: 230px;
+    margin-right: 16px;
     ${Text} {
       font-size: 14px;
     }
