@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   FlexGap,
+  Grid,
   Link,
   Message,
   Skeleton,
@@ -14,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Hex } from 'viem'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
@@ -64,7 +65,7 @@ export const VoteTable = () => {
 
   const { gauges, rows, onRowSelect, refetch, isLoading } = useGaugeRows()
   const { data: slopes } = useUserVoteSlopes()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
     return rows?.map((row) => {
       return {
@@ -246,7 +247,7 @@ export const VoteTable = () => {
         isOpen={isOpen}
         onDismiss={() => setIsOpen(false)}
       />
-      <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
+      <ResponsiveCard>
         {gaugesTable}
 
         {rowsWithLock?.length && epochPower <= 0n && cakeLockedAmount > 0n ? (
@@ -293,23 +294,47 @@ export const VoteTable = () => {
             </Message>
           </Box>
         ) : null}
-        <FlexGap
-          gap="12px"
+        <Grid
+          gridTemplateColumns="1fr 1fr "
+          gridGap="12px"
           padding={isDesktop ? '2em' : '1em'}
           style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}
         >
-          <Button width="100%" onClick={() => setIsOpen(true)}>
-            + Add Gauges ({leftGaugesCanAdd || 0})
+          <Button
+            width="100%"
+            onClick={() => setIsOpen(true)}
+            style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
+          >
+            + Add Gauges {isMobile ? null : `(${leftGaugesCanAdd || 0})`}
           </Button>
           {!account ? (
             <ConnectWalletButton width="100%" />
           ) : (
-            <Button width="100%" disabled={disabled} onClick={submitVote}>
+            <Button
+              width="100%"
+              disabled={disabled}
+              onClick={submitVote}
+              style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
+            >
               Submit vote
             </Button>
           )}
-        </FlexGap>
-      </Card>
+        </Grid>
+      </ResponsiveCard>
     </>
+  )
+}
+
+const ResponsiveCard: React.FC<PropsWithChildren> = ({ children }) => {
+  const { isMobile, isDesktop } = useMatchBreakpoints()
+
+  if (isMobile) {
+    return <Box mx="-16px">{children}</Box>
+  }
+
+  return (
+    <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
+      {children}
+    </Card>
   )
 }
