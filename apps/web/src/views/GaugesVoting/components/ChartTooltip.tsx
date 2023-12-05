@@ -42,6 +42,8 @@ const Tooltip = styled.div.withConfig({ shouldForwardProp: (prop) => prop !== 's
   }
 `
 
+export const OTHERS_GAUGES = '0xOTHERS'
+
 export const ChartTooltip: React.FC<{
   color: string
   visible: boolean
@@ -53,6 +55,14 @@ export const ChartTooltip: React.FC<{
   const percent = useMemo(() => {
     return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
   }, [total, gauge?.weight])
+  const name = useMemo(() => {
+    return gauge?.hash === OTHERS_GAUGES ? 'Others' : gauge?.pairName
+  }, [gauge?.pairName, gauge?.hash])
+
+  const desc = useMemo(() => {
+    if (!gauge) return ''
+    return gauge?.hash === OTHERS_GAUGES ? gauge?.pairName.split('|')[1] : GAUGE_TYPE_NAMES[gauge.type]
+  }, [gauge])
 
   if (!visible) return null
 
@@ -70,7 +80,7 @@ export const ChartTooltip: React.FC<{
         <TripleLogo gaugeConfig={gauge} chainId={Number(gauge?.chainId)} size={36} />
         <Flex flexDirection="column">
           <Text fontSize={18} bold lineHeight={1.2} color="text">
-            {gauge?.pairName}
+            {name}
           </Text>
           <Flex alignItems="center">
             {gauge?.type === GaugeType.V3 || gauge?.type === GaugeType.V2 ? (
@@ -84,7 +94,7 @@ export const ChartTooltip: React.FC<{
               </>
             ) : null}
             <Text fontSize={12} color="textSubtle" lineHeight={1.2}>
-              {gauge ? GAUGE_TYPE_NAMES[gauge.type] : ''}
+              {desc}
             </Text>
           </Flex>
         </Flex>

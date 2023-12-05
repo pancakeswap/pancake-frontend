@@ -6,13 +6,16 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import styled, { keyframes } from 'styled-components'
 import { ChartLabel } from './ChartLabel'
-import { ChartTooltip } from './ChartTooltip'
+import { ChartTooltip, OTHERS_GAUGES } from './ChartTooltip'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 const Container = styled(Box)`
   position: relative;
   margin-top: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const Center = styled.div`
@@ -43,6 +46,11 @@ const Circle = styled.circle`
   animation: ${opacityAnimation} 1s ease-in-out infinite alternate;
 `
 
+const othersColor = {
+  backgroundColor: '#919191',
+  hoverBorderColor: '#91919152',
+}
+
 export const chartDataOption: ChartDataset<'doughnut', number[]> = {
   data: [],
   backgroundColor: ['#F35E79', '#27B9C4', '#8051D6', '#129E7D', '#FCC631', '#2882CC', '#3DDBB5'],
@@ -62,26 +70,57 @@ export const WeightsPieChart: React.FC<{
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
   const [selectedGauge, setSelectedGauge] = useState<Gauge>()
   const sortedGauge = useMemo<Gauge[]>(() => data?.sort((a, b) => (a.weight < b.weight ? 1 : -1)) ?? [], [data])
+  const [topGaugesAndOthers, othersIndex] = useMemo(() => {
+    const maxCount = 10
+    const tops = sortedGauge.slice(0, maxCount)
+    const others = sortedGauge.slice(maxCount).reduce(
+      (prev, curr) => {
+        return {
+          ...prev,
+          weight: curr.weight + (prev?.weight || 0n),
+        }
+      },
+      {
+        hash: OTHERS_GAUGES,
+        pairName: `Other|${sortedGauge.length - maxCount}`,
+      } as Gauge,
+    )
+
+    const _topGaugesAndOthers = [...tops, others].sort((a, b) => (a.weight < b.weight ? 1 : -1)) ?? []
+    const _othersIndex = _topGaugesAndOthers.findIndex((a) => a.hash === OTHERS_GAUGES)
+    return [_topGaugesAndOthers, _othersIndex]
+  }, [sortedGauge])
   const selectedGaugeSort = useMemo(() => {
     if (!selectedGauge) return ''
-    const index = sortedGauge.findIndex((g) => g.hash === selectedGauge.hash) + 1
+    const index = topGaugesAndOthers.findIndex((g) => g.hash === selectedGauge.hash) + 1
     if (index < 10) return `0${index}`
     return String(index)
-  }, [selectedGauge, sortedGauge])
+  }, [selectedGauge, topGaugesAndOthers])
   const [color, setColor] = useState<string>('')
   const { isDesktop } = useMatchBreakpoints()
 
   const gauges = useMemo<ChartData<'doughnut'>>(() => {
+    const options = {
+      ...chartDataOption,
+    }
+    if (othersIndex > -1 && topGaugesAndOthers.length > 1) {
+      if (Array.isArray(options.backgroundColor) && !options.backgroundColor.includes(othersColor.backgroundColor)) {
+        options.backgroundColor.splice(othersIndex, 0, othersColor.backgroundColor)
+      }
+      if (Array.isArray(options.hoverBorderColor) && !options.hoverBorderColor.includes(othersColor.hoverBorderColor)) {
+        options.hoverBorderColor.splice(othersIndex, 0, othersColor.hoverBorderColor)
+      }
+    }
     return {
-      labels: data?.map((gauge) => gauge.hash) ?? [],
+      labels: topGaugesAndOthers?.map((gauge) => gauge.hash) ?? [],
       datasets: [
         {
-          ...chartDataOption,
-          data: data?.map((gauge) => Number(gauge.weight)) ?? [],
+          ...options,
+          data: topGaugesAndOthers?.map((gauge) => Number(gauge.weight)) ?? [],
         },
       ],
     }
-  }, [data])
+  }, [topGaugesAndOthers, othersIndex])
 
   const externalTooltipHandler = useCallback(
     ({ tooltip }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
@@ -99,7 +138,7 @@ export const WeightsPieChart: React.FC<{
 
       // set tooltip visible
       tooltipRef.current = `${tooltip.x},${tooltip.y}`
-      setSelectedGauge(data?.find((gauge) => gauge.hash === tooltip.title[0]))
+      setSelectedGauge(topGaugesAndOthers?.find((gauge) => gauge.hash === tooltip.title[0]))
       setColor(tooltip.labelColors[0].backgroundColor as string)
       setTooltipVisible(true)
       setTooltipPosition({
@@ -109,7 +148,7 @@ export const WeightsPieChart: React.FC<{
         top: tooltip.y + 20,
       })
     },
-    [data],
+    [topGaugesAndOthers],
   )
 
   const tooltipComp = (
