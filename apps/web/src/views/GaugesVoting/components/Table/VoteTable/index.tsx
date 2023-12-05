@@ -261,8 +261,10 @@ export const VoteTable = () => {
                 </Text>
                 <FlexGap alignItems="center" gap="0.2em">
                   {t('To cast your vote, ')}
-                  <Link href="/cake-staking">
-                    <Text bold>{t('extend your lock >>')}</Text>
+                  <Link href="/cake-staking" color="text">
+                    <Text bold style={{ textDecoration: 'underline' }}>
+                      {t('extend your lock >>')}
+                    </Text>
                   </Link>
                 </FlexGap>
               </AutoColumn>
@@ -274,10 +276,12 @@ export const VoteTable = () => {
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
                 <Text>{t('You have no locked CAKE.')}</Text>
-                <FlexGap alignItems="center" gap="0.2em">
+                <FlexGap alignItems="center" gap="0.2em" flexWrap="wrap">
                   {t('To cast your vote, ')}
-                  <Link href="/cake-staking">
-                    <Text bold>{t('lock your CAKE')}</Text>
+                  <Link href="/cake-staking" color="text">
+                    <Text bold style={{ textDecoration: 'underline' }}>
+                      {t('lock your CAKE')}
+                    </Text>
                   </Link>
                   {t('for 3 weeks or more.')}
                 </FlexGap>
