@@ -21,7 +21,6 @@ import {
   Text,
   ThemeSwitcher,
   Toggle,
-  useToast,
 } from '@pancakeswap/uikit'
 import {
   useAudioPlay,
@@ -106,7 +105,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { allowNotifications, handleEnableNotifications, handleDiableNotifications } = useTogglenotifications()
-  const toast = useToast()
 
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
