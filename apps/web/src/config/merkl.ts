@@ -9,6 +9,17 @@ type MerklPool = {
   link: string
 }
 
+const DISTRIBUTOR_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae' as const
+
+export const DISTRIBUTOR_ADDRESSES = {
+  [ChainId.ETHEREUM]: DISTRIBUTOR_ADDRESS,
+  [ChainId.BSC]: DISTRIBUTOR_ADDRESS,
+  [ChainId.LINEA]: DISTRIBUTOR_ADDRESS,
+  [ChainId.BASE]: DISTRIBUTOR_ADDRESS,
+  [ChainId.ARBITRUM_ONE]: DISTRIBUTOR_ADDRESS,
+  [ChainId.POLYGON_ZKEVM]: DISTRIBUTOR_ADDRESS,
+}
+
 export const MERKL_POOLS: MerklPool[] = [
   {
     chainId: ChainId.ETHEREUM,

@@ -1,5 +1,5 @@
 import { Profile } from 'state/types'
-import { StaticImageData } from 'next/dist/client/image'
+import { StaticImageData } from 'next/dist/client/legacy/image'
 
 export interface CompetitionProps extends UserRewardsProps {
   userTradingInformation?: UserTradingInformation
