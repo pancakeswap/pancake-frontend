@@ -54,7 +54,7 @@ export const NotificationFilterTypes: OptionProps[] = [
   },
 ]
 
-export const SECURE_TOKEN = process.env.NEXT_PUBLIC_SECURE_TOKEN ?? ''
+export const NEXT_PUBLIC_WEB_NOTIFICATION_SECURE_TOKEN = process.env.NEXT_PUBLIC_WEB_NOTIFICATION_SECURE_TOKEN ?? ''
 export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY ?? ''
 export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
 
