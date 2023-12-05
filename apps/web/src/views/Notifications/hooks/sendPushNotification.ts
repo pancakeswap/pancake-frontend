@@ -1,4 +1,6 @@
 import { useToast } from '@pancakeswap/uikit'
+import { NOTIFICATION_HUB_BASE_URL } from 'config/constants/endpoints'
+import crypto from 'crypto'
 import {
   PUBLIC_VAPID_KEY,
   PancakeNotifications,
@@ -7,7 +9,6 @@ import {
   WEB_PUSH_IV,
 } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
-import crypto from 'crypto'
 import { useAccount } from 'wagmi'
 
 interface IUseSendNotification {
@@ -49,8 +50,7 @@ const useSendPushNotification = (): IUseSendNotification => {
           existingSubscription ||
           (await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey:
-              'BMqr9OUv0dxUll4al_WO0EGFf87hkxrIrQik_fv_rkX7Mtr7irwOnaw8egvgYFQqsi3_rbsoY4TzjfrqUL1sA44',
+            applicationServerKey: PUBLIC_VAPID_KEY,
           }))
 
         const data = JSON.stringify(subscription)
@@ -59,7 +59,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         let encryptedData = cipher.update(data, 'utf8', 'hex')
         encryptedData += cipher.final('hex')
 
-        await fetch('https://lobster-app-6lfpi.ondigitalocean.app/subscribe', {
+        await fetch(`${NOTIFICATION_HUB_BASE_URL}/subscribe`, {
           method: 'POST',
           body: JSON.stringify({ subscription: encryptedData, user: address }),
           headers: { 'Content-Type': 'application/json' },
@@ -76,7 +76,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      await fetch(`https://lobster-app-6lfpi.ondigitalocean.app/walletconnect-notify`, {
+      await fetch(`${NOTIFICATION_HUB_BASE_URL}/walletconnect-notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -40,7 +40,7 @@ import { styled } from 'styled-components'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { LightGreyCard } from 'components/Card'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
-import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { hexToBigInt } from 'viem'
 
@@ -70,14 +70,14 @@ export default function RemoveLiquidityV3() {
     try {
       return BigInt(tokenId as string)
     } catch {
-      return null
+      return undefined
     }
   }, [tokenId])
 
   return <Remove tokenId={parsedTokenId} />
 }
 
-function Remove({ tokenId }: { tokenId: bigint }) {
+function Remove({ tokenId }: { tokenId?: bigint }) {
   const {
     t,
     currentLanguage: { locale },
@@ -152,7 +152,8 @@ function Remove({ tokenId }: { tokenId: bigint }) {
       !chainId ||
       !positionSDK ||
       !liquidityPercentage ||
-      !sendTransactionAsync
+      !sendTransactionAsync ||
+      !tokenId
     ) {
       return
     }
@@ -228,7 +229,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
   const price0 = useStablecoinPrice(liquidityValue0?.currency?.wrapped ?? undefined, { enabled: !!feeValue0 })
   const price1 = useStablecoinPrice(liquidityValue1?.currency?.wrapped ?? undefined, { enabled: !!feeValue1 })
 
-  function modalHeader() {
+  const modalHeader = useCallback(() => {
     return (
       <>
         <RowBetween alignItems="flex-end">
@@ -284,7 +285,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
         ) : null}
       </>
     )
-  }
+  }, [feeValue0, feeValue1, liquidityValue0, liquidityValue1, t])
 
   const router = useRouter()
 

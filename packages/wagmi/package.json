@@ -31,8 +31,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "tsup": "^6.7.0",
-    "viem": "^1.15.1",
-    "wagmi": "^1.4.3"
+    "viem": "1.15.1",
+    "wagmi": "1.4.3"
   },
   "exports": {
     "./package.json": "./package.json",

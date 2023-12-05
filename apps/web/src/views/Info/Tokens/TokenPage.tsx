@@ -8,13 +8,14 @@ import {
   Flex,
   Heading,
   Image,
-  NextLinkFromReactRouter,
   Spinner,
   Text,
   Link as UIKitLink,
   useMatchBreakpoints,
   ScanLink,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { NextSeo } from 'next-seo'
 

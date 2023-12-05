@@ -1,5 +1,11 @@
 # @pancakeswap/awgmi
 
+## 0.2.1
+
+### Patch Changes
+
+- e73d4ded3: use new msafe aptos sdk
+
 ## 0.2.0
 
 ### Minor Changes

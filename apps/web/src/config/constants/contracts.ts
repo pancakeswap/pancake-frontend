@@ -1,7 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
-import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
+import { ICAKE } from '@pancakeswap/ifos'
+import { CAKE_VAULT } from '@pancakeswap/pools'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
+import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 
 export default {
   masterChef: {
@@ -81,10 +83,7 @@ export default {
     [ChainId.BSC]: '0x23c41D28A239dDCAABd1bb1deF8d057189510066',
     [ChainId.BSC_TESTNET]: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
-  cakeVault: {
-    [ChainId.BSC]: '0x45c54210128a065de780C4B0Df3d16664f7f859e',
-    [ChainId.BSC_TESTNET]: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
-  },
+  cakeVault: CAKE_VAULT,
   cakeFlexibleSideVault: {
     [ChainId.BSC]: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
     [ChainId.BSC_TESTNET]: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
@@ -153,10 +152,7 @@ export default {
     [ChainId.BSC]: '0x52E5D1e24A4308ef1A221C949cb2F7cbbAFEE090',
     [ChainId.BSC_TESTNET]: '0x6e4B1D7C65E86f1723720a5fE8993f0908108b64',
   },
-  iCake: {
-    [ChainId.BSC]: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
-    [ChainId.BSC_TESTNET]: '0x',
-  },
+  iCake: ICAKE,
   bCakeFarmBooster: {
     [ChainId.BSC]: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
     [ChainId.BSC_TESTNET]: '0x',
@@ -264,5 +260,25 @@ export default {
     [ChainId.ETHEREUM]: '0x',
     [ChainId.BSC]: '0xC0E92c9B437734a0c0e0466F76cDf71c5478b0AB',
     [ChainId.BSC_TESTNET]: '0x',
+  },
+  veCake: {
+    [ChainId.BSC]: '0x5692DB8177a81A6c6afc8084C2976C9933EC1bAB',
+    [ChainId.BSC_TESTNET]: '0x279957513FC505F8Cb16f4b6783D170C9BEcE322',
+  },
+  gaugesVoting: {
+    [ChainId.BSC]: '0x26F4dcd64434CCA69F7E94fB1001E22a1EB51526',
+    [ChainId.BSC_TESTNET]: '0x357b01894b21787B41A8FA4DCaFE92293470FaD9',
+  },
+  revenueSharingVeCake: {
+    [ChainId.BSC]: '0x9cac9745731d1Cf2B483f257745A512f0938DD01',
+    [ChainId.BSC_TESTNET]: '0x482a401D57C9892D6d6BD6A4A976CfDDeD83BF11',
+  },
+  revenueSharingCakePool: {
+    [ChainId.BSC]: '0xCaF4e48a4Cb930060D0c3409F40Ae7b34d2AbE2D',
+    [ChainId.BSC_TESTNET]: '0x58fde4bf684B631363640808F452952D8c14084b',
+  },
+  revenueSharingPoolGateway: {
+    [ChainId.BSC]: '0x011f2a82846a4E9c62C2FC4Fd6fDbad19147D94A',
+    [ChainId.BSC_TESTNET]: '0x946273012ED616410F698536F1BF2513417BF8Ec',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

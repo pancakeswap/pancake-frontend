@@ -1,6 +1,6 @@
-import useSWR from 'swr'
-import { ArticleType } from '../utils/transformArticle'
+import { useQuery } from '@tanstack/react-query'
 import { getArticle } from './getArticle'
+import { ArticleType } from '../utils/transformArticle'
 
 interface AllArticleType {
   isFetching: boolean
@@ -8,9 +8,9 @@ interface AllArticleType {
 }
 
 export const useAllNewsArticle = (): AllArticleType => {
-  const { data: articlesData, isLoading } = useSWR(
+  const { data: articlesData, isLoading } = useQuery(
     ['/allNews'],
-    () =>
+    async () =>
       getArticle({
         url: '/articles',
         urlParamsObject: {
@@ -27,10 +27,8 @@ export const useAllNewsArticle = (): AllArticleType => {
         },
       }),
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   )
 
@@ -49,8 +47,8 @@ export const useAllNewsArticle = (): AllArticleType => {
 }
 
 export const useLatestArticle = (): AllArticleType => {
-  const { data: articlesData, isLoading } = useSWR(
-    ['/lastetArticle'],
+  const { data: articlesData, isLoading } = useQuery(
+    ['/latestArticle'],
     () =>
       getArticle({
         url: '/articles',
@@ -61,10 +59,8 @@ export const useLatestArticle = (): AllArticleType => {
         },
       }),
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   )
 

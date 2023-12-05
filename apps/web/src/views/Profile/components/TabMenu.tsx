@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
-import { Flex, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useRouter } from 'next/router'
 
 const Tab = styled.button<{ $active: boolean }>`

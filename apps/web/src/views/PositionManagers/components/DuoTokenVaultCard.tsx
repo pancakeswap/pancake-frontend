@@ -32,6 +32,7 @@ interface Props {
   earningToken: Currency
   name: string
   id: string | number
+  idByManager: string | number
   feeTier: FeeAmount
   ratio: number
   strategy: Strategy
@@ -73,6 +74,7 @@ interface Props {
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
+  lpTokenDecimals?: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -81,6 +83,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   earningToken,
   name,
   id,
+  idByManager,
   feeTier,
   autoFarm,
   autoCompound,
@@ -114,6 +117,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   managerAddress,
   totalStakedInUsd,
   learnMoreAboutUrl,
+  lpTokenDecimals,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -131,7 +135,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   })
 
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
-  const vaultName = useMemo(() => getVaultName(id, name), [name, id])
+  const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
   const staked1Amount = stakedToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, stakedToken1Amount) : undefined
 
@@ -162,6 +166,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           totalSupplyAmounts={totalSupplyAmounts}
           userLpAmounts={userLpAmounts}
           precision={precision}
+          lpTokenDecimals={lpTokenDecimals}
         />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement
@@ -198,6 +203,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           totalStakedInUsd={totalStakedInUsd}
           strategyInfoUrl={strategyInfoUrl}
           learnMoreAboutUrl={learnMoreAboutUrl}
+          lpTokenDecimals={lpTokenDecimals}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

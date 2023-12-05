@@ -1,5 +1,31 @@
 # @pancakeswap/smart-router
 
+## 4.9.10
+
+### Patch Changes
+
+- Updated dependencies [be74f8b0d]
+  - @pancakeswap/v3-sdk@3.6.0
+
+## 4.9.9
+
+### Patch Changes
+
+- Updated dependencies [fd7a96a36]
+  - @pancakeswap/multicall@3.3.0
+
+## 4.9.8
+
+### Patch Changes
+
+- 63bb02a04: refactor: Add undefined type to subgraph provider
+
+## 4.9.7
+
+### Patch Changes
+
+- a890b2bc0: Add smart-router exports default path
+
 ## 4.9.6
 
 ### Patch Changes

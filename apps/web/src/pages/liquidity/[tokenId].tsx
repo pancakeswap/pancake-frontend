@@ -12,7 +12,6 @@ import {
   ExpandableLabel,
   Flex,
   Heading,
-  NextLinkFromReactRouter,
   NotFound,
   PreTitle,
   RowBetween,
@@ -26,9 +25,10 @@ import {
   useModal,
   ScanLink,
 } from '@pancakeswap/uikit'
-import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 
-import { MasterChefV3, NonfungiblePositionManager, Pool, Position } from '@pancakeswap/v3-sdk'
+import { ConfirmationModalContent, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
+import { MasterChefV3, NonfungiblePositionManager, Pool, Position, isPoolTickInRange } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import { useFarm } from 'hooks/useFarm'
@@ -40,7 +40,7 @@ import { NextSeo } from 'next-seo'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { LightGreyCard } from 'components/Card'
-import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { RangePriceSection } from 'components/RangePriceSection'
 import { RangeTag } from 'components/RangeTag'
@@ -75,11 +75,11 @@ import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
-import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { ChainLinkSupportChains } from 'state/info/constant'
 import { MerklSection } from 'components/Merkl/MerklSection'
 import { MerklTag } from 'components/Merkl/MerklTag'
 import { useMerklInfo } from 'hooks/useMerkl'
+import Link from 'next/link'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -349,7 +349,7 @@ export default function PoolPage() {
     }
 
     getViemClients({ chainId })
-      .estimateGas(txn)
+      ?.estimateGas(txn)
       .then((estimate) => {
         const newTxn = {
           ...txn,
@@ -395,9 +395,9 @@ export default function PoolPage() {
   ])
 
   const owner = useSingleCallResult({
-    contract: tokenId ? positionManager : null,
+    contract: tokenId && positionManager ? positionManager : undefined,
     functionName: 'ownerOf',
-    args: useMemo(() => [tokenId] as const, [tokenId]),
+    args: useMemo(() => [tokenId] as [bigint], [tokenId]),
   }).result
   const ownsNFT = owner === account || positionDetails?.operator === account
 
@@ -484,7 +484,7 @@ export default function PoolPage() {
 
   if (!isLoading && poolState === PoolState.NOT_EXISTS) {
     return (
-      <NotFound>
+      <NotFound LinkComp={Link}>
         <NextSeo title="404" />
       </NotFound>
     )
@@ -521,7 +521,7 @@ export default function PoolPage() {
           <>
             <AppHeader
               title={
-                <Box mb={['8px', '8px', 0]} width="100%" style={{ flex: 1 }} minWidth={['auto', , 'max-content']}>
+                <Box mb={['8px', '8px', 0]} width="100%" style={{ flex: 1 }} minWidth={['auto', 'auto', 'max-content']}>
                   <Flex alignItems="center">
                     <DoubleCurrencyLogo size={24} currency0={currencyQuote} currency1={currencyBase} />
                     <Heading as="h2" ml="8px">
@@ -903,10 +903,7 @@ function PositionHistory_({
 
       return result.positionSnapshots.filter((snapshot) => {
         const { transaction } = snapshot
-        if (transaction.mints.length > 0 || transaction.burns.length > 0 || transaction.collects.length > 0) {
-          return true
-        }
-        return false
+        return transaction.mints.length > 0 || transaction.burns.length > 0 || transaction.collects.length > 0
       })
     },
     {
@@ -1017,7 +1014,7 @@ function PositionHistoryRow({
   currency0,
   currency1,
 }: {
-  chainId: ChainId
+  chainId?: ChainId
   positionTx: PositionTX
   type: PositionHistoryType
   currency0: Currency
@@ -1059,7 +1056,7 @@ function PositionHistoryRow({
       <Box>
         <AutoRow>
           <ScanLink
-            useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+            useBscCoinFallback={chainId ? ChainLinkSupportChains.includes(chainId) : false}
             href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
           >
             <Flex flexDirection="column" alignItems="center">
@@ -1076,7 +1073,7 @@ function PositionHistoryRow({
                 <AtomBox minWidth="24px">
                   <CurrencyLogo currency={currency0} />
                 </AtomBox>
-                <Text display={['none', , 'block']}>{currency0.symbol}</Text>
+                <Text display={['none', 'none', 'block']}>{currency0.symbol}</Text>
               </AutoRow>
               <Text bold ellipsis title={positionTx.amount0}>
                 {isPlus ? '+' : '-'} {position0AmountString}
@@ -1089,7 +1086,7 @@ function PositionHistoryRow({
                 <AtomBox minWidth="24px">
                   <CurrencyLogo currency={currency1} />
                 </AtomBox>
-                <Text display={['none', , 'block']}>{currency1.symbol}</Text>
+                <Text display={['none', 'none', 'block']}>{currency1.symbol}</Text>
               </AutoRow>
               <Text bold ellipsis title={positionTx.amount1}>
                 {isPlus ? '+' : '-'} {position1AmountString}
@@ -1112,7 +1109,7 @@ function PositionHistoryRow({
     >
       <AutoRow justifyContent="center">
         <ScanLink
-          useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+          useBscCoinFallback={chainId ? ChainLinkSupportChains.includes(chainId) : false}
           href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
         >
           <Text ellipsis>{desktopDate}</Text>
@@ -1129,7 +1126,7 @@ function PositionHistoryRow({
               <AtomBox minWidth="24px">
                 <CurrencyLogo currency={currency0} />
               </AtomBox>
-              <Text display={['none', , 'block']}>{currency0.symbol}</Text>
+              <Text display={['none', 'none', 'block']}>{currency0.symbol}</Text>
             </AutoRow>
           </AutoRow>
         )}
@@ -1142,7 +1139,7 @@ function PositionHistoryRow({
               <AtomBox minWidth="24px">
                 <CurrencyLogo currency={currency1} />
               </AtomBox>
-              <Text display={['none', , 'block']}>{currency1.symbol}</Text>
+              <Text display={['none', 'none', 'block']}>{currency1.symbol}</Text>
             </AutoRow>
           </AutoRow>
         )}
@@ -1159,11 +1156,11 @@ export const getStaticPaths: GetStaticPaths = () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { tokenId } = params
+  const tokenId = params?.tokenId
 
   const isNumberReg = /^\d+$/
 
-  if (!(tokenId as string)?.match(isNumberReg)) {
+  if (tokenId && !(tokenId as string)?.match(isNumberReg)) {
     return {
       redirect: {
         statusCode: 303,

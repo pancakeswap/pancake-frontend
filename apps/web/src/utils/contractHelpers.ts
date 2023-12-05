@@ -2,6 +2,8 @@ import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
 import {
+  getAffiliateProgramAddress,
+  getAnniversaryAchievementAddress,
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
   getBCakeFarmBoosterV3Address,
@@ -11,6 +13,8 @@ import {
   getCrossFarmingReceiverAddress,
   getCrossFarmingSenderAddress,
   getFarmAuctionAddress,
+  getFixedStakingAddress,
+  getGaugesVotingAddress,
   getLotteryV2Address,
   getMasterChefV2Address,
   getMasterChefV3Address,
@@ -22,20 +26,21 @@ import {
   getPointCenterIfoAddress,
   getPotteryDrawAddress,
   getPredictionsV1Address,
+  getRevenueSharingCakePoolAddress,
+  getRevenueSharingPoolAddress,
+  getRevenueSharingPoolGatewayAddress,
+  getRevenueSharingVeCakeAddress,
   getStableSwapNativeHelperAddress,
   getTradingCompetitionAddressEaster,
   getTradingCompetitionAddressFanToken,
   getTradingCompetitionAddressMoD,
   getTradingCompetitionAddressMobox,
   getTradingRewardAddress,
+  getTradingRewardTopTradesAddress,
   getV3AirdropAddress,
   getV3MigratorAddress,
-  getAffiliateProgramAddress,
-  getTradingRewardTopTradesAddress,
   getVCakeAddress,
-  getRevenueSharingPoolAddress,
-  getAnniversaryAchievementAddress,
-  getFixedStakingAddress,
+  getVeCakeAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -48,25 +53,25 @@ import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { predictionsV1ABI } from 'config/abi/predictionsV1'
 import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
-import {
-  cakeFlexibleSideVaultV2ABI,
-  cakeVaultV2ABI,
-  getIfoCreditAddressContract as getIfoCreditAddressContract_,
-} from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/chains'
+import { getIfoCreditAddressContract as getIfoCreditAddressContract_ } from '@pancakeswap/ifos'
+import { cakeFlexibleSideVaultV2ABI, cakeVaultV2ABI } from '@pancakeswap/pools'
+import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { sidABI } from 'config/abi/SID'
 import { SIDResolverABI } from 'config/abi/SIDResolver'
 import { affiliateProgramABI } from 'config/abi/affiliateProgram'
+import { anniversaryAchievementABI } from 'config/abi/anniversaryAchievement'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
 import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
-import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
 import { farmAuctionABI } from 'config/abi/farmAuction'
+import { fixedStakingABI } from 'config/abi/fixedStaking'
+import { gaugesVotingABI } from 'config/abi/gaugesVoting'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
@@ -76,6 +81,9 @@ import { pancakeSquadABI } from 'config/abi/pancakeSquad'
 import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
+import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
+import { revenueSharingPoolGatewayABI } from 'config/abi/revenueSharingPoolGateway'
+import { revenueSharingPoolProxyABI } from 'config/abi/revenueSharingPoolProxy'
 import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
 import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
@@ -84,12 +92,10 @@ import { tradingRewardABI } from 'config/abi/tradingReward'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
-import { anniversaryAchievementABI } from 'config/abi/anniversaryAchievement'
-import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
+import { veCakeABI } from 'config/abi/veCake'
 import { getViemClients, viemClients } from 'utils/viem'
 import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
-import { fixedStakingABI } from 'config/abi/fixedStaking'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -445,6 +451,51 @@ export const getFixedStakingContract = (signer?: WalletClient, chainId?: number)
   return getContract({
     abi: fixedStakingABI,
     address: getFixedStakingAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getVeCakeContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: veCakeABI,
+    address: getVeCakeAddress(chainId) ?? getVeCakeAddress(ChainId.BSC),
+    signer,
+    chainId,
+  })
+}
+
+export const getGaugesVotingContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: gaugesVotingABI,
+    address: getGaugesVotingAddress(chainId) ?? getGaugesVotingAddress(ChainId.BSC),
+    signer,
+    chainId,
+  })
+}
+
+export const getRevenueSharingCakePoolContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: revenueSharingPoolProxyABI,
+    address: getRevenueSharingCakePoolAddress(chainId) ?? getRevenueSharingCakePoolAddress(ChainId.BSC),
+    signer,
+    chainId,
+  })
+}
+
+export const getRevenueSharingVeCakeContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: revenueSharingPoolProxyABI,
+    address: getRevenueSharingVeCakeAddress(chainId) ?? getRevenueSharingVeCakeAddress(ChainId.BSC),
+    signer,
+    chainId,
+  })
+}
+
+export const getRevenueSharingPoolGatewayContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: revenueSharingPoolGatewayABI,
+    address: getRevenueSharingPoolGatewayAddress(chainId) ?? getRevenueSharingPoolGatewayAddress(ChainId.BSC),
     signer,
     chainId,
   })

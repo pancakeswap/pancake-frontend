@@ -18,6 +18,7 @@ interface Props {
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
+  lpTokenDecimals?: number
 }
 
 export const YieldInfo = memo(function YieldInfo({
@@ -32,6 +33,7 @@ export const YieldInfo = memo(function YieldInfo({
   totalSupplyAmounts,
   totalStakedInUsd,
   precision,
+  lpTokenDecimals,
 }: Props) {
   const { t } = useTranslation()
 
@@ -54,6 +56,7 @@ export const YieldInfo = memo(function YieldInfo({
           totalStakedInUsd={totalStakedInUsd}
           userLpAmounts={userLpAmounts}
           precision={precision}
+          lpTokenDecimals={lpTokenDecimals}
         />
       </RowBetween>
       <RowBetween>

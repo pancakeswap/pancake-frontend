@@ -22,8 +22,8 @@ const NOT_APPLICABLE = { wrapType: WrapType.NOT_APPLICABLE }
  * @param typedValue the user input value
  */
 export default function useWrapCallback(
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
+  inputCurrency: Currency | undefined | null,
+  outputCurrency: Currency | undefined | null,
   typedValue: string | undefined,
 ): { wrapType: WrapType; execute?: undefined | (() => Promise<void>); inputError?: string } {
   const { t } = useTranslation()
@@ -97,7 +97,11 @@ export default function useWrapCallback(
   }, [wbnbContract, chainId, inputCurrency, outputCurrency, t, inputAmount, balance, addTransaction, callWithGasPrice])
 }
 
-export function useIsWrapping(currencyA: Currency | undefined, currencyB: Currency | undefined, value?: string) {
+export function useIsWrapping(
+  currencyA: Currency | undefined | null,
+  currencyB: Currency | undefined | null,
+  value?: string,
+) {
   const { wrapType } = useWrapCallback(currencyA, currencyB, value)
 
   return wrapType !== WrapType.NOT_APPLICABLE

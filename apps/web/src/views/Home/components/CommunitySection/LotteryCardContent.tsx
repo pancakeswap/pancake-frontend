@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Balance, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Balance } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -7,7 +9,7 @@ import { styled } from 'styled-components'
 import { fetchLottery, fetchCurrentLotteryId } from 'state/lottery/helpers'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { SLOW_INTERVAL } from 'config/constants'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 
 const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
@@ -24,14 +26,22 @@ const LotteryCardContent = () => {
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const cakePriceBusd = useCakePrice()
-  const { data: currentLotteryId } = useSWRImmutable(loadData ? ['currentLotteryId'] : null, fetchCurrentLotteryId, {
-    refreshInterval: SLOW_INTERVAL,
+  const { data: currentLotteryId } = useQuery(['currentLotteryId'], fetchCurrentLotteryId, {
+    enabled: Boolean(loadData),
+    refetchInterval: SLOW_INTERVAL,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   })
-  const { data: currentLottery } = useSWRImmutable(
-    currentLotteryId ? ['currentLottery'] : null,
+  const { data: currentLottery } = useQuery(
+    ['currentLottery'],
     async () => fetchLottery(currentLotteryId?.toString() ?? ''),
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(loadData),
+      refetchInterval: SLOW_INTERVAL,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
     },
   )
 

@@ -1,5 +1,5 @@
-import { OptionProps } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
+import { OptionProps } from '@pancakeswap/uikit'
 import {
   EventInformation,
   PancakeNotificationBuilders,
@@ -45,16 +45,18 @@ export const NotificationFilterTypes: OptionProps[] = [
     value: SubsctiptionType.Alerts,
   },
   {
+    label: 'Rewards',
+    value: SubsctiptionType.TradingReward,
+  },
+  {
     label: 'Archived',
     value: 'Archived',
   },
 ]
 
-export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_DEFAULT_PROJECT_ID ?? ''
 export const SECURE_TOKEN = process.env.NEXT_PUBLIC_SECURE_TOKEN ?? ''
 export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY ?? ''
 export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
-export const PUBLIC_VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_KEY ?? ''
 
 export const PancakeNotifications: {
   [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(args: T[]) => pushNotification
@@ -62,9 +64,9 @@ export const PancakeNotifications: {
   OnBoardNotification: (): pushNotification => {
     return {
       title: 'Welcome Aboard',
-      body: 'You have successfully subscribed to Pancake Notifications Wooo!',
+      body: 'You have successfully subscribed to notifications!',
       icon: `https://pancakeswap.finance/logo.png`,
-      type: 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
+      type: SubsctiptionType.Alerts,
     }
   },
   newLpNotification: (): pushNotification => {
@@ -73,39 +75,43 @@ export const PancakeNotifications: {
       body: `New LP position successfully added. you will be notified on important updates.`,
       icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pc-custom-web.vercel.app',
-      type: 'd0173b5f-5564-4e78-9e87-bf6016bb99b2',
+      type: SubsctiptionType.Liquidity,
     }
     // ... add more as we create use cases
   },
 }
+export const APP_DOMAIN = 'pancakeswap.finance'
+
+export const PUBLIC_VAPID_KEY =
+  'BI1vtjF3A-NX4nNyJhWx0Ky--zOTlWBS5cLNQgOzSMElN4I27BgzREPtIZR1poZKjCgjWpS969wGQC8TdlSz1Zk'
 
 export const Events: { [event in keyof typeof ResponseEvents]: EventInformation } = {
-  [ResponseEvents.SignatureRequest]: {
-    title: 'Request Sent',
-    message: 'Please sign the subscription request sent to your wallet',
+  [ResponseEvents.NotificationsEnabled]: {
+    title: 'Notifications Enabled',
+    message: () => 'You can now opt-in to pancakeswap web notifications',
   },
-  [ResponseEvents.SignatureRequestError]: {
-    title: 'Request Error',
-    message: 'User rejected the signature request',
+  [ResponseEvents.NotificationsEnabledError]: {
+    title: 'Error Enabling Notifications',
+    message: (error) => `Something went wrong when trying to enable notifications ${error}`,
   },
   [ResponseEvents.SubscriptionRequestError]: {
     title: 'Subscription Error',
   },
   [ResponseEvents.PreferencesUpdated]: {
     title: 'Success',
-    message: 'your notification preferences have been updated.',
+    message: () => 'Your notification preferences have been updated.',
   },
   [ResponseEvents.PreferencesError]: {
     title: 'Something went wrong',
-    message: 'Unable to update your preferences',
+    message: (error) => `Unable to update your preferences ${error}`,
   },
   [ResponseEvents.UnsubscribeError]: {
-    title: 'Error',
-    message: 'Unable to unsubscribe.',
+    title: 'Error Unsubscribing',
+    message: (error) => `Unable to unsubscribe ${error}`,
   },
   [ResponseEvents.Unsubscribed]: {
     title: 'Update',
-    message: 'You sucessfully unsubsrcibed from notifications. You can re-subscribe any time',
+    message: () => 'You sucessfully unsubsrcibed from notifications. You can re-subscribe any time',
   },
 }
 

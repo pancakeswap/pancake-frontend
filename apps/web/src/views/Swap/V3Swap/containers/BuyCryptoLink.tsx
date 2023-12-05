@@ -8,7 +8,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCanBuyCrypto } from 'hooks/useCanBuyCrypto'
 
 interface Props {
-  currency?: Currency
+  currency?: Currency | null
 }
 
 export const BuyCryptoLink = memo(function BuyCryptoInstruction({ currency }: Props) {

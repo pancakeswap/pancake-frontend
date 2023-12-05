@@ -31,6 +31,9 @@ export const ScopeIcon: React.FC<
     [SubsctiptionType.Promotional]: (
       <Image src="/images/notifications/promotional-scope.svg" alt="promo-scope" width={40} height={40} />
     ),
+    [SubsctiptionType.TradingReward]: (
+      <Image src="/images/notifications/promotional-scope.svg" alt="promo-scope" width={40} height={40} />
+    ),
   }
   const logo = providerToLogo[scope]
   return logo
@@ -88,7 +91,7 @@ const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
   const { isMobile } = useMatchBreakpoints()
   const mobileHeight = window?.innerHeight
   return (
-    <NotificationContainerStyled maxHeight={isMobile ? `${mobileHeight - 150}px` : '550px'}>
+    <NotificationContainerStyled $maxHeight={isMobile ? `${mobileHeight - 150}px` : '550px'}>
       {Object.entries(scopes)
         .sort(([, scopeA], [, scopeB]) => {
           if (scopeA.name === 'alerts' || scopeA.name === 'Liquidity') return -1

@@ -15,8 +15,6 @@ import {
   fetchUserBalances,
   fetchUserPendingRewards,
   fetchUserStakeBalances,
-  fetchPublicIfoData,
-  fetchUserIfoCredit,
   fetchPublicVaultData,
   fetchPublicFlexibleSideVaultData,
   fetchVaultUser,
@@ -30,6 +28,7 @@ import {
   getPoolAprByTokenPerBlock,
 } from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/chains'
+import { fetchPublicIfoData, fetchUserIfoCredit } from '@pancakeswap/ifos'
 
 import {
   PoolsState,
@@ -92,9 +91,9 @@ export const initialIfoState = Object.freeze({
 const initialState: PoolsState = {
   data: [],
   userDataLoaded: false,
-  cakeVault: initialPoolVaultState,
-  ifo: initialIfoState,
-  cakeFlexibleSideVault: initialPoolVaultState,
+  cakeVault: initialPoolVaultState as any,
+  ifo: initialIfoState as any,
+  cakeFlexibleSideVault: initialPoolVaultState as any,
 }
 
 export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
@@ -300,7 +299,7 @@ export const fetchPoolsUserDataAsync = createAsyncThunk<
     account: string
     chainId: ChainId
   }
->('pool/fetchPoolsUserData', async ({ account, chainId }, { rejectWithValue }) => {
+>('pool/fetchPoolsUserData', async ({ account, chainId }: any, { rejectWithValue }: any) => {
   try {
     const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
       fetchPoolsAllowance({ account, chainId, provider: getViemClients }),
@@ -357,7 +356,7 @@ export const updateUserPendingReward = createAsyncThunk<
 
 export const fetchCakeVaultPublicData = createAsyncThunk<SerializedLockedCakeVault, ChainId>(
   'cakeVault/fetchPublicData',
-  async (chainId) => {
+  async (chainId: any): Promise<any> => {
     const publicVaultInfo = await fetchPublicVaultData({ chainId, provider: getViemClients })
     return publicVaultInfo
   },
@@ -365,7 +364,7 @@ export const fetchCakeVaultPublicData = createAsyncThunk<SerializedLockedCakeVau
 
 export const fetchCakeFlexibleSideVaultPublicData = createAsyncThunk<SerializedCakeVault, ChainId>(
   'cakeFlexibleSideVault/fetchPublicData',
-  async (chainId) => {
+  async (chainId: any): Promise<any> => {
     const publicVaultInfo = await fetchPublicFlexibleSideVaultData({ chainId, provider: getViemClients })
     return publicVaultInfo
   },
@@ -373,7 +372,7 @@ export const fetchCakeFlexibleSideVaultPublicData = createAsyncThunk<SerializedC
 
 export const fetchCakeVaultFees = createAsyncThunk<SerializedVaultFees, ChainId>(
   'cakeVault/fetchFees',
-  async (chainId) => {
+  async (chainId: any): Promise<any> => {
     const vaultFees = await fetchVaultFees({
       chainId,
       provider: getViemClients,
@@ -385,7 +384,7 @@ export const fetchCakeVaultFees = createAsyncThunk<SerializedVaultFees, ChainId>
 
 export const fetchCakeFlexibleSideVaultFees = createAsyncThunk<SerializedVaultFees, ChainId>(
   'cakeFlexibleSideVault/fetchFees',
-  async (chainId) => {
+  async (chainId: any): Promise<any> => {
     const vaultFees = await fetchVaultFees({
       chainId,
       provider: getViemClients,
@@ -438,9 +437,9 @@ export const PoolsSlice = createSlice({
       const poolsConfig = getPoolsConfig(chainId) || []
       state.data = [...poolsConfig]
       state.userDataLoaded = false
-      state.cakeVault = initialPoolVaultState
-      state.ifo = initialIfoState
-      state.cakeFlexibleSideVault = initialPoolVaultState
+      state.cakeVault = initialPoolVaultState as any
+      state.ifo = initialIfoState as any
+      state.cakeFlexibleSideVault = initialPoolVaultState as any
     },
     setPoolPublicData: (state, action) => {
       const { sousId } = action.payload
@@ -480,8 +479,8 @@ export const PoolsSlice = createSlice({
         return { ...pool }
       })
       state.userDataLoaded = false
-      state.cakeVault = { ...state.cakeVault, userData: initialPoolVaultState.userData }
-      state.cakeFlexibleSideVault = { ...state.cakeFlexibleSideVault, userData: initialPoolVaultState.userData }
+      state.cakeVault = { ...state.cakeVault, userData: initialPoolVaultState.userData as any }
+      state.cakeFlexibleSideVault = { ...state.cakeFlexibleSideVault, userData: initialPoolVaultState.userData as any }
     })
     builder.addCase(
       fetchPoolsUserDataAsync.fulfilled,
@@ -552,7 +551,10 @@ export const PoolsSlice = createSlice({
         const index = state.data.findIndex((p) => p.sousId === sousId)
 
         if (index >= 0) {
-          state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+          state.data[index] = {
+            ...state.data[index],
+            userData: { ...state.data[index].userData, [field]: value } as any,
+          }
         }
       },
     )

@@ -63,6 +63,7 @@ interface Props {
   isInCakeRewardDateRange: boolean
   strategyInfoUrl?: string
   learnMoreAboutUrl?: string
+  lpTokenDecimals?: number
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -100,6 +101,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   totalStakedInUsd,
   strategyInfoUrl,
   learnMoreAboutUrl,
+  lpTokenDecimals,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -121,6 +123,8 @@ export const LiquidityManagement = memo(function LiquidityManagement({
     token1Balance: relevantTokenBalances[1],
   }
 
+  const isSingleDepositToken0 = isSingleDepositToken && allowDepositToken0
+
   return (
     <>
       {hasStaked ? (
@@ -136,6 +140,8 @@ export const LiquidityManagement = memo(function LiquidityManagement({
               onRemove={showRemoveLiquidityModal}
               token0PriceUSD={token0PriceUSD}
               token1PriceUSD={token1PriceUSD}
+              isSingleDepositToken={isSingleDepositToken}
+              isSingleDepositToken0={isSingleDepositToken0}
             />
           </InnerCard>
           <RewardAssets
@@ -188,6 +194,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         totalStakedInUsd={totalStakedInUsd}
         strategyInfoUrl={strategyInfoUrl}
         learnMoreAboutUrl={learnMoreAboutUrl}
+        lpTokenDecimals={lpTokenDecimals}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

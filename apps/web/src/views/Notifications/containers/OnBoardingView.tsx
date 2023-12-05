@@ -9,6 +9,7 @@ import { useAccount } from 'wagmi'
 import { Events } from '../constants'
 import useSendPushNotification from '../hooks/sendPushNotification'
 import { BuilderNames } from '../types'
+import { parseErrorMessage } from '../utils/errorBuilder'
 import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
 
 interface IOnboardingButtonProps {
@@ -65,9 +66,10 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
       setTimeout(async () => {
         await sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`)
         await requestNotificationPermission()
-      }, 1000)
+      }, 1500)
     } catch (error) {
-      toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
+      const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
+      toast.toastError(Events.SubscriptionRequestError.title, errMessage)
     }
   }, [account, toast, sendPushNotification, subscribe, subscribeToPushNotifications, requestNotificationPermission])
 

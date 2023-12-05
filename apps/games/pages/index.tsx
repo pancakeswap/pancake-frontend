@@ -1,5 +1,10 @@
-const HomePage = () => {
-  return <>123</>
+import { GameHomePage } from 'components/Game/index'
+import { GamePageLayout } from 'components/Game/GamePageLayout'
+
+const GamePage = () => {
+  return <GameHomePage />
 }
 
-export default HomePage
+GamePage.Layout = GamePageLayout
+
+export default GamePage

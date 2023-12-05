@@ -173,6 +173,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
   useEffect(() => {
     if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
     if (!hasUnread) dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: false }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -186,7 +187,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
           <Flex justifyContent="space-between" width="100%">
             <NotificationImage image={image} title={title} message={description} />
             <Flex flexDirection="column" width="100%">
-              <Text fontWeight={600} marginBottom="4px">
+              <Text fontWeight={600} marginBottom="2px">
                 {title.includes('Update POLYGON_ZKEVM') ? 'Farms APR Update ZKEVM' : title}
               </Text>
               <FlexGap alignItems="center" gap="6px" width="100%">

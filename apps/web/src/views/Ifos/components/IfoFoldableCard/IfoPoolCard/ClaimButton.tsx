@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { PoolIds } from 'config/constants/types'
+import { PoolIds } from '@pancakeswap/ifos'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { WalletIfoData } from 'views/Ifos/types'
 
@@ -24,10 +24,19 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
   const handleClaim = async () => {
     const receipt = await fetchWithCatchTxError(() => {
       setPendingTx(true)
-      return ifoVersion === 1 && walletIfoData.version === 1
-        ? walletIfoData.contract.write.harvest({ account, chain })
-        : walletIfoData.version === 3 &&
-            walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
+      if (!walletIfoData?.contract || !account) {
+        throw new Error('Invalid wallet ifo data contract or account')
+      }
+      if (ifoVersion === 1 && walletIfoData.version === 1) {
+        return walletIfoData.contract.write.harvest({ account, chain })
+      }
+      if (walletIfoData.version === 3) {
+        return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
+      }
+      if (walletIfoData.version === 7) {
+        return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
+      }
+      throw new Error('Invalid wallet ifo data version')
     })
     if (receipt?.status) {
       walletIfoData.setIsClaimed(poolId)
@@ -44,10 +53,10 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
   return (
     <Button
       onClick={handleClaim}
-      disabled={userPoolCharacteristics.isPendingTx}
+      disabled={userPoolCharacteristics?.isPendingTx}
       width="100%"
-      isLoading={userPoolCharacteristics.isPendingTx}
-      endIcon={userPoolCharacteristics.isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+      isLoading={userPoolCharacteristics?.isPendingTx}
+      endIcon={userPoolCharacteristics?.isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
     >
       {t('Claim')}
     </Button>

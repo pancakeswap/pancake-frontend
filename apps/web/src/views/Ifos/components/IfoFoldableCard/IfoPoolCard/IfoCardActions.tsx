@@ -1,12 +1,17 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Button, NextLinkFromReactRouter, IfoSkeletonCardActions } from '@pancakeswap/uikit'
+import { IfoSkeletonCardActions } from '@pancakeswap/uikit'
+
 import { useAccount } from 'wagmi'
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
+import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+
 import ContributeButton from './ContributeButton'
 import ClaimButton from './ClaimButton'
 import { EnableStatus } from '../types'
+import { ActivateProfileButton } from './ActivateProfileButton'
+import { SwitchNetworkTips } from './SwitchNetworkTips'
 
 interface Props {
   poolId: PoolIds
@@ -29,8 +34,8 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   isEligible,
   enableStatus,
 }) => {
-  const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const userPoolCharacteristics = walletIfoData[poolId]
 
   if (isLoading) {
@@ -41,19 +46,19 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
     return <ConnectWalletButton width="100%" />
   }
 
-  if (!hasProfile) {
-    return (
-      <Button as={NextLinkFromReactRouter} to={`/profile/${account.toLowerCase()}`} width="100%">
-        {t('Activate your Profile')}
-      </Button>
-    )
+  if (!hasProfile && !isBasicSale(publicIfoData[poolId]?.saleType)) {
+    return <ActivateProfileButton saleFinished={publicIfoData.status === 'finished'} />
+  }
+
+  if (ifo.version >= 7 && ifo.chainId !== chainId) {
+    return <SwitchNetworkTips ifoChainId={ifo.chainId} />
   }
 
   const needClaim =
     publicIfoData.status === 'finished' &&
-    !userPoolCharacteristics.hasClaimed &&
-    (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
-      userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0))
+    !userPoolCharacteristics?.hasClaimed &&
+    (userPoolCharacteristics?.offeringAmountInToken.isGreaterThan(0) ||
+      userPoolCharacteristics?.refundingAmountInLP.isGreaterThan(0))
 
   if (needClaim) {
     return <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />

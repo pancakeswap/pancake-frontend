@@ -1,23 +1,35 @@
-import useSWR from 'swr'
 import { fetchCurrentLotteryId, fetchLottery } from 'state/lottery/helpers'
-import { FetchStatus } from 'config/constants/types'
-import { immutableMiddleware } from 'hooks/useSWRContract'
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
+import { useQuery } from '@tanstack/react-query'
 
 const useIsRenderLotteryBanner = () => {
-  const { data: currentLotteryId, status: currentLotteryIdStatus } = useSWR(
+  const { data: currentLotteryId, status: currentLotteryIdStatus } = useQuery(
     ['currentLotteryId'],
     fetchCurrentLotteryId,
-    { refreshInterval: SLOW_INTERVAL, use: [immutableMiddleware] },
+    {
+      refetchInterval: SLOW_INTERVAL,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
   )
 
-  const { status: currentLotteryStatus } = useSWR(
-    currentLotteryId ? ['currentLottery'] : null,
-    async () => fetchLottery(currentLotteryId.toString()),
-    { refreshInterval: FAST_INTERVAL, use: [immutableMiddleware] },
+  const { status: currentLotteryStatus } = useQuery(
+    ['currentLottery'],
+    async () => {
+      if (!currentLotteryId) return undefined
+      return fetchLottery(currentLotteryId.toString())
+    },
+    {
+      enabled: Boolean(currentLotteryId),
+      refetchInterval: FAST_INTERVAL,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
   )
 
-  return currentLotteryIdStatus === FetchStatus.Fetched && currentLotteryStatus === FetchStatus.Fetched
+  return currentLotteryIdStatus === 'success' && currentLotteryStatus === 'success'
 }
 
 export default useIsRenderLotteryBanner

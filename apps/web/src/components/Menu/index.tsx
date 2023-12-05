@@ -1,23 +1,23 @@
 import { languageList, useTranslation } from '@pancakeswap/localization'
-import { footerLinks, Menu as UikitMenu, NextLinkFromReactRouter, useModal } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter, Menu as UikitMenu, footerLinks, useModal } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
+import { EXPERIMENTAL_FEATURES } from 'config/experminetalFeatures'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import useTheme from 'hooks/useTheme'
+import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { EXPERIMENTAL_FEATURES } from 'config/experminetalFeatures'
-import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Notifications from 'views/Notifications'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
-import { useMenuItems } from './hooks/useMenuItems'
 import UserMenu from './UserMenu'
+import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 
 const LinkComponent = (linkProps) => {
@@ -25,6 +25,7 @@ const LinkComponent = (linkProps) => {
 }
 
 const Menu = (props) => {
+  const [allowNotifications] = useAllowNotifications()
   const { chainId } = useActiveChainId()
   const { isDark, setTheme } = useTheme()
   const cakePrice = useCakePrice()

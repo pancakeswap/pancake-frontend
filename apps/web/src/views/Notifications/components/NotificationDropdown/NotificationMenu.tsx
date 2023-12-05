@@ -1,13 +1,16 @@
 import {
+  NotificationBell as BellIcon,
   Box,
   Flex,
   ModalV2,
   ModalWrapper,
   UserMenuProps,
-  NotificationBell as BellIcon,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { useMessages } from '@web3inbox/widget-react'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
+import { useAppDispatch } from 'state'
+import { setHasUnread } from 'state/notifications/actions'
 import { useHasUnreadNotifications } from 'state/notifications/hooks'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
 import { PAGE_VIEW } from 'views/Notifications/types'
@@ -34,17 +37,28 @@ const NotificationMenu: React.FC<
     handleRegistration: () => Promise<void>
     viewIndex: PAGE_VIEW
     subscriptionId: string | undefined
+    account: string | undefined
   }
-> = ({ children, isMenuOpen, setIsMenuOpen, isRegistered, handleRegistration, viewIndex, subscriptionId }) => {
+> = ({ children, isMenuOpen, setIsMenuOpen, isRegistered, handleRegistration, viewIndex, subscriptionId, account }) => {
   const hasUnread = useHasUnreadNotifications(subscriptionId)
+  const dispatch = useAppDispatch()
+  const { messages: notifications } = useMessages(account)
 
   const ref = useRef<HTMLDivElement>(null)
   const { isMobile } = useMatchBreakpoints()
 
+  const markAllNotificationsAsRead = useCallback(() => {
+    if (!subscriptionId) return
+    for (const unreadNotification of notifications) {
+      dispatch(setHasUnread({ subscriptionId, notificationId: unreadNotification.id, hasUnread: true }))
+    }
+  }, [dispatch, notifications, subscriptionId])
+
   const toggleMenu = useCallback(() => {
     if (isRegistered) handleRegistration()
+    if (!isMenuOpen) markAllNotificationsAsRead()
     setIsMenuOpen(!isMenuOpen)
-  }, [setIsMenuOpen, isMenuOpen, isRegistered, handleRegistration])
+  }, [setIsMenuOpen, isMenuOpen, isRegistered, handleRegistration, markAllNotificationsAsRead])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
@@ -72,9 +86,9 @@ const NotificationMenu: React.FC<
     <Flex alignItems="center" justifyContent="center" height="100%" ref={ref} tabIndex={-1}>
       <NotificationBell unread={hasUnread} toggleMenu={toggleMenu} />
       <Menu
-        isOpen={isMenuOpen}
+        $isOpen={isMenuOpen}
         style={{ top: '100%', position: 'fixed' }}
-        overrideHeight={viewIndex === PAGE_VIEW.OnboardView}
+        $overrideHeight={viewIndex === PAGE_VIEW.OnboardView}
       >
         <Box>{children?.({ isOpen: isMenuOpen })}</Box>
       </Menu>

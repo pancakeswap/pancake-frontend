@@ -1,6 +1,5 @@
 import { styled } from "styled-components";
-import Link from "next/link";
-import { ReactNode } from "react";
+import { JSXElementConstructor, ReactNode, createElement } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import { LogoIcon } from "../Svg";
 import { Heading } from "../Heading";
@@ -15,8 +14,25 @@ const StyledNotFound = styled.div`
   justify-content: center;
 `;
 
-const NotFound = ({ statusCode = 404, children }: { statusCode?: number; children: ReactNode }) => {
+const NotFound = ({
+  statusCode = 404,
+  children,
+  LinkComp,
+}: {
+  LinkComp: JSXElementConstructor<any>;
+  statusCode?: number;
+  children: ReactNode;
+}) => {
   const { t } = useTranslation();
+
+  const linkElement = createElement(
+    LinkComp,
+    {
+      href: "/",
+      passHref: true,
+    },
+    <Button scale="sm">{t("Back Home")}</Button>
+  );
 
   return (
     <>
@@ -25,9 +41,7 @@ const NotFound = ({ statusCode = 404, children }: { statusCode?: number; childre
         <LogoIcon width="64px" mb="8px" />
         <Heading scale="xxl">{statusCode}</Heading>
         <Text mb="16px">{t("Oops, page not found.")}</Text>
-        <Link href="/" passHref>
-          <Button scale="sm">{t("Back Home")}</Button>
-        </Link>
+        {linkElement}
       </StyledNotFound>
     </>
   );

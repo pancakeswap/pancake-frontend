@@ -7,13 +7,14 @@ import {
   Card,
   Flex,
   Heading,
-  NextLinkFromReactRouter,
   Spinner,
   Text,
   useMatchBreakpoints,
   Button,
   ScanLink,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import { CHAIN_QUERY_NAME } from 'config/chains'

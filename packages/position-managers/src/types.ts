@@ -13,6 +13,9 @@ export enum OnChainActionType {
 export enum Strategy {
   TYPICAL_WIDE,
   YIELD_IQ,
+  ACTIVE,
+  PASSIVE,
+  PEGGED,
 }
 
 export interface OnChainActionResponse {
@@ -98,6 +101,7 @@ export interface DuoTokenVault {
   // The unique id of the vault
   // It can be used to sort the managed positions on fe
   id: number
+  idByManager: number
   name: string
   adapterAddress: Address
   currencyA: Currency

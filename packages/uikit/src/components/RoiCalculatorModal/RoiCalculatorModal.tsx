@@ -16,10 +16,10 @@ import { Text } from "../Text";
 import { HelpIcon } from "../Svg";
 import { Button } from "../Button";
 import { Checkbox } from "../Checkbox";
-import { Modal } from "../../widgets/Modal";
 import { BalanceInput } from "../BalanceInput";
 import { useTooltip } from "../../hooks/useTooltip";
 import { ButtonMenu, ButtonMenuItem } from "../ButtonMenu";
+import Modal from "../../widgets/Modal/Modal";
 
 const StyledModal = styled(Modal)`
   & > :nth-child(2) {
