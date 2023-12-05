@@ -13,6 +13,7 @@ import {
   Skeleton,
   Tag,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
@@ -131,15 +132,16 @@ type ListItemProps = {
 } & ListDisplayProps
 
 export function GaugeIdentifierDetails({ data }: ListItemProps) {
+  const { isMobile } = useMatchBreakpoints()
   return (
     <Flex justifyContent="space-between" flex="1">
-      <FlexGap gap="0.25em" flexWrap="wrap">
-        <GaugeTokenImage gauge={data} size={24} />
+      <FlexGap gap="0.25em" flexWrap="nowrap">
+        <GaugeTokenImage gauge={data} size={24} margin={isMobile ? '-4px' : undefined} />
         <Text fontWeight={600} fontSize={16}>
           {data.pairName}
         </Text>
       </FlexGap>
-      <FlexGap gap="0.25em" justifyContent="flex-end" flexWrap="wrap">
+      <FlexGap gap="0.25em" justifyContent="flex-end" flexWrap="wrap" style={{ flex: 1 }}>
         <NetworkBadge chainId={Number(data.chainId)} scale="sm" />
         {data.type === GaugeType.V3 ? (
           <Tag outline variant="secondary" scale="sm">
