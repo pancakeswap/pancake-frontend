@@ -52,7 +52,7 @@ export const GaugesTable: React.FC<
 
   return (
     <Table {...props}>
-      <TableHeader onSort={handleSort} selectable={selectable} />
+      <TableHeader onSort={handleSort} selectable={selectable} total={sortedData.length} />
       {isLoading ? (
         <AutoColumn gap="16px" py="16px">
           <Skeleton height={64} />
