@@ -14,7 +14,7 @@ import useTheme from 'hooks/useTheme'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { useAllowNotifications } from 'state/notifications/hooks'
+// import { useAllowNotifications } from 'state/notifications/hooks'
 import Notifications from 'views/Notifications'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
@@ -27,7 +27,7 @@ const LinkComponent = (linkProps) => {
 }
 
 const Menu = (props) => {
-  const [allowNotifications] = useAllowNotifications()
+  // const [allowNotifications] = useAllowNotifications()
   const { chainId } = useActiveChainId()
   const { isDark, setTheme } = useTheme()
   const cakePrice = useCakePrice()
