@@ -112,6 +112,15 @@ const NotificationView = ({
         return extractedType === subscriptionType
       })
     }
+    const typeFilterLP = (
+      subscriptionType: SubsctiptionType,
+      unFilteredNotifications: NotifyClientTypes.NotifyMessageRecord[],
+    ) => {
+      return unFilteredNotifications.filter((notification: NotifyClientTypes.NotifyMessageRecord) => {
+        const extractedType = [notification.message.type, SubsctiptionType.Liquidity]
+        return extractedType.includes(subscriptionType)
+      })
+    }
     const sortNotifications = (unFilteredNotifications: NotifyClientTypes.NotifyMessageRecord[]) => {
       switch (notificationType) {
         case SubsctiptionType.Lottery:
@@ -127,7 +136,9 @@ const NotificationView = ({
         case SubsctiptionType.Promotional:
           return typeFilter(SubsctiptionType.Promotional, unFilteredNotifications)
         case SubsctiptionType.Alerts:
-          return typeFilter(SubsctiptionType.Alerts, unFilteredNotifications)
+          return typeFilterLP(SubsctiptionType.Alerts, unFilteredNotifications)
+        case SubsctiptionType.TradingReward:
+          return typeFilter(SubsctiptionType.TradingReward, unFilteredNotifications)
         default:
           return unFilteredNotifications
       }
