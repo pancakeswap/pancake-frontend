@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRenewIcon, Box, Button, Flex } from '@pancakeswap/uikit'
+import { Box, Button, Flex } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import { useCallback, useMemo } from 'react'
@@ -8,9 +8,11 @@ import {
   useUserBoostedPoolsTokenId,
   useUserMultiplierBeforeBoosted,
   useUserPositionInfo,
+  useVeCakeUserMultiplierBeforeBoosted,
 } from '../../hooks/bCakeV3/useBCakeV3Info'
-import { useBoosterFarmV3Handlers } from '../../hooks/bCakeV3/useBoostBcakeV3'
 import { BoostStatus, useBoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
+import { useUpdateLiquidity } from '../../hooks/bCakeV3/useUpdateLiquidity'
+
 import { StatusView } from './StatusView'
 
 export const BCakeV3CardView: React.FC<{
@@ -31,14 +33,20 @@ export const BCakeV3CardView: React.FC<{
     updateUserPositionInfo()
     updateBoostedPoolsTokenId()
   }, [updateStatus, updateUserPositionInfo, updateBoostedPoolsTokenId])
-  const { isReachedMaxBoostLimit, locked, isLockEnd } = useBCakeBoostLimitAndLockInfo()
+  const { locked, isLockEnd } = useBCakeBoostLimitAndLockInfo()
 
-  const { activate, deactivate, isConfirming } = useBoosterFarmV3Handlers(tokenId, onDone)
+  const { updateLiquidity, isConfirming } = useUpdateLiquidity(tokenId, onDone)
   const { userMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted(tokenId)
+  const { veCakeUserMultiplierBeforeBoosted } = useVeCakeUserMultiplierBeforeBoosted(tokenId)
   const { theme } = useTheme()
   const lockValidated = useMemo(() => {
     return locked && !isLockEnd
   }, [locked, isLockEnd])
+  const shouldUpdate = useMemo(() => {
+    if (boostMultiplier && veCakeUserMultiplierBeforeBoosted && boostMultiplier < veCakeUserMultiplierBeforeBoosted)
+      return true
+    return false
+  }, [boostMultiplier, veCakeUserMultiplierBeforeBoosted])
 
   return (
     <Flex width="100%" alignItems="center" justifyContent="space-between">
@@ -55,34 +63,20 @@ export const BCakeV3CardView: React.FC<{
             <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Lock')}</Button>
           </NextLink>
         )}
-        {boostStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && lockValidated && (
+        {shouldUpdate && lockValidated && (
           <Button
             onClick={() => {
-              activate()
-            }}
-            style={{ padding: isConfirming && '0 10px' }}
-            isLoading={isConfirming}
-            endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
-            disabled={isReachedMaxBoostLimit}
-          >
-            {t('Boost')}
-          </Button>
-        )}
-        {boostStatus === BoostStatus.Boosted && lockValidated && (
-          <Button
-            onClick={() => {
-              deactivate()
+              updateLiquidity()
             }}
             style={{
               backgroundColor: 'transparent',
               border: `2px solid ${theme.colors.primary}`,
               color: theme.colors.primary,
-              padding: isConfirming && '0 10px',
+              padding: isConfirming ? '0 10px' : undefined,
             }}
             isLoading={isConfirming}
-            endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
           >
-            {t('Unset')}
+            {t('Update')}
           </Button>
         )}
       </Box>

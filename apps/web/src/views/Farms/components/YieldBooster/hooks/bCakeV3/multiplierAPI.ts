@@ -33,7 +33,7 @@ export async function getPublicMultiplier({ farmBoosterContract, chainId }): Pro
   const MAX_BOOST_PRECISION = new BN(CA_PRECISION.toString())
     .div(new BN(cA.toString()))
     .times(PRECISION_FACTOR)
-    .minus(new BN(BOOST_PRECISION.toString()))
+    .minus(new BN(BOOST_PRECISION?.toString() ?? '0'))
 
   const boostPercent = PRECISION_FACTOR.plus(MAX_BOOST_PRECISION).div(PRECISION_FACTOR)
 

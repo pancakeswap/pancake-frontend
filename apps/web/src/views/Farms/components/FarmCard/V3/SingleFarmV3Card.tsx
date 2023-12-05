@@ -14,19 +14,19 @@ import {
   Text,
   useModalV2,
 } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { Pool } from '@pancakeswap/v3-sdk'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { BigNumber } from 'bignumber.js'
 import { LightCard } from 'components/Card'
 import { RangeTag } from 'components/RangeTag'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCakePrice } from 'hooks/useCakePrice'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useCallback, useMemo } from 'react'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { styled, useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
@@ -208,7 +208,7 @@ const SingleFarmV3Card: React.FunctionComponent<
             quoteToken={quoteToken}
             positionType={positionType}
             liquidityUrl={liquidityUrl}
-            isPending={attemptingTxn || harvesting}
+            isPending={attemptingTxn || (harvesting ?? false)}
             handleStake={outOfRangeUnstaked ? handleStakeInactivePosition : handleStake}
             handleUnStake={unstakedModal.onOpen}
           />
@@ -216,7 +216,7 @@ const SingleFarmV3Card: React.FunctionComponent<
             <Modal
               title={outOfRangeUnstaked ? t('Staking') : t('Unstaking')}
               width={['100%', '100%', '420px']}
-              maxWidth={['100%', , '420px']}
+              maxWidth={['100%', null, '420px']}
             >
               <AutoColumn gap="16px">
                 <AtomBox
@@ -327,7 +327,7 @@ const SingleFarmV3Card: React.FunctionComponent<
               <FarmV3HarvestAction
                 earnings={totalEarnings}
                 earningsBusd={earningsBusd}
-                pendingTx={attemptingTxn || harvesting}
+                pendingTx={attemptingTxn || (harvesting ?? false)}
                 disabled={!pendingCakeByTokenIds?.[position.tokenId.toString()] ?? true}
                 userDataReady
                 handleHarvest={handleHarvest}

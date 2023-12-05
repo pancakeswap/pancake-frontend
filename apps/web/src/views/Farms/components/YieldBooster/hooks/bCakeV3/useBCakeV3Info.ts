@@ -1,14 +1,14 @@
-import BN from 'bignumber.js'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useMemo } from 'react'
 import { bCakeSupportedChainId } from '@pancakeswap/farms'
-import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
-import _toNumber from 'lodash/toNumber'
 import { useQuery } from '@tanstack/react-query'
-import { useContractRead } from 'wagmi'
+import BN from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useBCakeFarmBoosterV3Contract, useBCakeFarmBoosterVeCakeContract, useMasterchefV3 } from 'hooks/useContract'
+import _toNumber from 'lodash/toNumber'
+import { useMemo } from 'react'
+import { useContractRead } from 'wagmi'
 import { useUserLockedCakeStatus } from '../../../../hooks/useUserLockedCakeStatus'
+import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
 
 export const USER_ESTIMATED_MULTIPLIER = 2
 
@@ -51,7 +51,7 @@ export const useUserPositionInfo = (tokenId: string) => {
   const masterChefV3 = useMasterchefV3()
   const { data, refetch } = useQuery(
     [`v3/masterChef/userPositionInfos/${chainId}/${tokenId}`],
-    () => masterChefV3.read.userPositionInfos([BigInt(tokenId)]),
+    () => masterChefV3?.read.userPositionInfos([BigInt(tokenId)]),
     {
       enabled: Boolean(chainId && tokenId),
       ...QUERY_SETTINGS_WITHOUT_REFETCH,
@@ -67,7 +67,7 @@ export const useUserPositionInfo = (tokenId: string) => {
       reward: data?.[5],
       user: data?.[6],
       pid: data?.[7],
-      boostMultiplier: _toNumber(new BN(data?.[8].toString()).div(PRECISION_FACTOR).toString()),
+      boostMultiplier: _toNumber(new BN(data?.[8]?.toString() ?? 0).div(PRECISION_FACTOR).toString()),
     },
     updateUserPositionInfo: refetch,
   }
@@ -78,7 +78,7 @@ export const useUserBoostedPoolsTokenId = () => {
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data, refetch } = useQuery(
     [`v3/bcake/userBoostedPools/${chainId}/${account}`],
-    () => farmBoosterV3Contract.read.activedPositions([account]),
+    () => farmBoosterV3Contract.read.activedPositions([account ?? '0x']),
     {
       enabled: Boolean(chainId && account),
       ...QUERY_SETTINGS_WITHOUT_REFETCH,
@@ -107,6 +107,23 @@ export const useUserMultiplierBeforeBoosted = (tokenId?: string) => {
   }
 }
 
+export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
+  const { chainId } = useActiveChainId()
+  const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
+  const { data, refetch } = useQuery(
+    [`v3/bcake/useUserMultiplierBeforeBoosted/${chainId}/${tokenId}`],
+    () => getUserMultiplier({ address: farmBoosterV3Contract.address, tokenId, chainId }),
+    {
+      enabled: Boolean(chainId && tokenId),
+      ...QUERY_SETTINGS_WITHOUT_REFETCH,
+    },
+  )
+  return {
+    veCakeUserMultiplierBeforeBoosted: data ?? 1,
+    updatedUserMultiplierBeforeBoosted: refetch,
+  }
+}
+
 export const useUserMaxBoostedPositionLimit = () => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
@@ -123,7 +140,10 @@ export const useUserMaxBoostedPositionLimit = () => {
 
 export const useBCakeBoostLimitAndLockInfo = () => {
   const { locked, lockedEnd } = useUserLockedCakeStatus()
-  const isLockEnd = useMemo(() => lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000), [lockedEnd])
+  const isLockEnd = useMemo(
+    () => lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd ?? '') * 1000),
+    [lockedEnd],
+  )
   const maxBoostLimit = useUserMaxBoostedPositionLimit()
   const { pids } = useUserBoostedPoolsTokenId()
   const remainingCounts = useMemo(() => maxBoostLimit - (pids?.length ?? 0), [pids, maxBoostLimit])
