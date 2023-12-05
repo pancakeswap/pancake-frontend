@@ -189,6 +189,16 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                   <Input placeholder={t('Search gauges')} onChange={(e) => setSearchText(e.target.value)} />
                 </AutoColumn>
               </Grid>
+              {isMobile && selectRows?.length ? (
+                <Flex>
+                  <Text fontSize={14} bold color="secondary" textTransform="uppercase">
+                    {selectRows?.length} {t('selected')}
+                  </Text>
+                  <Text ml="2px" fontSize={14} bold color="textSubtle" textTransform="uppercase">
+                    / {gauges?.length} {t('total')}
+                  </Text>
+                </Flex>
+              ) : null}
               <Box style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>{gaugesTable}</Box>
             </FlexGap>
             <BottomAction pb="32px" style={{ marginTop: 'auto' }} onClick={onDismiss}>
