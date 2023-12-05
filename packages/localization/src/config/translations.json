@@ -3064,6 +3064,5 @@
   "Allow notifications": "Allow notifications",
   "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible",
   "Show only the notifications that belong to your wallet or LP positions": "Show only the notifications that belong to your wallet or LP positions",
-  "Mark as all read": "Mark as all read",
   "Important only": "Important only"
 }
