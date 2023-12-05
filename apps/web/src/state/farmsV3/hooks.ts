@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import {
   FarmV3DataWithPrice,
   FarmV3DataWithPriceAndUserInfo,
@@ -12,14 +13,14 @@ import {
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { TvlMap, fetchCommonTokenUSDValue } from '@pancakeswap/farms/src/fetchFarmsV3'
-import { ChainId } from '@pancakeswap/chains'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { useCakePrice } from 'hooks/useCakePrice'
+import { useQuery } from '@tanstack/react-query'
 import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
 import { FAST_INTERVAL } from 'config/constants'
 import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useBCakeFarmBoosterV3Contract, useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
@@ -28,7 +29,6 @@ import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { Hex, decodeFunctionResult, encodeFunctionData } from 'viem'
 import { useAccount } from 'wagmi'
-import { useQuery } from '@tanstack/react-query'
 
 export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
   fetch(`/api/v3/${chainId}/farms`)
@@ -357,11 +357,11 @@ export function useFarmsV3WithPositionsAndBooster(options: UseFarmsOptions = {})
 
 const useV3BoostedFarm = (pids?: number[]) => {
   const { chainId } = useActiveChainId()
-  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const farmBoosterVeCakeContract = useBCakeFarmBoosterVeCakeContract()
 
   const { data } = useQuery(
     ['v3/boostedFarm', chainId, pids?.join('-')],
-    () => getV3FarmBoosterWhiteList({ farmBoosterContract: farmBoosterV3Contract, chainId, pids }),
+    () => getV3FarmBoosterWhiteList({ farmBoosterContract: farmBoosterVeCakeContract, chainId, pids: pids ?? [] }),
     {
       enabled: Boolean(chainId && pids && pids.length > 0 && bCakeSupportedChainId.includes(chainId)),
       retry: 3,
@@ -377,7 +377,7 @@ export async function getV3FarmBoosterWhiteList({
   chainId,
   pids,
 }: {
-  farmBoosterContract: ReturnType<typeof useBCakeFarmBoosterV3Contract>
+  farmBoosterContract: ReturnType<typeof useBCakeFarmBoosterVeCakeContract>
   chainId: ChainId
   pids: number[]
 }): Promise<{ pid: number; boosted: boolean }[]> {
@@ -394,5 +394,5 @@ export async function getV3FarmBoosterWhiteList({
   })
 
   if (!whiteList || whiteList?.length !== pids?.length) return []
-  return pids?.map((d, index) => ({ pid: d, boosted: whiteList[index].result }))
+  return pids?.map((d, index) => ({ pid: d, boosted: whiteList[index].result ?? false }))
 }
