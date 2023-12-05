@@ -46,12 +46,20 @@ const StyledFlex = styled(Flex)`
 
 const StyledTableViewFlex = styled(Flex)`
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  border-radius: 16px;
   padding: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.tertiary};
-  box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
   flex-grow: 0;
+  border-bottom: 1px solid #e7e3eb;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    border-radius: 16px;
+    background-color: ${({ theme }) => theme.colors.backgroundAlt};
+    box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
+    border: 1px solid ${({ theme }) => theme.colors.tertiary};
+  }
 `
 
 const StyledMiniTableViewFlex = styled(Flex)`
@@ -82,9 +90,15 @@ const Divider = styled.div`
   margin: 8px 0;
 `
 const VerticalDivider = styled.div`
-  background-color: ${({ theme }) => theme.colors.cardBorder};
+  opacity: 0.5;
+  background: #e7e3eb;
   height: 45px;
   width: 1px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    opacity: 1;
+    background-color: ${({ theme }) => theme.colors.cardBorder};
+  }
 `
 
 const ImageBox = styled.div`
@@ -221,13 +235,13 @@ export const VeCakeCardTableView = memo(() => {
   return (
     <LightGreyCard
       style={{
-        padding: '16px',
+        padding: isMobile ? 0 : '16px',
         gap: isMobile ? 12 : 8,
         display: 'flex',
         maxWidth: isMobile ? '100%' : '60%',
         flexGrow: 0,
         flexWrap: 'wrap',
-        border: `2px solid ${theme.colors.input}`,
+        border: isMobile ? 'none' : `2px solid ${theme.colors.input}`,
         marginBottom: isMobile ? 14 : undefined,
       }}
     >

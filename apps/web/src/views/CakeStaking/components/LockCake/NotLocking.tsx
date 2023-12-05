@@ -59,7 +59,7 @@ export const NotLockingCard = () => {
             {t('Lock CAKE')}
           </Button>
         ) : (
-          <ConnectWalletButton width="50%" />
+          <ConnectWalletButton width={['100%', '100%', '50%']} />
         )}
       </ColumnCenter>
     </StyledCard>

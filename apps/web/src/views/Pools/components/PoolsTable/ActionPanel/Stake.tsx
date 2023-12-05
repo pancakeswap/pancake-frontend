@@ -210,6 +210,14 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       vaultPosition === VaultPosition.None &&
       (vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault))
   ) {
+    if (isMobile) {
+      return vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault ? (
+        <VeCakeButton type="get" />
+      ) : (
+        <ConnectWalletButton width="100%" />
+      )
+    }
+
     return (
       <ActionContainer>
         <ActionTitles>

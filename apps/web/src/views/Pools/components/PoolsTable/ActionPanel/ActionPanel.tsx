@@ -38,7 +38,6 @@ import PoolStatsInfo from '../../PoolStatsInfo'
 import PoolTypeTag from '../../PoolTypeTag'
 import { VaultPositionTagWithLabel } from '../../Vault/VaultPositionTag'
 import AutoHarvest from './AutoHarvest'
-import CakeVaultApr from './CakeVaultApr'
 import Harvest from './Harvest'
 import Stake from './Stake'
 
@@ -184,7 +183,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
         )}
         <Flex flexDirection="column" mb="8px">
           <>
-            {vaultKey === VaultKey.CakeVault && !account ? (
+            {!isMobile && vaultKey === VaultKey.CakeVault && !account ? (
               <VeCakeBunny />
             ) : (
               <PoolStatsInfo pool={pool} account={account} showTotalStaked={isMobile} alignLinksToRight={isMobile} />
@@ -204,9 +203,6 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
         </Flex>
       </InfoSection>
       <ActionContainer>
-        {isMobile && vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None && (
-          <CakeVaultApr pool={pool} userData={vaultData.userData} vaultPosition={vaultPosition} />
-        )}
         <Box width="100%">
           {pool.vaultKey === VaultKey.CakeVault && (
             <VaultPositionTagWithLabel
