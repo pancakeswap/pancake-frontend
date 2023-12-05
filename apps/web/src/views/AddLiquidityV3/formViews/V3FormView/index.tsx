@@ -277,7 +277,7 @@ export default function V3FormView({
         account,
       }
       getViemClients({ chainId })
-        .estimateGas(txn)
+        ?.estimateGas(txn)
         .then((gas) => {
           sendTransactionAsync({
             ...txn,
@@ -352,21 +352,32 @@ export default function V3FormView({
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
 
-  const translationData = useMemo(
-    () => ({
-      amountA: !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : '',
-      symbolA: !depositADisabled && currencies[Field.CURRENCY_A]?.symbol ? currencies[Field.CURRENCY_A].symbol : '',
-      amountB: !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : '',
-      symbolB: !depositBDisabled && currencies[Field.CURRENCY_B]?.symbol ? currencies[Field.CURRENCY_B].symbol : '',
-    }),
-    [depositADisabled, depositBDisabled, parsedAmounts, locale, currencies],
-  )
+  const translationData = useMemo(() => {
+    if (depositADisabled) {
+      return {
+        amount: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale),
+        symbol: currencies[Field.CURRENCY_B]?.symbol ? currencies[Field.CURRENCY_B].symbol : '',
+      }
+    }
+    if (depositBDisabled) {
+      return {
+        amount: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale),
+        symbol: currencies[Field.CURRENCY_A]?.symbol ? currencies[Field.CURRENCY_A].symbol : '',
+      }
+    }
+    return {
+      amountA: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale),
+      symbolA: currencies[Field.CURRENCY_A]?.symbol ? currencies[Field.CURRENCY_A].symbol : '',
+      amountB: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale),
+      symbolB: currencies[Field.CURRENCY_B]?.symbol ? currencies[Field.CURRENCY_B].symbol : '',
+    }
+  }, [depositADisabled, depositBDisabled, parsedAmounts, locale, currencies])
 
   const pendingText = useMemo(
     () =>
       !outOfRange
         ? t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData)
-        : t('Supplying %amountA% %symbolA% %amountB% %symbolB%', translationData),
+        : t('Supplying %amount% %symbol%', translationData),
     [t, outOfRange, translationData],
   )
 

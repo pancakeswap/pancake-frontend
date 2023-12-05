@@ -311,6 +311,17 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
     setTxnHash('')
   }, [onPercentSelectForSlider, percentForSlider, router, txnHash])
 
+  const pendingText = useMemo(
+    () =>
+      t('Removing %amountA% %symbolA% and %amountB% %symbolB%', {
+        amountA: liquidityValue0?.toSignificant(6),
+        symbolA: liquidityValue0?.currency?.symbol,
+        amountB: liquidityValue1?.toSignificant(6),
+        symbolB: liquidityValue1?.currency?.symbol,
+      }),
+    [liquidityValue0, liquidityValue1, t],
+  )
+
   const [onPresentRemoveLiquidityModal] = useModal(
     <TransactionConfirmationModal
       title={t('Remove Liquidity')}
@@ -330,8 +341,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
           )}
         />
       )}
-      pendingText={`Removing ${liquidityValue0?.toSignificant(6)} ${liquidityValue0?.currency?.symbol} and
-      ${liquidityValue1?.toSignificant(6)} ${liquidityValue1?.currency?.symbol}`}
+      pendingText={pendingText}
     />,
     true,
     true,
