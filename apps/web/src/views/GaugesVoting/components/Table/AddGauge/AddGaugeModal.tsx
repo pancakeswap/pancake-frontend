@@ -36,7 +36,7 @@ const ScrollableGaugesList = styled(GaugesList).attrs({ pagination: false })`
 
 export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => {
   const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
   const totalGaugesWeight = useGaugesTotalWeight()
   const { data: gauges } = useGauges()
   const [searchText, setSearchText] = useState<string>('')
@@ -140,7 +140,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
     <>
       <ModalV2 isOpen={isOpen} onDismiss={onDismiss}>
         <ModalWrapper maxHeight="90vh" style={{ overflowY: 'auto' }}>
-          <FlexGap flexDirection="column" padding={32} gap="32px">
+          <FlexGap flexDirection="column" padding="32px" pb="0" gap="32px">
             <FlexGap justifyContent="space-between" gap="8px" alignItems="flex-start">
               <AutoColumn>
                 <Heading>{t('Add Gauges')}</Heading>
@@ -177,10 +177,10 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
               </AutoColumn>
             </Grid>
             <Box>{gaugesTable}</Box>
-            <ColumnCenter style={{ marginTop: 'auto' }} onClick={onDismiss}>
-              <Button width="50%">{t('Finish')}</Button>
-            </ColumnCenter>
           </FlexGap>
+          <BottomAction pb="32px" style={{ marginTop: 'auto' }} onClick={onDismiss}>
+            <Button width={isMobile ? '100%' : '50%'}>{t(isMobile ? 'Continue' : 'Finish')}</Button>
+          </BottomAction>
         </ModalWrapper>
       </ModalV2>
       <OptionsModal
@@ -193,3 +193,12 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
     </>
   )
 }
+
+const BottomAction = styled(ColumnCenter)`
+  padding: calc(16px + env(safe-area-inset-bottom));
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 0;
+    padding-bottom: 32px;
+  }
+`
