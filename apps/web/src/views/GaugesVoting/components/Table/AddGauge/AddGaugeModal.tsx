@@ -7,6 +7,7 @@ import {
   Button,
   CloseIcon,
   ColumnCenter,
+  Flex,
   FlexGap,
   Grid,
   Heading,
@@ -30,8 +31,11 @@ const FilterButton = styled(Button)`
 `
 
 const ScrollableGaugesList = styled(GaugesList).attrs({ pagination: false })`
-  max-height: calc(90vh - 390px);
   overflow-y: auto;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-height: calc(90vh - 390px);
+  }
 `
 
 export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => {
@@ -139,48 +143,58 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   return (
     <>
       <ModalV2 isOpen={isOpen} onDismiss={onDismiss}>
-        <ModalWrapper maxHeight="90vh" style={{ overflowY: 'auto' }}>
-          <FlexGap flexDirection="column" padding="32px" pb="0" gap="32px">
-            <FlexGap justifyContent="space-between" gap="8px" alignItems="flex-start">
-              <AutoColumn>
-                <Heading>{t('Add Gauges')}</Heading>
-                <Text fontSize={14} color="textSubtle">
-                  {t('Search and add the gauge you want to vote')}
-                </Text>
-              </AutoColumn>
-              <Button variant="text" onClick={onDismiss} px={0} height="fit-content">
-                <CloseIcon color="textSubtle" />
-              </Button>
+        <ModalWrapper maxHeight="90vh" height={isMobile ? '90vh' : undefined} style={{ overflowY: 'auto' }}>
+          <Flex flexDirection="column" height="100%">
+            <FlexGap
+              flexDirection="column"
+              padding={isMobile ? '16px' : '32px'}
+              pb="0"
+              gap={isMobile ? '20px' : '32px'}
+              style={{ flex: 1, overflowY: 'hidden' }}
+            >
+              <FlexGap justifyContent="space-between" gap="8px" alignItems="flex-start">
+                <AutoColumn>
+                  <Heading>{t('Add Gauges')}</Heading>
+                  <Text fontSize={14} color="textSubtle" style={{ whiteSpace: 'nowrap' }}>
+                    {t('Search and add the gauge you want to vote')}
+                  </Text>
+                </AutoColumn>
+                <Button variant="text" onClick={onDismiss} px={0} height="fit-content">
+                  <CloseIcon color="textSubtle" />
+                </Button>
+              </FlexGap>
+              <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} gridGap={isDesktop ? '32px' : '1em'}>
+                <AutoColumn gap="4px">
+                  <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
+                    {t('filter')}
+                  </Text>
+                  <FlexGap gap="10px">
+                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByChain)}>
+                      {t('Chain')}
+                    </FilterButton>
+                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByFeeTier)}>
+                      {t('Fee Tier')}
+                    </FilterButton>
+                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByType)}>
+                      {t('Type')}
+                    </FilterButton>
+                  </FlexGap>
+                </AutoColumn>
+                <AutoColumn gap="4px">
+                  {!isMobile ? (
+                    <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
+                      {t('search')}
+                    </Text>
+                  ) : null}
+                  <Input placeholder={t('Search gauges')} onChange={(e) => setSearchText(e.target.value)} />
+                </AutoColumn>
+              </Grid>
+              <Box style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>{gaugesTable}</Box>
             </FlexGap>
-            <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} gridGap={isDesktop ? '32px' : '1em'}>
-              <AutoColumn gap="4px">
-                <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
-                  {t('filter')}
-                </Text>
-                <FlexGap gap="10px">
-                  <FilterButton variant="light" onClick={() => setOption(OptionsType.ByChain)}>
-                    {t('Chain')}
-                  </FilterButton>
-                  <FilterButton variant="light" onClick={() => setOption(OptionsType.ByFeeTier)}>
-                    {t('Fee Tier')}
-                  </FilterButton>
-                  <FilterButton variant="light" onClick={() => setOption(OptionsType.ByType)}>
-                    {t('Type')}
-                  </FilterButton>
-                </FlexGap>
-              </AutoColumn>
-              <AutoColumn gap="4px">
-                <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
-                  {t('search')}
-                </Text>
-                <Input placeholder={t('Search gauges')} onChange={(e) => setSearchText(e.target.value)} />
-              </AutoColumn>
-            </Grid>
-            <Box>{gaugesTable}</Box>
-          </FlexGap>
-          <BottomAction pb="32px" style={{ marginTop: 'auto' }} onClick={onDismiss}>
-            <Button width={isMobile ? '100%' : '50%'}>{t(isMobile ? 'Continue' : 'Finish')}</Button>
-          </BottomAction>
+            <BottomAction pb="32px" style={{ marginTop: 'auto' }} onClick={onDismiss}>
+              <Button width={isMobile ? '100%' : '50%'}>{t(isMobile ? 'Continue' : 'Finish')}</Button>
+            </BottomAction>
+          </Flex>
         </ModalWrapper>
       </ModalV2>
       <OptionsModal
@@ -195,6 +209,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
 }
 
 const BottomAction = styled(ColumnCenter)`
+  flex: 0;
   padding: calc(16px + env(safe-area-inset-bottom));
 
   ${({ theme }) => theme.mediaQueries.sm} {
