@@ -1,5 +1,25 @@
 # @pancakeswap/pools
 
+## 5.0.2
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+  - @pancakeswap/tokens@0.5.6
+
+## 5.0.1
+
+### Patch Changes
+
+- Updated dependencies [2bb70e602]
+  - @pancakeswap/tokens@0.5.5
+
+## 5.0.0
+
+### Major Changes
+
+- a016ea8ee: List new ALP pool
+
 ## 4.0.22
 
 ### Patch Changes

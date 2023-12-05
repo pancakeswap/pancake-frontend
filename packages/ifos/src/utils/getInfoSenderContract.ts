@@ -19,6 +19,8 @@ export function getInfoSenderContract({ chainId, provider }: Params) {
   return getContract({
     abi: pancakeInfoSenderABI,
     address: senderContractAddress,
+    // TODO: Fix viem
+    // @ts-ignore
     publicClient: provider({ chainId }),
   })
 }

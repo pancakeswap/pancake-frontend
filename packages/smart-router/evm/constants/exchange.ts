@@ -157,6 +157,11 @@ export const ADDITIONAL_BASES: {
     // rETH - ETH
     [ethereumTokens.weth.address]: [ethereumTokens.rETH],
   },
+  [ChainId.BASE]: {
+    // axlusdc - USDbC
+    [baseTokens.axlusdc.address]: [baseTokens.usdbc],
+    [baseTokens.usdbc.address]: [baseTokens.axlusdc],
+  },
 }
 
 /**

@@ -1,10 +1,10 @@
+import { Gauge } from '@pancakeswap/gauges'
 import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import type { ChartData, ChartDataset, TooltipModel } from 'chart.js'
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
-import styled from 'styled-components'
-import { GaugeVoting } from '../hooks/useGaugesVoting'
+import styled, { keyframes } from 'styled-components'
 import { ChartLabel } from './ChartLabel'
 import { ChartTooltip } from './ChartTooltip'
 
@@ -29,6 +29,20 @@ const Absolute = styled(Box)`
   z-index: 1;
 `
 
+const opacityAnimation = keyframes`
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 0.4;
+  }
+
+`
+
+const Circle = styled.circle`
+  animation: ${opacityAnimation} 1s ease-in-out infinite alternate;
+`
+
 export const chartDataOption: ChartDataset<'doughnut', number[]> = {
   data: [],
   backgroundColor: ['#F35E79', '#27B9C4', '#8051D6', '#129E7D', '#FCC631', '#2882CC', '#3DDBB5'],
@@ -39,13 +53,21 @@ export const chartDataOption: ChartDataset<'doughnut', number[]> = {
   borderWidth: 0,
 }
 export const WeightsPieChart: React.FC<{
-  data?: GaugeVoting[]
+  data?: Gauge[]
   totalGaugesWeight: number
-}> = ({ data, totalGaugesWeight }) => {
+  isLoading?: boolean
+}> = ({ data, totalGaugesWeight, isLoading }) => {
   const tooltipRef = useRef<string | null>(null)
   const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
-  const [selectedGauge, setSelectedGauge] = useState<GaugeVoting>()
+  const [selectedGauge, setSelectedGauge] = useState<Gauge>()
+  const sortedGauge = useMemo<Gauge[]>(() => data?.sort((a, b) => (a.weight < b.weight ? 1 : -1)) ?? [], [data])
+  const selectedGaugeSort = useMemo(() => {
+    if (!selectedGauge) return ''
+    const index = sortedGauge.findIndex((g) => g.hash === selectedGauge.hash) + 1
+    if (index < 10) return `0${index}`
+    return String(index)
+  }, [selectedGauge, sortedGauge])
   const [color, setColor] = useState<string>('')
   const { isDesktop } = useMatchBreakpoints()
 
@@ -55,7 +77,7 @@ export const WeightsPieChart: React.FC<{
       datasets: [
         {
           ...chartDataOption,
-          data: data?.map((gauge) => gauge.weight) ?? [],
+          data: data?.map((gauge) => Number(gauge.weight)) ?? [],
         },
       ],
     }
@@ -96,7 +118,7 @@ export const WeightsPieChart: React.FC<{
       total={totalGaugesWeight}
       color={color}
       gauge={selectedGauge}
-      allGauges={data}
+      sort={selectedGaugeSort}
     />
   )
   const tooltipNode = isDesktop ? (
@@ -113,7 +135,13 @@ export const WeightsPieChart: React.FC<{
       <ChartLabel total={totalGaugesWeight} gauge={selectedGauge} />
     </Center>
   )
-  const chart = (
+  const chart = isLoading ? (
+    <Box ml="20px">
+      <svg width="293" height="293" viewBox="0 0 293 293" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <Circle cx="146.5" cy="146.5" r="131.5" stroke="#E9EAEB" stroke-width="30" />
+      </svg>
+    </Box>
+  ) : (
     <Doughnut
       data={gauges}
       options={{

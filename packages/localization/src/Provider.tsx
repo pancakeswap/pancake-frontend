@@ -106,7 +106,7 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
           return reduce(
             omitBy(data, isUndefinedOrNull),
             (result, dataValue, dataKey) => {
-              if (dataValue) {
+              if (dataValue !== undefined && dataValue !== null) {
                 return result.replace(getRegExpForDataKey(dataKey), dataValue.toString())
               }
               return result

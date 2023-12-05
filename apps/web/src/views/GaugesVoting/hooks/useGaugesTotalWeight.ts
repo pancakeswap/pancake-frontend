@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { useGaugesVotingContract } from 'hooks/useContract'
+import { useCalcGaugesVotingContract } from 'hooks/useContract'
 
 export const useGaugesTotalWeight = () => {
-  const gaugesVotingContract = useGaugesVotingContract()
+  const gaugesVotingContract = useCalcGaugesVotingContract()
 
   const { data } = useQuery(['gaugesTotalWeight', gaugesVotingContract.address], async () => {
     return gaugesVotingContract.read.getTotalWeight([true])

@@ -64,7 +64,7 @@ export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
 export const V3_SUBGRAPH_URLS = V3_SUBGRAPHS
 
-export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancakeswap.com/api/v1'
+export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'
 
 export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 

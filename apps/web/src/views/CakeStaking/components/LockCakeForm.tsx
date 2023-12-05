@@ -21,8 +21,8 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
 import { cakeLockAmountAtom } from 'state/vecake/atoms'
 import { useBSCCakeBalance } from '../hooks/useBSCCakeBalance'
-import { LockCakeDataSet } from './DataSet'
 import { useWriteApproveAndIncreaseLockAmountCallback } from '../hooks/useContractWrite'
+import { LockCakeDataSet } from './DataSet'
 
 const percentShortcuts = [25, 50, 75]
 
@@ -71,7 +71,7 @@ const CakeInput: React.FC<{
 
   const usdValue = (
     <Flex>
-      <Balance fontSize="12px" color="textSubtle" decimals={2} value={cakeUsdValue} unit=" USD" prefix="~" />
+      <Balance mt={1} fontSize="12px" color="textSubtle" decimals={2} value={cakeUsdValue} unit=" USD" prefix="~" />
     </Flex>
   )
 

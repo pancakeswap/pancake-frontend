@@ -4,14 +4,6 @@ import * as exportedNameSpaces from './index'
 test('exports', () => {
   expect(Object.keys(exportedNameSpaces)).toMatchInlineSnapshot(`
     [
-      "StableSwap",
-      "SmartRouter",
-      "SwapRouter",
-      "Transformer",
-      "PoolType",
-      "RouteType",
-      "getStableSwapPools",
-      "isStableSwapSupported",
       "BIG_INT_TEN",
       "BIPS_BASE",
       "MIN_BNB",
@@ -22,11 +14,6 @@ test('exports', () => {
       "BASES_TO_CHECK_TRADES_AGAINST",
       "ADDITIONAL_BASES",
       "CUSTOM_BASES",
-      "V2_FEE_PATH_PLACEHOLDER",
-      "MSG_SENDER",
-      "ADDRESS_THIS",
-      "MIXED_ROUTE_QUOTER_ADDRESSES",
-      "V3_QUOTER_ADDRESSES",
       "BASE_SWAP_COST_V2",
       "COST_PER_EXTRA_HOP_V2",
       "COST_PER_UNINIT_TICK",
@@ -37,6 +24,19 @@ test('exports', () => {
       "COST_PER_EXTRA_HOP_STABLE_SWAP",
       "usdGasTokensByChain",
       "BATCH_MULTICALL_CONFIGS",
+      "V2_FEE_PATH_PLACEHOLDER",
+      "MSG_SENDER",
+      "ADDRESS_THIS",
+      "MIXED_ROUTE_QUOTER_ADDRESSES",
+      "V3_QUOTER_ADDRESSES",
+      "getStableSwapPools",
+      "isStableSwapSupported",
+      "StableSwap",
+      "SmartRouter",
+      "SwapRouter",
+      "Transformer",
+      "PoolType",
+      "RouteType",
     ]
   `)
 })

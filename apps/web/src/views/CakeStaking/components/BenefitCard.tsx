@@ -1,6 +1,5 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { Button, Card, Flex, FlexGap, Heading, Text } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { Button, Card, Flex, FlexGap, Heading, Link, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 type BenefitCardType = 'earnCake' | 'gaugesVoting' | 'farmBoost' | 'snapshotVoting' | 'ifo' | 'more'
@@ -129,9 +128,9 @@ export const BenefitCard: React.FC<{
           </Text>
         </div>
         {button && info.link ? (
-          <NextLinkFromReactRouter to={info.link} prefetch={false}>
+          <Link href={info.link} style={{ width: '100%' }}>
             {button}
-          </NextLinkFromReactRouter>
+          </Link>
         ) : null}
         {button && !info.link && onClick ? button : null}
       </FlexGap>

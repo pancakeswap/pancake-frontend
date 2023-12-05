@@ -1,37 +1,48 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
-import { useGaugesVoting, GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
-import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGuages'
+import { Gauge } from '@pancakeswap/gauges'
+import { usePreviousValue } from '@pancakeswap/hooks'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
+import { useUserVoteGauges } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 
 export const useGaugeRows = () => {
-  const gauges = useGaugesVoting()
+  const { data: gauges, isLoading } = useGauges()
+  const { account } = useAccountActiveChain()
+  const previousAccount = usePreviousValue(account)
   const { data: prevVotedGauges, refetch } = useUserVoteGauges()
-  const [selectRows, setSelectRows] = useState<GaugeVoting['hash'][]>([])
+  const [selectRowsHash, setSelectRowsHash] = useState<Gauge['hash'][]>([])
   const rows = useMemo(() => {
-    return gauges?.filter((gauge) => selectRows.includes(gauge.hash))
-  }, [gauges, selectRows])
+    return gauges?.filter((gauge) => selectRowsHash.includes(gauge.hash))
+  }, [gauges, selectRowsHash])
+
+  useEffect(() => {
+    if (account !== previousAccount) {
+      setSelectRowsHash([])
+    }
+  }, [account, previousAccount, selectRowsHash])
 
   // add all gauges to selectRows when user has voted gauges
   useEffect(() => {
-    if (prevVotedGauges?.length && !selectRows.length) {
-      setSelectRows(prevVotedGauges.map((gauge) => gauge.hash))
+    if (prevVotedGauges?.length && !selectRowsHash.length) {
+      setSelectRowsHash(prevVotedGauges.map((gauge) => gauge.hash))
     }
-  }, [prevVotedGauges, selectRows.length])
+  }, [prevVotedGauges, selectRowsHash.length])
 
-  const onRowAdd = useCallback(
-    (hash: GaugeVoting['hash']) => {
-      if (selectRows.includes(hash)) {
-        setSelectRows((prev) => prev.filter((v) => v !== hash))
+  const onRowSelect = useCallback(
+    (hash: Gauge['hash']) => {
+      if (selectRowsHash.includes(hash)) {
+        setSelectRowsHash((prev) => prev.filter((v) => v !== hash))
       } else {
-        setSelectRows((prev) => [...prev, hash])
+        setSelectRowsHash((prev) => [...prev, hash])
       }
     },
-    [selectRows],
+    [selectRowsHash],
   )
 
   return {
     rows,
-    selectRows,
-    onRowAdd,
+    isLoading,
+    onRowSelect,
     refetch,
   }
 }

@@ -53,6 +53,18 @@ import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
 import { SettingsMode } from './types'
 
+const BetaTag = styled.div`
+  border: 2px solid ${({ theme }) => theme.colors.success};
+  border-radius: 16px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: ${({ theme }) => theme.colors.success};
+  margin-left: 6px;
+  font-weight: bold;
+  font-size: 14px;
+`
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   height: auto;
@@ -178,7 +190,9 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                     placement="top"
                     ml="4px"
                   />
+                  <BetaTag>{t('BETA')}</BetaTag>
                 </Flex>
+
                 <Toggle
                   id="toggle-username-visibility"
                   checked={allowNotifications}

@@ -1,4 +1,4 @@
-import { Distributor__factory as DistributorFactory, MerklAPIData, registry } from '@angleprotocol/sdk'
+import type { MerklAPIData } from '@angleprotocol/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
@@ -14,6 +14,8 @@ import uniq from 'lodash/uniq'
 import { useQuery } from '@tanstack/react-query'
 import { useAllLists } from 'state/lists/hooks'
 import { TokenInfo } from '@pancakeswap/token-lists'
+import { distributorABI } from 'config/abi/AngleProtocolDistributor'
+import { DISTRIBUTOR_ADDRESSES } from 'config/merkl'
 
 export const MERKL_API = 'https://api.angle.money/v1/merkl'
 
@@ -128,12 +130,12 @@ export default function useMerkl(poolAddress: string | null) {
   const { t } = useTranslation()
 
   const claimTokenReward = useCallback(async () => {
-    const contractAddress = chainId ? registry(chainId)?.Merkl?.Distributor : undefined
+    const contractAddress = chainId ? DISTRIBUTOR_ADDRESSES[chainId] : undefined
 
     if (!account || !contractAddress || !signer) return undefined
 
     const distributorContract = getContract({
-      abi: DistributorFactory.abi,
+      abi: distributorABI,
       address: contractAddress as Address,
       signer,
     })

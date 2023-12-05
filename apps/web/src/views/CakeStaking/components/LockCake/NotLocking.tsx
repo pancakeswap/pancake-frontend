@@ -1,6 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, ColumnCenter, Grid, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { WEEK } from 'config/constants/veCake'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
@@ -21,6 +23,7 @@ export const NotLocking = () => {
 }
 
 export const NotLockingCard = () => {
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
   const { isDesktop } = useMatchBreakpoints()
@@ -51,9 +54,13 @@ export const NotLockingCard = () => {
         cakeAmount={Number(cakeLockAmount)}
       />
       <ColumnCenter>
-        <Button disabled={disabled} width="50%" onClick={handleModalOpen}>
-          {t('Lock CAKE')}
-        </Button>
+        {account ? (
+          <Button disabled={disabled} width="50%" onClick={handleModalOpen}>
+            {t('Lock CAKE')}
+          </Button>
+        ) : (
+          <ConnectWalletButton width="50%" />
+        )}
       </ColumnCenter>
     </StyledCard>
   )
