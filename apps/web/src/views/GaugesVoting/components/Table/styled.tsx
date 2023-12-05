@@ -7,6 +7,7 @@ export const Row = css`
   grid-template-columns: 3fr repeat(3, 1fr);
   padding: 10px 16px 10px;
   min-height: 64px;
+  transition: all 0.2s ease-in-out;
 
   & :nth-child(3) {
     justify-content: center;
@@ -15,6 +16,10 @@ export const Row = css`
   & :nth-child(4) {
     text-align: right;
     justify-content: flex-end;
+  }
+
+  &:hover {
+    backdrop-filter: brightness(95%);
   }
 `
 
