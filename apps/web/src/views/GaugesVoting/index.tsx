@@ -30,9 +30,6 @@ const InlineLink = styled(LinkExternal)`
 `
 
 const StyledGaugesVotingPage = styled.div`
-  background: linear-gradient(314deg, rgba(230, 253, 255, 0.5) -24.74%, rgba(243, 240, 255, 0.5) 91.65%),
-    linear-gradient(112deg, #f2ecf2 0%, #e8f2f6 100%);
-
   ${({ theme }) => theme.mediaQueries.lg} {
     background: ${({ theme }) => theme.colors.gradientBubblegum};
   }
@@ -40,7 +37,11 @@ const StyledGaugesVotingPage = styled.div`
 
 const StyledPageHeader = styled(PageHeader)`
   padding-top: 9px;
-  padding-bottom: 0px;
+  padding-bottom: 33px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-bottom: 0px;
+  }
 `
 
 const BunnyImage = styled.img`
@@ -60,11 +61,17 @@ const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
   const { data: gauges, isLoading } = useGauges()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
 
   return (
     <StyledGaugesVotingPage>
-      <StyledPageHeader background="transparent">
+      <StyledPageHeader
+        background={
+          isMobile
+            ? 'linear-gradient(314deg, rgba(230, 253, 255, 0.5) -24.74%, rgba(243, 240, 255, 0.5) 91.65%), linear-gradient(112deg, #f2ecf2 0%, #e8f2f6 100%);'
+            : ''
+        }
+      >
         <Flex justifyContent="space-between">
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
             <Link href="/cake-staking">
@@ -101,9 +108,9 @@ const GaugesVoting = () => {
           </Flex>
         </Flex>
       </StyledPageHeader>
-      <Page style={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0 }}>
+      <Page style={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0, background: isMobile ? '#fff' : undefined }}>
         <Box pl={['16px', '16px', '24px']} pr={['16px', '16px', '24px']} mt={['32px', '32px', '32px', '-18px']}>
-          <Card innerCardProps={{ padding: isDesktop ? '2em 2em 0 2em' : '1em 1em 0 1em' }}>
+          <Card innerCardProps={{ padding: isMobile ? '0' : '2em 2em 0 2em' }}>
             <Grid gridTemplateColumns={isDesktop ? '2fr 3fr' : '1fr'}>
               <FlexGap flexDirection="column" gap="24px">
                 <MyVeCakeBalance />
