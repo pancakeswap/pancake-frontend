@@ -131,7 +131,7 @@ export const ExpandRow: React.FC<{
     setExpanded((prev) => !prev)
     onCollapse?.()
   }, [onCollapse])
-  const textToDisplay = expanded ? expandedText || t('Expanded') : text || t('Expand')
+  const textToDisplay = expanded ? expandedText || t('Collapse') : text || t('Expand')
 
   return (
     <Flex alignItems="center" justifyContent="center" py="8px">
