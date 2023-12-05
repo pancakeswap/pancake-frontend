@@ -11,6 +11,7 @@ import {
   ErrorIcon,
   Flex,
   FlexGap,
+  Grid,
   Tag,
   Text,
 } from '@pancakeswap/uikit'
@@ -85,20 +86,24 @@ export const TableRow: React.FC<{
             </SelectButton>
           </span>
         ) : null}
-        <GaugeTokenImage gauge={data} />
-        <Text fontWeight={600} fontSize={16}>
-          {data.pairName}
-        </Text>
-        <FlexGap gap="5px" alignItems="center">
-          <NetworkBadge chainId={Number(data.chainId)} />
-          {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
-            <Tag outline variant="secondary">
-              {feeTierPercent(data.feeTier)}
-            </Tag>
-          ) : null}
+        <Grid gridTemplateColumns="1fr 1fr" justifyContent="space-between" width="100%">
+          <FlexGap alignItems="center" gap="13px">
+            <GaugeTokenImage gauge={data} />
+            <Text fontWeight={600} fontSize={16}>
+              {data.pairName}
+            </Text>
+          </FlexGap>
+          <FlexGap gap="5px" alignItems="center">
+            <NetworkBadge chainId={Number(data.chainId)} />
+            {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
+              <Tag outline variant="secondary">
+                {feeTierPercent(data.feeTier)}
+              </Tag>
+            ) : null}
 
-          <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
-        </FlexGap>
+            <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
+          </FlexGap>
+        </Grid>
       </FlexGap>
       <Flex alignItems="center" pl="32px">
         <Tooltips
