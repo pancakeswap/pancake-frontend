@@ -60,7 +60,7 @@ export const GaugesTable: React.FC<
           <Skeleton height={64} />
         </AutoColumn>
       ) : (
-        <tbody>
+        <div>
           <Scrollable expanded={expanded} style={scrollStyle}>
             {sortedData?.map((row) => (
               <TableRow
@@ -75,7 +75,7 @@ export const GaugesTable: React.FC<
             ))}
           </Scrollable>
           <ExpandRow onCollapse={() => setExpanded(!expanded)} />
-        </tbody>
+        </div>
       )}
     </Table>
   )
