@@ -188,6 +188,7 @@ export const useFetchIfo = () => {
           dispatch(fetchIfoPublicDataAsync(chainId))
         })
       }
+      return null
     },
     {
       enabled: Boolean(chainId && ifoSupported),
@@ -208,6 +209,7 @@ export const useFetchIfo = () => {
           dispatch(fetchUserIfoCreditDataAsync({ account, chainId }))
         })
       }
+      return null
     },
     {
       enabled: Boolean(account && chainId && cakeVaultChain),
@@ -224,6 +226,7 @@ export const useFetchIfo = () => {
       if (cakeVaultChain) {
         dispatch(fetchCakeVaultFees(cakeVaultChain))
       }
+      return null
     },
     {
       enabled: Boolean(cakeVaultChain && ifoSupported),

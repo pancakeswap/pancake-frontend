@@ -15,6 +15,12 @@ export const iCakeABI = [
   },
   {
     anonymous: false,
+    inputs: [{ indexed: true, internalType: 'address', name: 'newAddress', type: 'address' }],
+    name: 'UpdateIfoDeployerAddress',
+    type: 'event',
+  },
+  {
+    anonymous: false,
     inputs: [{ indexed: false, internalType: 'uint256', name: 'newRatio', type: 'uint256' }],
     name: 'UpdateRatio',
     type: 'event',
@@ -34,8 +40,22 @@ export const iCakeABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'admin',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
     name: 'getUserCredit',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
+    name: 'getUserCreditForNextIfo',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
@@ -62,6 +82,13 @@ export const iCakeABI = [
   },
   {
     inputs: [],
+    name: 'ifoDeployerAddress',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'owner',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
@@ -78,6 +105,13 @@ export const iCakeABI = [
   {
     inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
     name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_newAddress', type: 'address' }],
+    name: 'updateIfoDeployerAddress',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

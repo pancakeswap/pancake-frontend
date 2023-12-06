@@ -151,16 +151,14 @@ const Step1 = ({
       <Box>
         <Text mb="4px" color="textSubtle" small>
           {t(
-            'The maximum amount of CAKE you can commit to the Public Sale equals the number of your iCAKE. Lock more CAKE for longer durations to increase the maximum CAKE you can commit to the sale.',
+            'The maximum amount of CAKE you can commit to the Public Sale equals the number of your iCAKE, which is based on your veCAKE balance at the snapshot time of each IFO. Lock more CAKE for longer durations to increase the maximum CAKE you can commit to the sale.',
           )}
         </Text>
         <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
           {t('How does the number of iCAKE calculated?')}
         </TooltipText>
         <Text mt="4px" color="textSubtle" small>
-          {t(
-            'Missed this IFO? You will enjoy the same amount of iCAKE for future IFOs if your locked-staking position is not unlocked.',
-          )}
+          {t('Missed this IFO? Lock CAKE today for the next IFO, while enjoying a wide range of veCAKE benefits!')}
         </Text>
       </Box>
       {hasProfile && (
@@ -194,17 +192,17 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
   const { t } = useTranslation()
   return (
     <CardBody>
-      <Heading as="h4" color="secondary" mb="16px">
+      <Heading as="h4" color="secondary" mb="1rem">
         {t('Commit CAKE')}
       </Heading>
       <Text color="textSubtle" small>
-        {t(
-          'Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.',
-        )}{' '}
-        <br />
+        {t('When the IFO sales are live, you can click “commit” to commit CAKE and buy the tokens being sold.')}
+      </Text>
+      <Text color="textSubtle" small mt="1rem">
+        {t('You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.')}
       </Text>
       {hasProfile && isLive && !isCommitted && (
-        <Button as="a" href="#current-ifo" mt="16px">
+        <Button as="a" href="#current-ifo" mt="1rem">
           {t('Commit CAKE')}
         </Button>
       )}
@@ -276,12 +274,10 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
     const renderClaimStep = () => (
       <CardBody>
         <Heading as="h4" color="secondary" mb="16px">
-          {t('Claim your tokens and achievement')}
+          {t('Claim your tokens')}
         </Heading>
         <Text color="textSubtle" small>
-          {t(
-            'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.',
-          )}
+          {t('After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE.')}
         </Text>
       </CardBody>
     )

@@ -47,7 +47,7 @@ export function VeCakeCard({ ifoAddress }: Props) {
   )
   const { snapshotTime, credit, veCake } = useUserIfoInfo({ ifoAddress, chainId })
   const creditBN = useMemo(
-    () => credit && new BigNumber(credit.numerator.toString()).div(credit.denominator.toString()),
+    () => credit && new BigNumber(credit.numerator.toString()).div(credit.decimalScale.toString()),
     [credit],
   )
   const hasICake = useMemo(() => creditBN && creditBN.toNumber() > 0, [creditBN])

@@ -1,47 +1,21 @@
-import { ChainId, CurrencyAmount } from '@pancakeswap/sdk'
-import { fetchUserIfoCredit, fetchPublicIfoData } from '@pancakeswap/ifos'
-import { CAKE } from '@pancakeswap/tokens'
+import { ChainId } from '@pancakeswap/chains'
+import { fetchPublicIfoData } from '@pancakeswap/ifos'
 import { useQuery } from '@tanstack/react-query'
-import { useAccount } from 'wagmi'
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 
 import { getViemClients } from 'utils/viem'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { useIfoSourceChain } from './useIfoSourceChain'
+import { useUserIfoInfo } from './useUserIfoInfo'
 
 type IfoCreditParams = {
   chainId?: ChainId
-  // Ifo credit on current chain
-  ifoCredit?: BigNumber
 }
 
-export function useIfoCredit({ chainId, ifoCredit }: IfoCreditParams) {
-  const { address: account } = useAccount()
-  const { chainId: currentChainId } = useActiveChainId()
-  const shouldUseCreditFromCurrentChain = chainId === currentChainId
-  const { data: creditAmountRaw } = useQuery(
-    [account, chainId, 'ifo-credit'],
-    () =>
-      fetchUserIfoCredit({
-        account,
-        chainId,
-        provider: getViemClients,
-      }),
-    {
-      enabled: Boolean(account && chainId && currentChainId && !shouldUseCreditFromCurrentChain),
-    },
-  )
-  return useMemo(
-    () =>
-      chainId &&
-      CAKE[chainId] &&
-      (shouldUseCreditFromCurrentChain
-        ? ifoCredit && CurrencyAmount.fromRawAmount(CAKE[chainId], ifoCredit.toString())
-        : creditAmountRaw && CurrencyAmount.fromRawAmount(CAKE[chainId], creditAmountRaw)),
-    [creditAmountRaw, chainId, shouldUseCreditFromCurrentChain, ifoCredit],
-  )
+export function useIfoCredit({ chainId }: IfoCreditParams) {
+  const { credit } = useUserIfoInfo({ chainId })
+  return credit
 }
 
 export function useIfoCeiling({ chainId }: { chainId?: ChainId }): BigNumber | undefined {
@@ -53,15 +27,12 @@ export function useIfoCeiling({ chainId }: { chainId?: ChainId }): BigNumber | u
 
 type ICakeStatusParams = {
   ifoChainId?: ChainId
-
-  // Ifo credit on destination chain, i.e. the chain on which ifo is hosted
-  ifoCredit?: BigNumber
 }
 
-export function useICakeBridgeStatus({ ifoChainId, ifoCredit }: ICakeStatusParams) {
+export function useICakeBridgeStatus({ ifoChainId }: ICakeStatusParams) {
   const srcChainId = useIfoSourceChain(ifoChainId)
-  const destChainCredit = useIfoCredit({ chainId: ifoChainId, ifoCredit })
-  const sourceChainCredit = useIfoCredit({ chainId: srcChainId, ifoCredit })
+  const destChainCredit = useIfoCredit({ chainId: ifoChainId })
+  const sourceChainCredit = useIfoCredit({ chainId: srcChainId })
   const noICake = useMemo(() => !sourceChainCredit || sourceChainCredit.quotient === 0n, [sourceChainCredit])
   const isICakeSynced = useMemo(
     () => destChainCredit && sourceChainCredit && destChainCredit.quotient === sourceChainCredit.quotient,

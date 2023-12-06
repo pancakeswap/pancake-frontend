@@ -47,7 +47,7 @@ export function useUserIfoInfo({ chainId, ifoAddress }: Params) {
         provider: getViemClients,
       }),
     {
-      enabled: Boolean(account && chainId && ifoAddress),
+      enabled: Boolean(account && chainId),
     },
   )
 
@@ -64,7 +64,7 @@ export function useUserIfoInfo({ chainId, ifoAddress }: Params) {
   const veCake = useMemo(
     () =>
       credit && ratio
-        ? new BigNumber(credit.numerator.toString()).div(credit.denominator.toString()).div(ratio)
+        ? new BigNumber(credit.numerator.toString()).div(credit.decimalScale.toString()).div(ratio)
         : undefined,
     [credit, ratio],
   )

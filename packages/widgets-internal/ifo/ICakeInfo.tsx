@@ -2,8 +2,8 @@ import { ReactNode, useMemo } from "react";
 import { FlexGap, Text, useTooltip } from "@pancakeswap/uikit";
 import { SpaceProps } from "styled-system";
 import { useTranslation } from "@pancakeswap/localization";
+import { formatUnixTimestamp } from "@pancakeswap/utils/formatTimestamp";
 import styled from "styled-components";
-import dayjs from "dayjs";
 
 type Props = {
   // Unix timestamp of the snapshot
@@ -36,7 +36,7 @@ function InfoItem({ label, value, labelTooltip }: { label?: ReactNode; value?: R
 
 export function ICakeInfo({ snapshot, ratio = 1, ...props }: Props & SpaceProps) {
   const { t } = useTranslation();
-  const timeDisplay = useMemo(() => snapshot && dayjs.unix(snapshot).format("MMM D YYYY HH:mm"), [snapshot]);
+  const timeDisplay = useMemo(() => snapshot && formatUnixTimestamp(snapshot), [snapshot]);
 
   return (
     <FlexGap flexDirection="column" gap="0.5rem" {...props}>

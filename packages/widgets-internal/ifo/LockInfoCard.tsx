@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { RowBetween, AutoColumn, Text, Balance, Card, CardBody } from "@pancakeswap/uikit";
+import { formatUnixTimestamp } from "@pancakeswap/utils/formatTimestamp";
 import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
 import { useMemo } from "react";
@@ -30,7 +31,7 @@ export function LockInfoCard({ amount = 0, usdPrice = 0, unlockAt = 0, ...props 
     return new BigNumber(usdPrice).times(new BigNumber(amount)).toNumber();
   }, [usdPrice, amount]);
   const unlockIn = useMemo(() => dayjs().from(dayjs.unix(unlockAt), true), [unlockAt]);
-  const unlockDisplay = useMemo(() => dayjs.unix(unlockAt).format("MMM D, YYYY HH:mm"), [unlockAt]);
+  const unlockDisplay = useMemo(() => formatUnixTimestamp(unlockAt), [unlockAt]);
 
   return (
     <StyledCard {...props}>

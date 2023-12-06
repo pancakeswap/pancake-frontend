@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Card, CardHeader, Flex, Text, QuestionHelper, FlexGap, CardBody } from "@pancakeswap/uikit";
+import { Card, CardHeader, Flex, Text, QuestionHelper, FlexGap, CardBody, Balance } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
 import { PropsWithChildren, ReactNode, useMemo } from "react";
 import { BigNumber } from "bignumber.js";
@@ -48,9 +48,14 @@ export function MyICake({ amount = 0 }: { amount?: number | BigNumber }) {
         {t("My iCAKE")}
       </Text>
       <FlexGap gap="0.25rem" alignItems="center">
-        <Text bold fontSize="1.5rem" lineHeight="1.75rem" color={color}>
-          {amount.toString()}
-        </Text>
+        <Balance
+          fontSize="1.5rem"
+          bold
+          value={Number(amount.toString())}
+          decimals={2}
+          lineHeight="1.75rem"
+          color={color}
+        />
         <QuestionHelper
           size="1.375rem"
           text={t(
