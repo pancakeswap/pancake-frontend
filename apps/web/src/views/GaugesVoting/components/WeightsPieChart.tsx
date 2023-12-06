@@ -12,7 +12,7 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 
 const Container = styled(Box)`
   position: relative;
-  margin-top: 0.5em;
+  margin: 0.5em auto 0;
   display: flex;
   align-items: center;
   justify-content: center;
