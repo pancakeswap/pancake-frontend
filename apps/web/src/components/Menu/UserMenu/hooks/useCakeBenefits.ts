@@ -92,13 +92,13 @@ const useCakeBenefits = () => {
             currentOverdueFeeAsBigNumber.plus(currentPerformanceFeeAsBigNumber).plus(userBoostedSharesAsBignumber),
           ).cakeAsNumberBalance.toLocaleString('en', { maximumFractionDigits: 3 })
 
-    let iCake = ''
-    let vCake = { vaultScore: '0', totalScore: '0' }
-    if (lockPosition === VaultPosition.Locked) {
-      // @ts-ignore
-      // TODO: Fix viem
-      const credit = await ifoCreditAddressContract.read.getUserCredit([account])
-      iCake = getBalanceNumber(new BigNumber(credit.toString())).toLocaleString('en', { maximumFractionDigits: 3 })
+      let iCake = ''
+      let vCake = { vaultScore: '0', totalScore: '0' }
+      if (lockPosition === VaultPosition.Locked) {
+        // @ts-ignore
+        // TODO: Fix viem
+        const credit = await ifoCreditAddressContract.read.getUserCredit([account])
+        iCake = getBalanceNumber(new BigNumber(credit.toString())).toLocaleString('en', { maximumFractionDigits: 3 })
 
         const eligiblePools: any = await getActivePools(ChainId.BSC, currentBscBlock)
         const poolAddresses = eligiblePools.map(({ contractAddress }) => contractAddress)
