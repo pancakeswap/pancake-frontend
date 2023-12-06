@@ -37,16 +37,6 @@ const ButtonBlocked = styled(Button)`
   flex: 1;
 `
 
-const WeekButton = styled(Button)`
-  flex: 1;
-  font-size: 12px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 14px;
-    padding: 0 10px;
-  }
-`
-
 const WeekInput: React.FC<{
   value: BalanceInputProps['value']
   onUserInput: BalanceInputProps['onUserInput']

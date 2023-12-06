@@ -12,7 +12,6 @@ import {
   FlexGap,
   Text,
   TokenImage,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
@@ -39,7 +38,6 @@ const CakeInput: React.FC<{
   const [percent, setPercent] = useState<number | null>(null)
   const _cakeBalance = useBSCCakeBalance()
   const cakeBalance = BigInt(_cakeBalance.toString())
-  const { isDesktop } = useMatchBreakpoints()
 
   const onInput = useCallback(
     (input: string) => {
