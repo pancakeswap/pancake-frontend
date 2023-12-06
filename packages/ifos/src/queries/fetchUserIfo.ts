@@ -24,6 +24,7 @@ export const getIfoCreditAddressContract = (
   return getContract({ abi: iCakeABI, address, publicClient, walletClient })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const fetchPublicIfoData = async (chainId: ChainId | undefined, provider: OnChainProvider) => {
   return {
     ceiling: BIG_ZERO.toJSON(),
