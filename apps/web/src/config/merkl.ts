@@ -31,4 +31,9 @@ export const MERKL_POOLS: MerklPool[] = [
     address: '0x39aCc7cf02af19A1eB0e3628bA0F5C48f44beBF3',
     link: 'https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=grai&chains=1101%2C',
   },
+  {
+    chainId: ChainId.ETHEREUM,
+    address: '0xEd4D5317823Ff7BC8BB868C1612Bb270a8311179',
+    link: 'https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=INSP&chains=1%2C',
+  },
 ]
