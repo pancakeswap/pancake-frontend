@@ -8,7 +8,6 @@ import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useEpochVotePower } from '../hooks/useEpochVotePower'
 
 const StyledBox = styled(Box)`
-  border-radius: 16px;
   background: ${({ theme }) => theme.card.cardHeaderBackground.default};
   padding: 18px;
   display: flex;
