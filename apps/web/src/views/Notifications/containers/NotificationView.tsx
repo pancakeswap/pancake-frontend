@@ -214,13 +214,7 @@ const NotificationView = ({
             options={NotificationFilterTypes.filter((option) => {
               if (!isMobile) return option.label !== 'Archived'
               return option
-            })
-              .sort((a, b) => {
-                if (a.label === 'Alerts') return -1
-                if (b.label === 'Alerts') return 1
-                return 0
-              })
-              .map((type) => type)}
+            })}
           />
         </Box>
         {!isMobile && <NotificationsTabButton activeIndex={viewMode} setActiveIndex={setViewMode} />}
