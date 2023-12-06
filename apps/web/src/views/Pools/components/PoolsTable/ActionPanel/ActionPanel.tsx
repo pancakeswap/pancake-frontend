@@ -225,7 +225,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           <Flex width="100%">
             <Message
               variant="warning"
-              style={{ width: '100%', marginTop: '16px', flexWrap: 'wrap' }}
+              style={{ width: '100%', margin: '16px', marginBottom: '0', flexWrap: 'wrap' }}
               action={
                 <Flex
                   alignItems="center"
