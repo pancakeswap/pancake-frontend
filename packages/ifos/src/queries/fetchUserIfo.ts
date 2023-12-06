@@ -20,6 +20,7 @@ export const getIfoCreditAddressContract = (
   }
   const publicClient = provider({ chainId })
 
+  // @ts-ignore
   return getContract({ abi: iCakeABI, address, publicClient, walletClient })
 }
 
@@ -99,7 +100,9 @@ export async function getCurrentIfoRatio({ chainId, provider }: Omit<Params, 'ac
   try {
     const ifoCreditContract = getIfoCreditAddressContract(chainId, provider)
     const [ratio, precision] = await Promise.all([
+      // @ts-ignore
       ifoCreditContract.read.ratio,
+      // @ts-ignore
       ifoCreditContract.read.RATION_PRECISION,
     ])
     return new BigNumber(ratio.toString()).div(new BigNumber(precision.toString())).toNumber()
