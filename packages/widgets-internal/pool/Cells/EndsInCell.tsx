@@ -1,10 +1,10 @@
-import getTimePeriods from "@pancakeswap/utils/getTimePeriods";
 import { useTranslation } from "@pancakeswap/localization";
+import { Flex, Text, TimerIcon, useTooltip } from "@pancakeswap/uikit";
+import getTimePeriods from "@pancakeswap/utils/getTimePeriods";
 import { useMemo } from "react";
-import { Text, Flex, useTooltip, TimerIcon } from "@pancakeswap/uikit";
 
-import { CellContent, BaseCell } from "./BaseCell";
 import { DeserializedPool } from "../types";
+import { BaseCell, CellContent } from "./BaseCell";
 
 interface EndsInCellProps<T> {
   pool: DeserializedPool<T>;
@@ -41,10 +41,10 @@ export const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTo
 };
 
 export function TimeCountdownDisplay({
-  timestamp,
+  timestamp = 0,
   getNow = () => Date.now(),
 }: {
-  timestamp: number;
+  timestamp?: number;
   getNow?: () => number;
 }) {
   const { t } = useTranslation();
@@ -60,6 +60,8 @@ export function TimeCountdownDisplay({
   } = useTooltip(<EndTimeTooltipComponent endTime={timestamp} />, {
     placement: "top",
   });
+
+  if (!timestamp) return null;
 
   return (
     <Flex alignItems="center">

@@ -6,6 +6,7 @@ import { useDeserializedPoolByVaultKey, usePool, useVaultPoolByKey } from 'state
 import { VaultKey } from 'state/types'
 import { VeCakeBenefitCard } from 'views/CakeStaking/components/SyrupPool/VeCakeCard'
 
+import { Token } from '@pancakeswap/swap-sdk-core'
 import styled from 'styled-components'
 import ActionPanel from './ActionPanel/ActionPanel'
 import AprCell from './Cells/AprCell'
@@ -32,7 +33,7 @@ export const VaultPoolRow: React.FC<
   const { isLg, isXl, isXxl, isMobile } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
-  const pool = useDeserializedPoolByVaultKey(vaultKey)
+  const pool = useDeserializedPoolByVaultKey(vaultKey) as Pool.DeserializedPoolLockedVault<Token>
   const { totalCakeInVault } = useVaultPoolByKey(vaultKey)
 
   const { stakingToken, totalStaked } = pool

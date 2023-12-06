@@ -26,19 +26,18 @@ const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool, 
   const { isMobile } = useMatchBreakpoints()
 
   // vault
-  const vaultData = useVaultPoolByKey(pool.vaultKey)
+  const vaultData = useVaultPoolByKey(pool.vaultKey as Pool.VaultKey) as Pool.DeserializedPoolLockedVault<Token>
+
   const {
-    userData: {
-      userShares,
-      balance: { cakeAsBigNumber, cakeAsNumberBalance },
-      isLoading,
-    },
-  } = vaultData
+    userShares,
+    balance: { cakeAsBigNumber, cakeAsNumberBalance },
+    isLoading,
+  } = vaultData.userData as Pool.DeserializedLockedVaultUser
   const hasSharesStaked = userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
 
   // pool
-  const { stakingTokenPrice, stakingToken, userData } = pool
+  const { stakingTokenPrice = 0, stakingToken, userData } = pool
   const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
@@ -47,8 +46,7 @@ const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool, 
     stakingToken.decimals,
   )
 
-  const isLocked =
-    pool.vaultKey === VaultKey.CakeVault && (vaultData as Pool.DeserializedPoolLockedVault<Token>).userData.locked
+  const isLocked = pool.vaultKey === VaultKey.CakeVault && vaultData.userData?.locked
   const labelText = `${pool.stakingToken.symbol} ${isLocked ? t('Locked') : t('Staked')}`
 
   const hasStaked = account && (stakedBalance.gt(0) || isVaultWithShares)

@@ -138,16 +138,11 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
   const { userData, vaultKey } = pool
   const { isMobile } = useMatchBreakpoints()
 
-  const vaultData = useVaultPoolByKey(vaultKey)
-  const {
-    userData: {
-      balance: { cakeAsBigNumber },
-    },
-  } = vaultData
-
+  const vaultData = useVaultPoolByKey(vaultKey as Pool.VaultKey) as DeserializedLockedCakeVault
+  const cakeAsBigNumber = vaultData.userData?.balance?.cakeAsBigNumber ?? new BigNumber(0)
   const vaultPosition = getVaultPosition(vaultData.userData)
 
-  const isLocked = (vaultData as DeserializedLockedCakeVault).userData.locked
+  const isLocked = vaultData.userData?.locked
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
@@ -170,8 +165,8 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
         {isMobile && vaultKey === VaultKey.CakeVault && isLocked && (
           <Box mb="16px">
             <YieldBoostDurationRow
-              lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
-              lockStartTime={(vaultData as DeserializedLockedCakeVault).userData.lockStartTime}
+              lockEndTime={vaultData.userData?.lockEndTime}
+              lockStartTime={vaultData.userData?.lockStartTime}
             />
             <Flex alignItems="center" justifyContent="space-between">
               <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
@@ -207,8 +202,8 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           {pool.vaultKey === VaultKey.CakeVault && (
             <VaultPositionTagWithLabel
               userData={vaultData.userData as DeserializedLockedVaultUser}
-              width={['auto', , 'fit-content']}
-              ml={['12px', , , , , '32px']}
+              width={['auto', null, 'fit-content']}
+              ml={['12px', null, null, null, null, '32px']}
             />
           )}
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>

@@ -2,6 +2,7 @@ import { Flex, LinkExternal, ScanLink, Skeleton, Text } from '@pancakeswap/uikit
 import { Pool } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
+import { DeserializedLockedCakeVault } from '@pancakeswap/pools'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
@@ -51,12 +52,10 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
-  const {
-    totalCakeInVault,
-    totalLockedAmount,
-    fees: { performanceFeeAsDecimal },
-    userData,
-  } = useVaultPoolByKey(vaultKey)
+  const { totalCakeInVault, totalLockedAmount, fees, userData } = useVaultPoolByKey(
+    vaultKey as Pool.VaultKey,
+  ) as DeserializedLockedCakeVault
+  const performanceFeeAsDecimal = fees?.performanceFeeAsDecimal
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = contractAddress
@@ -66,7 +65,10 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     pool,
     currentBlock,
   )
-  const tokenInfoPath = useMemo(() => getTokenInfoPath(chainId, earningToken.address), [chainId, earningToken.address])
+  const tokenInfoPath = useMemo(
+    () => (chainId ? getTokenInfoPath(chainId, earningToken.address) : ''),
+    [chainId, earningToken.address],
+  )
 
   return (
     <>
@@ -138,7 +140,11 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       {poolContractAddress && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <ScanLink
-            href={getBlockExploreLink(vaultKey ? cakeVaultContractAddress : poolContractAddress, 'address', chainId)}
+            href={getBlockExploreLink(
+              (vaultKey ? cakeVaultContractAddress : poolContractAddress) ?? '',
+              'address',
+              chainId,
+            )}
             bold={false}
             small
           >

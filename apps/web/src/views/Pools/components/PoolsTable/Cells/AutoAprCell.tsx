@@ -39,10 +39,10 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const { userData } = useVaultPoolByKey(pool.vaultKey)
+  const { userData } = useVaultPoolByKey(pool.vaultKey as Pool.VaultKey)
 
   const vaultPosition = getVaultPosition(userData)
-  const isLock = isLocked(userData)
+  const isLock = userData ? isLocked(userData) : false
 
   const { flexibleApy, lockedApy } = useVaultApy({
     duration:
@@ -164,7 +164,9 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
                 >
                   <Balance
                     fontSize="16px"
-                    value={vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy) : parseFloat(flexibleApy)}
+                    value={
+                      vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy ?? '0') : parseFloat(flexibleApy)
+                    }
                     decimals={2}
                     unit="%"
                   />

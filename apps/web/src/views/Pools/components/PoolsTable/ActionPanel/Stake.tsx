@@ -66,11 +66,11 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     isFinished,
     poolCategory,
     userData,
-    stakingTokenPrice,
-    vaultKey,
     profileRequirement,
+    stakingTokenPrice = 0,
     userDataLoaded,
   } = pool
+  const vaultKey = pool.vaultKey as Pool.VaultKey
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile } = useMatchBreakpoints()
@@ -100,22 +100,16 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     ? getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPrice), stakingToken.decimals)
     : 0
 
-  const vaultData = useVaultPoolByKey(pool.vaultKey)
+  const vaultData = useVaultPoolByKey(vaultKey) as DeserializedLockedCakeVault
 
-  const {
-    userData: {
-      userShares,
-      balance: { cakeAsBigNumber, cakeAsNumberBalance },
-    },
-  } = vaultData
+  const userShares = vaultData.userData?.userShares ?? new BigNumber(0)
+  const cakeAsBigNumber = vaultData.userData?.balance?.cakeAsBigNumber ?? new BigNumber(0)
+  const cakeAsNumberBalance = vaultData.userData?.balance?.cakeAsNumberBalance ?? 0
 
   const { lockEndDate, remainingTime, burnStartTime } = useUserDataInVaultPresenter({
-    lockStartTime:
-      vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.lockStartTime ?? '0' : '0',
-    lockEndTime:
-      vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.lockEndTime ?? '0' : '0',
-    burnStartTime:
-      vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.burnStartTime ?? '0' : '0',
+    lockStartTime: vaultKey === VaultKey.CakeVault ? vaultData.userData?.lockStartTime ?? '0' : '0',
+    lockEndTime: vaultKey === VaultKey.CakeVault ? vaultData.userData?.lockEndTime ?? '0' : '0',
+    burnStartTime: vaultKey === VaultKey.CakeVault ? vaultData.userData?.burnStartTime ?? '0' : '0',
   })
 
   const hasSharesStaked = userShares.gt(0)
@@ -202,7 +196,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   })
 
   const reachStakingLimit = stakingLimit?.gt(0) && userData?.stakedBalance?.gte(stakingLimit)
-  const isLocked = vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked
+  const isLocked = vaultKey === VaultKey.CakeVault && vaultData.userData?.locked
   const vaultPosition = getVaultPosition(vaultData.userData)
   if (
     !account ||
@@ -424,20 +418,16 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                 </Text>
                 <Text lineHeight="1" mt="8px" bold fontSize="20px" color="failure">
                   {vaultPosition === VaultPosition.AfterBurning ? (
-                    isUndefinedOrNull((vaultData as DeserializedLockedCakeVault).userData.currentOverdueFee) ? (
+                    isUndefinedOrNull(vaultData.userData?.currentOverdueFee) ? (
                       '-'
                     ) : (
                       t('%amount% Burned', {
-                        amount: getFullDisplayBalance(
-                          (vaultData as DeserializedLockedCakeVault).userData.currentOverdueFee,
-                          18,
-                          5,
-                        ),
+                        amount: getFullDisplayBalance(vaultData.userData?.currentOverdueFee ?? new BigNumber(0), 18, 5),
                       })
                     )
-                  ) : (
-                    <BurningCountDown lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime} />
-                  )}
+                  ) : vaultData.userData?.lockEndTime ? (
+                    <BurningCountDown lockEndTime={vaultData.userData?.lockEndTime} />
+                  ) : null}
                 </Text>
               </Flex>
             )}
@@ -451,20 +441,16 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
             </Text>
             <Text fontSize="14px" bold color="failure">
               {vaultPosition === VaultPosition.AfterBurning ? (
-                isUndefinedOrNull((vaultData as DeserializedLockedCakeVault).userData.currentOverdueFee) ? (
+                isUndefinedOrNull(vaultData.userData?.currentOverdueFee) ? (
                   '-'
                 ) : (
                   t('%amount% Burned', {
-                    amount: getFullDisplayBalance(
-                      (vaultData as DeserializedLockedCakeVault).userData.currentOverdueFee,
-                      18,
-                      5,
-                    ),
+                    amount: getFullDisplayBalance(vaultData.userData?.currentOverdueFee ?? new BigNumber(0), 18, 5),
                   })
                 )
-              ) : (
-                <BurningCountDown lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime} />
-              )}
+              ) : vaultData.userData?.lockEndTime ? (
+                <BurningCountDown lockEndTime={vaultData.userData.lockEndTime} />
+              ) : null}
             </Text>
           </Flex>
         )}
@@ -504,7 +490,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         {vaultKey ? (
           <VaultStakeButtonGroup
             onFlexibleClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-            onLockedClick={vaultKey === VaultKey.CakeVault ? openPresentLockedStakeModal : null}
+            onLockedClick={vaultKey === VaultKey.CakeVault ? openPresentLockedStakeModal : () => {}}
           />
         ) : (
           <Button
