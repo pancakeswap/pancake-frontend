@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
-import BigNumber from 'bignumber.js'
 
 import { StakeButton } from './StakeButton'
 import { useICakeBridgeStatus } from '../../../hooks/useIfoCredit'
@@ -12,15 +11,12 @@ type Props = {
   ifoId: string
 
   ifoChainId: ChainId
-  // Ifo credit on destination chain, i.e. the chain on which ifo is hosted
-  ifoCredit?: BigNumber
 }
 
-export function ICakeTips({ ifoChainId, ifoCredit, ifoId }: Props) {
+export function ICakeTips({ ifoChainId, ifoId }: Props) {
   const { t } = useTranslation()
   const { noICake, hasBridged, shouldBridgeAgain, sourceChainCredit, destChainCredit } = useICakeBridgeStatus({
     ifoChainId,
-    ifoCredit,
   })
   const chainName = useChainNames([ifoChainId])
 
