@@ -153,7 +153,7 @@ export const VoteTable = () => {
 
       {!isLoading ? (
         rows?.length ? (
-          <tbody>
+          <div>
             <Scrollable expanded={expanded}>
               {rows.map((row) => (
                 <TableRow
@@ -165,7 +165,7 @@ export const VoteTable = () => {
               ))}
             </Scrollable>
             {rows?.length > 3 ? <ExpandRow text={t('Show all')} onCollapse={() => setExpanded(!expanded)} /> : null}
-          </tbody>
+          </div>
         ) : (
           <EmptyTable />
         )
