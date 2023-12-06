@@ -255,7 +255,13 @@ const NotificationView = ({
       >
         {subscription?.topic && (
           <NotificationItem
-            notifications={viewMode === ViewMode.Latest ? filteredNotifications.active : filteredNotifications.archived}
+            notifications={
+              viewMode === ViewMode.Latest
+                ? importantAlertsOnly
+                  ? notifications
+                  : filteredNotifications.active
+                : filteredNotifications.archived
+            }
             isClosing={isClosing}
             subscriptionId={subscription.topic}
             importantAlertsOnly={importantAlertsOnly}
