@@ -89,7 +89,7 @@ const DescriptionContent = styled(Box).withConfig({
   ${({ fullSize }) =>
     fullSize
       ? css`
-          max-width: '100%';
+          max-width: 100% !important;
         `
       : null}
 `
@@ -100,7 +100,7 @@ const Description = () => {
   const { isMobile } = useMatchBreakpoints()
   const staking = useMemo(() => status === CakeLockStatus.Locking, [status])
   return (
-    <Grid justifyContent="space-between" gridTemplateColumns={['4fr 1fr', '4fr 1fr', '1fr']}>
+    <Grid justifyContent="space-between" gridTemplateColumns={staking ? '1fr' : ['4fr 1fr', '4fr 1fr', '1fr']}>
       <DescriptionContent fullSize={staking}>
         <Text color="textSubtle" lineHeight="120%">
           {t(
