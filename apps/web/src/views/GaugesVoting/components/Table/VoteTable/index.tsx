@@ -129,7 +129,7 @@ export const VoteTable = () => {
   const sortedSubmitVotes = useMemo(() => {
     const voteGauges = Object.values(votes)
       .map((vote) => {
-        if (!vote.locked && Number(vote.power)) {
+        if (!vote.locked) {
           const row = rows?.find((r) => r.hash === vote.hash)
           const slope = slopes?.find((r) => r.hash === vote.hash)
           if (!row) return undefined
