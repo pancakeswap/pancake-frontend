@@ -21,6 +21,7 @@ import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCou
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochOnTally } from 'views/GaugesVoting/hooks/useEpochTime'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
+import { useUserVoteSlopes } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
@@ -30,6 +31,10 @@ import { TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
 import { useGaugeRows } from './hooks/useGaugeRows'
 import { UserVote } from './types'
+
+type GaugeWithDelta = Gauge & {
+  delta: bigint
+}
 
 const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expanded'].includes(prop) })<{
   expanded: boolean
@@ -58,6 +63,7 @@ export const VoteTable = () => {
   }, [votes])
 
   const { rows, onRowSelect, refetch, isLoading } = useGaugeRows()
+  const { data: slopes } = useUserVoteSlopes()
   const { isDesktop } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
     return rows?.map((row) => {
@@ -120,24 +126,32 @@ export const VoteTable = () => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])
 
-  const submitVote = useCallback(async () => {
+  const sortedSubmitVotes = useMemo(() => {
     const voteGauges = Object.values(votes)
       .map((vote) => {
         if (!vote.locked && Number(vote.power)) {
           const row = rows?.find((r) => r.hash === vote.hash)
+          const slope = slopes?.find((r) => r.hash === vote.hash)
           if (!row) return undefined
+          const currentPower = BigInt((Number(vote.power) * 100).toFixed(0))
+          const { nativePower = 0, proxyPower = 0 } = slope || {}
           return {
             ...row,
-            weight: BigInt((Number(vote.power) * 100).toFixed(0)),
+            delta: currentPower - (BigInt(nativePower) + BigInt(proxyPower)),
+            weight: currentPower,
           }
         }
         return undefined
       })
-      .filter((gauge: Gauge | undefined): gauge is Gauge => Boolean(gauge))
+      .filter((gauge: GaugeWithDelta | undefined): gauge is GaugeWithDelta => Boolean(gauge))
+      .sort((a, b) => (b.delta < a.delta ? 1 : -1))
+    return voteGauges
+  }, [slopes, votes, rows])
 
-    await writeVote(voteGauges)
+  const submitVote = useCallback(async () => {
+    await writeVote(sortedSubmitVotes)
     await refetch()
-  }, [refetch, rows, votes, writeVote])
+  }, [refetch, sortedSubmitVotes, writeVote])
 
   const gauges = isDesktop ? (
     <>
