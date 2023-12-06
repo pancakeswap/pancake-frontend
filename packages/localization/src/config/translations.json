@@ -2970,10 +2970,8 @@
   "Extending or adding CAKE is not available for migrated positions. You will be able to withdraw CAKE when the lock ends.": "Extending or adding CAKE is not available for migrated positions. You will be able to withdraw CAKE when the lock ends.",
   "This product have been upgraded to CAKE staking page.": "This product have been upgraded to CAKE staking page.",
   "This product have been upgraded. Check out the brand new veCAKE for more CAKE staking benefits.": "This product have been upgraded. Check out the brand new veCAKE for more CAKE staking benefits.",
-  "Cake Staking": "Cake Staking",
   "Get CAKE": "Get CAKE",
   "Benefits of veCAKE": "Benefits of veCAKE",
-  "Cake staking": "Cake staking",
   "Enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!",
   "CAKE rewards": "CAKE rewards",
   "Total votes": "Total votes",
@@ -2993,7 +2991,6 @@
   "votes": "votes",
   "boost": "boost",
   "caps": "caps",
-  "Expanded": "Expanded",
   "Expand": "Expand",
   "You are not currently voting any gauges.": "You are not currently voting any gauges.",
   "current votes": "current votes",
@@ -3089,5 +3086,7 @@
   "Your vote has been submitted successfully.": "Your vote has been submitted successfully.",
   "BETA": "BETA",
   "All Your DeFi Updates, All in One Place": "All Your DeFi Updates, All in One Place",
-  "Web3 Notifications (BETA) trial available": "Web3 Notifications (BETA) trial available"
+  "Web3 Notifications (BETA) trial available": "Web3 Notifications (BETA) trial available",
+  "selected": "selected",
+  "Collapse": "Collapse"
 }
