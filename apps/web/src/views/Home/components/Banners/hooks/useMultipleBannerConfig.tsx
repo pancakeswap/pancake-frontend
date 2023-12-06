@@ -8,6 +8,7 @@ import PerpetualBanner from '../PerpetualBanner'
 import TradingRewardBanner from '../TradingRewardBanner'
 import UserBanner from '../UserBanner'
 import VeCakeBanner from '../VeCakeBanner'
+import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
@@ -37,6 +38,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <VeCakeBanner /> },
       { shouldRender: true, banner: <GameBanner /> },
       {
