@@ -27,6 +27,9 @@ export const THeader = styled.thead`
   ${Row}
 
   padding: 0;
+  &:hover {
+    backdrop-filter: none;
+  }
 `
 
 export const TRow = styled.tr`
