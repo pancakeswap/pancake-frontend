@@ -43,17 +43,20 @@ const useSendPushNotification = (): IUseSendNotification => {
 
         const existingSubscription = await registration.pushManager.getSubscription()
 
+        if (existingSubscription) {
+          // Unsubscribe the user from the existing subscription // fixes brokeb subscriptuon
+          await existingSubscription.unsubscribe()
+        }
+
         const secretKeyBuffer = Buffer.from(WEB_PUSH_ENCRYPTION_KEY, 'hex')
         const ivBuffer = Buffer.from(WEB_PUSH_IV, 'hex')
 
-        const subscription =
-          existingSubscription ||
-          (await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: PUBLIC_VAPID_KEY,
-          }))
+        const newSubscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: PUBLIC_VAPID_KEY,
+        })
 
-        const data = JSON.stringify(subscription)
+        const data = JSON.stringify(newSubscription)
         const cipher = crypto.createCipheriv('aes-256-cbc', secretKeyBuffer, ivBuffer)
 
         let encryptedData = cipher.update(data, 'utf8', 'hex')
@@ -65,7 +68,7 @@ const useSendPushNotification = (): IUseSendNotification => {
           headers: { 'Content-Type': 'application/json' },
         })
       } catch (error) {
-        console.error('failed to subscribe to push notis', error)
+        console.error('Failed to subscribe to push notifications', error)
       }
     }
   }
