@@ -158,7 +158,7 @@ const GaugesVoting = () => {
 const EpochPreview = () => {
   const { t } = useTranslation()
   return (
-    <Card isActive>
+    <Card isActive style={{ height: 'fit-content' }}>
       <MyVeCakeBalance />
       <CurrentEpoch />
     </Card>
