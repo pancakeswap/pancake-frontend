@@ -337,4 +337,12 @@ export const ethereumTokens = {
     'agEUR',
     'https://angle.money/',
   ),
+  insp: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x186eF81fd8E77EEC8BfFC3039e7eC41D5FC0b457',
+    18,
+    'INSP',
+    'Inspect',
+    'https://www.inspect.xyz/',
+  ),
 }
