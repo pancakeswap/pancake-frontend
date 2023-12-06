@@ -1,56 +1,69 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   AtomBox,
+  AutoColumn,
+  AutoRow,
+  Button,
+  ButtonProps,
+  Checkbox,
   Flex,
   InjectedModalProps,
+  Message,
+  MessageText,
   Modal,
+  ModalV2,
+  NotificationDot,
   PancakeToggle,
+  PreTitle,
   QuestionHelper,
+  RowFixed,
   Text,
   ThemeSwitcher,
   Toggle,
-  Button,
-  ModalV2,
-  PreTitle,
-  AutoColumn,
-  Message,
-  MessageText,
-  NotificationDot,
-  ButtonProps,
-  Checkbox,
-  AutoRow,
-  RowFixed,
 } from '@pancakeswap/uikit'
-import { ExpertModal } from '@pancakeswap/widgets-internal'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useTheme from 'hooks/useTheme'
-import { ReactNode, useCallback, useState } from 'react'
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import {
   useAudioPlay,
   useExpertMode,
-  useUserSingleHopOnly,
   useUserExpertModeAcknowledgement,
+  useUserSingleHopOnly,
 } from '@pancakeswap/utils/user'
+import { ExpertModal } from '@pancakeswap/widgets-internal'
+import { TOKEN_RISK } from 'components/AccessRisk'
+import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
+import { useTogglenotifications } from 'hooks/v3/useToggleNotifications'
+import { ReactNode, useCallback, useState } from 'react'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
+import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import {
   useOnlyOneAMMSourceEnabled,
+  useRoutingSettingChanged,
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
   useUserV2SwapEnable,
   useUserV3SwapEnable,
-  useRoutingSettingChanged,
 } from 'state/user/smartRouter'
-import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import { styled } from 'styled-components'
-import { TOKEN_RISK } from 'components/AccessRisk'
-import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
 import { SettingsMode } from './types'
 
+const BetaTag = styled.div`
+  border: 2px solid ${({ theme }) => theme.colors.success};
+  border-radius: 16px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: ${({ theme }) => theme.colors.success};
+  margin-left: 6px;
+  font-weight: bold;
+  font-size: 14px;
+`
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   height: auto;
@@ -91,6 +104,8 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, setAudioMode] = useAudioPlay()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
+  const { allowNotifications, handleEnableNotifications, handleDiableNotifications } = useTogglenotifications()
+
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
   const [tokenRisk, setTokenRisk] = useUserTokenRisk()
@@ -161,6 +176,26 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   onChange={() => {
                     setUserUsernameVisibility(!userUsernameVisibility)
                   }}
+                />
+              </Flex>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Allow notifications')}</Text>
+                  <QuestionHelper
+                    text={t(
+                      'Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible',
+                    )}
+                    placement="top"
+                    ml="4px"
+                  />
+                  <BetaTag>{t('BETA')}</BetaTag>
+                </Flex>
+
+                <Toggle
+                  id="toggle-username-visibility"
+                  checked={allowNotifications}
+                  scale="md"
+                  onChange={allowNotifications ? handleDiableNotifications : handleEnableNotifications}
                 />
               </Flex>
               {chainId === ChainId.BSC && (
