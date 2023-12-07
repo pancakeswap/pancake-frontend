@@ -62,7 +62,7 @@ export const VoteTable = () => {
     return Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
   }, [votes])
 
-  const { rows, onRowSelect, refetch, isLoading } = useGaugeRows()
+  const { gauges, rows, onRowSelect, refetch, isLoading } = useGaugeRows()
   const { data: slopes } = useUserVoteSlopes()
   const { isDesktop } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
@@ -132,7 +132,7 @@ export const VoteTable = () => {
         const vote = votes[slope.hash]
         // update vote power
         if (vote && !vote?.locked) {
-          const row = rows?.find((r) => r.hash === slope.hash)
+          const row = gauges?.find((r) => r.hash === slope.hash)
           if (!row) return undefined
           const currentPower = BigInt((Number(vote.power) * 100).toFixed(0))
           const { nativePower = 0, proxyPower = 0 } = slope || {}
@@ -144,7 +144,7 @@ export const VoteTable = () => {
         }
         // vote deleted
         if (!vote && (slope.proxyPower > 0 || slope.nativePower > 0)) {
-          const row = rows?.find((r) => r.hash === slope.hash)
+          const row = gauges?.find((r) => r.hash === slope.hash)
           if (!row) return undefined
           return {
             ...row,
@@ -157,14 +157,14 @@ export const VoteTable = () => {
       .filter((gauge: GaugeWithDelta | undefined): gauge is GaugeWithDelta => Boolean(gauge))
       .sort((a, b) => (b.delta < a.delta ? 1 : -1))
     return voteGauges
-  }, [slopes, votes, rows])
+  }, [slopes, votes, gauges])
 
   const submitVote = useCallback(async () => {
     await writeVote(sortedSubmitVotes)
     await refetch()
   }, [refetch, sortedSubmitVotes, writeVote])
 
-  const gauges = isDesktop ? (
+  const gaugesTable = isDesktop ? (
     <>
       <TableHeader count={rows?.length} />
 
@@ -245,7 +245,7 @@ export const VoteTable = () => {
         onDismiss={() => setIsOpen(false)}
       />
       <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
-        {gauges}
+        {gaugesTable}
 
         {rowsWithLock?.length && epochPower <= 0n && cakeLockedAmount > 0n ? (
           <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">

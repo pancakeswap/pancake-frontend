@@ -40,6 +40,7 @@ export const useGaugeRows = () => {
   )
 
   return {
+    gauges,
     rows,
     isLoading,
     onRowSelect,
