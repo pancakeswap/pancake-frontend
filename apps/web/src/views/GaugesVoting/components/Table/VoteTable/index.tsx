@@ -107,8 +107,10 @@ export const VoteTable = () => {
   const { writeVote, isPending } = useWriteGaugesVoteCallback()
 
   const disabled = useMemo(() => {
-    const lockedSum = Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
-    const newAddSum = Object.values(votes).reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
+    let lockedSum = Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
+    let newAddSum = Object.values(votes).reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
+    lockedSum = Number(Number(lockedSum).toFixed(2))
+    newAddSum = Number(Number(newAddSum).toFixed(2))
 
     // voting ended
     if (onTally) return true
