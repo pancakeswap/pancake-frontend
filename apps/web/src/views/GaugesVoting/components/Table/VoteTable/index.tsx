@@ -41,7 +41,8 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
   expanded: boolean
 }>`
   overflow-y: auto;
-  height: ${({ expanded }) => (expanded ? 'auto' : '210px')};
+
+  ${({ expanded }) => (!expanded ? 'max-height: 200px;' : '')}
 `
 
 export const VoteTable = () => {
@@ -251,7 +252,7 @@ export const VoteTable = () => {
         {gaugesTable}
 
         {rowsWithLock?.length && epochPower <= 0n && cakeLockedAmount > 0n ? (
-          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} my={['24px', '24px', '36px']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
                 <Text>
@@ -272,7 +273,7 @@ export const VoteTable = () => {
           </Box>
         ) : null}
         {showNoCakeLockedWarning ? (
-          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} my={['24px', '24px', '36px']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
                 <Text>{t('You have no locked CAKE.')}</Text>
@@ -290,7 +291,7 @@ export const VoteTable = () => {
           </Box>
         ) : null}
         {showOnTallyWarning ? (
-          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} my={['24px', '24px', '36px']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
                 <Text>{t('Votes are currently being adjusted and tallied. No more votes can be casted.')}</Text>
@@ -304,13 +305,18 @@ export const VoteTable = () => {
           padding={isDesktop ? '' : '1em'}
           style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}
         >
-          <Button
-            width="100%"
-            onClick={() => setIsOpen(true)}
-            style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
-          >
-            + Add Gauges {isMobile ? null : `(${leftGaugesCanAdd || 0})`}
-          </Button>
+          {!account ? (
+            <ConnectWalletButton width="100%" />
+          ) : (
+            <Button
+              width="100%"
+              onClick={() => setIsOpen(true)}
+              style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
+            >
+              + Add Gauges {isMobile ? null : `(${leftGaugesCanAdd || 0})`}
+            </Button>
+          )}
+
           {!account ? (
             <ConnectWalletButton width="100%" />
           ) : (
