@@ -5,14 +5,16 @@ import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useMemo } from 'react'
 import { Hex } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
-import { RowProps } from '../types'
+import { DEFAULT_VOTE, RowProps } from '../types'
 
 export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
   const userVote = useUserVote(data)
   const voteLocked = userVote?.voteLocked
   const { balance: veCakeBalance } = useVeCakeBalance()
+  const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
   const currentTimestamp = useCurrentBlockTimestamp()
   const epochVotePower = useEpochVotePower()
   const willUnlock = useMemo(
@@ -52,18 +54,27 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
 
   const voteValue = useMemo(() => {
     if (voteLocked) return currentVotePercent ?? ''
-    return willUnlock ? '0' : vote?.power ?? ''
+    if (willUnlock) return '0'
+    if (vote?.power === DEFAULT_VOTE.power) return currentVotePercent ?? ''
+    return vote?.power ?? ''
   }, [voteLocked, currentVotePercent, willUnlock, vote?.power])
 
   const previewVoteWeight = useMemo(() => {
     const p = Number(voteValue || 0) * 100
     // const powerBN = new BN(epochVotePower.toString())
-    const amount = getBalanceNumber(veCakeBalance.times(p).div(10000))
+    let balance = veCakeBalance
+    if (userVote?.ignoredSide === 'proxy') {
+      balance = veCakeBalance.minus(proxyVeCakeBalance)
+    }
+    if (userVote?.ignoredSide === 'native') {
+      balance = proxyVeCakeBalance
+    }
+    const amount = getBalanceNumber(balance.times(p).div(10000))
 
     if (amount === 0) return 0
     if (amount < 1) return amount.toPrecision(2)
     return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-  }, [veCakeBalance, voteValue])
+  }, [voteValue, veCakeBalance, userVote?.ignoredSide, proxyVeCakeBalance])
 
   // init vote value if still default
   useEffect(() => {
@@ -83,5 +94,6 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     voteValue,
     voteLocked,
     willUnlock,
+    proxyVeCakeBalance,
   }
 }

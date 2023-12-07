@@ -21,6 +21,7 @@ import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCou
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochOnTally } from 'views/GaugesVoting/hooks/useEpochTime'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
+import { useUserVoteSlopes } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
@@ -30,6 +31,10 @@ import { TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
 import { useGaugeRows } from './hooks/useGaugeRows'
 import { UserVote } from './types'
+
+type GaugeWithDelta = Gauge & {
+  delta: bigint
+}
 
 const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expanded'].includes(prop) })<{
   expanded: boolean
@@ -57,7 +62,8 @@ export const VoteTable = () => {
     return Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
   }, [votes])
 
-  const { rows, onRowSelect, refetch, isLoading } = useGaugeRows()
+  const { gauges, rows, onRowSelect, refetch, isLoading } = useGaugeRows()
+  const { data: slopes } = useUserVoteSlopes()
   const { isDesktop } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
     return rows?.map((row) => {
@@ -101,8 +107,10 @@ export const VoteTable = () => {
   const { writeVote, isPending } = useWriteGaugesVoteCallback()
 
   const disabled = useMemo(() => {
-    const lockedSum = Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
-    const newAddSum = Object.values(votes).reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
+    let lockedSum = Object.values(votes).reduce((acc, cur) => acc + (cur?.locked ? Number(cur?.power) : 0), 0)
+    let newAddSum = Object.values(votes).reduce((acc, cur) => acc + (!cur?.locked ? Number(cur?.power) : 0), 0)
+    lockedSum = Number(Number(lockedSum).toFixed(2))
+    newAddSum = Number(Number(newAddSum).toFixed(2))
 
     // voting ended
     if (onTally) return true
@@ -120,26 +128,45 @@ export const VoteTable = () => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])
 
-  const submitVote = useCallback(async () => {
-    const voteGauges = Object.values(votes)
-      .map((vote) => {
-        if (!vote.locked && Number(vote.power)) {
-          const row = rows?.find((r) => r.hash === vote.hash)
+  const sortedSubmitVotes = useMemo(() => {
+    const voteGauges = slopes
+      .map((slope) => {
+        const vote = votes[slope.hash]
+        // update vote power
+        if (vote && !vote?.locked) {
+          const row = gauges?.find((r) => r.hash === slope.hash)
+          if (!row) return undefined
+          const currentPower = BigInt((Number(vote.power) * 100).toFixed(0))
+          const { nativePower = 0, proxyPower = 0 } = slope || {}
+          return {
+            ...row,
+            delta: currentPower - (BigInt(nativePower) + BigInt(proxyPower)),
+            weight: currentPower,
+          }
+        }
+        // vote deleted
+        if (!vote && (slope.proxyPower > 0 || slope.nativePower > 0)) {
+          const row = gauges?.find((r) => r.hash === slope.hash)
           if (!row) return undefined
           return {
             ...row,
-            weight: BigInt((Number(vote.power) * 100).toFixed(0)),
+            delta: 0n - (BigInt(slope.nativePower) + BigInt(slope.proxyPower)),
+            weight: 0n,
           }
         }
         return undefined
       })
-      .filter((gauge: Gauge | undefined): gauge is Gauge => Boolean(gauge))
+      .filter((gauge: GaugeWithDelta | undefined): gauge is GaugeWithDelta => Boolean(gauge))
+      .sort((a, b) => (b.delta < a.delta ? 1 : -1))
+    return voteGauges
+  }, [slopes, votes, gauges])
 
-    await writeVote(voteGauges)
+  const submitVote = useCallback(async () => {
+    await writeVote(sortedSubmitVotes)
     await refetch()
-  }, [refetch, rows, votes, writeVote])
+  }, [refetch, sortedSubmitVotes, writeVote])
 
-  const gauges = isDesktop ? (
+  const gaugesTable = isDesktop ? (
     <>
       <TableHeader count={rows?.length} />
 
@@ -220,7 +247,7 @@ export const VoteTable = () => {
         onDismiss={() => setIsOpen(false)}
       />
       <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
-        {gauges}
+        {gaugesTable}
 
         {rowsWithLock?.length && epochPower <= 0n && cakeLockedAmount > 0n ? (
           <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">

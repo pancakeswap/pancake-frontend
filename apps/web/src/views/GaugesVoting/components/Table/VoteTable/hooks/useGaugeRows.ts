@@ -11,22 +11,25 @@ export const useGaugeRows = () => {
   const previousAccount = usePreviousValue(account)
   const { data: prevVotedGauges, refetch } = useUserVoteGauges()
   const [selectRowsHash, setSelectRowsHash] = useState<Gauge['hash'][]>([])
+  const [initialed, setInitialed] = useState(false)
   const rows = useMemo(() => {
     return gauges?.filter((gauge) => selectRowsHash.includes(gauge.hash))
   }, [gauges, selectRowsHash])
 
   useEffect(() => {
     if (account !== previousAccount) {
+      setInitialed(false)
       setSelectRowsHash([])
     }
   }, [account, previousAccount, selectRowsHash])
 
   // add all gauges to selectRows when user has voted gauges
   useEffect(() => {
-    if (prevVotedGauges?.length && !selectRowsHash.length) {
+    if (prevVotedGauges?.length && !selectRowsHash.length && !initialed) {
       setSelectRowsHash(prevVotedGauges.map((gauge) => gauge.hash))
+      setInitialed(true)
     }
-  }, [prevVotedGauges, selectRowsHash.length])
+  }, [initialed, prevVotedGauges, selectRowsHash.length])
 
   const onRowSelect = useCallback(
     (hash: Gauge['hash']) => {
@@ -40,6 +43,7 @@ export const useGaugeRows = () => {
   )
 
   return {
+    gauges,
     rows,
     isLoading,
     onRowSelect,
