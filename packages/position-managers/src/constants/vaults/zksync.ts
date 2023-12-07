@@ -1,4 +1,4 @@
-import { arbitrumTokens } from '@pancakeswap/tokens'
+import { zksyncTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Strategy, VaultConfig } from '../../types'
 import { MANAGER } from '../managers'
@@ -8,11 +8,11 @@ export const vaults: VaultConfig[] = [
     id: 1,
     idByManager: 1,
     name: 'DEFIEDGE',
-    address: '0x4fa0c6FC2d0d7b6cDa4215Ff09e8ed444F87dDB3',
-    adapterAddress: '0xaCAbb974b3c97f8F521634AcaC6ce1D9A1557BFb',
-    currencyA: arbitrumTokens.weth,
-    currencyB: arbitrumTokens.arb,
-    earningToken: arbitrumTokens.cake,
+    address: '0x43Da8432E9015C6660B927d842CD239df28Ffacf',
+    adapterAddress: '0xa4a1306754c1Bf0d72BFCE38f408D5eaE3863c3B',
+    currencyA: zksyncTokens.usdc,
+    currencyB: zksyncTokens.weth,
+    earningToken: zksyncTokens.cake,
     feeTier: FeeAmount.LOW,
     strategy: Strategy.ALO,
     manager: MANAGER.DEFIEDGE,
