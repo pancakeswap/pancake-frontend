@@ -116,7 +116,12 @@ const GaugesVoting = () => {
         </Flex>
       </StyledPageHeader>
       <StyledPage>
-        <Box pl={['16px', '16px', '24px']} pr={['16px', '16px', '24px']} mt={['32px', '32px', '32px', '-18px']}>
+        <Box
+          pl={['16px', '16px', '24px']}
+          pr={['16px', '16px', '24px']}
+          mt={['32px', '32px', '32px', '-18px']}
+          pb={['32px', '32px', '52px']}
+        >
           <ResponsiveCard>
             <Grid gridTemplateColumns={isDesktop ? '2.2fr 3fr' : '1fr'}>
               <EpochPreview />

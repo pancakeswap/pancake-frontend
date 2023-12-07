@@ -301,7 +301,7 @@ export const VoteTable = () => {
         <Grid
           gridTemplateColumns="1fr 1fr "
           gridGap="12px"
-          padding={isDesktop ? '2em' : '1em'}
+          padding={isDesktop ? '' : '1em'}
           style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}
         >
           <Button
