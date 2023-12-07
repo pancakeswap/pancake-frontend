@@ -27,12 +27,19 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const userVote = useUserVote(data)
-  const { currentVoteWeight, currentVotePercent, previewVoteWeight, voteValue, voteLocked, willUnlock } =
-    useRowVoteState({
-      data,
-      vote,
-      onChange,
-    })
+  const {
+    currentVoteWeight,
+    currentVotePercent,
+    previewVoteWeight,
+    voteValue,
+    voteLocked,
+    willUnlock,
+    proxyVeCakeBalance,
+  } = useRowVoteState({
+    data,
+    vote,
+    onChange,
+  })
   const onMax = () => {
     onChange(vote, true)
   }
@@ -48,12 +55,13 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
                 {
                   ...userVote,
                   currentTimestamp: debugFormat(currentTimestamp),
-                  nativeLasVoteTime: debugFormat(userVote?.lastVoteTime),
+                  nativeLasVoteTime: debugFormat(userVote?.nativeLastVoteTime),
                   proxyLastVoteTime: debugFormat(userVote?.proxyLastVoteTime),
                   lastVoteTime: debugFormat(userVote?.lastVoteTime),
                   end: debugFormat(userVote?.end),
                   proxyEnd: debugFormat(userVote?.proxyEnd),
                   nativeEnd: debugFormat(userVote?.nativeEnd),
+                  proxyVeCakeBalance: proxyVeCakeBalance?.toString(),
                 },
                 undefined,
                 2,

@@ -29,7 +29,9 @@ export type VotedSlope = {
   end: bigint
   lastVoteTime: bigint
   voteLocked: boolean
-  ignoredWeight?: bigint
+  ignoredSide?: 'native' | 'proxy'
+  ignoredSlope?: bigint
+  ignoredPower?: bigint
 }
 
 const max = (a: bigint, b: bigint) => (a > b ? a : b)
@@ -92,20 +94,26 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           .add(10, 'day')
           .isAfter(dayjs.unix(currentTimestamp))
         let [nativeSlope, nativePower, proxySlope, proxyPower] = [_nativeSlope, _nativePower, _proxySlope, _proxyPower]
-        let ignoredWeight = 0n
+        let ignoredSlope = 0n
+        let ignoredPower = 0n
+        let ignoredSide: 'native' | 'proxy' | undefined
         // when native slope will expire before current epochEnd
         // use proxy slope only
         if (nativeEnd < nextEpochStart && proxyEnd > nextEpochStart) {
+          ignoredSlope = nativeSlope
+          ignoredPower = nativePower
+          ignoredSide = 'native'
           nativeSlope = 0n
           nativePower = 0n
-          ignoredWeight = _nativeSlope * (nativeEnd - BigInt(currentTimestamp))
         }
         // when proxy slope will expire before current epochEnd
         // use native slope only
         if (proxyEnd < nextEpochStart && nativeEnd > nextEpochStart) {
+          ignoredSlope = proxySlope
+          ignoredPower = proxyPower
+          ignoredSide = 'proxy'
           proxySlope = 0n
           proxyPower = 0n
-          ignoredWeight = _proxySlope * (proxyEnd - BigInt(currentTimestamp))
         }
 
         // when both slopes will expire before current epochEnd
@@ -114,13 +122,17 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           const nativeWeight = _nativeSlope * (nativeEnd - BigInt(currentTimestamp))
           const proxyWeight = _proxySlope * (proxyEnd - BigInt(currentTimestamp))
           if (nativeWeight > proxyWeight) {
+            ignoredPower = proxyPower
+            ignoredSlope = proxySlope
+            ignoredSide = 'proxy'
             proxySlope = 0n
             proxyPower = 0n
-            ignoredWeight = proxyWeight
           } else {
+            ignoredPower = nativePower
+            ignoredSlope = nativeSlope
+            ignoredSide = 'native'
             nativeSlope = 0n
             nativePower = 0n
-            ignoredWeight = nativeWeight
           }
         }
 
@@ -142,7 +154,9 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           end: max(nativeEnd, nativeEnd),
           voteLocked: proxyVoteLocked || nativeVoteLocked,
           lastVoteTime: proxyLastVoteTime < nativeLastVoteTime ? nativeLastVoteTime : proxyLastVoteTime,
-          ignoredWeight,
+          ignoredPower,
+          ignoredSlope,
+          ignoredSide,
         }
       }
       const response = await publicClient.multicall({
