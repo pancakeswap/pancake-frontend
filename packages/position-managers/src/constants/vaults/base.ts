@@ -8,7 +8,7 @@ export const vaults: VaultConfig[] = [
     id: 1,
     idByManager: 1,
     name: 'DEFIEDGE',
-    address: '0xdf431D25e3BE16bDf7501F70e7fBa55a9E53eae5',
+    address: '0x5fF47dE6F96937eB24d1Ae1A9036b5963418208b',
     adapterAddress: '0xFB90a3F1822fa3Da84C984272a6266Cf336A1807',
     currencyA: baseTokens.usdc,
     currencyB: baseTokens.usdbc,
