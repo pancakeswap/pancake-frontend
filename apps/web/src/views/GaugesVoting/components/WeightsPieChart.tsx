@@ -16,6 +16,19 @@ const Container = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  svg,
+  canvas {
+    max-width: 290px !important;
+    width: 290px !important;
+    height: 290px !important;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+      max-width: 300px !important;
+      width: 300px !important;
+      height: 300px !important;
+    }
+  }
 `
 
 const Center = styled.div`
@@ -175,8 +188,8 @@ export const WeightsPieChart: React.FC<{
     </Center>
   )
   const chart = isLoading ? (
-    <Box ml="20px">
-      <svg width="293" height="293" viewBox="0 0 293 293" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Box ml={[0, 0, '20px']}>
+      <svg viewBox="0 0 293 293" fill="none" xmlns="http://www.w3.org/2000/svg">
         <Circle cx="146.5" cy="146.5" r="131.5" stroke="#E9EAEB" stroke-width="30" />
       </svg>
     </Box>
@@ -184,6 +197,7 @@ export const WeightsPieChart: React.FC<{
     <Doughnut
       data={gauges}
       options={{
+        responsive: true,
         cutout: '80%',
         radius: '95%',
         plugins: {

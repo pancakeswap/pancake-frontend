@@ -25,7 +25,7 @@ export const CurrentEpoch = () => {
   const { isDesktop } = useMatchBreakpoints()
 
   return (
-    <Box padding="16px 24px 24px">
+    <Box padding={['16px', '16px', '16px 24px 24px']}>
       <FlexGap gap="8px" flexDirection="column">
         <AutoRow justifyContent="space-between">
           <FlexGap

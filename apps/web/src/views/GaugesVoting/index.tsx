@@ -30,7 +30,9 @@ const InlineLink = styled(LinkExternal)`
 `
 
 const StyledGaugesVotingPage = styled.div`
+  overflow: hidden;
   background: transparent;
+
   ${({ theme }) => theme.mediaQueries.lg} {
     background: ${({ theme }) => theme.colors.gradientBubblegum};
   }
@@ -46,9 +48,7 @@ const StyledPageHeader = styled(PageHeader)`
 `
 
 const StyledPage = styled(Page)`
-  padding-top: 0px;
-  padding-bottom: 0px;
-  padding-left: 0px;
+  padding: 0px;
 
   background: ${({ theme }) => theme.colors.backgroundAlt};
 
@@ -117,6 +117,7 @@ const GaugesVoting = () => {
       </StyledPageHeader>
       <StyledPage>
         <Box
+          id="test___kkk"
           pl={['16px', '16px', '24px']}
           pr={['16px', '16px', '24px']}
           mt={['32px', '32px', '32px', '-18px']}
