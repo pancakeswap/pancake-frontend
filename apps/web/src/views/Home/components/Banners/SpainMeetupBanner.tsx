@@ -145,10 +145,10 @@ export function NumberDisplay({ label, value }: NumberDisplayProps) {
 
   return (
     <NumberDisplayContainer flexDirection="column" alignItems="center" justifyContent="center" gap="0.5rem" flex={1}>
-      <Text fontSize="4rem" lineHeight="100%" fontFamily="Inter, Sans-Serif">
+      <Text fontSize="4rem" lineHeight="100%" fontFamily="Inter, Sans-Serif" color="white">
         {valueDisplay}
       </Text>
-      <Text textTransform="uppercase" fontSize="0.825rem">
+      <Text textTransform="uppercase" fontSize="0.825rem" color="white">
         {label}
       </Text>
     </NumberDisplayContainer>
