@@ -54,7 +54,9 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
 
   const voteValue = useMemo(() => {
     if (voteLocked) return currentVotePercent ?? ''
-    return willUnlock ? '0' : vote?.power ?? ''
+    if (willUnlock) return '0'
+    if (vote?.power && Number(vote?.power)) return vote.power
+    return currentVotePercent ?? ''
   }, [voteLocked, currentVotePercent, willUnlock, vote?.power])
 
   const previewVoteWeight = useMemo(() => {
