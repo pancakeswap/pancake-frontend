@@ -7,6 +7,7 @@ import { Address, Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { usePublicClient } from 'wagmi'
+import { useNextEpochStart } from './useEpochTime'
 
 export type VotedSlope = {
   hash: string
@@ -28,6 +29,7 @@ export type VotedSlope = {
   end: bigint
   lastVoteTime: bigint
   voteLocked: boolean
+  ignoredWeight?: bigint
 }
 
 const max = (a: bigint, b: bigint) => (a > b ? a : b)
@@ -39,7 +41,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
   const contract = useGaugesVotingContract()
   const { data: userInfo } = useVeCakeUserInfo()
   const currentTimestamp = useCurrentBlockTimestamp()
-  // const nextEpochStart = useNextEpochStart()
+  const nextEpochStart = useNextEpochStart()
 
   const { data } = useQuery(
     ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
@@ -76,9 +78,9 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           allowFailure: false,
         })
         const [
-          [proxySlope, proxyPower, proxyEnd],
+          [_proxySlope, _proxyPower, proxyEnd],
           proxyLastVoteTime,
-          [nativeSlope, nativePower, nativeEnd],
+          [_nativeSlope, _nativePower, nativeEnd],
           nativeLastVoteTime,
         ] = response
         const proxyVoteLocked = dayjs
@@ -89,6 +91,39 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           .unix(Number(nativeLastVoteTime))
           .add(10, 'day')
           .isAfter(dayjs.unix(currentTimestamp))
+        let [nativeSlope, nativePower, proxySlope, proxyPower] = [_nativeSlope, _nativePower, _proxySlope, _proxyPower]
+        let ignoredWeight = 0n
+        // when native slope will expire before current epochEnd
+        // use proxy slope only
+        if (nativeEnd < nextEpochStart && proxyEnd > nextEpochStart) {
+          nativeSlope = 0n
+          nativePower = 0n
+          ignoredWeight = _nativeSlope * (nativeEnd - BigInt(currentTimestamp))
+        }
+        // when proxy slope will expire before current epochEnd
+        // use native slope only
+        if (proxyEnd < nextEpochStart && nativeEnd > nextEpochStart) {
+          proxySlope = 0n
+          proxyPower = 0n
+          ignoredWeight = _proxySlope * (proxyEnd - BigInt(currentTimestamp))
+        }
+
+        // when both slopes will expire before current epochEnd
+        // use max of both slopes
+        if (nativeEnd < nextEpochStart && proxyEnd < nextEpochStart) {
+          const nativeWeight = _nativeSlope * (nativeEnd - BigInt(currentTimestamp))
+          const proxyWeight = _proxySlope * (proxyEnd - BigInt(currentTimestamp))
+          if (nativeWeight > proxyWeight) {
+            proxySlope = 0n
+            proxyPower = 0n
+            ignoredWeight = proxyWeight
+          } else {
+            nativeSlope = 0n
+            nativePower = 0n
+            ignoredWeight = nativeWeight
+          }
+        }
+
         return {
           hash: gauge?.hash as Hex,
           proxyPower,
@@ -107,6 +142,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           end: max(nativeEnd, nativeEnd),
           voteLocked: proxyVoteLocked || nativeVoteLocked,
           lastVoteTime: proxyLastVoteTime < nativeLastVoteTime ? nativeLastVoteTime : proxyLastVoteTime,
+          ignoredWeight,
         }
       }
       const response = await publicClient.multicall({
