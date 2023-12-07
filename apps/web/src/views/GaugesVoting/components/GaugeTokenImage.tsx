@@ -18,7 +18,15 @@ type Props = {
 }
 
 const GaugeSingleTokenImage = ({ size = 32 }: Props) => {
-  return <img src="/images/cake-staking/token-vecake.png" alt="ve-cake" width={size} height={size} />
+  return (
+    <img
+      src="/images/cake-staking/token-vecake.png"
+      alt="ve-cake"
+      width={size}
+      height={size}
+      style={{ maxHeight: `${size}px` }}
+    />
+  )
 }
 
 const Wrapper = styled.div`

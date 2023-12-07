@@ -117,7 +117,6 @@ const GaugesVoting = () => {
       </StyledPageHeader>
       <StyledPage>
         <Box
-          id="test___kkk"
           pl={['16px', '16px', '24px']}
           pr={['16px', '16px', '24px']}
           mt={['32px', '32px', '32px', '-18px']}
@@ -162,7 +161,6 @@ const GaugesVoting = () => {
 }
 
 const EpochPreview = () => {
-  const { t } = useTranslation()
   return (
     <Card isActive style={{ height: 'fit-content' }}>
       <MyVeCakeBalance />
