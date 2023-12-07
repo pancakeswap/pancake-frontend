@@ -135,7 +135,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
           <ModalCloseButton onDismiss={onDismiss} />
         </StyledModalHeader>
 
-        <ModalBody>
+        <ModalBody style={{ marginLeft: '-24px', marginRight: '-24px', paddingLeft: '24px', paddingRight: '24px' }}>
           <Row>
             <Text fontSize="16px" bold color="secondary">
               {t('EARN CAKE')}
