@@ -12,7 +12,7 @@ type Countdown = {
 export function useCountdown(to: number): Countdown | undefined {
   const [countdown, setCountdown] = useState<Countdown | undefined>()
 
-  const updateCountdown = useCallback(() => {
+  const updateCountdown = useCallback((): ReturnType<typeof setTimeout> | void => {
     const target = dayjs.unix(to)
     let relative = dayjs()
     if (target.isBefore(relative)) {
@@ -37,7 +37,11 @@ export function useCountdown(to: number): Countdown | undefined {
 
   useEffect(() => {
     const timer = updateCountdown()
-    return () => clearTimeout(timer)
+    return () => {
+      if (timer) {
+        clearTimeout(timer)
+      }
+    }
   }, [updateCountdown])
 
   return countdown
