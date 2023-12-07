@@ -129,7 +129,7 @@ const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
         {bannerList.map((banner, index) => {
           const childKey = `Banner${index}`
           return (
-            <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0 }} key={childKey}>
+            <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0, height: 'auto' }} key={childKey}>
               {banner}
             </SwiperSlide>
           )
