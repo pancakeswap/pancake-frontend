@@ -25,7 +25,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 13,
-    idByManager: 1,
+    idByManager: 2,
     name: 'DEFIEDGE',
     address: '0x2eaa7A52071D4b2dd9d9eC279Ea53D7F2D99D076',
     adapterAddress: '0x65A7d8A2eF40E14Ed5174B830B63019777398A98',
