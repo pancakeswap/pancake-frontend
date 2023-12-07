@@ -8,7 +8,7 @@ import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBloc
 import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
-import { RowProps } from '../types'
+import { DEFAULT_VOTE, RowProps } from '../types'
 
 export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
   const userVote = useUserVote(data)
@@ -55,8 +55,8 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
   const voteValue = useMemo(() => {
     if (voteLocked) return currentVotePercent ?? ''
     if (willUnlock) return '0'
-    if (vote?.power && Number(vote?.power)) return vote.power
-    return currentVotePercent ?? ''
+    if (vote?.power === DEFAULT_VOTE.power) return currentVotePercent ?? ''
+    return vote?.power ?? ''
   }, [voteLocked, currentVotePercent, willUnlock, vote?.power])
 
   const previewVoteWeight = useMemo(() => {
@@ -74,7 +74,7 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     if (amount === 0) return 0
     if (amount < 1) return amount.toPrecision(2)
     return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-  }, [veCakeBalance, proxyVeCakeBalance, voteValue])
+  }, [voteValue, veCakeBalance, userVote?.ignoredSide, proxyVeCakeBalance])
 
   // init vote value if still default
   useEffect(() => {

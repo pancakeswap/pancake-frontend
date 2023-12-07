@@ -15,7 +15,7 @@ export type RowProps = {
 } & SpaceProps
 
 export const DEFAULT_VOTE: UserVote = {
-  power: '0',
+  power: 'DEFAULT',
   locked: false,
   hash: '0x',
 }
