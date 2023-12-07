@@ -5,6 +5,31 @@ import { cakeBnbLpToken } from '../lpTokens'
 
 export const ifos: BaseIfoConfig[] = [
   {
+    id: 'test-ifo-v7',
+    address: '0xD0642815310f617bBe8bf9782b368D4AADf544b8',
+    isActive: true,
+    name: 'Test',
+    plannedStartTime: 1701856800,
+    poolBasic: {
+      raiseAmount: '$156,000',
+    },
+    poolUnlimited: {
+      raiseAmount: '$624,000',
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.sable,
+    campaignId: '512200000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/0x01ced179a39d30bc11436fd7f578ae45089bacaace57caa47881146fce7586ba',
+    tokenOfferingPrice: 0.06,
+    version: 7,
+    twitterUrl: 'https://twitter.com/SableFinance',
+    description:
+      'Sable Finance is a decentralized stablecoin protocol that allows users to draw interest-free loans, minting USDS, a USD-pegged stablecoin.',
+    vestingTitle:
+      '$SABLE is the secondary token issued by Sable Finance, enabling users to capture fee revenue and participate in governance. $SABLE will also be emitted to Stability Providers and Frontend Operators.',
+  },
+  {
     id: 'sable',
     address: '0xD247FFf8005917aDc02f59Ba8F2Dde02c13ee92d',
     isActive: false,
