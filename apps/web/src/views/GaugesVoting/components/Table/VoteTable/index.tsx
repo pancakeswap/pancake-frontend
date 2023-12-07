@@ -127,11 +127,12 @@ export const VoteTable = () => {
   }, [gaugesCount, rows])
 
   const sortedSubmitVotes = useMemo(() => {
-    const voteGauges = Object.values(votes)
-      .map((vote) => {
-        if (!vote.locked) {
-          const row = rows?.find((r) => r.hash === vote.hash)
-          const slope = slopes?.find((r) => r.hash === vote.hash)
+    const voteGauges = slopes
+      .map((slope) => {
+        const vote = votes[slope.hash]
+        // update vote power
+        if (vote && !vote?.locked) {
+          const row = rows?.find((r) => r.hash === slope.hash)
           if (!row) return undefined
           const currentPower = BigInt((Number(vote.power) * 100).toFixed(0))
           const { nativePower = 0, proxyPower = 0 } = slope || {}
@@ -139,6 +140,16 @@ export const VoteTable = () => {
             ...row,
             delta: currentPower - (BigInt(nativePower) + BigInt(proxyPower)),
             weight: currentPower,
+          }
+        }
+        // vote deleted
+        if (!vote && (slope.proxyPower > 0 || slope.nativePower > 0)) {
+          const row = rows?.find((r) => r.hash === slope.hash)
+          if (!row) return undefined
+          return {
+            ...row,
+            delta: 0n - (BigInt(slope.nativePower) + BigInt(slope.proxyPower)),
+            weight: 0n,
           }
         }
         return undefined
