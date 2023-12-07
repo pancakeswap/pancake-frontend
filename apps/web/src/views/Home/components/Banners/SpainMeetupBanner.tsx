@@ -157,7 +157,7 @@ export function NumberDisplay({ label, value }: NumberDisplayProps) {
 
 export function Countdown() {
   const { t } = useTranslation()
-  const countdown = useCountdown(1701942378)
+  const countdown = useCountdown(1702659600)
   if (!countdown) {
     return null
   }
@@ -205,7 +205,7 @@ export const SpainMeetupBanner = memo(function SpainMeetupBanner() {
             </BunnyContainer>
             <TicketBtnContainer>
               <Link
-                href="https://blog.pancakeswap.finance/articles/introducing-web3-notifications-on-pancake-swap"
+                href="https://www.eventbrite.com/e/entradas-pancakeswap-meetup-in-spain-764126180977?aff=oddtdtcreator"
                 external
                 style={{ textDecoration: 'none' }}
               >
