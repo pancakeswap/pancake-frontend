@@ -15,13 +15,13 @@ type Props = {
   ifoChainId?: ChainId
 }
 
-const IfoPoolVaultCard = ({ ifoBasicSaleType }: Props) => {
+const IfoPoolVaultCard = ({ ifoBasicSaleType, ifoAddress }: Props) => {
   const { chainId } = useActiveChainId()
   const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
   const { isXl, isLg, isMd, isXs, isSm } = useMatchBreakpoints()
   const isSmallerThanXl = isXl || isLg || isMd || isXs || isSm
 
-  const vault = isSmallerThanXl ? null : <VeCakeCard />
+  const vault = isSmallerThanXl ? null : <VeCakeCard ifoAddress={ifoAddress} />
 
   return (
     <Flex width="100%" maxWidth={400} alignItems="center" flexDirection="column">

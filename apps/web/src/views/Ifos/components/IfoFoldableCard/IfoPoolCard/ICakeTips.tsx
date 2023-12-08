@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
+import { Address } from 'viem'
 
 import { StakeButton } from './StakeButton'
 import { useICakeBridgeStatus } from '../../../hooks/useIfoCredit'
@@ -11,12 +12,15 @@ type Props = {
   ifoId: string
 
   ifoChainId: ChainId
+
+  ifoAddress?: Address
 }
 
-export function ICakeTips({ ifoChainId, ifoId }: Props) {
+export function ICakeTips({ ifoChainId, ifoId, ifoAddress }: Props) {
   const { t } = useTranslation()
   const { noICake, hasBridged, shouldBridgeAgain, sourceChainCredit, destChainCredit } = useICakeBridgeStatus({
     ifoChainId,
+    ifoAddress,
   })
   const chainName = useChainNames([ifoChainId])
 

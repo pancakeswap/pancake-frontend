@@ -38,7 +38,7 @@ export function useUserIfoInfo({ chainId, ifoAddress }: Params) {
   const { address: account } = useAccount()
   const ratio = useICakeRatio({ chainId })
   const { data } = useQuery(
-    [account, chainId, 'user-ifo-info'],
+    [account, chainId, ifoAddress, 'user-ifo-info'],
     () =>
       getUserIfoInfo({
         account,

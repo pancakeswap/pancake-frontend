@@ -3,6 +3,7 @@ import { fetchPublicIfoData } from '@pancakeswap/ifos'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import { Address } from 'viem'
 
 import { getViemClients } from 'utils/viem'
 
@@ -11,10 +12,11 @@ import { useUserIfoInfo } from './useUserIfoInfo'
 
 type IfoCreditParams = {
   chainId?: ChainId
+  ifoAddress?: Address
 }
 
-export function useIfoCredit({ chainId }: IfoCreditParams) {
-  const { credit } = useUserIfoInfo({ chainId })
+export function useIfoCredit({ chainId, ifoAddress }: IfoCreditParams) {
+  const { credit } = useUserIfoInfo({ chainId, ifoAddress })
   return credit
 }
 
@@ -27,12 +29,13 @@ export function useIfoCeiling({ chainId }: { chainId?: ChainId }): BigNumber | u
 
 type ICakeStatusParams = {
   ifoChainId?: ChainId
+  ifoAddress?: Address
 }
 
-export function useICakeBridgeStatus({ ifoChainId }: ICakeStatusParams) {
+export function useICakeBridgeStatus({ ifoChainId, ifoAddress }: ICakeStatusParams) {
   const srcChainId = useIfoSourceChain(ifoChainId)
-  const destChainCredit = useIfoCredit({ chainId: ifoChainId })
-  const sourceChainCredit = useIfoCredit({ chainId: srcChainId })
+  const destChainCredit = useIfoCredit({ chainId: ifoChainId, ifoAddress })
+  const sourceChainCredit = useIfoCredit({ chainId: srcChainId, ifoAddress })
   const noICake = useMemo(() => !sourceChainCredit || sourceChainCredit.quotient === 0n, [sourceChainCredit])
   const isICakeSynced = useMemo(
     () => destChainCredit && sourceChainCredit && destChainCredit.quotient === sourceChainCredit.quotient,
