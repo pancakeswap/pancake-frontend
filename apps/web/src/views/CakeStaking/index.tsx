@@ -4,6 +4,7 @@ import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import Page from 'components/Layout/Page'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
+import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { BenefitCard } from './components/BenefitCard'
@@ -22,19 +23,14 @@ const CakeStaking = () => {
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
   const totalIFOSold = useTotalIFOSold()
   const { isDesktop, isMobile } = useMatchBreakpoints()
+  const { theme } = useTheme()
 
   return (
     <>
       <ModalV2 isOpen={cakeRewardModalVisible} closeOnOverlayClick onDismiss={() => setCakeRewardModalVisible(false)}>
         <CakeRewardsCard onDismiss={() => setCakeRewardModalVisible(false)} />
       </ModalV2>
-      <StyledPageHeader
-        background={
-          isMobile
-            ? 'linear-gradient(314deg, rgba(230, 253, 255, 0.50) -24.74%, rgba(243, 240, 255, 0.50) 91.65%), linear-gradient(112deg, #F2ECF2 0%, #E8F2F6 100%);'
-            : undefined
-        }
-      >
+      <StyledPageHeader background={isMobile ? theme.colors.gradientInverseBubblegum : undefined}>
         <PageHead />
         <LockCake />
         <Heading scale="xl" color="secondary" mt={['40px', '40px', '45px']} mb={['24px', '24px', '48px']}>
