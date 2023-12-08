@@ -60,12 +60,12 @@ const parseMerklConfig = (merklConfig: MerklConfig[]): MerklConfigPool[] => {
 }
 
 const run = async () => {
-  console.log('Fetching merkl config...')
+  console.info('Fetching merkl config...')
   const merklConfig = await fetchAllMerklConfig()
-  console.log('Fetched merkl config!', Object.keys(merklConfig).length)
-  console.log('Parsing merkl config...')
+  console.info('Fetched merkl config!', Object.keys(merklConfig).length)
+  console.info('Parsing merkl config...')
   const merklPools = parseMerklConfig(Object.values(merklConfig))
-  console.log('Writing merkl config...')
+  console.info('Writing merkl config...')
 
   fs.writeFile(`apps/web/src/config/constants/merklPools.json`, JSON.stringify(merklPools, null, 2) + os.EOL, (err) => {
     if (err) throw err
