@@ -1,13 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  CalculateIcon,
   Flex,
+  IconButton,
   RoiCalculatorModal,
   Skeleton,
   Text,
   useModal,
   useTooltip,
-  IconButton,
-  CalculateIcon,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
