@@ -174,7 +174,7 @@ export function Countdown() {
 
 export const SpainMeetupBanner = memo(function SpainMeetupBanner() {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
 
   return (
     <Wrapper>
@@ -196,9 +196,11 @@ export const SpainMeetupBanner = memo(function SpainMeetupBanner() {
               <HeadLine data-text={t('Spain')}>{t('Spain')}</HeadLine>
             </Flex>
           </FlexGap>
-          <FlexGap>
-            <Countdown />
-          </FlexGap>
+          {isDesktop && (
+            <FlexGap>
+              <Countdown />
+            </FlexGap>
+          )}
           <Flex height="100%">
             <BunnyContainer>
               <Image src={bunny} alt="bunny" height={isMobile ? 120 : 240} unoptimized />
