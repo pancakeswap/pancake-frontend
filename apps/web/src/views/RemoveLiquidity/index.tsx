@@ -261,7 +261,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     }
 
     let methodNames: string[]
-    let args
+    let args: any
     // we have approval, use normal remove liquidity
     if (approvalState === ApprovalState.APPROVED) {
       // removeLiquidityETH
@@ -332,7 +332,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
 
     let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint } | undefined
     for (let i = 0; i < methodNames.length; i++) {
-      let safeGasEstimate
+      let safeGasEstimate: any
       try {
         // eslint-disable-next-line no-await-in-loop
         safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](args, { account }))
@@ -354,7 +354,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
       await routerContract.write[methodName](args, {
-        gasLimit: safeGasEstimate,
+        gas: safeGasEstimate,
         gasPrice,
       })
         .then((response: Hash) => {
@@ -373,7 +373,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
             },
           )
         })
-        .catch((err) => {
+        .catch((err: any) => {
           if (err && !isUserRejected(err)) {
             logError(err)
             console.error(`Remove Liquidity failed`, err, args)
@@ -445,7 +445,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   )
 
   const handleChangePercent = useCallback(
-    (value) => setInnerLiquidityPercentage(Math.ceil(value)),
+    (value: any) => setInnerLiquidityPercentage(Math.ceil(value)),
     [setInnerLiquidityPercentage],
   )
 
