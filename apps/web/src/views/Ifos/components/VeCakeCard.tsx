@@ -11,10 +11,9 @@ import { CAKE } from '@pancakeswap/tokens'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 
 import { useCakePrice } from 'hooks/useCakePrice'
-import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
-// TODO these two hooks should be common hooks
+// TODO should be common hooks
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
@@ -36,7 +35,6 @@ type Props = {
 export function VeCakeCard({ ifoAddress }: Props) {
   const { chainId } = useActiveChainId()
   const cakePrice = useCakePrice()
-  const now = useCurrentBlockTimestamp()
   const {
     cakeUnlockTime: nativeUnlockTime,
     nativeCakeLockedAmount,
@@ -44,8 +42,6 @@ export function VeCakeCard({ ifoAddress }: Props) {
     cakePoolLocked: proxyLocked,
     cakePoolUnlockTime: proxyUnlockTime,
     cakeLocked: nativeLocked,
-    cakeLockExpired: nativeExpired,
-    cakePoolLockExpired: proxyExpired,
   } = useCakeLockStatus()
   const totalLockCake = useMemo(
     () => Number(formatBigInt(nativeCakeLockedAmount + proxyCakeLockedAmount, CAKE[chainId || ChainId.BSC].decimals)),
@@ -56,7 +52,7 @@ export function VeCakeCard({ ifoAddress }: Props) {
       return proxyUnlockTime
     }
     return nativeUnlockTime
-  }, [nativeExpired, nativeLocked, nativeUnlockTime, now, proxyExpired, proxyLocked, proxyUnlockTime])
+  }, [nativeLocked, nativeUnlockTime, proxyLocked, proxyUnlockTime])
 
   const { shouldMigrate } = useCakeLockStatus()
   const { snapshotTime, credit, veCake } = useUserIfoInfo({ ifoAddress, chainId })
