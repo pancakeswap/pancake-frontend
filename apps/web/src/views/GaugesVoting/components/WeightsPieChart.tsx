@@ -17,8 +17,7 @@ const Container = styled(Box)`
   align-items: center;
   justify-content: center;
 
-  svg,
-  canvas {
+  .gauge-pie-chart {
     max-width: 290px !important;
     width: 290px !important;
     height: 290px !important;
@@ -189,12 +188,13 @@ export const WeightsPieChart: React.FC<{
   )
   const chart = isLoading ? (
     <Box ml={[0, 0, '20px']}>
-      <svg viewBox="0 0 293 293" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg className="gauge-pie-chart" viewBox="0 0 293 293" fill="none" xmlns="http://www.w3.org/2000/svg">
         <Circle cx="146.5" cy="146.5" r="131.5" stroke="#E9EAEB" stroke-width="30" />
       </svg>
     </Box>
   ) : (
     <Doughnut
+      className="gauge-pie-chart"
       data={gauges}
       options={{
         responsive: true,
