@@ -39,10 +39,10 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const { userData } = useVaultPoolByKey(pool.vaultKey)
+  const { userData } = useVaultPoolByKey(pool.vaultKey as Pool.VaultKey)
 
   const vaultPosition = getVaultPosition(userData)
-  const isLock = isLocked(userData)
+  const isLock = userData ? isLocked(userData) : false
 
   const { flexibleApy, lockedApy } = useVaultApy({
     duration:
@@ -66,7 +66,7 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
   if (pool.vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None) {
     return (
       <>
-        <Pool.BaseCell role="cell" flex={['1 0 50px', '4.5', '1 0 120px', null, '2 0 100px']}>
+        <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
           <Pool.CellContent>
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Flexible APY')}
@@ -101,7 +101,7 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
             )}
           </Pool.CellContent>
         </Pool.BaseCell>
-        <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', null, '1 0 120px']}>
+        <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 150px', '2 0 150px', '1 0 190px']}>
           <Pool.CellContent>
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Locked APR')}
@@ -146,7 +146,7 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
   }
 
   return (
-    <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+    <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 150px', '2 0 150px', '1 0 190px']}>
       <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {isLock ? t('APR') : t('APY')}
@@ -164,7 +164,9 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
                 >
                   <Balance
                     fontSize="16px"
-                    value={vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy) : parseFloat(flexibleApy)}
+                    value={
+                      vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy ?? '0') : parseFloat(flexibleApy)
+                    }
                     decimals={2}
                     unit="%"
                   />

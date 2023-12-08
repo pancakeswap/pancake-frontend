@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   FlexGap,
+  Grid,
   Link,
   Message,
   Skeleton,
@@ -14,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Hex } from 'viem'
 import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
@@ -40,7 +41,8 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
   expanded: boolean
 }>`
   overflow-y: auto;
-  height: ${({ expanded }) => (expanded ? 'auto' : '210px')};
+
+  ${({ expanded }) => (!expanded ? 'max-height: 200px;' : '')}
 `
 
 export const VoteTable = () => {
@@ -64,7 +66,7 @@ export const VoteTable = () => {
 
   const { gauges, rows, onRowSelect, refetch, isLoading } = useGaugeRows()
   const { data: slopes } = useUserVoteSlopes()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
     return rows?.map((row) => {
       return {
@@ -246,11 +248,11 @@ export const VoteTable = () => {
         isOpen={isOpen}
         onDismiss={() => setIsOpen(false)}
       />
-      <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
+      <ResponsiveCard>
         {gaugesTable}
 
         {rowsWithLock?.length && epochPower <= 0n && cakeLockedAmount > 0n ? (
-          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} my={['24px', '24px', '36px']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
                 <Text>
@@ -260,8 +262,10 @@ export const VoteTable = () => {
                 </Text>
                 <FlexGap alignItems="center" gap="0.2em">
                   {t('To cast your vote, ')}
-                  <Link href="/cake-staking">
-                    <Text bold>{t('extend your lock >>')}</Text>
+                  <Link href="/cake-staking" color="text">
+                    <Text bold style={{ textDecoration: 'underline' }}>
+                      {t('extend your lock >>')}
+                    </Text>
                   </Link>
                 </FlexGap>
               </AutoColumn>
@@ -269,14 +273,16 @@ export const VoteTable = () => {
           </Box>
         ) : null}
         {showNoCakeLockedWarning ? (
-          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} my={['24px', '24px', '36px']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
                 <Text>{t('You have no locked CAKE.')}</Text>
-                <FlexGap alignItems="center" gap="0.2em">
+                <FlexGap alignItems="center" gap="0.2em" flexWrap="wrap">
                   {t('To cast your vote, ')}
-                  <Link href="/cake-staking">
-                    <Text bold>{t('lock your CAKE')}</Text>
+                  <Link href="/cake-staking" color="text">
+                    <Text bold style={{ textDecoration: 'underline' }}>
+                      {t('lock your CAKE')}
+                    </Text>
                   </Link>
                   {t('for 3 weeks or more.')}
                 </FlexGap>
@@ -285,7 +291,7 @@ export const VoteTable = () => {
           </Box>
         ) : null}
         {showOnTallyWarning ? (
-          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} mx="auto">
+          <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} my={['24px', '24px', '36px']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
                 <Text>{t('Votes are currently being adjusted and tallied. No more votes can be casted.')}</Text>
@@ -293,23 +299,52 @@ export const VoteTable = () => {
             </Message>
           </Box>
         ) : null}
-        <FlexGap
-          gap="12px"
-          padding={isDesktop ? '2em' : '1em'}
+        <Grid
+          gridTemplateColumns="1fr 1fr "
+          gridGap="12px"
+          padding={isDesktop ? '' : '1em'}
           style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}
         >
-          <Button width="100%" onClick={() => setIsOpen(true)}>
-            + Add Gauges ({leftGaugesCanAdd || 0})
-          </Button>
           {!account ? (
             <ConnectWalletButton width="100%" />
           ) : (
-            <Button width="100%" disabled={disabled} onClick={submitVote}>
+            <Button
+              width="100%"
+              onClick={() => setIsOpen(true)}
+              style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
+            >
+              + Add Gauges {isMobile ? null : `(${leftGaugesCanAdd || 0})`}
+            </Button>
+          )}
+
+          {!account ? (
+            <ConnectWalletButton width="100%" />
+          ) : (
+            <Button
+              width="100%"
+              disabled={disabled}
+              onClick={submitVote}
+              style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
+            >
               Submit vote
             </Button>
           )}
-        </FlexGap>
-      </Card>
+        </Grid>
+      </ResponsiveCard>
     </>
+  )
+}
+
+const ResponsiveCard: React.FC<PropsWithChildren> = ({ children }) => {
+  const { isMobile, isDesktop } = useMatchBreakpoints()
+
+  if (isMobile) {
+    return <Box mx="-16px">{children}</Box>
+  }
+
+  return (
+    <Card innerCardProps={{ padding: isDesktop ? '2em' : '0', paddingTop: isDesktop ? '1em' : '0' }} mt="2em">
+      {children}
+    </Card>
   )
 }

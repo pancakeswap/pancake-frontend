@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox, Box, Button, HelpIcon, Link, Svg, SvgProps, Text } from '@pancakeswap/uikit'
+import { AtomBox, Box, Button, HelpIcon, Link, Svg, SvgProps, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
@@ -58,23 +58,50 @@ export const NewCakeStakingCard: React.FC = () => {
   )
 }
 
-export const HeadImage = () => {
+export const HeadBunny = () => {
   const { status } = useCakeLockStatus()
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
 
-  if (status === CakeLockStatus.NotLocked) return <NewCakeStakingCard />
+  if (isMobile) {
+    return null
+  }
 
+  if (status === CakeLockStatus.Locking) {
+    return (
+      <Link
+        external
+        href="https://docs.pancakeswap.finance/products/vecake/how-to-get-vecake"
+        style={{ textDecoration: 'none' }}
+      >
+        <Button variant="subtle" endIcon={<HelpIcon color="white" width="24px" />} mt="1em">
+          <Text color="white" textTransform="capitalize">
+            {t('help')}
+          </Text>
+        </Button>
+      </Link>
+    )
+  }
+  return <NewCakeStakingCard />
+}
+
+export const MobileHeadBunny = () => {
   return (
-    <Link
-      external
-      href="https://docs.pancakeswap.finance/products/vecake/how-to-get-vecake"
-      style={{ textDecoration: 'none' }}
-    >
-      <Button variant="subtle" endIcon={<HelpIcon color="white" width="24px" />} mt="1em">
-        <Text color="white" textTransform="capitalize">
-          {t('help')}
-        </Text>
-      </Button>
-    </Link>
+    <Box position="relative">
+      <StyleMobileBunny src="/images/cake-staking/new-staking-bunny.png" alt="new-staking-bunny" />
+    </Box>
   )
 }
+
+const StyleMobileBunny = styled.img`
+  position: absolute;
+  width: 135px;
+  height: 204px;
+  max-width: fit-content;
+  top: -3em;
+  left: -3em;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    left: -2em;
+  }
+`

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRow, Balance, Card, FlexGap, Text, TooltipText, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AutoRow, Balance, Box, ErrorIcon, FlexGap, Text, TooltipText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   formatNumber,
   getBalanceNumber,
@@ -25,7 +25,7 @@ export const CurrentEpoch = () => {
   const { isDesktop } = useMatchBreakpoints()
 
   return (
-    <Card isActive innerCardProps={{ padding: isDesktop ? '1.5em' : '1em' }}>
+    <Box padding={['16px', '16px', '16px 24px 24px']}>
       <FlexGap gap="8px" flexDirection="column">
         <AutoRow justifyContent="space-between">
           <FlexGap
@@ -116,7 +116,15 @@ export const CurrentEpoch = () => {
           </Tooltips>
           <Balance bold fontSize={16} value={getBalanceNumber(new BN(totalWeight.toString()))} unit=" veCAKE" />
         </AutoRow>
+        <AutoRow alignItems="center" flexDirection="row" justifyContent="flex-start" flexWrap="nowrap" mt="16px">
+          <ErrorIcon color="#7A6EAA" width="24px" mr="8px" />
+          <Text color="textSubtle" fontSize={12}>
+            {t(
+              'Results are updated weekly. Vote numbers are estimations based on the veCAKE balance at 00:00 UTC on the upcoming Thursday.',
+            )}
+          </Text>
+        </AutoRow>
       </FlexGap>
-    </Card>
+    </Box>
   )
 }

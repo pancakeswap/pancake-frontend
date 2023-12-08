@@ -2,7 +2,6 @@ import { GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/sdk'
 import {
-  AddCircleIcon,
   Button,
   CheckmarkCircleFillIcon,
   ChevronDownIcon,
@@ -11,6 +10,7 @@ import {
   ErrorIcon,
   Flex,
   FlexGap,
+  Grid,
   Tag,
   Text,
 } from '@pancakeswap/uikit'
@@ -31,6 +31,24 @@ const SelectButton = styled(Button)`
     background-color: transparent;
   }
 `
+
+const AddIcon = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <g clip-path="url(#clip0_7260_24227)">
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16 13H13V16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V13H8C7.45 13 7 12.55 7 12C7 11.45 7.45 11 8 11H11V8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8V11H16C16.55 11 17 11.45 17 12C17 12.55 16.55 13 16 13Z"
+          fill="#31D0AA"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_7260_24227">
+          <rect width="24" height="24" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  )
+}
 
 export const TableRow: React.FC<{
   data: RowData
@@ -77,28 +95,32 @@ export const TableRow: React.FC<{
                 isHover ? (
                   <CrossIcon color="#ED4B9E" />
                 ) : (
-                  <CheckmarkCircleFillIcon color="disabled" />
+                  <CheckmarkCircleFillIcon color="#BDC2C4" />
                 )
               ) : (
-                <AddCircleIcon color="primary" />
+                <AddIcon />
               )}
             </SelectButton>
           </span>
         ) : null}
-        <GaugeTokenImage gauge={data} />
-        <Text fontWeight={600} fontSize={16}>
-          {data.pairName}
-        </Text>
-        <FlexGap gap="5px" alignItems="center">
-          <NetworkBadge chainId={Number(data.chainId)} />
-          {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
-            <Tag outline variant="secondary">
-              {feeTierPercent(data.feeTier)}
-            </Tag>
-          ) : null}
+        <Grid gridTemplateColumns="1fr 1fr" justifyContent="space-between" width="100%">
+          <FlexGap alignItems="center" gap="13px">
+            <GaugeTokenImage gauge={data} />
+            <Text fontWeight={600} fontSize={16}>
+              {data.pairName}
+            </Text>
+          </FlexGap>
+          <FlexGap gap="5px" alignItems="center">
+            <NetworkBadge chainId={Number(data.chainId)} />
+            {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
+              <Tag outline variant="secondary">
+                {feeTierPercent(data.feeTier)}
+              </Tag>
+            ) : null}
 
-          <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
-        </FlexGap>
+            <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
+          </FlexGap>
+        </Grid>
       </FlexGap>
       <Flex alignItems="center" pl="32px">
         <Tooltips
@@ -143,7 +165,7 @@ export const ExpandRow: React.FC<{
     setExpanded((prev) => !prev)
     onCollapse?.()
   }, [onCollapse])
-  const textToDisplay = expanded ? expandedText || t('Expanded') : text || t('Expand')
+  const textToDisplay = expanded ? expandedText || t('Collapse') : text || t('Expand')
 
   return (
     <Flex alignItems="center" justifyContent="center" py="8px">

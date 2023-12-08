@@ -1,15 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AutoRow,
-  BalanceInput,
-  BalanceInputProps,
-  Box,
-  Button,
-  FlexGap,
-  Image,
-  Text,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Image, Text } from '@pancakeswap/uikit'
 import { MAX_VECAKE_LOCK_WEEKS } from 'config/constants/veCake'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
@@ -47,23 +37,12 @@ const ButtonBlocked = styled(Button)`
   flex: 1;
 `
 
-const WeekButton = styled(Button)`
-  flex: 1;
-  fontsize: 12;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    fontsize: 14;
-    padding: 0 10px;
-  }
-`
-
 const WeekInput: React.FC<{
   value: BalanceInputProps['value']
   onUserInput: BalanceInputProps['onUserInput']
   disabled?: boolean
 }> = ({ value, onUserInput, disabled }) => {
   const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
   const onInput = useCallback(
     (v: string) => {
       if (Number(v) > MAX_VECAKE_LOCK_WEEKS) {
@@ -100,16 +79,16 @@ const WeekInput: React.FC<{
       {disabled ? null : (
         <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {weeks.map(({ value: v, label }) => (
-            <WeekButton
+            <Button
               key={v}
               data-week={v}
               disabled={disabled}
               onClick={handleWeekSelect}
-              scale={isDesktop ? 'sm' : 'xs'}
+              scale="sm"
               variant={Number(value) === v ? 'subtle' : 'light'}
             >
               {label}
-            </WeekButton>
+            </Button>
           ))}
         </FlexGap>
       )}
@@ -126,9 +105,9 @@ export const LockWeeksForm: React.FC<{
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
   return (
     <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
+      <FlexGap gap="8px" alignItems="center" height="40px">
         <Box width={40}>
-          <Image src="/images/cake-staking/lock.png" height={40} width={40} />
+          <Image src="/images/cake-staking/lock.png" height={37} width={34} mx="auto" />
         </Box>
         <FlexGap gap="4px">
           <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>

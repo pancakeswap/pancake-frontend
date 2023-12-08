@@ -9,7 +9,7 @@ export const Expired = () => {
   const { isDesktop } = useMatchBreakpoints()
 
   return (
-    <StyledCard innerCardProps={{ padding: '24px' }}>
+    <StyledCard innerCardProps={{ padding: ['24px 16px', '24px 16px', '24px'] }}>
       <Heading scale="md">{t('Unlock to create a new lock position')}</Heading>
       <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} mt={32} gridColumnGap="24px" gridRowGap="24px">
         <LockCakeForm disabled />

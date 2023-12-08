@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRow, Box, Text, TooltipText } from '@pancakeswap/uikit'
+import { AutoRow, Box, Text, TooltipText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import dayjs from 'dayjs'
@@ -13,8 +13,8 @@ import { DataRow } from './DataBox'
 import { formatDate } from './format'
 
 const ValueText = styled(Text)`
-  fontsize: 16px;
-  fontweight: 400;
+  font-size: 16px;
+  font-weight: 400;
 `
 
 export const NewStakingDataSet: React.FC<{
@@ -26,17 +26,18 @@ export const NewStakingDataSet: React.FC<{
   const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeAmount).toPrecision(2)}x` : '0x'
   const { cakeLockWeeks } = useLockCakeData()
   const unlockTimestamp = useRoundedUnlockTimestamp()
+  const { isDesktop } = useMatchBreakpoints()
   const unlockOn = useMemo(() => {
     return formatDate(dayjs.unix(Number(unlockTimestamp)))
   }, [unlockTimestamp])
   return (
     <>
-      <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
+      <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
         {t('lock overview')}
       </Text>
-      <Box padding={12}>
+      <Box padding={['16px 0', '16px 0', 12]}>
         <MyVeCakeCard type="row" value={veCake} />
-        <AutoRow px="16px" py="12px" gap="8px">
+        <AutoRow px={['0px', '0px', '16px']} py={['16px', '16px', '12px']} gap="8px">
           <DataRow
             label={
               <Text fontSize={14} color="textSubtle" textTransform="uppercase">

@@ -1,27 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  ArrowForwardIcon,
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  ModalV2,
-  PageHeader,
-  QuestionHelper,
-  Text,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
-import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import Page from 'components/Layout/Page'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
+import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
+import styled from 'styled-components'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
-import { HeadImage } from './components/HeadImage'
 import { LockCake } from './components/LockCake'
+import { PageHead } from './components/PageHead'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 import { useSnapshotProposalsCount } from './hooks/useSnapshotProposalsCount'
 import { useTotalIFOSold } from './hooks/useTotalIFOSold'
@@ -33,47 +22,20 @@ const CakeStaking = () => {
   const totalCakeDistributed = useCakeDistributed()
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
   const totalIFOSold = useTotalIFOSold()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
+  const { theme } = useTheme()
 
   return (
     <>
       <ModalV2 isOpen={cakeRewardModalVisible} closeOnOverlayClick onDismiss={() => setCakeRewardModalVisible(false)}>
         <CakeRewardsCard onDismiss={() => setCakeRewardModalVisible(false)} />
       </ModalV2>
-      <PageHeader>
-        <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
-          <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('Cake Staking')}
-            </Heading>
-            <Box maxWidth="537px">
-              <Text color="textSubtle">
-                {t(
-                  'Enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
-                )}
-              </Text>
-            </Box>
-            <NextLinkFromReactRouter
-              to="/swap?chain=bsc&inputCurrency=BNB&outputCurrency=0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
-              prefetch={false}
-            >
-              <Button p="0" variant="text">
-                <Text color="primary" bold fontSize="16px" mr="4px">
-                  {t('Get CAKE')}
-                </Text>
-                <ArrowForwardIcon color="primary" />
-              </Button>
-            </NextLinkFromReactRouter>
-          </Flex>
-
-          <Box>
-            <HeadImage />
-          </Box>
-        </Flex>
+      <StyledPageHeader background={isMobile ? theme.colors.gradientInverseBubblegum : undefined}>
+        <PageHead />
         <LockCake />
-        <Text fontSize="40px" bold color="secondary" lineHeight="110%" mt="45px" mb="48px">
+        <Heading scale="xl" color="secondary" mt={['40px', '40px', '45px']} mb={['24px', '24px', '48px']}>
           {t('Benefits of veCAKE')}
-        </Text>
+        </Heading>
         <Grid
           maxWidth="820px"
           gridGap="24px"
@@ -114,9 +76,9 @@ const CakeStaking = () => {
             onClick={() => {}}
           />
         </Grid>
-      </PageHeader>
-      <Page title={t('Cake staking')}>
-        <Heading scale="xl" mb="48px">
+      </StyledPageHeader>
+      <Page title={t('CAKE Staking')}>
+        <Heading scale="xl" mb={['24px', '24px', '48px']} mt={['16px', '16px', 0]}>
           {t('And So Much More...')}
         </Heading>
         <Grid
@@ -174,5 +136,13 @@ const CakeStaking = () => {
     </>
   )
 }
+
+const StyledPageHeader = styled(PageHeader)`
+  padding-top: 32px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-top: 56px;
+  }
+`
 
 export default CakeStaking

@@ -12,7 +12,6 @@ import {
   FlexGap,
   Text,
   TokenImage,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
@@ -39,7 +38,6 @@ const CakeInput: React.FC<{
   const [percent, setPercent] = useState<number | null>(null)
   const _cakeBalance = useBSCCakeBalance()
   const cakeBalance = BigInt(_cakeBalance.toString())
-  const { isDesktop } = useMatchBreakpoints()
 
   const onInput = useCallback(
     (input: string) => {
@@ -92,7 +90,7 @@ const CakeInput: React.FC<{
               <Button
                 key={p}
                 style={{ flex: 1 }}
-                scale={isDesktop ? 'sm' : 'xs'}
+                scale="sm"
                 variant={p === percent ? 'primary' : 'tertiary'}
                 onClick={() => handlePercentChange(p)}
               >
@@ -101,7 +99,7 @@ const CakeInput: React.FC<{
             )
           })}
           <Button
-            scale={isDesktop ? 'sm' : 'xs'}
+            scale="sm"
             style={{ flex: 1 }}
             variant={percent === 100 ? 'primary' : 'tertiary'}
             onClick={() => handlePercentChange(100)}
@@ -124,7 +122,7 @@ export const LockCakeForm: React.FC<{
 
   return (
     <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
+      <FlexGap gap="8px" alignItems="center" height="40px">
         <Box width={40}>
           <TokenImage
             src={`https://pancakeswap.finance/images/tokens/${CAKE[ChainId.BSC].address}.png`}

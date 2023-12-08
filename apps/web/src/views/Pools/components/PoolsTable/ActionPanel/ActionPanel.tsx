@@ -38,7 +38,6 @@ import PoolStatsInfo from '../../PoolStatsInfo'
 import PoolTypeTag from '../../PoolTypeTag'
 import { VaultPositionTagWithLabel } from '../../Vault/VaultPositionTag'
 import AutoHarvest from './AutoHarvest'
-import CakeVaultApr from './CakeVaultApr'
 import Harvest from './Harvest'
 import Stake from './Stake'
 
@@ -78,7 +77,7 @@ export const StyledActionPanel = styled.div<{ expanded: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
+    padding: 16px;
   }
 `
 
@@ -113,6 +112,7 @@ export const InfoSection = styled(Box)`
   ${({ theme }) => theme.mediaQueries.lg} {
     padding: 0;
     flex-basis: 230px;
+    margin-right: 16px;
     ${Text} {
       font-size: 14px;
     }
@@ -138,16 +138,11 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
   const { userData, vaultKey } = pool
   const { isMobile } = useMatchBreakpoints()
 
-  const vaultData = useVaultPoolByKey(vaultKey)
-  const {
-    userData: {
-      balance: { cakeAsBigNumber },
-    },
-  } = vaultData
-
+  const vaultData = useVaultPoolByKey(vaultKey as Pool.VaultKey) as DeserializedLockedCakeVault
+  const cakeAsBigNumber = vaultData.userData?.balance?.cakeAsBigNumber ?? new BigNumber(0)
   const vaultPosition = getVaultPosition(vaultData.userData)
 
-  const isLocked = (vaultData as DeserializedLockedCakeVault).userData.locked
+  const isLocked = vaultData.userData?.locked
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
@@ -170,8 +165,8 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
         {isMobile && vaultKey === VaultKey.CakeVault && isLocked && (
           <Box mb="16px">
             <YieldBoostDurationRow
-              lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
-              lockStartTime={(vaultData as DeserializedLockedCakeVault).userData.lockStartTime}
+              lockEndTime={vaultData.userData?.lockEndTime}
+              lockStartTime={vaultData.userData?.lockStartTime}
             />
             <Flex alignItems="center" justifyContent="space-between">
               <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
@@ -183,7 +178,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
         )}
         <Flex flexDirection="column" mb="8px">
           <>
-            {vaultKey === VaultKey.CakeVault && !account ? (
+            {!isMobile && vaultKey === VaultKey.CakeVault && !account ? (
               <VeCakeBunny />
             ) : (
               <PoolStatsInfo pool={pool} account={account} showTotalStaked={isMobile} alignLinksToRight={isMobile} />
@@ -203,15 +198,12 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
         </Flex>
       </InfoSection>
       <ActionContainer>
-        {isMobile && vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None && (
-          <CakeVaultApr pool={pool} userData={vaultData.userData} vaultPosition={vaultPosition} />
-        )}
         <Box width="100%">
           {pool.vaultKey === VaultKey.CakeVault && (
             <VaultPositionTagWithLabel
               userData={vaultData.userData as DeserializedLockedVaultUser}
-              width={['auto', , 'fit-content']}
-              ml={['12px', , , , , '32px']}
+              width={['auto', null, 'fit-content']}
+              ml={['12px', null, null, null, null, '32px']}
             />
           )}
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
@@ -233,7 +225,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           <Flex width="100%">
             <Message
               variant="warning"
-              style={{ width: '100%', marginTop: '16px', flexWrap: 'wrap' }}
+              style={{ width: '100%', margin: '16px', marginBottom: '0', flexWrap: 'wrap' }}
               action={
                 <Flex
                   alignItems="center"

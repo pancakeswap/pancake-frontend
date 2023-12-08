@@ -39,7 +39,7 @@ export const DataHeader: React.FC<{
         </FlexGap>
       }
       value={
-        <Text fontSize="14px" bold>
+        <Text fontSize="16px" bold>
           {value}
         </Text>
       }

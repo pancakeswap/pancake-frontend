@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, AutoRow, Box, Text } from '@pancakeswap/uikit'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import styled from 'styled-components'
 
@@ -29,7 +29,7 @@ export const MyVeCakeCard: React.FC<{
             {t('MY veCAKE')}
           </Text>
           <Text fontSize="24px" bold color="white" lineHeight="110%">
-            {value ?? getBalanceNumber(balance)}
+            {value ?? formatNumber(getBalanceNumber(balance))}
           </Text>
         </AutoColumn>
       ) : null}
@@ -40,7 +40,7 @@ export const MyVeCakeCard: React.FC<{
           </Text>
 
           <Text fontSize="20px" bold color="white" lineHeight="110%">
-            {value ?? getBalanceNumber(balance)}
+            {value ?? formatNumber(getBalanceNumber(balance))}
           </Text>
         </AutoRow>
       ) : null}

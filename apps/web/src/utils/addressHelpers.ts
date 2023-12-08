@@ -53,7 +53,7 @@ export const getTradingCompetitionAddressMoD = () => {
   return getAddressFromMap(addresses.tradingCompetitionMoD)
 }
 
-export const getVaultPoolAddress = (vaultKey: VaultKey) => {
+export const getVaultPoolAddress = (vaultKey?: VaultKey) => {
   if (!vaultKey) {
     return null
   }
