@@ -1290,6 +1290,9 @@ importers:
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.5

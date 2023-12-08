@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {},
   "dependencies": {
+    "dayjs": "^1.11.10",
     "js-cookie": "^3.0.1",
     "react": "^18.2.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
