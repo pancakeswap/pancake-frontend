@@ -161,7 +161,7 @@ const CardContent: React.FC = () => {
           {t('Yield booster active')}
         </Text>
       </Flex>
-      <Text color="textSubtle" fontSize={12}>
+      <Text color="textSubtle" fontSize={12} mb="10px">
         {t(
           'Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
         )}

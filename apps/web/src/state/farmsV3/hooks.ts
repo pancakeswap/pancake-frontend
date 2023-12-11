@@ -368,7 +368,6 @@ const useV3BoostedFarm = (pids?: number[]) => {
       retryDelay: 3000,
     },
   )
-
   return { data }
 }
 

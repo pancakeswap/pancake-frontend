@@ -13,12 +13,12 @@ import {
   useModalV2,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { Position, encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { RoiCalculatorModalV2, useRoi } from '@pancakeswap/widgets-internal/roi'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { Position, encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 
@@ -149,7 +149,10 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
       existingPosition
         ? outOfRange
           ? 0
-          : new BigNumber(existingPosition.liquidity.toString()).times(cakeAprFactor).div(depositUsdAsBN).toNumber()
+          : new BigNumber(existingPosition.liquidity.toString())
+              .times(cakeAprFactor)
+              .div(depositUsdAsBN ?? 0)
+              .toNumber()
         : 0,
     [cakeAprFactor, depositUsdAsBN, existingPosition, outOfRange],
   )
@@ -169,7 +172,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   })
 
   const lpApr = existingPosition ? +apr.toFixed(2) : globalLpApr
-  const cakeApr = +farm.cakeApr
+  const cakeApr = +(farm.cakeApr ?? 0)
 
   const displayApr = getDisplayApr(cakeApr, lpApr)
   const cakeAprDisplay = cakeApr.toFixed(2)

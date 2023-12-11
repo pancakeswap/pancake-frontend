@@ -4,6 +4,7 @@ import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
+import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
 const { MerklNotice } = FarmWidget
@@ -23,6 +24,7 @@ type ExpandableSectionProps = {
   totalMultipliers?: string
   merklLink?: string
   hasBothFarmAndMerkl?: boolean
+  isBoosted?: boolean
 }
 
 const Wrapper = styled(Flex)`
@@ -48,9 +50,9 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   totalMultipliers,
   merklLink,
   hasBothFarmAndMerkl,
+  isBoosted,
 }) => {
   const isReady = multiplier !== undefined
-
   const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? '-',
     totalMultipliers: totalMultipliers ?? '-',
@@ -97,6 +99,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
+          {isReady && isBoosted && <BoostedTag mr="-4px" />}
         </AutoRow>
       </Flex>
     </Wrapper>

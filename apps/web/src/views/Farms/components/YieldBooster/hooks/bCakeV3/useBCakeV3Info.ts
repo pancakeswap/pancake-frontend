@@ -3,11 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import BN from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useBCakeFarmBoosterV3Contract, useBCakeFarmBoosterVeCakeContract, useMasterchefV3 } from 'hooks/useContract'
+import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3 } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { CakeLockStatus } from 'views/CakeStaking/types'
 import { useContractRead } from 'wagmi'
-import { useUserLockedCakeStatus } from '../../../../hooks/useUserLockedCakeStatus'
 import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
 
 export const USER_ESTIMATED_MULTIPLIER = 2
@@ -20,7 +21,7 @@ const QUERY_SETTINGS_WITHOUT_REFETCH = {
 
 export const useBakeV3farmCanBoost = (farmPid: number) => {
   const { chainId } = useActiveChainId()
-  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
   const { data } = useContractRead({
     abi: farmBoosterV3Contract.abi,
     address: farmBoosterV3Contract.address,
@@ -34,7 +35,7 @@ export const useBakeV3farmCanBoost = (farmPid: number) => {
 
 export const useIsBoostedPool = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
-  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
   const { data, refetch } = useQuery(
     [`v3/bcake/isBoostedPool/${chainId}/${tokenId}`],
     () => farmBoosterV3Contract.read.isBoostedPool([BigInt(tokenId ?? 0)]),
@@ -75,7 +76,7 @@ export const useUserPositionInfo = (tokenId: string) => {
 
 export const useUserBoostedPoolsTokenId = () => {
   const { account, chainId } = useAccountActiveChain()
-  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
   const { data, refetch } = useQuery(
     [`v3/bcake/userBoostedPools/${chainId}/${account}`],
     () => farmBoosterV3Contract.read.activedPositions([account ?? '0x']),
@@ -85,14 +86,14 @@ export const useUserBoostedPoolsTokenId = () => {
     },
   )
   return {
-    pids: data?.map((tokenId) => Number(tokenId)) ?? [],
+    tokenIds: data?.map((tokenId) => Number(tokenId)) ?? [],
     updateBoostedPoolsTokenId: refetch,
   }
 }
 
 export const useUserMultiplierBeforeBoosted = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
-  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
   const { data, refetch } = useQuery(
     [`v3/bcake/useUserMultiplierBeforeBoosted/${chainId}/${tokenId}`],
     () => getUserMultiplier({ address: farmBoosterV3Contract.address, tokenId, chainId }),
@@ -124,29 +125,10 @@ export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
   }
 }
 
-export const useUserMaxBoostedPositionLimit = () => {
-  const { chainId } = useActiveChainId()
-  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data } = useQuery(
-    [`v3/bcake/userMaxBoostedPositionLimit/${chainId}`],
-    () => farmBoosterV3Contract.read.MAX_BOOST_POSITION(),
-    {
-      enabled: Boolean(chainId),
-      ...QUERY_SETTINGS_WITHOUT_REFETCH,
-    },
-  )
-  return Number(data)
-}
-
 export const useBCakeBoostLimitAndLockInfo = () => {
-  const { locked, lockedEnd } = useUserLockedCakeStatus()
-  const isLockEnd = useMemo(
-    () => lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd ?? '') * 1000),
-    [lockedEnd],
-  )
-  const maxBoostLimit = useUserMaxBoostedPositionLimit()
-  const { pids } = useUserBoostedPoolsTokenId()
-  const remainingCounts = useMemo(() => maxBoostLimit - (pids?.length ?? 0), [pids, maxBoostLimit])
-  const isReachedMaxBoostLimit = useMemo(() => remainingCounts <= 0, [remainingCounts])
-  return { locked, isLockEnd, maxBoostLimit, remainingCounts, isReachedMaxBoostLimit }
+  const { status } = useCakeLockStatus()
+  const isLockEnd = useMemo(() => status === CakeLockStatus.Expired, [status])
+  const locked = useMemo(() => status === CakeLockStatus.Locking, [status])
+
+  return { locked, isLockEnd }
 }

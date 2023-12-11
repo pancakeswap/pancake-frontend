@@ -1,9 +1,9 @@
-import { Box, Text, useTooltip, useMatchBreakpoints, LinkExternal, HelpIcon, Flex } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, HelpIcon, LinkExternal, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { BoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
 import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
+import { BoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
 
 const BoosterTooltip = () => {
   const { t } = useTranslation()
@@ -25,8 +25,10 @@ const BoosterTooltip = () => {
 export const StatusView: React.FC<{
   status: BoostStatus
   boostedMultiplier?: number
+  expectMultiplier?: number
   isFarmStaking?: boolean
-}> = ({ status, boostedMultiplier, isFarmStaking }) => {
+  shouldUpdate?: boolean
+}> = ({ status, boostedMultiplier, isFarmStaking, shouldUpdate, expectMultiplier }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { address: account } = useAccount()
@@ -34,13 +36,13 @@ export const StatusView: React.FC<{
     placement: 'top',
     ...(isMobile && { hideTimeout: 1500 }),
   })
-  const { locked, isLockEnd, isReachedMaxBoostLimit } = useBCakeBoostLimitAndLockInfo()
+  const { locked, isLockEnd } = useBCakeBoostLimitAndLockInfo()
   const bCakeMessage = useBCakeMessage(
     account,
     Boolean(isFarmStaking),
     locked,
     isLockEnd,
-    isReachedMaxBoostLimit,
+    false,
     status === BoostStatus.farmCanBoostButNot,
     status === BoostStatus.Boosted,
   )
@@ -51,19 +53,36 @@ export const StatusView: React.FC<{
         {t('Yield Booster')}
       </Text>
       <Flex alignItems="center">
-        <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
-          {(status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)) &&
-          locked &&
-          !isLockEnd
-            ? `${
-                boostedMultiplier < 1.001 && boostedMultiplier !== 1
-                  ? '< 1.001'
-                  : boostedMultiplier?.toLocaleString('en-US', {
-                      maximumFractionDigits: 3,
-                    })
-              }x`
-            : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
-        </Text>
+        {shouldUpdate ? (
+          <Flex>
+            <Text fontSize={16} lineHeight="120%" bold color="success" mr="3px">
+              {expectMultiplier?.toLocaleString('en-US', {
+                maximumFractionDigits: 3,
+              })}
+              x
+            </Text>
+            <Text fontSize={16} lineHeight="120%" bold color="textSubtle" style={{ textDecoration: 'line-through' }}>
+              {boostedMultiplier?.toLocaleString('en-US', {
+                maximumFractionDigits: 3,
+              })}
+              x
+            </Text>
+          </Flex>
+        ) : (
+          <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
+            {(status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)) &&
+            locked &&
+            !isLockEnd
+              ? `${
+                  (boostedMultiplier ?? 0) < 1.001 && boostedMultiplier !== 1
+                    ? '< 1.001'
+                    : boostedMultiplier?.toLocaleString('en-US', {
+                        maximumFractionDigits: 3,
+                      })
+                }x`
+              : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
+          </Text>
+        )}
         <Flex ref={targetRef}>
           <HelpIcon color="textSubtle" width="20px" height="20px" />
         </Flex>

@@ -6,11 +6,10 @@ import { useCallback, useMemo } from 'react'
 import {
   useBCakeBoostLimitAndLockInfo,
   useUserBoostedPoolsTokenId,
-  useUserMultiplierBeforeBoosted,
   useUserPositionInfo,
   useVeCakeUserMultiplierBeforeBoosted,
 } from '../../hooks/bCakeV3/useBCakeV3Info'
-import { BoostStatus, useBoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
+import { useBoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
 import { useUpdateLiquidity } from '../../hooks/bCakeV3/useUpdateLiquidity'
 
 import { StatusView } from './StatusView'
@@ -36,7 +35,6 @@ export const BCakeV3CardView: React.FC<{
   const { locked, isLockEnd } = useBCakeBoostLimitAndLockInfo()
 
   const { updateLiquidity, isConfirming } = useUpdateLiquidity(tokenId, onDone)
-  const { userMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted(tokenId)
   const { veCakeUserMultiplierBeforeBoosted } = useVeCakeUserMultiplierBeforeBoosted(tokenId)
   const { theme } = useTheme()
   const lockValidated = useMemo(() => {
@@ -48,14 +46,16 @@ export const BCakeV3CardView: React.FC<{
     return false
   }, [boostMultiplier, veCakeUserMultiplierBeforeBoosted])
 
+  if (shouldUpdate) console.log(veCakeUserMultiplierBeforeBoosted, boostMultiplier, 'boostMultiplier???')
+
   return (
     <Flex width="100%" alignItems="center" justifyContent="space-between">
       <StatusView
         status={boostStatus}
-        boostedMultiplier={
-          boostStatus === BoostStatus.farmCanBoostButNot ? userMultiplierBeforeBoosted : boostMultiplier
-        }
+        boostedMultiplier={boostMultiplier}
+        expectMultiplier={veCakeUserMultiplierBeforeBoosted}
         isFarmStaking={isFarmStaking}
+        shouldUpdate={shouldUpdate}
       />
       <Box>
         {!lockValidated && (
@@ -72,11 +72,11 @@ export const BCakeV3CardView: React.FC<{
               backgroundColor: 'transparent',
               border: `2px solid ${theme.colors.primary}`,
               color: theme.colors.primary,
-              padding: isConfirming ? '0 10px' : undefined,
+              // padding: isConfirming ? '0 10px' : undefined,
             }}
             isLoading={isConfirming}
           >
-            {t('Update')}
+            {isConfirming ? t('Confirming') : t('update')}
           </Button>
         )}
       </Box>
