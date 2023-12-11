@@ -149,7 +149,6 @@ const config: (
         {
           label: t('Gaming Marketplace'),
           href: 'https://pancakeswap.games/',
-          status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
