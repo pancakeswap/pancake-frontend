@@ -3,7 +3,7 @@ import { PredictionSupportedSymbol } from '@pancakeswap/prediction'
 import PageLoader from 'components/Loader/PageLoader'
 import { FetchStatus } from 'config/constants/types'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { filterLeaderboard } from 'state/predictions'
 import { useGetLeaderboardFilters, useGetLeaderboardLoadingState } from 'state/predictions/hooks'
 import { usePredictionConfigs } from 'views/Predictions/hooks/usePredictionConfigs'
@@ -23,16 +23,19 @@ const Leaderboard = () => {
 
   const predictionConfigs = usePredictionConfigs(pickedChainId)
 
-  const symbol = useMemo(() => {
-    return pickedTokenSymbol || (predictionConfigs && Object.values(predictionConfigs)?.[0]?.token?.symbol)
-  }, [pickedTokenSymbol, predictionConfigs])
+  useEffect(() => {
+    if (predictionConfigs) {
+      const defaultPickedTokenSymbol = Object.values(predictionConfigs)?.[0]?.token?.symbol
+      setPickedTokenSymbol(defaultPickedTokenSymbol)
+    }
+  }, [predictionConfigs, pickedChainId])
 
   useEffect(() => {
     if (predictionConfigs) {
-      const extra = predictionConfigs?.[symbol] ?? Object.values(predictionConfigs)?.[0]
+      const extra = predictionConfigs?.[pickedTokenSymbol] ?? Object.values(predictionConfigs)?.[0]
       dispatch(filterLeaderboard({ filters, extra }))
     }
-  }, [account, filters, dispatch, predictionConfigs, pickedChainId, symbol])
+  }, [account, filters, dispatch, predictionConfigs, pickedChainId, pickedTokenSymbol])
 
   if (leaderboardLoadingState === FetchStatus.Idle) {
     return <PageLoader />
@@ -43,7 +46,7 @@ const Leaderboard = () => {
       <Hero />
       <Filters
         pickedChainId={pickedChainId}
-        pickedTokenSymbol={symbol}
+        pickedTokenSymbol={pickedTokenSymbol}
         predictionConfigs={predictionConfigs}
         setPickedChainId={setPickedChainId}
         setPickedTokenSymbol={setPickedTokenSymbol}

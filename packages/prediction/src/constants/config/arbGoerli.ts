@@ -6,7 +6,7 @@ import { predictionsETH } from '../../predictionContract'
 import { PredictionConfig, PredictionSupportedSymbol } from '../../type'
 
 export const predictions: Record<string, PredictionConfig> = {
-  [PredictionSupportedSymbol.ETH]: {
+  [PredictionSupportedSymbol.WETH]: {
     isNativeToken: true,
     address: predictionsETH[ChainId.ARBITRUM_GOERLI],
     api: GRAPH_API_PREDICTION_ETH[ChainId.ARBITRUM_GOERLI],
