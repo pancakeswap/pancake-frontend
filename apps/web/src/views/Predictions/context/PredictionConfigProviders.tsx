@@ -12,8 +12,7 @@ import { usePredictionToken } from 'views/Predictions/hooks/usePredictionToken'
 import ConfigProvider from './ConfigProvider'
 
 const PredictionConfigProviders = ({ children }) => {
-  const { query } = useRouter()
-  const { token } = query
+  const router = useRouter()
   const { chainId } = useActiveChainId()
   const predictionConfigs = usePredictionConfigs()
   const [selectedPickedToken, setSelectedPickedToken] = useState('')
@@ -22,7 +21,7 @@ const PredictionConfigProviders = ({ children }) => {
   const supportedSymbol = useMemo(() => (predictionConfigs ? Object.keys(predictionConfigs) : []), [predictionConfigs])
 
   useEffect(() => {
-    const upperToken = _toUpper(token as string) as PredictionSupportedSymbol
+    const upperToken = _toUpper(router?.query?.token as string) as PredictionSupportedSymbol
 
     if (supportedSymbol.includes(upperToken)) {
       setSelectedPickedToken(upperToken)
@@ -34,9 +33,27 @@ const PredictionConfigProviders = ({ children }) => {
         }),
       } as Record<ChainId, PredictionSupportedSymbol>
       setPrevSelectedToken(newData)
+
+      return
+    }
+
+    // Set default to the first supported chain config.
+    if (supportedSymbol.length) {
+      const defaultTokenSymbol = supportedSymbol?.[0]
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            token: defaultTokenSymbol,
+          },
+        },
+        undefined,
+        { shallow: true },
+      )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainId, supportedSymbol, token, setPrevSelectedToken])
+  }, [chainId, supportedSymbol, router, setPrevSelectedToken])
 
   const selectedToken = useMemo(() => {
     if (supportedSymbol.includes(chainId && prevSelectedToken?.[chainId])) {

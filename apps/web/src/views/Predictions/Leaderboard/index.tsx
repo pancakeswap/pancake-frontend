@@ -25,7 +25,7 @@ const Leaderboard = () => {
 
   useEffect(() => {
     if (predictionConfigs) {
-      const defaultPickedTokenSymbol = Object.values(predictionConfigs)?.[0]?.token?.symbol
+      const defaultPickedTokenSymbol = Object.values(predictionConfigs)?.[0]?.token?.symbol as PredictionSupportedSymbol
       setPickedTokenSymbol(defaultPickedTokenSymbol)
     }
   }, [predictionConfigs, pickedChainId])
