@@ -55,7 +55,9 @@ export const TokenSelector = () => {
   const config = useConfig()
   const predictionConfigs = usePredictionConfigs()
 
-  const { data: ImageColor } = useColor(getImageUrlFromToken(config?.token ?? ''), 'hex', { crossOrigin: '' })
+  const { data: ImageColor } = useColor(config?.token ? getImageUrlFromToken(config?.token) : '', 'hex', {
+    crossOrigin: '',
+  })
 
   useEffect(() => {
     const handleClickOutside = () => {
