@@ -1,18 +1,18 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRow,
+  Box,
   Button,
-  Text,
   Flex,
+  Link,
   Message,
   MessageText,
-  Box,
-  Link,
-  useTooltip,
+  Text,
   TooltipText,
+  useTooltip,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
+import { LightGreyCard } from 'components/Card'
 
 import useMerkl from '../../hooks/useMerkl'
 
@@ -60,7 +60,7 @@ export function MerklSection({
       fontSize="md"
       external
       style={{ display: 'inline-flex' }}
-      href="https://docs.angle.money/side-products/merkl"
+      href="https://docs.angle.money/merkl/introduction"
     >
       {t('Learn more about Merkl')}
     </Link>

@@ -1,11 +1,13 @@
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useDeserializedPoolByVaultKey, usePool, useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
 import { VeCakeBenefitCard } from 'views/CakeStaking/components/SyrupPool/VeCakeCard'
 
+import { Token } from '@pancakeswap/swap-sdk-core'
+import styled from 'styled-components'
 import ActionPanel from './ActionPanel/ActionPanel'
 import AprCell from './Cells/AprCell'
 import AutoAprCell from './Cells/AutoAprCell'
@@ -15,13 +17,23 @@ import NameCell from './Cells/NameCell'
 import StakedCell from './Cells/StakedCell'
 import TotalStakedCell from './Cells/TotalStakedCell'
 
+const MigrateCell = styled(Pool.BaseCell)`
+  padding: 0;
+  justify-content: center;
+  flex: 7.5;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-grow: 1;
+  }
+`
+
 export const VaultPoolRow: React.FC<
   React.PropsWithChildren<{ vaultKey: VaultKey; account: string; initialActivity?: boolean }>
 > = memo(({ vaultKey, account, initialActivity }) => {
-  const { isLg, isXl, isXxl } = useMatchBreakpoints()
+  const { isLg, isXl, isXxl, isMobile } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
-  const pool = useDeserializedPoolByVaultKey(vaultKey)
+  const pool = useDeserializedPoolByVaultKey(vaultKey) as Pool.DeserializedPoolLockedVault<Token>
   const { totalCakeInVault } = useVaultPoolByKey(vaultKey)
 
   const { stakingToken, totalStaked } = pool
@@ -33,9 +45,17 @@ export const VaultPoolRow: React.FC<
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <NameCell pool={pool} />
-      <Pool.BaseCell style={{ padding: 0, justifyContent: 'center', flexGrow: 1 }}>
-        {!account && <VeCakeBenefitCard isTableView />}
-      </Pool.BaseCell>
+      {!account ? (
+        <MigrateCell>
+          {isMobile ? (
+            <Text fontSize={14} lineHeight="14px">
+              This product have been upgraded!
+            </Text>
+          ) : (
+            <VeCakeBenefitCard isTableView />
+          )}
+        </MigrateCell>
+      ) : null}
       {account && (
         <>
           {isXLargerScreen && <AutoEarningsCell pool={pool} account={account} />}

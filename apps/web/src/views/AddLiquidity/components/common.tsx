@@ -123,8 +123,8 @@ export const PairDistribution = ({
 interface AddLiquidityModalHeaderProps {
   currencies: { [field in Field]?: Currency }
   poolTokenPercentage?: Percent
-  liquidityMinted: CurrencyAmount<Token>
-  price: Fraction
+  liquidityMinted?: CurrencyAmount<Token>
+  price?: Fraction
   allowedSlippage: number
   children: React.ReactNode
   noLiquidity?: boolean

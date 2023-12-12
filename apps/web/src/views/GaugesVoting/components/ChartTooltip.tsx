@@ -1,12 +1,9 @@
+import { GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
 import { Percent } from '@pancakeswap/swap-sdk-core'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Address } from 'viem'
 import { feeTierPercent } from 'views/V3Info/utils'
-import { useGaugeConfig } from '../hooks/useGaugePair'
-import { GaugeVoting } from '../hooks/useGaugesVoting'
 import { TripleLogo } from './TripleLogo'
 
 const Indicator = styled.div`
@@ -45,28 +42,27 @@ const Tooltip = styled.div.withConfig({ shouldForwardProp: (prop) => prop !== 's
   }
 `
 
+export const OTHERS_GAUGES = '0xOTHERS'
+
 export const ChartTooltip: React.FC<{
   color: string
   visible: boolean
-  gauge?: GaugeVoting
+  gauge?: Gauge
   total?: number
-  allGauges?: GaugeVoting[]
-}> = ({ color, allGauges, gauge, visible, total }) => {
+  sort: string
+}> = ({ color, sort, gauge, visible, total }) => {
   const { isDesktop } = useMatchBreakpoints()
-  const sortedGauges = useMemo(() => {
-    return allGauges?.filter((x) => x.weight > 0).sort((a, b) => (a.weight < b.weight ? 1 : -1))
-  }, [allGauges])
-  const sort = useMemo(() => {
-    if (!gauge?.weight) return '0'
-    const index = (sortedGauges?.findIndex((g) => g.hash === gauge.hash) ?? 0) + 1
-    if (index < 10) return `0${index}`
-    return index
-  }, [gauge?.hash, gauge?.weight, sortedGauges])
   const percent = useMemo(() => {
     return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
   }, [total, gauge?.weight])
+  const name = useMemo(() => {
+    return gauge?.hash === OTHERS_GAUGES ? 'Others' : gauge?.pairName
+  }, [gauge?.pairName, gauge?.hash])
 
-  const pool = useGaugeConfig(gauge?.pairAddress as Address, Number(gauge?.chainId || undefined))
+  const desc = useMemo(() => {
+    if (!gauge) return ''
+    return gauge?.hash === OTHERS_GAUGES ? gauge?.pairName.split('|')[1] : GAUGE_TYPE_NAMES[gauge.type]
+  }, [gauge])
 
   if (!visible) return null
 
@@ -81,16 +77,16 @@ export const ChartTooltip: React.FC<{
         </Text>
       </Indicator>
       <Content flexShrink={isDesktop ? 0 : 1}>
-        <TripleLogo gaugeConfig={pool} chainId={Number(gauge?.chainId)} size={36} />
+        <TripleLogo gaugeConfig={gauge} chainId={Number(gauge?.chainId)} size={36} />
         <Flex flexDirection="column">
           <Text fontSize={18} bold lineHeight={1.2} color="text">
-            {pool?.pairName}
+            {name}
           </Text>
           <Flex alignItems="center">
-            {pool?.type === GaugeType.V3 ? (
+            {gauge?.type === GaugeType.V3 || gauge?.type === GaugeType.V2 ? (
               <>
                 <Text fontSize={12} lineHeight={1.2} color="textSubtle">
-                  {feeTierPercent(pool.feeTier)}
+                  {feeTierPercent(gauge.feeTier)}
                 </Text>
                 <Text color="textSubtle" mx="0.375em" style={{ opacity: 0.2 }}>
                   |
@@ -98,7 +94,7 @@ export const ChartTooltip: React.FC<{
               </>
             ) : null}
             <Text fontSize={12} color="textSubtle" lineHeight={1.2}>
-              {pool ? GAUGE_TYPE_NAMES[pool.type] : ''}
+              {desc}
             </Text>
           </Flex>
         </Flex>

@@ -14,7 +14,7 @@ export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancak
 export const ONRAMP_API_BASE_URL = 'https://pcs-on-ramp-api.com'
 export const TRANSAK_API_BASE_URL = 'https://api-stg.transak.com/api/v1'
 export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
-export const NOTIFICATION_HUB_BASE_URL = 'https://lobster-app-6lfpi.ondigitalocean.app'
+export const NOTIFICATION_HUB_BASE_URL = 'https://notification-hub.pancakeswap.com'
 /**
  * V1 will be deprecated but is still used to claim old rounds
  */
@@ -64,7 +64,7 @@ export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
 export const V3_SUBGRAPH_URLS = V3_SUBGRAPHS
 
-export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancakeswap.com/api/v1'
+export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'
 
 export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 

@@ -1,5 +1,42 @@
 # routing-api
 
+## 0.3.15
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+- Updated dependencies [2ec03f1b2]
+  - @pancakeswap/smart-router@4.11.1
+  - @pancakeswap/sdk@5.7.3
+  - @pancakeswap/v3-sdk@3.7.2
+  - @pancakeswap/farms@1.0.28
+
+## 0.3.14
+
+### Patch Changes
+
+- Updated dependencies [95c5fb6cd]
+- Updated dependencies [761e8523e]
+  - @pancakeswap/smart-router@4.11.0
+
+## 0.3.13
+
+### Patch Changes
+
+- Updated dependencies [2bb70e602]
+  - @pancakeswap/smart-router@4.10.1
+  - @pancakeswap/farms@1.0.27
+  - @pancakeswap/v3-sdk@3.7.1
+
+## 0.3.12
+
+### Patch Changes
+
+- Updated dependencies [cd5c4d0ce]
+  - @pancakeswap/smart-router@4.10.0
+  - @pancakeswap/v3-sdk@3.7.0
+  - @pancakeswap/farms@1.0.26
+
 ## 0.3.11
 
 ### Patch Changes

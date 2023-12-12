@@ -1,11 +1,11 @@
-import { memo, useMemo } from 'react'
 import { Currency } from '@pancakeswap/sdk'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { memo, useMemo } from 'react'
 
 import { CardHeader } from './CardLayout'
+import { FarmTag, FeeTag, SingleTokenTag } from './Tags'
 import { TokenPairLogos } from './TokenPairLogos'
-import { FeeTag, FarmTag, SingleTokenTag } from './Tags'
 
 interface Props {
   currencyA: Currency

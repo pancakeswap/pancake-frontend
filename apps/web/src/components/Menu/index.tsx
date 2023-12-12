@@ -6,15 +6,13 @@ import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
-import { EXPERIMENTAL_FEATURES } from 'config/experminetalFeatures'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import useTheme from 'hooks/useTheme'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useTogglenotifications } from 'hooks/v3/useToggleNotifications'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-// import { useAllowNotifications } from 'state/notifications/hooks'
 import Notifications from 'views/Notifications'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
@@ -27,13 +25,12 @@ const LinkComponent = (linkProps) => {
 }
 
 const Menu = (props) => {
-  // const [allowNotifications] = useAllowNotifications()
+  const { allowNotifications, featureEnabled } = useTogglenotifications()
   const { chainId } = useActiveChainId()
   const { isDark, setTheme } = useTheme()
   const cakePrice = useCakePrice()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const featureEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.WebNotifications)
 
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
@@ -63,7 +60,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
-            {featureEnabled && <Notifications />}
+            {featureEnabled && allowNotifications && <Notifications />}
             <NetworkSwitcher />
             <UserMenu />
           </>

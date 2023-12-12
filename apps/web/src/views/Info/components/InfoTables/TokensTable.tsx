@@ -1,17 +1,17 @@
-import { useState, useMemo, useCallback, useEffect, Fragment } from 'react'
-import { styled } from 'styled-components'
-import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 
-import { useMultiChainPath, useStableSwapPath, useChainNameByQuery } from 'state/info/hooks'
-import { subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
-import { TokenData } from 'state/info/types'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import Percent from 'views/Info/components/Percent'
 import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
-import { formatAmount } from 'utils/formatInfoNumbers'
+import { subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { TokenData } from 'state/info/types'
 import { safeGetAddress } from 'utils'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import Percent from 'views/Info/components/Percent'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 /**
@@ -111,7 +111,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
             <Flex marginLeft="10px">
               <Text>{(checksummedAddress && subgraphTokenName[checksummedAddress]) || tokenData.name}</Text>
               <Text ml="8px">
-                {(checksummedAddress && subgraphTokenSymbol[checksummedAddress]) || tokenData.symbol})
+                ({(checksummedAddress && subgraphTokenSymbol[checksummedAddress]) || tokenData.symbol})
               </Text>
             </Flex>
           )}

@@ -15,7 +15,7 @@ import {
   RowBetween,
   Text,
 } from '@pancakeswap/uikit'
-import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -56,15 +56,14 @@ export const LockedVeCakeStatus: React.FC<{
 
   if (status === CakeLockStatus.NotLocked) return null
 
-  const TextComp = proxyBalance.gt(0) ? UnderlineText : Text
   const balanceText =
     balanceBN > 0 && balanceBN < 0.01 ? (
-      <TextComp fontSize="20px" bold color={balance.eq(0) ? 'failure' : 'secondary'}>
+      <UnderlineText fontSize="20px" bold color={balance.eq(0) ? 'failure' : 'secondary'}>
         {`< 0.01`}
-      </TextComp>
+      </UnderlineText>
     ) : (
       <UnderlinedBalance
-        underlined={proxyBalance.gt(0)}
+        underlined
         fontSize="20px"
         bold
         color={balance.eq(0) ? 'failure' : 'secondary'}
@@ -79,11 +78,17 @@ export const LockedVeCakeStatus: React.FC<{
           <RowBetween>
             <AutoColumn>
               <Heading color="text">{t('My VeCAKE')}</Heading>
-              {proxyBalance.gt(0) ? (
-                <Tooltips content={<FromProxyTooltip proxyCake={proxyCake} />}>{balanceText}</Tooltips>
-              ) : (
-                balanceText
-              )}
+              <Tooltips
+                content={
+                  proxyBalance.gt(0) ? (
+                    <DualStakeTooltip nativeBalance={balanceBN} proxyBalance={proxyCake} />
+                  ) : (
+                    <SingleStakeTooltip />
+                  )
+                }
+              >
+                {balanceText}
+              </Tooltips>
             </AutoColumn>
             <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="token-vecake" />
           </RowBetween>
@@ -189,14 +194,37 @@ const LockedInfo = () => {
   )
 }
 
-const FromProxyTooltip: React.FC<{
-  proxyCake: number
-}> = ({ proxyCake }) => {
+const SingleStakeTooltip = () => {
   const { t } = useTranslation()
 
   return (
     <>
-      {t('%amount% veCAKE from CAKE Pool migrated position.', { amount: proxyCake })}
+      {t('veCAKE is calculated with number of CAKE locked, and the remaining time against maximum lock time.')}
+      <LearnMore />
+    </>
+  )
+}
+
+const DualStakeTooltip: React.FC<{
+  nativeBalance: number
+  proxyBalance: number
+}> = ({ nativeBalance, proxyBalance }) => {
+  const { t } = useTranslation()
+
+  return (
+    <>
+      {t('veCAKE is calculated with number of CAKE locked, and the remaining time against maximum lock time.')}
+      <br />
+      <br />
+      <ul>
+        <li>
+          {t('Native:')} {formatNumber(nativeBalance)} veCAKE
+        </li>
+        <li>
+          {t('Migrated:')} {formatNumber(proxyBalance)} veCAKE
+        </li>
+      </ul>
+      <br />
       <LearnMore />
     </>
   )

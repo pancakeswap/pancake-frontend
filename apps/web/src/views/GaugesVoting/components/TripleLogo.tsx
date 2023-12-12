@@ -1,7 +1,14 @@
-import { Token, WNATIVE, Native } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { CurrencyLogo, ChainLogo } from '@pancakeswap/widgets-internal'
-import { GaugeALMConfig, GaugeConfig, GaugeType, GaugeV2Config, GaugeV3Config } from 'config/constants/types'
+import {
+  GaugeALMConfig,
+  GaugeConfig,
+  GaugeStableSwapConfig,
+  GaugeType,
+  GaugeV2Config,
+  GaugeV3Config,
+} from '@pancakeswap/gauges'
+import { Native, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainLogo, CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Address } from 'viem'
@@ -32,18 +39,25 @@ const SingleLogo = ({ size = 32 }: { size?: number }) => {
   return <img src="/images/cake-staking/token-vecake.png" alt="ve-cake" width={size} height={size} />
 }
 
-const DoubleLogo: React.FC<{ gaugeConfig: GaugeV2Config | GaugeV3Config | GaugeALMConfig; size?: number }> = ({
-  gaugeConfig,
-  size = 36,
-}) => {
-  const currency0 = useMemo(
-    () => getCurrency(gaugeConfig.chainId, gaugeConfig.token0Address),
-    [gaugeConfig.chainId, gaugeConfig.token0Address],
-  )
-  const currency1 = useMemo(
-    () => getCurrency(gaugeConfig.chainId, gaugeConfig.token1Address),
-    [gaugeConfig.chainId, gaugeConfig.token1Address],
-  )
+const DoubleLogo: React.FC<{
+  gaugeConfig: GaugeV2Config | GaugeStableSwapConfig | GaugeV3Config | GaugeALMConfig
+  size?: number
+}> = ({ gaugeConfig, size = 36 }) => {
+  const token0Address = useMemo<Address | undefined>(() => {
+    if (gaugeConfig.type === GaugeType.StableSwap) {
+      return gaugeConfig.tokenAddresses[0]
+    }
+    return gaugeConfig.token0Address
+  }, [gaugeConfig])
+  const token1Address = useMemo<Address | undefined>(() => {
+    if (gaugeConfig.type === GaugeType.StableSwap) {
+      return gaugeConfig.tokenAddresses[1]
+    }
+    return gaugeConfig.token1Address
+  }, [gaugeConfig])
+
+  const currency0 = useMemo(() => getCurrency(gaugeConfig.chainId, token0Address), [gaugeConfig.chainId, token0Address])
+  const currency1 = useMemo(() => getCurrency(gaugeConfig.chainId, token1Address), [gaugeConfig.chainId, token1Address])
 
   return (
     <>

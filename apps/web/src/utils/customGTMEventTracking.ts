@@ -75,11 +75,12 @@ export const logGTMClickAddLiquidityEvent = () => {
   })
 }
 
-export const logGTMWalletConnectEvent = () => {
+export const logGTMWalletConnectEvent = (walletTitle?: string) => {
   console.info('---WalletConnect---')
   window?.dataLayer?.push({
     event: GTMEvent.WalletConnect,
     action: GTMAction.ClickWalletConnectButton,
     category: GTMCategory.WalletConnect,
+    label: walletTitle,
   })
 }

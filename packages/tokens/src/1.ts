@@ -1,5 +1,5 @@
-import { WETH9, ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
 
 import { CAKE, USDC, USDT, WBTC_ETH } from './common'
 
@@ -312,5 +312,37 @@ export const ethereumTokens = {
     'MEME',
     'Memecoin',
     'https://www.memecoin.org/',
+  ),
+  btrfly: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xc55126051B22eBb829D00368f4B12Bde432de5Da',
+    18,
+    'BTRFLY',
+    'BTRFLY',
+    'https://www.redactedcartel.xyz/',
+  ),
+  sdt: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x73968b9a57c6E53d41345FD57a6E6ae27d6CDB2F',
+    18,
+    'SDT',
+    'Stake DAO Token',
+    'https://www.stakedao.org/',
+  ),
+  agEUR: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8',
+    18,
+    'agEUR',
+    'agEUR',
+    'https://angle.money/',
+  ),
+  insp: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x186eF81fd8E77EEC8BfFC3039e7eC41D5FC0b457',
+    18,
+    'INSP',
+    'Inspect',
+    'https://www.inspect.xyz/',
   ),
 }

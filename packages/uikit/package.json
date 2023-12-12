@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/uikit",
-  "version": "0.65.0",
+  "version": "0.65.1",
   "description": "Set of UI components for pancake projects",
   "type": "module",
   "main": "dist/index.cjs",
@@ -144,7 +144,7 @@
     "react-popper": "^2.3.0",
     "styled-system": "^5.1.5",
     "tslib": "^2.2.0",
-    "wagmi": "1.4.3"
+    "wagmi": "1.4.7"
   },
   "publishConfig": {
     "access": "public"

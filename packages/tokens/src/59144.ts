@@ -1,6 +1,6 @@
-import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { USDC, USDT, CAKE } from './common'
+import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
+import { CAKE, USDC, USDT } from './common'
 
 export const lineaTokens = {
   weth: WETH9[ChainId.LINEA],
@@ -15,5 +15,13 @@ export const lineaTokens = {
     6,
     'axlUSDC',
     'Axelar Wrapped USDC',
+  ),
+  wstETH: new ERC20Token(
+    ChainId.LINEA,
+    '0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F',
+    18,
+    'wstETH',
+    'Wrapped liquid staked Ether 2.0',
+    'https://lido.fi/',
   ),
 }

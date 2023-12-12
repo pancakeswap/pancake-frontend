@@ -2,9 +2,9 @@ import { useToast } from '@pancakeswap/uikit'
 import { NOTIFICATION_HUB_BASE_URL } from 'config/constants/endpoints'
 import crypto from 'crypto'
 import {
+  NEXT_PUBLIC_WEB_NOTIFICATION_SECURE_TOKEN,
   PUBLIC_VAPID_KEY,
   PancakeNotifications,
-  SECURE_TOKEN,
   WEB_PUSH_ENCRYPTION_KEY,
   WEB_PUSH_IV,
 } from 'views/Notifications/constants'
@@ -80,7 +80,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-secure-token': SECURE_TOKEN,
+          'x-secure-token': NEXT_PUBLIC_WEB_NOTIFICATION_SECURE_TOKEN,
         },
         body: JSON.stringify(notificationPayload),
       })

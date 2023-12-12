@@ -1,6 +1,5 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { Button, Card, Flex, FlexGap, Heading, Text } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { Button, Card, Flex, FlexGap, Heading, Link, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 type BenefitCardType = 'earnCake' | 'gaugesVoting' | 'farmBoost' | 'snapshotVoting' | 'ifo' | 'more'
@@ -71,6 +70,16 @@ const StyledCard = styled(Card)`
   height: 100%;
 `
 
+const StyleUl = styled.ul`
+  list-style-type: '\u2022';
+  list-style-position: outside;
+  margin-left: 16px;
+
+  li {
+    padding-left: 10px;
+  }
+`
+
 export const BenefitCard: React.FC<{
   type: BenefitCardType
   dataText?: string
@@ -96,10 +105,12 @@ export const BenefitCard: React.FC<{
   ) : null
 
   return (
-    <StyledCard innerCardProps={{ p: '24px' }}>
+    <StyledCard innerCardProps={{ p: ['16px', '16px', '24px'] }}>
       <FlexGap flexDirection="column" gap="16px" height="100%" justifyContent="space-between">
         <FlexGap gap="16px" alignItems="center">
-          <img srcSet={`${info.headImg} 2x`} alt="earn-cake" />
+          <HeadImage>
+            <img srcSet={`${info.headImg} 2x`} alt="earn-cake" />
+          </HeadImage>
           <FlexGap flexDirection="column" gap="8px">
             <Flex>
               <Heading as="h3" scale="lg" color="secondary">
@@ -121,20 +132,37 @@ export const BenefitCard: React.FC<{
         </FlexGap>
         <div>
           <Text lineHeight="130%">
-            <ul>
+            <StyleUl>
               {info.desc.map((item) => (
                 <li key={item}>{t(item)}</li>
               ))}
-            </ul>
+            </StyleUl>
           </Text>
         </div>
         {button && info.link ? (
-          <NextLinkFromReactRouter to={info.link} prefetch={false}>
+          <Link href={info.link} style={{ width: '100%' }}>
             {button}
-          </NextLinkFromReactRouter>
+          </Link>
         ) : null}
         {button && !info.link && onClick ? button : null}
       </FlexGap>
     </StyledCard>
   )
 }
+
+const HeadImage = styled.div`
+  width: 68px;
+  height: 68px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 72px;
+    height: 72px;
+  }
+
+  img {
+    height: 100%;
+  }
+`

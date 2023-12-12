@@ -8,11 +8,11 @@ import { Address, useAccount } from 'wagmi'
 const isCookieInFeatureFlags = (feature: EXPERIMENTAL_FEATURES) =>
   Cookies.get(getCookieKey(feature))?.toString() === 'true'
 
-const isUserAddressInWhitelist = (userAddress: Address, whitelist: string[]) =>
-  whitelist.includes(`eip155:1:${userAddress}`)
+const isUserAddressInWhitelist = (userAddress: Address, whitelist: string[] | undefined) =>
+  whitelist && whitelist.includes(`eip155:1:${userAddress}`)
 
 export const useExperimentalFeatureEnabled = (featureFlag: EXPERIMENTAL_FEATURES) => {
-  const [featureEnabled, setFeatureEnabled] = useState<boolean | null>(null)
+  const [featureEnabled, setFeatureEnabled] = useState<boolean | null | undefined>(null)
   const { address } = useAccount()
 
   const { data: subscribers } = useQuery(['subscribers'], async () => {
@@ -22,10 +22,10 @@ export const useExperimentalFeatureEnabled = (featureFlag: EXPERIMENTAL_FEATURES
   })
 
   useEffect(() => {
-    if (!subscribers || !address) return
+    if (!address) return
     const cookie = isCookieInFeatureFlags(featureFlag)
-    const userInWhitelist = isUserAddressInWhitelist(address, subscribers.data)
-
+    const userInWhitelist = isUserAddressInWhitelist(address, subscribers?.data)
+    console.log(cookie)
     setFeatureEnabled(cookie || userInWhitelist)
   }, [featureFlag, address, subscribers])
 

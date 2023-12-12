@@ -1,5 +1,7 @@
 import { useToast } from '@pancakeswap/uikit'
 import { useManageSubscription, useW3iAccount } from '@web3inbox/widget-react'
+import { EXPERIMENTAL_FEATURES } from 'config/experminetalFeatures'
+import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import { useCallback } from 'react'
 import { useAllowNotifications } from 'state/notifications/hooks'
 import { Events } from 'views/Notifications/constants'
@@ -9,6 +11,8 @@ export const useTogglenotifications = () => {
   const { account } = useW3iAccount()
   const { unsubscribe, isSubscribed } = useManageSubscription(account)
   const [allowNotifications, setAllowNotifications] = useAllowNotifications()
+  const featureEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.WebNotifications)
+
   const toast = useToast()
 
   const handleDiableNotifications = useCallback(async () => {
@@ -32,5 +36,5 @@ export const useTogglenotifications = () => {
     }
   }, [setAllowNotifications, toast])
 
-  return { allowNotifications, handleEnableNotifications, handleDiableNotifications }
+  return { allowNotifications, featureEnabled, handleEnableNotifications, handleDiableNotifications }
 }

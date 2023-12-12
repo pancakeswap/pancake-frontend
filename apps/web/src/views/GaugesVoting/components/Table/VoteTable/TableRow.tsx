@@ -1,98 +1,103 @@
+import { GAUGE_TYPE_NAMES, GaugeType } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
-import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import BN from 'bignumber.js'
-import { GAUGE_TYPE_NAMES, GaugeType } from 'config/constants/types'
 import dayjs from 'dayjs'
-import { useVeCakeBalance } from 'hooks/useTokenBalance'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Address } from 'viem'
+import { useCallback, useMemo, useState } from 'react'
+import { stringify } from 'viem'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
-import { useGaugeConfig } from 'views/GaugesVoting/hooks/useGaugePair'
-import { GaugeVoting } from 'views/GaugesVoting/hooks/useGaugesVoting'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 import { TRow } from '../styled'
 import { PercentInput } from './PercentInput'
+import { useRowVoteState } from './hooks/useRowVoteState'
+import { DEFAULT_VOTE, RowProps } from './types'
 
-export const TableRow: React.FC<{
-  data: GaugeVoting
-  value: string
-  onChange: (value: string) => void
-}> = ({ data, value, onChange }) => {
+const debugFormat = (unix?: bigint | number) => {
+  if (!unix) return ''
+  return dayjs.unix(Number(unix)).format('YYYY-MM-DD HH:mm:ss')
+}
+
+export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE }, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const { balance: veCake } = useVeCakeBalance()
-
-  const pool = useGaugeConfig(data?.pairAddress as Address, Number(data?.chainId || undefined))
-
+  const { cakeLockedAmount } = useCakeLockStatus()
+  const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const userVote = useUserVote(data)
-  const voteDisabled = userVote?.voteLocked
-  const powerPercent = useMemo(() => {
-    return userVote?.power ? new Percent(userVote?.power, 10000).toSignificant(2) : undefined
-  }, [userVote?.power])
-  const power = useMemo(() => {
-    if (userVote?.slope) {
-      const amount = getBalanceNumber(new BN(userVote.slope))
-      return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-    }
-    return 0
-  }, [userVote?.slope])
-
+  const {
+    currentVoteWeight,
+    currentVotePercent,
+    previewVoteWeight,
+    voteValue,
+    voteLocked,
+    willUnlock,
+    proxyVeCakeBalance,
+  } = useRowVoteState({
+    data,
+    vote,
+    onChange,
+  })
   const onMax = () => {
-    onChange('100')
+    onChange(vote, true)
   }
-
-  const voteValue = useMemo(() => {
-    if (voteDisabled) return powerPercent ?? ''
-    return value ?? ''
-  }, [voteDisabled, powerPercent, value])
-  const votesAmount = useMemo(() => {
-    const p = Number(voteValue || 0) * 100
-    const amount = getBalanceNumber(veCake.times(p).div(10000))
-    return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-  }, [veCake, voteValue])
-
-  useEffect(() => {
-    if (voteDisabled && !value) {
-      onChange(voteValue)
-    }
-  }, [onChange, value, voteDisabled, voteValue])
 
   return (
     <TRow>
       <FlexGap alignItems="center" gap="13px">
-        <GaugeTokenImage gauge={pool} />
+        <Tooltips
+          disabled={!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')}
+          content={
+            <pre>
+              {stringify(
+                {
+                  ...userVote,
+                  currentTimestamp: debugFormat(currentTimestamp),
+                  nativeLasVoteTime: debugFormat(userVote?.nativeLastVoteTime),
+                  proxyLastVoteTime: debugFormat(userVote?.proxyLastVoteTime),
+                  lastVoteTime: debugFormat(userVote?.lastVoteTime),
+                  end: debugFormat(userVote?.end),
+                  proxyEnd: debugFormat(userVote?.proxyEnd),
+                  nativeEnd: debugFormat(userVote?.nativeEnd),
+                  proxyVeCakeBalance: proxyVeCakeBalance?.toString(),
+                },
+                undefined,
+                2,
+              )}
+            </pre>
+          }
+        >
+          <GaugeTokenImage gauge={data} />
+        </Tooltips>
         <Text fontWeight={600} fontSize={16}>
-          {pool?.pairName}
+          {data.pairName}
         </Text>
         <FlexGap gap="5px" alignItems="center">
-          <NetworkBadge chainId={Number(data?.chainId)} />
-          {pool?.type === GaugeType.V3 ? (
+          <NetworkBadge chainId={Number(data.chainId)} />
+          {/* {[GaugeType.V3, GaugeType.V2].includes(data.type) ? ( */}
+          {GaugeType.V3 === data.type || GaugeType.V2 === data.type ? (
             <Tag outline variant="secondary">
-              {feeTierPercent(pool.feeTier)}
+              {feeTierPercent(data.feeTier)}
             </Tag>
           ) : null}
 
-          <Tag variant="secondary">{pool ? GAUGE_TYPE_NAMES[pool.type] : ''}</Tag>
+          <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
         </FlexGap>
       </FlexGap>
       <FlexGap alignItems="center" justifyContent="center" gap="4px">
-        <Text bold>{power}</Text>
-        <Text>{powerPercent ? ` (${powerPercent}%)` : null}</Text>
+        <Text bold>{currentVoteWeight}</Text>
+        <Text>{currentVotePercent ? ` (${currentVotePercent}%)` : null}</Text>
       </FlexGap>
       <Flex alignItems="center" pr="25px">
-        {userVote?.voteLocked ? (
+        {voteLocked ? (
           <Tooltips
             content={t(
               'Gauge’s vote can not be changed more frequent than 10 days. You can update your vote for this gauge in: %distance%',
               {
                 distance: userVote?.lastVoteTime
-                  ? dayjs.unix(userVote?.lastVoteTime).add(10, 'day').from(dayjs.unix(currentTimestamp), true)
+                  ? dayjs.unix(Number(userVote?.lastVoteTime)).add(10, 'day').from(dayjs.unix(currentTimestamp), true)
                   : '',
               },
             )}
@@ -100,15 +105,15 @@ export const TableRow: React.FC<{
             <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
           </Tooltips>
         ) : null}
-        <Text color={userVote?.voteLocked ? 'textDisabled' : ''}>{votesAmount} veCAKE</Text>
+        <Text color={voteLocked || willUnlock || !cakeLocked ? 'textDisabled' : ''}>{previewVoteWeight} veCAKE</Text>
       </Flex>
       <Flex>
         <PercentInput
-          disabled={voteDisabled}
-          inputProps={{ disabled: voteDisabled }}
+          disabled={voteLocked || willUnlock || !cakeLocked}
+          inputProps={{ disabled: voteLocked || willUnlock || !cakeLocked }}
           onMax={onMax}
           value={voteValue}
-          onUserInput={onChange}
+          onUserInput={(v) => onChange({ ...vote!, power: v })}
         />
       </Flex>
     </TRow>
@@ -126,7 +131,7 @@ export const ExpandRow: React.FC<{
     setExpanded((prev) => !prev)
     onCollapse?.()
   }, [onCollapse])
-  const textToDisplay = expanded ? expandedText || t('Expanded') : text || t('Expand')
+  const textToDisplay = expanded ? expandedText || t('Collapse') : text || t('Expand')
 
   return (
     <Flex alignItems="center" justifyContent="center" py="8px">

@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   Flex,
-  FlexGap,
   Grid,
   Heading,
   Link,
@@ -15,14 +14,14 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
-import { RemainVeCakeBalance } from './components/RemainVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
+import { useGauges } from './hooks/useGauges'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
-import { useGaugesVoting } from './hooks/useGaugesVoting'
 
 const InlineLink = styled(LinkExternal)`
   display: inline-flex;
@@ -31,24 +30,56 @@ const InlineLink = styled(LinkExternal)`
 `
 
 const StyledGaugesVotingPage = styled.div`
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
+  overflow: hidden;
+  background: transparent;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    background: ${({ theme }) => theme.colors.gradientBubblegum};
+  }
 `
 
 const StyledPageHeader = styled(PageHeader)`
   padding-top: 9px;
-  padding-bottom: 0px;
+  padding-bottom: 33px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-bottom: 0px;
+  }
+`
+
+const StyledPage = styled(Page)`
+  padding: 0px;
+
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    background: transparent;
+  }
+`
+
+const BunnyImage = styled.img`
+  /* width: 218px; */
+  width: 180px;
+  position: absolute;
+  right: -30px;
+  top: 16px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 218px;
+    position: static;
+  }
 `
 
 const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const gauges = useGaugesVoting()
-  const { isDesktop } = useMatchBreakpoints()
+  const { data: gauges, isLoading } = useGauges()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
 
   return (
     <StyledGaugesVotingPage>
       <StyledPageHeader background="transparent">
-        <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
+        <Flex justifyContent="space-between">
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
             <Link href="/cake-staking">
               <Button p="0" variant="text">
@@ -58,59 +89,92 @@ const GaugesVoting = () => {
                 </Text>
               </Button>
             </Link>
-            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
+            <Text lineHeight="110%" bold color="secondary" mb="16px" fontSize={['32px', '32px', '64px', '64px']}>
               {t('Gauges Voting')}
-            </Heading>
-            <Box maxWidth="537px">
-              <Text color="textSubtle">
-                {t('Use veCAKE to vote and determine CAKE emissions.')}
-                <InlineLink
-                  external
-                  showExternalIcon
-                  color="textSubtle"
-                  href="https://docs.pancakeswap.finance/products/vecake"
-                >
-                  {t('Learn More')}
-                </InlineLink>
-              </Text>
+            </Text>
+            <Box maxWidth={['200px', '200px', '537px']}>
+              <Flex flexDirection={['column', 'column', 'row']}>
+                <Text color="textSubtle" maxWidth={['142px', '100%', '100%']}>
+                  {t('Use veCAKE to vote and determine CAKE emissions.')}
+                </Text>
+                <Box ml={['-8px', '-8px', 0]}>
+                  <InlineLink
+                    external
+                    showExternalIcon
+                    color="textSubtle"
+                    href="https://docs.pancakeswap.finance/products/vecake"
+                  >
+                    {t('Learn More')}
+                  </InlineLink>
+                </Box>
+              </Flex>
             </Box>
           </Flex>
-
-          <Box>
-            <img src="/images/gauges-voting/landing-bunny.png" alt="bunny" width="218px" />
-          </Box>
+          <Flex justifyContent="flex-end">
+            <BunnyImage src="/images/gauges-voting/landing-bunny.png" alt="bunny" />
+          </Flex>
         </Flex>
       </StyledPageHeader>
-      <Page style={{ paddingTop: 0, marginTop: '-18px' }}>
-        <Card innerCardProps={{ padding: isDesktop ? '2em 2em 0 2em' : '1em 1em 0 1em' }}>
-          <Grid gridTemplateColumns={isDesktop ? '2fr 3fr' : '1fr'}>
-            <FlexGap flexDirection="column" gap="24px">
-              <MyVeCakeBalance />
-              <CurrentEpoch />
-            </FlexGap>
-            <Box ml={isDesktop ? '60px' : '0'} mt={isDesktop ? '0' : '1em'}>
-              <Text color="secondary" textTransform="uppercase" bold>
-                Proposed weights
-              </Text>
-              <WeightsPieChart totalGaugesWeight={Number(totalGaugesWeight)} data={gauges} />
-            </Box>
-          </Grid>
-          {isDesktop ? (
-            <GaugesTable mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
-          ) : (
-            <GaugesList mt="1.5em" data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} />
-          )}
-        </Card>
-        <Box mt="80px">
-          <Heading as="h2" scale="xl" mb="24px">
-            {t('My votes')}
-          </Heading>
-          <RemainVeCakeBalance />
-          <VoteTable />
+      <StyledPage>
+        <Box
+          pl={['16px', '16px', '24px']}
+          pr={['16px', '16px', '24px']}
+          mt={['32px', '32px', '32px', '-18px']}
+          pb={['32px', '32px', '52px']}
+        >
+          <ResponsiveCard>
+            <Grid gridTemplateColumns={isDesktop ? '2.2fr 3fr' : '1fr'}>
+              <EpochPreview />
+              <Box ml={isDesktop ? '60px' : '0'} mt={isDesktop ? '0' : '1em'}>
+                <Text color="secondary" textTransform="uppercase" bold>
+                  {t('proposed weights')}
+                </Text>
+                <WeightsPieChart data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} isLoading={isLoading} />
+              </Box>
+            </Grid>
+            {isMobile ? (
+              <GaugesList
+                mt="1.5em"
+                data={gauges}
+                isLoading={isLoading}
+                totalGaugesWeight={Number(totalGaugesWeight)}
+              />
+            ) : (
+              <GaugesTable
+                mt="1.5em"
+                data={gauges}
+                isLoading={isLoading}
+                totalGaugesWeight={Number(totalGaugesWeight)}
+              />
+            )}
+          </ResponsiveCard>
+          <Box mt="80px">
+            <Heading as="h2" scale="xl" mb="24px">
+              {t('My votes')}
+            </Heading>
+            <VoteTable />
+          </Box>
         </Box>
-      </Page>
+      </StyledPage>
     </StyledGaugesVotingPage>
   )
+}
+
+const EpochPreview = () => {
+  return (
+    <Card isActive style={{ height: 'fit-content' }}>
+      <MyVeCakeBalance />
+      <CurrentEpoch />
+    </Card>
+  )
+}
+
+const ResponsiveCard: React.FC<PropsWithChildren> = ({ children }) => {
+  const { isDesktop } = useMatchBreakpoints()
+  if (isDesktop) {
+    return <Card innerCardProps={{ padding: '2em 2em 0 2em' }}>{children}</Card>
+  }
+  return <Box pt="2em">{children}</Box>
 }
 
 export default GaugesVoting

@@ -198,7 +198,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
 
       setAttemptingTxn(true)
       getViemClients({ chainId })
-        .estimateGas({
+        ?.estimateGas({
           account,
           to: manager.address,
           data: calldata,
@@ -274,15 +274,30 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     }
   }, [onFieldAInput, router, txHash, tokenId])
 
-  const pendingText = useMemo(
-    () =>
-      `Supplying ${!depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''} ${
-        !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
-      } ${!outOfRange ? 'and' : ''} ${
-        !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
-      } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`,
-    [depositADisabled, depositBDisabled, currencies, parsedAmounts, outOfRange, locale],
-  )
+  const pendingText = useMemo(() => {
+    if (depositADisabled) {
+      return t('Supplying %amountA% %symbolA% %amountB% %symbolB%', {
+        amountA: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale),
+        symbolA: currencies[Field.CURRENCY_B]?.symbol,
+        amountB: '',
+        symbolB: '',
+      })
+    }
+    if (depositBDisabled) {
+      return t('Supplying %amountA% %symbolA% %amountB% %symbolB%', {
+        amountA: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale),
+        symbolA: currencies[Field.CURRENCY_A]?.symbol,
+        amountB: '',
+        symbolB: '',
+      })
+    }
+    return t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', {
+      amountA: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale),
+      symbolA: currencies[Field.CURRENCY_A]?.symbol ?? '',
+      amountB: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale),
+      symbolB: currencies[Field.CURRENCY_B]?.symbol ?? '',
+    })
+  }, [depositADisabled, depositBDisabled, currencies, parsedAmounts, locale, t])
 
   const [onPresentIncreaseLiquidityModal] = useModal(
     <TransactionConfirmationModal

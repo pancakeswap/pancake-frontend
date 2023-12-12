@@ -1,12 +1,12 @@
 import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
-import { isLocked, isStaked } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
-import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
+import BigNumber from 'bignumber.js'
+import { isLocked, isStaked } from 'utils/cakePool'
 import Apr from './Apr'
+import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
 
 export const PerformanceFee: React.FC<
   React.PropsWithChildren<{ userData?: Pool.DeserializedVaultUser; performanceFeeAsDecimal?: number }>
@@ -17,8 +17,8 @@ export const PerformanceFee: React.FC<
     { placement: 'bottom-start' },
   )
 
-  const isLock = isLocked(userData)
-  const isStake = isStaked(userData)
+  const isLock = userData ? isLocked(userData) : false
+  const isStake = userData ? isStaked(userData) : false
 
   if (!performanceFeeAsDecimal || isLock) {
     return null
@@ -40,7 +40,7 @@ export const PerformanceFee: React.FC<
   )
 }
 
-export const TotalLocked: React.FC<React.PropsWithChildren<{ totalLocked: BigNumber; lockedToken: Token }>> = ({
+export const TotalLocked: React.FC<React.PropsWithChildren<{ totalLocked?: BigNumber; lockedToken: Token }>> = ({
   totalLocked,
   lockedToken,
 }) => {

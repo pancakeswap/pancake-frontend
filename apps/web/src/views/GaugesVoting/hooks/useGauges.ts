@@ -1,68 +1,41 @@
+import { ChainId } from '@pancakeswap/chains'
+import { Gauge } from '@pancakeswap/gauges'
 import { useQuery } from '@tanstack/react-query'
-import { gaugesVotingABI } from 'config/abi/gaugesVoting'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useGaugesVotingContract } from 'hooks/useContract'
-import { Address, ContractFunctionConfig, ContractFunctionResult, MulticallContracts } from 'viem'
-import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
-import { usePublicClient } from 'wagmi'
-import { getGaugeHash } from '../utils'
 
-export type GaugeInfo = {
-  hash: string
-  pairAddress: Address
-  masterChef: Address
-  pid: bigint
-  chainId: bigint
-  boostMultiplier: bigint
-  maxVoteCap: bigint
+type Response = {
+  data: Gauge[]
+  lastUpdated: number
 }
 
 export const useGauges = () => {
-  const gaugesVotingContract = useGaugesVotingContract()
-  const gaugesCount = useGaugesVotingCount()
   const { chainId } = useActiveChainId()
-  const publicClient = usePublicClient({ chainId })
-  const { data } = useQuery(
-    ['gauges', Number(gaugesCount), gaugesVotingContract.address, gaugesVotingContract.chain?.id],
-    async (): Promise<GaugeInfo[]> => {
-      if (!gaugesCount) return []
-      const contracts: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'gauges'>[]> = []
-      for (let index = 0; index < gaugesCount; index++) {
-        contracts.push({
-          ...gaugesVotingContract,
-          functionName: 'gauges',
-          args: [BigInt(index)],
-        } as const)
+
+  const { data, isLoading } = useQuery(
+    ['gaugesVoting', chainId],
+    async (): Promise<Gauge[]> => {
+      const response = await fetch(`/api/gauges/getAllGauges?testnet=${chainId === ChainId.BSC_TESTNET ? 1 : ''}`)
+      if (response.ok) {
+        const result = (await response.json()) as Response
+
+        const gauges = result.data.map((gauge) => ({
+          ...gauge,
+          weight: BigInt(gauge.weight),
+        }))
+
+        return gauges
       }
-
-      const response = (await publicClient.multicall({
-        contracts,
-        allowFailure: false,
-      })) as ContractFunctionResult<typeof gaugesVotingABI, 'gauges'>[]
-
-      const result = response.reduce((prev, curr) => {
-        const [pid, masterChef, _chainId, pairAddress, boostMultiplier, maxVoteCap] = curr
-        return [
-          ...prev,
-          {
-            pid,
-            masterChef,
-            chainId: _chainId,
-            pairAddress,
-            boostMultiplier,
-            maxVoteCap,
-            hash: getGaugeHash(pairAddress, Number(_chainId)),
-          },
-        ]
-      }, [] as GaugeInfo[])
-
-      return result
+      return [] as Gauge[]
     },
     {
-      enabled: !!gaugesVotingContract,
-      keepPreviousData: true,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   )
 
-  return data
+  return {
+    data,
+    isLoading: isLoading || data?.length === 0,
+  }
 }

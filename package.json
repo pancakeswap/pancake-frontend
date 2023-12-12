@@ -11,7 +11,7 @@
   "packageManager": "pnpm@8.x",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "turbo run dev --filter=web... --concurrency=23",
+    "dev": "turbo run dev --filter=web... --concurrency=24",
     "dev:aptos": "pnpm turbo run dev --filter=aptos-web... --concurrency=20",
     "dev:blog": "pnpm turbo run dev --filter=blog...",
     "dev:bridge": "pnpm turbo run dev --filter=bridge... --concurrency=16",
@@ -35,6 +35,7 @@
     "e2e:ci": "turbo run build --filter=web...[HEAD^1] && turbo run integration-test --filter=e2e...[HEAD^1]",
     "updateLPsAPR": "pnpm turbo run build --filter=@pancakeswap/farms && NODE_PATH=./apps/web/src tsx --tsconfig ./apps/web/tsconfig.json scripts/updateLPsAPR.ts",
     "updateAptosLPsAPR": "pnpm turbo run build --filter=@pancakeswap/aptos-swap-sdk && NODE_PATH=./apps/aptos/src tsx --tsconfig ./apps/aptos/tsconfig.json  scripts/updateAptosLpsAPR/index.ts",
+    "updateMerkl": "NODE_PATH=./apps/web/src tsx --tsconfig ./apps/web/tsconfig.json scripts/updateMerkl/index.ts",
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm i --lockfile-only",

@@ -21,7 +21,6 @@ import {
   Text,
   ThemeSwitcher,
   Toggle,
-  useToast,
 } from '@pancakeswap/uikit'
 import {
   useAudioPlay,
@@ -53,6 +52,18 @@ import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
 import { SettingsMode } from './types'
 
+const BetaTag = styled.div`
+  border: 2px solid ${({ theme }) => theme.colors.success};
+  border-radius: 16px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: ${({ theme }) => theme.colors.success};
+  margin-left: 6px;
+  font-weight: bold;
+  font-size: 14px;
+`
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   height: auto;
@@ -93,8 +104,8 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, setAudioMode] = useAudioPlay()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
-  const { allowNotifications, handleEnableNotifications, handleDiableNotifications } = useTogglenotifications()
-  const toast = useToast()
+  const { allowNotifications, featureEnabled, handleEnableNotifications, handleDiableNotifications } =
+    useTogglenotifications()
 
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
@@ -168,24 +179,28 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   }}
                 />
               </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Allow notifications')}</Text>
-                  <QuestionHelper
-                    text={t(
-                      'Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible',
-                    )}
-                    placement="top"
-                    ml="4px"
+              {featureEnabled ? (
+                <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                  <Flex alignItems="center">
+                    <Text>{t('Allow notifications')}</Text>
+                    <QuestionHelper
+                      text={t(
+                        'Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible',
+                      )}
+                      placement="top"
+                      ml="4px"
+                    />
+                    <BetaTag>{t('BETA')}</BetaTag>
+                  </Flex>
+
+                  <Toggle
+                    id="toggle-username-visibility"
+                    checked={allowNotifications}
+                    scale="md"
+                    onChange={allowNotifications ? handleDiableNotifications : handleEnableNotifications}
                   />
                 </Flex>
-                <Toggle
-                  id="toggle-username-visibility"
-                  checked={allowNotifications}
-                  scale="md"
-                  onChange={allowNotifications ? handleDiableNotifications : handleEnableNotifications}
-                />
-              </Flex>
+              ) : null}
               {chainId === ChainId.BSC && (
                 <>
                   <Flex justifyContent="space-between" alignItems="center" mb="24px">

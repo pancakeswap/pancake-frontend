@@ -1,5 +1,48 @@
 # @pancakeswap/smart-router
 
+## 4.11.1
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+- Updated dependencies [2ec03f1b2]
+  - @pancakeswap/multicall@3.3.2
+  - @pancakeswap/sdk@5.7.3
+  - @pancakeswap/v3-sdk@3.7.2
+  - @pancakeswap/tokens@0.5.6
+
+## 4.11.0
+
+### Minor Changes
+
+- 761e8523e: Add retry options to onchain quoter
+
+### Patch Changes
+
+- 95c5fb6cd: Update default configuration on base network
+- Updated dependencies [95c5fb6cd]
+  - @pancakeswap/multicall@3.3.1
+
+## 4.10.1
+
+### Patch Changes
+
+- 2bb70e602: Add cake sdcake stable pair
+- Updated dependencies [2bb70e602]
+  - @pancakeswap/tokens@0.5.5
+  - @pancakeswap/v3-sdk@3.7.1
+
+## 4.10.0
+
+### Minor Changes
+
+- cd5c4d0ce: export pancakeV3PoolABI from v3-sdk
+
+### Patch Changes
+
+- Updated dependencies [cd5c4d0ce]
+  - @pancakeswap/v3-sdk@3.7.0
+
 ## 4.9.10
 
 ### Patch Changes

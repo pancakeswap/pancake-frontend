@@ -32,8 +32,9 @@ const getSortClassName = (sortBy: SortBy | undefined): string | undefined => {
 
 export const TableHeader: React.FC<{
   selectable?: boolean
+  total?: number
   onSort?: (field: SortField, sortBy: SortBy) => void
-}> = ({ onSort, selectable }) => {
+}> = ({ onSort, selectable, total }) => {
   const { t } = useTranslation()
   const [voteSort, setVoteSort] = useState<SortBy | undefined>()
   const [boostSort, setBoostSort] = useState<SortBy | undefined>()
@@ -58,24 +59,25 @@ export const TableHeader: React.FC<{
       <Th style={{ textAlign: 'left' }}>
         <Text color="secondary" textTransform="uppercase" fontWeight={600} ml={selectable ? 44 : 0}>
           {t('gauges')}
+          {total ? ` (${total})` : ''}
         </Text>
       </Th>
       <Th>
-        <Touchable>
+        <Touchable onClick={onVoteSort}>
           <Text color="secondary" textTransform="uppercase" fontWeight={600}>
             {t('votes')}
           </Text>
-          <SortButton scale="sm" variant="subtle" onClick={onVoteSort} className={getSortClassName(voteSort)}>
+          <SortButton scale="sm" variant="subtle" className={getSortClassName(voteSort)}>
             <SortArrowIcon />
           </SortButton>
         </Touchable>
       </Th>
       <Th>
-        <Touchable>
+        <Touchable onClick={onBoostSort}>
           <Text color="secondary" textTransform="uppercase" fontWeight={600}>
             {t('boost')}
           </Text>
-          <SortButton scale="sm" variant="subtle" onClick={onBoostSort} className={getSortClassName(boostSort)}>
+          <SortButton scale="sm" variant="subtle" className={getSortClassName(boostSort)}>
             <SortArrowIcon />
           </SortButton>
         </Touchable>

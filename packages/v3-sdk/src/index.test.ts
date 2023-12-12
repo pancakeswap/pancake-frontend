@@ -54,6 +54,7 @@ test('exports', () => {
       "POOL_INIT_CODE_HASHES",
       "FeeAmount",
       "TICK_SPACINGS",
+      "MasterChefV3",
       "Multicall",
       "MaxUint128",
       "isMint",
@@ -63,15 +64,15 @@ test('exports', () => {
       "SelfPermit",
       "Staker",
       "SwapRouter",
-      "MasterChefV3",
+      "pancakeV3PoolABI",
       "masterChefV3ABI",
       "nonfungiblePositionManagerABI",
       "peripheryPaymentsWithFeeABI",
       "quoterABI",
       "quoterV2ABI",
       "selfPermitABI",
-      "v3StakerABI",
       "swapRouterABI",
+      "v3StakerABI",
     ]
   `)
 })
