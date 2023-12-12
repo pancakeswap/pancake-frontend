@@ -5,7 +5,7 @@ import MobileRow from './MobileRow'
 
 interface MobileResultsProps {
   results: PredictionUser[]
-  token: Token
+  token: Token | undefined
   api: string
 }
 

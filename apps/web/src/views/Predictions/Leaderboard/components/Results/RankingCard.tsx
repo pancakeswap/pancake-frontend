@@ -29,7 +29,7 @@ import { NetWinningsRow, Row } from './styles'
 interface RankingCardProps {
   rank: 1 | 2 | 3
   user: PredictionUser
-  token: Token
+  token: Token | undefined
   api: string
 }
 

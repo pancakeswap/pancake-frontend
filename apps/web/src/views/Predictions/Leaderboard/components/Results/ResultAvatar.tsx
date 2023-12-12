@@ -23,7 +23,7 @@ import WalletStatsModal from '../WalletStatsModal'
 
 interface ResultAvatarProps extends FlexProps {
   user: PredictionUser
-  token: Token
+  token: Token | undefined
   api: string
 }
 
