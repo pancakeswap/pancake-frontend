@@ -4,27 +4,27 @@ import {
   FlexGap,
   FlexProps,
   Text,
+  additionalColors,
   baseColors,
   darkColors,
   lightColors,
-  additionalColors,
 } from '@pancakeswap/uikit'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { LineChartLoader } from 'components/ChartLoaders'
 import PairPriceDisplay from 'components/PairPriceDisplay'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
+import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useChainlinkOracleContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
+import { IChartApi, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp, createChart } from 'lightweight-charts'
 import orderBy from 'lodash/orderBy'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { createChart, IChartApi, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp } from 'lightweight-charts'
-import dayjs from 'dayjs'
 import { darken } from 'polished'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
 import { styled } from 'styled-components'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useContractRead, useContractReads } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 import { CHART_DOT_CLICK_EVENT } from '../helpers'
@@ -74,11 +74,10 @@ function useChainlinkRoundDataSet() {
       data
         ?.filter((d) => !!d && d.status === 'success' && d.result[1] > 0n)
         ?.map(({ result }) => {
-          const [roundId, answer, startedAt] = result
           return {
-            answer: formatBigIntToFixed(answer, 4, 8),
-            roundId: roundId.toString(),
-            startedAt: Number(startedAt),
+            answer: formatBigIntToFixed(result?.[2] ?? 0n, 4, 8),
+            roundId: result?.[1]?.toString() ?? '0',
+            startedAt: Number(result?.[3]),
           }
         }) ?? []
     )
