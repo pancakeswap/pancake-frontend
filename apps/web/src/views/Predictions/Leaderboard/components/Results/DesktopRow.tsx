@@ -8,7 +8,7 @@ interface DesktopRowProps {
   rank?: number
   user: PredictionUser
   api: string
-  token: Token
+  token: Token | undefined
 }
 
 const DesktopRow: React.FC<React.PropsWithChildren<DesktopRowProps>> = ({ rank, user, api, token, ...props }) => (

@@ -9,7 +9,7 @@ import { NetWinningsRow, Row } from './styles'
 interface MobileRowProps {
   rank?: number
   user: PredictionUser
-  token: Token
+  token: Token | undefined
   api: string
 }
 

@@ -15,7 +15,7 @@ interface NetWinningsProps extends FlexProps {
   amount: number
   textPrefix?: string
   textColor?: string
-  token: Token
+  token: Token | undefined
 }
 
 export const NetWinnings: React.FC<React.PropsWithChildren<NetWinningsProps>> = ({ token, ...props }) => {
@@ -47,7 +47,7 @@ export const NetWinningsView: React.FC<React.PropsWithChildren<NetWinningsProps>
   )
 }
 
-export const NetWinningsRow: React.FC<React.PropsWithChildren<{ amount: number; token: Token }>> = ({
+export const NetWinningsRow: React.FC<React.PropsWithChildren<{ amount: number; token: Token | undefined }>> = ({
   amount,
   token,
 }) => {
