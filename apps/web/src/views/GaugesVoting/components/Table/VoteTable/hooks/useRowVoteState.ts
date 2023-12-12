@@ -59,7 +59,7 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     return vote?.power ?? ''
   }, [voteLocked, currentVotePercent, willUnlock, vote?.power])
 
-  const previewVoteWeight = useMemo(() => {
+  const previewVoteWeightAmount = useMemo(() => {
     const p = Number(voteValue || 0) * 100
     // const powerBN = new BN(epochVotePower.toString())
     let balance = veCakeBalance
@@ -70,20 +70,26 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
       balance = proxyVeCakeBalance
     }
     const amount = getBalanceNumber(balance.times(p).div(10000))
-
-    if (amount === 0) return 0
-    if (amount < 1) return amount.toPrecision(2)
-    return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
-  }, [voteValue, veCakeBalance, userVote?.ignoredSide, proxyVeCakeBalance])
+    return amount
+  }, [proxyVeCakeBalance, userVote?.ignoredSide, veCakeBalance, voteValue])
+  const previewVoteWeight = useMemo(() => {
+    if (previewVoteWeightAmount === 0) return 0
+    if (previewVoteWeightAmount < 1) return previewVoteWeightAmount.toPrecision(2)
+    return previewVoteWeightAmount < 1000
+      ? previewVoteWeightAmount.toFixed(2)
+      : formatLocalisedCompactNumber(previewVoteWeightAmount, true)
+  }, [previewVoteWeightAmount])
 
   // when previous vote is changed, highlight the changed number
   const changeHighlight = useMemo(() => {
-    if (currentVotePercent === '' || voteValue === '') return false
-    const prev = Number(currentVotePercent)
-    const next = Number(voteValue)
-    if (prev === next) return false
-    return true
-  }, [voteValue, currentVotePercent])
+    const prev = getBalanceNumber(new BN(currentVoteWeightAmount.toString())).toPrecision(2)
+    const current = previewVoteWeightAmount.toPrecision(2)
+    console.debug('debug amount', {
+      prev,
+      current,
+    })
+    return prev !== current
+  }, [currentVoteWeightAmount, previewVoteWeightAmount])
 
   // init vote value if still default
   useEffect(() => {

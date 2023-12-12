@@ -108,7 +108,10 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
             <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
           </Tooltips>
         ) : null}
-        <Text bold={changeHighlight} color={voteLocked || willUnlock || !cakeLocked ? 'textDisabled' : ''}>
+        <Text
+          bold={changeHighlight}
+          color={voteLocked || willUnlock || !cakeLocked ? (changeHighlight ? 'textSubtle' : 'textDisabled') : ''}
+        >
           {previewVoteWeight} veCAKE
         </Text>
       </Flex>
