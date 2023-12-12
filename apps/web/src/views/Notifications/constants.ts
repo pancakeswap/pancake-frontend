@@ -82,8 +82,7 @@ export const PancakeNotifications: {
 }
 export const APP_DOMAIN = 'pancakeswap.finance'
 
-export const PUBLIC_VAPID_KEY =
-  'BI1vtjF3A-NX4nNyJhWx0Ky--zOTlWBS5cLNQgOzSMElN4I27BgzREPtIZR1poZKjCgjWpS969wGQC8TdlSz1Zk'
+export const PUBLIC_VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_KEY ?? ''
 
 export const Events: { [event in keyof typeof ResponseEvents]: EventInformation } = {
   [ResponseEvents.NotificationsEnabled]: {
