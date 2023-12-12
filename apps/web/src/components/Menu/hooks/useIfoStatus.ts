@@ -1,4 +1,4 @@
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { ifoV7ABI } from '@pancakeswap/ifos'
 
@@ -8,8 +8,8 @@ import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 export const useIfoStatus = () => {
   const { activeIfo } = useActiveIfoConfig()
 
-  const { data = { startTime: 0, endTime: 0 } } = useSWRImmutable(
-    activeIfo ? ['ifo', 'currentIfo_timestamps', activeIfo.chainId] : null,
+  const { data = { startTime: 0, endTime: 0 } } = useQuery(
+    ['ifo', 'currentIfo_timestamps', activeIfo?.chainId],
     async () => {
       const client = publicClient({ chainId: activeIfo?.chainId })
       if (!client || !activeIfo?.chainId) {
@@ -38,6 +38,12 @@ export const useIfoStatus = () => {
         startTime: startTimeResponse.status === 'success' ? Number(startTimeResponse.result) : 0,
         endTime: endTimeResponse.status === 'success' ? Number(endTimeResponse.result) : 0,
       }
+    },
+    {
+      enabled: Boolean(activeIfo),
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   )
 
