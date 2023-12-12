@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
 import { isCakeVaultSupported } from '@pancakeswap/pools'
 import { Address } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
@@ -18,10 +18,8 @@ type Props = {
 const IfoPoolVaultCard = ({ ifoBasicSaleType, ifoAddress }: Props) => {
   const { chainId } = useActiveChainId()
   const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
-  const { isXl, isLg, isMd, isXs, isSm } = useMatchBreakpoints()
-  const isSmallerThanXl = isXl || isLg || isMd || isXs || isSm
 
-  const vault = isSmallerThanXl ? null : <VeCakeCard ifoAddress={ifoAddress} />
+  const vault = <VeCakeCard ifoAddress={ifoAddress} />
 
   return (
     <Flex width="100%" maxWidth={400} alignItems="center" flexDirection="column">

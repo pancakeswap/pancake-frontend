@@ -27,7 +27,7 @@ export function MyVeCake({ amount = 0 }: PropsWithChildren<{ amount?: number | B
       <Image src="/images/cake-staking/token-vecake.png" alt="token-vecake" width={40} height={40} />
       <FlexGap
         flex="1"
-        flexDirection={["column", "column", "row"]}
+        flexDirection="row"
         justifyContent={showLabel ? "space-between" : "flex-end"}
         gap="0.5rem"
         alignItems="center"
