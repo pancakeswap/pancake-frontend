@@ -25,7 +25,7 @@ export function VoteListItem({ style, data, vote = { ...DEFAULT_VOTE }, onChange
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const userVote = useUserVote(data)
-  const { currentVoteWeight, previewVoteWeight, voteValue, voteLocked } = useRowVoteState({
+  const { currentVoteWeight, previewVoteWeight, voteValue, voteLocked, changeHighlight } = useRowVoteState({
     data,
     vote,
     onChange,
@@ -55,7 +55,7 @@ export function VoteListItem({ style, data, vote = { ...DEFAULT_VOTE }, onChange
               <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
             </Tooltips>
           ) : null}
-          <Text>{voteLocked ? currentVoteWeight : previewVoteWeight} veCAKE</Text>
+          <Text bold={changeHighlight}>{voteLocked ? currentVoteWeight : previewVoteWeight} veCAKE</Text>
         </FlexGap>
       </Flex>
       <Flex alignSelf="stretch">

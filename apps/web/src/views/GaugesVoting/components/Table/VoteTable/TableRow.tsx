@@ -35,6 +35,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
     voteLocked,
     willUnlock,
     proxyVeCakeBalance,
+    changeHighlight,
   } = useRowVoteState({
     data,
     vote,
@@ -105,7 +106,9 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
             <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
           </Tooltips>
         ) : null}
-        <Text color={voteLocked || willUnlock || !cakeLocked ? 'textDisabled' : ''}>{previewVoteWeight} veCAKE</Text>
+        <Text bold={changeHighlight} color={voteLocked || willUnlock || !cakeLocked ? 'textDisabled' : ''}>
+          {previewVoteWeight} veCAKE
+        </Text>
       </Flex>
       <Flex>
         <PercentInput

@@ -76,6 +76,15 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     return amount < 1000 ? amount.toFixed(2) : formatLocalisedCompactNumber(amount, true)
   }, [voteValue, veCakeBalance, userVote?.ignoredSide, proxyVeCakeBalance])
 
+  // when previous vote is changed, highlight the changed number
+  const changeHighlight = useMemo(() => {
+    if (currentVotePercent === '' || voteValue === '') return false
+    const prev = Number(currentVotePercent)
+    const next = Number(voteValue)
+    if (prev === next) return false
+    return true
+  }, [voteValue, currentVotePercent])
+
   // init vote value if still default
   useEffect(() => {
     if (userVote?.hash && (!vote?.hash || vote?.hash === '0x')) {
@@ -95,5 +104,6 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
     voteLocked,
     willUnlock,
     proxyVeCakeBalance,
+    changeHighlight,
   }
 }
