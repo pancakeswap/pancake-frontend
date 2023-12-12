@@ -120,7 +120,7 @@
     "zod": "^3.22.3"
   },
   "devDependencies": {
-    "@angleprotocol/sdk": "3.0.121",
+    "@angleprotocol/sdk": "^3.0.121",
     "@next/eslint-plugin-next": "13.4.2",
     "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",

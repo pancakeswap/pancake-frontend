@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -892,8 +892,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@angleprotocol/sdk':
-        specifier: 3.0.121
-        version: 3.0.121(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(encoding@0.1.13)(typescript@5.2.2)
+        specifier: ^3.0.121
+        version: 3.0.127(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(encoding@0.1.13)(typescript@5.2.2)
       '@next/eslint-plugin-next':
         specifier: 13.4.2
         version: 13.4.2
@@ -2268,8 +2268,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
 
-  /@angleprotocol/sdk@3.0.121(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(encoding@0.1.13)(typescript@5.2.2):
-    resolution: {integrity: sha512-XAhNlFIEbKm2f0nQHF0sTA56OAPlsZD5OtTvD32CnTM0Lk2ezIRjgKJf5imwpZxMRgP/5jKtLZyP+fi8o/Ry0w==}
+  /@angleprotocol/sdk@3.0.127(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(encoding@0.1.13)(typescript@5.2.2):
+    resolution: {integrity: sha512-z9OoiusDq/kX1mrt8LeKwBGJLMx2udsk5lEI7TVupCBZPlRKAhCGTpOBwN9GnGD141FYWzW9eUQJibF6sdhlhg==}
     requiresBuild: true
     dependencies:
       '@typechain/ethers-v5': 10.2.1(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(ethers@5.7.2)(typechain@8.3.2)(typescript@5.2.2)
