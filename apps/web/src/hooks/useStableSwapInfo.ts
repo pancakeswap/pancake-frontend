@@ -60,7 +60,7 @@ export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddr
     balances: [results?.[0].result, results?.[1].result],
     amplifier: results?.[2].result,
     totalSupply: results?.[3].result,
-    fee: feeNumerator && feeDenominator && new Percent(feeNumerator, feeDenominator),
+    fee: new Percent(feeNumerator ?? 0, feeDenominator ?? 0),
     loading: isLoading,
   }
 }
