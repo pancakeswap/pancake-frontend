@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import {
   AutoRenewIcon,
@@ -16,22 +17,21 @@ import {
   TrophyGoldIcon,
   useToast,
 } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { AnyAction, AsyncThunkAction } from '@reduxjs/toolkit'
-import { useEffect } from 'react'
-import { styled } from 'styled-components'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useTranslation } from '@pancakeswap/localization'
-import { useAccount } from 'wagmi'
-import { Address } from 'viem'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePredictionsContract } from 'hooks/useContract'
+import { useEffect } from 'react'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { REWARD_RATE } from 'state/predictions/config'
 import { Bet } from 'state/types'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
+import { useAccount } from 'wagmi'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
@@ -40,7 +40,7 @@ interface CollectRoundWinningsModalProps extends InjectedModalProps {
   history: Bet[]
   isLoadingHistory: boolean
   predictionsAddress: Address
-  token: Token
+  token: Token | undefined
   isV1Claim?: boolean
   isNativeToken: boolean
 }

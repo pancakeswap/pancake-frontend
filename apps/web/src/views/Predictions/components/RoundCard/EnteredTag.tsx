@@ -28,7 +28,7 @@ const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount
     } else {
       tokenAmount = amount
     }
-    return formatTokenv2(tokenAmount, config?.token?.decimals, config?.displayedDecimals ?? 0)
+    return formatTokenv2(tokenAmount, config?.token?.decimals ?? 0, config?.displayedDecimals ?? 0)
   }, [amount, config, hasClaimed, multiplier])
 
   const { targetRef, tooltipVisible, tooltip } = useTooltip(

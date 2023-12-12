@@ -12,7 +12,7 @@ import { NetWinningsView } from './Results/styles'
 interface PreviousBetsTableProps {
   numberOfBets?: number
   account: string
-  token: Token
+  token: Token | undefined
   api: string
 }
 

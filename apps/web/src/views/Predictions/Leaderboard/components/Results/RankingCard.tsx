@@ -61,7 +61,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
   const { result, address, leaderboardLoadingState } = useStatModalProps({
     account: user.id,
     api,
-    tokenSymbol: token?.symbol,
+    tokenSymbol: token?.symbol ?? '',
   })
 
   const [onPresentWalletStatsModal] = useModal(

@@ -100,7 +100,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     t('You can now start prediction'),
   )
 
-  const { balance: userBalance } = useTokenBalanceByChain(config?.token?.address)
+  const { balance: userBalance } = useTokenBalanceByChain(config?.token?.address ?? '0x')
   const { balance: userNativeTokenBalance } = useGetNativeTokenBalance()
 
   const balance = useMemo(() => {
@@ -218,7 +218,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
           </Text>
           <Flex alignItems="center">
             <Box mr="4px" width={20} height={20}>
-              <TokenImage width={20} height={20} token={config?.token} />
+              {config?.token && <TokenImage width={20} height={20} token={config?.token} />}
             </Box>
             <Text bold textTransform="uppercase">
               {tokenSymbol}

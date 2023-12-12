@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { Token } from '@pancakeswap/sdk'
-import { Flex, Text, ChevronUpIcon, ChevronDownIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
+import { ChevronDownIcon, ChevronUpIcon, Flex, Text } from '@pancakeswap/uikit'
+import { useState } from 'react'
 import PreviousBetsTable from './PreviousBetsTable'
 
 interface MobileBetsTableProps {
   account: string
-  token: Token
+  token: Token | undefined
   api: string
 }
 

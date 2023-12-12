@@ -53,7 +53,7 @@ const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ us
   const { result, address, leaderboardLoadingState } = useStatModalProps({
     account: user.id,
     api,
-    tokenSymbol: token?.symbol,
+    tokenSymbol: token?.symbol ?? '',
   })
 
   const [onPresentWalletStatsModal] = useModal(

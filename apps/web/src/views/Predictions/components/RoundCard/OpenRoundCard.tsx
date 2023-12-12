@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { BetPosition } from '@pancakeswap/prediction'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -9,18 +10,17 @@ import {
   useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
 import { ROUND_BUFFER } from 'state/predictions/config'
 import { NodeLedger, NodeRound } from 'state/types'
-import { BetPosition } from '@pancakeswap/prediction'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { useAccount } from 'wagmi'
 import { formatTokenv2 } from '../../helpers'
 import CardFlip from '../CardFlip'
 import { PrizePoolRow, RoundResultBox } from '../RoundResult'
@@ -84,7 +84,7 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatTokenv2(
       betAmount ?? 0n,
-      config?.token?.decimals,
+      config?.token?.decimals ?? 0,
       config?.displayedDecimals ?? 4,
     )} ${config?.token?.symbol}`}</div>,
     { placement: 'top' },

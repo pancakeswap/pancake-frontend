@@ -143,7 +143,7 @@ interface TimerLabelProps {
 
 export const TimerLabel: React.FC<React.PropsWithChildren<TimerLabelProps>> = ({ interval, unit }) => {
   const currentRoundCloseTimestamp = useGetCurrentRoundCloseTimestamp()
-  const { secondsRemaining } = useCountdown(currentRoundCloseTimestamp)
+  const { secondsRemaining } = useCountdown(currentRoundCloseTimestamp ?? 0)
   const countdown = formatRoundTime(secondsRemaining)
   const { t } = useTranslation()
 

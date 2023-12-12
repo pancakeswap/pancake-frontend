@@ -1,18 +1,18 @@
-import { styled } from 'styled-components'
-import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { NodeRound, NodeLedger } from 'state/types'
 import { BetPosition } from '@pancakeswap/prediction'
-import { useGetBufferSeconds } from 'state/predictions/hooks'
-import { getHasRoundFailed } from 'state/predictions/helpers'
+import { BlockIcon, Box, Card, CardBody } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
+import { getHasRoundFailed } from 'state/predictions/helpers'
+import { useGetBufferSeconds } from 'state/predictions/hooks'
+import { NodeLedger, NodeRound } from 'state/types'
+import { styled } from 'styled-components'
 import { getRoundPosition } from '../../helpers'
 import { RoundResult } from '../RoundResult'
-import MultiplierArrow from './MultiplierArrow'
+import CalculatingCard from './CalculatingCard'
+import CanceledRoundCard from './CanceledRoundCard'
 import CardHeader, { getBorderBackground } from './CardHeader'
 import CollectWinningsOverlay from './CollectWinningsOverlay'
-import CanceledRoundCard from './CanceledRoundCard'
-import CalculatingCard from './CalculatingCard'
+import MultiplierArrow from './MultiplierArrow'
 
 interface ExpiredRoundCardProps {
   round: NodeRound
@@ -49,7 +49,7 @@ const ExpiredRoundCard: React.FC<React.PropsWithChildren<ExpiredRoundCardProps>>
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { epoch, lockPrice, closePrice } = round
-  const betPosition = getRoundPosition(lockPrice, closePrice)
+  const betPosition = getRoundPosition(lockPrice ?? 0n, closePrice ?? 0n)
   const bufferSeconds = useGetBufferSeconds()
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
 
