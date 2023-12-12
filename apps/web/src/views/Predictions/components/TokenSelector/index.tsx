@@ -55,7 +55,7 @@ export const TokenSelector = () => {
   const config = useConfig()
   const predictionConfigs = usePredictionConfigs()
 
-  const { data: ImageColor } = useColor(getImageUrlFromToken(config?.token), 'hex', { crossOrigin: '' })
+  const { data: ImageColor } = useColor(getImageUrlFromToken(config?.token ?? ''), 'hex', { crossOrigin: '' })
 
   useEffect(() => {
     const handleClickOutside = () => {
@@ -103,9 +103,11 @@ export const TokenSelector = () => {
     <Flex>
       <Box position="relative" zIndex={11}>
         <SvgToken width={isDesktop ? 70 : 44} height={isDesktop ? 70 : 44} color={ImageColor} />
-        <SelectedToken>
-          <TokenImage width={isDesktop ? 60 : 38} height={isDesktop ? 60 : 38} token={config?.token} />
-        </SelectedToken>
+        {config?.token && (
+          <SelectedToken>
+            <TokenImage width={isDesktop ? 60 : 38} height={isDesktop ? 60 : 38} token={config?.token} />
+          </SelectedToken>
+        )}
       </Box>
       <Selector isOpen={isOpen && isDesktop} isSingleToken={!isTokenListMoreThanOne}>
         <Flex

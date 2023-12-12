@@ -16,7 +16,7 @@ const AddressSearch: React.FC<React.PropsWithChildren<AddressSearchProps>> = ({ 
   const dispatch = useLocalDispatch()
   const { result, address, leaderboardLoadingState } = useStatModalProps({
     api,
-    tokenSymbol: token?.symbol,
+    tokenSymbol: token?.symbol ?? '',
   })
 
   const handleBeforeDismiss = () => {
@@ -38,7 +38,9 @@ const AddressSearch: React.FC<React.PropsWithChildren<AddressSearchProps>> = ({ 
   )
   const handleValidAddress = useCallback(
     async (value: string) => {
-      const response: any = await dispatch(fetchAddressResult({ account: value, api, tokenSymbol: token?.symbol }))
+      const response: any = await dispatch(
+        fetchAddressResult({ account: value, api, tokenSymbol: token?.symbol ?? '' }),
+      )
       return response.payload?.data !== undefined
     },
     [api, dispatch, token?.symbol],
