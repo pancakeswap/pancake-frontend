@@ -230,6 +230,7 @@ function WalletSelect<T>({
                 alignItems="center"
                 className={walletIconClass}
                 style={{ borderRadius: '13px' }}
+                overflow="hidden"
               >
                 {isImage ? (
                   <Image src={Icon as string} width={50} height={50} />
