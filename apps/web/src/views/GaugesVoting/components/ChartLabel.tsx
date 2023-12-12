@@ -1,10 +1,21 @@
 import { Gauge } from '@pancakeswap/gauges'
-import { useTranslation } from '@pancakeswap/localization'
+import { getLanguageCodeFromLS, useTranslation } from '@pancakeswap/localization'
 import { Percent } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Text } from '@pancakeswap/uikit'
-import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useMemo } from 'react'
+
+const format = (value: number) => {
+  if (typeof window !== 'undefined' && window.Intl) {
+    return new Intl.NumberFormat(getLanguageCodeFromLS(), {
+      notation: 'compact',
+      compactDisplay: 'short',
+      maximumSignificantDigits: 3,
+    }).format(value)
+  }
+  return value
+}
 
 export const ChartLabel: React.FC<{
   total?: number
@@ -24,7 +35,7 @@ export const ChartLabel: React.FC<{
         {t('total')}
       </Text>
       <Text bold fontSize={16}>
-        {`${formatLocalisedCompactNumber(weight, true)} veCAKE`}
+        {`${format(weight)} veCAKE`}
       </Text>
       {gauge?.weight ? (
         <Text fontSize={14} color="textSubtle">

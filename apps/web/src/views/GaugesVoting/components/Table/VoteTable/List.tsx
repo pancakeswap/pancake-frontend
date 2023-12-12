@@ -1,12 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ErrorIcon, Flex, FlexGap, Text } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
-import { CSSProperties } from 'react'
+import { CSSProperties, useMemo } from 'react'
 import styled from 'styled-components'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { GaugeIdentifierDetails } from '../GaugesTable/List'
 import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
@@ -25,7 +26,9 @@ export function VoteListItem({ style, data, vote = { ...DEFAULT_VOTE }, onChange
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const userVote = useUserVote(data)
-  const { currentVoteWeight, previewVoteWeight, voteValue, voteLocked } = useRowVoteState({
+  const { cakeLockedAmount } = useCakeLockStatus()
+  const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
+  const { currentVoteWeight, previewVoteWeight, voteValue, voteLocked, willUnlock, changeHighlight } = useRowVoteState({
     data,
     vote,
     onChange,
@@ -55,7 +58,12 @@ export function VoteListItem({ style, data, vote = { ...DEFAULT_VOTE }, onChange
               <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
             </Tooltips>
           ) : null}
-          <Text>{voteLocked ? currentVoteWeight : previewVoteWeight} veCAKE</Text>
+          <Text
+            bold={changeHighlight}
+            color={voteLocked || willUnlock || !cakeLocked ? (changeHighlight ? 'textSubtle' : 'textDisabled') : ''}
+          >
+            {voteLocked ? currentVoteWeight : previewVoteWeight} veCAKE
+          </Text>
         </FlexGap>
       </Flex>
       <Flex alignSelf="stretch">
