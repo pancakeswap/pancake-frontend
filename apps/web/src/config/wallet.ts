@@ -3,7 +3,7 @@ import { WalletFilledIcon } from '@pancakeswap/uikit'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
-import { isCyberWallet, isChainUnsupported } from '@cyberlab/cyber-app-sdk'
+import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
@@ -211,11 +211,7 @@ const walletsConfig = ({
       icon: `${ASSET_CDN}/web/wallets/cyberwallet.png`,
       connectorId: ConnectorNames.CyberWallet,
       get installed() {
-        if (typeof window === 'undefined' || !isCyberWallet()) {
-          return false
-        }
-        const chainNumber = Number((window.ethereum as any)?.networkVersion)
-        return !isChainUnsupported(chainNumber)
+        return typeof window !== 'undefined' && isCyberWallet()
       },
       isNotExtension: true,
       guide: {
