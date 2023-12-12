@@ -119,6 +119,9 @@ export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
       ...QUERY_SETTINGS_WITHOUT_REFETCH,
     },
   )
+  if (tokenId) {
+    console.log('useVeCakeUserMultiplierBeforeBoosted', tokenId, data)
+  }
   return {
     veCakeUserMultiplierBeforeBoosted: data ?? 1,
     updatedUserMultiplierBeforeBoosted: refetch,

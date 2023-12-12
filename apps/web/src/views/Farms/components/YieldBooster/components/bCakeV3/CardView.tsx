@@ -46,8 +46,6 @@ export const BCakeV3CardView: React.FC<{
     return false
   }, [boostMultiplier, veCakeUserMultiplierBeforeBoosted])
 
-  if (shouldUpdate) console.log(veCakeUserMultiplierBeforeBoosted, boostMultiplier, 'boostMultiplier???')
-
   return (
     <Flex width="100%" alignItems="center" justifyContent="space-between">
       <StatusView

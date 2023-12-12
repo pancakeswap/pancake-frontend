@@ -1,5 +1,5 @@
 import BN from 'bignumber.js'
-import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
+import { bCakeFarmBoosterVeCakeABI } from 'config/abi/bCakeFarmBoosterVeCake'
 import _toNumber from 'lodash/toNumber'
 import { publicClient } from 'utils/wagmi'
 
@@ -11,17 +11,17 @@ export async function getPublicMultiplier({ farmBoosterContract, chainId }): Pro
       {
         address: farmBoosterContract.address,
         functionName: 'cA',
-        abi: bCakeFarmBoosterV3ABI,
+        abi: bCakeFarmBoosterVeCakeABI,
       },
       {
         address: farmBoosterContract.address,
         functionName: 'CA_PRECISION',
-        abi: bCakeFarmBoosterV3ABI,
+        abi: bCakeFarmBoosterVeCakeABI,
       },
       {
         address: farmBoosterContract.address,
         functionName: 'BOOST_PRECISION',
-        abi: bCakeFarmBoosterV3ABI,
+        abi: bCakeFarmBoosterVeCakeABI,
       },
     ],
   })
@@ -46,12 +46,12 @@ export async function getUserMultiplier({ address, tokenId, chainId }): Promise<
       {
         address,
         functionName: 'getUserMultiplier',
-        abi: bCakeFarmBoosterV3ABI,
+        abi: bCakeFarmBoosterVeCakeABI,
         args: [tokenId],
       },
       {
         address,
-        abi: bCakeFarmBoosterV3ABI,
+        abi: bCakeFarmBoosterVeCakeABI,
         functionName: 'BOOST_PRECISION',
       },
     ],
@@ -60,7 +60,6 @@ export async function getUserMultiplier({ address, tokenId, chainId }): Promise<
   if (!multiplierResult.result || !boostPrecisionResult.result) return 0
 
   const [multiplier, BOOST_PRECISION] = [multiplierResult.result, boostPrecisionResult.result]
-
   return _toNumber(
     PRECISION_FACTOR.plus(new BN(multiplier.toString()))
       .minus(new BN(BOOST_PRECISION.toString()))

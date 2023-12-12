@@ -80,7 +80,9 @@ export const StatusView: React.FC<{
                         maximumFractionDigits: 3,
                       })
                 }x`
-              : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
+              : `${expectMultiplier?.toLocaleString('en-US', {
+                  maximumFractionDigits: 3,
+                })}x`}
           </Text>
         )}
         <Flex ref={targetRef}>
