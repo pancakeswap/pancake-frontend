@@ -53,7 +53,7 @@ export function useUserIfoInfo({ chainId, ifoAddress }: Params) {
 
   const snapshotTime = useMemo(() => {
     const now = Math.floor(Date.now() / 1000)
-    return data?.endTimestamp && data.endTimestamp > now ? data.endTimestamp : now
+    return data?.endTimestamp && data.endTimestamp > now ? data.endTimestamp : undefined
   }, [data?.endTimestamp])
 
   const credit = useMemo(

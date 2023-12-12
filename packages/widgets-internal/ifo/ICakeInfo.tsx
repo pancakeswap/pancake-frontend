@@ -40,11 +40,13 @@ export function ICakeInfo({ snapshot, ratio = 1, ...props }: Props & SpaceProps)
 
   return (
     <FlexGap flexDirection="column" gap="0.5rem" {...props}>
-      <InfoItem
-        label={t("Snapshot at")}
-        value={timeDisplay}
-        labelTooltip={t("The displayed iCAKE is calculated based on this snapshot time.")}
-      />
+      {timeDisplay ? (
+        <InfoItem
+          label={t("Snapshot at")}
+          value={timeDisplay}
+          labelTooltip={t("The displayed iCAKE is calculated based on this snapshot time.")}
+        />
+      ) : null}
       <InfoItem
         label={t("Ratio")}
         value={`${ratio}x`}

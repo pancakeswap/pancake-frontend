@@ -79,7 +79,7 @@ export function VeCakeCard({ ifoAddress }: Props) {
         <Ifo.LockInfoCard mt="1.5rem" amount={totalLockCake} unlockAt={unlockAt} usdPrice={cakePrice} />
       ) : null}
 
-      {!hasVeCake ? <Ifo.ZeroVeCakeTips mt="1.5rem" /> : null}
+      {!hasVeCake && !shouldMigrate ? <Ifo.ZeroVeCakeTips mt="1.5rem" /> : null}
 
       {shouldMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null}
       <NavigateButton mt="1.5rem" />
