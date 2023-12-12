@@ -84,7 +84,7 @@ export const PayoutRow: React.FC<React.PropsWithChildren<PayoutRowProps>> = ({
 }
 
 interface LockPriceRowProps extends FlexProps {
-  lockPrice: NodeRound['lockPrice']
+  lockPrice: bigint
 }
 
 export const LockPriceRow: React.FC<React.PropsWithChildren<LockPriceRowProps>> = ({ lockPrice, ...props }) => {
