@@ -4,7 +4,7 @@ import { useManageSubscription } from '@web3inbox/widget-react'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/image'
-import { useCallback } from 'react'
+import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Events } from '../constants'
 import useSendPushNotification from '../hooks/sendPushNotification'
@@ -24,6 +24,8 @@ interface IOnBoardingProps {
   identityKey: string | undefined
   handleRegistration: () => Promise<void>
   isReady: boolean
+  isSubscribing: boolean
+  setIsSubscribing: Dispatch<SetStateAction<boolean>>
 }
 
 function OnboardingButton({ onClick, loading, isOnBoarded, account, isReady }: IOnboardingButtonProps) {
@@ -51,35 +53,52 @@ function OnboardingButton({ onClick, loading, isOnBoarded, account, isReady }: I
   )
 }
 
-const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardingProps) => {
+const OnBoardingView = ({
+  identityKey,
+  handleRegistration,
+  isReady,
+  isSubscribing,
+  setIsSubscribing,
+}: IOnBoardingProps) => {
+  const [isOboarding, setIsOnBoarding] = useState<boolean>(false)
   const toast = useToast()
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { subscribe, isSubscribing } = useManageSubscription(`eip155:1:${account}`)
-  const { sendPushNotification, requestNotificationPermission, subscribeToPushNotifications } =
-    useSendPushNotification()
+  const { subscribe } = useManageSubscription(`eip155:1:${account}`)
+  const { sendPushNotification, subscribeToPushNotifications } = useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {
+    setIsSubscribing(true)
     try {
-      await subscribe()
       await subscribeToPushNotifications()
+      await subscribe()
       setTimeout(async () => {
         await sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`)
-        await requestNotificationPermission()
-      }, 1500)
+      }, 1200)
     } catch (error) {
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
       toast.toastError(Events.SubscriptionRequestError.title, errMessage)
     }
-  }, [account, toast, sendPushNotification, subscribe, subscribeToPushNotifications, requestNotificationPermission])
+  }, [account, toast, sendPushNotification, subscribe, subscribeToPushNotifications, setIsSubscribing])
+
+  const handleOnBoarding = useCallback(async () => {
+    setIsOnBoarding(true)
+    try {
+      await handleRegistration()
+    } catch (error) {
+      const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
+      toast.toastError(Events.SubscriptionRequestError.title, errMessage)
+    }
+    setIsOnBoarding(false)
+  }, [setIsOnBoarding, handleRegistration, toast])
 
   const handleAction = useCallback(
-    (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
+    async (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      if (!identityKey) handleRegistration()
-      else handleSubscribe()
+      if (!identityKey) await handleOnBoarding()
+      else await handleSubscribe()
     },
-    [handleRegistration, handleSubscribe, identityKey],
+    [handleSubscribe, handleOnBoarding, identityKey],
   )
 
   const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(identityKey), t)
@@ -98,7 +117,7 @@ const OnBoardingView = ({ identityKey, handleRegistration, isReady }: IOnBoardin
             {onBoardingDescription}
           </Text>
           <OnboardingButton
-            loading={isSubscribing}
+            loading={isSubscribing || isOboarding}
             onClick={handleAction}
             isOnBoarded={Boolean(identityKey)}
             account={account}
