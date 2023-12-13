@@ -3094,5 +3094,7 @@
   "Seconds": "Seconds",
   "PancakeSwap Meetup": "PancakeSwap Meetup",
   "Spain": "Spain",
-  "Automated Liquidity Optimization": "Automated Liquidity Optimization"
+  "Automated Liquidity Optimization": "Automated Liquidity Optimization",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Permit %symbol%": "Permit %symbol%"
 }
