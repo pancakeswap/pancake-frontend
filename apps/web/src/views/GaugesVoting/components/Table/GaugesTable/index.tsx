@@ -10,13 +10,6 @@ import { SortBy, SortField, TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
 import { RowData } from './types'
 
-const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expanded'].includes(prop) })<{
-  expanded: boolean
-}>`
-  overflow-y: auto;
-  height: ${({ expanded }) => (expanded ? 'auto' : '192px')};
-`
-
 const Table = styled.table`
   width: 100%;
 
@@ -29,7 +22,7 @@ const ROW_HEIGHT = 70
 
 export const GaugesTable: React.FC<
   {
-    scrollStyle?: React.CSSProperties
+    maxHeight?: number | string
     totalGaugesWeight: number
     data?: Gauge[]
     isLoading?: boolean
@@ -37,7 +30,7 @@ export const GaugesTable: React.FC<
     selectRows?: Array<RowData>
     onRowSelect?: (hash: Gauge['hash']) => void
   } & SpaceProps
-> = ({ scrollStyle, data, isLoading, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
+> = ({ maxHeight, data, isLoading, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
   const [expanded, setExpanded] = useState(false)
   const [sortKey, setSortKey] = useState<SortField | undefined>()
   const [sortBy, setSortBy] = useState<SortBy | undefined>()
@@ -72,7 +65,10 @@ export const GaugesTable: React.FC<
   )
 
   const itemKey = useCallback((index: number, row: Gauge[]) => row[index].hash, [])
-  const fullHeight = useMemo(() => ROW_HEIGHT * sortedData.length, [sortedData.length])
+  const expandHeight = useMemo(
+    () => (typeof maxHeight !== 'undefined' ? maxHeight : ROW_HEIGHT * sortedData.length),
+    [sortedData.length, maxHeight],
+  )
 
   return (
     <Table {...props}>
@@ -90,7 +86,7 @@ export const GaugesTable: React.FC<
             itemCount={sortedData.length}
             itemKey={itemKey}
             itemSize={ROW_HEIGHT}
-            height={expanded ? fullHeight : 210}
+            height={expanded ? expandHeight : 210}
             width="100%"
           >
             {Row}

@@ -951,11 +951,8 @@ importers:
       '@types/react-transition-group':
         specifier: ^4.4.1
         version: 4.4.9
-      '@types/react-virtualized':
-        specifier: ^9.21.29
-        version: 9.21.29
       '@types/react-window':
-        specifier: ^1.8.3
+        specifier: ^1.8.8
         version: 1.8.8
       '@types/simplemde':
         specifier: ^1.11.7
@@ -10351,13 +10348,6 @@ packages:
     resolution: {integrity: sha512-ZVNmWumUIh5NhH8aMD9CR2hdW0fNuYInlocZHaZ+dgk/1K49j1w/HoAuK1ki+pgscQrOFRTlXeoURtuzEkV3dg==}
     dependencies:
       '@types/react': 18.2.37
-
-  /@types/react-virtualized@9.21.29:
-    resolution: {integrity: sha512-+ODVQ+AyKngenj4OPpg43Hz4B9Rdjuz1Naxu9ypNc3Cjo0WVZTYhqXfF/Nm38i8PV/YXECRIl4mTAZK5hq2B+g==}
-    dependencies:
-      '@types/prop-types': 15.7.10
-      '@types/react': 18.2.37
-    dev: true
 
   /@types/react-window@1.8.8:
     resolution: {integrity: sha512-8Ls660bHR1AUA2kuRvVG9D/4XpRC6wjAaPT9dil7Ckc76eP9TKWZwwmgfq8Q1LANX3QNDnoU4Zp48A3w+zK69Q==}

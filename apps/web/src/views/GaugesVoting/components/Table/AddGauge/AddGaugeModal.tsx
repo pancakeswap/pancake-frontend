@@ -116,7 +116,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       onRowSelect={onGaugeAdd}
       totalGaugesWeight={Number(totalGaugesWeight)}
       data={filterRows}
-      scrollStyle={{ maxHeight: '40vh' }}
+      maxHeight={70 * 5}
     />
   ) : (
     <ScrollableGaugesList
@@ -143,7 +143,12 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   return (
     <>
       <ModalV2 isOpen={isOpen} onDismiss={onDismiss}>
-        <ModalWrapper maxHeight="90vh" height={isMobile ? '90vh' : undefined} style={{ overflowY: 'auto' }}>
+        <ModalWrapper
+          maxHeight="90vh"
+          minWidth="50vw"
+          height={isMobile ? '90vh' : undefined}
+          style={{ overflowY: 'auto' }}
+        >
           <Flex flexDirection="column" height="100%">
             <FlexGap
               flexDirection="column"
