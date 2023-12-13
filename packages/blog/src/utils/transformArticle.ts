@@ -1,4 +1,4 @@
-import { ResponseArticleDataType, PaginationType } from '../types'
+import { PaginationType, ResponseArticleDataType } from '../types'
 
 export interface ArticleDataType {
   id: number
@@ -35,6 +35,6 @@ export const transformArticle = (article: ResponseArticleDataType): ArticleDataT
     newsOutBoundLink: article?.attributes?.newsOutBoundLink ?? '',
     imgUrl: article?.attributes?.image?.data?.[0]?.attributes?.url ?? '',
     categories: article.attributes?.categories?.data?.map((i) => i.attributes.name),
-    gamesCategories: article.attributes?.['games-categories']?.data?.map((i) => i.attributes.name),
+    gamesCategories: article.attributes?.['games-categories']?.data?.map((i) => i.attributes.name) ?? [],
   }
 }

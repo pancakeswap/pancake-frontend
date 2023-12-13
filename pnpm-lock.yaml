@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -364,6 +364,9 @@ importers:
 
   apps/blog:
     dependencies:
+      '@pancakeswap/blog':
+        specifier: workspace:*
+        version: link:../../packages/blog
       '@pancakeswap/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
