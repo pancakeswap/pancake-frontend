@@ -193,7 +193,6 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
   const positionBoostedDisplayApr = getDisplayApr(boostMultiplier * positionCakeApr, lpApr)
 
-  if (tokenId === '336592') console.log({ positionCakeApr, lpApr, tokenId })
   const aprTooltip = useTooltip(
     <>
       <Text>
