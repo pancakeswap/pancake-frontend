@@ -28,7 +28,7 @@ const ConnectedWalletResult: React.FC<React.PropsWithChildren<ConnectedWalletRes
 
   useEffect(() => {
     if (account && api && token?.symbol) {
-      dispatch(fetchAddressResult({ account, api, tokenSymbol: token?.symbol }))
+      dispatch(fetchAddressResult({ account, api, tokenSymbol: token?.symbol, chainId: token?.chainId }))
     }
   }, [account, api, dispatch, token])
 

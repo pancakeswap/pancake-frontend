@@ -254,23 +254,23 @@ export const filterLeaderboard = createAsyncThunk<
     extra.token.symbol,
   )
 
-  const transformer = transformUserResponse(extra.token.symbol)
+  const transformer = transformUserResponse(extra.token.symbol, extra.token.chainId)
 
   return { results: usersResponse.map(transformer) }
 })
 
 export const fetchAddressResult = createAsyncThunk<
   { account: string; data: PredictionUser },
-  { account: string; api: string; tokenSymbol: string },
+  { account: string; api: string; tokenSymbol: string; chainId: ChainId | undefined },
   { rejectValue: string }
->('predictions/fetchAddressResult', async ({ account, api, tokenSymbol }, { rejectWithValue }) => {
+>('predictions/fetchAddressResult', async ({ account, api, tokenSymbol, chainId }, { rejectWithValue }) => {
   const userResponse = await getPredictionUser(account, api, tokenSymbol)
 
   if (!userResponse) {
     return rejectWithValue(account)
   }
 
-  return { account, data: transformUserResponse(tokenSymbol)(userResponse) }
+  return { account, data: transformUserResponse(tokenSymbol, chainId)(userResponse) }
 })
 
 export const filterNextPageLeaderboard = createAsyncThunk<
@@ -289,7 +289,7 @@ export const filterNextPageLeaderboard = createAsyncThunk<
     extra.token.symbol,
   )
 
-  const transformer = transformUserResponse(extra.token.symbol)
+  const transformer = transformUserResponse(extra.token.symbol, extra.token.chainId)
 
   return { results: usersResponse.map(transformer), skip }
 })

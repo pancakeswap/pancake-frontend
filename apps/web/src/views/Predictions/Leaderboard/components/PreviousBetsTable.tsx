@@ -42,7 +42,7 @@ const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps
             token?.symbol,
           )
 
-          const transformer = transformBetResponse(token?.symbol)
+          const transformer = transformBetResponse(token?.symbol, token?.chainId)
 
           setBets(response.map(transformer))
         }
@@ -52,7 +52,7 @@ const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps
     }
 
     fetchBetHistory()
-  }, [account, numberOfBets, setIsFetching, setBets, api, token?.symbol])
+  }, [account, numberOfBets, setIsFetching, setBets, api, token])
 
   return (
     <Table>

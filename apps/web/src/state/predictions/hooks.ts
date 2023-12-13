@@ -1,6 +1,7 @@
 import { TFetchStatus } from 'config/constants/types'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import useSelector from 'contexts/LocalRedux/useSelector'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useEffect, useMemo } from 'react'
 import { safeGetAddress } from 'utils'
 import { Address } from 'viem'
@@ -134,6 +135,7 @@ export const useGetOrFetchLeaderboardAddressResult = ({
 }): PredictionUser | any => {
   const addressResult = useGetAddressResult(account)
   const dispatch = useLocalDispatch()
+  const { chainId } = useActiveChainId()
 
   useEffect(() => {
     if (account) {
@@ -141,10 +143,10 @@ export const useGetOrFetchLeaderboardAddressResult = ({
 
       // If address result is null it means we already tried fetching the results and none came back
       if (!addressResult && addressResult !== null && address) {
-        dispatch(fetchAddressResult({ account, api, tokenSymbol }))
+        dispatch(fetchAddressResult({ account, api, tokenSymbol, chainId }))
       }
     }
-  }, [dispatch, account, addressResult, api, tokenSymbol])
+  }, [dispatch, account, addressResult, api, tokenSymbol, chainId])
 
   return addressResult
 }

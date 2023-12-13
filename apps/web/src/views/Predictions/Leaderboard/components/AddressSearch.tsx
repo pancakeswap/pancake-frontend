@@ -39,11 +39,11 @@ const AddressSearch: React.FC<React.PropsWithChildren<AddressSearchProps>> = ({ 
   const handleValidAddress = useCallback(
     async (value: string) => {
       const response: any = await dispatch(
-        fetchAddressResult({ account: value, api, tokenSymbol: token?.symbol ?? '' }),
+        fetchAddressResult({ account: value, api, tokenSymbol: token?.symbol ?? '', chainId: token?.chainId }),
       )
       return response.payload?.data !== undefined
     },
-    [api, dispatch, token?.symbol],
+    [api, dispatch, token],
   )
 
   const handleAddressClick = async (value: string) => {

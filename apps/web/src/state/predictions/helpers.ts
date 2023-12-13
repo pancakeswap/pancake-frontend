@@ -45,26 +45,26 @@ export enum Result {
   LIVE = 'live',
 }
 
-export const transformBetResponse = (tokenSymbol) => {
+export const transformBetResponse = (tokenSymbol: string, chainId: ChainId | undefined) => {
   // BSC CAKE
-  if (tokenSymbol === PredictionSupportedSymbol.CAKE) {
+  if (tokenSymbol === PredictionSupportedSymbol.CAKE && chainId === ChainId.BSC) {
     return transformBetResponseCAKE
   }
   // BSC BNB
-  if (tokenSymbol === PredictionSupportedSymbol.BNB) {
+  if (tokenSymbol === PredictionSupportedSymbol.BNB && chainId === ChainId.BSC) {
     return transformBetResponseBNB
   }
 
   return newTransformBetResponse
 }
 
-export const transformUserResponse = (tokenSymbol) => {
+export const transformUserResponse = (tokenSymbol: string, chainId: ChainId | undefined) => {
   // BSC CAKE
-  if (tokenSymbol === PredictionSupportedSymbol.CAKE) {
+  if (tokenSymbol === PredictionSupportedSymbol.CAKE && chainId === ChainId.BSC) {
     return transformUserResponseCAKE
   }
   // BSC BNB
-  if (tokenSymbol === PredictionSupportedSymbol.BNB) {
+  if (tokenSymbol === PredictionSupportedSymbol.BNB && chainId === ChainId.BSC) {
     return transformUserResponseBNB
   }
 
