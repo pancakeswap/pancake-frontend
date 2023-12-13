@@ -135,7 +135,7 @@ export function useWallchainApi(
 
   const sdk = useWallchainSDK()
 
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, deadline, feeOptions)
+  const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, undefined, deadline, feeOptions)
 
   useEffect(() => {
     if (!sdk || !walletClient || !trade || !account) {
