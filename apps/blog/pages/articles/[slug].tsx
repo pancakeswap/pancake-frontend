@@ -1,15 +1,15 @@
-import { useRouter } from 'next/router'
-import { NotFound, Box } from '@pancakeswap/uikit'
+import { Box, NotFound } from '@pancakeswap/uikit'
+import { Hydrate, QueryClient, dehydrate } from '@tanstack/react-query'
 import ArticleInfo from 'components/Article/SingleArticle/ArticleInfo'
 import HowItWork from 'components/Article/SingleArticle/HowItWork'
 import SimilarArticles from 'components/Article/SingleArticle/SimilarArticles'
-import { InferGetStaticPropsType, GetStaticProps } from 'next'
-import { getArticle, getSingleArticle } from 'hooks/getArticle'
 import PageMeta from 'components/PageMeta'
-import { filterTagArray } from 'utils/filterTagArray'
+import { getArticle, getSingleArticle } from 'hooks/getArticle'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { NextSeo } from 'next-seo'
-import { dehydrate, Hydrate, QueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { filterTagArray } from 'utils/filterTagArray'
 
 export async function getStaticPaths() {
   return {

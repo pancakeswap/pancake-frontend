@@ -13,6 +13,7 @@
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
+    "@pancakeswap/blog": "workspace:*",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@tanstack/react-query": "^4.28.0",
     "next-seo": "^5.15.0",

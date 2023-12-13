@@ -1,15 +1,15 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { ArticleDataType } from '@pancakeswap/blog'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
+import ArticleView from 'components/Article/ArticleView'
+import BlogCard from 'components/BlogCard'
+import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
 import { styled } from 'styled-components'
-import BlogCard from 'components/BlogCard'
-import { useTranslation } from '@pancakeswap/localization'
-import { Autoplay } from 'swiper/modules'
-import ArticleView from 'components/Article/ArticleView'
-import { ArticleDataType } from 'utils/transformArticle'
 import 'swiper/css/bundle'
-import dynamic from 'next/dynamic'
-import { useQuery } from '@tanstack/react-query'
+import { Autoplay } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 const StyledChefsChoiceContainer = styled(Flex)`
   margin: 61px auto 48px auto;

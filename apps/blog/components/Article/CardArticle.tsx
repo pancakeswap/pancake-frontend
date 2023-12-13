@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { Box, Text, Flex } from '@pancakeswap/uikit'
-import { ArticleDataType } from 'utils/transformArticle'
-import NextLink from 'next/link'
+import { ArticleDataType } from '@pancakeswap/blog'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { StyledLineClamp } from 'components/StyledLineClamp'
+import NextLink from 'next/link'
+import { styled } from 'styled-components'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
