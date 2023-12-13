@@ -1,20 +1,20 @@
-import React from 'react'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import React from 'react'
 
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 
 interface MaxStakeRowProps {
   small?: boolean
   stakingLimit: BigNumber
   currentBlock: number
-  stakingLimitEndTimestamp: number
+  stakingLimitEndTimestamp?: number
   stakingToken: Token
   hasPoolStarted: boolean
-  endTimestamp: number
+  endTimestamp?: number
 }
 
 const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
@@ -27,9 +27,13 @@ const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
 }) => {
   const { t } = useTranslation()
 
+  if (typeof stakingLimitEndTimestamp === 'undefined') {
+    return null
+  }
+
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const showMaxStakeLimit =
-    hasPoolStarted && endTimestamp >= currentTimestamp && stakingLimitEndTimestamp >= currentTimestamp
+    hasPoolStarted && endTimestamp && endTimestamp >= currentTimestamp && stakingLimitEndTimestamp >= currentTimestamp
   const showMaxStakeLimitCountdown = showMaxStakeLimit && endTimestamp !== stakingLimitEndTimestamp
 
   if (!showMaxStakeLimit) {

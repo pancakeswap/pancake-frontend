@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
 import { multiChainName } from 'state/info/constant'
-import { useTokenDatasSWR, useAllTokenHighLight } from 'state/info/hooks'
+import { useTokenDatasQuery, useAllTokenHighLight } from 'state/info/hooks'
 import { useTokensData } from 'views/V3Info/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/chains'
@@ -22,10 +22,10 @@ export const useChainWhiteList = (chainId?: number) => {
 export const useTokenHighLightList = () => {
   const { chainId } = useActiveChainId()
   const chainWhiteList = useChainWhiteList(chainId)
-  const allTokensFromWhiteList = useTokenDatasSWR(chainWhiteList || [], false)
+  const allTokensFromWhiteList = useTokenDatasQuery(chainWhiteList || [], false)
   const allTokensFromChain = useAllTokenHighLight({
-    enable: !chainWhiteList,
-    targetChainName: multiChainName[chainId],
+    enable: Boolean(!chainWhiteList && chainId),
+    targetChainName: chainId ? multiChainName[chainId] : undefined,
   })
   const tokenAddresses: string[] = useMemo(
     () => allTokensFromChain?.map(({ address }) => address) || [],

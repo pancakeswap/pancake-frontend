@@ -1,13 +1,13 @@
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { checkIsStableSwap } from 'state/info/constant'
-import { useAllPoolDataSWR, useStableSwapTopPoolsAPR } from 'state/info/hooks'
+import { useAllPoolDataQuery, useStableSwapTopPoolsAPR } from 'state/info/hooks'
 
 export const usePoolsData = () => {
   const isStableSwap = checkIsStableSwap()
 
   // get all the pool datas that exist
-  const allPoolData = useAllPoolDataSWR()
+  const allPoolData = useAllPoolDataQuery()
 
   const poolAddresses = useMemo(() => {
     return Object.keys(allPoolData)

@@ -4,8 +4,8 @@ import { LightGreyCard, LightCardProps } from 'components/Card'
 
 interface RangePriceSectionProps extends LightCardProps {
   title: string
-  currency0: Currency
-  currency1: Currency
+  currency0?: Currency
+  currency1?: Currency
   price: string
 }
 

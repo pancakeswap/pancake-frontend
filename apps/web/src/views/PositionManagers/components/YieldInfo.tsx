@@ -12,11 +12,13 @@ interface Props {
   withCakeReward?: boolean
   lpSymbol: string
   autoCompound?: boolean
+  totalStakedInUsd: number
   totalAssetsInUsd: number
   onAprClick?: () => void
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
+  lpTokenDecimals?: number
 }
 
 export const YieldInfo = memo(function YieldInfo({
@@ -29,7 +31,9 @@ export const YieldInfo = memo(function YieldInfo({
   lpSymbol,
   userLpAmounts,
   totalSupplyAmounts,
+  totalStakedInUsd,
   precision,
+  lpTokenDecimals,
 }: Props) {
   const { t } = useTranslation()
 
@@ -49,8 +53,10 @@ export const YieldInfo = memo(function YieldInfo({
           lpSymbol={lpSymbol}
           totalAssetsInUsd={totalAssetsInUsd}
           totalSupplyAmounts={totalSupplyAmounts}
+          totalStakedInUsd={totalStakedInUsd}
           userLpAmounts={userLpAmounts}
           precision={precision}
+          lpTokenDecimals={lpTokenDecimals}
         />
       </RowBetween>
       <RowBetween>

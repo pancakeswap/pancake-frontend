@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import { FAST_INTERVAL } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import useSWR from 'swr'
 import { useFarmsLength } from 'state/farms/hooks'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -14,6 +13,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { publicClient } from 'utils/wagmi'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
+import { useQuery } from '@tanstack/react-query'
 import { useBCakeProxyContractAddress } from '../../Farms/hooks/useBCakeProxyContractAddress'
 import splitProxyFarms from '../../Farms/components/YieldBooster/helpers/splitProxyFarms'
 
@@ -47,7 +47,7 @@ const useFarmsWithBalance = () => {
       })
 
       const proxyCakeBalance =
-        contract.address !== masterChefContract.address && bCakeProxy
+        contract.address !== masterChefContract.address && bCakeProxy && cake
           ? await cake.read.balanceOf([bCakeProxy.address])
           : null
 
@@ -71,7 +71,7 @@ const useFarmsWithBalance = () => {
       }, 0)
       return { farmsWithBalances, totalEarned: totalEarned + proxyCakeBalanceNumber }
     },
-    [bCakeProxy, cake?.read, chainId, masterChefContract?.address],
+    [bCakeProxy, cake, chainId, masterChefContract?.address],
   )
 
   const {
@@ -79,14 +79,13 @@ const useFarmsWithBalance = () => {
       farmsWithStakedBalance: [] as FarmWithBalance[],
       earningsSum: null,
     },
-  } = useSWR(
-    account && poolLength && chainId && !isProxyContractAddressLoading
-      ? [account, 'farmsWithBalance', chainId, poolLength]
-      : null,
+  } = useQuery(
+    [account, 'farmsWithBalance', chainId, poolLength],
     async () => {
+      if (!account || !poolLength || !chainId) return undefined
       const farmsConfig = await getFarmConfig(chainId)
       const farmsCanFetch = farmsConfig?.filter((f) => poolLength > f.pid)
-      const normalBalances = await getFarmsWithBalances(farmsCanFetch, account, masterChefContract)
+      const normalBalances = await getFarmsWithBalances(farmsCanFetch ?? [], account, masterChefContract)
       if (proxyAddress && farmsCanFetch?.length && verifyBscNetwork(chainId)) {
         const { farmsWithProxy } = splitProxyFarms(farmsCanFetch)
 
@@ -101,7 +100,10 @@ const useFarmsWithBalance = () => {
         earningsSum: normalBalances.totalEarned,
       }
     },
-    { refreshInterval: FAST_INTERVAL },
+    {
+      enabled: Boolean(account && poolLength && chainId && !isProxyContractAddressLoading),
+      refetchInterval: FAST_INTERVAL,
+    },
   )
 
   const v3FarmsWithBalance = useMemo(
@@ -126,7 +128,7 @@ const useFarmsWithBalance = () => {
     return {
       farmsWithStakedBalance: [...farmsWithStakedBalance, ...v3FarmsWithBalance],
       earningsSum:
-        earningsSum +
+        (earningsSum ?? 0) +
           v3PendingCakes?.reduce((accum, earning) => {
             const earningNumber = new BigNumber(earning.toString())
             if (earningNumber.eq(0)) {

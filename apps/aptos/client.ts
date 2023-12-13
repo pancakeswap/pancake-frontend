@@ -6,6 +6,7 @@ import { PontemConnector } from '@pancakeswap/awgmi/connectors/pontem'
 import { FewchaConnector } from '@pancakeswap/awgmi/connectors/fewcha'
 import { SafePalConnector } from '@pancakeswap/awgmi/connectors/safePal'
 import { RiseConnector } from '@pancakeswap/awgmi/connectors/rise'
+import { MsafeConnector } from '@pancakeswap/awgmi/connectors/msafe'
 import { AptosClient } from 'aptos'
 import { chains, defaultChain } from 'config/chains'
 
@@ -21,6 +22,8 @@ const nodeReal = {
   }),
 }
 
+export const msafeConnector = new MsafeConnector({ chains })
+
 export const client = createClient({
   connectors: [
     new PetraConnector({ chains }),
@@ -31,6 +34,7 @@ export const client = createClient({
     new PetraConnector({ chains, options: { name: 'Trust Wallet', id: 'trustWallet' } }),
     new SafePalConnector({ chains }),
     new RiseConnector({ chains }),
+    msafeConnector,
   ],
   provider: ({ networkName }) => {
     const networkNameLowerCase = networkName?.toLowerCase()

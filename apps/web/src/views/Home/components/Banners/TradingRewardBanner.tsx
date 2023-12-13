@@ -1,14 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  Box,
-  Button,
-  Flex,
-  NextLinkFromReactRouter,
-  Text,
-  useMatchBreakpoints,
-  OpenNewIcon,
-  ArrowForwardIcon,
-} from '@pancakeswap/uikit'
+import { Box, Button, Flex, Text, useMatchBreakpoints, OpenNewIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import Image from 'next/legacy/image'
 import { styled, css, keyframes } from 'styled-components'
 import {

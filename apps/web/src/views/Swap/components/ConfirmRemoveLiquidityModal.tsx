@@ -25,13 +25,13 @@ interface ConfirmRemoveLiquidityModalProps {
   }
   allowedSlippage: number
   onRemove: () => void
-  liquidityErrorMessage: string
+  liquidityErrorMessage?: string
   approval: ApprovalState
   signatureData?: any
   tokenA: Token
   tokenB: Token
-  currencyA: Currency | null | undefined
-  currencyB: Currency | null | undefined
+  currencyA?: Currency
+  currencyB?: Currency
 }
 
 const ConfirmRemoveLiquidityModal: React.FC<

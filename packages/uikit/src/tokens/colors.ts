@@ -20,6 +20,7 @@ export const additionalColors = {
   gold: "#FFC700",
   silver: "#B2B2B2",
   bronze: "#E7974D",
+  yellow: "#D67E0A",
 };
 
 export const lightColors = {
@@ -57,8 +58,8 @@ export const lightColors = {
 export const darkColors = {
   ...baseColors,
   ...additionalColors,
-  secondary: "#9A6AFF",
-  secondary80: "#9A6AFF80",
+  secondary: "#A881FC",
+  secondary80: "#A881FC80",
   background: "#08060B",
   backgroundDisabled: "#3c3742",
   backgroundAlt: "#27262c",

@@ -8,7 +8,7 @@ import { TradeType } from '@pancakeswap/swap-sdk-core'
 import first from 'lodash/first'
 import { useSlippageAdjustedAmounts } from './useSlippageAdjustedAmounts'
 
-export function useCheckInsufficientError(trade: SmartRouterTrade<TradeType>) {
+export function useCheckInsufficientError(trade?: SmartRouterTrade<TradeType>) {
   const { address: account } = useAccount()
 
   const {

@@ -1,4 +1,3 @@
-import { SWRConfig } from 'swr'
 import { useRouter } from 'next/router'
 import { NotFound, Box } from '@pancakeswap/uikit'
 import ArticleInfo from 'components/Article/SingleArticle/ArticleInfo'
@@ -9,6 +8,8 @@ import { getArticle, getSingleArticle } from 'hooks/getArticle'
 import PageMeta from 'components/PageMeta'
 import { filterTagArray } from 'utils/filterTagArray'
 import { NextSeo } from 'next-seo'
+import { dehydrate, Hydrate, QueryClient } from '@tanstack/react-query'
+import Link from 'next/link'
 
 export async function getStaticPaths() {
   return {
@@ -18,6 +19,8 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps = (async ({ params, previewData }) => {
+  const queryClient = new QueryClient()
+
   if (!params)
     return {
       redirect: {
@@ -35,46 +38,51 @@ export const getStaticProps = (async ({ params, previewData }) => {
     name = { $eq: 'Preview' }
   }
 
-  const article = await getSingleArticle({
-    url: `/slugify/slugs/article/${slug}`,
-    urlParamsObject: {
-      populate: 'categories,image',
-      locale: 'all',
-      filters: {
-        categories: {
-          name,
+  const article = await queryClient.fetchQuery(['/article'], () =>
+    getSingleArticle({
+      url: `/slugify/slugs/article/${slug}`,
+      urlParamsObject: {
+        populate: 'categories,image',
+        locale: 'all',
+        filters: {
+          categories: {
+            name,
+          },
         },
       },
-    },
-  })
+    }),
+  )
 
-  const similarArticles = await getArticle({
-    url: '/articles',
-    urlParamsObject: {
-      locale: article.locale,
-      sort: 'createAt:desc',
-      populate: 'categories,image',
-      pagination: { limit: 6 },
-      filters: {
-        id: {
-          $not: article.id,
-        },
-        categories: {
-          $or: article.categories.map((category) => ({
-            name: {
-              $eq: category,
-            },
-          })),
+  const similarArticles = await queryClient.fetchQuery(['/similarArticles'], () =>
+    getArticle({
+      url: '/articles',
+      urlParamsObject: {
+        locale: article.locale,
+        sort: 'createAt:desc',
+        populate: 'categories,image',
+        pagination: { limit: 6 },
+        filters: {
+          id: {
+            $not: article.id,
+          },
+          categories: {
+            $or: article.categories.map((category) => ({
+              name: {
+                $eq: category,
+              },
+            })),
+          },
         },
       },
-    },
-  })
+    }).then((result) => result.data),
+  )
 
   return {
     props: {
+      dehydratedState: dehydrate(queryClient),
       fallback: {
         '/article': article,
-        '/similarArticles': similarArticles.data,
+        '/similarArticles': similarArticles,
         isPreviewMode: !!isPreviewMode,
       },
     },
@@ -82,11 +90,11 @@ export const getStaticProps = (async ({ params, previewData }) => {
   }
 }) satisfies GetStaticProps
 
-const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ fallback }) => {
+const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ fallback, dehydratedState }) => {
   const router = useRouter()
   if (!router.isFallback && !fallback?.['/article']?.title) {
     return (
-      <NotFound>
+      <NotFound LinkComp={Link}>
         <NextSeo title="404" />
       </NotFound>
     )
@@ -97,7 +105,7 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <>
       <PageMeta title={title} description={description} imgUrl={imgUrl} />
-      <SWRConfig value={{ fallback }}>
+      <Hydrate state={dehydratedState}>
         <Box>
           <ArticleInfo />
           {!fallback.isPreviewMode && (
@@ -107,7 +115,7 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
             </>
           )}
         </Box>
-      </SWRConfig>
+      </Hydrate>
     </>
   )
 }

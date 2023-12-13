@@ -1,18 +1,19 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import farmsReducer from './farms'
 import { updateVersion } from './global/actions'
+import globalReducer from './global/reducer'
 import lotteryReducer from './lottery'
+import notifications from './notifications/reducer'
 import poolsReducer from './pools'
+import potteryReducer from './pottery'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
-import potteryReducer from './pottery'
-import globalReducer from './global/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'notifications']
 
 const persistConfig = {
   key: 'primary',
@@ -34,6 +35,7 @@ const persistedReducer = persistReducer(
     // Exchange
     user,
     transactions,
+    notifications,
   }),
 )
 
@@ -55,7 +57,7 @@ export function makeStore(preloadedState = undefined) {
   })
 }
 
-export const initializeStore = (preloadedState = undefined) => {
+export const initializeStore = (preloadedState: any = undefined) => {
   let _store = store ?? makeStore(preloadedState)
 
   // After navigating to a page with an initial Redux state, merge that state
@@ -66,7 +68,7 @@ export const initializeStore = (preloadedState = undefined) => {
       ...preloadedState,
     })
     // Reset the current store
-    store = undefined
+    store = undefined as any
   }
 
   // For SSG and SSR always create a new store

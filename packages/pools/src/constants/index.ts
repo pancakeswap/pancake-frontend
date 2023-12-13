@@ -1,4 +1,5 @@
 export * from './pools'
+export * from './boostedPools'
 export * from './contracts'
 export * from './supportedChains'
 

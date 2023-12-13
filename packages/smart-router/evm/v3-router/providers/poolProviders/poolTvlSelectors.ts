@@ -175,19 +175,19 @@ function poolSelectorFactory<P extends WithTvl>({
             : getToken0(subgraphPool)
         })
         .map((secondHopToken: Currency) => {
-          return poolsFromSubgraph
-            .filter((subgraphPool) => {
-              if (poolSet.has(getPoolAddress(subgraphPool))) {
-                return false
-              }
-              return (
-                getToken0(subgraphPool).wrapped.equals(secondHopToken.wrapped) ||
-                getToken1(subgraphPool).wrapped.equals(secondHopToken.wrapped)
-              )
-            })
-            .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
+          return poolsFromSubgraph.filter((subgraphPool) => {
+            if (poolSet.has(getPoolAddress(subgraphPool))) {
+              return false
+            }
+            return (
+              getToken0(subgraphPool).wrapped.equals(secondHopToken.wrapped) ||
+              getToken1(subgraphPool).wrapped.equals(secondHopToken.wrapped)
+            )
+          })
         })
         .reduce<P[]>((acc, cur) => [...acc, ...cur], [])
+        // Uniq
+        .reduce<P[]>((acc, cur) => (acc.some((p) => p === cur) ? acc : [...acc, cur]), [])
         .sort(sortByTvl)
         .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
 

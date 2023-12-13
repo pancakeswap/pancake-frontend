@@ -24,8 +24,7 @@ import { darken } from 'polished'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
 import { styled } from 'styled-components'
-import { useSWRConfig } from 'swr'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useContractRead, useContractReads } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 import { CHART_DOT_CLICK_EVENT } from '../helpers'
@@ -93,18 +92,27 @@ type ChartData = {
 }
 
 function useChartHover() {
-  const { data } = useSWRImmutable<ChartData>('chainlinkChartHover')
+  const { data } = useQuery<ChartData>(['chainlinkChartHover'], {
+    enabled: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
   return data
 }
 
 function useChartHoverMutate() {
-  const { mutate } = useSWRConfig()
+  const queryClient = useQueryClient()
 
   const updateHover = useCallback(
     (data) => {
-      mutate('chainlinkChartHover', data)
+      if (data) {
+        queryClient.setQueryData(['chainlinkChartHover'], data)
+      } else {
+        queryClient.resetQueries({ queryKey: ['chainlinkChartHover'], exact: true })
+      }
     },
-    [mutate],
+    [queryClient],
   )
 
   return updateHover

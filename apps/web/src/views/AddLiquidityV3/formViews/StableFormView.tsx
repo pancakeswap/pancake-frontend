@@ -22,10 +22,11 @@ import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
 import { AddStableChildrenProps } from 'views/AddLiquidity/AddStableLiquidity'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { FormattedSlippage } from 'views/AddLiquidity/AddStableLiquidity/components/FormattedSlippage'
-import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 
-import { RowFixed } from '../../../components/Layout/Row'
+import { RowFixed } from 'components/Layout/Row'
 
+import { ReactElement } from 'react'
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 
 export default function StableFormView({
@@ -63,8 +64,8 @@ export default function StableFormView({
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
 
-  const reservedToken0 = pair?.token0 ? CurrencyAmount.fromRawAmount(pair.token0, reserves[0].toString()) : null
-  const reservedToken1 = pair?.token1 ? CurrencyAmount.fromRawAmount(pair.token1, reserves[1].toString()) : null
+  const reservedToken0 = pair?.token0 ? CurrencyAmount.fromRawAmount(pair.token0, reserves[0].toString()) : undefined
+  const reservedToken1 = pair?.token1 ? CurrencyAmount.fromRawAmount(pair.token1, reserves[1].toString()) : undefined
 
   const totalLiquidityUSD = useTotalUSDValue({
     currency0: pair?.token0,
@@ -73,7 +74,7 @@ export default function StableFormView({
     token1Deposited: reservedToken1,
   })
 
-  let buttons = null
+  let buttons: ReactElement
   if (addIsUnsupported || addIsWarning) {
     buttons = (
       <Button disabled mb="4px">

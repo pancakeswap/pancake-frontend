@@ -1,20 +1,21 @@
-import { Box, Flex, Modal, ModalV2, PreTitle, Text, Button, useModalV2, Card } from '@pancakeswap/uikit'
-import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Percent, Currency } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/swap-sdk-core'
+import { Box, Button, Card, Flex, Modal, ModalV2, PreTitle, Text, useModalV2 } from '@pancakeswap/uikit'
+import { LightCard } from 'components/Card'
 import { ReactNode, useMemo, useState } from 'react'
 import { formatUnixTime } from 'utils/formatTime'
 
-import { UnstakeEndedModal } from './UnstakeModal'
-import { HarvestModal } from './HarvestModal'
-import { PoolGroup, StakePositionUserInfo, StakedPosition } from '../type'
-import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
+import { bscTokens } from '@pancakeswap/tokens'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
+import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
+import useIsBoost from '../hooks/useIsBoost'
+import { useCurrentDay } from '../hooks/useStakedPools'
+import { PoolGroup, StakePositionUserInfo, StakedPosition } from '../type'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { HarvestModal } from './HarvestModal'
 import { ModalTitle } from './ModalTitle'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
-import { useCurrentDay } from '../hooks/useStakedPools'
-import useIsBoost from '../hooks/useIsBoost'
+import { UnstakeEndedModal } from './UnstakeModal'
 
 export function ClaimModal({
   token,
@@ -180,6 +181,7 @@ export function ClaimModal({
                 </Flex>
                 {poolEnded ? null : (
                   <Button
+                    disabled={pool.token.equals(bscTokens.cake)}
                     variant="subtle"
                     width="100%"
                     onClick={() => {

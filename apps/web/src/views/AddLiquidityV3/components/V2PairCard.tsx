@@ -3,11 +3,12 @@ import useTotalSupply from 'hooks/useTotalSupply'
 import { useTokensDeposited } from 'components/PositionCard'
 import { Tag } from '@pancakeswap/uikit'
 import { Pair } from '@pancakeswap/sdk'
-import { LiquidityCardRow } from 'components/LiquidityCardRow'
+import { LiquidityCardRow } from 'views/AddLiquidity/components/LiquidityCardRow'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import currencyId from 'utils/currencyId'
+import React from 'react'
 
-export function V2PairCard({ pair, account }: { pair: null | Pair; account: string | undefined }) {
+export const V2PairCard = React.memo(({ pair, account }: { pair: null | Pair; account: string | undefined }) => {
   const userPoolBalance = useTokenBalance(account ?? undefined, pair?.liquidityToken)
 
   const totalPoolTokens = useTotalSupply(pair?.liquidityToken)
@@ -32,4 +33,4 @@ export function V2PairCard({ pair, account }: { pair: null | Pair; account: stri
       tags={<Tag variant="secondary">V2 LP</Tag>}
     />
   )
-}
+})

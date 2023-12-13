@@ -16,11 +16,10 @@ import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
 import { fetchAllTokenData, fetchAllTokenDataByAddresses } from 'state/info/queries/tokens/tokenData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Block, Transaction } from 'state/info/types'
-import { SWRConfiguration } from 'swr'
-import useSWRImmutable from 'swr/immutable'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { useQuery } from '@tanstack/react-query'
 import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
@@ -29,78 +28,96 @@ dayjs.extend(duration)
 // Protocol hooks
 
 const refreshIntervalForInfo = 15000 // 15s
-const SWR_SETTINGS_WITHOUT_REFETCH = {
-  errorRetryCount: 3,
-  errorRetryInterval: 3000,
+const QUERY_SETTINGS_IMMUTABLE = {
+  refetchOnReconnect: false,
+  refetchOnMount: false,
+  refetchOnWindowFocus: false,
 }
-const SWR_SETTINGS: SWRConfiguration = {
-  refreshInterval: refreshIntervalForInfo,
+const QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH = {
+  retry: 3,
+  retryDelay: 3000,
+}
+const QUERY_SETTINGS_INTERVAL_REFETCH = {
+  refetchInterval: refreshIntervalForInfo,
   keepPreviousData: true,
-  ...SWR_SETTINGS_WITHOUT_REFETCH,
+  ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
 }
 
-export const useProtocolDataSWR = (): ProtocolData | undefined => {
+export const useProtocolDataQuery = (): ProtocolData | undefined => {
   const chainName = useChainNameByQuery()
   const [t24, t48] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24, t48])
+  const { blocks } = useBlockFromTimeStampQuery([t24, t48])
   const [block24, block48] = blocks ?? []
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: protocolData } = useSWRImmutable(
-    chainName && block24 && block48 ? [`info/protocol/updateProtocolData/${type}`, chainName] : null,
+  const { data: protocolData } = useQuery(
+    [`info/protocol/updateProtocolData/${type}`, chainName],
     () => fetchProtocolData(chainName, block24, block48),
-    SWR_SETTINGS_WITHOUT_REFETCH,
+    {
+      enabled: Boolean(chainName && block24 && block48),
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    },
   )
-
   return protocolData ?? undefined
 }
 
-export const useProtocolChartDataSWR = (): ChartEntry[] | undefined => {
+export const useProtocolChartDataQuery = (): ChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: chartData } = useSWRImmutable(
+  const { data: chartData } = useQuery(
     [`info/protocol/updateProtocolChartData/${type}`, chainName],
     () => fetchGlobalChartData(chainName),
-    SWR_SETTINGS_WITHOUT_REFETCH,
+    {
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    },
   )
   return chartData ?? undefined
 }
 
-export const useProtocolTransactionsSWR = (): Transaction[] | undefined => {
+export const useProtocolTransactionsQuery = (): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: transactions } = useSWRImmutable(
+  const { data: transactions } = useQuery(
     [`info/protocol/updateProtocolTransactionsData/${type}`, chainName],
     () => fetchTopTransactions(chainName),
-    SWR_SETTINGS, // update latest Transactions per 15s
+    {
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_INTERVAL_REFETCH, // update latest Transactions per 15s
+    },
   )
   return transactions ?? undefined
 }
 
-export const useAllPoolDataSWR = () => {
+export const useAllPoolDataQuery = () => {
   const chainName = useChainNameByQuery()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
-    blocks && chainName && [`info/pools/data/${type}`, chainName],
-    () => fetchAllPoolData(blocks ?? [], chainName),
-    SWR_SETTINGS_WITHOUT_REFETCH,
-  )
+  const { data } = useQuery([`info/pools/data/${type}`, chainName], () => fetchAllPoolData(blocks ?? [], chainName), {
+    enabled: Boolean(blocks && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
   return useMemo(() => {
     return data ?? {}
   }, [data])
 }
 
-export const usePoolDatasSWR = (poolAddresses: string[]): (PoolData | undefined)[] => {
+export const usePoolDatasQuery = (poolAddresses: string[]): (PoolData | undefined)[] => {
   const name = poolAddresses.join('')
   const chainName = useChainNameByQuery()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
-    blocks && chainName && [`info/pool/data/${name}/${type}`, chainName],
+  const { data } = useQuery(
+    [`info/pool/data/${name}/${type}`, chainName],
     () => fetchAllPoolDataWithAddress(blocks ?? [], chainName, poolAddresses),
-    SWR_SETTINGS,
+    {
+      enabled: Boolean(blocks && chainName),
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_INTERVAL_REFETCH,
+    },
   )
 
   return useMemo(() => {
@@ -112,24 +129,30 @@ export const usePoolDatasSWR = (poolAddresses: string[]): (PoolData | undefined)
   }, [data, poolAddresses])
 }
 
-export const usePoolChartDataSWR = (address: string): ChartEntry[] | undefined => {
+export const usePoolChartDataQuery = (address: string): ChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
+  const { data } = useQuery(
     [`info/pool/chartData/${address}/${type}`, chainName],
     () => fetchPoolChartData(chainName, address),
-    SWR_SETTINGS_WITHOUT_REFETCH,
+    {
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    },
   )
   return data?.data ?? undefined
 }
 
-export const usePoolTransactionsSWR = (address: string): Transaction[] | undefined => {
+export const usePoolTransactionsQuery = (address: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
+  const { data } = useQuery(
     [`info/pool/transactionsData/${address}/${type}`, chainName],
     () => fetchPoolTransactions(chainName, address),
-    SWR_SETTINGS,
+    {
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    },
   )
   return data?.data ?? undefined
 }
@@ -146,12 +169,16 @@ export const useAllTokenHighLight = ({
   const chainNameByQuery = useChainNameByQuery()
   const chainName = targetChainName ?? chainNameByQuery
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d], undefined, undefined, chainName)
+  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d], undefined, undefined, chainName)
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data, isLoading } = useSWRImmutable(
-    enable && blocks && chainName && [`info/token/data/${type}`, chainName],
+  const { data, isLoading } = useQuery(
+    [`info/token/data/${type}`, chainName],
     () => fetchAllTokenData(chainName, blocks ?? []),
-    SWR_SETTINGS_WITHOUT_REFETCH,
+    {
+      enabled: Boolean(enable && blocks && chainName),
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    },
   )
 
   const tokensWithData = useMemo(() => {
@@ -168,18 +195,18 @@ export const useAllTokenHighLight = ({
   }, [isLoading, tokensWithData])
 }
 
-export const useAllTokenDataSWR = (): {
+export const useAllTokenDataQuery = (): {
   [address: string]: { data?: TokenData }
 } => {
   const chainName = useChainNameByQuery()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
-    blocks && chainName && [`info/token/data/${type}`, chainName],
-    () => fetchAllTokenData(chainName, blocks ?? []),
-    SWR_SETTINGS_WITHOUT_REFETCH,
-  )
+  const { data } = useQuery([`info/token/data/${type}`, chainName], () => fetchAllTokenData(chainName, blocks ?? []), {
+    enabled: Boolean(blocks && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
   return data ?? {}
 }
 
@@ -194,16 +221,20 @@ const fetcher = (addresses: string[], chainName: MultiChainName, blocks: Block[]
   return Promise.all(addressGroup.map((d) => fetchAllTokenDataByAddresses(chainName, blocks, d)))
 }
 
-export const useTokenDatasSWR = (addresses?: string[], withSettings = true): TokenData[] | undefined => {
+export const useTokenDatasQuery = (addresses?: string[], withSettings = true): TokenData[] | undefined => {
   const name = addresses?.join('')
   const chainName = useChainNameByQuery()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data, isLoading } = useSWRImmutable(
-    blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
+  const { data, isLoading } = useQuery(
+    [`info/token/data/${name}/${type}`, chainName],
     () => fetcher(addresses || [], chainName, blocks ?? []),
-    withSettings ? SWR_SETTINGS : SWR_SETTINGS_WITHOUT_REFETCH,
+    {
+      enabled: Boolean(blocks && chainName),
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...(withSettings ? QUERY_SETTINGS_INTERVAL_REFETCH : QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH),
+    },
   )
   const allData = useMemo(() => {
     return data && data.length > 0
@@ -225,36 +256,43 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
   }, [isLoading, tokensWithData])
 }
 
-export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
-  const allTokenData = useTokenDatasSWR([address ?? ''])
+export const useTokenDataQuery = (address: string | undefined): TokenData | undefined => {
+  const allTokenData = useTokenDatasQuery([address ?? ''])
   return allTokenData?.find((d) => d.address === address) ?? undefined
 }
 
-export const usePoolsForTokenSWR = (address: string): string[] | undefined => {
+export const usePoolsForTokenQuery = (address: string): string[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
+  const { data } = useQuery(
     [`info/token/poolAddress/${address}/${type}`, chainName],
     () => fetchPoolsForToken(chainName, address),
-    SWR_SETTINGS_WITHOUT_REFETCH,
+    {
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    },
   )
 
   return data?.addresses ?? undefined
 }
 
-export const useTokenChartDataSWR = (address: string): ChartEntry[] | undefined => {
+export const useTokenChartDataQuery = (address: string): ChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
-    address && chainName && [`info/token/chartData/${address}/${type}`, chainName],
+  const { data } = useQuery(
+    [`info/token/chartData/${address}/${type}`, chainName],
     () => fetchTokenChartData(chainName, address),
-    SWR_SETTINGS,
+    {
+      enabled: Boolean(address && chainName),
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_INTERVAL_REFETCH,
+    },
   )
 
   return data?.data ?? undefined
 }
 
-export const useTokenPriceDataSWR = (
+export const useTokenPriceDataQuery = (
   address: string,
   interval: number,
   timeWindow: duration.Duration,
@@ -262,21 +300,27 @@ export const useTokenPriceDataSWR = (
   const startTimestamp = dayjs().subtract(timeWindow).startOf('hours').unix()
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
+  const { data } = useQuery(
     [`info/token/priceData/${address}/${type}`, chainName],
     () => fetchTokenPriceData(chainName, address, interval, startTimestamp),
-    SWR_SETTINGS,
+    {
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_INTERVAL_REFETCH,
+    },
   )
   return data?.data ?? undefined
 }
 
-export const useTokenTransactionsSWR = (address: string): Transaction[] | undefined => {
+export const useTokenTransactionsQuery = (address: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
+  const { data } = useQuery(
     [`info/token/transactionsData/${address}/${type}`, chainName],
     () => fetchTokenTransactions(chainName, address),
-    SWR_SETTINGS,
+    {
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_INTERVAL_REFETCH,
+    },
   )
   return data?.data ?? undefined
 }
@@ -338,10 +382,14 @@ const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
 export const useStableSwapTopPoolsAPR = (addresses: string[]): Record<string, number> => {
   const isStableSwap = checkIsStableSwap()
   const chainName = useChainNameByQuery()
-  const { data } = useSWRImmutable<BigNumber[]>(
-    isStableSwap && addresses?.length > 0 && [`info/pool/stableAPRs/Addresses/`, chainName],
+  const { data } = useQuery<BigNumber[]>(
+    [`info/pool/stableAPRs/Addresses/`, chainName],
     () => stableSwapAPRWithAddressesFetcher(addresses),
-    SWR_SETTINGS_WITHOUT_REFETCH,
+    {
+      enabled: Boolean(isStableSwap && addresses?.length > 0),
+      ...QUERY_SETTINGS_IMMUTABLE,
+      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    },
   )
   const addressWithAPR = useMemo(() => {
     const result: Record<string, number> = {}

@@ -1,4 +1,6 @@
-import { Button, Flex, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Button, Flex } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { ContextApi } from '@pancakeswap/localization'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 

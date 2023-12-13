@@ -17,7 +17,7 @@ export default function useCriterias(userBasicPoolInfo, ifoCriterias) {
     [ifoCriterias, userBasicPoolInfo],
   )
 
-  const isEligible = useMemo(() => criterias.some((criteria) => criteria?.value), [criterias])
+  const isEligible = useMemo(() => criterias.length === 0 || criterias.some((criteria) => criteria?.value), [criterias])
 
   return {
     isEligible,

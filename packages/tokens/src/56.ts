@@ -1,5 +1,5 @@
-import { WBNB, ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token, WBNB } from '@pancakeswap/sdk'
 
 import { BUSD_BSC, CAKE_MAINNET, USDT_BSC } from './common'
 
@@ -2754,5 +2754,21 @@ export const bscTokens = {
     'FDUSD',
     'First Digital USD',
     'https://firstdigitallabs.com/',
+  ),
+  stg: new ERC20Token(
+    ChainId.BSC,
+    '0xB0D502E938ed5f4df2E681fE6E419ff29631d62b',
+    18,
+    'STG',
+    'StargateToken',
+    'https://stargate.finance/',
+  ),
+  sdcake: new ERC20Token(
+    ChainId.BSC,
+    '0xF79B275e0B602D82B822895074552e487412A41a',
+    18,
+    'sdCAKE',
+    'Stake DAO CAKE',
+    'https://lockers.stakedao.org/',
   ),
 }

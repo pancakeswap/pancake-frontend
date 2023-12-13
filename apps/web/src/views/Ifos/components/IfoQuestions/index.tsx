@@ -3,6 +3,13 @@ import { styled } from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex, Image } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
+import { useMemo } from 'react'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { isIfoSupported } from '@pancakeswap/ifos'
+import { ChainId } from '@pancakeswap/sdk'
+
+import { getChainBasedImageUrl } from 'views/Ifos/helpers'
+
 import config from './config'
 
 const ImageWrapper = styled.div`
@@ -13,6 +20,7 @@ const ImageWrapper = styled.div`
 
   ${({ theme }) => theme.mediaQueries.md} {
     order: 1;
+    margin-top: 4rem;
   }
 `
 
@@ -29,11 +37,16 @@ const DetailsWrapper = styled.div`
 
 const IfoQuestions = () => {
   const { t } = useTranslation()
+  const { chainId: currentChainId } = useActiveChainId()
+  const bunnyImageUrl = useMemo(() => {
+    const chainId = isIfoSupported(currentChainId) ? currentChainId : ChainId.BSC
+    return getChainBasedImageUrl({ chainId, name: 'faq-bunny' })
+  }, [currentChainId])
 
   return (
     <Flex alignItems={['center', null, null, 'start']} flexDirection={['column', null, null, 'row']}>
       <ImageWrapper>
-        <Image src="/images/ifos/ifo-bunny.png" alt="ifo bunny" width={414} height={500} />
+        <Image src={bunnyImageUrl} alt="ifo faq bunny" width={395} height={410} />
       </ImageWrapper>
       <DetailsWrapper>
         <Card>

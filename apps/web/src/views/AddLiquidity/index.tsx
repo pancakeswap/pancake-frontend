@@ -11,6 +11,7 @@ import { isUserRejected, logError } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { Hash } from 'viem'
+import { useWalletClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -32,13 +33,13 @@ import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 
 export interface LP2ChildrenProps {
-  error: string
+  error?: string
   currencies: {
     [Field.CURRENCY_A]?: Currency
     [Field.CURRENCY_B]?: Currency
   }
   isOneWeiAttack?: boolean
-  noLiquidity: boolean
+  noLiquidity?: boolean
   handleCurrencyASelect: (currencyA_: Currency) => void
   formattedAmounts: {
     [Field.CURRENCY_A]?: string
@@ -49,14 +50,14 @@ export interface LP2ChildrenProps {
   handleCurrencyBSelect: (currencyB_: Currency) => void
   onFieldBInput: (typedValue: string) => void
   pairState: PairState
-  poolTokenPercentage: Percent
-  price: Price<Currency, Currency>
+  poolTokenPercentage?: Percent
+  price?: Price<Currency, Currency>
   onPresentSettingsModal: () => void
   allowedSlippage: number
-  pair: Pair
-  poolData: {
+  pair?: Pair | null
+  poolData?: {
     lpApr7d: number
-  }
+  } | null
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
   approveACallback: () => Promise<SendTransactionResult>
@@ -71,7 +72,7 @@ export interface LP2ChildrenProps {
   onAdd: () => Promise<void>
   onPresentAddLiquidityModal: () => void
   buttonDisabled: boolean
-  errorText: string
+  errorText?: string
   addIsWarning: boolean
   addIsUnsupported: boolean
   pendingText: string
@@ -86,6 +87,7 @@ export default function AddLiquidity({
   currencyB: Currency
   children: (props: LP2ChildrenProps) => ReactElement
 }) {
+  const { data: walletClient } = useWalletClient()
   const { account, chainId } = useAccountActiveChain()
 
   const addPair = usePairAdder()
@@ -163,20 +165,20 @@ export default function AddLiquidity({
     approveCallback: approveACallback,
     revokeCallback: revokeACallback,
     currentAllowance: currentAllowanceA,
-  } = useApproveCallback(parsedAmounts[Field.CURRENCY_A], V2_ROUTER_ADDRESS[chainId])
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_A], chainId ? V2_ROUTER_ADDRESS[chainId] : undefined)
   const {
     approvalState: approvalB,
     approveCallback: approveBCallback,
     revokeCallback: revokeBCallback,
     currentAllowance: currentAllowanceB,
-  } = useApproveCallback(parsedAmounts[Field.CURRENCY_B], V2_ROUTER_ADDRESS[chainId])
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_B], chainId && V2_ROUTER_ADDRESS[chainId])
 
   const addTransaction = useTransactionAdder()
 
   const routerContract = useRouterContract()
 
   async function onAdd() {
-    if (!chainId || !account || !routerContract) return
+    if (!chainId || !account || !routerContract || !walletClient) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
@@ -231,10 +233,10 @@ export default function AddLiquidity({
         ? { value, account: routerContract.account, chain: routerContract.chain }
         : { account: routerContract.account, chain: routerContract.chain },
     )
-      .then((estimatedGasLimit) =>
+      .then((estimatedGasLimit: any) =>
         method(args, {
           ...(value ? { value } : {}),
-          gasLimit: calculateGasMargin(estimatedGasLimit),
+          gas: calculateGasMargin(estimatedGasLimit),
           gasPrice,
         }).then((response: Hash) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response })
@@ -260,7 +262,7 @@ export default function AddLiquidity({
           }
         }),
       )
-      ?.catch((err) => {
+      ?.catch((err: any) => {
         if (err && !isUserRejected(err)) {
           logError(err)
           console.error(`Add Liquidity failed`, err, args, value)

@@ -1,8 +1,8 @@
-import { getAddress } from "viem";
-import memoize from "lodash/memoize";
-import { Token, Currency, NATIVE } from "@pancakeswap/sdk";
 import { ChainId } from "@pancakeswap/chains";
-import { ethereumTokens, bscTokens } from "@pancakeswap/tokens";
+import { Currency, NATIVE, Token } from "@pancakeswap/sdk";
+import { bscTokens, ethereumTokens } from "@pancakeswap/tokens";
+import memoize from "lodash/memoize";
+import { getAddress } from "viem";
 
 const mapping: { [key: number]: string } = {
   [ChainId.BSC]: "smartchain",
@@ -43,7 +43,7 @@ const chainName: { [key: number]: string } = {
   [ChainId.BSC]: "",
   [ChainId.ETHEREUM]: "eth",
   [ChainId.POLYGON_ZKEVM]: "polygon-zkevm",
-  [ChainId.ARBITRUM_ONE]: "arb",
+  [ChainId.ARBITRUM_ONE]: "arbitrum",
   [ChainId.ZKSYNC]: "zksync",
   [ChainId.LINEA]: "linea",
   [ChainId.BASE]: "base",
@@ -55,7 +55,7 @@ export const getTokenListBaseURL = (chainId: number) =>
   `https://tokens.pancakeswap.finance/images/${chainName[chainId]}`;
 
 export const getTokenListTokenUrl = (token: Token) =>
-  chainName[token.chainId]
+  Object.keys(chainName).includes(String(token.chainId))
     ? `https://tokens.pancakeswap.finance/images/${
         token.chainId === ChainId.BSC ? "" : `${chainName[token.chainId]}/`
       }${token.address}.png`
@@ -85,11 +85,18 @@ export const getCommonCurrencyUrlBySymbol = memoize(
   (symbol?: string) => `logoUrls#symbol#${symbol}`
 );
 
+type GetLogoUrlsOptions = {
+  useTrustWallet?: boolean;
+};
+
 export const getCurrencyLogoUrls = memoize(
-  (currency?: Currency): string[] => {
+  (currency: Currency | undefined, { useTrustWallet = true }: GetLogoUrlsOptions = {}): string[] => {
     const trustWalletLogo = getTokenLogoURL(currency?.wrapped);
     const logoUrl = currency ? getTokenListTokenUrl(currency.wrapped) : null;
-    return [getCommonCurrencyUrl(currency), trustWalletLogo, logoUrl].filter((url): url is string => !!url);
+    return [getCommonCurrencyUrl(currency), useTrustWallet ? trustWalletLogo : undefined, logoUrl].filter(
+      (url): url is string => !!url
+    );
   },
-  (currency?: Currency) => `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}`
+  (currency: Currency | undefined, options?: GetLogoUrlsOptions) =>
+    `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}#${options ? JSON.stringify(options) : ""}`
 );

@@ -1,5 +1,46 @@
 # @pancakeswap/farms
 
+## 1.0.28
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+- Updated dependencies [2ec03f1b2]
+  - @pancakeswap/sdk@5.7.3
+  - @pancakeswap/v3-sdk@3.7.2
+  - @pancakeswap/tokens@0.5.6
+
+## 1.0.27
+
+### Patch Changes
+
+- Updated dependencies [2bb70e602]
+  - @pancakeswap/tokens@0.5.5
+  - @pancakeswap/v3-sdk@3.7.1
+
+## 1.0.26
+
+### Patch Changes
+
+- Updated dependencies [cd5c4d0ce]
+  - @pancakeswap/v3-sdk@3.7.0
+
+## 1.0.25
+
+### Patch Changes
+
+- Updated dependencies [be74f8b0d]
+  - @pancakeswap/v3-sdk@3.6.0
+
+## 1.0.24
+
+### Patch Changes
+
+- @pancakeswap/utils@5.0.7
+- @pancakeswap/token-lists@0.0.9
+- @pancakeswap/tokens@0.5.4
+- @pancakeswap/v3-sdk@3.5.4
+
 ## 1.0.23
 
 ### Patch Changes

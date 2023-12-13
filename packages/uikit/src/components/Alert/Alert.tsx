@@ -13,7 +13,6 @@ import { AlertProps, variants } from "./types";
 interface ThemedIconLabel {
   variant: AlertProps["variant"];
   theme: DefaultTheme;
-  hasDescription: boolean;
 }
 
 const getThemeColor = ({ theme, variant = variants.INFO }: ThemedIconLabel) => {
@@ -52,11 +51,11 @@ const IconLabel = styled.div<ThemedIconLabel>`
 `;
 
 const withHandlerSpacing = 32 + 12 + 8; // button size + inner spacing + handler position
-const Details = styled.div<{ hasHandler: boolean }>`
+const Details = styled.div<{ $hasHandler: boolean }>`
   flex: 1;
   padding-bottom: 12px;
   padding-left: 12px;
-  padding-right: ${({ hasHandler }) => (hasHandler ? `${withHandlerSpacing}px` : "12px")};
+  padding-right: ${({ $hasHandler }) => ($hasHandler ? `${withHandlerSpacing}px` : "12px")};
   padding-top: 12px;
 `;
 
@@ -79,10 +78,10 @@ const Alert: React.FC<React.PropsWithChildren<AlertProps>> = ({ title, children,
 
   return (
     <StyledAlert>
-      <IconLabel variant={variant} hasDescription={!!children}>
+      <IconLabel variant={variant}>
         <Icon color="currentColor" width="24px" />
       </IconLabel>
-      <Details hasHandler={!!onClick}>
+      <Details $hasHandler={!!onClick}>
         <Text bold>{title}</Text>
         {typeof children === "string" ? (
           <Text style={{ wordBreak: "break-word" }} as="p">

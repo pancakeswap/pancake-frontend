@@ -1,14 +1,21 @@
 import useSWR from 'swr'
+import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { Ifo, PoolIds } from 'config/constants/types'
-import { ifosConfig, FAST_INTERVAL } from 'config/constants'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import BigNumber from 'bignumber.js'
-import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 
-const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle)
+import { useIfoConfigsAcrossChains } from 'hooks/useIfoConfig'
+import { FAST_INTERVAL } from 'config/constants'
+
+import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 
 const useFetchVestingData = () => {
   const { address: account } = useAccount()
+  const configs = useIfoConfigsAcrossChains()
+  const allVestingIfo = useMemo<Ifo[]>(
+    () => configs?.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle) || [],
+    [configs],
+  )
 
   const { data, mutate } = useSWR(
     account ? ['vestingData'] : null,

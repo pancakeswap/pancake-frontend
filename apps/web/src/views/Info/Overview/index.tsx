@@ -3,10 +3,10 @@ import { Card, Flex, Heading } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useMemo } from 'react'
 import {
-  useAllTokenDataSWR,
-  useProtocolChartDataSWR,
-  useProtocolDataSWR,
-  useProtocolTransactionsSWR,
+  useAllTokenDataQuery,
+  useProtocolChartDataQuery,
+  useProtocolDataQuery,
+  useProtocolTransactionsQuery,
 } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
 import { styled } from 'styled-components'
@@ -40,16 +40,16 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
     currentLanguage: { locale },
   } = useTranslation()
 
-  const protocolData = useProtocolDataSWR()
-  const chartData = useProtocolChartDataSWR()
-  const transactions = useProtocolTransactionsSWR()
+  const protocolData = useProtocolDataQuery()
+  const chartData = useProtocolChartDataQuery()
+  const transactions = useProtocolTransactionsQuery()
 
   const currentDate = useMemo(
     () => new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' }),
     [locale],
   )
 
-  const allTokens = useAllTokenDataSWR()
+  const allTokens = useAllTokenDataQuery()
 
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)

@@ -4,7 +4,7 @@ import { Flex, Box, Text, Balance, SkeletonV2 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCakePrice } from 'hooks/useCakePrice'
 import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
-import { BannerTimer, LockTimer } from 'views/Pottery/components/Timer'
+import { LockTimer } from 'views/Pottery/components/Timer'
 import { PotteryDepositStatus } from 'state/types'
 import { OutlineText, DarkTextStyle } from 'views/Pottery/components/TextStyle'
 import TicketsDecorations from 'views/Pottery/components/Banner/TicketsDecorations'
@@ -77,7 +77,7 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
   const prizeInBusd = publicData.totalPrize.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
 
-  const apy = useMemo(() => +getLockedApy(weeksToSeconds(10)), [getLockedApy])
+  const apy = useMemo(() => Number(getLockedApy(weeksToSeconds(10))), [getLockedApy])
   const apyDisplay = useMemo(() => (!Number.isNaN(apy) ? `${Number(apy).toFixed(2)}%` : '0%'), [apy])
 
   return (
@@ -157,7 +157,6 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
               {t('win prize pot!')}
             </DarkTextStyle>
           </Box>
-          <BannerTimer />
         </Flex>
       </Flex>
     </PotteryBanner>

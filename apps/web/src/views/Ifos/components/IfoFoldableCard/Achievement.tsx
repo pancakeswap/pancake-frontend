@@ -16,7 +16,7 @@ import {
 import { bscTokens } from '@pancakeswap/tokens'
 import { useTranslation } from '@pancakeswap/localization'
 import { PublicIfoData } from 'views/Ifos/types'
-import { Ifo } from 'config/constants/types'
+import { Ifo } from '@pancakeswap/ifos'
 import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
 import { getBlockExploreLink } from 'utils'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
@@ -135,7 +135,7 @@ const IfoAchievement: React.FC<React.PropsWithChildren<Props>> = ({ ifo, publicI
             <Link external href={ifo.articleUrl}>
               <ProposalIcon color="textSubtle" />
             </Link>
-            <Link external href={getBlockExploreLink(ifo.address, 'address')}>
+            <Link external href={getBlockExploreLink(ifo.address, 'address', ifo.chainId)}>
               <SmartContractIcon color="textSubtle" />
             </Link>
             {ifo.twitterUrl && (

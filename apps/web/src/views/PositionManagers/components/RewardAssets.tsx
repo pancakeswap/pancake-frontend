@@ -29,7 +29,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   const { t } = useTranslation()
   const { account, chain } = useWeb3React()
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({ waitForTransactionTimeout: 25_000 })
   const { earningUsdValue, earningsBalance } = useEarningTokenPriceInfo(earningToken, pendingReward)
 
   const wrapperContract = usePositionManagerWrapperContract(contractAddress)
@@ -69,8 +69,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
           </Flex>
           <Balance lineHeight="1" bold fontSize="20px" decimals={3} value={earningsBalance} />
           <Balance
-            prefix="~"
-            unit=" USD"
+            prefix="~$"
             decimals={2}
             fontSize="12px"
             display="inline"

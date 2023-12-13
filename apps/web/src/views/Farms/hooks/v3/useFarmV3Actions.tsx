@@ -6,11 +6,11 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useCallback } from 'react'
-import { mutate } from 'swr'
 import { calculateGasMargin } from 'utils'
 import { getViemClients, viemClients } from 'utils/viem'
 import { Address, hexToBigInt } from 'viem'
 import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FarmV3ActionContainerChildrenProps {
   attemptingTxn: boolean
@@ -32,6 +32,7 @@ const useFarmV3Actions = ({
   const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
   const { sendTransactionAsync } = useSendTransaction()
+  const queryClient = useQueryClient()
   const publicClient = viemClients[chainId as keyof typeof viemClients]
 
   const { loading, fetchWithCatchTxError } = useCatchTxError()
@@ -165,7 +166,7 @@ const useFarmV3Actions = ({
           {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
         </ToastDescriptionWithTx>,
       )
-      mutate((key) => Array.isArray(key) && key[0] === 'mcv3-harvest', undefined)
+      queryClient.invalidateQueries({ queryKey: ['mcv3-harvest'] })
     }
   }, [
     account,
@@ -177,6 +178,7 @@ const useFarmV3Actions = ({
     t,
     toastSuccess,
     tokenId,
+    queryClient,
   ])
 
   return {
@@ -194,6 +196,7 @@ export function useFarmsV3BatchHarvest() {
   const { address: account } = useAccount()
   const { sendTransactionAsync } = useSendTransaction()
   const { loading, fetchWithCatchTxError } = useCatchTxError()
+  const queryClient = useQueryClient()
 
   const masterChefV3Address = useMasterchefV3()?.address
   const onHarvestAll = useCallback(
@@ -228,10 +231,10 @@ export function useFarmsV3BatchHarvest() {
             {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
           </ToastDescriptionWithTx>,
         )
-        mutate((key) => Array.isArray(key) && key[0] === 'mcv3-harvest', undefined)
+        queryClient.invalidateQueries({ queryKey: ['mcv3-harvest'] })
       }
     },
-    [account, fetchWithCatchTxError, masterChefV3Address, sendTransactionAsync, signer, t, toastSuccess],
+    [account, fetchWithCatchTxError, masterChefV3Address, sendTransactionAsync, signer, t, toastSuccess, queryClient],
   )
 
   return {

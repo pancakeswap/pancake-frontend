@@ -3,14 +3,14 @@ import { Card, Heading, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { useMemo } from 'react'
-import { useAllTokenDataSWR, useChainIdByQuery, useTokenDatasSWR } from 'state/info/hooks'
+import { useAllTokenDataQuery, useChainIdByQuery, useTokenDatasQuery } from 'state/info/hooks'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import TopTokenMovers from 'views/Info/components/TopTokenMovers'
 
 const TokensOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
-  const allTokens = useAllTokenDataSWR()
+  const allTokens = useAllTokenDataQuery()
   const chainId = useChainIdByQuery()
   const { savedTokens } = useInfoUserSavedTokensAndPools(chainId)
 
@@ -19,14 +19,14 @@ const TokensOverview: React.FC<React.PropsWithChildren> = () => {
       .map((token) => token.data)
       .filter((token) => token)
   }, [allTokens])
-  const watchListTokens = useTokenDatasSWR(savedTokens)
+  const watchListTokens = useTokenDatasQuery(savedTokens)
 
   return (
     <Page>
       <Heading scale="lg" mb="16px">
         {t('Your Watchlist')}
       </Heading>
-      {watchListTokens.length > 0 ? (
+      {watchListTokens && watchListTokens.length > 0 ? (
         <TokenTable tokenDatas={watchListTokens} />
       ) : (
         <Card>

@@ -1,16 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
-import {
-  AutoRenewIcon,
-  Button,
-  Card,
-  CardBody,
-  Heading,
-  NextLinkFromReactRouter,
-  Skeleton,
-  Text,
-  useToast,
-} from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text, useToast } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'

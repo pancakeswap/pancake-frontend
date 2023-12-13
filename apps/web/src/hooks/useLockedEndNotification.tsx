@@ -1,4 +1,6 @@
-import { useToast, Text, NextLinkFromReactRouter, StyledLink } from '@pancakeswap/uikit'
+import { useToast, Text, StyledLink } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useEffect } from 'react'
 import { useSWRConfig } from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
