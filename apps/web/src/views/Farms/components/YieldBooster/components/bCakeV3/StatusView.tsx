@@ -57,9 +57,11 @@ export const StatusView: React.FC<{
         {shouldUpdate ? (
           <Flex>
             <Text fontSize={16} lineHeight="120%" bold color="success" mr="3px">
-              {expectMultiplier?.toLocaleString('en-US', {
-                maximumFractionDigits: 3,
-              })}
+              {(expectMultiplier ?? 0) < 1.001 && expectMultiplier !== 1
+                ? '< 1.001'
+                : expectMultiplier?.toLocaleString('en-US', {
+                    maximumFractionDigits: 3,
+                  })}
               x
             </Text>
             <Text fontSize={16} lineHeight="120%" bold color="textSubtle" style={{ textDecoration: 'line-through' }}>
