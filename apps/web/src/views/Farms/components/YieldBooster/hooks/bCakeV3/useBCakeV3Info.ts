@@ -61,12 +61,12 @@ export const useIsBoostedPool = (tokenId?: string) => {
   return { isBoosted: data?.[0], pid: Number(data?.[1]), mutate: refetch }
 }
 
-export const useUserPositionInfo = (tokenId: string) => {
+export const useUserPositionInfo = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const masterChefV3 = useMasterchefV3()
   const { data, refetch } = useQuery(
     [`v3/masterChef/userPositionInfos/${chainId}/${tokenId}`],
-    () => masterChefV3?.read.userPositionInfos([BigInt(tokenId)]),
+    () => masterChefV3?.read.userPositionInfos([BigInt(tokenId ?? 0)]),
     {
       enabled: Boolean(chainId && tokenId),
       ...QUERY_SETTINGS_WITHOUT_REFETCH,
