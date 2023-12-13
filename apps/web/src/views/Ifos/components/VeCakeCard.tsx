@@ -4,6 +4,7 @@ import { Button } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Link from 'next/link'
 import { SpaceProps } from 'styled-system'
+import { useAccount } from 'wagmi'
 import { Address } from 'viem'
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
@@ -12,6 +13,7 @@ import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 
 // TODO should be common hooks
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
@@ -34,6 +36,7 @@ type Props = {
 
 export function VeCakeCard({ ifoAddress }: Props) {
   const { chainId } = useActiveChainId()
+  const { isConnected } = useAccount()
   const cakePrice = useCakePrice()
   const {
     cakeUnlockTime: nativeUnlockTime,
@@ -75,14 +78,14 @@ export function VeCakeCard({ ifoAddress }: Props) {
       <Ifo.MyVeCake amount={veCake} />
       <Ifo.ICakeInfo mt="1.5rem" snapshot={snapshotTime} />
 
-      {hasICake && totalLockCake ? (
+      {isConnected && hasICake && totalLockCake ? (
         <Ifo.LockInfoCard mt="1.5rem" amount={totalLockCake} unlockAt={unlockAt} usdPrice={cakePrice} />
       ) : null}
 
-      {!hasVeCake && !shouldMigrate ? <Ifo.ZeroVeCakeTips mt="1.5rem" /> : null}
+      {isConnected && !hasVeCake && !shouldMigrate ? <Ifo.ZeroVeCakeTips mt="1.5rem" /> : null}
 
       {shouldMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null}
-      <NavigateButton mt="1.5rem" />
+      {isConnected ? <NavigateButton mt="1.5rem" /> : <ConnectWalletButton width="100%" mt="1.5rem" />}
     </Ifo.VeCakeCard>
   )
 }
