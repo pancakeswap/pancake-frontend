@@ -1,16 +1,16 @@
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
 import { TrendingTagType } from '@pancakeswap/games'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
 
-export const StyledTag = styled(Button)<{ isPurple?: boolean }>`
+export const StyledTag = styled(Button)<{ $isPurple?: boolean }>`
   padding: 4px 8px;
   font-size: 14px;
   font-weight: 400;
   box-shadow: 0px 0px 1px 0px #757575;
-  border: ${({ theme, isPurple }) => `solid 1px ${isPurple ? theme.colors.secondary : theme.colors.textSubtle}`};
+  border: ${({ theme, $isPurple }) => `solid 1px ${$isPurple ? theme.colors.secondary : theme.colors.textSubtle}`};
   color: ${({ theme }) => theme.colors.textSubtle};
-  background-color: ${({ theme, isPurple }) => (isPurple ? theme.colors.secondary : theme.card.background)};
+  background-color: ${({ theme, $isPurple }) => ($isPurple ? theme.colors.secondary : theme.card.background)};
 `
 
 const StyledTagContainer = styled(Flex)`
