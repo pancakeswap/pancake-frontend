@@ -1,21 +1,21 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AllowanceTransfer,
+  Permit2ABI,
+  PermitSingle,
   generatePermitTypedData,
   getPermit2Address,
-  PermitSingle,
-  Permit2ABI,
 } from '@pancakeswap/permit2-sdk'
-import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useCallback, useMemo } from 'react'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { publicClient } from 'utils/wagmi'
+import { Address, zeroAddress } from 'viem'
 import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
 import { useQuery, useSignTypedData } from 'wagmi'
-import { Address, zeroAddress } from 'viem'
 import useAccountActiveChain from './useAccountActiveChain'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -92,8 +92,6 @@ export function useUpdatePermitAllowance(
         message: values,
       })
       onPermitSignature?.({ ...permit, signature })
-
-      return
     } catch (error: unknown) {
       if (isUserRejected(error)) {
         throw new TransactionRejectedError(t('Transaction rejected'))
