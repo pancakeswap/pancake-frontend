@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { Currency, CurrencyAmount, Fraction, ONE, Percent } from '@pancakeswap/swap-sdk-core'
@@ -6,10 +7,6 @@ import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } f
 import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
-
-import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -27,11 +24,13 @@ import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import usePermit2Allowance, { AllowanceState } from 'hooks/usePermit2Allowance'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
 import { isChainSupported } from 'utils/wagmi'
 import { useAccount, useChainId } from 'wagmi'
@@ -392,7 +391,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         disabled={
           !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || statusWallchain === 'pending'
         }
-        onClick={onSwapHandler}
+        onClick={() => onSwapHandler()}
       >
         {swapInputError ||
           (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||

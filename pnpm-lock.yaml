@@ -9805,7 +9805,7 @@ packages:
   /@types/better-sqlite3@7.6.7:
     resolution: {integrity: sha512-+c2YGPWY5831v3uj2/X0HRTK94u1GXU3sCnLqu7AKlxlSfawswnAiJR//TFzSL5azWsLQkG/uS+YnnqHtuZxPw==}
     dependencies:
-      '@types/node': 20.5.7
+      '@types/node': 18.18.9
     dev: true
 
   /@types/big.js@4.0.5:
@@ -10311,7 +10311,7 @@ packages:
   /@types/node-forge@1.3.9:
     resolution: {integrity: sha512-meK88cx/sTalPSLSoCzkiUB4VPIFHmxtXm5FaaqRDqBX2i/Sy8bJ4odsan0b20RBjPh06dAQ+OTTdnyQyhJZyQ==}
     dependencies:
-      '@types/node': 20.5.7
+      '@types/node': 18.18.9
     dev: true
 
   /@types/node@10.12.18:
