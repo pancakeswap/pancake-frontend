@@ -188,16 +188,12 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
       maximumFractionDigits: 2,
     })
   }, [cakeAprDisplay, lpAprDisplay])
-  const boostedAPR = useMemo(() => {
-    return (parseFloat(positionCakeAprDisplay) * boostMultiplier + parseFloat(lpAprDisplay)).toLocaleString('en-US', {
-      maximumFractionDigits: 2,
-    })
-  }, [positionCakeAprDisplay, lpAprDisplay, boostMultiplier])
   const canBoosted = useMemo(() => boostedStatus !== BoostStatus.CanNotBoost, [boostedStatus])
   const isBoosted = useMemo(() => boostedStatus === BoostStatus.Boosted, [boostedStatus])
   const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
   const positionBoostedDisplayApr = getDisplayApr(boostMultiplier * positionCakeApr, lpApr)
 
+  if (tokenId === '336592') console.log({ positionCakeApr, lpApr, tokenId })
   const aprTooltip = useTooltip(
     <>
       <Text>
@@ -241,7 +237,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
         <li>
           {t('Farm APR')}:{' '}
           <b>
-            {isBoosted && <>{(parseFloat(positionCakeAprDisplay) * boostMultiplier).toFixed(2)}% </>}
+            {isBoosted && <>{(positionCakeApr * boostMultiplier).toFixed(2)}% </>}
             <Text
               display="inline-block"
               bold={!isBoosted}
@@ -283,7 +279,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
                       <>
                         {isDesktop && <RocketIcon color="success" />}
                         <Text fontSize="14px" color="success">
-                          {boostedAPR}%
+                          {positionBoostedDisplayApr}%
                         </Text>
                       </>
                     )}
