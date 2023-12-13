@@ -30,6 +30,24 @@ interface ApproveStepFlowProps {
   pendingModalSteps: PendingConfirmModalState[]
 }
 
+const ApprovalSteps = ({ pendingModalSteps, confirmModalState }: ApproveStepFlowProps) => {
+  const stepWidth = useMemo(() => `${100 / pendingModalSteps.length}%`, [pendingModalSteps])
+  return (
+    <>
+      {pendingModalSteps.map((pendingStep: PendingConfirmModalState) => {
+        return (
+          <Step
+            active={
+              Object.values(ConfirmModalState)[confirmModalState] === Object.values(ConfirmModalState)[pendingStep]
+            }
+            width={stepWidth}
+          />
+        )
+      })}
+    </>
+  )
+}
+
 export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({
   confirmModalState,
   pendingModalSteps,
@@ -44,7 +62,6 @@ export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowPr
     { placement: 'top' },
   )
 
-  const stepWidth = useMemo(() => `${100 / pendingModalSteps.length}%`, [pendingModalSteps])
   const hideStepIndicators = useMemo(() => pendingModalSteps.length === 1, [pendingModalSteps])
 
   return (
@@ -55,12 +72,7 @@ export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowPr
       {!hideStepIndicators && (
         <>
           <StepsContainer>
-            {pendingModalSteps.length !== 3 && (
-              <Step active={confirmModalState === ConfirmModalState.RESETTING_APPROVAL} width={stepWidth} />
-            )}
-            <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} width={stepWidth} />
-            <Step active={confirmModalState === ConfirmModalState.APPROVE_PENDING} width={stepWidth} />
-            <Step active={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION} width={stepWidth} />
+            <ApprovalSteps pendingModalSteps={pendingModalSteps} confirmModalState={confirmModalState} />
           </StepsContainer>
           {confirmModalState === ConfirmModalState.RESETTING_APPROVAL && (
             <StyledLinkExternal

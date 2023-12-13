@@ -1,0 +1,15 @@
+{
+  "extends": "@pancakeswap/tsconfig/base",
+  "include": ["./src"],
+  "exclude": ["**/*.test.ts", "./dist/**"],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "target": "es2020",
+    "lib": ["ES2021"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  }
+}

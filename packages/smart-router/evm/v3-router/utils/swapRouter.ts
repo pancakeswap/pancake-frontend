@@ -768,7 +768,7 @@ export abstract class SwapRouter {
   }
 
   // if price impact is very high, there's a chance of hitting max/min prices resulting in a partial fill of the swap
-  private static riskOfPartialFill(trades: AnyTradeType): boolean {
+  public static riskOfPartialFill(trades: AnyTradeType): boolean {
     if (Array.isArray(trades)) {
       return trades.some((trade) => {
         return SwapRouter.v3TradeWithHighPriceImpact(trade)
