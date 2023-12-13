@@ -7,12 +7,12 @@ import { useAllowNotifications } from 'state/notifications/hooks'
 import { Events } from 'views/Notifications/constants'
 import { parseErrorMessage } from 'views/Notifications/utils/errorBuilder'
 
-export const useTogglenotifications = () => {
+export const useWebNotifications = () => {
   const { account } = useW3iAccount()
   const { unsubscribe, isSubscribed } = useManageSubscription(account)
   const [allowNotifications, setAllowNotifications] = useAllowNotifications()
-  const featureEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.WebNotifications)
-
+  const featurEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.WebNotifications)
+  const enabled = typeof allowNotifications === 'undefined' ? featurEnabled : allowNotifications
   const toast = useToast()
 
   const handleDiableNotifications = useCallback(async () => {
@@ -36,5 +36,10 @@ export const useTogglenotifications = () => {
     }
   }, [setAllowNotifications, toast])
 
-  return { allowNotifications, featureEnabled, handleEnableNotifications, handleDiableNotifications }
+  const toggle = useCallback(
+    () => (allowNotifications ? handleDiableNotifications() : handleEnableNotifications()),
+    [allowNotifications, handleDiableNotifications, handleEnableNotifications],
+  )
+
+  return { enabled, toggle }
 }

@@ -41,7 +41,7 @@ export function useImportantNotificationsOnly(subscription: string | undefined):
   return state.notifications?.[subscription].importantAlertsOnly
 }
 
-export function useAllowNotifications(): [boolean, (allowNotifications: boolean) => void] {
+export function useAllowNotifications(): [boolean | undefined, (allowNotifications: boolean) => void] {
   const dispatch = useAppDispatch()
   const allowNotifications = useSelector<AppState, AppState['notifications']['allowNotifications']>((state) => {
     return state.notifications.allowNotifications
