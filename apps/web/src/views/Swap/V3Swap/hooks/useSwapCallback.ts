@@ -2,6 +2,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { ReactNode, useMemo } from 'react'
 
@@ -14,9 +15,8 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
-
+import type { TWallchainMasterInput, WallchainStatus } from './useWallchain'
 import { useWallchainSwapCallArguments } from './useWallchain'
-import type { TWallchainMasterInput } from './useWallchain'
 
 export enum SwapCallbackState {
   INVALID,
@@ -35,10 +35,11 @@ interface UseSwapCallbackArgs {
   trade: SmartRouterTrade<TradeType> | undefined | null // trade to execute, required
   // allowedSlippage: Percent // in bips
   // recipientAddressOrName: string | null | undefined // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  // signatureData: SignatureData | null | undefined
   deadline?: bigint
+  permitSignature: Permit2Signature | undefined
   feeOptions?: FeeOptions
   onWallchainDrop: () => void
+  statusWallchain: WallchainStatus
   wallchainMasterInput?: TWallchainMasterInput
 }
 
@@ -46,10 +47,11 @@ interface UseSwapCallbackArgs {
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback({
   trade,
-  // signatureData,
   deadline,
+  permitSignature,
   feeOptions,
   onWallchainDrop,
+  statusWallchain,
   wallchainMasterInput,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { t } = useTranslation()
@@ -63,10 +65,11 @@ export function useSwapCallback({
     trade,
     allowedSlippage,
     recipientAddress,
-    // signatureData,
+    permitSignature,
     deadline,
     feeOptions,
   )
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const wallchainSwapCalls = useWallchainSwapCallArguments(
     trade,
     swapCalls,
@@ -78,9 +81,9 @@ export function useSwapCallback({
   const { callback } = useSendSwapTransaction(
     account,
     chainId,
-    trade,
-    // @ts-expect-error uncompatible types side-by-side cause wrong type assertion
-    wallchainSwapCalls,
+    trade ?? undefined,
+    // @ts-ignore
+    statusWallchain === 'found' ? wallchainSwapCalls : swapCalls,
   )
 
   return useMemo(() => {

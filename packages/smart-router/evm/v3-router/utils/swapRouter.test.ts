@@ -426,7 +426,7 @@ describe('SwapRouter', () => {
           }
 
           it('generates the same calldata', async () => {
-            const trades = [v2Trade, v3Trade]
+            const trades = [mixedRouteTrade1, mixedRouteTrade2]
             const { calldata, value } = SwapRouter.swapCallParameters(trades, {
               slippageTolerance,
               recipient,
