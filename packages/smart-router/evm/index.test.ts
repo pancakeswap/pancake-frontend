@@ -4,15 +4,6 @@ import * as exportedNameSpaces from './index'
 test('exports', () => {
   expect(Object.keys(exportedNameSpaces)).toMatchInlineSnapshot(`
     [
-      "StableSwap",
-      "SmartRouter",
-      "SwapRouter",
-      "getPoolAddress",
-      "Transformer",
-      "PoolType",
-      "RouteType",
-      "getStableSwapPools",
-      "isStableSwapSupported",
       "BIG_INT_TEN",
       "BIPS_BASE",
       "MIN_BNB",
@@ -43,6 +34,7 @@ test('exports', () => {
       "StableSwap",
       "SmartRouter",
       "SwapRouter",
+      "getPoolAddress",
       "Transformer",
       "PoolType",
       "RouteType",
