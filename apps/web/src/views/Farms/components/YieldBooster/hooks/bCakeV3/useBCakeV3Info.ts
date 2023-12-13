@@ -105,23 +105,6 @@ export const useUserBoostedPoolsTokenId = () => {
   }
 }
 
-export const useUserMultiplierBeforeBoosted = (tokenId?: string) => {
-  const { chainId } = useActiveChainId()
-  const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
-  const { data, refetch } = useQuery(
-    [`v3/bcake/useUserMultiplierBeforeBoosted/${chainId}/${tokenId}`],
-    () => getUserMultiplier({ address: farmBoosterV3Contract.address, tokenId, chainId }),
-    {
-      enabled: Boolean(chainId && tokenId),
-      ...QUERY_SETTINGS_WITHOUT_REFETCH,
-    },
-  )
-  return {
-    userMultiplierBeforeBoosted: data ?? 1,
-    updatedUserMultiplierBeforeBoosted: refetch,
-  }
-}
-
 export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
@@ -135,7 +118,7 @@ export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
   )
 
   return {
-    veCakeUserMultiplierBeforeBoosted: data ?? 1,
+    veCakeUserMultiplierBeforeBoosted: data ? (data > 2 ? 2 : data) : 1,
     updatedUserMultiplierBeforeBoosted: refetch,
   }
 }

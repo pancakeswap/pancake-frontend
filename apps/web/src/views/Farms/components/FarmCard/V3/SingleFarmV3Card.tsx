@@ -36,8 +36,8 @@ import {
   useBakeV3farmCanBoost,
   useIsBoostedPool,
   useUserBoostedPoolsTokenId,
-  useUserMultiplierBeforeBoosted,
   useUserPositionInfo,
+  useVeCakeUserMultiplierBeforeBoosted,
 } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
@@ -118,7 +118,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   const title = `${lpSymbol} (#${tokenId.toString()})`
   const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
 
-  const { updatedUserMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted()
+  const { updatedUserMultiplierBeforeBoosted } = useVeCakeUserMultiplierBeforeBoosted()
   const { mutate: updateIsBoostedPool } = useIsBoostedPool(tokenId.toString())
   const { updateUserPositionInfo } = useUserPositionInfo(tokenId.toString())
   const { updateBoostedPoolsTokenId } = useUserBoostedPoolsTokenId()
