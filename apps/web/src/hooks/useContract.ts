@@ -9,20 +9,23 @@ import addresses from 'config/constants/contracts'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
+  getAffiliateProgramContract,
+  getAnniversaryAchievementContract,
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
   getBCakeFarmBoosterV3Contract,
-  getPositionManagerWrapperContract,
-  getPositionManagerAdapterContract,
   getBCakeProxyContract,
   getBunnyFactoryContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getCakeVaultV2Contract,
+  getCalcGaugesVotingContract,
   getChainlinkOracleContract,
   getContract,
   getCrossFarmingProxyContract,
   getFarmAuctionContract,
+  getFixedStakingContract,
+  getGaugesVotingContract,
   getIfoCreditAddressContract,
   getLotteryV2Contract,
   getMasterChefContract,
@@ -31,11 +34,17 @@ import {
   getNftSaleContract,
   getNonBscVaultContract,
   getPointCenterIfoContract,
+  getPositionManagerAdapterContract,
+  getPositionManagerWrapperContract,
   getPotteryDrawContract,
   getPotteryVaultContract,
   getPredictionsV1Contract,
   getPredictionsV2Contract,
   getProfileContract,
+  getRevenueSharingCakePoolContract,
+  getRevenueSharingPoolContract,
+  getRevenueSharingPoolGatewayContract,
+  getRevenueSharingVeCakeContract,
   getSidContract,
   getStableSwapNativeHelperContract,
   getTradingCompetitionContractEaster,
@@ -43,19 +52,17 @@ import {
   getTradingCompetitionContractMoD,
   getTradingCompetitionContractMobox,
   getTradingRewardContract,
+  getTradingRewardTopTradesContract,
   getUnsContract,
-  getAffiliateProgramContract,
   getV3AirdropContract,
   getV3MigratorContract,
-  getTradingRewardTopTradesContract,
   getVCakeContract,
-  getRevenueSharingPoolContract,
-  getAnniversaryAchievementContract,
-  getFixedStakingContract,
+  getVeCakeContract,
 } from 'utils/contractHelpers'
 
-import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ifoV7ABI } from '@pancakeswap/ifos'
+import { WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import { multicallABI } from 'config/abi/Multicall'
@@ -88,8 +95,12 @@ export const useIfoV3Contract = (address: Address) => {
   return useContract(address, ifoV3ABI)
 }
 
-export const useERC20 = (address: Address) => {
-  return useContract(address, erc20ABI)
+export const useIfoV7Contract = (address: Address, options?: UseContractOptions) => {
+  return useContract(address, ifoV7ABI, options)
+}
+
+export const useERC20 = (address: Address, options?: UseContractOptions) => {
+  return useContract(address, erc20ABI, options)
 }
 
 export const useCake = () => {
@@ -228,12 +239,18 @@ export const useErc721CollectionContract = (collectionAddress: Address) => {
 
 // Code below migrated from Exchange useContract.ts
 
+type UseContractOptions = {
+  chainId?: ChainId
+}
+
 // returns null on errors
 export function useContract<TAbi extends Abi>(
   addressOrAddressMap?: Address | { [chainId: number]: Address },
   abi?: TAbi,
+  options?: UseContractOptions,
 ) {
-  const { chainId } = useActiveChainId()
+  const { chainId: currentChainId } = useActiveChainId()
+  const chainId = options?.chainId || currentChainId
   const { data: walletClient } = useWalletClient()
 
   return useMemo(() => {
@@ -280,8 +297,8 @@ export function useBytes32TokenContract(tokenAddress?: Address) {
   return useContract(tokenAddress, erc20Bytes32ABI)
 }
 
-export function usePairContract(pairAddress?: Address) {
-  return useContract(pairAddress, pancakePairV2ABI)
+export function usePairContract(pairAddress?: Address, options?: UseContractOptions) {
+  return useContract(pairAddress, pancakePairV2ABI, options)
 }
 
 export function useMulticallContract() {
@@ -454,4 +471,49 @@ export const useFixedStakingContract = () => {
   const { data: signer } = useWalletClient()
 
   return useMemo(() => getFixedStakingContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useVeCakeContract = () => {
+  const { chainId } = useActiveChainId()
+
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getVeCakeContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useGaugesVotingContract = () => {
+  const { chainId } = useActiveChainId()
+
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getGaugesVotingContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useCalcGaugesVotingContract = () => {
+  const { chainId } = useActiveChainId()
+
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getCalcGaugesVotingContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const useRevenueSharingCakePoolContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getRevenueSharingCakePoolContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useRevenueSharingVeCakeContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getRevenueSharingVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useRevenueSharingPoolGatewayContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getRevenueSharingPoolGatewayContract(signer ?? undefined, chainId), [signer, chainId])
 }

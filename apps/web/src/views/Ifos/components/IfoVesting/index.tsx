@@ -19,7 +19,7 @@ const StyleVestingCard = styled(Card)`
   align-self: baseline;
   ${({ theme }) => theme.mediaQueries.xl} {
     max-width: 350px;
-    margin: -22px 12px 0 12px;
+    margin: 0 12px 0 12px;
   }
 `
 
@@ -27,7 +27,7 @@ const VestingCardBody = styled(CardBody)`
   position: relative;
   z-index: 2;
   overflow-y: auto;
-  max-height: 570px;
+  max-height: 640px;
   padding-bottom: 0;
   border-radius: 0 0 24px 24px;
 `
@@ -62,9 +62,10 @@ const IfoVestingStatus = {
 
 interface IfoVestingProps {
   pool: Pool.DeserializedPool<Token>
+  ifoBasicSaleType?: number
 }
 
-const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
+const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = ({ ifoBasicSaleType }: IfoVestingProps) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const [isFirstTime, setIsFirstTime] = useState(true)
@@ -124,7 +125,13 @@ const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
         {cardStatus.status === VestingStatus.HAS_TOKENS_CLAIM && (
           <TokenInfoContainer>
             {data.map((ifo, index) => (
-              <TokenInfo key={ifo.ifo.id} index={index} data={ifo} fetchUserVestingData={handleFetchUserVesting} />
+              <TokenInfo
+                key={ifo.ifo.id}
+                index={index}
+                data={ifo}
+                fetchUserVestingData={handleFetchUserVesting}
+                ifoBasicSaleType={ifoBasicSaleType}
+              />
             ))}
           </TokenInfoContainer>
         )}

@@ -3,8 +3,8 @@ import { isStableFarm, SerializedFarmConfig, supportedChainIdV2 } from '..'
 
 let logged = false
 
-export const getFarmConfig = async (chainId: ChainId) => {
-  if (supportedChainIdV2.includes(chainId as number)) {
+export const getFarmConfig = async (chainId?: ChainId) => {
+  if (chainId && supportedChainIdV2.includes(chainId as number)) {
     const chainName = getChainName(chainId)
     try {
       return (await import(`/${chainName}.ts`)).default.filter(

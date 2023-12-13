@@ -14,7 +14,10 @@ import {
   arbitrumGoerli,
   base,
   baseGoerli,
-  scrollSepolia as scrollSepolia_,
+  scrollSepolia,
+  opBNBTestnet,
+  linea,
+  opBNB,
   Chain,
 } from 'wagmi/chains'
 
@@ -46,109 +49,6 @@ const bsc = {
     },
   },
 } satisfies Chain
-
-const scrollSepolia = {
-  ...scrollSepolia_,
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 9473,
-    },
-  },
-} as const satisfies Chain
-
-export const opbnbTestnet = {
-  id: ChainId.OPBNB_TESTNET,
-  name: 'opBNB Testnet',
-  network: 'opbnb-testnet',
-  nativeCurrency: bscTestnet.nativeCurrency,
-  rpcUrls: {
-    default: {
-      http: ['https://opbnb-testnet-rpc.bnbchain.org'],
-    },
-    public: {
-      http: ['https://opbnb-testnet-rpc.bnbchain.org'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'opBNBScan',
-      url: 'https://testnet.opbnbscan.com',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 3705108,
-    },
-  },
-  testnet: true,
-} as const satisfies Chain
-
-export const opbnb = {
-  id: ChainId.OPBNB,
-  name: 'opBNB Mainnet',
-  network: 'opbnb',
-  nativeCurrency: bsc_.nativeCurrency,
-  rpcUrls: {
-    default: {
-      http: ['https://opbnb-mainnet-rpc.bnbchain.org'],
-    },
-    public: {
-      http: ['https://opbnb-mainnet-rpc.bnbchain.org'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'opBNBScan',
-      url: 'https://opbnbscan.com',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 512881,
-    },
-  },
-} as const satisfies Chain
-
-export const linea = {
-  id: ChainId.LINEA,
-  name: 'Linea Mainnet',
-  network: 'linea-mainnet',
-  nativeCurrency: { name: 'Linea Ether', symbol: 'ETH', decimals: 18 },
-  rpcUrls: {
-    infura: {
-      http: ['https://linea-mainnet.infura.io/v3'],
-      webSocket: ['wss://linea-mainnet.infura.io/ws/v3'],
-    },
-    default: {
-      http: ['https://rpc.linea.build'],
-      webSocket: ['wss://rpc.linea.build'],
-    },
-    public: {
-      http: ['https://rpc.linea.build'],
-      webSocket: ['wss://rpc.linea.build'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'Etherscan',
-      url: 'https://lineascan.build',
-    },
-    etherscan: {
-      name: 'Etherscan',
-      url: 'https://lineascan.build',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 42,
-    },
-  },
-  testnet: false,
-} as const satisfies Chain
 
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
@@ -186,7 +86,7 @@ export const CHAINS = [
   arbitrum,
   base,
   baseGoerli,
-  opbnb,
-  opbnbTestnet,
+  opBNB,
+  opBNBTestnet,
   scrollSepolia,
 ]

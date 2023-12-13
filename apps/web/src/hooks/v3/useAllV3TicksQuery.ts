@@ -1,10 +1,10 @@
-import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { v3Clients } from 'utils/graphql'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/chains'
 import { gql } from 'graphql-request'
 import { TickMath } from '@pancakeswap/v3-sdk'
+import { useQuery } from '@tanstack/react-query'
 
 export type AllV3TicksQuery = {
   ticks: Array<{
@@ -19,13 +19,18 @@ export type TickData = Ticks[number]
 
 export default function useAllV3TicksQuery(poolAddress: string | undefined, interval: number) {
   const { chainId } = useActiveChainId()
-  const { data, isLoading, error } = useSWRImmutable(
-    poolAddress && v3Clients[chainId] ? `useAllV3TicksQuery-${poolAddress}-${chainId}` : null,
+  const { data, isLoading, error } = useQuery(
+    [`useAllV3TicksQuery-${poolAddress}-${chainId}`],
     async () => {
+      if (!chainId || !poolAddress) return undefined
       return getPoolTicks(chainId, poolAddress)
     },
     {
-      refreshInterval: interval,
+      enabled: Boolean(poolAddress && chainId && v3Clients[chainId]),
+      refetchInterval: interval,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   )
 
@@ -41,7 +46,7 @@ export default function useAllV3TicksQuery(poolAddress: string | undefined, inte
 
 export async function getPoolTicks(chainId: number, poolAddress: string, blockNumber?: string): Promise<Ticks> {
   const PAGE_SIZE = 1000
-  let allTicks = []
+  let allTicks: any[] = []
   let lastTick = TickMath.MIN_TICK - 1
   // eslint-disable-next-line no-constant-condition
   while (true) {

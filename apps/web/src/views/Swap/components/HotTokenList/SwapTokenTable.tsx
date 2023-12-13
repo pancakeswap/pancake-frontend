@@ -7,13 +7,13 @@ import {
   Button,
   Flex,
   MoreIcon,
-  NextLinkFromReactRouter,
   Skeleton,
   SortArrowIcon,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { CurrencyLogo } from '@pancakeswap/widgets-internal'
+
+import { CurrencyLogo, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'

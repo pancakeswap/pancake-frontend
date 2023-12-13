@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRenewIcon, NextLinkFromReactRouter, Button } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { ReactNode, useCallback, useContext, useEffect } from 'react'
 
 import BigNumber from 'bignumber.js'

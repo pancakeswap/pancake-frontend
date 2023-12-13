@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import { Pair } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
@@ -22,10 +22,11 @@ interface PoolReserveVolumeResponse {
   twoWeeksAgo: PoolReserveVolume[]
 }
 
-export const useLPApr = (pair?: Pair) => {
-  const { data: poolData } = useSWRImmutable(
-    pair && pair.chainId === ChainId.BSC ? ['LP7dApr', pair.liquidityToken.address] : null,
+export const useLPApr = (pair?: Pair | null) => {
+  const { data: poolData } = useQuery(
+    ['LP7dApr', pair?.liquidityToken.address],
     async () => {
+      if (!pair) return undefined
       const timestampsArray = getDeltaTimestamps()
       const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
       const [, , block7d] = blocks ?? []
@@ -34,16 +35,21 @@ export const useLPApr = (pair?: Pair) => {
         pair.liquidityToken.address.toLowerCase(),
       )
       if (error) return null
-      const current = parseFloat(data?.now[0]?.volumeUSD)
-      const currentReserveUSD = parseFloat(data?.now[0]?.reserveUSD)
-      const week = parseFloat(data?.oneWeekAgo[0]?.volumeUSD)
+      const current = data?.now[0]?.volumeUSD !== undefined ? parseFloat(data?.now[0]?.volumeUSD) : undefined
+      const currentReserveUSD =
+        data?.now[0]?.reserveUSD !== undefined ? parseFloat(data?.now[0]?.reserveUSD) : undefined
+      const week = data?.oneWeekAgo[0]?.volumeUSD !== undefined ? parseFloat(data?.oneWeekAgo[0]?.volumeUSD) : undefined
       const [volumeUSDWeek] = getChangeForPeriod(current, week)
       const liquidityUSD = currentReserveUSD || 0
       const lpApr7d = liquidityUSD > 0 ? (volumeUSDWeek * LP_HOLDERS_FEE * WEEKS_IN_YEAR * 100) / liquidityUSD : 0
-      return lpApr7d ? { lpApr7d } : null
+      return lpApr7d ? { lpApr7d } : undefined
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(pair && pair.chainId === ChainId.BSC),
+      refetchInterval: SLOW_INTERVAL,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     },
   )
 

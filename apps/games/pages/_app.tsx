@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import { NextPage } from 'next'
 import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
 import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
@@ -10,7 +11,12 @@ import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'ne
 import Head from 'next/head'
 import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Menu from '../components/Menu'
+import Footer from '../components/Footer'
+
+// Create a client
+const queryClient = new QueryClient()
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -49,8 +55,19 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: unset !important;
   }
 `
+type NextPageWithLayout = NextPage & {
+  Layout?: React.FC<React.PropsWithChildren<unknown>>
+  /** render component without all layouts */
+  pure?: true
+}
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const Layout = Component.Layout || Fragment
+
   return (
     <>
       <Head>
@@ -61,20 +78,27 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#1FC7D4" />
       </Head>
       <DefaultSeo {...SEO} />
-      <NextThemeProvider>
-        <StyledThemeProvider>
-          <LanguageProvider>
-            <ModalProvider>
-              <ResetCSS />
-              <GlobalStyle />
-              <Menu />
-              <WrapBalancerProvider>
-                <Component {...pageProps} />
-              </WrapBalancerProvider>
-            </ModalProvider>
-          </LanguageProvider>
-        </StyledThemeProvider>
-      </NextThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <NextThemeProvider>
+            <StyledThemeProvider>
+              <LanguageProvider>
+                <ModalProvider>
+                  <ResetCSS />
+                  <GlobalStyle />
+                  <Menu />
+                  <Layout>
+                    <WrapBalancerProvider>
+                      <Component {...pageProps} />
+                    </WrapBalancerProvider>
+                  </Layout>
+                  <Footer />
+                </ModalProvider>
+              </LanguageProvider>
+            </StyledThemeProvider>
+          </NextThemeProvider>
+        </Hydrate>
+      </QueryClientProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"
@@ -84,7 +108,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTAG}');
+            })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTM}');
           `,
         }}
       />

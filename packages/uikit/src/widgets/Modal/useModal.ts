@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useRef } from "react";
 import get from "lodash/get";
-import { serialize } from "wagmi";
 import { Context } from "./ModalContext";
 import { Handler } from "./types";
+import { serialize } from "../../util/serialize";
 
 const useModal = (
   modal: React.ReactNode,

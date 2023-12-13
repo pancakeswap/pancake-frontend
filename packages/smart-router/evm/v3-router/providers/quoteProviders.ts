@@ -30,7 +30,8 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
       routes: RouteWithoutQuote[],
       { blockNumber, gasModel }: QuoterOptions,
     ): Promise<RouteWithQuote[]> {
-      const v3Routes: RouteWithoutQuote[] = []
+      const v3SingleHopRoutes: RouteWithoutQuote[] = []
+      const v3MultihopRoutes: RouteWithoutQuote[] = []
       const mixedRoutesHaveV3Pool: RouteWithoutQuote[] = []
       const routesCanQuoteOffChain: RouteWithoutQuote[] = []
       for (const route of routes) {
@@ -39,7 +40,11 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
           continue
         }
         if (route.type === RouteType.V3) {
-          v3Routes.push(route)
+          if (route.pools.length === 1) {
+            v3SingleHopRoutes.push(route)
+            continue
+          }
+          v3MultihopRoutes.push(route)
           continue
         }
         const { pools } = route
@@ -52,8 +57,9 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
 
       const results = await Promise.allSettled([
         getOffChainQuotes(routesCanQuoteOffChain, { blockNumber, gasModel }),
-        getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber, gasModel }),
-        getV3Quotes(v3Routes, { blockNumber, gasModel }),
+        getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber, gasModel, retry: { retries: 0 } }),
+        getV3Quotes(v3SingleHopRoutes, { blockNumber, gasModel }),
+        getV3Quotes(v3MultihopRoutes, { blockNumber, gasModel, retry: { retries: 1 } }),
       ])
       if (results.every((result) => result.status === 'rejected')) {
         throw new Error(results.map((result) => (result as PromiseRejectedResult).reason).join(','))

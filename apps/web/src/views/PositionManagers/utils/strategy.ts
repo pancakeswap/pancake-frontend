@@ -7,6 +7,14 @@ export function getStrategyName(t: TranslateFunction, strategy: Strategy) {
       return t('Typical Wide')
     case Strategy.YIELD_IQ:
       return t('Yield IQ')
+    case Strategy.ACTIVE:
+      return t('Active')
+    case Strategy.PASSIVE:
+      return t('Passive')
+    case Strategy.PEGGED:
+      return t('Pegged')
+    case Strategy.ALO:
+      return t('Automated Liquidity Optimization')
     default:
       return ''
   }

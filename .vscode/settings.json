@@ -2,5 +2,21 @@
   "deno.enablePaths": ["./cli/aptos-codegen"],
   "deno.config": "./cli/aptos-codegen/deno.jsonc",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["bips", "Merkl", "pancakeswap"]
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "cSpell.words": [
+    "bips",
+    "Aptos",
+    "ARBITRUM",
+    "bignumber",
+    "LINEA",
+    "Merkl",
+    "multicall",
+    "pancakeswap",
+    "vecake",
+    "wagmi",
+    "wbnb",
+    "ZKSYNC"
+  ]
 }

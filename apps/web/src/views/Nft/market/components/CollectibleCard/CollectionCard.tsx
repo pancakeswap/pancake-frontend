@@ -1,4 +1,6 @@
-import { Card, CardBody, Flex, Heading, ProfileAvatar, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Card, CardBody, Flex, Heading, ProfileAvatar } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { styled, css } from 'styled-components'
 
 interface CollectionCardProps {

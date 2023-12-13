@@ -5,12 +5,13 @@ import {
   ButtonMenu,
   ButtonMenuItem,
   Flex,
-  NextLinkFromReactRouter,
   Text,
   UserMenu,
   UserMenuDivider,
   UserMenuItem,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useRouter } from 'next/router'

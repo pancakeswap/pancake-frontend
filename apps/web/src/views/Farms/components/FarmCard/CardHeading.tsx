@@ -81,7 +81,6 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         <AutoRow gap="4px" justifyContent="flex-end">
           {isReady && isStable ? <StableFarmTag /> : version === 2 ? <V2Tag /> : null}
           {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
-          {/* {isReady && boosted && <BoostedTag />} */}
           {isReady && isCommunityFarm && <FarmAuctionTag mr="-4px" />}
           {isReady ? (
             <Flex ref={targetRef}>

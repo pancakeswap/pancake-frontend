@@ -3,9 +3,9 @@ import { Box, Flex, Text, Card } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import useSWR from 'swr'
 import { ArticleDataType } from 'utils/transformArticle'
 import { StyledLineClamp } from 'components/StyledLineClamp'
+import { useQuery } from '@tanstack/react-query'
 
 const StyledBackground = styled(Box)`
   position: relative;
@@ -63,7 +63,7 @@ const StyledTagGroup = styled(Flex)`
 
 const NewBlog = () => {
   const { t } = useTranslation()
-  const { data: articlesData } = useSWR<ArticleDataType[]>('/latestArticles')
+  const { data: articlesData } = useQuery<ArticleDataType[]>(['/latestArticles'], { enabled: false })
   const article = useMemo(() => articlesData?.[0], [articlesData])
 
   return (

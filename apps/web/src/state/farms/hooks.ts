@@ -2,7 +2,7 @@ import { SLOW_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { getMasterChefContract } from 'utils/contractHelpers'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
@@ -25,23 +25,35 @@ import {
 
 export function useFarmsLength() {
   const { chainId } = useActiveChainId()
-  return useSWRImmutable(
-    chainId && supportedChainIdV2.includes(chainId) ? ['farmsLength', chainId] : null,
+  return useQuery(
+    ['farmsLength', chainId],
     async () => {
       const mc = getMasterChefContract(undefined, chainId)
       return Number(await mc.read.poolLength())
+    },
+    {
+      enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   )
 }
 
 export function useFarmV2PublicAPI() {
   const { chainId } = useActiveChainId()
-  return useSWRImmutable(
-    chainId && supportedChainIdV2.includes(chainId) ? ['farm-v2-pubic-api', chainId] : null,
+  return useQuery(
+    ['farm-v2-pubic-api', chainId],
     async () => {
       return fetch(`https://farms-api.pancakeswap.com/${chainId}`)
         .then((res) => res.json())
         .then((res) => res.data)
+    },
+    {
+      enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   )
 }
@@ -55,8 +67,8 @@ export const usePollFarmsWithUserData = () => {
     isLoading: isProxyContractLoading,
   } = useBCakeProxyContractAddress(account, chainId)
 
-  useSWRImmutable(
-    chainId && supportedChainIdV2.includes(chainId) ? ['publicFarmData', chainId] : null,
+  useQuery(
+    ['publicFarmData', chainId],
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       if (!farmsConfig) return
@@ -65,7 +77,11 @@ export const usePollFarmsWithUserData = () => {
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+      refetchInterval: SLOW_INTERVAL,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   )
 
@@ -73,8 +89,8 @@ export const usePollFarmsWithUserData = () => {
     ? ['farmsWithUserData', account, proxyAddress, chainId]
     : ['farmsWithUserData', account, chainId]
 
-  useSWRImmutable(
-    account && chainId && !isProxyContractLoading ? name : null,
+  useQuery(
+    name,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       if (!farmsConfig) return
@@ -83,7 +99,11 @@ export const usePollFarmsWithUserData = () => {
       dispatch(fetchFarmUserDataAsync(params))
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(account && chainId && !isProxyContractLoading),
+      refetchInterval: SLOW_INTERVAL,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   )
 }

@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, Card, ICakeIcon, BCakeIcon, VCakeIcon, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Card, ICakeIcon, BCakeIcon, VCakeIcon } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import Image from 'next/image'
 import BigNumber from 'bignumber.js'
 import BenefitsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsText'

@@ -8,9 +8,10 @@ import {
   Heading,
   VisibilityOff,
   VisibilityOn,
-  NextLinkFromReactRouter as ReactRouterLink,
   ScanLink,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter as ReactRouterLink } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'

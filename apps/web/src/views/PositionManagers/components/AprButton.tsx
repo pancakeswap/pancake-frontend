@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, RoiCalculatorModal, Skeleton, Text, useModal, useTooltip } from '@pancakeswap/uikit'
+import {
+  CalculateIcon,
+  Flex,
+  IconButton,
+  RoiCalculatorModal,
+  Skeleton,
+  Text,
+  useModal,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { memo, useMemo } from 'react'
@@ -12,10 +21,12 @@ interface Props {
   apr: AprResult
   isAprLoading: boolean
   lpSymbol: string
+  totalStakedInUsd: number
   totalAssetsInUsd: number
   userLpAmounts?: bigint
   totalSupplyAmounts?: bigint
   precision?: bigint
+  lpTokenDecimals?: number
 }
 
 const AprText = styled(Text)`
@@ -28,23 +39,29 @@ export const AprButton = memo(function YieldInfo({
   id,
   apr,
   isAprLoading,
-  totalAssetsInUsd,
+  totalStakedInUsd,
   lpSymbol,
   userLpAmounts,
+  totalSupplyAmounts,
   precision,
+  lpTokenDecimals = 0,
 }: Props) {
   const { t } = useTranslation()
 
   const { address: account } = useAccount()
   const cakePriceBusd = useCakePrice()
+  const tokenBalanceMultiplier = useMemo(() => new BigNumber(10).pow(lpTokenDecimals), [lpTokenDecimals])
   const tokenBalance = useMemo(
-    () => new BigNumber(Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
-    [userLpAmounts, precision],
+    () =>
+      new BigNumber(Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0).times(
+        tokenBalanceMultiplier,
+      ),
+    [userLpAmounts, precision, tokenBalanceMultiplier],
   )
 
   const tokenPrice = useMemo(
-    () => totalAssetsInUsd / (Number(((userLpAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
-    [userLpAmounts, precision, totalAssetsInUsd],
+    () => totalStakedInUsd / (Number(((totalSupplyAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
+    [totalSupplyAmounts, precision, totalStakedInUsd],
   )
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
@@ -71,7 +88,7 @@ export const AprButton = memo(function YieldInfo({
         </li>
       </ul>
       <Text lineHeight="120%" mt="20px">
-        {t('Calculated based on previous 7 days average data.')}
+        {t(`Calculated based on previous %days% days average data.`, { days: 1 })}
       </Text>
     </>,
     {
@@ -85,7 +102,7 @@ export const AprButton = memo(function YieldInfo({
       pid={Number(id)}
       linkLabel=""
       stakingTokenBalance={tokenBalance}
-      stakingTokenDecimals={0}
+      stakingTokenDecimals={lpTokenDecimals}
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={tokenPrice}
       earningTokenPrice={cakePriceBusd.toNumber()}
@@ -99,12 +116,17 @@ export const AprButton = memo(function YieldInfo({
   )
 
   return (
-    <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
+    <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {apr && !isAprLoading ? (
-        <AprText color="success" ref={targetRef} bold onClick={onPresentApyModal}>
-          {`${apr.combinedApr}%`}
-          {tooltipVisible && tooltip}
-        </AprText>
+        <>
+          <AprText color="success" ref={targetRef} bold onClick={onPresentApyModal}>
+            {`${apr.combinedApr}%`}
+            {tooltipVisible && tooltip}
+          </AprText>
+          <IconButton variant="text" scale="sm" onClick={onPresentApyModal}>
+            <CalculateIcon mt="3px" color="textSubtle" ml="3px" width="20px" />
+          </IconButton>
+        </>
       ) : (
         <Skeleton width={50} height={20} />
       )}

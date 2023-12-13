@@ -283,21 +283,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         farmCakePerSecond={multiplier.farmCakePerSecond}
                         totalMultipliers={multiplier.totalMultipliers}
                       />
-                      {/* {props?.details?.boosted && userDataReady ? (
-                        <BoostedApr
-                          lpRewardsApr={props?.apr?.lpRewardsApr}
-                          apr={props?.apr?.originalValue}
-                          pid={props.farm?.pid}
-                          lpTotalSupply={props.details?.lpTotalSupply}
-                          userBalanceInFarm={
-                            props.details.userData.stakedBalance.plus(props.details.userData.tokenBalance).gt(0)
-                              ? props.details.userData.stakedBalance.plus(props.details.userData.tokenBalance)
-                              : props.details.userData.proxy.stakedBalance.plus(
-                                  props.details.userData.proxy.tokenBalance,
-                                )
-                          }
-                        />
-                      ) : null} */}
                     </>
                   )}
                 </CellLayout>

@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/farms",
-  "version": "1.0.23",
+  "version": "1.0.28",
   "sideEffects": false,
   "private": true,
   "scripts": {
@@ -23,6 +23,6 @@
     "bignumber.js": "^9.0.0",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
-    "viem": "^1.15.1"
+    "viem": "1.19.9"
   }
 }

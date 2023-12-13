@@ -3,7 +3,7 @@ import { acceptListUpdate, updateListVersion, useFetchListCallback } from '@panc
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useEffect } from 'react'
 import { useAllLists } from 'state/lists/hooks'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@pancakeswap/awgmi'
 import { useActiveListUrls } from './hooks'
 import { useListState, initialState, useListStateReady } from './index'
 
@@ -25,17 +25,26 @@ export default function Updater(): null {
   const fetchList = useFetchListCallback(dispatch)
 
   // whenever a list is not loaded and not loading, try again to load it
-  useSWRImmutable(isReady && ['first-fetch-token-list', lists], () => {
-    Object.keys(lists).forEach((listUrl) => {
-      const list = lists[listUrl]
-      if (!list.current && !list.loadingRequestId && !list.error) {
-        fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
-      }
-    })
-  })
+  useQuery(
+    ['first-fetch-token-list', lists],
+    () => {
+      Object.keys(lists).forEach((listUrl) => {
+        const list = lists[listUrl]
+        if (!list.current && !list.loadingRequestId && !list.error) {
+          fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
+        }
+      })
+    },
+    {
+      enabled: Boolean(isReady),
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  )
 
-  useSWRImmutable(
-    isReady && listState !== initialState && ['token-list'],
+  useQuery(
+    ['token-list'],
     async () => {
       return Promise.all(
         Object.keys(lists).map((url) =>
@@ -44,8 +53,12 @@ export default function Updater(): null {
       )
     },
     {
-      dedupingInterval: 1000 * 60 * 10,
-      refreshInterval: 1000 * 60 * 10,
+      enabled: Boolean(isReady && listState !== initialState),
+      staleTime: 1000 * 60 * 10,
+      refetchInterval: 1000 * 60 * 10,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   )
 

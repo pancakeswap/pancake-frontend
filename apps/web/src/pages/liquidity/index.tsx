@@ -38,7 +38,7 @@ import { useMemo, useState } from 'react'
 import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import { LiquidityCardRow } from 'components/LiquidityCardRow'
+import { LiquidityCardRow } from 'views/AddLiquidity/components/LiquidityCardRow'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useAtom } from 'jotai'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
@@ -95,26 +95,22 @@ export default function PoolListPage() {
   const isNeedFilterByQuery = useMemo(() => token0 || token1 || fee, [token0, token1, fee])
   const [showAllPositionWithQuery, setShowAllPositionWithQuery] = useState(false)
 
-  let v2PairsSection: null | JSX.Element[] = null
+  const v2PairsSection: null | JSX.Element[] = v2Pairs?.length
+    ? v2Pairs.map((pair, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <V2PairCard key={`${pair?.token0}-${pair?.token1}-${index}`} pair={pair} account={account} />
+      ))
+    : null
 
-  if (v2Pairs?.length) {
-    v2PairsSection = v2Pairs.map((pair, index) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <V2PairCard key={`${pair?.token0}-${pair?.token1}-${index}`} pair={pair} account={account} />
-    ))
-  }
+  const stablePairsSection: null | JSX.Element[] = useMemo(() => {
+    if (!stablePairs?.length) return null
 
-  let stablePairsSection: null | JSX.Element[] = null
+    return stablePairs.map((pair) => <StableContextProvider key={pair.lpAddress} pair={pair} account={account} />)
+  }, [account, stablePairs])
 
-  if (stablePairs?.length) {
-    stablePairsSection = stablePairs.map((pair) => (
-      <StableContextProvider key={pair.lpAddress} pair={pair} account={account} />
-    ))
-  }
+  const v3PairsSection: null | JSX.Element[] = useMemo(() => {
+    if (!positions?.length) return null
 
-  let v3PairsSection: null | JSX.Element[] = null
-
-  if (positions?.length) {
     const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
       (acc, p) => {
         acc[p.liquidity === 0n ? 1 : 0].push(p)
@@ -125,7 +121,7 @@ export default function PoolListPage() {
 
     const filteredPositions = [...openPositions, ...(hideClosedPositions ? [] : closedPositions)]
 
-    v3PairsSection = filteredPositions.map((p) => {
+    return filteredPositions.map((p) => {
       return (
         <PositionListItem key={p.tokenId.toString()} positionDetails={p}>
           {({
@@ -175,7 +171,7 @@ export default function PoolListPage() {
         </PositionListItem>
       )
     })
-  }
+  }, [hideClosedPositions, positions, t])
 
   const filteredWithQueryFilter = useMemo(() => {
     if (isNeedFilterByQuery && !showAllPositionWithQuery && v3PairsSection) {

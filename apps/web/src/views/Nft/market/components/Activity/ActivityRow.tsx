@@ -9,8 +9,9 @@ import {
   useModal,
   Skeleton,
   useMatchBreakpoints,
-  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { Activity, NftToken } from 'state/nftMarket/types'
 import BigNumber from 'bignumber.js'
 import { getBlockExploreLink, safeGetAddress } from 'utils'

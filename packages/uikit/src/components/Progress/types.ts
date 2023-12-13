@@ -13,6 +13,7 @@ export type Scale = (typeof scales)[keyof typeof scales];
 export type Variant = (typeof variants)[keyof typeof variants];
 
 export interface ProgressProps {
+  className?: string;
   variant?: Variant;
   scale?: Scale;
   primaryStep?: number;

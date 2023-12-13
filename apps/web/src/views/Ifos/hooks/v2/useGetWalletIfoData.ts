@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
@@ -65,6 +65,9 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const fetchIfoData = useCallback(async () => {
     const bscClient = publicClient({ chainId: ChainId.BSC })
 
+    if (!account) {
+      return
+    }
     const [userInfo, amounts] = await bscClient.multicall({
       contracts: [
         {
@@ -83,26 +86,29 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       allowFailure: false,
     })
 
-    setState((prevState) => ({
-      ...prevState,
-      isInitialized: true,
-      poolBasic: {
-        ...prevState.poolBasic,
-        amountTokenCommittedInLP: new BigNumber(userInfo[0][0].toString()),
-        offeringAmountInToken: new BigNumber(amounts[0][0].toString()),
-        refundingAmountInLP: new BigNumber(amounts[0][1].toString()),
-        taxAmountInLP: new BigNumber(amounts[0][2].toString()),
-        hasClaimed: userInfo[1][0],
-      },
-      poolUnlimited: {
-        ...prevState.poolUnlimited,
-        amountTokenCommittedInLP: new BigNumber(userInfo[0][1].toString()),
-        offeringAmountInToken: new BigNumber(amounts[1][0].toString()),
-        refundingAmountInLP: new BigNumber(amounts[1][1].toString()),
-        taxAmountInLP: new BigNumber(amounts[1][2].toString()),
-        hasClaimed: userInfo[1][1],
-      },
-    }))
+    setState(
+      (prevState) =>
+        ({
+          ...prevState,
+          isInitialized: true,
+          poolBasic: {
+            ...prevState.poolBasic,
+            amountTokenCommittedInLP: new BigNumber(userInfo[0][0].toString()),
+            offeringAmountInToken: new BigNumber(amounts[0][0].toString()),
+            refundingAmountInLP: new BigNumber(amounts[0][1].toString()),
+            taxAmountInLP: new BigNumber(amounts[0][2].toString()),
+            hasClaimed: userInfo[1][0],
+          },
+          poolUnlimited: {
+            ...prevState.poolUnlimited,
+            amountTokenCommittedInLP: new BigNumber(userInfo[0][1].toString()),
+            offeringAmountInToken: new BigNumber(amounts[1][0].toString()),
+            refundingAmountInLP: new BigNumber(amounts[1][1].toString()),
+            taxAmountInLP: new BigNumber(amounts[1][2].toString()),
+            hasClaimed: userInfo[1][1],
+          },
+        } as any),
+    )
   }, [account, address])
 
   const resetIfoData = useCallback(() => {

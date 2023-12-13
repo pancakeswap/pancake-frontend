@@ -2,7 +2,7 @@ import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Address, Hash } from 'viem'
 
-import { MANAGER, BaseManager } from './constants/managers'
+import { BaseManager, MANAGER } from './constants/managers'
 
 export enum OnChainActionType {
   ADD_LIQUIDITY,
@@ -13,6 +13,10 @@ export enum OnChainActionType {
 export enum Strategy {
   TYPICAL_WIDE,
   YIELD_IQ,
+  ACTIVE,
+  PASSIVE,
+  PEGGED,
+  ALO,
 }
 
 export interface OnChainActionResponse {
@@ -98,6 +102,7 @@ export interface DuoTokenVault {
   // The unique id of the vault
   // It can be used to sort the managed positions on fe
   id: number
+  idByManager: number
   name: string
   adapterAddress: Address
   currencyA: Currency

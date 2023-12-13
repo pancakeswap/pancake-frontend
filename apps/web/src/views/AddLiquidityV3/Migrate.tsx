@@ -506,7 +506,11 @@ function V2PairMigrate({
     setConfirmingMigration(true)
 
     migrator.estimateGas
-      .multicall([data], { account: migrator.account!, value: 0n })
+      .multicall(
+        [data], // TODO: Fix viem
+        // @ts-ignore
+        { account: migrator.account!, value: 0n },
+      )
       .then((gasEstimate) => {
         return migrator.write
           .multicall([data], { gas: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })

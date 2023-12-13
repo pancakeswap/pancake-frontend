@@ -1,11 +1,10 @@
-import useSWR from 'swr'
 import { CAKE } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { FetchStatus } from 'config/constants/types'
 import { useBCakeProxyContract, useCake } from 'hooks/useContract'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useQuery } from '@tanstack/react-query'
 import { useBCakeProxyContractAddress } from './useBCakeProxyContractAddress'
 
 const SMALL_AMOUNT_THRESHOLD = new BigNumber(0.001)
@@ -16,11 +15,14 @@ const useBCakeProxyBalance = () => {
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const cakeContract = useCake()
 
-  const { data, status } = useSWR(
-    account && bCakeProxy && !isProxyContractAddressLoading && ['bCakeProxyBalance', account],
+  const { data, status } = useQuery(
+    ['bCakeProxyBalance', account],
     async () => {
       const rawBalance = await cakeContract.read.balanceOf([bCakeProxy.address])
       return new BigNumber(rawBalance.toString())
+    },
+    {
+      enabled: Boolean(account && bCakeProxy && !isProxyContractAddressLoading),
     },
   )
 
@@ -37,7 +39,7 @@ const useBCakeProxyBalance = () => {
           ? getFullDisplayBalance(data, CAKE[chainId].decimals, 3)
           : '< 0.001'
         : null,
-      isLoading: status !== FetchStatus.Fetched,
+      isLoading: status !== 'success',
     }
   }, [data, balanceAmount, status, chainId])
 }

@@ -1,4 +1,4 @@
-import { Token, WNATIVE } from '@pancakeswap/sdk'
+import { ERC20Token, Token, WNATIVE } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import {
   bscTokens,
@@ -114,6 +114,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
 
+const czusd = new ERC20Token(ChainId.BSC, '0xE68b79e51bf826534Ff37AA9CeE71a3842ee9c70', 18, 'CZUSD', 'CZUSD')
+
 /**
  * Additional bases for specific tokens
  * @example { [WBTC.address]: [renBTC], [renBTC.address]: [WBTC] }
@@ -138,6 +140,14 @@ export const ADDITIONAL_BASES: {
 
     [bscTokens.tusd.address]: [bscTokens.usdd],
     [bscTokens.usdd.address]: [bscTokens.tusd],
+
+    // pancakeswap/pancake-frontend#7909
+    // LSDT
+    '0xAa83Bb1Be2a74AaA8795a8887054919A0Ea96BFA': [czusd],
+    // GEM
+    '0x701F1ed50Aa5e784B8Fb89d1Ba05cCCd627839a7': [czusd],
+    // DOGD
+    '0x99F4cc2BAE97F82A823CA80DcAe52EF972B7F270': [czusd],
   },
   [ChainId.ETHEREUM]: {
     // alETH - ALCX
@@ -146,6 +156,11 @@ export const ADDITIONAL_BASES: {
 
     // rETH - ETH
     [ethereumTokens.weth.address]: [ethereumTokens.rETH],
+  },
+  [ChainId.BASE]: {
+    // axlusdc - USDbC
+    [baseTokens.axlusdc.address]: [baseTokens.usdbc],
+    [baseTokens.usdbc.address]: [baseTokens.axlusdc],
   },
 }
 

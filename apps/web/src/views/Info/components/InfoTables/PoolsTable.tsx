@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, NextLinkFromReactRouter, Skeleton, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
@@ -112,7 +114,7 @@ const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => 
 }
 
 interface PoolTableProps {
-  poolDatas: PoolData[]
+  poolDatas: (PoolData | undefined)[]
   loading?: boolean // If true shows indication that SOME pools are loading, but the ones already fetched will be shown
 }
 
@@ -137,9 +139,10 @@ const PoolTable: React.FC<React.PropsWithChildren<PoolTableProps>> = ({ poolData
       ? poolDatas
           .sort((a, b) => {
             if (a && b) {
-              return a[sortField as keyof PoolData] > b[sortField as keyof PoolData]
-                ? (sortDirection ? -1 : 1) * 1
-                : (sortDirection ? -1 : 1) * -1
+              const aElement = a[sortField as keyof PoolData]
+              const bElement = b[sortField as keyof PoolData]
+              const predicate = aElement !== undefined && bElement !== undefined ? aElement > bElement : false
+              return predicate ? (sortDirection ? -1 : 1) * 1 : (sortDirection ? -1 : 1) * -1
             }
             return -1
           })

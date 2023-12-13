@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Price, WETH9, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price, TradeType } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { CAKE, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
@@ -8,6 +8,7 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
+import { fetchTokenUSDValue } from 'utils/llamaPrice'
 import { warningSeverity } from 'utils/exchange'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
@@ -37,18 +38,19 @@ export function useStablecoinPrice(
 
   const shouldEnabled = currency && stableCoin && enabled && currentChainId === chainId && !isCake && !isStableCoin
 
-  const enableLlama = currency?.chainId === ChainId.ETHEREUM && shouldEnabled
+  const enableLlama =
+    (currency?.chainId === ChainId.ETHEREUM || currency?.chainId === ChainId.POLYGON_ZKEVM) && shouldEnabled
 
   // we don't have too many AMM pools on ethereum yet, try to get it from api
-  const { data: priceFromLlama, isLoading } = useSWRImmutable<string>(
-    currency && enableLlama && ['fiat-price-ethereum', currency],
+  const { data: priceFromLlama, isLoading } = useSWRImmutable<string | undefined>(
+    currency && enableLlama && ['fiat-price-llama', currency],
     async () => {
-      const address = currency?.isToken ? currency.address : WETH9[ChainId.ETHEREUM]?.address
-      return fetch(`https://coins.llama.fi/prices/current/ethereum:${address}`) // <3 llama
-        .then((res) => res.json())
-        .then(
-          (res) => res?.coins?.[`ethereum:${address}`]?.confidence > 0.9 && res?.coins?.[`ethereum:${address}`]?.price,
-        )
+      if (!currency) {
+        return undefined
+      }
+      const tokenAddress = currency.wrapped.address
+      const result = await fetchTokenUSDValue(currency.chainId, [tokenAddress])
+      return result.get(tokenAddress)
     },
     {
       dedupingInterval: 30_000,

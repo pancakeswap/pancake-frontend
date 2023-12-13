@@ -217,10 +217,14 @@ export default function AddStableLiquidity({
       const value = (currencyB?.isNative ? parsedAmountB : parsedAmountA).quotient
       value_ = value
       call = nativeHelperContract.estimateGas
-        .add_liquidity(args, {
-          value,
-          account: contract.account,
-        })
+        .add_liquidity(
+          args, // TODO: Fix viem
+          // @ts-ignore
+          {
+            value,
+            account: contract.account,
+          },
+        )
         .then((estimatedGasLimit) => {
           return nativeHelperContract.write.add_liquidity(args, {
             gas: calculateGasMargin(estimatedGasLimit),
@@ -234,9 +238,12 @@ export default function AddStableLiquidity({
       const args = [tokenAmounts, minLPOutput || lpMintedSlippage] as const
       args_ = args
       call = stableSwapContract.estimateGas
-        .add_liquidity(args, {
-          account: contract.account,
-        })
+        .add_liquidity(
+          args, // @ts-ignore
+          {
+            account: contract.account,
+          },
+        )
         .then((estimatedGasLimit) => {
           return stableSwapContract.write.add_liquidity(args, {
             gas: calculateGasMargin(estimatedGasLimit),

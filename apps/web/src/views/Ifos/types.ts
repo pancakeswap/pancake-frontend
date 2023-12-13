@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
+import { IfoStatus, PoolIds } from '@pancakeswap/ifos'
 
-import { IfoStatus, PoolIds } from 'config/constants/types'
-import { useIfoV1Contract, useIfoV2Contract, useIfoV3Contract } from 'hooks/useContract'
+import { useIfoV1Contract, useIfoV2Contract, useIfoV3Contract, useIfoV7Contract } from 'hooks/useContract'
 
 // PoolCharacteristics retrieved from the contract
 export interface PoolCharacteristics {
@@ -20,18 +20,23 @@ export interface PoolCharacteristics {
   needQualifiedPoints?: boolean
   vestingInformation?: VestingInformation
   hasTax?: boolean
+
+  // 0: public sale
+  // 1: private sale
+  // 2: basic sale
+  saleType?: number
 }
 
 // IFO data unrelated to the user returned by useGetPublicIfoData
 export interface PublicIfoData {
   isInitialized: boolean
   status: IfoStatus
-  blocksRemaining: number
+  blocksRemaining?: number
   secondsUntilStart: number
   progress: number
   secondsUntilEnd: number
-  startBlockNum: number
-  endBlockNum: number
+  startBlockNum?: number
+  endBlockNum?: number
   currencyPriceInUSD: BigNumber
   numberPoints: number
   thresholdPoints: bigint
@@ -41,6 +46,9 @@ export interface PublicIfoData {
   fetchIfoData: (currentBlock: number) => Promise<void>
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
+
+  startTimestamp?: number
+  endTimestamp?: number
 }
 
 export interface VestingInformation {
@@ -80,25 +88,35 @@ export interface WalletIfoState {
   }
 }
 
-// Returned by useGetWalletIfoData
-export type WalletIfoData = {
+type WalletIfoBase = {
   allowance: BigNumber
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
   fetchIfoData: () => Promise<void>
   resetIfoData: () => void
-} & WalletIfoState &
-  (WalletIfoDataV1 | WalletIfoDataV2 | WalletIfoDataV3)
+} & WalletIfoState
 
-type WalletIfoDataV1 = {
+// Returned by useGetWalletIfoData
+export type WalletIfoData = WalletIfoBase & WalletIfoContract
+
+type WalletIfoDataV1Contract = {
   version: 1
   contract: ReturnType<typeof useIfoV1Contract>
 }
-type WalletIfoDataV2 = {
+type WalletIfoDataV2Contract = {
   version: 2
   contract: ReturnType<typeof useIfoV2Contract>
 }
-type WalletIfoDataV3 = {
+type WalletIfoDataV3Contract = {
   version: 3
   contract: ReturnType<typeof useIfoV3Contract>
 }
+type WalletIfoDataV7Contract = {
+  version: 7
+  contract: ReturnType<typeof useIfoV7Contract>
+}
+type WalletIfoContract =
+  | WalletIfoDataV1Contract
+  | WalletIfoDataV2Contract
+  | WalletIfoDataV3Contract
+  | WalletIfoDataV7Contract

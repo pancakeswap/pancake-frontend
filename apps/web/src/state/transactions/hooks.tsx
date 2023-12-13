@@ -1,36 +1,36 @@
+import { Order } from '@gelatonetwork/limit-orders-lib'
+import isEmpty from 'lodash/isEmpty'
+import keyBy from 'lodash/keyBy'
+import mapValues from 'lodash/mapValues'
+import omitBy from 'lodash/omitBy'
+import orderBy from 'lodash/orderBy'
+import pickBy from 'lodash/pickBy'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Order } from '@gelatonetwork/limit-orders-lib'
 import { AppState, useAppDispatch } from 'state'
-import pickBy from 'lodash/pickBy'
-import mapValues from 'lodash/mapValues'
-import keyBy from 'lodash/keyBy'
-import orderBy from 'lodash/orderBy'
-import omitBy from 'lodash/omitBy'
-import isEmpty from 'lodash/isEmpty'
 import { useAccount } from 'wagmi'
 
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Hash } from 'viem'
 
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { TransactionDetails } from './reducer'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import {
-  addTransaction,
-  TransactionType,
-  NonBscFarmTransactionType,
   FarmTransactionStatus,
   NonBscFarmStepType,
+  NonBscFarmTransactionType,
+  TransactionType,
+  addTransaction,
 } from './actions'
+import { TransactionDetails } from './reducer'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
   response: { hash: Hash | string } | { transactionHash: Hash | string },
   customData?: {
     summary?: string
-    translatableSummary?: { text: string; data?: Record<string, string | number> }
+    translatableSummary?: { text: string; data?: Record<string, string | number | undefined> }
     approval?: { tokenAddress: string; spender: string; amount: string }
     claim?: { recipient: string }
     type?: TransactionType
@@ -66,7 +66,7 @@ export function useTransactionAdder(): (
         nonBscFarm,
       }: {
         summary?: string
-        translatableSummary?: { text: string; data?: Record<string, string | number> }
+        translatableSummary?: { text: string; data?: Record<string, string | number | undefined> }
         claim?: { recipient: string }
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType
@@ -77,7 +77,7 @@ export function useTransactionAdder(): (
       if (!account) return
       if (!chainId) return
 
-      let hash: Hash | string
+      let hash: Hash | string | undefined
 
       if ('hash' in response) {
         // eslint-disable-next-line prefer-destructuring
@@ -151,7 +151,7 @@ export function useAllActiveChainTransactions(): { [txHash: string]: Transaction
   return useAllChainTransactions(chainId)
 }
 
-export function useAllChainTransactions(chainId: number): { [txHash: string]: TransactionDetails } {
+export function useAllChainTransactions(chainId?: number): { [txHash: string]: TransactionDetails } {
   const { address: account } = useAccount()
 
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
@@ -230,9 +230,9 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 
 // calculate pending transactions
 interface NonBscPendingData {
-  txid: string
-  lpAddress: string
-  type: NonBscFarmStepType
+  txid?: string
+  lpAddress?: string
+  type?: NonBscFarmStepType
 }
 export function usePendingTransactions(): {
   hasPendingTransactions: boolean
@@ -264,6 +264,6 @@ export function usePendingTransactions(): {
 export function useNonBscFarmPendingTransaction(lpAddress: string): NonBscPendingData[] {
   const { nonBscFarmPendingList } = usePendingTransactions()
   return useMemo(() => {
-    return nonBscFarmPendingList.filter((tx) => tx.lpAddress.toLocaleLowerCase() === lpAddress.toLocaleLowerCase())
+    return nonBscFarmPendingList.filter((tx) => tx?.lpAddress?.toLocaleLowerCase() === lpAddress.toLocaleLowerCase())
   }, [lpAddress, nonBscFarmPendingList])
 }

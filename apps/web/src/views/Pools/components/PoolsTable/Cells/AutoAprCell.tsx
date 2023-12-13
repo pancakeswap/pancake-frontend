@@ -1,31 +1,29 @@
 import {
-  Skeleton,
-  Text,
-  Flex,
+  Balance,
   Button,
   CalculateIcon,
-  useModal,
-  useMatchBreakpoints,
+  Flex,
   FlexGap,
-  Balance,
-  useTooltip,
+  Skeleton,
+  Text,
   TooltipText,
+  useMatchBreakpoints,
+  useModal,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
+import { Token } from '@pancakeswap/sdk'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedLockedVaultUser, VaultKey } from 'state/types'
-import { getVaultPosition, VaultPosition, isLocked } from 'utils/cakePool'
-import { Token } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { styled } from 'styled-components'
+import { VaultPosition, getVaultPosition, isLocked } from 'utils/cakePool'
 
-import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
 import LockedAprTooltipContent from '../../LockedPool/Common/LockedAprTooltipContent'
+import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
 
 const AprLabelContainer = styled(Flex)`
   &:hover {
@@ -41,10 +39,10 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const { userData } = useVaultPoolByKey(pool.vaultKey)
+  const { userData } = useVaultPoolByKey(pool.vaultKey as Pool.VaultKey)
 
   const vaultPosition = getVaultPosition(userData)
-  const isLock = isLocked(userData)
+  const isLock = userData ? isLocked(userData) : false
 
   const { flexibleApy, lockedApy } = useVaultApy({
     duration:
@@ -62,17 +60,13 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
     pool.vaultKey === VaultKey.CakeVault ? 'LockedVaultRoiCalculatorModal' : 'FlexibleSideVaultRoiCalculatorModal',
   )
 
-  const boostedYieldAmount = useMemo(() => {
-    return isLock ? getFullDisplayBalance(userData?.cakeAtLastUserAction, 18, 5) : 0
-  }, [isLock, userData?.cakeAtLastUserAction])
-
-  const tooltipContent = <LockedAprTooltipContent boostedYieldAmount={boostedYieldAmount} />
+  const tooltipContent = <LockedAprTooltipContent />
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
   if (pool.vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None) {
     return (
       <>
-        <Pool.BaseCell role="cell" flex={['1 0 50px', '4.5', '1 0 120px', null, '2 0 100px']}>
+        <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
           <Pool.CellContent>
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Flexible APY')}
@@ -107,7 +101,7 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
             )}
           </Pool.CellContent>
         </Pool.BaseCell>
-        <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', null, '1 0 120px']}>
+        <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 150px', '2 0 150px', '1 0 190px']}>
           <Pool.CellContent>
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Locked APR')}
@@ -152,14 +146,14 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
   }
 
   return (
-    <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+    <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 150px', '2 0 150px', '1 0 190px']}>
       <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {isLock ? t('APR') : t('APY')}
         </Text>
         {flexibleApy ? (
           <AprLabelContainer alignItems="center" justifyContent="flex-start">
-            {isLock ? (
+            {vaultPosition >= VaultPosition.Flexible ? (
               <>
                 {tooltipVisible && tooltip}
                 <TooltipText
@@ -170,7 +164,9 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
                 >
                   <Balance
                     fontSize="16px"
-                    value={vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy) : parseFloat(flexibleApy)}
+                    value={
+                      vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy ?? '0') : parseFloat(flexibleApy)
+                    }
                     decimals={2}
                     unit="%"
                   />

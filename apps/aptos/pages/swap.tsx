@@ -8,7 +8,7 @@ import {
   Trade,
   TradeType,
 } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount } from '@pancakeswap/awgmi'
+import { useAccount, useQuery } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import {
@@ -50,7 +50,6 @@ import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLS
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useIsExpertMode } from '@pancakeswap/utils/user/expertMode'
-import useSWRImmutable from 'swr/immutable'
 import currencyId from 'utils/currencyId'
 import {
   basisPointsToPercent,
@@ -79,7 +78,12 @@ function useWarningImport(currencies: (Currency | undefined)[]) {
   const defaultTokens = useAllTokens()
   const { isWrongNetwork } = useActiveNetwork()
   const chainId = useActiveChainId()
-  const { data: loadedTokenList } = useSWRImmutable(['token-list'])
+  const { data: loadedTokenList } = useQuery(['token-list'], {
+    enabled: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
   const urlLoadedTokens = useMemo(() => currencies.filter((c): c is Token => Boolean(c?.isToken)), [currencies])
   const isLoaded = !!loadedTokenList
   const importTokensNotInDefault = useMemo(() => {

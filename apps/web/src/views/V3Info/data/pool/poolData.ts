@@ -102,7 +102,7 @@ interface PoolDataResponse {
 export async function fetchPoolDatas(
   dataClient: GraphQLClient,
   poolAddresses: string[],
-  blocks: Block[],
+  blocks?: Block[],
 ): Promise<{
   error: boolean
   data:

@@ -1,4 +1,4 @@
-import { NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { safeGetAddress } from 'utils'
 import { StyledCollectibleCard } from './styles'
 import CardBody from './CardBody'

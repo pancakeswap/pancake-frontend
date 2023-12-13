@@ -1,7 +1,6 @@
-import { Flex, Skeleton, Text, Balance } from '@pancakeswap/uikit'
+import { Balance, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
@@ -9,12 +8,8 @@ import BigNumber from 'bignumber.js'
 interface TotalStakedCellProps {
   totalStakedBalance: number
   stakingToken: Token
-  totalStaked: BigNumber
+  totalStaked?: BigNumber
 }
-
-const StyledCell = styled(Pool.BaseCell)`
-  flex: 2 0 100px;
-`
 
 const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> = ({
   stakingToken,
@@ -24,7 +19,7 @@ const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> =
   const { t } = useTranslation()
 
   return (
-    <StyledCell role="cell">
+    <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
       <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('Total staked')}
@@ -37,7 +32,7 @@ const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> =
           <Skeleton width="80px" height="16px" />
         )}
       </Pool.CellContent>
-    </StyledCell>
+    </Pool.BaseCell>
   )
 }
 

@@ -64,7 +64,7 @@ interface TokenDataResponse {
 export async function fetchedTokenDatas(
   dataClient: GraphQLClient,
   tokenAddresses: string[],
-  blocks: Block[],
+  blocks?: Block[],
 ): Promise<{
   error: boolean
   data:
@@ -76,7 +76,7 @@ export async function fetchedTokenDatas(
   const [block24, block48, blockWeek] = blocks ?? []
 
   try {
-    const { data: ethPrices } = await fetchEthPrices(blocks, dataClient)
+    const { data: ethPrices } = await fetchEthPrices(dataClient, blocks)
 
     const data = await dataClient.request<TokenDataResponse>(TOKENS_BULK(undefined, tokenAddresses))
 

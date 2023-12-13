@@ -1,21 +1,13 @@
 // eslint-disable-next-line camelcase
-import { SWRConfig, unstable_serialize } from 'swr'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { NextSeo } from 'next-seo'
 import { getProposal } from 'state/voting/helpers'
 import { ProposalState } from 'state/types'
 import Overview from 'views/Voting/Proposal/Overview'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 
-const ProposalPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return (
-    <SWRConfig
-      value={{
-        fallback,
-      }}
-    >
-      <Overview />
-    </SWRConfig>
-  )
+const ProposalPage = () => {
+  return <Overview />
 }
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -26,20 +18,24 @@ export const getStaticPaths: GetStaticPaths = () => {
 }
 
 ProposalPage.Meta = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  if (props.id && props.fallback[unstable_serialize(['proposal', props.id])]) {
-    const proposal = props.fallback[unstable_serialize(['proposal', props.id])]
-    return (
-      <NextSeo
-        openGraph={{
-          description: proposal.title,
-        }}
-      />
-    )
+  if (props.id && props.dehydratedState?.queries?.[0]?.state?.data) {
+    // @ts-ignore
+    const title = props.dehydratedState?.queries?.[0]?.state?.data?.ttile
+    if (title) {
+      return (
+        <NextSeo
+          openGraph={{
+            description: title,
+          }}
+        />
+      )
+    }
   }
   return null
 }
 
 export const getStaticProps = (async ({ params }) => {
+  const queryClient = new QueryClient()
   const { id } = params
   if (typeof id !== 'string') {
     return {
@@ -48,7 +44,7 @@ export const getStaticProps = (async ({ params }) => {
   }
 
   try {
-    const fetchedProposal = await getProposal(id)
+    const fetchedProposal = await queryClient.fetchQuery(['voting', 'proposal', id], () => getProposal(id))
     if (!fetchedProposal) {
       return {
         notFound: true,
@@ -57,9 +53,7 @@ export const getStaticProps = (async ({ params }) => {
     }
     return {
       props: {
-        fallback: {
-          [unstable_serialize(['proposal', id])]: fetchedProposal,
-        },
+        dehydratedState: dehydrate(queryClient),
         id,
       },
       revalidate:
@@ -70,7 +64,7 @@ export const getStaticProps = (async ({ params }) => {
   } catch (error) {
     return {
       props: {
-        fallback: {},
+        dehydratedState: dehydrate(queryClient),
         id,
       },
       revalidate: 60,

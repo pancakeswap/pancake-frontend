@@ -1,5 +1,7 @@
 import { Card, Link } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import NextLink from 'next/link'
+import { TypographyProps, typography } from 'styled-system'
 
 export const StyledCard = styled(Card)`
   background: none;
@@ -33,4 +35,17 @@ export const MessageTextLink = styled(Link)`
   font-weight: bold;
   font-size: 14px;
   white-space: nowrap;
+  cursor: pointer;
+`
+
+export const TextLink = styled(NextLink)<TypographyProps>`
+  display: inline;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.primary};
+
+  ${typography}
 `

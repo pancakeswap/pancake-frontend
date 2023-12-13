@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { isPCSVaultConfig } from '@pancakeswap/position-managers'
+import { isThirdPartyVaultConfig } from '@pancakeswap/position-managers'
 import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 
 import {
@@ -12,7 +12,7 @@ import {
   usePositionManagerDetailsData,
   useStakeOnly,
 } from '../hooks'
-import { PCSVaultCard } from './PCSVaultCard'
+import { ThirdPartyVaultCard } from './PCSVaultCard'
 import { CardLayout } from '../components'
 
 export const VaultCards = memo(function VaultCards() {
@@ -61,12 +61,12 @@ export const VaultCards = memo(function VaultCards() {
       if (sortBy === 'latest') {
         return b.id - a.id
       }
-      return a.id - b.id
+      return a.id // default sort by sequence of configs
     })
     .map((config) => {
-      if (isPCSVaultConfig(config)) {
+      if (isThirdPartyVaultConfig(config)) {
         return (
-          <PCSVaultCard
+          <ThirdPartyVaultCard
             key={config.id}
             config={config}
             farmsV3={farmsV3}

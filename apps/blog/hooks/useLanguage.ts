@@ -1,5 +1,5 @@
-import useSWR from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
+import { useQuery } from '@tanstack/react-query'
 
 interface ResponseLanguageType {
   code: string
@@ -10,7 +10,7 @@ const useLanguage = () => {
   const { t } = useTranslation()
   const defaultLanguage = { label: t('All'), value: 'all' }
 
-  const { data } = useSWR(
+  const { data } = useQuery(
     ['/language', defaultLanguage],
     async () => {
       try {
@@ -27,10 +27,9 @@ const useLanguage = () => {
       }
     },
     {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
     },
   )
 

@@ -33,7 +33,7 @@ interface GlobalResponse {
 
 export async function fetchProtocolData(
   dataClient: GraphQLClient,
-  blocks: Block[],
+  blocks?: Block[],
 ): Promise<{
   error: boolean
   data: ProtocolData | undefined

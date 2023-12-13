@@ -1,6 +1,6 @@
-import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { USDT, USDC, CAKE } from './common'
+import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
+import { CAKE, USDC, USDT } from './common'
 
 export const arbitrumTokens = {
   weth: WETH9[ChainId.ARBITRUM_ONE],
@@ -20,4 +20,73 @@ export const arbitrumTokens = {
     'https://level.finance/',
   ),
   mgp: new ERC20Token(ChainId.ARBITRUM_ONE, '0xa61F74247455A40b01b0559ff6274441FAfa22A3', 18, 'MGP', 'Magpie Token'),
+  dai: new ERC20Token(ChainId.ARBITRUM_ONE, '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18, 'DAI', 'Dai Stablecoin'),
+  axlUSDC: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xEB466342C4d449BC9f53A865D5Cb90586f405215',
+    6,
+    'axlUSDC',
+    'Axelar Wrapped USDC',
+  ),
+  stg: new ERC20Token(ChainId.ARBITRUM_ONE, '0x6694340fc020c5E6B96567843da2df01b2CE1eb6', 18, 'STG', 'StargateToken'),
+  pendle: new ERC20Token(ChainId.ARBITRUM_ONE, '0x0c880f6761F1af8d9Aa9C466984b80DAb9a8c9e8', 18, 'PENDLE', 'Pendle'),
+  rdnt: new ERC20Token(ChainId.ARBITRUM_ONE, '0x3082CC23568eA640225c2467653dB90e9250AaA0', 18, 'RDNT', 'Radiant'),
+  magic: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x539bdE0d7Dbd336b79148AA742883198BBF60342',
+    18,
+    'MAGIC',
+    'Magic Internet Money',
+  ),
+  wstETH: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x5979D7b546E38E414F7E9822514be443A4800529',
+    18,
+    'wstETH',
+    'Wrapped liquid staked Ether 2.0',
+  ),
+  rETH: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8',
+    18,
+    'rETH',
+    'Rocket Pool ETH',
+  ),
+  link: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xf97f4df75117a78c1A5a0DBb814Af92458539FB4',
+    18,
+    'LINK',
+    'ChainLink Token',
+  ),
+  stEUR: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x004626A008B1aCdC4c74ab51644093b155e59A23',
+    18,
+    'stEUR',
+    'Staked agEUR',
+  ),
+  kuji: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x3A18dcC9745eDcD1Ef33ecB93b0b6eBA5671e7Ca',
+    6,
+    'KUJI',
+    'Kujira native asset',
+  ),
+  dmt: new ERC20Token(ChainId.ARBITRUM_ONE, '0x8B0E6f19Ee57089F7649A455D89D7bC6314D04e8', 18, 'DMT', 'DMT'),
+  eqb: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xBfbCFe8873fE28Dfa25f1099282b088D52bbAD9C',
+    18,
+    'EQB',
+    'Equilibria Token',
+  ),
+  grai: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487',
+    18,
+    'GRAI',
+    'Gravita Debt Token',
+  ),
+  swETH: new ERC20Token(ChainId.ARBITRUM_ONE, '0xbc011A12Da28e8F0f528d9eE5E7039E22F91cf18', 18, 'swETH', 'swETH'),
 }

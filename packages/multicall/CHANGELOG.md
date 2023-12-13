@@ -1,5 +1,25 @@
 # @pancakeswap/multicall
 
+## 3.3.2
+
+### Patch Changes
+
+- 2ec03f1b2: chore: Bump up gauges
+- Updated dependencies [2ec03f1b2]
+  - @pancakeswap/sdk@5.7.3
+
+## 3.3.1
+
+### Patch Changes
+
+- 95c5fb6cd: Update default configuration on base network
+
+## 3.3.0
+
+### Minor Changes
+
+- fd7a96a36: Add multicall3 contract addresses
+
 ## 3.2.3
 
 ### Patch Changes

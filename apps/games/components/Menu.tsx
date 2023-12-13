@@ -51,6 +51,7 @@ interface MenuConfigType {
 }
 
 const MenuConfig: MenuConfigType[] = [
+  { title: <Trans>Games</Trans>, href: '/' },
   { title: <Trans>Developers</Trans>, href: '/developers' },
   { title: <Trans>Community</Trans>, href: '/community' },
 ]
@@ -66,29 +67,31 @@ const Menu = () => {
     <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={9}>
       <Flex>
         <Logo href="/" />
-        <Flex pl={['10px', '10px', '10px', '50px']}>
-          {MenuConfig.map((menu) => (
-            <Flex key={menu.href}>
-              {menu.items ? (
-                <DropdownMenu items={menu.items}>
-                  <NextLink href={menu.href} passHref>
-                    <StyledMenuItem
-                      $isActive={menu.items.findIndex((item) => item.href === nextRouter.pathname) !== -1}
-                    >
-                      {menu.title}
-                    </StyledMenuItem>
-                  </NextLink>
-                </DropdownMenu>
-              ) : (
-                <Box display="flex">
-                  <NextLink href={menu.href} passHref>
-                    <StyledMenuItem $isActive={nextRouter.pathname === menu.href}>{menu.title}</StyledMenuItem>
-                  </NextLink>
-                </Box>
-              )}
-            </Flex>
-          ))}
-        </Flex>
+        {isDesktop && (
+          <Flex pl={['10px', '10px', '10px', '50px']}>
+            {MenuConfig.map((menu) => (
+              <Flex key={menu.href}>
+                {menu.items ? (
+                  <DropdownMenu items={menu.items}>
+                    <NextLink href={menu.href} passHref>
+                      <StyledMenuItem
+                        $isActive={menu.items.findIndex((item) => item.href === nextRouter.pathname) !== -1}
+                      >
+                        {menu.title}
+                      </StyledMenuItem>
+                    </NextLink>
+                  </DropdownMenu>
+                ) : (
+                  <Box display="flex">
+                    <NextLink href={menu.href} passHref>
+                      <StyledMenuItem $isActive={nextRouter.pathname === menu.href}>{menu.title}</StyledMenuItem>
+                    </NextLink>
+                  </Box>
+                )}
+              </Flex>
+            ))}
+          </Flex>
+        )}
       </Flex>
       <Flex alignItems="center">
         <Box mt="6px">
@@ -104,11 +107,9 @@ const Menu = () => {
         <Box mr="16px">
           <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
         </Box>
-        {isDesktop && (
-          <Link external href="https://pancakeswap.finance/">
-            <Button scale="sm">{t('Launch App')}</Button>
-          </Link>
-        )}
+        <Link external href="https://pancakeswap.finance/">
+          <Button scale="sm">{t('Launch App')}</Button>
+        </Link>
       </Flex>
     </Flex>
   )

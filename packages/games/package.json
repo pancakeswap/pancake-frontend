@@ -1,0 +1,18 @@
+{
+  "name": "@pancakeswap/games",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "type": "module",
+  "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "@pancakeswap/tsconfig": "workspace:*"
+  }
+}

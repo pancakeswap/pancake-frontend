@@ -1,7 +1,7 @@
 import { ArrowBackIcon, Box, Button, Flex, Heading, NotFound, ReactMarkdown } from '@pancakeswap/uikit'
 import { getAllVotes, getProposal } from 'state/voting/helpers'
 import { useAccount } from 'wagmi'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { ProposalState } from 'state/types'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -9,7 +9,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import Container from 'components/Layout/Container'
 import PageLoader from 'components/Loader/PageLoader'
 import { NextSeo } from 'next-seo'
-import { FetchStatus } from 'config/constants/types'
 import { isCoreProposal } from '../helpers'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
 import Layout from '../components/Layout'
@@ -28,20 +27,30 @@ const Overview = () => {
     status: proposalLoadingStatus,
     data: proposal,
     error,
-  } = useSWRImmutable(id ? ['proposal', id] : null, () => getProposal(id))
+  } = useQuery(['voting', 'proposal', id], () => getProposal(id), {
+    enabled: Boolean(id),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
   const {
     status: votesLoadingStatus,
     data: votes,
-    mutate: refetch,
-  } = useSWRImmutable(proposal ? ['proposal', proposal, 'votes'] : null, async () => getAllVotes(proposal))
+    refetch,
+  } = useQuery(['voting', 'proposal', proposal, 'votes'], async () => getAllVotes(proposal), {
+    enabled: Boolean(proposal),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
   const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
-  const isPageLoading = votesLoadingStatus === FetchStatus.Fetching || proposalLoadingStatus === FetchStatus.Fetching
+  const isPageLoading = votesLoadingStatus === 'loading' || proposalLoadingStatus === 'loading'
 
   if (!proposal && error) {
     return (
-      <NotFound>
+      <NotFound LinkComp={Link}>
         <NextSeo title="404" />
       </NotFound>
     )

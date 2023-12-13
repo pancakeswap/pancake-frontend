@@ -9,11 +9,11 @@ import { SLOW_INTERVAL } from 'config/constants'
 import { useEffect, useState } from 'react'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { styled } from 'styled-components'
-import useSWR from 'swr'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { useCakeEmissionPerBlock } from 'views/Home/hooks/useCakeEmissionPerBlock'
 import { erc20ABI } from 'wagmi'
+import { useQuery } from '@tanstack/react-query'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
@@ -81,8 +81,8 @@ const CakeDataRow = () => {
       burnedBalance: 0,
       circulatingSupply: 0,
     },
-  } = useSWR(
-    loadData ? ['cakeDataRow'] : null,
+  } = useQuery(
+    ['cakeDataRow'],
     async () => {
       const [totalSupply, burned, totalLockedAmount] = await publicClient({ chainId: ChainId.BSC }).multicall({
         contracts: [
@@ -111,7 +111,8 @@ const CakeDataRow = () => {
       }
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      enabled: Boolean(loadData),
+      refetchInterval: SLOW_INTERVAL,
     },
   )
   const cakePriceBusd = useCakePrice()

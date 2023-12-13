@@ -7,13 +7,14 @@ import {
   Card,
   CardBody,
   Flex,
-  NextLinkFromReactRouter,
   Skeleton,
   Text,
   TextProps,
   useMatchBreakpoints,
   useToast,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BOOSTED_FARM_GAS_LIMIT } from 'config'

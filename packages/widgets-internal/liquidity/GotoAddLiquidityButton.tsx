@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { AddIcon, Button, NextLinkFromReactRouter } from "@pancakeswap/uikit";
+import { AddIcon, Button } from "@pancakeswap/uikit";
+import { NextLinkFromReactRouter } from "../components/NextLink";
 
 export function GotoAddLiquidityButton() {
   const { t } = useTranslation();

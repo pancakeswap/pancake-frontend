@@ -21,8 +21,9 @@ import {
   Button,
   AddIcon,
   useTooltip,
-  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
+
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 

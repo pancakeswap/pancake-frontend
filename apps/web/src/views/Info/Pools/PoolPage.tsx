@@ -10,13 +10,14 @@ import {
   Flex,
   Heading,
   HelpIcon,
-  NextLinkFromReactRouter,
   ScanLink,
   Spinner,
   Text,
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { getChainName } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
@@ -30,13 +31,13 @@ import {
   useChainIdByQuery,
   useChainNameByQuery,
   useMultiChainPath,
-  usePoolChartDataSWR,
-  usePoolDatasSWR,
-  usePoolTransactionsSWR,
+  usePoolChartDataQuery,
+  usePoolDatasQuery,
+  usePoolTransactionsQuery,
   useStableSwapPath,
 } from 'state/info/hooks'
 import { styled } from 'styled-components'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -93,9 +94,9 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
 
-  const poolData = usePoolDatasSWR(useMemo(() => [address], [address]))[0]
-  const chartData = usePoolChartDataSWR(address)
-  const transactions = usePoolTransactionsSWR(address)
+  const poolData = usePoolDatasQuery(useMemo(() => [address], [address]))[0]
+  const chartData = usePoolChartDataQuery(address)
+  const transactions = usePoolTransactionsQuery(address)
   const chainId = useChainIdByQuery()
   const { savedPools, addPool } = useInfoUserSavedTokensAndPools(chainId)
   const chainName = useChainNameByQuery()
@@ -103,9 +104,12 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
   const stableAPR = useStableSwapAPR(isStableSwap ? address : undefined)
-  const { data: farmConfig } = useSWRImmutable(isStableSwap && chainId && `info/gerFarmConfig/${chainId}`, () =>
-    getFarmConfig(chainId),
-  )
+  const { data: farmConfig } = useQuery([`info/getFarmConfig/${chainId}`], () => getFarmConfig(chainId), {
+    enabled: Boolean(isStableSwap && chainId),
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
 
   const feeDisplay = useMemo(() => {
     if (isStableSwap && farmConfig) {
@@ -118,7 +122,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
     return showWeeklyData ? poolData?.lpFees7d : poolData?.lpFees24h
   }, [poolData, isStableSwap, farmConfig, showWeeklyData, address])
   const stableTotalFee = useMemo(
-    () => (isStableSwap ? new BigNumber(feeDisplay).times(2).toNumber() : 0),
+    () => (isStableSwap && feeDisplay ? new BigNumber(feeDisplay).times(2).toNumber() : 0),
     [isStableSwap, feeDisplay],
   )
 
