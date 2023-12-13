@@ -34,13 +34,13 @@ import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import Page from 'views/Page'
-import { useSendTransaction } from 'wagmi'
+import { useWalletClient } from 'wagmi'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { styled } from 'styled-components'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { LightGreyCard } from 'components/Card'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
-import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { hexToBigInt } from 'viem'
 
@@ -52,6 +52,7 @@ import { getViemClients } from 'utils/viem'
 import { calculateGasMargin } from 'utils'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useBurnV3ActionHandlers } from './form/hooks'
 
 const BorderCard = styled.div`
@@ -70,14 +71,14 @@ export default function RemoveLiquidityV3() {
     try {
       return BigInt(tokenId as string)
     } catch {
-      return null
+      return undefined
     }
   }, [tokenId])
 
   return <Remove tokenId={parsedTokenId} />
 }
 
-function Remove({ tokenId }: { tokenId: bigint }) {
+function Remove({ tokenId }: { tokenId?: bigint }) {
   const {
     t,
     currentLanguage: { locale },
@@ -91,8 +92,11 @@ function Remove({ tokenId }: { tokenId: bigint }) {
   const { percent } = useLocalSelector<{ percent: number }>((s) => s) as { percent: number }
 
   const { account, chainId } = useAccountActiveChain()
-  const { sendTransactionAsync } = useSendTransaction()
   const addTransaction = useTransactionAdder()
+
+  const { fetchWithCatchTxError } = useCatchTxError()
+
+  const { data: walletClient } = useWalletClient()
 
   const masterchefV3 = useMasterchefV3()
   const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(
@@ -152,7 +156,8 @@ function Remove({ tokenId }: { tokenId: bigint }) {
       !chainId ||
       !positionSDK ||
       !liquidityPercentage ||
-      !sendTransactionAsync
+      !tokenId ||
+      !walletClient
     ) {
       return
     }
@@ -182,22 +187,26 @@ function Remove({ tokenId }: { tokenId: bigint }) {
 
     const publicClient = getViemClients({ chainId })
 
-    publicClient.estimateGas(txn).then((gas) => {
-      sendTransactionAsync({
-        ...txn,
-        gas: calculateGasMargin(gas),
-        chainId,
-      })
+    publicClient?.estimateGas(txn).then((gas) => {
+      fetchWithCatchTxError(() =>
+        walletClient.sendTransaction({
+          ...txn,
+          gas: calculateGasMargin(gas),
+          chain: publicClient?.chain,
+        }),
+      )
         .then((response) => {
-          const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
-          const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
+          if (response?.status) {
+            const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
+            const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
 
-          setTxnHash(response.hash)
+            setTxnHash(response.transactionHash)
+            addTransaction(response, {
+              type: 'remove-liquidity-v3',
+              summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
+            })
+          }
           setAttemptingTxn(false)
-          addTransaction(response, {
-            type: 'remove-liquidity-v3',
-            summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
-          })
         })
         .catch((err) => {
           setAttemptingTxn(false)
@@ -215,12 +224,13 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     chainId,
     positionSDK,
     liquidityPercentage,
-    sendTransactionAsync,
     tokenId,
     allowedSlippage,
     feeValue0,
     feeValue1,
     addTransaction,
+    fetchWithCatchTxError,
+    walletClient,
   ])
 
   const removed = position?.liquidity === 0n
@@ -228,7 +238,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
   const price0 = useStablecoinPrice(liquidityValue0?.currency?.wrapped ?? undefined, { enabled: !!feeValue0 })
   const price1 = useStablecoinPrice(liquidityValue1?.currency?.wrapped ?? undefined, { enabled: !!feeValue1 })
 
-  function modalHeader() {
+  const modalHeader = useCallback(() => {
     return (
       <>
         <RowBetween alignItems="flex-end">
@@ -284,7 +294,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
         ) : null}
       </>
     )
-  }
+  }, [feeValue0, feeValue1, liquidityValue0, liquidityValue1, t])
 
   const router = useRouter()
 
@@ -300,6 +310,17 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     setAttemptingTxn(false)
     setTxnHash('')
   }, [onPercentSelectForSlider, percentForSlider, router, txnHash])
+
+  const pendingText = useMemo(
+    () =>
+      t('Removing %amountA% %symbolA% and %amountB% %symbolB%', {
+        amountA: liquidityValue0?.toSignificant(6),
+        symbolA: liquidityValue0?.currency?.symbol,
+        amountB: liquidityValue1?.toSignificant(6),
+        symbolB: liquidityValue1?.currency?.symbol,
+      }),
+    [liquidityValue0, liquidityValue1, t],
+  )
 
   const [onPresentRemoveLiquidityModal] = useModal(
     <TransactionConfirmationModal
@@ -320,8 +341,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
           )}
         />
       )}
-      pendingText={`Removing ${liquidityValue0?.toSignificant(6)} ${liquidityValue0?.currency?.symbol} and
-      ${liquidityValue1?.toSignificant(6)} ${liquidityValue1?.currency?.symbol}`}
+      pendingText={pendingText}
     />,
     true,
     true,

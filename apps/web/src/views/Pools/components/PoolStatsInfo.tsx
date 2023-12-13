@@ -1,19 +1,20 @@
-import { Flex, LinkExternal, Skeleton, Text, ScanLink } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, ScanLink, Skeleton, Text } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
-import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
+import { DeserializedLockedCakeVault } from '@pancakeswap/pools'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { memo, useMemo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
+import { getTokenInfoPath } from 'state/info/utils'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
+import { getBlockExploreLink } from 'utils'
 import { getVaultPoolAddress } from 'utils/addressHelpers'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { getBlockExploreLink } from 'utils'
-import { getTokenInfoPath } from 'state/info/utils'
 import MaxStakeRow from './MaxStakeRow'
 import { AprInfo, DurationAvg, PerformanceFee, TotalLocked } from './Stat'
 
@@ -51,12 +52,10 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
-  const {
-    totalCakeInVault,
-    totalLockedAmount,
-    fees: { performanceFeeAsDecimal },
-    userData,
-  } = useVaultPoolByKey(vaultKey)
+  const { totalCakeInVault, totalLockedAmount, fees, userData } = useVaultPoolByKey(
+    vaultKey as Pool.VaultKey,
+  ) as DeserializedLockedCakeVault
+  const performanceFeeAsDecimal = fees?.performanceFeeAsDecimal
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = contractAddress
@@ -66,7 +65,10 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     pool,
     currentBlock,
   )
-  const tokenInfoPath = useMemo(() => getTokenInfoPath(chainId, earningToken.address), [chainId, earningToken.address])
+  const tokenInfoPath = useMemo(
+    () => (chainId ? getTokenInfoPath(chainId, earningToken.address) : ''),
+    [chainId, earningToken.address],
+  )
 
   return (
     <>
@@ -130,7 +132,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       )}
       {vaultKey && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <LinkExternal href="https://docs.pancakeswap.finance/products/syrup-pool/new-cake-pool" bold={false} small>
+          <LinkExternal href="https://docs.pancakeswap.finance/products/vecake/how-to-get-vecake" bold={false} small>
             {t('View Tutorial')}
           </LinkExternal>
         </Flex>
@@ -138,7 +140,11 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       {poolContractAddress && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <ScanLink
-            href={getBlockExploreLink(vaultKey ? cakeVaultContractAddress : poolContractAddress, 'address', chainId)}
+            href={getBlockExploreLink(
+              (vaultKey ? cakeVaultContractAddress : poolContractAddress) ?? '',
+              'address',
+              chainId,
+            )}
             bold={false}
             small
           >

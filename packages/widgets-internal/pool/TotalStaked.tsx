@@ -1,7 +1,7 @@
-import BigNumber from "bignumber.js";
-import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import { useTranslation } from "@pancakeswap/localization";
-import { TooltipText, Balance, Skeleton, useTooltip } from "@pancakeswap/uikit";
+import { Balance, Skeleton, TooltipText, useTooltip } from "@pancakeswap/uikit";
+import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
+import BigNumber from "bignumber.js";
 import { StatWrapper } from "./StatWrapper";
 
 export const TotalToken = ({
@@ -10,7 +10,7 @@ export const TotalToken = ({
   decimalsToShow,
   symbol,
 }: {
-  total: BigNumber;
+  total?: BigNumber;
   tokenDecimals: number;
   decimalsToShow: number;
   symbol: string;
@@ -24,7 +24,7 @@ export const TotalToken = ({
 };
 
 export const TotalStaked: React.FC<
-  React.PropsWithChildren<{ totalStaked: BigNumber; tokenDecimals: number; decimalsToShow: number; symbol: string }>
+  React.PropsWithChildren<{ totalStaked?: BigNumber; tokenDecimals: number; decimalsToShow: number; symbol: string }>
 > = ({ totalStaked, tokenDecimals, decimalsToShow, symbol }) => {
   const { t } = useTranslation();
 

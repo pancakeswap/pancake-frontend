@@ -1,4 +1,6 @@
-import { ArrowForwardIcon, Button, Text, useMatchBreakpoints, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
@@ -86,7 +88,7 @@ const IFOBanner = () => {
 
   const isIfoAlive = !!(currentBlock && activeIfoWithBlocks && activeIfoWithBlocks.endBlock > currentBlock)
   const status = isIfoAlive
-    ? getStatus(Number(currentBlock), activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
+    ? getStatus(Number(currentBlock), activeIfoWithBlocks?.startBlock, activeIfoWithBlocks?.endBlock)
     : null
   const { isMobile } = useMatchBreakpoints()
   useEffect(() => {
@@ -118,7 +120,7 @@ const IFOBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           <IFOIconImage
-            src={`/images/tokens/${activeIfoWithBlocks.token.address}.png`}
+            src={`/images/tokens/${activeIfoWithBlocks?.token.address}.png`}
             onError={(event) => {
               // @ts-ignore
               // eslint-disable-next-line no-param-reassign

@@ -1,4 +1,6 @@
-import { Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints, OpenNewIcon } from '@pancakeswap/uikit'
+import { Button, Flex, Text, useMatchBreakpoints, OpenNewIcon } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import { styled, css } from 'styled-components'

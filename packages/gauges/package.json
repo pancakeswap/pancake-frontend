@@ -1,0 +1,33 @@
+{
+  "name": "@pancakeswap/gauges",
+  "version": "0.0.2",
+  "private": true,
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "vitest --run --globals"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0"
+  },
+  "dependencies": {
+    "@pancakeswap/chains": "workspace:^",
+    "@pancakeswap/tokens": "workspace:^",
+    "@pancakeswap/v3-sdk": "workspace:^",
+    "viem": "1.19.9"
+  }
+}

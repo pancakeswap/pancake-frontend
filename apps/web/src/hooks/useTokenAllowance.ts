@@ -21,18 +21,22 @@ function useTokenAllowance(
 
   const { data: allowance, refetch } = useQuery(
     [chainId, token?.address, owner, spender],
-    () =>
-      publicClient({ chainId }).readContract({
+    () => {
+      if (!token) {
+        throw new Error('No token')
+      }
+      return publicClient({ chainId }).readContract({
         abi: erc20ABI,
         address: token?.address,
         functionName: 'allowance',
         args: inputs,
-      }),
+      })
+    },
     {
       refetchInterval: FAST_INTERVAL,
       retry: true,
       refetchOnWindowFocus: false,
-      enabled: Boolean(spender && owner),
+      enabled: Boolean(spender && owner && token),
     },
   )
 

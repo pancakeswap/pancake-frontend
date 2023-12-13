@@ -1,24 +1,20 @@
 import { ChainId } from '@pancakeswap/chains'
-import {
-  arbitrum,
-  polygonZkEvm,
-  zkSync,
-  zkSyncTestnet,
-  polygonZkEvmTestnet,
-  arbitrumGoerli,
-  baseGoerli,
-  scrollSepolia,
-  base,
-} from 'wagmi/chains'
 import { getNodeRealUrl } from 'utils/node/nodeReal'
 import { getPoktUrl } from 'utils/node/pokt'
-import { opbnbTestnet, linea, opbnb } from './chains'
-
-const POLYGON_ZKEVM_NODES = [
-  'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
-  getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
-  ...polygonZkEvm.rpcUrls.public.http,
-]
+import {
+  arbitrum,
+  arbitrumGoerli,
+  base,
+  baseGoerli,
+  linea,
+  opBNB,
+  opBNBTestnet,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
+  scrollSepolia,
+  zkSync,
+  zkSyncTestnet,
+} from 'wagmi/chains'
 
 const ARBITRUM_NODES = [
   ...arbitrum.rpcUrls.public.http,
@@ -50,7 +46,12 @@ export const SERVER_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: ARBITRUM_NODES,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_NODES,
+  [ChainId.POLYGON_ZKEVM]: [
+    'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+    process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
+    ...polygonZkEvm.rpcUrls.public.http,
+    getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+  ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,
@@ -66,9 +67,9 @@ export const SERVER_NODES = {
     'https://linea-testnet.rpc.thirdweb.com',
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
-  [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
+  [ChainId.OPBNB_TESTNET]: opBNBTestnet.rpcUrls.public.http,
   [ChainId.OPBNB]: [
-    ...opbnb.rpcUrls.public.http,
+    ...opBNB.rpcUrls.public.http,
     getNodeRealUrl(ChainId.OPBNB, process.env.SERVER_NODE_REAL_API_ETH) || '',
   ],
   [ChainId.BASE]: [
@@ -112,9 +113,11 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: [
-    ...POLYGON_ZKEVM_NODES,
-    getNodeRealUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
-  ],
+    process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
+    ...polygonZkEvm.rpcUrls.public.http,
+    'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+    getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+  ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     ...polygonZkEvmTestnet.rpcUrls.public.http,
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
@@ -130,9 +133,9 @@ export const PUBLIC_NODES = {
     'https://linea-testnet.rpc.thirdweb.com',
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
-  [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
+  [ChainId.OPBNB_TESTNET]: opBNBTestnet.rpcUrls.public.http,
   [ChainId.OPBNB]: [
-    ...opbnb.rpcUrls.public.http,
+    ...opBNB.rpcUrls.public.http,
     getNodeRealUrl(ChainId.OPBNB, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     'https://opbnb.publicnode.com',
   ],

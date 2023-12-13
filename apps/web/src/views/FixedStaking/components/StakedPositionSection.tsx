@@ -1,21 +1,22 @@
-import { Box, Button, Flex, Text, IconButton, AddIcon, MinusIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Percent, Currency } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/swap-sdk-core'
+import { AddIcon, Box, Button, ChevronRightIcon, Flex, IconButton, MinusIcon, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 
 import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 
-import { LockedFixedTag } from './LockedFixedTag'
-import { PoolGroup, StakePositionUserInfo, StakedPosition } from '../type'
-import { ClaimModal } from './ClaimModal'
-import { UnlockedFixedTag } from './UnlockedFixedTag'
-import { FixedRestakingModal } from './RestakeFixedStakingModal'
-import { UnstakeBeforeEnededModal } from './UnstakeBeforeEndedModal'
-import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
-import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { bscTokens } from '@pancakeswap/tokens'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
+import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { useCurrentDay } from '../hooks/useStakedPools'
+import { PoolGroup, StakePositionUserInfo, StakedPosition } from '../type'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { ClaimModal } from './ClaimModal'
+import { LockedFixedTag } from './LockedFixedTag'
+import { FixedRestakingModal } from './RestakeFixedStakingModal'
+import { UnlockedFixedTag } from './UnlockedFixedTag'
+import { UnstakeBeforeEnededModal } from './UnstakeBeforeEndedModal'
 
 const FlexLeft = styled(Flex)`
   width: 100%;
@@ -233,7 +234,11 @@ export function StakedPositionSection({
             initialLockPeriod={lockPeriod}
           >
             {(openModal) => (
-              <IconButton disabled={currentDay + lockPeriod > poolEndDay} variant="secondary" onClick={openModal}>
+              <IconButton
+                disabled={pool.token.equals(bscTokens.cake) || currentDay + lockPeriod > poolEndDay}
+                variant="secondary"
+                onClick={openModal}
+              >
                 <AddIcon color="primary" width="14px" />
               </IconButton>
             )}

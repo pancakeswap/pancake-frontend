@@ -1,8 +1,8 @@
-import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { v3Clients } from 'utils/graphql'
 import { gql } from 'graphql-request'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useQuery } from '@tanstack/react-query'
 
 const query = gql`
   query FeeTierDistribution($token0: String!, $token1: String!) {
@@ -39,16 +39,21 @@ export default function useFeeTierDistributionQuery(
   interval: number,
 ) {
   const { chainId } = useActiveChainId()
-  const { data, isLoading, error } = useSWRImmutable(
-    token0 && token1 && v3Clients[chainId] ? `useFeeTierDistributionQuery-${token0}-${token1}` : null,
+  const { data, isLoading, error } = useQuery(
+    [`useFeeTierDistributionQuery-${token0}-${token1}`],
     async () => {
+      if (!chainId) return undefined
       return v3Clients[chainId].request(query, {
         token0: token0?.toLowerCase(),
         token1: token1?.toLowerCase(),
       })
     },
     {
-      refreshInterval: interval,
+      enabled: Boolean(token0 && token1 && chainId && v3Clients[chainId]),
+      refetchInterval: interval,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   )
 

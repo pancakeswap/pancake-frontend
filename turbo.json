@@ -26,6 +26,7 @@
       "outputs": []
     },
     "dev": {
+      "dependsOn": ["@pancakeswap/next-config#build"],
       "cache": false,
       "persistent": true
     },

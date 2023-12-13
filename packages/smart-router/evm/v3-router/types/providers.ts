@@ -2,6 +2,7 @@ import { Currency, BigintIsh } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { PublicClient } from 'viem'
 import type { GraphQLClient } from 'graphql-request'
+import type { Options as RetryOptions } from 'async-retry'
 
 import { Pool, PoolType } from './pool'
 import { RouteWithoutQuote, RouteWithQuote } from './route'
@@ -22,9 +23,12 @@ export interface PoolProvider {
   getCandidatePools: (params: GetPoolParams) => Promise<Pool[]>
 }
 
+export type QuoteRetryOptions = RetryOptions
+
 export interface QuoterOptions {
   blockNumber?: BigintIsh
   gasModel: GasModel
+  retry?: QuoteRetryOptions
 }
 
 export type QuoterConfig = {
@@ -42,4 +46,4 @@ export interface QuoteProvider<C = any> {
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient
 
-export type SubgraphProvider = ({ chainId }: { chainId?: ChainId }) => GraphQLClient
+export type SubgraphProvider = ({ chainId }: { chainId?: ChainId }) => GraphQLClient | undefined

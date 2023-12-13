@@ -70,6 +70,7 @@ interface Props {
   precision?: bigint
   strategyInfoUrl?: string
   learnMoreAboutUrl?: string
+  lpTokenDecimals?: number
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -108,6 +109,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   totalStakedInUsd,
   strategyInfoUrl,
   learnMoreAboutUrl,
+  lpTokenDecimals,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -133,10 +135,13 @@ export const AddLiquidity = memo(function AddLiquidity({
       setOtherValue: (value: string) => void
       isToken0: boolean
     }) => {
+      const ratioValue = new BigNumber(value).times(new BigNumber(isToken0 ? 1 / ratio : ratio)).toNumber()
+      const finalFormat =
+        ratioValue > 0 ? ratioValue.toFixed(6) : ratioValue.toFixed(isToken0 ? currencyB.decimals : currencyA.decimals)
       setValue(value)
-      setOtherValue((Number(value) * (isToken0 ? 1 / ratio : ratio)).toString())
+      setOtherValue(value ? finalFormat : '0.0')
     },
-    [ratio],
+    [ratio, currencyA, currencyB],
   )
 
   const onCurrencyAChange = useCallback(
@@ -275,20 +280,28 @@ export const AddLiquidity = memo(function AddLiquidity({
   ])
 
   const translationData = useMemo(
-    () => ({
-      amountA: allowDepositToken0 ? formatCurrencyAmount(amountA, 4, locale) : '',
-      symbolA: allowDepositToken0 ? currencyA.symbol : '',
-      amountB: allowDepositToken1 ? formatCurrencyAmount(amountB, 4, locale) : '',
-      symbolB: allowDepositToken1 ? currencyB.symbol : '',
-    }),
-    [allowDepositToken0, allowDepositToken1, amountA, amountB, currencyA.symbol, currencyB.symbol, locale],
+    () =>
+      isSingleDepositToken
+        ? {
+            amount: allowDepositToken0
+              ? formatCurrencyAmount(amountA, 4, locale)
+              : formatCurrencyAmount(amountB, 4, locale),
+            symbol: allowDepositToken0 ? currencyA.symbol : currencyB.symbol,
+          }
+        : {
+            amountA: formatCurrencyAmount(amountA, 4, locale),
+            symbolA: currencyA.symbol,
+            amountB: formatCurrencyAmount(amountB, 4, locale),
+            symbolB: currencyB.symbol,
+          },
+    [allowDepositToken0, amountA, amountB, currencyA.symbol, currencyB.symbol, locale, isSingleDepositToken],
   )
 
   const pendingText = useMemo(
     () =>
-      !isSingleDepositToken
-        ? t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData)
-        : t('Supplying %amountA% %symbolA% %amountB% %symbolB%', translationData),
+      isSingleDepositToken
+        ? t('Supplying %amount% %symbol%', translationData)
+        : t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData),
     [t, isSingleDepositToken, translationData],
   )
 
@@ -346,9 +359,11 @@ export const AddLiquidity = memo(function AddLiquidity({
                   isAprLoading={aprDataInfo.isLoading}
                   lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
                   totalAssetsInUsd={totalAssetsInUsd}
+                  totalStakedInUsd={totalStakedInUsd}
                   userLpAmounts={userLpAmounts}
                   totalSupplyAmounts={totalSupplyAmounts}
                   precision={precision}
+                  lpTokenDecimals={lpTokenDecimals}
                 />
               </RowBetween>
             </Flex>

@@ -3,20 +3,24 @@ import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
-
+import { getVeCakeAddress } from 'utils/addressHelpers'
 import { Address, erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
+  return useTokenBalanceByChain(tokenAddress, forceBSC ? ChainId.BSC : undefined)
+}
+
+export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: ChainId) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
   const { data, status, ...rest } = useContractRead({
-    chainId: forceBSC ? ChainId.BSC : chainId,
+    chainId: chainIdOverride || chainId,
     abi: erc20ABI,
     address: tokenAddress,
     functionName: 'balanceOf',
-    args: [account],
+    args: [account || '0x'],
     enabled: !!account,
     watch: true,
   })
@@ -44,6 +48,14 @@ export const useBSCCakeBalance = () => {
   const { balance, fetchStatus } = useTokenBalance(CAKE[ChainId.BSC]?.address, true)
 
   return { balance: BigInt(balance.toString()), fetchStatus }
+}
+
+// veCake only deploy on bsc/bscTestnet
+export const useVeCakeBalance = () => {
+  const { chainId } = useActiveChainId()
+  const { balance, fetchStatus } = useTokenBalance(getVeCakeAddress(chainId))
+
+  return { balance, fetchStatus }
 }
 
 export default useTokenBalance

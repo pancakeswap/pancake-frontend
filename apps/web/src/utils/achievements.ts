@@ -1,5 +1,5 @@
 import { Campaign, TranslatableText } from 'config/constants/types'
-import ifosList from 'config/constants/ifo'
+import { getIfoConfig } from '@pancakeswap/ifos'
 import { campaignMap } from 'config/constants/campaigns'
 import { TranslateFunction } from '@pancakeswap/localization'
 import { Achievement } from 'state/types'
@@ -15,25 +15,31 @@ interface IfoMapResponse {
   numberPoints: bigint
 }
 
-export const getAchievementTitle = (campaign: Campaign, t: TranslateFunction): TranslatableText => {
+export const getAchievementTitle = (campaign: Campaign | undefined, t: TranslateFunction): TranslatableText => {
+  if (!campaign) {
+    return ''
+  }
   const title = campaign.title as string
 
   switch (campaign.type) {
     case 'ifo':
       return t('IFO Shopper: %title%', { title })
     default:
-      return campaign.title
+      return campaign.title || ''
   }
 }
 
-export const getAchievementDescription = (campaign: Campaign, t: TranslateFunction): TranslatableText => {
+export const getAchievementDescription = (campaign: Campaign | undefined, t: TranslateFunction): TranslatableText => {
+  if (!campaign) {
+    return ''
+  }
   const title = campaign.title as string
 
   switch (campaign.type) {
     case 'ifo':
       return t('Participated in the %title% IFO by committing above the minimum required amount', { title })
     default:
-      return campaign.description
+      return campaign.description || ''
   }
 }
 
@@ -41,6 +47,7 @@ export const getAchievementDescription = (campaign: Campaign, t: TranslateFuncti
  * Checks if a wallet is eligible to claim points from valid IFO's
  */
 export const getClaimableIfoData = async (account: string, t: TranslateFunction): Promise<Achievement[]> => {
+  const ifosList = (await getIfoConfig(ChainId.BSC)) || []
   const ifoCampaigns = ifosList.filter((ifoItem) => ifoItem.campaignId !== undefined)
 
   const bscClient = publicClient({ chainId: ChainId.BSC })
@@ -61,7 +68,7 @@ export const getClaimableIfoData = async (account: string, t: TranslateFunction)
 
   const claimStatuses = claimStatusesResults.map((result) => result.result)
 
-  const calls = claimStatuses.reduce((accum, claimStatusArr, index) => {
+  const calls = claimStatuses.reduce((accum: any, claimStatusArr: any, index: any) => {
     if (claimStatusArr === true) {
       return [
         ...accum,
@@ -93,24 +100,24 @@ export const getClaimableIfoData = async (account: string, t: TranslateFunction)
   )
 
   // Transform response to an Achievement
-  return claimableIfoData.reduce((accum, claimableIfoDataItem) => {
+  return claimableIfoData.reduce((accum: any, claimableIfoDataItem: any) => {
     const claimableCampaignId = claimableIfoDataItem.campaignId.toString()
     if (!campaignMap.has(claimableCampaignId)) {
       return accum
     }
 
     const campaignMeta = campaignMap.get(claimableCampaignId)
-    const { address } = ifoCampaigns.find((ifoCampaign) => ifoCampaign.campaignId === claimableCampaignId)
+    const campaign = ifoCampaigns.find((ifoCampaign) => ifoCampaign.campaignId === claimableCampaignId)
 
     return [
       ...accum,
       {
-        address,
+        address: campaign?.address,
         id: claimableCampaignId,
         type: 'ifo',
         title: getAchievementTitle(campaignMeta, t),
         description: getAchievementDescription(campaignMeta, t),
-        badge: campaignMeta.badge,
+        badge: campaignMeta?.badge,
         points: Number(claimableIfoDataItem.numberPoints),
       },
     ]

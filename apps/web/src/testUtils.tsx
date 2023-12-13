@@ -4,7 +4,7 @@
 /* eslint-disable import/no-unresolved */
 import { render as rtlRender } from '@testing-library/react'
 import noop from 'lodash/noop'
-import { RouterContext } from 'next/dist/shared/lib/router-context'
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'
 import { NextRouter } from 'next/router'
 import Provider from 'Providers'
 import { Provider as JotaiProvider } from 'jotai'
@@ -13,7 +13,8 @@ import { SWRConfig } from 'swr'
 import { vi } from 'vitest'
 import { WagmiConfig } from 'wagmi'
 import { useHydrateAtoms } from 'jotai/utils'
-import { wagmiConfig } from './utils/wagmi'
+import { wagmiConfig } from 'utils/wagmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const mockRouter: NextRouter = {
   basePath: '',
@@ -92,8 +93,15 @@ export const createSWRWrapper =
 
 export const createWagmiWrapper =
   () =>
-  ({ children }) =>
-    <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
+  ({ children }) => {
+    const queryClient = new QueryClient()
+
+    return (
+      <QueryClientProvider client={queryClient}>
+        <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
+      </QueryClientProvider>
+    )
+  }
 
 // re-export everything
 export * from '@testing-library/react'

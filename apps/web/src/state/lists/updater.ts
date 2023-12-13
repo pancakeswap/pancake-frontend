@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useAllLists } from 'state/lists/hooks'
 import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import { useActiveListUrls } from './hooks'
 import { useListState, useListStateReady, initialState } from './lists'
 
@@ -47,8 +48,8 @@ export default function Updater(): null {
     })
   })
 
-  useSWRImmutable(
-    includeListUpdater && isReady && listState !== initialState ? ['token-list'] : null,
+  useQuery(
+    ['token-list'],
     async () => {
       return Promise.all(
         Object.keys(lists).map((url) =>
@@ -57,8 +58,12 @@ export default function Updater(): null {
       )
     },
     {
-      dedupingInterval: 1000 * 60 * 10,
-      refreshInterval: 1000 * 60 * 10,
+      enabled: Boolean(includeListUpdater && isReady && listState !== initialState),
+      refetchInterval: 1000 * 60 * 10,
+      staleTime: 1000 * 60 * 10,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
     },
   )
 

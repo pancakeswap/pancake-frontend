@@ -1,10 +1,11 @@
 import { Flex, Box, Text, BalanceWithLoading, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { TokenImage } from 'components/TokenImage'
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { WalletIfoData } from 'views/Ifos/types'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 interface TotalPurchasedProps {
   ifo: Ifo
@@ -15,8 +16,10 @@ interface TotalPurchasedProps {
 const TotalPurchased: React.FC<React.PropsWithChildren<TotalPurchasedProps>> = ({ ifo, poolId, walletIfoData }) => {
   const { t } = useTranslation()
   const { token } = ifo
-  const { offeringAmountInToken, amountTokenCommittedInLP, refundingAmountInLP } = walletIfoData[poolId]
-  const spentAmount = amountTokenCommittedInLP.minus(refundingAmountInLP)
+  const offeringAmountInToken = walletIfoData[poolId]?.offeringAmountInToken
+  const amountTokenCommittedInLP = walletIfoData[poolId]?.amountTokenCommittedInLP
+  const refundingAmountInLP = walletIfoData[poolId]?.refundingAmountInLP
+  const spentAmount = amountTokenCommittedInLP?.minus(refundingAmountInLP || BIG_ZERO)
 
   const tooltipContentOfSpent = t(
     'Based on "overflow" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.',

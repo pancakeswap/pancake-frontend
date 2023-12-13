@@ -7,7 +7,6 @@ import useVCake from 'views/Pools/hooks/useVCake'
 import JoinRevenueModal from 'views/Pools/components/RevenueSharing/JoinRevenueModal'
 import useCakeBenefits from 'components/Menu/UserMenu/hooks/useCakeBenefits'
 import { VaultPosition } from 'utils/cakePool'
-import { FetchStatus } from 'config/constants/types'
 
 const VCakeModal = () => {
   const { account, chainId } = useAccountActiveChain()
@@ -20,7 +19,7 @@ const VCakeModal = () => {
       account &&
       chainId === ChainId.BSC &&
       isInitialization === false &&
-      cakeBenefitsFetchStatus === FetchStatus.Fetched &&
+      cakeBenefitsFetchStatus === 'success' &&
       cakeBenefits?.lockPosition === VaultPosition.Locked
     ) {
       setOpen(true)

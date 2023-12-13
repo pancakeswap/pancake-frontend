@@ -1,10 +1,10 @@
 import { styled } from 'styled-components'
 import { Box, Text, Flex, ReactMarkdown } from '@pancakeswap/uikit'
-import useSWR from 'swr'
 import Balancer from 'react-wrap-balancer'
 import { ArticleDataType } from 'utils/transformArticle'
 import { useRouter } from 'next/router'
 import SocialIcon from 'components/Article/SingleArticle/SocialIcon'
+import { useQuery } from '@tanstack/react-query'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -34,7 +34,7 @@ const StyledTagGroup = styled(Flex)`
 
 const ArticleInfo = () => {
   const router = useRouter()
-  const { data: article } = useSWR<ArticleDataType>('/article')
+  const { data: article } = useQuery<ArticleDataType>(['/article'], { enabled: false })
 
   const handleClickTag = (category: string) => {
     router.push(`/?category=${category}#all`)

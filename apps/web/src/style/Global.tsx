@@ -10,6 +10,11 @@ const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Kanit', sans-serif;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: ${({ theme }) => theme.colors.background};
 

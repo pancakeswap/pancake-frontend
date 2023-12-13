@@ -1,15 +1,6 @@
-import {
-  AutoRow,
-  Box,
-  Button,
-  Card,
-  CardBody,
-  Flex,
-  Heading,
-  NextLinkFromReactRouter,
-  Text,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { AutoRow, Box, Button, Card, CardBody, Flex, Heading, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { AppHeader } from 'components/App'
 
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'

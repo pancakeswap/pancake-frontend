@@ -101,7 +101,7 @@ function tryGetEstimatedLPFeeByAmounts({
   invariant(!Number.isNaN(fee) && fee >= 0, 'INVALID_FEE')
 
   const tickCurrent = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
-  if (tickCurrent < tickLower || tickCurrent > tickUpper) {
+  if (tickCurrent < tickLower || tickCurrent >= tickUpper) {
     return new Fraction(ZERO)
   }
 

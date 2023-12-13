@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { gql } from 'graphql-request'
+import { subgraphTokenSymbol } from 'state/info/constant'
 import { Block, PoolData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { subgraphTokenSymbol } from 'state/info/constant'
 
 import { safeGetAddress } from 'utils'
 import {
@@ -133,7 +133,7 @@ export const parsePoolData = (pairs?: PoolFields[]) => {
     accum[poolData.id.toLowerCase()] = {
       ...poolData,
       volumeUSD: parseFloat(volumeUSD),
-      volumeOutUSD: volumeOutUSD && parseFloat(volumeOutUSD),
+      volumeOutUSD: volumeOutUSD ? parseFloat(volumeOutUSD) : 0,
       reserveUSD: parseFloat(reserveUSD),
       reserve0: parseFloat(reserve0),
       reserve1: parseFloat(reserve1),
@@ -190,7 +190,7 @@ export const fetchAllPoolDataWithAddress = async (
 
     const liquidityToken0 = current ? current.reserve0 : 0
     const liquidityToken1 = current ? current.reserve1 : 0
-    const timestamp = current.timestamp ?? 0
+    const timestamp = current?.timestamp ?? 0
 
     const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
       volumeUSD,
@@ -199,18 +199,20 @@ export const fetchAllPoolDataWithAddress = async (
     )
 
     if (current) {
+      const token0Address = safeGetAddress(current?.token0?.id)
+      const token1Address = safeGetAddress(current?.token1?.id)
       accum[address] = {
         data: {
           address,
           token0: {
             address: current?.token0?.id ?? '',
             name: current?.token0?.name ?? '',
-            symbol: subgraphTokenSymbol[safeGetAddress(current?.token0?.id)] ?? current?.token0?.symbol ?? '',
+            symbol: !token0Address ? '' : subgraphTokenSymbol[token0Address] ?? current?.token0?.symbol ?? '',
           },
           token1: {
             address: current?.token1?.id ?? '',
             name: current?.token1?.name ?? '',
-            symbol: subgraphTokenSymbol[safeGetAddress(current?.token0?.id)] ?? current?.token1?.symbol ?? '',
+            symbol: !token1Address ? '' : subgraphTokenSymbol[token1Address] ?? current?.token1?.symbol ?? '',
           },
           timestamp,
           token0Price: current.token0Price,

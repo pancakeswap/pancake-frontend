@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import BundleAnalyzer from '@next/bundle-analyzer'
+import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
+import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
 import { withSentryConfig } from '@sentry/nextjs'
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 import { withAxiom } from 'next-axiom'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import BundleAnalyzer from '@next/bundle-analyzer'
-import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
-import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
-import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -19,21 +19,21 @@ const withVanillaExtract = createVanillaExtractPlugin()
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
     ? {
-      // Additional config options for the Sentry Webpack plugin. Keep in mind that
-      // the following options are set automatically, and overriding them is not
-      // recommended:
-      //   release, url, org, project, authToken, configFile, stripPrefix,
-      //   urlPrefix, include, ignore
-      silent: false, // Logging when deploying to check if there is any problem
-      validate: true,
-      hideSourceMaps: false,
-      // https://github.com/getsentry/sentry-webpack-plugin#options.
-    }
+        // Additional config options for the Sentry Webpack plugin. Keep in mind that
+        // the following options are set automatically, and overriding them is not
+        // recommended:
+        //   release, url, org, project, authToken, configFile, stripPrefix,
+        //   urlPrefix, include, ignore
+        silent: false, // Logging when deploying to check if there is any problem
+        validate: true,
+        hideSourceMaps: false,
+        // https://github.com/getsentry/sentry-webpack-plugin#options.
+      }
     : {
-      hideSourceMaps: false,
-      silent: true, // Suppresses all logs
-      dryRun: !process.env.SENTRY_AUTH_TOKEN,
-    }
+        hideSourceMaps: false,
+        silent: true, // Suppresses all logs
+        dryRun: !process.env.SENTRY_AUTH_TOKEN,
+      }
 
 const workerDeps = Object.keys(smartRouterPkgs.dependencies)
   .map((d) => d.replace('@pancakeswap/', 'packages/'))
@@ -51,7 +51,7 @@ const config = {
     scrollRestoration: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
-      '*': ['**@swc+core*', '**/@esbuild**'],
+      '*': [],
     },
   },
   transpilePackages: [
@@ -62,8 +62,9 @@ const config = {
     '@pancakeswap/utils',
     '@pancakeswap/widgets-internal',
     '@pancakeswap/universal-router-sdk',
-    '@pancakeswap/permit2-sdk'
-
+    '@pancakeswap/permit2-sdk',
+    '@pancakeswap/ifos',
+    '@pancakeswap/gauges',
   ],
   reactStrictMode: true,
   swcMinify: true,

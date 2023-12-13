@@ -123,7 +123,7 @@ interface PoolRes {
 export async function fetchSearchResults(
   client: GraphQLClient,
   value: string,
-  blocks: Block[],
+  blocks?: Block[],
 ): Promise<{
   tokens: TokenData[]
   pools: PoolData[]

@@ -4,8 +4,8 @@ import {
   SmartRouter,
   PoolType,
   QuoteProvider,
-  SmartRouterTrade,
   BATCH_MULTICALL_CONFIGS,
+  SmartRouterTrade,
 } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
@@ -41,8 +41,8 @@ interface FactoryOptions {
 
 interface Options {
   amount?: CurrencyAmount<Currency>
-  baseCurrency?: Currency
-  currency?: Currency
+  baseCurrency?: Currency | null
+  currency?: Currency | null
   tradeType?: TradeType
   maxHops?: number
   maxSplits?: number
@@ -161,7 +161,7 @@ function bestTradeHookFactory({
       fetchStatus,
       isPreviousData,
       error,
-    } = useQuery<SmartRouterTrade<TradeType>, Error>({
+    } = useQuery({
       queryKey: [
         key,
         currency?.chainId,
@@ -175,7 +175,7 @@ function bestTradeHookFactory({
       ],
       queryFn: async () => {
         if (!amount || !amount.currency || !currency || !deferQuotient) {
-          return null
+          return undefined
         }
         const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
         const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
@@ -195,29 +195,31 @@ function bestTradeHookFactory({
           allowedPoolTypes: poolTypes,
           quoterOptimization,
         })
-        if (res) {
-          SmartRouter.metric(
-            label,
-            res.inputAmount.toExact(),
-            res.inputAmount.currency.symbol,
-            '->',
-            res.outputAmount.toExact(),
-            res.outputAmount.currency.symbol,
-            res.routes,
-          )
+        if (!res) {
+          return undefined
         }
+        SmartRouter.metric(
+          label,
+          res.inputAmount.toExact(),
+          res.inputAmount.currency.symbol,
+          '->',
+          res.outputAmount.toExact(),
+          res.outputAmount.currency.symbol,
+          res.routes,
+        )
         SmartRouter.log(label, res)
         return {
           ...res,
           blockNumber,
-        }
+        } as SmartRouterTrade<TradeType>
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
       refetchOnWindowFocus: false,
       keepPreviousData: keepPreviousDataRef.current,
       retry: false,
-      staleTime: autoRevalidate ? POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId] : 0,
-      refetchInterval: autoRevalidate && POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId],
+      staleTime: autoRevalidate && amount?.currency.chainId ? POOLS_NORMAL_REVALIDATE[amount.currency.chainId] : 0,
+      refetchInterval:
+        autoRevalidate && amount?.currency.chainId ? POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId] : 0,
     })
 
     useEffect(() => {
@@ -234,7 +236,7 @@ function bestTradeHookFactory({
       trade,
       isLoading: isLoading || loading,
       isStale: trade?.blockNumber !== blockNumber,
-      error,
+      error: error as Error | undefined,
       syncing:
         syncing || isValidating || (amount?.quotient?.toString() !== deferQuotient && deferQuotient !== undefined),
     }
@@ -314,13 +316,16 @@ const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRoute
     tradeType,
     { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei, quoteProvider },
   ) => {
+    if (!quoteWorker) {
+      throw new Error('Quote worker not initialized')
+    }
     const candidatePools = await poolProvider.getCandidatePools({
       currencyA: amount.currency,
       currencyB: currency,
       protocols: allowedPoolTypes,
     })
 
-    const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig()
+    const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig?.()
     const result = await quoteWorker.getBestTrade({
       chainId: currency.chainId,
       currency: SmartRouter.Transformer.serializeCurrency(currency),

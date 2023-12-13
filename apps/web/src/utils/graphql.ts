@@ -24,8 +24,8 @@ export const getGQLHeaders = (endpoint: string) => {
 
 export const infoClient = new GraphQLClient(INFO_CLIENT)
 
-export const infoClientWithChain = (chainId: number) => {
-  if (INFO_CLIENT_WITH_CHAIN[chainId]) {
+export const infoClientWithChain = (chainId?: number) => {
+  if (chainId && INFO_CLIENT_WITH_CHAIN[chainId]) {
     return new GraphQLClient(INFO_CLIENT_WITH_CHAIN[chainId], {
       headers: getGQLHeaders(INFO_CLIENT_WITH_CHAIN[chainId]),
     })

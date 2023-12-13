@@ -10,18 +10,17 @@ import {
   setInitialPoolConfig,
 } from 'state/pools'
 import { usePoolsWithVault } from 'state/pools/hooks'
-import { FetchStatus } from 'config/constants/types'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/sdk'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 
 const useGetTopPoolsByApr = (isIntersecting: boolean, chainId: number) => {
   const dispatch = useAppDispatch()
-  const [topPools, setTopPools] = useState<Pool.DeserializedPool<Token>[]>(() => [null, null, null, null, null])
+  const [topPools, setTopPools] = useState<(Pool.DeserializedPool<Token> | any)[]>(() => [null, null, null, null, null])
   const { pools } = usePoolsWithVault()
 
-  const { status: fetchStatus, isValidating } = useSWR(
-    isIntersecting && chainId && [chainId, 'fetchTopPoolsByApr'],
+  const { status: fetchStatus, isFetching } = useQuery(
+    [chainId, 'fetchTopPoolsByApr'],
     async () => {
       await dispatch(setInitialPoolConfig({ chainId }))
       return Promise.all([
@@ -30,20 +29,24 @@ const useGetTopPoolsByApr = (isIntersecting: boolean, chainId: number) => {
         dispatch(fetchPoolsPublicDataAsync(chainId)),
       ])
     },
-    { revalidateOnFocus: false, revalidateOnReconnect: false },
+    {
+      enabled: Boolean(isIntersecting && chainId),
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
   )
 
   useEffect(() => {
     const [cakePools, otherPools] = partition(pools, (pool) => pool.sousId === 0)
     const masterCakePool = cakePools.filter((cakePool) => cakePool.vaultKey === VaultKey.CakeVault)
-    const getTopPoolsByApr = (activePools: Pool.DeserializedPool<Token>[]) => {
+    const getTopPoolsByApr = (activePools: (Pool.DeserializedPool<Token> | any)[]) => {
       const sortedByApr = orderBy(activePools, (pool: Pool.DeserializedPool<Token>) => pool.apr || 0, 'desc')
       setTopPools([...masterCakePool, ...sortedByApr.slice(0, 4)])
     }
-    if (fetchStatus === FetchStatus.Fetched && !isValidating) {
+    if (fetchStatus === 'success' && !isFetching) {
       getTopPoolsByApr(otherPools)
     }
-  }, [setTopPools, pools, isValidating, fetchStatus])
+  }, [setTopPools, pools, isFetching, fetchStatus])
 
   return { topPools }
 }

@@ -2,10 +2,9 @@ import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import { useTranslation } from '@pancakeswap/localization'
 import Container from 'components/Layout/Container'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 import { ProposalState, ProposalType } from 'state/types'
 import { getProposals } from 'state/voting/helpers'
-import { FetchStatus } from 'config/constants/types'
 import { useSessionStorage } from 'hooks/useSessionStorage'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import ProposalsLoading from './ProposalsLoading'
@@ -27,7 +26,9 @@ const Proposals = () => {
 
   const { proposalType, filterState } = state
 
-  const { status, data } = useSWR(['proposals', filterState], async () => getProposals(1000, 0, filterState))
+  const { data, status } = useQuery(['voting', 'proposals', filterState], async () =>
+    getProposals(1000, 0, filterState),
+  )
 
   const handleProposalTypeChange = (newProposalType: ProposalType) => {
     setState((prevState) => ({
@@ -58,18 +59,14 @@ const Proposals = () => {
       </Heading>
       <Card>
         <TabMenu proposalType={proposalType} onTypeChange={handleProposalTypeChange} />
-        <Filters
-          filterState={filterState}
-          onFilterChange={handleFilterChange}
-          isLoading={status !== FetchStatus.Fetched}
-        />
-        {status !== FetchStatus.Fetched && <ProposalsLoading />}
-        {status === FetchStatus.Fetched &&
+        <Filters filterState={filterState} onFilterChange={handleFilterChange} isLoading={status !== 'success'} />
+        {status !== 'success' && <ProposalsLoading />}
+        {status === 'success' &&
           filteredProposals.length > 0 &&
           filteredProposals.map((proposal) => {
             return <ProposalRow key={proposal.id} proposal={proposal} />
           })}
-        {status === FetchStatus.Fetched && filteredProposals.length === 0 && (
+        {status === 'success' && filteredProposals.length === 0 && (
           <Flex alignItems="center" justifyContent="center" p="32px">
             <Heading as="h5">{t('No proposals found')}</Heading>
           </Flex>

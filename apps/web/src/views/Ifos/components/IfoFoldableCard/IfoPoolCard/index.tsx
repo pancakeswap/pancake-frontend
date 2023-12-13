@@ -12,7 +12,7 @@ import {
   CardFooter,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useMemo, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
@@ -23,6 +23,7 @@ import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardTokens from './IfoCardTokens'
 import IfoVestingCard from './IfoVestingCard'
+import { isBasicSale } from '../../../hooks/v7/helpers'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -53,11 +54,13 @@ export const cardConfig = (
     version: number
     needQualifiedPoints?: boolean
     needQualifiedNFT?: boolean
+    saleType?: number
   },
 ): CardConfigReturn => {
   switch (poolId) {
     case PoolIds.poolBasic:
-      if (meta?.version >= 3.1) {
+      // Sale type 2 is basic sale
+      if (meta?.version >= 3.1 && !isBasicSale(meta?.saleType)) {
         const MSG_MAP = {
           needQualifiedNFT: t('Set PancakeSquad NFT as Pancake Profile avatar.'),
           needQualifiedPoints: t('Reach a certain Pancake Profile Points threshold.'),
@@ -84,7 +87,9 @@ export const cardConfig = (
                 </Text>
               ))}
             </>
-          ) : null,
+          ) : (
+            <></>
+          ),
         }
       }
 
@@ -118,21 +123,25 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
   const { t } = useTranslation()
   const { address: account } = useAccount()
 
-  const { admissionProfile, pointThreshold, vestingInformation } = publicIfoData[poolId]
+  const admissionProfile = publicIfoData[poolId]?.admissionProfile
+  const pointThreshold = publicIfoData[poolId]?.pointThreshold
+  const vestingInformation = publicIfoData[poolId]?.vestingInformation
+  const saleType = publicIfoData[poolId]?.saleType
 
   const { needQualifiedNFT, needQualifiedPoints } = useMemo(() => {
-    return ifo.version >= 3.1 && poolId === PoolIds.poolBasic
+    return ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isBasicSale(saleType)
       ? {
           needQualifiedNFT: Boolean(admissionProfile),
           needQualifiedPoints: pointThreshold ? pointThreshold > 0 : false,
         }
       : {}
-  }, [ifo.version, admissionProfile, pointThreshold, poolId])
+  }, [ifo.version, admissionProfile, pointThreshold, poolId, saleType])
 
   const config = cardConfig(t, poolId, {
     version: ifo.version,
     needQualifiedNFT,
     needQualifiedPoints,
+    saleType,
   })
 
   const { hasActiveProfile, isLoading: isProfileLoading } = useProfile()
@@ -149,9 +158,10 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
     return (
       account &&
       ifo.version >= 3.2 &&
+      vestingInformation?.percentage &&
       vestingInformation.percentage > 0 &&
       publicIfoData.status === 'finished' &&
-      walletIfoData[poolId].amountTokenCommittedInLP.gt(0)
+      walletIfoData[poolId]?.amountTokenCommittedInLP.gt(0)
     )
   }, [account, ifo, poolId, publicIfoData, vestingInformation, walletIfoData])
 

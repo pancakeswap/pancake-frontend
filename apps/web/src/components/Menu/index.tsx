@@ -1,5 +1,7 @@
 import { languageList, useTranslation } from '@pancakeswap/localization'
-import { footerLinks, Menu as UikitMenu, NextLinkFromReactRouter, useModal } from '@pancakeswap/uikit'
+import { footerLinks, Menu as UikitMenu, useModal } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
@@ -11,6 +13,8 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import Notifications from 'views/Notifications'
+import { useAllowNotifications } from 'state/notifications/hooks'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import { useMenuItems } from './hooks/useMenuItems'
@@ -22,6 +26,7 @@ const LinkComponent = (linkProps) => {
 }
 
 const Menu = (props) => {
+  const [allowNotifications] = useAllowNotifications()
   const { chainId } = useActiveChainId()
   const { isDark, setTheme } = useTheme()
   const cakePrice = useCakePrice()
@@ -55,6 +60,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
+            {allowNotifications && <Notifications />}
             <NetworkSwitcher />
             <UserMenu />
           </>

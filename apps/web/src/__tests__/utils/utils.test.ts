@@ -69,7 +69,7 @@ describe('getActiveSubMenuItem', () => {
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[1] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[1].items?.[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[1].items?.[2])
   })
 
   it('should return the item with the longest href when multiple items are found', () => {

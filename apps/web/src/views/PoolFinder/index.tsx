@@ -1,14 +1,7 @@
 import { Currency } from '@pancakeswap/sdk'
-import {
-  AddIcon,
-  Button,
-  ChevronDownIcon,
-  Text,
-  useModal,
-  NextLinkFromReactRouter,
-  AutoColumn,
-  ColumnCenter,
-} from '@pancakeswap/uikit'
+import { AddIcon, Button, ChevronDownIcon, Text, useModal, AutoColumn, ColumnCenter } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { BIG_INT_ZERO } from 'config/constants/exchange'

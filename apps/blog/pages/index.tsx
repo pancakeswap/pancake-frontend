@@ -1,4 +1,3 @@
-import { SWRConfig } from 'swr'
 import { InferGetServerSidePropsType } from 'next'
 import { getArticle, getCategories } from 'hooks/getArticle'
 import { Box } from '@pancakeswap/uikit'
@@ -6,9 +5,12 @@ import NewBlog from 'components/NewBlog'
 import ChefsChoice from 'components/ChefsChoice'
 import AllArticle from 'components/Article/AllArticle'
 import { filterTagArray } from 'utils/filterTagArray'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 export async function getStaticProps() {
-  const [latestArticles, chefChoiceArticle, categories] = await Promise.all([
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery(['/latestArticles'], () =>
     getArticle({
       url: '/articles',
       urlParamsObject: {
@@ -23,7 +25,10 @@ export async function getStaticProps() {
           },
         },
       },
-    }),
+    }).then((latestArticles) => latestArticles.data),
+  )
+
+  await queryClient.prefetchQuery(['/chefChoiceArticle'], () =>
     getArticle({
       url: '/articles',
       urlParamsObject: {
@@ -38,31 +43,26 @@ export async function getStaticProps() {
           },
         },
       },
-    }),
-    getCategories(),
-  ])
+    }).then((article) => article.data),
+  )
+
+  await queryClient.prefetchQuery(['/categories'], () => getCategories())
 
   return {
     props: {
-      fallback: {
-        '/latestArticles': latestArticles.data,
-        '/chefChoiceArticle': chefChoiceArticle.data,
-        '/categories': categories,
-      },
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: 60,
   }
 }
 
-const BlogPage: React.FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
+const BlogPage: React.FC<InferGetServerSidePropsType<typeof getStaticProps>> = () => {
   return (
-    <SWRConfig value={{ fallback }}>
-      <Box width="100%" mb="150px">
-        <NewBlog />
-        <ChefsChoice />
-        <AllArticle />
-      </Box>
-    </SWRConfig>
+    <Box width="100%" mb="150px">
+      <NewBlog />
+      <ChefsChoice />
+      <AllArticle />
+    </Box>
   )
 }
 

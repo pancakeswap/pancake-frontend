@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { MERKL_POOLS } from 'config/merkl'
+import MERKL_POOLS from 'config/constants/merklPools.json'
 import { Address } from 'viem'
 
 export const getMerklLink = ({
