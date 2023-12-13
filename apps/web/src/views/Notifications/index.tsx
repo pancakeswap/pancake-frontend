@@ -17,6 +17,7 @@ import { disableGlobalScroll, enableGlobalScroll } from './utils/toggleEnableScr
 const Notifications = () => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+  const [isSubscribing, setIsSubscribing] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const { address } = useAccount()
   const { signMessageAsync } = useSignMessage()
@@ -65,8 +66,11 @@ const Notifications = () => {
   useEffect(() => {
     if (!address || !isReady) setViewIndex(PAGE_VIEW.OnboardView)
     if (address) setAccount(`eip155:1:${address}`)
-    if (isReady) setViewIndex(PAGE_VIEW.NotificationView)
-  }, [address, isReady, setAccount])
+    if (isReady) {
+      setViewIndex(PAGE_VIEW.NotificationView)
+      setIsSubscribing(false)
+    }
+  }, [address, isReady, setAccount, setIsSubscribing])
 
   useEffect(() => {
     if (!subscription?.topic) return () => null
@@ -95,6 +99,8 @@ const Notifications = () => {
               identityKey={identityKey}
               handleRegistration={handleRegistration}
               isReady={isW3iInitialized}
+              isSubscribing={isSubscribing}
+              setIsSubscribing={setIsSubscribing}
             />
             <NotificationView toggleSettings={toggleSettings} onDismiss={onDismiss} account={account!} />
             <NotificationSettingsView

@@ -12,6 +12,7 @@ import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 
 import { useAppDispatch } from 'state'
 import { setHasUnread } from 'state/notifications/actions'
 import { useHasUnreadNotifications } from 'state/notifications/hooks'
+import useSendPushNotification from 'views/Notifications/hooks/sendPushNotification'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
 import { PAGE_VIEW } from 'views/Notifications/types'
 
@@ -43,6 +44,7 @@ const NotificationMenu: React.FC<
   const hasUnread = useHasUnreadNotifications(subscriptionId)
   const dispatch = useAppDispatch()
   const { messages: notifications } = useMessages(account)
+  const { requestNotificationPermission } = useSendPushNotification()
 
   const ref = useRef<HTMLDivElement>(null)
   const { isMobile } = useMatchBreakpoints()
@@ -56,9 +58,19 @@ const NotificationMenu: React.FC<
 
   const toggleMenu = useCallback(() => {
     if (isRegistered) handleRegistration()
-    if (!isMenuOpen) markAllNotificationsAsRead()
+    if (!isMenuOpen) {
+      requestNotificationPermission()
+      markAllNotificationsAsRead()
+    }
     setIsMenuOpen(!isMenuOpen)
-  }, [setIsMenuOpen, isMenuOpen, isRegistered, handleRegistration, markAllNotificationsAsRead])
+  }, [
+    setIsMenuOpen,
+    isMenuOpen,
+    isRegistered,
+    handleRegistration,
+    markAllNotificationsAsRead,
+    requestNotificationPermission,
+  ])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
