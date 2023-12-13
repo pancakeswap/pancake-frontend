@@ -4,7 +4,6 @@ import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurity
 import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
 import { withSentryConfig } from '@sentry/nextjs'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
-import { withAxiom } from 'next-axiom'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -220,5 +219,5 @@ const config = {
 }
 
 export default withBundleAnalyzer(
-  withVanillaExtract(withSentryConfig(withAxiom(withWebSecurityHeaders(config)), sentryWebpackPluginOptions)),
+  withVanillaExtract(withSentryConfig(withWebSecurityHeaders(config)), sentryWebpackPluginOptions),
 )

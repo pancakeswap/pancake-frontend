@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server'
-import { log } from 'next-axiom'
-import { string as zString, object as zObject, number as zNumber } from 'zod'
+import { number as zNumber, object as zObject, string as zString } from 'zod'
 
 const zCSPReport = zObject({
   'blocked-uri': zString(),
@@ -31,19 +30,19 @@ export default async (req: NextRequest) => {
     const json = await req.json()
     const parsed = zBody.safeParse(json)
     if (parsed.success === false) {
-      log.error('CSP-Report invalid request', {
+      console.error('CSP-Report invalid request', {
         body: json,
         error: parsed.error,
       })
       return badRequestRes
     }
 
-    log.info('CSP-Report violation', {
+    console.info('CSP-Report violation', {
       ...parsed.data['csp-report'],
     })
     return new Response(null, { status: 200, statusText: 'OK' })
   } catch (e) {
-    log.error('CSP-Report unexpected error', {
+    console.error('CSP-Report unexpected error', {
       error: e,
     })
     return badRequestRes

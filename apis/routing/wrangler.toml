@@ -22,7 +22,6 @@ name = "routing"
 [env.production.triggers]
 crons = ["*/30 * * * *"]
 
-# - AXIOM_TOKEN
 # The necessary secrets are:
 # - ETH_NODE
 # - GOERLI_NODE
