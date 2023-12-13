@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import BN from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3 } from 'hooks/useContract'
+import { useBCakeFarmBoosterV3Contract, useBCakeFarmBoosterVeCakeContract, useMasterchefV3 } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
@@ -31,6 +31,20 @@ export const useBakeV3farmCanBoost = (farmPid: number) => {
     args: [BigInt(farmPid ?? 0)],
   })
   return { farmCanBoost: data }
+}
+
+export const useIsBoostedPoolLegacy = (tokenId?: string) => {
+  const { chainId } = useActiveChainId()
+  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const { data, refetch } = useQuery(
+    [`v3/bcake/isBoostedPoolLegacy/${chainId}/${tokenId}`],
+    () => farmBoosterV3Contract.read.isBoostedPool([BigInt(tokenId ?? 0)]),
+    {
+      enabled: Boolean(chainId && tokenId && tokenId !== 'undefined'),
+      ...QUERY_SETTINGS_WITHOUT_REFETCH,
+    },
+  )
+  return { isBoosted: data?.[0], pid: Number(data?.[1]), mutate: refetch }
 }
 
 export const useIsBoostedPool = (tokenId?: string) => {
@@ -119,9 +133,7 @@ export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
       ...QUERY_SETTINGS_WITHOUT_REFETCH,
     },
   )
-  if (tokenId) {
-    console.log('useVeCakeUserMultiplierBeforeBoosted', tokenId, data)
-  }
+
   return {
     veCakeUserMultiplierBeforeBoosted: data ?? 1,
     updatedUserMultiplierBeforeBoosted: refetch,
