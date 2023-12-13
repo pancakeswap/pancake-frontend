@@ -70,11 +70,11 @@ export const BCakeV3CardView: React.FC<{
               backgroundColor: 'transparent',
               border: `2px solid ${theme.colors.primary}`,
               color: theme.colors.primary,
-              // padding: isConfirming ? '0 10px' : undefined,
+              padding: isConfirming ? '0 10px' : undefined,
             }}
             isLoading={isConfirming}
           >
-            {isConfirming ? t('Confirming') : t('update')}
+            {isConfirming ? t('Confirming') : t('Update')}
           </Button>
         )}
       </Box>

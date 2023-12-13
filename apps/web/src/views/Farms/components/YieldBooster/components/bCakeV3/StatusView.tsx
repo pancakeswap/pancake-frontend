@@ -45,6 +45,7 @@ export const StatusView: React.FC<{
     false,
     status === BoostStatus.farmCanBoostButNot,
     status === BoostStatus.Boosted,
+    shouldUpdate ?? false,
   )
 
   return (
@@ -105,17 +106,19 @@ const useBCakeMessage = (
   isReachedMaxBoostLimit: boolean,
   canBoostedButNot: boolean,
   boosted: boolean,
+  shouldUpdate: boolean,
 ) => {
   const { t } = useTranslation()
   const bCakeMessage = useMemo(() => {
     if (!account) return t('Connect wallet to activate yield booster')
     if (!isFarmStaking) return t('Start staking to activate yield booster.')
-    if (!locked) return t('Lock CAKE to activate yield booster')
+    if (!locked) return t('Get veCAKE to activate yield booster')
+    if (shouldUpdate) return t('Click to update and increase your boosts.')
     if (isLockEnd) return t('Renew your CAKE staking to activate yield booster')
     if (isReachedMaxBoostLimit && canBoostedButNot) return t('Unset other boosters to activate')
     if (canBoostedButNot) return t('Yield booster available')
     if (boosted) return t('Active')
     return ''
-  }, [t, account, isFarmStaking, locked, isLockEnd, isReachedMaxBoostLimit, canBoostedButNot, boosted])
+  }, [t, account, isFarmStaking, locked, isLockEnd, isReachedMaxBoostLimit, canBoostedButNot, boosted, shouldUpdate])
   return bCakeMessage
 }
