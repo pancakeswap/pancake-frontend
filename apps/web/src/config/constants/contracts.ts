@@ -167,7 +167,7 @@ export default {
     [ChainId.BSC_TESTNET]: '0x56666300A1E25624489b661f3C6c456c159a109a',
   },
   bCakeFarmBoosterVeCake: {
-    [ChainId.BSC]: '0xe20AB665af9fDe73cc63C9F997eD1FBD8E2D2377',
+    [ChainId.BSC]: '0x413706FE696A1CCBa622d74F72b787104c3d38Fc',
     [ChainId.BSC_TESTNET]: '0x1F32591CC45f00BaE3A742Bf2bCAdAe59DbAd228',
   },
   nonBscVault: {
