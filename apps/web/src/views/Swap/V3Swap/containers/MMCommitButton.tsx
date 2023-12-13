@@ -8,8 +8,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { isChainSupported } from 'utils/wagmi'
+import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
 import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButton'
-import { useAccount } from 'wagmi'
+import { useAccount, useChainId } from 'wagmi'
+import usePermit2Allowance from 'hooks/usePermit2Allowance'
 
 export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, mmTradeInfo }) {
   const {
@@ -18,15 +21,16 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
+  const chainId = useChainId()
 
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
+  const inputCurrency = useCurrency(inputCurrencyId) ?? undefined
+  const outputCurrency = useCurrency(outputCurrencyId) ?? undefined
   const { address: account } = useAccount()
   const [isExpertMode] = useExpertMode()
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({
-      [Field.INPUT]: inputCurrency ?? undefined,
-      [Field.OUTPUT]: outputCurrency ?? undefined,
+      [Field.INPUT]: inputCurrency,
+      [Field.OUTPUT]: outputCurrency,
     }),
     [inputCurrency, outputCurrency],
   )
@@ -39,9 +43,15 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
 
-  const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
+  const { approvalState, currentAllowance, isPendingError } = useApproveCallback(
     mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
     mmTradeInfo?.routerAddress,
+  )
+
+  const allowance = usePermit2Allowance(
+    mmTradeInfo?.routerAddress,
+    mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
+    isChainSupported(chainId) ? getUniversalRouterAddress(chainId) : undefined,
   )
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
@@ -69,8 +79,7 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
       account={account}
       approvalSubmitted={approvalSubmitted}
       onWrap={onWrap}
-      approveCallback={approveCallback}
-      revokeCallback={revokeCallback}
+      allowance={allowance}
       currencies={currencies}
       currencyBalances={mmOrderBookTrade?.currencyBalances}
       isExpertMode={isExpertMode}

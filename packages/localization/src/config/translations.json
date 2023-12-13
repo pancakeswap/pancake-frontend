@@ -2655,7 +2655,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% supports limited fiat currencies. USD are not supported",
   "Proceed in your wallet": "Proceed in your wallet",
-  "Enable spending %symbol%": "Enable spending %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.",
   "Why": "Why",
   "approving": "approving",
@@ -3050,7 +3049,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "An active veCAKE staking position is required for activating farm yield boosters.",
-  "Go to CAKE Staking": "Go to CAKE Staking",
   "Yield booster active": "Yield booster active",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.",
   "Go to Lock": "Go to Lock",
@@ -3137,5 +3135,6 @@
   "U.S.-based and VPN users.": "U.S.-based and VPN users.",
   "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.",
   "Base APR (APT yield only)": "Base APR (APT yield only)",
-  "%percent%% of total supply": "%percent%% of total supply"
+  "%percent%% of total supply": "%percent%% of total supply",
+  "Permit %symbol%": "Permit %symbol%"
 }
