@@ -34,7 +34,7 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "@cyberlab/cyber-app-sdk": "2.3.3",
+    "@cyberlab/cyber-app-sdk": "2.4.4",
     "@datadog/browser-logs": "^5.1.0",
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",

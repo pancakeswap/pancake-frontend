@@ -639,8 +639,8 @@ importers:
   apps/web:
     dependencies:
       '@cyberlab/cyber-app-sdk':
-        specifier: 2.3.3
-        version: 2.3.3(@types/node@13.13.52)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+        specifier: 2.4.4
+        version: 2.4.4(@types/node@13.13.52)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       '@datadog/browser-logs':
         specifier: ^5.1.0
         version: 5.2.0
@@ -4063,8 +4063,8 @@ packages:
       postcss-selector-parser: 6.0.13
     dev: true
 
-  /@cyberlab/cyber-app-sdk@2.3.3(@types/node@13.13.52)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
-    resolution: {integrity: sha512-mZCdmKEBzPXZmQBzIscOao7uFXMwvprJZpHHC1E3wkzhxvJScR6Er3nInP0Ytq0nGcc8ZYK3p2uTZEOhcnVW6g==}
+  /@cyberlab/cyber-app-sdk@2.4.4(@types/node@13.13.52)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
+    resolution: {integrity: sha512-cGtmhERQohMM9CXVDFRJzG01qis8o5PGauKWwtMtYlaq8uIso4Hmf3R40vOwk7XroHcD6fY3zzpjiYhYA6mn3g==}
     dependencies:
       '@wagmi/connectors': 3.1.5(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)(typescript@5.2.2)(viem@1.19.11)(zod@3.22.4)
       ts-node: 10.9.1(@types/node@13.13.52)(typescript@5.2.2)
@@ -11043,7 +11043,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.23.3(@babel/core@7.23.3)
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.3)
       react-refresh: 0.14.0
-      vite: 4.3.9(@types/node@18.0.4)
+      vite: 4.3.9(@types/node@13.13.52)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -25658,7 +25658,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       globrex: 0.1.2
       tsconfck: 2.1.2(typescript@5.2.2)
-      vite: 4.3.9(@types/node@18.0.4)
+      vite: 4.3.9(@types/node@13.13.52)
     transitivePeerDependencies:
       - supports-color
       - typescript
