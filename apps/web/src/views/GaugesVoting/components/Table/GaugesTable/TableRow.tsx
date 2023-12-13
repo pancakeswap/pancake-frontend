@@ -57,7 +57,8 @@ export const TableRow: React.FC<{
   selected?: boolean
   onSelect?: (hash: Gauge['hash']) => void
   totalGaugesWeight?: number
-}> = ({ data, locked, totalGaugesWeight, selected, selectable, onSelect }) => {
+  style?: React.CSSProperties
+}> = ({ data, locked, totalGaugesWeight, selected, selectable, onSelect, style }) => {
   const { t } = useTranslation()
 
   const maxCapPercent = useMemo(() => {
@@ -79,7 +80,7 @@ export const TableRow: React.FC<{
   const [ref, isHover] = useHover<HTMLButtonElement>()
 
   return (
-    <TRow>
+    <TRow style={style}>
       <FlexGap alignItems="center" gap="13px">
         {selectable ? (
           <span ref={ref}>

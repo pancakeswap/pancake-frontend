@@ -951,6 +951,9 @@ importers:
       '@types/react-transition-group':
         specifier: ^4.4.1
         version: 4.4.9
+      '@types/react-virtualized':
+        specifier: ^9.21.29
+        version: 9.21.29
       '@types/react-window':
         specifier: ^1.8.3
         version: 1.8.8
@@ -10349,6 +10352,13 @@ packages:
     dependencies:
       '@types/react': 18.2.37
 
+  /@types/react-virtualized@9.21.29:
+    resolution: {integrity: sha512-+ODVQ+AyKngenj4OPpg43Hz4B9Rdjuz1Naxu9ypNc3Cjo0WVZTYhqXfF/Nm38i8PV/YXECRIl4mTAZK5hq2B+g==}
+    dependencies:
+      '@types/prop-types': 15.7.10
+      '@types/react': 18.2.37
+    dev: true
+
   /@types/react-window@1.8.8:
     resolution: {integrity: sha512-8Ls660bHR1AUA2kuRvVG9D/4XpRC6wjAaPT9dil7Ckc76eP9TKWZwwmgfq8Q1LANX3QNDnoU4Zp48A3w+zK69Q==}
     dependencies:
@@ -10975,7 +10985,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.23.3(@babel/core@7.23.3)
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.3)
       react-refresh: 0.14.0
-      vite: 4.3.9(@types/node@18.0.4)
+      vite: 4.3.9(@types/node@13.13.52)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -25503,7 +25513,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       globrex: 0.1.2
       tsconfck: 2.1.2(typescript@5.2.2)
-      vite: 4.3.9(@types/node@18.0.4)
+      vite: 4.3.9(@types/node@13.13.52)
     transitivePeerDependencies:
       - supports-color
       - typescript

@@ -2,7 +2,8 @@ import { Gauge } from '@pancakeswap/gauges'
 import { AutoColumn, Skeleton } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import uniqBy from 'lodash/uniqBy'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { FixedSizeList } from 'react-window'
 import styled from 'styled-components'
 import { SpaceProps, space } from 'styled-system'
 import { SortBy, SortField, TableHeader } from './TableHeader'
@@ -23,6 +24,8 @@ const Table = styled.table`
 `
 
 export * from './List'
+
+const ROW_HEIGHT = 70
 
 export const GaugesTable: React.FC<
   {
@@ -50,6 +53,27 @@ export const GaugesTable: React.FC<
     setSortBy(by)
   }
 
+  const Row = useCallback(
+    ({ data: rows, index, style }): JSX.Element => {
+      const row = rows[index]
+      return (
+        <TableRow
+          style={style}
+          data={row}
+          locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
+          selectable={selectable}
+          selected={selectRows?.some((r) => r.hash === row.hash)}
+          onSelect={onRowSelect}
+          totalGaugesWeight={totalGaugesWeight}
+        />
+      )
+    },
+    [onRowSelect, selectRows, selectable, totalGaugesWeight],
+  )
+
+  const itemKey = useCallback((index: number, row: Gauge[]) => row[index].hash, [])
+  const fullHeight = useMemo(() => ROW_HEIGHT * sortedData.length, [sortedData.length])
+
   return (
     <Table {...props}>
       <TableHeader onSort={handleSort} selectable={selectable} total={sortedData.length} />
@@ -61,19 +85,16 @@ export const GaugesTable: React.FC<
         </AutoColumn>
       ) : (
         <div>
-          <Scrollable expanded={expanded} style={scrollStyle}>
-            {sortedData?.map((row) => (
-              <TableRow
-                key={`${row.hash}-${row.pid}`}
-                data={row}
-                locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
-                selectable={selectable}
-                selected={selectRows?.some((r) => r.hash === row.hash)}
-                onSelect={onRowSelect}
-                totalGaugesWeight={totalGaugesWeight}
-              />
-            ))}
-          </Scrollable>
+          <FixedSizeList
+            itemData={sortedData ?? []}
+            itemCount={sortedData.length}
+            itemKey={itemKey}
+            itemSize={ROW_HEIGHT}
+            height={expanded ? fullHeight : 210}
+            width="100%"
+          >
+            {Row}
+          </FixedSizeList>
           <ExpandRow onCollapse={() => setExpanded(!expanded)} />
         </div>
       )}
