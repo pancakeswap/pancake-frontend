@@ -4,7 +4,7 @@ import { useManageSubscription } from '@web3inbox/widget-react'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Events } from '../constants'
 import useSendPushNotification from '../hooks/sendPushNotification'
@@ -25,7 +25,7 @@ interface IOnBoardingProps {
   handleRegistration: () => Promise<void>
   isReady: boolean
   isSubscribing: boolean
-  setIsSubscribing: Dispatch<SetStateAction<boolean>>
+  setIsSubscribing: (state: boolean) => void
 }
 
 function OnboardingButton({ onClick, loading, isOnBoarded, account, isReady }: IOnboardingButtonProps) {
@@ -76,6 +76,7 @@ const OnBoardingView = ({
         await sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`)
       }, 1200)
     } catch (error) {
+      setIsSubscribing(false)
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
       toast.toastError(Events.SubscriptionRequestError.title, errMessage)
     }
@@ -95,8 +96,8 @@ const OnBoardingView = ({
   const handleAction = useCallback(
     async (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      if (!identityKey) await handleOnBoarding()
-      else await handleSubscribe()
+      if (!identityKey) handleOnBoarding()
+      else handleSubscribe()
     },
     [handleSubscribe, handleOnBoarding, identityKey],
   )
