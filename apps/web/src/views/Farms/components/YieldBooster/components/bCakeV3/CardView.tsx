@@ -14,6 +14,8 @@ import { useUpdateLiquidity } from '../../hooks/bCakeV3/useUpdateLiquidity'
 
 import { StatusView } from './StatusView'
 
+const SHOULD_UPDATE_THRESHOLD = 1.1
+
 export const BCakeV3CardView: React.FC<{
   tokenId: string
   pid: number
@@ -41,7 +43,11 @@ export const BCakeV3CardView: React.FC<{
     return locked && !isLockEnd
   }, [locked, isLockEnd])
   const shouldUpdate = useMemo(() => {
-    if (boostMultiplier && veCakeUserMultiplierBeforeBoosted && boostMultiplier < veCakeUserMultiplierBeforeBoosted)
+    if (
+      boostMultiplier &&
+      veCakeUserMultiplierBeforeBoosted &&
+      boostMultiplier * SHOULD_UPDATE_THRESHOLD <= veCakeUserMultiplierBeforeBoosted
+    )
       return true
     return false
   }, [boostMultiplier, veCakeUserMultiplierBeforeBoosted])
