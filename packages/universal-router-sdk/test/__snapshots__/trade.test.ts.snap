@@ -1,0 +1,3309 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mixed > should encodes a mixed exactInput BNB-v2->USDC-stable->USDT swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "57896044618658097711785492504343953926634992332820282019728792003956564819968"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "948957469284015852"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+          "0x55d398326f99059fF775485246999027B3197955"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mixed > should encodes a mixed exactInput ETH-v3->USDC-stable->USDT swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0x2170ed0880ac9a755fd29b2688956bd959f933f80009c48ac76a51cc950d9822d68b83fe1ad97b32cd580d"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "57896044618658097711785492504343953926634992332820282019728792003956564819968"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "948957469284015852"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+          "0x55d398326f99059fF775485246999027B3197955"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mixed > should encodes a mixed exactInput USDT-stable->USDC-v2->BNB swap 1`] = `
+[
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xd99c7F6C65857AC913a8f880A4cb84032AB2FC5b"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "57896044618658097711785492504343953926634992332820282019728792003956564819968"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949904999"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "949904999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mixed > should encodes a mixed exactInput USDT-stable->USDC-v3->BNB swap 1`] = `
+[
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "57896044618658097711785492504343953926634992332820282019728792003956564819968"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949904999"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d0009c4bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "949904999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > multi-route > should encode a multi-route exactOutput v2 USDT-USDC & v3 USDT-USDC & stable USDT-USDC 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0x55d398326f99059ff775485246999027b31979550001f48ac76a51cc950d9822d68b83fe1ad97b32cd580d"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "952380952"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > should encode a exactInput USDT->USDC->BUSD swap 1`] = `
+[
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "952380952"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+          "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2",
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > should encode a single exactInput USDT->USDC swap 1`] = `
+[
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "952380952"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > should encode a single exactInput USDT->USDC swap, with fee 1`] = `
+[
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "909090909"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "909090909"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > should encode a single exactInput USDT->USDC swap, with permit2 1`] = `
+[
+  {
+    "command": "PERMIT2_PERMIT",
+    "args": [
+      {
+        "type": "tuple",
+        "name": "permitSingle",
+        "value": {
+          "details": {
+            "token": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+            "amount": "1461501637330902918203684832716283019655932542975",
+            "expiration": 281474976710655,
+            "nonce": 0
+          },
+          "spender": "0x1A0A18AC4BECDDbd6389559687d1A73d8927E416",
+          "sigDeadline": "281474976710655"
+        }
+      },
+      {
+        "type": "bytes",
+        "name": "data",
+        "value": "0x777406b366e3539754d5ea1056d11c8f7482c7f095b48cc3520051169c6e0e1f49116cbe67f45bfe7c1af7599e7c6c5c93565294bcc0fb2f42699d2845b11da41b"
+      }
+    ]
+  },
+  {
+    "command": "STABLE_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "952380952"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > mixed > should encodes a mixed exactInput ETH-v2->USDC-v2->USDT swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "945740605931802096"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > mixed > should encodes a mixed exactInput ETH-v2->USDC-v3->USDT swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "57896044618658097711785492504343953926634992332820282019728792003956564819968"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "947634940925779854"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480001f4dac17f958d2ee523a2206206994597c13d831ec7"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > mixed > should encodes a mixed exactInput ETH-v3->USDC-v2->USDT swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xaD6B7d0beE456e89B04064f0F750775Cde0F4c9b"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "57896044618658097711785492504343953926634992332820282019728792003956564819968"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "945740605931802096"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > mixed > should encodes a mixed exactInput ETH-v3->USDC-v3->USDT swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "947634940925779854"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480001f4dac17f958d2ee523a2206206994597c13d831ec7"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > mixed > should encodes a mixed exactInput USDT-v2->USDC-v3->ETH swap 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "57896044618658097711785492504343953926634992332820282019728792003956564819968"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "947624998"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480009c4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "947624998"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > multi-route > should encode a split exactInput with 2 routes: v2 ETH-USDC & v3 ETH-USDC 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "2000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949053319313984300"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949053319313984300"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > multi-route > should encode a split exactInput with 3 routes: v2 ETH-USDC & v3 ETH-USDC & v3 ETH-USDC 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "2000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "500000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "500000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "0"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20001f4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1904761904761904761"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a exactInput ETH->USDC->USDT Swap, with fee, with recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "902752396571265637"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "902752396571265637"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a exactInput ETH->USDC->USDT Swap, with fee, without recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "902752396571265637"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "902752396571265637"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a exactInput ETH->USDC->USDT Swap, without fee, with recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "945740605931802096"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a exactInput ETH->USDC->USDT Swap, without fee, without recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "945740605931802096"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput ETH->USDC Swap, with fee, with recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "905914532072439559"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "905914532072439559"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput ETH->USDC Swap, with fee, without recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "905914532072439559"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "905914532072439559"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput ETH->USDC Swap, without fee, with recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949053319313984300"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput ETH->USDC Swap, without fee, without recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949053319313984300"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput USDC->ETH Swap 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949999999"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "949999999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput USDC->ETH Swap, with fee 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "906818180"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "906818180"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput USDC->ETH Swap, with fee, with recipient 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "906818180"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "906818180"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput USDC->ETH Swap, with recipient 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949999999"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "949999999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput USDC->ETH swap, with EIP-2098 permit 1`] = `
+[
+  {
+    "command": "PERMIT2_PERMIT",
+    "args": [
+      {
+        "type": "tuple",
+        "name": "permitSingle",
+        "value": {
+          "details": {
+            "token": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "amount": "1461501637330902918203684832716283019655932542975",
+            "expiration": 281474976710655,
+            "nonce": 0
+          },
+          "spender": "0x65b382653f7C31bC0Af67f188122035461ec9C76",
+          "sigDeadline": "281474976710655"
+        }
+      },
+      {
+        "type": "bytes",
+        "name": "data",
+        "value": "0x92ff2b035c8005213bd910849532da0f4adde9e35393c8ed4872db90eef2c153492dec30a70476e98f21d28398396669fbef6f9785c903ef83810673ec96fc8d"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949999999"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "949999999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode a single exactInput USDC->ETH swap, with permit2 1`] = `
+[
+  {
+    "command": "PERMIT2_PERMIT",
+    "args": [
+      {
+        "type": "tuple",
+        "name": "permitSingle",
+        "value": {
+          "details": {
+            "token": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "amount": "1461501637330902918203684832716283019655932542975",
+            "expiration": 281474976710655,
+            "nonce": 0
+          },
+          "spender": "0x65b382653f7C31bC0Af67f188122035461ec9C76",
+          "sigDeadline": "281474976710655"
+        }
+      },
+      {
+        "type": "bytes",
+        "name": "data",
+        "value": "0x92ff2b035c8005213bd910849532da0f4adde9e35393c8ed4872db90eef2c153492dec30a70476e98f21d28398396669fbef6f9785c903ef83810673ec96fc8d1b"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949999999"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "949999999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode exactInput USDT->USDC->ETH swap 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "947624999"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "947624999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode exactOutput ETH->USDC swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1053685264211580002"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1053685264211580002"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "0"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode exactOutput ETH->USDC swap, with fee 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1103860752983560002"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1103860752983560002"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "950000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "0"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode exactOutput ETH->USDC swap, with fee, with recipient 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1103860752983560002"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1103860752983560002"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "950000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "0"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v2 > should encode exactOutput USDC-ETH swap 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1053685264211580002"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a exactInput ETH->USDC->USDT swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "947634940925779854"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480001f4dac17f958d2ee523a2206206994597c13d831ec7"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a exactOutput ETH->USDC->USDT swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1053158161"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1053158161"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xdac17f958d2ee523a2206206994597c13d831ec70001f4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480009c4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "0"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a exactOutput USDT->USDC->ETH swap 1`] = `
+[
+  {
+    "command": "V3_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1055271345507736707"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480001f4dac17f958d2ee523a2206206994597c13d831ec7"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a single exactInput ETH->USDC swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949053319313984300"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a single exactInput ETH->USDC swap, with a fee 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "905914532072439559"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "SWEEP",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "905914532072439559"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a single exactInput USDC->ETH swap 1`] = `
+[
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949999999"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480009c4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "949999999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a single exactInput USDC->ETH swap, with a fee 1`] = `
+[
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "906818180"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480009c4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "PAY_PORTION",
+    "args": [
+      {
+        "type": "address",
+        "name": "token",
+        "value": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      },
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      {
+        "type": "uint256",
+        "name": "bips",
+        "value": "500"
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "906818180"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a single exactInput USDC->ETH swap, with permit2 1`] = `
+[
+  {
+    "command": "PERMIT2_PERMIT",
+    "args": [
+      {
+        "type": "tuple",
+        "name": "permitSingle",
+        "value": {
+          "details": {
+            "token": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "amount": "1461501637330902918203684832716283019655932542975",
+            "expiration": 281474976710655,
+            "nonce": 0
+          },
+          "spender": "0x65b382653f7C31bC0Af67f188122035461ec9C76",
+          "sigDeadline": "281474976710655"
+        }
+      },
+      {
+        "type": "bytes",
+        "name": "data",
+        "value": "0x92ff2b035c8005213bd910849532da0f4adde9e35393c8ed4872db90eef2c153492dec30a70476e98f21d28398396669fbef6f9785c903ef83810673ec96fc8d1b"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_IN",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountIn",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOutMin",
+        "value": "949999999"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480009c4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "949999999"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a single exactOutput ETH->USDC swap 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1052631580"
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1052631580"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480009c4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "0"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > v3 > should encode a single exactOutput USDC->ETH swap 1`] = `
+[
+  {
+    "command": "V3_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1053685264211580003"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20009c4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "1000000000000000000"
+      }
+    ]
+  }
+]
+`;

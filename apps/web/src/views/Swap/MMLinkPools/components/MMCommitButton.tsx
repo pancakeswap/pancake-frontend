@@ -9,13 +9,14 @@ import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettin
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
+import { Allowance } from 'hooks/usePermit2Allowance'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import { Address } from 'viem'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
-import { SendTransactionResult } from 'wagmi/actions'
 import { ConfirmSwapModal } from '../../V3Swap/containers/ConfirmSwapModal'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
@@ -25,14 +26,13 @@ const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
   swapIsUnsupported: boolean
-  account: string
+  account: Address | undefined
   showWrap: boolean
-  wrapInputError: string
-  onWrap: () => Promise<void>
+  wrapInputError?: string
+  onWrap?: () => Promise<void>
   wrapType: WrapType
   approval: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  allowance: Allowance
   approvalSubmitted: boolean
   currencies: {
     INPUT?: Currency
@@ -45,11 +45,11 @@ interface SwapCommitButtonPropsType {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
-  recipient: string
+  recipient: string | null
   onUserInput: (field: Field, typedValue: string) => void
   mmQuoteExpiryRemainingSec?: number | null
   isPendingError: boolean
-  currentAllowance: CurrencyAmount<Currency>
+  currentAllowance?: CurrencyAmount<Currency>
 }
 
 export function MMSwapCommitButton({
@@ -60,8 +60,7 @@ export function MMSwapCommitButton({
   onWrap,
   wrapType,
   approval,
-  approveCallback,
-  revokeCallback,
+  allowance,
   approvalSubmitted,
   rfqTrade,
   swapInputError,
@@ -77,7 +76,6 @@ export function MMSwapCommitButton({
 
   const { t } = useTranslation()
   // the callback to execute the swap
-
   // @ts-ignore
   const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq, recipient)
 
@@ -151,7 +149,12 @@ export function MMSwapCommitButton({
     />,
   )
 
-  const { confirmModalState, pendingModalSteps, startSwapFlow, resetSwapFlow } = useConfirmModalState({
+  const {
+    confirmModalState,
+    pendingModalSteps,
+    startSwapFlow,
+    onCancel: resetSwapFlow,
+  } = useConfirmModalState({
     txHash,
     chainId,
     approval,
@@ -159,8 +162,7 @@ export function MMSwapCommitButton({
     isPendingError,
     isExpertMode,
     currentAllowance,
-    approveCallback,
-    revokeCallback,
+    allowance,
     onConfirm: handleSwap,
   })
 
@@ -174,15 +176,17 @@ export function MMSwapCommitButton({
       confirmModalState={confirmModalState}
       pendingModalSteps={pendingModalSteps}
       startSwapFlow={startSwapFlow}
+      allowance={allowance}
       originalTrade={tradeToConfirm}
       showApproveFlow={showApproveFlow}
       currencyBalances={currencyBalances}
       isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
       currentAllowance={currentAllowance}
-      swapErrorMessage={swapErrorMessage || (!rfqTrade.trade && t('Unable request a quote'))}
+      swapErrorMessage={swapErrorMessage ?? !rfqTrade.trade ?  t('Unable request a quote') : undefined}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
+      isPendingError={false}
     />,
     true,
     true,
