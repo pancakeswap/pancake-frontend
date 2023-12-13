@@ -1,10 +1,10 @@
-import { styled } from 'styled-components'
-import { useEffect, useMemo, useState } from 'react'
+import { GameType } from '@pancakeswap/games'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
-import { GameType } from '@pancakeswap/games'
-import { Games } from 'components/Game/Home/Games'
 import { Game } from 'components/Game/Home/Game'
+import { Games } from 'components/Game/Home/Games'
+import { useEffect, useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 
 const StyledContainer = styled(Box)`
   width: 100%;
@@ -40,7 +40,7 @@ export const OtherGames: React.FC<React.PropsWithChildren<OtherGamesProps>> = ({
       <Text bold mb="32px" lineHeight="110%" textAlign="center" fontSize={['40px']}>
         {t('Explore Other Games')}
       </Text>
-      {otherGames.length > 2 && (
+      {otherGames.length >= 2 && (
         <Games otherGames={otherGames} pickedGameId={pickedGameId} setPickedGameId={setPickedGameId} />
       )}
       {pickedGame && <Game game={pickedGame} />}

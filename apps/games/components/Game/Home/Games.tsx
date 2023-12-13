@@ -1,10 +1,12 @@
-import { styled, useTheme } from 'styled-components'
-import { useCallback } from 'react'
-import dayjs from 'dayjs'
 import { GameType } from '@pancakeswap/games'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Box, Text, Button, CardHeader, Card } from '@pancakeswap/uikit'
+import { Box, Button, Card, CardHeader, Flex, Text } from '@pancakeswap/uikit'
 import { StyledTextLineClamp } from 'components/Game/StyledTextLineClamp'
+import dayjs from 'dayjs'
+import { useCallback } from 'react'
+import { styled, useTheme } from 'styled-components'
+import { Autoplay } from 'swiper/modules'
+import type { Swiper as SwiperClass } from 'swiper/types'
 
 import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -109,6 +111,14 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
     return dayjs(timeToMilliseconds).format('MM/DD/YYYY')
   }, [])
 
+  const handleRealIndexChange = useCallback(
+    (swiperInstance: SwiperClass) => {
+      const getPickedGameId = otherGames[swiperInstance.realIndex].id
+      setPickedGameId(getPickedGameId)
+    },
+    [otherGames, setPickedGameId],
+  )
+
   return (
     <StyledSwiper
       slidesPerView={1}
@@ -117,13 +127,21 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
         prevEl: '.prev',
         nextEl: '.next',
       }}
-      centeredSlides
+      resizeObserver
+      autoplay={{
+        delay: 15000,
+        pauseOnMouseEnter: true,
+        disableOnInteraction: false,
+      }}
+      modules={[Autoplay]}
       breakpoints={{
-        768: {
+        860: {
           slidesPerView: 2,
           spaceBetween: 34,
+          autoplay: false,
         },
       }}
+      onRealIndexChange={handleRealIndexChange}
     >
       {otherGames?.map((game) => (
         <SwiperSlide key={game.id} onClick={() => setPickedGameId(game.id)}>
