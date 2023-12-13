@@ -191,7 +191,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   <BetaTag>{t('BETA')}</BetaTag>
                 </Flex>
 
-                <Toggle id="toggle-username-visibility" checked={enabled} scale="md" onChange={toggle} />
+                <Toggle id="toggle-username-visibility" checked={Boolean(enabled)} scale="md" onChange={toggle} />
               </Flex>
               {chainId === ChainId.BSC && (
                 <>
