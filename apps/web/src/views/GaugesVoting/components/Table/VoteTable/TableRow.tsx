@@ -1,6 +1,6 @@
 import { GAUGE_TYPE_NAMES, GaugeType } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Grid, Tag, Text } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import { useCallback, useMemo, useState } from 'react'
 import { stringify } from 'viem'
@@ -35,6 +35,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
     voteLocked,
     willUnlock,
     proxyVeCakeBalance,
+    changeHighlight,
   } = useRowVoteState({
     data,
     vote,
@@ -46,34 +47,36 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
 
   return (
     <TRow>
-      <FlexGap alignItems="center" gap="13px">
-        <Tooltips
-          disabled={!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')}
-          content={
-            <pre>
-              {stringify(
-                {
-                  ...userVote,
-                  currentTimestamp: debugFormat(currentTimestamp),
-                  nativeLasVoteTime: debugFormat(userVote?.nativeLastVoteTime),
-                  proxyLastVoteTime: debugFormat(userVote?.proxyLastVoteTime),
-                  lastVoteTime: debugFormat(userVote?.lastVoteTime),
-                  end: debugFormat(userVote?.end),
-                  proxyEnd: debugFormat(userVote?.proxyEnd),
-                  nativeEnd: debugFormat(userVote?.nativeEnd),
-                  proxyVeCakeBalance: proxyVeCakeBalance?.toString(),
-                },
-                undefined,
-                2,
-              )}
-            </pre>
-          }
-        >
-          <GaugeTokenImage gauge={data} />
-        </Tooltips>
-        <Text fontWeight={600} fontSize={16}>
-          {data.pairName}
-        </Text>
+      <Grid gridTemplateColumns="1fr 1fr" justifyContent="space-between" width="100%">
+        <FlexGap alignItems="center" gap="13px">
+          <Tooltips
+            disabled={!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')}
+            content={
+              <pre>
+                {stringify(
+                  {
+                    ...userVote,
+                    currentTimestamp: debugFormat(currentTimestamp),
+                    nativeLasVoteTime: debugFormat(userVote?.nativeLastVoteTime),
+                    proxyLastVoteTime: debugFormat(userVote?.proxyLastVoteTime),
+                    lastVoteTime: debugFormat(userVote?.lastVoteTime),
+                    end: debugFormat(userVote?.end),
+                    proxyEnd: debugFormat(userVote?.proxyEnd),
+                    nativeEnd: debugFormat(userVote?.nativeEnd),
+                    proxyVeCakeBalance: proxyVeCakeBalance?.toString(),
+                  },
+                  undefined,
+                  2,
+                )}
+              </pre>
+            }
+          >
+            <GaugeTokenImage gauge={data} />
+          </Tooltips>
+          <Text fontWeight={600} fontSize={16}>
+            {data.pairName}
+          </Text>
+        </FlexGap>
         <FlexGap gap="5px" alignItems="center">
           <NetworkBadge chainId={Number(data.chainId)} />
           {/* {[GaugeType.V3, GaugeType.V2].includes(data.type) ? ( */}
@@ -85,7 +88,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
 
           <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
         </FlexGap>
-      </FlexGap>
+      </Grid>
       <FlexGap alignItems="center" justifyContent="center" gap="4px">
         <Text bold>{currentVoteWeight}</Text>
         <Text>{currentVotePercent ? ` (${currentVotePercent}%)` : null}</Text>
@@ -105,7 +108,12 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
             <ErrorIcon height="20px" color="warning" mb="-2px" mr="2px" />
           </Tooltips>
         ) : null}
-        <Text color={voteLocked || willUnlock || !cakeLocked ? 'textDisabled' : ''}>{previewVoteWeight} veCAKE</Text>
+        <Text
+          bold={changeHighlight}
+          color={voteLocked || willUnlock || !cakeLocked ? (changeHighlight ? 'textSubtle' : 'textDisabled') : ''}
+        >
+          {previewVoteWeight} veCAKE
+        </Text>
       </Flex>
       <Flex>
         <PercentInput

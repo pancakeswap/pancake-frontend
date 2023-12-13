@@ -57,15 +57,19 @@ const RightWrapper = styled.div`
 
   > span:nth-child(2) {
     position: absolute !important;
-    right: 10px;
+    right: 1%;
     z-index: 2;
     bottom: 42px;
 
     ${({ theme }) => theme.mediaQueries.sm} {
-      right: 10%;
+      right: 6%;
       bottom: 2px;
     }
 
+    ${({ theme }) => theme.mediaQueries.md} {
+      right: 10%;
+      bottom: 2px;
+    }
     ${({ theme }) => theme.mediaQueries.lg} {
       right: 12%;
       bottom: 2px;
@@ -105,7 +109,7 @@ const Header = styled.div`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 6px;
-  width: 80%;
+  width: 100%;
 
   &::after {
     letter-spacing: 0.01em;
@@ -121,6 +125,10 @@ const Header = styled.div`
     top: 0;
     z-index: -1;
     padding-right: 100px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 80%;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {

@@ -300,34 +300,31 @@ export const VoteTable = () => {
           </Box>
         ) : null}
         <Grid
-          gridTemplateColumns="1fr 1fr "
+          gridTemplateColumns={!account ? '1fr' : '1fr 1fr'}
           gridGap="12px"
           padding={isDesktop ? '' : '1em'}
           style={{ marginTop: rows && rows?.length > 3 ? 0 : '8px' }}
         >
           {!account ? (
-            <ConnectWalletButton width="100%" />
+            <ConnectWalletButton mx="auto" width={isDesktop ? '50%' : '100%'} />
           ) : (
-            <Button
-              width="100%"
-              onClick={() => setIsOpen(true)}
-              style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
-            >
-              + Add Gauges {isMobile ? null : `(${leftGaugesCanAdd || 0})`}
-            </Button>
-          )}
-
-          {!account ? (
-            <ConnectWalletButton width="100%" />
-          ) : (
-            <Button
-              width="100%"
-              disabled={disabled}
-              onClick={submitVote}
-              style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
-            >
-              Submit vote
-            </Button>
+            <>
+              <Button
+                width="100%"
+                onClick={() => setIsOpen(true)}
+                style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
+              >
+                + Add Gauges {isMobile ? null : `(${leftGaugesCanAdd || 0})`}
+              </Button>
+              <Button
+                width="100%"
+                disabled={disabled}
+                onClick={submitVote}
+                style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
+              >
+                Submit vote
+              </Button>
+            </>
           )}
         </Grid>
       </ResponsiveCard>

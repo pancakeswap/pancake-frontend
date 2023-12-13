@@ -1,6 +1,7 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
+import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import memoize from 'lodash/memoize'
 import { createConfig, createStorage } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -75,10 +76,20 @@ export const trustWalletConnector = new TrustWalletConnector({
   },
 })
 
+export const cyberWalletConnector = isCyberWallet()
+  ? new CyberWalletConnector({
+      chains: chains as any,
+      options: {
+        name: 'PancakeSwap',
+        appId: 'b825cd87-2db3-456d-b108-d61e74d89771',
+      },
+    })
+  : undefined
+
 export const noopStorage = {
-  getItem: (_key) => '',
-  setItem: (_key, _value) => null,
-  removeItem: (_key) => null,
+  getItem: (_key: any) => '',
+  setItem: (_key: any, _value: any) => null,
+  removeItem: (_key: any) => null,
 }
 
 export const wagmiConfig = createConfig({
@@ -98,6 +109,7 @@ export const wagmiConfig = createConfig({
     bloctoConnector,
     ledgerConnector,
     trustWalletConnector,
+    ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
   ],
 })
 

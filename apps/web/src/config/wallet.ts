@@ -1,8 +1,9 @@
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
+import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
-import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
+import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
@@ -16,6 +17,7 @@ export enum ConnectorNames {
   WalletLink = 'coinbaseWallet',
   Ledger = 'ledger',
   TrustWallet = 'trustWallet',
+  CyberWallet = 'cyberwallet',
 }
 
 const createQrCode = (chainId: number, connect) => async () => {
@@ -133,6 +135,21 @@ const walletsConfig = ({
       downloadLink: 'https://brave.com/wallet/',
     },
     {
+      id: 'rabby',
+      title: 'Rabby Wallet',
+      icon: `${ASSET_CDN}/web/wallets/rabby.png`,
+      get installed() {
+        return typeof window !== 'undefined' && Boolean(window.ethereum?.isRabby)
+      },
+      connectorId: ConnectorNames.Injected,
+      guide: {
+        desktop: 'https://rabby.io/',
+      },
+      downloadLink: {
+        desktop: 'https://chrome.google.com/webstore/detail/rabby/acmacodkjbdgmoleebolmdjonilkdbch',
+      },
+    },
+    {
       id: 'math',
       title: 'MathWallet',
       icon: `${ASSET_CDN}/web/wallets/mathwallet.png`,
@@ -186,6 +203,19 @@ const walletsConfig = ({
         return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto)
           ? true
           : undefined // undefined to show SDK
+      },
+    },
+    {
+      id: 'cyberwallet',
+      title: 'CyberWallet',
+      icon: `${ASSET_CDN}/web/wallets/cyberwallet.png`,
+      connectorId: ConnectorNames.CyberWallet,
+      get installed() {
+        return typeof window !== 'undefined' && isCyberWallet()
+      },
+      isNotExtension: true,
+      guide: {
+        desktop: 'https://docs.cyber.co/sdk/cyber-account#supported-chains',
       },
     },
     {
