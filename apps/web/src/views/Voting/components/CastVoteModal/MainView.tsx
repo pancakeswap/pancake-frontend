@@ -12,6 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { useMemo } from 'react'
 import { getBlockExploreLink } from 'utils'
@@ -68,6 +69,8 @@ export const VeMainView = ({
 }: VeMainViewProps) => {
   const { t } = useTranslation()
 
+  const { chainId } = useActiveChainId()
+
   return (
     <>
       <ModalInner>
@@ -84,7 +87,7 @@ export const VeMainView = ({
 
         <Text color="secondary" textTransform="uppercase" bold fontSize="14px">
           {t('Your voting power at block')}
-          <StyledScanLink useBscCoinFallback href={getBlockExploreLink(block, 'block')} ml="8px">
+          <StyledScanLink useBscCoinFallback href={getBlockExploreLink(block, 'block', chainId)} ml="8px">
             {block}
           </StyledScanLink>
         </Text>

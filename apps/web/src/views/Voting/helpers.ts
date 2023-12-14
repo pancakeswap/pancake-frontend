@@ -98,7 +98,7 @@ export const VOTING_POWER_BLOCK = {
   v1: 17137653n,
 }
 
-export const VECAKE_VOTING_POWER_BLOCK = 33903950n
+export const VECAKE_VOTING_POWER_BLOCK = 34371669n
 
 /**
  *  Get voting power by single user for each category
@@ -129,14 +129,7 @@ const nodeRealProvider = createPublicClient({
 })
 
 export const getVeVotingPower = async (account: Address, blockNumber?: bigint): Promise<GetVeVotingPowerType> => {
-  // use getScores veCakeBalanceStrategy after
-  const scores = await getScores(
-    PANCAKE_SPACE,
-    [strategies.veCakeBalanceStrategy],
-    NETWORK,
-    [account],
-    Number(blockNumber),
-  )
+  const scores = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], Number(blockNumber))
   const result = scores[0][account]
 
   return {
