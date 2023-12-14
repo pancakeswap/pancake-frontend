@@ -1,11 +1,11 @@
+import { ArticleDataType } from '@pancakeswap/blog'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, Card } from '@pancakeswap/uikit'
+import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
+import { StyledLineClamp } from 'components/StyledLineClamp'
 import NextLink from 'next/link'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { ArticleDataType } from 'utils/transformArticle'
-import { StyledLineClamp } from 'components/StyledLineClamp'
-import { useQuery } from '@tanstack/react-query'
 
 const StyledBackground = styled(Box)`
   position: relative;

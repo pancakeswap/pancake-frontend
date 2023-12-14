@@ -1,6 +1,6 @@
+import { ArticleType } from '@pancakeswap/blog'
 import { useQuery } from '@tanstack/react-query'
 import { getArticle } from './getArticle'
-import { ArticleType } from '../utils/transformArticle'
 
 interface AllArticleType {
   isFetching: boolean

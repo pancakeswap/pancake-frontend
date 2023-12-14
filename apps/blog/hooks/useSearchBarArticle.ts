@@ -1,6 +1,6 @@
-import { getArticle } from 'hooks/getArticle'
-import { ArticleDataType } from 'utils/transformArticle'
+import { ArticleDataType } from '@pancakeswap/blog'
 import { useQuery } from '@tanstack/react-query'
+import { getArticle } from 'hooks/getArticle'
 
 interface SearchBarArticle {
   isFetching: boolean
