@@ -91,6 +91,8 @@ export const useUserPositionInfo = (tokenId?: string) => {
 export const useUserBoostedPoolsTokenId = () => {
   const { account, chainId } = useAccountActiveChain()
   const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
+  const farmBoosterV3ContractLegacy = useBCakeFarmBoosterV3Contract()
+
   const { data, refetch } = useQuery(
     [`v3/bcake/userBoostedPools/${chainId}/${account}`],
     () => farmBoosterV3Contract.read.activedPositions([account ?? '0x']),
@@ -99,9 +101,24 @@ export const useUserBoostedPoolsTokenId = () => {
       ...QUERY_SETTINGS_WITHOUT_REFETCH,
     },
   )
+
+  const { data: dataLegacy, refetch: refetchLagacy } = useQuery(
+    [`v3/bcake/userBoostedPoolsLegacy/${chainId}/${account}`],
+    () => farmBoosterV3ContractLegacy.read.activedPositions([account ?? '0x']),
+    {
+      enabled: Boolean(chainId && account),
+      ...QUERY_SETTINGS_WITHOUT_REFETCH,
+    },
+  )
+  const tokenIds = data?.map((tokenId) => Number(tokenId)) ?? []
+  const tokenIdsLegacy = dataLegacy?.map((tokenId) => Number(tokenId)) ?? []
+
   return {
-    tokenIds: data?.map((tokenId) => Number(tokenId)) ?? [],
-    updateBoostedPoolsTokenId: refetch,
+    tokenIds: [...tokenIds, ...tokenIdsLegacy],
+    updateBoostedPoolsTokenId: () => {
+      refetch()
+      refetchLagacy()
+    },
   }
 }
 
