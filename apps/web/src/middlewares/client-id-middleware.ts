@@ -8,10 +8,8 @@ const clientCookieOptions = { httpOnly: true, secure: true, maxAge: ONE_YEAR_SEC
 
 export const withClientId: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: ExtendedNextReq, _next: NextFetchEvent) => {
-    const randomId = v4()
-
     const clientIdCookie = request.cookies.get('p_client_id')
-    const clientId = clientIdCookie ? clientIdCookie.value : randomId
+    const clientId = clientIdCookie ? clientIdCookie.value : v4()
 
     request.p_client_id = clientId
 
