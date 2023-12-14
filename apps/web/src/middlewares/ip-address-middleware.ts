@@ -8,7 +8,7 @@ export const withUserIp: MiddlewareFactory = (next: NextMiddleware) => {
     if (!ip && forwardedFor) ip = forwardedFor.split(',').at(0) ?? ip
 
     // eslint-disable-next-line no-param-reassign
-    request.p_user_ip = ip
+    request.userIp = ip
     return next(request, _next)
   }
 }

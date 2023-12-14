@@ -9,6 +9,6 @@ export type NextMiddleware = (
 export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware
 
 export interface ExtendedNextReq extends NextRequest {
-  p_user_ip?: string | null
+  userIp?: string | null
   p_client_id?: string | undefined
 }
