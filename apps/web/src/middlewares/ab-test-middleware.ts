@@ -34,7 +34,7 @@ export const getExperimentalFeatureAccessList = async (
 
 export const withABTesting: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: ExtendedNextReq, _next: NextFetchEvent) => {
-    const clientId = request.p_client_id
+    const clientId = request?.clientId
     const response = (await next(request, _next)) || NextResponse.next()
     if (!clientId) return response
 

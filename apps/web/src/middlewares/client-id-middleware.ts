@@ -11,7 +11,7 @@ export const withClientId: MiddlewareFactory = (next: NextMiddleware) => {
     const clientIdCookie = request.cookies.get('p_client_id')
     const clientId = clientIdCookie ? clientIdCookie.value : v4()
 
-    request.p_client_id = clientId
+    request.clientId = clientId
 
     const response = (await next(request, _next)) || NextResponse.next()
     response.cookies.set('p_client_id', clientId, clientCookieOptions)
