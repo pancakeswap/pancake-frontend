@@ -17,6 +17,7 @@ import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
 import { useUserBoostedPoolsTokenId } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
+import { useIsSomePositionBoosted } from '../../YieldBooster/hooks/bCakeV3/useIsSomePositionBoosted'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
@@ -92,12 +93,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
     </>,
   )
   const { tokenIds } = useUserBoostedPoolsTokenId()
-  const isBoosted = useMemo(() => {
-    const tokenIdMap = farm.stakedPositions
-      .map((d) => d.tokenId.toString())
-      .reduce((a, key) => Object.assign(a, { [key]: true }), {})
-    return Boolean(tokenIds.some((tokenId) => tokenIdMap[tokenId] === true))
-  }, [farm.stakedPositions, tokenIds])
+  const { isBoosted } = useIsSomePositionBoosted(farm.stakedPositions, tokenIds)
 
   const addLiquidityModal = useModalV2()
 

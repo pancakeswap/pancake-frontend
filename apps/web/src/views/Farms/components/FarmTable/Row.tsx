@@ -9,6 +9,7 @@ import { styled } from 'styled-components'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'
 import { useUserBoostedPoolsTokenId } from '../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import { useIsSomePositionBoosted } from '../YieldBooster/hooks/bCakeV3/useIsSomePositionBoosted'
 import { ActionPanelV2, ActionPanelV3 } from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import { FarmCell } from './Farm'
@@ -111,14 +112,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const { t } = useTranslation()
 
   const { tokenIds } = useUserBoostedPoolsTokenId()
-
-  const isBoosted = useMemo(() => {
-    if (props.type !== 'v3') return false
-    const tokenIdMap = props.details.stakedPositions
-      .map((d) => d.tokenId.toString())
-      .reduce((a, key) => Object.assign(a, { [key]: true }), {})
-    return Boolean(tokenIds.some((tokenId) => tokenIdMap[tokenId] === true))
-  }, [props.details, tokenIds, props.type])
+  const { isBoosted } = useIsSomePositionBoosted(props.type === 'v3' ? props?.details?.stakedPositions : [], tokenIds)
 
   const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
