@@ -33,7 +33,7 @@ import { TOKEN_RISK } from 'components/AccessRisk'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { useTogglenotifications } from 'hooks/v3/useToggleNotifications'
+import { useWebNotifications } from 'hooks/useWebNotifications'
 import { ReactNode, useCallback, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
@@ -104,7 +104,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, setAudioMode] = useAudioPlay()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
-  const { allowNotifications, handleEnableNotifications, handleDiableNotifications } = useTogglenotifications()
+  const { enabled, toggle } = useWebNotifications()
 
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
@@ -191,12 +191,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   <BetaTag>{t('BETA')}</BetaTag>
                 </Flex>
 
-                <Toggle
-                  id="toggle-username-visibility"
-                  checked={allowNotifications}
-                  scale="md"
-                  onChange={allowNotifications ? handleDiableNotifications : handleEnableNotifications}
-                />
+                <Toggle id="toggle-username-visibility" checked={enabled} scale="md" onChange={toggle} />
               </Flex>
               {chainId === ChainId.BSC && (
                 <>

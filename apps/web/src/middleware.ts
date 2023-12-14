@@ -1,15 +1,11 @@
-import { shouldGeoBlock } from '@pancakeswap/utils/geoBlock'
-import { NextRequest, NextResponse } from 'next/server'
+// middleware.ts
+import { withABTesting } from 'middlewares/ab-test-middleware'
+import { withClientId } from 'middlewares/client-id-middleware'
+import { withGeoBlock } from 'middlewares/geo-block-middleware'
+import { withUserIp } from 'middlewares/ip-address-middleware'
+import { stackMiddlewares } from 'middlewares/stack-middleware'
 
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-
-  if (shouldGeoBlock(req.geo)) {
-    return NextResponse.redirect(new URL('/451', req.url))
-  }
-
-  return res
-}
+export const middleware = stackMiddlewares([withClientId, withGeoBlock, withUserIp, withABTesting])
 
 export const config = {
   matcher: [

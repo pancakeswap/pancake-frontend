@@ -18,12 +18,12 @@ export interface NotificationState {
       importantAlertsOnly: boolean
     }
   }
-  allowNotifications: boolean
+  allowNotifications: undefined | boolean
 }
 
 export const initialState: NotificationState = {
   notifications: {},
-  allowNotifications: false,
+  allowNotifications: undefined,
 }
 
 export default createReducer(initialState, (builder) =>
