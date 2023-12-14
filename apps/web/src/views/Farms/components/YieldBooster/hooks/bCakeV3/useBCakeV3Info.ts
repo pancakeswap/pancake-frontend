@@ -102,7 +102,7 @@ export const useUserBoostedPoolsTokenId = () => {
     },
   )
 
-  const { data: dataLegacy, refetch: refetchLagacy } = useQuery(
+  const { data: dataLegacy, refetch: refetchLegacy } = useQuery(
     [`v3/bcake/userBoostedPoolsLegacy/${chainId}/${account}`],
     () => farmBoosterV3ContractLegacy.read.activedPositions([account ?? '0x']),
     {
@@ -117,7 +117,7 @@ export const useUserBoostedPoolsTokenId = () => {
     tokenIds: [...tokenIds, ...tokenIdsLegacy],
     updateBoostedPoolsTokenId: () => {
       refetch()
-      refetchLagacy()
+      refetchLegacy()
     },
   }
 }
