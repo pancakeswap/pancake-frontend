@@ -33,6 +33,9 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "resolutions": {
+    "wagmi": "1.4.12"
+  },
   "dependencies": {
     "@cyberlab/cyber-app-sdk": "2.4.4",
     "@datadog/browser-logs": "^5.1.0",
