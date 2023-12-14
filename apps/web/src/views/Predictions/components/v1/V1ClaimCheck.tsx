@@ -60,7 +60,7 @@ const ClaimCheck = () => {
       })
 
       if (unclaimedBets.length > 0) {
-        const transformer = transformBetResponse(bscTokens.bnb, chainId)
+        const transformer = transformBetResponse(bscTokens?.bnb, chainId)
         setHistory(unclaimedBets.map(transformer))
         onPresentCollectWinningsModal()
       } else {
