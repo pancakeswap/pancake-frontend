@@ -1,9 +1,9 @@
-import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
+import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
@@ -218,12 +218,12 @@ const walletsConfig = ({
         desktop: 'https://docs.cyber.co/sdk/cyber-account#supported-chains',
       },
     },
-    // {
-    //   id: 'ledger',
-    //   title: 'Ledger',
-    //   icon: `${ASSET_CDN}/web/wallets/ledger.png`,
-    //   connectorId: ConnectorNames.Ledger,
-    // },
+    {
+      id: 'ledger',
+      title: 'Ledger',
+      icon: `${ASSET_CDN}/web/wallets/ledger.png`,
+      connectorId: ConnectorNames.Ledger,
+    },
   ]
 }
 
