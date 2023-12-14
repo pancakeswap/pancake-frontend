@@ -14,5 +14,6 @@ export const predictionsCAKE: Record<string, Address> = {
 export const predictionsETH: Record<string, Address> = {
   [ChainId.BSC]: '0x',
   [ChainId.BSC_TESTNET]: '0x',
+  [ChainId.ZKSYNC]: '0xaf321b731E65715DdbFDa73A066E00BB28345709',
   [ChainId.ARBITRUM_GOERLI]: '0xd5330586c035a67bd32A6FD8e390c72DB9372861',
 }

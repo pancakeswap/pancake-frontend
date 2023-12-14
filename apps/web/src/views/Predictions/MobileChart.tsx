@@ -1,14 +1,15 @@
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
+import { PredictionsChartView } from '@pancakeswap/prediction'
 import { Flex } from '@pancakeswap/uikit'
-import { useChartView } from 'state/predictions/hooks'
-import { setChartView } from 'state/predictions'
+import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import dynamic from 'next/dynamic'
-import { PredictionsChartView } from '@pancakeswap/prediction'
-import { TabToggleGroup, TabToggle } from 'components/TabToggle'
-import { useTranslation } from '@pancakeswap/localization'
+import { setChartView } from 'state/predictions'
+import { useChartView } from 'state/predictions/hooks'
+import { styled } from 'styled-components'
 import Menu from './components/Menu'
 import TradingView from './components/TradingView'
+import { useConfig } from './context/ConfigProvider'
 
 const ChainlinkChart = dynamic(() => import('./components/ChainlinkChart'), { ssr: false })
 
@@ -34,6 +35,7 @@ const MobileChart = () => {
   const chartView = useChartView()
   const dispatch = useLocalDispatch()
   const { t } = useTranslation()
+  const config = useConfig()
 
   return (
     <MobileChartWrapper>
@@ -48,12 +50,16 @@ const MobileChart = () => {
           >
             TradingView {t('Chart')}
           </TabToggle>
-          <TabToggle
-            isActive={chartView === PredictionsChartView.Chainlink}
-            onClick={() => dispatch(setChartView(PredictionsChartView.Chainlink))}
-          >
-            Chainlink {t('Chart')}
-          </TabToggle>
+          <>
+            {config?.chainlinkOracleAddress && (
+              <TabToggle
+                isActive={chartView === PredictionsChartView.Chainlink}
+                onClick={() => dispatch(setChartView(PredictionsChartView.Chainlink))}
+              >
+                Chainlink {t('Chart')}
+              </TabToggle>
+            )}
+          </>
         </TabToggleGroup>
       </div>
       <ChartWrapper>

@@ -1,29 +1,29 @@
-import { memo, useEffect, useRef, useMemo } from 'react'
-import { styled } from 'styled-components'
-import Split, { SplitInstance } from 'split-grid'
-import { Button, ChartIcon, Flex, Box, Link } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { PredictionStatus, PredictionsChartView } from '@pancakeswap/prediction'
+import { Box, Button, ChartIcon, Flex, Link } from '@pancakeswap/uikit'
+import { ChartByLabel } from 'components/Chart/ChartbyLabel'
+import { TabToggle } from 'components/TabToggle'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
-import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
+import dynamic from 'next/dynamic'
+import { memo, useEffect, useMemo, useRef } from 'react'
+import Split, { SplitInstance } from 'split-grid'
+import { setChartPaneState, setChartView } from 'state/predictions'
 import {
   useChartView,
   useGetPredictionsStatus,
   useIsChartPaneOpen,
   useIsHistoryPaneOpen,
 } from 'state/predictions/hooks'
-import { setChartPaneState, setChartView } from 'state/predictions'
-import { PredictionStatus, PredictionsChartView } from '@pancakeswap/prediction'
-import dynamic from 'next/dynamic'
-import { useTranslation } from '@pancakeswap/localization'
-import { ChartByLabel } from 'components/Chart/ChartbyLabel'
-import { TabToggle } from 'components/TabToggle'
-import TradingView from './components/TradingView'
-import { ErrorNotification, PauseNotification } from './components/Notification'
+import { styled } from 'styled-components'
 import History from './History'
 import Positions from './Positions'
-import { useConfig } from './context/ConfigProvider'
 import LoadingSection from './components/LoadingSection'
 import Menu from './components/Menu'
+import { ErrorNotification, PauseNotification } from './components/Notification'
+import TradingView from './components/TradingView'
+import { useConfig } from './context/ConfigProvider'
 
 const ChainlinkChart = dynamic(() => import('./components/ChainlinkChart'), { ssr: false })
 
@@ -213,9 +213,11 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
           </PositionPane>
 
           <Gutter ref={gutterRef} $isChartPaneOpen={isChartPaneOpen} onClick={() => openChartPane()}>
-            <PowerLinkStyle href="https://chain.link/" external>
-              <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
-            </PowerLinkStyle>
+            {config?.chainlinkOracleAddress && (
+              <PowerLinkStyle href="https://chain.link/" external>
+                <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
+              </PowerLinkStyle>
+            )}
             <ExpandButtonGroup>
               <TabToggle
                 height="42px"
@@ -230,19 +232,21 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
               >
                 {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
               </TabToggle>
-              <TabToggle
-                as={Button}
-                height="42px"
-                style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-                isActive={chartView === PredictionsChartView.Chainlink}
-                onMouseDown={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  dispatch(setChartView(PredictionsChartView.Chainlink))
-                }}
-              >
-                {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
-              </TabToggle>
+              {config?.chainlinkOracleAddress && (
+                <TabToggle
+                  as={Button}
+                  height="42px"
+                  style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
+                  isActive={chartView === PredictionsChartView.Chainlink}
+                  onMouseDown={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    dispatch(setChartView(PredictionsChartView.Chainlink))
+                  }}
+                >
+                  {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
+                </TabToggle>
+              )}
             </ExpandButtonGroup>
             {isChartPaneOpen && (
               <ChartByLabel
