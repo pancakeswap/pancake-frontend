@@ -2771,4 +2771,20 @@ export const bscTokens = {
     'Stake DAO CAKE',
     'https://lockers.stakedao.org/',
   ),
+  kuji: new ERC20Token(
+    ChainId.BSC,
+    '0x073690e6CE25bE816E68F32dCA3e11067c9FB5Cc',
+    6,
+    'KUJI',
+    'Kujira native asset',
+    'https://kujira.network/',
+  ),
+  bonk: new ERC20Token(
+    ChainId.BSC,
+    '0xA697e272a73744b343528C3Bc4702F2565b2F422',
+    5,
+    'Bonk',
+    'Bonk',
+    'https://bonkcoin.com',
+  ),
 }

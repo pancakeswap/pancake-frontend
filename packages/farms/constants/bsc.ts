@@ -1,9 +1,9 @@
 import { bscTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { getAddress } from 'viem'
-import { CAKE_BNB_LP_MAINNET } from './common'
-import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 import { FarmConfigV3, SerializedFarmConfig } from '..'
+import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
+import { CAKE_BNB_LP_MAINNET } from './common'
 
 const v3TopFixedLps: FarmConfigV3[] = [
   {
@@ -47,6 +47,27 @@ export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedLps,
   // new lps should follow after the top fixed lps
   // latest first
+  {
+    pid: 102,
+    lpAddress: '0x1A1703Bf5f1Da9DB0f62d17e8c54e84Fd732D695',
+    token0: bscTokens.bonk,
+    token1: bscTokens.bnb,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 101,
+    lpAddress: '0x2f74ad2c64be7DC07C9f51E9d338EcB7C1ee0B18',
+    token0: bscTokens.usdt,
+    token1: bscTokens.bonk,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 100,
+    lpAddress: '0xB5D01A6e99FdcDB6DB8D0A342C35036Adeb8FB48',
+    token0: bscTokens.kuji,
+    token1: bscTokens.bnb,
+    feeAmount: FeeAmount.HIGH,
+  },
   {
     pid: 99,
     lpAddress: '0x4BBA1018b967e59220b22Ca03f68821A3276c9a6',
