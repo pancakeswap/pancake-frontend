@@ -3087,5 +3087,6 @@
   "Go to Lock": "Go to Lock",
   "Update": "Update",
   "Get veCAKE to activate yield booster": "Get veCAKE to activate yield booster",
-  "Click to update and increase your boosts.": "Click to update and increase your boosts."
+  "Click to update and increase your boosts.": "Click to update and increase your boosts.",
+  "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions": "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions"
 }

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, HelpIcon, LinkExternal, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, HelpIcon, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
@@ -10,14 +10,8 @@ const BoosterTooltip = () => {
   return (
     <>
       {t(
-        `Boost multiplier is calculated based on the staking conditions from both Farms and fixed-term CAKE syrup pool and will be automatically updated upon user actions.`,
+        `Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.`,
       )}
-      <LinkExternal
-        href="https://docs.pancakeswap.finance/products/yield-farming/bcake/faq#how-are-the-bcake-multipliers-calculated"
-        external
-      >
-        {t('Learn More')}
-      </LinkExternal>
     </>
   )
 }
