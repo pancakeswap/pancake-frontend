@@ -6,7 +6,7 @@ const isCookieInFeatureFlags = (feature: EXPERIMENTAL_FEATURES) =>
   Cookies.get(getCookieKey(feature))?.toString() === 'true'
 
 export const useExperimentalFeatureEnabled = (featureFlag: EXPERIMENTAL_FEATURES) => {
-  const [featureEnabled, setFeatureEnabled] = useState<boolean | null | undefined>(null)
+  const [featureEnabled, setFeatureEnabled] = useState<boolean | undefined>()
 
   useEffect(() => {
     const cookie = isCookieInFeatureFlags(featureFlag)

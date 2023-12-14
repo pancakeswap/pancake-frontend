@@ -12,7 +12,7 @@ export const useWebNotifications = () => {
   const { unsubscribe, isSubscribed } = useManageSubscription(account)
   const [allowNotifications, setAllowNotifications] = useAllowNotifications()
   const featurEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.WebNotifications)
-  const enabled = typeof allowNotifications === 'undefined' ? featurEnabled : allowNotifications
+  const enabled = Boolean(allowNotifications ?? featurEnabled)
   const toast = useToast()
 
   const handleDiableNotifications = useCallback(async () => {

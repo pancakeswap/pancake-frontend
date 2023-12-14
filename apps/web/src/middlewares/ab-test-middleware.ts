@@ -6,6 +6,7 @@ import {
   getCookieKey,
 } from 'config/experminetalFeatures'
 import { NextFetchEvent, NextResponse } from 'next/server'
+import { ONE_YEAR_MILLISECONDS } from 'views/Notifications/constants'
 import { ExtendedNextReq, MiddlewareFactory, NextMiddleware } from './types'
 // this function generates a deterministic result for a user for a given feature
 // it hashes a concatination of the users ip together with the features identifier and
@@ -33,13 +34,16 @@ export const getExperimentalFeatureAccessList = async (
 
 export const withABTesting: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: ExtendedNextReq, _next: NextFetchEvent) => {
-    const clientId = request.cookies.get('client-id')
+    const clientId = request.p_client_id
     const response = (await next(request, _next)) || NextResponse.next()
     if (!clientId) return response
 
-    const accessList = await getExperimentalFeatureAccessList(clientId.value, EXPERIMENTAL_FEATURE_CONFIGS)
+    const accessList = await getExperimentalFeatureAccessList(clientId, EXPERIMENTAL_FEATURE_CONFIGS)
     for (const { feature, hasAccess } of accessList) {
-      response.cookies.set(getCookieKey(feature), hasAccess.toString())
+      response.cookies.set(getCookieKey(feature), hasAccess.toString(), {
+        secure: true,
+        maxAge: hasAccess ? ONE_YEAR_MILLISECONDS : 0,
+      })
     }
     return response
   }

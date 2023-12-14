@@ -1,5 +1,5 @@
 import { NextFetchEvent } from 'next/server'
-import { MiddlewareFactory, ExtendedNextReq, NextMiddleware } from './types'
+import { ExtendedNextReq, MiddlewareFactory, NextMiddleware } from './types'
 
 export const withUserIp: MiddlewareFactory = (next: NextMiddleware) => {
   return async (request: ExtendedNextReq, _next: NextFetchEvent) => {
@@ -8,7 +8,7 @@ export const withUserIp: MiddlewareFactory = (next: NextMiddleware) => {
     if (!ip && forwardedFor) ip = forwardedFor.split(',').at(0) ?? ip
 
     // eslint-disable-next-line no-param-reassign
-    request.userIp = ip
+    request.p_user_ip = ip
     return next(request, _next)
   }
 }

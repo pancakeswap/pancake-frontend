@@ -5,7 +5,7 @@ export type EnumValues<T> = T extends { [key: string]: infer U } ? U : never
 
 export type FeatureKeys = EnumValues<typeof EXPERIMENTAL_FEATURES>[]
 
-export const getCookieKey = (key: EXPERIMENTAL_FEATURES) => `ctx-${key.toLowerCase()}`
+export const getCookieKey = (key: EXPERIMENTAL_FEATURES) => `p_exp_${key.toLowerCase()}`
 
 export type FeatureRollOutConfig = {
   feature: EXPERIMENTAL_FEATURES
@@ -19,7 +19,7 @@ export type ExperimentalFeatureConfigs = FeatureRollOutConfig[]
 export const EXPERIMENTAL_FEATURE_CONFIGS: ExperimentalFeatureConfigs = [
   {
     feature: EXPERIMENTAL_FEATURES.WebNotifications,
-    percentage: 0.05,
+    percentage: 0.95,
     whitelist: [],
   },
 ]
