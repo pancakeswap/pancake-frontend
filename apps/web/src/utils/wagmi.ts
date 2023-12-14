@@ -58,12 +58,12 @@ const bloctoConnector = new BloctoConnector({
   },
 })
 
-const ledgerConnector = new LedgerConnector({
-  chains,
-  options: {
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
-  },
-})
+// const ledgerConnector = new LedgerConnector({
+//   chains,
+//   options: {
+//     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+//   },
+// })
 
 export const bscConnector = new BinanceWalletConnector({ chains })
 
