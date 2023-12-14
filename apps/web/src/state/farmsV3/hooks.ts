@@ -21,6 +21,7 @@ import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
@@ -66,7 +67,7 @@ export const useFarmsV3Public = () => {
     [chainId, 'farmV3ApiFetch'],
     async () => {
       if (API_FLAG) {
-        return farmV3ApiFetch(chainId).catch((err) => {
+        return farmV3ApiFetch(chainId ?? -1).catch((err) => {
           console.error(err)
           return fallback
         })
@@ -75,11 +76,11 @@ export const useFarmsV3Public = () => {
       // direct copy from api routes, the client side fetch is preventing cache due to migration phase we want fresh data
       const farms = farmsV3ConfigChainMap[chainId as ChainId]
 
-      const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
+      const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId ?? -1])
 
       try {
         const data = await farmFetcherV3.fetchFarms({
-          chainId,
+          chainId: chainId ?? -1,
           farms,
           commonPrice,
         })
@@ -92,7 +93,7 @@ export const useFarmsV3Public = () => {
       }
     },
     {
-      enabled: Boolean(farmFetcherV3.isChainSupported(chainId)),
+      enabled: Boolean(farmFetcherV3.isChainSupported(chainId ?? -1)),
       refetchInterval: FAST_INTERVAL * 3,
       initialData: fallback,
     },
@@ -195,13 +196,13 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
   const masterchefV3 = useMasterchefV3()
 
   const harvestCalls = useMemo(() => {
-    if (!account || !supportedChainIdV3.includes(chainId)) return []
+    if (!account || !supportedChainIdV3.includes(chainId ?? -1)) return []
     const callData: Hex[] = []
     for (const stakedTokenId of stakedTokenIds) {
-      if (zkSyncChains.includes(chainId)) {
+      if (zkSyncChains.includes(chainId ?? -1)) {
         callData.push(
           encodeFunctionData({
-            abi: masterchefV3?.abi,
+            abi: masterchefV3?.abi ?? [],
             functionName: 'pendingCake',
             args: [stakedTokenId],
           }),
@@ -209,7 +210,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
       } else {
         callData.push(
           encodeFunctionData({
-            abi: masterchefV3?.abi,
+            abi: masterchefV3?.abi ?? [],
             functionName: 'harvest',
             args: [stakedTokenId, account],
           }),
@@ -222,12 +223,12 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
   const { data } = useQuery(
     ['mcv3-harvest', harvestCalls],
     () => {
-      return masterchefV3.simulate.multicall([harvestCalls], { account, value: 0n }).then((res) => {
+      return masterchefV3?.simulate.multicall([harvestCalls], { account, value: 0n }).then((res) => {
         return res.result
           .map((r) =>
             decodeFunctionResult({
-              abi: masterchefV3.abi,
-              functionName: zkSyncChains.includes(chainId) ? 'pendingCake' : 'harvest',
+              abi: masterchefV3?.abi,
+              functionName: zkSyncChains.includes(chainId ?? 0) ? 'pendingCake' : 'harvest',
               data: r,
             }),
           )
@@ -271,8 +272,8 @@ const usePositionsByUserFarms = (
     if (!positions) return [[], []]
     const unstakedIds = tokenIds.filter((id) => !stakedIds.find((s) => s === id))
     return [
-      unstakedIds.map((id) => positions.find((p) => p.tokenId === id)).filter((p) => p?.liquidity > 0n),
-      stakedIds.map((id) => positions.find((p) => p.tokenId === id)).filter((p) => p?.liquidity > 0n),
+      unstakedIds.map((id) => positions.find((p) => p.tokenId === id)).filter((p) => (p?.liquidity ?? 0n) > 0n),
+      stakedIds.map((id) => positions.find((p) => p.tokenId === id)).filter((p) => (p?.liquidity ?? 0n) > 0n),
     ]
   }, [positions, stakedIds, tokenIds])
 
@@ -296,25 +297,25 @@ const usePositionsByUserFarms = (
 
         const unstaked = unstakedPositions.filter(
           (p) =>
-            toLower(p.token0) === toLower(token0.address) &&
-            toLower(p.token1) === toLower(token1.address) &&
-            feeAmount === p.fee,
+            toLower(p?.token0) === toLower(token0.address) &&
+            toLower(p?.token1) === toLower(token1.address) &&
+            feeAmount === p?.fee,
         )
         const staked = stakedPositions.filter((p) => {
           return (
-            toLower(p.token0) === toLower(token0.address) &&
-            toLower(p.token1) === toLower(token1.address) &&
-            feeAmount === p.fee
+            toLower(p?.token0) === toLower(token0.address) &&
+            toLower(p?.token1) === toLower(token1.address) &&
+            feeAmount === p?.fee
           )
         })
 
         return {
           ...farm,
-          unstakedPositions: unstaked,
-          stakedPositions: staked,
+          unstakedPositions: unstaked.filter((d) => d !== undefined),
+          stakedPositions: staked.filter((d) => d !== undefined),
           pendingCakeByTokenIds: Object.entries(pendingCakeByTokenIds).reduce<IPendingCakeByTokenId>(
             (acc, [tokenId, cake]) => {
-              const foundPosition = staked.find((p) => p.tokenId === BigInt(tokenId))
+              const foundPosition = staked.find((p) => p?.tokenId === BigInt(tokenId))
 
               if (foundPosition) {
                 return { ...acc, [tokenId]: cake }
@@ -361,7 +362,12 @@ const useV3BoostedFarm = (pids?: number[]) => {
 
   const { data } = useQuery(
     ['v3/boostedFarm', chainId, pids?.join('-')],
-    () => getV3FarmBoosterWhiteList({ farmBoosterContract: farmBoosterVeCakeContract, chainId, pids: pids ?? [] }),
+    () =>
+      getV3FarmBoosterWhiteList({
+        farmBoosterContract: farmBoosterVeCakeContract,
+        chainId: chainId ?? -1,
+        pids: pids ?? [],
+      }),
     {
       enabled: Boolean(chainId && pids && pids.length > 0 && bCakeSupportedChainId.includes(chainId)),
       retry: 3,

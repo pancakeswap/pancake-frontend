@@ -116,7 +116,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   const { isDark, colors } = useTheme()
 
   const title = `${lpSymbol} (#${tokenId.toString()})`
-  const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
+  const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId ?? -1] ?? ''}`
 
   const { updatedUserMultiplierBeforeBoosted } = useVeCakeUserMultiplierBeforeBoosted()
   const { mutate: updateIsBoostedPool } = useIsBoostedPool(tokenId.toString())
