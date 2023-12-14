@@ -9,7 +9,6 @@ import {
 } from './types'
 
 export const ONE_DAY_MILLISECONDS = 86400000
-export const ONE_YEAR_MILLISECONDS = 86400000 * 365
 export const TWO_MINUTES_MILLISECONDS = 120000
 
 export const NotificationFilterTypes: OptionProps[] = [

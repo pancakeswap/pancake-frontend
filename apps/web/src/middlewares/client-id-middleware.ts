@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { NextFetchEvent, NextResponse } from 'next/server'
 import { v4 } from 'uuid'
-import { ONE_YEAR_MILLISECONDS } from 'views/Notifications/constants'
+import { ONE_YEAR_MILLISECONDS } from './constants'
 import { ExtendedNextReq, MiddlewareFactory, NextMiddleware } from './types'
 
 const clientCookieOptions = { httpOnly: true, secure: true, maxAge: ONE_YEAR_MILLISECONDS }

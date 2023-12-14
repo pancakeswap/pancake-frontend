@@ -6,7 +6,7 @@ import {
   getCookieKey,
 } from 'config/experminetalFeatures'
 import { NextFetchEvent, NextResponse } from 'next/server'
-import { ONE_YEAR_MILLISECONDS } from 'views/Notifications/constants'
+import { ONE_YEAR_MILLISECONDS } from './constants'
 import { ExtendedNextReq, MiddlewareFactory, NextMiddleware } from './types'
 // this function generates a deterministic result for a user for a given feature
 // it hashes a concatination of the users ip together with the features identifier and
