@@ -345,4 +345,20 @@ export const ethereumTokens = {
     'Inspect',
     'https://www.inspect.xyz/',
   ),
+  id: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x2dfF88A56767223A5529eA5960Da7A3F5f766406',
+    18,
+    'ID',
+    'SPACE ID',
+    'https://space.id/',
+  ),
+  bonk: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x1151CB3d861920e07a38e03eEAd12C32178567F6',
+    5,
+    'BONK',
+    'BONK',
+    'https://bonkcoin.com',
+  ),
 }
