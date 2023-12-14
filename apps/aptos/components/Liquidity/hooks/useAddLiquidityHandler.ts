@@ -1,12 +1,11 @@
 import { Currency, CurrencyAmount, Router } from '@pancakeswap/aptos-swap-sdk'
 import { SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
-import { log } from 'next-axiom'
 import { useCallback, useContext, useMemo, useState } from 'react'
 
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useUserSlippage } from '@pancakeswap/utils/user'
 import { calculateSlippageAmount } from 'utils/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 
@@ -67,7 +66,6 @@ export default function useAddLiquidityHandler({
     )
 
     executeTransaction(payload, (error) => {
-      log.error('Add Liquidity Simulation Error', { error, payload })
       if (error instanceof SimulateTransactionError) {
         setLiquidityState({
           attemptingTxn: false,
@@ -92,7 +90,6 @@ export default function useAddLiquidityHandler({
         })
       })
       .catch((err) => {
-        log.error('Add Liquidity Error', { error: err, payload })
         console.error(`Add Liquidity failed`, { err }, payload)
 
         let errorMsg = ''

@@ -1,13 +1,12 @@
-import { Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
 
-import { sendLog } from './log'
-import { v3SubgraphProvider, viemProviders } from './provider'
 import { poolsRoute } from './pools'
+import { v3SubgraphProvider, viemProviders } from './provider'
 import { setupPoolBackupCrontab } from './subgraphPoolBackup'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
@@ -195,7 +194,6 @@ router.post('/v0/quote', async (req, event) => {
       response = error(500, e instanceof Error ? e.message : 'No valid trade')
     }
   } else {
-    sendLog({ message: 'cache hit', url: cacheUrl.toString() })
     response = new Response(cacheResponse.body, cacheResponse)
   }
 
