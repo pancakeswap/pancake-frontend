@@ -5,6 +5,7 @@ import {
   FarmV3DataWithPriceTVL,
   FarmsV3Response,
   IPendingCakeByTokenId,
+  PositionDetails,
   SerializedFarmsV3Response,
   bCakeSupportedChainId,
   createFarmFetcherV3,
@@ -21,7 +22,6 @@ import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
@@ -272,8 +272,12 @@ const usePositionsByUserFarms = (
     if (!positions) return [[], []]
     const unstakedIds = tokenIds.filter((id) => !stakedIds.find((s) => s === id))
     return [
-      unstakedIds.map((id) => positions.find((p) => p.tokenId === id)).filter((p) => (p?.liquidity ?? 0n) > 0n),
-      stakedIds.map((id) => positions.find((p) => p.tokenId === id)).filter((p) => (p?.liquidity ?? 0n) > 0n),
+      unstakedIds
+        .map((id) => positions.find((p) => p.tokenId === id))
+        .filter((p) => (p?.liquidity ?? 0n) > 0n) as PositionDetails[],
+      stakedIds
+        .map((id) => positions.find((p) => p.tokenId === id))
+        .filter((p) => (p?.liquidity ?? 0n) > 0n) as PositionDetails[],
     ]
   }, [positions, stakedIds, tokenIds])
 
@@ -311,8 +315,8 @@ const usePositionsByUserFarms = (
 
         return {
           ...farm,
-          unstakedPositions: unstaked.filter((d) => d !== undefined),
-          stakedPositions: staked.filter((d) => d !== undefined),
+          unstakedPositions: unstaked,
+          stakedPositions: staked,
           pendingCakeByTokenIds: Object.entries(pendingCakeByTokenIds).reduce<IPendingCakeByTokenId>(
             (acc, [tokenId, cake]) => {
               const foundPosition = staked.find((p) => p?.tokenId === BigInt(tokenId))

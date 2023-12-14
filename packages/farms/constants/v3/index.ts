@@ -38,6 +38,6 @@ export const bCakeFarmBoosterV3Address: Addresses = {
   [ChainId.BSC_TESTNET]: '0x56666300A1E25624489b661f3C6c456c159a109a',
 }
 export const bCakeFarmBoosterVeCakeAddress: Addresses = {
-  [ChainId.BSC]: '0x413706FE696A1CCBa622d74F72b787104c3d38Fc',
+  [ChainId.BSC]: '0x625F45234D6335859a8b940960067E89476300c6',
   [ChainId.BSC_TESTNET]: '0x1F32591CC45f00BaE3A742Bf2bCAdAe59DbAd228',
 }

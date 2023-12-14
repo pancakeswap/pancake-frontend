@@ -41,13 +41,11 @@ const bsc = {
     ...bsc_.rpcUrls,
     public: {
       ...bsc_.rpcUrls.public,
-      // TODO: remove this to the original one
-      http: ['https://devnet_1.pancakeswap.ai'],
+      http: ['https://bsc-dataseed.binance.org/'],
     },
     default: {
       ...bsc_.rpcUrls.default,
-      // TODO: remove this to the original one
-      http: ['https://devnet_1.pancakeswap.ai'],
+      http: ['https://bsc-dataseed.binance.org/'],
     },
   },
 } satisfies Chain
