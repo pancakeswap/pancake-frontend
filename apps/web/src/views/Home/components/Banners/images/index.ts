@@ -14,15 +14,6 @@ import ETHXPancakeSwap from './ethXpancakeswap.png'
 import farmV3MigrationBunny from './farmV3MigrationBunny.png'
 import farmV3MigrationBunnyFull from './farmV3MigrationBunnyFull.png'
 import farmV3MigrationMobileBunny from './farmV3MigrationMobileBunny.png'
-import liquidStakingBunny from './liquidStakingBunny.png'
-import liquidStakingBunnyBg1 from './liquidStakingBunnyBg1.png'
-import liquidStakingBunnyBg2 from './liquidStakingBunnyBg2.png'
-import liquidStakingBunnyBg2Mobile from './liquidStakingBunnyBg2Mobile.png'
-import liquidStakingBunnyBg3 from './liquidStakingBunnyBg3.png'
-import liquidStakingBunnyBg4 from './liquidStakingBunnyBg4.png'
-import liquidStakingBunnyMobile from './liquidStakingBunnyMobile.png'
-import liquidStakingTitle from './liquidStakingTitle.png'
-import liquidStakingTitleMobile from './liquidStakingTitleMobile.png'
 import lotteryImage from './lottery.png'
 import lotteryMobileImage from './lotteryMobile.png'
 import modImage from './mod-tc-desktop.png'
@@ -136,15 +127,6 @@ export {
   lineaBunny,
   lineaBunnyMobile,
   lineaLogo,
-  liquidStakingBunny,
-  liquidStakingBunnyBg1,
-  liquidStakingBunnyBg2,
-  liquidStakingBunnyBg2Mobile,
-  liquidStakingBunnyBg3,
-  liquidStakingBunnyBg4,
-  liquidStakingBunnyMobile,
-  liquidStakingTitle,
-  liquidStakingTitleMobile,
   lotteryImage,
   lotteryMobileImage,
   mercuryoLogo,
