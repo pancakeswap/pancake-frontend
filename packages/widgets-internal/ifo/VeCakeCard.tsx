@@ -1,9 +1,11 @@
 import { styled } from "styled-components";
-import { Card, CardHeader, Flex, Text, QuestionHelper, FlexGap, CardBody, Balance } from "@pancakeswap/uikit";
+import { Card, CardHeader, Flex, Text, QuestionHelper, FlexGap, CardBody } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
 import { PropsWithChildren, ReactNode, useMemo } from "react";
 import { BigNumber } from "bignumber.js";
 import Image from "next/image";
+
+import { BalanceDisplay } from "./BalanceDisplay";
 
 const StyledCard = styled(Card)`
   min-width: 280px;
@@ -48,7 +50,7 @@ export function MyICake({ amount = 0 }: { amount?: number | BigNumber }) {
         {t("My iCAKE")}
       </Text>
       <FlexGap gap="0.25rem" alignItems="center">
-        <Balance
+        <BalanceDisplay
           fontSize="1.5rem"
           bold
           value={Number(amount.toString())}

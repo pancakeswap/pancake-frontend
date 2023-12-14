@@ -58,7 +58,9 @@ export function useUserIfoInfo({ chainId, ifoAddress }: Params) {
 
   const credit = useMemo(
     () =>
-      data?.credit && chainId && CAKE[chainId] ? CurrencyAmount.fromRawAmount(CAKE[chainId], data.credit) : undefined,
+      chainId && CAKE[chainId] && data?.credit !== undefined
+        ? CurrencyAmount.fromRawAmount(CAKE[chainId], data?.credit)
+        : undefined,
     [data?.credit, chainId],
   )
   const veCake = useMemo(

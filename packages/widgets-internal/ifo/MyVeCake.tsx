@@ -1,9 +1,11 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Balance, FlexGap, Text } from "@pancakeswap/uikit";
+import { FlexGap, Text } from "@pancakeswap/uikit";
 import { PropsWithChildren, useMemo } from "react";
 import styled from "styled-components";
 import { BigNumber } from "bignumber.js";
 import Image from "next/image";
+
+import { BalanceDisplay } from "./BalanceDisplay";
 
 const Container = styled(FlexGap)`
   border-radius: 16px;
@@ -33,7 +35,7 @@ export function MyVeCake({ amount = 0 }: PropsWithChildren<{ amount?: number | B
         alignItems="center"
       >
         {label}
-        <Balance fontSize="1.25rem" bold color="white" value={balanceNumber} decimals={2} />
+        <BalanceDisplay fontSize="1.25rem" bold color="white" value={balanceNumber} decimals={2} />
       </FlexGap>
     </Container>
   );
