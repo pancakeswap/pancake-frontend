@@ -242,9 +242,8 @@ export const fetchNodeHistory = createAsyncThunk<
 // Leaderboard
 export const filterLeaderboard = createAsyncThunk<
   { results: PredictionUser[] },
-  { filters: LeaderboardFilter },
-  { extra: PredictionConfig }
->('predictions/filterLeaderboard', async ({ filters }, { extra }) => {
+  { filters: LeaderboardFilter; extra: PredictionConfig }
+>('predictions/filterLeaderboard', async ({ filters, extra }) => {
   const usersResponse = await getPredictionUsers(
     {
       skip: 0,
@@ -262,16 +261,16 @@ export const filterLeaderboard = createAsyncThunk<
 
 export const fetchAddressResult = createAsyncThunk<
   { account: string; data: PredictionUser },
-  string,
-  { rejectValue: string; extra: PredictionConfig }
->('predictions/fetchAddressResult', async (account, { rejectWithValue, extra }) => {
-  const userResponse = await getPredictionUser(account, extra.api, extra.token.symbol)
+  { account: string; api: string; tokenSymbol: string },
+  { rejectValue: string }
+>('predictions/fetchAddressResult', async ({ account, api, tokenSymbol }, { rejectWithValue }) => {
+  const userResponse = await getPredictionUser(account, api, tokenSymbol)
 
   if (!userResponse) {
     return rejectWithValue(account)
   }
 
-  return { account, data: transformUserResponse(extra.token.symbol)(userResponse) }
+  return { account, data: transformUserResponse(tokenSymbol)(userResponse) }
 })
 
 export const filterNextPageLeaderboard = createAsyncThunk<

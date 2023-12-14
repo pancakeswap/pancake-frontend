@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "viem": "1.15.1",
+    "wagmi": "1.4.3",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/tokens": "workspace:*"
   },

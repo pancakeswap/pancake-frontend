@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import times from 'lodash/times'
-import orderBy from 'lodash/orderBy'
-import { Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
-import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
+import { Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
+import orderBy from 'lodash/orderBy'
+import times from 'lodash/times'
+import { useEffect, useState } from 'react'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { Bet } from 'state/types'
 import PositionLabel from './PositionLabel'
@@ -31,26 +31,28 @@ const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps
     const fetchBetHistory = async () => {
       setIsFetching(true)
       try {
-        const response = await getBetHistory(
-          {
-            user: account.toLowerCase(),
-          },
-          numberOfBets,
-          undefined,
-          api,
-          token.symbol,
-        )
+        if (token?.symbol) {
+          const response = await getBetHistory(
+            {
+              user: account.toLowerCase(),
+            },
+            numberOfBets,
+            undefined,
+            api,
+            token?.symbol,
+          )
 
-        const transformer = transformBetResponse(token.symbol)
+          const transformer = transformBetResponse(token?.symbol)
 
-        setBets(response.map(transformer))
+          setBets(response.map(transformer))
+        }
       } finally {
         setIsFetching(false)
       }
     }
 
     fetchBetHistory()
-  }, [account, numberOfBets, setIsFetching, setBets, api, token.symbol])
+  }, [account, numberOfBets, setIsFetching, setBets, api, token?.symbol])
 
   return (
     <Table>
@@ -58,7 +60,7 @@ const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps
         <tr>
           <Th>{t('Round')}</Th>
           <Th>{t('Direction')}</Th>
-          <Th textAlign="right">{t('Winnings (%symbol%)', { symbol: token.symbol })}</Th>
+          <Th textAlign="right">{t('Winnings (%symbol%)', { symbol: token?.symbol })}</Th>
         </tr>
       </thead>
       <tbody>
@@ -77,13 +79,13 @@ const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps
               </tr>
             ))
           : orderedBets.map((bet) => {
-              const isCancelled = bet.round.failed
-              const isWinner = bet.position === bet.round.position
+              const isCancelled = bet?.round?.failed
+              const isWinner = bet.position === bet?.round?.position
 
               return (
                 <tr key={bet.id}>
                   <Td textAlign="center" fontWeight="bold">
-                    {bet.round.epoch}
+                    {bet?.round?.epoch}
                   </Td>
                   <Td textAlign="center">
                     <PositionLabel position={bet.position} />

@@ -1,17 +1,16 @@
-import { Card, Table, Th } from '@pancakeswap/uikit'
-import { PredictionUser } from 'state/types'
-import Container from 'components/Layout/Container'
 import { useTranslation } from '@pancakeswap/localization'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { Card, Table, Th } from '@pancakeswap/uikit'
+import Container from 'components/Layout/Container'
+import { PredictionUser } from 'state/types'
 import DesktopRow from './DesktopRow'
 
 interface DesktopResultsProps {
   results: PredictionUser[]
+  pickedTokenSymbol: string
 }
 
-const DesktopResults: React.FC<React.PropsWithChildren<DesktopResultsProps>> = ({ results }) => {
+const DesktopResults: React.FC<React.PropsWithChildren<DesktopResultsProps>> = ({ results, pickedTokenSymbol }) => {
   const { t } = useTranslation()
-  const { token } = useConfig()
 
   return (
     <Container mb="24px">
@@ -21,7 +20,7 @@ const DesktopResults: React.FC<React.PropsWithChildren<DesktopResultsProps>> = (
             <tr>
               <Th width="60px">&nbsp;</Th>
               <Th textAlign="left">{t('User')}</Th>
-              <Th textAlign="right">{t('Net Winnings (%symbol%)', { symbol: token.symbol })}</Th>
+              <Th textAlign="right">{t('Net Winnings (%symbol%)', { symbol: pickedTokenSymbol })}</Th>
               <Th>{t('Win Rate')}</Th>
               <Th>{t('Rounds Won')}</Th>
               <Th>{t('Rounds Played')}</Th>

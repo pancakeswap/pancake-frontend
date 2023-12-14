@@ -1,5 +1,5 @@
-import { Address } from 'viem'
 import { Token } from '@pancakeswap/sdk'
+import { Address } from 'viem'
 
 export enum PredictionSupportedSymbol {
   BNB = 'BNB',

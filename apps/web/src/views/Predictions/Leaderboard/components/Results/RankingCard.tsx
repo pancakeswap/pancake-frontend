@@ -1,34 +1,36 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
 import {
   Box,
+  BscScanIcon,
   Card,
   CardBody,
   CardRibbon,
   Flex,
-  ProfileAvatar,
   LaurelLeftIcon,
   LaurelRightIcon,
   Link,
-  Text,
+  ProfileAvatar,
   SubMenu,
   SubMenuItem,
+  Text,
   useModal,
-  BscScanIcon,
 } from '@pancakeswap/uikit'
-import { PredictionUser } from 'state/types'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useStatModalProps } from 'state/predictions/hooks'
 import { useProfileForAddress } from 'state/profile/hooks'
+import { PredictionUser } from 'state/types'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import truncateHash from '@pancakeswap/utils/truncateHash'
-import { useTranslation } from '@pancakeswap/localization'
-import { useStatModalProps } from 'state/predictions/hooks'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { useDomainNameForAddress } from 'hooks/useDomain'
 import WalletStatsModal from '../WalletStatsModal'
 import { NetWinningsRow, Row } from './styles'
 
 interface RankingCardProps {
   rank: 1 | 2 | 3
   user: PredictionUser
+  token: Token
+  api: string
 }
 
 const RotatedLaurelLeftIcon = styled(LaurelLeftIcon)`
@@ -51,13 +53,16 @@ const getRankingColor = (rank: number) => {
   return 'gold'
 }
 
-const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user }) => {
+const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user, token, api }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
   const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
-  const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
-  const { token, api } = useConfig()
+  const { result, address, leaderboardLoadingState } = useStatModalProps({
+    account: user.id,
+    api,
+    tokenSymbol: token?.symbol,
+  })
 
   const [onPresentWalletStatsModal] = useModal(
     <WalletStatsModal
@@ -108,7 +113,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
             {`${user.winRate.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}%`}
           </Text>
         </Row>
-        <NetWinningsRow amount={user.netBNB} />
+        <NetWinningsRow amount={user.netBNB} token={token} />
         <Row>
           <Text fontSize="12px" color="textSubtle">
             {t('Rounds Won')}

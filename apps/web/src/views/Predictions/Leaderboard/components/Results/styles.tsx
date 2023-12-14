@@ -1,7 +1,6 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import { Flex, FlexProps, Text } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
 
 export const Row: React.FC<React.PropsWithChildren<FlexProps>> = ({ children, ...props }) => {
@@ -16,14 +15,14 @@ interface NetWinningsProps extends FlexProps {
   amount: number
   textPrefix?: string
   textColor?: string
+  token: Token
 }
 
-export const NetWinnings: React.FC<React.PropsWithChildren<NetWinningsProps>> = (props) => {
-  const { token } = useConfig()
+export const NetWinnings: React.FC<React.PropsWithChildren<NetWinningsProps>> = ({ token, ...props }) => {
   return <NetWinningsView token={token} {...props} />
 }
 
-export const NetWinningsView: React.FC<React.PropsWithChildren<NetWinningsProps & { token: Token }>> = ({
+export const NetWinningsView: React.FC<React.PropsWithChildren<NetWinningsProps>> = ({
   token,
   amount,
   textPrefix = '',
@@ -48,16 +47,23 @@ export const NetWinningsView: React.FC<React.PropsWithChildren<NetWinningsProps 
   )
 }
 
-export const NetWinningsRow: React.FC<React.PropsWithChildren<{ amount: number }>> = ({ amount }) => {
+export const NetWinningsRow: React.FC<React.PropsWithChildren<{ amount: number; token: Token }>> = ({
+  amount,
+  token,
+}) => {
   const { t } = useTranslation()
-  const { token } = useConfig()
 
   return (
     <Row mb="4px">
       <Text fontSize="12px" color="textSubtle">
-        {t('Net Winnings (%symbol%)', { symbol: token.symbol })}
+        {t('Net Winnings (%symbol%)', { symbol: token?.symbol })}
       </Text>
-      <NetWinnings amount={amount} textPrefix={amount > 0 ? '+' : ''} textColor={amount > 0 ? 'success' : 'failure'} />
+      <NetWinnings
+        amount={amount}
+        token={token}
+        textPrefix={amount > 0 ? '+' : ''}
+        textColor={amount > 0 ? 'success' : 'failure'}
+      />
     </Row>
   )
 }

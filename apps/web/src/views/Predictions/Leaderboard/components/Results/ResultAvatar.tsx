@@ -1,28 +1,30 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
 import {
   Box,
+  BscScanIcon,
   Flex,
   FlexProps,
   Link,
   ProfileAvatar,
   SubMenu,
   SubMenuItem,
-  useModal,
   Text,
-  BscScanIcon,
+  useModal,
 } from '@pancakeswap/uikit'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useStatModalProps } from 'state/predictions/hooks'
+import { useProfileForAddress } from 'state/profile/hooks'
+import { PredictionUser } from 'state/types'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import { PredictionUser } from 'state/types'
-import { useProfileForAddress } from 'state/profile/hooks'
-import truncateHash from '@pancakeswap/utils/truncateHash'
-import { useTranslation } from '@pancakeswap/localization'
-import { useStatModalProps } from 'state/predictions/hooks'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { useDomainNameForAddress } from 'hooks/useDomain'
 import WalletStatsModal from '../WalletStatsModal'
 
 interface ResultAvatarProps extends FlexProps {
   user: PredictionUser
+  token: Token
+  api: string
 }
 
 const AvatarWrapper = styled(Box)`
@@ -44,12 +46,15 @@ const UsernameWrapper = styled(Box)`
   }
 `
 
-const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ user, ...props }) => {
+const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ user, token, api, ...props }) => {
   const { t } = useTranslation()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
   const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
-  const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
-  const { token, api } = useConfig()
+  const { result, address, leaderboardLoadingState } = useStatModalProps({
+    account: user.id,
+    api,
+    tokenSymbol: token?.symbol,
+  })
 
   const [onPresentWalletStatsModal] = useModal(
     <WalletStatsModal

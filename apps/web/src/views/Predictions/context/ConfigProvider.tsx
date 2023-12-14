@@ -1,5 +1,5 @@
-import { createContext, useContext } from 'react'
 import { PredictionConfig } from '@pancakeswap/prediction'
+import { createContext, useContext } from 'react'
 
 export const ConfigContext = createContext<PredictionConfig | null>(null)
 
