@@ -144,7 +144,7 @@
     "react-popper": "^2.3.0",
     "styled-system": "^5.1.5",
     "tslib": "^2.2.0",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.12"
   },
   "publishConfig": {
     "access": "public"
