@@ -45,6 +45,9 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "resolutions": {
+    "wagmi": "1.4.12"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@pancakeswap/eslint-config-pancake": "workspace:*",

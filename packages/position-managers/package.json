@@ -16,7 +16,7 @@
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
     "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.12"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",
