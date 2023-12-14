@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, ExpandableSectionButton, Flex, Text, TooltipText, useModalV2, useTooltip, Box } from '@pancakeswap/uikit'
+import { Box, Card, ExpandableSectionButton, Flex, Text, TooltipText, useModalV2, useTooltip } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -8,16 +8,17 @@ import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { getMerklLink } from 'utils/getMerklLink'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
-import { getMerklLink } from 'utils/getMerklLink'
+import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
+import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
-import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
-import { useBoostStatus, BoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 
 const { DetailsSection } = FarmWidget.FarmCard
 
@@ -69,6 +70,11 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   const infoUrl = useMemo(() => {
     return chainId ? `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}` : ''
   }, [chainId, lpAddress])
+  const hasBothFarmAndMerkl = useMemo(
+    // for now, only rETH-ETH require both farm and merkl, so we hardcode it here
+    () => Boolean(merklLink) && isAddressEqual(farm.lpAddress, '0x2201d2400d30BFD8172104B4ad046d019CA4E7bd'),
+    [farm.lpAddress, merklLink],
+  )
 
   const toggleExpandableSection = useCallback(() => {
     setShowExpandableSection((prev) => !prev)
@@ -93,6 +99,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
         <CardHeading
           lpLabel={lpLabel}
           merklLink={merklLink}
+          hasBothFarmAndMerkl={hasBothFarmAndMerkl}
           multiplier={farm.multiplier}
           token={farm.token}
           quoteToken={farm.quoteToken}
