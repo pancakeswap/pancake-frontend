@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import BigNumber from "bignumber.js";
 import { Token } from "@pancakeswap/sdk";
+import BigNumber from "bignumber.js";
+import { ReactNode } from "react";
 
 export interface FarmTableEarnedProps {
   earnings: number;
@@ -34,6 +34,7 @@ export interface FarmTableFarmTokenInfoProps {
   children?: ReactNode;
   isCommunity?: boolean;
   merklLink?: string;
+  hasBothFarmAndMerkl?: boolean;
 }
 
 export type ColumnsDefTypes = {

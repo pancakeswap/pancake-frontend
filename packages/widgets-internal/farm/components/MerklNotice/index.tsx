@@ -11,10 +11,39 @@ const InlineLink = styled(LinkExternal)`
 type MerklNoticeContentProps = {
   linkColor?: string;
   merklLink: string;
+  hasFarm?: boolean;
 };
 
-export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({ linkColor = "primary", merklLink }) => {
+export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
+  linkColor = "primary",
+  merklLink,
+  hasFarm,
+}) => {
   const { t } = useTranslation();
+
+  if (hasFarm) {
+    return (
+      <>
+        <Box>
+          <Text display="inline" color="currentColor">
+            {t("Incentives can be earned on either Merkl or Farm but NOT both")}
+            <br />
+            <br />
+            <p>
+              {t(
+                "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on "
+              )}
+              <InlineLink color={linkColor} external display="inline" href={merklLink}>
+                {t("Merkl")}
+              </InlineLink>
+            </p>
+            <br />
+            {t("To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.")}
+          </Text>
+        </Box>
+      </>
+    );
+  }
   return (
     <>
       <Box>
@@ -41,6 +70,7 @@ type MerklNoticeProps = {
   placement?: Placement;
   tooltipOffset?: [number, number];
   merklLink: string;
+  hasFarm?: boolean;
 };
 
 const MerklNotice: React.FC<MerklNoticeProps> = ({
@@ -48,12 +78,16 @@ const MerklNotice: React.FC<MerklNoticeProps> = ({
   placement = "top-start",
   tooltipOffset = [-20, 10],
   merklLink,
+  hasFarm,
 }) => {
-  const { tooltip, tooltipVisible, targetRef } = useTooltip(<MerklNoticeContent merklLink={merklLink} />, {
-    placement,
-    tooltipOffset,
-    trigger: isMobile ? "focus" : "hover",
-  });
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(
+    <MerklNoticeContent merklLink={merklLink} hasFarm={hasFarm} />,
+    {
+      placement,
+      tooltipOffset,
+      trigger: isMobile ? "focus" : "hover",
+    }
+  );
   return (
     <>
       <TooltipText ref={targetRef} display="inline">

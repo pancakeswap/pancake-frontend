@@ -1,7 +1,7 @@
 import { Token } from '@pancakeswap/sdk'
-import { AutoRow, Flex, Heading, Skeleton, Tag, useTooltip, FarmMultiplierInfo, Box } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
+import { AutoRow, Box, FarmMultiplierInfo, Flex, Heading, Skeleton, Tag, useTooltip } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
 
@@ -22,6 +22,7 @@ type ExpandableSectionProps = {
   farmCakePerSecond?: string
   totalMultipliers?: string
   merklLink?: string
+  hasBothFarmAndMerkl?: boolean
 }
 
 const Wrapper = styled(Flex)`
@@ -46,6 +47,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   farmCakePerSecond,
   totalMultipliers,
   merklLink,
+  hasBothFarmAndMerkl,
 }) => {
   const isReady = multiplier !== undefined
 
@@ -71,7 +73,12 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
             {lpLabel?.split(' ')?.[0] ?? ''}
             {merklLink ? (
               <Box mr="-4px" ml="4px">
-                <MerklNotice.WithTooltip placement="top" tooltipOffset={[0, 10]} merklLink={merklLink} />
+                <MerklNotice.WithTooltip
+                  placement="top"
+                  tooltipOffset={[0, 10]}
+                  merklLink={merklLink}
+                  hasFarm={hasBothFarmAndMerkl}
+                />
               </Box>
             ) : null}
           </Heading>

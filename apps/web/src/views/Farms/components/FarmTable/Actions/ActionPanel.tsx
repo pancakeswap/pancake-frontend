@@ -1,25 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Flex,
-  Skeleton,
-  Text,
-  useMatchBreakpoints,
-  useModalV2,
-  ScanLink,
   LinkExternal,
   Message,
   MessageText,
+  ScanLink,
+  Skeleton,
+  Text,
   VerifiedIcon,
+  useMatchBreakpoints,
+  useModalV2,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FC, useContext, useMemo } from 'react'
-import { multiChainPaths, ChainLinkSupportChains } from 'state/info/constant'
-import { styled, css, keyframes } from 'styled-components'
+import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
+import { css, keyframes, styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
@@ -176,12 +177,13 @@ const StyleMerklWarning = styled.div`
 
 const MerklWarning: React.FC<{
   merklLink: string
-}> = ({ merklLink }) => {
+  hasFarm?: boolean
+}> = ({ merklLink, hasFarm }) => {
   return (
     <StyleMerklWarning>
       <Message variant="primary" icon={<VerifiedIcon color="#7645D9" />}>
         <MessageText color="#7645D9">
-          <MerklNotice.Content merklLink={merklLink} linkColor="currentColor" />
+          <MerklNotice.Content hasFarm={hasFarm} merklLink={merklLink} linkColor="currentColor" />
         </MessageText>
       </Message>
     </StyleMerklWarning>
@@ -219,6 +221,12 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const hasNoPosition = useMemo(
     () => userDataReady && farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
     [farm.stakedPositions.length, farm.unstakedPositions.length, userDataReady],
+  )
+
+  const hasBothFarmAndMerkl = useMemo(
+    // for now, only rETH-ETH require both farm and merkl, so we hardcode it here
+    () => Boolean(merklLink) && isAddressEqual(farm.lpAddress, '0x2201d2400d30BFD8172104B4ad046d019CA4E7bd'),
+    [farm.lpAddress, merklLink],
   )
 
   const addLiquidityModal = useModalV2()
@@ -276,7 +284,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
           </>
         }
       >
-        {!isDesktop && merklLink ? <MerklWarning merklLink={merklLink} /> : null}
+        {!isDesktop && merklLink ? <MerklWarning hasFarm={hasBothFarmAndMerkl} merklLink={merklLink} /> : null}
         {!userDataReady ? (
           <Skeleton height={200} width="100%" />
         ) : account && !hasNoPosition ? (

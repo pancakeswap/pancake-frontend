@@ -225,6 +225,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           isStaking: farm.stakedPositions?.length > 0,
           isCommunity: farm.isCommunity,
           merklLink,
+          // @notice: this is a hack to make the merkl notice work for rETH-ETH
+          hasBothFarmAndMerkl: Boolean(merklLink) && farm.lpAddress === '0x2201d2400d30BFD8172104B4ad046d019CA4E7bd',
         },
         type: 'v3',
         details: farm,
