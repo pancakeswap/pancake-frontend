@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text } from '@pancakeswap/uikit'
 
-import { styled, css } from 'styled-components'
+import { css, styled } from 'styled-components'
 
 export const sharedCss = css`
   @media screen and (max-width: 396px) {
@@ -45,7 +45,7 @@ const CommunitySummary = () => {
           {t('Community Members')}
         </Text>
         <StyledText fontSize="40px" bold mb="27px">
-          1.7M +
+          1.8M +
         </StyledText>
         <Text color="white" bold fontSize="16px">
           {t('Multilingual Communities')}

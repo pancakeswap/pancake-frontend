@@ -72,11 +72,16 @@ export const useTweetsData = () => {
   return useMemo(() => {
     return [
       {
-        tweet: `🎂 3 years ago, we planted the seed on the BNB Chain, and today, it has grown into Everyone's Favorite DEX across eight blockchains.`,
-        link: 'https://x.com/PancakeSwap/status/1705190230394032541?s=20',
-        date: 'Sep 22',
-        like: '249',
-        impression: '19.7k',
+        tweet: `🥞Your CAKE, Your Voice
+🐰Introducing Gauges Voting and veCAKE
+🏦More governance power 
+🪒Control CAKE emissions 
+🌊Deeper liquidity 
+🪙Vote Incentives`,
+        link: 'https://x.com/PancakeSwap/status/1727311273023742115?s=20',
+        date: 'Nov 22',
+        like: '1.2k',
+        impression: '377k',
       },
     ]
   }, [])
