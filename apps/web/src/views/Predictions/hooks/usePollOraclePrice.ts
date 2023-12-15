@@ -30,7 +30,7 @@ const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: Use
 
   const { data: galetoOraclePrice = 0n, refetch: refetchGaletoOraclePrice } = useContractRead({
     abi: galetoOracleABI,
-    address: '0x48F3aAeBea55c80aB7815D829C9B48D57c1b3bab',
+    address: galetoOracleAddress,
     functionName: 'latestAnswer',
     watch: true,
     chainId: ChainId.ZKSYNC,
