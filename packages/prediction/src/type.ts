@@ -31,8 +31,8 @@ export interface PredictionConfig {
   isNativeToken: boolean
   address: Address
   api: string
-  chainlinkOracleAddress?: Address
-  galetoOracleAddress?: Address
+  chainlinkOracleAddress?: Address // All EVM chain are using chainlink oracle, but not include zkSync chain.
+  galetoOracleAddress?: Address // Only zkSync chain use galeto oracle.
   displayedDecimals: number
   token: Token
 }
