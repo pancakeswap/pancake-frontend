@@ -1,15 +1,15 @@
-import { createPublicClient, http } from 'viem'
+import { cakeVaultV2ABI } from '@pancakeswap/pools'
 import { bscTokens } from '@pancakeswap/tokens'
 import BigNumber from 'bignumber.js'
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import fromPairs from 'lodash/fromPairs'
 import groupBy from 'lodash/groupBy'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
-import { bsc } from 'viem/chains'
-import { cakeVaultV2ABI } from '@pancakeswap/pools'
-import { Address } from 'wagmi'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
+import { createPublicClient, http } from 'viem'
+import { bsc } from 'viem/chains'
 import { convertSharesToCake } from 'views/Pools/helpers'
+import { Address } from 'wagmi'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getScores } from './getScores'
 import * as strategies from './strategies'
@@ -98,10 +98,12 @@ export const VOTING_POWER_BLOCK = {
   v1: 17137653n,
 }
 
+export const VECAKE_VOTING_POWER_BLOCK = 34371669n
+
 /**
  *  Get voting power by single user for each category
  */
-interface GetVotingPowerType {
+type GetVotingPowerType = {
   total: number
   voter: string
   poolsBalance?: number
@@ -114,10 +116,28 @@ interface GetVotingPowerType {
   lockedEndTime?: number
 }
 
+// Voting power for veCake holders
+type GetVeVotingPowerType = {
+  total: number
+  voter: string
+  veCakeBalance: number
+}
+
 const nodeRealProvider = createPublicClient({
   transport: http(`https://bsc-mainnet.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_ETH}`),
   chain: bsc,
 })
+
+export const getVeVotingPower = async (account: Address, blockNumber?: bigint): Promise<GetVeVotingPowerType> => {
+  const scores = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], Number(blockNumber))
+  const result = scores[0][account]
+
+  return {
+    total: result,
+    voter: account,
+    veCakeBalance: result,
+  }
+}
 
 export const getVotingPower = async (
   account: Address,

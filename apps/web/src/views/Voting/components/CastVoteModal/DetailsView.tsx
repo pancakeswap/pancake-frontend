@@ -1,14 +1,15 @@
-import { useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-import { Flex, Text, Box, HelpIcon, useTooltip, RocketIcon, ScanLink, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, HelpIcon, Link, RocketIcon, ScanLink, Text, useTooltip } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
 
-const StyledScanLink = styled(ScanLink)`
+export const StyledScanLink = styled(ScanLink)`
   display: inline-flex;
   font-size: 14px;
   > svg {
@@ -73,6 +74,8 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
   const { t } = useTranslation()
   const blockTimestamp = useCurrentBlockTimestamp()
 
+  const { chainId } = useActiveChainId()
+
   const isBoostingExpired = useMemo(() => {
     return lockedEndTime !== 0 && new BigNumber(blockTimestamp?.toString()).gte(lockedEndTime)
   }, [blockTimestamp, lockedEndTime])
@@ -124,7 +127,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
       </VotingBoxBorder>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
         {t('Your voting power at block')}
-        <StyledScanLink useBscCoinFallback href={getBlockExploreLink(block, 'block')} ml="8px">
+        <StyledScanLink useBscCoinFallback href={getBlockExploreLink(block, 'block', chainId)} ml="8px">
           {block}
         </StyledScanLink>
       </Text>

@@ -1,13 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Modal, useToast } from '@pancakeswap/uikit'
-import { useAccount, useWalletClient } from 'wagmi'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
 import { PANCAKE_SPACE } from 'views/Voting/config'
+import { VECAKE_VOTING_POWER_BLOCK } from 'views/Voting/helpers'
+import { useAccount, useWalletClient } from 'wagmi'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 import DetailsView from './DetailsView'
-import MainView from './MainView'
+import MainView, { VeMainView } from './MainView'
 import { CastVoteModalProps, ConfirmVoteView } from './types'
 
 const hub = 'https://hub.snapshot.org'
@@ -39,10 +40,11 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
     ifoPoolBalance,
     lockedCakeBalance,
     lockedEndTime,
+    veCakeBalance,
   } = useGetVotingPower(block)
 
   const isStartView = view === ConfirmVoteView.MAIN
-  const handleBack = isStartView ? null : () => setView(ConfirmVoteView.MAIN)
+  const handleBack = isStartView ? undefined : () => setView(ConfirmVoteView.MAIN)
   const handleViewDetails = () => setView(ConfirmVoteView.DETAILS)
 
   const title = {
@@ -51,7 +53,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   }
 
   const handleDismiss = () => {
-    onDismiss()
+    onDismiss?.()
   }
 
   const handleConfirmVote = async () => {
@@ -61,7 +63,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
         getSigner: () => {
           return {
             _signTypedData: (domain, types, message) =>
-              signer.signTypedData({
+              signer?.signTypedData({
                 account,
                 domain,
                 types,
@@ -70,6 +72,10 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
               }),
           }
         },
+      }
+
+      if (!account) {
+        return
       }
 
       await client.vote(web3 as any, account, {
@@ -101,20 +107,33 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
       headerBackground={theme.colors.gradientCardHeader}
     >
       <Box mb="24px">
-        {view === ConfirmVoteView.MAIN && (
-          <MainView
-            vote={vote}
-            isError={isError}
-            isLoading={isLoading}
-            isPending={isPending}
-            total={total}
-            lockedCakeBalance={lockedCakeBalance}
-            lockedEndTime={lockedEndTime}
-            onConfirm={handleConfirmVote}
-            onViewDetails={handleViewDetails}
-            onDismiss={handleDismiss}
-          />
-        )}
+        {view === ConfirmVoteView.MAIN &&
+          (!block || BigInt(block) >= VECAKE_VOTING_POWER_BLOCK ? (
+            <VeMainView
+              block={block}
+              vote={vote}
+              total={total}
+              isPending={isPending}
+              isLoading={isLoading}
+              isError={isError}
+              veCakeBalance={veCakeBalance}
+              onConfirm={handleConfirmVote}
+              onDismiss={handleDismiss}
+            />
+          ) : (
+            <MainView
+              vote={vote}
+              isError={isError}
+              isLoading={isLoading}
+              isPending={isPending}
+              total={total}
+              lockedCakeBalance={lockedCakeBalance}
+              lockedEndTime={lockedEndTime}
+              onConfirm={handleConfirmVote}
+              onViewDetails={handleViewDetails}
+              onDismiss={handleDismiss}
+            />
+          ))}
         {view === ConfirmVoteView.DETAILS && (
           <DetailsView
             total={total}
