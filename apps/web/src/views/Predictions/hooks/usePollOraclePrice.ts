@@ -14,7 +14,7 @@ interface UsePollOraclePriceProps {
 const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: UsePollOraclePriceProps) => {
   const { chainId } = useActiveChainId()
 
-  const shouldUseGaletoPrice = useMemo(
+  const shouldFetchGaletoPrice = useMemo(
     () => Boolean(galetoOracleAddress && chainId === ChainId.ZKSYNC),
     [galetoOracleAddress, chainId],
   )
@@ -25,7 +25,7 @@ const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: Use
     functionName: 'latestAnswer',
     watch: true,
     chainId,
-    enabled: !shouldUseGaletoPrice,
+    enabled: !shouldFetchGaletoPrice,
   })
 
   const { data: galetoOraclePrice = 0n, refetch: refetchGaletoOraclePrice } = useContractRead({
@@ -34,12 +34,12 @@ const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: Use
     functionName: 'latestAnswer',
     watch: true,
     chainId: ChainId.ZKSYNC,
-    enabled: shouldUseGaletoPrice,
+    enabled: shouldFetchGaletoPrice,
   })
 
   return {
-    price: shouldUseGaletoPrice ? galetoOraclePrice : chainlinkOraclePrice,
-    refresh: shouldUseGaletoPrice ? refetchGaletoOraclePrice : refetchChainlinkOraclePrice,
+    price: shouldFetchGaletoPrice ? galetoOraclePrice : chainlinkOraclePrice,
+    refresh: shouldFetchGaletoPrice ? refetchGaletoOraclePrice : refetchChainlinkOraclePrice,
   }
 }
 
