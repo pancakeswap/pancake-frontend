@@ -2,19 +2,13 @@ import { Gauge } from '@pancakeswap/gauges'
 import { AutoColumn, Skeleton } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import uniqBy from 'lodash/uniqBy'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { FixedSizeList } from 'react-window'
 import styled from 'styled-components'
 import { SpaceProps, space } from 'styled-system'
 import { SortBy, SortField, TableHeader } from './TableHeader'
 import { ExpandRow, TableRow } from './TableRow'
 import { RowData } from './types'
-
-const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expanded'].includes(prop) })<{
-  expanded: boolean
-}>`
-  overflow-y: auto;
-  height: ${({ expanded }) => (expanded ? 'auto' : '192px')};
-`
 
 const Table = styled.table`
   width: 100%;
@@ -24,9 +18,11 @@ const Table = styled.table`
 
 export * from './List'
 
+const ROW_HEIGHT = 70
+
 export const GaugesTable: React.FC<
   {
-    scrollStyle?: React.CSSProperties
+    maxHeight?: number | string
     totalGaugesWeight: number
     data?: Gauge[]
     isLoading?: boolean
@@ -34,7 +30,7 @@ export const GaugesTable: React.FC<
     selectRows?: Array<RowData>
     onRowSelect?: (hash: Gauge['hash']) => void
   } & SpaceProps
-> = ({ scrollStyle, data, isLoading, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
+> = ({ maxHeight, data, isLoading, totalGaugesWeight, selectable, selectRows, onRowSelect, ...props }) => {
   const [expanded, setExpanded] = useState(false)
   const [sortKey, setSortKey] = useState<SortField | undefined>()
   const [sortBy, setSortBy] = useState<SortBy | undefined>()
@@ -50,6 +46,27 @@ export const GaugesTable: React.FC<
     setSortBy(by)
   }
 
+  const Row = ({ data: rows, index, style }): JSX.Element => {
+    const row = rows[index]
+    return (
+      <TableRow
+        style={style}
+        data={row}
+        locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
+        selectable={selectable}
+        selected={selectRows?.some((r) => r.hash === row.hash)}
+        onSelect={onRowSelect}
+        totalGaugesWeight={totalGaugesWeight}
+      />
+    )
+  }
+
+  const itemKey = useCallback((index: number, row: Gauge[]) => row[index].hash, [])
+  const expandHeight = useMemo(
+    () => (typeof maxHeight !== 'undefined' ? maxHeight : ROW_HEIGHT * sortedData.length),
+    [sortedData.length, maxHeight],
+  )
+
   return (
     <Table {...props}>
       <TableHeader onSort={handleSort} selectable={selectable} total={sortedData.length} />
@@ -61,19 +78,16 @@ export const GaugesTable: React.FC<
         </AutoColumn>
       ) : (
         <div>
-          <Scrollable expanded={expanded} style={scrollStyle}>
-            {sortedData?.map((row) => (
-              <TableRow
-                key={`${row.hash}-${row.pid}`}
-                data={row}
-                locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
-                selectable={selectable}
-                selected={selectRows?.some((r) => r.hash === row.hash)}
-                onSelect={onRowSelect}
-                totalGaugesWeight={totalGaugesWeight}
-              />
-            ))}
-          </Scrollable>
+          <FixedSizeList
+            itemData={sortedData ?? []}
+            itemCount={sortedData.length}
+            itemKey={itemKey}
+            itemSize={ROW_HEIGHT}
+            height={expanded ? expandHeight : 210}
+            width="100%"
+          >
+            {Row}
+          </FixedSizeList>
           <ExpandRow onCollapse={() => setExpanded(!expanded)} />
         </div>
       )}

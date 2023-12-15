@@ -17,7 +17,7 @@ import {
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useHover } from 'hooks/useHover'
-import { useCallback, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { feeTierPercent } from 'views/V3Info/utils'
@@ -50,14 +50,15 @@ const AddIcon = () => {
   )
 }
 
-export const TableRow: React.FC<{
+const TableRowItem: React.FC<{
   data: RowData
   selectable?: boolean
   locked?: boolean
   selected?: boolean
   onSelect?: (hash: Gauge['hash']) => void
   totalGaugesWeight?: number
-}> = ({ data, locked, totalGaugesWeight, selected, selectable, onSelect }) => {
+  style?: React.CSSProperties
+}> = ({ data, locked, totalGaugesWeight, selected, selectable, onSelect, style }) => {
   const { t } = useTranslation()
 
   const maxCapPercent = useMemo(() => {
@@ -79,7 +80,7 @@ export const TableRow: React.FC<{
   const [ref, isHover] = useHover<HTMLButtonElement>()
 
   return (
-    <TRow>
+    <TRow style={style}>
       <FlexGap alignItems="center" gap="13px">
         {selectable ? (
           <span ref={ref}>
@@ -153,6 +154,8 @@ export const TableRow: React.FC<{
     </TRow>
   )
 }
+
+export const TableRow = memo(TableRowItem)
 
 export const ExpandRow: React.FC<{
   onCollapse?: () => void
