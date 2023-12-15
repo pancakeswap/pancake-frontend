@@ -1753,7 +1753,7 @@
   "Remaining": "Maradék",
   "Switch pairs here.": "Itt váltson párokat.",
   "Perpetual Futures": "Örökös határidős ügyletek",
-  "Up to 100× Leverage": "Akár 100szoros tőkeáttétel",
+  "Up to 1001× Leverage": "Up to 1001× Leverage",
   "Circulating Supply": "Körforgó kínálat",
   "Prizes will be announced and available for claiming at ~": "A nyereményeket itt közöljük és vehetők át",
   "Follow Update": "Kövesse a frissítést",
@@ -2289,7 +2289,6 @@
   "Add Stable Liquidity": "Stabil likviditás hozzáadása",
   "Add V3 Liquidity": "V3 likviditás hozzáadása",
   "MMs are temporarily unable to facilitate trades. Please try again later": "A pénzpiaci szereplők átmenetileg nem tudják elősegíteni a kereskedést. Kérjük, próbálja meg később újra",
-  "Trade to Earn Rewards": "Kereskedjen a jutalmakért",
   "Trading Reward": "Kereskedési jutalom",
   "10% trading rebate to be earned!": "10% kereskedési kedvezményt kell kiérdemelni!",
   "Why my traded volume was not tracked?": "Miért nem követték nyomon a kereskedelmi volumenemet?",
@@ -2480,10 +2479,6 @@
   "section 2.1 (c) on slippage during trades.": "a 2.1. szakasz (c) pontja a kereskedés során bekövetkező csúszásról.",
   "Please review the updates to ensure you agree with the revised terms.": "Kérjük, tekintse át a frissítéseket, hogy megbizonyosodjon egyetértésében a módosított feltételekkel.",
   "I have read and agree to the updated": "Elolvastam és elfogadom a frissített",
-  "WBETH Liquid Staking": "WBETH likvid tét elhelyezése",
-  "Liquid Staking Integration for WBETH:": "Likvid tét beépítése a WBETH-be:",
-  "Stake ETH Receive WBETH": "ETH elhelyezése tétként WBETH szerzése ellenében",
-  "ETH to WBETH conversion and earn ETH staking rewards!": "ETH átváltása WBETH-be és ETH tét jutalmak megszerzése!",
   "Get Started": "Fogj neki",
   "V3 Farms": "V3 hozamgazdaságok",
   "V2 Farms": "V2 hozamgazdaságok",
@@ -3095,5 +3090,8 @@
   "Seconds": "Seconds",
   "PancakeSwap Meetup": "PancakeSwap Meetup",
   "Spain": "Spain",
-  "Automated Liquidity Optimization": "Automated Liquidity Optimization"
+  "Automated Liquidity Optimization": "Automated Liquidity Optimization",
+  "Incentives can be earned on either Merkl or Farm but NOT both": "Incentives can be earned on either Merkl or Farm but NOT both",
+  "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.",
+  "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on "
 }
