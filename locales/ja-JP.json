@@ -1753,7 +1753,7 @@
   "Remaining": "残り",
   "Switch pairs here.": "ここでペアを入れ替えます。",
   "Perpetual Futures": "パーペチュアルフューチャーズ",
-  "Up to 100× Leverage": "最大100xレバレッジ",
+  "Up to 1001× Leverage": "Up to 1001× Leverage",
   "Circulating Supply": "循環サプライ",
   "Prizes will be announced and available for claiming at ~": "賞金は次の日時に発表され、請求可能になります:",
   "Follow Update": "更新をフォロー",
@@ -2289,7 +2289,6 @@
   "Add Stable Liquidity": "安定した流動性を追加",
   "Add V3 Liquidity": "V3流動性の追加",
   "MMs are temporarily unable to facilitate trades. Please try again later": "MMは一時的にトレードを提供できません。後でもう一度お試しください",
-  "Trade to Earn Rewards": "トレードして報酬を獲得",
   "Trading Reward": "トレード報酬",
   "10% trading rebate to be earned!": "10%のトレードリベートを獲得します！",
   "Why my traded volume was not tracked?": "トレードしたボリュームが追跡されなかったのは何故ですか？",
@@ -2480,10 +2479,6 @@
   "section 2.1 (c) on slippage during trades.": "セクション2.1（c）トレード中のスリッページに関する項目。",
   "Please review the updates to ensure you agree with the revised terms.": "更新内容をご確認の上、新しい規約に同意してください。",
   "I have read and agree to the updated": "以下の更新内容を読み、それに同意します:",
-  "WBETH Liquid Staking": "WBETHリキッドステーキング",
-  "Liquid Staking Integration for WBETH:": "WBETHのリキッドステーキング統合:",
-  "Stake ETH Receive WBETH": "ETHをステーキングするとWBETHを獲得",
-  "ETH to WBETH conversion and earn ETH staking rewards!": "ETHからWBETHに変換して、ETHステーキング報酬を獲得！",
   "Get Started": "始める",
   "V3 Farms": "V3ファーム",
   "V2 Farms": "V2ファーム",
@@ -3095,5 +3090,8 @@
   "Seconds": "Seconds",
   "PancakeSwap Meetup": "PancakeSwap Meetup",
   "Spain": "Spain",
-  "Automated Liquidity Optimization": "Automated Liquidity Optimization"
+  "Automated Liquidity Optimization": "Automated Liquidity Optimization",
+  "Incentives can be earned on either Merkl or Farm but NOT both": "Incentives can be earned on either Merkl or Farm but NOT both",
+  "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.",
+  "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on "
 }
