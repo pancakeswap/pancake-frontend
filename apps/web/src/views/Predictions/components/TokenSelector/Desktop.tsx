@@ -56,7 +56,10 @@ export const DesktopPredictionTokenSelector: React.FC<React.PropsWithChildren<De
               >
                 {`${list?.token?.symbol}USD`}
               </Text>
-              {list?.chainlinkOracleAddress && <Price chainlinkOracleAddress={list?.chainlinkOracleAddress} />}
+              <Price
+                chainlinkOracleAddress={list?.chainlinkOracleAddress}
+                galetoOracleAddress={list?.galetoOracleAddress}
+              />
             </Flex>
           ))}
         </DropDownListContainer>

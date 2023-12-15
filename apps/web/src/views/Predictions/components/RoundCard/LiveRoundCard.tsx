@@ -41,9 +41,12 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
-  const { price, refresh } = usePollOraclePrice()
   const bufferSeconds = useGetBufferSeconds()
   const config = useConfig()
+  const { price, refresh } = usePollOraclePrice({
+    chainlinkOracleAddress: config?.chainlinkOracleAddress,
+    galetoOracleAddress: config?.galetoOracleAddress,
+  })
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 

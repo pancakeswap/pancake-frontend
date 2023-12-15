@@ -32,9 +32,11 @@ export const MobilePredictionTokenSelector: React.FC<React.PropsWithChildren<Des
             >
               {`${config?.token?.symbol}USD`}
             </Text>
-            {config?.chainlinkOracleAddress && (
-              <Price color="secondary" chainlinkOracleAddress={config?.chainlinkOracleAddress} />
-            )}
+            <Price
+              color="secondary"
+              chainlinkOracleAddress={config?.chainlinkOracleAddress}
+              galetoOracleAddress={config?.galetoOracleAddress}
+            />
           </Flex>
           <Button variant="text" onClick={onDismiss} px={0} height="fit-content">
             <CloseIcon color="primary" />
@@ -59,7 +61,10 @@ export const MobilePredictionTokenSelector: React.FC<React.PropsWithChildren<Des
                 </Box>
                 <Text fontSize={20} bold color="textSubtle">{`${list?.token?.symbol}USD`}</Text>
               </Flex>
-              <Price chainlinkOracleAddress={list?.chainlinkOracleAddress} />
+              <Price
+                chainlinkOracleAddress={list?.chainlinkOracleAddress}
+                galetoOracleAddress={list?.galetoOracleAddress}
+              />
             </Flex>
           ))}
         </Flex>

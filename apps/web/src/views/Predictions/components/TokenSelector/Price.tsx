@@ -6,11 +6,19 @@ import { Address } from 'viem'
 import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
 
 interface PriceProps extends TextProps {
-  chainlinkOracleAddress: Address
+  chainlinkOracleAddress?: Address
+  galetoOracleAddress?: Address
 }
 
-export const Price: React.FC<React.PropsWithChildren<PriceProps>> = ({ chainlinkOracleAddress, ...props }) => {
-  const { price } = usePollOraclePrice(chainlinkOracleAddress)
+export const Price: React.FC<React.PropsWithChildren<PriceProps>> = ({
+  chainlinkOracleAddress,
+  galetoOracleAddress,
+  ...props
+}) => {
+  const { price } = usePollOraclePrice({
+    chainlinkOracleAddress,
+    galetoOracleAddress,
+  })
 
   const priceAsNumber = useMemo(() => parseFloat(formatBigIntToFixed(price, 4, 8)), [price])
 

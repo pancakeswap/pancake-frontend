@@ -132,12 +132,11 @@ export const TokenSelector = () => {
           </Text>
           {isTokenListMoreThanOne && (
             <Flex>
-              {config?.chainlinkOracleAddress && (
-                <Price
-                  fontSize={['12px', '12px', '12px', '12px', '16px']}
-                  chainlinkOracleAddress={config?.chainlinkOracleAddress}
-                />
-              )}
+              <Price
+                fontSize={['12px', '12px', '12px', '12px', '16px']}
+                chainlinkOracleAddress={config?.chainlinkOracleAddress}
+                galetoOracleAddress={config?.galetoOracleAddress}
+              />
               <ChevronDownIcon width={isDesktop ? 24 : 16} height={isDesktop ? 24 : 16} ml="4px" color="primary" />
             </Flex>
           )}
