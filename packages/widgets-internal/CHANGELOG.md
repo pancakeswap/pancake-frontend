@@ -1,5 +1,11 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.8
+
+### Patch Changes
+
+- c397ecd45: feat: add farm&merkl notice option
+
 ## 0.1.7
 
 ### Patch Changes
