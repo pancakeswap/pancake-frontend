@@ -7,7 +7,7 @@ function getMinNumberToDisplay(decimals = 2) {
 
 export function BalanceDisplay({ value, decimals = 2, prefix, ...props }: BalanceProps) {
   const minNumberToDisplay = useMemo(() => getMinNumberToDisplay(decimals), [decimals]);
-  const isBalanceTooSmall = useMemo(() => value < minNumberToDisplay, [minNumberToDisplay, value]);
+  const isBalanceTooSmall = useMemo(() => value < minNumberToDisplay && value !== 0, [minNumberToDisplay, value]);
   const valueDisplay = useMemo(
     () => (isBalanceTooSmall ? minNumberToDisplay : value),
     [isBalanceTooSmall, value, minNumberToDisplay]
