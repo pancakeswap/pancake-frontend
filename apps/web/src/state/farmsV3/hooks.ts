@@ -13,10 +13,10 @@ import {
 } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterVeCake'
 import { TvlMap, fetchCommonTokenUSDValue } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { useQuery } from '@tanstack/react-query'
-import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
 import { FAST_INTERVAL } from 'config/constants'
 import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -394,7 +394,7 @@ export async function getV3FarmBoosterWhiteList({
     return {
       address: farmBoosterContract.address,
       functionName: 'whiteList',
-      abi: bCakeFarmBoosterV3ABI,
+      abi: bCakeFarmBoosterVeCakeABI,
       args: [BigInt(pid)],
     } as const
   })
