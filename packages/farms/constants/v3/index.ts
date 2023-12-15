@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
+import { Address } from 'viem'
 import { FarmV3SupportedChainId } from '../../src'
 import { ComputedFarmConfigV3 } from '../../src/types'
 import { farmsV3 as arbFarms } from '../arb'
@@ -29,8 +30,8 @@ export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmC
   [ChainId.OPBNB_TESTNET]: opBnbTestnetFarms,
 }
 
-export interface Addresses {
-  [chainId: number]: `0x${string}`
+export type Addresses = {
+  [chainId in ChainId]?: Address
 }
 
 export const bCakeFarmBoosterV3Address: Addresses = {
