@@ -118,7 +118,7 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHar
   }
 
   return (
-    <RowActionContainer style={{ flexDirection: 'column', flex: '1.5' }}>
+    <RowActionContainer style={{ flexDirection: 'column', flex: 1 }}>
       <Flex justifyContent="space-between">
         <Box width="100%">
           <ActionTitles>{actionTitle}</ActionTitles>
