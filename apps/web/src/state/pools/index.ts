@@ -1,59 +1,60 @@
-import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit'
-import BigNumber from 'bignumber.js'
-import keyBy from 'lodash/keyBy'
-import orderBy from 'lodash/orderBy'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { bscTokens, arbitrumTokens } from '@pancakeswap/tokens'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { ChainId } from '@pancakeswap/chains'
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
+import { fetchPublicIfoData, fetchUserIfoCredit } from '@pancakeswap/ifos'
 import {
-  fetchPoolsTimeLimits,
-  fetchPoolsTotalStaking,
+  fetchFlexibleSideVaultUser,
+  fetchPoolsAllowance,
   fetchPoolsProfileRequirement,
   fetchPoolsStakingLimits,
-  fetchPoolsAllowance,
+  fetchPoolsTimeLimits,
+  fetchPoolsTotalStaking,
+  fetchPublicFlexibleSideVaultData,
+  fetchPublicVaultData,
   fetchUserBalances,
   fetchUserPendingRewards,
   fetchUserStakeBalances,
-  fetchPublicVaultData,
-  fetchPublicFlexibleSideVaultData,
-  fetchVaultUser,
   fetchVaultFees,
-  fetchFlexibleSideVaultUser,
-  getCakeVaultAddress,
+  fetchVaultUser,
   getCakeFlexibleSideVaultAddress,
+  getCakeVaultAddress,
+  getPoolAprByTokenPerBlock,
+  getPoolAprByTokenPerSecond,
   getPoolsConfig,
   isLegacyPool,
-  getPoolAprByTokenPerSecond,
-  getPoolAprByTokenPerBlock,
 } from '@pancakeswap/pools'
-import { ChainId } from '@pancakeswap/chains'
-import { fetchPublicIfoData, fetchUserIfoCredit } from '@pancakeswap/ifos'
+import { arbitrumTokens, bscTokens } from '@pancakeswap/tokens'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { PayloadAction, createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
+import keyBy from 'lodash/keyBy'
+import orderBy from 'lodash/orderBy'
 
+import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
+import { getCakePriceFromOracle } from 'hooks/useCakePrice'
+import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import {
   PoolsState,
+  PublicIfoData,
+  SerializedCakeVault,
+  SerializedLockedCakeVault,
+  SerializedLockedVaultUser,
   SerializedPool,
   SerializedVaultFees,
-  SerializedCakeVault,
-  SerializedLockedVaultUser,
-  PublicIfoData,
   SerializedVaultUser,
-  SerializedLockedCakeVault,
 } from 'state/types'
-import { Address, erc20ABI } from 'wagmi'
 import { safeGetAddress } from 'utils'
-import { publicClient } from 'utils/wagmi'
-import { getViemClients } from 'utils/viem'
-import { fetchTokenUSDValue } from 'utils/llamaPrice'
-import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
-import { farmV3ApiFetch } from 'state/farmsV3/hooks'
-import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 import { fetchTokenAplPrice } from 'utils/fetchTokenAplPrice'
+import { fetchTokenUSDValue } from 'utils/llamaPrice'
+import { getViemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
+import { Address, erc20ABI } from 'wagmi'
+import { fetchAceTokenPrice } from './fetchAceTokenPrice'
 
 import fetchFarms from '../farms/fetchFarms'
 import { nativeStableLpMap } from '../farms/getFarmsPrices'
-import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
+import { getTokenPricesFromFarm } from './helpers'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
@@ -162,7 +163,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
           .filter((pool) => {
             const poolTimeLimit = timeLimitsSousIdMap[pool.sousId]
             if (poolTimeLimit) {
-              return poolTimeLimit.endTimestamp > Number(block.timestamp)
+              return poolTimeLimit.endTimestamp > Number(block?.timestamp)
             }
             return false
           }).length > 0
@@ -227,9 +228,15 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       const earningTokenAddress = safeGetAddress(pool.earningToken.address)
       let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
       if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
-        // eslint-disable-next-line no-await-in-loop
-        const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
-        earningTokenPrice = result.get(earningTokenAddress) || 0
+        // TODO: Remove this when fetchTokenUSDValue can get ACE USD Price
+        if (pool.earningToken.chainId === ChainId.BSC && pool.earningToken.address === bscTokens.ace.address) {
+          // eslint-disable-next-line no-await-in-loop
+          earningTokenPrice = await fetchAceTokenPrice(pool.earningToken.address)
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
+          earningTokenPrice = result.get(earningTokenAddress) || 0
+        }
       }
       const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
       const apr = !isPoolFinished
