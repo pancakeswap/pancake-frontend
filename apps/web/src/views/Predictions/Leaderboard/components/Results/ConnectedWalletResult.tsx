@@ -12,7 +12,7 @@ import MobileRow from './MobileRow'
 
 interface ConnectedWalletResultProps {
   api: string
-  token: Token
+  token: Token | undefined
 }
 
 const ConnectedWalletResult: React.FC<React.PropsWithChildren<ConnectedWalletResultProps>> = ({ api, token }) => {

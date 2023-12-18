@@ -17,7 +17,7 @@ import MobileResults from './MobileResults'
 import RankingCard from './RankingCard'
 
 interface ResultsProps {
-  token: Token
+  token: Token | undefined
   api: string
 }
 

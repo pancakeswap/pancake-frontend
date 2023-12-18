@@ -8,7 +8,7 @@ import { useStatModalProps } from 'state/predictions/hooks'
 import WalletStatsModal from './WalletStatsModal'
 
 interface AddressSearchProps {
-  token: Token
+  token: Token | undefined
   api: string
 }
 
