@@ -1,70 +1,40 @@
 /* eslint-disable no-param-reassign, no-await-in-loop */
-import { masterChefV3Addresses, FarmV3SupportedChainId } from '@pancakeswap/farms'
+import { ChainId, V3_SUBGRAPHS } from '@pancakeswap/chains'
+import { FarmV3SupportedChainId, masterChefV3Addresses } from '@pancakeswap/farms'
 import { ERC20Token } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
-import { gql, GraphQLClient } from 'graphql-request'
+import { GraphQLClient, gql } from 'graphql-request'
 import { Request } from 'itty-router'
 import { error, json } from 'itty-router-extras'
-import { z } from 'zod'
 import { Address } from 'viem'
+import { z } from 'zod'
 
-import { viemProviders } from './provider'
 import { FarmKV } from './kv'
+import { viemProviders } from './provider'
 
-export const V3_SUBGRAPH_CLIENTS = {
-  [ChainId.ETHEREUM]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth', {
-    fetch,
-  }),
-  [ChainId.GOERLI]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-goerli', {
-    fetch,
-  }),
-  [ChainId.BSC]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-bsc', { fetch }),
-  [ChainId.BSC_TESTNET]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel', {
-    fetch,
-  }),
-  [ChainId.ZKSYNC_TESTNET]: new GraphQLClient(
-    'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest',
-    {
-      fetch,
-    },
-  ),
-  [ChainId.POLYGON_ZKEVM]: new GraphQLClient(
-    'https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/version/latest',
-    {
-      fetch,
-    },
-  ),
-  [ChainId.ZKSYNC]: new GraphQLClient('https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest', {
-    fetch,
-  }),
-  [ChainId.ARBITRUM_ONE]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-arb', {
-    fetch,
-  }),
-  [ChainId.LINEA]: new GraphQLClient('https://graph-query.linea.build/subgraphs/name/pancakeswap/exchange-v3-linea', {
-    fetch,
-  }),
-  [ChainId.BASE]: new GraphQLClient('https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest', {
-    fetch,
-  }),
-} satisfies Record<
-  Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET>,
-  GraphQLClient
->
+export const V3_SUBGRAPH_CLIENTS_CHAIN_IDS = [
+  ChainId.ETHEREUM,
+  ChainId.GOERLI,
+  ChainId.BSC,
+  ChainId.BSC_TESTNET,
+  ChainId.ZKSYNC_TESTNET,
+  ChainId.POLYGON_ZKEVM,
+  ChainId.ZKSYNC,
+  ChainId.ARBITRUM_ONE,
+  ChainId.LINEA,
+  ChainId.BASE,
+  ChainId.OPBNB,
+] as const
 
-const zChainId = z.enum([
-  String(ChainId.BSC),
-  String(ChainId.ETHEREUM),
-  String(ChainId.GOERLI),
-  String(ChainId.BSC_TESTNET),
-  String(ChainId.ZKSYNC_TESTNET),
-  String(ChainId.POLYGON_ZKEVM),
-  String(ChainId.ZKSYNC),
-  String(ChainId.ARBITRUM_ONE),
-  String(ChainId.LINEA),
-  String(ChainId.BASE),
-])
+type SupportChainId = (typeof V3_SUBGRAPH_CLIENTS_CHAIN_IDS)[number]
+
+export const V3_SUBGRAPH_CLIENTS = V3_SUBGRAPH_CLIENTS_CHAIN_IDS.reduce((acc, chainId) => {
+  acc[chainId] = new GraphQLClient(V3_SUBGRAPHS[chainId], { fetch })
+  return acc
+}, {} as Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET>, GraphQLClient>)
+
+const zChainId = z.enum(V3_SUBGRAPH_CLIENTS_CHAIN_IDS.map((chainId) => String(chainId)) as [string, ...string[]])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 
@@ -176,10 +146,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
   }
 
   const { chainId: chainIdString, address: address_ } = parsed.data
-  const chainId = Number(chainIdString) as Exclude<
-    FarmV3SupportedChainId,
-    ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET
-  >
+  const chainId = Number(chainIdString) as SupportChainId
 
   const address = address_.toLowerCase()
 

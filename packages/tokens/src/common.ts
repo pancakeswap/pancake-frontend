@@ -1,5 +1,5 @@
-import { ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token } from '@pancakeswap/sdk'
 
 export const CAKE_MAINNET = new ERC20Token(
   ChainId.BSC,
@@ -215,6 +215,22 @@ export const CAKE = {
   [ChainId.LINEA_TESTNET]: new ERC20Token(
     ChainId.LINEA_TESTNET,
     '0x2B3C5df29F73dbF028BA82C33e0A5A6e5800F75e',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.OPBNB]: new ERC20Token(
+    ChainId.OPBNB,
+    '0x2779106e4F4A8A28d77A24c18283651a2AE22D1C',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.OPBNB_TESTNET]: new ERC20Token(
+    ChainId.OPBNB_TESTNET,
+    '0xa11B290B038C35711eB309268a2460754f730921',
     18,
     'CAKE',
     'PancakeSwap Token',

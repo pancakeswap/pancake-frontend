@@ -9,6 +9,7 @@ import { farmsV3 as bscTestnetFarms } from '../bscTestnet'
 import { farmsV3 as ethFarms } from '../eth'
 import { farmsV3 as goerliFarms } from '../goerli'
 import { farmsV3 as lineaFarms } from '../linea'
+import { farmsV3 as opBNBFarms } from '../opBNB'
 import { farmsV3 as opBnbTestnetFarms } from '../opBnbTestnet'
 import { farmsV3 as polygonZkEVMFarms } from '../polygonZkEVM'
 import { farmsV3 as polygonZkEVMTestnetFarms } from '../polygonZkEVMTestnet'
@@ -28,6 +29,7 @@ export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmC
   [ChainId.LINEA]: lineaFarms,
   [ChainId.BASE]: baseFarms,
   [ChainId.OPBNB_TESTNET]: opBnbTestnetFarms,
+  [ChainId.OPBNB]: opBNBFarms,
 }
 
 export type Addresses = {
