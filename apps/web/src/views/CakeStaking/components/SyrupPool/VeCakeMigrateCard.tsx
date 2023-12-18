@@ -14,7 +14,10 @@ export const VeCakeMigrateCard: React.FC<{ isTableView?: boolean; lockEndTime?: 
     const isUserAllowMigrate = useCheckIsUserAllowMigrate(lockEndTime)
     if (!isUserAllowMigrate) return null
     return (
-      <ShineStyledBox p="10px" style={{ alignItems: 'center', gap: 10, flexDirection: 'column' }}>
+      <ShineStyledBox
+        p="10px"
+        style={{ alignItems: 'center', gap: 10, flexDirection: 'column', flexBasis: isTableView ? '50%' : undefined }}
+      >
         <Flex alignItems="center" style={{ gap: 10 }}>
           <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
           <Box>

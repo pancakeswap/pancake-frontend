@@ -240,7 +240,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                   {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake isTableView />}
                   {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCardTableView />}
                   {vaultPosition >= VaultPosition.LockedEnd && <WithdrawAllButton />}
-                  <VeCakeButton type="get" />
+                  <VeCakeButton style={{ flexBasis: '50%' }} type="get" />
                 </Flex>
               }
               showIcon={vaultPosition !== VaultPosition.Locked}
