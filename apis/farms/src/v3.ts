@@ -49,17 +49,13 @@ export const V3_SUBGRAPH_CLIENTS = {
     fetch,
   }),
   // @todo @Chef-Jerry add opbnb subgraph
-  [ChainId.OPBNB]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-opbnb', {
+  [ChainId.OPBNB]: new GraphQLClient('https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/exchange-v3', {
     fetch,
   }),
-  // @todo @Chef-Jerry add opbnb subgraph
-  [ChainId.OPBNB_TESTNET]: new GraphQLClient(
-    'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-opbnb-testnet',
-    {
-      fetch,
-    },
-  ),
-} satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
+} satisfies Record<
+  Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET>,
+  GraphQLClient
+>
 
 const zChainId = z.enum([
   String(ChainId.BSC),
