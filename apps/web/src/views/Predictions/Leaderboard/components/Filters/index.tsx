@@ -1,13 +1,14 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { PredictionConfig, PredictionSupportedSymbol } from '@pancakeswap/prediction'
+import { PredictionConfig, PredictionSupportedSymbol, targetChains } from '@pancakeswap/prediction'
 import { Box, Flex, OptionProps, Select, Text } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
+import { getImageUrlFromToken } from 'components/TokenImage'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useMemo } from 'react'
 import { setLeaderboardFilter } from 'state/predictions'
 import { styled } from 'styled-components'
-import { NetworkSwitcher } from 'views/Predictions/Leaderboard/components/Filters/NetworkSelect'
 import AddressSearch from '../AddressSearch'
 
 const SearchWrapper = styled(Box)`
@@ -73,11 +74,22 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
     dispatch(setLeaderboardFilter({ orderBy: option.value }))
   }
 
+  const networkOptions = useMemo(() => {
+    return (
+      targetChains?.map((i) => ({
+        label: i?.name ?? '',
+        value: i?.id?.toString?.() ?? '',
+        imageUrl: `${ASSET_CDN}/web/chains/${i.id}.png`,
+      })) ?? []
+    )
+  }, [])
+
   const tokenOptions = useMemo(() => {
     return predictionConfigs
       ? Object.values(predictionConfigs)?.map((i) => ({
           label: i?.token?.symbol ?? '',
           value: i?.token?.symbol ?? '',
+          imageUrl: getImageUrlFromToken(i?.token),
         }))
       : []
   }, [predictionConfigs])
@@ -86,26 +98,35 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
     setPickedTokenSymbol(option?.value)
   }
 
-  const handleSwitchNetwork = (network: ChainId) => {
-    setPickedChainId(network)
+  const handleSwitchNetwork = (option: OptionProps) => {
+    setPickedChainId(option?.value)
   }
 
   return (
     <Container position="relative" py="32px" zIndex={3}>
       <Flex width={['100%']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
         <Flex width={['100%']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
-          <NetworkSwitcher pickedChainId={pickedChainId} setPickedChainId={handleSwitchNetwork} />
-          <Box width={['100%', '100%', '100%', 'auto']} m={['18px 0', '18px 0', '18px 0', '18px 0', '0 24px']}>
+          <Box width={['100%', '100%', '100%', '240px']} m={['18px 0', '18px 0', '18px 0', '18px 0', '0']}>
+            <Text textTransform="uppercase" fontSize="12px" color="textSubtle" fontWeight="bold" mb="4px">
+              {t('Network')}
+            </Text>
+            {networkOptions.length > 0 && (
+              <FilterWrapper>
+                <Select options={networkOptions} onOptionChange={handleSwitchNetwork} />
+              </FilterWrapper>
+            )}
+          </Box>
+          <Box width={['100%', '100%', '100%', '180px']} m={['18px 0', '18px 0', '18px 0', '18px 0', '0 24px']}>
             <Text textTransform="uppercase" fontSize="12px" color="textSubtle" fontWeight="bold" mb="4px">
               {t('Token')}
             </Text>
-            <FilterWrapper>
-              {predictionConfigs && pickedTokenSymbol && tokenOptions.length > 0 && (
+            {predictionConfigs && pickedTokenSymbol && tokenOptions.length > 0 && (
+              <FilterWrapper>
                 <Select options={tokenOptions} onOptionChange={handleTokenChange} />
-              )}
-            </FilterWrapper>
+              </FilterWrapper>
+            )}
           </Box>
-          <Box width={['100%', '100%', '100%', 'auto']}>
+          <Box width={['100%', '100%', '100%', '160px']}>
             <Text textTransform="uppercase" fontSize="12px" color="textSubtle" fontWeight="bold" mb="4px">
               {t('Rank By')}
             </Text>
