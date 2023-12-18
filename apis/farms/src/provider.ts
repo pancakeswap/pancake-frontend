@@ -1,6 +1,17 @@
 import { ChainId } from '@pancakeswap/chains'
 import { createPublicClient, http, PublicClient } from 'viem'
-import { bsc, bscTestnet, goerli, mainnet, zkSyncTestnet, polygonZkEvm, zkSync, arbitrum } from 'viem/chains'
+import {
+  arbitrum,
+  bsc,
+  bscTestnet,
+  goerli,
+  mainnet,
+  opBNB,
+  opBNBTestnet,
+  polygonZkEvm,
+  zkSync,
+  zkSyncTestnet,
+} from 'viem/chains'
 
 const requireCheck = [
   ETH_NODE,
@@ -12,6 +23,8 @@ const requireCheck = [
   ARBITRUM_ONE_NODE,
   LINEA_NODE,
   BASE_NODE,
+  OPBNB_NODE,
+  OPBNB_TESTNET_NODE,
 ]
 
 const base = {
@@ -229,6 +242,28 @@ const baseClient = createPublicClient({
   pollingInterval: 6_000,
 })
 
+const opBNBClient = createPublicClient({
+  chain: opBNB,
+  transport: http(OPBNB_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+})
+
+const opBNBTestnetClient = createPublicClient({
+  chain: opBNBTestnet,
+  transport: http(OPBNB_TESTNET_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+})
+
 export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient => {
   switch (chainId) {
     case ChainId.ETHEREUM:
@@ -251,6 +286,10 @@ export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient 
       return lineaClient
     case ChainId.BASE:
       return baseClient
+    case ChainId.OPBNB:
+      return opBNBClient
+    case ChainId.OPBNB_TESTNET:
+      return opBNBTestnetClient
     default:
       return bscClient
   }
