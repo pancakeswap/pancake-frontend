@@ -2787,4 +2787,12 @@ export const bscTokens = {
     'Bonk',
     'https://bonkcoin.com',
   ),
+  ace: new ERC20Token(
+    ChainId.BSC,
+    '0xc27A719105A987b4c34116223CAE8bd8F4B5def4',
+    18,
+    'ACE',
+    'ACEToken',
+    'https://ace.fusionist.io/',
+  ),
 }
