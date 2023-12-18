@@ -8,6 +8,7 @@ import {
   ethereumTokens,
   goerliTestnetTokens,
   lineaTokens,
+  opBnbTokens,
   polygonZkEvmTokens,
   zkSyncTestnetTokens,
   zksyncTokens,
@@ -50,6 +51,10 @@ export const priceHelperTokens = {
   [ChainId.BASE]: {
     chain: 'base',
     list: [baseTokens.weth, baseTokens.usdbc, baseTokens.dai, baseTokens.cbETH, baseTokens.usdc],
+  },
+  [ChainId.OPBNB]: {
+    chain: 'opbnb',
+    list: [opBnbTokens.wbnb, opBnbTokens.usdt],
   },
 } satisfies Record<number, PriceHelper>
 
