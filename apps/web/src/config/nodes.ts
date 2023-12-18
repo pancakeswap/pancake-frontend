@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { getNodeRealUrl } from 'utils/node/nodeReal'
-import { getPoktUrl } from 'utils/node/pokt'
+import { getGroveUrl } from 'utils/node/pokt'
 import {
   arbitrum,
   arbitrumGoerli,
@@ -20,13 +20,12 @@ const ARBITRUM_NODES = [
   ...arbitrum.rpcUrls.public.http,
   'https://arbitrum-one.publicnode.com',
   'https://arbitrum.llamarpc.com',
-  getPoktUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
 ].filter(Boolean)
 
 export const SERVER_NODES = {
   [ChainId.BSC]: [
     process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
-    getPoktUrl(ChainId.BSC, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+    getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
     'https://bsc.publicnode.com',
     'https://binance.llamarpc.com',
     'https://bsc-dataseed1.defibit.io',
@@ -35,7 +34,6 @@ export const SERVER_NODES = {
   [ChainId.BSC_TESTNET]: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
   [ChainId.ETHEREUM]: [
     getNodeRealUrl(ChainId.ETHEREUM, process.env.SERVER_NODE_REAL_API_ETH) || '',
-    getPoktUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
     'https://ethereum.publicnode.com',
     'https://eth.llamarpc.com',
     'https://cloudflare-eth.com',
@@ -50,7 +48,6 @@ export const SERVER_NODES = {
     'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
     process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
     ...polygonZkEvm.rpcUrls.public.http,
-    getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
   ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
@@ -74,7 +71,6 @@ export const SERVER_NODES = {
   ],
   [ChainId.BASE]: [
     'https://base.publicnode.com',
-    getPoktUrl(ChainId.BASE, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
     // process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION,
     ...base.rpcUrls.public.http,
   ],
@@ -87,7 +83,7 @@ export const PUBLIC_NODES = {
     process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
     getNodeRealUrl(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_BSC || '',
-    getPoktUrl(ChainId.BSC, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+    getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
     'https://bsc.publicnode.com',
     'https://binance.llamarpc.com',
     'https://bsc-dataseed1.defibit.io',
@@ -97,7 +93,7 @@ export const PUBLIC_NODES = {
   [ChainId.ETHEREUM]: [
     getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_ETH || '',
-    getPoktUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+    getGroveUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
     'https://ethereum.publicnode.com',
     'https://eth.llamarpc.com',
     'https://cloudflare-eth.com',
@@ -110,13 +106,14 @@ export const PUBLIC_NODES = {
     ...ARBITRUM_NODES,
     process.env.NEXT_PUBLIC_NODIES_ARB || '',
     getNodeRealUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
+    getGroveUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
   ].filter(Boolean),
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: [
     process.env.NEXT_PUBLIC_NODIES_POLYGON_ZKEVM || '',
     ...polygonZkEvm.rpcUrls.public.http,
     'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
-    getPoktUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+    getGroveUrl(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
   ].filter(Boolean),
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     ...polygonZkEvmTestnet.rpcUrls.public.http,
@@ -142,7 +139,7 @@ export const PUBLIC_NODES = {
   [ChainId.BASE]: [
     'https://base.publicnode.com',
     process.env.NEXT_PUBLIC_NODIES_BASE || '',
-    getPoktUrl(ChainId.BASE, process.env.NEXT_PUBLIC_POKT_API_KEY) || '',
+    getGroveUrl(ChainId.BASE, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
     // process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION,
     ...base.rpcUrls.public.http,
   ].filter(Boolean),
