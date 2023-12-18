@@ -1,17 +1,17 @@
 /* eslint-disable no-param-reassign, no-await-in-loop */
-import { masterChefV3Addresses, FarmV3SupportedChainId } from '@pancakeswap/farms'
-import { ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { FarmV3SupportedChainId, masterChefV3Addresses } from '@pancakeswap/farms'
+import { ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
-import { gql, GraphQLClient } from 'graphql-request'
+import { GraphQLClient, gql } from 'graphql-request'
 import { Request } from 'itty-router'
 import { error, json } from 'itty-router-extras'
-import { z } from 'zod'
 import { Address } from 'viem'
+import { z } from 'zod'
 
-import { viemProviders } from './provider'
 import { FarmKV } from './kv'
+import { viemProviders } from './provider'
 
 export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.ETHEREUM]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth', {
@@ -48,10 +48,18 @@ export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.BASE]: new GraphQLClient('https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest', {
     fetch,
   }),
-} satisfies Record<
-  Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET>,
-  GraphQLClient
->
+  // @todo @Chef-Jerry add opbnb subgraph
+  [ChainId.OPBNB]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-opbnb', {
+    fetch,
+  }),
+  // @todo @Chef-Jerry add opbnb subgraph
+  [ChainId.OPBNB_TESTNET]: new GraphQLClient(
+    'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-opbnb-testnet',
+    {
+      fetch,
+    },
+  ),
+} satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
 
 const zChainId = z.enum([
   String(ChainId.BSC),
@@ -64,6 +72,8 @@ const zChainId = z.enum([
   String(ChainId.ARBITRUM_ONE),
   String(ChainId.LINEA),
   String(ChainId.BASE),
+  String(ChainId.OPBNB),
+  String(ChainId.OPBNB_TESTNET),
 ])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
@@ -176,10 +186,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
   }
 
   const { chainId: chainIdString, address: address_ } = parsed.data
-  const chainId = Number(chainIdString) as Exclude<
-    FarmV3SupportedChainId,
-    ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET
-  >
+  const chainId = Number(chainIdString) as Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>
 
   const address = address_.toLowerCase()
 

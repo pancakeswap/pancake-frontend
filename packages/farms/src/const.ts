@@ -14,6 +14,7 @@ export const supportedChainIdV3 = [
   ChainId.ARBITRUM_ONE,
   ChainId.LINEA,
   ChainId.BASE,
+  ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,
 ] as const
 export const supportedChainId = uniq([...supportedChainIdV2, ...supportedChainIdV3])
@@ -44,6 +45,7 @@ export const masterChefV3Addresses = {
   [ChainId.ARBITRUM_ONE]: '0x5e09ACf80C0296740eC5d6F643005a4ef8DaA694',
   [ChainId.LINEA]: '0x22E2f236065B780FA33EC8C4E58b99ebc8B55c57',
   [ChainId.BASE]: '0xC6A2Db661D5a5690172d8eB0a7DEA2d3008665A3',
+  [ChainId.OPBNB]: '0x05ddEDd07C51739d2aE21F6A9d97a8d69C2C3aaA',
   [ChainId.OPBNB_TESTNET]: '0x236e713bFF45adb30e25D1c29A887aBCb0Ea7E21',
 } as const satisfies Record<FarmV3SupportedChainId, string>
 
