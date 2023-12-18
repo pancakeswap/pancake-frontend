@@ -15,7 +15,7 @@ export const VeCakeUpdateCard: React.FC<{
     <ShineStyledBox
       mb={isTableView ? undefined : '15px'}
       p="10px"
-      style={{ alignItems: 'center', gap: 10, flexDirection: 'column' }}
+      style={{ alignItems: 'center', gap: 10, flexDirection: 'column', flexBasis: isTableView ? '50%' : undefined }}
     >
       <Flex alignItems="center" style={{ gap: 10 }}>
         <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
