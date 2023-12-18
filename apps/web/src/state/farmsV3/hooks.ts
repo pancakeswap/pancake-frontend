@@ -66,8 +66,8 @@ export const useFarmsV3Public = () => {
   return useQuery(
     [chainId, 'farmV3ApiFetch'],
     async () => {
-      if (API_FLAG) {
-        return farmV3ApiFetch(chainId ?? -1).catch((err) => {
+      if (API_FLAG && chainId) {
+        return farmV3ApiFetch(chainId).catch((err) => {
           console.error(err)
           return fallback
         })
