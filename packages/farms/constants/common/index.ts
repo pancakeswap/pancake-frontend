@@ -1,19 +1,19 @@
-import { ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token } from '@pancakeswap/sdk'
 import {
+  arbitrumTokens,
+  baseTokens,
   bscTestnetTokens,
   bscTokens,
   ethereumTokens,
   goerliTestnetTokens,
-  zkSyncTestnetTokens,
-  polygonZkEvmTokens,
-  zksyncTokens,
-  arbitrumTokens,
   lineaTokens,
-  baseTokens,
+  polygonZkEvmTokens,
+  zkSyncTestnetTokens,
+  zksyncTokens,
 } from '@pancakeswap/tokens'
-import type { CommonPrice } from '../../src/fetchFarmsV3'
 import type { FarmV3SupportedChainId } from '../../src'
+import type { CommonPrice } from '../../src/fetchFarmsV3'
 
 export const CAKE_BNB_LP_MAINNET = '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0'
 
@@ -76,4 +76,5 @@ export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> =
   [ChainId.LINEA]: {},
   [ChainId.BASE]: {},
   [ChainId.OPBNB_TESTNET]: {},
+  [ChainId.OPBNB]: {},
 }
