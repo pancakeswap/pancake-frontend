@@ -6,9 +6,9 @@ import { cakeBnbLpToken } from '../lpTokens'
 export const ifos: BaseIfoConfig[] = [
   {
     id: 'test-ifo-v7',
-    address: '0x9290BF8793D18d2c0b0D23B1856ad59463211aE7',
+    address: '0x99CB3a09279c4A969A29A2B65Bf362Cd2095199E',
     isActive: true,
-    cIFO: true,
+    // cIFO: true,
     name: 'Test',
     plannedStartTime: 1702018800,
     poolBasic: {
