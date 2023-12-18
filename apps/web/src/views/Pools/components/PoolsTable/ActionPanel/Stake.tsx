@@ -283,7 +283,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   if (isNotVaultAndHasStake || isVaultWithShares) {
     return (
       <>
-        <ActionContainer flex={vaultPosition > 1 ? 1.5 : 1}>
+        <ActionContainer flex={1}>
           <ActionContent mt={0}>
             <Flex flex="1" flexDirection="column" alignSelf="flex-start">
               <ActionTitles>
