@@ -1,11 +1,11 @@
+import { ChainId } from '@pancakeswap/chains'
+import { Token } from '@pancakeswap/sdk'
 import {
+  ImageProps,
+  TokenImage as UIKitTokenImage,
   TokenPairImage as UIKitTokenPairImage,
   TokenPairImageProps as UIKitTokenPairImageProps,
-  TokenImage as UIKitTokenImage,
-  ImageProps,
 } from '@pancakeswap/uikit'
-import { Token } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
   primaryToken: Token
@@ -20,6 +20,7 @@ export const tokenImageChainNameMapping = {
   [ChainId.ARBITRUM_ONE]: 'arbitrum/',
   [ChainId.LINEA]: 'linea/',
   [ChainId.BASE]: 'base/',
+  [ChainId.OPBNB]: 'opbnb/',
 }
 
 const getImageUrlFromToken = (token: Token) => {
