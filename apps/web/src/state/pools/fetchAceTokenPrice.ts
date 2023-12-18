@@ -18,18 +18,5 @@ export const fetchAceTokenPrice = async (tokenAddress: string) => {
     blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[ChainId.BSC]),
   )
 
-  console.log('result', result?.data)
-
-  // .priceUSD
-
-  // fetchTokenPriceData(
-  //   tokenAddress,
-  //   ONE_HOUR_SECONDS,
-  //   startTimestamp,
-  //   v3InfoClients[ChainId.BSC],
-  //   'BSC',
-  //   SUBGRAPH_START_BLOCK[ChainId.BSC],
-  // )
-
-  return result?.data?.data?.[tokenAddress?.toLowerCase()]?.priceUSD ?? 0
+  return result?.[tokenAddress?.toLowerCase()]?.priceUSD ?? 0
 }
