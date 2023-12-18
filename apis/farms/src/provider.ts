@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { createPublicClient, http, PublicClient } from 'viem'
+import { Chain, createPublicClient, http, PublicClient } from 'viem'
 import {
   arbitrum,
   bsc,
@@ -163,7 +163,7 @@ const goerliClient = createPublicClient({
 })
 
 const zksyncTestnetClient = createPublicClient({
-  chain: zkSyncTestnet,
+  chain: zkSyncTestnet as Chain,
   transport: http(),
   batch: {
     multicall: {
@@ -195,7 +195,7 @@ const polygonZkEvmClient = createPublicClient({
 })
 
 const zksyncClient = createPublicClient({
-  chain: zkSync,
+  chain: zkSync as Chain,
   transport: http(ZKSYNC_NODE),
   batch: {
     multicall: {
