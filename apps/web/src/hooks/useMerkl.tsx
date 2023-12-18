@@ -1,23 +1,22 @@
-import type { MerklAPIData } from '@angleprotocol/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { TokenInfo } from '@pancakeswap/token-lists'
 import { useToast } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { distributorABI } from 'config/abi/AngleProtocolDistributor'
+import { DISTRIBUTOR_ADDRESSES } from 'config/merkl'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useCallback, useMemo } from 'react'
-import { getContract } from 'utils/contractHelpers'
-import { Address, useWalletClient } from 'wagmi'
 import first from 'lodash/first'
 import uniq from 'lodash/uniq'
-import { useQuery } from '@tanstack/react-query'
+import { useCallback, useMemo } from 'react'
 import { useAllLists } from 'state/lists/hooks'
-import { TokenInfo } from '@pancakeswap/token-lists'
-import { distributorABI } from 'config/abi/AngleProtocolDistributor'
-import { DISTRIBUTOR_ADDRESSES } from 'config/merkl'
+import { getContract } from 'utils/contractHelpers'
+import { Address, useWalletClient } from 'wagmi'
 
-export const MERKL_API = 'https://api.angle.money/v1/merkl'
+export const MERKL_API_V2 = 'https://api.angle.money/v2/merkl'
 
 export function useMerklInfo(poolAddress: string | null): {
   rewardsPerToken: CurrencyAmount<Currency>[]
@@ -36,14 +35,15 @@ export function useMerklInfo(poolAddress: string | null): {
   const { data, isLoading, refetch } = useQuery({
     queryKey: [`fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}`],
     queryFn: async () => {
-      const response = await fetch(
-        `${MERKL_API}?chainId=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
+      const responsev2 = await fetch(
+        `${MERKL_API_V2}?chainIds[]=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
       )
-      const merklData = (await response.json()) as MerklAPIData | undefined
 
-      if (!merklData) return null
+      const merklDataV2 = await responsev2.json()
 
-      const { pools } = merklData
+      if (!chainId || !merklDataV2[chainId]) return null
+
+      const { pools, transactionData } = merklDataV2[chainId]
 
       const hasLive = first(
         Object.keys(pools)
@@ -60,20 +60,22 @@ export function useMerklInfo(poolAddress: string | null): {
       const rewardsPerTokenObject = merklPoolData?.rewardsPerToken
 
       const rewardsPerToken = rewardsPerTokenObject
-        ? Object.keys(rewardsPerTokenObject).map((tokenAddress) => {
-            const tokenInfo = rewardsPerTokenObject[tokenAddress]
+        ? Object.keys(rewardsPerTokenObject)
+            .map((tokenAddress) => {
+              const tokenInfo = rewardsPerTokenObject[tokenAddress]
 
-            const token = new Token(chainId as number, tokenAddress as Address, tokenInfo.decimals, tokenInfo.symbol)
+              const token = new Token(chainId as number, tokenAddress as Address, tokenInfo.decimals, tokenInfo.symbol)
 
-            return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
-          })
+              return CurrencyAmount.fromRawAmount(token, tokenInfo.unclaimedUnformatted)
+            })
+            .filter(Boolean)
         : []
 
       return {
         hasMerkl: Boolean(hasLive),
         rewardsPerToken,
         rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
-        transactionData: merklData.transactionData,
+        transactionData,
         isLoading,
       }
     },
