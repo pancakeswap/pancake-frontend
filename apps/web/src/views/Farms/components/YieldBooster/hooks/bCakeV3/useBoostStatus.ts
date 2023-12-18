@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { useIsBoostedPool, useBakeV3farmCanBoost } from './useBCakeV3Info'
+import { useBakeV3farmCanBoost, useUserPositionInfo } from './useBCakeV3Info'
 
 export enum BoostStatus {
   UpTo,
@@ -11,14 +11,22 @@ export enum BoostStatus {
 
 export const useBoostStatus = (pid: number, tokenId?: string) => {
   const { address: account } = useAccount()
-  const { isBoosted, mutate } = useIsBoostedPool(tokenId)
+  const {
+    data: { boostMultiplier },
+    updateUserPositionInfo,
+  } = useUserPositionInfo(tokenId)
   const { farmCanBoost } = useBakeV3farmCanBoost(pid)
   const status = useMemo(() => {
     if (!account && !farmCanBoost) return BoostStatus.CanNotBoost
     if (!account && farmCanBoost) return BoostStatus.UpTo
-    if (farmCanBoost) return isBoosted ? BoostStatus.Boosted : BoostStatus.farmCanBoostButNot
+    if (farmCanBoost) return boostMultiplier > 1 ? BoostStatus.Boosted : BoostStatus.farmCanBoostButNot
     return BoostStatus.CanNotBoost
-  }, [account, farmCanBoost, isBoosted])
+  }, [account, farmCanBoost, boostMultiplier])
 
-  return { status, updateStatus: mutate }
+  return {
+    status,
+    updateStatus: () => {
+      updateUserPositionInfo()
+    },
+  }
 }

@@ -8,6 +8,8 @@ import { styled } from 'styled-components'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'
+import { useUserBoostedPoolsTokenId } from '../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import { useIsSomePositionBoosted } from '../YieldBooster/hooks/bCakeV3/useIsSomePositionBoosted'
 import { ActionPanelV2, ActionPanelV3 } from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import { FarmCell } from './Farm'
@@ -109,6 +111,9 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
   const { t } = useTranslation()
 
+  const { tokenIds } = useUserBoostedPoolsTokenId()
+  const { isBoosted } = useIsSomePositionBoosted(props.type === 'v3' ? props?.details?.stakedPositions : [], tokenIds)
+
   const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
   }, [actionPanelExpanded])
@@ -156,7 +161,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         )
                       ) : null}
                       {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
-                      {props?.details?.boosted && props.type === 'v3' ? <BoostedTag scale="sm" /> : null}
+                      {isBoosted ? <BoostedTag scale="sm" /> : null}
                     </CellInner>
                   </td>
                 )
@@ -253,9 +258,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   ) : null}
                   {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
                   {props.type === 'community' || props?.farm?.isCommunity ? <FarmAuctionTag scale="sm" /> : null}
-                  {props?.details?.boosted && props.type === 'v3' ? (
-                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
-                  ) : null}
+                  {isBoosted ? <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" /> : null}
                 </Flex>
               </Flex>
             </FarmMobileCell>

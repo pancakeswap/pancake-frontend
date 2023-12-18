@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "npx tsx scripts/build.ts",
+    "update:snapshot": "vitest -u",
     "test": "vitest --run"
   },
   "devDependencies": {

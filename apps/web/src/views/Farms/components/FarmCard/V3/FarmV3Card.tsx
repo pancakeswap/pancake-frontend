@@ -15,7 +15,9 @@ import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
+import { useUserBoostedPoolsTokenId } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
+import { useIsSomePositionBoosted } from '../../YieldBooster/hooks/bCakeV3/useIsSomePositionBoosted'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
@@ -90,6 +92,8 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
       <Text>{t('APRs for individual positions may vary depend on their price range settings.')}</Text>
     </>,
   )
+  const { tokenIds } = useUserBoostedPoolsTokenId()
+  const { isBoosted } = useIsSomePositionBoosted(farm.stakedPositions, tokenIds)
 
   const addLiquidityModal = useModalV2()
 
@@ -109,6 +113,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
           totalMultipliers={totalMultipliers}
           isCommunityFarm={farm.isCommunity}
           boosted={boostStatus !== BoostStatus.CanNotBoost}
+          isBoosted={isBoosted}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">

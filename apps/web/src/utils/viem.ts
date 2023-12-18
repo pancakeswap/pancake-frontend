@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
-import { createPublicClient, http, fallback, PublicClient } from 'viem'
+import { PublicClient, createPublicClient, fallback, http } from 'viem'
 
 export const viemClients = CHAINS.reduce((prev, cur) => {
   return {
@@ -29,6 +29,6 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
   }
 }, {} as Record<ChainId, PublicClient>)
 
-export const getViemClients = ({ chainId }: { chainId?: ChainId }): PublicClient | undefined => {
+export const getViemClients = ({ chainId }: { chainId?: ChainId }): PublicClient => {
   return viemClients[chainId as ChainId]
 }

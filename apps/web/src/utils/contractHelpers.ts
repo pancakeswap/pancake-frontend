@@ -7,6 +7,7 @@ import {
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
   getBCakeFarmBoosterV3Address,
+  getBCakeFarmBoosterVeCakeAddress,
   getBunnyFactoryAddress,
   getCakeFlexibleSideVaultAddress,
   getCakeVaultAddress,
@@ -55,6 +56,8 @@ import { predictionsV1ABI } from 'config/abi/predictionsV1'
 import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
 import { ChainId } from '@pancakeswap/chains'
+import { bCakeFarmBoosterV3ABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterV3'
+import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterVeCake'
 import { calcGaugesVotingABI, gaugesVotingABI } from '@pancakeswap/gauges'
 import { getIfoCreditAddressContract as getIfoCreditAddressContract_ } from '@pancakeswap/ifos'
 import { cakeFlexibleSideVaultV2ABI, cakeVaultV2ABI } from '@pancakeswap/pools'
@@ -66,7 +69,6 @@ import { affiliateProgramABI } from 'config/abi/affiliateProgram'
 import { anniversaryAchievementABI } from 'config/abi/anniversaryAchievement'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
-import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
@@ -257,6 +259,15 @@ export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
 
 export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: number) => {
   return getContract({ abi: bCakeFarmBoosterV3ABI, address: getBCakeFarmBoosterV3Address(chainId), signer, chainId })
+}
+
+export const getBCakeFarmBoosterVeCakeContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: bCakeFarmBoosterVeCakeABI,
+    address: getBCakeFarmBoosterVeCakeAddress(chainId),
+    signer,
+    chainId,
+  })
 }
 
 export const getPositionManagerWrapperContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {

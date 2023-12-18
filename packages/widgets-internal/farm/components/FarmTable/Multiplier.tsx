@@ -1,5 +1,5 @@
+import { FarmMultiplierInfo, HelpIcon, Skeleton, useTooltip } from "@pancakeswap/uikit";
 import { styled } from "styled-components";
-import { HelpIcon, Skeleton, useTooltip, FarmMultiplierInfo } from "@pancakeswap/uikit";
 import { FarmTableMultiplierProps } from "../../types";
 
 const ReferenceElement = styled.div`
@@ -8,7 +8,6 @@ const ReferenceElement = styled.div`
 
 const MultiplierWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text};
-  width: 36px;
   text-align: right;
   margin-right: 4px;
 

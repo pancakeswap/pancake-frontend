@@ -1,9 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
+import { bCakeFarmBoosterV3Address, bCakeFarmBoosterVeCakeAddress } from '@pancakeswap/farms/constants/v3'
 import addresses from 'config/constants/contracts'
 import { VaultKey } from 'state/types'
+import { Address } from 'viem'
 
-export interface Addresses {
-  [chainId: number]: `0x${string}`
+export type Addresses = {
+  [chainId in ChainId]?: Address
 }
 
 export const getAddressFromMap = (address: Addresses, chainId?: number): `0x${string}` => {
@@ -94,7 +96,11 @@ export const getBCakeFarmBoosterAddress = () => {
 }
 
 export const getBCakeFarmBoosterV3Address = (chainId?: number) => {
-  return getAddressFromMap(addresses.bCakeFarmBoosterV3, chainId)
+  return getAddressFromMap(bCakeFarmBoosterV3Address, chainId)
+}
+
+export const getBCakeFarmBoosterVeCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(bCakeFarmBoosterVeCakeAddress, chainId)
 }
 
 export const getBCakeFarmBoosterProxyFactoryAddress = () => {

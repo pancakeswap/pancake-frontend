@@ -1,24 +1,24 @@
 import { ChainId, chainNames } from '@pancakeswap/chains'
 import memoize from 'lodash/memoize'
 import {
-  bsc as bsc_,
-  bscTestnet,
-  goerli,
-  mainnet,
-  zkSync,
-  zkSyncTestnet,
-  polygonZkEvmTestnet,
-  polygonZkEvm,
-  lineaTestnet,
+  Chain,
   arbitrum,
   arbitrumGoerli,
   base,
   baseGoerli,
-  scrollSepolia,
-  opBNBTestnet,
+  bscTestnet,
+  bsc as bsc_,
+  goerli,
   linea,
+  lineaTestnet,
+  mainnet,
   opBNB,
-  Chain,
+  opBNBTestnet,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
+  scrollSepolia,
+  zkSync,
+  zkSyncTestnet,
 } from 'wagmi/chains'
 
 export const CHAIN_QUERY_NAME = chainNames

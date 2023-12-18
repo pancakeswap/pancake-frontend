@@ -1,23 +1,17 @@
-import { Box, Text, useTooltip, useMatchBreakpoints, LinkExternal, HelpIcon, Flex } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, HelpIcon, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { BoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
 import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
+import { BoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
 
 const BoosterTooltip = () => {
   const { t } = useTranslation()
   return (
     <>
       {t(
-        `Boost multiplier is calculated based on the staking conditions from both Farms and fixed-term CAKE syrup pool and will be automatically updated upon user actions.`,
+        `Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.`,
       )}
-      <LinkExternal
-        href="https://docs.pancakeswap.finance/products/yield-farming/bcake/faq#how-are-the-bcake-multipliers-calculated"
-        external
-      >
-        {t('Learn More')}
-      </LinkExternal>
     </>
   )
 }
@@ -25,8 +19,10 @@ const BoosterTooltip = () => {
 export const StatusView: React.FC<{
   status: BoostStatus
   boostedMultiplier?: number
+  expectMultiplier?: number
   isFarmStaking?: boolean
-}> = ({ status, boostedMultiplier, isFarmStaking }) => {
+  shouldUpdate?: boolean
+}> = ({ status, boostedMultiplier, isFarmStaking, shouldUpdate, expectMultiplier }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { address: account } = useAccount()
@@ -34,15 +30,16 @@ export const StatusView: React.FC<{
     placement: 'top',
     ...(isMobile && { hideTimeout: 1500 }),
   })
-  const { locked, isLockEnd, isReachedMaxBoostLimit } = useBCakeBoostLimitAndLockInfo()
+  const { locked, isLockEnd } = useBCakeBoostLimitAndLockInfo()
   const bCakeMessage = useBCakeMessage(
     account,
     Boolean(isFarmStaking),
     locked,
     isLockEnd,
-    isReachedMaxBoostLimit,
+    false,
     status === BoostStatus.farmCanBoostButNot,
     status === BoostStatus.Boosted,
+    shouldUpdate ?? false,
   )
 
   return (
@@ -51,19 +48,42 @@ export const StatusView: React.FC<{
         {t('Yield Booster')}
       </Text>
       <Flex alignItems="center">
-        <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
-          {(status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)) &&
-          locked &&
-          !isLockEnd
-            ? `${
-                boostedMultiplier < 1.001 && boostedMultiplier !== 1
-                  ? '< 1.001'
-                  : boostedMultiplier?.toLocaleString('en-US', {
-                      maximumFractionDigits: 3,
-                    })
-              }x`
-            : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
-        </Text>
+        {shouldUpdate ? (
+          <Flex>
+            <Text fontSize={16} lineHeight="120%" bold color="success" mr="3px">
+              {(expectMultiplier ?? 0) < 1.001 && expectMultiplier !== 1
+                ? '< 1.001'
+                : expectMultiplier?.toLocaleString('en-US', {
+                    maximumFractionDigits: 3,
+                  })}
+              x
+            </Text>
+            <Text fontSize={16} lineHeight="120%" bold color="textSubtle" style={{ textDecoration: 'line-through' }}>
+              {boostedMultiplier?.toLocaleString('en-US', {
+                maximumFractionDigits: 3,
+              })}
+              x
+            </Text>
+          </Flex>
+        ) : (
+          <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
+            {(status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)) &&
+            locked &&
+            !isLockEnd
+              ? `${
+                  (boostedMultiplier ?? 0) < 1.001 && boostedMultiplier !== 1
+                    ? '< 1.001'
+                    : boostedMultiplier?.toLocaleString('en-US', {
+                        maximumFractionDigits: 3,
+                      })
+                }x`
+              : expectMultiplier && expectMultiplier > 1
+              ? `${expectMultiplier?.toLocaleString('en-US', {
+                  maximumFractionDigits: 3,
+                })}x`
+              : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
+          </Text>
+        )}
         <Flex ref={targetRef}>
           <HelpIcon color="textSubtle" width="20px" height="20px" />
         </Flex>
@@ -84,17 +104,19 @@ const useBCakeMessage = (
   isReachedMaxBoostLimit: boolean,
   canBoostedButNot: boolean,
   boosted: boolean,
+  shouldUpdate: boolean,
 ) => {
   const { t } = useTranslation()
   const bCakeMessage = useMemo(() => {
     if (!account) return t('Connect wallet to activate yield booster')
     if (!isFarmStaking) return t('Start staking to activate yield booster.')
-    if (!locked) return t('Lock CAKE to activate yield booster')
+    if (!locked) return t('Get veCAKE to activate yield booster')
+    if (shouldUpdate) return t('Click to update and increase your boosts.')
     if (isLockEnd) return t('Renew your CAKE staking to activate yield booster')
     if (isReachedMaxBoostLimit && canBoostedButNot) return t('Unset other boosters to activate')
     if (canBoostedButNot) return t('Yield booster available')
     if (boosted) return t('Active')
     return ''
-  }, [t, account, isFarmStaking, locked, isLockEnd, isReachedMaxBoostLimit, canBoostedButNot, boosted])
+  }, [t, account, isFarmStaking, locked, isLockEnd, isReachedMaxBoostLimit, canBoostedButNot, boosted, shouldUpdate])
   return bCakeMessage
 }

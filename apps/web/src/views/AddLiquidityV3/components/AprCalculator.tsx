@@ -1,35 +1,37 @@
-import { Currency, CurrencyAmount, Token, ZERO, Price } from '@pancakeswap/sdk'
-import { TooltipText, Flex, CalculateIcon, Text, IconButton, QuestionHelper } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount, Price, Token, ZERO } from '@pancakeswap/sdk'
+import { CalculateIcon, Flex, IconButton, QuestionHelper, RocketIcon, Text, TooltipText } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { formatPrice } from '@pancakeswap/utils/formatFractions'
+import { FeeCalculator, Pool, encodeSqrtRatioX96, isPoolTickInRange, parseProtocolFees } from '@pancakeswap/v3-sdk'
 import {
   RoiCalculatorModalV2,
   RoiCalculatorPositionInfo,
-  useRoi,
   useAmountsByUsdValue,
+  useRoi,
 } from '@pancakeswap/widgets-internal/roi'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator, isPoolTickInRange } from '@pancakeswap/v3-sdk'
-import { useCallback, useMemo, useState } from 'react'
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useRouter } from 'next/router'
+import { useCallback, useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 
-import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
-import { Bound } from 'config/constants/types'
-import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
-import { Field } from 'state/mint/actions'
-import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
-import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
-import { batch } from 'react-redux'
 import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
-import currencyId from 'utils/currencyId'
+import { Bound } from 'config/constants/types'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { useFarm } from 'hooks/useFarm'
+import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
+import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
+import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
+import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
+import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
+import { batch } from 'react-redux'
+import { Field } from 'state/mint/actions'
+import currencyId from 'utils/currencyId'
 
-import { useV3FormState } from '../formViews/V3FormView/form/reducer'
+import { useUserPositionInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import { BoostStatus, useBoostStatus } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
+import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 
 interface Props {
   baseCurrency?: Currency
@@ -232,6 +234,15 @@ export function AprCalculator({
   // NOTE: Assume no liquidity when opening modal
   const { onFieldAInput, onBothRangeInput, onSetFullRange } = useV3MintActionHandlers(false)
 
+  const tokenId = useMemo(() => positionDetails?.tokenId?.toString() ?? '-1', [positionDetails?.tokenId])
+  const pid = useMemo(() => farm?.farm?.pid ?? -1, [farm?.farm.pid])
+  const {
+    data: { boostMultiplier },
+  } = useUserPositionInfo(positionDetails?.tokenId?.toString() ?? '-1')
+
+  const { status: boostedStatus } = useBoostStatus(pid, tokenId)
+  const isBoosted = useMemo(() => boostedStatus === BoostStatus.Boosted, [boostedStatus])
+
   const closeModal = useCallback(() => setOpen(false), [])
   const onApply = useCallback(
     (position: RoiCalculatorPositionInfo) => {
@@ -279,7 +290,15 @@ export function AprCalculator({
 
   const hasFarmApr = positionFarmApr && +positionFarmApr > 0
   const combinedApr = hasFarmApr ? +apr.toSignificant(6) + +positionFarmApr : +apr.toSignificant(6)
+  const combinedAprWithBoosted = hasFarmApr
+    ? +apr.toSignificant(6) + +positionFarmApr * (isBoosted ? boostMultiplier : 1)
+    : +apr.toSignificant(6)
   const aprDisplay = combinedApr.toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  })
+
+  const boostedAprDisplay = combinedAprWithBoosted.toLocaleString(undefined, {
     maximumFractionDigits: 2,
     minimumFractionDigits: 0,
   })
@@ -300,7 +319,21 @@ export function AprCalculator({
           </Text>
         )}
         <AprButtonContainer alignItems="center">
-          <AprText onClick={() => setOpen(true)}>{aprDisplay}%</AprText>
+          <AprText onClick={() => setOpen(true)}>
+            <Flex style={{ gap: 3 }}>
+              {isBoosted && (
+                <>
+                  <RocketIcon color="success" />
+                  <Text fontSize="14px" color="success">
+                    {boostedAprDisplay}%
+                  </Text>
+                </>
+              )}
+              <Text fontSize="14px" style={{ textDecoration: isBoosted ? 'line-through' : 'none' }}>
+                {aprDisplay}%
+              </Text>
+            </Flex>
+          </AprText>
           <IconButton variant="text" scale="sm" onClick={() => setOpen(true)}>
             <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
           </IconButton>
@@ -350,7 +383,7 @@ export function AprCalculator({
         onPriceSpanChange={setPriceSpan}
         onApply={onApply}
         isFarm={Boolean(hasFarmApr)}
-        cakeAprFactor={positionFarmAprFactor}
+        cakeAprFactor={positionFarmAprFactor.times(isBoosted ? boostMultiplier : 1)}
         cakePrice={cakePrice.toFixed(3)}
       />
     </>
