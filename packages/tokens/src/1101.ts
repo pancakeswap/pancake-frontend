@@ -1,6 +1,6 @@
-import { WETH9, ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { USDC, USDT, CAKE } from './common'
+import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
+import { CAKE, USDC, USDT } from './common'
 
 export const polygonZkEvmTokens = {
   weth: WETH9[ChainId.POLYGON_ZKEVM],
@@ -23,5 +23,12 @@ export const polygonZkEvmTokens = {
     'Gravita Debt Token',
     'https://www.gravitaprotocol.com/',
   ),
-  wbtc: new ERC20Token(ChainId.POLYGON_ZKEVM, '0xEA034fb02eB1808C2cc3adbC15f447B93CbE08e1', 8, 'WBTC', 'Wrapped BTC'),
+  wbtc: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0xEA034fb02eB1808C2cc3adbC15f447B93CbE08e1',
+    8,
+    'WBTC',
+    'Wrapped BTC',
+    'https://bitcoin.org/',
+  ),
 }
