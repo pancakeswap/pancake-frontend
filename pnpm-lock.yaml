@@ -635,11 +635,11 @@ importers:
   apps/web:
     dependencies:
       '@binance/w3w-utils':
-        specifier: 1.0.2-alpha.0
-        version: 1.0.2-alpha.0
+        specifier: 1.1.0-alpha.0
+        version: 1.1.0-alpha.0
       '@binance/w3w-wagmi-connector':
-        specifier: 1.0.2-alpha.0
-        version: 1.0.2-alpha.0(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(viem@1.19.11)
+        specifier: 1.1.0-alpha.1
+        version: 1.1.0-alpha.1(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(viem@1.19.11)(wagmi@1.4.7)
       '@cyberlab/cyber-app-sdk':
         specifier: 2.4.4
         version: 2.4.4(@types/node@13.13.52)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
@@ -651,7 +651,7 @@ importers:
         version: 4.5.0(encoding@0.1.13)
       '@gnosis.pm/safe-apps-wagmi':
         specifier: ^1.2.0
-        version: 1.2.0(encoding@0.1.13)
+        version: 1.2.0(@wagmi/core@0.7.9)(encoding@0.1.13)
       '@next/bundle-analyzer':
         specifier: 13.0.7
         version: 13.0.7
@@ -3638,13 +3638,13 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@binance/w3w-core@1.0.2-alpha.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-iy9a63BPiGnNmKjLV1HmyomhV+/mYw0jy9NGHVU2V58ZcyURY2GQbI+BNQZ+AAnZ0vgOHETbAj93N3FNXE4xDQ==}
+  /@binance/w3w-core@1.1.0-alpha.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ePQ8jFEz89VbdlDm3JrfAm//P291jhE6KqLMIZtJAEvBmOr6h3aWpu7HCh2CLPaPlArSHPa7wVIN9VpXDj02jg==}
     dependencies:
-      '@binance/w3w-qrcode-modal': 1.0.2-alpha.0(react-dom@18.2.0)(react@18.2.0)
-      '@binance/w3w-socket-transport': 1.0.2-alpha.0
-      '@binance/w3w-types': 1.0.2-alpha.0
-      '@binance/w3w-utils': 1.0.2-alpha.0
+      '@binance/w3w-qrcode-modal': 1.1.0-alpha.1(react-dom@18.2.0)(react@18.2.0)
+      '@binance/w3w-socket-transport': 1.1.0-alpha.1
+      '@binance/w3w-types': 1.1.0-alpha.1
+      '@binance/w3w-utils': 1.1.0-alpha.1
       '@ethersproject/abi': 5.7.0
       axios: 1.6.2
       js-base64: 3.7.5
@@ -3657,13 +3657,13 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@binance/w3w-ethereum-provider@1.0.2-alpha.0(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-tzYILc8aTDQKPX7fMfWjfL3xKg6ZbrRUEbC3BWVK789jAR2Wz/Tj21HyUxvIFaBvA4pfEt29jSy0C+6U2ljimg==}
+  /@binance/w3w-ethereum-provider@1.1.0-alpha.1(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-e0JEFi8twRcNaLt/LF6JFL7i0VtjHiV/qGv9GrfMEF1vpluu7QZW/YIVa5LAWZZ0VyZ81GYxJXTtxWC8Ui8dXw==}
     dependencies:
-      '@binance/w3w-http-client': 1.0.2-alpha.0(encoding@0.1.13)
-      '@binance/w3w-sign-client': 1.0.2-alpha.0(react-dom@18.2.0)(react@18.2.0)
-      '@binance/w3w-types': 1.0.2-alpha.0
-      '@binance/w3w-utils': 1.0.2-alpha.0
+      '@binance/w3w-http-client': 1.1.0-alpha.1(encoding@0.1.13)
+      '@binance/w3w-sign-client': 1.1.0-alpha.1(react-dom@18.2.0)(react@18.2.0)
+      '@binance/w3w-types': 1.1.0-alpha.1
+      '@binance/w3w-utils': 1.1.0-alpha.1
       eip1193-provider: 1.0.1
       eventemitter3: 5.0.1
     transitivePeerDependencies:
@@ -3676,25 +3676,25 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@binance/w3w-http-client@1.0.2-alpha.0(encoding@0.1.13):
-    resolution: {integrity: sha512-rniovEvd1kMNdQBiDcFbGlNDKtx1bgonf7ewZ7WNUx+IAe47RKFhC6wW+V9XpZ4+HPCe/yWd4Ny9VuLf2rcLGQ==}
+  /@binance/w3w-http-client@1.1.0-alpha.1(encoding@0.1.13):
+    resolution: {integrity: sha512-GPRtLVvKL462WZgWECfHU5YNohhm75OcA6wN9sBCUGYRkClgX7jhugzXnEg23y78hlM3+4IAVu4/s+qmoAhugQ==}
     dependencies:
-      '@binance/w3w-types': 1.0.2-alpha.0
-      '@binance/w3w-utils': 1.0.2-alpha.0
+      '@binance/w3w-types': 1.1.0-alpha.1
+      '@binance/w3w-utils': 1.1.0-alpha.1
       cross-fetch: 3.1.8(encoding@0.1.13)
       eventemitter3: 5.0.1
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /@binance/w3w-qrcode-modal@1.0.2-alpha.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-YIj4Lmp/YuLxju1neAP73Xy6+EAPkd50ZEYjnWVMwbhYiGfOioeuhwUg6B8VKBwECrAIWxn60tXDY56cgWl73w==}
+  /@binance/w3w-qrcode-modal@1.1.0-alpha.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-1UpfKcdVMsjN7kmYhJVbrurhJXeIxXN4UR1S+iJLX5NCGZFMa+Xaa8tgxF8/Uhx8gQbUHzHPgy+4gSjDahMh1Q==}
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@binance/w3w-types': 1.0.2-alpha.0
-      '@binance/w3w-utils': 1.0.2-alpha.0
+      '@binance/w3w-types': 1.1.0-alpha.1
+      '@binance/w3w-utils': 1.1.0-alpha.1
       qrcode: 1.5.3
       qrcode.react: 3.1.0(react@18.2.0)
       react: 18.2.0
@@ -3704,12 +3704,12 @@ packages:
       - ts-node
     dev: false
 
-  /@binance/w3w-sign-client@1.0.2-alpha.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-y6CItLeaCmqFqq7P1QzO0pOvmqni2PdKimlcPXAZ4qVh08FgDTjBeb0d1m9SbWQhuktNhOrZ8W3aPleAsRAN7g==}
+  /@binance/w3w-sign-client@1.1.0-alpha.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-VD9SeXIv8Gu0RwEjeRzB8WEsbqJ8x8o7Mp1gIWmaYJHD83C/XfVcQkaB2sl/uPrwygvAVZncZcxU80OxIURycg==}
     dependencies:
-      '@binance/w3w-core': 1.0.2-alpha.0(react-dom@18.2.0)(react@18.2.0)
-      '@binance/w3w-types': 1.0.2-alpha.0
-      '@binance/w3w-utils': 1.0.2-alpha.0
+      '@binance/w3w-core': 1.1.0-alpha.1(react-dom@18.2.0)(react@18.2.0)
+      '@binance/w3w-types': 1.1.0-alpha.1
+      '@binance/w3w-utils': 1.1.0-alpha.1
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -3719,41 +3719,57 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@binance/w3w-socket-transport@1.0.2-alpha.0:
-    resolution: {integrity: sha512-sn2Ck6IuI1yPj3pZofdsEOPpjW9gTcIBpOcgCqooF/hl9LqI4epqpXtCbp2XTkT+ApnvDUFSQcEG02X2xOQr+w==}
+  /@binance/w3w-socket-transport@1.1.0-alpha.1:
+    resolution: {integrity: sha512-H3AVqe0F8ed5M1V6D7GpJggOIKjAbfZ4nmTiYRTqyzjVim3zEXZZExGesZ7tHP2py6+y3NDsHCQvI+aDFbSJZA==}
     dependencies:
-      '@binance/w3w-types': 1.0.2-alpha.0
-      '@binance/w3w-utils': 1.0.2-alpha.0
+      '@binance/w3w-types': 1.1.0-alpha.1
+      '@binance/w3w-utils': 1.1.0-alpha.1
       ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /@binance/w3w-types@1.0.2-alpha.0:
-    resolution: {integrity: sha512-G21Kxami9GFd/2kMtSm0zFwVGpI2io15VUimVmesD7pbVonOVE/nm+IM/XPUbxS1pqs/2wnoH2KxjbJ4hf6yug==}
+  /@binance/w3w-types@1.1.0-alpha.0:
+    resolution: {integrity: sha512-wlYSx+IGHGrwPDT2z6c2X6Gh0gxLLv9rokHDLXQF8TdW7TleBTIAC7GJqni8gKs2uXgI1hreGpf0cTl/Z8s9dQ==}
     dependencies:
       eventemitter3: 5.0.1
     dev: false
 
-  /@binance/w3w-utils@1.0.2-alpha.0:
-    resolution: {integrity: sha512-qJ2/nLxsSTqmK0M2BMFqYmAmDLMm4DIqgQpQ5H5gzo9L0JANRSPmQkEnMTiJDCHQwPyRTuXI7uNG0utlYQtHvQ==}
+  /@binance/w3w-types@1.1.0-alpha.1:
+    resolution: {integrity: sha512-a3R2pNaUxW1YMk9tu6xbl/8fT+6+1Ue7E7DGbMpINGlD9XhEQfDC+cFAJ7+f97UVnjm1GB3TC80OOyImoJvwjA==}
     dependencies:
-      '@binance/w3w-types': 1.0.2-alpha.0
+      eventemitter3: 5.0.1
+    dev: false
+
+  /@binance/w3w-utils@1.1.0-alpha.0:
+    resolution: {integrity: sha512-I2Ink42fqGgDfza+IxH+Yj0vRhn63XkNXYXvasshb6deKWztxYwgukSGMqNy3u/GFRFyfS5ycogssyH71PpqZg==}
+    dependencies:
+      '@binance/w3w-types': 1.1.0-alpha.0
       eventemitter3: 5.0.1
       hash.js: 1.1.7
       js-base64: 3.7.5
     dev: false
 
-  /@binance/w3w-wagmi-connector@1.0.2-alpha.0(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(viem@1.19.11):
-    resolution: {integrity: sha512-F0F1zGUOEIcEn1E4h8IaZ7qEvRGh/fUni3rXzUbA+82S071f3ITVFT8FR3LfwNHUniYjfWNYu2rMslwCLdkLIA==}
-    peerDependencies:
-      '@wagmi/core': ^1.4.7
-      viem: ^1.19.3
+  /@binance/w3w-utils@1.1.0-alpha.1:
+    resolution: {integrity: sha512-S7+vgXunRjHKOJuL2rd5lwTqzdrgN+htaSaJXzItCRTNi5c0ueiDJwWMCgobr3YOY6Fud/AcMv19GQH30E3l0w==}
     dependencies:
-      '@binance/w3w-ethereum-provider': 1.0.2-alpha.0(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)
-      '@binance/w3w-utils': 1.0.2-alpha.0
+      '@binance/w3w-types': 1.1.0-alpha.1
+      eventemitter3: 5.0.1
+      hash.js: 1.1.7
+      js-base64: 3.7.5
+    dev: false
+
+  /@binance/w3w-wagmi-connector@1.1.0-alpha.1(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(viem@1.19.11)(wagmi@1.4.7):
+    resolution: {integrity: sha512-uBtWUKQ1uncmByehTJ9qGCfnZpOD6tikMyMm3q3e2QS4+YyzF3K7Yy8nGUxJ3m01T5hwD0syCsdOX9513EZYIQ==}
+    peerDependencies:
+      viem: ^1.19.3
+      wagmi: ^1.4.7
+    dependencies:
+      '@binance/w3w-ethereum-provider': 1.1.0-alpha.1(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)
+      '@binance/w3w-utils': 1.1.0-alpha.1
       viem: 1.19.11(typescript@5.2.2)(zod@3.22.4)
+      wagmi: 1.4.7(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(viem@1.19.11)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -5694,13 +5710,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@gnosis.pm/safe-apps-wagmi@1.2.0(encoding@0.1.13):
+  /@gnosis.pm/safe-apps-wagmi@1.2.0(@wagmi/core@0.7.9)(encoding@0.1.13):
     resolution: {integrity: sha512-ecDiNMkQ01m2yM/eKKtt08bTvYjWfacG+vwAeb4Lpiitm8RBI8wkW1jUoOgvd9tNhHZtdykgGETUZGmMo1XDuw==}
     peerDependencies:
       '@wagmi/core': '>= 0.3.8 < 0.8.0'
     dependencies:
       '@gnosis.pm/safe-apps-provider': 0.15.1(encoding@0.1.13)
       '@gnosis.pm/safe-apps-sdk': 7.8.0(encoding@0.1.13)
+      '@wagmi/core': 0.7.9(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -11176,7 +11193,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.23.3(@babel/core@7.23.3)
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.3)
       react-refresh: 0.14.0
-      vite: 4.3.9(@types/node@18.0.4)
+      vite: 4.3.9(@types/node@13.13.52)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11456,6 +11473,29 @@ packages:
       - supports-color
       - utf-8-validate
       - zod
+    dev: false
+
+  /@wagmi/core@0.7.9(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-97KCELUP5Q1AagRyE7SmpLh4/v3xdcy/XMbybLvvtQbgmi3y5oEzy4h/wJMY1hEZlmicqyWZAHHm6xIr1tP5HA==}
+    peerDependencies:
+      '@coinbase/wallet-sdk': '>=3.3.0'
+      '@walletconnect/ethereum-provider': '>=1.7.5'
+      ethers: '>=5.5.1'
+    peerDependenciesMeta:
+      '@coinbase/wallet-sdk':
+        optional: true
+      '@walletconnect/ethereum-provider':
+        optional: true
+    dependencies:
+      abitype: 0.1.8(typescript@5.2.2)
+      ethers: 5.7.2
+      eventemitter3: 4.0.7
+      zustand: 4.4.6(@types/react@18.2.37)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+      - react
+      - typescript
     dev: false
 
   /@wagmi/core@1.4.7(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)(typescript@5.2.2)(viem@1.19.11)(zod@3.22.4):
@@ -12712,6 +12752,15 @@ packages:
   /abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
     dev: true
+
+  /abitype@0.1.8(typescript@5.2.2):
+    resolution: {integrity: sha512-2pde0KepTzdfu19ZrzYTYVIWo69+6UbBCY4B1RDiwWgo2XZtFSJhF6C+XThuRXbbZ823J0Rw1Y5cP0NXYVcCdQ==}
+    engines: {pnpm: '>=7'}
+    peerDependencies:
+      typescript: '>=4.7.4'
+    dependencies:
+      typescript: 5.2.2
+    dev: false
 
   /abitype@0.3.0(typescript@5.2.2):
     resolution: {integrity: sha512-0YokyAV4hKMcy97Pl+6QgZBlBdZJN2llslOs7kiFY+cu7kMlVXDBpxMExfv0krzBCQt2t7hNovpQ3y/zvEm18A==}
@@ -25854,7 +25903,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       globrex: 0.1.2
       tsconfck: 2.1.2(typescript@5.2.2)
-      vite: 4.3.9(@types/node@18.0.4)
+      vite: 4.3.9(@types/node@13.13.52)
     transitivePeerDependencies:
       - supports-color
       - typescript

@@ -18,7 +18,7 @@ const useEagerConnect = () => {
       return
     }
 
-    if (typeof window !== 'undefined' && isInBinance()) {
+    if (isInBinance()) {
       import('@binance/w3w-wagmi-connector').then(({ getWagmiConnector }) => {
         const BinanceConnector = getWagmiConnector()
         const binanceConnector = new BinanceConnector({
