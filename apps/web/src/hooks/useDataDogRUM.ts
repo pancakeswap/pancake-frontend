@@ -12,6 +12,7 @@ export function useDataDogRUM() {
     console.log(env)
     const sessionSampleRate = env === 'production' ? 0.01 : env === 'preview' ? 100 : 0
     datadogRum.init({
+      version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
       enableExperimentalFeatures: ['feature_flags'],
       applicationId: process.env.NEXT_PUBLIC_DD_RUM_APP_ID || '',
       clientToken: process.env.NEXT_PUBLIC_DD_RUM_CLIENT_TOKEN || '',
