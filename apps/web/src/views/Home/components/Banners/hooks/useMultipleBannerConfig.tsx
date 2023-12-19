@@ -44,12 +44,12 @@ export const useMultipleBannerConfig = () => {
         shouldRender: isRenderIFOBanner,
         banner: <IFOBanner />,
       },
-    ]
-
-    const SHUFFLE_BANNERS: IBannerConfig[] = [
       { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <VeCakeBanner /> },
       { shouldRender: true, banner: <GameBanner /> },
+    ]
+
+    const SHUFFLE_BANNERS: IBannerConfig[] = [
       {
         shouldRender: isRenderCompetitionBanner,
         banner: <CompetitionBanner />,
