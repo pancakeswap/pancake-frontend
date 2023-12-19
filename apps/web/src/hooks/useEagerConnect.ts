@@ -1,11 +1,10 @@
 import { useConfig, useConnect } from 'wagmi'
 import { useEffect } from 'react'
 import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { isInBinance } from '@binance/w3w-utils'
 
 import { CHAINS } from 'config/chains'
-import { cyberWalletConnector } from 'utils/wagmi'
+import { cyberWalletConnector, binanceWeb3WalletConnector } from 'utils/wagmi'
 
 const useEagerConnect = () => {
   const config = useConfig()
@@ -19,16 +18,8 @@ const useEagerConnect = () => {
     }
 
     if (isInBinance()) {
-      import('@binance/w3w-wagmi-connector').then(({ getWagmiConnector }) => {
-        const BinanceConnector = getWagmiConnector()
-        const binanceConnector = new BinanceConnector({
-          chains: CHAINS,
-          options: { chainId: ChainId.BSC },
-        })
-
-        connectAsync({ connector: binanceConnector as any }).catch(() => {
-          config.autoConnect()
-        })
+      connectAsync({ connector: binanceWeb3WalletConnector }).catch(() => {
+        config.autoConnect()
       })
       return
     }
