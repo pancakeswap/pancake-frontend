@@ -4,7 +4,6 @@ import CompetitionBanner from '../CompetitionBanner'
 import GameBanner from '../GameBanner'
 import IFOBanner from '../IFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
-import { SpainMeetupBanner } from '../SpainMeetupBanner'
 import UserBanner from '../UserBanner'
 import VeCakeBanner from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
@@ -37,7 +36,6 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <SpainMeetupBanner /> },
       { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <VeCakeBanner /> },
       { shouldRender: true, banner: <GameBanner /> },
