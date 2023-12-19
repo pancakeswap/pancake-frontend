@@ -21,6 +21,8 @@ import { DefaultSeo } from 'next-seo'
 import { PageMeta } from 'components/Layout/Page'
 import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import { PersistGate } from 'redux-persist/integration/react'
+
+import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { Blocklist, Updaters } from '..'
@@ -38,6 +40,7 @@ BigNumber.config({
 })
 
 function GlobalHooks() {
+  useDataDogRUM()
   usePollBlockNumber()
   useEagerConnect()
   useUserAgent()
