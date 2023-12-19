@@ -23,7 +23,9 @@ export interface AprData {
   refetch: () => void
 }
 
-export const useFetchApr = (): AprData => {
+const useFetchAllSpecific = () => {}
+
+export const useFetchApr = (timeWindows: number[]): AprData => {
   const { chainId } = useActiveChainId()
   const supportedChain = useMemo((): boolean => {
     const chainIds = POSITION_MANAGERS_SUPPORTED_CHAINS

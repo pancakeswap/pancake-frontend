@@ -1,20 +1,20 @@
 import { MANAGER, Strategy } from '@pancakeswap/position-managers'
+import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
 import { Card, CardBody } from '@pancakeswap/uikit'
-import { Currency, Percent, Price, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { Address } from 'viem'
-import { ReactNode, memo, PropsWithChildren, useMemo } from 'react'
+import { PropsWithChildren, ReactNode, memo, useMemo } from 'react'
 import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { useApr } from 'views/PositionManagers/hooks/useApr'
-import { CardTitle } from './CardTitle'
-import { YieldInfo } from './YieldInfo'
-import { ManagerInfo } from './ManagerInfo'
-import { LiquidityManagement } from './LiquidityManagement'
+import { AprDataInfo } from '../hooks'
 import { getVaultName } from '../utils'
+import { CardTitle } from './CardTitle'
 import { ExpandableSection } from './ExpandableSection'
+import { LiquidityManagement } from './LiquidityManagement'
+import { ManagerInfo } from './ManagerInfo'
 import { VaultInfo } from './VaultInfo'
 import { VaultLinks } from './VaultLinks'
-import { AprDataInfo } from '../hooks'
+import { YieldInfo } from './YieldInfo'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -75,6 +75,7 @@ interface Props {
   totalSupplyAmounts?: bigint
   precision?: bigint
   lpTokenDecimals?: number
+  aprTimeWindow?: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({

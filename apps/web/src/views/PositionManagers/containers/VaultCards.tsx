@@ -1,19 +1,19 @@
-import { memo } from 'react'
 import { isThirdPartyVaultConfig } from '@pancakeswap/position-managers'
+import { memo, useMemo } from 'react'
 import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 
+import { CardLayout } from '../components'
 import {
-  useVaultConfigs,
+  PositionManagerStatus,
   useFetchApr,
+  usePositionManagerDetailsData,
+  usePositionManagerStatus,
   useSearch,
   useSortBy,
-  usePositionManagerStatus,
-  PositionManagerStatus,
-  usePositionManagerDetailsData,
   useStakeOnly,
+  useVaultConfigs,
 } from '../hooks'
 import { ThirdPartyVaultCard } from './PCSVaultCard'
-import { CardLayout } from '../components'
 
 export const VaultCards = memo(function VaultCards() {
   const configs = useVaultConfigs()
@@ -23,7 +23,16 @@ export const VaultCards = memo(function VaultCards() {
   const [stakeOnly] = useStakeOnly()
   const { data: positionMangerDetailsData, updateData: updatePositionMangerDetailsData } =
     usePositionManagerDetailsData()
-  const aprDataList = useFetchApr()
+  const aprTimeWindows = useMemo(() => {
+    const timeWindows = new Set<number>()
+    configs.forEach((config) => {
+      if (config?.aprTimeWindow) {
+        timeWindows.add(config.aprTimeWindow)
+      }
+    })
+    return Array.from(timeWindows)
+  }, [configs])
+  const aprDataList = useFetchApr(aprTimeWindows)
   const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster()
   const cards = configs
     .filter((d) => {
