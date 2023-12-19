@@ -17,6 +17,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 
 // TODO should be common hooks
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { useIsMigratedToVeCake } from 'views/CakeStaking/hooks/useIsMigratedToVeCake'
 
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
 
@@ -45,19 +46,22 @@ export function VeCakeCard({ ifoAddress }: Props) {
     cakePoolLocked: proxyLocked,
     cakePoolUnlockTime: proxyUnlockTime,
     cakeLocked: nativeLocked,
+    shouldMigrate,
   } = useCakeLockStatus()
+  const isMigrated = useIsMigratedToVeCake()
+  const needMigrate = useMemo(() => shouldMigrate && !isMigrated, [shouldMigrate, isMigrated])
   const totalLockCake = useMemo(
     () => Number(formatBigInt(nativeCakeLockedAmount + proxyCakeLockedAmount, CAKE[chainId || ChainId.BSC].decimals)),
     [nativeCakeLockedAmount, proxyCakeLockedAmount, chainId],
   )
+  const hasProxyCakeButNoNativeVeCake = useMemo(() => !nativeLocked && proxyLocked, [nativeLocked, proxyLocked])
   const unlockAt = useMemo(() => {
-    if (!nativeLocked && proxyLocked) {
+    if (hasProxyCakeButNoNativeVeCake) {
       return proxyUnlockTime
     }
     return nativeUnlockTime
-  }, [nativeLocked, nativeUnlockTime, proxyLocked, proxyUnlockTime])
+  }, [hasProxyCakeButNoNativeVeCake, nativeUnlockTime, proxyUnlockTime])
 
-  const { shouldMigrate } = useCakeLockStatus()
   const { snapshotTime, credit, veCake } = useUserIfoInfo({ ifoAddress, chainId })
   const creditBN = useMemo(
     () => credit && new BigNumber(credit.numerator.toString()).div(credit.decimalScale.toString()),
@@ -82,9 +86,15 @@ export function VeCakeCard({ ifoAddress }: Props) {
         <Ifo.LockInfoCard mt="1.5rem" amount={totalLockCake} unlockAt={unlockAt} usdPrice={cakePrice} />
       ) : null}
 
-      {isConnected && !hasVeCake && !shouldMigrate ? <Ifo.ZeroVeCakeTips mt="1.5rem" /> : null}
+      {isConnected && !hasVeCake && !needMigrate && hasProxyCakeButNoNativeVeCake ? (
+        <Ifo.InsufficientNativeVeCakeTips mt="1.5rem" />
+      ) : null}
 
-      {shouldMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null}
+      {isConnected && !hasVeCake && !needMigrate && !hasProxyCakeButNoNativeVeCake ? (
+        <Ifo.ZeroVeCakeTips mt="1.5rem" />
+      ) : null}
+
+      {needMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null}
       {isConnected ? <NavigateButton mt="1.5rem" /> : <ConnectWalletButton width="100%" mt="1.5rem" />}
     </Ifo.VeCakeCard>
   )
