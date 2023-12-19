@@ -9,7 +9,8 @@ export function useDataDogRUM() {
       return
     }
     const env = process.env.NEXT_PUBLIC_VERCEL_ENV
-    const sessionSampleRate = env === 'production' ? 0.01 : 100
+    console.log(env)
+    const sessionSampleRate = env === 'production' ? 0.01 : env === 'preview' ? 100 : 0
     datadogRum.init({
       enableExperimentalFeatures: ['feature_flags'],
       applicationId: process.env.NEXT_PUBLIC_DD_RUM_APP_ID || '',
