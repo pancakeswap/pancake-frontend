@@ -66,8 +66,6 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
   const isLocked = (vaultPool as DeserializedLockedCakeVault)?.userData?.locked
   const isUserDelegated = useIsUserDelegated()
 
-  console.log(isUserDelegated, 'isUserDelegated')
-
   if (!pool) {
     return null
   }
@@ -77,10 +75,10 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
       <StyledCardBody isLoading={isLoading}>
         {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCard isLockEndOrAfterLock />}
 
-        {account && pool.vaultKey === VaultKey.CakeVault && (
+        {account && pool.vaultKey === VaultKey.CakeVault && !isUserDelegated && (
           <VaultPositionTagWithLabel userData={(vaultPool as DeserializedLockedCakeVault)?.userData} />
         )}
-        {account && pool.vaultKey === VaultKey.CakeVault && isLocked ? (
+        {account && pool.vaultKey === VaultKey.CakeVault && isLocked && !isUserDelegated ? (
           <>
             <LockedStakingApy
               userData={(vaultPool as DeserializedLockedCakeVault).userData}
@@ -102,7 +100,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
               <VeCakeCard />
             )}
             {/* {<StakingApy pool={pool} />} */}
-            {vaultPosition !== VaultPosition.None && (
+            {vaultPosition !== VaultPosition.None && !isUserDelegated && (
               <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
                 <Box>
                   {account && (
