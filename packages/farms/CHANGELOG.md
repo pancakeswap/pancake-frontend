@@ -1,5 +1,11 @@
 # @pancakeswap/farms
 
+## 1.0.29
+
+### Patch Changes
+
+- e39632abf: export the bcake contract abi and address from farm v3
+
 ## 1.0.28
 
 ### Patch Changes
