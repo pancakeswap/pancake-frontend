@@ -291,9 +291,9 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
   }
 
   return {
-    gasPrice: data?.gasPrice,
-    maxFeePerGas: data?.maxFeePerGas,
-    maxPriorityFeePerGas: data?.maxPriorityFeePerGas,
+    gasPrice: data?.gasPrice ?? undefined,
+    maxFeePerGas: data?.maxFeePerGas ?? undefined,
+    maxPriorityFeePerGas: data?.maxPriorityFeePerGas ?? undefined,
   }
 }
 
@@ -312,7 +312,7 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
     async () => {
       // @ts-ignore
       const gasPrice = await signer?.request({
-        method: 'eth_gasPrice',
+        method: 'eth_gasPrice' as any,
       })
       return hexToBigInt(gasPrice as Hex)
     },
@@ -381,7 +381,7 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
-  const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
+  const { data: farmPairs = [] } = useSWRImmutable(chainId ? ['track-farms-pairs', chainId] : null, async () => {
     const farms = await getFarmConfig(chainId)
 
     const fPairs: [ERC20Token, ERC20Token][] | undefined = farms
