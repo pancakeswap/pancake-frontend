@@ -5,29 +5,6 @@ import { cakeBnbLpToken } from '../lpTokens'
 
 export const ifos: BaseIfoConfig[] = [
   {
-    id: 'test-ifo-v7',
-    address: '0xAF714a2d41095aea8CC0D281C997E59224e5880A',
-    isActive: true,
-    cIFO: true,
-    name: 'Test',
-    plannedStartTime: 1702018800,
-    poolBasic: {
-      raiseAmount: '$0.8',
-    },
-    poolUnlimited: {
-      raiseAmount: '$3.2',
-    },
-    currency: bscTokens.cake,
-    token: bscTokens.usdt,
-    campaignId: '512200000',
-    articleUrl: 'https://pancakeswap.finance/voting/',
-    tokenOfferingPrice: 1,
-    version: 7,
-    twitterUrl: 'https://twitter.com/pancakeswap',
-    description: 'Spend CAKE, buy USDT, but on vesting',
-    vestingTitle: 'Use CAKE to buy USDT',
-  },
-  {
     id: 'sable',
     address: '0xD247FFf8005917aDc02f59Ba8F2Dde02c13ee92d',
     isActive: false,
