@@ -247,6 +247,41 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                   />
                   <Text bold>{timeFormat(locale, lastTokenTimestamp)}</Text>
                 </Flex>
+                <Flex mt="8px" flexDirection="row" alignItems="center">
+                  <BenefitsTooltipsText
+                    title={t('APR')}
+                    tooltipComponent={
+                      <div>
+                        {/* @todo use real APR Value */}
+                        <p>
+                          {t('CAKE Pool:')}{' '}
+                          <Text bold style={{ display: 'inline' }}>
+                            12.31%
+                          </Text>
+                        </p>
+                        <p>
+                          {t('Revenue Sharing:')}{' '}
+                          <Text bold style={{ display: 'inline' }}>
+                            12.31%
+                          </Text>
+                        </p>
+                        <br />
+                        <p>
+                          {t(
+                            'CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.',
+                          )}
+                        </p>
+                        <br />
+                        <p>
+                          {t(
+                            'Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.',
+                          )}
+                        </p>
+                      </div>
+                    }
+                  />
+                  <Text bold>{timeFormat(locale, lastTokenTimestamp)}</Text>
+                </Flex>
                 <Box mt="16px">
                   <Text fontSize={12} bold color="secondary" textTransform="uppercase">
                     {t('cake pool')}
