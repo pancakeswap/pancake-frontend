@@ -125,7 +125,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
           </>
         )}
       </StyledCardBody>
-      {account && (
+      {account && !isUserDelegated && (
         <CardFooter isLocked={isLocked} defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
       )}
     </>
