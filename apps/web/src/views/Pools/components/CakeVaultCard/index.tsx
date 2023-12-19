@@ -13,6 +13,7 @@ import useVCake from 'views/Pools/hooks/useVCake'
 import { useAccount } from 'wagmi'
 
 import { VeCakeCard, VeCakeUpdateCard } from 'views/CakeStaking/components/SyrupPool'
+import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import LockedStakingApy from '../LockedPool/LockedStakingApy'
 import CardFooter from '../PoolCard/CardFooter'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
@@ -63,6 +64,9 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
 
   const vaultPosition = getVaultPosition(vaultPool.userData)
   const isLocked = (vaultPool as DeserializedLockedCakeVault)?.userData?.locked
+  const isUserDelegated = useIsUserDelegated()
+
+  console.log(isUserDelegated, 'isUserDelegated')
 
   if (!pool) {
     return null
@@ -92,7 +96,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
           </>
         ) : (
           <>
-            {account && vaultPosition === VaultPosition.Flexible ? (
+            {account && vaultPosition === VaultPosition.Flexible && !isUserDelegated ? (
               <VeCakeUpdateCard isFlexibleStake />
             ) : (
               <VeCakeCard />
