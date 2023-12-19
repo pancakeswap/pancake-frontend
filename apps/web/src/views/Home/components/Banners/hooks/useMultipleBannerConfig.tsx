@@ -36,9 +36,6 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <WebNotificationBanner /> },
-      { shouldRender: true, banner: <VeCakeBanner /> },
-      { shouldRender: true, banner: <GameBanner /> },
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
@@ -50,6 +47,9 @@ export const useMultipleBannerConfig = () => {
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <WebNotificationBanner /> },
+      { shouldRender: true, banner: <VeCakeBanner /> },
+      { shouldRender: true, banner: <GameBanner /> },
       {
         shouldRender: isRenderCompetitionBanner,
         banner: <CompetitionBanner />,
