@@ -69,13 +69,13 @@ const useCakePoolEmission = () => {
     const cakeRateToSpecialFarm = response[0] ?? 0n
     const allocPoint = response[1][2] ?? 0n
     const totalSpecialAllocPoint = response[2] ?? 0n
-
     return [cakeRateToSpecialFarm, allocPoint, totalSpecialAllocPoint]
   })
 
   return useMemo(() => {
     if (!data) return 0n
     const [cakeRateToSpecialFarm, allocPoint, totalSpecialAllocPoint] = data
+
     return new BigNumber(CAKE_PER_BLOCK)
       .times(new BigNumber(cakeRateToSpecialFarm.toString()).div(1e12))
       .times(allocPoint.toString())
@@ -90,9 +90,14 @@ export const useCakePoolAPR = () => {
 
   return useMemo(() => {
     if (!cakePoolEmission || !userSharesPercent?.denominator || !userCakeTVL) return new Percent(0, 1)
+
     return new Percent(
-      new BigNumber(cakePoolEmission).times(userSharesPercent.numerator.toString()).toFixed(0),
-      (userCakeTVL * userSharesPercent.denominator * BigInt(3 * 24 * 60 * 60 * 365)).toString(),
+      new BigNumber(cakePoolEmission)
+        .times(1e18)
+        .times(24 * 60 * 60 * 365)
+        .times(userSharesPercent.numerator.toString())
+        .toFixed(0),
+      (userCakeTVL * userSharesPercent.denominator * 3n).toString(),
     )
   }, [cakePoolEmission, userSharesPercent, userCakeTVL])
 }
@@ -111,6 +116,7 @@ export const useRevenueSharingAPR = () => {
     functionName: 'totalDistributed',
     chainId,
   })
+
   const lastThursday = useMemo(() => {
     return Math.floor(currentTimestamp / WEEK) * WEEK
   }, [currentTimestamp])
