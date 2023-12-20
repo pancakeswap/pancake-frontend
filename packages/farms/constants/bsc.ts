@@ -49,7 +49,7 @@ export const farmsV3 = defineFarmV3Configs([
   // latest first
   {
     pid: 105,
-    lpAddress: '0x80968a476E0235a026Fd1F33AAac5a3B7b76110F',
+    lpAddress: '0x14861FFC20f88E6D0Cf90da6BDc796Bb7f0B19E6',
     token0: bscTokens.esRDNT,
     token1: bscTokens.rdnt,
     feeAmount: FeeAmount.MEDIUM,
