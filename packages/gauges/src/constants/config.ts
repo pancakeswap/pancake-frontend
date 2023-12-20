@@ -1871,14 +1871,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: bscTokens.usdc.address,
     feeTier: FeeAmount.LOWEST,
   },
-  // {
-  //   gid: 175,
-  //   address: '0xb4C27884308C3Bca710c220D680BAb02f6b64b51',
-  //   pairName: 'sdCAKE-CAKE',
-  //   chainId: ChainId.BSC,
-  //   type: GaugeType.StableSwap,
-  //   tokenAddresses: [bscTokens.sdcake.address, bscTokens.cake.address],
-  // },
+  {
+    gid: 175,
+    address: '0xB1D54d76E2cB9425Ec9c018538cc531440b55dbB',
+    pairName: 'CAKE-sdCAKE',
+    chainId: ChainId.BSC,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [bscTokens.cake.address, bscTokens.sdcake.address],
+  },
   {
     gid: 176,
     address: '0x060d8a5a7C03882e33AcA8FC304BabE869e21Ee9',
