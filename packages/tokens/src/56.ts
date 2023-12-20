@@ -2763,9 +2763,17 @@ export const bscTokens = {
     'StargateToken',
     'https://stargate.finance/',
   ),
-  sdcake: new ERC20Token(
+  deprecated_sdcake: new ERC20Token(
     ChainId.BSC,
     '0xF79B275e0B602D82B822895074552e487412A41a',
+    18,
+    'sdCAKE',
+    'Stake DAO CAKE',
+    'https://lockers.stakedao.org/',
+  ),
+  sdcake: new ERC20Token(
+    ChainId.BSC,
+    '0x6a1c1447F97B27dA23dC52802F5f1435b5aC821A',
     18,
     'sdCAKE',
     'Stake DAO CAKE',
