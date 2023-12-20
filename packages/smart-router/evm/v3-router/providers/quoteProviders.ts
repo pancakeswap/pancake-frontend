@@ -13,6 +13,12 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
     multicallConfigs,
     gasLimit,
   })
+  const v3SingleHopOnChainQuoteProvider = createV3OnChainQuoteProvider({
+    onChainProvider,
+    multicallConfigs,
+    gasLimit,
+    onAdjustQuoteForGas: ({ quote }) => quote,
+  })
   const v3OnChainQuoteProvider = createV3OnChainQuoteProvider({ onChainProvider, multicallConfigs, gasLimit })
 
   const createGetRouteWithQuotes = (isExactIn = true) => {
@@ -25,6 +31,9 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
     const getV3Quotes = isExactIn
       ? v3OnChainQuoteProvider.getRouteWithQuotesExactIn
       : v3OnChainQuoteProvider.getRouteWithQuotesExactOut
+    const getV3SingleHopQuotes = isExactIn
+      ? v3SingleHopOnChainQuoteProvider.getRouteWithQuotesExactIn
+      : v3SingleHopOnChainQuoteProvider.getRouteWithQuotesExactOut
 
     return async function getRoutesWithQuotes(
       routes: RouteWithoutQuote[],
@@ -58,7 +67,7 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
       const results = await Promise.allSettled([
         getOffChainQuotes(routesCanQuoteOffChain, { blockNumber, gasModel }),
         getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber, gasModel, retry: { retries: 0 } }),
-        getV3Quotes(v3SingleHopRoutes, { blockNumber, gasModel }),
+        getV3SingleHopQuotes(v3SingleHopRoutes, { blockNumber, gasModel }),
         getV3Quotes(v3MultihopRoutes, { blockNumber, gasModel, retry: { retries: 1 } }),
       ])
       if (results.every((result) => result.status === 'rejected')) {
