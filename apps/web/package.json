@@ -34,6 +34,8 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@binance/w3w-utils": "1.1.0-alpha.0",
+    "@binance/w3w-wagmi-connector": "1.1.0-alpha.1",
     "@cyberlab/cyber-app-sdk": "2.4.4",
     "@datadog/browser-logs": "^5.1.0",
     "@datadog/browser-rum": "^5.5.1",

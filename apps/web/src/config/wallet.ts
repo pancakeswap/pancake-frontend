@@ -13,6 +13,7 @@ export enum ConnectorNames {
   WalletConnect = 'walletConnect',
   WalletConnectV1 = 'walletConnectLegacy',
   BSC = 'bsc',
+  BinanceW3W = 'BinanceW3W',
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
   Ledger = 'ledger',
@@ -68,6 +69,12 @@ const walletsConfig = ({
       deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
       qrCode,
       downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
+    },
+    {
+      id: 'BinanceW3W',
+      title: 'Binance Web3 Wallet',
+      icon: `${ASSET_CDN}/web/wallets/binance-w3w.png`,
+      connectorId: ConnectorNames.BinanceW3W,
     },
     {
       id: 'binance',
