@@ -26,7 +26,9 @@ export const fetchTokenUSDValue = async (chainId: number, tokenAddresses: string
 
   const cakeAddress = tokenAddresses
     .map((address) =>
-      address.toLowerCase() === CAKE?.[chainId]?.address?.toLowerCase() ? `${CHAIN_MAPPING[chainId]}:${address}` : '',
+      address.toLowerCase() === CAKE?.[chainId]?.address?.toLowerCase()
+        ? `${defiLlamaChainNames[chainId]}:${address}`
+        : '',
     )
     .filter(Boolean)
 
