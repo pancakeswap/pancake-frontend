@@ -2041,7 +2041,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 191,
-    address: '0x14861FFC20f88E6D0Cf90da6BDc796Bb7f0B19E6',
+    address: '0x589a5062e47202bB994cD354913733a14b54e8Dc',
     pairName: 'USDV-USDT',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
