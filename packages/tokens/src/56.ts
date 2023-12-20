@@ -2803,4 +2803,12 @@ export const bscTokens = {
     'AIOZ Network',
     'https://aioz.network/',
   ),
+  usdv: new ERC20Token(
+    ChainId.BSC,
+    '0x323665443CEf804A3b5206103304BD4872EA4253',
+    6,
+    'USDV',
+    'USDV',
+    'https://usdv.money/',
+  ),
 }
