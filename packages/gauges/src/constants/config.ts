@@ -2029,6 +2029,26 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: bscTokens.bnb.address,
     feeTier: FeeAmount.MEDIUM,
   },
+  {
+    gid: 190,
+    address: '0x898fe77d1C083DD725004A12DF0bC55f6Dbdec2f',
+    pairName: 'USDV-BNB',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.usdv.address,
+    token1Address: bscTokens.bnb.address,
+    feeTier: FeeAmount.LOW,
+  },
+  {
+    gid: 191,
+    address: '0x14861FFC20f88E6D0Cf90da6BDc796Bb7f0B19E6',
+    pairName: 'USDV-USDT',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.usdv.address,
+    token1Address: bscTokens.usdt.address,
+    feeTier: FeeAmount.LOWEST,
+  },
 ]
 
 export const GAUGES_CONFIG = {
