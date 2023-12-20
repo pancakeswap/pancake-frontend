@@ -34,9 +34,16 @@ import { useCallback, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import styled from 'styled-components'
 import { getRevenueSharingCakePoolAddress, getRevenueSharingVeCakeAddress } from 'utils/addressHelpers'
+import { stringify } from 'viem'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { useVeCakeAPR } from '../hooks/useAPR'
+import {
+  useCakePoolEmission,
+  useRevShareEmission,
+  useUserCakeTVL,
+  useUserSharesPercent,
+  useVeCakeAPR,
+} from '../hooks/useAPR'
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
 import { useRevenueSharingCakePool, useRevenueSharingVeCake } from '../hooks/useRevenueSharingProxy'
 import { MyVeCakeCard } from './MyVeCakeCard'
@@ -45,6 +52,39 @@ const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
   margin-bottom: 16px;
 `
+
+const APRDebugView = () => {
+  const cakePoolEmission = useCakePoolEmission()
+  const userSharesPercent = useUserSharesPercent()
+  const userCakeTVL = useUserCakeTVL()
+  const revShareEmission = useRevShareEmission()
+  const { cakePoolAPR, revenueSharingAPR, totalAPR } = useVeCakeAPR()
+  if (!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')) return null
+  return (
+    <Flex mt="8px" flexDirection="row" alignItems="center">
+      <BenefitsTooltipsText
+        title="APR DebugView"
+        tooltipComponent={
+          <pre>
+            {stringify(
+              {
+                cakePoolAPR: cakePoolAPR?.toSignificant(18),
+                revenueSharingAPR: revenueSharingAPR?.toSignificant(18),
+                totalAPR: totalAPR?.toSignificant(18),
+                cakePoolEmission: cakePoolEmission?.toString(),
+                userSharesPercent: userSharesPercent.toSignificant(18),
+                userCakeTVL: userCakeTVL?.toString(),
+                revShareEmission: revShareEmission?.toString(),
+              },
+              null,
+              2,
+            )}
+          </pre>
+        }
+      />
+    </Flex>
+  )
+}
 
 // @notice
 // migrate from: apps/web/src/views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing.tsx
@@ -238,7 +278,6 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                     title={t('APR')}
                     tooltipComponent={
                       <div>
-                        {/* @todo use real APR Value */}
                         <p>
                           {t('CAKE Pool:')}{' '}
                           <Text bold style={{ display: 'inline' }}>
@@ -268,6 +307,9 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                   />
                   <Text bold>{totalAPR.toFixed(2)}%</Text>
                 </Flex>
+
+                <APRDebugView />
+
                 <Box mt="16px">
                   <Text fontSize={12} bold color="secondary" textTransform="uppercase">
                     {t('cake pool')}

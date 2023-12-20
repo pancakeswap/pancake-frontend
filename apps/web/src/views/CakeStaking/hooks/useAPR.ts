@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Percent } from '@pancakeswap/swap-sdk-core'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { CAKE_PER_BLOCK } from 'config'
@@ -16,7 +17,7 @@ import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 import { useVeCakeTotalSupply } from './useVeCakeTotalSupply'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
-const useUserCakeTVL = (): bigint => {
+export const useUserCakeTVL = (): bigint => {
   const { data } = useVeCakeUserInfo()
 
   return useMemo(() => {
@@ -25,7 +26,7 @@ const useUserCakeTVL = (): bigint => {
   }, [data])
 }
 
-const useUserSharesPercent = (): Percent => {
+export const useUserSharesPercent = (): Percent => {
   const { balance } = useVeCakeBalance()
   const { data: totalSupply } = useVeCakeTotalSupply()
 
@@ -35,7 +36,7 @@ const useUserSharesPercent = (): Percent => {
   }, [balance, totalSupply])
 }
 
-const useCakePoolEmission = () => {
+export const useCakePoolEmission = () => {
   const { chainId } = useActiveChainId()
   const client = useMemo(() => {
     return publicClient({
@@ -73,7 +74,7 @@ const useCakePoolEmission = () => {
   })
 
   return useMemo(() => {
-    if (!data) return 0n
+    if (!data) return BIG_ZERO
     const [cakeRateToSpecialFarm, allocPoint, totalSpecialAllocPoint] = data
 
     return new BigNumber(CAKE_PER_BLOCK)
@@ -104,28 +105,29 @@ export const useCakePoolAPR = () => {
 
 const SECONDS_IN_YEAR = 31536000 // 365 * 24 * 60 * 60
 
-export const useRevenueSharingAPR = () => {
+export const useRevShareEmission = () => {
   const { chainId } = useActiveChainId()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const userSharesPercent = useUserSharesPercent()
-  const userCakeTVL = useUserCakeTVL()
-
   const { data: totalDistributed } = useContractRead({
     abi: revenueSharingPoolProxyABI,
     address: getRevenueSharingVeCakeAddress(chainId) ?? getRevenueSharingVeCakeAddress(ChainId.BSC),
     functionName: 'totalDistributed',
     chainId,
   })
-
   const lastThursday = useMemo(() => {
     return Math.floor(currentTimestamp / WEEK) * WEEK
   }, [currentTimestamp])
-
-  const revShareEmission = useMemo(() => {
-    if (!totalDistributed) return 0n
+  return useMemo(() => {
+    if (!totalDistributed) return BIG_ZERO
     // 1700697600 is the timestamp of the first distribution
     return new BigNumber(totalDistributed.toString()).dividedBy(lastThursday - 1700697600)
   }, [totalDistributed, lastThursday])
+}
+
+export const useRevenueSharingAPR = () => {
+  const userSharesPercent = useUserSharesPercent()
+  const userCakeTVL = useUserCakeTVL()
+  const revShareEmission = useRevShareEmission()
 
   return useMemo(() => {
     if (!revShareEmission || !userSharesPercent?.denominator || !userCakeTVL) return new Percent(0, 1)
