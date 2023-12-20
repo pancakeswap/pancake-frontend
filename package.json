@@ -11,7 +11,7 @@
   "packageManager": "pnpm@8.x",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "turbo run dev --filter=web... --concurrency=26",
+    "dev": "turbo run dev --filter=web... --concurrency=27",
     "dev:aptos": "pnpm turbo run dev --filter=aptos-web... --concurrency=20",
     "dev:blog": "pnpm turbo run dev --filter=blog... --concurrency=12",
     "dev:bridge": "pnpm turbo run dev --filter=bridge... --concurrency=16",
