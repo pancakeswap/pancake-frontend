@@ -26,6 +26,9 @@ export const useUserCakeTVL = (): bigint => {
   }, [data])
 }
 
+// A mock pool which OP harvests weekly and inject rewards to RevenueSharingVeCake
+const pid = 172n
+
 export const useUserSharesPercent = (): Percent => {
   const { balance } = useVeCakeBalance()
   const { data: totalSupply } = useVeCakeTotalSupply()
@@ -56,7 +59,7 @@ export const useCakePoolEmission = () => {
           address: getMasterChefV2Address(client.chain.id),
           abi: masterChefV2ABI,
           functionName: 'poolInfo',
-          args: [172n],
+          args: [pid],
         } as const,
         {
           address: getMasterChefV2Address(client.chain.id),

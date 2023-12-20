@@ -59,7 +59,7 @@ const APRDebugView = () => {
   const userCakeTVL = useUserCakeTVL()
   const revShareEmission = useRevShareEmission()
   const { cakePoolAPR, revenueSharingAPR, totalAPR } = useVeCakeAPR()
-  if (!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')) return null
+  if (!(window?.location?.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')) return null
   return (
     <Flex mt="8px" flexDirection="row" alignItems="center">
       <BenefitsTooltipsText
