@@ -34,8 +34,16 @@ import { useCallback, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import styled from 'styled-components'
 import { getRevenueSharingCakePoolAddress, getRevenueSharingVeCakeAddress } from 'utils/addressHelpers'
+import { stringify } from 'viem'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
+import {
+  useCakePoolEmission,
+  useRevShareEmission,
+  useUserCakeTVL,
+  useUserSharesPercent,
+  useVeCakeAPR,
+} from '../hooks/useAPR'
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
 import { useRevenueSharingCakePool, useRevenueSharingVeCake } from '../hooks/useRevenueSharingProxy'
 import { MyVeCakeCard } from './MyVeCakeCard'
@@ -44,6 +52,39 @@ const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
   margin-bottom: 16px;
 `
+
+const APRDebugView = () => {
+  const cakePoolEmission = useCakePoolEmission()
+  const userSharesPercent = useUserSharesPercent()
+  const userCakeTVL = useUserCakeTVL()
+  const revShareEmission = useRevShareEmission()
+  const { cakePoolAPR, revenueSharingAPR, totalAPR } = useVeCakeAPR()
+  if (!(window?.location?.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')) return null
+  return (
+    <Flex mt="8px" flexDirection="row" alignItems="center">
+      <BenefitsTooltipsText
+        title="APR DebugView"
+        tooltipComponent={
+          <pre>
+            {stringify(
+              {
+                cakePoolAPR: cakePoolAPR?.toSignificant(18),
+                revenueSharingAPR: revenueSharingAPR?.toSignificant(18),
+                totalAPR: totalAPR?.toSignificant(18),
+                cakePoolEmission: cakePoolEmission?.toString(),
+                userSharesPercent: userSharesPercent.toSignificant(18),
+                userCakeTVL: userCakeTVL?.toString(),
+                revShareEmission: revShareEmission?.toString(),
+              },
+              null,
+              2,
+            )}
+          </pre>
+        }
+      />
+    </Flex>
+  )
+}
 
 // @notice
 // migrate from: apps/web/src/views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing.tsx
@@ -115,6 +156,8 @@ export const CakeRewardsCard = ({ onDismiss }) => {
     return t('in %day% days', { day: days })
   }, [days, hours, minutes, seconds, t])
 
+  const { cakePoolAPR, revenueSharingAPR, totalAPR } = useVeCakeAPR()
+
   return (
     <ModalContainer
       title={t('CAKE Reward / Yield')}
@@ -150,9 +193,6 @@ export const CakeRewardsCard = ({ onDismiss }) => {
           <MyVeCakeCard />
           <Card mt="16px" style={{ overflow: 'unset' }} mb={isDesktop ? '0' : '24px'}>
             <Box padding={16}>
-              {/* <Text fontSize={12} bold color="secondary" textTransform="uppercase">
-                {t('revenue sharing')}
-              </Text> */}
               <Box>
                 <Flex flexDirection="row" alignItems="center">
                   <BenefitsTooltipsText
@@ -225,20 +265,6 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                     {nextDistributionTime}
                   </Text>
                 </Flex>
-                {/* {showExpireSoonWarning && (
-                  <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
-                    <MessageText lineHeight="120%">
-                      <Text fontSize="14px" color="failure">
-                        {t(
-                          'Your CAKE staking position will have less than 1 week in remaining duration upon the next distribution.',
-                        )}
-                      </Text>
-                      <Text fontSize="14px" color="failure" mt="4px">
-                        {t('Extend your stakings to receive shares in the next distribution.')}
-                      </Text>
-                    </MessageText>
-                  </Message>
-                )} */}
 
                 <Flex mt="8px" flexDirection="row" alignItems="center">
                   <BenefitsTooltipsText
@@ -247,6 +273,43 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                   />
                   <Text bold>{timeFormat(locale, lastTokenTimestamp)}</Text>
                 </Flex>
+                <Flex mt="8px" flexDirection="row" alignItems="center">
+                  <BenefitsTooltipsText
+                    title={t('APR')}
+                    tooltipComponent={
+                      <div>
+                        <p>
+                          {t('CAKE Pool:')}{' '}
+                          <Text bold style={{ display: 'inline' }}>
+                            {cakePoolAPR.toFixed(2)}%
+                          </Text>
+                        </p>
+                        <p>
+                          {t('Revenue Sharing:')}{' '}
+                          <Text bold style={{ display: 'inline' }}>
+                            {revenueSharingAPR.toFixed(2)}%
+                          </Text>
+                        </p>
+                        <br />
+                        <p>
+                          {t(
+                            'CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.',
+                          )}
+                        </p>
+                        <br />
+                        <p>
+                          {t(
+                            'Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.',
+                          )}
+                        </p>
+                      </div>
+                    }
+                  />
+                  <Text bold>{totalAPR.toFixed(2)}%</Text>
+                </Flex>
+
+                <APRDebugView />
+
                 <Box mt="16px">
                   <Text fontSize={12} bold color="secondary" textTransform="uppercase">
                     {t('cake pool')}
