@@ -1,11 +1,19 @@
-import { getViemClients } from 'utils/viem'
 import { ChainId } from '@pancakeswap/chains'
-import BigNumber from 'bignumber.js'
+import { arbitrumTokens, opBnbTokens } from '@pancakeswap/tokens'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { getViemClients } from 'utils/viem'
 
 // Contract will return price with 10^8, although ALP token decimals is 18.
 const TOKEN_DECIMALS = 8
 const CONTRACT_ADDRESS = '0xB3879E95a4B8e3eE570c232B19d520821F540E48'
+
+export const isAlpToken = ({ chainId, tokenAddress }: { chainId: ChainId; tokenAddress: string }) => {
+  return (
+    (chainId === ChainId.ARBITRUM_ONE && tokenAddress === arbitrumTokens.alp.address) ||
+    (chainId === ChainId.OPBNB && tokenAddress === opBnbTokens.alp.address)
+  )
+}
 
 export const fetchTokenAplPrice = async () => {
   const client = getViemClients({ chainId: ChainId.ARBITRUM_ONE })
