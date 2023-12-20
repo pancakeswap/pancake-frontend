@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BoosterConfig } from '../../utils/boosted/types'
 import { arbBoostedPools } from './arb'
-import { opBnbBoostedPools } from './opBnb'
+import { opBnbBoostedPools } from './opBNB'
 
 export type BoostedPoolsConfigByChain<TChainId extends ChainId> = {
   [chainId in TChainId]?: BoosterConfig[]
