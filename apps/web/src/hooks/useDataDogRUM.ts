@@ -9,7 +9,7 @@ export function useDataDogRUM() {
       return
     }
     const env = process.env.NEXT_PUBLIC_VERCEL_ENV
-    const sessionSampleRate = env === 'production' ? 0.01 : env === 'preview' ? 100 : 0
+    const sessionSampleRate = env === 'production' ? 0.1 : env === 'preview' ? 100 : 0
     datadogRum.init({
       version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
       enableExperimentalFeatures: ['feature_flags'],
