@@ -20,10 +20,36 @@ export interface AprData {
   data: AprDataInfo[]
   fallbackData: AprDataInfo[]
   isLoading: boolean
+  specificData: Record<number, AprDataInfo[]>
   refetch: () => void
 }
 
-const useFetchAllSpecific = () => {}
+const TIME_WINDOW_DEFAULT = 3
+const TIME_WINDOW_FALLBACK = 0
+
+const fetchAllSpecificTimeWindow = async (timeWindows: number[], chainId?: number) => {
+  const data = await Promise.all(
+    timeWindows.map(async (timeWindow) => {
+      const response = await fetch(`${POSITION_MANAGER_API}/${chainId}/vault/feeAvg`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          avgFeeCalculationDays: timeWindow,
+        }),
+      })
+      const result: AprDataInfo[] = await response.json()
+      return result
+    }),
+  )
+  const result: Record<number, AprDataInfo[]> = {}
+  timeWindows.forEach((d, index) => {
+    result[d] = data[index]
+  })
+  return result
+}
 
 export const useFetchApr = (timeWindows: number[]): AprData => {
   const { chainId } = useActiveChainId()
@@ -43,7 +69,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            avgFeeCalculationDays: 1,
+            avgFeeCalculationDays: TIME_WINDOW_DEFAULT,
           }),
         })
 
@@ -61,7 +87,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
   )
 
   const { data: fallbackData, isLoading: isFallbackLoading } = useQuery(
-    ['/fetch-position-manager-apr-fallback', chainId],
+    ['/fetch-position-manager-apr-specific', chainId],
     async () => {
       try {
         const response = await fetch(`${POSITION_MANAGER_API}/${chainId}/vault/feeAvg`, {
@@ -71,7 +97,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            avgFeeCalculationDays: 0,
+            avgFeeCalculationDays: TIME_WINDOW_FALLBACK,
           }),
         })
 
@@ -87,5 +113,29 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
       refetchOnWindowFocus: false,
     },
   )
-  return { data: data ?? [], isLoading: isLoading || isFallbackLoading, refetch, fallbackData: fallbackData ?? [] }
+
+  const { data: specificData, isLoading: isSpecificLoading } = useQuery(
+    ['/fetch-position-manager-apr-fallback', chainId],
+    async () => {
+      try {
+        const result = await fetchAllSpecificTimeWindow(timeWindows, chainId)
+        return result
+      } catch (error) {
+        console.error(`Fetch fetch APR API Error: ${error}`)
+        return []
+      }
+    },
+    {
+      enabled: supportedChain,
+      refetchOnWindowFocus: false,
+    },
+  )
+
+  return {
+    data: data ?? [],
+    isLoading: isLoading || isFallbackLoading || isSpecificLoading,
+    refetch,
+    fallbackData: fallbackData ?? [],
+    specificData: specificData ?? {},
+  }
 }

@@ -54,6 +54,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     strategyInfoUrl,
     projectVaultUrl,
     learnMoreAboutUrl,
+    aprTimeWindow,
   } = vault
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
@@ -100,21 +101,29 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   )
 
   const aprDataInfo = useMemo(() => {
-    const { isLoading, data, fallbackData } = aprDataList
-    let aprInfo = data?.length
-      ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
-      : undefined
+    const { isLoading, data, fallbackData, specificData } = aprDataList
+    let timeWindow = aprTimeWindow ?? 1
 
-    if (aprInfo?.token0 === 0 || aprInfo?.token1 === 0) {
-      aprInfo = fallbackData?.length
-        ? fallbackData?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
-        : undefined
+    let aprInfo: AprDataInfo | undefined
+    if (specificData?.[aprTimeWindow ?? -1]) {
+      aprInfo = specificData?.[timeWindow]?.find(
+        (apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase(),
+      )
+    }
+    if (!aprInfo && data?.length) {
+      aprInfo = data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
+    }
+    if (!aprInfo || aprInfo?.token0 === 0 || (aprInfo?.token1 === 0 && fallbackData?.length)) {
+      aprInfo = fallbackData?.find(
+        (apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase(),
+      )
+      timeWindow = 0
     }
     return {
       isLoading,
       info: aprInfo,
     }
-  }, [info.vaultAddress, aprDataList])
+  }, [aprDataList, aprTimeWindow, info.vaultAddress])
 
   const { earningUsdValue } = useEarningTokenPriceInfo(earningToken, info?.pendingReward)
 

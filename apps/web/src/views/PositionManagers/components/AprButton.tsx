@@ -27,6 +27,7 @@ interface Props {
   totalSupplyAmounts?: bigint
   precision?: bigint
   lpTokenDecimals?: number
+  aprTimeWindow?: number
 }
 
 const AprText = styled(Text)`
@@ -45,6 +46,7 @@ export const AprButton = memo(function YieldInfo({
   totalSupplyAmounts,
   precision,
   lpTokenDecimals = 0,
+  aprTimeWindow = 0,
 }: Props) {
   const { t } = useTranslation()
 
@@ -87,8 +89,11 @@ export const AprButton = memo(function YieldInfo({
           </Text>
         </li>
       </ul>
+
       <Text lineHeight="120%" mt="20px">
-        {t(`Calculated based on previous %days% days average data.`, { days: 1 })}
+        {aprTimeWindow > 0
+          ? t(`Calculated based on previous %days% days average data.`, { days: aprTimeWindow })
+          : t('Calculated based average data since vault inception.')}
       </Text>
     </>,
     {

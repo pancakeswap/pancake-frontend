@@ -3094,5 +3094,6 @@
   "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.": "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.",
   "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.",
   "Disabled": "Disabled",
-  "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience": "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience"
+  "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience": "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience",
+  "Calculated based average data since vault inception.": "Calculated based average data since vault inception."
 }
