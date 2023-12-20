@@ -44,7 +44,7 @@ import {
   SerializedVaultUser,
 } from 'state/types'
 import { safeGetAddress } from 'utils'
-import { fetchTokenAplPrice } from 'utils/fetchTokenAplPrice'
+import { fetchTokenAplPrice, isAlpToken } from 'utils/fetchTokenAplPrice'
 import { fetchTokenUSDValue } from 'utils/llamaPrice'
 import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
@@ -212,10 +212,8 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
       if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
         // TODO: Remove this when fetchTokenUSDValue can get APL USD Price
-        if (
-          pool.stakingToken.chainId === ChainId.ARBITRUM_ONE &&
-          pool.stakingToken.address === arbitrumTokens.alp.address
-        ) {
+        const isAlpTokenValid = isAlpToken({ chainId, tokenAddress: arbitrumTokens.alp.address })
+        if (isAlpTokenValid) {
           // eslint-disable-next-line no-await-in-loop
           stakingTokenPrice = await fetchTokenAplPrice()
         } else {

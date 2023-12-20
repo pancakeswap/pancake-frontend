@@ -1,22 +1,23 @@
 import { ChainId } from '@pancakeswap/chains'
 
-import { pools as ethPools, livePools as ethLivePools } from './1'
-import { pools as bscPools, livePools as bscLivePools } from './56'
-import { pools as bscTestnetPools, livePools as bscTestnetLivePools } from './97'
-import { pools as arbPools, livePools as arbLivePools } from './42161'
-import { pools as arbTestnetPools, livePools as arbTestnetLivePools } from './421613'
-import { pools as zkSyncPools, livePools as zkSyncLivePools } from './324'
-import { pools as zkSyncTestnetPools, livePools as zkSyncTestnetLivePools } from './280'
-import { pools as basePools, livePools as baseLivePools } from './8453'
-import { pools as baseTestnetPools, livePools as baseTestnetLivePools } from './84531'
-import { pools as lineaPools, livePools as lineaLivePools } from './59144'
-import { pools as lineaTestnetPools, livePools as lineaTestnetLivePools } from './59140'
-import { pools as polygonZkEvmPools, livePools as polygonZkEvmLivePools } from './1101'
-import { pools as polygonZkEvmTestnetPools, livePools as polygonZkEvmTestnetLivePools } from './1442'
+import { livePools as ethLivePools, pools as ethPools } from './1'
+import { livePools as polygonZkEvmLivePools, pools as polygonZkEvmPools } from './1101'
+import { livePools as polygonZkEvmTestnetLivePools, pools as polygonZkEvmTestnetPools } from './1442'
+import { livePools as opBNBLivePools, pools as opBNBPools } from './204'
+import { livePools as zkSyncTestnetLivePools, pools as zkSyncTestnetPools } from './280'
+import { livePools as zkSyncLivePools, pools as zkSyncPools } from './324'
+import { livePools as arbLivePools, pools as arbPools } from './42161'
+import { livePools as arbTestnetLivePools, pools as arbTestnetPools } from './421613'
+import { livePools as bscLivePools, pools as bscPools } from './56'
+import { livePools as lineaTestnetLivePools, pools as lineaTestnetPools } from './59140'
+import { livePools as lineaLivePools, pools as lineaPools } from './59144'
+import { livePools as baseLivePools, pools as basePools } from './8453'
+import { livePools as baseTestnetLivePools, pools as baseTestnetPools } from './84531'
+import { livePools as bscTestnetLivePools, pools as bscTestnetPools } from './97'
 
 import { SerializedPool } from '../../types'
-import { SupportedChainId } from '../supportedChains'
 import { isPoolsSupported } from '../../utils/isPoolsSupported'
+import { SupportedChainId } from '../supportedChains'
 
 export type PoolsConfigByChain<TChainId extends ChainId> = {
   [chainId in TChainId]: SerializedPool[]
@@ -36,6 +37,7 @@ export const POOLS_CONFIG_BY_CHAIN = {
   [ChainId.LINEA_TESTNET]: lineaTestnetPools,
   [ChainId.POLYGON_ZKEVM]: polygonZkEvmPools,
   [ChainId.POLYGON_ZKEVM_TESTNET]: polygonZkEvmTestnetPools,
+  [ChainId.OPBNB]: opBNBPools,
 } as PoolsConfigByChain<SupportedChainId>
 
 export const LIVE_POOLS_CONFIG_BY_CHAIN = {
@@ -52,6 +54,7 @@ export const LIVE_POOLS_CONFIG_BY_CHAIN = {
   [ChainId.LINEA_TESTNET]: lineaTestnetLivePools,
   [ChainId.POLYGON_ZKEVM]: polygonZkEvmLivePools,
   [ChainId.POLYGON_ZKEVM_TESTNET]: polygonZkEvmTestnetLivePools,
+  [ChainId.OPBNB]: opBNBLivePools,
 } as PoolsConfigByChain<SupportedChainId>
 
 export const getPoolsConfig = (chainId: ChainId) => {
