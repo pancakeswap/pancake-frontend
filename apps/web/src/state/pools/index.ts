@@ -22,7 +22,7 @@ import {
   getPoolsConfig,
   isLegacyPool,
 } from '@pancakeswap/pools'
-import { arbitrumTokens, bscTokens } from '@pancakeswap/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { PayloadAction, createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
@@ -212,7 +212,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
       if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
         // TODO: Remove this when fetchTokenUSDValue can get APL USD Price
-        const isAlpTokenValid = isAlpToken({ chainId, tokenAddress: arbitrumTokens.alp.address })
+        const isAlpTokenValid = isAlpToken({ chainId, tokenAddress: stakingTokenAddress })
         if (isAlpTokenValid) {
           // eslint-disable-next-line no-await-in-loop
           stakingTokenPrice = await fetchTokenAplPrice()
