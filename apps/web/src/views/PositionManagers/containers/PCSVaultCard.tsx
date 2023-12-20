@@ -122,6 +122,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     return {
       isLoading,
       info: aprInfo,
+      timeWindow,
     }
   }, [aprDataList, aprTimeWindow, info.vaultAddress])
 

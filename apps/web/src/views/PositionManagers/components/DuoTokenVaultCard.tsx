@@ -65,6 +65,7 @@ interface Props {
   aprDataInfo: {
     info: AprDataInfo | undefined
     isLoading: boolean
+    timeWindow: number
   }
   rewardEndTime: number
   rewardStartTime: number
@@ -168,7 +169,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           userLpAmounts={userLpAmounts}
           precision={precision}
           lpTokenDecimals={lpTokenDecimals}
-          aprTimeWindow={aprDataInfo?.info?.calculationDays}
+          aprTimeWindow={aprDataInfo.timeWindow}
         />
         <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
         <LiquidityManagement

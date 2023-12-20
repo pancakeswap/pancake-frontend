@@ -22,6 +22,7 @@ export const vaults: VaultConfig[] = [
     managerInfoUrl: 'https://www.defiedge.io/',
     strategyInfoUrl: 'https://docs.defiedge.io/category/strategy-manager',
     learnMoreAboutUrl: 'https://docs.defiedge.io/category/strategy-manager',
+    aprTimeWindow: 7,
   },
   {
     id: 13,
@@ -41,6 +42,7 @@ export const vaults: VaultConfig[] = [
     managerInfoUrl: 'https://www.defiedge.io/',
     strategyInfoUrl: 'https://docs.defiedge.io/category/strategy-manager',
     learnMoreAboutUrl: 'https://docs.defiedge.io/category/strategy-manager',
+    aprTimeWindow: 7,
   },
   {
     id: 11,
