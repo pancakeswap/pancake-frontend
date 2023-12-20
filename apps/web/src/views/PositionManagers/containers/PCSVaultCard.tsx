@@ -18,6 +18,7 @@ import {
   useTotalAssetInUsd,
   useTotalStakedInUsd,
 } from '../hooks'
+import { TIME_WINDOW_DEFAULT, TIME_WINDOW_FALLBACK } from '../hooks/useFetchApr'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
@@ -102,7 +103,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
 
   const aprDataInfo = useMemo(() => {
     const { isLoading, data, fallbackData, specificData } = aprDataList
-    let timeWindow = aprTimeWindow ?? 1
+    let timeWindow = aprTimeWindow ?? TIME_WINDOW_DEFAULT
 
     let aprInfo: AprDataInfo | undefined
     if (specificData?.[aprTimeWindow ?? -1]) {
@@ -117,7 +118,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       aprInfo = fallbackData?.find(
         (apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase(),
       )
-      timeWindow = 0
+      timeWindow = TIME_WINDOW_FALLBACK
     }
     return {
       isLoading,

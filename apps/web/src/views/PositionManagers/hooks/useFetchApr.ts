@@ -24,8 +24,8 @@ export interface AprData {
   refetch: () => void
 }
 
-const TIME_WINDOW_DEFAULT = 3
-const TIME_WINDOW_FALLBACK = 0
+export const TIME_WINDOW_DEFAULT = 3
+export const TIME_WINDOW_FALLBACK = 0
 
 const fetchAllSpecificTimeWindow = async (timeWindows: number[], chainId?: number) => {
   const data = await Promise.all(
