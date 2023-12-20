@@ -1,22 +1,12 @@
-import { ChainId } from '@pancakeswap/chains'
+import { defiLlamaChainNames } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
 import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 
-const CHAIN_MAPPING = {
-  [ChainId.ETHEREUM]: 'ethereum',
-  [ChainId.BSC]: 'bsc',
-  [ChainId.ARBITRUM_ONE]: 'arbitrum',
-  [ChainId.ZKSYNC]: 'era',
-  [ChainId.LINEA]: 'linea',
-  [ChainId.BASE]: 'base',
-  [ChainId.POLYGON_ZKEVM]: 'polygon_zkevm',
-} as const satisfies Record<number, string>
-
 // use for fetch usd outside of the liquidity pools on PancakeSwap
 export const fetchTokenUSDValue = async (chainId: number, tokenAddresses: string[]) => {
-  if (!tokenAddresses.length || !CHAIN_MAPPING[chainId]) return new Map<string, string>()
+  if (!tokenAddresses.length || !defiLlamaChainNames[chainId]) return new Map<string, string>()
 
-  const list = tokenAddresses.map((address) => `${CHAIN_MAPPING[chainId]}:${address}`).join(',')
+  const list = tokenAddresses.map((address) => `${defiLlamaChainNames[chainId]}:${address}`).join(',')
 
   let tokenPriceArray: { coins: { [key: string]: { price: string } } } = {
     coins: {},
