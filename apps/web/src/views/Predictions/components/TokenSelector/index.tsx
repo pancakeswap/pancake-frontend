@@ -125,16 +125,16 @@ export const TokenSelector = () => {
           >
             {`${config?.token?.symbol}USD`}
           </Text>
-          {isTokenListMoreThanOne && (
-            <Flex>
-              <Price
-                fontSize={['12px', '12px', '12px', '12px', '16px']}
-                chainlinkOracleAddress={config?.chainlinkOracleAddress}
-                galetoOracleAddress={config?.galetoOracleAddress}
-              />
+          <Flex>
+            <Price
+              fontSize={['12px', '12px', '12px', '12px', '16px']}
+              chainlinkOracleAddress={config?.chainlinkOracleAddress}
+              galetoOracleAddress={config?.galetoOracleAddress}
+            />
+            {isTokenListMoreThanOne && (
               <ChevronDownIcon width={isDesktop ? 24 : 16} height={isDesktop ? 24 : 16} ml="4px" color="primary" />
-            </Flex>
-          )}
+            )}
+          </Flex>
         </Flex>
         {isDesktop ? (
           <DesktopPredictionTokenSelector
