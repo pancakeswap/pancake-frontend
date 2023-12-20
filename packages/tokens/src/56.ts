@@ -2795,4 +2795,12 @@ export const bscTokens = {
     'ACEToken',
     'https://ace.fusionist.io/',
   ),
+  aioz: new ERC20Token(
+    ChainId.BSC,
+    '0x33d08D8C7a168333a85285a68C0042b39fC3741D',
+    18,
+    'AIOZ',
+    'AIOZ Network',
+    'https://aioz.network/',
+  ),
 }

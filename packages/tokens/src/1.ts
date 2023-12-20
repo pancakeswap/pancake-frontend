@@ -361,4 +361,12 @@ export const ethereumTokens = {
     'BONK',
     'https://bonkcoin.com',
   ),
+  aioz: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x626E8036dEB333b408Be468F951bdB42433cBF18',
+    18,
+    'AIOZ',
+    'AIOZ Network',
+    'https://aioz.network/',
+  ),
 }

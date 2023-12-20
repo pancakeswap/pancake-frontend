@@ -23,8 +23,8 @@ import {
 export const usdGasTokensByChain = {
   [ChainId.ETHEREUM]: [ethereumTokens.usdt],
   [ChainId.GOERLI]: [goerliTestnetTokens.usdc],
-  [ChainId.BSC]: [bscTokens.busd],
-  [ChainId.BSC_TESTNET]: [bscTestnetTokens.busd],
+  [ChainId.BSC]: [bscTokens.usdt],
+  [ChainId.BSC_TESTNET]: [bscTestnetTokens.usdt],
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.usdc],
   [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.usdt],

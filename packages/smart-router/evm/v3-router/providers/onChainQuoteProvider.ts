@@ -48,6 +48,12 @@ type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
 type CallInputs = V3Inputs | MixedInputs
 
+type AdjustQuoteForGasHandler = (params: {
+  isExactIn?: boolean
+  quote: CurrencyAmount<Currency>
+  gasCostInToken: CurrencyAmount<Currency>
+}) => CurrencyAmount<Currency>
+
 interface FactoryConfig {
   getCallInputs: (route: RouteWithoutQuote, isExactIn: boolean) => CallInputs
   getQuoterAddress: (chainId: ChainId) => Address
@@ -59,6 +65,7 @@ interface ProviderConfig {
   onChainProvider: OnChainProvider
   gasLimit?: BigintIsh
   multicallConfigs?: ChainMap<BatchMulticallConfigs>
+  onAdjustQuoteForGas?: AdjustQuoteForGasHandler
 }
 
 export class BlockConflictError extends Error {
@@ -108,16 +115,20 @@ const retryControllerFactory = ({ retries }: QuoteRetryOptions) => {
   }
 }
 
+const defaultAdjustQuoteForGas: AdjustQuoteForGasHandler = ({ isExactIn, quote, gasCostInToken }) =>
+  isExactIn ? quote.subtract(gasCostInToken) : quote.add(gasCostInToken)
+
 function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, abi, getCallInputs }: FactoryConfig) {
   return function createOnChainQuoteProvider({
     onChainProvider,
     gasLimit,
     multicallConfigs: multicallConfigsOverride,
+    onAdjustQuoteForGas = defaultAdjustQuoteForGas,
   }: ProviderConfig): QuoteProvider {
     const createGetRoutesWithQuotes = (isExactIn = true) => {
       const functionName = getQuoteFunctionName(isExactIn)
-      const adjustQuoteForGas = (quote: CurrencyAmount<Currency>, gasCostInToken: CurrencyAmount<Currency>) =>
-        isExactIn ? quote.subtract(gasCostInToken) : quote.add(gasCostInToken)
+      const adjustQuoteForGas: AdjustQuoteForGasHandler = ({ quote, gasCostInToken }) =>
+        onAdjustQuoteForGas({ quote, gasCostInToken, isExactIn })
 
       return async function getRoutesWithQuote(
         routes: RouteWithoutQuote[],
@@ -312,10 +323,7 @@ function processQuoteResults(
   quoteResults: (Result<[bigint, bigint[], number[], bigint]> | null)[],
   routes: RouteWithoutQuote[],
   gasModel: GasModel,
-  adjustQuoteForGas: (
-    quote: CurrencyAmount<Currency>,
-    gasCostInToken: CurrencyAmount<Currency>,
-  ) => CurrencyAmount<Currency>,
+  adjustQuoteForGas: AdjustQuoteForGasHandler,
 ): RouteWithQuote[] {
   const routesWithQuote: RouteWithQuote[] = []
 
@@ -358,7 +366,7 @@ function processQuoteResults(
     routesWithQuote.push({
       ...route,
       quote,
-      quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
+      quoteAdjustedForGas: adjustQuoteForGas({ quote, gasCostInToken }),
       // sqrtPriceX96AfterList: quoteResult.result[1],
       gasEstimate,
       gasCostInToken,

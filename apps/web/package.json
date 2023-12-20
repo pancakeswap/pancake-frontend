@@ -34,11 +34,15 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@binance/w3w-utils": "1.1.0-alpha.0",
+    "@binance/w3w-wagmi-connector": "1.1.0-alpha.1",
     "@cyberlab/cyber-app-sdk": "2.4.4",
     "@datadog/browser-logs": "^5.1.0",
+    "@datadog/browser-rum": "^5.5.1",
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
     "@next/bundle-analyzer": "13.0.7",
+    "@pancakeswap/blog": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/gauges": "workspace:*",
@@ -59,7 +63,6 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/wagmi": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
-    "@pancakeswap/blog": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^7.52.1",
     "@snapshot-labs/snapshot.js": "^0.4.40",
