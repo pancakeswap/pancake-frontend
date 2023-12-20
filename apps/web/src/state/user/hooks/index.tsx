@@ -1,9 +1,10 @@
+import { datadogRum } from '@datadog/browser-rum'
 import { Pair, ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import useSWRImmutable from 'swr/immutable'
@@ -137,6 +138,10 @@ export function useUserFarmsViewMode(): [ViewMode, (viewMode: ViewMode) => void]
     },
     [dispatch],
   )
+
+  useEffect(() => {
+    datadogRum.addFeatureFlagEvaluation('farms-view-mode', userFarmsViewMode)
+  }, [userFarmsViewMode])
 
   return [userFarmsViewMode, setUserFarmsViewMode]
 }
@@ -286,9 +291,9 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
   }
 
   return {
-    gasPrice: data?.gasPrice,
-    maxFeePerGas: data?.maxFeePerGas,
-    maxPriorityFeePerGas: data?.maxPriorityFeePerGas,
+    gasPrice: data?.gasPrice ?? undefined,
+    maxFeePerGas: data?.maxFeePerGas ?? undefined,
+    maxPriorityFeePerGas: data?.maxPriorityFeePerGas ?? undefined,
   }
 }
 
@@ -307,7 +312,7 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
     async () => {
       // @ts-ignore
       const gasPrice = await signer?.request({
-        method: 'eth_gasPrice',
+        method: 'eth_gasPrice' as any,
       })
       return hexToBigInt(gasPrice as Hex)
     },
@@ -376,7 +381,7 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
-  const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
+  const { data: farmPairs = [] } = useSWRImmutable(chainId ? ['track-farms-pairs', chainId] : null, async () => {
     const farms = await getFarmConfig(chainId)
 
     const fPairs: [ERC20Token, ERC20Token][] | undefined = farms
