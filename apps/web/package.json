@@ -63,6 +63,7 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/wagmi": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
+    "@pancakeswap/prediction": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^7.52.1",
     "@snapshot-labs/snapshot.js": "^0.4.40",

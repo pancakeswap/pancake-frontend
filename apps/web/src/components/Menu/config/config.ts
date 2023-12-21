@@ -2,6 +2,7 @@ import { SUPPORTED_CHAIN_IDS as IFO_SUPPORTED_CHAINS } from '@pancakeswap/ifos'
 import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS } from '@pancakeswap/position-managers'
+import { SUPPORTED_CHAIN_IDS as PREDICTION_SUPPORTED_CHAINS } from '@pancakeswap/prediction'
 import {
   DropdownMenuItemType,
   DropdownMenuItems,
@@ -22,7 +23,6 @@ import {
   SUPPORT_CAKE_STAKING,
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
-  PREDICTION_SUPPORTED_CHAINS,
 } from 'config/constants/supportChains'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
