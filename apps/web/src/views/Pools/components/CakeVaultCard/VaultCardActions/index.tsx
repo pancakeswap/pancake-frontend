@@ -1,16 +1,17 @@
 import BigNumber from 'bignumber.js'
 
-import { styled } from 'styled-components'
-import { Flex, Text, Box } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Token } from '@pancakeswap/sdk'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
+import { VaultKey } from 'state/types'
+import { useCheckVaultApprovalStatus } from '../../../hooks/useApprove'
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
-import { useCheckVaultApprovalStatus } from '../../../hooks/useApprove'
 
 const InlineText = styled(Text)`
   display: inline;
@@ -19,16 +20,16 @@ const InlineText = styled(Text)`
 const CakeVaultCardActions: React.FC<
   React.PropsWithChildren<{
     pool: Pool.DeserializedPool<Token>
-    accountHasSharesStaked: boolean
+    accountHasSharesStaked?: boolean
     isLoading: boolean
-    performanceFee: number
+    performanceFee?: number
   }>
 > = ({ pool, accountHasSharesStaked, isLoading, performanceFee }) => {
   const { stakingToken, userData } = pool
   const { t } = useTranslation()
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
-  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey ?? VaultKey.None)
 
   return (
     <Flex flexDirection="column">
@@ -52,7 +53,11 @@ const CakeVaultCardActions: React.FC<
           </InlineText>
         </Box>
         {!isVaultApproved && !accountHasSharesStaked ? (
-          <VaultApprovalAction vaultKey={pool.vaultKey} isLoading={isLoading} setLastUpdated={setLastUpdated} />
+          <VaultApprovalAction
+            vaultKey={pool.vaultKey ?? VaultKey.None}
+            isLoading={isLoading}
+            setLastUpdated={setLastUpdated}
+          />
         ) : (
           <VaultStakeActions
             pool={pool}

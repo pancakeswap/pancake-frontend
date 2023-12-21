@@ -1,15 +1,15 @@
-import { useState, useMemo, useEffect } from 'react'
-import { Modal, Box } from '@pancakeswap/uikit'
-import useTheme from 'hooks/useTheme'
-import { VaultKey } from 'state/types'
-import { getBalanceNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Modal } from '@pancakeswap/uikit'
+import { getBalanceNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { GenericModalProps } from '../types'
+import useTheme from 'hooks/useTheme'
+import { useEffect, useMemo, useState } from 'react'
+import { VaultKey } from 'state/types'
+import { useCheckVaultApprovalStatus } from '../../../hooks/useApprove'
 import BalanceField from '../Common/BalanceField'
 import LockedBodyModal from '../Common/LockedModalBody'
+import { GenericModalProps } from '../types'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
-import { useCheckVaultApprovalStatus } from '../../../hooks/useApprove'
 
 const LockedStakeModal: React.FC<React.PropsWithChildren<GenericModalProps>> = ({
   onDismiss,
@@ -33,7 +33,7 @@ const LockedStakeModal: React.FC<React.PropsWithChildren<GenericModalProps>> = (
   const usdValueStaked = useMemo(
     () =>
       getBalanceNumber(
-        getDecimalAmount(new BigNumber(lockedAmount), stakingToken.decimals).multipliedBy(stakingTokenPrice),
+        getDecimalAmount(new BigNumber(lockedAmount), stakingToken.decimals).multipliedBy(stakingTokenPrice ?? 0),
         stakingToken.decimals,
       ),
     [lockedAmount, stakingTokenPrice, stakingToken.decimals],

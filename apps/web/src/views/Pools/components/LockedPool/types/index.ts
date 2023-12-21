@@ -13,7 +13,7 @@ export interface GenericModalProps {
   stakingToken: Token
   currentBalance: BigNumber
   stakingTokenBalance: BigNumber
-  stakingTokenPrice: number
+  stakingTokenPrice?: number
   customLockAmount?: string
   customLockWeekInSeconds?: number
 }
@@ -87,7 +87,7 @@ export interface ModalValidator {
 export interface LockedModalBodyPropsType {
   onDismiss?: VoidFn
   stakingToken: Token
-  stakingTokenPrice: number
+  stakingTokenPrice?: number
   currentBalance?: BigNumber
   lockedAmount: BigNumber
   editAmountOnly?: React.ReactElement
