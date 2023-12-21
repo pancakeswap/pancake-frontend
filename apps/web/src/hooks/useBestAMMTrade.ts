@@ -7,7 +7,7 @@ import {
   BATCH_MULTICALL_CONFIGS,
   SmartRouterTrade,
 } from '@pancakeswap/smart-router/evm'
-import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, TradeType, Currency, Native } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 
@@ -27,6 +27,7 @@ import {
   CommonPoolsParams,
 } from './useCommonPools'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
+import { useCurrencyPrice } from './useCurrencyPrice'
 
 interface FactoryOptions {
   // use to identify hook
@@ -132,7 +133,7 @@ function bestTradeHookFactory({
       pools: candidatePools,
       loading,
       syncing,
-    } = useCommonPools(baseCurrency || amount?.currency, currency, {
+    } = useCommonPools(baseCurrency || amount?.currency, currency ?? undefined, {
       blockNumber,
       allowInconsistentBlock: true,
       enabled,
@@ -140,6 +141,8 @@ function bestTradeHookFactory({
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
     const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
+    const quoteCurrencyUsdPrice = useCurrencyPrice(currency ?? undefined)
+    const nativeCurrencyUsdPrice = useCurrencyPrice(currency?.chainId ? Native.onChain(currency.chainId) : undefined)
 
     const poolTypes = useMemo(() => {
       const types: PoolType[] = []
@@ -194,6 +197,8 @@ function bestTradeHookFactory({
           quoteProvider,
           allowedPoolTypes: poolTypes,
           quoterOptimization,
+          quoteCurrencyUsdPrice,
+          nativeCurrencyUsdPrice,
         })
         if (!res) {
           return undefined
@@ -314,7 +319,16 @@ const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRoute
     amount,
     currency,
     tradeType,
-    { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei, quoteProvider },
+    {
+      maxHops,
+      maxSplits,
+      allowedPoolTypes,
+      poolProvider,
+      gasPriceWei,
+      quoteProvider,
+      nativeCurrencyUsdPrice,
+      quoteCurrencyUsdPrice,
+    },
   ) => {
     if (!quoteWorker) {
       throw new Error('Quote worker not initialized')
@@ -340,6 +354,8 @@ const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRoute
       poolTypes: allowedPoolTypes,
       candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
       onChainQuoterGasLimit: quoterConfig?.gasLimit?.toString(),
+      quoteCurrencyUsdPrice,
+      nativeCurrencyUsdPrice,
     })
     return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
   }

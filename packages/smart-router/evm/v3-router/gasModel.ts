@@ -1,5 +1,6 @@
-import { BigintIsh, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import sum from 'lodash/sum.js'
 
 import {
@@ -19,15 +20,26 @@ import {
   Pool,
   PoolProvider,
   PoolType,
+  PriceReferences,
   RouteWithoutGasEstimate,
 } from './types'
 import { getNativeWrappedToken, getTokenPrice, getUsdGasToken, isStablePool, isV2Pool, isV3Pool } from './utils'
 
-interface GasModelConfig {
+type GasModelConfig = {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
   blockNumber?: BigintIsh
   poolProvider: PoolProvider
   quoteCurrency: Currency
+} & PriceReferences
+
+function getTokenPriceByNumber(baseCurrency: Currency, quoteCurrency: Currency, price: number) {
+  const quoteAmount = tryParseAmount(String(price), baseCurrency)
+  const baseAmount = tryParseAmount('1', quoteCurrency)
+  if (!baseAmount || !quoteAmount) {
+    return undefined
+  }
+
+  return new Price({ baseAmount, quoteAmount })
 }
 
 export async function createGasModel({
@@ -35,6 +47,8 @@ export async function createGasModel({
   poolProvider,
   quoteCurrency,
   blockNumber,
+  quoteCurrencyUsdPrice,
+  nativeCurrencyUsdPrice,
 }: GasModelConfig): Promise<GasModel> {
   const { chainId } = quoteCurrency
   const usdToken = getUsdGasToken(chainId)
@@ -51,6 +65,13 @@ export async function createGasModel({
     getHighestLiquidityUSDPool(poolProvider, chainId, blockNumber),
     getHighestLiquidityNativePool(poolProvider, quoteCurrency, blockNumber),
   ])
+  const priceInUsd = quoteCurrencyUsdPrice
+    ? getTokenPriceByNumber(usdToken, quoteCurrency, quoteCurrencyUsdPrice)
+    : undefined
+  const nativePriceInUsd = nativeCurrencyUsdPrice
+    ? getTokenPriceByNumber(usdToken, nativeWrappedToken, nativeCurrencyUsdPrice)
+    : undefined
+  const priceInNative = priceInUsd && nativePriceInUsd ? nativePriceInUsd.multiply(priceInUsd.invert()) : undefined
 
   const estimateGasCost = (
     { pools }: RouteWithoutGasEstimate,
@@ -115,13 +136,16 @@ export async function createGasModel({
       if (isQuoteNative) {
         gasCostInToken = totalGasCostNativeCurrency
       }
-      if (!isQuoteNative && nativePool) {
-        const price = getTokenPrice(nativePool, nativeWrappedToken, quoteCurrency.wrapped)
-        gasCostInToken = price.quote(totalGasCostNativeCurrency)
+      if (!isQuoteNative) {
+        const price =
+          priceInNative || (nativePool && getTokenPrice(nativePool, nativeWrappedToken, quoteCurrency.wrapped))
+        if (price) {
+          gasCostInToken = price.quote(totalGasCostNativeCurrency)
+        }
       }
 
-      if (usdPool) {
-        const nativeTokenUsdPrice = getTokenPrice(usdPool, nativeWrappedToken, usdToken)
+      const nativeTokenUsdPrice = nativePriceInUsd || (usdPool && getTokenPrice(usdPool, nativeWrappedToken, usdToken))
+      if (nativeTokenUsdPrice) {
         gasCostInUSD = nativeTokenUsdPrice.quote(totalGasCostNativeCurrency)
       }
     } catch (e) {
