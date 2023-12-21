@@ -45,7 +45,6 @@ BigNumber.config({
 function GlobalHooks() {
   useDataDogRUM()
   useLoadExperimentalFeatures()
-  useGlobalSettingsEvaluation()
   usePollBlockNumber()
   useEagerConnect()
   useUserAgent()
