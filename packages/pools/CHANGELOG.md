@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 5.0.4
+
+### Patch Changes
+
+- 8e8d9309b: List ALP opBNB chain pool
+
 ## 5.0.3
 
 ### Patch Changes
