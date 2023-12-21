@@ -12,9 +12,9 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 import { Allowance } from 'hooks/usePermit2Allowance'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useState } from 'react'
-import { Address } from 'viem'
 import { Field } from 'state/swap/actions'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import { Address } from 'viem'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
 import { ConfirmSwapModal } from '../../V3Swap/containers/ConfirmSwapModal'
@@ -182,7 +182,7 @@ export function MMSwapCommitButton({
       currencyBalances={currencyBalances}
       isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
       currentAllowance={currentAllowance}
-      swapErrorMessage={swapErrorMessage ?? t('Unable request a quote')}
+      swapErrorMessage={swapErrorMessage || (!rfqTrade.trade ? t('Unable request a quote') : undefined)}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
