@@ -1,21 +1,21 @@
-import { memo, useCallback, useMemo, useState } from 'react'
-import { Button } from '@pancakeswap/uikit'
-import { Address } from 'viem'
-import { MANAGER, BaseAssets } from '@pancakeswap/position-managers'
 import { useTranslation } from '@pancakeswap/localization'
+import { BaseAssets, MANAGER } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
+import { Button } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import { Address } from 'viem'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useAccount } from 'wagmi'
-import { CardSection } from './CardSection'
-import { AddLiquidity } from './AddLiquidity'
-import { InnerCard } from './InnerCard'
-import { StakedAssets } from './StakedAssets'
-import { RewardAssets } from './RewardAssets'
-import { RemoveLiquidity } from './RemoveLiquidity'
 import { AprDataInfo } from '../hooks'
+import { AddLiquidity } from './AddLiquidity'
+import { CardSection } from './CardSection'
+import { InnerCard } from './InnerCard'
+import { RemoveLiquidity } from './RemoveLiquidity'
+import { RewardAssets } from './RewardAssets'
+import { StakedAssets } from './StakedAssets'
 
 interface Props {
   id: string | number
@@ -64,6 +64,7 @@ interface Props {
   strategyInfoUrl?: string
   learnMoreAboutUrl?: string
   lpTokenDecimals?: number
+  aprTimeWindow?: number
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -102,6 +103,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   strategyInfoUrl,
   learnMoreAboutUrl,
   lpTokenDecimals,
+  aprTimeWindow,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -195,6 +197,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         strategyInfoUrl={strategyInfoUrl}
         learnMoreAboutUrl={learnMoreAboutUrl}
         lpTokenDecimals={lpTokenDecimals}
+        aprTimeWindow={aprTimeWindow}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

@@ -207,6 +207,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           strategyInfoUrl={strategyInfoUrl}
           learnMoreAboutUrl={learnMoreAboutUrl}
           lpTokenDecimals={lpTokenDecimals}
+          aprTimeWindow={aprDataInfo.timeWindow}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo
