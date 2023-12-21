@@ -11,13 +11,14 @@
     "@pancakeswap/sdk": "workspace:*"
   },
   "dependencies": {
-    "viem": "1.15.1",
-    "wagmi": "1.4.3",
     "@pancakeswap/chains": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*"
+    "@pancakeswap/tokens": "workspace:*",
+    "@pythnetwork/pyth-evm-js": "^1.29.2",
+    "viem": "1.15.1",
+    "wagmi": "1.4.3"
   },
   "devDependencies": {
-    "@pancakeswap/tsconfig": "workspace:*",
-    "@pancakeswap/sdk": "workspace:*"
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/tsconfig": "workspace:*"
   }
 }

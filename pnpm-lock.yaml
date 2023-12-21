@@ -1493,6 +1493,9 @@ importers:
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
+      '@pythnetwork/pyth-evm-js':
+        specifier: ^1.29.2
+        version: 1.29.2
       viem:
         specifier: 1.15.1
         version: 1.15.1(typescript@5.2.2)
@@ -7199,6 +7202,37 @@ packages:
 
   /@protobufjs/utf8@1.1.0:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
+    dev: false
+
+  /@pythnetwork/price-service-client@1.8.2:
+    resolution: {integrity: sha512-k145LYktS806x/PiSR/VLUtKd6RFroFGF1EURUU8kxWAyW6Phv0b30Oxy5S7+NICboSxvBSTvlIUWtQ9AWi/PA==}
+    dependencies:
+      '@pythnetwork/price-service-sdk': 1.4.1
+      '@types/ws': 8.5.10
+      axios: 1.6.2
+      axios-retry: 3.9.1
+      isomorphic-ws: 4.0.1(ws@8.14.2)
+      ts-log: 2.2.5
+      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - utf-8-validate
+    dev: false
+
+  /@pythnetwork/price-service-sdk@1.4.1:
+    resolution: {integrity: sha512-ECR5v2WCwYBBWoGyg1wrUc/RgBeemBIT3bJzFUyt3/9cExLuc9pTioAzmlBDTjyMuGy7SBHTgIlUnWeu8BLhVg==}
+    dev: false
+
+  /@pythnetwork/pyth-evm-js@1.29.2:
+    resolution: {integrity: sha512-vZI9oldnSm9nx7Fu1n3V2P67mQeT2NZmhZUVwJ2hUK/i3RqQbhoNPB661dGyAwTqFuOHB9gSJMrcqDivkvcL8w==}
+    dependencies:
+      '@pythnetwork/price-service-client': 1.8.2
+      buffer: 6.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - utf-8-validate
     dev: false
 
   /@radix-ui/number@1.0.1:
@@ -13504,6 +13538,13 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /axios-retry@3.9.1:
+    resolution: {integrity: sha512-8PJDLJv7qTTMMwdnbMvrLYuvB47M81wRtxQmEdV5w4rgbTXTt+vtPkXwajOfOdSyv/wZICJOC+/UhXH4aQ/R+w==}
+    dependencies:
+      '@babel/runtime': 7.23.2
+      is-retry-allowed: 2.2.0
+    dev: false
+
   /axios@0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
@@ -18279,6 +18320,11 @@ packages:
       call-bind: 1.0.5
       has-tostringtag: 1.0.0
 
+  /is-retry-allowed@2.2.0:
+    resolution: {integrity: sha512-XVm7LOeLpTW4jV19QSH38vkswxoLud8sQ57YwJVTPWdiaI9I8keEhGFpBlslyVsgdQy4Opg8QOLb8YRgsyZiQg==}
+    engines: {node: '>=10'}
+    dev: false
+
   /is-set@2.0.2:
     resolution: {integrity: sha512-+2cnTEZeY5z/iXGbLhPrOAaK/Mau5k5eXq9j14CpRTftq0pAJu2MwVRSZhyZWBzx3o6X795Lz6Bpb6R0GKf37g==}
 
@@ -18409,6 +18455,14 @@ packages:
       ws: '*'
     dependencies:
       ws: 7.5.9
+
+  /isomorphic-ws@4.0.1(ws@8.14.2):
+    resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
+    peerDependencies:
+      ws: '*'
+    dependencies:
+      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+    dev: false
 
   /isomorphic-ws@5.0.0(ws@8.13.0):
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
@@ -24918,6 +24972,10 @@ packages:
       typescript: 5.2.2
       yargs-parser: 20.2.9
     dev: true
+
+  /ts-log@2.2.5:
+    resolution: {integrity: sha512-PGcnJoTBnVGy6yYNFxWVNkdcAuAMstvutN9MgDJIV6L0oG8fB+ZNNy1T+wJzah8RPGor1mZuPQkVfXNDpy9eHA==}
+    dev: false
 
   /ts-node@10.9.1(@types/node@13.13.52)(typescript@5.2.2):
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}

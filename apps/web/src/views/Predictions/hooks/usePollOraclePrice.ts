@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { galetoOracleABI } from '@pancakeswap/prediction'
+import { useGaletoOraclePrice } from '@pancakeswap/prediction'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
@@ -28,12 +28,8 @@ const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: Use
     enabled: !shouldFetchGaletoPrice,
   })
 
-  const { data: galetoOraclePrice = 0n, refetch: refetchGaletoOraclePrice } = useContractRead({
-    abi: galetoOracleABI,
+  const { galetoOraclePrice, refetchGaletoOraclePrice } = useGaletoOraclePrice({
     address: galetoOracleAddress,
-    functionName: 'latestAnswer',
-    watch: true,
-    chainId: ChainId.ZKSYNC,
     enabled: shouldFetchGaletoPrice,
   })
 
