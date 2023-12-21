@@ -37,7 +37,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
   stakingTokenBalance,
   performanceFee,
 }) => {
-  const { userData } = useVaultPoolByKey(pool.vaultKey ?? VaultKey.None)
+  const { userData } = useVaultPoolByKey(pool.vaultKey ?? VaultKey.CakeVaultV1)
 
   const cakeAsBigNumber = userData?.balance?.cakeAsBigNumber
   const cakeAsNumberBalance = userData?.balance?.cakeAsNumberBalance

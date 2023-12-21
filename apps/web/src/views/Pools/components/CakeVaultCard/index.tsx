@@ -105,7 +105,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
                 <Box>
                   {account && (
                     <Box mb="8px">
-                      <UnstakingFeeCountdownRow vaultKey={pool.vaultKey ?? VaultKey.None} />
+                      <UnstakingFeeCountdownRow vaultKey={pool.vaultKey ?? VaultKey.CakeVaultV1} />
                     </Box>
                   )}
                   {/* <RecentCakeProfitRow pool={pool} /> */}

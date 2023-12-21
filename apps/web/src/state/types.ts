@@ -41,7 +41,6 @@ export enum VaultKey {
   CakeVault = 'cakeVault',
   CakeFlexibleSideVault = 'cakeFlexibleSideVault',
   IfoPool = 'ifoPool',
-  None = 'none',
 }
 
 export type SerializedPool = SerializedPoolWithInfo & {
