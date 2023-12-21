@@ -1,14 +1,12 @@
 import { datadogLogs, LogsInitConfiguration } from '@datadog/browser-logs'
-
-// TODO: move to env if needed
-const DATA_DOG_SITE = 'us3.datadoghq.com'
+import { datadogRum as ddRum } from '@datadog/browser-rum'
 
 try {
   datadogLogs.init({
     clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN || '',
     env: process.env.NEXT_PUBLIC_VERCEL_ENV,
     version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
-    site: DATA_DOG_SITE,
+    site: process.env.NEXT_PUBLIC_DD_RUM_SITE || '',
     forwardErrorsToLogs: true,
     sessionSampleRate: 100,
     service: 'pancakeswap-web',
@@ -32,3 +30,54 @@ export function getLogger(name: string, config?: Partial<LogsInitConfiguration>)
 }
 
 export const logger = getLogger('main')
+
+function createDatadogRumManager() {
+  let initialized = false
+
+  function init() {
+    if (initialized) {
+      return
+    }
+    const env = process.env.NEXT_PUBLIC_VERCEL_ENV
+    const sessionSampleRate = env === 'production' ? 1 : env === 'preview' ? 100 : 0
+    ddRum.init({
+      version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
+      enableExperimentalFeatures: ['feature_flags'],
+      applicationId: process.env.NEXT_PUBLIC_DD_RUM_APP_ID || '',
+      clientToken: process.env.NEXT_PUBLIC_DD_RUM_CLIENT_TOKEN || '',
+      site: process.env.NEXT_PUBLIC_DD_RUM_SITE || '',
+      service: 'pancakeswap-web',
+      env,
+      sessionSampleRate,
+      sessionReplaySampleRate: 10,
+      trackUserInteractions: true,
+      trackResources: true,
+      trackLongTasks: true,
+      defaultPrivacyLevel: 'mask-user-input',
+    })
+    initialized = true
+  }
+
+  const setUser: typeof ddRum.setUser = (...args) => {
+    if (!initialized) {
+      return
+    }
+    ddRum.setUser(...args)
+  }
+
+  const addFeatureFlagEvaluation: typeof ddRum.addFeatureFlagEvaluation = (...args) => {
+    if (!initialized) {
+      return
+    }
+    ddRum.addFeatureFlagEvaluation(...args)
+  }
+
+  return {
+    initialized,
+    init,
+    setUser,
+    addFeatureFlagEvaluation,
+  }
+}
+
+export const datadogRum = createDatadogRumManager()
