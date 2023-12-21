@@ -9,6 +9,6 @@ export const GRAPH_API_PREDICTION_CAKE = {
 }
 
 export const GRAPH_API_PREDICTION_ETH = {
-  [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/48759/prediction-v3-zksync-era/version/latest',
+  [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/48759/prediction-v2-zksync-era/version/latest',
   [ChainId.ARBITRUM_GOERLI]: 'https://api.thegraph.com/subgraphs/name/chef-cannoli/prediction-v2-arbitrum-goerli',
 }
