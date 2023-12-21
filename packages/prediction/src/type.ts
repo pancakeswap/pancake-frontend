@@ -1,3 +1,5 @@
+import { Token } from '@pancakeswap/sdk'
+
 export enum PredictionSupportedSymbol {
   BNB = 'BNB',
   CAKE = 'CAKE',
@@ -21,4 +23,13 @@ export enum PredictionStatus {
 export enum PredictionsChartView {
   TradingView = 'TradingView',
   Chainlink = 'Chainlink Oracle',
+}
+
+export interface BasePredictionConfig {
+  isNativeToken: boolean
+  address: string
+  api: string
+  chainlinkOracleAddress: string
+  displayedDecimals: number
+  token: Token
 }

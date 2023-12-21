@@ -7,15 +7,15 @@
     "test": "vitest --run"
   },
   "type": "module",
+  "peerDependencies": {
+    "@pancakeswap/sdk": "workspace:*"
+  },
   "dependencies": {
-    "qs": "^6.0.0",
-    "lodash": "^4.17.21",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/tokens": "workspace:*"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",
-    "@types/lodash": "^4.14.168",
-    "@types/qs": "^6.0.0"
+    "@pancakeswap/sdk": "workspace:*"
   }
 }
