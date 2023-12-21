@@ -116,7 +116,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       aprInfo = data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
       if (aprInfo) timeWindow = TIME_WINDOW_DEFAULT
     }
-    if (!aprInfo || aprInfo?.token0 === 0 || (aprInfo?.token1 === 0 && fallbackData?.length)) {
+    if (!aprInfo || aprInfo?.token0 === 0 || aprInfo?.token1 === 0) {
       aprInfo = fallbackData?.find(
         (apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase(),
       )
