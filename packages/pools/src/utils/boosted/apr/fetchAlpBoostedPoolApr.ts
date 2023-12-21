@@ -1,12 +1,22 @@
+import { ChainId } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
-import { PublicClient } from 'viem'
+import { Address, PublicClient } from 'viem'
 
 const WEEK = 7
 const YEAR = 365
-const CONTRACT_ADDRESS = '0xB3879E95a4B8e3eE570c232B19d520821F540E48'
-const API_URL = 'https://perp.pancakeswap.finance/bapi/futures/v1/public/future/apx/fee/info?chain=ARB'
+const API_URL = 'https://perp.pancakeswap.finance/bapi/futures/v1/public/future/apx/fee/info?chain='
 
-export const fetchAlpBoostedPoolApr = async (client: PublicClient) => {
+const CONTRACT_ADDRESS: Record<number, Address> = {
+  [ChainId.OPBNB]: '0x5A5454A6030FB50ceb3eb78977D140198A27be5e',
+  [ChainId.ARBITRUM_ONE]: '0xB3879E95a4B8e3eE570c232B19d520821F540E48',
+}
+
+const CHAIN_NAME_MAP: Record<number, string> = {
+  [ChainId.OPBNB]: 'OPBNB',
+  [ChainId.ARBITRUM_ONE]: 'ARB',
+}
+
+export const fetchAlpBoostedPoolApr = async (client: PublicClient, chainId: ChainId) => {
   try {
     const [totalValue] = await client.multicall({
       contracts: [
@@ -36,7 +46,7 @@ export const fetchAlpBoostedPoolApr = async (client: PublicClient) => {
               type: 'function',
             },
           ] as const,
-          address: CONTRACT_ADDRESS,
+          address: CONTRACT_ADDRESS?.[chainId],
           functionName: 'totalValue',
         },
       ],
@@ -47,7 +57,7 @@ export const fetchAlpBoostedPoolApr = async (client: PublicClient) => {
       .map((i) => new BigNumber(i.valueUsd.toString()).div(1e18).toNumber())
       .reduce((a, b) => a + b, 0)
 
-    const response = await fetch(API_URL)
+    const response = await fetch(`${API_URL}${CHAIN_NAME_MAP[chainId]}`)
     const result = await response.json()
 
     const { alpFundingFee, alpTradingFee, alpLipFee } = result.data
