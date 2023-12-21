@@ -2615,7 +2615,6 @@
   "Time remaining until the next revenue distribution and share updates.": "Verbleibende Zeit bis zur nächsten Aktualisierung der Umsatzverteilung und Anteile.",
   "The time of the last revenue distribution and shares update.": "Der Zeitpunkt der letzten Aktualisierung der Umsatzverteilung und Anteile.",
   "Amount of revenue available for claiming in CAKE.": "Höhe der Einnahmen, die in CAKE beansprucht werden können.",
-  "Extend your stakings to receive shares in the next distribution.": "Erweitern Sie Ihre Einsätze, um bei der nächsten Verteilung Anteile zu erhalten.",
   "Curve exploit.": "Curve-Exploit.",
   "For more information, please refer to Alchemix’s": "Weitere Informationen finden Sie auf Alchemix’",
   "and await further updates from the team": "und warten Sie auf weitere Updates vom Team",
@@ -2917,7 +2916,6 @@
   "cake pool": "cake pool",
   "Reward amount": "Reward amount",
   "total": "total",
-  "Your CAKE staking position will have less than 1 week in remaining duration upon the next distribution.": "Your CAKE staking position will have less than 1 week in remaining duration upon the next distribution.",
   "CAKE to be locked": "CAKE to be locked",
   "factor": "factor",
   "unlock on": "unlock on",
@@ -3091,5 +3089,12 @@
   "Update": "Update",
   "Get veCAKE to activate yield booster": "Get veCAKE to activate yield booster",
   "Click to update and increase your boosts.": "Click to update and increase your boosts.",
-  "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.": "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions."
+  "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.": "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.",
+  "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.",
+  "CAKE Pool:": "CAKE Pool:",
+  "Revenue Sharing:": "Revenue Sharing:",
+  "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.",
+  "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.",
+  "Disabled": "Disabled",
+  "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience": "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience"
 }

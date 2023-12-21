@@ -2615,7 +2615,6 @@
   "Time remaining until the next revenue distribution and share updates.": "다음 수익 배분 및 공유 업데이트까지 남은 시간입니다.",
   "The time of the last revenue distribution and shares update.": "마지막 수익 배분 및 지분 업데이트 시간입니다",
   "Amount of revenue available for claiming in CAKE.": "CAKE에서 클레임할 수 있는 수익 금액입니다.",
-  "Extend your stakings to receive shares in the next distribution.": "다음 배분에서 지분을 받으려면 스테이킹을 연장하세요.",
   "Curve exploit.": "커브 취약점 공격.",
   "For more information, please refer to Alchemix’s": "자세한 정보는 Alchemix의 다음 내용을 참조하세요:",
   "and await further updates from the team": "그리고 팀의 추가 업데이트를 기다리세요",
@@ -2917,7 +2916,6 @@
   "cake pool": "cake pool",
   "Reward amount": "Reward amount",
   "total": "total",
-  "Your CAKE staking position will have less than 1 week in remaining duration upon the next distribution.": "Your CAKE staking position will have less than 1 week in remaining duration upon the next distribution.",
   "CAKE to be locked": "CAKE to be locked",
   "factor": "factor",
   "unlock on": "unlock on",
@@ -3091,5 +3089,12 @@
   "Update": "Update",
   "Get veCAKE to activate yield booster": "Get veCAKE to activate yield booster",
   "Click to update and increase your boosts.": "Click to update and increase your boosts.",
-  "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.": "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions."
+  "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.": "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.",
+  "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.",
+  "CAKE Pool:": "CAKE Pool:",
+  "Revenue Sharing:": "Revenue Sharing:",
+  "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.",
+  "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.",
+  "Disabled": "Disabled",
+  "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience": "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience"
 }
