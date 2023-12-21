@@ -188,6 +188,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
       })
       .catch((error) => {
+        console.error('swapCallback error#1001', error, JSON.stringify(error))
         setWallchainSecondaryStatus('not-found')
 
         if (error instanceof TransactionRejectedError) {
@@ -203,7 +204,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
-          swapErrorMessage: typeof error === 'string' ? error : error?.message,
+          swapErrorMessage:
+            (typeof error === 'string' ? error : error?.message) ??
+            t('Swap failed: %message%', { message: 'unknown reason #1001' }),
           txHash: undefined,
         })
       })
