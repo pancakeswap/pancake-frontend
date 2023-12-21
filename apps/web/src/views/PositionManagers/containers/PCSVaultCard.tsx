@@ -103,16 +103,18 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
 
   const aprDataInfo = useMemo(() => {
     const { isLoading, data, fallbackData, specificData } = aprDataList
-    let timeWindow = aprTimeWindow ?? TIME_WINDOW_DEFAULT
+    let timeWindow = TIME_WINDOW_FALLBACK
 
     let aprInfo: AprDataInfo | undefined
     if (specificData?.[aprTimeWindow ?? -1]) {
-      aprInfo = specificData?.[timeWindow]?.find(
+      aprInfo = specificData?.[aprTimeWindow ?? -1]?.find(
         (apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase(),
       )
+      if (aprInfo && aprTimeWindow) timeWindow = aprTimeWindow
     }
     if (!aprInfo && data?.length) {
       aprInfo = data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
+      if (aprInfo) timeWindow = TIME_WINDOW_DEFAULT
     }
     if (!aprInfo || aprInfo?.token0 === 0 || (aprInfo?.token1 === 0 && fallbackData?.length)) {
       aprInfo = fallbackData?.find(
