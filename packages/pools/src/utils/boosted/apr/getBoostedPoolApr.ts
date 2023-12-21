@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { Address, PublicClient } from 'viem'
 import { getBoostedPoolConfig } from '../../../constants/boostedPools'
 import { BoosterType } from '../types'
@@ -17,9 +16,9 @@ export const getBoostedPoolApr = async ({ client, contractAddress, chainId }: Ge
     return 0
   }
 
-  // Arbitrum ALP pools
-  if (pool?.boosterType === BoosterType.ALP && chainId === ChainId.ARBITRUM_ONE) {
-    const result = await fetchAlpBoostedPoolApr(client)
+  // ALP pools
+  if (pool?.boosterType === BoosterType.ALP) {
+    const result = await fetchAlpBoostedPoolApr(client, chainId)
     return result
   }
 
