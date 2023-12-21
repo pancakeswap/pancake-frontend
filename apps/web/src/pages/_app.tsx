@@ -24,7 +24,6 @@ import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
-import { useGlobalSettingsEvaluation } from 'hooks/useGlobalSettingsEvaluation'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
