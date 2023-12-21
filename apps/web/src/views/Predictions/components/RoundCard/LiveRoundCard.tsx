@@ -63,7 +63,7 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(config?.chainlinkOracleAddress ? 'Last price from Chainlink Oracle' : 'Last price from Galeto Oracle'),
+    config?.chainlinkOracleAddress ? t('Last price from Chainlink Oracle') : t('Last price from Galeto Oracle'),
     {
       placement: 'bottom',
     },
