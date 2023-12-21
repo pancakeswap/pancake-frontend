@@ -1496,6 +1496,9 @@ importers:
       '@pythnetwork/pyth-evm-js':
         specifier: ^1.29.2
         version: 1.29.2
+      '@tanstack/react-query':
+        specifier: ^4.28.0
+        version: 4.36.1(react-dom@18.2.0)(react@18.2.0)
       viem:
         specifier: 1.15.1
         version: 1.15.1(typescript@5.2.2)
