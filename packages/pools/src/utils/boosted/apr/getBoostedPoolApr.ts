@@ -16,7 +16,7 @@ export const getBoostedPoolApr = async ({ client, contractAddress, chainId }: Ge
     return 0
   }
 
-  // Arbitrum ALP pools
+  // ALP pools
   if (pool?.boosterType === BoosterType.ALP) {
     const result = await fetchAlpBoostedPoolApr(client, chainId)
     return result
