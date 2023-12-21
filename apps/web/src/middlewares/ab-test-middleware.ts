@@ -4,7 +4,7 @@ import {
   ExperimentalFeatureConfigs,
   FeatureRollOutConfig,
   getCookieKey,
-} from 'config/experminetalFeatures'
+} from 'config/experimentalFeatures'
 import { NextFetchEvent, NextResponse } from 'next/server'
 import { ONE_YEAR_SECONDS } from './constants'
 import { ExtendedNextReq, MiddlewareFactory, NextMiddleware } from './types'

@@ -1,6 +1,6 @@
 import { useToast } from '@pancakeswap/uikit'
 import { useManageSubscription, useW3iAccount } from '@web3inbox/widget-react'
-import { EXPERIMENTAL_FEATURES } from 'config/experminetalFeatures'
+import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
 import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import { useCallback } from 'react'
 import { useAllowNotifications } from 'state/notifications/hooks'

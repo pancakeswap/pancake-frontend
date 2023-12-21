@@ -1,10 +1,9 @@
-import { datadogRum } from '@datadog/browser-rum'
 import { Pair, ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { useCallback, useMemo, useEffect } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import useSWRImmutable from 'swr/immutable'
@@ -15,6 +14,7 @@ import { safeGetAddress } from 'utils'
 import { useFeeData, useWalletClient } from 'wagmi'
 import { Hex, hexToBigInt } from 'viem'
 import { AppState, useAppDispatch } from 'state'
+import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
 import {
   addSerializedPair,
   addSerializedToken,
@@ -131,6 +131,7 @@ export function useUserFarmsViewMode(): [ViewMode, (viewMode: ViewMode) => void]
   const userFarmsViewMode = useSelector<AppState, AppState['user']['userFarmsViewMode']>((state) => {
     return state.user.userFarmsViewMode
   })
+  useFeatureFlagEvaluation('farms-view-mode', userFarmsViewMode)
 
   const setUserFarmsViewMode = useCallback(
     (viewMode: ViewMode) => {
@@ -138,10 +139,6 @@ export function useUserFarmsViewMode(): [ViewMode, (viewMode: ViewMode) => void]
     },
     [dispatch],
   )
-
-  useEffect(() => {
-    datadogRum.addFeatureFlagEvaluation('farms-view-mode', userFarmsViewMode)
-  }, [userFarmsViewMode])
 
   return [userFarmsViewMode, setUserFarmsViewMode]
 }

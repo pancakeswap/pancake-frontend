@@ -3,6 +3,7 @@ import { escapeRegExp } from 'utils'
 import { Text, Button, Input, Flex, Box, QuestionHelper } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useUserSlippage } from '@pancakeswap/utils/user'
+
 import { useUserTransactionTTL } from 'state/user/hooks'
 
 enum SlippageError {
