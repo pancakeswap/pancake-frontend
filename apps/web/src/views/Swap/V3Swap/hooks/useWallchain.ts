@@ -132,13 +132,14 @@ export function useWallchainApi(
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
   const [lastUpdate, setLastUpdate] = useState(0)
+  const useUniversalRouter = true
 
   const sdk = useWallchainSDK()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, undefined, deadline, feeOptions)
 
   useEffect(() => {
-    if (!sdk || !walletClient || !trade || !account) {
+    if (!sdk || !walletClient || !trade || !account || useUniversalRouter) {
       setStatus('not-found')
       return
     }
