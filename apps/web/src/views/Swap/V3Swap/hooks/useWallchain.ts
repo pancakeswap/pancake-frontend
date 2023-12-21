@@ -1,24 +1,24 @@
-import { useState, useEffect, useMemo } from 'react'
+import { ChainId } from '@pancakeswap/chains'
+import { Currency, Token, TradeType } from '@pancakeswap/sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { useUserSlippage } from '@pancakeswap/utils/user'
+import { FeeOptions } from '@pancakeswap/v3-sdk'
+import { captureException } from '@sentry/nextjs'
+import { useQuery } from '@tanstack/react-query'
 import type WallchainSDK from '@wallchain/sdk'
 import type { TMEVFoundResponse } from '@wallchain/sdk'
 import { TOptions } from '@wallchain/sdk'
-import { Token, TradeType, Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { useWalletClient } from 'wagmi'
-import { useQuery } from '@tanstack/react-query'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { basisPointsToPercent } from 'utils/exchange'
-import { FeeOptions } from '@pancakeswap/v3-sdk'
-import { captureException } from '@sentry/nextjs'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { atom, useAtom } from 'jotai'
+import { useEffect, useMemo, useState } from 'react'
+import { basisPointsToPercent } from 'utils/exchange'
+import { useWalletClient } from 'wagmi'
 
 import Bottleneck from 'bottleneck'
-import { Address, Hex } from 'viem'
 import { WALLCHAIN_ENABLED, WallchainKeys, WallchainTokens } from 'config/wallchain'
+import { Address, Hex } from 'viem'
 import { useSwapCallArguments } from './useSwapCallArguments'
 
 interface SwapCall {
@@ -132,13 +132,14 @@ export function useWallchainApi(
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
   const [lastUpdate, setLastUpdate] = useState(0)
+  const useUniversalRouter = true
 
   const sdk = useWallchainSDK()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, undefined, deadline, feeOptions)
 
   useEffect(() => {
-    if (!sdk || !walletClient || !trade || !account) {
+    if (!sdk || !walletClient || !trade || !account || useUniversalRouter) {
       setStatus('not-found')
       return
     }
