@@ -2060,7 +2060,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.MEDIUM,
   },
   {
-    gid: 192,
+    gid: 193,
     address: '0x4689e3C91036437A46A6c8B62157F58210Ba67a7',
     pairName: 'SDT-ETH',
     chainId: ChainId.ETHEREUM,
@@ -2070,7 +2070,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.MEDIUM,
   },
   {
-    gid: 193,
+    gid: 194,
     address: '0x6Fab6CEdf26f9bF03448Fe835B674be1CFf0E8BB',
     pairName: 'agEUR-USDC',
     chainId: ChainId.ETHEREUM,
@@ -2080,9 +2080,9 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOW,
   },
   {
-    gid: 194,
+    gid: 195,
     address: '0x5F16320FA36559ca7bc785834Ba77105154DC40b',
-    pairName: 'STF-BUSD',
+    pairName: 'STG-BUSD',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.stg.address,
@@ -2090,9 +2090,9 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.MEDIUM,
   },
   {
-    gid: 195,
+    gid: 196,
     address: '0x89A6be1ec107C911C3F2A1112f049F876Ce033c9',
-    pairName: 'USDT-SGT',
+    pairName: 'USDT-STG',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.usdt.address,
@@ -2100,7 +2100,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.MEDIUM,
   },
   {
-    gid: 195,
+    gid: 197,
     address: '0xF5B4B24E5808DAA3fBeee11DF27a0994600356b4',
     pairName: 'VAI-USDT',
     chainId: ChainId.BSC,
@@ -2110,7 +2110,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 195,
+    gid: 198,
     address: '0x7D3c51D707C8C63CB9f85cEC6E9F9FF0A5fb2735',
     pairName: 'VAI-USDC',
     chainId: ChainId.BSC,
