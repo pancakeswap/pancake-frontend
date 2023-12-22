@@ -114,6 +114,8 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       poolTypes,
       candidatePools,
       onChainQuoterGasLimit: gasLimit,
+      nativeCurrencyUsdPrice,
+      quoteCurrencyUsdPrice,
     } = parsed.data
     const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients, gasLimit })
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
@@ -134,6 +136,8 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       blockNumber: blockNumber ? Number(blockNumber) : undefined,
       allowedPoolTypes: poolTypes,
       quoterOptimization: false,
+      quoteCurrencyUsdPrice,
+      nativeCurrencyUsdPrice,
     })
       .then((res) => {
         postMessage([

@@ -17,7 +17,12 @@ export interface SmartRouterTrade<TTradeType extends TradeType> {
   blockNumber?: number
 }
 
-export interface TradeConfig {
+export type PriceReferences = {
+  quoteCurrencyUsdPrice?: number
+  nativeCurrencyUsdPrice?: number
+}
+
+export type TradeConfig = {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
   blockNumber?: number | (() => Promise<number>)
   poolProvider: PoolProvider
@@ -27,8 +32,8 @@ export interface TradeConfig {
   distributionPercent?: number
   allowedPoolTypes?: PoolType[]
   quoterOptimization?: boolean
-}
+} & PriceReferences
 
-export interface RouteConfig extends TradeConfig {
+export type RouteConfig = TradeConfig & {
   blockNumber?: number
 }

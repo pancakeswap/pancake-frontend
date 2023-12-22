@@ -55,6 +55,8 @@ async function getBestRoutes(
     gasPriceWei,
     allowedPoolTypes,
     quoterOptimization,
+    quoteCurrencyUsdPrice,
+    nativeCurrencyUsdPrice,
   } = {
     ...routeConfig,
     ...(ROUTE_CONFIG_BY_CHAIN[chainId as ChainId] || {}),
@@ -76,7 +78,14 @@ async function getBestRoutes(
     baseRoutes = baseRoutes.filter(({ type }) => type !== RouteType.MIXED)
   }
 
-  const gasModel = await createGasModel({ gasPriceWei, poolProvider, quoteCurrency: currency, blockNumber })
+  const gasModel = await createGasModel({
+    gasPriceWei,
+    poolProvider,
+    quoteCurrency: currency,
+    blockNumber,
+    quoteCurrencyUsdPrice,
+    nativeCurrencyUsdPrice,
+  })
   const routesWithValidQuote = await getRoutesWithValidQuote({
     amount,
     baseRoutes,
