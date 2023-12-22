@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.12.0
+
+### Minor Changes
+
+- 86727ebf4: Improve accuracy of gas estimation by providing token price references
+
 ## 4.11.1
 
 ### Patch Changes
