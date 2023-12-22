@@ -147,7 +147,7 @@ export const GalxeTraverseBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isDesktop } = useMatchBreakpoints()
 
-  const title = isDesktop ? t('Traverse the Treasure Islands on Galxe now!') : t('Traverse the Treasure Islands!')
+  const title = isDesktop ? t('Traverse the Treasure Islands on Galxe') : t('Traverse the Treasure Islands!')
 
   return (
     <S.Wrapper
