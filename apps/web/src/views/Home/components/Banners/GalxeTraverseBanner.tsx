@@ -1,15 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Text, useMatchBreakpoints, OpenNewIcon } from '@pancakeswap/uikit'
+import { Button, Flex, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import Image from 'next/legacy/image'
-import { styled, css } from 'styled-components'
+import { css, styled } from 'styled-components'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 
-import { galxeTraverseBg, galxeTraverseBgMobile, galxeTraverseBunny, galxeTraverseCloud, galxeLogo } from './images'
 import * as S from './Styled'
 import { flyingAnim } from './animations'
+import { galxeLogo, galxeTraverseBg, galxeTraverseBgMobile, galxeTraverseBunny, galxeTraverseCloud } from './images'
 
 const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
 
@@ -172,13 +172,13 @@ export const GalxeTraverseBanner = () => {
           <Title data-text={title}>{title}</Title>
           {!isMobile && (
             <Text color="#280D5F" fontSize={24} fontWeight={700} mb="8px">
-              {t('Exclusive NFTs and treasures await!')}
+              {t('Claim Your Exclusive NFTs Now!')}
             </Text>
           )}
           <Flex>
             <NextLinkFromReactRouter
               target="_blank"
-              to="https://blog.pancakeswap.finance/articles/join-pancake-swap-s-multichain-adventure-traverse-the-treasure-islands"
+              to="https://blog.pancakeswap.finance/articles/celebrating-traverse-claim-your-exclusive-nfts"
             >
               <StyledButtonLeft scale={['xs', 'sm', 'md']}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
