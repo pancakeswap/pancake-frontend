@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.12.1
+
+### Patch Changes
+
+- c93283e99: Clean up smart router console log, use logger instead, and enable based on namespaces
+
 ## 4.12.0
 
 ### Minor Changes
