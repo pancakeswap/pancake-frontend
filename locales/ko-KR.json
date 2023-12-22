@@ -2571,9 +2571,8 @@
   "Your locked staking is expired": "잠긴 스테이킹이 만료되었습니다",
   "Renew your stakings for": "다음에 대한 스테이킹 갱신:",
   "Insufficient Funds?": "Insufficient Funds?",
-  "Traverse the Treasure Islands on Galxe now!": "지금 Galxe에서 보물섬을 여행하세요!",
+  "Traverse the Treasure Islands on Galxe": "Traverse the Treasure Islands on Galxe",
   "Traverse the Treasure Islands!": "보물섬을 여행하세요!",
-  "Exclusive NFTs and treasures await!": "독점 NFT와 보물이 기다리고 있습니다!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap이 이제 Polygon zkEVM에서 라이브로 진행됩니다!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM이 라이브 상태입니다!",
   "Swap, LP, and Farms on Polygon zkEVM now": "지금 Polygon zkEVM에서 스왑, LP 및 팜 사용",
@@ -3095,6 +3094,6 @@
   "Revenue Sharing:": "Revenue Sharing:",
   "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.",
-  "Disabled": "Disabled",
-  "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience": "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience"
+  "Claim Your Exclusive NFTs Now!": "Claim Your Exclusive NFTs Now!",
+  "Calculated based average data since vault inception.": "Calculated based average data since vault inception."
 }
