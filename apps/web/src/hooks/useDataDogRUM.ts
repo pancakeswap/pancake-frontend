@@ -38,6 +38,27 @@ export function useDataDogRUM() {
   }, [ready, address])
 }
 
+export type FeatureFlagEvaluation = {
+  flagName: string
+  value?: boolean | string | number
+}
+
+export function useFeatureFlagEvaluations(evaluations?: FeatureFlagEvaluation[]) {
+  const ready = useDataDogRUMReady()
+
+  useEffect(() => {
+    if (!ready || !evaluations) {
+      return
+    }
+
+    for (const { flagName, value } of evaluations) {
+      if (value !== undefined) {
+        datadogRum.addFeatureFlagEvaluation(flagName, value)
+      }
+    }
+  }, [ready, evaluations])
+}
+
 export function useFeatureFlagEvaluation(flagName: string, value?: boolean | string | number) {
   const ready = useDataDogRUMReady()
 
