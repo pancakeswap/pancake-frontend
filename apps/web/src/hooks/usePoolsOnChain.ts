@@ -3,7 +3,7 @@ import { BigintIsh, Currency } from '@pancakeswap/sdk'
 import { OnChainProvider, Pool, SmartRouter } from '@pancakeswap/smart-router/evm'
 
 import { useQuery } from '@tanstack/react-query'
-import { useMemo, useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { getViemClients } from 'utils/viem'
 
@@ -53,12 +53,15 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     const poolState = useQuery(
       [poolType, 'pools', key],
       async () => {
+        if (!blockNumber || !pairs) {
+          throw new Error('Failed to get pools on chain. Missing valid params')
+        }
         fetchingBlock.current = blockNumber.toString()
         try {
           const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${fetchingBlock.current}`
-          SmartRouter.metric(label)
+          SmartRouter.logger.metric(label)
           const pools = await getPoolsOnChain(pairs, getViemClients, blockNumber)
-          SmartRouter.metric(label, pools)
+          SmartRouter.logger.metric(label, pools)
 
           return {
             pools,

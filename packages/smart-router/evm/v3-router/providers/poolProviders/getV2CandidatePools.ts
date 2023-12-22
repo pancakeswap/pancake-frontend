@@ -1,14 +1,14 @@
 import { BigintIsh, Currency, CurrencyAmount, Price, ZERO } from '@pancakeswap/sdk'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 
-import { OnChainProvider, SubgraphProvider, V2PoolWithTvl } from '../../types'
-import { createAsyncCallWithFallbacks, WithFallbackOptions } from '../../../utils/withFallback'
-import { getV2PoolSubgraph } from './subgraphPoolProviders'
-import { getV2PoolsOnChain } from './onChainPoolProviders'
-import { getCommonTokenPrices as defaultGetCommonTokenPrices, CommonTokenPriceProvider } from '../getCommonTokenPrices'
+import { WithFallbackOptions, createAsyncCallWithFallbacks } from '../../../utils/withFallback'
 import { getPairCombinations } from '../../functions'
-import { getPoolAddress } from '../../utils'
+import { OnChainProvider, SubgraphProvider, V2PoolWithTvl } from '../../types'
+import { getPoolAddress, logger } from '../../utils'
+import { CommonTokenPriceProvider, getCommonTokenPrices as defaultGetCommonTokenPrices } from '../getCommonTokenPrices'
+import { getV2PoolsOnChain } from './onChainPoolProviders'
 import { v2PoolTvlSelector } from './poolTvlSelectors'
+import { getV2PoolSubgraph } from './subgraphPoolProviders'
 
 export type GetV2PoolsParams = {
   currencyA?: Currency
@@ -47,7 +47,7 @@ export function createV2PoolsProviderByCommonTokenPrices<T = any>(getCommonToken
     }
 
     if (!baseTokenUsdPrices) {
-      console.debug('Failed to get base token prices')
+      logger.log('Failed to get base token prices')
       return poolsFromOnChain.map((pool) => {
         return {
           ...pool,

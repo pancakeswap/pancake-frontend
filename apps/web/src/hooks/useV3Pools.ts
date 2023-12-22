@@ -1,13 +1,13 @@
 import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
 import { Tick } from '@pancakeswap/v3-sdk'
+import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
-import { useQuery } from '@tanstack/react-query'
 
+import { POOLS_FAST_REVALIDATE, POOLS_SLOW_REVALIDATE } from 'config/pools'
 import { v3Clients } from 'utils/graphql'
 import { getViemClients } from 'utils/viem'
-import { POOLS_FAST_REVALIDATE, POOLS_SLOW_REVALIDATE } from 'config/pools'
 
 import { getPoolTicks } from './v3/useAllV3TicksQuery'
 
@@ -147,7 +147,7 @@ export function useV3PoolsWithTicks(
         throw new Error('Invalid pools to get ticks')
       }
       const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
-      SmartRouter.metric(label)
+      SmartRouter.logger.metric(label)
       const poolTicks = await Promise.all(
         pools.map(async (pool) => {
           const { token0 } = pool
@@ -159,7 +159,7 @@ export function useV3PoolsWithTicks(
           })
         }),
       )
-      SmartRouter.metric(label, poolTicks)
+      SmartRouter.logger.metric(label, poolTicks)
       return {
         pools: pools?.map((pool, i) => ({
           ...pool,

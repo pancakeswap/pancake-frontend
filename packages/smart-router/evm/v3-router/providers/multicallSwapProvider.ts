@@ -1,9 +1,9 @@
-/* eslint-disable no-console, camelcase, @typescript-eslint/no-non-null-assertion */
-import { BigintIsh } from '@pancakeswap/sdk'
+/* eslint-disable camelcase, @typescript-eslint/no-non-null-assertion */
 import { ChainId } from '@pancakeswap/chains'
-import { encodeFunctionData, PublicClient, decodeFunctionResult } from 'viem'
-import stats from 'stats-lite'
 import { multicallByGasLimit } from '@pancakeswap/multicall'
+import { BigintIsh } from '@pancakeswap/sdk'
+import stats from 'stats-lite'
+import { PublicClient, decodeFunctionResult, encodeFunctionData } from 'viem'
 
 import IMulticallABI from '../../abis/InterfaceMulticall'
 import {
