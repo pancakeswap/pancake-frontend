@@ -124,15 +124,16 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
             </Text>
           </Flex>
         )}
+
+        <Flex justifyContent="space-between">
+          <Text>{t('Earn')}:</Text>
+          <Text>{earnLabel}</Text>
+        </Flex>
         {!account && farm.boosted && (
           <Box mt="24px" mb="16px">
             <StatusView status={boostStatus} />
           </Box>
         )}
-        <Flex justifyContent="space-between">
-          <Text>{t('Earn')}:</Text>
-          <Text>{earnLabel}</Text>
-        </Flex>
         <CardActionsContainer farm={farm} lpLabel={lpLabel} account={account} />
       </FarmCardInnerContainer>
       <ExpandingWrapper>
