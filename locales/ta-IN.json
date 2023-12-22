@@ -2571,9 +2571,8 @@
   "Your locked staking is expired": "உங்கள் பூட்டிய ஸ்டேக்கிங் காலாவதியானது",
   "Renew your stakings for": "இதற்கு உங்கள் ஸ்டேக்கிங்கை புதுப்பிக்கவும்",
   "Insufficient Funds?": "Insufficient Funds?",
-  "Traverse the Treasure Islands on Galxe now!": "Galxeல் உள்ள புதையல் தீவுகளைக் கடந்திடுங்கள்!",
+  "Traverse the Treasure Islands on Galxe": "Traverse the Treasure Islands on Galxe",
   "Traverse the Treasure Islands!": "புதையல் தீவுகளைக் கடந்திடுங்கள்!",
-  "Exclusive NFTs and treasures await!": "பிரத்தியேக NFTகள் மற்றும் பொக்கிஷங்கள் காத்திருக்கின்றன!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap இப்போது பாலிகான் zkEVMல் நேரலையிலுள்ளது!",
   "Polygon zkEVM is LIVE!": "பாலிகான் zkEVM நேரலையிலுள்ளது!",
   "Swap, LP, and Farms on Polygon zkEVM now": "இப்போது பாலிகான் zkEVMல் ஸ்வாப், LP மற்றும் ஃபார்ம்கள் உள்ளன",
@@ -3095,6 +3094,6 @@
   "Revenue Sharing:": "Revenue Sharing:",
   "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.",
-  "Disabled": "Disabled",
-  "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience": "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience"
+  "Claim Your Exclusive NFTs Now!": "Claim Your Exclusive NFTs Now!",
+  "Calculated based average data since vault inception.": "Calculated based average data since vault inception."
 }
