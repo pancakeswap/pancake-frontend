@@ -18,6 +18,7 @@ import {
   useTotalAssetInUsd,
   useTotalStakedInUsd,
 } from '../hooks'
+import { TIME_WINDOW_DEFAULT, TIME_WINDOW_FALLBACK } from '../hooks/useFetchApr'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
@@ -54,6 +55,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     strategyInfoUrl,
     projectVaultUrl,
     learnMoreAboutUrl,
+    aprTimeWindow,
   } = vault
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
@@ -100,21 +102,32 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   )
 
   const aprDataInfo = useMemo(() => {
-    const { isLoading, data, fallbackData } = aprDataList
-    let aprInfo = data?.length
-      ? data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
-      : undefined
+    const { isLoading, data, fallbackData, specificData } = aprDataList
+    let timeWindow = TIME_WINDOW_FALLBACK
 
-    if (aprInfo?.token0 === 0 || aprInfo?.token1 === 0) {
-      aprInfo = fallbackData?.length
-        ? fallbackData?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
-        : undefined
+    let aprInfo: AprDataInfo | undefined
+    if (specificData?.[aprTimeWindow ?? -1]) {
+      aprInfo = specificData?.[aprTimeWindow ?? -1]?.find(
+        (apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase(),
+      )
+      if (aprInfo && aprTimeWindow) timeWindow = aprTimeWindow
+    }
+    if (!aprInfo && data?.length) {
+      aprInfo = data?.find((apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase())
+      if (aprInfo) timeWindow = TIME_WINDOW_DEFAULT
+    }
+    if (!aprInfo || aprInfo?.token0 === 0 || aprInfo?.token1 === 0) {
+      aprInfo = fallbackData?.find(
+        (apr: AprDataInfo) => apr.lpAddress.toLowerCase() === info.vaultAddress?.toLowerCase(),
+      )
+      timeWindow = TIME_WINDOW_FALLBACK
     }
     return {
       isLoading,
       info: aprInfo,
+      timeWindow,
     }
-  }, [info.vaultAddress, aprDataList])
+  }, [aprDataList, aprTimeWindow, info.vaultAddress])
 
   const { earningUsdValue } = useEarningTokenPriceInfo(earningToken, info?.pendingReward)
 

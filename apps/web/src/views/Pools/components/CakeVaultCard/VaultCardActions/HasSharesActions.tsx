@@ -21,6 +21,7 @@ import BigNumber from 'bignumber.js'
 import { LightGreyCard } from 'components/Card'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
@@ -28,7 +29,7 @@ import VaultStakeModal from '../VaultStakeModal'
 interface HasStakeActionProps {
   pool: Pool.DeserializedPool<Token>
   stakingTokenBalance: BigNumber
-  performanceFee: number
+  performanceFee?: number
 }
 
 const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> = ({
@@ -36,10 +37,10 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
   stakingTokenBalance,
   performanceFee,
 }) => {
-  const { userData } = useVaultPoolByKey(pool.vaultKey)
-  const {
-    balance: { cakeAsBigNumber, cakeAsNumberBalance },
-  } = userData
+  const { userData } = useVaultPoolByKey(pool.vaultKey ?? VaultKey.CakeVaultV1)
+
+  const cakeAsBigNumber = userData?.balance?.cakeAsBigNumber
+  const cakeAsNumberBalance = userData?.balance?.cakeAsNumberBalance
   const isMigratedToVeCake = useIsMigratedToVeCake()
 
   const lockPosition = getVaultPosition(userData)
@@ -48,7 +49,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
   const { t } = useTranslation()
   const cakePriceBusd = useCakePrice()
   const stakedDollarValue = cakePriceBusd.gt(0)
-    ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), stakingToken.decimals)
+    ? getBalanceNumber(cakeAsBigNumber?.multipliedBy(cakePriceBusd), stakingToken.decimals)
     : 0
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
@@ -56,7 +57,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
     <VaultStakeModal stakingMax={stakingTokenBalance} performanceFee={performanceFee} pool={pool} />,
   )
   const [onPresentUnstake] = useModal(
-    <VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />,
+    <VaultStakeModal stakingMax={cakeAsBigNumber ?? new BigNumber(0)} pool={pool} isRemovingStake />,
     true,
     true,
     `withdraw-vault-${pool.sousId}-${pool.vaultKey}`,
@@ -65,7 +66,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
     <LightGreyCard>
       <Flex mb="16px" justifyContent="space-between" alignItems="center">
         <Flex flexDirection="column">
-          <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
+          <Balance fontSize="20px" bold value={cakeAsNumberBalance ?? 0} decimals={5} />
           <Text as={Flex} fontSize="12px" color="textSubtle" flexWrap="wrap">
             {cakePriceBusd.gt(0) ? (
               <Balance

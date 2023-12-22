@@ -120,6 +120,7 @@ export interface DuoTokenVault {
   projectVaultUrl?: string
   learnMoreUrl?: string
   learnMoreAboutUrl?: string
+  aprTimeWindow?: number
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

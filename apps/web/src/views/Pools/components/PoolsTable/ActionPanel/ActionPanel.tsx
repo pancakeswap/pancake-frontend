@@ -30,6 +30,7 @@ import {
   VeCakeUpdateCard,
   VeCakeUpdateCardTableView,
 } from 'views/CakeStaking/components/SyrupPool'
+import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import WithdrawAllButton from '../../LockedPool/Buttons/WithdrawAllButton'
 import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
 import YieldBoostRow from '../../LockedPool/Common/YieldBoostRow'
@@ -158,6 +159,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
     [pool.vaultKey],
   )
   const isMigratedToVeCake = useIsMigratedToVeCake()
+  const isUserDelegated = useIsUserDelegated()
 
   return (
     <StyledActionPanel expanded={expanded}>
@@ -199,7 +201,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
       </InfoSection>
       <ActionContainer>
         <Box width="100%">
-          {pool.vaultKey === VaultKey.CakeVault && (
+          {pool.vaultKey === VaultKey.CakeVault && !isUserDelegated && (
             <VaultPositionTagWithLabel
               userData={vaultData.userData as DeserializedLockedVaultUser}
               width={['auto', null, 'fit-content']}
@@ -209,7 +211,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
             {pool.vaultKey ? (
               <>
-                {account && vaultPosition !== VaultPosition.None ? (
+                {account && vaultPosition !== VaultPosition.None && !isUserDelegated ? (
                   <AutoHarvest pool={pool} />
                 ) : (
                   <VeCakeCardTableView />
@@ -221,7 +223,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             <Stake pool={pool} />
           </ActionContainer>
         </Box>
-        {isCakePool && account && vaultPosition !== VaultPosition.None && (
+        {!isUserDelegated && isCakePool && account && vaultPosition !== VaultPosition.None && (
           <Flex width="100%">
             <Message
               variant="warning"
