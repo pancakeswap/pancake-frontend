@@ -1,47 +1,45 @@
-import { Flex, Text, Box, ChevronRightIcon, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
-import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import { styled } from 'styled-components'
-import { useMemo } from 'react'
+import { Box, ChevronRightIcon, Flex, Text, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
-import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
+import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import Image, { StaticImageData } from 'next/image'
-import tradeBunny from '../../images/trade-bunny.png'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import { styled } from 'styled-components'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import earnNftBunny from '../../images/earn-bunny.png'
-import gameNftBunny from '../../images/game-nft-bunny.png'
-import tradeSwap from '../../images/trade-swap.png'
-import tradeLiquidity from '../../images/trade-liquidity.png'
-import tradeBridge from '../../images/trade-bridge.png'
-import tradePerpetual from '../../images/trade-perpetual.png'
-import tradeBuy from '../../images/trade-buy-crypto.png'
 import earnFarm from '../../images/earn-farm.png'
-import earnPools from '../../images/earn-pools.png'
-import earnLiquidStaking from '../../images/earn-liquidity-staking.png'
 import earnFixedStaking from '../../images/earn-fixed-staking.png'
-import gamePrediction from '../../images/game-prediction.png'
+import earnLiquidStaking from '../../images/earn-liquidity-staking.png'
+import earnPM from '../../images/earn-pm.png'
+import earnPools from '../../images/earn-pools.png'
+import gameNftBunny from '../../images/game-nft-bunny.png'
 import gamePancakeProtectors from '../../images/game-pancake-protectors.png'
-import gameLottery from '../../images/game-lottery.png'
-import gamePottery from '../../images/game-pottery.png'
+import gamePrediction from '../../images/game-prediction.png'
 import nftMarketplace from '../../images/nft-marketplace.png'
+import tradeBridge from '../../images/trade-bridge.png'
+import tradeBunny from '../../images/trade-bunny.png'
+import tradeBuy from '../../images/trade-buy-crypto.png'
+import tradeLiquidity from '../../images/trade-liquidity.png'
+import tradePerpetual from '../../images/trade-perpetual.png'
+import tradeSwap from '../../images/trade-swap.png'
 import GradientLogo from '../GradientLogoSvg'
 
-import tradeSwapPurple from '../../images/trade-swap-purple.png'
-import tradeLiquidityPurple from '../../images/trade-liquidity-purple.png'
-import tradeBridgePurple from '../../images/trade-bridge-purple.png'
-import tradePerpetualPurple from '../../images/trade-perpetual-purple.png'
-import tradeBuyPurple from '../../images/trade-buy-crypto-purple.png'
 import earnFarmPurple from '../../images/earn-farm-purple.png'
-import earnPoolsPurple from '../../images/earn-pools-purple.png'
-import earnLiquidStakingPurple from '../../images/earn-liquidity-staking-purple.png'
 import earnFixedStakingPurple from '../../images/earn-fixed-staking-purple.png'
-import gamePredictionPurple from '../../images/game-prediction-purple.png'
+import earnLiquidStakingPurple from '../../images/earn-liquidity-staking-purple.png'
+import earnPMPurple from '../../images/earn-pm-purple.png'
+import earnPoolsPurple from '../../images/earn-pools-purple.png'
 import gamePancakeProtectorsPurple from '../../images/game-pancake-protectors-purple.png'
-import gameLotteryPurple from '../../images/game-lottery-purple.png'
-import gamePotteryPurple from '../../images/game-pottery-purple.png'
+import gamePredictionPurple from '../../images/game-prediction-purple.png'
 import nftMarketplacePurple from '../../images/nft-marketplace-purple.png'
+import tradeBridgePurple from '../../images/trade-bridge-purple.png'
+import tradeBuyPurple from '../../images/trade-buy-crypto-purple.png'
+import tradeLiquidityPurple from '../../images/trade-liquidity-purple.png'
+import tradePerpetualPurple from '../../images/trade-perpetual-purple.png'
+import tradeSwapPurple from '../../images/trade-swap-purple.png'
 
 export const CardWrapper = styled.div`
   border-radius: 24px;
@@ -269,6 +267,14 @@ const useEarnBlockData = () => {
         defaultImage: earnFixedStakingPurple,
         path: '/simple-staking',
       },
+      {
+        title: t('Position Manager'),
+        description: t('Automate your PancakeSwap v3 liquidity'),
+        ctaTitle: t('Stake Now'),
+        image: earnPM,
+        defaultImage: earnPMPurple,
+        path: '/position-managers',
+      },
     ]
   }, [t])
 }
@@ -278,36 +284,36 @@ const useNftGameBlockData = () => {
   return useMemo(() => {
     return [
       {
+        title: t('Gaming Marketplace'),
+        description: t('Play, Build and Connect on PancakeSwap'),
+        ctaTitle: t('Play Now'),
+        image: gamePancakeProtectors,
+        defaultImage: gamePancakeProtectorsPurple,
+        path: 'https://pancakeswap.games/',
+      },
+      // {
+      //   title: t('Lottery'),
+      //   description: t('Enter for a chance to win CAKE prize pools'),
+      //   ctaTitle: t('Try Now'),
+      //   image: gameLottery,
+      //   defaultImage: gameLotteryPurple,
+      //   path: '/lottery',
+      // },
+      // {
+      //   title: t('Pottery'),
+      //   description: t('Stake CAKE, acquire pottery tickets, win prizes'),
+      //   ctaTitle: t('Try Now'),
+      //   image: gamePottery,
+      //   defaultImage: gamePotteryPurple,
+      //   path: '/pottery',
+      // },
+      {
         title: t('Prediction'),
         description: t('Forecast token prices within minutes'),
         ctaTitle: t('Try Now'),
         image: gamePrediction,
         defaultImage: gamePredictionPurple,
         path: '/prediction',
-      },
-      {
-        title: t('Pancake Protectors'),
-        description: t('Immersive PvP & PvE tower-defense GameFi'),
-        ctaTitle: t('Play Now'),
-        image: gamePancakeProtectors,
-        defaultImage: gamePancakeProtectorsPurple,
-        path: 'https://protectors.pancakeswap.finance/',
-      },
-      {
-        title: t('Lottery'),
-        description: t('Enter for a chance to win CAKE prize pools'),
-        ctaTitle: t('Try Now'),
-        image: gameLottery,
-        defaultImage: gameLotteryPurple,
-        path: '/lottery',
-      },
-      {
-        title: t('Pottery'),
-        description: t('Stake CAKE, acquire pottery tickets, win prizes'),
-        ctaTitle: t('Try Now'),
-        image: gamePottery,
-        defaultImage: gamePotteryPurple,
-        path: '/pottery',
       },
       {
         title: t('NFT Marketplace'),

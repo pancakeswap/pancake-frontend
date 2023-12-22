@@ -1,13 +1,13 @@
 import {
   AptosIcon,
+  BaseIcon,
   BinanceChainIcon,
   EthChainIcon,
+  Svg,
+  SvgProps,
   Text,
   ZkEVMIcon,
   useMatchBreakpoints,
-  BaseIcon,
-  Svg,
-  SvgProps,
 } from '@pancakeswap/uikit'
 import React, { cloneElement } from 'react'
 import Marquee from 'react-fast-marquee'
@@ -64,7 +64,13 @@ const StyledMarquee = styled(Marquee)`
   border-radius: 12px;
 `
 
-const StyledChainIcon = styled('div')`
+const StyledChainIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 100%;
+  }
   svg path {
     fill: ${({ theme }) => theme.colors.invertedContrast};
   }
@@ -74,12 +80,19 @@ const newsItems = [
   {
     key: 'BNB Chain',
     component: (
-      <StyledChainIcon>
+      <StyledChainIcon style={{ width: 26 }}>
         <BinanceChainIcon />
       </StyledChainIcon>
     ),
     background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #F0B90B',
     iconWidth: '26px',
+  },
+  {
+    key: 'opBNB Chain',
+    component: <BinanceChainIcon color="F0B90B" />,
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #333',
+    iconWidth: '26px',
+    color: '#F0B90B',
   },
   {
     key: 'Aptos',
@@ -140,7 +153,7 @@ export const ChainTags: React.FC = () => {
       {newsItems.map((d) => (
         <TagWrapper style={{ background: d.background }} key={d.key}>
           {cloneElement(d.component, { width: d.iconWidth, color: 'invertedContrast' })}
-          <Text fontWeight={600} fontSize={isMobile ? '16px' : '20px'} ml="10px" color="invertedContrast">
+          <Text fontWeight={600} fontSize={isMobile ? '16px' : '20px'} ml="10px" color={d?.color ?? 'invertedContrast'}>
             {d.key}
           </Text>
         </TagWrapper>
