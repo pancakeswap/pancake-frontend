@@ -7,12 +7,15 @@ const SCOPE = {
   error: 'error',
 } as const
 
-type ScopePrefix = typeof SCOPE_PREFIX
+type Scope = (typeof SCOPE)[keyof typeof SCOPE]
 
-type Namespace =
-  | `${ScopePrefix}:*`
-  | `${ScopePrefix}:${(typeof SCOPE)[keyof typeof SCOPE]}`
-  | (string & Record<never, never>)
+type CommaSeparated<T extends string, U extends T = T> = T extends string
+  ? [U] extends [T]
+    ? T
+    : `${`${T},` | ''}${CommaSeparated<Exclude<U, T>>}`
+  : never
+
+type Namespace = '*' | Scope | CommaSeparated<Scope> | (string & Record<never, never>)
 
 const log_ = debug(SCOPE_PREFIX)
 
@@ -23,5 +26,16 @@ export const logger = {
   metric,
   log,
   error: debug(SCOPE_PREFIX).extend(SCOPE.error),
-  enable: (namespace: Namespace) => debug.enable(namespace),
+  enable: (namespace: Namespace) => {
+    let namespaces = namespace
+    if (namespace.includes(',')) {
+      namespaces = namespace
+        .split(',')
+        .map((ns) => `${SCOPE_PREFIX}:${ns}`)
+        .join(',')
+    } else {
+      namespaces = `${SCOPE_PREFIX}:${namespace}`
+    }
+    debug.enable(namespaces)
+  },
 }

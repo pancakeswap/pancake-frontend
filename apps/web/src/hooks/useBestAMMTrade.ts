@@ -29,7 +29,7 @@ import {
 import { useCurrencyPrice } from './useCurrencyPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 
-SmartRouter.logger.enable('smart-router:log')
+SmartRouter.logger.enable('error,log')
 
 interface FactoryOptions {
   // use to identify hook
