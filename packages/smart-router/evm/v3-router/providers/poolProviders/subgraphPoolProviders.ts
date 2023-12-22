@@ -1,14 +1,14 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { parseProtocolFees, Pool, FeeAmount } from '@pancakeswap/v3-sdk'
-import { gql } from 'graphql-request'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { FeeAmount, Pool, parseProtocolFees } from '@pancakeswap/v3-sdk'
 import type { GraphQLClient } from 'graphql-request'
+import { gql } from 'graphql-request'
 import memoize from 'lodash/memoize.js'
 import { Address, getAddress } from 'viem'
-import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
 import { PoolType, SubgraphProvider, V2PoolWithTvl, V3PoolWithTvl, WithTvl } from '../../types'
-import { computeV2PoolAddress, metric } from '../../utils'
+import { computeV2PoolAddress, logger, metric } from '../../utils'
 import { PoolMeta, V3PoolMeta } from './internalTypes'
 
 interface FactoryParams<M extends PoolMeta, P extends WithTvl> {
@@ -46,7 +46,7 @@ function subgraphPoolProviderFactory<M extends PoolMeta, P extends WithTvl>({
     const client = provider({ chainId })
 
     if (!client) {
-      console.error('No subgraph client found for chainId', chainId)
+      logger.error('No subgraph client found for chainId', chainId)
       return []
     }
 

@@ -1,14 +1,14 @@
-/* eslint-disable no-console, @typescript-eslint/no-non-null-assertion */
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ChainId } from '@pancakeswap/chains'
-import FixedReverseHeap from 'mnemonist/fixed-reverse-heap.js'
-import Queue from 'mnemonist/queue.js'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap.js'
 import mapValues from 'lodash/mapValues.js'
+import FixedReverseHeap from 'mnemonist/fixed-reverse-heap.js'
+import Queue from 'mnemonist/queue.js'
 
-import { BestRoutes, L1ToL2GasCosts, RouteWithQuote } from '../types'
-import { getPoolAddress, isV2Pool, isV3Pool } from '../utils'
 import { usdGasTokensByChain } from '../../constants'
+import { BestRoutes, L1ToL2GasCosts, RouteWithQuote } from '../types'
+import { getPoolAddress, isV2Pool, isV3Pool, logger } from '../utils'
 
 interface Config {
   minSplits?: number
@@ -72,17 +72,17 @@ export function getBestRouteCombinationByQuotes(
 
   const missingAmount = amount.subtract(totalAmount)
   if (missingAmount.greaterThan(0)) {
-    console.log(
+    logger.log(
+      "Optimal route's amounts did not equal exactIn/exactOut total. Adding missing amount to last route in array.",
       {
         missingAmount: missingAmount.quotient.toString(),
       },
-      `Optimal route's amounts did not equal exactIn/exactOut total. Adding missing amount to last route in array.`,
     )
 
     routeAmounts[routeAmounts.length - 1]!.amount = routeAmounts[routeAmounts.length - 1]!.amount.add(missingAmount)
   }
 
-  console.log(
+  logger.log(
     {
       routes: routeAmounts,
       numSplits: routeAmounts.length,
@@ -175,7 +175,7 @@ export function getBestSwapRouteBy(
   )
 
   if (!percentToSortedQuotes[100] || minSplits > 1) {
-    console.log(
+    logger.log(
       {
         percentToSortedQuotes: mapValues(percentToSortedQuotes, (p) => p.length),
       },
@@ -242,7 +242,7 @@ export function getBestSwapRouteBy(
 
     // startedSplit = Date.now()
 
-    console.log(
+    logger.log(
       {
         top5: Array.from(bestSwapsPerSplit.consume()).map(
           (q) =>
@@ -280,7 +280,7 @@ export function getBestSwapRouteBy(
     }
 
     if (splits > maxSplits) {
-      console.log('Max splits reached. Stopping search.')
+      logger.log('Max splits reached. Stopping search.')
       // metric.putMetric(`MaxSplitsHitReached`, 1, MetricLoggerUnit.Count);
       break
     }
@@ -374,7 +374,7 @@ export function getBestSwapRouteBy(
   }
 
   if (!bestSwap) {
-    console.log(`Could not find a valid swap`)
+    logger.log(`Could not find a valid swap`)
     return null
   }
 

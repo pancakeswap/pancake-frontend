@@ -1,11 +1,11 @@
-import { Currency, Token } from '@pancakeswap/sdk'
 import { ChainId, getLlamaChainName } from '@pancakeswap/chains'
+import { Currency, Token } from '@pancakeswap/sdk'
 import { gql } from 'graphql-request'
-import { getAddress, Address } from 'viem'
+import { Address, getAddress } from 'viem'
 
+import { withFallback } from '../../utils/withFallback'
 import { getCheckAgainstBaseTokens } from '../functions'
 import { SubgraphProvider } from '../types'
-import { withFallback } from '../../utils/withFallback'
 
 const tokenPriceQuery = gql`
   query getTokens($pageSize: Int!, $tokenAddrs: [ID!]) {

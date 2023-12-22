@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import { QuoteProvider, RouteWithoutQuote, RouteWithQuote, RouteType, QuoterOptions, QuoterConfig } from '../types'
+import { QuoteProvider, QuoterConfig, QuoterOptions, RouteType, RouteWithQuote, RouteWithoutQuote } from '../types'
 import { isV3Pool } from '../utils'
 import { createOffChainQuoteProvider } from './offChainQuoteProvider'
 import { createMixedRouteOnChainQuoteProvider, createV3OnChainQuoteProvider } from './onChainQuoteProvider'

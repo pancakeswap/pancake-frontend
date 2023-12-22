@@ -1,33 +1,35 @@
-import { useQuery } from '@tanstack/react-query'
-import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
-import {
-  SmartRouter,
-  PoolType,
-  QuoteProvider,
-  BATCH_MULTICALL_CONFIGS,
-  SmartRouterTrade,
-} from '@pancakeswap/smart-router/evm'
-import { CurrencyAmount, TradeType, Currency, Native } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
+import { Currency, CurrencyAmount, Native, TradeType } from '@pancakeswap/sdk'
+import {
+  BATCH_MULTICALL_CONFIGS,
+  PoolType,
+  QuoteProvider,
+  SmartRouter,
+  SmartRouterTrade,
+} from '@pancakeswap/smart-router/evm'
+import { useQuery } from '@tanstack/react-query'
+import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
 
+import { QUOTING_API } from 'config/constants/endpoints'
+import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { useIsWrapping } from 'hooks/useWrapCallback'
-import { publicClient } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { getViemClients } from 'utils/viem'
-import { QUOTING_API } from 'config/constants/endpoints'
-import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
+import { publicClient } from 'utils/wagmi'
 import { worker, worker2 } from 'utils/worker'
 
 import {
-  useCommonPools as useCommonPoolsWithTicks,
-  useCommonPoolsLite,
-  PoolsWithState,
   CommonPoolsParams,
+  PoolsWithState,
+  useCommonPoolsLite,
+  useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
-import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useCurrencyPrice } from './useCurrencyPrice'
+import { useMulticallGasLimit } from './useMulticallGasLimit'
+
+SmartRouter.logger.enable('smart-router:log')
 
 interface FactoryOptions {
   // use to identify hook
@@ -184,8 +186,8 @@ function bestTradeHookFactory({
         const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
           amount.currency.symbol
         } -> ${currency.symbol}, tradeType ${tradeType}`
-        SmartRouter.log(label)
-        SmartRouter.metric(label, candidatePools)
+        SmartRouter.logger.log(label)
+        SmartRouter.logger.metric(label, candidatePools)
         const res = await getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei:
             typeof gasPrice === 'bigint'
@@ -203,7 +205,7 @@ function bestTradeHookFactory({
         if (!res) {
           return undefined
         }
-        SmartRouter.metric(
+        SmartRouter.logger.metric(
           label,
           res.inputAmount.toExact(),
           res.inputAmount.currency.symbol,
@@ -212,7 +214,7 @@ function bestTradeHookFactory({
           res.outputAmount.currency.symbol,
           res.routes,
         )
-        SmartRouter.log(label, res)
+        SmartRouter.logger.log(label, res)
         return {
           ...res,
           blockNumber,

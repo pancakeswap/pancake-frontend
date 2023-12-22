@@ -1,10 +1,9 @@
-/* eslint-disable no-console */
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk.js'
 
-import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
 import { getAmountDistribution } from './functions'
-import { metric } from './utils/metric'
+import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
+import { logger } from './utils/logger'
 
 interface Params {
   blockNumber?: BigintIsh
@@ -49,7 +48,7 @@ export async function getRoutesWithValidQuote({
   }
 
   const requestCallback = typeof window === 'undefined' ? setTimeout : window.requestIdleCallback || window.setTimeout
-  metric('Get quotes', 'from', routesWithoutQuote.length, 'routes', routesWithoutQuote)
+  logger.metric('Get quotes', 'from', routesWithoutQuote.length, 'routes', routesWithoutQuote)
   // Split into chunks so the calculation won't block the main thread
   const getQuotes = (routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> =>
     new Promise((resolve, reject) => {
@@ -65,6 +64,6 @@ export async function getRoutesWithValidQuote({
   const chunks = chunk(routesWithoutQuote, 10)
   const result = await Promise.all(chunks.map(getQuotes))
   const quotes = result.reduce<RouteWithQuote[]>((acc, cur) => [...acc, ...cur], [])
-  metric('Get quotes', 'success, got', quotes.length, 'quoted routes', quotes)
+  logger.metric('Get quotes', 'success, got', quotes.length, 'quoted routes', quotes)
   return quotes
 }
