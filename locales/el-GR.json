@@ -2571,9 +2571,8 @@
   "Your locked staking is expired": "Το κλειδωμένο staking σας έχει λήξει",
   "Renew your stakings for": "Ανανεώστε τα staking σας για",
   "Insufficient Funds?": "Insufficient Funds?",
-  "Traverse the Treasure Islands on Galxe now!": "Διασχίστε τα Νησιά του Θησαυρού στο Galxe τώρα!",
+  "Traverse the Treasure Islands on Galxe": "Traverse the Treasure Islands on Galxe",
   "Traverse the Treasure Islands!": "Διασχίστε τα Νησιά του Θησαυρού!",
-  "Exclusive NFTs and treasures await!": "Σας περιμένουν αποκλειστικά NFTs και θησαυροί!",
   "PancakeSwap Now Live on Polygon zkEVM!": "Το PancakeSwap είναι τώρα Live στο Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Το Polygon zkEVM είναι LIVE!",
   "Swap, LP, and Farms on Polygon zkEVM now": "Κάντε ανταλλαγές, παρέχετε ρευστότητα και μπείτε σε farms στο Polygon zkEVM τώρα",
@@ -3095,6 +3094,6 @@
   "Revenue Sharing:": "Revenue Sharing:",
   "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.",
-  "Disabled": "Disabled",
-  "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience": "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience"
+  "Claim Your Exclusive NFTs Now!": "Claim Your Exclusive NFTs Now!",
+  "Calculated based average data since vault inception.": "Calculated based average data since vault inception."
 }
