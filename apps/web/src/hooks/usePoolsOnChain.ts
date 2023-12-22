@@ -53,6 +53,9 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     const poolState = useQuery(
       [poolType, 'pools', key],
       async () => {
+        if (!blockNumber || !pairs) {
+          throw new Error('Failed to get pools on chain. Missing valid params')
+        }
         fetchingBlock.current = blockNumber.toString()
         try {
           const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${fetchingBlock.current}`
