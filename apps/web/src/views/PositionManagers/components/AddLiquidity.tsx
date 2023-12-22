@@ -71,6 +71,7 @@ interface Props {
   strategyInfoUrl?: string
   learnMoreAboutUrl?: string
   lpTokenDecimals?: number
+  aprTimeWindow?: number
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -110,6 +111,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   strategyInfoUrl,
   learnMoreAboutUrl,
   lpTokenDecimals,
+  aprTimeWindow,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -364,6 +366,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                   totalSupplyAmounts={totalSupplyAmounts}
                   precision={precision}
                   lpTokenDecimals={lpTokenDecimals}
+                  aprTimeWindow={aprTimeWindow}
                 />
               </RowBetween>
             </Flex>
