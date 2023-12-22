@@ -4,3 +4,9 @@ export enum CakeLockStatus {
   Expired = 'Expired',
   Migrate = 'Migrate',
 }
+
+export enum CakePoolType {
+  NOT_MIGRATED = 0,
+  MIGRATED = 1,
+  DELEGATED = 2,
+}

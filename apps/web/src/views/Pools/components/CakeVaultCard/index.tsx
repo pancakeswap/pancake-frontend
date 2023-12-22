@@ -13,6 +13,7 @@ import useVCake from 'views/Pools/hooks/useVCake'
 import { useAccount } from 'wagmi'
 
 import { VeCakeCard, VeCakeUpdateCard } from 'views/CakeStaking/components/SyrupPool'
+import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import LockedStakingApy from '../LockedPool/LockedStakingApy'
 import CardFooter from '../PoolCard/CardFooter'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
@@ -36,10 +37,10 @@ interface CakeVaultDetailProps {
   account?: string
   pool: Pool.DeserializedPool<Token>
   vaultPool: DeserializedCakeVault
-  accountHasSharesStaked: boolean
+  accountHasSharesStaked?: boolean
   defaultFooterExpanded?: boolean
   showICake?: boolean
-  performanceFeeAsDecimal: number
+  performanceFeeAsDecimal?: number
 }
 
 export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailProps>> = ({
@@ -63,6 +64,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
 
   const vaultPosition = getVaultPosition(vaultPool.userData)
   const isLocked = (vaultPool as DeserializedLockedCakeVault)?.userData?.locked
+  const isUserDelegated = useIsUserDelegated()
 
   if (!pool) {
     return null
@@ -73,10 +75,10 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
       <StyledCardBody isLoading={isLoading}>
         {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCard isLockEndOrAfterLock />}
 
-        {account && pool.vaultKey === VaultKey.CakeVault && (
+        {account && pool.vaultKey === VaultKey.CakeVault && !isUserDelegated && (
           <VaultPositionTagWithLabel userData={(vaultPool as DeserializedLockedCakeVault)?.userData} />
         )}
-        {account && pool.vaultKey === VaultKey.CakeVault && isLocked ? (
+        {account && pool.vaultKey === VaultKey.CakeVault && isLocked && !isUserDelegated ? (
           <>
             <LockedStakingApy
               userData={(vaultPool as DeserializedLockedCakeVault).userData}
@@ -92,18 +94,18 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
           </>
         ) : (
           <>
-            {account && vaultPosition === VaultPosition.Flexible ? (
+            {account && vaultPosition === VaultPosition.Flexible && !isUserDelegated ? (
               <VeCakeUpdateCard isFlexibleStake />
             ) : (
               <VeCakeCard />
             )}
             {/* {<StakingApy pool={pool} />} */}
-            {vaultPosition !== VaultPosition.None && (
+            {vaultPosition !== VaultPosition.None && !isUserDelegated && (
               <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
                 <Box>
                   {account && (
                     <Box mb="8px">
-                      <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />
+                      <UnstakingFeeCountdownRow vaultKey={pool.vaultKey ?? VaultKey.CakeVaultV1} />
                     </Box>
                   )}
                   {/* <RecentCakeProfitRow pool={pool} /> */}
@@ -123,7 +125,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
           </>
         )}
       </StyledCardBody>
-      {account && (
+      {account && !isUserDelegated && (
         <CardFooter isLocked={isLocked} defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
       )}
     </>
@@ -143,10 +145,9 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   const vaultPool = useVaultPoolByKey(pool?.vaultKey || VaultKey.CakeVault)
   const totalStaked = pool?.totalStaked
 
-  const {
-    userData: { userShares, isLoading: isVaultUserDataLoading },
-    fees: { performanceFeeAsDecimal },
-  } = vaultPool
+  const userShares = vaultPool?.userData?.userShares
+  const isVaultUserDataLoading = vaultPool?.userData?.isLoading
+  const performanceFeeAsDecimal = vaultPool?.fees?.performanceFeeAsDecimal
 
   const accountHasSharesStaked = userShares && userShares.gt(0)
   const isLoading = !pool?.userData || isVaultUserDataLoading
@@ -161,10 +162,10 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
         {!showSkeleton || (totalStaked && totalStaked.gte(0)) ? (
           <>
             <Pool.PoolCardHeaderTitle
-              title={vaultPoolConfig[pool.vaultKey].name}
-              subTitle={vaultPoolConfig[pool.vaultKey].description}
+              title={vaultPoolConfig?.[pool.vaultKey ?? '']?.name ?? ''}
+              subTitle={vaultPoolConfig?.[pool.vaultKey ?? ''].description ?? ''}
             />
-            <TokenPairImage {...vaultPoolConfig[pool.vaultKey].tokenImage} width={64} height={64} />
+            <TokenPairImage {...vaultPoolConfig?.[pool.vaultKey ?? ''].tokenImage} width={64} height={64} />
           </>
         ) : (
           <Flex width="100%" justifyContent="space-between">

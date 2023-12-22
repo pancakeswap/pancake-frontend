@@ -35,6 +35,7 @@ import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 
 import { VeCakeButton } from 'views/CakeStaking/components/SyrupPool/VeCakeButton'
+import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
@@ -151,6 +152,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       stakingTokenBalance={stakingTokenBalance}
     />,
   )
+  const isUserDelegated = useIsUserDelegated()
 
   const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
 
@@ -202,7 +204,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     !account ||
     (account &&
       vaultPosition === VaultPosition.None &&
-      (vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault))
+      (vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault)) ||
+    isUserDelegated
   ) {
     if (isMobile) {
       return vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault ? (

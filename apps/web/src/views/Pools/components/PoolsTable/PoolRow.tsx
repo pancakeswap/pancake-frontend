@@ -8,6 +8,7 @@ import { VeCakeBenefitCard } from 'views/CakeStaking/components/SyrupPool/VeCake
 
 import { Token } from '@pancakeswap/swap-sdk-core'
 import styled from 'styled-components'
+import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import ActionPanel from './ActionPanel/ActionPanel'
 import AprCell from './Cells/AprCell'
 import AutoAprCell from './Cells/AutoAprCell'
@@ -35,6 +36,7 @@ export const VaultPoolRow: React.FC<
   const isXLargerScreen = isXl || isXxl
   const pool = useDeserializedPoolByVaultKey(vaultKey) as Pool.DeserializedPoolLockedVault<Token>
   const { totalCakeInVault } = useVaultPoolByKey(vaultKey)
+  const isUserDelegated = useIsUserDelegated()
 
   const { stakingToken, totalStaked } = pool
 
@@ -45,7 +47,7 @@ export const VaultPoolRow: React.FC<
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <NameCell pool={pool} />
-      {!account ? (
+      {!account || isUserDelegated ? (
         <MigrateCell>
           {isMobile ? (
             <Text fontSize={14} lineHeight="14px">
@@ -56,7 +58,7 @@ export const VaultPoolRow: React.FC<
           )}
         </MigrateCell>
       ) : null}
-      {account && (
+      {account && !isUserDelegated && (
         <>
           {isXLargerScreen && <AutoEarningsCell pool={pool} account={account} />}
           {isXLargerScreen ? <StakedCell pool={pool} account={account} /> : null}
