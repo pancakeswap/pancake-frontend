@@ -77,8 +77,10 @@ const HeadingRow = ({ quote, quotesExist }: { quote: ProviderQuote; quotesExist:
           renderQuoteDetails()
         ) : (
           <BuyCryptoTooltip
-            tooltipText="Price quote from provider is currently unavailable. Please try again or try a different amount"
-            tooltipHeading="No Quote"
+            tooltipText={t(
+              'Price quote from provider is currently unavailable. Please try again or try a different amount',
+            )}
+            tooltipHeading={t('No Quote')}
           />
         )}
       </RowBetween>
