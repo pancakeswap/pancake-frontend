@@ -13,9 +13,15 @@ interface GetQuotesButtonProps {
   errorText: string | undefined
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
   fetchQuotes: () => Promise<void>
+  isAvailabilitiesLoading: boolean
 }
 
-export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }: GetQuotesButtonProps) {
+export default function GetQuotesButton({
+  errorText,
+  setModalView,
+  fetchQuotes,
+  isAvailabilitiesLoading,
+}: GetQuotesButtonProps) {
   const { address: account } = useAccount()
   const { t } = useTranslation()
 
@@ -51,7 +57,7 @@ export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }
       <CommitButton
         variant={errorText ? 'danger' : 'primary'}
         onClick={next}
-        disabled={Boolean(errorText)}
+        disabled={Boolean(errorText || isAvailabilitiesLoading)}
         isLoading={isLoading}
         height="55px"
       >

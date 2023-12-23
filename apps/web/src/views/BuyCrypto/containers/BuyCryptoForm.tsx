@@ -29,9 +29,11 @@ const allowTwoDecimalRegex = RegExp(`^\\d+(\\.\\d{0,2})?$`)
 export function BuyCryptoForm({
   setModalView,
   fetchQuotes,
+  isAvailabilitiesLoading,
 }: {
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
   fetchQuotes: () => Promise<void>
+  isAvailabilitiesLoading: boolean
 }) {
   const { t } = useTranslation()
   const chainId = useChainId()
@@ -156,7 +158,12 @@ export function BuyCryptoForm({
         <Text color="textSubtle" fontSize="14px" px="4px">
           {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}
         </Text>
-        <GetQuotesButton errorText={inputError} setModalView={setModalView} fetchQuotes={fetchQuotes} />
+        <GetQuotesButton
+          errorText={inputError}
+          setModalView={setModalView}
+          fetchQuotes={fetchQuotes}
+          isAvailabilitiesLoading={isAvailabilitiesLoading}
+        />
       </FormContainer>
     </Box>
   )

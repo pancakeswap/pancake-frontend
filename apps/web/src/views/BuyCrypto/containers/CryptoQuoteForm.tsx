@@ -1,20 +1,22 @@
-import { Dispatch, SetStateAction, useEffect, useState, useRef } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
-import { useAccount } from 'wagmi'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import Accordion from 'views/BuyCrypto/components/AccordionDropdown/Accordion'
-import { FormHeader } from './FormHeader'
+import { CryptoFormView, ProviderAvailabilities, ProviderQuote } from 'views/BuyCrypto/types'
+import { useAccount } from 'wagmi'
 import { FormContainer } from './FormContainer'
+import { FormHeader } from './FormHeader'
 
 export function CryptoQuoteForm({
   setModalView,
   fetchQuotes,
   combinedQuotes,
+  providerAvailabilities,
 }: {
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
   fetchQuotes: () => Promise<void>
   combinedQuotes: ProviderQuote[]
+  providerAvailabilities: ProviderAvailabilities
 }) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -59,7 +61,12 @@ export function CryptoQuoteForm({
         backTo={() => setModalView(CryptoFormView.Input)}
       />
       <FormContainer>
-        <Accordion fetching={fetching} combinedQuotes={combinedQuotes} setModalView={setModalView} />
+        <Accordion
+          fetching={fetching}
+          combinedQuotes={combinedQuotes}
+          setModalView={setModalView}
+          providerAvailabilities={providerAvailabilities}
+        />
       </FormContainer>
     </>
   )

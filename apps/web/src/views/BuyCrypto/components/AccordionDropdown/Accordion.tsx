@@ -1,17 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
+import { CryptoFormView, ProviderAvailabilities, ProviderQuote } from 'views/BuyCrypto/types'
 import AccordionItem from './AccordionItem'
 
 function Accordion({
   combinedQuotes,
   fetching,
   setModalView,
+  providerAvailabilities,
 }: {
   combinedQuotes: ProviderQuote[]
   fetching: boolean
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
+  providerAvailabilities: ProviderAvailabilities
 }) {
   const { t } = useTranslation()
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
@@ -31,18 +33,22 @@ function Accordion({
   }
   return (
     <FlexGap flexDirection="column" gap="16px">
-      {combinedQuotes.map((quote: ProviderQuote, idx) => {
-        return (
-          <AccordionItem
-            key={quote.provider}
-            active={currentIdx === idx}
-            toggleAccordianVisibility={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
-            quote={quote}
-            fetching={fetching}
-            setModalView={setModalView}
-          />
-        )
-      })}
+      {combinedQuotes
+        .filter((quote: ProviderQuote) => {
+          return providerAvailabilities[quote.provider]
+        })
+        .map((quote: ProviderQuote, idx) => {
+          return (
+            <AccordionItem
+              key={quote.provider}
+              active={currentIdx === idx}
+              toggleAccordianVisibility={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
+              quote={quote}
+              fetching={fetching}
+              setModalView={setModalView}
+            />
+          )
+        })}
     </FlexGap>
   )
 }

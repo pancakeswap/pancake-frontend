@@ -1,18 +1,14 @@
+import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
 import { useBuyCryptoState } from 'state/buyCrypto/hooks'
-import { ProviderAvailabilities, ProviderQuote } from '../types'
+import { ProviderQuote } from '../types'
 import { fetchProviderAvailabilities } from './useProviderAvailability'
 import { fetchProviderQuotes } from './useProviderQuotes'
 
 const usePriceQuotes = () => {
   const [quotes, setQuotes] = useState<ProviderQuote[]>([])
-  const [providerAvailabilities, setProviderAvailabilities] = useState<ProviderAvailabilities>({
-    MoonPay: true,
-    Mercuryo: true,
-    Transak: true,
-  })
   const { chainId } = useActiveChainId()
 
   const {
@@ -22,32 +18,34 @@ const usePriceQuotes = () => {
     userIpAddress: userIp,
   } = useBuyCryptoState()
 
-  const sortProviderQuotes = useCallback(
-    async (combinedData: ProviderQuote[]) => {
-      let sortedFilteredQuotes = combinedData
-      let availabilities = providerAvailabilities
-      try {
-        if (userIp) {
-          availabilities = await fetchProviderAvailabilities({ userIp })
-          sortedFilteredQuotes = combinedData.filter((quote: ProviderQuote) => {
-            return availabilities[quote.provider]
-          })
-        }
-        if (sortedFilteredQuotes.length === 0) return { sortedFilteredQuotes: [], availabilities }
-        if (sortedFilteredQuotes.length > 1) {
-          if (sortedFilteredQuotes.every((quote) => quote.quote === 0))
-            return { sortedFilteredQuotes: [], availabilities }
-          sortedFilteredQuotes.sort((a, b) => b.quote - a.quote)
-        }
-
-        return { sortedFilteredQuotes, availabilities }
-      } catch (error) {
-        console.error('Error fetching price quotes:', error)
-        return { sortedFilteredQuotes: [], availabilities }
-      }
+  const { data: providerAvailabilities, isLoading: isAvailabilitiesLoading } = useQuery(
+    ['providerAvailabilities'],
+    () => fetchProviderAvailabilities({ userIp }),
+    {
+      enabled: !!userIp,
+      initialData: {
+        MoonPay: true,
+        Mercuryo: true,
+        Transak: true,
+      },
     },
-    [userIp, providerAvailabilities],
   )
+
+  const sortProviderQuotes = useCallback(async (combinedData: ProviderQuote[]) => {
+    const sortedFilteredQuotes = combinedData
+    try {
+      if (sortedFilteredQuotes.length === 0) return []
+      if (sortedFilteredQuotes.length > 1) {
+        if (sortedFilteredQuotes.every((quote) => quote.quote === 0)) return []
+        sortedFilteredQuotes.sort((a, b) => b.quote - a.quote)
+      }
+
+      return sortedFilteredQuotes
+    } catch (error) {
+      console.error('Error fetching price quotes:', error)
+      return []
+    }
+  }, [])
 
   const fetchQuotes = useCallback(async () => {
     if (!chainId || !outputCurrency || !inputCurrency) return
@@ -58,16 +56,21 @@ const usePriceQuotes = () => {
         fiatAmount: Number(amount).toString(),
         network: chainId,
       })
-      const { sortedFilteredQuotes, availabilities } = await sortProviderQuotes(providerQuotes)
+      const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes)
       setQuotes(sortedFilteredQuotes)
-      setProviderAvailabilities(availabilities)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
       setQuotes([])
     }
   }, [amount, inputCurrency, outputCurrency, chainId, sortProviderQuotes])
 
-  return { quotes, fetchQuotes, fetchProviderAvailability: sortProviderQuotes, providerAvailabilities }
+  return {
+    quotes,
+    fetchQuotes,
+    fetchProviderAvailability: sortProviderQuotes,
+    providerAvailabilities,
+    isAvailabilitiesLoading,
+  }
 }
 
 export default usePriceQuotes

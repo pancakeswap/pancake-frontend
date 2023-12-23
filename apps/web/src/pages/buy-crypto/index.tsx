@@ -1,4 +1,3 @@
-import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import BuyCrypto from 'views/BuyCrypto'
 
@@ -8,7 +7,7 @@ const BuyCryptoPage = ({ userIp }) => {
 
 export async function getServerSideProps() {
   try {
-    const response = await fetch(`${ONRAMP_API_BASE_URL}/user-ip`)
+    const response = await fetch(`${'https://pcs-on-ramp-api.com'}/user-ip`)
     const data = await response.json()
     const userIp = data.ipAddress
 
