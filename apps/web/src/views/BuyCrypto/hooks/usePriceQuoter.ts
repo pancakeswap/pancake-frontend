@@ -51,7 +51,7 @@ const usePriceQuotes = () => {
         fiatAmount: Number(amount).toString(),
         network: chainId,
       })
-      const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes, [])
+      const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes)
       setQuotes(sortedFilteredQuotes)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
