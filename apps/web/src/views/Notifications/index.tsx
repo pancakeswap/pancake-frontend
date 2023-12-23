@@ -32,8 +32,6 @@ const Notifications = () => {
   })
 
   const isReady = Boolean(isSubscribed && account && isW3iInitialized)
-  const isRegistered = Boolean(!identityKey && isSubscribed)
-
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
   const toggleOnboardView = useCallback(() => setViewIndex(PAGE_VIEW.OnboardView), [setViewIndex])
 
