@@ -3,7 +3,6 @@ import { Box, Flex, Text } from '@pancakeswap/uikit'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import Image from 'next/image'
 import { CURRENT_CAMPAIGN_TIMESTAMP, ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
-import pocketWatch from '../../../../../public/images/pocket-watch.svg'
 
 const activeCampaigns: { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean } = {
   [ONRAMP_PROVIDERS.Mercuryo]: false,
@@ -27,7 +26,7 @@ const ProviderCampaign = ({ provider }: { provider: keyof typeof ONRAMP_PROVIDER
       {activeCampaigns[provider] && campaignEndTimeInSeconds >= 1 ? (
         <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
           <Flex>
-            <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
+            <Image src="/images/pocket-watch.svg" alt="pocket-watch" height={30} width={30} />
             <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
               {t('No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.', {
                 days,

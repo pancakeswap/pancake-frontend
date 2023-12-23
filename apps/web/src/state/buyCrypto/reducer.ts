@@ -24,7 +24,7 @@ export interface BuyCryptoState {
   readonly minBaseAmount: number | undefined
   readonly maxAmount: number | undefined
   readonly maxBaseAmount: number | undefined
-  readonly userIpAddress: string | null
+  readonly userIpAddress: string | undefined
 }
 
 const initialState: BuyCryptoState = {
@@ -40,7 +40,7 @@ const initialState: BuyCryptoState = {
   minBaseAmount: undefined,
   maxAmount: undefined,
   maxBaseAmount: undefined,
-  userIpAddress: null,
+  userIpAddress: undefined,
 }
 
 /// casting builder as any as its causing a 'no overload match call' ts error

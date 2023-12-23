@@ -15,7 +15,7 @@ export const setMinAmount = createAction<{
   maxAmount: number
   maxBaseAmount: number
 }>('buyCrypto/setMinAmount')
-export const setUsersIpAddress = createAction<{ ip: string | null }>('buyCrypto/setUsersIpAddress')
+export const setUsersIpAddress = createAction<{ ip: string | undefined }>('buyCrypto/setUsersIpAddress')
 export const replaceBuyCryptoState = createAction<{
   typedValue: string
   inputCurrencyId?: string | undefined
@@ -25,5 +25,5 @@ export const replaceBuyCryptoState = createAction<{
   minBaseAmount?: number | undefined
   maxAmount?: number | undefined
   maxBaseAmount?: number | undefined
-  userIpAddress?: string | null
+  userIpAddress?: string | undefined
 }>('swap/replaceBuyCryptoState')

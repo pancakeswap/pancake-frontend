@@ -5,7 +5,7 @@ import { useQuery } from 'wagmi'
 
 const BuyCryptoPage = ({ ip }) => {
   console.log(ip, 'ipp')
-  const { data: userIp } = useQuery(['userIp'], () => fetchUserIp(), { initialData: null })
+  const { data: userIp } = useQuery(['userIp'], () => fetchUserIp(), { initialData: undefined })
   return <BuyCrypto userIp={userIp} />
 }
 

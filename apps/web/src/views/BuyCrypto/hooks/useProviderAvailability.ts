@@ -19,13 +19,13 @@ export async function fetchProviderAvailabilities(
   }
 }
 
-export async function fetchUserIp(): Promise<string | null> {
+export async function fetchUserIp(): Promise<string | undefined> {
   try {
     const response = await fetch(`${ONRAMP_API_BASE_URL}/user-ip`)
     const result = await response.json()
     return result.ipAddress
   } catch (error) {
     console.error(error)
-    return null
+    return undefined
   }
 }

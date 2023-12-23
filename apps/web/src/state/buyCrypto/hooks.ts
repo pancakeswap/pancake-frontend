@@ -174,7 +174,7 @@ export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
   onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
-  onUsersIp: (ip: string | null) => void
+  onUsersIp: (ip: string | undefined) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -210,7 +210,7 @@ export function useBuyCryptoActionHandlers(): {
     [],
   )
 
-  const onUsersIp = useCallback((ip: string | null) => {
+  const onUsersIp = useCallback((ip: string | undefined) => {
     dispatch(
       setUsersIpAddress({
         ip,
@@ -253,7 +253,7 @@ export async function queryParametersToBuyCryptoState(
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
-    userIpAddress: null,
+    userIpAddress: undefined,
   }
 }
 

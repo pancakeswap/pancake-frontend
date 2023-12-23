@@ -9,7 +9,7 @@ import { CryptoQuoteForm } from './containers/CryptoQuoteForm'
 import usePriceQuotes from './hooks/usePriceQuoter'
 import { StyledAppBody } from './styles'
 
-export default function BuyCrypto({ userIp }: { userIp: string | null }) {
+export default function BuyCrypto({ userIp }: { userIp: string | undefined }) {
   const [modalView, setModalView] = useState<CryptoFormView>(CryptoFormView.Input)
   const { onUsersIp } = useBuyCryptoActionHandlers()
   const { address } = useAccount()
