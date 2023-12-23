@@ -17,7 +17,7 @@ export async function getServerSideProps() {
     }
   } catch (error) {
     return {
-      props: { userIp: null }, // Pass null as the user IP if an error occurs
+      props: { userIp: undefined }, // Pass null as the user IP if an error occurs
     }
   }
 }
