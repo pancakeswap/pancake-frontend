@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import Cookies from 'js-cookie'
+import { useEffect, useState } from 'react'
 import { useBuyCryptoActionHandlers, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { useAccount } from 'wagmi'
@@ -14,10 +15,13 @@ export default function BuyCrypto({ userIp }: { userIp: string | undefined }) {
   const { onUsersIp } = useBuyCryptoActionHandlers()
   const { address } = useAccount()
   useDefaultsFromURLSearch(address)
-  onUsersIp(userIp)
+  // onUsersIp(userIp)
   const { fetchQuotes, quotes } = usePriceQuotes()
 
   console.log(userIp)
+  useEffect(() => {
+    onUsersIp(Cookies.get('p_client_ip'))
+  }, [onUsersIp])
   return (
     <Page>
       <StyledAppBody mb="24px">

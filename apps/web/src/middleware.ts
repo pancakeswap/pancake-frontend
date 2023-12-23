@@ -25,5 +25,6 @@ export const config = {
     '/lottery',
     '/nfts',
     '/info/:path*',
+    '/buy-crypto',
   ],
 }
