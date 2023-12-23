@@ -1,23 +1,14 @@
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import BuyCrypto from 'views/BuyCrypto'
-import { fetchUserIp } from 'views/BuyCrypto/hooks/useProviderAvailability'
-import { useQuery } from 'wagmi'
 
-const BuyCryptoPage = ({ ip }) => {
-  console.log(ip, 'ipp')
-  const { data: userIp } = useQuery(['userIp'], () => fetchUserIp(), { initialData: undefined })
-  return <BuyCrypto userIp={userIp} />
+const BuyCryptoPage = ({ userIp }: { userIp: string | null }) => {
+  return <BuyCrypto userIp={userIp ?? undefined} />
 }
 
 export async function getServerSideProps(context) {
-  try {
-    return {
-      props: { ip: context.req.headers['x-forwarded-for'] },
-    }
-  } catch (error) {
-    return {
-      props: { ip: null }, // Pass null as the user IP if an error occurs
-    }
+  const userIp: string | null = context.req.headers['x-forwarded-for']
+  return {
+    props: { userIp },
   }
 }
 
