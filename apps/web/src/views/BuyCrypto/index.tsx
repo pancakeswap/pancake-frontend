@@ -1,5 +1,4 @@
-import Cookies from 'js-cookie'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useBuyCryptoActionHandlers, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { useAccount } from 'wagmi'
@@ -10,18 +9,14 @@ import { CryptoQuoteForm } from './containers/CryptoQuoteForm'
 import usePriceQuotes from './hooks/usePriceQuoter'
 import { StyledAppBody } from './styles'
 
-export default function BuyCrypto({ userIp }: { userIp: string | undefined }) {
+export default function BuyCrypto({ userIp }: { userIp: string | null }) {
   const [modalView, setModalView] = useState<CryptoFormView>(CryptoFormView.Input)
   const { onUsersIp } = useBuyCryptoActionHandlers()
   const { address } = useAccount()
   useDefaultsFromURLSearch(address)
-  // onUsersIp(userIp)
+  onUsersIp(userIp)
   const { fetchQuotes, quotes } = usePriceQuotes()
 
-  console.log(userIp)
-  useEffect(() => {
-    onUsersIp(Cookies.get('p_client_ip'))
-  }, [onUsersIp])
   return (
     <Page>
       <StyledAppBody mb="24px">

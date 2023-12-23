@@ -1,6 +1,7 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom, useAtomValue } from 'jotai'
 import ceil from 'lodash/ceil'
 import toString from 'lodash/toString'
@@ -9,10 +10,9 @@ import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { useAccount } from 'wagmi'
-import { fetchLimitOfMer, fetchLimitOfMoonpay, fetchLimitOfTransak } from 'views/BuyCrypto/hooks/useProviderQuotes'
 import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { fetchLimitOfMer, fetchLimitOfMoonpay, fetchLimitOfTransak } from 'views/BuyCrypto/hooks/useProviderQuotes'
+import { useAccount } from 'wagmi'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -174,7 +174,7 @@ export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
   onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
-  onUsersIp: (ip: string | undefined) => void
+  onUsersIp: (ip: string | null) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -210,7 +210,7 @@ export function useBuyCryptoActionHandlers(): {
     [],
   )
 
-  const onUsersIp = useCallback((ip: string | undefined) => {
+  const onUsersIp = useCallback((ip: string | null) => {
     dispatch(
       setUsersIpAddress({
         ip,
@@ -253,7 +253,7 @@ export async function queryParametersToBuyCryptoState(
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
-    userIpAddress: undefined,
+    userIpAddress: null,
   }
 }
 
