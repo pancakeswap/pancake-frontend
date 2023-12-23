@@ -18,13 +18,13 @@ const usePriceQuotes = () => {
   } = useBuyCryptoState()
 
   const sortProviderQuotes = useCallback(
-    async (combinedData: ProviderQuote[], disabledProviders: string[]) => {
+    async (combinedData: ProviderQuote[]) => {
       let sortedFilteredQuotes = combinedData
       try {
         if (userIp) {
           const providerAvailabilities = await fetchProviderAvailabilities({ userIp })
           sortedFilteredQuotes = combinedData.filter((quote: ProviderQuote) => {
-            return providerAvailabilities[quote.provider] && !disabledProviders.includes(quote.provider)
+            return providerAvailabilities[quote.provider]
           })
         }
         if (sortedFilteredQuotes.length === 0) return []
