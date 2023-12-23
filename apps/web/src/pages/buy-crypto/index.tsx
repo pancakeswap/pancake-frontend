@@ -6,18 +6,19 @@ const BuyCryptoPage = ({ userIp }) => {
   return <BuyCrypto userIp={userIp} />
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   try {
     const response = await fetch(`${ONRAMP_API_BASE_URL}/user-ip`)
     const data = await response.json()
-    const userIp = data.ipAddress
+    const userIp = context.req.headers['x-forwarded-for']
+    console.log(context.req.headers['x-forwarded-for'])
 
     return {
       props: { userIp },
     }
   } catch (error) {
     return {
-      props: { userIp: undefined }, // Pass null as the user IP if an error occurs
+      props: { userIp: null }, // Pass null as the user IP if an error occurs
     }
   }
 }
