@@ -14,3 +14,10 @@ export async function fetchProviderAvailabilities(
   const result = await response.json()
   return result.result
 }
+
+export async function fetchUserIp(): Promise<string | null> {
+  // Fetch data from endpoint 1
+  const response = await fetch(`${'https://pcs-on-ramp-api.com'}/user-ip`)
+  const result = await response.json()
+  return result.ipAddress
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useBuyCryptoActionHandlers, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { useAccount } from 'wagmi'
@@ -17,20 +17,6 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
   onUsersIp(userIp)
   const { fetchQuotes, quotes, isAvailabilitiesLoading, providerAvailabilities } = usePriceQuotes()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${'https://pcs-on-ramp-api.com'}/user-ip`)
-        const data = await response.json()
-        const userI = data.ipAddress
-        console.log('userip', userI)
-      } catch (error) {
-        console.error('Error fetching user IP:', error)
-      }
-    }
-
-    fetchData()
-  }, [onUsersIp])
   console.log(userIp)
   return (
     <Page>
