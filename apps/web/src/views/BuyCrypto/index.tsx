@@ -17,7 +17,6 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
   onUsersIp(userIp)
   const { fetchQuotes, quotes, isAvailabilitiesLoading, providerAvailabilities } = usePriceQuotes()
 
-  console.log(userIp)
   return (
     <Page>
       <StyledAppBody mb="24px">
