@@ -15,7 +15,6 @@ function Accordion({
 }) {
   const { t } = useTranslation()
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
-  console.log(combinedQuotes)
   if (combinedQuotes.length === 0) {
     return (
       <FlexGap flexDirection="column" gap="16px">
