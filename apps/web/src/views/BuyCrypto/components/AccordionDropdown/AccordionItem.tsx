@@ -16,6 +16,7 @@ type FeeComponents = { providerFee: number; networkFee: number }
 
 const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: ProviderQuote }) => {
   const {
+    t,
     currentLanguage: { locale },
   } = useTranslation()
 
@@ -29,9 +30,18 @@ const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: ProviderQuote
 
   return (
     <RowBetween>
-      <Text fontSize="14px" color="textSubtle">
-        {feeTitle}
-      </Text>
+      <Flex alignItems="center" justifyContent="center">
+        <Text fontSize="14px" color="textSubtle">
+          {feeTitle}
+        </Text>
+        {feeTitle === FeeTypes.TotalFees && (
+          <BuyCryptoTooltip
+            opacity={0.7}
+            iconSize="17px"
+            tooltipText={t('Note that Fees are just an estimation and may vary slightly when completing a purchase')}
+          />
+        )}
+      </Flex>
       <Text ml="4px" fontSize="14px" color="textSubtle">
         {formatLocaleNumber({
           number: FeeEstimates[feeTitle](quote),
@@ -81,6 +91,7 @@ const HeadingRow = ({ quote, quotesExist }: { quote: ProviderQuote; quotesExist:
               'Price quote from provider is currently unavailable. Please try again or try a different amount',
             )}
             tooltipHeading={t('No Quote')}
+            iconSize="22px"
           />
         )}
       </RowBetween>
