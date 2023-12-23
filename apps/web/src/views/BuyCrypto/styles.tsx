@@ -12,3 +12,8 @@ export const Wrapper = styled(Flex)`
   justify-content: space-between;
   padding: 0px 1rem 1rem 1rem;
 `
+export const DropdownWrapper = styled.div<{ isClicked: boolean }>`
+  opacity: ${({ isClicked }) => (isClicked ? '0' : '1')};
+  width: 100%;
+  transition: opacity 0.25s ease-in-out;
+`

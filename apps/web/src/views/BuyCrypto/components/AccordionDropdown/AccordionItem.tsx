@@ -1,178 +1,130 @@
-import { Box, Flex, InfoFilledIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
-import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
-import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import { isMobile } from 'react-device-detect'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { CURRENT_CAMPAIGN_TIMESTAMP, ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
-import pocketWatch from '../../../../../public/images/pocket-watch.svg'
+import { FeeTypes, providerFeeTypes } from 'views/BuyCrypto/constants'
+import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
+import { DropdownWrapper } from 'views/BuyCrypto/styles'
+import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
+import ProviderCampaign from '../ProviderCampaign/ProviderCampaign'
+import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
-const DropdownWrapper = styled.div<{ isClicked: boolean }>`
-  display: ${({ isClicked }) => (isClicked ? 'none' : 'block')};
-  width: 100%;
-  transition: display 0.6s ease-in-out;
-`
+type FeeComponents = { providerFee: number; networkFee: number }
 
-const activeProviders: { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean } = {
-  [ONRAMP_PROVIDERS.Mercuryo]: false,
-  [ONRAMP_PROVIDERS.MoonPay]: false,
-  [ONRAMP_PROVIDERS.Transak]: false,
-}
-
-const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmount: number; currency: string }) => {
+const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: ProviderQuote }) => {
   const {
     currentLanguage: { locale },
   } = useTranslation()
+
+  const FeeEstimates: {
+    [feeType: string]: <T extends FeeComponents = FeeComponents>(args: T) => number
+  } = {
+    [FeeTypes.TotalFees]: (args) => args.networkFee + args.providerFee,
+    [FeeTypes.NetworkingFees]: (args) => args.networkFee,
+    [FeeTypes.ProviderFees]: (args) => args.providerFee,
+  }
+
   return (
     <RowBetween>
       <Text fontSize="14px" color="textSubtle">
         {feeTitle}
       </Text>
       <Text ml="4px" fontSize="14px" color="textSubtle">
-        {formatLocaleNumber({ number: feeAmount, locale })} {currency}
+        {formatLocaleNumber({
+          number: FeeEstimates[feeTitle](quote),
+          locale,
+        })}{' '}
+        {quote.fiatCurrency}
       </Text>
     </RowBetween>
   )
 }
 
+const HeadingRow = ({ quote, quotesExist }: { quote: ProviderQuote; quotesExist: boolean }) => {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+
+  const renderQuoteDetails = () => (
+    <>
+      <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
+        {formatLocaleNumber({
+          number: quote.quote,
+          locale,
+        })}{' '}
+        {quote.cryptoCurrency}
+      </Text>
+      <RowBetween pt="12px">
+        <Text fontSize="15px">
+          {quote.cryptoCurrency} {t('rate')}
+        </Text>
+        <Text ml="4px" fontSize="16px">
+          = {formatLocaleNumber({ number: Number(quote.price), locale })} {quote.fiatCurrency}
+        </Text>
+      </RowBetween>
+    </>
+  )
+
+  return (
+    <>
+      <RowBetween>
+        <OnRampProviderLogo provider={quote.provider} />
+        {quotesExist ? (
+          renderQuoteDetails()
+        ) : (
+          <BuyCryptoTooltip
+            tooltipText="Price quote from provider is currently unavailable. Please try again or try a different amount"
+            tooltipHeading="No Quote"
+          />
+        )}
+      </RowBetween>
+    </>
+  )
+}
+
 function AccordionItem({
   active,
-  btnOnClick,
+  toggleAccordianVisibility,
   quote,
   fetching,
   setModalView,
 }: {
   active: boolean
-  btnOnClick: any
+  toggleAccordianVisibility: () => void
   quote: ProviderQuote
   fetching: boolean
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }) {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [maxHeight, setMaxHeight] = useState(active ? 500 : 150)
-  const multiple = false
-  const [visibility, setVisibility] = useState(false)
-  const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
-  const currentTimestamp = Math.floor(Date.now() / 1000)
-  const { days, hours, minutes, seconds } = getTimePeriods(currentTimestamp - CURRENT_CAMPAIGN_TIMESTAMP)
-  const isActive = () => (multiple ? visibility : active)
-
-  const toggleVisibility = useCallback(() => {
-    setVisibility((v) => !v)
-    btnOnClick()
-  }, [setVisibility, btnOnClick])
+  const [maxHeight, setMaxHeight] = useState<number>(105)
+  const quotesExist = Boolean(quote.amount !== 0)
 
   useEffect(() => {
-    const contentEl = getRefValue(contentRef)
-    setMaxHeight(contentEl?.scrollHeight + 150)
-  }, [active])
+    const contentEl = getRefValue(contentRef)?.scrollHeight
+    setMaxHeight(contentEl)
+  }, [])
 
-  const {
-    tooltip: buyCryptoTooltip,
-    tooltipVisible: buyCryptoTooltipVisible,
-    targetRef: buyCryptoTargetRef,
-  } = useTooltip(
-    <Box maxWidth="150px">
-      <Text as="p">
-        {t('Price quote from provider is currently unavailable. Please try again or try a different amount')}
-      </Text>
-    </Box>,
-    {
-      placement: isMobile ? 'top' : 'bottom',
-      trigger: isMobile ? 'focus' : 'hover',
-      ...(isMobile && { manualVisible: mobileTooltipShow }),
-    },
-  )
-
-  const providerFee = quote.providerFee < 3.5 && quote.provider === 'MoonPay' ? 3.5 : quote.providerFee
-
-  if (quote.amount === 0) {
-    return (
-      <Flex flexDirection="column">
-        <CryptoCard position="relative" isClicked={false} isDisabled>
-          <RowBetween>
-            <OnRampProviderLogo provider={quote.provider} />
-            <TooltipText
-              ref={buyCryptoTargetRef}
-              onClick={() => setMobileTooltipShow(false)}
-              display="flex"
-              style={{ justifyContent: 'center', alignItems: 'center' }}
-            >
-              <Flex alignItems="center" justifyContent="center">
-                <Text ml="4px" fontSize="15px" color="textSubtle" fontWeight="bold">
-                  {t('Quote not available')}
-                </Text>
-                <InfoFilledIcon pl="4px" pt="2px" color="textSubtle" width="22px" />
-              </Flex>
-            </TooltipText>
-            {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
-          </RowBetween>
-        </CryptoCard>
-      </Flex>
-    )
-  }
   return (
     <Flex flexDirection="column">
       <CryptoCard
         padding="18px 18px"
-        style={{ maxHeight }}
-        onClick={!isActive() ? toggleVisibility : () => null}
-        position="relative"
+        onClick={toggleAccordianVisibility}
+        ref={contentRef}
         isClicked={active}
-        isDisabled={false}
+        elementHeight={maxHeight}
+        isDisabled={!quotesExist}
       >
-        <RowBetween>
-          <OnRampProviderLogo provider={quote.provider} />
-          <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
-            {formatLocaleNumber({
-              number: quote.quote,
-              locale,
-            })}{' '}
-            {quote.cryptoCurrency}
-          </Text>
-        </RowBetween>
-        <RowBetween pt="12px">
-          <Text fontSize="15px">
-            {quote.cryptoCurrency} {t('rate')}
-          </Text>
-          <Text ml="4px" fontSize="16px">
-            = {formatLocaleNumber({ number: Number(quote.price), locale })} {quote.fiatCurrency}
-          </Text>
-        </RowBetween>
+        <HeadingRow quote={quote} quotesExist={quotesExist} />
 
-        <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
-          {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
-            let fee = 0
-            if (index === 0) fee = quote.networkFee + providerFee
-            else if (index === 1) fee = quote.networkFee
-            else fee = quote.providerFee
-            return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
+        <DropdownWrapper isClicked={!active}>
+          {providerFeeTypes[quote.provider].map((feeType: FeeTypes) => {
+            return <FeeItem key={feeType} feeTitle={feeType} quote={quote} />
           })}
-          {activeProviders[quote.provider] && seconds >= 1 ? (
-            <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
-              <Flex>
-                <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
-                <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
-                  {t('No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.', {
-                    days,
-                    hours,
-                    minutes,
-                  })}
-                </Text>
-              </Flex>
-            </Box>
-          ) : null}
+          <ProviderCampaign provider={quote.provider} />
           <FiatOnRampModalButton
             provider={quote.provider}
             inputCurrency={quote.cryptoCurrency}

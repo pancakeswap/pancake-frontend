@@ -15,7 +15,7 @@ function Accordion({
 }) {
   const { t } = useTranslation()
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
-
+  console.log(combinedQuotes)
   if (combinedQuotes.length === 0) {
     return (
       <FlexGap flexDirection="column" gap="16px">
@@ -36,7 +36,7 @@ function Accordion({
           <AccordionItem
             key={quote.provider}
             active={currentIdx === idx}
-            btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
+            toggleAccordianVisibility={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
             quote={quote}
             fetching={fetching}
             setModalView={setModalView}

@@ -1,14 +1,11 @@
+import { ChainId } from '@pancakeswap/chains'
 import { ContextData, TranslationKey } from '@pancakeswap/localization'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
-import { ChainId } from '@pancakeswap/chains'
 
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
 export const DEFAULT_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 export const WHITELISTED_FIAT_CURRENCIES_BASE = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
 export const WHITELISTED_FIAT_CURRENCIES_LINEA = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
-
-const MOONPAY_FEE_TYPES = ['Est. Total Fees', 'Networking Fees', 'Provider Fees']
-const MERCURYO_FEE_TYPES = ['Est. Total Fees']
 
 const SUPPORTED_MERCURYO_BSC_TOKENS = ['BNB', 'BUSD']
 const SUPPORTED_MERCURYO_ETH_TOKENS = ['ETH', 'USDT', 'DAI']
@@ -34,6 +31,15 @@ export enum ONRAMP_PROVIDERS {
   Mercuryo = 'Mercuryo',
   Transak = 'Transak',
 }
+
+export enum FeeTypes {
+  TotalFees = 'Est. Total Fees',
+  NetworkingFees = 'Networking Fees',
+  ProviderFees = 'Provider Fees',
+}
+
+const MOONPAY_FEE_TYPES = [FeeTypes.TotalFees, FeeTypes.NetworkingFees, FeeTypes.ProviderFees]
+const MERCURYO_FEE_TYPES = [FeeTypes.TotalFees]
 
 export const supportedTokenMap: {
   [chainId: number]: {
@@ -96,7 +102,7 @@ export function isBuyCryptoSupported(chain: ChainId) {
   return SUPPORT_BUY_CRYPTO.includes(chain)
 }
 
-export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: string[] } = {
+export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {
   [ONRAMP_PROVIDERS.MoonPay]: MOONPAY_FEE_TYPES,
   [ONRAMP_PROVIDERS.Mercuryo]: MERCURYO_FEE_TYPES,
   [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
@@ -167,10 +173,6 @@ export const getChainCurrencyWarningMessages = (
 ) => {
   const networkDisplay = getNetworkDisplay(chainId)
   return {
-    [ChainId.ARBITRUM_ONE]: t(
-      'UEDC.e quotes are currently unavailable in USD on Arbitrum. Please select another currency to receive USDC.e quotes',
-      { chainId: networkDisplay },
-    ),
     [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
       chainId: networkDisplay,
     }),

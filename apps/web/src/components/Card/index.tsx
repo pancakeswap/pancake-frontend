@@ -1,5 +1,5 @@
-import { styled } from 'styled-components'
 import { Box, BoxProps } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
 
 export interface LightCardProps extends BoxProps {
   width?: string
@@ -28,13 +28,15 @@ export const LightGreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.background};
 `
 
-export const CryptoCard = styled(Card)<{ isClicked: boolean; isDisabled: boolean }>`
+export const CryptoCard = styled(Card)<{ isClicked: boolean; isDisabled: boolean; elementHeight: number }>`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme, isClicked }) => (isClicked ? theme.colors.input : theme.colors.background)};
-  transition: max-height 0.4s ease-in-out, background-color 0.1s ease-in-out;
+  transition: max-height 0.3s ease-in-out, background-color 0.1s ease-in-out;
+  max-height: ${({ isClicked, elementHeight }) => (isClicked ? `${elementHeight}px` : `105px`)};
   overflow: hidden;
   &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+    pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'auto')};
   }
 `
 
