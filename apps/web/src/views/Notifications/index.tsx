@@ -67,10 +67,11 @@ const Notifications = () => {
     if (!address || !isReady) setViewIndex(PAGE_VIEW.OnboardView)
     if (address) setAccount(`eip155:1:${address}`)
     if (isReady) {
+      handleRegistration()
       setViewIndex(PAGE_VIEW.NotificationView)
       setIsSubscribing(false)
     }
-  }, [address, isReady, setAccount, setIsSubscribing])
+  }, [address, isReady, setAccount, setIsSubscribing, handleRegistration])
 
   useEffect(() => {
     if (!subscription?.topic) return () => null
@@ -86,8 +87,6 @@ const Notifications = () => {
     <NotificationMenu
       isMenuOpen={isMenuOpen}
       setIsMenuOpen={setIsMenuOpen}
-      isRegistered={isRegistered}
-      handleRegistration={handleRegistration}
       viewIndex={viewIndex}
       subscriptionId={subscription?.topic}
       account={account}
