@@ -5,7 +5,7 @@ const BuyCryptoPage = ({ userIp }) => {
   return <BuyCrypto userIp={userIp} />
 }
 
-export async function getServerSideProps() {
+export async function getInitialProps() {
   try {
     const response = await fetch(`${'https://pcs-on-ramp-api.com'}/user-ip`)
     const data = await response.json()
