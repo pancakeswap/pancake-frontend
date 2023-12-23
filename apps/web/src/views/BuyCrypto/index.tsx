@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { useEffect, useState } from 'react'
 import { useBuyCryptoActionHandlers, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { useAccount } from 'wagmi'
@@ -14,8 +15,22 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
   const { onUsersIp } = useBuyCryptoActionHandlers()
   const { address } = useAccount()
   useDefaultsFromURLSearch(address)
-  onUsersIp(userIp)
+  // onUsersIp(userIp)
   const { fetchQuotes, quotes } = usePriceQuotes()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${ONRAMP_API_BASE_URL}/user-ip`)
+        const data = await response.json()
+        onUsersIp(data?.ipAddress)
+      } catch (error) {
+        console.error('Error fetching user IP:', error)
+      }
+    }
+
+    fetchData()
+  }, [onUsersIp])
 
   return (
     <Page>
