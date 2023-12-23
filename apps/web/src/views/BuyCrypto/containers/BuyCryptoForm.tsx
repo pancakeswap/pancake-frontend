@@ -14,7 +14,7 @@ import {
 } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
-import { CryptoFormView } from 'views/BuyCrypto/types'
+import { CryptoFormView, ProviderAvailabilities } from 'views/BuyCrypto/types'
 import { useChainId } from 'wagmi'
 import GetQuotesButton from '../components/GetQuotesButton'
 import { CurrencySelect } from '../components/OnRampCurrencySelect'
@@ -30,10 +30,12 @@ export function BuyCryptoForm({
   setModalView,
   fetchQuotes,
   isAvailabilitiesLoading,
+  providerAvailabilities,
 }: {
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
   fetchQuotes: () => Promise<void>
   isAvailabilitiesLoading: boolean
+  providerAvailabilities: ProviderAvailabilities
 }) {
   const { t } = useTranslation()
   const chainId = useChainId()
@@ -116,6 +118,9 @@ export function BuyCryptoForm({
     [handleCurrencySelect],
   )
 
+  const disabledProviders = Object.keys(providerAvailabilities).filter((provider) =>
+    Boolean(!providerAvailabilities[provider]),
+  )
   return (
     <Box p="4px">
       <FormHeader title={t('Buy Crypto')} subTitle={t('Buy crypto in just a few clicks')} />
@@ -152,6 +157,13 @@ export function BuyCryptoForm({
           <Message variant="warning" padding="16px">
             <Text fontSize="15px" color="#D67E0B">
               {getChainCurrencyWarningMessages(t, chainId)[chainId]}
+            </Text>
+          </Message>
+        ) : null}
+        {disabledProviders.length > 0 ? (
+          <Message variant="warning" padding="16px">
+            <Text fontSize="15px" color="#D67E0B">
+              {`Due to your location quotes from ${disabledProviders.join(', ')} are currently unavailable`}
             </Text>
           </Message>
         ) : null}

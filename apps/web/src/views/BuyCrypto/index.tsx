@@ -26,6 +26,7 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
             setModalView={setModalView}
             fetchQuotes={fetchQuotes}
             isAvailabilitiesLoading={isAvailabilitiesLoading}
+            providerAvailabilities={providerAvailabilities}
           />
         ) : (
           <CryptoQuoteForm
