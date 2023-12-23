@@ -16,7 +16,7 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
   const { address } = useAccount()
   useDefaultsFromURLSearch(address)
   // onUsersIp(userIp)
-  const { fetchQuotes, quotes } = usePriceQuotes()
+  const { fetchQuotes, quotes, providerAvailabilities } = usePriceQuotes()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +24,7 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
         const response = await fetch(`${ONRAMP_API_BASE_URL}/user-ip`)
         const data = await response.json()
         onUsersIp(data?.ipAddress)
+        console.log(data?.ipAddress)
       } catch (error) {
         console.error('Error fetching user IP:', error)
       }
@@ -31,7 +32,7 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
 
     fetchData()
   }, [onUsersIp])
-
+  console.log(providerAvailabilities)
   return (
     <Page>
       <StyledAppBody mb="24px">

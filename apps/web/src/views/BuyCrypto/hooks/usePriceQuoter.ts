@@ -2,12 +2,17 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
 import { useBuyCryptoState } from 'state/buyCrypto/hooks'
-import { ProviderQuote } from '../types'
+import { ProviderAvailabilities, ProviderQuote } from '../types'
 import { fetchProviderAvailabilities } from './useProviderAvailability'
 import { fetchProviderQuotes } from './useProviderQuotes'
 
 const usePriceQuotes = () => {
   const [quotes, setQuotes] = useState<ProviderQuote[]>([])
+  const [providerAvailabilities, setProviderAvailabilities] = useState<ProviderAvailabilities>({
+    MoonPay: true,
+    Mercuryo: true,
+    Transak: true,
+  })
   const { chainId } = useActiveChainId()
 
   const {
@@ -20,26 +25,28 @@ const usePriceQuotes = () => {
   const sortProviderQuotes = useCallback(
     async (combinedData: ProviderQuote[]) => {
       let sortedFilteredQuotes = combinedData
+      let availabilities = providerAvailabilities
       try {
         if (userIp) {
-          const providerAvailabilities = await fetchProviderAvailabilities({ userIp })
+          availabilities = await fetchProviderAvailabilities({ userIp })
           sortedFilteredQuotes = combinedData.filter((quote: ProviderQuote) => {
-            return providerAvailabilities[quote.provider]
+            return availabilities[quote.provider]
           })
         }
-        if (sortedFilteredQuotes.length === 0) return []
+        if (sortedFilteredQuotes.length === 0) return { sortedFilteredQuotes: [], availabilities }
         if (sortedFilteredQuotes.length > 1) {
-          if (sortedFilteredQuotes.every((quote) => quote.quote === 0)) return []
+          if (sortedFilteredQuotes.every((quote) => quote.quote === 0))
+            return { sortedFilteredQuotes: [], availabilities }
           sortedFilteredQuotes.sort((a, b) => b.quote - a.quote)
         }
 
-        return sortedFilteredQuotes
+        return { sortedFilteredQuotes, availabilities }
       } catch (error) {
         console.error('Error fetching price quotes:', error)
-        return []
+        return { sortedFilteredQuotes: [], availabilities }
       }
     },
-    [userIp],
+    [userIp, providerAvailabilities],
   )
 
   const fetchQuotes = useCallback(async () => {
@@ -51,15 +58,16 @@ const usePriceQuotes = () => {
         fiatAmount: Number(amount).toString(),
         network: chainId,
       })
-      const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes)
+      const { sortedFilteredQuotes, availabilities } = await sortProviderQuotes(providerQuotes)
       setQuotes(sortedFilteredQuotes)
+      setProviderAvailabilities(availabilities)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
       setQuotes([])
     }
   }, [amount, inputCurrency, outputCurrency, chainId, sortProviderQuotes])
 
-  return { quotes, fetchQuotes, fetchProviderAvailability: sortProviderQuotes }
+  return { quotes, fetchQuotes, fetchProviderAvailability: sortProviderQuotes, providerAvailabilities }
 }
 
 export default usePriceQuotes

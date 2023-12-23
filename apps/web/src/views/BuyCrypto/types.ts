@@ -12,6 +12,12 @@ export type ProviderQuote = {
   error?: string
 }
 
+export type ProviderAvailabilities = {
+  readonly MoonPay: boolean
+  readonly Mercuryo: boolean
+  readonly Transak: boolean
+}
+
 export enum CryptoFormView {
   Input,
   Quote,
