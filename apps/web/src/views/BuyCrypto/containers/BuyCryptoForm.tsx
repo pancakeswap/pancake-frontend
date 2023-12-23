@@ -18,7 +18,7 @@ import { CryptoFormView, ProviderAvailabilities } from 'views/BuyCrypto/types'
 import { useChainId } from 'wagmi'
 import GetQuotesButton from '../components/GetQuotesButton'
 import { CurrencySelect } from '../components/OnRampCurrencySelect'
-import { fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
+import { fiatCurrencyMap, getChainCurrencyWarningMessages, parseDisabledProviders } from '../constants'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
 
@@ -163,7 +163,9 @@ export function BuyCryptoForm({
         {disabledProviders.length > 0 ? (
           <Message variant="warning" padding="16px">
             <Text fontSize="15px" color="#D67E0B">
-              {`Due to your location quotes from ${disabledProviders.join(', ')} are currently unavailable`}
+              {`Due to your location, quotes from ${parseDisabledProviders(
+                disabledProviders,
+              )} are currently unavailable`}
             </Text>
           </Message>
         ) : null}

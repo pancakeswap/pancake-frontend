@@ -182,6 +182,18 @@ export const getChainCurrencyWarningMessages = (
   }
 }
 
+export const parseDisabledProviders = (items: string[]) => {
+  if (items.length === 1) {
+    return items[0]
+  }
+  if (items.length === 2) {
+    return `${items[0]} and ${items[1]}`
+  }
+  const lastItem = items[items.length - 1]
+  const restItems = items.slice(0, items.length - 1).join(', ')
+  return `${restItems} and ${lastItem}`
+}
+
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
   USD: {
     name: 'United States Dollar',
