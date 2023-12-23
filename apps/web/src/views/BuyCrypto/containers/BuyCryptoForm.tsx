@@ -1,8 +1,10 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
-import { Text, Box, Message } from '@pancakeswap/uikit'
+import { Box, Message, Text } from '@pancakeswap/uikit'
+import { useOnRampCurrency } from 'hooks/Tokens'
+import toString from 'lodash/toString'
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
 import {
   calculateDefaultAmount,
   fetchMinimumBuyAmount,
@@ -10,17 +12,15 @@ import {
   useBuyCryptoErrorInfo,
   useBuyCryptoState,
 } from 'state/buyCrypto/hooks'
-import { useOnRampCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
-import toString from 'lodash/toString'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { useChainId } from 'wagmi'
-import { FormHeader } from './FormHeader'
-import { FormContainer } from './FormContainer'
 import GetQuotesButton from '../components/GetQuotesButton'
-import { fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
 import { CurrencySelect } from '../components/OnRampCurrencySelect'
+import { fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
+import { FormContainer } from './FormContainer'
+import { FormHeader } from './FormHeader'
 
 // Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),
 // the quote provider won't return a quote. Therefore, we restrict the fiat currency input to a maximum of 2 decimals.
@@ -146,7 +146,7 @@ export function BuyCryptoForm({
             value=""
           />
         </Box>
-        {[ChainId.BASE, ChainId.LINEA, ChainId.ARBITRUM_ONE].includes(chainId) ? (
+        {[ChainId.BASE, ChainId.LINEA].includes(chainId) ? (
           <Message variant="warning" padding="16px">
             <Text fontSize="15px" color="#D67E0B">
               {getChainCurrencyWarningMessages(t, chainId)[chainId]}

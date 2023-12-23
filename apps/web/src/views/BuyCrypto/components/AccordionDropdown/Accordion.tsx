@@ -36,7 +36,7 @@ function Accordion({
           <AccordionItem
             key={quote.provider}
             active={currentIdx === idx}
-            btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
+            toggleAccordianVisibility={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
             quote={quote}
             fetching={fetching}
             setModalView={setModalView}
