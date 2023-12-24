@@ -13,7 +13,7 @@ import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
 import { fetchLimitOfMer, fetchLimitOfMoonpay, fetchLimitOfTransak } from 'views/BuyCrypto/hooks/useProviderQuotes'
 import { useAccount } from 'wagmi'
-import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
+import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, typeInput } from './actions'
 
 type CurrencyLimits = {
   code: string
@@ -174,7 +174,6 @@ export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
   onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
-  onUsersIp: (ip: string | undefined) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -210,20 +209,10 @@ export function useBuyCryptoActionHandlers(): {
     [],
   )
 
-  const onUsersIp = useCallback((ip: string | undefined) => {
-    dispatch(
-      setUsersIpAddress({
-        ip,
-      }),
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return {
     onFieldAInput,
     onCurrencySelection,
     onLimitAmountUpdate,
-    onUsersIp,
   }
 }
 
@@ -253,7 +242,6 @@ export async function queryParametersToBuyCryptoState(
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
-    userIpAddress: undefined,
   }
 }
 

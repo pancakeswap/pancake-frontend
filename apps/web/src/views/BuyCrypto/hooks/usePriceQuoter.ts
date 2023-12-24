@@ -15,14 +15,12 @@ const usePriceQuotes = () => {
     typedValue: amount,
     [Field.INPUT]: { currencyId: inputCurrency },
     [Field.OUTPUT]: { currencyId: outputCurrency },
-    userIpAddress: userIp,
   } = useBuyCryptoState()
 
   const { data: providerAvailabilities, isLoading: isAvailabilitiesLoading } = useQuery(
     ['providerAvailabilities'],
-    () => fetchProviderAvailabilities({ userIp }),
+    () => fetchProviderAvailabilities(),
     {
-      enabled: !!userIp,
       initialData: {
         MoonPay: true,
         Mercuryo: true,

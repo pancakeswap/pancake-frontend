@@ -7,7 +7,6 @@ import {
   selectCurrency,
   setMinAmount,
   setRecipient,
-  setUsersIpAddress,
   typeInput,
 } from './actions'
 
@@ -24,7 +23,6 @@ export interface BuyCryptoState {
   readonly minBaseAmount: number | undefined
   readonly maxAmount: number | undefined
   readonly maxBaseAmount: number | undefined
-  readonly userIpAddress: string | undefined
 }
 
 const initialState: BuyCryptoState = {
@@ -40,7 +38,6 @@ const initialState: BuyCryptoState = {
   minBaseAmount: undefined,
   maxAmount: undefined,
   maxBaseAmount: undefined,
-  userIpAddress: undefined,
 }
 
 /// casting builder as any as its causing a 'no overload match call' ts error
@@ -65,9 +62,6 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder: any
     })
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient
-    })
-    .addCase(setUsersIpAddress, (state, { payload: { ip } }) => {
-      state.userIpAddress = ip
     })
     .addCase(
       replaceBuyCryptoState,
