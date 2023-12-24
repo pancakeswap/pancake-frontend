@@ -3115,5 +3115,5 @@
   "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
   "CKP cIFO": "CKP cIFO",
   "Token": "Token",
-  "Last price from Galeto Oracle": "Last price from Galeto Oracle"
+  "Last price from Pyth Oracle": "Last price from Pyth Oracle"
 }

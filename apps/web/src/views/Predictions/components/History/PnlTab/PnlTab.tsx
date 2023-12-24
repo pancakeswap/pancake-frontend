@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from '@pancakeswap/prediction'
 import { Box, BscScanIcon, Button, Flex, Heading, Link, Text } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { REWARD_RATE } from 'state/predictions/config'
 import { Result, getRoundResult } from 'state/predictions/helpers'
 import { useGetCurrentEpoch } from 'state/predictions/hooks'
@@ -10,7 +11,6 @@ import { getBlockExploreLink } from 'utils'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
 import { useAccount } from 'wagmi'
-
 import { formatBnb, getMultiplier, getNetPayout } from '../helpers'
 import PnlChart from './PnlChart'
 import SummaryRow from './SummaryRow'
@@ -105,6 +105,7 @@ const getPnlSummary = (bets: Bet[], currentEpoch: number): PnlSummary => {
 const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory, bets }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const currentEpoch = useGetCurrentEpoch()
   const config = useConfig()
   const tokenPrice = useTokenPrice(config?.token)
@@ -199,7 +200,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
 
         <Flex justifyContent="center" mt="24px">
           {account && (
-            <Link href={`${getBlockExploreLink(account, 'address')}#internaltx`} mb="16px" external>
+            <Link href={`${getBlockExploreLink(account, 'address', chainId)}#internaltx`} mb="16px" external>
               <Button mt="8px" width="100%">
                 {t('View Reclaimed & Won')}
                 <BscScanIcon color="invertedContrast" ml="4px" />
