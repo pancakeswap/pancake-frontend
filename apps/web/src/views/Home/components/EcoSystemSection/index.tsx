@@ -454,7 +454,7 @@ const EcoSystemSection: React.FC = () => {
             <FeatureBoxesWrapper>
               {earnBlockData.map((item) => (
                 <FeatureBox
-                  className="type-b"
+                  className="type-a"
                   key={`${item.title}Block`}
                   title={item.title}
                   description={item.description}
