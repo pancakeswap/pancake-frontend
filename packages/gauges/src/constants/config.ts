@@ -1980,16 +1980,6 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.MEDIUM,
   },
   {
-    gid: 185,
-    address: '0xBC7766aE74f38f251683633d50Cc2C1CD14aF948',
-    pairName: 'INSP-ETH',
-    chainId: ChainId.ETHEREUM,
-    type: GaugeType.V3,
-    token0Address: ethereumTokens.insp.address,
-    token1Address: ethereumTokens.weth.address,
-    feeTier: FeeAmount.HIGH,
-  },
-  {
     gid: 186,
     address: '0x80968a476E0235a026Fd1F33AAac5a3B7b76110F',
     pairName: 'AIOZ-BNB',
