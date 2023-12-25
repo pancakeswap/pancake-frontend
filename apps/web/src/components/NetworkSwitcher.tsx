@@ -1,6 +1,6 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { NATIVE } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -14,17 +14,18 @@ import {
   UserMenuItem,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useNetwork } from 'wagmi'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useHover } from 'hooks/useHover'
 import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import { useMemo } from 'react'
-import { useRouter } from 'next/router'
-import { chains } from 'utils/wagmi'
 import Image from 'next/image'
-import { ASSET_CDN } from 'config/constants/endpoints'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import { chainNameConverter } from 'utils/chainNameConverter'
+import { chains } from 'utils/wagmi'
+import { useNetwork } from 'wagmi'
 
 import { ChainLogo } from './Logo/ChainLogo'
 
@@ -58,7 +59,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
           >
             <ChainLogo chainId={chain.id} />
             <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">
-              {chain.name}
+              {chainNameConverter(chain.name)}
             </Text>
           </UserMenuItem>
         ))}
@@ -121,7 +122,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
         <UserMenuItem ref={ref1} onClick={() => setSessionChainId(chain.id)} style={{ justifyContent: 'flex-start' }}>
           <ChainLogo chainId={chain.id} />
           <Text color="secondary" bold pl="12px">
-            {chain.name}
+            {chainNameConverter(chain.name)}
           </Text>
         </UserMenuItem>
       )}
@@ -130,7 +131,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
       </Box>
       <UserMenuItem onClick={() => switchNetwork(localChainId)} style={{ justifyContent: 'flex-start' }}>
         <ChainLogo chainId={localChainId} />
-        <Text pl="12px">{localChainName}</Text>
+        <Text pl="12px">{chainNameConverter(localChainName)}</Text>
       </UserMenuItem>
       <Button mx="16px" my="8px" scale="sm" onClick={() => switchNetwork(localChainId)}>
         {t('Switch network in wallet')}
@@ -201,7 +202,7 @@ export const NetworkSwitcher = () => {
             t('Network')
           ) : foundChain ? (
             <>
-              <Box display={['none', null, null, null, null, 'block']}>{foundChain.name}</Box>
+              <Box display={['none', null, null, null, null, 'block']}>{chainNameConverter(foundChain.name)}</Box>
               <Box display={['block', null, null, null, null, 'none']}>{symbol}</Box>
             </>
           ) : (
