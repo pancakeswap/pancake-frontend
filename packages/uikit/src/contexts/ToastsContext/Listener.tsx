@@ -1,13 +1,7 @@
-import { useCallback } from "react";
-import { ToastContainer } from "../../components/Toast";
-import { useToast } from "./useToast";
+import { Toaster } from "sonner";
 
 const ToastListener = () => {
-  const { toasts, remove } = useToast();
-
-  const handleRemove = useCallback((id: string) => remove(id), [remove]);
-
-  return <ToastContainer toasts={toasts} onRemove={handleRemove} />;
+  return <Toaster position="top-right" duration={6000} gap={24} />;
 };
 
 export default ToastListener;

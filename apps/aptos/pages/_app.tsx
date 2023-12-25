@@ -1,21 +1,21 @@
 import '../css/theme.css'
 
-import BigNumber from 'bignumber.js'
 import { PancakeTheme, ResetCSS, ToastListener } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { Menu } from 'components/Menu'
 import Providers from 'components/Providers'
+import { WrongNetworkModal } from 'components/WrongNetworkModal'
+import useEagerConnect from 'hooks/useEagerConnect'
 import { NextPage } from 'next'
+import { DefaultSeo } from 'next-seo'
+import { SEO } from 'next-seo.config'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Script from 'next/script'
-import GlobalStyle from 'style/Global'
-import { DefaultSeo } from 'next-seo'
-import { SEO } from 'next-seo.config'
 import { Fragment } from 'react'
 import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
-import { WrongNetworkModal } from 'components/WrongNetworkModal'
-import useEagerConnect from 'hooks/useEagerConnect'
+import GlobalStyle from 'style/Global'
 
 // This config is required for number formatting
 BigNumber.config({
@@ -59,7 +59,6 @@ function MyApp(props: AppProps) {
         <GlobalStyle />
         <Updaters />
         <App {...props} />
-        <ToastListener />
       </Providers>
       {process.env.NEXT_PUBLIC_GA_TRACKING_ID && (
         <Script
