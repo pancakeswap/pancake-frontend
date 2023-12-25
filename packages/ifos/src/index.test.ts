@@ -33,6 +33,8 @@ test('exports', () => {
       "getIfoCreditAddressContract",
       "fetchPublicIfoData",
       "fetchUserIfoCredit",
+      "getUserIfoInfo",
+      "getCurrentIfoRatio",
       "fetchUserVestingData",
       "getBridgeICakeGasFee",
       "getCrossChainMessage",

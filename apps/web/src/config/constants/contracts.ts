@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { GAUGES_ADDRESS, GAUGES_CALC_ADDRESS } from '@pancakeswap/gauges'
 import { ICAKE } from '@pancakeswap/ifos'
-import { CAKE_VAULT } from '@pancakeswap/pools'
+import { CAKE_VAULT, CAKE_FLEXIBLE_SIDE_VAULT } from '@pancakeswap/pools'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
 import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 
@@ -85,10 +85,7 @@ export default {
     [ChainId.BSC_TESTNET]: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
   cakeVault: CAKE_VAULT,
-  cakeFlexibleSideVault: {
-    [ChainId.BSC]: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
-    [ChainId.BSC_TESTNET]: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
-  },
+  cakeFlexibleSideVault: CAKE_FLEXIBLE_SIDE_VAULT,
   predictionsBNB: {
     [ChainId.BSC]: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
     [ChainId.BSC_TESTNET]: '0x',
@@ -260,7 +257,7 @@ export default {
   },
   veCake: {
     [ChainId.BSC]: '0x5692DB8177a81A6c6afc8084C2976C9933EC1bAB',
-    [ChainId.BSC_TESTNET]: '0x279957513FC505F8Cb16f4b6783D170C9BEcE322',
+    [ChainId.BSC_TESTNET]: '0x4879fcB447E7F4c7843A6D15dF5526061304dcFb',
   },
   gaugesVoting: GAUGES_ADDRESS,
   gaugesVotingCalc: GAUGES_CALC_ADDRESS,

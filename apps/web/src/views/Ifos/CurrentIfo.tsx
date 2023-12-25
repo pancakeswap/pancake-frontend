@@ -20,7 +20,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
   const walletIfoData = useGetWalletIfoV7Data(activeIfo)
   const { hasBridged, sourceChainCredit, srcChainId, destChainCredit } = useICakeBridgeStatus({
     ifoChainId: activeIfo.chainId,
-    ifoCredit: walletIfoData.ifoCredit?.credit,
+    ifoAddress: activeIfo.address,
   })
   const isCrossChainIfo = useMemo(() => isCrossChainIfoSupportedOnly(activeIfo.chainId), [activeIfo.chainId])
 
@@ -34,6 +34,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
 
   return (
     <IfoContainer
+      ifoAddress={activeIfo.address}
       ifoBasicSaleType={publicIfoData?.poolBasic?.saleType}
       ifoSection={<IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />}
       ifoSteps={
