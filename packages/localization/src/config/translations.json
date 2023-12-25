@@ -3120,5 +3120,6 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Permit %symbol%": "Permit %symbol%"
+  "Permit %symbol%": "Permit %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT."
 }
