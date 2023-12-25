@@ -23,6 +23,7 @@
       "outputs": ["dist/**"]
     },
     "lint": {
+      "dependsOn": ["@pancakeswap/next-config#build"],
       "outputs": []
     },
     "dev": {
