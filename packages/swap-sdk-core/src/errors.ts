@@ -6,7 +6,7 @@ const CAN_SET_PROTOTYPE = 'setPrototypeOf' in Object
  * obtained by sending any amount of input.
  */
 export class InsufficientReservesError extends Error {
-  public readonly isInsufficientReservesError: true = true
+  public readonly isInsufficientReservesError = true as const
 
   public constructor() {
     super()
@@ -20,7 +20,7 @@ export class InsufficientReservesError extends Error {
  * than the price of a single unit of output after fees.
  */
 export class InsufficientInputAmountError extends Error {
-  public readonly isInsufficientInputAmountError: true = true
+  public readonly isInsufficientInputAmountError = true as const
 
   public constructor() {
     super()
