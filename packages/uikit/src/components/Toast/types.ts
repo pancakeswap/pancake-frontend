@@ -10,22 +10,13 @@ export const types = {
 export type Types = (typeof types)[keyof typeof types];
 
 export interface ToastData {
-  id: string;
+  id: string | number;
   type: Types;
   title: string;
   description?: ReactNode;
 }
 
-export interface ToastContainerProps {
-  toasts: ToastData[];
-  stackSpacing?: number;
-  ttl?: number;
-  onRemove: (id: string) => void;
-}
-
 export interface ToastProps {
   toast: ToastData;
-  onRemove: ToastContainerProps["onRemove"];
-  ttl: number;
-  style: Partial<CSSStyleDeclaration>;
+  onRemove: (id: string | number) => void;
 }

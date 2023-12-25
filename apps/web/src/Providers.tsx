@@ -1,14 +1,14 @@
-import { ModalProvider, light, dark, UIKitProvider } from '@pancakeswap/uikit'
+import { LanguageProvider } from '@pancakeswap/localization'
+import { ModalProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
+import { Store } from '@reduxjs/toolkit'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HistoryManagerProvider } from 'contexts/HistoryContext'
+import { fetchStatusMiddleware } from 'hooks/useSWRContract'
+import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
-import { LanguageProvider } from '@pancakeswap/localization'
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fetchStatusMiddleware } from 'hooks/useSWRContract'
-import { Store } from '@reduxjs/toolkit'
-import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
-import { WagmiConfig } from 'wagmi'
 import { wagmiConfig } from 'utils/wagmi'
-import { HistoryManagerProvider } from 'contexts/HistoryContext'
+import { WagmiConfig } from 'wagmi'
 
 // Create a client
 const queryClient = new QueryClient()
@@ -31,8 +31,8 @@ const Providers: React.FC<
         <WagmiConfig config={wagmiConfig}>
           <Provider store={store}>
             <NextThemeProvider>
-              <StyledUIKitProvider>
-                <LanguageProvider>
+              <LanguageProvider>
+                <StyledUIKitProvider>
                   <SWRConfig
                     value={{
                       use: [fetchStatusMiddleware],
@@ -42,8 +42,8 @@ const Providers: React.FC<
                       <ModalProvider>{children}</ModalProvider>
                     </HistoryManagerProvider>
                   </SWRConfig>
-                </LanguageProvider>
-              </StyledUIKitProvider>
+                </StyledUIKitProvider>
+              </LanguageProvider>
             </NextThemeProvider>
           </Provider>
         </WagmiConfig>

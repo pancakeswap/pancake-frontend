@@ -1,71 +1,83 @@
-import { createContext, useCallback, useState, useMemo } from "react";
-import kebabCase from "lodash/kebabCase";
-import { ToastData, types as toastTypes } from "../../components/Toast";
+import { createContext, useCallback, useMemo } from "react";
+import { toast as sonnerToast } from "sonner";
+import { Toast, ToastData, types } from "../../components/Toast";
 import { ToastContextApi } from "./types";
 
 export const ToastsContext = createContext<ToastContextApi | undefined>(undefined);
 
 export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [toasts, setToasts] = useState<ToastContextApi["toasts"]>([]);
+  const toastError = useCallback((title: ToastData["title"], description?: ToastData["description"]) => {
+    return sonnerToast.custom((t) => (
+      <Toast
+        toast={{
+          id: t,
+          title,
+          description,
+          type: types.DANGER,
+        }}
+        onRemove={() => sonnerToast.dismiss(t)}
+      >
+        {description}
+      </Toast>
+    ));
+  }, []);
 
-  const toast = useCallback(
-    ({ title, description, type }: Omit<ToastData, "id">) => {
-      setToasts((prevToasts) => {
-        const id = kebabCase(title);
+  const toastInfo = useCallback((title: ToastData["title"], description?: ToastData["description"]) => {
+    return sonnerToast.custom((t) => (
+      <Toast
+        toast={{
+          id: t,
+          title,
+          description,
+          type: types.INFO,
+        }}
+        onRemove={() => sonnerToast.dismiss(t)}
+      >
+        {description}
+      </Toast>
+    ));
+  }, []);
 
-        // Remove any existing toasts with the same id
-        const currentToasts = prevToasts.filter((prevToast) => prevToast.id !== id);
+  const toastSuccess = useCallback((title: ToastData["title"], description?: ToastData["description"]) => {
+    return sonnerToast.custom((t) => (
+      <Toast
+        toast={{
+          id: t,
+          title,
+          description,
+          type: types.SUCCESS,
+        }}
+        onRemove={() => sonnerToast.dismiss(t)}
+      >
+        {description}
+      </Toast>
+    ));
+  }, []);
 
-        return [
-          {
-            id,
-            title,
-            description,
-            type,
-          },
-          ...currentToasts,
-        ];
-      });
-    },
-    [setToasts]
-  );
+  const toastWarning = useCallback((title: ToastData["title"], description?: ToastData["description"]) => {
+    return sonnerToast.custom((t) => (
+      <Toast
+        toast={{
+          id: t,
+          title,
+          description,
+          type: types.WARNING,
+        }}
+        onRemove={() => sonnerToast.dismiss(t)}
+      >
+        {description}
+      </Toast>
+    ));
+  }, []);
 
-  const toastError = useCallback(
-    (title: ToastData["title"], description?: ToastData["description"]) => {
-      return toast({ title, description, type: toastTypes.DANGER });
-    },
-    [toast]
-  );
-
-  const toastInfo = useCallback(
-    (title: ToastData["title"], description?: ToastData["description"]) => {
-      return toast({ title, description, type: toastTypes.INFO });
-    },
-    [toast]
-  );
-
-  const toastSuccess = useCallback(
-    (title: ToastData["title"], description?: ToastData["description"]) => {
-      return toast({ title, description, type: toastTypes.SUCCESS });
-    },
-    [toast]
-  );
-
-  const toastWarning = useCallback(
-    (title: ToastData["title"], description?: ToastData["description"]) => {
-      return toast({ title, description, type: toastTypes.WARNING });
-    },
-    [toast]
-  );
-
-  const clear = useCallback(() => setToasts([]), []);
-  const remove = useCallback((id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
+  const clear = useCallback(() => sonnerToast.dismiss(), []);
+  const remove = useCallback((id: string | number) => {
+    sonnerToast.dismiss(id);
   }, []);
 
   const providerValue = useMemo(() => {
-    return { toasts, clear, remove, toastError, toastInfo, toastSuccess, toastWarning };
-  }, [toasts, clear, remove, toastError, toastInfo, toastSuccess, toastWarning]);
+    return { clear, remove, toastError, toastInfo, toastSuccess, toastWarning };
+  }, [clear, remove, toastError, toastInfo, toastSuccess, toastWarning]);
 
   return <ToastsContext.Provider value={providerValue}>{children}</ToastsContext.Provider>;
 };
