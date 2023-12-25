@@ -3136,5 +3136,6 @@
   "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.",
   "Base APR (APT yield only)": "Base APR (APT yield only)",
   "%percent%% of total supply": "%percent%% of total supply",
-  "Permit %symbol%": "Permit %symbol%"
+  "Permit %symbol%": "Permit %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT."
 }
