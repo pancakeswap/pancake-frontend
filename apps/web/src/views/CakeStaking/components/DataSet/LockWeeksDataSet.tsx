@@ -2,12 +2,13 @@ import { useTranslation } from '@pancakeswap/localization'
 import { FlexGap, Text, TooltipText } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
-import { WEEK } from 'config/constants/veCake'
+import { MAX_VECAKE_LOCK_WEEKS, WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
 import { useRoundedUnlockTimestamp } from 'views/CakeStaking/hooks/useRoundedUnlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Tooltips } from '../Tooltips'
@@ -18,15 +19,21 @@ export const LockWeeksDataSet = () => {
   const { t } = useTranslation()
   const { cakeLockWeeks } = useLockCakeData()
   const { cakeLockExpired, cakeUnlockTime, nativeCakeLockedAmount } = useCakeLockStatus()
+  const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const veCakeAmountBN = useMemo(() => {
-    const duration = cakeUnlockTime - currentTimestamp + Number(cakeLockWeeks || 0) * WEEK
+  const veCakeAmountFromNativeBN = useMemo(() => {
+    let duration = cakeUnlockTime - currentTimestamp + Number(cakeLockWeeks || 0) * WEEK
+    if (duration > MAX_VECAKE_LOCK_WEEKS * WEEK) duration = MAX_VECAKE_LOCK_WEEKS * WEEK
     return new BN(getVeCakeAmount(nativeCakeLockedAmount.toString(), duration))
   }, [cakeLockWeeks, cakeUnlockTime, currentTimestamp, nativeCakeLockedAmount])
 
+  const veCakeAmountBN = useMemo(() => {
+    return proxyVeCakeBalance.plus(veCakeAmountFromNativeBN)
+  }, [veCakeAmountFromNativeBN, proxyVeCakeBalance])
+
   const factor =
-    veCakeAmountBN && veCakeAmountBN.gt(0)
-      ? `${veCakeAmountBN.div(nativeCakeLockedAmount.toString()).toPrecision(2)}x`
+    veCakeAmountFromNativeBN && veCakeAmountFromNativeBN.gt(0)
+      ? `${veCakeAmountFromNativeBN.div(nativeCakeLockedAmount.toString()).toPrecision(2)}x`
       : '0.00x'
 
   const newUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? undefined : Number(cakeUnlockTime))
