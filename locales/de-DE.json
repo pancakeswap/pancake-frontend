@@ -2571,9 +2571,8 @@
   "Your locked staking is expired": "Ihre gesperrten Einsätze sind abgelaufen",
   "Renew your stakings for": "Erneuern Sie Ihre Einsätze für",
   "Insufficient Funds?": "Insufficient Funds?",
-  "Traverse the Treasure Islands on Galxe now!": "Bereisen Sie die Schatzinseln auf Galxe!",
+  "Traverse the Treasure Islands on Galxe": "Traverse the Treasure Islands on Galxe",
   "Traverse the Treasure Islands!": "Bereisen Sie die Schatzinseln!",
-  "Exclusive NFTs and treasures await!": "Exklusive NFTs und Schätze erwarten Sie!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap jetzt live auf Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM ist LIVE!",
   "Swap, LP, and Farms on Polygon zkEVM now": "Jetzt: Tauschen, LP und Farms auf Polygon zkEVM",
@@ -2661,7 +2660,7 @@
   "PancakeSwap Now Live on Linea!": "PancakeSwap jetzt live auf Linea!",
   "Swap and Provide Liquidity on Linea now": "Jetzt tauschen und Liquidität bereitstellen auf Linea",
   "day": "Tag",
-  "Quote not available": "Kurs nicht verfügbar",
+  "No Quote": "No Quote",
   "No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.": "Keine Providergebühren. Endet in %days% Tagen %hours% Stunden %minutes% Minuten.",
   "Invalid Pair": "Ungültiges Paar",
   "Learn more how to fix": "Erfahren Sie mehr über das Beheben",
@@ -2680,7 +2679,6 @@
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Die Nutzungsbedingungen unseres Partnerprogramms wurden zum 3. Mai 2023 aktualisiert und enthalten Änderungen in Bezug auf",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Wenn Sie auf zkSync Era einen Einsatz tätigen und diesen kurz darauf wieder aufheben, kann es sein, dass Sie keine Belohnungen erhalten.",
-  "UEDC.e quotes are currently unavailable in USD on Arbitrum. Please select another currency to receive USDC.e quotes": "UEDC.e quotes are currently unavailable in USD on Arbitrum. Please select another currency to receive USDC.e quotes",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% supports limited fiat currencies. USD are not supported",
   "Proceed in your wallet": "Proceed in your wallet",
   "Enable spending %symbol%": "Enable spending %symbol%",
@@ -3095,6 +3093,7 @@
   "Revenue Sharing:": "Revenue Sharing:",
   "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.",
-  "Disabled": "Disabled",
-  "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience": "The buy crypto feature is disabled for the time being but should be back running soon. Sorry for any inconvenience"
+  "Claim Your Exclusive NFTs Now!": "Claim Your Exclusive NFTs Now!",
+  "Calculated based average data since vault inception.": "Calculated based average data since vault inception.",
+  "Note that Fees are just an estimation and may vary slightly when completing a purchase": "Note that Fees are just an estimation and may vary slightly when completing a purchase"
 }
