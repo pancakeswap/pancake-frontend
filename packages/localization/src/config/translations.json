@@ -3118,5 +3118,6 @@
   "To check out your converted position, please visit the protocol page.": "To check out your converted position, please visit the protocol page.",
   "You can create a native veCAKE position by locking CAKE.": "You can create a native veCAKE position by locking CAKE.",
   "Converted": "Converted",
-  "Permit %symbol%": "Permit %symbol%"
+  "Permit %symbol%": "Permit %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT."
 }
