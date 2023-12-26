@@ -14,10 +14,10 @@ import {
   PredictionStatus,
   GRAPH_API_PREDICTION_BNB,
   GRAPH_API_PREDICTION_CAKE,
+  predictionsV2ABI,
 } from '@pancakeswap/prediction'
 import { Address } from 'wagmi'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
-import { predictionsV2ABI } from 'config/abi/predictionsV2'
 import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
 import { PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'

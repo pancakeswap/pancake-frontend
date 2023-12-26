@@ -18,7 +18,6 @@ import {
   getBCakeProxyContract,
   getBunnyFactoryContract,
   getCakeFlexibleSideVaultV2Contract,
-  getCakePredictionsContract,
   getCakeVaultV2Contract,
   getCalcGaugesVotingContract,
   getChainlinkOracleContract,
@@ -41,6 +40,7 @@ import {
   getPotteryVaultContract,
   getPredictionsV1Contract,
   getPredictionsV2Contract,
+  getPredictionsV3Contract,
   getProfileContract,
   getRevenueSharingCakePoolContract,
   getRevenueSharingPoolContract,
@@ -202,16 +202,16 @@ export const useIfoCreditAddressContract = () => {
   return useMemo(() => getIfoCreditAddressContract(), [])
 }
 
-export const usePredictionsContract = (address: Address, tokenSymbol: string) => {
+export const usePredictionsContract = (address: Address, isNativeToken: boolean) => {
   const { data: signer } = useWalletClient()
   return useMemo(() => {
     if (address === getPredictionsV1Address()) {
       return getPredictionsV1Contract(signer ?? undefined)
     }
-    const getPredContract = tokenSymbol === 'CAKE' ? getCakePredictionsContract : getPredictionsV2Contract
+    const getPredContract = isNativeToken ? getPredictionsV3Contract : getPredictionsV2Contract
 
     return getPredContract(address, signer ?? undefined)
-  }, [address, tokenSymbol, signer])
+  }, [address, isNativeToken, signer])
 }
 
 export const useChainlinkOracleContract = (address) => {

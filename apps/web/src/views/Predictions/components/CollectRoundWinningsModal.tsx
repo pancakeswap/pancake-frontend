@@ -21,7 +21,8 @@ import { useEffect } from 'react'
 import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { Address, useAccount } from 'wagmi'
+import { useAccount } from 'wagmi'
+import { Address } from 'viem'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -41,6 +42,7 @@ interface CollectRoundWinningsModalProps extends InjectedModalProps {
   predictionsAddress: Address
   token: Token
   isV1Claim?: boolean
+  isNativeToken: boolean
 }
 
 const Modal = styled(ModalContainer)`
@@ -67,7 +69,7 @@ const calculateClaimableRounds = (history): ClaimableRounds => {
 
   return history.reduce(
     (accum: ClaimableRounds, bet: Bet) => {
-      if (!bet.claimed && bet.position === bet.round.position) {
+      if (!bet.claimed && bet.position === bet?.round?.position) {
         const betPayout = getPayout(bet, REWARD_RATE)
         return {
           ...accum,
@@ -91,13 +93,14 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
   predictionsAddress,
   token,
   isV1Claim,
+  isNativeToken,
 }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
+  const predictionsContract = usePredictionsContract(predictionsAddress, isNativeToken)
   const tokenPrice = useTokenPrice(token)
 
   const { epochs, total } = calculateClaimableRounds(history)
@@ -107,7 +110,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
 
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
-    if (history.length === 0 && !isV1Claim) {
+    if (history.length === 0 && !isV1Claim && account) {
       dispatch(fetchNodeHistory({ account }))
     }
   }, [account, history, dispatch, isV1Claim])
@@ -136,7 +139,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
           {t('Your prizes have been sent to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      onDismiss()
+      onDismiss?.()
     }
   }
 

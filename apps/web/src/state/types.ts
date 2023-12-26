@@ -480,14 +480,6 @@ export interface UserRound {
   tickets?: LotteryTicket[]
 }
 
-export interface PredictionConfig {
-  address: Address
-  api: string
-  chainlinkOracleAddress: Address
-  displayedDecimals: number
-  token: Token
-}
-
 // Pottery
 export interface PotteryState {
   lastVaultAddress: Address

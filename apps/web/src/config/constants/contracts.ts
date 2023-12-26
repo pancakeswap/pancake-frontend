@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { GAUGES_ADDRESS, GAUGES_CALC_ADDRESS } from '@pancakeswap/gauges'
 import { ICAKE } from '@pancakeswap/ifos'
-import { CAKE_VAULT, CAKE_FLEXIBLE_SIDE_VAULT } from '@pancakeswap/pools'
+import { CAKE_VAULT } from '@pancakeswap/pools'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
 import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 
@@ -85,20 +85,17 @@ export default {
     [ChainId.BSC_TESTNET]: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
   cakeVault: CAKE_VAULT,
-  cakeFlexibleSideVault: CAKE_FLEXIBLE_SIDE_VAULT,
-  predictionsBNB: {
-    [ChainId.BSC]: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
-    [ChainId.BSC_TESTNET]: '0x',
-  },
-  predictionsCAKE: {
-    [ChainId.BSC]: '0x0E3A8078EDD2021dadcdE733C6b4a86E51EE8f07',
-    [ChainId.BSC_TESTNET]: '0x',
+  cakeFlexibleSideVault: {
+    [ChainId.BSC]: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
+    [ChainId.BSC_TESTNET]: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
   },
   chainlinkOracleBNB: {
+    // TODO REMOVE
     [ChainId.BSC]: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE',
     [ChainId.BSC_TESTNET]: '0x',
   },
   chainlinkOracleCAKE: {
+    // TODO REMOVE
     [ChainId.BSC]: '0xB6064eD41d4f67e353768aA239cA86f4F73665a1',
     [ChainId.BSC_TESTNET]: '0x',
   },

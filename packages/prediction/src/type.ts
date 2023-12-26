@@ -1,3 +1,4 @@
+import { Address } from 'viem'
 import { Token } from '@pancakeswap/sdk'
 
 export enum PredictionSupportedSymbol {
@@ -25,9 +26,9 @@ export enum PredictionsChartView {
   Chainlink = 'Chainlink Oracle',
 }
 
-export interface BasePredictionConfig {
+export interface PredictionConfig {
   isNativeToken: boolean
-  address: string
+  address: Address
   api: string
   chainlinkOracleAddress: string
   displayedDecimals: number

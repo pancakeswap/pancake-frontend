@@ -1,9 +1,9 @@
 import { bscTokens } from '@pancakeswap/tokens'
 import { ChainId } from '@pancakeswap/chains'
 import { GRAPH_API_PREDICTION_CAKE, GRAPH_API_PREDICTION_BNB } from '../../endpoints'
-import { PredictionSupportedSymbol, BasePredictionConfig } from '../../type'
+import { PredictionSupportedSymbol, PredictionConfig } from '../../type'
 
-export const predictions: Record<string, BasePredictionConfig> = {
+export const predictions: Record<string, PredictionConfig> = {
   [PredictionSupportedSymbol.BNB]: {
     isNativeToken: true,
     address: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',

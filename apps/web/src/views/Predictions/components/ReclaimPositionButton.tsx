@@ -20,9 +20,11 @@ const ReclaimPositionButton: React.FC<React.PropsWithChildren<ReclaimPositionBut
   ...props
 }) => {
   const { t } = useTranslation()
-  const { address: predictionsAddress } = useConfig()
-  const { token } = useConfig()
-  const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
+  const config = useConfig()
+  const predictionsAddress = config?.address ?? '0x'
+  const isNativeToken = config?.isNativeToken ?? false
+
+  const predictionsContract = usePredictionsContract(predictionsAddress, isNativeToken)
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()

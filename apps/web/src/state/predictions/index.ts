@@ -10,10 +10,9 @@ import {
   PredictionsState,
   PredictionUser,
   LeaderboardFilter,
-  PredictionConfig,
   ReduxNodeRound,
 } from 'state/types'
-import { BetPosition, PredictionStatus, PredictionsChartView } from '@pancakeswap/prediction'
+import { BetPosition, PredictionStatus, PredictionsChartView, PredictionConfig } from '@pancakeswap/prediction'
 import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionsRoundsResponse } from 'utils/types'

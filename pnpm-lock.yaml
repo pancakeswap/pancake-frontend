@@ -1493,6 +1493,9 @@ importers:
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
+      viem:
+        specifier: 1.15.1
+        version: 1.15.1(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
       '@pancakeswap/sdk':
         specifier: workspace:*

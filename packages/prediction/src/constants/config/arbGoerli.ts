@@ -1,9 +1,9 @@
 import { arbitrumGoerliTokens } from '@pancakeswap/tokens'
 import { ChainId } from '@pancakeswap/chains'
 import { GRAPH_API_PREDICTION_BNB } from '../../endpoints'
-import { PredictionSupportedSymbol, BasePredictionConfig } from '../../type'
+import { PredictionSupportedSymbol, PredictionConfig } from '../../type'
 
-export const predictions: Record<string, BasePredictionConfig> = {
+export const predictions: Record<string, PredictionConfig> = {
   [PredictionSupportedSymbol.ETH]: {
     isNativeToken: false,
     address: '0xd5330586c035a67bd32A6FD8e390c72DB9372861',

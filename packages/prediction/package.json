@@ -11,6 +11,7 @@
     "@pancakeswap/sdk": "workspace:*"
   },
   "dependencies": {
+    "viem": "1.15.1",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/tokens": "workspace:*"
   },
