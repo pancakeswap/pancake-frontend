@@ -35,4 +35,5 @@ export interface PredictionConfig {
   galetoOracleAddress?: Address // Only zkSync chain use galeto oracle.
   displayedDecimals: number
   token: Token
+  tokenBackgroundColor: string // For selector svg token for prediction page.
 }

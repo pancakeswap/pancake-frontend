@@ -13,5 +13,6 @@ export const predictions: Record<string, PredictionConfig> = {
     galetoOracleAddress: galetoOracleETH[ChainId.ZKSYNC],
     displayedDecimals: 4,
     token: Native.onChain(ChainId.ZKSYNC),
+    tokenBackgroundColor: '#FFFFFF',
   },
 }

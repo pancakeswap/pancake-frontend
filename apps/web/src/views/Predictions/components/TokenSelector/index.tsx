@@ -1,6 +1,5 @@
 import { Box, ChevronDownIcon, Flex, ModalV2, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useColor } from 'color-thief-react'
-import { TokenImage, getImageUrlFromToken } from 'components/TokenImage'
+import { TokenImage } from 'components/TokenImage'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
@@ -55,10 +54,6 @@ export const TokenSelector = () => {
   const config = useConfig()
   const predictionConfigs = usePredictionConfigs()
 
-  const { data: ImageColor } = useColor(config?.token ? getImageUrlFromToken(config?.token) : '', 'hex', {
-    crossOrigin: '',
-  })
-
   useEffect(() => {
     const handleClickOutside = () => {
       onDismiss()
@@ -104,7 +99,7 @@ export const TokenSelector = () => {
   return (
     <Flex>
       <Box position="relative" zIndex={11}>
-        <SvgToken width={isDesktop ? 70 : 44} height={isDesktop ? 70 : 44} color={ImageColor} />
+        <SvgToken width={isDesktop ? 70 : 44} height={isDesktop ? 70 : 44} color={config?.tokenBackgroundColor} />
         {config?.token && (
           <SelectedToken>
             <TokenImage width={isDesktop ? 60 : 38} height={isDesktop ? 60 : 38} token={config?.token} />

@@ -122,8 +122,7 @@
     "uuid": "^8.0.0",
     "viem": "1.19.11",
     "wagmi": "1.4.7",
-    "zod": "^3.22.3",
-    "color-thief-react": "^2.1.0"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@angleprotocol/sdk": "^3.0.121",
