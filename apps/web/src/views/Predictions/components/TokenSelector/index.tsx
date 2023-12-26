@@ -1,5 +1,5 @@
-import { useImageColor } from '@pancakeswap/hooks'
 import { Box, ChevronDownIcon, Flex, ModalV2, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useColor } from 'color-thief-react'
 import { TokenImage, getImageUrlFromToken } from 'components/TokenImage'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -55,7 +55,7 @@ export const TokenSelector = () => {
   const config = useConfig()
   const predictionConfigs = usePredictionConfigs()
 
-  const { color: ImageColor } = useImageColor({ url: getImageUrlFromToken(config?.token) }) // TODO: Check with jackson
+  const { data: ImageColor } = useColor(getImageUrlFromToken(config?.token), 'hex', { crossOrigin: '' })
 
   useEffect(() => {
     const handleClickOutside = () => {
