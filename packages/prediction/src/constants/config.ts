@@ -14,5 +14,5 @@ export const ROUNDS_PER_PAGE = 200
 export const LEADERBOARD_MIN_ROUNDS_PLAYED = {
   [PredictionSupportedSymbol.BNB]: 10,
   [PredictionSupportedSymbol.CAKE]: 10,
-  [PredictionSupportedSymbol.ETH]: 0.001, // TODO: Confirm with PM
+  [PredictionSupportedSymbol.ETH]: 1, // TODO: Confirm with PM
 } as const satisfies LeaderboardMinRoundsPlatedType<PredictionSupportedSymbol>
