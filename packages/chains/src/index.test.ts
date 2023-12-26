@@ -5,12 +5,14 @@ test('exports', () => {
   expect(Object.keys(exports)).toMatchInlineSnapshot(`
     [
       "ChainId",
+      "TestnetChainId",
       "chainNames",
       "chainNameToChainId",
       "defiLlamaChainNames",
       "getChainName",
       "getLlamaChainName",
       "getChainIdByChainName",
+      "isTestnetChainId",
       "V3_SUBGRAPHS",
       "V2_SUBGRAPHS",
     ]
