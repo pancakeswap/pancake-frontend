@@ -102,6 +102,16 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
     setPickedChainId(option?.value)
   }
 
+  const networkSelectedIndex = useMemo(() => {
+    const index = networkOptions.findIndex((option) => Number(option.value) === pickedChainId)
+    return index >= 0 ? index + 1 : 0
+  }, [networkOptions, pickedChainId])
+
+  const tokenSelectedIndex = useMemo(() => {
+    const index = tokenOptions.findIndex((option) => option.value === pickedTokenSymbol)
+    return index >= 0 ? index + 1 : 0
+  }, [pickedTokenSymbol, tokenOptions])
+
   return (
     <Container position="relative" py="32px" zIndex={3}>
       <Flex width={['100%']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
@@ -112,7 +122,11 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
             </Text>
             {networkOptions.length > 0 && (
               <FilterWrapper>
-                <Select options={networkOptions} onOptionChange={handleSwitchNetwork} />
+                <Select
+                  options={networkOptions}
+                  defaultOptionIndex={networkSelectedIndex}
+                  onOptionChange={handleSwitchNetwork}
+                />
               </FilterWrapper>
             )}
           </Box>
@@ -122,7 +136,11 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
             </Text>
             {predictionConfigs && pickedTokenSymbol && tokenOptions.length > 0 && (
               <FilterWrapper>
-                <Select options={tokenOptions} onOptionChange={handleTokenChange} />
+                <Select
+                  options={tokenOptions}
+                  defaultOptionIndex={tokenSelectedIndex}
+                  onOptionChange={handleTokenChange}
+                />
               </FilterWrapper>
             )}
           </Box>
