@@ -9,7 +9,7 @@ import { supportedChainIdV3 } from '../src'
 import { CommonPrice, getFarmsPrices } from '../src/fetchFarmsV3'
 
 const tokenListMap = {
-  [ChainId.BSC]: 'https://tokens.pancakeswap.finance/pancakeswap-default.json',
+  [ChainId.BSC]: 'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
   [ChainId.ETHEREUM]: 'https://tokens.pancakeswap.finance/pancakeswap-eth-default.json',
   [ChainId.ZKSYNC]: 'https://tokens.pancakeswap.finance/pancakeswap-zksync-default.json',
   [ChainId.POLYGON_ZKEVM]: 'https://tokens.pancakeswap.finance/pancakeswap-polygon-zkevm-default.json',
