@@ -1,13 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { Link, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useFixedStakingContract } from 'hooks/useContract'
 import { createElement, useCallback, useMemo } from 'react'
-import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { useContractRead } from 'wagmi'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 import { getBep20Contract } from 'utils/contractHelpers'
 
@@ -26,7 +26,7 @@ export function useHandleWithdrawSubmission({
   const { toastSuccess, toastInfo } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
 
-  const throwCustomeError = useCallback(() => {
+  const throwCustomError = useCallback(() => {
     toastInfo(
       t('Withdawal approval is pending'),
       <>
@@ -42,7 +42,7 @@ export function useHandleWithdrawSubmission({
   }, [t, toastInfo])
 
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({
-    throwCustomeError,
+    throwCustomError,
   })
   const fixedStakingContract = useFixedStakingContract()
   const { chainId } = useAccountActiveChain()

@@ -2,9 +2,9 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallback, useState } from 'react'
-import { WaitForTransactionResult, SendTransactionResult } from 'wagmi/actions'
 import { isUserRejected, logError } from 'utils/sentry'
 import { BaseError, Hash, UnknownRpcError } from 'viem'
+import { SendTransactionResult, WaitForTransactionResult } from 'wagmi/actions'
 import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
 
 export type CatchTxErrorReturn = {
@@ -33,11 +33,11 @@ const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
 type Params = {
   throwUserRejectError?: boolean
   waitForTransactionTimeout?: number
-  throwCustomeError?: () => void
+  throwCustomError?: () => void
 }
 
 export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
-  const { throwUserRejectError = false, throwCustomeError, waitForTransactionTimeout } = params || {}
+  const { throwUserRejectError = false, throwCustomError, waitForTransactionTimeout } = params || {}
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const [loading, setLoading] = useState(false)
@@ -105,8 +105,8 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
-          } else if (throwCustomeError) {
-            throwCustomeError()
+          } else if (throwCustomError) {
+            throwCustomError()
           } else {
             handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
           }
@@ -126,7 +126,7 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
       waitForTransaction,
       waitForTransactionTimeout,
       throwUserRejectError,
-      throwCustomeError,
+      throwCustomError,
       handleNormalError,
       handleTxError,
     ],
