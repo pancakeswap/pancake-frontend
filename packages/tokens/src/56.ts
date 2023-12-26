@@ -2823,8 +2823,8 @@ export const bscTokens = {
     ChainId.BSC,
     '0x27c073e8427aa493a90b8dC8b73A89e670FD77bB',
     18,
-    'Radpie',
     'RDP',
+    'Radpie',
     'https://www.radiant.magpiexyz.io/stake',
   ),
 }
