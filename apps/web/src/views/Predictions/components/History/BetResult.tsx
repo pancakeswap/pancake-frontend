@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition, REWARD_RATE } from '@pancakeswap/prediction'
 import { BlockIcon, Box, Flex, Heading, InfoIcon, PrizeIcon, ScanLink, Text, useTooltip } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
@@ -40,7 +39,6 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
   const { isRefundable } = useIsRefundable(bet?.round?.epoch ?? 0)
   const canClaim = useGetIsClaimable(bet?.round?.epoch)
   const config = useConfig()
@@ -115,10 +113,10 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   }, [result])
 
   const handleSuccess = async () => {
-    if (account && chainId && bet?.round?.epoch) {
+    if (account && bet?.round?.epoch) {
       // We have to mark the bet as claimed immediately because it does not update fast enough
       dispatch(markAsCollected({ [bet.round.epoch]: true }))
-      dispatch(fetchLedgerData({ account, chainId, epochs: [bet.round.epoch] }))
+      dispatch(fetchLedgerData({ account, chainId: config?.token?.chainId, epochs: [bet.round.epoch] }))
     }
   }
 
@@ -141,7 +139,7 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
         )}
         {bet.claimed && bet.claimedHash && (
           <Flex justifyContent="center">
-            <ScanLink href={getBlockExploreLink(bet.claimedHash, 'transaction', chainId)} mb="16px">
+            <ScanLink href={getBlockExploreLink(bet.claimedHash, 'transaction', config?.token?.chainId)} mb="16px">
               {t('View on %site%', { site: t('Explorer') })}
             </ScanLink>
           </Flex>

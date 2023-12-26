@@ -16,7 +16,6 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { useStatModalProps } from 'state/predictions/hooks'
 import { useProfileForAddress } from 'state/profile/hooks'
@@ -56,7 +55,6 @@ const getRankingColor = (rank: number) => {
 const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user, token, api }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
-  const { chainId } = useActiveChainId()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
   const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
   const { result, address, leaderboardLoadingState } = useStatModalProps({
@@ -102,7 +100,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
             <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
             <SubMenuItem
               as={Link}
-              href={getBlockExploreLink(user.id, 'address', chainId)}
+              href={getBlockExploreLink(user.id, 'address', token?.chainId)}
               bold={false}
               color="text"
               external
