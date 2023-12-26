@@ -159,7 +159,7 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
           />
         )}
         <Text color={!optionSelected && placeHolderText ? "text" : undefined}>
-          {!optionSelected && placeHolderText ? placeHolderText : options[selectedOptionIndex].label}
+          {!optionSelected && placeHolderText ? placeHolderText : options[selectedOptionIndex]?.label}
         </Text>
       </DropDownHeader>
       <ArrowDropDownIcon color="text" onClick={toggling} />
