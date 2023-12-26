@@ -1996,7 +1996,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.ace.address,
-    token1Address: bscTokens.ust.address,
+    token1Address: bscTokens.usdt.address,
     feeTier: FeeAmount.MEDIUM,
   },
   {
