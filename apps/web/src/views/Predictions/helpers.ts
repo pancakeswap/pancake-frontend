@@ -1,6 +1,6 @@
 import { BetPosition } from '@pancakeswap/prediction'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { formatBigIntToFixed, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import BN from 'bignumber.js'
 import memoize from 'lodash/memoize'
@@ -39,10 +39,13 @@ const formatPriceDifference = ({
 }
 
 export const formatUsdv2 = (usd: bigint, displayedDecimals: number) => {
-  const price = getBalanceNumber(BN(usd.toString()), 8)
-  return `$${price.toLocaleString(undefined, {
-    maximumFractionDigits: displayedDecimals,
-  })}`
+  return formatPriceDifference({
+    price: usd,
+    minPriceDisplayed: calculateMinDisplayed(8, displayedDecimals),
+    unitPrefix: '$',
+    displayedDecimals,
+    decimals: 8,
+  })
 }
 
 export const formatTokenv2 = (token: bigint, decimals: number, displayedDecimals: number) => {
