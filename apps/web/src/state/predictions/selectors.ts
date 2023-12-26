@@ -1,4 +1,6 @@
+import { MINUTE_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { createSelector } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 import orderBy from 'lodash/orderBy'
 import { Address } from 'wagmi'
 import { NodeLedger, NodeRound, PredictionsState } from '../types'
@@ -95,3 +97,7 @@ export const getCurrentRoundCloseTimestampSelector = createSelector(
     return currentRound.closeTimestamp
   },
 )
+
+export const getInternalTimeInMinutes = createSelector([selectIntervalSeconds], (intervalSeconds: number) => {
+  return new BigNumber(intervalSeconds).div(MINUTE_IN_SECONDS).toNumber()
+})

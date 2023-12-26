@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
-import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
+import { useGetCurrentRoundCloseTimestamp, useGetInternalTimeInMinutes } from 'state/predictions/hooks'
 import { keyframes, styled } from 'styled-components'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
@@ -136,12 +136,8 @@ const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean 
   }
 `
 
-interface TimerLabelProps {
-  interval: string
-  unit: 'm' | 'h' | 'd'
-}
-
-export const TimerLabel: React.FC<React.PropsWithChildren<TimerLabelProps>> = ({ interval, unit }) => {
+export const TimerLabel = () => {
+  const interval = useGetInternalTimeInMinutes()
   const currentRoundCloseTimestamp = useGetCurrentRoundCloseTimestamp()
   const { secondsRemaining } = useCountdown(currentRoundCloseTimestamp ?? 0)
   const countdown = formatRoundTime(secondsRemaining)
@@ -163,7 +159,7 @@ export const TimerLabel: React.FC<React.PropsWithChildren<TimerLabelProps>> = ({
             {t('Closing')}
           </ClosingTitle>
         )}
-        <Interval fontSize="12px">{`${interval}${t(unit)}`}</Interval>
+        <Interval fontSize="12px">{`${interval}${t('m')}`}</Interval>
       </Label>
       <Token right={0}>
         <PocketWatchIcon />

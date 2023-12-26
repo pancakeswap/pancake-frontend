@@ -10,6 +10,7 @@ import { fetchAddressResult } from '.'
 import { PredictionsState, PredictionUser } from '../types'
 import {
   getCurrentRoundCloseTimestampSelector,
+  getInternalTimeInMinutes,
   getMinBetAmountSelector,
   getRoundsByCloseOracleIdSelector,
   getSortedRoundsCurrentEpochSelector,
@@ -190,4 +191,8 @@ export const useCollectWinningModalProps = () => {
     isLoadingHistory,
     history,
   }
+}
+
+export const useGetInternalTimeInMinutes = () => {
+  return useSelector(getInternalTimeInMinutes)
 }
