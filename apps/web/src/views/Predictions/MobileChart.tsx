@@ -4,6 +4,7 @@ import { Flex } from '@pancakeswap/uikit'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import dynamic from 'next/dynamic'
+import { useEffect } from 'react'
 import { setChartView } from 'state/predictions'
 import { useChartView } from 'state/predictions/hooks'
 import { styled } from 'styled-components'
@@ -36,6 +37,12 @@ const MobileChart = () => {
   const dispatch = useLocalDispatch()
   const { t } = useTranslation()
   const config = useConfig()
+
+  useEffect(() => {
+    if (config?.galetoOracleAddress) {
+      dispatch(setChartView(PredictionsChartView.TradingView))
+    }
+  }, [config, dispatch])
 
   return (
     <MobileChartWrapper>

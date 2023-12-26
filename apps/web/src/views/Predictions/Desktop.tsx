@@ -125,6 +125,12 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   const status = useGetPredictionsStatus()
   const config = useConfig()
 
+  useEffect(() => {
+    if (config?.galetoOracleAddress) {
+      dispatch(setChartPaneState(false))
+    }
+  }, [config, dispatch])
+
   const openChartPane = () => {
     if (splitWrapperRef.current) {
       splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
