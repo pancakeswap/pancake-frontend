@@ -72,7 +72,7 @@ const APRDebugView = () => {
                 revenueSharingAPR: revenueSharingAPR?.toSignificant(18),
                 totalAPR: totalAPR?.toSignificant(18),
                 cakePoolEmission: cakePoolEmission?.toString(),
-                userSharesPercent: userSharesPercent.toSignificant(18),
+                userSharesPercent: userSharesPercent?.toSignificant(18),
                 userCakeTVL: userCakeTVL?.toString(),
                 revShareEmission: revShareEmission?.toString(),
               },
