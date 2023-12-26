@@ -28,6 +28,7 @@ for await (const [chainId, url] of Object.entries(tokenListMap)) {
     tokenListByChain[chainId] = json
   } catch (error) {
     console.error('chainId', url, error.message)
+    throw error
   }
 }
 
