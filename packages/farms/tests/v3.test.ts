@@ -1,10 +1,11 @@
-import { ChainId, chainNames } from '@pancakeswap/chains'
+import { ChainId, chainNames, isTestnetChainId } from '@pancakeswap/chains'
 import { Pool } from '@pancakeswap/v3-sdk'
 import groupBy from 'lodash/groupBy'
 import { isAddressEqual } from 'viem'
 import { describe, expect, it } from 'vitest'
 import { priceHelperTokens } from '../constants/common'
 import { farmsV3ConfigChainMap } from '../constants/v3'
+import { supportedChainIdV3 } from '../src'
 import { CommonPrice, getFarmsPrices } from '../src/fetchFarmsV3'
 
 const tokenListMap = {
@@ -33,19 +34,7 @@ for await (const [chainId, url] of Object.entries(tokenListMap)) {
 describe('Config farms V3', async () => {
   Object.entries(farmsV3ConfigChainMap).forEach(async ([_chainId, farms]) => {
     const chainId = Number(_chainId)
-    if (
-      ![
-        ChainId.BSC,
-        ChainId.ETHEREUM,
-        ChainId.POLYGON_ZKEVM,
-        ChainId.ZKSYNC,
-        ChainId.ARBITRUM_ONE,
-        ChainId.LINEA,
-        ChainId.BASE,
-        ChainId.OPBNB,
-      ].includes(chainId)
-    )
-      return
+    if (!supportedChainIdV3.filter((id) => !isTestnetChainId(id)).includes(chainId)) return
     const tokenList = tokenListByChain[chainId]
     it(`${chainNames[chainId]}.ts have config in token-list`, () => {
       expect(tokenList).not.toBeUndefined()
