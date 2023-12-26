@@ -1,4 +1,4 @@
-import { ChainId, TestnetChainId } from './chainId'
+import { ChainId, testnetChainIds } from './chainId'
 import { chainNameToChainId, chainNames, defiLlamaChainNames } from './chainNames'
 
 export function getChainName(chainId: ChainId) {
@@ -15,5 +15,5 @@ export function getChainIdByChainName(chainName?: string): ChainId | undefined {
 }
 
 export function isTestnetChainId(chainId: ChainId) {
-  return Boolean(TestnetChainId[chainId])
+  return testnetChainIds.includes(chainId)
 }
