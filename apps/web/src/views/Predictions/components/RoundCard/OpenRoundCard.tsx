@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BetPosition } from '@pancakeswap/prediction'
+import { BetPosition, ROUND_BUFFER } from '@pancakeswap/prediction'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -16,7 +16,6 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
-import { ROUND_BUFFER } from 'state/predictions/config'
 import { NodeLedger, NodeRound } from 'state/types'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'

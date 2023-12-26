@@ -1,5 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BetPosition, PredictionStatus, PredictionSupportedSymbol, predictionsV2ABI } from '@pancakeswap/prediction'
+import {
+  BetPosition,
+  PredictionStatus,
+  PredictionSupportedSymbol,
+  predictionsV2ABI,
+  ROUNDS_PER_PAGE,
+} from '@pancakeswap/prediction'
 import { gql, request } from 'graphql-request'
 import {
   Bet,
@@ -19,7 +25,6 @@ import { BetResponseBNB } from './bnbQueries'
 import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
 import { BetResponseCAKE } from './cakeQueries'
 import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTransformers'
-import { ROUNDS_PER_PAGE } from './config'
 import { newTransformBetResponse, newTransformUserResponse } from './newTransformers'
 import { getBetBaseFields, getRoundBaseFields, getUserBaseFields } from './queries'
 import { BetResponse, UserResponse } from './responseType'

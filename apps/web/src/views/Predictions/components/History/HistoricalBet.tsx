@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { PredictionStatus, REWARD_RATE } from '@pancakeswap/prediction'
 import {
   Box,
   ChevronDownIcon,
@@ -11,22 +12,20 @@ import {
   useTooltip,
   WaitIcon,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { styled } from 'styled-components'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { Bet } from 'state/types'
-import { PredictionStatus } from '@pancakeswap/prediction'
-import { REWARD_RATE } from 'state/predictions/config'
-import { useGetCurrentEpoch, useGetIsClaimable, useGetPredictionsStatus } from 'state/predictions/hooks'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useState } from 'react'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { getRoundResult, Result } from 'state/predictions/helpers'
-import { useTranslation } from '@pancakeswap/localization'
-import { formatBnb, getNetPayout } from './helpers'
+import { useGetCurrentEpoch, useGetIsClaimable, useGetPredictionsStatus } from 'state/predictions/hooks'
+import { Bet } from 'state/types'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
+import { useConfig } from '../../context/ConfigProvider'
 import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import BetDetails from './BetDetails'
-import { useConfig } from '../../context/ConfigProvider'
+import { formatBnb, getNetPayout } from './helpers'
 
 interface BetProps {
   bet: Bet

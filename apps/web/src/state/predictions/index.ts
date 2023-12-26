@@ -1,5 +1,14 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BetPosition, PredictionConfig, PredictionsChartView, PredictionStatus } from '@pancakeswap/prediction'
+import {
+  BetPosition,
+  FUTURE_ROUND_COUNT,
+  LEADERBOARD_MIN_ROUNDS_PLAYED,
+  PAST_ROUND_COUNT,
+  PredictionConfig,
+  PredictionsChartView,
+  PredictionStatus,
+  ROUNDS_PER_PAGE,
+} from '@pancakeswap/prediction'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FetchStatus } from 'config/constants/types'
 import merge from 'lodash/merge'
@@ -18,7 +27,6 @@ import { PredictionsRoundsResponse } from 'utils/types'
 import { formatUnits } from 'viem'
 import { Address } from 'wagmi'
 import { resetUserState } from '../global/actions'
-import { FUTURE_ROUND_COUNT, LEADERBOARD_MIN_ROUNDS_PLAYED, PAST_ROUND_COUNT, ROUNDS_PER_PAGE } from './config'
 import {
   fetchUserRounds,
   fetchUsersRoundsLength,
@@ -248,7 +256,7 @@ export const filterLeaderboard = createAsyncThunk<
     {
       skip: 0,
       orderBy: filters.orderBy,
-      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${filters.orderBy}_gt`]: 0 },
+      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED[extra.token.symbol], [`${filters.orderBy}_gt`]: 0 },
     },
     extra.api,
     extra.token.symbol,
@@ -283,7 +291,10 @@ export const filterNextPageLeaderboard = createAsyncThunk<
     {
       skip,
       orderBy: state.leaderboard.filters.orderBy,
-      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.leaderboard.filters.orderBy}_gt`]: 0 },
+      where: {
+        totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED[extra.token.symbol],
+        [`${state.leaderboard.filters.orderBy}_gt`]: 0,
+      },
     },
     extra.api,
     extra.token.symbol,

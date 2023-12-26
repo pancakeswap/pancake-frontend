@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { REWARD_RATE } from '@pancakeswap/prediction'
 import { CheckmarkCircleFillIcon, CheckmarkCircleIcon, Tag, useTooltip } from '@pancakeswap/uikit'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { useMemo } from 'react'
-import { REWARD_RATE } from 'state/predictions/config'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatTokenv2 } from '../../helpers'
 

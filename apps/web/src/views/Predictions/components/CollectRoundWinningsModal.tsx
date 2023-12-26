@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { REWARD_RATE } from '@pancakeswap/prediction'
 import { Token } from '@pancakeswap/sdk'
 import {
   AutoRenewIcon,
@@ -26,7 +27,6 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useEffect } from 'react'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
-import { REWARD_RATE } from 'state/predictions/config'
 import { Bet } from 'state/types'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
