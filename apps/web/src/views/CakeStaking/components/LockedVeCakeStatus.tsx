@@ -53,6 +53,7 @@ export const LockedVeCakeStatus: React.FC<{
   const { balance: proxyBalance } = useProxyVeCakeBalance()
   const balanceBN = useMemo(() => getBalanceNumber(balance), [balance])
   const proxyCake = useMemo(() => getBalanceNumber(proxyBalance), [proxyBalance])
+  const nativeCake = useMemo(() => getBalanceNumber(balance.minus(proxyBalance)), [balance, proxyBalance])
 
   if (status === CakeLockStatus.NotLocked) return null
 
@@ -81,7 +82,7 @@ export const LockedVeCakeStatus: React.FC<{
               <Tooltips
                 content={
                   proxyBalance.gt(0) ? (
-                    <DualStakeTooltip nativeBalance={balanceBN} proxyBalance={proxyCake} />
+                    <DualStakeTooltip nativeBalance={nativeCake} proxyBalance={proxyCake} />
                   ) : (
                     <SingleStakeTooltip />
                   )
@@ -218,10 +219,10 @@ const DualStakeTooltip: React.FC<{
       <br />
       <ul>
         <li>
-          {t('Native:')} {formatNumber(nativeBalance)} veCAKE
+          {t('Native:')} {formatNumber(nativeBalance, 2, 4)} veCAKE
         </li>
         <li>
-          {t('Migrated:')} {formatNumber(proxyBalance)} veCAKE
+          {t('Migrated:')} {formatNumber(proxyBalance, 2, 4)} veCAKE
         </li>
       </ul>
       <br />
