@@ -139,4 +139,11 @@ export const mainnetTokens = {
     'amAPT',
     'Amnis Aptos Coin',
   ),
+  gui: new Coin(
+    ChainId.MAINNET,
+    '0xe4ccb6d39136469f376242c31b34d10515c8eaaa38092f804db8e08a8f53c5b2::assets_v1::EchoCoin002',
+    6,
+    'GUI',
+    'GUI INU',
+  ),
 }
