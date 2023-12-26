@@ -46,7 +46,7 @@ const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount
           outline={!hasClaimed}
           startIcon={
             hasClaimed ? (
-              <CheckmarkCircleFillIcon color="secondary" width="18px" />
+              <CheckmarkCircleFillIcon color="white" width="18px" />
             ) : (
               <CheckmarkCircleIcon color="secondary" width="18px" />
             )
