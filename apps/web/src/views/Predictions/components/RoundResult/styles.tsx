@@ -1,11 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from '@pancakeswap/prediction'
 import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { useMemo } from 'react'
 import { NodeRound, Round } from 'state/types'
 import { DefaultTheme, styled } from 'styled-components'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { formatTokenv2, formatUsdv2, getPriceDifference, getRoundPosition } from '../../helpers'
+import { formatTokenv2, getPriceDifference, getRoundPosition } from '../../helpers'
 import { formatBnb, formatUsd } from '../History/helpers'
 import PositionTag from '../PositionTag'
 
@@ -90,11 +91,10 @@ interface LockPriceRowProps extends FlexProps {
 export const LockPriceRow: React.FC<React.PropsWithChildren<LockPriceRowProps>> = ({ lockPrice, ...props }) => {
   const { t } = useTranslation()
   const config = useConfig()
-
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsdv2(lockPrice ?? 0n, config?.displayedDecimals ?? 0)}</Text>
+      <Text fontSize="14px">{formatUsd(Number(formatBigInt(lockPrice, 8, 8)), config?.displayedDecimals ?? 0)}</Text>
     </Row>
   )
 }
@@ -186,14 +186,14 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
         <Text color={textColor} bold fontSize="24px">
-          {formatUsdv2(closePrice, config?.displayedDecimals ?? 0)}
+          {formatUsd(Number(formatBigInt(closePrice, 8, 8)), config?.displayedDecimals ?? 0)}
         </Text>
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
       {betPosition && (
         <PositionTag betPosition={betPosition}>
-          {formatUsdv2(priceDifference, config?.displayedDecimals ?? 0)}
+          {formatUsd(Number(formatBigInt(priceDifference, 8, 8)), config?.displayedDecimals ?? 0)}
         </PositionTag>
       )}
     </Flex>
