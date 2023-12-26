@@ -1,13 +1,37 @@
 import { ChainId, chainNames } from '@pancakeswap/chains'
 import { Pool } from '@pancakeswap/v3-sdk'
 import groupBy from 'lodash/groupBy'
+import { isAddressEqual } from 'viem'
 import { describe, expect, it } from 'vitest'
 import { priceHelperTokens } from '../constants/common'
 import { farmsV3ConfigChainMap } from '../constants/v3'
 import { CommonPrice, getFarmsPrices } from '../src/fetchFarmsV3'
 
-describe('Config farms V3', () => {
-  Object.entries(farmsV3ConfigChainMap).forEach(([_chainId, farms]) => {
+const tokenListMap = {
+  [ChainId.BSC]: 'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
+  [ChainId.ETHEREUM]: 'https://tokens.pancakeswap.finance/pancakeswap-eth-default.json',
+  [ChainId.ZKSYNC]: 'https://tokens.pancakeswap.finance/pancakeswap-zksync-default.json',
+  [ChainId.POLYGON_ZKEVM]: 'https://tokens.pancakeswap.finance/pancakeswap-polygon-zkevm-default.json',
+  [ChainId.ARBITRUM_ONE]: 'https://tokens.pancakeswap.finance/pancakeswap-arbitrum-default.json',
+  [ChainId.LINEA]: 'https://tokens.pancakeswap.finance/pancakeswap-linea-default.json',
+  [ChainId.BASE]: 'https://tokens.pancakeswap.finance/pancakeswap-base-default.json',
+  [ChainId.OPBNB]: 'https://tokens.pancakeswap.finance/pancakeswap-opbnb-default.json',
+}
+
+const tokenListByChain = {}
+
+for await (const [chainId, url] of Object.entries(tokenListMap)) {
+  try {
+    const resp = await fetch(url)
+    const json = await resp.json()
+    tokenListByChain[chainId] = json
+  } catch (error) {
+    console.error('chainId', url, error.message)
+  }
+}
+
+describe('Config farms V3', async () => {
+  Object.entries(farmsV3ConfigChainMap).forEach(async ([_chainId, farms]) => {
     const chainId = Number(_chainId)
     if (
       ![
@@ -18,9 +42,15 @@ describe('Config farms V3', () => {
         ChainId.ARBITRUM_ONE,
         ChainId.LINEA,
         ChainId.BASE,
+        ChainId.OPBNB,
       ].includes(chainId)
     )
       return
+    const tokenList = tokenListByChain[chainId]
+    it(`${chainNames[chainId]}.ts have config in token-list`, () => {
+      expect(tokenList).not.toBeUndefined()
+    })
+
     const groups = groupBy(farms, 'pid')
     Object.entries(groups).forEach(([pid, c]) => {
       it(`${chainNames[chainId]}.ts farms with pid #${pid} should unique`, () => {
@@ -31,6 +61,13 @@ describe('Config farms V3', () => {
       it(`${chainNames[chainId]}.ts pid #${farm.pid} tokens should has correct chainId`, () => {
         expect(farm.token0.chainId).toBe(chainId)
         expect(farm.token1.chainId).toBe(chainId)
+      })
+      const token0InList = tokenList.tokens.find((t) => isAddressEqual(t.address, farm.token0.address))
+      const token1InList = tokenList.tokens.find((t) => isAddressEqual(t.address, farm.token1.address))
+
+      it(`${chainNames[chainId]}.ts pid #${farm.pid} tokens should add to tokenlist`, () => {
+        expect(token0InList, `${farm.token0.symbol}#${farm.token0.address}`).toBeDefined()
+        expect(token1InList, `${farm.token1.symbol}#${farm.token1.address}`).toBeDefined()
       })
 
       it(`${chainNames[chainId]}.ts pid #${farm.pid} should has correct lpAddress`, () => {
