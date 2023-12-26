@@ -1,7 +1,6 @@
 import { SerializedFarmsState } from '@pancakeswap/farms'
 import { SerializedPoolWithInfo } from '@pancakeswap/pools'
 import { BetPosition, PredictionStatus, PredictionsChartView } from '@pancakeswap/prediction'
-import { Token } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import {
   CampaignType,
