@@ -2,7 +2,7 @@ import { CSSProperties } from 'react'
 import { styled } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { BetPosition } from 'state/types'
+import { BetPosition } from '@pancakeswap/prediction'
 import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMultiplierArrows'
 import EnteredTag from './EnteredTag'
 

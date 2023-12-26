@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import LocalReduxProvider from 'contexts/LocalRedux/Provider'
 import makeStore from 'contexts/LocalRedux/makeStore'
-import { PredictionSupportedSymbol } from 'state/types'
+import { PredictionSupportedSymbol } from '@pancakeswap/prediction'
 import reducers, { initialState } from 'state/predictions'
 import { useRouter } from 'next/router'
 import _toUpper from 'lodash/toUpper'

@@ -3,15 +3,14 @@ import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_CAKE } from 'config/cons
 import {
   Bet,
   LedgerData,
-  BetPosition,
   PredictionsState,
-  PredictionStatus,
   ReduxNodeLedger,
   RoundData,
   HistoryFilter,
   ReduxNodeRound,
   NodeRound,
 } from 'state/types'
+import { BetPosition, PredictionStatus } from '@pancakeswap/prediction'
 import { Address } from 'wagmi'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'

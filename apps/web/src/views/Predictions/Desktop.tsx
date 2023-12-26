@@ -12,7 +12,7 @@ import {
   useIsHistoryPaneOpen,
 } from 'state/predictions/hooks'
 import { setChartPaneState, setChartView } from 'state/predictions'
-import { PredictionsChartView, PredictionStatus } from 'state/types'
+import { PredictionStatus, PredictionsChartView } from '@pancakeswap/prediction'
 import dynamic from 'next/dynamic'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChartByLabel } from 'components/Chart/ChartbyLabel'

@@ -1,7 +1,7 @@
 import { useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useEffect, useRef } from 'react'
 import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
-import { PredictionsChartView } from 'state/types'
+import { PredictionsChartView } from '@pancakeswap/prediction'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
 import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
 import { PredictionSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'

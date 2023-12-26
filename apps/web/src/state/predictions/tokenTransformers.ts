@@ -1,5 +1,6 @@
 import numberOrNull from 'utils/numberOrNull'
-import { BetPosition, Bet, Round, PredictionUser } from '../types'
+import { BetPosition } from '@pancakeswap/prediction'
+import { Bet, Round, PredictionUser } from '../types'
 import { RoundResponse } from './responseType'
 import { BetResponseCAKE } from './cakeQueries'
 import { BetResponseBNB } from './bnbQueries'

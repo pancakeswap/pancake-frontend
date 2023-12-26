@@ -8,14 +8,12 @@ import {
   LedgerData,
   HistoryFilter,
   PredictionsState,
-  PredictionStatus,
-  BetPosition,
   PredictionUser,
   LeaderboardFilter,
-  PredictionsChartView,
   PredictionConfig,
   ReduxNodeRound,
 } from 'state/types'
+import { BetPosition, PredictionStatus, PredictionsChartView } from '@pancakeswap/prediction'
 import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionsRoundsResponse } from 'utils/types'

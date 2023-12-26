@@ -1,4 +1,5 @@
-import { Bet, BetPosition } from 'state/types'
+import { Bet } from 'state/types'
+import { BetPosition } from '@pancakeswap/prediction'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 
 export const formatUsd = (usd: number | undefined, displayedDecimals: number) => {

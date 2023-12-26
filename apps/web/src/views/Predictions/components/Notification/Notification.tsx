@@ -2,7 +2,7 @@ import { styled } from 'styled-components'
 import { Card, CardBody, Heading, ArrowBackIcon, IconButton } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
-import { PredictionSupportedSymbol } from 'state/types'
+import { PredictionSupportedSymbol } from '@pancakeswap/prediction'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
 interface NotificationProps {

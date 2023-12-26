@@ -1,4 +1,4 @@
-import { BetPosition } from 'state/types'
+import { BetPosition } from '@pancakeswap/prediction'
 import BN from 'bignumber.js'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
