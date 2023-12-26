@@ -15,7 +15,7 @@ import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { viemClients } from 'utils/viem'
-import { Address, Hex, hexToBigInt } from 'viem'
+import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
@@ -213,15 +213,15 @@ export default function useSendSwapTransaction(
               throw new TransactionRejectedError(t('Transaction rejected'))
             } else {
               // otherwise, the error was unexpected and we need to convey that
-              logger.error(
+              logger.warn(
                 'Swap failed',
                 {
                   chainId,
                   input: trade.inputAmount.currency,
                   output: trade.outputAmount.currency,
                   address: call.address,
-                  calldata: call.calldata,
                   value: call.value,
+                  cause: error instanceof TransactionExecutionError ? error.cause : undefined,
                 },
                 error,
               )
