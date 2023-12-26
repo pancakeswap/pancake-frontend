@@ -141,8 +141,8 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
         )}
         {bet.claimed && bet.claimedHash && (
           <Flex justifyContent="center">
-            <ScanLink href={getBlockExploreLink(bet.claimedHash, 'transaction')} mb="16px">
-              {t('View on BscScan')}
+            <ScanLink href={getBlockExploreLink(bet.claimedHash, 'transaction', chainId)} mb="16px">
+              {t('View on %site%', { site: t('Explorer') })}
             </ScanLink>
           </Flex>
         )}

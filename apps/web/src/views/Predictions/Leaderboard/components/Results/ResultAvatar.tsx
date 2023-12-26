@@ -1,18 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
-import {
-  Box,
-  BscScanIcon,
-  Flex,
-  FlexProps,
-  Link,
-  ProfileAvatar,
-  SubMenu,
-  SubMenuItem,
-  Text,
-  useModal,
-} from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps, Link, ProfileAvatar, SubMenu, SubMenuItem, Text, useModal } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { useStatModalProps } from 'state/predictions/hooks'
 import { useProfileForAddress } from 'state/profile/hooks'
@@ -48,6 +38,7 @@ const UsernameWrapper = styled(Box)`
 
 const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ user, token, api, ...props }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
   const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
   const { result, address, leaderboardLoadingState } = useStatModalProps({
@@ -89,9 +80,8 @@ const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ us
       options={{ placement: 'bottom-start' }}
     >
       <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
-      <SubMenuItem as={Link} href={getBlockExploreLink(user.id, 'address')} bold={false} color="text" external>
-        {t('View on BscScan')}
-        <BscScanIcon ml="4px" width="20px" color="textSubtle" />
+      <SubMenuItem as={Link} href={getBlockExploreLink(user.id, 'address', chainId)} bold={false} color="text" external>
+        {t('View on %site%', { site: t('Explorer') })}
       </SubMenuItem>
     </SubMenu>
   )

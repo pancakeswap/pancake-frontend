@@ -16,6 +16,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { styled } from 'styled-components'
@@ -58,6 +59,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const { chainId } = useActiveChainId()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(address)
   const { domainName, avatar } = useDomainNameForAddress(address, !profile && !isProfileLoading)
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
@@ -84,7 +86,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
                 {profile?.username}
               </Heading>
             )}
-            <StyledScanLink href={getBlockExploreLink(address, 'address')}>
+            <StyledScanLink href={getBlockExploreLink(address, 'address', chainId)}>
               {domainName || truncateHash(address)}
             </StyledScanLink>
           </Box>
