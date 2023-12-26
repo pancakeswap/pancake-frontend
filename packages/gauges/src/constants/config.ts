@@ -2149,6 +2149,24 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: zksyncTokens.usdc.address,
     feeTier: FeeAmount.LOWEST,
   },
+  {
+    gid: 203,
+    pairName: 'RDP-BNB',
+    address: '0xE297e1dA9a484E609D180C5B1fEfE4830df70eF1',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.rdp.address,
+    token1Address: bscTokens.wbnb.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
+  {
+    gid: 204,
+    pairName: 'sdCAKE-CAKE',
+    address: '0xB1D54d76E2cB9425Ec9c018538cc531440b55dbB',
+    chainId: ChainId.BSC,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [bscTokens.sdcake.address, bscTokens.cake.address],
+  },
 ]
 
 export const GAUGES_CONFIG = {
