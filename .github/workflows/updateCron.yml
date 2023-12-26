@@ -13,7 +13,7 @@ jobs:
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v2.2.4
@@ -67,7 +67,7 @@ jobs:
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v2.2.4
@@ -123,7 +123,7 @@ jobs:
     if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v2.2.4
