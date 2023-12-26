@@ -112,13 +112,29 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
 
   &.type-a {
     height: 246px;
+    &.adjust-height {
+      margin-top: 20px;
+      height: 220px;
+    }
     ${({ theme }) => theme.mediaQueries.sm} {
+      &.adjust-height {
+        margin-top: 0px;
+        height: 246px;
+      }
       flex-basis: calc(33.3% - 48px);
     }
     ${({ theme }) => theme.mediaQueries.xl} {
       height: 286px;
+      &.adjust-height {
+        margin-top: 0px;
+        height: 286px;
+      }
       &.higher {
         height: 292px;
+        &.adjust-height {
+          margin-top: 0px;
+          height: 292px;
+        }
       }
     }
     ${({ theme }) => theme.mediaQueries.xxl} {
@@ -274,6 +290,7 @@ const useEarnBlockData = () => {
         image: earnPM,
         defaultImage: earnPMPurple,
         path: '/position-managers',
+        className: 'adjust-height',
       },
     ]
   }, [t])
@@ -322,6 +339,7 @@ const useNftGameBlockData = () => {
         image: nftMarketplace,
         defaultImage: nftMarketplacePurple,
         path: '/nfts',
+        className: 'adjust-height',
       },
     ]
   }, [t])
@@ -454,7 +472,7 @@ const EcoSystemSection: React.FC = () => {
             <FeatureBoxesWrapper>
               {earnBlockData.map((item) => (
                 <FeatureBox
-                  className="type-a"
+                  className={`type-a${item?.className ? ` ${item?.className}` : ''}`}
                   key={`${item.title}Block`}
                   title={item.title}
                   description={item.description}
@@ -488,7 +506,7 @@ const EcoSystemSection: React.FC = () => {
             <FeatureBoxesWrapper>
               {nftGameBlockData.map((item) => (
                 <FeatureBox
-                  className="type-a higher"
+                  className={`type-a higher${item?.className ? ` ${item?.className}` : ''}`}
                   key={`${item.title}Block`}
                   title={item.title}
                   description={item.description}
