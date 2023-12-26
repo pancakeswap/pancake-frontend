@@ -34,7 +34,7 @@ export const useUserSharesPercent = (): Percent => {
   const { data: totalSupply } = useVeCakeTotalSupply()
 
   return useMemo(() => {
-    if (!totalSupply) return new Percent(0, 1)
+    if (!totalSupply || totalSupply.isZero()) return new Percent(0, 1)
     return new Percent(balance.toString(), totalSupply.toString())
   }, [balance, totalSupply])
 }
