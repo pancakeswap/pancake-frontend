@@ -1490,6 +1490,9 @@ importers:
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
+      '@pancakeswap/pools':
+        specifier: workspace:*
+        version: link:../pools
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens

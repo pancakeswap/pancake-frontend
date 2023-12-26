@@ -1,12 +1,12 @@
+import { ChainId } from '@pancakeswap/chains'
 import { Token } from '@pancakeswap/sdk'
 import { Address } from 'viem'
+import { SupportedChainId } from './constants/supportedChains'
 
 export enum PredictionSupportedSymbol {
   BNB = 'BNB',
   CAKE = 'CAKE',
   ETH = 'ETH',
-  WETH = 'WETH',
-  WBTC = 'WBTC',
 }
 
 export enum BetPosition {
@@ -36,4 +36,16 @@ export interface PredictionConfig {
   displayedDecimals: number
   token: Token
   tokenBackgroundColor: string // For selector svg token for prediction page.
+}
+
+export type ContractAddresses<T extends ChainId = SupportedChainId> = {
+  [chainId in T]: Address
+}
+
+export type EndPointType<T extends ChainId = SupportedChainId> = {
+  [chainId in T]: string
+}
+
+export type LeaderboardMinRoundsPlatedType<T extends PredictionSupportedSymbol> = {
+  [PredictionSupportedSymbol in T]: number
 }

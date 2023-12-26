@@ -7,7 +7,7 @@ export const getPredictionConfig = async (chainId?: ChainId): Promise<Record<str
   }
 
   try {
-    const { predictions } = await import(`../constants/config/${getChainName(chainId)}`)
+    const { predictions } = await import(`../constants/predictions/${getChainName(chainId)}`)
     return predictions
   } catch (e) {
     console.error(e)
