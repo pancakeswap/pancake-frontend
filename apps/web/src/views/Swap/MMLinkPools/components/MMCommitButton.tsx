@@ -1,25 +1,25 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { Button, useModal } from '@pancakeswap/uikit'
-import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
-import { SendTransactionResult } from 'wagmi/actions'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { WrapType } from 'hooks/useWrapCallback'
-import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
-import { useExpertMode } from '@pancakeswap/utils/user'
+import { SendTransactionResult } from 'wagmi/actions'
+import { ConfirmSwapModal } from '../../V3Swap/containers/ConfirmSwapModal'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
 import { MMRfqTrade } from '../types'
-import { ConfirmSwapModal } from '../../V3Swap/containers/ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -100,12 +100,12 @@ export function MMSwapCommitButton({
   })
 
   // Handlers
-  const handleSwap = useCallback(() => {
+  const handleSwap = useCallback(async () => {
     if (!swapCallback) {
-      return
+      return undefined
     }
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
-    swapCallback()
+    return swapCallback()
       .then((hash) => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
       })

@@ -141,7 +141,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     }
   }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
 
-  const handleSwap = useCallback(() => {
+  const handleSwap = useCallback(async () => {
     if (
       priceImpactWithoutFee &&
       !confirmPriceImpactWithoutFee(
@@ -151,18 +151,18 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         t,
       )
     ) {
-      return
+      return undefined
     }
     if (!swapCallback) {
       if (revertReason === 'insufficient allowance') {
         setApprovalSubmitted(false)
         setWallchainSecondaryStatus('found')
-        return
+        return undefined
       }
-      return
+      return undefined
     }
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
-    swapCallback()
+    return swapCallback()
       .then((res) => {
         setWallchainSecondaryStatus('not-found')
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
