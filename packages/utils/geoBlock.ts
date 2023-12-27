@@ -1,5 +1,16 @@
-// Sanctioned Countries: Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe.
-const BLOCK_COUNTRIES = { BY: 'BY', CU: 'CU', CD: 'CD', IR: 'IR', IQ: 'IQ', KP: 'KP', SD: 'SD', SY: 'SY', ZW: 'ZW' }
+// Sanctioned Countries: Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe, United States.
+const BLOCK_COUNTRIES = {
+  BY: 'BY',
+  CU: 'CU',
+  CD: 'CD',
+  IR: 'IR',
+  IQ: 'IQ',
+  KP: 'KP',
+  SD: 'SD',
+  SY: 'SY',
+  ZW: 'ZW',
+  US: 'US',
+}
 
 // Sanctioned Regions: Crimea
 const BLOCK_REGIONS = { 'UA-43': 'UA-43' }
