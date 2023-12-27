@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ChevronRightIcon, Flex, Text, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
@@ -10,36 +11,22 @@ import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import earnNftBunny from '../../images/earn-bunny.png'
-import earnFarm from '../../images/earn-farm.png'
 import earnFixedStaking from '../../images/earn-fixed-staking.png'
 import earnLiquidStaking from '../../images/earn-liquidity-staking.png'
 import earnPM from '../../images/earn-pm.png'
-import earnPools from '../../images/earn-pools.png'
 import gameNftBunny from '../../images/game-nft-bunny.png'
 import gamePancakeProtectors from '../../images/game-pancake-protectors.png'
 import gamePrediction from '../../images/game-prediction.png'
 import nftMarketplace from '../../images/nft-marketplace.png'
-import tradeBridge from '../../images/trade-bridge.png'
 import tradeBunny from '../../images/trade-bunny.png'
-import tradeBuy from '../../images/trade-buy-crypto.png'
-import tradeLiquidity from '../../images/trade-liquidity.png'
-import tradePerpetual from '../../images/trade-perpetual.png'
-import tradeSwap from '../../images/trade-swap.png'
 import GradientLogo from '../GradientLogoSvg'
 
-import earnFarmPurple from '../../images/earn-farm-purple.png'
 import earnFixedStakingPurple from '../../images/earn-fixed-staking-purple.png'
 import earnLiquidStakingPurple from '../../images/earn-liquidity-staking-purple.png'
 import earnPMPurple from '../../images/earn-pm-purple.png'
-import earnPoolsPurple from '../../images/earn-pools-purple.png'
 import gamePancakeProtectorsPurple from '../../images/game-pancake-protectors-purple.png'
 import gamePredictionPurple from '../../images/game-prediction-purple.png'
 import nftMarketplacePurple from '../../images/nft-marketplace-purple.png'
-import tradeBridgePurple from '../../images/trade-bridge-purple.png'
-import tradeBuyPurple from '../../images/trade-buy-crypto-purple.png'
-import tradeLiquidityPurple from '../../images/trade-liquidity-purple.png'
-import tradePerpetualPurple from '../../images/trade-perpetual-purple.png'
-import tradeSwapPurple from '../../images/trade-swap-purple.png'
 
 export const CardWrapper = styled.div`
   border-radius: 24px;
@@ -201,32 +188,32 @@ const useTradeBlockData = () => {
         title: t('Swap'),
         description: t('Trade crypto instantly across multiple chains'),
         ctaTitle: t('Trade Now'),
-        image: tradeSwap,
-        defaultImage: tradeSwapPurple,
+        image: `${ASSET_CDN}/web/landing/trade-swap.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-swap-purple.png`,
         path: '/swap',
       },
       {
         title: t('Liquidity'),
         description: t('Fund liquidity pools, earn trading fees'),
         ctaTitle: t('Add Now'),
-        image: tradeLiquidity,
-        defaultImage: tradeLiquidityPurple,
+        image: `${ASSET_CDN}/web/landing/trade-liquidity.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-liquidity-purple.png`,
         path: '/liquidity',
       },
       {
         title: t('Bridge'),
         description: t('Seamlessly transfer assets across chains'),
         ctaTitle: t('Bridge Now'),
-        image: tradeBridge,
-        defaultImage: tradeBridgePurple,
+        image: `${ASSET_CDN}/web/landing/trade-bridge.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-bridge-purple.png`,
         path: 'https://bridge.pancakeswap.finance/',
       },
       {
         title: t('Perpetual'),
         description: t('Trade endlessly without expiration dates'),
         ctaTitle: t('Trade Now'),
-        image: tradePerpetual,
-        defaultImage: tradePerpetualPurple,
+        image: `${ASSET_CDN}/web/landing/trade-perpetual.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-perpetual-purple.png`,
         onClick: () => {
           if (!userNotUsCitizenAcknowledgement) {
             onUSCitizenModalPresent()
@@ -239,8 +226,8 @@ const useTradeBlockData = () => {
         title: t('Buy Crypto'),
         description: t('Buy crypto with your preferred currency and payment method'),
         ctaTitle: t('Buy Now'),
-        image: tradeBuy,
-        defaultImage: tradeBuyPurple,
+        image: `${ASSET_CDN}/web/landing/trade-buy-crypto.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-buy-crypto-purple.png`,
         path: '/buy-crypto',
       },
     ]
@@ -255,16 +242,16 @@ const useEarnBlockData = () => {
         title: t('Farm'),
         description: t('Stake LP tokens, harvest CAKE'),
         ctaTitle: t('Stake Now'),
-        image: earnFarm,
-        defaultImage: earnFarmPurple,
+        image: `${ASSET_CDN}/web/landing/earn-farm.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/earn-farm-purple.png`,
         path: '/farms',
       },
       {
         title: t('Pools'),
         description: t('Stake CAKE, earn various rewards'),
         ctaTitle: t('Stake Now'),
-        image: earnPools,
-        defaultImage: earnPoolsPurple,
+        image: `${ASSET_CDN}/web/landing/earn-pools.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/earn-pools-purple.png`,
         path: '/pools',
       },
       {
@@ -348,8 +335,8 @@ const useNftGameBlockData = () => {
 const FeatureBox: React.FC<{
   title: string
   description: string
-  image: StaticImageData
-  defaultImage: StaticImageData
+  image: StaticImageData | string
+  defaultImage: StaticImageData | string
   width: number
   ctaTitle: string
   className?: string
@@ -365,8 +352,8 @@ const FeatureBox: React.FC<{
       onClick={onClick ? () => onClick() : () => path && push(path)}
     >
       <ImageBox>
-        <Image className="default" src={defaultImage} width={108} height={108} alt={title} />
-        <Image className="hover" src={image} width={108} height={108} alt={title} />
+        <Image className="default" src={defaultImage} width={108} height={108} alt={title} unoptimized />
+        <Image className="hover" src={image} width={108} height={108} alt={title} unoptimized />
       </ImageBox>
       <Box>
         <Text fontSize="20px" mb="8px" lineHeight="110%" fontWeight={600} color={theme.colors.text}>
@@ -431,6 +418,7 @@ const EcoSystemSection: React.FC = () => {
             width={340}
             height={340}
             placeholder="blur"
+            unoptimized
           />
           <Flex flexDirection="column">
             <Title>{t('Trade')}</Title>
@@ -466,6 +454,7 @@ const EcoSystemSection: React.FC = () => {
             width={296}
             height={360}
             placeholder="blur"
+            unoptimized
           />
           <Flex flexDirection="column">
             <Title>{t('Earn')}</Title>
@@ -500,6 +489,7 @@ const EcoSystemSection: React.FC = () => {
             width={344}
             height={360}
             placeholder="blur"
+            unoptimized
           />
           <Flex flexDirection="column">
             <Title>{t('Game & NFT')}</Title>
