@@ -19,6 +19,7 @@ export {
   partitionMixedRouteByProtocol,
   log,
   logger,
+  getPriceImpact,
   maximumAmountIn,
   metric,
   minimumAmountOut,
