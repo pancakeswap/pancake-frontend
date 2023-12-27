@@ -81,7 +81,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const routerAddress =
     statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
       ? approvalAddressForWallchain
-      : SMART_ROUTER_ADDRESSES[trade?.inputAmount?.currency?.chainId]
+      : SMART_ROUTER_ADDRESSES[trade?.inputAmount?.currency?.chainId as keyof typeof SMART_ROUTER_ADDRESSES]
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -97,7 +97,10 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     amountToApprove,
     routerAddress,
   )
-  const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
+  const { priceImpactWithoutFee } = useMemo(
+    () => (!showWrap ? computeTradePriceBreakdown(trade) : {}),
+    [showWrap, trade],
+  )
   const swapInputError = useSwapInputError(trade, currencyBalances)
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
@@ -312,7 +315,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     )
   }
 
-  const noRoute = !(trade?.routes?.length > 0) || tradeError
+  const noRoute = !((trade?.routes?.length ?? 0) > 0) || tradeError
 
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),

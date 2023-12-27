@@ -85,7 +85,7 @@ export function computeSlippageAdjustedAmounts(
   }
 }
 
-export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3 | 4 {
+export function warningSeverity(priceImpact: Percent | undefined | null): 0 | 1 | 2 | 3 | 4 {
   if (!priceImpact?.lessThan(BLOCKED_PRICE_IMPACT_NON_EXPERT)) return 4
   if (!priceImpact?.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) return 3
   if (!priceImpact?.lessThan(ALLOWED_PRICE_IMPACT_MEDIUM)) return 2

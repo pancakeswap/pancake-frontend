@@ -12,10 +12,10 @@ interface UseConfirmModalStateProps {
   txHash?: string
   chainId?: ChainId
   approval: ApprovalState
-  approvalToken: Currency
+  approvalToken?: Currency
   isPendingError: boolean
   isExpertMode: boolean
-  currentAllowance: CurrencyAmount<Currency>
+  currentAllowance?: CurrencyAmount<Currency>
   onConfirm: () => Promise<void>
   approveCallback: () => Promise<SendTransactionResult>
   revokeCallback: () => Promise<SendTransactionResult>
@@ -51,6 +51,7 @@ export const useConfirmModalState = ({
     if (
       approval === ApprovalState.NOT_APPROVED &&
       currentAllowance?.greaterThan(0) &&
+      approvalToken &&
       approvalToken.chainId === ethereumTokens.usdt.chainId &&
       approvalToken.wrapped.address.toLowerCase() === ethereumTokens.usdt.address.toLowerCase()
     ) {
@@ -69,6 +70,13 @@ export const useConfirmModalState = ({
   const onCancel = useCallback(() => {
     setConfirmModalState(ConfirmModalState.REVIEWING)
     setPreviouslyPending(false)
+  }, [])
+
+  const resetSwapFlow = useCallback(() => {
+    setConfirmModalState(ConfirmModalState.REVIEWING)
+    setPendingModalSteps([])
+    setPreviouslyPending(false)
+    setResettingApproval(false)
   }, [])
 
   const performStep = useCallback(
@@ -106,13 +114,6 @@ export const useConfirmModalState = ({
     },
     [approveCallback, revokeCallback, onConfirm, onCancel, resetSwapFlow],
   )
-
-  const resetSwapFlow = useCallback(() => {
-    setConfirmModalState(ConfirmModalState.REVIEWING)
-    setPendingModalSteps([])
-    setPreviouslyPending(false)
-    setResettingApproval(false)
-  }, [])
 
   const startSwapFlow = useCallback(() => {
     const steps = generateRequiredSteps()
