@@ -94,8 +94,8 @@ export const transformBetResponseToken = (betResponse): Bet => {
     claimedHash: betResponse.claimedHash,
     createdAt: numberOrNull(betResponse.createdAt),
     updatedAt: numberOrNull(betResponse.updatedAt),
-    claimedNetBNB: 0,
-    claimedBNB: 0,
+    claimedNetBNB: betResponse.amount ? parseFloat(betResponse.claimedNetAmount) : 0,
+    claimedBNB: betResponse.amount ? parseFloat(betResponse.claimedAmount) : 0,
   } as Bet
 }
 

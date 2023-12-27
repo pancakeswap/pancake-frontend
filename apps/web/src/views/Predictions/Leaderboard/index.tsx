@@ -33,7 +33,9 @@ const Leaderboard = () => {
   useEffect(() => {
     if (predictionConfigs) {
       const defaultPickedTokenSymbol =
-        typeof query?.token === 'string' && PredictionSupportedSymbol?.[query?.token]
+        typeof query?.token === 'string' &&
+        PredictionSupportedSymbol?.[query?.token] &&
+        predictionConfigs[PredictionSupportedSymbol?.[query?.token]]
           ? PredictionSupportedSymbol?.[query?.token]
           : (Object.values(predictionConfigs)?.[0]?.token?.symbol as PredictionSupportedSymbol)
 
