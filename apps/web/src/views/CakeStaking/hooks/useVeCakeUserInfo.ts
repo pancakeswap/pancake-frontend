@@ -4,7 +4,7 @@ import { useVeCakeContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { Address } from 'viem'
 import { useContractRead } from 'wagmi'
-import { CakeLockStatus } from '../types'
+import { CakeLockStatus, CakePoolType } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
 import { useCheckIsUserAllowMigrate } from './useCheckIsUserAllowMigrate'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
@@ -31,7 +31,7 @@ export type VeCakeUserInfo = {
   // cake pool type of cake pool proxy
   // 1: Migration
   // 2: Delegation
-  cakePoolType: number
+  cakePoolType: CakePoolType
   // withdraw flag of cake pool proxy
   // 0: not withdraw
   // 1: already withdraw
@@ -93,7 +93,7 @@ export const useCakeLockStatus = (): {
   const cakePoolLockInfo = useCakePoolLockInfo()
   const isAllowMigrate = useCheckIsUserAllowMigrate(String(cakePoolLockInfo.lockEndTime))
   const shouldMigrate = useMemo(() => {
-    return cakePoolLockInfo?.locked && userInfo?.cakePoolType !== 1 && isAllowMigrate
+    return cakePoolLockInfo?.locked && userInfo?.cakePoolType !== CakePoolType.MIGRATED && isAllowMigrate
   }, [cakePoolLockInfo?.locked, isAllowMigrate, userInfo?.cakePoolType])
   const now = useMemo(() => dayjs.unix(currentTimestamp), [currentTimestamp])
   const cakeLocked = useMemo(() => Boolean(userInfo && userInfo.amount > 0n), [userInfo])
@@ -134,7 +134,11 @@ export const useCakeLockStatus = (): {
   }, [userInfo, cakePoolLocked])
 
   const status = useMemo(() => {
-    if ((!userInfo || !userInfo.amount) && !cakePoolLocked && !shouldMigrate) return CakeLockStatus.NotLocked
+    if (
+      ((!userInfo || !userInfo.amount) && !cakePoolLocked && !shouldMigrate) ||
+      userInfo?.cakePoolType === CakePoolType.DELEGATED
+    )
+      return CakeLockStatus.NotLocked
     if (cakeLockExpired) return CakeLockStatus.Expired
     if ((userInfo?.amount && userInfo.end) || cakePoolLocked) return CakeLockStatus.Locking
     if (shouldMigrate) return CakeLockStatus.Migrate
