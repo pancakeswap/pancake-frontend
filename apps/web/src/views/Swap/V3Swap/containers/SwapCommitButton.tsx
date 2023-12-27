@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import { Button, Text, useModal, Box, Message, MessageText, AutoColumn, Dots } from '@pancakeswap/uikit'
-import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
-import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
+import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 
-import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -14,29 +14,30 @@ import { AutoRow } from 'components/Layout/Row'
 import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import {
+  ALLOWED_PRICE_IMPACT_HIGH,
   BIG_INT_ZERO,
   PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
-  ALLOWED_PRICE_IMPACT_HIGH,
 } from 'config/constants/exchange'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { Field } from 'state/swap/actions'
-import { useExpertMode } from '@pancakeswap/utils/user'
-import { warningSeverity } from 'utils/exchange'
-import { useSwapState } from 'state/swap/hooks'
 import { useCurrency } from 'hooks/Tokens'
-import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
-import { useCurrencyBalances } from 'state/wallet/hooks'
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
+import { Field } from 'state/swap/actions'
+import { useSwapState } from 'state/swap/hooks'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
+import { useCurrencyBalances } from 'state/wallet/hooks'
+import { warningSeverity } from 'utils/exchange'
 
-import { useAccount } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
-import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
+import { useAccount } from 'wagmi'
+import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
+import { TransactionRejectedError } from '../hooks/useSendSwapTransaction'
+import { useWallchainApi } from '../hooks/useWallchain'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
-import { useWallchainApi } from '../hooks/useWallchain'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -168,6 +169,17 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       })
       .catch((error) => {
         setWallchainSecondaryStatus('not-found')
+
+        if (error instanceof TransactionRejectedError) {
+          setSwapState((s) => ({
+            ...s,
+            txHash: undefined,
+            attemptingTxn: false,
+          }))
+          // throw reject error to reset the flow
+          throw error
+        }
+
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
@@ -175,7 +187,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState, revertReason])
+  }, [priceImpactWithoutFee, t, swapCallback, tradeToConfirm, revertReason])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })

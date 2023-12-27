@@ -1,14 +1,15 @@
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useToast } from '@pancakeswap/uikit'
-import { useAccount, Address } from 'wagmi'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { isUserRejected, logError } from 'utils/sentry'
-import { SendTransactionResult } from 'wagmi/actions'
 import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { getViemErrorMessage } from 'utils/errors'
+import { isUserRejected, logError } from 'utils/sentry'
+import { Address, useAccount } from 'wagmi'
+import { SendTransactionResult } from 'wagmi/actions'
 import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 import { useTokenContract } from './useContract'
@@ -172,7 +173,7 @@ export function useApproveCallback(
           logError(error)
           console.error('Failed to approve token', error)
           if (!isUserRejected(error)) {
-            toastError(t('Error'), error.message)
+            toastError(t('Error'), getViemErrorMessage(error))
           }
           throw error
         })

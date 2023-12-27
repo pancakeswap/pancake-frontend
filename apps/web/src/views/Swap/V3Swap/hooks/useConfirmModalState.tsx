@@ -1,11 +1,12 @@
-import { usePublicClient } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
+import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { ethereumTokens } from '@pancakeswap/tokens'
+import { ApprovalState } from 'hooks/useApproveCallback'
 import { useCallback, useEffect, useState } from 'react'
 import { ConfirmModalState, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
-import { ApprovalState } from 'hooks/useApproveCallback'
-import { ethereumTokens } from '@pancakeswap/tokens'
-import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { usePublicClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
-import { ChainId } from '@pancakeswap/chains'
+import { TransactionRejectedError } from './useSendSwapTransaction'
 
 interface UseConfirmModalStateProps {
   txHash?: string
@@ -15,7 +16,7 @@ interface UseConfirmModalStateProps {
   isPendingError: boolean
   isExpertMode: boolean
   currentAllowance: CurrencyAmount<Currency>
-  onConfirm: () => void
+  onConfirm: () => Promise<void>
   approveCallback: () => Promise<SendTransactionResult>
   revokeCallback: () => Promise<SendTransactionResult>
 }
@@ -71,7 +72,7 @@ export const useConfirmModalState = ({
   }, [])
 
   const performStep = useCallback(
-    (step: ConfirmModalState) => {
+    async (step: ConfirmModalState) => {
       switch (step) {
         case ConfirmModalState.RESETTING_APPROVAL:
           setConfirmModalState(ConfirmModalState.RESETTING_APPROVAL)
@@ -87,7 +88,13 @@ export const useConfirmModalState = ({
           break
         case ConfirmModalState.PENDING_CONFIRMATION:
           setConfirmModalState(ConfirmModalState.PENDING_CONFIRMATION)
-          onConfirm()
+          try {
+            await onConfirm()
+          } catch (error) {
+            if (error instanceof TransactionRejectedError) {
+              resetSwapFlow()
+            }
+          }
           break
         case ConfirmModalState.COMPLETED:
           setConfirmModalState(ConfirmModalState.COMPLETED)
@@ -97,7 +104,7 @@ export const useConfirmModalState = ({
           break
       }
     },
-    [approveCallback, revokeCallback, onConfirm, onCancel],
+    [approveCallback, revokeCallback, onConfirm, onCancel, resetSwapFlow],
   )
 
   const resetSwapFlow = useCallback(() => {
