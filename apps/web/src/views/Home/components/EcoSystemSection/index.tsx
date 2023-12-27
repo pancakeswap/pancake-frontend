@@ -260,6 +260,7 @@ const useEarnBlockData = () => {
         ctaTitle: t('Stake Now'),
         image: `${ASSET_CDN}/web/landing/earn-pm.png`,
         defaultImage: `${ASSET_CDN}/web/landing/earn-pm-purple.png`,
+        path: '/position-managers',
         className: 'adjust-height',
       },
     ]
