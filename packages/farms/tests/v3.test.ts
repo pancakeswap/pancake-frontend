@@ -22,17 +22,19 @@ const tokenListMap = {
 describe('Config farms V3', async () => {
   const tokenListByChain = {}
 
-  for await (const [chainId, url] of Object.entries(tokenListMap)) {
-    try {
-      const resp = await fetch(url)
-      const json = await resp.json()
-      tokenListByChain[chainId] = json
-    } catch (error) {
-      console.error('chainId', url, error.message)
-      throw error
-    }
-  }
-  Object.entries(farmsV3ConfigChainMap).forEach(async ([_chainId, farms]) => {
+  await Promise.all(
+    Object.entries(tokenListMap).map(async ([chainId, url]) => {
+      try {
+        const resp = await fetch(url)
+        const json = await resp.json()
+        tokenListByChain[chainId] = json
+      } catch (error) {
+        console.error('chainId', url, error.message)
+        throw error
+      }
+    }),
+  )
+  Object.entries(farmsV3ConfigChainMap).forEach(([_chainId, farms]) => {
     const chainId = Number(_chainId)
     if (!supportedChainIdV3.filter((id) => !isTestnetChainId(id)).includes(chainId)) return
     const tokenList = tokenListByChain[chainId]
