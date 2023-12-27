@@ -29,3 +29,12 @@ export const Tooltips: React.FC<React.PropsWithChildren<TooltipsProps>> = ({
     </>
   )
 }
+
+export const DebugTooltips: React.FC<React.PropsWithChildren<TooltipsProps>> = ({ ...props }) => {
+  return (
+    <Tooltips
+      {...props}
+      disabled={!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')}
+    />
+  )
+}

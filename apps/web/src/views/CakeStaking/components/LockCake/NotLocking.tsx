@@ -1,11 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, ColumnCenter, Grid, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { WEEK } from 'config/constants/veCake'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
-import { getVeCakeAmount } from 'utils/getVeCakeAmount'
 import { useWriteApproveAndLockCallback } from 'views/CakeStaking/hooks/useContractWrite'
 import { NewStakingDataSet } from '../DataSet'
 import { LockCakeForm } from '../LockCakeForm'
@@ -49,10 +47,7 @@ export const NotLockingCard = () => {
         <LockCakeForm fieldOnly />
         <LockWeeksForm fieldOnly />
       </Grid>
-      <NewStakingDataSet
-        veCakeAmount={getVeCakeAmount(cakeLockAmount, Number(cakeLockWeeks || 0) * WEEK)}
-        cakeAmount={Number(cakeLockAmount)}
-      />
+      <NewStakingDataSet cakeAmount={Number(cakeLockAmount)} />
       <ColumnCenter>
         {account ? (
           <Button disabled={disabled} width={['100%', '100%', '50%']} onClick={handleModalOpen}>

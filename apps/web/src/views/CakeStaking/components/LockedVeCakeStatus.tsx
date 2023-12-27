@@ -15,7 +15,7 @@ import {
   RowBetween,
   Text,
 } from '@pancakeswap/uikit'
-import { formatBigInt, formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, formatNumber, getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -60,7 +60,7 @@ export const LockedVeCakeStatus: React.FC<{
   const balanceText =
     balanceBN > 0 && balanceBN < 0.01 ? (
       <UnderlineText fontSize="20px" bold color={balance.eq(0) ? 'failure' : 'secondary'}>
-        {`< 0.01`}
+        {getBalanceAmount(balance).sd(2).toString()}
       </UnderlineText>
     ) : (
       <UnderlinedBalance

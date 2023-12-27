@@ -1,4 +1,5 @@
 import { AutoRow, Flex, FlexGap, Text } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 
 export const DataBox = styled(AutoRow)`
@@ -26,7 +27,7 @@ export const DataRow: React.FC<{
 }
 
 export const DataHeader: React.FC<{
-  value?: string
+  value?: BigNumber
 }> = ({ value }) => {
   return (
     <DataRow
@@ -40,7 +41,7 @@ export const DataHeader: React.FC<{
       }
       value={
         <Text fontSize="16px" bold>
-          {value}
+          {value?.lt(0.1) ? value.sd(2).toString() : value?.toFixed(2)}
         </Text>
       }
     />
