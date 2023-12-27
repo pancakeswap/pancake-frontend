@@ -6,7 +6,7 @@ import Container from 'components/Layout/Container'
 import { getImageUrlFromToken } from 'components/TokenImage'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { setLeaderboardFilter } from 'state/predictions'
 import { styled } from 'styled-components'
 import AddressSearch from '../AddressSearch'
@@ -45,6 +45,8 @@ interface FiltersProps {
   setPickedChainId: (chainId: ChainId) => void
 }
 
+const DEFAULT_ORDER = 'totalBets'
+
 const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
   pickedChainId,
   pickedTokenSymbol,
@@ -54,6 +56,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
 }) => {
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
+  const [pickedOrder, setPickedOrder] = useState(DEFAULT_ORDER)
 
   const orderByOptions = useMemo(() => {
     const isOldPrediction =
@@ -71,6 +74,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
   }, [pickedChainId, pickedTokenSymbol, t])
 
   const handleOrderBy = (option: OptionProps) => {
+    setPickedOrder(option.value)
     dispatch(setLeaderboardFilter({ orderBy: option.value }))
   }
 
@@ -94,13 +98,26 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
       : []
   }, [predictionConfigs])
 
-  const handleTokenChange = (option: OptionProps) => {
-    setPickedTokenSymbol(option?.value)
+  // When switch network / token make sure order set to default
+  const resetOrder = () => {
+    setPickedOrder(DEFAULT_ORDER)
+    dispatch(setLeaderboardFilter({ orderBy: DEFAULT_ORDER }))
   }
 
   const handleSwitchNetwork = (option: OptionProps) => {
+    resetOrder()
     setPickedChainId(option?.value)
   }
+
+  const handleTokenChange = (option: OptionProps) => {
+    resetOrder()
+    setPickedTokenSymbol(option?.value)
+  }
+
+  const orderSelectedIndex = useMemo(() => {
+    const index = orderByOptions.findIndex((option) => option.value === pickedOrder)
+    return index >= 0 ? index + 1 : 0
+  }, [pickedOrder, orderByOptions])
 
   const networkSelectedIndex = useMemo(() => {
     const index = networkOptions.findIndex((option) => Number(option.value) === pickedChainId)
@@ -149,7 +166,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
               {t('Rank By')}
             </Text>
             <FilterWrapper>
-              <Select options={orderByOptions} onOptionChange={handleOrderBy} />
+              <Select options={orderByOptions} defaultOptionIndex={orderSelectedIndex} onOptionChange={handleOrderBy} />
             </FilterWrapper>
           </Box>
         </Flex>
