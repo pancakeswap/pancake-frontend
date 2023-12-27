@@ -113,7 +113,7 @@ export const getNetworkDisplay = (chainId: number | undefined): string => {
     case ChainId.ETHEREUM:
       return 'Ethereum'
     case ChainId.BSC:
-      return 'BNB Smart Chain'
+      return 'BNB Chain'
     case ChainId.ZKSYNC:
       return 'zkSync Era'
     case ChainId.ARBITRUM_ONE:
@@ -121,7 +121,7 @@ export const getNetworkDisplay = (chainId: number | undefined): string => {
     case ChainId.POLYGON_ZKEVM:
       return 'Polygon zkEVM'
     case ChainId.LINEA:
-      return 'Linea Mainnet'
+      return 'Linea'
     case ChainId.BASE:
       return 'Base Mainnet'
     default:

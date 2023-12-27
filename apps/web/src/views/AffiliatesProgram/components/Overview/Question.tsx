@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { Card, CardBody, CardHeader, Heading, Text, Flex, PageSection, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Card, CardBody, CardHeader, Flex, Heading, Link, PageSection, Text } from '@pancakeswap/uikit'
 import FoldableText from 'components/FoldableSection/FoldableText'
 import useTheme from 'hooks/useTheme'
+import { styled } from 'styled-components'
 
 const Wrapper = styled(Flex)`
   width: 100%;
@@ -86,7 +86,7 @@ const Question = () => {
                   href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json"
                 >
                   <Text color="primary" ml="4px" as="span">
-                    {t('BNB Smart Chain')},
+                    {t('BNB Chain')},
                   </Text>
                 </Link>
                 <Link
