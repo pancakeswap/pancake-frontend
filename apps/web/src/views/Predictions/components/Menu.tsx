@@ -1,6 +1,10 @@
+import { chainNames } from '@pancakeswap/chains'
 import { PredictionStatus } from '@pancakeswap/prediction'
 import { Button, Flex, HelpIcon, PrizeIcon } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { useGetPredictionsStatus } from 'state/predictions/hooks'
 import { styled } from 'styled-components'
 import { TokenSelector } from 'views/Predictions/components/TokenSelector'
@@ -61,7 +65,13 @@ const ButtonWrapper = styled.div`
 `
 
 const Menu = () => {
+  const { query } = useRouter()
+  const { chainId } = useActiveChainId()
   const status = useGetPredictionsStatus()
+
+  const leaderboardUrl = useMemo(() => {
+    return chainId ? `/prediction/leaderboard?chain=${chainNames[chainId]}&token=${query.token}` : ''
+  }, [chainId, query.token])
 
   return (
     <FlexRow alignItems="center" p="16px" width="100%">
@@ -91,7 +101,7 @@ const Menu = () => {
                 </Button>
               </HelpButtonWrapper>
               <LeaderboardButtonWrapper>
-                <Link href="/prediction/leaderboard" passHref>
+                <Link href={leaderboardUrl} passHref>
                   <Button variant="subtle" width="48px">
                     <PrizeIcon color="white" />
                   </Button>
