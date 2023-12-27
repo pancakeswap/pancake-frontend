@@ -1,7 +1,7 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
 import React from 'react'
-import moboxImage from '../../images/mobox.png'
 
 export const PartnerVenus: React.FC<React.PropsWithChildren<SvgProps>> = (props) => (
   <Svg viewBox="0 0 20 20" {...props}>
@@ -377,4 +377,6 @@ export const PartnerMetaMask: React.FC<React.PropsWithChildren<SvgProps>> = (pro
   </Svg>
 )
 
-export const PartnerMobox: React.FC = () => <Image alt="mobox-logo" src={moboxImage} width={24} height={14} />
+export const PartnerMobox: React.FC = () => (
+  <Image alt="mobox-logo" src={`${ASSET_CDN}/web/landing/mobox.png`} width={24} height={14} unoptimized />
+)
