@@ -2827,4 +2827,21 @@ export const bscTokens = {
     'Radpie',
     'https://www.radiant.magpiexyz.io/stake',
   ),
+  sats: new ERC20Token(
+    ChainId.BSC,
+    '0x143D7A700a533B4baF6D693449b278A8A2F5927d',
+    18,
+    'sats',
+    'sats',
+    'https://satscoin.vip/',
+  ),
+  ordi: new ERC20Token(ChainId.BSC, '0xe2aE1a99bBd2eFab0a5C38f2146B7aCE61aBC5cE', 18, 'ordi', 'ordi', ''),
+  mubi: new ERC20Token(
+    ChainId.BSC,
+    '0x38e382F74dfb84608F3C1F10187f6bEf5951DE93',
+    18,
+    'MUBI',
+    'MUBI',
+    'https://multibit.exchange/',
+  ),
 }

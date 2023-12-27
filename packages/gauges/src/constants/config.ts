@@ -2167,6 +2167,36 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.StableSwap,
     tokenAddresses: [bscTokens.sdcake.address, bscTokens.cake.address],
   },
+  {
+    gid: 205,
+    pairName: 'sats-BNB',
+    address: '0xcF0bA206D688Fc9AE8A268F8b9077F4307600895',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.sats.address,
+    token1Address: bscTokens.wbnb.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
+  {
+    gid: 206,
+    pairName: 'ordi-BNB',
+    address: '0x442EFB99C2727c6000727C3cf672e3d77C9cDEaD',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.ordi.address,
+    token1Address: bscTokens.wbnb.address,
+    feeTier: FeeAmount.HIGH,
+  },
+  {
+    gid: 207,
+    pairName: 'MUBI-BNB',
+    address: '0x961C19a53e5EA0e43B8F9020553F94623Ce475B6',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.mubi.address,
+    token1Address: bscTokens.wbnb.address,
+    feeTier: FeeAmount.HIGH,
+  },
 ]
 
 export const GAUGES_CONFIG = {
