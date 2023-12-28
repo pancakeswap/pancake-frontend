@@ -7,6 +7,7 @@ import { cakeLockWeeksAtom } from 'state/vecake/atoms'
 import styled from 'styled-components'
 import { useWriteIncreaseLockWeeksCallback } from '../hooks/useContractWrite'
 import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWithdrawCallback'
+import { useMaxUnlockWeeks } from '../hooks/useMaxUnlockTime'
 import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
 import { LockWeeksDataSet } from './DataSet'
 
@@ -43,15 +44,21 @@ const WeekInput: React.FC<{
   disabled?: boolean
 }> = ({ value, onUserInput, disabled }) => {
   const { t } = useTranslation()
+  const { cakeLockExpired, cakeUnlockTime } = useCakeLockStatus()
+  const showMax = useMemo(() => (cakeLockExpired ? false : cakeUnlockTime > 0), [cakeLockExpired, cakeUnlockTime])
+  const weekOptions = useMemo(() => {
+    return showMax ? weeks.slice(0, weeks.length - 1) : weeks
+  }, [showMax])
+  const maxUnlockWeeks = useMaxUnlockWeeks(MAX_VECAKE_LOCK_WEEKS, cakeLockExpired ? 0 : cakeUnlockTime)
   const onInput = useCallback(
     (v: string) => {
-      if (Number(v) > MAX_VECAKE_LOCK_WEEKS) {
-        onUserInput(String(MAX_VECAKE_LOCK_WEEKS))
+      if (Number(v) > maxUnlockWeeks) {
+        onUserInput(String(maxUnlockWeeks))
       } else {
         onUserInput(v)
       }
     },
-    [onUserInput],
+    [maxUnlockWeeks, onUserInput],
   )
   const handleWeekSelect = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,11 +85,11 @@ const WeekInput: React.FC<{
       />
       {disabled ? null : (
         <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
-          {weeks.map(({ value: v, label }) => (
+          {weekOptions.map(({ value: v, label }) => (
             <Button
               key={v}
               data-week={v}
-              disabled={disabled}
+              disabled={disabled || maxUnlockWeeks < v}
               onClick={handleWeekSelect}
               scale="sm"
               variant={Number(value) === v ? 'subtle' : 'light'}
@@ -90,6 +97,18 @@ const WeekInput: React.FC<{
               {label}
             </Button>
           ))}
+
+          {showMax ? (
+            <Button
+              data-week={maxUnlockWeeks}
+              disabled={disabled || maxUnlockWeeks <= 0}
+              onClick={handleWeekSelect}
+              scale="sm"
+              variant={Number(value) === maxUnlockWeeks ? 'subtle' : 'light'}
+            >
+              {t('Max')}
+            </Button>
+          ) : null}
         </FlexGap>
       )}
     </>

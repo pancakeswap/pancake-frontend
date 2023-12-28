@@ -1,12 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, Box, Text, TooltipText, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getBalanceAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
+import { WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import styled from 'styled-components'
-import { useRoundedUnlockTimestamp } from 'views/CakeStaking/hooks/useRoundedUnlockTimestamp'
+import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
+import { useTargetUnlockTime } from 'views/CakeStaking/hooks/useTargetUnlockTime'
+import { useVeCakeAmount } from 'views/CakeStaking/hooks/useVeCakeAmount'
 import { MyVeCakeCard } from '../MyVeCakeCard'
 import { Tooltips } from '../Tooltips'
 import { DataRow } from './DataBox'
@@ -18,14 +21,23 @@ const ValueText = styled(Text)`
 `
 
 export const NewStakingDataSet: React.FC<{
-  veCakeAmount?: number
   cakeAmount?: number
-}> = ({ veCakeAmount = 0, cakeAmount = 0 }) => {
+}> = ({ cakeAmount = 0 }) => {
   const { t } = useTranslation()
-  const veCake = veCakeAmount ? getFullDisplayBalance(new BN(veCakeAmount), 0, 3) : '0'
-  const factor = veCakeAmount && veCakeAmount ? `${new BN(veCakeAmount).div(cakeAmount).toPrecision(2)}x` : '0x'
   const { cakeLockWeeks } = useLockCakeData()
-  const unlockTimestamp = useRoundedUnlockTimestamp()
+  const unlockTimestamp = useTargetUnlockTime(Number(cakeLockWeeks) * WEEK)
+  const cakeAmountBN = useMemo(() => getBalanceAmount(new BN(cakeAmount)).toString(), [cakeAmount])
+  const veCakeAmountFromNative = useVeCakeAmount(cakeAmountBN, unlockTimestamp)
+  const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
+  const veCakeAmount = useMemo(
+    () => proxyVeCakeBalance.plus(veCakeAmountFromNative),
+    [proxyVeCakeBalance, veCakeAmountFromNative],
+  )
+  const veCake = veCakeAmount ? getFullDisplayBalance(new BN(veCakeAmount), 18, 3) : '0'
+  const factor =
+    veCakeAmountFromNative && veCakeAmountFromNative
+      ? `${new BN(veCakeAmountFromNative).div(cakeAmountBN).toPrecision(2)}x`
+      : '0x'
   const { isDesktop } = useMatchBreakpoints()
   const unlockOn = useMemo(() => {
     return formatDate(dayjs.unix(Number(unlockTimestamp)))

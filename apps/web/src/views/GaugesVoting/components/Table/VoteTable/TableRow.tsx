@@ -4,7 +4,7 @@ import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Grid,
 import dayjs from 'dayjs'
 import { useCallback, useMemo, useState } from 'react'
 import { stringify } from 'viem'
-import { Tooltips } from 'views/CakeStaking/components/Tooltips'
+import { DebugTooltips, Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
@@ -49,8 +49,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
     <TRow>
       <Grid gridTemplateColumns="1fr 1fr" justifyContent="space-between" width="100%">
         <FlexGap alignItems="center" gap="13px">
-          <Tooltips
-            disabled={!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')}
+          <DebugTooltips
             content={
               <pre>
                 {stringify(
@@ -72,7 +71,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
             }
           >
             <GaugeTokenImage gauge={data} />
-          </Tooltips>
+          </DebugTooltips>
           <Text fontWeight={600} fontSize={16}>
             {data.pairName}
           </Text>
