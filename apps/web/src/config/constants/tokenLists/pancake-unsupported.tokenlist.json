@@ -9,5 +9,13 @@
   "tags": {},
   "logoURI": "ipfs://QmNa8mQkrNKp1WEEeGjFezDmDeodkWRevGFN8JCV7b4Xir",
   "keywords": ["pancake", "unsupported"],
-  "tokens": []
+  "tokens": [
+    {
+      "name": "HongKongDAO",
+      "symbol": "HKD",
+      "address": "0xB1A1D06d42A43a8FCfDC7FDcd744f7eF03e8ad1a",
+      "chainId": 56,
+      "decimals": 18
+    }
+  ]
 }

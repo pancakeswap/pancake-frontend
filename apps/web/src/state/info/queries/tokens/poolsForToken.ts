@@ -1,6 +1,6 @@
 import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
-import { MultiChainName, multiChainQueryMainToken, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
+import { MultiChainName, getMultiChainQueryEndPointWithStableSwap, multiChainQueryMainToken } from '../../constant'
 
 /**
  * Data for showing Pools table on the Token page
@@ -50,7 +50,7 @@ const fetchPoolsForToken = async (
       POOLS_FOR_TOKEN(chainName),
       {
         address,
-        blacklist: TOKEN_BLACKLIST,
+        blacklist: TOKEN_BLACKLIST.map((r) => r.toLocaleUpperCase()),
       },
     )
     return {
