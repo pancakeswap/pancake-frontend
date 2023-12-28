@@ -1,29 +1,29 @@
 import { ChainId } from '@pancakeswap/chains'
-import { TokenAddressMap as TTokenAddressMap, WrappedTokenInfo, TokenList, TokenInfo } from '@pancakeswap/token-lists'
-import { enumValues } from '@pancakeswap/utils/enumValues'
+import { TokenAddressMap as TTokenAddressMap, TokenInfo, TokenList, WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { ListsState } from '@pancakeswap/token-lists/react'
+import { EMPTY_LIST } from '@pancakeswap/tokens'
+import { enumValues } from '@pancakeswap/utils/enumValues'
 import {
   DEFAULT_LIST_OF_LISTS,
+  MULTI_CHAIN_LIST_URLS,
   OFFICIAL_LISTS,
   UNSUPPORTED_LIST_URLS,
   WARNING_LIST_URLS,
-  MULTI_CHAIN_LIST_URLS,
 } from 'config/constants/lists'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { atom, useAtomValue } from 'jotai'
-import mapValues from 'lodash/mapValues'
 import groupBy from 'lodash/groupBy'
 import keyBy from 'lodash/keyBy'
+import mapValues from 'lodash/mapValues'
 import _pickBy from 'lodash/pickBy'
-import { EMPTY_LIST } from '@pancakeswap/tokens'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
+import ONRAMP_TOKEN_LIST from '../../config/constants/tokenLists/pancake-supported-onramp-currency-list.json'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
-import ONRAMP_TOKEN_LIST from '../../config/constants/tokenLists/pancake-supported-onramp-currency-list.json'
-import { listsAtom } from './lists'
 import { safeGetAddress } from '../../utils'
+import { listsAtom } from './lists'
 
 type TokenAddressMap = TTokenAddressMap<ChainId>
 
@@ -132,7 +132,7 @@ export const tokenListFromOfficialsUrlsAtom = atom((get) => {
 export const combinedTokenMapFromUnsupportedUrlsAtom = atom((get) => {
   const lists = get(selectorByUrlsAtom)
   // get hard coded unsupported tokens
-  const localUnsupportedListMap = listToTokenMap(UNSUPPORTED_TOKEN_LIST, 'address')
+  const localUnsupportedListMap = listToTokenMap(UNSUPPORTED_TOKEN_LIST as TokenList, 'address')
   // get any loaded unsupported tokens
   const loadedUnsupportedListMap = combineTokenMaps(lists, UNSUPPORTED_LIST_URLS)
 
