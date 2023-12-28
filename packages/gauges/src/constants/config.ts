@@ -2197,6 +2197,16 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: bscTokens.wbnb.address,
     feeTier: FeeAmount.HIGH,
   },
+  {
+    gid: 208,
+    pairName: 'NFP-USDT',
+    address: '0x4b36782B47a28Ee003013E7C56174CB5812F418B',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.nfp.address,
+    token1Address: bscTokens.usdt.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
 ]
 
 export const GAUGES_CONFIG = {
