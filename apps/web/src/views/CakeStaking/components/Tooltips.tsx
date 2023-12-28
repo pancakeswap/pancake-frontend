@@ -34,7 +34,7 @@ export const DebugTooltips: React.FC<React.PropsWithChildren<TooltipsProps>> = (
   return (
     <Tooltips
       {...props}
-      disabled={!(window.location.hostname === 'localhost' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')}
+      disabled={!(process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview')}
     />
   )
 }
