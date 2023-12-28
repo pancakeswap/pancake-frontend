@@ -2844,4 +2844,12 @@ export const bscTokens = {
     'MUBI',
     'https://multibit.exchange/',
   ),
+  nfp: new ERC20Token(
+    ChainId.BSC,
+    '0x75E8ddB518bB757b4282cd5b83bb70d4101D12FB',
+    18,
+    'NFP',
+    'NFPrompt Token',
+    'https://nfprompt.io/',
+  ),
 }
