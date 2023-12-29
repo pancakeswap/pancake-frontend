@@ -2207,6 +2207,36 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: bscTokens.usdt.address,
     feeTier: FeeAmount.MEDIUM,
   },
+  {
+    gid: 209,
+    pairName: 'ordi-BNB',
+    address: '0x1be0A017CDA061501b9dd460EBFD16f0971Eea8e',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.ordi.address,
+    token1Address: bscTokens.wbnb.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
+  {
+    gid: 210,
+    pairName: 'MUBI-BNB',
+    address: '0x57dBE41582591e8a420cc80FB669F953d137a571',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.mubi.address,
+    token1Address: bscTokens.wbnb.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
+  {
+    gid: 211,
+    pairName: 'WETH-USDT',
+    address: '0x6Ff6B5c5957606220C6Cd0422499c9c1224c399b',
+    chainId: ChainId.ZKSYNC,
+    type: GaugeType.V3,
+    token0Address: zksyncTokens.weth.address,
+    token1Address: zksyncTokens.usdt.address,
+    feeTier: FeeAmount.LOW,
+  },
 ]
 
 export const GAUGES_CONFIG = {
