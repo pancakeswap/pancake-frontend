@@ -88,7 +88,7 @@ export const pools: StableSwapPool[] = [
     lpAddress: '0xB1D54d76E2cB9425Ec9c018538cc531440b55dbB',
     token: bscTokens.cake,
     quoteToken: bscTokens.sdcake,
-    stableSwapAddress: '0xB1D54d76E2cB9425Ec9c018538cc531440b55dbB',
+    stableSwapAddress: '0xb8204D31379A9B317CD61C833406C972F58ecCbC',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0004,
     stableLpFeeRateOfTotalFee: 0.5,
