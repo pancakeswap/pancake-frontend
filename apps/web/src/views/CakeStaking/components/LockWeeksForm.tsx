@@ -86,7 +86,7 @@ const WeekInput: React.FC<{
       {disabled ? null : (
         <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {weekOptions.map(({ value: v, label }) => (
-            <Button
+            <ButtonBlocked
               key={v}
               data-week={v}
               disabled={disabled || maxUnlockWeeks < v}
@@ -95,11 +95,11 @@ const WeekInput: React.FC<{
               variant={Number(value) === v ? 'subtle' : 'light'}
             >
               {label}
-            </Button>
+            </ButtonBlocked>
           ))}
 
           {showMax ? (
-            <Button
+            <ButtonBlocked
               data-week={maxUnlockWeeks}
               disabled={disabled || maxUnlockWeeks <= 0}
               onClick={handleWeekSelect}
@@ -107,7 +107,7 @@ const WeekInput: React.FC<{
               variant={Number(value) === maxUnlockWeeks ? 'subtle' : 'light'}
             >
               {t('Max')}
-            </Button>
+            </ButtonBlocked>
           ) : null}
         </FlexGap>
       )}
