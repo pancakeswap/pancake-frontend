@@ -4,6 +4,13 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
   {
+    pid: 12,
+    lpAddress: '0x6Ff6B5c5957606220C6Cd0422499c9c1224c399b',
+    token0: zksyncTokens.usdt,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 11,
     lpAddress: '0x6a8Fc7e8186ddC572e149dFAa49CfAE1E571108b',
     token0: zksyncTokens.usdc,
