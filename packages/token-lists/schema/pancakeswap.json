@@ -203,7 +203,7 @@
         "symbol": {
           "type": "string",
           "description": "The symbol for the token; must be alphanumeric",
-          "pattern": "^[a-zA-Z0-9+\\-%/$.]+$",
+          "pattern": "^[a-zA-Z0-9+\\-%/$.\\s]+$",
           "minLength": 1,
           "maxLength": 20,
           "examples": ["USDC"]
