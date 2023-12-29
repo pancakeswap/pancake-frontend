@@ -1,5 +1,5 @@
-import getLpAddress from 'utils/getLpAddress'
 import { bscTokens } from '@pancakeswap/tokens'
+import getLpAddress from 'utils/getLpAddress'
 import { FarmAuctionBidderConfig } from './types'
 
 export const whitelistedBidders: FarmAuctionBidderConfig[] = [
