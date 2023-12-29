@@ -430,7 +430,7 @@ const finishedPools = [
   {
     sousId: 330,
     stakingToken: bscTokens.cake,
-    earningToken: bscTokens['8pay'],
+    earningToken: bscTokens.deprecated_8pay,
     contractAddress: '0x67c7014b1C6B6a2d811687d4c5a53de518fA705f',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '2.48',

@@ -1994,12 +1994,20 @@ export const bscTokens = {
     'AgeOfGods',
     'https://ageofgods.net/',
   ),
-  '8pay': new ERC20Token(
+  deprecated_8pay: new ERC20Token(
     ChainId.BSC,
     '0xFeea0bDd3D07eb6FE305938878C0caDBFa169042',
     18,
     '8PAY',
     '8PAY Network',
+    'https://8pay.network/',
+  ),
+  '8payV2': new ERC20Token(
+    ChainId.BSC,
+    '0x6EaDc05928ACd93eFB3FA0DFbC644D96C6Aa1Df8',
+    18,
+    '8PAY v2',
+    '8PAY Network v2',
     'https://8pay.network/',
   ),
   bath: new ERC20Token(

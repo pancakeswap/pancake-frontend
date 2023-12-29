@@ -1329,7 +1329,7 @@ const farms: SerializedFarmConfig[] = [
     pid: 96,
     lpSymbol: '8PAY-BUSD LP',
     lpAddress: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
-    token: bscTokens['8pay'],
+    token: bscTokens.deprecated_8pay,
     quoteToken: bscTokens.busd,
     isCommunity: true,
   },
