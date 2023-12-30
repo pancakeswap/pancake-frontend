@@ -2237,6 +2237,16 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: zksyncTokens.usdt.address,
     feeTier: FeeAmount.LOW,
   },
+  {
+    gid: 212,
+    pairName: 'sdCAKE-CAKE',
+    address: '0x8A876Ca851063e0252654CA6368a5B2280f51c32',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.sdcake.address,
+    token1Address: bscTokens.cake.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
 ]
 
 export const GAUGES_CONFIG = {
