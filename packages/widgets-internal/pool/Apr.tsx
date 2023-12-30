@@ -63,7 +63,7 @@ export function Apr<T>({
   shouldShowApr,
   account,
   autoCompoundFrequency,
-  boostedApr,
+  boostedApr = 0,
   boostedTooltipsText,
   ...props
 }: AprProps<T>) {
