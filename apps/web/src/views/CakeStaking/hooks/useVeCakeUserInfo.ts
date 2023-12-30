@@ -95,6 +95,11 @@ export const useCakeLockStatus = (): {
   const shouldMigrate = useMemo(() => {
     return cakePoolLockInfo?.locked && userInfo?.cakePoolType !== CakePoolType.MIGRATED && isAllowMigrate
   }, [cakePoolLockInfo?.locked, isAllowMigrate, userInfo?.cakePoolType])
+  const delegateOnly = useMemo(() => {
+    if (!userInfo) return false
+
+    return userInfo.cakePoolType === CakePoolType.DELEGATED && userInfo.amount === 0n
+  }, [userInfo])
   const now = useMemo(() => dayjs.unix(currentTimestamp), [currentTimestamp])
   const cakeLocked = useMemo(() => Boolean(userInfo && userInfo.amount > 0n), [userInfo])
   const cakeUnlockTime = useMemo(() => {
@@ -134,16 +139,13 @@ export const useCakeLockStatus = (): {
   }, [userInfo, cakePoolLocked])
 
   const status = useMemo(() => {
-    if (
-      ((!userInfo || !userInfo.amount) && !cakePoolLocked && !shouldMigrate) ||
-      userInfo?.cakePoolType === CakePoolType.DELEGATED
-    )
+    if (((!userInfo || !userInfo.amount) && !cakePoolLocked && !shouldMigrate) || delegateOnly)
       return CakeLockStatus.NotLocked
     if (cakeLockExpired) return CakeLockStatus.Expired
     if ((userInfo?.amount && userInfo.end) || cakePoolLocked) return CakeLockStatus.Locking
     if (shouldMigrate) return CakeLockStatus.Migrate
     return CakeLockStatus.NotLocked
-  }, [userInfo, shouldMigrate, cakePoolLocked, cakeLockExpired])
+  }, [userInfo, cakePoolLocked, shouldMigrate, delegateOnly, cakeLockExpired])
 
   return {
     status,
