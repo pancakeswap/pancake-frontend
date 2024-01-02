@@ -1,19 +1,17 @@
-import { dehydrate, QueryClient } from '@tanstack/react-query'
+import { formatEther } from 'viem'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { getCakeContract } from 'utils/contractHelpers'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
-import { formatEther } from 'viem'
 import Home from '../views/Home'
 
 const IndexPage = () => {
   return <Home />
 }
-
-IndexPage.snowEffect = true
 
 // Values fetched from TheGraph and BitQuery jan 24, 2022
 const txCount = 54780336
