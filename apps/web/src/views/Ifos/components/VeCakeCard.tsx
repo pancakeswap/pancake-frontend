@@ -18,6 +18,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 // TODO should be common hooks
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useIsMigratedToVeCake } from 'views/CakeStaking/hooks/useIsMigratedToVeCake'
+import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 
 import { useUserIfoInfo } from '../hooks/useUserIfoInfo'
 
@@ -39,6 +40,7 @@ export function VeCakeCard({ ifoAddress }: Props) {
   const { chainId } = useActiveChainId()
   const { isConnected } = useAccount()
   const cakePrice = useCakePrice()
+  const isUserDelegated = useIsUserDelegated()
   const {
     cakeUnlockTime: nativeUnlockTime,
     nativeCakeLockedAmount,
@@ -51,8 +53,14 @@ export function VeCakeCard({ ifoAddress }: Props) {
   const isMigrated = useIsMigratedToVeCake()
   const needMigrate = useMemo(() => shouldMigrate && !isMigrated, [shouldMigrate, isMigrated])
   const totalLockCake = useMemo(
-    () => Number(formatBigInt(nativeCakeLockedAmount + proxyCakeLockedAmount, CAKE[chainId || ChainId.BSC].decimals)),
-    [nativeCakeLockedAmount, proxyCakeLockedAmount, chainId],
+    () =>
+      Number(
+        formatBigInt(
+          isUserDelegated ? nativeCakeLockedAmount : nativeCakeLockedAmount + proxyCakeLockedAmount,
+          CAKE[chainId || ChainId.BSC].decimals,
+        ),
+      ),
+    [nativeCakeLockedAmount, proxyCakeLockedAmount, chainId, isUserDelegated],
   )
   const hasProxyCakeButNoNativeVeCake = useMemo(() => !nativeLocked && proxyLocked, [nativeLocked, proxyLocked])
   const unlockAt = useMemo(() => {
@@ -86,12 +94,12 @@ export function VeCakeCard({ ifoAddress }: Props) {
         <Ifo.LockInfoCard mt="1.5rem" amount={totalLockCake} unlockAt={unlockAt} usdPrice={cakePrice} />
       ) : null}
 
-      {isConnected && !hasVeCake && !needMigrate && hasProxyCakeButNoNativeVeCake ? (
-        <Ifo.InsufficientNativeVeCakeTips mt="1.5rem" />
-      ) : null}
-
-      {isConnected && !hasVeCake && !needMigrate && !hasProxyCakeButNoNativeVeCake ? (
-        <Ifo.ZeroVeCakeTips mt="1.5rem" />
+      {isConnected && !hasVeCake ? (
+        !needMigrate && hasProxyCakeButNoNativeVeCake && !isUserDelegated ? (
+          <Ifo.InsufficientNativeVeCakeTips mt="1.5rem" />
+        ) : (
+          <Ifo.ZeroVeCakeTips mt="1.5rem" />
+        )
       ) : null}
 
       {needMigrate ? <Ifo.MigrateVeCakeTips mt="1.5rem" /> : null}

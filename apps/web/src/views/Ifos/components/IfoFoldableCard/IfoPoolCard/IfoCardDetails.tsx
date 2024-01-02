@@ -1,17 +1,17 @@
-import { useMemo, ReactNode } from 'react'
-import BigNumber from 'bignumber.js'
-import { styled } from 'styled-components'
-import { CAKE } from '@pancakeswap/tokens'
-import { Text, Flex, Box, Skeleton, TooltipText, useTooltip, IfoSkeletonCardDetails } from '@pancakeswap/uikit'
-import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { useTranslation } from '@pancakeswap/localization'
 import { Ifo, PoolIds } from '@pancakeswap/ifos'
+import { useTranslation } from '@pancakeswap/localization'
+import { CAKE } from '@pancakeswap/tokens'
+import { Box, Flex, IfoSkeletonCardDetails, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
-import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { DAY_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
+import BigNumber from 'bignumber.js'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { ReactNode, useMemo } from 'react'
+import { styled } from 'styled-components'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 const ZERO = new BigNumber(0)
 const ONE = new BigNumber(1)
@@ -129,9 +129,11 @@ const MaxTokenEntry = ({
         }
         value={
           <Text small textAlign="right" color={maxToken > 0 ? 'text' : 'failure'}>
-            {`${formatNumber(maxToken, 3, 3)} ${
-              !isCurrencyCake ? ifo.currency.symbol : ''
-            } ${` ~($${dollarValueOfToken.toFixed(0)})`}`}
+            {`${formatNumber(maxToken, 3, 3)} ${!isCurrencyCake ? ifo.currency.symbol : ''} ${` ~($${formatNumber(
+              dollarValueOfToken,
+              0,
+              0,
+            )})`}`}
           </Text>
         }
       />
@@ -181,7 +183,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
 
-  const sumTaxesOverflow = poolCharacteristic?.totalAmountPool.times(poolCharacteristic.taxRate).times(0.01)
+  const sumTaxesOverflow = poolCharacteristic?.sumTaxesOverflow
   const sumTaxesOverflowInUSD = currencyPriceInUSD.times(sumTaxesOverflow || ZERO)
   const pricePerTokenWithFeeToOriginalRatio = sumTaxesOverflow
     ?.plus(poolCharacteristic?.raisingAmountPool || ZERO)

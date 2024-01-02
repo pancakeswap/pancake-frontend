@@ -5,6 +5,32 @@ import { cakeBnbLpToken } from '../lpTokens'
 
 export const ifos: BaseIfoConfig[] = [
   {
+    id: 'cakepie',
+    address: '0x5f77A54F4314aef5BDd311aCfcccAC90B39432e8',
+    isActive: true,
+    cIFO: true,
+    name: 'CAKEPIE',
+    plannedStartTime: 1704369600, // Thu Jan 04 2024 12:00:00 UTC
+    poolBasic: {
+      raiseAmount: '$30,000',
+    },
+    poolUnlimited: {
+      raiseAmount: '$270,000',
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.ckp,
+    campaignId: '512300000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/0x9c54bc5c0861dc3131459c9e434a63a146200ef7fa17ac5348373bb1e03a2cee?chain=bsc',
+    tokenOfferingPrice: 1.5,
+    version: 7,
+    twitterUrl: 'https://twitter.com/Cakepiexyz_io',
+    description:
+      'Cakepie is a veCAKE Manager that boosts rewards for CAKE stakers and PancakeSwap’s liquidity providers',
+    vestingTitle:
+      'CKP is the primary token issued by Cakepie which can be locked for vlCKP (Vote-Locked Cakepie) at a 1:1 ratio.',
+  },
+  {
     id: 'sable',
     address: '0xD247FFf8005917aDc02f59Ba8F2Dde02c13ee92d',
     isActive: false,

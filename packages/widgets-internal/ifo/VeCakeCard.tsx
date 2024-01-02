@@ -71,13 +71,13 @@ export function MyICake({ amount = 0 }: { amount?: number | BigNumber }) {
   );
 }
 
-export function IfoSalesLogo({ hasICake }: { hasICake?: boolean }) {
+export function IfoSalesLogo({ hasICake, size = 60 }: { hasICake?: boolean; size?: number }) {
   return (
     <Image
       alt="ifo sales logo"
       src={`/images/ifos/assets/${hasICake ? "ifo-sales-active" : "ifo-sales"}.png`}
-      width={60}
-      height={60}
+      width={size}
+      height={size}
     />
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { Address } from 'viem'
 import BigNumber from 'bignumber.js'
@@ -6,7 +6,6 @@ import { Ifo, PoolIds, ifoV7ABI } from '@pancakeswap/ifos'
 import { useERC20, useIfoV7Contract } from 'hooks/useContract'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { useAppDispatch } from 'state'
-import { useIfoCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
 
@@ -15,6 +14,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
 import { useIfoSourceChain } from '../useIfoSourceChain'
+import { useIfoCredit } from '../useIfoCredit'
 
 const initialState = {
   isInitialized: false,
@@ -53,8 +53,12 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const { chainId: currenctChainId } = useActiveChainId()
   const [state, setState] = useState<WalletIfoState>(initialState)
   const dispatch = useAppDispatch()
-  const credit = useIfoCredit()
   const { chainId } = ifo
+  const creditAmount = useIfoCredit({ chainId, ifoAddress: ifo.address })
+  const credit = useMemo(
+    () => (creditAmount && BigNumber(creditAmount.quotient.toString())) ?? BIG_ZERO,
+    [creditAmount],
+  )
   const sourceChain = useIfoSourceChain(chainId)
 
   const { address, currency, version } = ifo

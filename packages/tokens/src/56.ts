@@ -2860,4 +2860,12 @@ export const bscTokens = {
     'NFPrompt Token',
     'https://nfprompt.io/',
   ),
+  ckp: new ERC20Token(
+    ChainId.BSC,
+    '0x2B5D9ADea07B590b638FFc165792b2C610EdA649',
+    18,
+    'CKP',
+    'Cakepie',
+    'https://www.pancake.magpiexyz.io/',
+  ),
 }
