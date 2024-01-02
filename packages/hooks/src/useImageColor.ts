@@ -14,6 +14,7 @@ export function useImageColor({ url }: Params) {
 
     const el = document.createElement('img')
     el.setAttribute('src', url)
+    el.setAttribute('crossOrigin', 'Anonymous')
     el.style.visibility = 'hidden'
 
     const onLoad = () => {
