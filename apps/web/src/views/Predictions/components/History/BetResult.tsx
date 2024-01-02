@@ -113,7 +113,7 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   }, [result])
 
   const handleSuccess = async () => {
-    if (account && bet?.round?.epoch) {
+    if (account && bet?.round?.epoch && config?.token?.chainId) {
       // We have to mark the bet as claimed immediately because it does not update fast enough
       dispatch(markAsCollected({ [bet.round.epoch]: true }))
       dispatch(fetchLedgerData({ account, chainId: config?.token?.chainId, epochs: [bet.round.epoch] }))

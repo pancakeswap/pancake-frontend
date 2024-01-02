@@ -27,7 +27,7 @@ import { usePredictionsContract } from 'hooks/useContract'
 import { useGetNativeTokenBalance, useTokenBalanceByChain } from 'hooks/useTokenBalance'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
-import { parseUnits } from 'viem'
+import { Address, parseUnits } from 'viem'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useAccount } from 'wagmi'
 
@@ -100,7 +100,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     t('You can now start prediction'),
   )
 
-  const { balance: userBalance } = useTokenBalanceByChain(config?.token?.address)
+  const { balance: userBalance } = useTokenBalanceByChain(config?.token?.address as Address)
   const { balance: userNativeTokenBalance } = useGetNativeTokenBalance()
 
   const balance = useMemo(() => {
