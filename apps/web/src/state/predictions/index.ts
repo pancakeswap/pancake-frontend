@@ -283,24 +283,24 @@ export const fetchAddressResult = createAsyncThunk<
 
 export const filterNextPageLeaderboard = createAsyncThunk<
   { results: PredictionUser[]; skip: number },
-  number,
+  { skip: number; api: string; tokenSymbol: string; chainId: ChainId | undefined },
   { state: PredictionsState; extra: PredictionConfig }
->('predictions/filterNextPageLeaderboard', async (skip, { getState, extra }) => {
+>('predictions/filterNextPageLeaderboard', async ({ skip, api, tokenSymbol, chainId }, { getState }) => {
   const state = getState()
   const usersResponse = await getPredictionUsers(
     {
       skip,
       orderBy: state.leaderboard.filters.orderBy,
       where: {
-        totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED[extra.token.symbol],
+        totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED[tokenSymbol],
         [`${state.leaderboard.filters.orderBy}_gt`]: 0,
       },
     },
-    extra.api,
-    extra.token.symbol,
+    api,
+    tokenSymbol,
   )
 
-  const transformer = transformUserResponse(extra.token.symbol, extra.token.chainId)
+  const transformer = transformUserResponse(tokenSymbol, chainId)
 
   return { results: usersResponse.map(transformer), skip }
 })

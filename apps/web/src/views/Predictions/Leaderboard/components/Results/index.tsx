@@ -32,7 +32,16 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ token, api }
   const dispatch = useLocalDispatch()
 
   const handleClick = () => {
-    dispatch(filterNextPageLeaderboard(currentSkip + LEADERBOARD_RESULTS_PER_PAGE))
+    if (api && token?.symbol && token?.chainId) {
+      dispatch(
+        filterNextPageLeaderboard({
+          api,
+          skip: currentSkip + LEADERBOARD_RESULTS_PER_PAGE,
+          tokenSymbol: token.symbol,
+          chainId: token.chainId,
+        }),
+      )
+    }
   }
 
   return (
