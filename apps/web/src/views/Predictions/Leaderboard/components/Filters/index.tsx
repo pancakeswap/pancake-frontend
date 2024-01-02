@@ -132,8 +132,8 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
   return (
     <Container position="relative" py="32px" zIndex={3}>
       <Flex width={['100%']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
-        <Flex width={['100%']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
-          <Box width={['100%', '100%', '100%', '240px']} m={['18px 0', '18px 0', '18px 0', '18px 0', '0']}>
+        <Flex zIndex={3} width={['100%']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
+          <Box zIndex={3} width={['100%', '100%', '100%', '100%', '240px']}>
             <Text textTransform="uppercase" fontSize="12px" color="textSubtle" fontWeight="bold" mb="4px">
               {t('Network')}
             </Text>
@@ -147,7 +147,11 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
               </FilterWrapper>
             )}
           </Box>
-          <Box width={['100%', '100%', '100%', '180px']} m={['18px 0', '18px 0', '18px 0', '18px 0', '0 24px']}>
+          <Box
+            zIndex={2}
+            width={['100%', '100%', '100%', '100%', '180px']}
+            m={['18px 0', '18px 0', '18px 0', '18px 0', '0 24px']}
+          >
             <Text textTransform="uppercase" fontSize="12px" color="textSubtle" fontWeight="bold" mb="4px">
               {t('Token')}
             </Text>
@@ -161,7 +165,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
               </FilterWrapper>
             )}
           </Box>
-          <Box width={['100%', '100%', '100%', '160px']}>
+          <Box width={['100%', '100%', '100%', '100%', '160px']}>
             <Text textTransform="uppercase" fontSize="12px" color="textSubtle" fontWeight="bold" mb="4px">
               {t('Rank By')}
             </Text>
