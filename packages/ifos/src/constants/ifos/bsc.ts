@@ -19,7 +19,7 @@ export const ifos: BaseIfoConfig[] = [
     },
     currency: bscTokens.cake,
     token: bscTokens.ckp,
-    campaignId: '0',
+    campaignId: '512300000',
     articleUrl:
       'https://pancakeswap.finance/voting/proposal/0x9c54bc5c0861dc3131459c9e434a63a146200ef7fa17ac5348373bb1e03a2cee?chain=bsc',
     tokenOfferingPrice: 1.5,
