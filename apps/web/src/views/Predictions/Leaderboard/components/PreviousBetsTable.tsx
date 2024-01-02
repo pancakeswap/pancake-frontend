@@ -17,7 +17,7 @@ interface PreviousBetsTableProps {
 }
 
 const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps>> = ({
-  numberOfBets = 10,
+  numberOfBets = 5,
   account,
   token,
   api,
