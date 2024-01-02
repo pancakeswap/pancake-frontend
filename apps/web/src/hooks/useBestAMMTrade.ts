@@ -210,6 +210,7 @@ function bestTradeHookFactory({
 
         if (trackPerf) {
           logger.log(`[PERF] ${key} duration:${duration}ms`, {
+            chainId: currency.chainId,
             label: key,
             duration,
           })
