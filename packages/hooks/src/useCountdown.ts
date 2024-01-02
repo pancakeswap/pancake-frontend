@@ -1,11 +1,12 @@
 import dayjs from 'dayjs'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 type Countdown = {
   days: number
   hours: number
   minutes: number
   seconds: number
+  isEnd: boolean
 }
 
 // @param to The target unix timestamp
@@ -26,11 +27,13 @@ export function useCountdown(to: number): Countdown | undefined {
     const minutes = target.diff(relative, 'minute')
     relative = relative.add(minutes, 'minute')
     const seconds = target.diff(relative, 'second')
+    const isEnd = days === 0 && hours === 0 && minutes === 0 && seconds === 0
     setCountdown({
       days,
       hours,
       minutes,
       seconds,
+      isEnd,
     })
     return setTimeout(updateCountdown, 1000)
   }, [to])
@@ -45,11 +48,4 @@ export function useCountdown(to: number): Countdown | undefined {
   }, [updateCountdown])
 
   return countdown
-}
-
-export const useIsCountdownOver = (to: number) => {
-  const target = dayjs.unix(to)
-  const relative = dayjs()
-  const diff = useMemo(() => target.diff(relative, 'second'), [target, relative])
-  return diff === 0
 }

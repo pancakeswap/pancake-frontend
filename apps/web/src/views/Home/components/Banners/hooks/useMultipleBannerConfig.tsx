@@ -1,4 +1,4 @@
-import { useIsCountdownOver } from '@pancakeswap/hooks'
+import { useCountdown } from '@pancakeswap/hooks'
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
@@ -35,14 +35,14 @@ export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
-  const isCountDownOver = useIsCountdownOver(1704369600)
+  const countdown = useCountdown(1704369600)
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      { shouldRender: isRenderIFOBanner || !isCountDownOver, banner: <NewIFOBanner /> },
+      { shouldRender: isRenderIFOBanner || !countdown?.isEnd, banner: <NewIFOBanner /> },
       { shouldRender: true, banner: <GalxeTraverseBanner /> },
       { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <VeCakeBanner /> },
@@ -71,7 +71,7 @@ export const useMultipleBannerConfig = () => {
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
   }, [
-    isCountDownOver,
+    countdown?.isEnd,
     isRenderCompetitionBanner,
     isRenderIFOBanner,
     isRenderUserBanner.isEarningsBusdZero,
