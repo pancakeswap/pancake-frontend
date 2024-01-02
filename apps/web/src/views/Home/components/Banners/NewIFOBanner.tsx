@@ -170,7 +170,7 @@ const BackGroundCircle3 = styled.div`
 export function Countdown() {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const countdown = useCountdown(1704376800)
+  const countdown = useCountdown(1704369600)
   if (!countdown) {
     return null
   }
@@ -210,16 +210,10 @@ const NewIFOBanner = () => {
             <Image src={cakeLogo} alt="liquidStakingTitle" width={20} height={20} />
             <Image src={partnerBnbChain} alt="liquidStakingTitle" width={104} height={24} />
           </Flex>
-          <StyledSubheading data-text={t('Web3 Notifications (BETA) trial available')}>
-            {t('CKP cIFO')}
-          </StyledSubheading>
+          <StyledSubheading>{t('CKP cIFO')}</StyledSubheading>
           <Countdown />
           <Flex style={{ gap: isMobile ? 4 : 16 }}>
-            <Link
-              href="https://blog.pancakeswap.finance/articles/introducing-web3-notifications-on-pancake-swap"
-              external
-              style={{ textDecoration: 'none' }}
-            >
+            <Link href="/ifo" style={{ textDecoration: 'none' }}>
               <Button variant="text" pl="0px" pt="0px" scale={isMobile ? 'sm' : 'md'}>
                 <Text
                   textTransform={isMobile ? 'uppercase' : 'capitalize'}

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type Countdown = {
   days: number
@@ -45,4 +45,11 @@ export function useCountdown(to: number): Countdown | undefined {
   }, [updateCountdown])
 
   return countdown
+}
+
+export const useIsCountdownOver = (to: number) => {
+  const target = dayjs.unix(to)
+  const relative = dayjs()
+  const diff = useMemo(() => target.diff(relative, 'second'), [target, relative])
+  return diff === 0
 }
