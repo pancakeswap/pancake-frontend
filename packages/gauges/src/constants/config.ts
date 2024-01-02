@@ -2247,6 +2247,24 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: bscTokens.cake.address,
     feeTier: FeeAmount.MEDIUM,
   },
+  {
+    gid: 213,
+    pairName: 'PNP-BNB',
+    address: '0x88240a2CA0Af5DD3b181975b9985274274CB3685',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.pnp.address,
+    token1Address: bscTokens.bnb.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
+  {
+    gid: 214,
+    pairName: 'mCAKE-CAKE',
+    address: '0xb9dC6396AcFFD24E0f69Dfd3231fDaeB31514D02',
+    chainId: ChainId.BSC,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [bscTokens.mcake.address, bscTokens.cake.address],
+  },
 ]
 
 export const GAUGES_CONFIG = {

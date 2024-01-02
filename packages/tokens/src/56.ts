@@ -2868,4 +2868,20 @@ export const bscTokens = {
     'Cakepie',
     'https://www.pancake.magpiexyz.io/',
   ),
+  pnp: new ERC20Token(
+    ChainId.BSC,
+    '0x5012c90F14d190607662CA8344120812Aaa2639D',
+    18,
+    'PNP',
+    'Penpie Token',
+    'https://www.pendle.magpiexyz.io/stake',
+  ),
+  mcake: new ERC20Token(
+    ChainId.BSC,
+    '0x581FA684D0Ec11ccb46B1d92F1F24C8A3F95C0CA',
+    18,
+    'mCAKE',
+    'mCake Token',
+    'https://www.pancake.magpiexyz.io/stake',
+  ),
 }
