@@ -1,10 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import { useCountdown } from '@pancakeswap/hooks'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import useTheme from 'hooks/useTheme'
-import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 import * as S from './Styled'
@@ -18,6 +17,8 @@ const { partnerCakePie, cakeLogo, partnerBnbChain, board, cakePie, cakePieMobile
   cakePieMobile: `${ASSET_CDN}/web/banners/ifo/cakepie-ifo-mobile.png`,
 }
 
+const Image = styled.img``
+
 const Divider = styled.div`
   height: 22px;
   width: 1px;
@@ -29,40 +30,45 @@ const RightWrapper = styled.div`
   min-height: 100%;
   width: 100%;
   right: 0;
-  bottom: -2px;
+  bottom: 0px;
   z-index: 1;
-  > span:first-child {
+  overflow: hidden;
+  border-radius: 32px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    overflow: visible;
+  }
+  > img:first-child {
     position: absolute !important;
-    bottom: 2px;
-    right: 0px;
-    z-index: 2;
+    bottom: -40px;
+    right: -50px;
+    z-index: 1;
+    width: 201px;
     ${({ theme }) => theme.mediaQueries.sm} {
-      right: 88px;
-      bottom: 2px;
+      right: 10px;
+      bottom: 0px;
+      width: 278px;
+    }
+    ${({ theme }) => theme.mediaQueries.md} {
+      width: 330px;
+      right: 60px;
+      bottom: 0px;
     }
   }
-  > span:nth-child(2) {
+  > img:nth-child(2) {
     position: absolute !important;
     bottom: -2px;
-    right: 120px;
-    z-index: 1;
-    ${({ theme }) => theme.mediaQueries.md} {
-      bottom: 1px;
-      right: 370px;
+    right: 75px;
+    z-index: 2;
+    width: 115px;
+    ${({ theme }) => theme.mediaQueries.sm} {
+      bottom: 0px;
+      right: 235px;
     }
-  }
-`
-const Header = styled.div`
-  font-family: 'Kanit';
-  font-style: normal;
-  font-weight: 800;
-  font-size: 16px;
-  line-height: 101%;
-  font-feature-settings: 'liga' off;
-  color: #280d5f;
-  margin: 5px 0px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 24px;
+    ${({ theme }) => theme.mediaQueries.md} {
+      width: 148px;
+      bottom: 0px;
+      right: 340px;
+    }
   }
 `
 
@@ -93,37 +99,50 @@ const StyledSubheading = styled.div`
 export const CountDownWrapper = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: self-start;
   background-color: #e8a571;
   font-family: Kanit;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 600;
-  line-height: 110%; /* 22px */
+  line-height: 90%;
   color: #08060b;
-  padding: 8px;
+  padding: 6px;
   border-radius: 8px;
   margin-top: 5px;
+  gap: 0px;
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+    gap: 8px;
+    padding: 8px;
+    font-size: 20px;
+    line-height: 110%; /* 22px */
+  }
 `
 
 export function Countdown() {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   const countdown = useCountdown(1704376800)
   if (!countdown) {
     return null
   }
-
+  const hours = countdown?.hours < 10 ? `0${countdown?.hours}` : countdown?.hours
+  const minutes = countdown?.minutes < 10 ? `0${countdown?.minutes}` : countdown?.minutes
   return (
     <CountDownWrapper>
-      {t('starts in')}
-      {countdown?.days}d:{countdown?.hours}h:{countdown?.minutes}m
+      <Box style={{ fontSize: isMobile ? '12px' : '20px' }}>{t('starts in')}</Box>
+      <Box>
+        0{countdown?.days}d:{hours}h:{minutes}m
+      </Box>
     </CountDownWrapper>
   )
 }
 
 const NewIFOBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   const { theme } = useTheme()
 
   return (
@@ -141,10 +160,10 @@ const NewIFOBanner = () => {
             alignItems="center"
             style={{ gap: isMobile ? 4 : 16 }}
           >
-            <Image src={partnerCakePie} alt="pancakeswap-logo" width={121} height={25} unoptimized />
+            <Image src={partnerCakePie} alt="pancakeswap-logo" width={121} height={25} />
             <Divider />
-            <Image src={cakeLogo} alt="liquidStakingTitle" width={20} height={20} unoptimized />
-            <Image src={partnerBnbChain} alt="liquidStakingTitle" width={104} height={24} unoptimized />
+            <Image src={cakeLogo} alt="liquidStakingTitle" width={20} height={20} />
+            <Image src={partnerBnbChain} alt="liquidStakingTitle" width={104} height={24} />
           </Flex>
           <StyledSubheading data-text={t('Web3 Notifications (BETA) trial available')}>
             {t('CKP cIFO')}
@@ -171,12 +190,8 @@ const NewIFOBanner = () => {
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
-          {isDesktop ? (
-            <Image src={cakePie} alt="webNotificationBunny" width={330} height={259} unoptimized />
-          ) : (
-            <Image src={cakePieMobile} alt="webNotificationBunny" width={151} height={207} unoptimized />
-          )}
-          <Image src={board} alt="webNotificationBunny" width={148} height={150} unoptimized />
+          {!isMobile ? <Image src={cakePie} alt="cake-pie" /> : <Image src={cakePieMobile} alt="cake-pie-mobile" />}
+          <Image src={board} alt="ifo-board" />
         </RightWrapper>
       </S.Inner>
     </S.Wrapper>
