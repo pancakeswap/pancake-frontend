@@ -117,7 +117,6 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
 
   // Native Token prediction doesn't need approval
-  console.log('allowance', allowance.toString(), valueAsBn.toString())
   const doesCakeApprovePrediction = isNativeToken || allowance.gte(valueAsBn.toString())
 
   const handleInputChange = (input: string) => {

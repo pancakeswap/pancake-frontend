@@ -218,6 +218,7 @@ export const fetchNodeHistory = createAsyncThunk<
             round.oracleCalled,
             round.closeTimestamp === 0n ? null : Number(round.closeTimestamp),
             bufferSeconds,
+            round.closePrice,
           ),
           startBlock: null,
           startAt: round.startTimestamp ? Number(round.startTimestamp) : null,

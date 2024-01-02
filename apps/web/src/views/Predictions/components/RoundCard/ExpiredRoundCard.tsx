@@ -51,7 +51,7 @@ const ExpiredRoundCard: React.FC<React.PropsWithChildren<ExpiredRoundCardProps>>
   const { epoch, lockPrice, closePrice } = round
   const betPosition = getRoundPosition(lockPrice ?? 0n, closePrice ?? 0n)
   const bufferSeconds = useGetBufferSeconds()
-  const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
+  const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds, round.closePrice)
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
