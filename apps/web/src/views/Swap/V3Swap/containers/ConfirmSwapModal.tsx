@@ -1,35 +1,35 @@
-import { memo, useCallback, useMemo } from 'react'
-import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
+import { memo, useCallback, useMemo } from 'react'
 
+import { useTranslation } from '@pancakeswap/localization'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/uikit'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import {
   ApproveModalContent,
   SwapPendingModalContent,
   SwapTransactionReceiptModalContent,
 } from '@pancakeswap/widgets-internal'
-import { useTranslation } from '@pancakeswap/localization'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import truncateHash from '@pancakeswap/utils/truncateHash'
 
-import { Field } from 'state/swap/actions'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useUserSlippage } from '@pancakeswap/utils/user'
-import { useSwapState } from 'state/swap/hooks'
-import { ApprovalState } from 'hooks/useApproveCallback'
 import { useDebounce } from '@pancakeswap/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { ApprovalState } from 'hooks/useApproveCallback'
+import { Field } from 'state/swap/actions'
+import { useSwapState } from 'state/swap/hooks'
 import { ConfirmModalState, PendingConfirmModalState } from '../types'
 
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from '../../components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
-import { ApproveStepFlow } from './ApproveStepFlow'
 import { useWallchainStatus } from '../hooks/useWallchain'
+import { ApproveStepFlow } from './ApproveStepFlow'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean
@@ -45,7 +45,7 @@ interface ConfirmSwapModalProps {
   confirmModalState: ConfirmModalState
   startSwapFlow: () => void
   pendingModalSteps: PendingConfirmModalState[]
-  currentAllowance: CurrencyAmount<Currency>
+  currentAllowance?: CurrencyAmount<Currency>
   onAcceptChanges: () => void
   customOnDismiss?: () => void
   openSettingModal?: () => void
