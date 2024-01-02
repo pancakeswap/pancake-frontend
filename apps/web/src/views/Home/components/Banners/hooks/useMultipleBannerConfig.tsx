@@ -1,6 +1,13 @@
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
+import CompetitionBanner from '../CompetitionBanner'
+import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
+import GameBanner from '../GameBanner'
 import NewIFOBanner from '../NewIFOBanner'
+import PerpetualBanner from '../PerpetualBanner'
+import UserBanner from '../UserBanner'
+import VeCakeBanner from '../VeCakeBanner'
+import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
@@ -30,39 +37,39 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      // {
-      //   shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
-      //   banner: <UserBanner />,
-      // },
+      {
+        shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
+        banner: <UserBanner />,
+      },
       // {
       //   shouldRender: isRenderIFOBanner,
       //   banner: <IFOBanner />,
       // },
       { shouldRender: true, banner: <NewIFOBanner /> },
-      // { shouldRender: true, banner: <GalxeTraverseBanner /> },
-      // { shouldRender: true, banner: <WebNotificationBanner /> },
-      // { shouldRender: true, banner: <VeCakeBanner /> },
-      // { shouldRender: true, banner: <GameBanner /> },
+      { shouldRender: true, banner: <GalxeTraverseBanner /> },
+      { shouldRender: true, banner: <WebNotificationBanner /> },
+      { shouldRender: true, banner: <VeCakeBanner /> },
+      { shouldRender: true, banner: <GameBanner /> },
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
-      // {
-      //   shouldRender: isRenderCompetitionBanner,
-      //   banner: <CompetitionBanner />,
-      // },
-      // {
-      //   shouldRender: true,
-      //   banner: <PerpetualBanner />,
-      // },
+      {
+        shouldRender: isRenderCompetitionBanner,
+        banner: <CompetitionBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <PerpetualBanner />,
+      },
     ]
     return [
       ...NO_SHUFFLE_BANNERS,
       ...shuffle(SHUFFLE_BANNERS),
-      // {
-      //   // be the last one if harvest value is zero
-      //   shouldRender: isRenderUserBanner.shouldRender && isRenderUserBanner.isEarningsBusdZero,
-      //   banner: <UserBanner />,
-      // },
+      {
+        // be the last one if harvest value is zero
+        shouldRender: isRenderUserBanner.shouldRender && isRenderUserBanner.isEarningsBusdZero,
+        banner: <UserBanner />,
+      },
     ]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)

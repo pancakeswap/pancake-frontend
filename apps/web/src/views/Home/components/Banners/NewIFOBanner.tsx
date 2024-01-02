@@ -25,6 +25,17 @@ const Divider = styled.div`
   background-color: #c8bdc8;
 `
 
+const BackGroundLayer = styled.div`
+  position: absolute;
+  min-height: 100%;
+  width: 100%;
+  right: 0;
+  bottom: 0px;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 32px;
+`
+
 const RightWrapper = styled.div`
   position: absolute;
   min-height: 100%;
@@ -41,7 +52,7 @@ const RightWrapper = styled.div`
     position: absolute !important;
     bottom: -40px;
     right: -50px;
-    z-index: 1;
+    z-index: 2;
     width: 201px;
     ${({ theme }) => theme.mediaQueries.sm} {
       right: 10px;
@@ -58,7 +69,7 @@ const RightWrapper = styled.div`
     position: absolute !important;
     bottom: -2px;
     right: 75px;
-    z-index: 2;
+    z-index: 3;
     width: 115px;
     ${({ theme }) => theme.mediaQueries.sm} {
       bottom: 0px;
@@ -121,6 +132,41 @@ export const CountDownWrapper = styled.div`
   }
 `
 
+const BackGroundCircle = styled.div`
+  position: absolute;
+  top: 41px;
+  right: -117px;
+  width: 296px;
+  height: 296px;
+  border-radius: 296px;
+  opacity: 0.5;
+  background: radial-gradient(50% 50% at 50% 50%, #c87c59 0%, rgba(228, 150, 91, 0) 100%);
+  z-index: 1;
+  filter: blur(64.5px);
+`
+
+const BackGroundCircle2 = styled.div`
+  position: absolute;
+  top: -148px;
+  left: calc(50% - 148px);
+  width: 296px;
+  height: 296px;
+  border-radius: 296px;
+  background: radial-gradient(50% 50% at 50% 50%, #d4e3e0 0%, rgba(212, 227, 224, 0) 100%);
+  filter: blur(49.5px);
+`
+
+const BackGroundCircle3 = styled.div`
+  position: absolute;
+  bottom: -150px;
+  left: calc(50% - 238px);
+  width: 296px;
+  height: 296px;
+  border-radius: 296px;
+  background: radial-gradient(50% 50% at 50% 50%, #beb1ce 0%, rgba(190, 177, 206, 0) 100%);
+  filter: blur(64.5px);
+`
+
 export function Countdown() {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
@@ -155,7 +201,6 @@ const NewIFOBanner = () => {
         <S.LeftWrapper position="relative" style={{ zIndex: 2 }}>
           <Flex
             height={isMobile ? '20px' : '43px'}
-            mt={isMobile ? '-10px' : '0px'}
             justifyContent="center"
             alignItems="center"
             style={{ gap: isMobile ? 4 : 16 }}
@@ -189,6 +234,11 @@ const NewIFOBanner = () => {
             </Link>
           </Flex>
         </S.LeftWrapper>
+        <BackGroundLayer>
+          <BackGroundCircle />
+          <BackGroundCircle2 />
+          <BackGroundCircle3 />
+        </BackGroundLayer>
         <RightWrapper>
           {!isMobile ? <Image src={cakePie} alt="cake-pie" /> : <Image src={cakePieMobile} alt="cake-pie-mobile" />}
           <Image src={board} alt="ifo-board" />
