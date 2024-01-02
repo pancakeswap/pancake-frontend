@@ -73,5 +73,5 @@ export const useMultipleBannerConfig = () => {
     ]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
-  }, [isRenderIFOBanner, isRenderCompetitionBanner, isRenderUserBanner])
+  }, [isRenderCompetitionBanner, isRenderUserBanner])
 }
