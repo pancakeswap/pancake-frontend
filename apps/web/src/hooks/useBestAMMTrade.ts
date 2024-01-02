@@ -20,6 +20,7 @@ import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { worker, worker2 } from 'utils/worker'
 
+import { logger } from 'utils/datadog'
 import {
   CommonPoolsParams,
   PoolsWithState,
@@ -54,6 +55,7 @@ interface Options {
   stableSwap?: boolean
   enabled?: boolean
   autoRevalidate?: boolean
+  trackPerf?: boolean
 }
 
 interface useBestAMMTradeOptions extends Options {
@@ -118,6 +120,7 @@ function bestTradeHookFactory({
     stableSwap = true,
     enabled = true,
     autoRevalidate,
+    trackPerf,
   }: Options) {
     const quoteProvider = useCustomQuoteProvider(currency?.chainId)
     const { gasPrice } = useFeeDataWithGasPrice()
@@ -186,6 +189,7 @@ function bestTradeHookFactory({
         const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
           amount.currency.symbol
         } -> ${currency.symbol}, tradeType ${tradeType}`
+        const startTime = performance.now()
         SmartRouter.logger.log(label)
         SmartRouter.logger.metric(label, candidatePools)
         const res = await getBestTrade(deferAmount, currency, tradeType, {
@@ -202,6 +206,15 @@ function bestTradeHookFactory({
           quoteCurrencyUsdPrice,
           nativeCurrencyUsdPrice,
         })
+        const duration = performance.now() - startTime
+
+        if (trackPerf) {
+          logger.log(`[PERF] ${key}`, {
+            label: key,
+            duration,
+          })
+        }
+
         if (!res) {
           return undefined
         }

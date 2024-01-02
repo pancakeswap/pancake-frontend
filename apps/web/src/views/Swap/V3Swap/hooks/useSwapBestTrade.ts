@@ -2,11 +2,11 @@ import { TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 
-import { useSwapState } from 'state/swap/hooks'
-import { Field } from 'state/swap/actions'
 import { useCurrency } from 'hooks/Tokens'
 import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
 import { useDeferredValue } from 'react'
+import { Field } from 'state/swap/actions'
+import { useSwapState } from 'state/swap/hooks'
 import {
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
@@ -50,6 +50,7 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     v3Swap,
     stableSwap,
     type: 'auto',
+    trackPerf: true,
   })
 
   return {
