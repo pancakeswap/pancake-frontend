@@ -1,9 +1,10 @@
+import { useCountdown } from '@pancakeswap/hooks'
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
-import IFOBanner from '../IFOBanner'
+import NewIFOBanner from '../NewIFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import UserBanner from '../UserBanner'
 import VeCakeBanner from '../VeCakeBanner'
@@ -34,17 +35,14 @@ export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
-
+  const countdown = useCountdown(1704369600)
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      {
-        shouldRender: isRenderIFOBanner,
-        banner: <IFOBanner />,
-      },
+      { shouldRender: isRenderIFOBanner || !countdown?.isEnd, banner: <NewIFOBanner /> },
       { shouldRender: true, banner: <GalxeTraverseBanner /> },
       { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <VeCakeBanner /> },
@@ -72,5 +70,11 @@ export const useMultipleBannerConfig = () => {
     ]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
-  }, [isRenderIFOBanner, isRenderCompetitionBanner, isRenderUserBanner])
+  }, [
+    countdown?.isEnd,
+    isRenderCompetitionBanner,
+    isRenderIFOBanner,
+    isRenderUserBanner.isEarningsBusdZero,
+    isRenderUserBanner.shouldRender,
+  ])
 }
