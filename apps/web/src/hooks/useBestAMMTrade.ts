@@ -206,10 +206,10 @@ function bestTradeHookFactory({
           quoteCurrencyUsdPrice,
           nativeCurrencyUsdPrice,
         })
-        const duration = performance.now() - startTime
+        const duration = Math.floor(performance.now() - startTime)
 
         if (trackPerf) {
-          logger.log(`[PERF] ${key}`, {
+          logger.log(`[PERF] ${key} duration:${duration}ms`, {
             label: key,
             duration,
           })
