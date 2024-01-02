@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import {
   Box,
+  BunnyPlaceholderIcon,
   Card,
   CardBody,
   CardRibbon,
@@ -86,7 +87,11 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
                 <Flex mb="4px">
                   <RotatedLaurelLeftIcon color={rankColor} width="32px" />
                   <Box width={['40px', null, null, '64px']} height={['40px', null, null, '64px']}>
-                    <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={64} width={64} />
+                    {profile?.nft?.image?.thumbnail ?? avatar ? (
+                      <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={64} width={64} />
+                    ) : (
+                      <BunnyPlaceholderIcon height={64} width={64} />
+                    )}
                   </Box>
                   <RotatedLaurelRightIcon color={rankColor} width="32px" />
                 </Flex>
