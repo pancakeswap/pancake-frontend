@@ -1674,7 +1674,7 @@
   "View Tutorial": "பயிற்சியைக் காண்க",
   "Average lock duration": "சராசரி லாக் கால அளவு",
   "The average lock duration of all the locked staking positions of other users": "மற்ற பயனர்களின் லாக் செய்த ஸ்டேக்கிங் நிலைகளின் சராசரி லாக் கால அளவு",
-  "Your max CAKE entry": "உங்கள் அதிகபட்ச CAKE உள்ளீடு",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "டோக்கன் வெஸ்டிங்",
   "You have tokens available for claiming now!": "இப்போது கிளைம் செய்வதற்கு உங்களிடம் டோக்கன்கள் உள்ளன!",
   "You have no tokens available for claiming": "கிளைம் செய்வதற்கு உங்களிடம் டோக்கன்கள் இல்லை",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
