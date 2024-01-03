@@ -1674,7 +1674,7 @@
   "View Tutorial": "Visa guide",
   "Average lock duration": "Genomsnittlig låsningslängd",
   "The average lock duration of all the locked staking positions of other users": "Den genomsnittliga låsningslängden för alla andra användares låsta insatspositioner",
-  "Your max CAKE entry": "Din maxgräns för antal CAKE-tokens",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Förvärv av tokens",
   "You have tokens available for claiming now!": "Det finns tokens som du kan hämta ut nu!",
   "You have no tokens available for claiming": "Det finns inga tokens att hämta ut",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
