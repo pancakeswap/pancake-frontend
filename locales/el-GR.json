@@ -1674,7 +1674,7 @@
   "View Tutorial": "Προβολή μαθήματος",
   "Average lock duration": "Μέση διάρκεια κλειδώματος",
   "The average lock duration of all the locked staking positions of other users": "Η μέση διάρκεια κλειδώματος όλων των κλειδωμένων θέσεων staking άλλων χρηστών",
-  "Your max CAKE entry": "Η μέγιστη συμμετοχή σας σε CAKE",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Διάστημα δέσμευσης νομίσματος",
   "You have tokens available for claiming now!": "Υπάρχουν διαθέσιμα νομίσματα για διεκδίκηση τώρα!",
   "You have no tokens available for claiming": "Δεν υπάρχουν διαθέσιμα νομίσματα για διεκδίκηση",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
