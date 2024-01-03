@@ -42,11 +42,13 @@ export const buildStableTrade = (
 ): SmartRouterTrade<TradeType> => {
   // @notice: just set same amountOut quantity as amountIn, for easy fixture
   const amountOut = CurrencyAmount.fromFractionalAmount(output, amountIn.numerator, amountIn.denominator)
-  const path: Currency[] = [input.wrapped]
+  const path: Currency[] = [input]
+  let current = input
 
   for (const pool of stablePools) {
     const { balances } = pool
-    path.push(balances[0].currency.equals(input) ? balances[1].currency : balances[0].currency)
+    current = balances[0].currency.equals(current) ? balances[1].currency : balances[0].currency
+    path.push(current)
   }
 
   return {
