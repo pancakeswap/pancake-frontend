@@ -14,6 +14,10 @@ const mapPerpChain = (chainId: ChainId): string => {
       return 'ethereum'
     case ChainId.ARBITRUM_ONE:
       return 'arbitrum'
+    case ChainId.OPBNB:
+      return 'opbnb'
+    case ChainId.BASE:
+      return 'base'
     default:
       return 'bsc'
   }
