@@ -1,5 +1,4 @@
 import { PredictionsChartView } from '@pancakeswap/prediction'
-import { Percent } from '@pancakeswap/sdk'
 import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { PredictionSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
@@ -53,9 +52,6 @@ const Predictions = () => {
   useAccountLocalEventListener()
 
   usePollPredictions()
-
-  const test = new Percent(10, 100)
-  console.log(Number(test))
 
   return (
     <>
