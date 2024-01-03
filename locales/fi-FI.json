@@ -1674,7 +1674,7 @@
   "View Tutorial": "Näytä opas",
   "Average lock duration": "Keskimääräinen lukituksen kesto",
   "The average lock duration of all the locked staking positions of other users": "Muiden käyttäjien kaikkien lukittujen panostuspositioiden keskimääräinen lukituksen kesto",
-  "Your max CAKE entry": "Enimmäis-CAKE-merkintäsi",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Poletin vestaus",
   "You have tokens available for claiming now!": "Sinulla on nyt poletteja lunastettavana!",
   "You have no tokens available for claiming": "Sinulla ei ole poletteja lunastettavana",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
