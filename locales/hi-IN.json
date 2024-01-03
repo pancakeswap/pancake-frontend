@@ -1674,7 +1674,7 @@
   "View Tutorial": "ट्यूटोरियल देखें",
   "Average lock duration": "औसत लॉक अवधि",
   "The average lock duration of all the locked staking positions of other users": "दूसरे यूज़र की सभी लॉक स्टेकिंग पोजीशन की औसत लॉक अवधि",
-  "Your max CAKE entry": "आपकी अधिकतम CAKE एंट्री",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "टोकन वेस्टिंग",
   "You have tokens available for claiming now!": "क्लेम करने के लिए आपके पास अब टोकन हैं!",
   "You have no tokens available for claiming": "आपके पास क्लेम करने के लिए कोई टोकन नहीं है",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
