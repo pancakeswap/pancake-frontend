@@ -3118,5 +3118,6 @@
   "Last price from Pyth Oracle": "Last price from Pyth Oracle",
   "Your CAKE pool position has been converted to one of the 3rd party veCAKE locker protocols.": "Your CAKE pool position has been converted to one of the 3rd party veCAKE locker protocols.",
   "To check out your converted position, please visit the protocol page.": "To check out your converted position, please visit the protocol page.",
-  "You can create a native veCAKE position by locking CAKE.": "You can create a native veCAKE position by locking CAKE."
+  "You can create a native veCAKE position by locking CAKE.": "You can create a native veCAKE position by locking CAKE.",
+  "Converted": "Converted"
 }
