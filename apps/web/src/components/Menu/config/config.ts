@@ -116,7 +116,6 @@ const config: (
           label: t('CAKE Staking'),
           href: '/cake-staking',
           supportChainIds: SUPPORT_CAKE_STAKING,
-          status: { text: t('New'), color: 'success' },
         },
         {
           label: t('Pools'),
