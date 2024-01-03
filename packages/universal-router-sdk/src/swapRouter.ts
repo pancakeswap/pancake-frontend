@@ -2,7 +2,7 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
-import { encodeFunctionData, toHex, Hex } from 'viem'
+import { encodeFunctionData, toHex } from 'viem'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
 import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
@@ -16,17 +16,15 @@ export abstract class PancakeSwapUniversalRouter {
    * @param options options for the call parameters
    */
   public static swapERC20CallParameters(
-    trades: SmartRouterTrade<TradeType>,
+    trade: SmartRouterTrade<TradeType>,
     options: PancakeSwapOptions,
   ): MethodParameters {
     // TODO: use permit if signature included in swapOptions
     const planner = new RoutePlanner()
 
-    const trade: PancakeSwapTrade = new PancakeSwapTrade(trades, options)
-    const tradesList = !Array.isArray(trade.trade) ? [trade.trade] : trade.trade
-    const sampleTrade = tradesList[0]
+    const tradeCommand: PancakeSwapTrade = new PancakeSwapTrade(trade, options)
 
-    const inputCurrency = sampleTrade.inputAmount.currency
+    const inputCurrency = tradeCommand.trade.inputAmount.currency
     invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 
     if (options.inputTokenPermit && typeof options.inputTokenPermit === 'object') {
@@ -34,10 +32,11 @@ export abstract class PancakeSwapUniversalRouter {
     }
 
     const nativeCurrencyValue = inputCurrency.isNative
-      ? SmartRouter.maximumAmountIn(sampleTrade, options.slippageTolerance, sampleTrade.inputAmount).quotient
+      ? SmartRouter.maximumAmountIn(tradeCommand.trade, options.slippageTolerance, tradeCommand.trade.inputAmount)
+          .quotient
       : 0n
 
-    trade.encode(planner, { allowRevert: false })
+    tradeCommand.encode(planner)
     return PancakeSwapUniversalRouter.encodePlan(planner, nativeCurrencyValue, {
       deadline: options.deadlineOrPreviousBlockhash
         ? BigInt(options.deadlineOrPreviousBlockhash.toString())
@@ -57,16 +56,13 @@ export abstract class PancakeSwapUniversalRouter {
     config: SwapRouterConfig = {},
   ): MethodParameters {
     const { commands, inputs } = planner
-    let calldata: Hex
-    if (config.deadline) {
-      calldata = encodeFunctionData({
-        abi: UniversalRouterABI,
-        args: [commands, inputs, BigInt(config.deadline)],
-        functionName: 'execute',
-      })
-    } else {
-      calldata = encodeFunctionData({ abi: UniversalRouterABI, args: [commands, inputs], functionName: 'execute' })
-    }
+    const calldata = config.deadline
+      ? encodeFunctionData({
+          abi: UniversalRouterABI,
+          args: [commands, inputs, BigInt(config.deadline)],
+          functionName: 'execute',
+        })
+      : encodeFunctionData({ abi: UniversalRouterABI, args: [commands, inputs], functionName: 'execute' })
     return { calldata, value: toHex(nativeCurrencyValue) }
   }
 }
