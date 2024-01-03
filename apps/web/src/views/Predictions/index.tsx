@@ -1,20 +1,21 @@
-import { useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { PredictionsChartView } from '@pancakeswap/prediction'
+import { Percent } from '@pancakeswap/sdk'
+import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { PredictionSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
+import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
 import { useEffect, useRef } from 'react'
 import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
-import { PredictionsChartView } from '@pancakeswap/prediction'
-import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
 import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
-import { PredictionSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
-import ChartDisclaimer from './components/ChartDisclaimer'
+import Desktop from './Desktop'
+import Mobile from './Mobile'
 import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
+import ChartDisclaimer from './components/ChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import Container from './components/Container'
 import RiskDisclaimer from './components/RiskDisclaimer'
 import SwiperProvider from './context/SwiperProvider'
-import Desktop from './Desktop'
 import usePollPredictions from './hooks/usePollPredictions'
-import Mobile from './Mobile'
 
 function Warnings() {
   const [showDisclaimer] = useUserPredictionChartDisclaimerShow()
@@ -52,6 +53,9 @@ const Predictions = () => {
   useAccountLocalEventListener()
 
   usePollPredictions()
+
+  const test = new Percent(10, 100)
+  console.log(Number(test))
 
   return (
     <>
