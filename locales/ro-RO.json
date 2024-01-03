@@ -1674,7 +1674,7 @@
   "View Tutorial": "Vizualizează tutorialul",
   "Average lock duration": "Durata medie de blocare",
   "The average lock duration of all the locked staking positions of other users": "Durata medie de blocare a tuturor pozițiilor de investiții blocate ale altor utilizatori",
-  "Your max CAKE entry": "Intrarea ta max. de CAKE",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Achiziție jetoane",
   "You have tokens available for claiming now!": "Ai jetoane disponibile pentru recuperare acum!",
   "You have no tokens available for claiming": "Nu ai jetoane disponibile pentru recuperare",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
