@@ -1674,7 +1674,7 @@
   "View Tutorial": "Wyświetl samouczek",
   "Average lock duration": "Średni czas trwania blokady",
   "The average lock duration of all the locked staking positions of other users": "Średni czas trwania blokady wszystkich zablokowanych pozycji stakingu innych użytkowników",
-  "Your max CAKE entry": "Twoje maks. zgłoszenie CAKE",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Nabywanie uprawnień do tokenów",
   "You have tokens available for claiming now!": "Masz tokeny, które możesz już odebrać!",
   "You have no tokens available for claiming": "Nie masz tokenów, które możesz odebrać",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
