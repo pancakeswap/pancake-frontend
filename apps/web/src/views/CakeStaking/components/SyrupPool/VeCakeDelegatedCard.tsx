@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { memo } from 'react'
 import { VeCakeButton } from './VeCakeButton'
 import { ShineStyledBox } from './VeCakeCard'
@@ -12,7 +13,7 @@ export const VeCakeDelegatedCard: React.FC<{ isTableView?: boolean }> = memo(({ 
       style={{ alignItems: 'center', gap: 10, flexDirection: 'column', flexBasis: isTableView ? '50%' : undefined }}
     >
       <Flex alignItems="center" style={{ gap: 10 }}>
-        <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
+        <img src={`${ASSET_CDN}/web/vecake/token-vecake.png`} alt="token-vecake" width="38px" />
         <Box>
           <Text color="white" bold fontSize={14} pr="20px" mb="10px">
             {t('Your CAKE pool position has been converted to one of the 3rd party veCAKE locker protocols.')}
