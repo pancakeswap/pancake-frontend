@@ -74,10 +74,11 @@ function useChainlinkRoundDataSet() {
       data
         ?.filter((d) => !!d && d.status === 'success' && d.result[1] > 0n)
         ?.map(({ result }) => {
+          // roundId = 0, answer = 1, startedAt = 2
           return {
-            answer: formatBigIntToFixed(result?.[2] ?? 0n, 4, 8),
-            roundId: result?.[1]?.toString() ?? '0',
-            startedAt: Number(result?.[3]),
+            answer: formatBigIntToFixed(result?.[1] ?? 0n, 4, 8),
+            roundId: result?.[0]?.toString() ?? '0',
+            startedAt: Number(result?.[2]),
           }
         }) ?? []
     )
@@ -128,14 +129,12 @@ const ChainlinkChartWrapper = styled(Flex)<{ isMobile?: boolean }>`
 
 const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
   const hoverData = useChartHover()
+  const config = useConfig()
+  const { price: answerAsBigNumber } = usePollOraclePrice({ chainlinkOracleAddress: config?.chainlinkOracleAddress })
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const config = useConfig()
-  const { price: answerAsBigNumber } = usePollOraclePrice({
-    chainlinkOracleAddress: config?.chainlinkOracleAddress,
-  })
 
   return (
     <PairPriceDisplay
