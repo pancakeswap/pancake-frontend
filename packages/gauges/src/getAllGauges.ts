@@ -1,5 +1,6 @@
 import { PublicClient } from 'viem'
-import { CONFIG_PROD, CONFIG_TESTNET } from './constants/config'
+import { CONFIG_PROD } from './constants/config/prod'
+import { CONFIG_TESTNET } from './constants/config/testnet'
 import { fetchAllGauges } from './fetchAllGauges'
 import { fetchAllGaugesVoting } from './fetchGaugeVoting'
 import { Gauge, GaugeInfoConfig } from './types'
