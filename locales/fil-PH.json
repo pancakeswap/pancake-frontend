@@ -1674,7 +1674,7 @@
   "View Tutorial": "Tingnan ang Tutorial",
   "Average lock duration": "Average na tagal ng pag-lock",
   "The average lock duration of all the locked staking positions of other users": "Ang average na tagal ng pag-lock ng lahat ng naka-lock na posisyon sa pag-stake ng iba pang user",
-  "Your max CAKE entry": "Max na maipapasok mong CAKE",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Pag-vest ng Token",
   "You have tokens available for claiming now!": "Mayroon kang mga token na available nang i-claim ngayon!",
   "You have no tokens available for claiming": "Wala kang token na available i-claim",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
