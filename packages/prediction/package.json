@@ -16,8 +16,8 @@
     "@pancakeswap/pools": "workspace:*",
     "@pythnetwork/pyth-evm-js": "^1.29.2",
     "@tanstack/react-query": "^4.28.0",
-    "viem": "1.15.1",
-    "wagmi": "1.4.3"
+    "viem": "1.19.11",
+    "wagmi": "1.4.7"
   },
   "devDependencies": {
     "@pancakeswap/sdk": "workspace:*",
