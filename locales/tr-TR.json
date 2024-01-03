@@ -1674,7 +1674,7 @@
   "View Tutorial": "Eğitimi Görüntüle",
   "Average lock duration": "Ortalama kilitleme süresi",
   "The average lock duration of all the locked staking positions of other users": "Diğer kullanıcıların tüm kilitli stake pozisyonlarının ortalama kilit süresi",
-  "Your max CAKE entry": "Maks. CAKE girişiniz",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Token Hak Edişi",
   "You have tokens available for claiming now!": "Şu anda alabileceğiniz token'larınız var!",
   "You have no tokens available for claiming": "Alabileceğiniz token'ınız yok",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
