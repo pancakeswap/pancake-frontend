@@ -1674,7 +1674,7 @@
   "View Tutorial": "Voir le tutoriel",
   "Average lock duration": "Durée moyenne du verrouillage",
   "The average lock duration of all the locked staking positions of other users": "La durée moyenne du verrouillage de toutes les positions de staking verrouillées des autres utilisateurs",
-  "Your max CAKE entry": "Votre entrée maximale en CAKE",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Acquisition de jetons",
   "You have tokens available for claiming now!": "Des jetons sont maintenant disponibles pour être récupérés !",
   "You have no tokens available for claiming": "Aucun jeton n'est disponible pour être récupéré pour le moment",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
