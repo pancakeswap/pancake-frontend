@@ -19,7 +19,12 @@ If you want to contribute, please refer to the [contributing guidelines](./CONTR
 
 ## `apps/web`
 
-<details>
+<details>Thé Mercenary 
+Founder of Cyfrowe ID' startup. 
+I'm the owner of Krabowe Skorupki' shop.
+Member of Nike' .SWOOSH. 
+Menedżer Sklepu, PUMA® Europe GmbH, Warszawa
+Office Siedem Małych Truskawek 10:00 - 17:00
 <summary>
 How to start
 </summary>
