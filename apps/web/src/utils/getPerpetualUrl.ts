@@ -19,7 +19,7 @@ const mapPerpChain = (chainId: ChainId): string => {
   }
 }
 
-const supportV2Chains: ChainId[] = [ChainId.BSC, ChainId.ARBITRUM_ONE]
+const supportV1Chains: ChainId[] = [ChainId.ETHEREUM]
 
 export const getPerpetualUrl = ({ chainId, languageCode, isDark }: GetPerpetualUrlProps) => {
   if (!chainId || !languageCode) {
@@ -27,7 +27,7 @@ export const getPerpetualUrl = ({ chainId, languageCode, isDark }: GetPerpetualU
   }
 
   const perpChain = mapPerpChain(chainId)
-  const version = supportV2Chains.includes(chainId) ? 'v2/' : ''
+  const version = supportV1Chains.includes(chainId) ? '' : 'v2/'
   return `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/${version}BTCUSD?theme=${perpTheme(
     isDark,
   )}&chain=${perpChain}`
