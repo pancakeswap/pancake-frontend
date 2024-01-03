@@ -1,15 +1,20 @@
-import { useAccount } from 'wagmi'
-import orderBy from 'lodash/orderBy'
-import { Box, Button, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { Box, Button, Flex, Heading, Text } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { Bet } from 'state/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import orderBy from 'lodash/orderBy'
 import { fetchNodeHistory } from 'state/predictions'
+import {
+  useGetCurrentHistoryPage,
+  useGetHasHistoryLoaded,
+  useGetHistoryFilter,
+  useGetIsFetchingHistory,
+} from 'state/predictions/hooks'
+import { Bet, HistoryFilter } from 'state/types'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { useGetCurrentHistoryPage, useGetHasHistoryLoaded, useGetIsFetchingHistory } from 'state/predictions/hooks'
-import HistoricalBet from './HistoricalBet'
+import { useAccount } from 'wagmi'
 import V1ClaimCheck from '../v1/V1ClaimCheck'
+import HistoricalBet from './HistoricalBet'
 
 interface RoundsTabProps {
   hasBetHistory: boolean
@@ -21,6 +26,7 @@ const RoundsTab: React.FC<React.PropsWithChildren<RoundsTabProps>> = ({ hasBetHi
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
+  const historyFilter = useGetHistoryFilter()
   const hasHistoryLoaded = useGetHasHistoryLoaded()
   const currentHistoryPage = useGetCurrentHistoryPage()
   const isFetchingHistory = useGetIsFetchingHistory()
@@ -40,7 +46,7 @@ const RoundsTab: React.FC<React.PropsWithChildren<RoundsTabProps>> = ({ hasBetHi
       {orderBy(bets, ['round.epoch'], ['desc'])?.map((bet) => (
         <HistoricalBet key={bet?.round?.epoch} bet={bet} />
       ))}
-      {hasBetHistory && !hasHistoryLoaded && (
+      {hasBetHistory && !hasHistoryLoaded && historyFilter === HistoryFilter.ALL && (
         <Flex alignItems="center" justifyContent="center" py="24px">
           <Button variant="secondary" scale="sm" onClick={handleClick} disabled={isFetchingHistory}>
             {t('View More')}
