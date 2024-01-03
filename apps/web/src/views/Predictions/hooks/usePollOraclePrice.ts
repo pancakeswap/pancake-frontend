@@ -1,10 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
-import { useGaletoOraclePrice } from '@pancakeswap/prediction'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { Address } from 'viem'
 import { useContractRead } from 'wagmi'
+import { useGaletoOraclePrice } from './useGaletoOraclePrice'
 
 interface UsePollOraclePriceProps {
   chainlinkOracleAddress?: Address

@@ -1,7 +1,6 @@
 export * from './chainlinkOracleContract'
 export * from './constants'
 export * from './endpoints'
-export * from './hooks'
 export * from './type'
 export * from './utils'
 

@@ -724,6 +724,9 @@ importers:
       '@pancakeswap/widgets-internal':
         specifier: workspace:*
         version: link:../../packages/widgets-internal
+      '@pythnetwork/pyth-evm-js':
+        specifier: ^1.29.2
+        version: 1.29.2
       '@reduxjs/toolkit':
         specifier: ^1.9.1
         version: 1.9.7(react-redux@8.1.3)(react@18.2.0)
@@ -1496,12 +1499,6 @@ importers:
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@pythnetwork/pyth-evm-js':
-        specifier: ^1.29.2
-        version: 1.29.2
-      '@tanstack/react-query':
-        specifier: ^4.28.0
-        version: 4.36.1(react-dom@18.2.0)(react@18.2.0)
       viem:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
