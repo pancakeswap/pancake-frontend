@@ -1674,7 +1674,7 @@
   "View Tutorial": "عرض البرنامج التعليمي",
   "Average lock duration": "متوسط مدة التجميد",
   "The average lock duration of all the locked staking positions of other users": "متوسط مدة التجميد لكل مراكز الرهن المجمدة للمستخدمين الآخرين",
-  "Your max CAKE entry": "أقصى إدخال لـ CAKE الخاص بك",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "فترة تجميد الرموز المميزة",
   "You have tokens available for claiming now!": "لديك رموز مميزة متوفرة الآن للمطالبة!",
   "You have no tokens available for claiming": "ليس لديك رموز مميزة متوفرة الآن للمطالبة",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
