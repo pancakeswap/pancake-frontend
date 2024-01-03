@@ -6,7 +6,6 @@ type Countdown = {
   hours: number
   minutes: number
   seconds: number
-  isEnd: boolean
 }
 
 // @param to The target unix timestamp
@@ -27,13 +26,11 @@ export function useCountdown(to: number): Countdown | undefined {
     const minutes = target.diff(relative, 'minute')
     relative = relative.add(minutes, 'minute')
     const seconds = target.diff(relative, 'second')
-    const isEnd = days === 0 && hours === 0 && minutes === 0 && seconds === 0
     setCountdown({
       days,
       hours,
       minutes,
       seconds,
-      isEnd,
     })
     return setTimeout(updateCountdown, 1000)
   }, [to])
