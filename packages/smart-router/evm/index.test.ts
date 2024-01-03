@@ -111,6 +111,7 @@ test('SmartRouter exports', () => {
       "partitionMixedRouteByProtocol",
       "log",
       "logger",
+      "getPriceImpact",
       "maximumAmountIn",
       "metric",
       "minimumAmountOut",
