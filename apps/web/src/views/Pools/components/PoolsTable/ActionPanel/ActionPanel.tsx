@@ -26,6 +26,7 @@ import {
   VeCakeBunny,
   VeCakeButton,
   VeCakeCardTableView,
+  VeCakeDelegatedCard,
   VeCakeMigrateCard,
   VeCakeUpdateCard,
   VeCakeUpdateCardTableView,
@@ -201,7 +202,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
       </InfoSection>
       <ActionContainer>
         <Box width="100%">
-          {pool.vaultKey === VaultKey.CakeVault && !isUserDelegated && (
+          {pool.vaultKey === VaultKey.CakeVault && (
             <VaultPositionTagWithLabel
               userData={vaultData.userData as DeserializedLockedVaultUser}
               width={['auto', null, 'fit-content']}
@@ -211,8 +212,10 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
             {pool.vaultKey ? (
               <>
-                {account && vaultPosition !== VaultPosition.None && !isUserDelegated ? (
-                  <AutoHarvest pool={pool} />
+                {account && vaultPosition !== VaultPosition.None ? (
+                  isUserDelegated ? null : (
+                    <AutoHarvest pool={pool} />
+                  )
                 ) : (
                   <VeCakeCardTableView />
                 )}
@@ -220,10 +223,10 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             ) : (
               <Harvest {...pool} />
             )}
-            <Stake pool={pool} />
+            {!isUserDelegated && <Stake pool={pool} />}
           </ActionContainer>
         </Box>
-        {!isUserDelegated && isCakePool && account && vaultPosition !== VaultPosition.None && (
+        {isCakePool && account && vaultPosition !== VaultPosition.None && (
           <Flex width="100%">
             <Message
               variant="warning"
@@ -233,6 +236,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                   alignItems="center"
                   style={{ gap: isMobile ? 15 : 24, flexDirection: isMobile ? 'column' : 'row' }}
                 >
+                  {isUserDelegated && <VeCakeDelegatedCard isTableView />}
                   {vaultPosition === VaultPosition.Locked && (
                     <VeCakeMigrateCard
                       isTableView
@@ -240,8 +244,8 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                     />
                   )}
                   {vaultPosition === VaultPosition.Flexible && <VeCakeUpdateCard isFlexibleStake isTableView />}
-                  {vaultPosition >= VaultPosition.LockedEnd && <VeCakeUpdateCardTableView />}
-                  {vaultPosition >= VaultPosition.LockedEnd && <WithdrawAllButton />}
+                  {vaultPosition >= VaultPosition.LockedEnd && !isUserDelegated && <VeCakeUpdateCardTableView />}
+                  {vaultPosition >= VaultPosition.LockedEnd && !isUserDelegated && <WithdrawAllButton />}
                   <VeCakeButton style={{ flexBasis: '50%' }} type="get" />
                 </Flex>
               }
@@ -255,7 +259,9 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                       <LearnMoreLink withArrow />
                     </>
                   ) : vaultPosition >= VaultPosition.LockedEnd ? (
-                    isMigratedToVeCake ? (
+                    isUserDelegated ? (
+                      t('To check out your converted position, please visit the protocol page.')
+                    ) : isMigratedToVeCake ? (
                       t(
                         'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
                       )

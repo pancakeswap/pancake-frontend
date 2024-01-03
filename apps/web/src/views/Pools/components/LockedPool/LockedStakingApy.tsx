@@ -3,6 +3,7 @@ import { memo } from 'react'
 
 import { Token } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
+import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import LockDurationRow from './Common/LockDurationRow'
 import LockedStaking from './LockedStaking'
 import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
@@ -15,6 +16,7 @@ interface LockedStakingApyProps extends LockedStakingApyPropsType {
 }
 
 const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>> = ({ userData, pool }) => {
+  const isUserDelegated = useIsUserDelegated()
   // const position = useMemo(
   //   () =>
   //     getVaultPosition({
@@ -26,8 +28,8 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
   // )
 
   const { weekDuration } = useUserDataInVaultPresenter({
-    lockStartTime: userData?.lockStartTime,
-    lockEndTime: userData?.lockEndTime,
+    lockStartTime: userData?.lockStartTime ?? '',
+    lockEndTime: userData?.lockEndTime ?? '',
     burnStartTime: userData?.burnStartTime,
   })
 
@@ -52,7 +54,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
           <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
         </Flex>
       )} */}
-      <LockDurationRow weekDuration={weekDuration} />
+      {!isUserDelegated && <LockDurationRow weekDuration={weekDuration} />}
       {/* {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
         <YieldBoostRow secondDuration={secondDuration} />
       )}
