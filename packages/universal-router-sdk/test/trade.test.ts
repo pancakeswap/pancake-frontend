@@ -1662,6 +1662,9 @@ describe('PancakeSwap Universal Router Trade', () => {
         gasEstimateInUSD: CurrencyAmount.fromRawAmount(ETHER, amountIn),
       }
 
+      // FIXME: a valid trade should have the correct output amounts
+      expect(trade.routes.reduce((acc, r) => acc + r.outputAmount.quotient, 0n)).toEqual(trade.outputAmount.quotient)
+
       const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
       expect(BigInt(value)).toEqual(amountIn)
       expect(calldata).toMatchSnapshot()
@@ -1968,6 +1971,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
         gasEstimate: 0n,
         gasEstimateInUSD: CurrencyAmount.fromRawAmount(USDT, amountIn),
       }
+
+      // FIXME: a valid trade should have the correct output amounts
+      expect(trade.routes.reduce((acc, r) => acc + r.outputAmount.quotient, 0n)).toEqual(trade.outputAmount.quotient)
+
       const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
 
       expect(BigInt(value)).toEqual(0n)
