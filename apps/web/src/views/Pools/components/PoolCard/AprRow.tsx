@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js'
-import Apr from 'views/Pools/components/Apr'
 import { Token } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/widgets-internal'
+import BigNumber from 'bignumber.js'
+import Apr from 'views/Pools/components/Apr'
 
 interface AprRowProps {
   pool: Pool.DeserializedPool<Token>
