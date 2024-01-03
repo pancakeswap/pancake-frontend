@@ -1674,7 +1674,7 @@
   "View Tutorial": "Lihat Tutorial",
   "Average lock duration": "Durasi penguncian rata-rata",
   "The average lock duration of all the locked staking positions of other users": "Durasi penguncian rata-rata dari semua posisi penumpukan terkunci oleh para pengguna lain",
-  "Your max CAKE entry": "Entri CAKE maks. Anda",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Vesting Token",
   "You have tokens available for claiming now!": "Ada token yang tersedia untuk Anda klaim sekarang!",
   "You have no tokens available for claiming": "Tidak ada token yang tersedia untuk Anda klaim",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
