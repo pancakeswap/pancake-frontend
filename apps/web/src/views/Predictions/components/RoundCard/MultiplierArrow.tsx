@@ -1,8 +1,8 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { BetPosition } from '@pancakeswap/prediction'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { CSSProperties } from 'react'
 import { styled } from 'styled-components'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { BetPosition } from 'state/types'
 import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMultiplierArrows'
 import EnteredTag from './EnteredTag'
 
@@ -88,7 +88,7 @@ const MultiplierArrow: React.FC<React.PropsWithChildren<MultiplierArrowProps>> =
 
     return (
       <EnteredTagWrapper style={position}>
-        <EnteredTag amount={betAmount} hasClaimed={hasClaimed} multiplier={multiplier} />
+        <EnteredTag amount={betAmount} hasClaimed={hasClaimed} multiplier={multiplier ?? ''} />
       </EnteredTagWrapper>
     )
   }

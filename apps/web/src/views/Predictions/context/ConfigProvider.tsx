@@ -1,7 +1,7 @@
+import { PredictionConfig } from '@pancakeswap/prediction'
 import { createContext, useContext } from 'react'
-import { PredictionConfig } from 'state/types'
 
-export const ConfigContext = createContext<PredictionConfig>(null)
+export const ConfigContext = createContext<PredictionConfig | null>(null)
 
 export function useConfig() {
   return useContext(ConfigContext)

@@ -1,4 +1,4 @@
-export const cakePredictionsABI = [
+export const predictionsV3ABI = [
   {
     inputs: [],
     name: 'MAX_TREASURY_FEE',

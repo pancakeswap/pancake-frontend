@@ -1,19 +1,26 @@
-import { useCallback } from 'react'
+import { Token } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
-import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { fetchAddressResult, setSelectedAddress } from 'state/predictions'
 import AddressInputSelect from 'components/AddressInputSelect'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
+import { useCallback } from 'react'
+import { fetchAddressResult, setSelectedAddress } from 'state/predictions'
 import { useStatModalProps } from 'state/predictions/hooks'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import WalletStatsModal from './WalletStatsModal'
 
-const AddressSearch = () => {
+interface AddressSearchProps {
+  token: Token | undefined
+  api: string
+}
+
+const AddressSearch: React.FC<React.PropsWithChildren<AddressSearchProps>> = ({ token, api }) => {
   const dispatch = useLocalDispatch()
-  const { result, address, leaderboardLoadingState } = useStatModalProps()
-  const { token, api } = useConfig()
+  const { result, address, leaderboardLoadingState } = useStatModalProps({
+    api,
+    tokenSymbol: token?.symbol ?? '',
+  })
 
   const handleBeforeDismiss = () => {
-    dispatch(setSelectedAddress(null))
+    dispatch(setSelectedAddress(''))
   }
 
   const [onPresentWalletStatsModal] = useModal(
@@ -31,10 +38,12 @@ const AddressSearch = () => {
   )
   const handleValidAddress = useCallback(
     async (value: string) => {
-      const response: any = await dispatch(fetchAddressResult(value))
+      const response: any = await dispatch(
+        fetchAddressResult({ account: value, api, tokenSymbol: token?.symbol ?? '', chainId: token?.chainId }),
+      )
       return response.payload?.data !== undefined
     },
-    [dispatch],
+    [api, dispatch, token],
   )
 
   const handleAddressClick = async (value: string) => {

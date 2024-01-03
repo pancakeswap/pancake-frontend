@@ -30,7 +30,7 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
   const { t } = useTranslation()
 
   const handleConfirm = () => {
-    onDismiss()
+    onDismiss?.()
   }
 
   return (

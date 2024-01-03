@@ -10,7 +10,7 @@ import {
   TooltipText,
   InfoIcon,
 } from '@pancakeswap/uikit'
-import { BetPosition } from 'state/types'
+import { BetPosition } from '@pancakeswap/prediction'
 import { useTranslation } from '@pancakeswap/localization'
 
 interface TagProps extends FlexProps {

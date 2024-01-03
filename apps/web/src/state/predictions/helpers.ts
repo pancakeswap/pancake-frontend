@@ -1,30 +1,33 @@
-import { request, gql } from 'graphql-request'
-import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_CAKE } from 'config/constants/endpoints'
+import { ChainId } from '@pancakeswap/chains'
+import {
+  BetPosition,
+  PredictionStatus,
+  PredictionSupportedSymbol,
+  predictionsV2ABI,
+  ROUNDS_PER_PAGE,
+} from '@pancakeswap/prediction'
+import { gql, request } from 'graphql-request'
 import {
   Bet,
-  LedgerData,
-  BetPosition,
-  PredictionsState,
-  PredictionStatus,
-  ReduxNodeLedger,
-  RoundData,
   HistoryFilter,
-  ReduxNodeRound,
+  LedgerData,
   NodeRound,
+  PredictionsState,
+  ReduxNodeLedger,
+  ReduxNodeRound,
+  RoundData,
 } from 'state/types'
-import { Address } from 'wagmi'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
-import { predictionsV2ABI } from 'config/abi/predictionsV2'
-import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/chains'
 import { PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
-import { getRoundBaseFields, getBetBaseFields, getUserBaseFields } from './queries'
-import { ROUNDS_PER_PAGE } from './config'
-import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTransformers'
-import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
-import { BetResponse, UserResponse } from './responseType'
+import { publicClient } from 'utils/wagmi'
+import { Address } from 'wagmi'
 import { BetResponseBNB } from './bnbQueries'
+import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
 import { BetResponseCAKE } from './cakeQueries'
+import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTransformers'
+import { newTransformBetResponse, newTransformUserResponse } from './newTransformers'
+import { getBetBaseFields, getRoundBaseFields, getUserBaseFields } from './queries'
+import { BetResponse, UserResponse } from './responseType'
 
 const convertBigInt = (value: string | null): null | bigint => (!value ? null : BigInt(value))
 
@@ -39,9 +42,6 @@ export const deserializeRound = (round: ReduxNodeRound): NodeRound => ({
   rewardAmount: convertBigInt(round.rewardAmount),
 })
 
-// TODO: refactor it when multi-chain
-const bscClient = publicClient({ chainId: ChainId.BSC })
-
 export enum Result {
   WIN = 'win',
   LOSE = 'lose',
@@ -50,11 +50,31 @@ export enum Result {
   LIVE = 'live',
 }
 
-export const transformBetResponse = (tokenSymbol) =>
-  tokenSymbol === 'CAKE' ? transformBetResponseCAKE : transformBetResponseBNB
+export const transformBetResponse = (tokenSymbol: string, chainId: ChainId | undefined) => {
+  // BSC CAKE
+  if (tokenSymbol === PredictionSupportedSymbol.CAKE && chainId === ChainId.BSC) {
+    return transformBetResponseCAKE
+  }
+  // BSC BNB
+  if (tokenSymbol === PredictionSupportedSymbol.BNB && chainId === ChainId.BSC) {
+    return transformBetResponseBNB
+  }
 
-export const transformUserResponse = (tokenSymbol) =>
-  tokenSymbol === 'CAKE' ? transformUserResponseCAKE : transformUserResponseBNB
+  return newTransformBetResponse
+}
+
+export const transformUserResponse = (tokenSymbol: string, chainId: ChainId | undefined) => {
+  // BSC CAKE
+  if (tokenSymbol === PredictionSupportedSymbol.CAKE && chainId === ChainId.BSC) {
+    return transformUserResponseCAKE
+  }
+  // BSC BNB
+  if (tokenSymbol === PredictionSupportedSymbol.BNB && chainId === ChainId.BSC) {
+    return transformUserResponseBNB
+  }
+
+  return newTransformUserResponse
+}
 
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   const { round } = bet
@@ -89,45 +109,6 @@ export const getFilteredBets = (bets: Bet[], filter: HistoryFilter) => {
   }
 }
 
-const getTotalWonMarket = (market, tokenSymbol) => {
-  const total = market[`total${tokenSymbol}`] ? parseFloat(market[`total${tokenSymbol}`]) : 0
-  const totalTreasury = market[`total${tokenSymbol}Treasury`] ? parseFloat(market[`total${tokenSymbol}Treasury`]) : 0
-
-  return Math.max(total - totalTreasury, 0)
-}
-
-export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE: number }> => {
-  const [{ market: BNBMarket, market: CAKEMarket }] = await Promise.all([
-    request(
-      GRAPH_API_PREDICTION_BNB,
-      gql`
-        query getTotalWonData {
-          market(id: 1) {
-            totalBNB
-            totalBNBTreasury
-          }
-        }
-      `,
-    ),
-    request(
-      GRAPH_API_PREDICTION_CAKE,
-      gql`
-        query getTotalWonData {
-          market(id: 1) {
-            totalCAKE
-            totalCAKETreasury
-          }
-        }
-      `,
-    ),
-  ])
-
-  const totalWonBNB = getTotalWonMarket(BNBMarket, 'BNB')
-  const totalWonCAKE = getTotalWonMarket(CAKEMarket, 'CAKE')
-
-  return { totalWonBNB, totalWonCAKE }
-}
-
 type WhereClause = Record<string, string | number | boolean | string[]>
 
 export const getBetHistory = async (
@@ -144,7 +125,7 @@ export const getBetHistory = async (
         bets(first: $first, skip: $skip, where: $where, orderBy: createdAt, orderDirection: desc) {
           ${getBetBaseFields(tokenSymbol)}
           round {
-            ${getRoundBaseFields(tokenSymbol)}
+            ${getRoundBaseFields}
           }
           user {
             ${getUserBaseFields(tokenSymbol)}
@@ -159,10 +140,12 @@ export const getBetHistory = async (
 
 export const getLedgerData = async (
   account: Address,
+  chainId: ChainId,
   epochs: number[],
   address: Address,
 ): Promise<PredictionsLedgerResponse[]> => {
-  const response = await bscClient.multicall({
+  const client = publicClient({ chainId })
+  const response = await client.multicall({
     contracts: epochs.map(
       (epoch) =>
         ({
@@ -199,7 +182,16 @@ const defaultPredictionUserOptions = {
   orderDir: 'desc',
 }
 
-export const getHasRoundFailed = (oracleCalled: boolean, closeTimestamp: null | number, buffer: number) => {
+export const getHasRoundFailed = (
+  oracleCalled: boolean,
+  closeTimestamp: null | number,
+  buffer: number,
+  closePrice: null | bigint,
+) => {
+  if (closePrice === 0n) {
+    return true
+  }
+
   if (!oracleCalled && !closeTimestamp) {
     const closeTimestampMs = (Number(closeTimestamp) + buffer) * 1000
     if (Number.isFinite(closeTimestampMs)) {
@@ -253,10 +245,12 @@ export const getPredictionUser = async (
 
 export const getClaimStatuses = async (
   account: Address,
+  chainId: ChainId,
   epochs: number[],
   address: Address,
 ): Promise<PredictionsState['claimableStatuses']> => {
-  const response = await bscClient.multicall({
+  const client = publicClient({ chainId })
+  const response = await client.multicall({
     contracts: epochs.map(
       (epoch) =>
         ({
@@ -280,8 +274,9 @@ export const getClaimStatuses = async (
 }
 
 export type MarketData = Pick<PredictionsState, 'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount'>
-export const getPredictionData = async (address: Address): Promise<MarketData> => {
-  const [currentEpoch, intervalSeconds, minBetAmount, paused] = await bscClient.multicall({
+export const getPredictionData = async (address: Address, chainId: ChainId): Promise<MarketData> => {
+  const client = publicClient({ chainId })
+  const [currentEpoch, intervalSeconds, minBetAmount, paused] = await client.multicall({
     contracts: [
       {
         address,
@@ -315,8 +310,13 @@ export const getPredictionData = async (address: Address): Promise<MarketData> =
   }
 }
 
-export const getRoundsData = async (epochs: number[], address: Address): Promise<PredictionsRoundsResponse[]> => {
-  const response = await bscClient.multicall({
+export const getRoundsData = async (
+  epochs: number[],
+  address: Address,
+  chainId: ChainId,
+): Promise<PredictionsRoundsResponse[]> => {
+  const client = publicClient({ chainId })
+  const response = await client.multicall({
     contracts: epochs.map(
       (epoch) =>
         ({
@@ -443,9 +443,9 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
   }
 }
 
-export const fetchUsersRoundsLength = async (account: Address, address: Address) => {
+export const fetchUsersRoundsLength = async (account: Address, chainId: ChainId, address: Address) => {
   try {
-    const contract = getPredictionsV2Contract(address)
+    const contract = getPredictionsV2Contract(address, chainId)
     const length = await contract.read.getUserRoundsLength([account])
     return length
   } catch {
@@ -458,11 +458,12 @@ export const fetchUsersRoundsLength = async (account: Address, address: Address)
  */
 export const fetchUserRounds = async (
   account: Address,
+  chainId: ChainId,
   cursor = 0,
   size = ROUNDS_PER_PAGE,
   address: Address,
 ): Promise<null | { [key: string]: ReduxNodeLedger }> => {
-  const contract = getPredictionsV2Contract(address)
+  const contract = getPredictionsV2Contract(address, chainId)
 
   try {
     const [rounds, ledgers] = await contract.read.getUserRounds([account, BigInt(cursor), BigInt(size)])

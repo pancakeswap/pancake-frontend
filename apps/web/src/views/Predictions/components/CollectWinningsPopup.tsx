@@ -129,7 +129,7 @@ const CollectWinningsPopup = () => {
   const predictionStatus = useGetPredictionsStatus()
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const dispatch = useLocalDispatch()
-  const { api, token } = useConfig()
+  const config = useConfig()
 
   const handleOpenHistory = () => {
     dispatch(setHistoryPaneState(true))
@@ -143,14 +143,14 @@ const CollectWinningsPopup = () => {
   // Check user's history for unclaimed winners
   useEffect(() => {
     let isCancelled = false
-    if (account) {
+    if (account && config) {
       timer = setInterval(async () => {
         const bets = await getBetHistory(
           { user: account.toLowerCase(), claimed: false },
           undefined,
           undefined,
-          api,
-          token.symbol,
+          config?.api,
+          config?.token?.symbol,
         )
 
         if (!isCancelled) {
@@ -170,7 +170,7 @@ const CollectWinningsPopup = () => {
       clearInterval(timer)
       isCancelled = true
     }
-  }, [account, predictionStatus, setIsOpen, isHistoryPaneOpen, api, token.symbol])
+  }, [account, predictionStatus, setIsOpen, isHistoryPaneOpen, config])
 
   // Any time the history pane is open make sure the popup closes
   useEffect(() => {

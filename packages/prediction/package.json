@@ -1,0 +1,24 @@
+{
+  "name": "@pancakeswap/prediction",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@pancakeswap/sdk": "workspace:*"
+  },
+  "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/pools": "workspace:*",
+    "viem": "1.19.11",
+    "wagmi": "1.4.7"
+  },
+  "devDependencies": {
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/tsconfig": "workspace:*"
+  }
+}

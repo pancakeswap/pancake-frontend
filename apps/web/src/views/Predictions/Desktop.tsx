@@ -1,29 +1,29 @@
-import { memo, useEffect, useRef } from 'react'
-import { styled } from 'styled-components'
-import Split, { SplitInstance } from 'split-grid'
-import { Button, ChartIcon, Flex, Box, Link } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { PredictionStatus, PredictionsChartView } from '@pancakeswap/prediction'
+import { Box, Button, ChartIcon, Flex, Link } from '@pancakeswap/uikit'
+import { ChartByLabel } from 'components/Chart/ChartbyLabel'
+import { TabToggle } from 'components/TabToggle'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
-import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
+import dynamic from 'next/dynamic'
+import { memo, useEffect, useMemo, useRef } from 'react'
+import Split, { SplitInstance } from 'split-grid'
+import { setChartPaneState, setChartView } from 'state/predictions'
 import {
   useChartView,
   useGetPredictionsStatus,
   useIsChartPaneOpen,
   useIsHistoryPaneOpen,
 } from 'state/predictions/hooks'
-import { setChartPaneState, setChartView } from 'state/predictions'
-import { PredictionsChartView, PredictionStatus } from 'state/types'
-import dynamic from 'next/dynamic'
-import { useTranslation } from '@pancakeswap/localization'
-import { ChartByLabel } from 'components/Chart/ChartbyLabel'
-import { TabToggle } from 'components/TabToggle'
-import TradingView from './components/TradingView'
-import { ErrorNotification, PauseNotification } from './components/Notification'
+import { styled } from 'styled-components'
 import History from './History'
 import Positions from './Positions'
-import { useConfig } from './context/ConfigProvider'
 import LoadingSection from './components/LoadingSection'
 import Menu from './components/Menu'
+import { ErrorNotification, PauseNotification } from './components/Notification'
+import TradingView from './components/TradingView'
+import { useConfig } from './context/ConfigProvider'
 
 const ChainlinkChart = dynamic(() => import('./components/ChainlinkChart'), { ssr: false })
 
@@ -57,13 +57,13 @@ const ChartPane = styled.div`
   background: ${({ theme }) => theme.colors.background};
 `
 
-const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean; isChartPaneOpen: boolean }>`
+const HistoryPane = styled.div<{ $isHistoryPaneOpen: boolean; $isChartPaneOpen: boolean }>`
   flex: none;
   overflow: hidden;
   transition: width 200ms ease-in-out;
   background: ${({ theme }) => theme.card.background};
-  padding-bottom: ${({ isChartPaneOpen }) => (isChartPaneOpen ? 0 : '24px')};
-  width: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '384px' : 0)};
+  padding-bottom: ${({ $isChartPaneOpen }) => ($isChartPaneOpen ? 0 : '24px')};
+  width: ${({ $isHistoryPaneOpen }) => ($isHistoryPaneOpen ? '384px' : 0)};
 `
 
 const StyledDesktop = styled.div`
@@ -88,9 +88,9 @@ const PositionPane = styled.div`
   }
 `
 
-const Gutter = styled.div<{ isChartPaneOpen?: boolean }>`
+const Gutter = styled.div<{ $isChartPaneOpen?: boolean }>`
   background: ${({ theme }) => theme.card.background};
-  cursor: ${({ isChartPaneOpen }) => (isChartPaneOpen ? 'row-resize' : 'pointer')};
+  cursor: ${({ $isChartPaneOpen }) => ($isChartPaneOpen ? 'row-resize' : 'pointer')};
   height: 24px;
   position: relative;
 
@@ -114,25 +114,35 @@ const PowerLinkStyle = styled(Link)`
 `
 
 const Desktop: React.FC<React.PropsWithChildren> = () => {
-  const splitWrapperRef = useRef<HTMLDivElement>()
-  const chartRef = useRef<HTMLDivElement>()
-  const gutterRef = useRef<HTMLDivElement>()
+  const splitWrapperRef = useRef<HTMLDivElement>(null)
+  const chartRef = useRef<HTMLDivElement>(null)
+  const gutterRef = useRef<HTMLDivElement>(null)
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const chartView = useChartView()
   const dispatch = useLocalDispatch()
   const { t } = useTranslation()
   const status = useGetPredictionsStatus()
-  const { token } = useConfig()
+  const config = useConfig()
+
+  useEffect(() => {
+    if (config?.galetoOracleAddress) {
+      dispatch(setChartPaneState(false))
+    }
+  }, [config, dispatch])
 
   const openChartPane = () => {
-    splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
-    splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
+    if (splitWrapperRef.current) {
+      splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
+      splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
+    }
 
     // Purely comedic: We only want to animate if we are clicking the open chart button
     // If we keep the transition on the resizing becomes very choppy
     delay(() => {
-      splitWrapperRef.current.style.transition = ''
+      if (splitWrapperRef.current) {
+        splitWrapperRef.current.style.transition = ''
+      }
     }, 150)
 
     dispatch(setChartPaneState(true))
@@ -140,11 +150,15 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
 
   const splitInstance = useRef<SplitInstance>()
 
-  useEffect(() => {
-    const { height } = chartRef.current.getBoundingClientRect()
+  const tokenSymbol = useMemo(() => config?.token.symbol ?? '', [config])
 
-    if (height > 0 && !isChartPaneOpen) {
-      dispatch(setChartPaneState(true))
+  useEffect(() => {
+    if (chartRef.current) {
+      const { height } = chartRef.current.getBoundingClientRect()
+
+      if (height > 0 && !isChartPaneOpen) {
+        dispatch(setChartPaneState(true))
+      }
     }
   }, [isChartPaneOpen, dispatch])
 
@@ -158,13 +172,15 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   useEffect(() => {
     const threshold = 100
     const handleDrag = debounce(() => {
-      const { height } = chartRef.current.getBoundingClientRect()
+      if (chartRef.current) {
+        const { height } = chartRef.current.getBoundingClientRect()
 
-      // If the height of the chart pane goes below the "snapOffset" threshold mark the chart pane as closed
-      dispatch(setChartPaneState(height > threshold))
+        // If the height of the chart pane goes below the "snapOffset" threshold mark the chart pane as closed
+        dispatch(setChartPaneState(height > threshold))
+      }
     }, 50)
 
-    if (isChartPaneOpen && !splitInstance.current) {
+    if (isChartPaneOpen && !splitInstance.current && gutterRef?.current) {
       splitInstance.current = Split({
         dragInterval: 1,
         snapOffset: threshold,
@@ -202,16 +218,12 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             )}
           </PositionPane>
 
-          <Gutter
-            ref={gutterRef}
-            isChartPaneOpen={isChartPaneOpen}
-            onClick={() => {
-              openChartPane()
-            }}
-          >
-            <PowerLinkStyle href="https://chain.link/" external>
-              <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
-            </PowerLinkStyle>
+          <Gutter ref={gutterRef} $isChartPaneOpen={isChartPaneOpen} onClick={() => openChartPane()}>
+            {config?.chainlinkOracleAddress && (
+              <PowerLinkStyle href="https://chain.link/" external>
+                <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
+              </PowerLinkStyle>
+            )}
             <ExpandButtonGroup>
               <TabToggle
                 height="42px"
@@ -226,30 +238,32 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
               >
                 {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
               </TabToggle>
-              <TabToggle
-                as={Button}
-                height="42px"
-                style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
-                isActive={chartView === PredictionsChartView.Chainlink}
-                onMouseDown={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  dispatch(setChartView(PredictionsChartView.Chainlink))
-                }}
-              >
-                {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
-              </TabToggle>
+              {config?.chainlinkOracleAddress && (
+                <TabToggle
+                  as={Button}
+                  height="42px"
+                  style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
+                  isActive={chartView === PredictionsChartView.Chainlink}
+                  onMouseDown={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    dispatch(setChartView(PredictionsChartView.Chainlink))
+                  }}
+                >
+                  {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
+                </TabToggle>
+              )}
             </ExpandButtonGroup>
             {isChartPaneOpen && (
               <ChartByLabel
                 justifyContent="flex-end"
-                symbol={`${token.symbol}/USD`}
+                symbol={`${tokenSymbol}/USD`}
                 by={chartView}
                 linkProps={{
                   onMouseDown: (e) => {
                     window.open(
                       chartView === PredictionsChartView.TradingView
-                        ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${token.symbol}USD`
+                        ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
                         : 'https://chain.link/data-feeds',
                       '_blank',
                       'noopener noreferrer',
@@ -260,7 +274,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
                 }}
                 link={
                   chartView === PredictionsChartView.TradingView
-                    ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${token.symbol}USD`
+                    ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
                     : 'https://chain.link/data-feeds'
                 }
               />
@@ -270,7 +284,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             {isChartPaneOpen && (chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart />)}
           </ChartPane>
         </SplitWrapper>
-        <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen} isChartPaneOpen={isChartPaneOpen}>
+        <HistoryPane $isHistoryPaneOpen={isHistoryPaneOpen} $isChartPaneOpen={isChartPaneOpen}>
           <History />
         </HistoryPane>
       </StyledDesktop>

@@ -1,33 +1,33 @@
+import { Token } from '@pancakeswap/sdk'
 import {
   Box,
   CloseIcon,
   Flex,
   Grid,
-  Text,
+  Heading,
   IconButton,
   InjectedModalProps,
-  ModalWrapper,
   ModalHeader,
+  ModalWrapper,
   ProfileAvatar,
-  Skeleton,
-  Heading,
-  useMatchBreakpoints,
   ScanLink,
+  Skeleton,
+  Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useProfileForAddress } from 'state/profile/hooks'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import useTheme from 'hooks/useTheme'
+import { useProfileForAddress } from 'state/profile/hooks'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import truncateHash from '@pancakeswap/utils/truncateHash'
-import { Token } from '@pancakeswap/sdk'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
-import { PredictionUser } from 'state/types'
 import { useDomainNameForAddress } from 'hooks/useDomain'
-import { NetWinningsView } from './Results/styles'
+import { PredictionUser } from 'state/types'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
+import { NetWinningsView } from './Results/styles'
 
 interface WalletStatsModalProps extends InjectedModalProps {
   account?: string
@@ -35,7 +35,7 @@ interface WalletStatsModalProps extends InjectedModalProps {
   address: string
   result: PredictionUser
   leaderboardLoadingState: TFetchStatus
-  token: Token
+  token: Token | undefined
   api: string
 }
 
@@ -84,7 +84,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
                 {profile?.username}
               </Heading>
             )}
-            <StyledScanLink href={getBlockExploreLink(address, 'address')}>
+            <StyledScanLink href={getBlockExploreLink(address, 'address', token?.chainId)}>
               {domainName || truncateHash(address)}
             </StyledScanLink>
           </Box>

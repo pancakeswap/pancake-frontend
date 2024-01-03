@@ -1,6 +1,7 @@
 import { Card, CardBody, Text, Flex, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { NodeRound, BetPosition } from 'state/types'
+import { NodeRound } from 'state/types'
+import { BetPosition } from '@pancakeswap/prediction'
 import useTheme from 'hooks/useTheme'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import useIsRefundable from '../../hooks/useIsRefundable'

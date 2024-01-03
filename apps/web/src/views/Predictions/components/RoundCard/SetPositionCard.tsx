@@ -1,44 +1,38 @@
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { BetPosition } from '@pancakeswap/prediction'
 import {
   ArrowBackIcon,
+  AutoRenewIcon,
+  BalanceInput,
+  Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
   Flex,
   Heading,
   IconButton,
-  Button,
-  BinanceIcon,
-  LogoIcon,
-  Text,
-  BalanceInput,
   Slider,
-  Box,
-  AutoRenewIcon,
+  Text,
 } from '@pancakeswap/uikit'
-import BN from 'bignumber.js'
-import { parseUnits } from 'viem'
-import { useAccount } from 'wagmi'
-import { useGetMinBetAmount } from 'state/predictions/hooks'
-import { useTranslation } from '@pancakeswap/localization'
-import { usePredictionsContract } from 'hooks/useContract'
-import { useGetBnbBalance, useBSCCakeBalance } from 'hooks/useTokenBalance'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { BetPosition } from 'state/types'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BN from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { TokenImage } from 'components/TokenImage'
 import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
 import useCakeApprove from 'hooks/useCakeApprove'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { usePredictionsContract } from 'hooks/useContract'
+import { useGetNativeTokenBalance, useTokenBalanceByChain } from 'hooks/useTokenBalance'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useGetMinBetAmount } from 'state/predictions/hooks'
+import { Address, parseUnits } from 'viem'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { useAccount } from 'wagmi'
 
-import PositionTag from '../PositionTag'
 import FlexRow from '../FlexRow'
-
-const LOGOS = {
-  BNB: BinanceIcon,
-  CAKE: LogoIcon,
-}
+import PositionTag from '../PositionTag'
 
 interface SetPositionCardProps {
   position: BetPosition
@@ -75,11 +69,6 @@ const getValueAsEthersBn = (value: string) => {
   return Number.isNaN(valueAsFloat) ? 0n : parseUnits(value as `${number}`, 18)
 }
 
-const TOKEN_BALANCE_CONFIG = {
-  BNB: useGetBnbBalance,
-  CAKE: useBSCCakeBalance,
-} as const
-
 const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> = ({
   position,
   togglePosition,
@@ -88,7 +77,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   onSuccess,
 }) => {
   const [value, setValue] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [percent, setPercent] = useState(0)
 
   const { address: account } = useAccount()
@@ -96,31 +85,39 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   const { t } = useTranslation()
   const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { address: predictionsAddress, token } = useConfig()
-  const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
-  const useTokenBalance = useMemo(() => {
-    return TOKEN_BALANCE_CONFIG[token.symbol as keyof typeof TOKEN_BALANCE_CONFIG]
-  }, [token.symbol])
 
-  const { setLastUpdated, allowance } = useCakeApprovalStatus(token.symbol === 'CAKE' ? predictionsAddress : null)
+  const config = useConfig()
+  const predictionsAddress = config?.address ?? '0x'
+  const isNativeToken = config?.isNativeToken ?? false
+  const tokenSymbol = config?.token?.symbol ?? ''
+
+  const predictionsContract = usePredictionsContract(predictionsAddress, isNativeToken)
+
+  const { setLastUpdated, allowance } = useCakeApprovalStatus(config?.isNativeToken ? null : predictionsAddress)
   const { handleApprove, pendingTx } = useCakeApprove(
     setLastUpdated,
     predictionsAddress,
     t('You can now start prediction'),
   )
 
-  const { balance: bnbBalance } = useTokenBalance()
+  const { balance: userBalance } = useTokenBalanceByChain(config?.token?.address as Address)
+  const { balance: userNativeTokenBalance } = useGetNativeTokenBalance()
 
-  const maxBalance = useMemo(() => {
-    return bnbBalance > dust ? bnbBalance - dust : 0n
-  }, [bnbBalance])
-  const balanceDisplay = formatBigInt(bnbBalance)
+  const balance = useMemo(() => {
+    if (isNativeToken) {
+      return BigInt(userNativeTokenBalance.toString()) ?? 0n
+    }
+    return BigInt(userBalance.toString()) ?? 0n
+  }, [isNativeToken, userNativeTokenBalance, userBalance])
+
+  const maxBalance = useMemo(() => (balance > dust ? balance - dust : 0n), [balance])
+  const balanceDisplay = formatBigInt(balance)
 
   const valueAsBn = getValueAsEthersBn(value)
   const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
 
-  // BNB prediction doesn't need approval
-  const doesCakeApprovePrediction = token.symbol === 'BNB' || allowance.gte(valueAsBn.toString())
+  // Native Token prediction doesn't need approval
+  const doesCakeApprovePrediction = isNativeToken || allowance.gte(valueAsBn.toString())
 
   const handleInputChange = (input: string) => {
     const inputAsBn = getValueAsEthersBn(input)
@@ -166,15 +163,14 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
 
   const handleEnterPosition = async () => {
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
-    const callOptions =
-      token.symbol === 'CAKE'
-        ? {
-            gas: 300000n,
-            value: 0n,
-          }
-        : { value: BigInt(valueAsBn.toString()) }
+    const callOptions = !isNativeToken
+      ? {
+          gas: 300000n,
+          value: 0n,
+        }
+      : { value: BigInt(valueAsBn.toString()) }
 
-    const args = token.symbol === 'CAKE' ? [epoch, valueAsBn.toString()] : [epoch]
+    const args = !isNativeToken ? [epoch, valueAsBn.toString()] : [epoch]
 
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(predictionsContract as any, betMethod, args, callOptions)
@@ -190,19 +186,15 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     const hasSufficientBalance = inputAmount > 0n && inputAmount <= maxBalance
 
     if (!hasSufficientBalance) {
-      setErrorMessage(t('Insufficient %symbol% balance', { symbol: token.symbol }))
+      setErrorMessage(t('Insufficient %symbol% balance', { symbol: tokenSymbol }))
     } else if (inputAmount > 0n && inputAmount < minBetAmount) {
       setErrorMessage(
-        t('A minimum amount of %num% %token% is required', { num: formatBigInt(minBetAmount), token: token.symbol }),
+        t('A minimum amount of %num% %token% is required', { num: formatBigInt(minBetAmount), token: tokenSymbol }),
       )
     } else {
       setErrorMessage(null)
     }
-  }, [value, maxBalance, minBetAmount, setErrorMessage, t, token.symbol])
-
-  const Logo = useMemo(() => {
-    return LOGOS[token.symbol]
-  }, [token.symbol])
+  }, [value, maxBalance, minBetAmount, setErrorMessage, t, tokenSymbol])
 
   return (
     <Card>
@@ -225,9 +217,11 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
             {t('Commit')}:
           </Text>
           <Flex alignItems="center">
-            <Logo mr="4px" />
+            <Box mr="4px" width={20} height={20}>
+              {config?.token && <TokenImage width={20} height={20} token={config?.token} />}
+            </Box>
             <Text bold textTransform="uppercase">
-              {token.symbol}
+              {tokenSymbol}
             </Text>
           </Flex>
         </Flex>
@@ -299,7 +293,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
                 isLoading={isTxPending}
                 endIcon={isTxPending ? <AutoRenewIcon color="currentColor" spin /> : null}
               >
-                {t(key, { symbol: token.symbol })}
+                {t(key, { symbol: tokenSymbol })}
               </Button>
             ) : (
               <Button

@@ -1,9 +1,9 @@
-import { BetPosition } from 'state/types'
-import BN from 'bignumber.js'
+import { BetPosition } from '@pancakeswap/prediction'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import BN from 'bignumber.js'
 import memoize from 'lodash/memoize'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 const abs = (n: bigint) => (n === -0n || n < 0n ? -n : n)
 

@@ -1,10 +1,12 @@
-import { useMemo } from 'react'
-import { styled, DefaultTheme } from 'styled-components'
-import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { BetPosition, NodeRound, Round } from 'state/types'
+import { BetPosition } from '@pancakeswap/prediction'
+import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { useMemo } from 'react'
+import { NodeRound, Round } from 'state/types'
+import { DefaultTheme, styled } from 'styled-components'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { formatUsdv2, formatTokenv2, getRoundPosition, getPriceDifference } from '../../helpers'
+import { formatTokenv2, getPriceDifference, getRoundPosition } from '../../helpers'
 import { formatBnb, formatUsd } from '../History/helpers'
 import PositionTag from '../PositionTag'
 
@@ -35,12 +37,14 @@ const Row = ({ children, ...props }) => {
 
 export const PrizePoolRow: React.FC<React.PropsWithChildren<PrizePoolRowProps>> = ({ totalAmount, ...props }) => {
   const { t } = useTranslation()
-  const { token, displayedDecimals } = useConfig()
+  const config = useConfig()
 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmount(totalAmount, token.decimals, displayedDecimals)} ${token.symbol}`}</Text>
+      <Text bold>{`${getPrizePoolAmount(totalAmount, config?.token?.decimals ?? 0, config?.displayedDecimals ?? 0)} ${
+        config?.token?.symbol
+      }`}</Text>
     </Row>
   )
 }
@@ -60,7 +64,7 @@ export const PayoutRow: React.FC<React.PropsWithChildren<PayoutRowProps>> = ({
 }) => {
   const { t } = useTranslation()
   const formattedMultiplier = `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x`
-  const { token, displayedDecimals } = useConfig()
+  const config = useConfig()
 
   return (
     <Row height="18px" {...props}>
@@ -72,24 +76,25 @@ export const PayoutRow: React.FC<React.PropsWithChildren<PayoutRowProps>> = ({
           {t('%multiplier% Payout', { multiplier: formattedMultiplier })}
         </Text>
         <Text mx="4px">|</Text>
-        <Text fontSize="12px" lineHeight="18px">{`${formatBnb(amount, displayedDecimals)} ${token.symbol}`}</Text>
+        <Text fontSize="12px" lineHeight="18px">{`${formatBnb(amount, config?.displayedDecimals ?? 0)} ${
+          config?.token?.symbol
+        }`}</Text>
       </Flex>
     </Row>
   )
 }
 
 interface LockPriceRowProps extends FlexProps {
-  lockPrice: NodeRound['lockPrice']
+  lockPrice: bigint
 }
 
 export const LockPriceRow: React.FC<React.PropsWithChildren<LockPriceRowProps>> = ({ lockPrice, ...props }) => {
   const { t } = useTranslation()
-  const { displayedDecimals } = useConfig()
-
+  const config = useConfig()
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsdv2(lockPrice, displayedDecimals)}</Text>
+      <Text fontSize="14px">{formatUsd(Number(formatBigInt(lockPrice, 8, 8)), config?.displayedDecimals ?? 0)}</Text>
     </Row>
   )
 }
@@ -161,7 +166,7 @@ interface RoundPriceProps {
 }
 
 export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice }) => {
-  const { displayedDecimals } = useConfig()
+  const config = useConfig()
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const priceDifference = getPriceDifference(closePrice, lockPrice)
 
@@ -181,12 +186,16 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
         <Text color={textColor} bold fontSize="24px">
-          {formatUsdv2(closePrice, displayedDecimals)}
+          {formatUsd(Number(formatBigInt(closePrice, 8, 8)), config?.displayedDecimals ?? 0)}
         </Text>
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
-      <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference, displayedDecimals)}</PositionTag>
+      {betPosition && (
+        <PositionTag betPosition={betPosition}>
+          {formatUsd(Number(formatBigInt(priceDifference, 8, 8)), config?.displayedDecimals ?? 0)}
+        </PositionTag>
+      )}
     </Flex>
   )
 }
@@ -213,12 +222,14 @@ export const PrizePoolHistoryRow: React.FC<React.PropsWithChildren<PrizePoolHist
   ...props
 }) => {
   const { t } = useTranslation()
-  const { token, displayedDecimals } = useConfig()
+  const config = useConfig()
 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmountHistory(totalAmount, displayedDecimals)} ${token.symbol}`}</Text>
+      <Text bold>{`${getPrizePoolAmountHistory(totalAmount, config?.displayedDecimals ?? 0)} ${
+        config?.token?.symbol
+      }`}</Text>
     </Row>
   )
 }
@@ -232,12 +243,12 @@ export const LockPriceHistoryRow: React.FC<React.PropsWithChildren<LockPriceHist
   ...props
 }) => {
   const { t } = useTranslation()
-  const { displayedDecimals } = useConfig()
+  const config = useConfig()
 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(lockPrice, displayedDecimals)}</Text>
+      <Text fontSize="14px">{formatUsd(lockPrice, config?.displayedDecimals ?? 0)}</Text>
     </Row>
   )
 }

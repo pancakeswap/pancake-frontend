@@ -17,7 +17,9 @@ const CollectWinningsButton: React.FC<React.PropsWithChildren<CollectWinningsBut
 }) => {
   const { history, isLoadingHistory } = useCollectWinningModalProps()
   const dispatch = useLocalDispatch()
-  const { address: predictionsAddress, token } = useConfig()
+  const config = useConfig()
+  const predictionsAddress = config?.address ?? '0x'
+  const isNativeToken = config?.isNativeToken ?? false
 
   const [onPresentCollectWinningsModal] = useModal(
     <CollectRoundWinningsModal
@@ -26,7 +28,8 @@ const CollectWinningsButton: React.FC<React.PropsWithChildren<CollectWinningsBut
       isLoadingHistory={isLoadingHistory}
       onSuccess={onSuccess}
       predictionsAddress={predictionsAddress}
-      token={token}
+      token={config?.token}
+      isNativeToken={isNativeToken}
     />,
     false,
     true,
