@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
-import { CONFIG_PROD } from './config/prod'
-import { CONFIG_TESTNET } from './config/testnet'
+import { CONFIG_PROD } from './prod'
+import { CONFIG_TESTNET } from './testnet'
 
 export const GAUGES_CONFIG = {
   [ChainId.BSC]: CONFIG_PROD,
