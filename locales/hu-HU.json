@@ -1674,7 +1674,7 @@
   "View Tutorial": "Oktatóanyag megtekintése",
   "Average lock duration": "Átlagos zárolási időtartam",
   "The average lock duration of all the locked staking positions of other users": "A többi felhasználó összes zárolt tétpozícióinak átlagos zárolási időtartama",
-  "Your max CAKE entry": "Az Ön maximális CAKE belépője",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Zseton beszerzés",
   "You have tokens available for claiming now!": "A zsetonjait mostantól igényelheti!",
   "You have no tokens available for claiming": "Önnek nincsenek igényelhető zsetonjai",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
