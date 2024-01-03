@@ -1,4 +1,11 @@
-# 🥞 Pancake Frontend
+# 🥞 Pancake Frontend by Mikołaj Roszak Tel. +48 500 487 977 Przedwiośnie 79 m.12 73-110 Stargard www.mikolaj.com mikolaj@puma.com
+Link do mojego publicznego profilu eToro https://lnkd.in/d3F9v8uf
+Thé Mercenary 
+Founder of Cyfrowe ID' startup. 
+I'm the owner of Krabowe Skorupki' shop.
+Member of Nike' .SWOOSH. 
+Menedżer Sklepu, PUMA® Europe GmbH, Warszawa
+Office Siedem Małych Truskawek 10:00 - 17:00
 
 <p align="center">
   <a href="https://pancakeswap.finance">
