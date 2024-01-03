@@ -62,9 +62,12 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   const priceDifference = getPriceDifference(price, lockPrice ?? 0n)
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Last price from Chainlink Oracle'), {
-    placement: 'bottom',
-  })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(config?.chainlinkOracleAddress ? 'Last price from Chainlink Oracle' : 'Last price from Galeto Oracle'),
+    {
+      placement: 'bottom',
+    },
+  )
 
   useEffect(() => {
     const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
