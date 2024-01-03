@@ -20,7 +20,7 @@ import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { worker, worker2 } from 'utils/worker'
 
-import { logger } from 'utils/datadog'
+import { tracker } from 'utils/datadog'
 import {
   CommonPoolsParams,
   PoolsWithState,
@@ -209,7 +209,7 @@ function bestTradeHookFactory({
         const duration = Math.floor(performance.now() - startTime)
 
         if (trackPerf) {
-          logger.log(`[PERF] ${key} duration:${duration}ms`, {
+          tracker.log(`[PERF] ${key} duration:${duration}ms`, {
             chainId: currency.chainId,
             label: key,
             duration,

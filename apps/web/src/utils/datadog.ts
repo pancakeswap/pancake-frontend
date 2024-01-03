@@ -31,6 +31,8 @@ export function getLogger(name: string, config?: Partial<LogsInitConfiguration>)
 
 export const logger = getLogger('main')
 
+export const tracker = getLogger('perf', { forwardErrorsToLogs: false })
+
 function createDatadogRumManager() {
   let initialized = false
 
