@@ -1674,7 +1674,7 @@
   "View Tutorial": "튜토리얼 보기",
   "Average lock duration": "평균 잠금 기간",
   "The average lock duration of all the locked staking positions of other users": "다른 사용자에 대한 모든 잠긴 예치 포지션의 평균 잠금 기간",
-  "Your max CAKE entry": "내 최대 CAKE 엔트리",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "토큰 베스팅",
   "You have tokens available for claiming now!": "이제 클레임할 수 있는 토큰이 있습니다!",
   "You have no tokens available for claiming": "클레임할 수 있는 토큰이 없습니다",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
