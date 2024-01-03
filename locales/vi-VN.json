@@ -1674,7 +1674,7 @@
   "View Tutorial": "Xem hướng dẫn",
   "Average lock duration": "Thời lượng khóa trung bình",
   "The average lock duration of all the locked staking positions of other users": "Thời lượng khóa trung bình của tất cả các vị thế đặt cọc đã được khóa của những người dùng khác",
-  "Your max CAKE entry": "Đầu vào CAKE tối đa của bạn",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "Đầu tư token",
   "You have tokens available for claiming now!": "Bạn đang có token có thể nhận!",
   "You have no tokens available for claiming": "Bạn không có token nào có thể nhận",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
