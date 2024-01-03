@@ -42,7 +42,7 @@ export const useMultipleBannerConfig = () => {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      { shouldRender: isRenderIFOBanner || !countdown?.isEnd, banner: <NewIFOBanner /> },
+      { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
       { shouldRender: true, banner: <GalxeTraverseBanner /> },
       { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <VeCakeBanner /> },
@@ -71,7 +71,7 @@ export const useMultipleBannerConfig = () => {
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
   }, [
-    countdown?.isEnd,
+    countdown,
     isRenderCompetitionBanner,
     isRenderIFOBanner,
     isRenderUserBanner.isEarningsBusdZero,
