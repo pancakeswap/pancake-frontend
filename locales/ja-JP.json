@@ -1674,7 +1674,7 @@
   "View Tutorial": "チュートリアルを表示",
   "Average lock duration": "平均ロック期間",
   "The average lock duration of all the locked staking positions of other users": "その他のユーザーのすべてのロックステーキングポジションの平均ロック期間",
-  "Your max CAKE entry": "あなたの最大CAKEエントリー",
+  "Your ICAKE": "Your ICAKE",
   "Token Vesting": "トークンべスティング",
   "You have tokens available for claiming now!": "今すぐ回収できるトークンがあります！",
   "You have no tokens available for claiming": "回収できるトークンはありません",
@@ -3116,5 +3116,6 @@
   "Mobox": "Mobox",
   "Revenue Sharing": "Revenue Sharing",
   "Farm Booster": "Farm Booster",
-  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity"
+  "Automate your PancakeSwap v3 liquidity": "Automate your PancakeSwap v3 liquidity",
+  "CKP cIFO": "CKP cIFO"
 }
