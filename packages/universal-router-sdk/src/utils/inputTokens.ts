@@ -1,13 +1,13 @@
 import invariant from 'tiny-invariant'
 import type { Address } from 'viem'
+import { ROUTER_AS_RECIPIENT } from '../constants'
 import { Permit2Signature } from '../entities/types'
-import { ROUTER_AS_RECIPIENT } from './constants'
 import { CommandType, RoutePlanner } from './routerCommands'
 
-// export type ApproveProtocol = {
-//   token: string
-//   protocol: string
-// }
+export type ApproveProtocol = {
+  token: string
+  protocol: string
+}
 
 export type Permit2TransferFrom = {
   token: string
