@@ -12,6 +12,12 @@ export type SwapRouterConfig = {
   deadline?: BigintIsh | undefined
 }
 
+export type FlatFeeOptions = {
+  amount: BigintIsh
+  recipient: Address
+}
+
 export type PancakeSwapOptions = Omit<SwapOptions, 'inputTokenPermit'> & {
   inputTokenPermit?: Permit2Signature
+  flatFee?: FlatFeeOptions
 }
