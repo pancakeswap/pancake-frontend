@@ -12,7 +12,7 @@ export const VeCakeMigrateCard: React.FC<{ isTableView?: boolean; lockEndTime?: 
     const { t } = useTranslation()
     const isMigratedToVeCake = useIsMigratedToVeCake()
     const isUserAllowMigrate = useCheckIsUserAllowMigrate(lockEndTime)
-    if (!isUserAllowMigrate) return null
+    if (!isUserAllowMigrate && !isMigratedToVeCake) return null
     return (
       <ShineStyledBox
         p="10px"
