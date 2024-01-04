@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
-import { CurrencyAmount, ERC20Token, Pair, Percent, computePairAddress, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { getPermit2Address } from '@pancakeswap/permit2-sdk'
+import { CurrencyAmount, ERC20Token, Pair, Percent } from '@pancakeswap/sdk'
 import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import {
   DEPLOYER_ADDRESSES,
@@ -10,13 +11,10 @@ import {
   computePoolAddress,
   encodeSqrtRatioX96,
   nearestUsableTick,
-  v3PoolAbi,
 } from '@pancakeswap/v3-sdk'
-import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { getUniversalRouterAddress } from '../../src'
-import { Provider, getPublicClient } from './clients'
-import { V2_FACTORY_ADDRESSES } from './constants/addresses'
-import { BUSD, CAKE, ETHER, USDC, USDT, WETH9, WBNB } from './constants/tokens'
+import { Provider } from './clients'
+import { BUSD, CAKE, ETHER, USDC, USDT, WBNB, WETH9 } from './constants/tokens'
 
 const fixtureTokensAddresses = (chainId: ChainId) => {
   return {
@@ -53,31 +51,17 @@ export const getStablePool = async (
   return stablePool
 }
 
-const getPair = (tokenA: ERC20Token, tokenB: ERC20Token, liquidity?: bigint) => {
-  return async (getClient: Provider) => {
-    // eslint-disable-next-line no-console
-    console.assert(tokenA.chainId === tokenB.chainId, 'Invalid token pair')
-    const chainId = tokenA.chainId as ChainId
-    const client = getClient({ chainId })
-    const pairAddress = computePairAddress({ factoryAddress: V2_FACTORY_ADDRESSES[chainId], tokenA, tokenB })
+const getPair = (tokenA: ERC20Token, tokenB: ERC20Token, liquidity: bigint) => {
+  // eslint-disable-next-line no-console
+  console.assert(tokenA.chainId === tokenB.chainId, 'Invalid token pair')
 
-    let reserve0: bigint
-    let reserve1: bigint
-    // @notice: to match off-chain testing ,we can use fixed liquid to match snapshots
-    if (liquidity) {
-      reserve0 = liquidity
-      reserve1 = liquidity
-    } else {
-      ;[reserve0, reserve1] = await client.readContract({
-        abi: pancakePairV2ABI,
-        address: pairAddress,
-        functionName: 'getReserves',
-      })
-    }
-    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+  // @notice: to match off-chain testing ,we can use fixed liquid to match snapshots
+  const reserve0 = liquidity
+  const reserve1 = liquidity
 
-    return new Pair(CurrencyAmount.fromRawAmount(token0, reserve0), CurrencyAmount.fromRawAmount(token1, reserve1))
-  }
+  const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+
+  return new Pair(CurrencyAmount.fromRawAmount(token0, reserve0), CurrencyAmount.fromRawAmount(token1, reserve1))
 }
 
 export const convertPoolToV3Pool = (pool: Pool): V3Pool => {
@@ -113,99 +97,73 @@ const fixturePool = ({
   tokenA: ERC20Token
   tokenB: ERC20Token
   feeAmount: FeeAmount
-  reserve?:
+  reserve:
     | {
         reserve0: bigint
         reserve1: bigint
       }
     | bigint
 }) => {
-  return async (getClient: Provider): Promise<Pool> => {
-    const chainId = tokenA.chainId as ChainId
-    // eslint-disable-next-line no-console
-    console.assert(tokenA.chainId === tokenB.chainId, 'Invalid token pair')
+  // eslint-disable-next-line no-console
+  console.assert(tokenA.chainId === tokenB.chainId, 'Invalid token pair')
 
-    const poolAddress = computePoolAddress({
-      deployerAddress: DEPLOYER_ADDRESSES[chainId],
-      fee: feeAmount,
-      tokenA,
-      tokenB,
-    })
-    let sqrtPriceX96: bigint
-    let liquidity: bigint
+  const reserve0 = typeof reserve === 'bigint' ? reserve : reserve.reserve0
+  const reserve1 = typeof reserve === 'bigint' ? reserve : reserve.reserve1
+  const sqrtPriceX96 = encodeSqrtRatioX96(reserve0, reserve1)
+  // fixture to full range liquidity
+  const liquidity = BigInt(Math.floor(Math.sqrt(Number(reserve0 * reserve1))))
 
-    if (!reserve) {
-      ;[sqrtPriceX96] = await getClient({ chainId }).readContract({
-        abi: v3PoolAbi,
-        address: poolAddress,
-        functionName: 'slot0',
-      })
-      liquidity = await getClient({ chainId }).readContract({
-        abi: v3PoolAbi,
-        address: poolAddress,
-        functionName: 'liquidity',
-      })
-    } else {
-      const reserve0 = typeof reserve === 'bigint' ? reserve : reserve.reserve0
-      const reserve1 = typeof reserve === 'bigint' ? reserve : reserve.reserve1
-      sqrtPriceX96 = encodeSqrtRatioX96(reserve0, reserve1)
-      // fixture to full range liquidity
-      liquidity = BigInt(Math.floor(Math.sqrt(Number(reserve0 * reserve1))))
-    }
-    return new Pool(tokenA, tokenB, feeAmount, sqrtPriceX96, liquidity, TickMath.getTickAtSqrtRatio(sqrtPriceX96), [
-      {
-        index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[feeAmount]),
-        liquidityNet: liquidity,
-        liquidityGross: liquidity,
-      },
-      {
-        index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[feeAmount]),
-        liquidityNet: -liquidity,
-        liquidityGross: liquidity,
-      },
-    ])
-  }
+  return new Pool(tokenA, tokenB, feeAmount, sqrtPriceX96, liquidity, TickMath.getTickAtSqrtRatio(sqrtPriceX96), [
+    {
+      index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[feeAmount]),
+      liquidityNet: liquidity,
+      liquidityGross: liquidity,
+    },
+    {
+      index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[feeAmount]),
+      liquidityNet: -liquidity,
+      liquidityGross: liquidity,
+    },
+  ])
 }
 
-export const fixtureAddresses = async (chainId: ChainId, liquidity?: bigint) => {
+export const fixtureAddresses = async (chainId: ChainId, liquidity: bigint) => {
   const tokens = fixtureTokensAddresses(chainId)
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const { USDC, USDT, WETH, WBNB } = tokens
 
   const v2Pairs = {
-    WETH_USDC_V2: await getPair(WETH, USDC, liquidity)(getPublicClient),
-    WBNB_USDC_V2: await getPair(WBNB, USDC, liquidity)(getPublicClient),
-    USDC_USDT_V2: await getPair(USDT, USDC, liquidity)(getPublicClient),
+    WETH_USDC_V2: getPair(WETH, USDC, liquidity),
+    WBNB_USDC_V2: getPair(WBNB, USDC, liquidity),
+    USDC_USDT_V2: getPair(USDT, USDC, liquidity),
   }
 
   const v3Pools = {
-    WETH_USDC_V3_MEDIUM: await fixturePool({
+    WETH_USDC_V3_MEDIUM: fixturePool({
       tokenA: WETH,
       tokenB: USDC,
       feeAmount: FeeAmount.MEDIUM,
       reserve: liquidity,
-    })(getPublicClient),
+    }),
     WETH_USDC_V3_MEDIUM_ADDRESS: computePoolAddress({
       deployerAddress: DEPLOYER_ADDRESSES[chainId],
       tokenA: WETH,
       tokenB: USDC,
       fee: FeeAmount.MEDIUM,
     }),
-    WETH_USDC_V3_LOW: await fixturePool({
+    WETH_USDC_V3_LOW: fixturePool({
       tokenA: WETH,
       tokenB: USDC,
       reserve: liquidity,
       feeAmount: FeeAmount.LOW,
-    })(getPublicClient),
-    WBNB_USDC_V3_MEDIUM: await fixturePool({
+    }),
+    WBNB_USDC_V3_MEDIUM: fixturePool({
       tokenA: WBNB,
       tokenB: USDC,
       feeAmount: FeeAmount.MEDIUM,
       reserve: liquidity,
-    })(getPublicClient),
-    USDC_USDT_V3_LOW: await fixturePool({ tokenA: USDC, tokenB: USDT, feeAmount: FeeAmount.LOW, reserve: liquidity })(
-      getPublicClient,
-    ),
+    }),
+    USDC_USDT_V3_LOW: fixturePool({ tokenA: USDC, tokenB: USDT, feeAmount: FeeAmount.LOW, reserve: liquidity }),
     USDC_USDT_V3_LOW_ADDRESS: computePoolAddress({
       deployerAddress: DEPLOYER_ADDRESSES[chainId],
       tokenA: USDC,
