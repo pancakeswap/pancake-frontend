@@ -1,11 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BigintIsh, WETH9 } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
-import { ROUTER_AS_RECIPIENT } from '../../utils/constants'
+import { ROUTER_AS_RECIPIENT } from '../../constants'
 import { encodeInputTokenOptions } from '../../utils/inputTokens'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'
-import { Permit2Signature } from '../types'
 import { Command, RouterTradeType, TradeConfig } from '../Command'
+import { Permit2Signature } from '../types'
 
 export class UnwrapWETH implements Command {
   readonly tradeType: RouterTradeType = RouterTradeType.UnwrapWETH

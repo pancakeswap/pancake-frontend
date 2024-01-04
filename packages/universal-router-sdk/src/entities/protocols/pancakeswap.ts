@@ -10,7 +10,7 @@ import {
 import invariant from 'tiny-invariant'
 import { Address } from 'viem'
 
-import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
+import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../constants'
 import { encodeFeeBips } from '../../utils/numbers'
 import { ABIParametersType, CommandType, RoutePlanner } from '../../utils/routerCommands'
 import { Command, RouterTradeType } from '../Command'
