@@ -6,7 +6,7 @@ export type TradeConfig = {
 
 export enum RouterTradeType {
   PancakeSwapTrade = 'PancakeSwapTrade',
-  NFTTrade = 'NFTTrade',
+  // NFTTrade = 'NFTTrade',
   UnwrapWETH = 'UnwrapWETH',
 }
 
