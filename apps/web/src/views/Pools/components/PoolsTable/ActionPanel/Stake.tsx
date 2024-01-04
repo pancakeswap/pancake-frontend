@@ -214,7 +214,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         <ConnectWalletButton width="100%" />
       )
     }
-
+    if (vaultKey === VaultKey.CakeVault && isUserDelegated) return null
     return (
       <ActionContainer>
         <ActionTitles>

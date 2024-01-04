@@ -223,7 +223,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             ) : (
               <Harvest {...pool} />
             )}
-            {!isUserDelegated && <Stake pool={pool} />}
+            <Stake pool={pool} />
           </ActionContainer>
         </Box>
         {isCakePool && account && vaultPosition !== VaultPosition.None && (
@@ -237,7 +237,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                   style={{ gap: isMobile ? 15 : 24, flexDirection: isMobile ? 'column' : 'row' }}
                 >
                   {isUserDelegated && <VeCakeDelegatedCard isTableView />}
-                  {vaultPosition === VaultPosition.Locked && (
+                  {vaultPosition === VaultPosition.Locked && !isUserDelegated && (
                     <VeCakeMigrateCard
                       isTableView
                       lockEndTime={(vaultData?.userData as DeserializedLockedVaultUser)?.lockEndTime}
