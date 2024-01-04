@@ -183,7 +183,10 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
 
-  const sumTaxesOverflow = poolCharacteristic?.sumTaxesOverflow
+  const sumTaxesOverflow = poolCharacteristic?.totalAmountPool
+    .minus(poolCharacteristic.raisingAmountPool)
+    .times(poolCharacteristic.taxRate)
+    .times(0.01)
   const sumTaxesOverflowInUSD = currencyPriceInUSD.times(sumTaxesOverflow || ZERO)
   const pricePerTokenWithFeeToOriginalRatio = sumTaxesOverflow
     ?.plus(poolCharacteristic?.raisingAmountPool || ZERO)
