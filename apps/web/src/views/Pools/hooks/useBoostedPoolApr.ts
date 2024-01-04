@@ -6,16 +6,16 @@ import { Address } from 'viem'
 interface UseBoostedPoolApr {
   contractAddress: Address
   chainId: number | undefined
-  isFinished: boolean
+  enabled: boolean
 }
 
-export const useBoostedPoolApr = ({ contractAddress, chainId, isFinished }: UseBoostedPoolApr): number => {
+export const useBoostedPoolApr = ({ contractAddress, chainId, enabled }: UseBoostedPoolApr): number => {
   const client = getViemClients({ chainId })
 
   const { data } = useQuery(
     ['boostedPoolsApr', contractAddress, chainId],
     () => {
-      if (client && !isFinished) {
+      if (client) {
         return getBoostedPoolApr({
           client,
           chainId,
@@ -26,7 +26,7 @@ export const useBoostedPoolApr = ({ contractAddress, chainId, isFinished }: UseB
       return 0
     },
     {
-      enabled: Boolean(client && contractAddress && chainId),
+      enabled: Boolean(enabled && client && contractAddress && chainId),
     },
   )
 
