@@ -140,7 +140,7 @@ export const useConfirmModalState = ({
     async (hash) => {
       const receipt: any = await waitForTransaction({ hash, chainId })
       if (receipt.status === 'success') {
-        performStep(ConfirmModalState.REVIEWING)
+        performStep(ConfirmModalState.COMPLETED)
       }
     },
     [performStep, waitForTransaction, chainId],
