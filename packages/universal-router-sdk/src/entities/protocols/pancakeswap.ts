@@ -1,4 +1,4 @@
-import { Currency, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
   RouteType,
@@ -24,11 +24,14 @@ export class PancakeSwapTrade implements Command {
 
   constructor(public trade: SmartRouterTrade<TradeType>, public options: PancakeSwapOptions) {
     this.type = this.trade.tradeType
+    if (options.fee && options.flatFee) {
+      throw new Error('Cannot specify both fee and flatFee')
+    }
   }
 
   encode(planner: RoutePlanner): void {
     let payerIsUser = true
-    const trade: SmartRouterTrade<TradeType> = this.trade
+    const { trade } = this
     const numberOfTrades = trade.routes.length
 
     // If the input currency is the native currency, we need to wrap it with the router as the recipient
@@ -94,6 +97,22 @@ export class PancakeSwapTrade implements Command {
       }
 
       // TODO: missing flatFee
+      if (this.options.flatFee) {
+        const fee = BigInt(this.options.flatFee.amount.toString())
+        if (fee < minAmountOut.quotient) throw new Error("Flat fee can't be greater than minimum amount out")
+
+        planner.addCommand(CommandType.TRANSFER, [
+          trade.outputAmount.currency.wrapped.address,
+          this.options.flatFee.recipient,
+          fee,
+        ])
+
+        // If the trade is exact output, and a fee was taken, we must adjust the amount out to be the amount after the fee
+        // Otherwise we continue as expected with the trade's normal expected output
+        if (this.type === TradeType.EXACT_OUTPUT) {
+          minAmountOut = CurrencyAmount.fromRawAmount(trade.outputAmount.currency, minAmountOut.quotient - fee)
+        }
+      }
 
       // The remaining tokens that need to be sent to the user after the fee is taken will be caught
       // by this if-else clause.
