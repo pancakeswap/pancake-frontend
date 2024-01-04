@@ -1,4 +1,4 @@
-import { TradeType, validateAndParseAddress, Percent, Currency } from '@pancakeswap/sdk'
+import { Currency, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
   RouteType,
@@ -7,8 +7,8 @@ import {
   StablePool,
   getPoolAddress,
 } from '@pancakeswap/smart-router/evm'
-import { Address } from 'viem'
 import invariant from 'tiny-invariant'
+import { Address } from 'viem'
 
 import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../utils/constants'
 import { encodeFeeBips } from '../../utils/numbers'
