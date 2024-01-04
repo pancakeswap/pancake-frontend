@@ -391,7 +391,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         disabled={
           !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || statusWallchain === 'pending'
         }
-        onClick={() => onSwapHandler()}
+        onClick={onSwapHandler}
       >
         {swapInputError ||
           (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||
