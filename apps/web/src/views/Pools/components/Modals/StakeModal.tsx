@@ -2,25 +2,25 @@ import { useToast } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { useBoostedPoolApr } from 'views/Pools/hooks/useBoostedPoolApr'
 
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallback, useState, useMemo } from 'react'
-import { useAppDispatch } from 'state'
-import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance, updateUserAllowance } from 'state/pools'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { Token } from '@pancakeswap/sdk'
-import BigNumber from 'bignumber.js'
-import { useERC20 } from 'hooks/useContract'
-import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
-import { useApprovePool } from 'views/Pools/hooks/useApprove'
-import { tokenImageChainNameMapping } from 'components/TokenImage'
-import { usePool } from 'state/pools/hooks'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import ZkSyncWarning from './ZkSyncWarning'
+import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { tokenImageChainNameMapping } from 'components/TokenImage'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useERC20 } from 'hooks/useContract'
+import { useCallback, useMemo, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { updateUserAllowance, updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
+import { usePool } from 'state/pools/hooks'
+import { useApprovePool } from 'views/Pools/hooks/useApprove'
+import { useAccount } from 'wagmi'
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
+import ZkSyncWarning from './ZkSyncWarning'
 
 const StakeModalContainer = ({
   isBnbPool,
@@ -35,6 +35,7 @@ const StakeModalContainer = ({
 
   const boostedApr = useBoostedPoolApr({
     chainId,
+    enabled: !pool.isFinished ?? true,
     contractAddress: pool.contractAddress,
   })
 

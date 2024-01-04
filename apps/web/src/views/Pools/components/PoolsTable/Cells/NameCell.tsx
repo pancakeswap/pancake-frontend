@@ -1,18 +1,18 @@
-import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Skeleton, Box } from '@pancakeswap/uikit'
-import { Pool, FarmWidget } from '@pancakeswap/widgets-internal'
+import { useTranslation } from '@pancakeswap/localization'
+import { checkIsBoostedPool } from '@pancakeswap/pools'
+import { Token } from '@pancakeswap/sdk'
+import { Box, Skeleton, Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { FarmWidget, Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { memo, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
+import { DeserializedLockedCakeVault, VaultKey } from 'state/types'
 import { styled } from 'styled-components'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
-import { Token } from '@pancakeswap/sdk'
-import { checkIsBoostedPool } from '@pancakeswap/pools'
+import { VaultPosition, VaultPositionParams, getVaultPosition } from 'utils/cakePool'
 
 const { AlpBoostedTag } = FarmWidget.Tags
 
@@ -65,8 +65,8 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
   }, [pool.vaultKey, totalCakeInVault, totalStaked])
 
   const isBoostedPool = useMemo(
-    () => Boolean(chainId && checkIsBoostedPool(pool.contractAddress, chainId)),
-    [pool, chainId],
+    () => Boolean(!isFinished && chainId && checkIsBoostedPool(pool.contractAddress, chainId)),
+    [pool, isFinished, chainId],
   )
 
   return (

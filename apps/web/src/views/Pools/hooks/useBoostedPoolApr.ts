@@ -1,14 +1,15 @@
-import { Address } from 'viem'
+import { getBoostedPoolApr } from '@pancakeswap/pools'
 import { useQuery } from '@tanstack/react-query'
 import { getViemClients } from 'utils/viem'
-import { getBoostedPoolApr } from '@pancakeswap/pools'
+import { Address } from 'viem'
 
 interface UseBoostedPoolApr {
   contractAddress: Address
   chainId: number | undefined
+  enabled: boolean
 }
 
-export const useBoostedPoolApr = ({ contractAddress, chainId }: UseBoostedPoolApr): number => {
+export const useBoostedPoolApr = ({ contractAddress, chainId, enabled }: UseBoostedPoolApr): number => {
   const client = getViemClients({ chainId })
 
   const { data } = useQuery(
@@ -25,7 +26,7 @@ export const useBoostedPoolApr = ({ contractAddress, chainId }: UseBoostedPoolAp
       return 0
     },
     {
-      enabled: Boolean(client && contractAddress && chainId),
+      enabled: Boolean(enabled && client && contractAddress && chainId),
     },
   )
 
