@@ -1,13 +1,13 @@
 import invariant from 'tiny-invariant'
 import type { Address } from 'viem'
 import { Permit2Signature } from '../entities/types'
-import { OPENSEA_CONDUIT_SPENDER_ID, ROUTER_AS_RECIPIENT, SUDOSWAP_SPENDER_ID } from './constants'
+import { ROUTER_AS_RECIPIENT } from './constants'
 import { CommandType, RoutePlanner } from './routerCommands'
 
-export type ApproveProtocol = {
-  token: string
-  protocol: string
-}
+// export type ApproveProtocol = {
+//   token: string
+//   protocol: string
+// }
 
 export type Permit2TransferFrom = {
   token: string
@@ -40,12 +40,12 @@ export function encodeInputTokenOptions(planner: RoutePlanner, options: InputTok
     invariant(options.permit2TransferFrom.token === options.permit2Permit.details.token, `inconsistent token`)
 
   // if an options.approval is required, add it
-  if (options.approval) {
-    planner.addCommand(CommandType.APPROVE_ERC20, [
-      options.approval.token as Address,
-      BigInt(mapApprovalProtocol(options.approval.protocol)),
-    ])
-  }
+  // if (options.approval) {
+  //   planner.addCommand(CommandType.APPROVE_ERC20, [
+  //     options.approval.token as Address,
+  //     BigInt(mapApprovalProtocol(options.approval.protocol)),
+  //   ])
+  // }
 
   // if this order has a options.permit2Permit, encode it
   if (options.permit2Permit) {
@@ -61,15 +61,15 @@ export function encodeInputTokenOptions(planner: RoutePlanner, options: InputTok
   }
 }
 
-function mapApprovalProtocol(protocolAddress: string): number {
-  switch (protocolAddress.toLowerCase()) {
-    case '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC': // Seaport v1.5
-      return OPENSEA_CONDUIT_SPENDER_ID
-    case '0x00000000000001ad428e4906aE43D8F9852d0dD6': // Seaport v1.4
-      return OPENSEA_CONDUIT_SPENDER_ID
-    case '0x2B2e8cDA09bBA9660dCA5cB6233787738Ad68329': // Sudoswap
-      return SUDOSWAP_SPENDER_ID
-    default:
-      throw new Error('unsupported protocol address')
-  }
-}
+// function mapApprovalProtocol(protocolAddress: string): number {
+//   switch (protocolAddress.toLowerCase()) {
+//     case '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC': // Seaport v1.5
+//       return OPENSEA_CONDUIT_SPENDER_ID
+//     case '0x00000000000001ad428e4906aE43D8F9852d0dD6': // Seaport v1.4
+//       return OPENSEA_CONDUIT_SPENDER_ID
+//     case '0x2B2e8cDA09bBA9660dCA5cB6233787738Ad68329': // Sudoswap
+//       return SUDOSWAP_SPENDER_ID
+//     default:
+//       throw new Error('unsupported protocol address')
+//   }
+// }
