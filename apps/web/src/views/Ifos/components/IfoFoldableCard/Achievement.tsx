@@ -1,25 +1,25 @@
-import { styled } from 'styled-components'
+import { Ifo } from '@pancakeswap/ifos'
+import { useTranslation } from '@pancakeswap/localization'
+import { bscTokens } from '@pancakeswap/tokens'
 import {
   Flex,
+  FlexGap,
   Image,
-  Text,
+  LanguageIcon,
+  Link,
   PrizeIcon,
   Skeleton,
-  LanguageIcon,
-  SvgProps,
   Svg,
-  TwitterIcon,
-  Link,
+  SvgProps,
   TelegramIcon,
-  FlexGap,
+  Text,
+  TwitterIcon,
 } from '@pancakeswap/uikit'
-import { bscTokens } from '@pancakeswap/tokens'
-import { useTranslation } from '@pancakeswap/localization'
-import { PublicIfoData } from 'views/Ifos/types'
-import { Ifo } from '@pancakeswap/ifos'
 import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
-import { getBlockExploreLink } from 'utils'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { styled } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
+import { PublicIfoData } from 'views/Ifos/types'
 
 const SmartContractIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
@@ -83,6 +83,22 @@ const InlinePrize = styled(Flex)`
   display: inline-flex;
   vertical-align: top;
 `
+
+const DescriptionText = styled(Text)`
+  a {
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
+const textFormatter = (text: string) => {
+  if (!text) {
+    return ''
+  }
+  return text
+    .replace(/\[(.*)\]\((.*)\)/, `<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>`)
+    .replace(/\\n/, '\n')
+}
 
 const IfoAchievement: React.FC<React.PropsWithChildren<Props>> = ({ ifo, publicIfoData }) => {
   const { t } = useTranslation()
@@ -153,9 +169,12 @@ const IfoAchievement: React.FC<React.PropsWithChildren<Props>> = ({ ifo, publicI
       </AchievementFlex>
       {ifo.description && (
         <Flex alignItems="flex-end" flexDirection="column" flex={1}>
-          <Text fontSize="14px" lineHeight={1.2} style={{ whiteSpace: 'pre-line' }}>
-            {ifo.description}
-          </Text>
+          <DescriptionText
+            fontSize="14px"
+            lineHeight={1.2}
+            style={{ whiteSpace: 'pre-line' }}
+            dangerouslySetInnerHTML={{ __html: textFormatter(ifo.description) }}
+          />
         </Flex>
       )}
     </Container>
