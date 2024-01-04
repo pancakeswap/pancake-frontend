@@ -69,7 +69,7 @@ export enum CommandType {
 
   // Command Types where 0x20<=value
   EXECUTE_SUB_PLAN = 0x20,
-  APPROVE_ERC20 = 0x21,
+  // APPROVE_ERC20 = 0x21,
   STABLE_SWAP_EXACT_IN = 0x22,
   STABLE_SWAP_EXACT_OUT = 0x23,
   // PANCAKE_NFT_BNB = 0x24,
@@ -173,7 +173,7 @@ export const ABI_PARAMETER = {
   [CommandType.BALANCE_CHECK_ERC20]: parseAbiParameters('address owner, address token, uint256 minBalance'),
   // [CommandType.OWNER_CHECK_721]: parseAbiParameters('address owner, address token, uint256 id'),
   // [CommandType.OWNER_CHECK_1155]: parseAbiParameters('address owner, address token, uint256 id, uint256 minBalance'),
-  [CommandType.APPROVE_ERC20]: parseAbiParameters('address token, uint256 spender'),
+  // [CommandType.APPROVE_ERC20]: parseAbiParameters('address token, uint256 spender'),
 
   // NFT Markets
   // [CommandType.SEAPORT_V1_5]: parseAbiParameters('uint256 value, bytes data'),
