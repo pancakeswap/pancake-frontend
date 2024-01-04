@@ -1,5 +1,5 @@
-import { Hex, encodeAbiParameters, parseAbiParameters } from 'viem'
 import { AbiParametersToPrimitiveTypes } from 'abitype'
+import { Hex, encodeAbiParameters, parseAbiParameters } from 'viem'
 
 export type ABIType = typeof ABI_PARAMETER
 export type ABIParametersType<TCommandType extends CommandUsed> = AbiParametersToPrimitiveTypes<ABIType[TCommandType]>
@@ -45,10 +45,10 @@ export enum CommandType {
   // SECOND_IF_BOUNDARY = 0x10,
 
   // Command Types where 0x10<=value<0x18, executed in the third nested-if block
-  OWNER_CHECK_721 = 0x10,
-  OWNER_CHECK_1155 = 0x11,
-  SWEEP_ERC721 = 0x12,
-  SWEEP_ERC1155 = 0x13,
+  // OWNER_CHECK_721 = 0x10,
+  // OWNER_CHECK_1155 = 0x11,
+  // SWEEP_ERC721 = 0x12,
+  // SWEEP_ERC1155 = 0x13,
   // COMMAND_PLACEHOLDER for 0x14-0x17 (all unused)
 
   // The commands are executed in nested if blocks to minimise gas consumption
@@ -56,11 +56,11 @@ export enum CommandType {
   // THIRD_IF_BOUNDARY = 0x18,
 
   // Command Types where 0x18<=value<=0x1f, executed in the final nested-if block
-  SEAPORT_V1_5 = 0x18,
-  SEAPORT_V1_4 = 0x19,
-  LOOKS_RARE_V2 = 0x1a,
-  X2Y2_721 = 0x1b,
-  X2Y2_1155 = 0x1c,
+  // SEAPORT_V1_5 = 0x18,
+  // SEAPORT_V1_4 = 0x19,
+  // LOOKS_RARE_V2 = 0x1a,
+  // X2Y2_721 = 0x1b,
+  // X2Y2_1155 = 0x1c,
   // COMMAND_PLACEHOLDER for 0x1d-0x1f (all unused)
 
   // The commands are executed in nested if blocks to minimise gas consumption
@@ -72,18 +72,18 @@ export enum CommandType {
   APPROVE_ERC20 = 0x21,
   STABLE_SWAP_EXACT_IN = 0x22,
   STABLE_SWAP_EXACT_OUT = 0x23,
-  PANCAKE_NFT_BNB = 0x24,
-  PANCAKE_NFT_WBNB = 0x25,
+  // PANCAKE_NFT_BNB = 0x24,
+  // PANCAKE_NFT_WBNB = 0x25,
 }
 
 const ALLOW_REVERT_FLAG = 0x80
 
 const REVERTIBLE_COMMANDS = new Set<CommandType>([
-  CommandType.SEAPORT_V1_5,
-  CommandType.SEAPORT_V1_4,
-  CommandType.LOOKS_RARE_V2,
-  CommandType.X2Y2_721,
-  CommandType.X2Y2_1155,
+  // CommandType.SEAPORT_V1_5,
+  // CommandType.SEAPORT_V1_4,
+  // CommandType.LOOKS_RARE_V2,
+  // CommandType.X2Y2_721,
+  // CommandType.X2Y2_1155,
   CommandType.EXECUTE_SUB_PLAN,
 ])
 
@@ -166,26 +166,26 @@ export const ABI_PARAMETER = {
   [CommandType.WRAP_ETH]: parseAbiParameters('address recipient, uint256 amountMin'),
   [CommandType.UNWRAP_WETH]: parseAbiParameters('address recipient, uint256 amountMin'),
   [CommandType.SWEEP]: parseAbiParameters('address token, address recipient, uint256 amountMin'),
-  [CommandType.SWEEP_ERC721]: parseAbiParameters('address token, address recipient, uint256 id'),
-  [CommandType.SWEEP_ERC1155]: parseAbiParameters('address token, address recipient, uint256 id, uint256 amount'),
+  // [CommandType.SWEEP_ERC721]: parseAbiParameters('address token, address recipient, uint256 id'),
+  // [CommandType.SWEEP_ERC1155]: parseAbiParameters('address token, address recipient, uint256 id, uint256 amount'),
   [CommandType.TRANSFER]: parseAbiParameters('address token, address recipient, uint256 value'),
   [CommandType.PAY_PORTION]: parseAbiParameters('address token, address recipient, uint256 bips'),
   [CommandType.BALANCE_CHECK_ERC20]: parseAbiParameters('address owner, address token, uint256 minBalance'),
-  [CommandType.OWNER_CHECK_721]: parseAbiParameters('address owner, address token, uint256 id'),
-  [CommandType.OWNER_CHECK_1155]: parseAbiParameters('address owner, address token, uint256 id, uint256 minBalance'),
+  // [CommandType.OWNER_CHECK_721]: parseAbiParameters('address owner, address token, uint256 id'),
+  // [CommandType.OWNER_CHECK_1155]: parseAbiParameters('address owner, address token, uint256 id, uint256 minBalance'),
   [CommandType.APPROVE_ERC20]: parseAbiParameters('address token, uint256 spender'),
 
   // NFT Markets
-  [CommandType.SEAPORT_V1_5]: parseAbiParameters('uint256 value, bytes data'),
-  [CommandType.SEAPORT_V1_4]: parseAbiParameters('uint256 value, bytes data'),
+  // [CommandType.SEAPORT_V1_5]: parseAbiParameters('uint256 value, bytes data'),
+  // [CommandType.SEAPORT_V1_4]: parseAbiParameters('uint256 value, bytes data'),
   // @fixme: contract not implemented
-  [CommandType.LOOKS_RARE_V2]: parseAbiParameters('uint256 value, bytes data'),
-  [CommandType.X2Y2_721]: parseAbiParameters('uint256 value, bytes data, address recipient, address token, uint256 id'),
-  [CommandType.X2Y2_1155]: parseAbiParameters(
-    'uint256 value, bytes data, address recipient, address token, uint256 id, uint256 amount',
-  ),
-  [CommandType.PANCAKE_NFT_WBNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
-  [CommandType.PANCAKE_NFT_BNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
+  // [CommandType.LOOKS_RARE_V2]: parseAbiParameters('uint256 value, bytes data'),
+  // [CommandType.X2Y2_721]: parseAbiParameters('uint256 value, bytes data, address recipient, address token, uint256 id'),
+  // [CommandType.X2Y2_1155]: parseAbiParameters(
+  //   'uint256 value, bytes data, address recipient, address token, uint256 id, uint256 amount',
+  // ),
+  // [CommandType.PANCAKE_NFT_WBNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
+  // [CommandType.PANCAKE_NFT_BNB]: parseAbiParameters('address collection, uint256 tokenId, uint256 price'),
   // @notice: following marketplace not supported now
   // [CommandType.NFTX]: parseAbiParameters('uint256 value, bytes data'),
   // [CommandType.FOUNDATION]: parseAbiParameters(
