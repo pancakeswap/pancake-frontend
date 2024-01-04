@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 5.1.0
+
+### Minor Changes
+
+- 0d60f672c: Move Alp Arb pool to finished
+
 ## 5.0.4
 
 ### Patch Changes
