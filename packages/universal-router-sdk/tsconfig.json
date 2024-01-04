@@ -9,6 +9,7 @@
     "lib": ["ES2021"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "importHelpers": true,
     "isolatedModules": true,
     "skipLibCheck": true
   }
