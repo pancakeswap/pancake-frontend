@@ -205,7 +205,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     (account &&
       vaultPosition === VaultPosition.None &&
       (vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault)) ||
-    isUserDelegated
+    ((vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault) && isUserDelegated)
   ) {
     if (isMobile) {
       return vaultKey === VaultKey.CakeVault || vaultKey === VaultKey.CakeFlexibleSideVault ? (
