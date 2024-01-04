@@ -26,7 +26,7 @@ export const ifos: BaseIfoConfig[] = [
     version: 7,
     twitterUrl: 'https://twitter.com/Cakepiexyz_io',
     description:
-      'Cakepie is a veCAKE Manager that boosts rewards for CAKE stakers and PancakeSwap’s liquidity providers',
+      'Cakepie is a veCAKE Manager that boosts rewards for CAKE stakers and PancakeSwap’s liquidity providers, as part of the wider [veCAKE Ecosystem](https://docs.pancakeswap.finance/products/vecake/vecake-managers)',
     vestingTitle:
       'CKP is the primary token issued by Cakepie which can be locked for vlCKP (Vote-Locked Cakepie) at a 1:1 ratio.',
   },
