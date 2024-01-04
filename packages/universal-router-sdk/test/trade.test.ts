@@ -1,27 +1,27 @@
 import { ChainId } from '@pancakeswap/chains'
 import {
+  CurrencyAmount,
   ERC20Token,
   Ether,
-  Trade as V2Trade,
-  Route as V2Route,
   Pair,
-  CurrencyAmount,
-  TradeType,
   Percent,
+  TradeType,
+  Route as V2Route,
+  Trade as V2Trade,
 } from '@pancakeswap/sdk'
-import { Trade as V3Trade, Route as V3Route, Pool } from '@pancakeswap/v3-sdk'
-import { PoolType, SmartRouterTrade, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
-import { describe, it, expect, beforeEach } from 'vitest'
-import { parseEther, parseUnits, Address, WalletClient, isHex, stringify } from 'viem'
-import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
-import { getPublicClient, getWalletClient } from './fixtures/clients'
+import { PoolType, SmartRouter, SmartRouterTrade, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
+import { Pool, Route as V3Route, Trade as V3Trade } from '@pancakeswap/v3-sdk'
+import { Address, WalletClient, isHex, parseEther, parseUnits, stringify } from 'viem'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { PancakeSwapUniversalRouter, ROUTER_AS_RECIPIENT } from '../src'
 import { PancakeSwapOptions, Permit2Signature } from '../src/entities/types'
-import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
-import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
-import { decodeUniversalCalldata } from './utils/calldataDecode'
+import { CONTRACT_BALANCE, SENDER_AS_RECIPIENT } from '../src/utils/constants'
 import { CommandType } from '../src/utils/routerCommands'
-import { SENDER_AS_RECIPIENT } from '../src/utils/constants'
+import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures/address'
+import { getPublicClient, getWalletClient } from './fixtures/clients'
+import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
+import { decodeUniversalCalldata } from './utils/calldataDecode'
+import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
 
 const TEST_RECIPIENT_ADDRESS = '0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa' as const
 const TEST_FEE_RECIPIENT_ADDRESS = '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB' as const
@@ -117,6 +117,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
     })
@@ -153,6 +155,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(TEST_RECIPIENT_ADDRESS)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
     })
@@ -191,6 +195,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -245,6 +251,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -304,6 +312,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
     })
@@ -346,6 +356,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -404,6 +416,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
     })
@@ -446,6 +460,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -494,6 +510,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -531,6 +549,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -576,6 +596,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -614,6 +636,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -670,6 +694,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(true)
 
@@ -718,6 +744,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(true)
 
@@ -761,6 +789,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(v2Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[3].name).toEqual('path')
       expect((decodedCommands[0].args[3].value as string[]).length).toEqual(3)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
@@ -803,6 +833,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountOut')
       expect(decodedCommands[1].args[1].value).toEqual(amountOut)
+      expect(decodedCommands[1].args[2].name).toEqual('amountInMax')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.maximumAmountIn(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -847,6 +879,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountOut')
       expect(decodedCommands[1].args[1].value).toEqual(amountOut)
+      expect(decodedCommands[1].args[2].name).toEqual('amountInMax')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.maximumAmountIn(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -907,6 +941,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountOut')
       expect(decodedCommands[1].args[1].value).toEqual(amountOut)
+      expect(decodedCommands[1].args[2].name).toEqual('amountInMax')
+      expect(decodedCommands[1].args[2].value).toEqual(v2Trade.maximumAmountIn(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -961,6 +997,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountOut')
       expect(decodedCommands[0].args[1].value).toEqual(amountOut)
+      expect(decodedCommands[0].args[2].name).toEqual('amountInMax')
+      expect(decodedCommands[0].args[2].value).toEqual(v2Trade.maximumAmountIn(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -1000,6 +1038,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v3Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
     })
@@ -1035,6 +1075,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v3Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1080,6 +1122,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(v3Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -1114,6 +1158,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(v3Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -1165,6 +1211,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v3Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(true)
 
@@ -1202,6 +1250,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(v3Trade.minimumAmountOut(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
     })
@@ -1234,6 +1284,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountOut')
       expect(decodedCommands[1].args[1].value).toEqual(amountOut)
+      expect(decodedCommands[1].args[2].name).toEqual('amountInMax')
+      expect(decodedCommands[1].args[2].value).toEqual(v3Trade.maximumAmountIn(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1268,6 +1320,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountOut')
       expect(decodedCommands[0].args[1].value).toEqual(amountOut)
+      expect(decodedCommands[0].args[2].name).toEqual('amountInMax')
+      expect(decodedCommands[0].args[2].value).toEqual(v3Trade.maximumAmountIn(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -1304,6 +1358,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountOut')
       expect(decodedCommands[1].args[1].value).toEqual(amountOut)
+      expect(decodedCommands[1].args[2].name).toEqual('amountInMax')
+      expect(decodedCommands[1].args[2].value).toEqual(v3Trade.maximumAmountIn(options.slippageTolerance).quotient)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1338,6 +1394,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountOut')
       expect(decodedCommands[0].args[1].value).toEqual(amountOut)
+      expect(decodedCommands[0].args[2].name).toEqual('amountInMax')
+      expect(decodedCommands[0].args[2].value).toEqual(v3Trade.maximumAmountIn(options.slippageTolerance).quotient)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[0].args[4].value).toEqual(true)
 
@@ -1376,6 +1434,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(USDC_USDT_V2.liquidityToken.address)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(0n)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1383,7 +1443,11 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[2].args[0].name).toEqual('recipient')
       expect(decodedCommands[2].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[2].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[2].args[1].value).toBeGreaterThan(0n)
+      expect(decodedCommands[2].args[1].value).toEqual(CONTRACT_BALANCE)
+      expect(decodedCommands[2].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[2].args[2].value).toBeGreaterThanOrEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[2].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[2].args[4].value).toEqual(false)
     })
@@ -1418,6 +1482,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(0n)
       expect(decodedCommands[1].args[3].name).toEqual('path')
       expect((decodedCommands[1].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[1].args[4].value).toEqual(false)
@@ -1426,7 +1492,11 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[2].args[0].name).toEqual('recipient')
       expect(decodedCommands[2].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[2].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[2].args[1].value).toBeGreaterThan(0n)
+      expect(decodedCommands[2].args[1].value).toEqual(CONTRACT_BALANCE)
+      expect(decodedCommands[2].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[2].args[2].value).toBeGreaterThanOrEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[2].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[2].args[4].value).toEqual(false)
     })
@@ -1460,6 +1530,10 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toBeGreaterThanOrEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[1].args[3].name).toEqual('path')
       expect((decodedCommands[1].args[3].value as string[]).length).toEqual(3)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
@@ -1495,6 +1569,10 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
     })
@@ -1525,6 +1603,8 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(0n)
       expect(decodedCommands[0].args[3].name).toEqual('path')
       expect((decodedCommands[0].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[0].args[4].name).toEqual('payerIsUser')
@@ -1534,7 +1614,11 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].name).toEqual('recipient')
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[1].args[1].value).toBeGreaterThan(0n)
+      expect(decodedCommands[1].args[1].value).toEqual(CONTRACT_BALANCE)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toBeGreaterThanOrEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1546,28 +1630,24 @@ describe('PancakeSwap Universal Router Trade', () => {
   describe('multi-route', () => {
     it('should encode a split exactInput with 2 routes: v2 ETH-USDC & v3 ETH-USDC', async () => {
       const amountIn = parseEther('1')
-      const v2Trade = buildV2Trade(
-        new V2Trade(
-          new V2Route([WETH_USDC_V2], ETHER, USDC),
-          CurrencyAmount.fromRawAmount(ETHER, amountIn),
-          TradeType.EXACT_INPUT,
-        ),
-        [
-          {
-            type: PoolType.V2,
-            reserve0: WETH_USDC_V2.reserve0,
-            reserve1: WETH_USDC_V2.reserve1,
-          },
-        ],
+      const v2TradeRoute = new V2Trade(
+        new V2Route([WETH_USDC_V2], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
       )
-      const v3Trade = buildV3Trade(
-        await V3Trade.fromRoute(
-          new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
-          CurrencyAmount.fromRawAmount(ETHER, amountIn),
-          TradeType.EXACT_INPUT,
-        ),
-        [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)],
+      const v2Trade = buildV2Trade(v2TradeRoute, [
+        {
+          type: PoolType.V2,
+          reserve0: WETH_USDC_V2.reserve0,
+          reserve1: WETH_USDC_V2.reserve1,
+        },
+      ])
+      const v3TradeRoute = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
       )
+      const v3Trade = buildV3Trade(v3TradeRoute, [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)])
 
       v2Trade.routes[0].percent = 50
       v3Trade.routes[0].percent = 50
@@ -1599,6 +1679,10 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(
+        v2TradeRoute.minimumAmountOut(options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[1].args[3].name).toEqual('path')
       expect((decodedCommands[1].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[1].args[4].value).toEqual(false)
@@ -1608,56 +1692,58 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[2].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[2].args[1].name).toEqual('amountIn')
       expect(decodedCommands[2].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[2].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[2].args[2].value).toEqual(
+        v3TradeRoute.minimumAmountOut(options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[2].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[2].args[4].value).toEqual(false)
     })
+
     it('should encode a split exactInput with 3 routes: v2 ETH-USDC & v3 ETH-USDC & v3 ETH-USDC', async () => {
       const amountIn = parseEther('2')
-      const v2Trade = buildV2Trade(
-        new V2Trade(
-          new V2Route([WETH_USDC_V2], ETHER, USDC),
-          CurrencyAmount.fromRawAmount(ETHER, (amountIn * 5000n) / 10000n),
-          TradeType.EXACT_INPUT,
-        ),
-        [
-          {
-            type: PoolType.V2,
-            reserve0: WETH_USDC_V2.reserve0,
-            reserve1: WETH_USDC_V2.reserve1,
-          },
-        ],
+      const v2TradeRoute = new V2Trade(
+        new V2Route([WETH_USDC_V2], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, (amountIn * 5000n) / 10000n),
+        TradeType.EXACT_INPUT,
       )
+      const v2Trade = buildV2Trade(v2TradeRoute, [
+        {
+          type: PoolType.V2,
+          reserve0: WETH_USDC_V2.reserve0,
+          reserve1: WETH_USDC_V2.reserve1,
+        },
+      ])
+      const v3TradeRoute = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, (amountIn * 2500n) / 10000n),
+        // CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
+      )
+      const v3Trade = buildV3Trade(v3TradeRoute, [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)])
 
-      const v3Trade = buildV3Trade(
-        await V3Trade.fromRoute(
-          new V3Route([WETH_USDC_V3_MEDIUM], ETHER, USDC),
-          CurrencyAmount.fromRawAmount(ETHER, (amountIn * 2500n) / 10000n),
-          // CurrencyAmount.fromRawAmount(ETHER, amountIn),
-          TradeType.EXACT_INPUT,
-        ),
-        [convertPoolToV3Pool(WETH_USDC_V3_MEDIUM)],
+      const v3TradeRoute2 = await V3Trade.fromRoute(
+        new V3Route([WETH_USDC_V3_LOW], ETHER, USDC),
+        CurrencyAmount.fromRawAmount(ETHER, (amountIn * 2500n) / 10000n),
+        // CurrencyAmount.fromRawAmount(ETHER, amountIn),
+        TradeType.EXACT_INPUT,
       )
-
-      const v3Trade2 = buildV3Trade(
-        await V3Trade.fromRoute(
-          new V3Route([WETH_USDC_V3_LOW], ETHER, USDC),
-          CurrencyAmount.fromRawAmount(ETHER, (amountIn * 2500n) / 10000n),
-          // CurrencyAmount.fromRawAmount(ETHER, amountIn),
-          TradeType.EXACT_INPUT,
-        ),
-        [convertPoolToV3Pool(WETH_USDC_V3_LOW)],
-      )
+      const v3Trade2 = buildV3Trade(v3TradeRoute2, [convertPoolToV3Pool(WETH_USDC_V3_LOW)])
 
       v2Trade.routes[0].percent = 50
       v3Trade.routes[0].percent = 25
       v3Trade2.routes[0].percent = 25
 
       const options = swapOptions({})
+      const routes = [...v2Trade.routes, ...v3Trade.routes, ...v3Trade2.routes]
       const trade: SmartRouterTrade<TradeType.EXACT_INPUT> = {
         tradeType: TradeType.EXACT_INPUT,
         inputAmount: CurrencyAmount.fromRawAmount(ETHER, amountIn),
-        outputAmount: CurrencyAmount.fromRawAmount(USDC, amountIn),
-        routes: [...v2Trade.routes, ...v3Trade.routes, ...v3Trade2.routes],
+        outputAmount: CurrencyAmount.fromRawAmount(
+          USDC,
+          routes.reduce((acc, r) => acc + r.outputAmount.quotient, 0n),
+        ),
+        routes,
         gasEstimate: 0n,
         gasEstimateInUSD: CurrencyAmount.fromRawAmount(ETHER, amountIn),
       }
@@ -1681,7 +1767,11 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[1].args[0].name).toEqual('recipient')
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[1].args[1].value).toEqual((amountIn * 5000n) / 10000n)
+      expect(decodedCommands[1].args[1].value).toEqual(v2TradeRoute.inputAmount.quotient)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(
+        v2TradeRoute.minimumAmountOut(options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[1].args[3].name).toEqual('path')
       expect((decodedCommands[1].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[1].args[4].value).toEqual(false)
@@ -1690,7 +1780,11 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[2].args[0].name).toEqual('recipient')
       expect(decodedCommands[2].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[2].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[2].args[1].value).toEqual((amountIn * 2500n) / 10000n)
+      expect(decodedCommands[2].args[1].value).toEqual(v3TradeRoute.inputAmount.quotient)
+      expect(decodedCommands[2].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[2].args[2].value).toEqual(
+        v3TradeRoute.minimumAmountOut(options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[2].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[2].args[4].value).toEqual(false)
 
@@ -1698,7 +1792,11 @@ describe('PancakeSwap Universal Router Trade', () => {
       expect(decodedCommands[3].args[0].name).toEqual('recipient')
       expect(decodedCommands[3].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[3].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[3].args[1].value).toEqual((amountIn * 2500n) / 10000n)
+      expect(decodedCommands[3].args[1].value).toEqual(v3TradeRoute2.inputAmount.quotient)
+      expect(decodedCommands[3].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[3].args[2].value).toEqual(
+        v3TradeRoute2.minimumAmountOut(options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[3].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[3].args[4].value).toEqual(false)
 
@@ -1778,6 +1876,8 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(0n)
       expect(decodedCommands[0].args[3].name).toEqual('path')
       expect((decodedCommands[0].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[0].args[5].name).toEqual('payerIsUser')
@@ -1787,7 +1887,11 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[1].args[0].name).toEqual('recipient')
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[1].args[1].value).toBeGreaterThan(0n)
+      expect(decodedCommands[1].args[1].value).toEqual(CONTRACT_BALANCE)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toBeGreaterThanOrEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1822,6 +1926,8 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[0].args[0].value).toEqual(WBNB_USDC_V2.liquidityToken.address)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(0n)
       expect(decodedCommands[0].args[3].name).toEqual('path')
       expect((decodedCommands[0].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[0].args[5].name).toEqual('payerIsUser')
@@ -1831,7 +1937,11 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[1].args[0].name).toEqual('recipient')
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[1].args[1].value).toBeGreaterThan(0n)
+      expect(decodedCommands[1].args[1].value).toEqual(CONTRACT_BALANCE)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1870,6 +1980,8 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(0n)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1877,7 +1989,11 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[2].args[0].name).toEqual('recipient')
       expect(decodedCommands[2].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[2].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[2].args[1].value).toBeGreaterThan(0n)
+      expect(decodedCommands[2].args[1].value).toEqual(CONTRACT_BALANCE)
+      expect(decodedCommands[2].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[2].args[2].value).toEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[2].args[3].name).toEqual('path')
       expect((decodedCommands[2].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[2].args[5].name).toEqual('payerIsUser')
@@ -1913,6 +2029,8 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(0n)
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(false)
 
@@ -1920,7 +2038,11 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[2].args[0].name).toEqual('recipient')
       expect(decodedCommands[2].args[0].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[2].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[2].args[1].value).toBeGreaterThan(0n)
+      expect(decodedCommands[2].args[1].value).toEqual(CONTRACT_BALANCE)
+      expect(decodedCommands[2].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[2].args[2].value).toEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[2].args[3].name).toEqual('path')
       expect((decodedCommands[2].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[2].args[5].name).toEqual('payerIsUser')
@@ -1929,30 +2051,26 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
   })
 
   describe('multi-route', () => {
-    it('should encode a multi-route exactOutput v2 USDT-USDC & v3 USDT-USDC & stable USDT-USDC', async () => {
+    it('should encode a multi-route exactInput v2 USDT-USDC & v3 USDT-USDC & stable USDT-USDC', async () => {
       const amountIn = parseUnits('1000', 6)
-      const v2Trade = buildV2Trade(
-        new V2Trade(
-          new V2Route([USDC_USDT_V2], USDT, USDC),
-          CurrencyAmount.fromRawAmount(USDT, amountIn),
-          TradeType.EXACT_INPUT,
-        ),
-        [
-          {
-            type: PoolType.V2,
-            reserve0: USDC_USDT_V2.reserve0,
-            reserve1: USDC_USDT_V2.reserve1,
-          },
-        ],
+      const v2TradeRoute = new V2Trade(
+        new V2Route([USDC_USDT_V2], USDT, USDC),
+        CurrencyAmount.fromRawAmount(USDT, amountIn),
+        TradeType.EXACT_INPUT,
       )
-      const v3Trade = buildV3Trade(
-        await V3Trade.fromRoute(
-          new V3Route([USDC_USDT_V3_LOW], USDT, USDC),
-          CurrencyAmount.fromRawAmount(USDT, amountIn),
-          TradeType.EXACT_INPUT,
-        ),
-        [convertPoolToV3Pool(USDC_USDT_V3_LOW)],
+      const v2Trade = buildV2Trade(v2TradeRoute, [
+        {
+          type: PoolType.V2,
+          reserve0: USDC_USDT_V2.reserve0,
+          reserve1: USDC_USDT_V2.reserve1,
+        },
+      ])
+      const v3TradeRoute = await V3Trade.fromRoute(
+        new V3Route([USDC_USDT_V3_LOW], USDT, USDC),
+        CurrencyAmount.fromRawAmount(USDT, amountIn),
+        TradeType.EXACT_INPUT,
       )
+      const v3Trade = buildV3Trade(v3TradeRoute, [convertPoolToV3Pool(USDC_USDT_V3_LOW)])
 
       const stableTrade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [
         await getStablePool(USDT, USDC, getPublicClient, liquidity),
@@ -1962,17 +2080,20 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       v3Trade.routes[0].percent = 33
       stableTrade.routes[0].percent = 33
 
+      const routes = [...v2Trade.routes, ...v3Trade.routes, ...stableTrade.routes]
       const options = swapOptions({})
       const trade: SmartRouterTrade<TradeType.EXACT_INPUT> = {
         tradeType: TradeType.EXACT_INPUT,
         inputAmount: CurrencyAmount.fromRawAmount(USDT, amountIn * 3n),
-        outputAmount: CurrencyAmount.fromRawAmount(USDC, amountIn),
-        routes: [...v2Trade.routes, ...v3Trade.routes, ...stableTrade.routes],
+        outputAmount: CurrencyAmount.fromRawAmount(
+          USDC,
+          routes.reduce((acc, r) => acc + r.outputAmount.quotient, 0n),
+        ),
+        routes,
         gasEstimate: 0n,
         gasEstimateInUSD: CurrencyAmount.fromRawAmount(USDT, amountIn),
       }
 
-      // FIXME: a valid trade should have the correct output amounts
       expect(trade.routes.reduce((acc, r) => acc + r.outputAmount.quotient, 0n)).toEqual(trade.outputAmount.quotient)
 
       const { calldata, value } = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, options)
@@ -1989,6 +2110,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[0].args[1].name).toEqual('amountIn')
       expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[0].args[2].value).toEqual(
+        v2TradeRoute.minimumAmountOut(options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[0].args[3].name).toEqual('path')
       expect((decodedCommands[0].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[0].args[4].value).toEqual(true)
@@ -1998,6 +2123,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[1].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[1].args[1].name).toEqual('amountIn')
       expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[1].args[2].value).toEqual(
+        v3TradeRoute.minimumAmountOut(options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[1].args[4].name).toEqual('payerIsUser')
       expect(decodedCommands[1].args[4].value).toEqual(true)
 
@@ -2005,7 +2134,11 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[2].args[0].name).toEqual('recipient')
       expect(decodedCommands[2].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
       expect(decodedCommands[2].args[1].name).toEqual('amountIn')
-      expect(decodedCommands[2].args[1].value).toBeGreaterThan(0n)
+      expect(decodedCommands[2].args[1].value).toEqual(amountIn)
+      expect(decodedCommands[2].args[2].name).toEqual('amountOutMin')
+      expect(decodedCommands[2].args[2].value).toEqual(
+        SmartRouter.minimumAmountOut(stableTrade, options.slippageTolerance).quotient,
+      )
       expect(decodedCommands[2].args[3].name).toEqual('path')
       expect((decodedCommands[2].args[3].value as string[]).length).toEqual(2)
       expect(decodedCommands[2].args[5].name).toEqual('payerIsUser')
@@ -2017,7 +2150,9 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
       expect(decodedCommands[3].args[1].name).toEqual('recipient')
       expect(decodedCommands[3].args[1].value).toEqual(SENDER_AS_RECIPIENT)
       expect(decodedCommands[3].args[2].name).toEqual('amountMin')
-      expect(decodedCommands[3].args[2].value).toBeGreaterThan(0n)
+      expect(decodedCommands[3].args[2].value).toEqual(
+        SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+      )
     })
   })
 
@@ -2042,6 +2177,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     expect(decodedCommands[0].args[0].value).toEqual(SENDER_AS_RECIPIENT)
     expect(decodedCommands[0].args[1].name).toEqual('amountIn')
     expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+    expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+    expect(decodedCommands[0].args[2].value).toEqual(
+      SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+    )
     expect(decodedCommands[0].args[3].name).toEqual('path')
     expect((decodedCommands[0].args[3].value as string[]).length).toEqual(2)
     expect(decodedCommands[0].args[5].name).toEqual('payerIsUser')
@@ -2068,6 +2207,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     expect(decodedCommands[0].args[0].value).toEqual(ROUTER_AS_RECIPIENT)
     expect(decodedCommands[0].args[1].name).toEqual('amountIn')
     expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+    expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+    expect(decodedCommands[0].args[2].value).toEqual(
+      SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+    )
     expect(decodedCommands[0].args[3].name).toEqual('path')
     expect((decodedCommands[0].args[3].value as string[]).length).toEqual(2)
     expect(decodedCommands[0].args[5].name).toEqual('payerIsUser')
@@ -2087,7 +2230,9 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     expect(decodedCommands[2].args[1].name).toEqual('recipient')
     expect(decodedCommands[2].args[1].value).toEqual(SENDER_AS_RECIPIENT)
     expect(decodedCommands[2].args[2].name).toEqual('amountMin')
-    expect(decodedCommands[2].args[2].value).toBeGreaterThan(0n)
+    expect(decodedCommands[2].args[2].value).toEqual(
+      SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+    )
   })
   it('should encode a single exactInput USDT->USDC swap, with permit2', async () => {
     const amountIn = parseUnits('1000', 6)
@@ -2120,6 +2265,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     expect(decodedCommands[1].args[0].value).toEqual(SENDER_AS_RECIPIENT)
     expect(decodedCommands[1].args[1].name).toEqual('amountIn')
     expect(decodedCommands[1].args[1].value).toEqual(amountIn)
+    expect(decodedCommands[1].args[2].name).toEqual('amountOutMin')
+    expect(decodedCommands[1].args[2].value).toEqual(
+      SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+    )
     expect(decodedCommands[1].args[3].name).toEqual('path')
     expect((decodedCommands[1].args[3].value as string[]).length).toEqual(2)
     expect(decodedCommands[1].args[5].name).toEqual('payerIsUser')
@@ -2149,6 +2298,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     expect(decodedCommands[0].args[0].value).toEqual(SENDER_AS_RECIPIENT)
     expect(decodedCommands[0].args[1].name).toEqual('amountIn')
     expect(decodedCommands[0].args[1].value).toEqual(amountIn)
+    expect(decodedCommands[0].args[2].name).toEqual('amountOutMin')
+    expect(decodedCommands[0].args[2].value).toEqual(
+      SmartRouter.minimumAmountOut(trade, options.slippageTolerance).quotient,
+    )
     expect(decodedCommands[0].args[3].name).toEqual('path')
     expect((decodedCommands[0].args[3].value as string[]).length).toEqual(3)
     expect(decodedCommands[0].args[5].name).toEqual('payerIsUser')

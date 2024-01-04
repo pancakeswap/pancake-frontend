@@ -366,7 +366,7 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mix
 ]
 `;
 
-exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > multi-route > should encode a multi-route exactOutput v2 USDT-USDC & v3 USDT-USDC & stable USDT-USDC 1`] = `
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > multi-route > should encode a multi-route exactInput v2 USDT-USDC & v3 USDT-USDC & stable USDT-USDC 1`] = `
 [
   {
     "command": "V2_SWAP_EXACT_IN",
@@ -384,7 +384,7 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mul
       {
         "type": "uint256",
         "name": "amountOutMin",
-        "value": "0"
+        "value": "949999999"
       },
       {
         "type": "address[]",
@@ -417,7 +417,7 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mul
       {
         "type": "uint256",
         "name": "amountOutMin",
-        "value": "0"
+        "value": "951904760"
       },
       {
         "type": "bytes",
@@ -447,7 +447,7 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mul
       {
         "type": "uint256",
         "name": "amountOutMin",
-        "value": "0"
+        "value": "952380952"
       },
       {
         "type": "address[]",
@@ -487,7 +487,115 @@ exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > mul
       {
         "type": "uint256",
         "name": "amountMin",
-        "value": "952380952"
+        "value": "2854285712"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap StableSwap Through Universal Router, BSC Network Only > multi-route > should encode a multi-route exactOutput v2 USDT-USDC & v3 USDT-USDC & stable USDT-USDC 1`] = `
+[
+  {
+    "command": "V2_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1052631579"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1050525264"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d0001f455d398326f99059ff775485246999027b3197955"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
+      }
+    ]
+  },
+  {
+    "command": "STABLE_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1050000000"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0x55d398326f99059fF775485246999027B3197955",
+          "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
+        ]
+      },
+      {
+        "type": "uint256[]",
+        "name": "flag",
+        "value": [
+          "2"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": true
       }
     ]
   }
@@ -1209,7 +1317,7 @@ exports[`PancakeSwap Universal Router Trade > multi-route > should encode a spli
       {
         "type": "uint256",
         "name": "amountOutMin",
-        "value": "0"
+        "value": "949053319313984300"
       },
       {
         "type": "address[]",
@@ -1242,7 +1350,7 @@ exports[`PancakeSwap Universal Router Trade > multi-route > should encode a spli
       {
         "type": "uint256",
         "name": "amountOutMin",
-        "value": "0"
+        "value": "474763211848090763"
       },
       {
         "type": "bytes",
@@ -1272,7 +1380,7 @@ exports[`PancakeSwap Universal Router Trade > multi-route > should encode a spli
       {
         "type": "uint256",
         "name": "amountOutMin",
-        "value": "0"
+        "value": "475714642559761711"
       },
       {
         "type": "bytes",
@@ -1302,7 +1410,233 @@ exports[`PancakeSwap Universal Router Trade > multi-route > should encode a spli
       {
         "type": "uint256",
         "name": "amountMin",
-        "value": "1904761904761904761"
+        "value": "1899531173721836775"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > multi-route > should encode a split exactOutput with 2 routes: v2 ETH-USDC & v3 ETH-USDC 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "2107370528423160005"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1053685264211580002"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1053685264211580003"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480009c4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "0"
+      }
+    ]
+  }
+]
+`;
+
+exports[`PancakeSwap Universal Router Trade > multi-route > should encode a split exactOutput with 3 routes: v2 ETH-USDC & v3 ETH-USDC & v3 ETH-USDC 1`] = `
+[
+  {
+    "command": "WRAP_ETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000002"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "2105789737237434971"
+      }
+    ]
+  },
+  {
+    "command": "V2_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "1000000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "1053685264211580002"
+      },
+      {
+        "type": "address[]",
+        "name": "path",
+        "value": [
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "500000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "526579079013190806"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480009c4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "V3_SWAP_EXACT_OUT",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountOut",
+        "value": "500000000000000000"
+      },
+      {
+        "type": "uint256",
+        "name": "amountInMax",
+        "value": "525525394012664162"
+      },
+      {
+        "type": "bytes",
+        "name": "path",
+        "value": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb480001f4c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      },
+      {
+        "type": "bool",
+        "name": "payerIsUser",
+        "value": false
+      }
+    ]
+  },
+  {
+    "command": "UNWRAP_WETH",
+    "args": [
+      {
+        "type": "address",
+        "name": "recipient",
+        "value": "0x0000000000000000000000000000000000000001"
+      },
+      {
+        "type": "uint256",
+        "name": "amountMin",
+        "value": "0"
       }
     ]
   }
