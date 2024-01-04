@@ -155,7 +155,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
       )
     }
 
-    if (confirmModalState === ConfirmModalState.REVIEWING && txHash) {
+    if (confirmModalState === ConfirmModalState.COMPLETED && txHash) {
       return (
         <SwapTransactionReceiptModalContent
           explorerLink={
