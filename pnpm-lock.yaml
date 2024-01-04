@@ -1428,19 +1428,16 @@ importers:
       tiny-invariant:
         specifier: ^1.3.1
         version: 1.3.1
+      viem:
+        specifier: 1.19.11
+        version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
+    devDependencies:
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
-      viem:
-        specifier: 1.10.9
-        version: 1.10.9(typescript@5.2.2)
-    devDependencies:
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.3.96)(postcss@8.4.31)(typescript@5.2.2)
-      vitest:
-        specifier: ^0.30.1
-        version: 0.30.1
 
   packages/pools:
     dependencies:
@@ -2041,8 +2038,8 @@ importers:
         specifier: ^1.1.0
         version: 1.3.1
       viem:
-        specifier: ^1.15.1
-        version: 1.19.9(typescript@5.2.2)
+        specifier: 1.19.11
+        version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
       '@pancakeswap/tokens':
         specifier: workspace:*
@@ -2056,12 +2053,6 @@ importers:
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.3.96)(postcss@8.4.31)(typescript@5.2.2)
-      typescript:
-        specifier: ^5.1.3
-        version: 5.2.2
-      vitest:
-        specifier: ^0.30.1
-        version: 0.30.1
 
   packages/utils:
     dependencies:
@@ -2376,10 +2367,6 @@ packages:
 
   /@adraffy/ens-normalize@1.10.0:
     resolution: {integrity: sha512-nA9XHtlAkYfJxY7bce8DcN7eKxWWCWkU+1GR9d+U6MbNpfwQp8TI7vqOsBsMcHoT4mBu2kypKoSKnghEzOOq5Q==}
-
-  /@adraffy/ens-normalize@1.9.4:
-    resolution: {integrity: sha512-UK0bHA7hh9cR39V+4gl2/NnBBjoXIxkuWAPCaY4X7fbH4L/azIi7ilWOCjMUYfpJgraLUAqkRi2BqrjME8Rynw==}
-    dev: false
 
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -18282,14 +18269,6 @@ packages:
       ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     dev: false
 
-  /isomorphic-ws@5.0.0(ws@8.13.0):
-    resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
-    peerDependencies:
-      ws: '*'
-    dependencies:
-      ws: 8.13.0
-    dev: false
-
   /isows@1.0.3(ws@8.13.0):
     resolution: {integrity: sha512-2cKei4vlmg2cxEjm3wVSqn8pcoRF/LX/wpifuuNquFO4SQmPwarClT+SUCA2lt+l581tTeZIPIZuIDo2jWN1fg==}
     peerDependencies:
@@ -25629,30 +25608,6 @@ packages:
       vfile-message: 2.0.4
     dev: true
 
-  /viem@1.10.9(typescript@5.2.2):
-    resolution: {integrity: sha512-fhQxnMBFwGbyE/VOfcvcavxAPyqIHSgOB793gQcMPH1B9ahQvjMe3C3icqypC01ACaqpDPgYWGfvF/ExTeIPuA==}
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@adraffy/ens-normalize': 1.9.4
-      '@noble/curves': 1.2.0
-      '@noble/hashes': 1.3.2
-      '@scure/bip32': 1.3.2
-      '@scure/bip39': 1.2.1
-      '@types/ws': 8.5.10
-      abitype: 0.9.8(typescript@5.2.2)(zod@3.22.4)
-      isomorphic-ws: 5.0.0(ws@8.13.0)
-      typescript: 5.2.2
-      ws: 8.13.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-    dev: false
-
   /viem@1.19.11(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-dbsXEWDBZkByuzJXAs/e01j7dpUJ5ICF5WcyntFwf8Y97n5vnC/91lAleSa6DA5V4WJvYZbhDpYeTctsMAQnhA==}
     peerDependencies:
@@ -25674,29 +25629,6 @@ packages:
       - bufferutil
       - utf-8-validate
       - zod
-
-  /viem@1.19.9(typescript@5.2.2):
-    resolution: {integrity: sha512-Sf9U2x4jU0S/FALqYypcspWOGene0NZyD470oUripNhE0Ta6uOE/OgE4toTDVfRxov8qw0JFinr/wPGxYE3+HQ==}
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@adraffy/ens-normalize': 1.10.0
-      '@noble/curves': 1.2.0
-      '@noble/hashes': 1.3.2
-      '@scure/bip32': 1.3.2
-      '@scure/bip39': 1.2.1
-      abitype: 0.9.8(typescript@5.2.2)(zod@3.22.4)
-      isows: 1.0.3(ws@8.13.0)
-      typescript: 5.2.2
-      ws: 8.13.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-    dev: false
 
   /vite-node@0.28.5(@types/node@13.13.52):
     resolution: {integrity: sha512-LmXb9saMGlrMZbXTvOveJKwMTBTNUH66c8rJnQ0ZPNX+myPEol64+szRzXtV5ORb0Hb/91yq+/D3oERoyAt6LA==}
