@@ -48,6 +48,10 @@ const isMetamaskInstalled = () => {
   return false
 }
 
+function isBinanceWeb3WalletInstalled() {
+  return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBinance)
+}
+
 const walletsConfig = ({
   chainId,
   connect,
@@ -74,9 +78,9 @@ const walletsConfig = ({
       id: 'BinanceW3W',
       title: 'Binance Web3 Wallet',
       icon: `${ASSET_CDN}/web/wallets/binance-w3w.png`,
-      connectorId: ConnectorNames.BinanceW3W,
+      connectorId: isBinanceWeb3WalletInstalled() ? ConnectorNames.Injected : ConnectorNames.BinanceW3W,
       get installed() {
-        if (typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBinance)) {
+        if (isBinanceWeb3WalletInstalled()) {
           return true
         }
         // still showing the SDK if not installed
