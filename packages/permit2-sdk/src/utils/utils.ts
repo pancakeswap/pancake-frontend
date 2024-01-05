@@ -9,8 +9,8 @@ interface Permit extends PermitSingle {
 export const toDeadline = (expiration: number): number => {
   // @FIXME: @ChefJerry remove after test
   // @ts-ignore
-  const now = window.nowBlockTimestamp ?? Date.now()
-  return Math.floor((now + expiration) / 1000)
+  const now = window.nowBlockTimestamp ?? Date.now() / 1000
+  return now + expiration
 }
 
 export const generatePermitTypedData = (token: Token, nonce: BigintIsh, spender: string): Permit => {

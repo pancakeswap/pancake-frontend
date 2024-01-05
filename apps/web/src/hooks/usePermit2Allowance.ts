@@ -1,11 +1,11 @@
-import { useInterval } from '@pancakeswap/hooks'
-import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react'
+import { Dispatch, SetStateAction, useMemo, useState } from 'react'
 import { useHasPendingApproval, useHasPendingRevocation } from 'state/transactions/hooks'
-import { useAccount, Address } from 'wagmi'
+import { Address, useAccount } from 'wagmi'
 import { ApprovalState, useApproveCallback } from './useApproveCallback'
+import useCurrentBlockTimestamp from './useCurrentBlockTimestamp'
 import useTokenAllowance from './useTokenAllowance'
 
 export enum AllowanceState {
@@ -44,8 +44,6 @@ export interface AllowanceRequired extends BaseAllowance {
 
 export type Allowance = AllowanceLoading | AllowanceAllowed | AllowanceRequired
 
-const AVERAGE_L1_BLOCK_TIME = 12000
-
 export default function usePermit2Allowance(
   approvalAddress: string | undefined,
   amount?: CurrencyAmount<Token>,
@@ -56,25 +54,20 @@ export default function usePermit2Allowance(
 
   const { allowance: tokenAllowance } = useTokenAllowance(token, account, approvalAddress)
   const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, approvalAddress)
-
+  const now = useCurrentBlockTimestamp() ?? 0n
   const isApproved = approvalState === ApprovalState.APPROVED
   const isApprovalLoading = approvalState === ApprovalState.PENDING
   const isApprovalPending = useHasPendingApproval(token?.address, approvalAddress)
   const isRevocationPending = useHasPendingRevocation(token, approvalAddress)
 
-  // Signature and PermitAllowance will expire, so they should be rechecked at an interval.
-  // Calculate now such that the signature will still be valid for the submitting block.
-  const [now, setNow] = useState(Date.now() + AVERAGE_L1_BLOCK_TIME / 1000)
-  useInterval(
-    useCallback(() => setNow((Date.now() + AVERAGE_L1_BLOCK_TIME) / 1000), []),
-    AVERAGE_L1_BLOCK_TIME,
-  )
-
   const [signature, setSignature] = useState<Permit2Signature>()
   const isSigned = useMemo(() => {
     if (!amount || !signature) return false
-    // @ts-ignore
-    return signature.details.token === token?.address && signature.spender === spender && signature.sigDeadline >= now
+    return (
+      signature.details.token === token?.address &&
+      signature.spender === spender &&
+      BigInt(signature.sigDeadline) >= now
+    )
   }, [amount, now, signature, spender, token?.address])
 
   const { permitAllowance, expiration: permitExpiration, nonce } = usePermitAllowance(token, account, spender)
