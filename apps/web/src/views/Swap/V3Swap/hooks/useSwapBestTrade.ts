@@ -1,10 +1,11 @@
 import { TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
+import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 
 import { useCurrency } from 'hooks/Tokens'
 import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
-import { useDeferredValue } from 'react'
+import { useDeferredValue, useEffect } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import {
@@ -38,6 +39,13 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
   const [v2Swap] = useUserV2SwapEnable()
   const [v3Swap] = useUserV3SwapEnable()
   const [stableSwap] = useUserStableSwapEnable()
+
+  const currentBlockTimestamp = useCurrentBlockTimestamp()
+
+  useEffect(() => {
+    // @ts-ignore
+    window.nowBlockTimestamp = currentBlockTimestamp
+  }, [currentBlockTimestamp])
 
   const { isLoading, trade, refresh, syncing, isStale, error } = useBestAMMTrade({
     amount,
