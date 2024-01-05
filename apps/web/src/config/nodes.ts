@@ -23,21 +23,22 @@ const ARBITRUM_NODES = [
 ].filter(Boolean)
 
 export const SERVER_NODES = {
-  [ChainId.BSC]: [
-    process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
-    getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
-    'https://bsc.publicnode.com',
-    'https://binance.llamarpc.com',
-    'https://bsc-dataseed1.defibit.io',
-    'https://bsc-dataseed1.binance.org',
-  ].filter(Boolean),
+  [ChainId.BSC]: ['https://rpc.tenderly.co/fork/464c9282-a77a-42b8-aff2-77f150e27ce7'],
+  // process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
+  // getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
+  // 'https://bsc.publicnode.com',
+  // 'https://binance.llamarpc.com',
+  // 'https://bsc-dataseed1.defibit.io',
+  // 'https://bsc-dataseed1.binance.org',
+  // ].filter(Boolean),
   [ChainId.BSC_TESTNET]: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
-  [ChainId.ETHEREUM]: [
-    getNodeRealUrl(ChainId.ETHEREUM, process.env.SERVER_NODE_REAL_API_ETH) || '',
-    'https://ethereum.publicnode.com',
-    'https://eth.llamarpc.com',
-    'https://cloudflare-eth.com',
-  ],
+  // [ChainId.ETHEREUM]: [
+  //   getNodeRealUrl(ChainId.ETHEREUM, process.env.SERVER_NODE_REAL_API_ETH) || '',
+  //   'https://ethereum.publicnode.com',
+  //   'https://eth.llamarpc.com',
+  //   'https://cloudflare-eth.com',
+  // ],
+  [ChainId.ETHEREUM]: ['https://rpc.tenderly.co/fork/2964006e-6338-4bd0-9ee2-08df2d49507a'],
   [ChainId.GOERLI]: [
     getNodeRealUrl(ChainId.GOERLI, process.env.SERVER_NODE_REAL_API_GOERLI) || '',
     'https://eth-goerli.public.blastapi.io',
@@ -79,25 +80,26 @@ export const SERVER_NODES = {
 } satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
-  [ChainId.BSC]: [
-    process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
-    getNodeRealUrl(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
-    process.env.NEXT_PUBLIC_NODIES_BSC || '',
-    getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
-    'https://bsc.publicnode.com',
-    'https://binance.llamarpc.com',
-    'https://bsc-dataseed1.defibit.io',
-    'https://bsc-dataseed1.binance.org',
-  ].filter(Boolean),
+  [ChainId.BSC]: ['https://rpc.tenderly.co/fork/464c9282-a77a-42b8-aff2-77f150e27ce7'],
+  //   process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
+  //   getNodeRealUrl(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
+  //   process.env.NEXT_PUBLIC_NODIES_BSC || '',
+  //   getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
+  //   'https://bsc.publicnode.com',
+  //   'https://binance.llamarpc.com',
+  //   'https://bsc-dataseed1.defibit.io',
+  //   'https://bsc-dataseed1.binance.org',
+  // ].filter(Boolean),
   [ChainId.BSC_TESTNET]: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
-  [ChainId.ETHEREUM]: [
-    getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
-    process.env.NEXT_PUBLIC_NODIES_ETH || '',
-    getGroveUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
-    'https://ethereum.publicnode.com',
-    'https://eth.llamarpc.com',
-    'https://cloudflare-eth.com',
-  ].filter(Boolean),
+  // [ChainId.ETHEREUM]: [
+  //   getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
+  //   process.env.NEXT_PUBLIC_NODIES_ETH || '',
+  //   getGroveUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
+  //   'https://ethereum.publicnode.com',
+  //   'https://eth.llamarpc.com',
+  //   'https://cloudflare-eth.com',
+  // ].filter(Boolean),
+  [ChainId.ETHEREUM]: ['https://rpc.tenderly.co/fork/2964006e-6338-4bd0-9ee2-08df2d49507a'],
   [ChainId.GOERLI]: [
     getNodeRealUrl(ChainId.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI) || '',
     'https://eth-goerli.public.blastapi.io',
