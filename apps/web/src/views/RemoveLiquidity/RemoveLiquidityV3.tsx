@@ -34,7 +34,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import Page from 'views/Page'
-import { useWalletClient } from 'wagmi'
+import { useSendTransaction, useWalletClient } from 'wagmi'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { styled } from 'styled-components'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
@@ -52,7 +52,8 @@ import { getViemClients } from 'utils/viem'
 import { calculateGasMargin } from 'utils'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import useCatchTxError from 'hooks/useCatchTxError'
+import { isUserRejected } from 'utils/sentry'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useBurnV3ActionHandlers } from './form/hooks'
 
 const BorderCard = styled.div`
@@ -94,8 +95,6 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
   const { account, chainId } = useAccountActiveChain()
   const addTransaction = useTransactionAdder()
 
-  const { fetchWithCatchTxError } = useCatchTxError()
-
   const { data: walletClient } = useWalletClient()
 
   const masterchefV3 = useMasterchefV3()
@@ -133,6 +132,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
   const deadline = useTransactionDeadline() // custom from users settings
   const [attemptingTxn, setAttemptingTxn] = useState(false)
   const [txnHash, setTxnHash] = useState<string | undefined>()
+  const [errorMessage, setErrorMessage] = useState<string | undefined>()
+
+  const { sendTransactionAsync } = useSendTransaction()
 
   const positionManager = useV3NFTPositionManagerContract()
 
@@ -188,27 +190,28 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
     const publicClient = getViemClients({ chainId })
 
     publicClient?.estimateGas(txn).then((gas) => {
-      fetchWithCatchTxError(() =>
-        walletClient.sendTransaction({
-          ...txn,
-          gas: calculateGasMargin(gas),
-          chain: publicClient?.chain,
-        }),
-      )
+      sendTransactionAsync({
+        ...txn,
+        gas: calculateGasMargin(gas),
+        chainId,
+      })
         .then((response) => {
-          if (response?.status) {
-            const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
-            const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
+          const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
+          const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
 
-            setTxnHash(response.transactionHash)
-            addTransaction(response, {
-              type: 'remove-liquidity-v3',
-              summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
-            })
-          }
+          setTxnHash(response.hash)
           setAttemptingTxn(false)
+          addTransaction(response, {
+            type: 'remove-liquidity-v3',
+            summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
+          })
         })
         .catch((err) => {
+          if (isUserRejected(err)) {
+            setErrorMessage(t('Transaction rejected'))
+          } else {
+            setErrorMessage(transactionErrorToUserReadableMessage(err, t))
+          }
           setAttemptingTxn(false)
           console.error(err)
         })
@@ -229,8 +232,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
     feeValue0,
     feeValue1,
     addTransaction,
-    fetchWithCatchTxError,
     walletClient,
+    sendTransactionAsync,
+    t,
   ])
 
   const removed = position?.liquidity === 0n
@@ -309,6 +313,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
     }
     setAttemptingTxn(false)
     setTxnHash('')
+    setErrorMessage(undefined)
   }, [onPercentSelectForSlider, percentForSlider, router, txnHash])
 
   const pendingText = useMemo(
@@ -331,6 +336,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
       style={{
         minHeight: 'auto',
       }}
+      errorMessage={errorMessage}
       content={() => (
         <ConfirmationModalContent
           topContent={modalHeader}

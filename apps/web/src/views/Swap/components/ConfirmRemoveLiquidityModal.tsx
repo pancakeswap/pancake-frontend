@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
 import { AddIcon, Button, InjectedModalProps, Text, AutoColumn } from '@pancakeswap/uikit'
-import { ConfirmationModalContent, TransactionErrorContent } from '@pancakeswap/widgets-internal'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
@@ -138,15 +138,8 @@ const ConfirmRemoveLiquidityModal: React.FC<
   }, [currencyA, currencyB, parsedAmounts, approval, onRemove, pair, tokenA, tokenB, t, signatureData])
 
   const confirmationContent = useCallback(
-    () =>
-      liquidityErrorMessage ? (
-        <>
-          <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
-        </>
-      ) : (
-        <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
-      ),
-    [liquidityErrorMessage, onDismiss, modalHeader, modalBottom],
+    () => <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />,
+    [modalHeader, modalBottom],
   )
 
   return (
@@ -156,6 +149,7 @@ const ConfirmRemoveLiquidityModal: React.FC<
       customOnDismiss={customOnDismiss}
       attemptingTxn={attemptingTxn}
       hash={hash}
+      errorMessage={liquidityErrorMessage}
       content={confirmationContent}
       pendingText={pendingText}
     />
