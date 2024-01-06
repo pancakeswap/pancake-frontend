@@ -4,6 +4,7 @@ import React, { createContext, useCallback, useMemo, useRef, useState } from "re
 import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
 import { styled } from "styled-components";
+import get from "lodash/get";
 import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
 import { useIsomorphicEffect } from "../../hooks";
@@ -105,13 +106,17 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const handleOverlayDismiss = useCallback(() => {
     if (closeOnOverlayClick) {
+      const customOnDismiss = get(modalNode, "props.customOnDismiss") as any;
+      customOnDismiss?.();
       handleDismiss();
     }
-  }, [closeOnOverlayClick, handleDismiss]);
+  }, [closeOnOverlayClick, handleDismiss, modalNode]);
 
   const providerValue = useMemo(() => {
     return { isOpen, nodeId, modalNode, setModalNode, onPresent: handlePresent, onDismiss: handleDismiss };
   }, [isOpen, nodeId, modalNode, setModalNode, handlePresent, handleDismiss]);
+
+  const handleAnimationStart = useCallback(() => animationHandler(animationRef.current), [animationRef]);
 
   const portal = useMemo(() => getPortalRoot(), []);
 
@@ -129,7 +134,7 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
                 >
                   <StyledModalWrapper
                     ref={animationRef}
-                    onAnimationStart={() => animationHandler(animationRef.current)}
+                    onAnimationStart={handleAnimationStart}
                     {...animationMap}
                     variants={animationVariants}
                     transition={{ duration: 0.3 }}
