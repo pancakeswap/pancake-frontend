@@ -1,5 +1,5 @@
 import { useIsMounted } from '@pancakeswap/hooks'
-import { Trans } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { AtomBox, Button, LinkExternal, Modal, ModalV2, Text, useModalV2, useToast } from '@pancakeswap/uikit'
 import { MasterChefV3, Multicall } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -61,6 +61,7 @@ export function UpdatePositionsReminder() {
 }
 
 export function UpdatePositionsReminder_() {
+  const { t } = useTranslation()
   const { data: farmsV3 } = useFarmsV3Public()
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
@@ -208,7 +209,7 @@ export function UpdatePositionsReminder_() {
 
   return (
     <ModalV2 {...modal} closeOnOverlayClick>
-      <Modal title="Update Positions">
+      <Modal title={t('Update Positions')}>
         <AtomBox textAlign="center">
           <Text>
             <Trans>The followings farming positions require updates to continue earning</Trans>:

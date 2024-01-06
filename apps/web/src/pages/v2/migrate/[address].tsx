@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import { AppHeader } from 'components/App'
 import { BodyWrapper } from 'components/App/AppBody'
 import { useRouter } from 'next/router'
@@ -14,11 +15,13 @@ function MigratePage() {
 
   const address = safeGetAddress(router.query.address)
 
+  const { t } = useTranslation()
+
   return (
     <LiquidityFormProvider>
       <Page>
         <BodyWrapper style={{ maxWidth: '858px' }}>
-          <AppHeader title="Migrate Liquidity" />
+          <AppHeader title={t('Migrate Liquidity')} />
           {address && <Migrate v2PairAddress={address} />}
         </BodyWrapper>
       </Page>
