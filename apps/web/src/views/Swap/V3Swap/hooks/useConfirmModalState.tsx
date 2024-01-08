@@ -17,7 +17,7 @@ interface UseConfirmModalStateProps {
   approval: ApprovalState
   approvalToken: Currency | undefined
   currentAllowance: CurrencyAmount<Currency> | undefined
-  onConfirm: () => Promise<void>
+  onConfirm: () => Promise<string | undefined>
   allowance: Allowance
   isPendingError?: boolean
   isExpertMode: boolean
@@ -112,7 +112,9 @@ export const useConfirmModalState = ({
         case ConfirmModalState.PENDING_CONFIRMATION:
           setConfirmModalState(ConfirmModalState.PENDING_CONFIRMATION)
           try {
-            await onConfirm()
+            if (!(await onConfirm())) {
+              resetSwapFlow()
+            }
           } catch (error) {
             if (error instanceof TransactionRejectedError) {
               resetSwapFlow()
