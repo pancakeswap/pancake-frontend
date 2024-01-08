@@ -116,7 +116,7 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return { isOpen, nodeId, modalNode, setModalNode, onPresent: handlePresent, onDismiss: handleDismiss };
   }, [isOpen, nodeId, modalNode, setModalNode, handlePresent, handleDismiss]);
 
-  const handleAnimationStart = useCallback(() => animationHandler(animationRef.current), [animationRef]);
+  const handleAnimationStart = useCallback(() => animationHandler(animationRef.current), []);
 
   const portal = useMemo(() => getPortalRoot(), []);
 
