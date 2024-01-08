@@ -302,7 +302,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const [onPresentIncreaseLiquidityModal] = useModal(
     <TransactionConfirmationModal
       minWidth={['100%', null, '420px']}
-      title="Increase Liquidity"
+      title={t('Increase Liquidity')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
