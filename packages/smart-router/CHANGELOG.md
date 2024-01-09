@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.12.3
+
+### Patch Changes
+
+- efa27e63f: refactor: Add undefined type to public provider
+
 ## 4.12.2
 
 ### Patch Changes
