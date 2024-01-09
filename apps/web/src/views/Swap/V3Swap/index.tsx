@@ -13,7 +13,7 @@ import {
   FormMain,
   MMTradeDetail,
   PricingAndSlippage,
-  SwapCommitButton,
+  SwapCommitButtonV2,
   TradeDetails,
 } from './containers'
 import { MMCommitButton } from './containers/MMCommitButton'
@@ -50,7 +50,8 @@ export function V3SwapForm() {
           mm?.isMMBetter ? (
             <MMCommitButton {...mm} />
           ) : (
-            <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+            // <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+            <SwapCommitButtonV2 trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
           )
         }
       />

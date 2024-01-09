@@ -1,6 +1,6 @@
 import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { Currency, CurrencyAmount, Fraction, ONE, Percent } from '@pancakeswap/swap-sdk-core'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
 import React, { memo, useMemo } from 'react'
 
@@ -21,9 +21,12 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import { warningSeverity } from 'utils/exchange'
 import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSwapInputError } from '../hooks'
+import { computeTradePriceBreakdown } from '../utils/exchange'
+import { ConfirmSwapModalV2 } from './ConfirmSwapModalV2'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -31,16 +34,6 @@ interface SwapCommitButtonPropsType {
   trade?: SmartRouterTrade<TradeType>
   tradeError?: Error
   tradeLoading?: boolean
-}
-
-export function useMaxAmountIn(trade: SmartRouterTrade<TradeType>, slippage: Percent, amountIn = trade?.inputAmount) {
-  if (!trade) return undefined
-  if (trade?.tradeType === TradeType.EXACT_INPUT) {
-    return amountIn
-  }
-
-  const slippageAdjustedAmountIn = new Fraction(ONE).add(slippage).multiply(amountIn.quotient).quotient
-  return CurrencyAmount.fromRawAmount(amountIn.currency, slippageAdjustedAmountIn)
 }
 
 const useSettingModal = () => {
@@ -52,6 +45,11 @@ const useSettingModal = () => {
     />,
   )
   return openSettingsModal
+}
+
+const useConfirmSwapModal = () => {
+  const [openConfirmSwapModal] = useModal(<ConfirmSwapModalV2 />, true, true, 'confirmSwapModal')
+  return openConfirmSwapModal
 }
 
 const useSwapCurrencies = () => {
@@ -107,19 +105,19 @@ const UnsupportedSwapButtonReplace = ({ children }) => {
   return children
 }
 
-export const SwapCommitButtonV2 = () => {
+export const SwapCommitButtonV2: React.FC<SwapCommitButtonPropsType> = (props) => {
   return (
     <UnsupportedSwapButtonReplace>
       <ConnectButtonReplace>
         <WrapCommitButtonReplace>
-          <SwapCommitButton />
+          <SwapCommitButton {...props} />
         </WrapCommitButtonReplace>
       </ConnectButtonReplace>
     </UnsupportedSwapButtonReplace>
   )
 }
 
-export const SwapCommitButton = memo(function SwapCommitButton({
+const SwapCommitButton = memo(function SwapCommitButton({
   trade,
   tradeError,
   tradeLoading,
@@ -153,18 +151,20 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   // modals
   const openSettingModal = useSettingModal()
+  const openConfirmSwapModal = useConfirmSwapModal()
 
   // todo
   const statusWallchain: string = '@TODO'
-  const swapCallbackError = '@TODO'
+  const swapCallbackError = undefined // TODO
   const handleSwap = () => {
-    throw Error('not implemented')
+    openConfirmSwapModal()
+    logGTMClickSwapEvent()
   }
 
-  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade as any), [trade])
+  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(
-    tradePriceBreakdown ? (tradePriceBreakdown.priceImpactWithoutFee as Percent) : undefined,
+    tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : undefined,
   )
 
   const noRoute = useMemo(() => !((trade?.routes?.length ?? 0) > 0) || tradeError, [trade?.routes?.length, tradeError])
@@ -172,7 +172,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const disabled = useMemo(
     () =>
       !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || statusWallchain === 'pending',
-    [isExpertMode, isValid, priceImpactSeverity],
+    [isExpertMode, isValid, priceImpactSeverity, swapCallbackError],
   )
 
   const userHasSpecifiedInputOutput = Boolean(
