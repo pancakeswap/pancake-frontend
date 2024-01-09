@@ -96,8 +96,8 @@ importers:
         specifier: ^0.30.1
         version: 0.30.1
       wrangler:
-        specifier: ^2.0.6
-        version: 2.20.1
+        specifier: 2.20.2
+        version: 2.20.2
 
   apis/farms:
     dependencies:
@@ -160,8 +160,8 @@ importers:
         specifier: ^4.14.168
         version: 4.14.201
       wrangler:
-        specifier: 2.20.1
-        version: 2.20.1
+        specifier: 2.20.2
+        version: 2.20.2
 
   apis/proxy-worker:
     dependencies:
@@ -182,8 +182,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.3
       wrangler:
-        specifier: 2.20.1
-        version: 2.20.1
+        specifier: 2.20.2
+        version: 2.20.2
 
   apis/routing:
     dependencies:
@@ -228,8 +228,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.3
       wrangler:
-        specifier: 2.20.1
-        version: 2.20.1
+        specifier: 2.20.2
+        version: 2.20.2
 
   apps/aptos:
     dependencies:
@@ -1258,8 +1258,8 @@ importers:
         specifier: ^3.12.1
         version: 3.14.0
       wrangler:
-        specifier: 2.20.1
-        version: 2.20.1
+        specifier: 2.20.2
+        version: 2.20.2
 
   packages/games:
     dependencies:
@@ -26354,8 +26354,8 @@ packages:
       typical: 5.2.0
     dev: true
 
-  /wrangler@2.20.1:
-    resolution: {integrity: sha512-5fl7xF7OkRHim0B0kVXtmSPMrRhRKZ3rqAdn9tKYgi6MnZOvWC+HesGKpNxpVUWsJYpPfJ5AU6gZ6gEL1OLmFQ==}
+  /wrangler@2.20.2:
+    resolution: {integrity: sha512-ZWydYGuKbHC8PdKLk7JAdRYMK78mHVnmaFsLRf2ZpnmVl2nQl9lKIXKKGVUdmezj70FvLhJCD/2LsGOPGg2AFg==}
     engines: {node: '>=16.13.0'}
     hasBin: true
     dependencies:

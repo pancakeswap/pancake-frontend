@@ -11,7 +11,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.168",
     "tsx": "^3.12.1",
-    "wrangler": "2.20.1"
+    "wrangler": "2.20.2"
   },
   "dependencies": {
     "@pancakeswap/sdk": "workspace:*",
