@@ -175,4 +175,12 @@ export const arbitrumTokens = {
     'swETH',
     'https://www.swellnetwork.io/',
   ),
+  xai: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x4Cb9a7AE498CEDcBb5EAe9f25736aE7d428C9D66',
+    18,
+    'XAI',
+    'Xai',
+    'https://xai.games/',
+  ),
 }
