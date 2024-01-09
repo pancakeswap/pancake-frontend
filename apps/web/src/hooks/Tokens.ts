@@ -1,13 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { useToken as useToken_ } from 'wagmi'
 import {
   combinedCurrenciesMapFromActiveUrlsAtom,
   combinedTokenMapFromActiveUrlsAtom,
@@ -16,6 +15,7 @@ import {
   useWarningTokenList,
 } from 'state/lists/hooks'
 import { safeGetAddress } from 'utils'
+import { useToken as useToken_ } from 'wagmi'
 import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { useActiveChainId } from './useActiveChainId'
 import useNativeCurrency from './useNativeCurrency'
@@ -149,6 +149,7 @@ export function useIsUserAddedToken(currency: Currency | undefined | null): bool
 // otherwise returns the token
 export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   const { chainId } = useActiveChainId()
+  const unsupportedTokens = useUnsupportedTokens()
   const tokens = useAllTokens()
 
   const address = safeGetAddress(tokenAddress)
@@ -165,6 +166,7 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   return useMemo(() => {
     if (token) return token
     if (!chainId || !address) return undefined
+    if (unsupportedTokens[address]) return undefined
     if (isLoading) return null
     if (data) {
       return new ERC20Token(
@@ -176,7 +178,7 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
       )
     }
     return undefined
-  }, [token, chainId, address, isLoading, data])
+  }, [token, chainId, address, isLoading, data, unsupportedTokens])
 }
 
 export function useOnRampToken(tokenAddress?: string): Currency | undefined {

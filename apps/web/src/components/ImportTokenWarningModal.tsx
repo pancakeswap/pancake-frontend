@@ -1,7 +1,10 @@
-import { Token } from '@pancakeswap/sdk'
-import { Modal, Box, InjectedModalProps } from '@pancakeswap/uikit'
-import ImportToken from 'components/SearchModal/ImportToken'
 import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
+import { Box, InjectedModalProps, Modal } from '@pancakeswap/uikit'
+import ImportToken from 'components/SearchModal/ImportToken'
+import { useUnsupportedTokens } from 'hooks/Tokens'
+import { useMemo } from 'react'
+import { UnsupportedModal } from './UnsupportedModal'
 
 interface Props extends InjectedModalProps {
   tokens: Token[]
@@ -10,6 +13,19 @@ interface Props extends InjectedModalProps {
 
 const ImportTokenWarningModal: React.FC<React.PropsWithChildren<Props>> = ({ tokens, onDismiss, onCancel }) => {
   const { t } = useTranslation()
+
+  const unsupportedTokens = useUnsupportedTokens()
+
+  const hasUnsupportedTokens = useMemo(() => {
+    return tokens.some((token) => {
+      return unsupportedTokens?.[token.address]
+    })
+  }, [tokens, unsupportedTokens])
+
+  if (hasUnsupportedTokens) {
+    return <UnsupportedModal onDismiss={onCancel} currencies={tokens} />
+  }
+
   return (
     <Modal
       title={t('Import Token')}
