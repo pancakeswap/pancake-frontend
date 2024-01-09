@@ -1518,7 +1518,6 @@
   "Private Sale": "Magánkiárusítás",
   "Unsupported Assets": "Nem támogatott eszközök",
   "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "Egyes eszközök nem érhetők el ezen a felületen keresztül, mert előfordulhat, hogy nem képesek jól együttműködni a mi okosszerződésünkkel, vagy jogi okokból nem engedélyezhetjük a kereskedést.",
-  "Read more about unsupported assets": "További információ a nem támogatott eszközökről",
   "Trade the new BTT token": "Kereskedjen az új BTT zsetonnal",
   "here": "itt",
   "New token contract address": "Új zseton kontraktus cím",
