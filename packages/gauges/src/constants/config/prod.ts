@@ -2195,8 +2195,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     address: '0x39aCc7cf02af19A1eB0e3628bA0F5C48f44beBF3',
     chainId: ChainId.POLYGON_ZKEVM,
     type: GaugeType.V3,
-    token0Address: polygonZkEvmTokens.grai.address,
-    token1Address: polygonZkEvmTokens.usdc.address,
+    token0Address: polygonZkEvmTokens.usdc.address,
+    token1Address: polygonZkEvmTokens.grai.address,
     feeTier: FeeAmount.LOW,
   },
   {
