@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/tokens",
   "license": "MIT",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Tokens for pancakeswap",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

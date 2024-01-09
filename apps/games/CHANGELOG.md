@@ -1,5 +1,14 @@
 # games
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [49730e609]
+  - @pancakeswap/chains@0.3.1
+  - @pancakeswap/games@0.0.2
+  - @pancakeswap/uikit@0.65.1
+
 ## 0.1.3
 
 ### Patch Changes
