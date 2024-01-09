@@ -2161,12 +2161,12 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 216,
-    pairName: 'WETH-USDC',
+    pairName: 'WETH-USDT',
     address: '0x4A080D9488cE2C8258185d78852275D6d3c2820c',
     chainId: ChainId.POLYGON_ZKEVM,
     type: GaugeType.V3,
     token0Address: polygonZkEvmTokens.weth.address,
-    token1Address: polygonZkEvmTokens.usdc.address,
+    token1Address: polygonZkEvmTokens.usdt.address,
     feeTier: FeeAmount.LOW,
   },
   {
