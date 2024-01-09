@@ -1518,7 +1518,6 @@
   "Private Sale": "Özel Satış",
   "Unsupported Assets": "Desteklenmeyen Varlıklar",
   "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "Bazı varlıklar, akıllı sözleşmemizle düzgün çalışmayabileceğinden veya yasal nedenlerle alım satıma izin veremediğimiz için bu arayüz üzerinden kullanılamaz.",
-  "Read more about unsupported assets": "Desteklenmeyen varlıklar hakkında daha fazla bilgi edinin",
   "Trade the new BTT token": "Yeni BTT token'ınını",
   "here": "burada alıp satın",
   "New token contract address": "Yeni token sözleşme adresi",
