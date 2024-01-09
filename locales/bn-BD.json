@@ -1518,7 +1518,6 @@
   "Private Sale": "প্রাইভেট সেল",
   "Unsupported Assets": "অসমর্থিত সম্পদ",
   "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "এই ইন্টারফেসের মাধ্যমে কিছু সম্পদ নিয়ে কাজ করার সুযোগ নেই, কারণ সেগুলো আমাদের স্মার্ট চুক্তির সাথে ভালভাবে কাজ নাও করতে পারে বা আমরা আইনি কারণে ট্রেড করার অনুমতি দিতে পারি না।",
-  "Read more about unsupported assets": "অসমর্থিত সম্পদ সম্পর্কে আরও পড়ুন",
   "Trade the new BTT token": "নতুন BTT টোকেন ট্রেড করুন",
   "here": "এখানে",
   "New token contract address": "নতুন টোকেন চুক্তির ঠিকানা।",
