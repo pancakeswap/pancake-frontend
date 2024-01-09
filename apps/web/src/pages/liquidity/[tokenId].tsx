@@ -80,6 +80,8 @@ import { MerklSection } from 'components/Merkl/MerklSection'
 import { MerklTag } from 'components/Merkl/MerklTag'
 import { useMerklInfo } from 'hooks/useMerkl'
 import Link from 'next/link'
+import { isUserRejected } from 'utils/sentry'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -180,6 +182,7 @@ export default function PoolPage() {
   } = useTranslation()
 
   const [collecting, setCollecting] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
   const [receiveWNATIVE, setReceiveWNATIVE] = useState(false)
 
@@ -317,6 +320,10 @@ export default function PoolPage() {
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
 
+  const handleDismissConfirmation = useCallback(() => {
+    setErrorMessage(undefined)
+  }, [])
+
   const collect = useCallback(() => {
     if (
       tokenIdsInMCv3Loading ||
@@ -375,6 +382,11 @@ export default function PoolPage() {
         })
       })
       ?.catch((error) => {
+        if (isUserRejected(error)) {
+          setErrorMessage(t('Transaction rejected'))
+        } else {
+          setErrorMessage(transactionErrorToUserReadableMessage(error, t))
+        }
         setCollecting(false)
         console.error(error)
       })
@@ -392,6 +404,7 @@ export default function PoolPage() {
     signer,
     sendTransactionAsync,
     addTransaction,
+    t,
   ])
 
   const owner = useSingleCallResult({
@@ -456,7 +469,9 @@ export default function PoolPage() {
     <TransactionConfirmationModal
       title={t('Claim fees')}
       attemptingTxn={collecting}
+      customOnDismiss={handleDismissConfirmation}
       hash={collectMigrationHash ?? ''}
+      errorMessage={errorMessage}
       content={() => (
         <ConfirmationModalContent
           topContent={modalHeader}
@@ -471,7 +486,7 @@ export default function PoolPage() {
     />,
     true,
     true,
-    'TransactionConfirmationModalColelctFees',
+    'TransactionConfirmationModalCollectFees',
   )
 
   const isLoading = loading || poolState === PoolState.LOADING || poolState === PoolState.INVALID || !feeAmount

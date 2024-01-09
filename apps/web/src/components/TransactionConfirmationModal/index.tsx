@@ -14,7 +14,7 @@ import {
   AutoColumn,
   ColumnCenter,
 } from '@pancakeswap/uikit'
-import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
+import { ConfirmationPendingContent, TransactionErrorContent } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
@@ -71,9 +71,9 @@ export function TransactionSubmittedContent({
               width="fit-content"
               marginTextBetweenLogo="6px"
               textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
-              tokenAddress={token.address}
+              tokenAddress={token?.address}
               tokenSymbol={currencyToAdd.symbol}
-              tokenDecimals={token.decimals}
+              tokenDecimals={token?.decimals}
               tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
             />
           )}
@@ -90,6 +90,7 @@ interface ConfirmationModalProps {
   title: string
   customOnDismiss?: () => void
   hash: string | undefined
+  errorMessage?: string
   content: () => React.ReactNode
   attemptingTxn: boolean
   pendingText: string
@@ -98,7 +99,18 @@ interface ConfirmationModalProps {
 
 const TransactionConfirmationModal: React.FC<
   React.PropsWithChildren<InjectedModalProps & ConfirmationModalProps & ModalProps>
-> = ({ title, onDismiss, customOnDismiss, attemptingTxn, hash, pendingText, content, currencyToAdd, ...props }) => {
+> = ({
+  title,
+  onDismiss,
+  customOnDismiss,
+  attemptingTxn,
+  errorMessage,
+  hash,
+  pendingText,
+  content,
+  currencyToAdd,
+  ...props
+}) => {
   const { chainId } = useActiveChainId()
 
   const handleDismiss = useCallback(() => {
@@ -121,6 +133,8 @@ const TransactionConfirmationModal: React.FC<
           onDismiss={handleDismiss}
           currencyToAdd={currencyToAdd}
         />
+      ) : errorMessage ? (
+        <TransactionErrorContent message={errorMessage} onDismiss={handleDismiss} />
       ) : (
         content()
       )}

@@ -35,6 +35,7 @@ import { hexToBigInt } from 'viem'
 import { isUserRejected } from 'utils/sentry'
 import { getViemClients } from 'utils/viem'
 
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
 import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
@@ -50,6 +51,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const router = useRouter()
   const { sendTransactionAsync } = useSendTransaction()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
+  const [txnErrorMessage, setTxnErrorMessage] = useState<string | undefined>()
 
   const [, , feeAmountFromUrl, tokenId] = router.query.currency || []
 
@@ -233,13 +235,13 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           })
           setTxHash(response.hash)
         })
-        .catch((error) => {
-          console.error('Failed to send transaction', error)
-          setAttemptingTxn(false)
+        .catch((err) => {
           // we only care if the error is something _other_ than the user rejected the tx
-          if (!isUserRejected(error)) {
-            console.error(error)
+          if (!isUserRejected(err)) {
+            setTxnErrorMessage(transactionErrorToUserReadableMessage(err, t))
           }
+          setAttemptingTxn(false)
+          console.error(err)
         })
     }
   }, [
@@ -260,6 +262,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     sendTransactionAsync,
     tokenId,
     tokenIdsInMCv3Loading,
+    t,
   ])
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
@@ -272,6 +275,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       onFieldAInput('')
       router.push(`/liquidity/${tokenId}`)
     }
+    setTxnErrorMessage(undefined)
   }, [onFieldAInput, router, txHash, tokenId])
 
   const pendingText = useMemo(() => {
@@ -305,6 +309,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       title={t('Increase Liquidity')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
+      errorMessage={txnErrorMessage}
       hash={txHash}
       content={() => (
         <ConfirmationModalContent
