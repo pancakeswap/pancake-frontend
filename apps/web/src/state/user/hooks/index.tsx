@@ -287,9 +287,9 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
   }
 
   return {
-    gasPrice: data?.gasPrice || undefined,
-    maxFeePerGas: data?.maxFeePerGas || undefined,
-    maxPriorityFeePerGas: data?.maxPriorityFeePerGas || undefined,
+    gasPrice: data?.gasPrice ?? undefined,
+    maxFeePerGas: data?.maxFeePerGas ?? undefined,
+    maxPriorityFeePerGas: data?.maxPriorityFeePerGas ?? undefined,
   }
 }
 
