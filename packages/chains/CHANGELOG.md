@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.3.1
+
+### Patch Changes
+
+- 49730e609: feat: add isTestnetChainId utils
+
 ## 0.3.0
 
 ### Minor Changes
