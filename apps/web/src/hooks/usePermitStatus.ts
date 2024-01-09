@@ -138,21 +138,21 @@ enum PermitState {
   DONE,
 }
 
-export const usePermit = <T extends Token>(amount: CurrencyAmount<T>, spender?: Address) => {
+export const usePermit = <T extends Token>(amount: CurrencyAmount<T> | undefined, spender?: Address) => {
   const { account, chainId } = useAccountActiveChain()
   const [permitState, setPermitState] = useState<PermitState>(PermitState.IDLE)
-  const { allowance, permitAmount, nonce, expiration } = usePermitStatus(amount.currency, account, spender)
+  const { allowance, permitAmount, nonce, expiration } = usePermitStatus(amount?.currency, account, spender)
 
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature>()
-  const permitCallback = useWritePermit(amount.currency, spender, nonce)
+  const permitCallback = useWritePermit(amount?.currency, spender, nonce)
   const now = useCurrentBlockTimestamp() ?? 0n
 
   const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, getPermit2Address(chainId))
 
   const requireRevoke = useMemo(() => {
     const isMainnetUSDT =
-      amount.currency.chainId === ethereumTokens.usdt.chainId &&
-      isAddressEqual(amount.currency.address, ethereumTokens.usdt.address)
+      amount?.currency.chainId === ethereumTokens.usdt.chainId &&
+      isAddressEqual(amount?.currency.address, ethereumTokens.usdt.address)
 
     if (!isMainnetUSDT) return false
 
@@ -160,11 +160,11 @@ export const usePermit = <T extends Token>(amount: CurrencyAmount<T>, spender?: 
   }, [allowance, amount])
 
   const requireApprove = useMemo(() => {
-    return allowance?.lessThan(amount)
+    return amount && allowance?.lessThan(amount)
   }, [allowance, amount])
 
   const requirePermit = useMemo(() => {
-    return permitAmount?.lessThan(amount) || now >= expiration
+    return (amount && permitAmount?.lessThan(amount)) || now >= expiration
   }, [permitAmount, amount, now, expiration])
 
   // execution of the permit state machine
