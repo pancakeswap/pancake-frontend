@@ -60,7 +60,6 @@ import { memo, ReactNode, useCallback, useMemo, useState } from 'react'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
 import { styled } from 'styled-components'
-import useSWRImmutable from 'swr/immutable'
 import { calculateGasMargin, getBlockExploreLink } from 'utils'
 import currencyId from 'utils/currencyId'
 import { formatCurrencyAmount, formatPrice } from 'utils/formatCurrencyAmount'
@@ -82,6 +81,7 @@ import { useMerklInfo } from 'hooks/useMerkl'
 import Link from 'next/link'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { useQuery } from '@tanstack/react-query'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -877,8 +877,8 @@ function PositionHistory_({
   const [isExpanded, setIsExpanded] = useState(false)
   const { chainId } = useActiveChainId()
   const client = v3Clients[chainId as ChainId]
-  const { data, isLoading } = useSWRImmutable(
-    client && tokenId && ['positionHistory', chainId, tokenId],
+  const { data, isLoading } = useQuery(
+    ['positionHistory', chainId, tokenId],
     async () => {
       const result = await client.request<PositionHistoryResult>(
         gql`
@@ -922,8 +922,10 @@ function PositionHistory_({
       })
     },
     {
-      revalidateOnMount: true,
-      refreshInterval: 30_000,
+      enabled: Boolean(client && tokenId),
+      refetchInterval: 30_000,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     },
   )
 
