@@ -220,4 +220,11 @@ export const farmsV3 = defineFarmV3Configs([
     token1: arbitrumTokens.swETH,
     feeAmount: FeeAmount.LOWEST,
   },
+  {
+    pid: 32,
+    lpAddress: '0xf0B860d338E8B5199606322653B83A166d96E417',
+    token0: arbitrumTokens.xai,
+    token1: arbitrumTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
 ])
