@@ -1518,7 +1518,6 @@
   "Private Sale": "Pribadong Pagbebenta",
   "Unsupported Assets": "Mga Hindi Sinusuportahang Asset",
   "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "Hindi available ang ilang asset sa pamamagitan ng interface na ito dahil posibleng hindi gumana nang maayos ang mga ito sa aming smart contract o hindi namin mapahintulutan ang pag-trade dahil sa mga legal na bagay.",
-  "Read more about unsupported assets": "Magbasa pa tungkol sa mga hindi sinusuportahang asset",
   "Trade the new BTT token": "I-trade ang bagong BTT token",
   "here": "dito",
   "New token contract address": "Bagong address ng kontrata ng token",
