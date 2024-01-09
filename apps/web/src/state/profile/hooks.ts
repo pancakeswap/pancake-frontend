@@ -2,9 +2,7 @@ import { useAccount } from 'wagmi'
 import { getAchievements } from 'state/achievements/helpers'
 import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
-import useSWR, { KeyedMutator } from 'swr'
-import { localStorageMiddleware } from 'hooks/useSWRContract'
-import useSWRImmutable from 'swr/immutable'
+import { QueryObserverResult, useQuery } from '@tanstack/react-query'
 import { getProfile, GetProfileResponse } from './helpers'
 import { Profile } from '../types'
 
@@ -20,36 +18,40 @@ export const useProfileForAddress = (
   isLoading: boolean
   isFetching: boolean
   isValidating: boolean
-  refresh: KeyedMutator<GetProfileResponse>
+  refresh: () => Promise<QueryObserverResult<GetProfileResponse>>
 } => {
-  const { data, status, mutate, isValidating } = useSWR(
-    address ? [address, 'profile'] : null,
-    () => getProfile(address),
-    fetchConfiguration,
-  )
+  const { data, status, refetch, isFetching } = useQuery([address, 'profile'], () => getProfile(address), {
+    enabled: Boolean(address),
+    refetchOnMount: fetchConfiguration.revalidateIfStale,
+    refetchOnWindowFocus: fetchConfiguration.revalidateOnFocus,
+    refetchOnReconnect: fetchConfiguration.revalidateOnReconnect,
+  })
 
-  const { profile } = data ?? { profile: null }
+  const { profile } = data ?? { profile: undefined }
 
   return {
     profile,
     isLoading: status !== FetchStatus.Fetched,
     isFetching: status === FetchStatus.Fetching,
-    isValidating,
-    refresh: mutate,
+    isValidating: isFetching,
+    refresh: refetch,
   }
 }
 
 export const useAchievementsForAddress = (address: string) => {
   const { t } = useTranslation()
 
-  const { data, status, mutate } = useSWRImmutable(address ? [address, 'achievements'] : null, () =>
-    getAchievements(address, t),
-  )
+  const { data, status, refetch } = useQuery([address, 'achievements'], () => getAchievements(address, t), {
+    enabled: Boolean(address),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return {
     achievements: data || [],
-    isFetching: status === FetchStatus.Fetching,
-    refresh: mutate,
+    isFetching: status === 'loading',
+    refresh: refetch,
   }
 }
 
@@ -59,19 +61,29 @@ export const useProfile = (): {
   hasActiveProfile: boolean
   isInitialized: boolean
   isLoading: boolean
-  refresh: KeyedMutator<GetProfileResponse>
+  refresh: () => Promise<QueryObserverResult<GetProfileResponse | undefined>>
 } => {
   const { address: account } = useAccount()
-  const { data, status, mutate } = useSWRImmutable(account ? [account, 'profile'] : null, () => getProfile(account), {
-    use: [localStorageMiddleware],
-  })
+  const { data, status, refetch } = useQuery(
+    [account, 'profile'],
+    () => {
+      if (!account) return undefined
+      return getProfile(account)
+    },
+    {
+      enabled: Boolean(account),
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  )
 
-  const { profile, hasRegistered } = data ?? ({ profile: null, hasRegistered: false } as GetProfileResponse)
+  const { profile, hasRegistered } = data ?? ({ profile: undefined, hasRegistered: false } as GetProfileResponse)
 
   const isLoading = status === FetchStatus.Fetching
   const isInitialized = status === FetchStatus.Fetched || status === FetchStatus.Failed
   const hasProfile = isInitialized && hasRegistered
-  const hasActiveProfile = hasProfile && profile?.isActive
+  const hasActiveProfile = hasProfile && profile ? profile.isActive : false
 
-  return { profile, hasProfile, hasActiveProfile, isInitialized, isLoading, refresh: mutate }
+  return { profile, hasProfile, hasActiveProfile, isInitialized, isLoading, refresh: refetch }
 }

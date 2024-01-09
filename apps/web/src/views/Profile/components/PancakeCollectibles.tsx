@@ -1,7 +1,6 @@
 import { Grid, Heading, PageHeader } from '@pancakeswap/uikit'
-import useSWR from 'swr'
 import dynamic from 'next/dynamic'
-import { FetchStatus } from 'config/constants/types'
+import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from '@pancakeswap/localization'
 import { Collection } from 'state/nftMarket/types'
 import Page from 'components/Layout/Page'
@@ -15,7 +14,7 @@ const CollectionCardWithVolume = dynamic(
 
 const PancakeCollectibles = () => {
   const { t } = useTranslation()
-  const { data: collections, status } = useSWR<Collection[]>(['pancakeCollectibles'])
+  const { data: collections, status } = useQuery<Collection[]>(['pancakeCollectibles'])
 
   return (
     <>
@@ -25,7 +24,7 @@ const PancakeCollectibles = () => {
         </Heading>
       </PageHeader>
       <Page>
-        {status !== FetchStatus.Fetched ? (
+        {status !== 'success' ? (
           <PageLoader />
         ) : (
           <>
