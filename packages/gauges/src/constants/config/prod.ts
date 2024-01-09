@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { arbitrumTokens, bscTokens, ethereumTokens, zksyncTokens } from '@pancakeswap/tokens'
+import { arbitrumTokens, bscTokens, ethereumTokens, polygonZkEvmTokens, zksyncTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { GaugeConfig, GaugeType } from '../../types'
 
@@ -2148,5 +2148,65 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.BSC,
     type: GaugeType.StableSwap,
     tokenAddresses: [bscTokens.mcake.address, bscTokens.cake.address],
+  },
+  {
+    gid: 215,
+    pairName: 'WETH-USDC',
+    address: '0xD43b9dCbB61e6ccFbCFef9f21e1BB5064F1CB33f',
+    chainId: ChainId.POLYGON_ZKEVM,
+    type: GaugeType.V3,
+    token0Address: polygonZkEvmTokens.weth.address,
+    token1Address: polygonZkEvmTokens.usdc.address,
+    feeTier: FeeAmount.LOW,
+  },
+  {
+    gid: 216,
+    pairName: 'WETH-USDT',
+    address: '0x4A080D9488cE2C8258185d78852275D6d3c2820c',
+    chainId: ChainId.POLYGON_ZKEVM,
+    type: GaugeType.V3,
+    token0Address: polygonZkEvmTokens.usdt.address,
+    token1Address: polygonZkEvmTokens.weth.address,
+    feeTier: FeeAmount.LOW,
+  },
+  {
+    gid: 217,
+    pairName: 'USDT-USDC',
+    address: '0xca06375be938a2d6eF311dfaFab7E326d55D23Cc',
+    chainId: ChainId.POLYGON_ZKEVM,
+    type: GaugeType.V3,
+    token0Address: polygonZkEvmTokens.usdt.address,
+    token1Address: polygonZkEvmTokens.usdc.address,
+    feeTier: FeeAmount.LOWEST,
+  },
+  {
+    gid: 218,
+    pairName: 'WETH-MATIC',
+    address: '0xaE30fcdEE41dC9eC265e841D8185d055B87d1B7a',
+    chainId: ChainId.POLYGON_ZKEVM,
+    type: GaugeType.V3,
+    token0Address: polygonZkEvmTokens.weth.address,
+    token1Address: polygonZkEvmTokens.matic.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
+  {
+    gid: 219,
+    pairName: 'GRAI-USDC',
+    address: '0x39aCc7cf02af19A1eB0e3628bA0F5C48f44beBF3',
+    chainId: ChainId.POLYGON_ZKEVM,
+    type: GaugeType.V3,
+    token0Address: polygonZkEvmTokens.usdc.address,
+    token1Address: polygonZkEvmTokens.grai.address,
+    feeTier: FeeAmount.LOW,
+  },
+  {
+    gid: 220,
+    pairName: 'WETH-BTC',
+    address: '0xf1e501f74Ed9dc619be53Fddb698c94AbF9D56B6',
+    chainId: ChainId.POLYGON_ZKEVM,
+    type: GaugeType.V3,
+    token0Address: polygonZkEvmTokens.weth.address,
+    token1Address: polygonZkEvmTokens.wbtc.address,
+    feeTier: FeeAmount.LOW,
   },
 ]
