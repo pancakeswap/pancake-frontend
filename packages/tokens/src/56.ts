@@ -2898,6 +2898,6 @@ export const bscTokens = {
     18,
     'WROSE',
     'Wrapped ROSE',
-    'https://overnight.fi/',
+    'https://overnight.fi',
   ),
 }
