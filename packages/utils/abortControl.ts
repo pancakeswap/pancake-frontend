@@ -9,8 +9,8 @@ export class AbortError extends Error {
   }
 }
 
-export function abortInvariant(signal: AbortSignal, message?: string) {
-  if (signal.aborted) {
+export function abortInvariant(signal?: AbortSignal, message?: string) {
+  if (signal?.aborted) {
     throw new AbortError(message || 'Signal aborted')
   }
 }
