@@ -4,17 +4,13 @@ import { WalletConnectorNotFoundError, WalletSwitchChainError } from '@pancakesw
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
-import { useAppDispatch } from 'state'
 import { ConnectorNotFoundError, SwitchChainNotSupportedError, useConnect, useDisconnect, useNetwork } from 'wagmi'
-import { useTransactionState } from 'state/transactions/reducer'
 import useStorageDispatches from 'hooks/useStorageDispatches'
 import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
 import { useSessionChainId } from './useSessionChainId'
 
 const useAuth = () => {
-  const dispatch = useAppDispatch()
-  const [, transactionDispatch] = useTransactionState()
   const storageDispatches = useStorageDispatches()
   const { connectAsync, connectors } = useConnect()
   const { chain } = useNetwork()
@@ -56,9 +52,9 @@ const useAuth = () => {
     } catch (error) {
       console.error(error)
     } finally {
-      clearUserStates([dispatch, ...storageDispatches], transactionDispatch, { chainId: chain?.id })
+      clearUserStates(storageDispatches, { chainId: chain?.id })
     }
-  }, [disconnectAsync, dispatch, transactionDispatch, storageDispatches, chain?.id])
+  }, [disconnectAsync, storageDispatches, chain?.id])
 
   return { login, logout }
 }
