@@ -139,7 +139,6 @@ function bestTradeHookFactory({
     autoRevalidate,
     trackPerf,
   }: Options) {
-    const abortControllerRef = useRef<AbortController | undefined>()
     const getBestTrade = useGetBestTrade()
     const { gasPrice } = useFeeDataWithGasPrice()
     const gasLimit = useMulticallGasLimit(currency?.chainId)
@@ -200,15 +199,13 @@ function bestTradeHookFactory({
         maxSplits,
         poolTypes,
       ],
-      queryFn: async () => {
+      queryFn: async ({ signal }) => {
         if (!amount || !amount.currency || !currency || !deferQuotient) {
           return undefined
         }
-        abortControllerRef.current?.abort()
-        abortControllerRef.current = new AbortController()
         const quoteProvider = createCustomQuoteProvider({
           gasLimit,
-          signal: abortControllerRef.current.signal,
+          signal,
         })
 
         const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
