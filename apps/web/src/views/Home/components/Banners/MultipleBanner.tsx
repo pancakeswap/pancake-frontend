@@ -1,5 +1,5 @@
 import { appearAnimation, useIsomorphicEffect, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import type SwiperCore from 'swiper'
 import 'swiper/css'
@@ -100,6 +100,11 @@ const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
   const bannerList = useMultipleBannerConfig()
   const { isDesktop, isTablet } = useMatchBreakpoints()
   const [swiperRef, setSwiperRef] = useState<SwiperCore | null>(null)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useIsomorphicEffect(() => {
     if (swiperRef) {
@@ -112,30 +117,32 @@ const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
   }, [bannerList, swiperRef])
 
   return (
-    <BannerPlaceHolder>
-      <StyledSwiper
-        onSwiper={setSwiperRef}
-        modules={[Autoplay, Pagination, EffectFade]}
-        spaceBetween={50}
-        observer
-        slidesPerView={1}
-        effect="fade"
-        fadeEffect={{ crossFade: true }}
-        speed={500}
-        autoplay={{ delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: false }}
-        loop
-        pagination={{ clickable: true }}
-      >
-        {bannerList.map((banner, index) => {
-          const childKey = `Banner${index}`
-          return (
-            <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0, height: 'auto' }} key={childKey}>
-              {banner}
-            </SwiperSlide>
-          )
-        })}
-      </StyledSwiper>
-    </BannerPlaceHolder>
+    isClient && (
+      <BannerPlaceHolder>
+        <StyledSwiper
+          onSwiper={setSwiperRef}
+          modules={[Autoplay, Pagination, EffectFade]}
+          spaceBetween={50}
+          observer
+          slidesPerView={1}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
+          speed={500}
+          autoplay={{ delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: false }}
+          loop
+          pagination={{ clickable: true }}
+        >
+          {bannerList.map((banner, index) => {
+            const childKey = `Banner${index}`
+            return (
+              <SwiperSlide style={{ padding: isDesktop || isTablet ? 20 : 0, height: 'auto' }} key={childKey}>
+                {banner}
+              </SwiperSlide>
+            )
+          })}
+        </StyledSwiper>
+      </BannerPlaceHolder>
+    )
   )
 }
 
