@@ -4,8 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import isEmpty from 'lodash/isEmpty'
 import groupBy from 'lodash/groupBy'
 import { useAllSortedRecentTransactions } from 'state/transactions/hooks'
-import { TransactionDetails } from 'state/transactions/reducer'
-import { useAppDispatch } from 'state'
+import { TransactionDetails, useTransactionState } from 'state/transactions/reducer'
 import { clearAllTransactions } from 'state/transactions/actions'
 import { chains } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
@@ -25,8 +24,8 @@ function renderTransactions(transactions: TransactionDetails[], chainId: number)
 
 const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const { address: account } = useAccount()
-  const dispatch = useAppDispatch()
   const sortedRecentTransactions = useAllSortedRecentTransactions()
+  const [, dispatch] = useTransactionState()
 
   const { t } = useTranslation()
 

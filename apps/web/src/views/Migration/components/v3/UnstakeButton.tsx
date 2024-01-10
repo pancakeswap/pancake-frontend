@@ -19,6 +19,7 @@ import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { ChainId } from '@pancakeswap/chains'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
+import { useTransactionState } from 'state/transactions/reducer'
 
 export interface UnstakeButtonProps {
   pid: number
@@ -36,6 +37,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
   const { stakedBalance, proxy } = useFarmUser(pid)
   const { onUnstake } = useUnstakeFarms(pid, vaultPid)
   const dispatch = useAppDispatch()
+  const [, transactionDispatch] = useTransactionState()
   const { shouldUseProxyFarm, proxyAddress } = useContext(YieldBoosterStateContext)
   const isNeedUnstake = stakedBalance.gt(0) || proxy?.stakedBalance.gt(0)
 
@@ -99,7 +101,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
             },
           })
 
-          dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
+          transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
         }
       }
 

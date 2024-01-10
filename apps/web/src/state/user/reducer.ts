@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import omitBy from 'lodash/omitBy'
+import { atomWithStorage, createJSONStorage, useReducerAtom } from 'jotai/utils'
 import { DEFAULT_DEADLINE_FROM_NOW } from '../../config/constants'
 import { updateVersion } from '../global/actions'
 import {
@@ -89,7 +90,7 @@ export const initialState: UserState = {
   hideTimestampPhishingWarningBanner: null,
 }
 
-export default createReducer(initialState, (builder) =>
+export const userReducer = createReducer(initialState, (builder) =>
   builder
     .addCase(updateVersion, (state) => {
       // slippage is'nt being tracked in local storage, reset to default
@@ -197,3 +198,11 @@ export default createReducer(initialState, (builder) =>
       state.isSubgraphHealthIndicatorDisplayed = payload
     }),
 )
+
+const storage = createJSONStorage<UserState>(() => localStorage)
+
+const userAtom = atomWithStorage('pcs:user', initialState, storage)
+
+export function useUserState() {
+  return useReducerAtom(userAtom, reducer)
+}

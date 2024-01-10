@@ -29,6 +29,7 @@ import { Hash } from 'viem'
 import { useIsBloctoETH } from 'views/Farms'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import { useAccount } from 'wagmi'
+import { useTransactionState } from 'state/transactions/reducer'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import { useFirstTimeCrossFarming } from '../../../hooks/useFirstTimeCrossFarming'
 import useStakeFarms from '../../../hooks/useStakeFarms'
@@ -138,7 +139,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   onApprove,
   isApproved,
 }) => {
-  const dispatch = useAppDispatch()
+  const [, transactionDispatch] = useTransactionState()
   const native = useNativeCurrency()
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { boosterState } = useContext(YieldBoosterStateContext)
@@ -232,7 +233,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       })
 
       if (chainId) {
-        dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
+          transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       }
       onDone()
     }
@@ -297,7 +298,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       })
 
       if (chainId) {
-        dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
+          transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       }
       onDone()
     }
@@ -372,7 +373,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       if (length > 1) {
         onPresentTransactionModal()
       } else if (pendingFarm[0].txid && chainId) {
-        dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
+          transactionDispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
       }
     }
   }

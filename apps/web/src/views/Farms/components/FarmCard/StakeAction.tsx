@@ -16,7 +16,6 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { useCallback, useContext, useMemo, useState } from 'react'
-import { useAppDispatch } from 'state'
 import { useFarmFromPid } from 'state/farms/hooks'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
@@ -72,7 +71,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   isApproved,
 }) => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
+  const [, transactionDispatch] = useTransactionState()
   const addTransaction = useTransactionAdder()
   const { account, chainId } = useAccountActiveChain()
   const native = useNativeCurrency()
@@ -154,7 +153,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         },
       })
 
-      dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId: chainId! }))
+      transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId: chainId! }))
       onDone()
     }
   }
@@ -217,7 +216,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         },
       })
 
-      dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId: chainId! }))
+      transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId: chainId! }))
       onDone()
     }
   }
@@ -310,7 +309,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       if (length > 1) {
         onPresentTransactionModal()
       } else if (pendingFarm[0].txid) {
-        dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId: chainId! }))
+        transactionDispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId: chainId! }))
       }
     }
   }

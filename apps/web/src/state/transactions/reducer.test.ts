@@ -7,13 +7,13 @@ import {
   finalizeTransaction,
   clearAllChainTransactions,
 } from './actions'
-import reducer, { initialState, TransactionState } from './reducer'
+import { initialState, transactionReducer, TransactionState } from './reducer'
 
 describe('transaction reducer', () => {
   let store: Store<TransactionState>
 
   beforeEach(() => {
-    store = createStore(reducer, initialState)
+    store = createStore(transactionReducer, initialState)
   })
 
   describe('addTransaction', () => {

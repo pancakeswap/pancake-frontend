@@ -61,8 +61,8 @@ export const formatBigIntToFixed = (number: bigint, displayDecimals = 18, decima
 export const formatLocalisedCompactNumber = (number: number, isShort?: boolean): string => {
   const codeFromStorage = getLanguageCodeFromLS()
 
-  const isClient = typeof window === 'object'
-  const isSupported = window?.Intl
+  const isClient = typeof window !== 'undefined'
+  const isSupported = typeof window !== 'undefined' && window?.Intl
 
   // For clients do not support Intl, just return number
   if (isClient && !isSupported) {

@@ -7,18 +7,13 @@ import farmsReducer from './farms'
 import { updateVersion } from './global/actions'
 import globalReducer from './global/reducer'
 import lotteryReducer from './lottery'
-import notifications from './notifications/reducer'
 import poolsReducer from './pools'
 import potteryReducer from './pottery'
-import transactions from './transactions/reducer'
-import user from './user/reducer'
-
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'notifications']
 
 const persistConfig = {
   key: 'primary',
-  whitelist: PERSISTED_KEYS,
-  blacklist: ['profile'],
+  whitelist: [],
+  blacklist: ['user', 'transactions', 'notifications', 'profile'],
   storage,
   version: 1,
 }
@@ -31,11 +26,6 @@ const persistedReducer = persistReducer(
     pools: poolsReducer,
     lottery: lotteryReducer,
     pottery: potteryReducer,
-
-    // Exchange
-    user,
-    transactions,
-    notifications,
   }),
 )
 

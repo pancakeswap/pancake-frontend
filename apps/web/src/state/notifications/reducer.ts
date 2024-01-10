@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
+import { atomWithStorage, createJSONStorage, useReducerAtom } from 'jotai/utils'
 import {
   addArchivedNotification,
   clearArchivedTransactions,
@@ -26,7 +27,7 @@ export const initialState: NotificationState = {
   allowNotifications: undefined,
 }
 
-export default createReducer(initialState, (builder) =>
+const reducer = createReducer(initialState, (builder) =>
   builder
     .addCase(
       addArchivedNotification,
@@ -106,3 +107,11 @@ export default createReducer(initialState, (builder) =>
       }
     }),
 )
+
+const storage = createJSONStorage<NotificationState>(() => localStorage)
+
+const notificationsAtom = atomWithStorage('pcs:notifications', initialState, storage)
+
+export function useNotificationsState() {
+  return useReducerAtom(notificationsAtom, reducer)
+}

@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { styled } from 'styled-components'
 import { BlockIcon, BscScanIcon, CheckmarkCircleIcon, Flex, RefreshIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
+import { TransactionDetails, useTransactionState } from 'state/transactions/reducer'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { FarmTransactionStatus, TransactionType } from 'state/transactions/actions'
-import { TransactionDetails } from 'state/transactions/reducer'
-import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 
 interface TransactionRowProps {
@@ -54,7 +54,7 @@ const renderIcon = (txn: TransactionDetails) => {
 
 const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn, chainId, type, onDismiss }) => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useTransactionState()
 
   const onClickTransaction = () => {
     if (type === 'non-bsc-farm') {

@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Flex, Text, useIsomorphicEffect, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import useTheme from 'hooks/useTheme'
-import { useLayoutEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { useDrawCanvas } from '../hooks/useDrawCanvas'
@@ -151,7 +151,7 @@ const Hero = () => {
     [starVideoRef, cakeVideoRef, rock01VideoRef, rock02VideoRef, rock03VideoRef],
   )
 
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     starVideoRef.current?.play()
     cakeVideoRef.current?.play()
     rock01VideoRef.current?.play()
