@@ -45,6 +45,10 @@ class WorkerProxy {
       params,
     })
   }
+
+  public terminate = async () => {
+    return this.terminate()
+  }
 }
 
 export function createWorker() {

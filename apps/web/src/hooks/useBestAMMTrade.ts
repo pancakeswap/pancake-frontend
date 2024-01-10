@@ -9,7 +9,7 @@ import {
   SmartRouterTrade,
 } from '@pancakeswap/smart-router/evm'
 import { useQuery } from '@tanstack/react-query'
-import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
+import { useDeferredValue, useEffect, useMemo, useRef, useCallback } from 'react'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 
 import { QUOTING_API } from 'config/constants/endpoints'
@@ -106,15 +106,9 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   )
 }
 
-function simpleGetBestTradeFactory(getBestTrade: typeof SmartRouter.getBestTrade = SmartRouter.getBestTrade) {
-  return () => getBestTrade
-}
-
-function createUseGetBestTradeHook(
-  createGetBestTrade: () => typeof SmartRouter.getBestTrade = simpleGetBestTradeFactory(SmartRouter.getBestTrade),
-): () => typeof SmartRouter.getBestTrade {
+function createSimpleUseGetBestTradeHook(getBestTrade: typeof SmartRouter.getBestTrade = SmartRouter.getBestTrade) {
   return function useGetBestTrade() {
-    return useMemo(() => createGetBestTrade(), [])
+    return useCallback(getBestTrade, [])
   }
 }
 
@@ -123,7 +117,7 @@ function bestTradeHookFactory({
   useCommonPools,
   createQuoteProvider: createCustomQuoteProvider,
   quoterOptimization = true,
-  useGetBestTrade = createUseGetBestTradeHook(),
+  useGetBestTrade = createSimpleUseGetBestTradeHook(),
 }: FactoryOptions) {
   return function useBestTrade({
     amount,
@@ -228,7 +222,7 @@ function bestTradeHookFactory({
           quoterOptimization,
           quoteCurrencyUsdPrice,
           nativeCurrencyUsdPrice,
-          signal: abortControllerRef.current.signal,
+          signal,
         })
         const duration = Math.floor(performance.now() - startTime)
 
@@ -315,92 +309,103 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterApi',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider,
-  useGetBestTrade: createUseGetBestTradeHook(
-    simpleGetBestTradeFactory(
-      async (amount, currency, tradeType, { maxHops, maxSplits, gasPriceWei, allowedPoolTypes, poolProvider }) => {
-        const candidatePools = await poolProvider.getCandidatePools({
-          currencyA: amount.currency,
-          currencyB: currency,
-          protocols: allowedPoolTypes,
-        })
-
-        const serverRes = await fetch(`${QUOTING_API}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            chainId: currency.chainId,
-            currency: SmartRouter.Transformer.serializeCurrency(currency),
-            tradeType,
-            amount: {
-              currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
-              value: amount.quotient.toString(),
-            },
-            gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
-            maxHops,
-            maxSplits,
-            poolTypes: allowedPoolTypes,
-            candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
-          }),
-        })
-        const serializedRes = await serverRes.json()
-        return SmartRouter.Transformer.parseTrade(currency.chainId, serializedRes)
-      },
-    ),
-  ),
-  // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
-  quoterOptimization: false,
-})
-
-const createUseWorkerGetBestTrade = () =>
-  createUseGetBestTradeHook(() => {
-    const quoteWorker = createWorker()
-    return async (
-      amount,
-      currency,
-      tradeType,
-      {
-        maxHops,
-        maxSplits,
-        allowedPoolTypes,
-        poolProvider,
-        gasPriceWei,
-        quoteProvider,
-        nativeCurrencyUsdPrice,
-        quoteCurrencyUsdPrice,
-      },
-    ) => {
-      if (!quoteWorker) {
-        throw new Error('Quote worker not initialized')
-      }
+  useGetBestTrade: createSimpleUseGetBestTradeHook(
+    async (amount, currency, tradeType, { maxHops, maxSplits, gasPriceWei, allowedPoolTypes, poolProvider }) => {
       const candidatePools = await poolProvider.getCandidatePools({
         currencyA: amount.currency,
         currencyB: currency,
         protocols: allowedPoolTypes,
       })
 
-      const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig?.()
-      const result = await quoteWorker.getBestTrade({
-        chainId: currency.chainId,
-        currency: SmartRouter.Transformer.serializeCurrency(currency),
-        tradeType,
-        amount: {
-          currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
-          value: amount.quotient.toString(),
+      const serverRes = await fetch(`${QUOTING_API}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
-        maxHops,
-        maxSplits,
-        poolTypes: allowedPoolTypes,
-        candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
-        onChainQuoterGasLimit: quoterConfig?.gasLimit?.toString(),
-        quoteCurrencyUsdPrice,
-        nativeCurrencyUsdPrice,
+        body: JSON.stringify({
+          chainId: currency.chainId,
+          currency: SmartRouter.Transformer.serializeCurrency(currency),
+          tradeType,
+          amount: {
+            currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
+            value: amount.quotient.toString(),
+          },
+          gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
+          maxHops,
+          maxSplits,
+          poolTypes: allowedPoolTypes,
+          candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+        }),
       })
-      return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
-    }
-  })
+      const serializedRes = await serverRes.json()
+      return SmartRouter.Transformer.parseTrade(currency.chainId, serializedRes)
+    },
+  ),
+  // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
+  quoterOptimization: false,
+})
+
+function createUseWorkerGetBestTrade() {
+  return function useWorkerGetBestTrade(): typeof SmartRouter.getBestTrade {
+    const workerRef = useRef<ReturnType<typeof createWorker> | undefined>()
+
+    useEffect(() => {
+      workerRef.current = createWorker()
+
+      return () => {
+        workerRef.current?.terminate()
+      }
+    }, [])
+
+    return useCallback(
+      async (
+        amount,
+        currency,
+        tradeType,
+        {
+          maxHops,
+          maxSplits,
+          allowedPoolTypes,
+          poolProvider,
+          gasPriceWei,
+          quoteProvider,
+          nativeCurrencyUsdPrice,
+          quoteCurrencyUsdPrice,
+        },
+      ) => {
+        if (!workerRef.current) {
+          throw new Error('Quote worker not initialized')
+        }
+        const candidatePools = await poolProvider.getCandidatePools({
+          currencyA: amount.currency,
+          currencyB: currency,
+          protocols: allowedPoolTypes,
+        })
+
+        const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig?.()
+        const result = await workerRef.current.getBestTrade({
+          chainId: currency.chainId,
+          currency: SmartRouter.Transformer.serializeCurrency(currency),
+          tradeType,
+          amount: {
+            currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
+            value: amount.quotient.toString(),
+          },
+          gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
+          maxHops,
+          maxSplits,
+          poolTypes: allowedPoolTypes,
+          candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+          onChainQuoterGasLimit: quoterConfig?.gasLimit?.toString(),
+          quoteCurrencyUsdPrice,
+          nativeCurrencyUsdPrice,
+        })
+        return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
+      },
+      [],
+    )
+  }
+}
 
 export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterWorker',
