@@ -31,6 +31,7 @@ import { persistor, useStore } from 'state'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
+import UpdateUserState from 'components/UpdateUserState'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import Providers from '../Providers'
@@ -102,8 +103,10 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           <ResetCSS />
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
-          <Updaters />
-          <App {...props} />
+          <UpdateUserState>
+            <Updaters />
+            <App {...props} />
+          </UpdateUserState>
         </Blocklist>
       </Providers>
       <Script
