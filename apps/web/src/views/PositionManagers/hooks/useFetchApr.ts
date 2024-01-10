@@ -30,7 +30,7 @@ export const TIME_WINDOW_FALLBACK = 0
 const fetchAllSpecificTimeWindow = async (timeWindows: number[], chainId?: number) => {
   const data = await Promise.all(
     timeWindows.map(async (timeWindow) => {
-      const response = await fetch(`${POSITION_MANAGER_API}/${chainId}/vault/feeAvg`, {
+      const response = await fetch(`${POSITION_MANAGER_API}?chainId=${chainId}&item=feeAvg`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -62,7 +62,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
     ['/fetch-position-manager-apr', chainId],
     async () => {
       try {
-        const response = await fetch(`${POSITION_MANAGER_API}/${chainId}/vault/feeAvg`, {
+        const response = await fetch(`${POSITION_MANAGER_API}?chainId=${chainId}&item=feeAvg`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -87,10 +87,10 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
   )
 
   const { data: fallbackData, isLoading: isFallbackLoading } = useQuery(
-    ['/fetch-position-manager-apr-specific', chainId],
+    ['/fetch-position-manager-apr-fallback', chainId],
     async () => {
       try {
-        const response = await fetch(`${POSITION_MANAGER_API}/${chainId}/vault/feeAvg`, {
+        const response = await fetch(`${POSITION_MANAGER_API}?chainId=${chainId}&item=feeAvg`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -115,7 +115,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
   )
 
   const { data: specificData, isLoading: isSpecificLoading } = useQuery(
-    ['/fetch-position-manager-apr-fallback', chainId],
+    ['/fetch-position-manager-apr-specific', chainId],
     async () => {
       try {
         const result = await fetchAllSpecificTimeWindow(timeWindows, chainId)
