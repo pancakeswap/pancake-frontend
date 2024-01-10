@@ -183,4 +183,22 @@ export const arbitrumTokens = {
     'Xai',
     'https://xai.games/',
   ),
+  usdplus: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xe80772Eaf6e2E18B651F160Bc9158b2A5caFCA65',
+    6,
+    'USD+',
+    'USD+',
+    'https://overnight.fi/',
+  ),
+  usdce: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+    6,
+    'USD Coin (Arb1)',
+    'USDC.e',
+    'https://www.centre.io/',
+  ),
+  usdtplus: new ERC20Token(ChainId.ARBITRUM_ONE, '0xb1084db8D3C05CEbd5FA9335dF95EE4b8a0edc30', 6, 'USDT+', 'USDT+', ''),
+  ethlus: new ERC20Token(ChainId.ARBITRUM_ONE, '0xD4939D69B31fbE981ed6904A3aF43Ee1dc777Aab', 18, 'ETH+', 'ETH+', ''),
 }

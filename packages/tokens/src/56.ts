@@ -2884,12 +2884,5 @@ export const bscTokens = {
     'mCake Token',
     'https://www.pancake.magpiexyz.io/stake',
   ),
-  insp: new ERC20Token(
-    ChainId.BSC,
-    '0x8D279274789CceC8af94a430A5996eAaCE9609A9',
-    18,
-    'INSP',
-    'INSPECT',
-    'https://www.inspect.xyz/',
-  ),
+  insp: new ERC20Token(ChainId.BSC, '0xF00600eBC7633462BC4F9C61eA2cE99F5AAEBd4a', 18, 'WROSE', 'Wrapped ROSE', ''),
 }
