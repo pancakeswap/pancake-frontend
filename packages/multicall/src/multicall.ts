@@ -1,5 +1,5 @@
 import { toBigInt } from '@pancakeswap/utils/toBigInt'
-import { AbortControl, AbortError } from '@pancakeswap/utils/abortControl'
+import { AbortControl, AbortError, abortInvariant } from '@pancakeswap/utils/abortControl'
 
 import { GetGasLimitParams, getDefaultGasBuffer, getGasLimit } from './getGasLimit'
 import { MulticallRequestWithGas } from './types'
@@ -90,9 +90,7 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
     }
   }
 
-  if (signal?.aborted) {
-    throw new AbortError('Multicall aborted')
-  }
+  abortInvariant(signal, 'Multicall aborted')
 
   const contract = getMulticallContract({ chainId, client })
   const { result } = await contract.simulate.multicallWithGasLimitation([calls, gasBuffer])

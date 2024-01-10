@@ -2,7 +2,7 @@ import { BigintIsh, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { Abi, Address } from 'viem'
 import retry from 'async-retry'
-import { AbortControl } from '@pancakeswap/utils/abortControl'
+import { AbortControl, isAbortError } from '@pancakeswap/utils/abortControl'
 
 import {
   GasModel,
@@ -15,7 +15,7 @@ import {
 } from '../types'
 import { mixedRouteQuoterV1ABI } from '../../abis/IMixedRouteQuoterV1'
 import { quoterV2ABI } from '../../abis/IQuoterV2'
-import { encodeMixedRouteToPath, getQuoteCurrency, isAbortError, isStablePool, isV2Pool, isV3Pool } from '../utils'
+import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
 import { PancakeMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
