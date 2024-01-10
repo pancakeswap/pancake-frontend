@@ -23,7 +23,7 @@ const LoginButton = () => {
       const nonceResponse = await fetch('/api/affiliates-program/affiliate-nonce')
       const { nonce } = await nonceResponse.json()
 
-      if (nonce) {
+      if (typeof window !== 'undefined' && nonce) {
         const initMessage = new SiweMessage({
           domain: window.location.host,
           address,

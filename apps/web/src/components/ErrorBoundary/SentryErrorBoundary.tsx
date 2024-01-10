@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 
 export function SentryErrorBoundary({ children }) {
   const { t } = useTranslation()
-  const handleOnClick = useCallback(() => window.location.reload(), [])
+  const handleOnClick = useCallback(() => typeof window !== 'undefined' && window.location.reload(), [])
   return (
     <SErrorBoundary
       beforeCapture={(scope) => {

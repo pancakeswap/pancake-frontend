@@ -43,7 +43,7 @@ export function useSwitchNetwork() {
         return _switchNetworkAsync(chainId)
           .then((c) => {
             // well token pocket
-            if (window.ethereum?.isTokenPocket === true) {
+            if (typeof window !== 'undefined' && window.ethereum?.isTokenPocket === true) {
               switchNetworkLocal(chainId)
               window.location.reload()
             }
