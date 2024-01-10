@@ -1,23 +1,32 @@
 import { toBigInt } from '@pancakeswap/utils/toBigInt'
+import { AbortControl, AbortError } from '@pancakeswap/utils/abortControl'
 
 import { GetGasLimitParams, getDefaultGasBuffer, getGasLimit } from './getGasLimit'
 import { MulticallRequestWithGas } from './types'
 import { getMulticallContract } from './getMulticallContract'
 import { getBlockConflictTolerance } from './getBlockConflictTolerance'
 
-export type CallByGasLimitParams = GetGasLimitParams & {
-  // Normally we expect to get quotes from within the same block
-  // But for some chains like BSC the block time is quite short so need some extra tolerance
-  // 0 means no block conflict and all the multicall results should be queried within the same block
-  blockConflictTolerance?: number
+export type CallByGasLimitParams = AbortControl &
+  GetGasLimitParams & {
+    // Normally we expect to get quotes from within the same block
+    // But for some chains like BSC the block time is quite short so need some extra tolerance
+    // 0 means no block conflict and all the multicall results should be queried within the same block
+    blockConflictTolerance?: number
 
-  // Treat unexecuted calls as failed calls
-  dropUnexecutedCalls?: boolean
-}
+    // Treat unexecuted calls as failed calls
+    dropUnexecutedCalls?: boolean
+  }
 
 export async function multicallByGasLimit(
   calls: MulticallRequestWithGas[],
-  { chainId, gasBuffer = getDefaultGasBuffer(chainId), client, dropUnexecutedCalls, ...rest }: CallByGasLimitParams,
+  {
+    chainId,
+    gasBuffer = getDefaultGasBuffer(chainId),
+    client,
+    dropUnexecutedCalls,
+    signal,
+    ...rest
+  }: CallByGasLimitParams,
 ) {
   const gasLimit = await getGasLimit({
     chainId,
@@ -26,12 +35,12 @@ export async function multicallByGasLimit(
     ...rest,
   })
   const callChunks = splitCallsIntoChunks(calls, gasLimit)
-  return callByChunks(callChunks, { gasBuffer, client, chainId, dropUnexecutedCalls })
+  return callByChunks(callChunks, { gasBuffer, client, chainId, dropUnexecutedCalls, signal })
 }
 
 type CallParams = Pick<
   CallByGasLimitParams,
-  'chainId' | 'client' | 'gasBuffer' | 'blockConflictTolerance' | 'dropUnexecutedCalls'
+  'chainId' | 'client' | 'gasBuffer' | 'blockConflictTolerance' | 'dropUnexecutedCalls' | 'signal'
 >
 
 export type SingleCallResult = {
@@ -72,12 +81,17 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
     gasBuffer = getDefaultGasBuffer(chainId),
     blockConflictTolerance = getBlockConflictTolerance(chainId),
     dropUnexecutedCalls = false,
+    signal,
   } = params
   if (!calls.length) {
     return {
       results: [],
       blockNumber: 0n,
     }
+  }
+
+  if (signal?.aborted) {
+    throw new AbortError('Multicall aborted')
   }
 
   const contract = getMulticallContract({ chainId, client })

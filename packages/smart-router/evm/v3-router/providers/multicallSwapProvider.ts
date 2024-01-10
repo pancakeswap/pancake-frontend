@@ -4,6 +4,7 @@ import { multicallByGasLimit } from '@pancakeswap/multicall'
 import { BigintIsh } from '@pancakeswap/sdk'
 import stats from 'stats-lite'
 import { PublicClient, decodeFunctionResult, encodeFunctionData } from 'viem'
+import { AbortControl } from '@pancakeswap/utils/abortControl'
 
 import IMulticallABI from '../../abis/InterfaceMulticall'
 import {
@@ -23,7 +24,7 @@ export type PancakeMulticallConfig = {
   gasBuffer?: BigintIsh
 
   dropUnexecutedCalls?: boolean
-}
+} & AbortControl
 
 /**
  * The PancakeswapMulticall contract has added functionality for limiting the amount of gas
@@ -79,6 +80,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
       chainId: this.chainId,
       client: this.provider,
+      signal: additionalConfig?.signal,
     })
 
     const results: Result<TReturn>[] = []
@@ -159,6 +161,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
       chainId: this.chainId,
       client: this.provider,
+      signal: additionalConfig?.signal,
     })
 
     const results: Result<TReturn>[] = []
@@ -237,6 +240,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
       chainId: this.chainId,
       client: this.provider,
+      signal: additionalConfig?.signal,
     })
 
     const results: Result<TReturn>[] = []

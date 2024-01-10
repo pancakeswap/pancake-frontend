@@ -47,12 +47,12 @@ class WorkerProxy {
   }
 }
 
-export const worker =
-  typeof window !== 'undefined' && typeof Worker !== 'undefined'
+export function createWorker() {
+  return typeof window !== 'undefined' && typeof Worker !== 'undefined'
     ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
     : undefined
+}
 
-export const worker2 =
-  typeof window !== 'undefined' && typeof Worker !== 'undefined'
-    ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
-    : undefined
+export const worker = createWorker()
+
+export const worker2 = createWorker()
