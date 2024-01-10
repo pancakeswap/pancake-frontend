@@ -199,14 +199,7 @@ export const arbitrumTokens = {
     'USD Coin (Arb1)',
     'https://www.centre.io/',
   ),
-  usdtplus: new ERC20Token(
-    ChainId.ARBITRUM_ONE,
-    '0xb1084db8D3C05CEbd5FA9335dF95EE4b8a0edc30',
-    6,
-    'USDT+',
-    'USDT+',
-    'https://ordiswap.fi/',
-  ),
+  usdtplus: new ERC20Token(ChainId.ARBITRUM_ONE, '0xb1084db8D3C05CEbd5FA9335dF95EE4b8a0edc30', 6, 'USDT+', 'USDT+'),
   ethplus: new ERC20Token(
     ChainId.ARBITRUM_ONE,
     '0xD4939D69B31fbE981ed6904A3aF43Ee1dc777Aab',
