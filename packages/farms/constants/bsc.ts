@@ -106,7 +106,7 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 121,
     lpAddress: '0x8b626Acfb32CDad0d2F3b493Eb9928BbA1BbBcCa',
-    token0: bscTokens.ckb,
+    token0: bscTokens.ckp,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
   },
