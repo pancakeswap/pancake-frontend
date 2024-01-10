@@ -6,8 +6,8 @@ import { useUserState } from 'state/user/reducer'
 
 export default function useUserAddedTokens(): Token[] {
   const { chainId } = useActiveChainId()
-  const [state, dispatch] = useUserState()
+  const [state] = useUserState()
   return useMemo(() => {
     return Object.values(state?.tokens?.[chainId] ?? {}).map(deserializeToken)
-  }, [state])
+  }, [state, chainId])
 }
