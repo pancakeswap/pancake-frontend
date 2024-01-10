@@ -203,7 +203,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.V3,
     token0Address: bscTokens.ankrETH.address,
     token1Address: bscTokens.eth.address,
-    feeTier: FeeAmount.LOWEST,
+    feeTier: FeeAmount.LOW,
   },
   {
     gid: 20,
@@ -1203,7 +1203,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.V3,
     token0Address: ethereumTokens.rETH.address,
     token1Address: ethereumTokens.weth.address,
-    feeTier: FeeAmount.HIGH,
+    feeTier: FeeAmount.LOW,
   },
   {
     gid: 121,
@@ -2198,7 +2198,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.V3,
     token0Address: polygonZkEvmTokens.weth.address,
     token1Address: polygonZkEvmTokens.wbtc.address,
-    feeTier: FeeAmount.MEDIUM,
+    feeTier: FeeAmount.LOW,
   },
   {
     gid: 221,
