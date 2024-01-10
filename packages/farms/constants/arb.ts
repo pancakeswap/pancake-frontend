@@ -13,13 +13,13 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 35,
     lpAddress: '0xd01075f7314a6436e8B74fc18069848229D0c555',
-    token0: arbitrumTokens.usdce,
-    token1: arbitrumTokens.usdplus,
+    token0: arbitrumTokens.usdplus,
+    token1: arbitrumTokens.usdce,
     feeAmount: FeeAmount.MEDIUM,
   },
   {
     pid: 34,
-    lpAddress: '0x06c75011479e47280e8b7e72e9e0315c8b3a634d',
+    lpAddress: '0x06c75011479E47280e8B7E72E9e0315C8b3A634d',
     token0: arbitrumTokens.ethplus,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.MEDIUM,
@@ -27,8 +27,8 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 33,
     lpAddress: '0xb9c2d906f94b27bC403Ab76B611D2C4490c2ae3F',
-    token0: arbitrumTokens.usdplus,
-    token1: arbitrumTokens.usdtplus,
+    token0: arbitrumTokens.usdtplus,
+    token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.MEDIUM,
   },
   {
