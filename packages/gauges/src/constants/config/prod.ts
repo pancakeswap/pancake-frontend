@@ -2202,7 +2202,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 221,
-    pairName: 'swETH-ETH',
+    pairName: 'ETH-swETH',
     address: '0x6db0f81Db2C3B2A85a802d511577d8522D0D8C14',
     chainId: ChainId.ETHEREUM,
     type: GaugeType.V3,
@@ -2220,7 +2220,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 223,
-    pairName: 'CGPT-USDT',
+    pairName: 'USDT-CGPT',
     address: '0x1E8D7AB96323953faC85ab687f5D38b45344e62d',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
@@ -2230,7 +2230,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 224,
-    pairName: 'WROSE-USDT',
+    pairName: 'USDT-WROSE',
     address: '0x5B56eea565dad4E72B8ea6a6567834E144fb7a93',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
@@ -2250,12 +2250,12 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 226,
-    pairName: 'USD+-USDT+',
+    pairName: 'USDT+-USD+',
     address: '0xb9c2d906f94b27bC403Ab76B611D2C4490c2ae3F',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.V3,
-    token0Address: arbitrumTokens.usdplus.address,
-    token1Address: arbitrumTokens.usdtplus.address,
+    token0Address: arbitrumTokens.usdtplus.address,
+    token1Address: arbitrumTokens.usdplus.address,
     feeTier: FeeAmount.LOWEST,
   },
   {
@@ -2270,7 +2270,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 228,
-    pairName: 'USDC.e-USD+',
+    pairName: 'USD+-USDC.e',
     address: '0xd01075f7314a6436e8B74fc18069848229D0c555',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.V3,
@@ -2286,6 +2286,6 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.V3,
     token0Address: bscTokens.insp.address,
     token1Address: bscTokens.wbnb.address,
-    feeTier: FeeAmount.LOWEST,
+    feeTier: FeeAmount.HIGH,
   },
 ]

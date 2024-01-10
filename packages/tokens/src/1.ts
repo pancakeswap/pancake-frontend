@@ -369,7 +369,7 @@ export const ethereumTokens = {
     'AIOZ Network',
     'https://aioz.network/',
   ),
-  sweth: new ERC20Token(
+  swETH: new ERC20Token(
     ChainId.ETHEREUM,
     '0xf951E335afb289353dc249e82926178EaC7DEd78',
     18,
