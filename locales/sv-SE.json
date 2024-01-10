@@ -1518,7 +1518,6 @@
   "Private Sale": "Privat försäljning",
   "Unsupported Assets": "Inkompatibla tillgångar",
   "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "Vissa tillgångar är inte tillgängliga via detta gränssnitt, antingen för att de kanske inte fungerar bra ihop med vårt smarta kontrakt eller för att vi inte kan tillåta handel av juridiska skäl.",
-  "Read more about unsupported assets": "Läs mer om inkompatibla tillgångar",
   "Trade the new BTT token": "Handla med den nya BTT-token",
   "here": "här",
   "New token contract address": "Kontraktsadress för ny token",

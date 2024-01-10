@@ -1518,7 +1518,6 @@
   "Private Sale": "Приватний продаж",
   "Unsupported Assets": "Непідтримувані активи",
   "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "У цьому інтерфейсі недоступні деякі активи, тому що вони несумісні з нашими смартконтрактами або тому що ми не дозволяємо торгувати ними з юридичних причин.",
-  "Read more about unsupported assets": "Докладніше про непідтримувані активи",
   "Trade the new BTT token": "Торгуйте новим токеном BTT",
   "here": "тут",
   "New token contract address": "Нова контрактна адреса токена",

@@ -1518,7 +1518,6 @@
   "Private Sale": "非公開販売",
   "Unsupported Assets": "対応していない資産",
   "Some assets are not available through this interface because they may not work well with our smart contract or we are unable to allow trading for legal reasons.": "一部の資産は、スマートコントラクトとの相性により、または法的な理由でトレードを許可できないため、このインターフェースを介して利用することはできません。",
-  "Read more about unsupported assets": "対応していない資産についてさらに読む",
   "Trade the new BTT token": "新しいBTTトークンをトレード",
   "here": "ここ",
   "New token contract address": "新しいトークンスマートコントラクトアドレス",
