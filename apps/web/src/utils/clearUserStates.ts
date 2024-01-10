@@ -1,5 +1,5 @@
 import { configureScope } from '@sentry/nextjs'
-import { Dispatch } from '@reduxjs/toolkit'
+import { AnyAction } from '@reduxjs/toolkit'
 import { resetUserState, toggleFarmTransactionModal } from 'state/global/actions'
 import { PREDICTION_TOOLTIP_DISMISS_KEY } from 'config/constants'
 import { deleteCookie } from 'cookies-next'
@@ -8,7 +8,8 @@ import { LS_ORDERS } from './localStorageOrders'
 import getLocalStorageItemKeys from './getLocalStorageItemKeys'
 
 export const clearUserStates = (
-  dispatch: Dispatch<any>,
+  allDispatches: ((action: AnyAction) => void)[],
+  transactionDispatch: (action: AnyAction) => void,
   {
     chainId,
     newChainId,
@@ -17,8 +18,8 @@ export const clearUserStates = (
     newChainId?: number
   },
 ) => {
-  dispatch(resetUserState({ chainId, newChainId }))
-  dispatch(toggleFarmTransactionModal({ showModal: false }))
+  allDispatches.forEach((dispatch) => dispatch(resetUserState({ chainId, newChainId })))
+  transactionDispatch(toggleFarmTransactionModal({ showModal: false }))
   configureScope((scope) => scope.setUser(null))
   const lsOrderKeys = getLocalStorageItemKeys(LS_ORDERS)
   lsOrderKeys.forEach((lsOrderKey) => window?.localStorage?.removeItem(lsOrderKey))
