@@ -105,28 +105,39 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
   const stableSwapAddress = stableFarm?.stableSwapAddress
 
   try {
+    const day3Ago = dayjs().subtract(3, 'days')
     const day7Ago = dayjs().subtract(7, 'days')
 
+    const day3AgoTimestamp = day3Ago.unix()
     const day7AgoTimestamp = day7Ago.unix()
 
-    const blockDay7Ago = await getBlockAtTimestamp(day7AgoTimestamp)
+    const [block3DaysAgo, block7DaysAgo] = await Promise.all([
+      getBlockAtTimestamp(day3AgoTimestamp),
+      getBlockAtTimestamp(day7AgoTimestamp),
+    ])
 
-    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo: virtualPrice7DayAgo } = await stableSwapClient.request(
+    const { virtualPriceAtLatestBlock, virtualPrice3DaysAgo, virtualPrice7DaysAgo } = await stableSwapClient.request(
       gql`
-        query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
+        query virtualPriceStableSwap($stableSwapAddress: String, $block3DaysAgo: Int!, $block7DaysAgo: Int!) {
           virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
             virtualPrice
           }
-          virtualPriceOneDayAgo: pair(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+          virtualPrice3DaysAgo: pair(id: $stableSwapAddress, block: { number: $block3DaysAgo }) {
+            virtualPrice
+          }
+          virtualPrice7DaysAgo: pair(id: $stableSwapAddress, block: { number: $block7DaysAgo }) {
             virtualPrice
           }
         }
       `,
-      { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo: blockDay7Ago },
+      { stableSwapAddress: _toLower(stableSwapAddress), block7DaysAgo, block3DaysAgo },
     )
 
     const virtualPrice = virtualPriceAtLatestBlock?.virtualPrice
-    const preVirtualPrice = virtualPrice7DayAgo?.virtualPrice
+    const preVirtualPrice =
+      !virtualPrice7DaysAgo?.virtualPrice || virtualPrice7DaysAgo?.virtualPrice === '0'
+        ? virtualPrice3DaysAgo?.virtualPrice
+        : virtualPrice7DaysAgo?.virtualPrice
 
     const current = new BigNumber(virtualPrice)
     const prev = new BigNumber(preVirtualPrice)

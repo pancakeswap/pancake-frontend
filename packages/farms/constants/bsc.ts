@@ -906,10 +906,10 @@ const farms: SerializedFarmConfig[] = [
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
     pid: 173,
-    lpSymbol: 'SDCAKE-CAKE LP',
+    lpSymbol: 'sdCAKE-CAKE LP',
     lpAddress: '0xB1D54d76E2cB9425Ec9c018538cc531440b55dbB',
-    token: bscTokens.cake,
-    quoteToken: bscTokens.sdcake,
+    token: bscTokens.sdcake,
+    quoteToken: bscTokens.cake,
     stableSwapAddress: '0xb8204D31379A9B317CD61C833406C972F58ecCbC',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0005,
@@ -917,10 +917,10 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 174,
-    lpSymbol: 'MCAKE-CAKE LP',
+    lpSymbol: 'mCAKE-CAKE LP',
     lpAddress: '0xb9dC6396AcFFD24E0f69Dfd3231fDaeB31514D02',
-    token: bscTokens.cake,
-    quoteToken: bscTokens.mcake,
+    token: bscTokens.mcake,
+    quoteToken: bscTokens.cake,
     stableSwapAddress: '0xc54d35a8Cfd9f6dAe50945Df27A91C9911A03ab1',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0005,
