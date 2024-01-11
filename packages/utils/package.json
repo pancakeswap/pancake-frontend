@@ -24,6 +24,7 @@
     }
   },
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "url-parse": "^1.5.10"
   }
 }
