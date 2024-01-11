@@ -1,14 +1,15 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Heading, useToast, Balance } from '@pancakeswap/uikit'
 import { useAccount } from '@pancakeswap/awgmi'
-import BigNumber from 'bignumber.js'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
-import { usePriceCakeUsdc } from 'hooks/useStablePrice'
+import { useTranslation } from '@pancakeswap/localization'
+import { Balance, Button, Flex, Heading, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
+import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
@@ -20,6 +21,7 @@ interface FarmCardActionsProps {
 const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ earnings, onReward, onDone }) => {
   const { t } = useTranslation()
   const { account } = useAccount()
+  const isUserIpPass = useCheckIsUserIpPass()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const cakePrice = usePriceCakeUsdc()
@@ -49,7 +51,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
           <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
         )}
       </Flex>
-      <Button disabled={rawEarningsBalance.eq(0) || pendingTx} onClick={handleHarvest}>
+      <Button disabled={rawEarningsBalance.eq(0) || pendingTx || !isUserIpPass} onClick={handleHarvest}>
         {pendingTx ? t('Harvesting') : t('Harvest')}
       </Button>
     </Flex>

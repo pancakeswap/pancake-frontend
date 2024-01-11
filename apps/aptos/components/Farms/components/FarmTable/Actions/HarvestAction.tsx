@@ -1,15 +1,16 @@
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Skeleton, useToast } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
-import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 
 const { FarmTableHarvestAction } = FarmWidget.FarmTable
@@ -32,6 +33,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
+  const isUserIpPass = useCheckIsUserIpPass()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = userData?.earnings ? new BigNumber(userData.earnings) : BIG_ZERO
   const cakePrice = usePriceCakeUsdc()
@@ -65,6 +67,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
       displayBalance={displayBalance}
       pendingTx={pendingTx}
       userDataReady={userDataReady}
+      disabled={earnings.eq(0) || pendingTx || !userDataReady || !isUserIpPass}
       handleHarvest={handleHarvest}
     />
   )
