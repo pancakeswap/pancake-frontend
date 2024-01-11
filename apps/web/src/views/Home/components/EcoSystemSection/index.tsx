@@ -231,12 +231,12 @@ const useEarnBlockData = () => {
         path: '/farms',
       },
       {
-        title: t('Pools'),
-        description: t('Stake CAKE, earn various rewards'),
+        title: t('CAKE Staking'),
+        description: t('Stake CAKE for weekly CAKE yield, governance power and revenue share'),
         ctaTitle: t('Stake Now'),
         image: `${ASSET_CDN}/web/landing/earn-pools.png`,
         defaultImage: `${ASSET_CDN}/web/landing/earn-pools-purple.png`,
-        path: '/pools',
+        path: '/cake-staking',
       },
       {
         title: t('Liquid Staking'),
