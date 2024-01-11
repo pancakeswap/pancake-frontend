@@ -94,6 +94,11 @@ export async function getCurrencyPrices(currencies?: Currency[]): Promise<{ [add
   return result
 }
 
+export async function getTokenUsdPrice(tokenInfo?: TokenInfo) {
+  const prices = await getCurrencyPricesByTokenInfoList(tokenInfo && [tokenInfo])
+  return (tokenInfo && prices[tokenInfo.address]) ?? 0
+}
+
 export async function getCurrencyPricesByTokenInfoList(infoList?: TokenInfo[]): Promise<{ [address: string]: number }> {
   const requestUrl = getRequestUrlByInfo(infoList)
   if (!requestUrl || !infoList) {
