@@ -1,8 +1,9 @@
 import { Address, PublicClient, formatUnits } from 'viem'
 import BN from 'bignumber.js'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { TokenInfo, getCurrencyPricesByTokenInfoList } from '@pancakeswap/utils/getCurrencyPrice'
 import { ChainId } from '@pancakeswap/chains'
-import { getFarmsPrices } from './farmPrices'
+import { getFarmsPrices, getFarmLpTokenPrice } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchStableFarmData } from './fetchStableFarmData'
 import { isStableFarm, SerializedFarmConfig } from '../types'
@@ -123,11 +124,41 @@ export async function farmV2FetchFarms({
     }
   })
 
-  const farmsDataWithPrices = await getFarmsPrices(
+  const decimals = 18
+  const farmsDataWithPrices = getFarmsPrices(
     farmsData,
     evmNativeStableLpMap[chainId as FarmV2SupportedChainId],
-    18,
+    decimals,
   )
+
+  const tokensWithoutPrice = farmsDataWithPrices.reduce<Map<string, TokenInfo>>((acc, cur) => {
+    if (cur.tokenPriceBusd === '0') {
+      acc.set(cur.token.address, cur.token)
+    }
+    if (cur.quoteTokenPriceBusd === '0') {
+      acc.set(cur.quoteToken.address, cur.quoteToken)
+    }
+    return acc
+  }, new Map<string, TokenInfo>())
+  const tokenInfoList = Array.from(tokensWithoutPrice.values())
+  if (tokenInfoList.length) {
+    const prices = await getCurrencyPricesByTokenInfoList(tokenInfoList)
+
+    return farmsDataWithPrices.map((f) => {
+      if (f.tokenPriceBusd !== '0' && f.quoteTokenPriceBusd !== '0') {
+        return f
+      }
+      const tokenPrice = new BN(prices[f.token.address] ?? 0)
+      const quoteTokenPrice = new BN(prices[f.quoteToken.address] ?? 0)
+      const lpTokenPrice = getFarmLpTokenPrice(f, tokenPrice, quoteTokenPrice, decimals)
+      return {
+        ...f,
+        tokenPriceBusd: tokenPrice.toString(),
+        quoteTokenPriceBusd: quoteTokenPrice.toString(),
+        lpTokenPrice: lpTokenPrice.toString(),
+      }
+    })
+  }
 
   return farmsDataWithPrices
 }

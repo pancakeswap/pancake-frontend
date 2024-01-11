@@ -89,7 +89,7 @@ describe('getFarmPrices tests', () => {
       },
     ]
 
-    const farmWithPrices: FarmWithPrices[] = await getFarmsPrices(
+    const farmWithPrices: FarmWithPrices[] = getFarmsPrices(
       farms as any,
       {
         address: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
