@@ -1,6 +1,7 @@
 import { BIG_ONE, BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BN from 'bignumber.js'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
+import { TokenInfo, getCurrencyPricesByTokenInfoList } from '@pancakeswap/utils/getCurrencyPrice'
 import toNumber from 'lodash/toNumber'
 import { SerializedFarmPublicData, FarmData, isStableFarm } from '../types'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
@@ -168,7 +169,26 @@ const isNativeFarm = (
   return true
 }
 
-export const getFarmsPrices = (
+function getFarmLpTokenPrice(farm: FarmData, tokenPrice: BN, quoteTokenPrice: BN, decimals: number) {
+  return isStableFarm(farm)
+    ? getStableLpTokenPrice(
+        new BN(farm.lpTotalSupply),
+        new BN(farm.tokenAmountTotal),
+        tokenPrice,
+        new BN(farm.quoteTokenAmountTotal),
+        quoteTokenPrice,
+        decimals,
+      )
+    : getLpTokenPrice(
+        new BN(farm.lpTotalSupply),
+        new BN(farm.lpTotalInQuoteToken),
+        new BN(farm.tokenAmountTotal),
+        tokenPrice,
+        decimals,
+      )
+}
+
+export const getFarmsPrices = async (
   farms: FarmData[],
   nativeStableLp: {
     address: string
@@ -176,7 +196,7 @@ export const getFarmsPrices = (
     stable: string
   },
   decimals: number,
-): FarmWithPrices[] => {
+): Promise<FarmWithPrices[]> => {
   if (!farms || !nativeStableLp || farms.length === 0) return []
 
   const nativeStableFarm = farms.find((farm) => isNativeFarm(farm, nativeStableLp))
@@ -213,23 +233,7 @@ export const getFarmsPrices = (
       quoteTokenPriceBusd,
     )
 
-    const lpTokenPrice = isStableFarm(farm)
-      ? getStableLpTokenPrice(
-          new BN(farm.lpTotalSupply),
-          new BN(farm.tokenAmountTotal),
-          tokenPriceBusd,
-          new BN(farm.quoteTokenAmountTotal),
-          quoteTokenPriceBusd,
-          decimals,
-        )
-      : getLpTokenPrice(
-          new BN(farm.lpTotalSupply),
-          new BN(farm.lpTotalInQuoteToken),
-          new BN(farm.tokenAmountTotal),
-          tokenPriceBusd,
-          decimals,
-        )
-
+    const lpTokenPrice = getFarmLpTokenPrice(farm, tokenPriceBusd, quoteTokenPriceBusd, decimals)
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),
@@ -237,6 +241,35 @@ export const getFarmsPrices = (
       lpTokenPrice: lpTokenPrice.toString(),
     }
   })
+
+  const tokensWithoutPrice = farmsWithPrices.reduce<Map<string, TokenInfo>>((acc, cur) => {
+    if (cur.tokenPriceBusd === '0') {
+      acc.set(cur.token.address, cur.token)
+    }
+    if (cur.quoteTokenPriceBusd === '0') {
+      acc.set(cur.quoteToken.address, cur.quoteToken)
+    }
+    return acc
+  }, new Map<string, TokenInfo>())
+  const tokenInfoList = Array.from(tokensWithoutPrice.values())
+  if (tokenInfoList.length) {
+    const prices = await getCurrencyPricesByTokenInfoList(tokenInfoList)
+
+    return farmsWithPrices.map((f) => {
+      if (f.tokenPriceBusd !== '0' && f.quoteTokenPriceBusd !== '0') {
+        return f
+      }
+      const tokenPrice = new BN(prices[f.token.address] ?? 0)
+      const quoteTokenPrice = new BN(prices[f.quoteToken.address] ?? 0)
+      const lpTokenPrice = getFarmLpTokenPrice(f, tokenPrice, quoteTokenPrice, decimals)
+      return {
+        ...f,
+        tokenPriceBusd: tokenPrice.toString(),
+        quoteTokenPriceBusd: quoteTokenPrice.toString(),
+        lpTokenPrice: lpTokenPrice.toString(),
+      }
+    })
+  }
 
   return farmsWithPrices
 }

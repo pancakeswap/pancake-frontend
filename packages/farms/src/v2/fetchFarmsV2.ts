@@ -123,7 +123,11 @@ export async function farmV2FetchFarms({
     }
   })
 
-  const farmsDataWithPrices = getFarmsPrices(farmsData, evmNativeStableLpMap[chainId as FarmV2SupportedChainId], 18)
+  const farmsDataWithPrices = await getFarmsPrices(
+    farmsData,
+    evmNativeStableLpMap[chainId as FarmV2SupportedChainId],
+    18,
+  )
 
   return farmsDataWithPrices
 }
