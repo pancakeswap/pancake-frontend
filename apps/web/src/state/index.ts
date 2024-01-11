@@ -1,21 +1,54 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from 'redux-persist'
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
+  createMigrate,
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import farmsReducer from './farms'
 import { updateVersion } from './global/actions'
 import globalReducer from './global/reducer'
 import lotteryReducer from './lottery'
+import { notificationReducer } from './notifications/reducer'
 import poolsReducer from './pools'
 import potteryReducer from './pottery'
+import { transactionReducer } from './transactions/reducer'
+import { userReducer } from './user/reducer'
+
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'notifications']
+
+const migrations = {
+  2: (state) => {
+    if (typeof window !== 'undefined') {
+      if (state.user) {
+        localStorage.setItem('pcs:user', JSON.stringify(state.user))
+      }
+      if (state.transactions) {
+        localStorage.setItem('pcs:transactions', JSON.stringify(state.transactions))
+      }
+      if (state.notifications) {
+        localStorage.setItem('pcs:notifications', JSON.stringify(state.notifications))
+      }
+    }
+    return state
+  },
+}
 
 const persistConfig = {
   key: 'primary',
-  whitelist: [],
-  blacklist: ['user', 'transactions', 'notifications', 'profile'],
+  whitelist: PERSISTED_KEYS,
+  blacklist: ['profile'],
   storage,
-  version: 1,
+  version: 2,
+  migrate: createMigrate(migrations, { debug: false }),
 }
 
 const persistedReducer = persistReducer(
@@ -26,6 +59,11 @@ const persistedReducer = persistReducer(
     pools: poolsReducer,
     lottery: lotteryReducer,
     pottery: potteryReducer,
+
+    // Exchange
+    userReducer,
+    transactionReducer,
+    notificationReducer,
   }),
 )
 

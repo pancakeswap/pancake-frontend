@@ -27,7 +27,7 @@ export const initialState: NotificationState = {
   allowNotifications: undefined,
 }
 
-const reducer = createReducer(initialState, (builder) =>
+export const notificationReducer = createReducer(initialState, (builder) =>
   builder
     .addCase(
       addArchivedNotification,
@@ -113,5 +113,5 @@ const storage = createJSONStorage<NotificationState>(() => localStorage)
 const notificationsAtom = atomWithStorage('pcs:notifications', initialState, storage)
 
 export function useNotificationsState() {
-  return useReducerAtom(notificationsAtom, reducer)
+  return useReducerAtom(notificationsAtom, notificationReducer)
 }
