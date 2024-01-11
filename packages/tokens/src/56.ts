@@ -2892,4 +2892,20 @@ export const bscTokens = {
     'INSPECT',
     'https://www.inspect.xyz/',
   ),
+  wrose: new ERC20Token(
+    ChainId.BSC,
+    '0xF00600eBC7633462BC4F9C61eA2cE99F5AAEBd4a',
+    18,
+    'WROSE',
+    'Wrapped ROSE',
+    'https://overnight.fi',
+  ),
+  irl: new ERC20Token(
+    ChainId.BSC,
+    '0xa80221D067603e30060F75E2458AA361f8eE5402',
+    18,
+    'IRL',
+    'Rebase (IRL)',
+    'https://rebase.gg/',
+  ),
 }

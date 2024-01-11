@@ -48,6 +48,76 @@ export const farmsV3 = defineFarmV3Configs([
   // new lps should follow after the top fixed lps
   // latest first
   {
+    pid: 130,
+    lpAddress: '0xce44eBE42ABc496eACBd6582b6e14f3937116B23',
+    token0: bscTokens.usdt,
+    token1: bscTokens.irl,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 129,
+    lpAddress: '0xf66A930Ed3b004BA16ee11b3A9B142EAf2259b0d',
+    token0: bscTokens.usdc,
+    token1: bscTokens.fdusd,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 128,
+    lpAddress: '0x0f3aDA81A32D8a7233fe9B1D04f0A8231AdB98F0',
+    token0: bscTokens.bnb,
+    token1: bscTokens.fdusd,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 127,
+    lpAddress: '0xA62439A42fbeC9827a0B0452A5fD619d517F2D83',
+    token0: bscTokens.cake,
+    token1: bscTokens.fdusd,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 126,
+    lpAddress: '0x63393D036FEf3B187ca613a8E5D917697ade2cD5',
+    token0: bscTokens.eth,
+    token1: bscTokens.fdusd,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 125,
+    lpAddress: '0x6AA9c4eDA3BF8ac038aD5C243133d6D25aA9cc73',
+    token0: bscTokens.btcb,
+    token1: bscTokens.fdusd,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 124,
+    lpAddress: '0x06aC8EE32BCdcE6bF2eA82D9Bfb932a84D45BFcb',
+    token0: bscTokens.insp,
+    token1: bscTokens.bnb,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 123,
+    lpAddress: '0x5B56eea565dad4E72B8ea6a6567834E144fb7a93',
+    token0: bscTokens.usdt,
+    token1: bscTokens.wrose,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 122,
+    lpAddress: '0x1E8D7AB96323953faC85ab687f5D38b45344e62d',
+    token0: bscTokens.usdt,
+    token1: bscTokens.cgpt,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 121,
+    lpAddress: '0x8b626Acfb32CDad0d2F3b493Eb9928BbA1BbBcCa',
+    token0: bscTokens.ckp,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 120,
     lpAddress: '0x88240a2CA0Af5DD3b181975b9985274274CB3685',
     token0: bscTokens.pnp,
@@ -944,7 +1014,6 @@ const farms: SerializedFarmConfig[] = [
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
-
   {
     pid: 163,
     lpSymbol: 'HAY-USDT LP',

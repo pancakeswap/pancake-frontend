@@ -42,7 +42,7 @@ export const priceHelperTokens = {
   },
   [ChainId.ARBITRUM_ONE]: {
     chain: 'arbitrum',
-    list: [arbitrumTokens.weth, arbitrumTokens.usdc, arbitrumTokens.usdt, arbitrumTokens.arb],
+    list: [arbitrumTokens.weth, arbitrumTokens.usdc, arbitrumTokens.usdt, arbitrumTokens.arb, arbitrumTokens.usdplus],
   },
   [ChainId.LINEA]: {
     chain: 'linea',
