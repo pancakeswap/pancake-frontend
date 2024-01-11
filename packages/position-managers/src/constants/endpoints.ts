@@ -1,1 +1,1 @@
-export const POSITION_MANAGER_API = 'https://vault-api.pancakeswap.com/api/v1'
+export const POSITION_MANAGER_API = 'https://vault.pancakeswap.com/api/statistics'
