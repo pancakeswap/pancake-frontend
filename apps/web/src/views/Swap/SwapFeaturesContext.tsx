@@ -1,8 +1,8 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
-import { useExchangeChartManager } from 'state/user/hooks'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import React, { createContext, useEffect, useMemo, useState } from 'react'
+import { useExchangeChartManager } from 'state/user/hooks'
 
 export const SwapFeaturesContext = createContext<{
   isHotTokenSupported: boolean
@@ -29,7 +29,7 @@ const CHART_SUPPORT_CHAIN_IDS = [
   ChainId.BSC_TESTNET,
   // ChainId.ETHEREUM
 ]
-const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
 const STABLE_SUPPORT_CHAIN_IDS = [ChainId.BSC_TESTNET, ChainId.BSC]
 const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
 
