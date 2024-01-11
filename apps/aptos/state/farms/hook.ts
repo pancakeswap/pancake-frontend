@@ -1,28 +1,31 @@
 /* eslint-disable camelcase */
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
-import { DeserializedFarmsState, deserializeFarm } from '@pancakeswap/farms'
 import { useAccount, useAccountResource, useCoins, useQueries, useQuery } from '@pancakeswap/awgmi'
 import {
-  FetchCoinResult,
-  unwrapTypeArgFromString,
-  fetchTableItem,
   FetchAccountResourceResult,
+  fetchAptosView,
+  FetchCoinResult,
+  fetchTableItem,
+  unwrapTypeArgFromString,
 } from '@pancakeswap/awgmi/core'
+import { DeserializedFarmsState, deserializeFarm, SerializedFarmConfig } from '@pancakeswap/farms'
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { APT, L0_USDC } from 'config/coins'
 import { CAKE_PID } from 'config/constants'
+import { masterchefGetPendingApt } from 'config/constants/contracts/masterchef'
 import { getFarmConfig } from 'config/constants/farms'
-import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
+import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
 import { usePairReservesQueries } from 'hooks/usePairs'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
-import { FARMS_ADDRESS, FARMS_NAME_TAG, FARMS_USER_INFO_RESOURCE, FARMS_USER_INFO } from 'state/farms/constants'
+
+import { FARMS_ADDRESS, FARMS_NAME_TAG, FARMS_USER_INFO, FARMS_USER_INFO_RESOURCE } from 'state/farms/constants'
 import { FarmResource, FarmUserInfoResource } from 'state/farms/types'
-import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
 import { calcPendingRewardCake, calcRewardCakePerShare } from './utils/pendingCake'
@@ -160,6 +163,9 @@ export const useFarms = () => {
   const totalRegularAllocPoint = masterChef?.data.total_regular_alloc_point
   const cakePerBlock = masterChef?.data.cake_per_second
 
+  // Aptos Reward
+  const userAptosReward = useFarmsPendingAptosReward(farmConfig)
+
   return useMemo(() => {
     return {
       userDataLoaded: true,
@@ -180,11 +186,14 @@ export const useFarms = () => {
             accCakePerShare,
           )
           const stakedBalance = new BigNumber(userInfos[f.pid]?.amount)
+          const earningsAptosReward = new BigNumber(userAptosReward?.[f.pid]?.amount)
+
           return {
             ...f,
             userData: {
               earnings: earningToken.gte(0) ? earningToken : BIG_ZERO,
               stakedBalance: stakedBalance.gte(0) ? stakedBalance : BIG_ZERO,
+              earningsAptosReward: earningsAptosReward.gte(0) ? stakedBalance : BIG_ZERO,
             },
           }
         }),
@@ -192,12 +201,13 @@ export const useFarms = () => {
   }, [
     poolLength,
     regularCakePerSeconds,
-    farmsWithPrices,
-    masterChef,
-    userInfos,
-    getNow,
     totalRegularAllocPoint,
     cakePerBlock,
+    farmsWithPrices,
+    masterChef,
+    getNow,
+    userInfos,
+    userAptosReward,
   ])
 }
 
@@ -262,4 +272,30 @@ export function useFarmUserInfoCache(pid: string) {
       enabled: Boolean(account?.address),
     },
   )
+}
+
+export async function useFarmsPendingAptosReward(farmConfig: SerializedFarmConfig[]) {
+  const { account } = useAccount()
+  const { networkName } = useActiveNetwork()
+  const userPendingAptosQueries = useQueries({
+    queries:
+      farmConfig.map((farm) => ({
+        staleTime: Infinity,
+        enabled: Boolean(farm.lpAddress) && Boolean(farm.pid) && Boolean(account?.address),
+        refetchInterval: 3_000,
+        queryKey: [{ entity: 'getPendingAptos', networkName, pid: farm.pid, address: account?.address }],
+        queryFn: async () => {
+          const params = await masterchefGetPendingApt([account?.address ?? ''], [farm.lpAddress])
+          const response = await fetchAptosView({ networkName, params })
+          const amount = response?.[0] ?? 0
+          return { pid: farm.pid, amount }
+        },
+      })) ?? [],
+  })
+
+  const userAptosReward = useMemo(() => {
+    return fromPairs(userPendingAptosQueries.filter((u: any) => u?.data?.pid).map((u) => [(u as any).data.pid, u.data]))
+  }, [userPendingAptosQueries])
+
+  return userAptosReward
 }

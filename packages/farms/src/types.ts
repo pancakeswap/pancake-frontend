@@ -143,6 +143,7 @@ export interface SerializedFarmUserData {
   tokenBalance: string
   stakedBalance: string
   earnings: string
+  earningsAptosReward?: string
   proxy?: {
     allowance: string
     tokenBalance: string
@@ -184,6 +185,7 @@ export interface DeserializedFarmUserData {
   tokenBalance: BigNumber
   stakedBalance: BigNumber
   earnings: BigNumber
+  earningsAptosReward?: BigNumber
   proxy?: {
     allowance: BigNumber
     tokenBalance: BigNumber

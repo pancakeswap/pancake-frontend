@@ -1,7 +1,8 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-export const ADDRESS = '0x7968a225eba6c99f5f1070aeec1b405757dee939eabcfda43ba91588bf5fccf3' as const
+// export const ADDRESS = '0x7968a225eba6c99f5f1070aeec1b405757dee939eabcfda43ba91588bf5fccf3' as const
+export const ADDRESS = '0xe2d46b292780a31bf4731b5f9ae65d3f0048f8e262f7c916dbe5be87030ce73c' as const
 
 export const MASTERCHEF_MODULE_NAME = 'masterchef' as const
 
@@ -16,6 +17,19 @@ export const masterchefAddPool = (
     type_arguments: typeArgs,
     arguments: args,
     function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::add_pool`,
+  }
+}
+
+export type MasterchefCloseAptIncentiveArgs = [boolean]
+
+export const masterchefCloseAptIncentive = (
+  args: MasterchefCloseAptIncentiveArgs,
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::close_apt_incentive`,
   }
 }
 
@@ -42,12 +56,83 @@ export const masterchefEmergencyWithdraw = (typeArgs: [string]): Types.Transacti
   }
 }
 
+export const masterchefGetAptIncentiveInfo = (): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: [],
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::get_apt_incentive_info`,
+  }
+}
+
+export type MasterchefGetAptIncentivePoolInfoArgs = [bigint | string]
+
+export const masterchefGetAptIncentivePoolInfo = (
+  args: MasterchefGetAptIncentivePoolInfoArgs,
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::get_apt_incentive_pool_info`,
+  }
+}
+
+export type MasterchefGetPendingAptArgs = [string]
+
+export const masterchefGetPendingApt = (
+  args: MasterchefGetPendingAptArgs,
+  typeArgs: [string],
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: typeArgs,
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::get_pending_apt`,
+  }
+}
+
+export type MasterchefInitAptIncentiveArgs = [bigint | string, boolean]
+
+export const masterchefInitAptIncentive = (
+  args: MasterchefInitAptIncentiveArgs,
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::init_apt_incentive`,
+  }
+}
+
 export const masterchefMassUpdatePools = (): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
     type_arguments: [],
     arguments: [],
     function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::mass_update_pools`,
+  }
+}
+
+export type MasterchefPendingCakeArgs = [bigint | string, string]
+
+export const masterchefPendingCake = (
+  args: MasterchefPendingCakeArgs,
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::pending_cake`,
+  }
+}
+
+export const masterchefPoolLength = (): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: [],
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::pool_length`,
   }
 }
 
@@ -145,5 +230,14 @@ export const masterchefWithdraw = (
     type_arguments: typeArgs,
     arguments: args,
     function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::withdraw`,
+  }
+}
+
+export const masterchefWithdrawAllApt = (): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: [],
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::withdraw_all_apt`,
   }
 }
