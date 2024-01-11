@@ -56,7 +56,3 @@ export function createWorker() {
     ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
     : undefined
 }
-
-export const worker = createWorker()
-
-export const worker2 = createWorker()
