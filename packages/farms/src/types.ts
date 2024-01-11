@@ -53,9 +53,8 @@ export interface FarmConfigBaseProps {
   auctionHostingStartSeconds?: number
   auctionHostingEndDate?: string
   dual?: {
-    rewardPerBlock: number
     earnLabel: string
-    endBlock: number
+    token: SerializedWrappedToken
   }
   boosted?: boolean
 }
@@ -143,7 +142,7 @@ export interface SerializedFarmUserData {
   tokenBalance: string
   stakedBalance: string
   earnings: string
-  earningsAptosReward?: string
+  earningsDualTokenBalance?: string
   proxy?: {
     allowance: string
     tokenBalance: string
@@ -185,7 +184,7 @@ export interface DeserializedFarmUserData {
   tokenBalance: BigNumber
   stakedBalance: BigNumber
   earnings: BigNumber
-  earningsAptosReward?: BigNumber
+  earningsDualTokenBalance?: BigNumber
   proxy?: {
     allowance: BigNumber
     tokenBalance: BigNumber

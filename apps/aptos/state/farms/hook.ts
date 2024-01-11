@@ -186,14 +186,14 @@ export const useFarms = () => {
             accCakePerShare,
           )
           const stakedBalance = new BigNumber(userInfos[f.pid]?.amount)
-          const earningsAptosReward = new BigNumber(userAptosReward?.[f.pid]?.amount)
+          const earningsDualTokenBalance = new BigNumber(userAptosReward?.[f.pid]?.amount)
 
           return {
             ...f,
             userData: {
               earnings: earningToken.gte(0) ? earningToken : BIG_ZERO,
               stakedBalance: stakedBalance.gte(0) ? stakedBalance : BIG_ZERO,
-              earningsAptosReward: earningsAptosReward.gte(0) ? stakedBalance : BIG_ZERO,
+              earningsDualTokenBalance: earningsDualTokenBalance.gte(0) ? earningsDualTokenBalance : BIG_ZERO,
             },
           }
         }),
