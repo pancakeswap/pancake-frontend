@@ -17,7 +17,7 @@ interface UseConfirmModalStateProps {
   approval: ApprovalState
   approvalToken: Currency | undefined
   currentAllowance: CurrencyAmount<Currency> | undefined
-  onConfirm: () => Promise<string | undefined>
+  onConfirm: () => Promise<string | void>
   allowance: Allowance
   isPendingError?: boolean
   isExpertMode: boolean
