@@ -106,6 +106,7 @@ export function MMSwapCommitButton({
     return swapCallback()
       .then((hash) => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
+        return hash
       })
       .catch((error) => {
         setSwapState({
