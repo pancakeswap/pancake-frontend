@@ -198,7 +198,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
               approxGasUsedPerSuccessCall,
             }
           } catch (err: any) {
-            if (err instanceof SuccessRateError || err instanceof BlockConflictError) {
+            if (err instanceof SuccessRateError || err instanceof BlockConflictError || isAbortError(err)) {
               throw err
             }
 

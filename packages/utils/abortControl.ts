@@ -15,6 +15,7 @@ export function abortInvariant(signal?: AbortSignal, message?: string) {
   }
 }
 
-export function isAbortError(error: Error) {
-  return error instanceof AbortError
+export function isAbortError(error: any) {
+  // Not using instance is because the utils is bundled into different pkgs right now
+  return error instanceof Error && error.name === 'AbortError'
 }

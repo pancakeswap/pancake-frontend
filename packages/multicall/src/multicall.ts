@@ -1,5 +1,6 @@
 import { toBigInt } from '@pancakeswap/utils/toBigInt'
 import { AbortControl, AbortError, abortInvariant } from '@pancakeswap/utils/abortControl'
+import { isAbortError } from '@pancakeswap/utils/viem/isAbortError'
 
 import { GetGasLimitParams, getDefaultGasBuffer, getGasLimit } from './getGasLimit'
 import { MulticallRequestWithGas } from './types'
@@ -93,41 +94,48 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
   abortInvariant(signal, 'Multicall aborted')
 
   const contract = getMulticallContract({ chainId, client })
-  const { result } = await contract.simulate.multicallWithGasLimitation([calls, gasBuffer])
-  const { results, lastSuccessIndex, blockNumber } = formatCallReturn(result as CallReturnFromContract)
-  if (lastSuccessIndex === calls.length - 1) {
-    return {
-      results,
-      blockNumber,
+  try {
+    const { result } = await contract.simulate.multicallWithGasLimitation([calls, gasBuffer])
+    const { results, lastSuccessIndex, blockNumber } = formatCallReturn(result as CallReturnFromContract)
+    if (lastSuccessIndex === calls.length - 1) {
+      return {
+        results,
+        blockNumber,
+      }
     }
-  }
-  console.warn(
-    `Gas limit reached. Total num of ${calls.length} calls. First ${
-      lastSuccessIndex + 1
-    } calls executed. The remaining ${
-      calls.length - lastSuccessIndex - 1
-    } calls are not executed. Pls try adjust the gas limit per call.`,
-  )
-  const remainingCalls = calls.slice(lastSuccessIndex + 1)
-  if (dropUnexecutedCalls) {
-    return {
-      results: [...results, ...remainingCalls.map(() => ({ result: '0x', gasUsed: 0n, success: false }))],
-      blockNumber,
-    }
-  }
-  const { results: remainingResults, blockNumber: nextBlockNumber } = await call(
-    calls.slice(lastSuccessIndex + 1),
-    params,
-  )
-  if (Number(nextBlockNumber - blockNumber) > blockConflictTolerance) {
-    throw new Error(
-      `Multicall failed because of block conflict. Latest calls are made at block ${nextBlockNumber} while last calls made at block ${blockNumber}. Block conflict tolerance is ${blockConflictTolerance}`,
+    console.warn(
+      `Gas limit reached. Total num of ${calls.length} calls. First ${
+        lastSuccessIndex + 1
+      } calls executed. The remaining ${
+        calls.length - lastSuccessIndex - 1
+      } calls are not executed. Pls try adjust the gas limit per call.`,
     )
-  }
-  return {
-    results: [...results, ...remainingResults],
-    // Use the latest block number
-    blockNumber: nextBlockNumber,
+    const remainingCalls = calls.slice(lastSuccessIndex + 1)
+    if (dropUnexecutedCalls) {
+      return {
+        results: [...results, ...remainingCalls.map(() => ({ result: '0x', gasUsed: 0n, success: false }))],
+        blockNumber,
+      }
+    }
+    const { results: remainingResults, blockNumber: nextBlockNumber } = await call(
+      calls.slice(lastSuccessIndex + 1),
+      params,
+    )
+    if (Number(nextBlockNumber - blockNumber) > blockConflictTolerance) {
+      throw new Error(
+        `Multicall failed because of block conflict. Latest calls are made at block ${nextBlockNumber} while last calls made at block ${blockNumber}. Block conflict tolerance is ${blockConflictTolerance}`,
+      )
+    }
+    return {
+      results: [...results, ...remainingResults],
+      // Use the latest block number
+      blockNumber: nextBlockNumber,
+    }
+  } catch (e: any) {
+    if (isAbortError(e)) {
+      throw new AbortError(e.message)
+    }
+    throw e
   }
 }
 
