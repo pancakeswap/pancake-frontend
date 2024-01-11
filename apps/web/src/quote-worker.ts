@@ -146,6 +146,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       quoterOptimization: false,
       quoteCurrencyUsdPrice,
       nativeCurrencyUsdPrice,
+      signal: getBestTradeAbortController.signal,
     })
       .then((res) => {
         postMessage([
