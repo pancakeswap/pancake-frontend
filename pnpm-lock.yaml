@@ -2050,6 +2050,9 @@ importers:
 
   packages/utils:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../localization

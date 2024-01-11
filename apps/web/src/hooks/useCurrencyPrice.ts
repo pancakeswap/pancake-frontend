@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { Currency } from '@pancakeswap/sdk'
+import { getCurrencyPrice } from '@pancakeswap/utils/getCurrencyPrice'
 
 import { SLOW_INTERVAL } from 'config/constants'
-import { getCurrencyPrice } from 'utils/getCurrencyPrice'
 
 type Config = {
   enabled?: boolean
