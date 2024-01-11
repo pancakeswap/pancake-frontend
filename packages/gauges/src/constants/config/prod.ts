@@ -2240,7 +2240,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 227,
-    pairName: 'ETH-FDUSD',
+    pairName: 'FDUSD-ETH',
     address: '0x63393D036FEf3B187ca613a8E5D917697ade2cD5',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
@@ -2250,7 +2250,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 228,
-    pairName: 'CAKE-FDUSD',
+    pairName: 'FDUSD-CAKE',
     address: '0xA62439A42fbeC9827a0B0452A5fD619d517F2D83',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
@@ -2260,7 +2260,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 229,
-    pairName: 'BNB-FDUSD',
+    pairName: 'FDUSD-BNB',
     address: '0x0f3aDA81A32D8a7233fe9B1D04f0A8231AdB98F0',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
@@ -2270,7 +2270,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 230,
-    pairName: 'USDC-FDUSD',
+    pairName: 'FDUSD-USDC',
     address: '0xf66A930Ed3b004BA16ee11b3A9B142EAf2259b0d',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
