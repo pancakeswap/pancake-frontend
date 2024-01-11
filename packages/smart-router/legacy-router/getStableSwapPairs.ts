@@ -11,16 +11,17 @@ export function getStableSwapPairs(chainId: ChainId): StableSwapPair[] {
   const pools = getStableSwapPools(chainId)
   return pools.map(
     ({
-      token,
-      quoteToken,
+      token: serializedToken,
+      quoteToken: serializedQuoteToken,
       stableSwapAddress,
       lpAddress,
       infoStableSwapAddress,
       stableLpFee,
       stableLpFeeRateOfTotalFee,
     }) => {
-      const token0 = deserializeToken(token)
-      const token1 = deserializeToken(quoteToken)
+      const token = deserializeToken(serializedToken)
+      const quoteToken = deserializeToken(serializedQuoteToken)
+      const [token0, token1] = token.sortsBefore(quoteToken) ? [token, quoteToken] : [quoteToken, token]
       return createStableSwapPair(
         {
           token0,
