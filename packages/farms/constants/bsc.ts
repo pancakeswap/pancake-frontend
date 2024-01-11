@@ -49,10 +49,10 @@ export const farmsV3 = defineFarmV3Configs([
   // latest first
   {
     pid: 130,
-    lpAddress: '0xd5909FFDA2966C87c593d14006eb77218C65479E',
+    lpAddress: '0xce44eBE42ABc496eACBd6582b6e14f3937116B23',
     token0: bscTokens.usdt,
     token1: bscTokens.irl,
-    feeAmount: FeeAmount.MEDIUM,
+    feeAmount: FeeAmount.HIGH,
   },
   {
     pid: 129,
@@ -151,6 +151,20 @@ export const farmsV3 = defineFarmV3Configs([
     token0: bscTokens.usdt,
     token1: bscTokens.nfp,
     feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 115,
+    lpAddress: '0x961C19a53e5EA0e43B8F9020553F94623Ce475B6',
+    token0: bscTokens.mubi,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 114,
+    lpAddress: '0x442EFB99C2727c6000727C3cf672e3d77C9cDEaD',
+    token0: bscTokens.wbnb,
+    token1: bscTokens.ordi,
+    feeAmount: FeeAmount.HIGH,
   },
   {
     pid: 113,
@@ -996,6 +1010,17 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.axlusdc,
     quoteToken: bscTokens.usdt,
     stableSwapAddress: '0x6D8fba276ec6F1EDa2344DA48565AdbCA7e4FFa5',
+    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
+  {
+    pid: 163,
+    lpSymbol: 'HAY-USDT LP',
+    lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
+    token: bscTokens.hay,
+    quoteToken: bscTokens.usdt,
+    stableSwapAddress: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
