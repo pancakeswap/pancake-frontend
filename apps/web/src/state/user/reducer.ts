@@ -28,12 +28,7 @@ import {
 } from './actions'
 import { GAS_PRICE_GWEI } from '../types'
 
-const currentTimestamp = () => Date.now()
-
 export interface UserState {
-  // the timestamp of the last updateVersion action
-  lastUpdateVersionTimestamp?: number
-
   // deadline set by user in minutes, used in all txns
   userDeadline: number
 
@@ -92,16 +87,11 @@ export const initialState: UserState = {
 export default createReducer(initialState, (builder) =>
   builder
     .addCase(updateVersion, (state) => {
-      // slippage is'nt being tracked in local storage, reset to default
-      // noinspection SuspiciousTypeOfGuard
-
       // deadline isnt being tracked in local storage, reset to default
       // noinspection SuspiciousTypeOfGuard
       if (typeof state.userDeadline !== 'number') {
         state.userDeadline = DEFAULT_DEADLINE_FROM_NOW
       }
-
-      state.lastUpdateVersionTimestamp = currentTimestamp()
     })
     .addCase(updateUserDeadline, (state, action) => {
       state.userDeadline = action.payload.userDeadline

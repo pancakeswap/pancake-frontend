@@ -1,4 +1,5 @@
 import { createStore, Store } from 'redux'
+import { DEFAULT_DEADLINE_FROM_NOW } from 'config/constants'
 import { updateVersion } from '../global/actions'
 import reducer, { initialState, UserState } from './reducer'
 
@@ -10,13 +11,9 @@ describe('swap reducer', () => {
   })
 
   describe('updateVersion', () => {
-    it('has no timestamp originally', () => {
-      expect(store.getState().lastUpdateVersionTimestamp).toBeUndefined()
-    })
-    it('sets the lastUpdateVersionTimestamp', () => {
-      const time = Date.now()
+    it('sets the userDeadline', () => {
       store.dispatch(updateVersion())
-      expect(store.getState().lastUpdateVersionTimestamp).toBeGreaterThanOrEqual(time)
+      expect(store.getState().userDeadline).toBeGreaterThanOrEqual(DEFAULT_DEADLINE_FROM_NOW)
     })
   })
 })
