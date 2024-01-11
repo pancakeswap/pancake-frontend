@@ -2279,7 +2279,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 228,
+    gid: 229,
     pairName: 'WETH-ETH+',
     address: '0xdAA80a051E22A7f7b0cfC33Aa29572fbDE65183E',
     chainId: ChainId.ARBITRUM_ONE,
@@ -2289,7 +2289,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 229,
+    gid: 230,
     pairName: 'INSP-BNB',
     address: '0x06aC8EE32BCdcE6bF2eA82D9Bfb932a84D45BFcb',
     chainId: ChainId.BSC,
