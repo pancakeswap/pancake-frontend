@@ -283,7 +283,15 @@ export async function useFarmsPendingAptosReward(farmConfig: SerializedFarmConfi
         staleTime: Infinity,
         enabled: Boolean(farm.lpAddress) && Boolean(farm.pid) && Boolean(account?.address),
         refetchInterval: 3_000,
-        queryKey: [{ entity: 'getPendingAptos', networkName, pid: farm.pid, address: account?.address }],
+        queryKey: [
+          {
+            entity: 'getPendingAptos',
+            networkName,
+            pid: farm.pid,
+            lpAddress: farm.lpAddress,
+            address: account?.address,
+          },
+        ],
         queryFn: async () => {
           const params = await masterchefGetPendingApt([account?.address ?? ''], [farm.lpAddress])
           const response = await fetchAptosView({ networkName, params })
