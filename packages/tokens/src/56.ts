@@ -2900,4 +2900,12 @@ export const bscTokens = {
     'Wrapped ROSE',
     'https://overnight.fi',
   ),
+  irl: new ERC20Token(
+    ChainId.BSC,
+    '0xa80221D067603e30060F75E2458AA361f8eE5402',
+    18,
+    'IRL',
+    'Rebase (IRL)',
+    'https://rebase.gg/',
+  ),
 }
