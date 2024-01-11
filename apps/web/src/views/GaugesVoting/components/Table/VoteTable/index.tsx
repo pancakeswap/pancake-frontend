@@ -314,7 +314,7 @@ export const VoteTable = () => {
                 onClick={() => setIsOpen(true)}
                 style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
               >
-                + Add Gauges {isMobile ? null : `(${leftGaugesCanAdd || 0})`}
+                + {t('Add Gauges')} {isMobile ? null : `(${leftGaugesCanAdd || 0})`}
               </Button>
               <Button
                 width="100%"
@@ -322,7 +322,7 @@ export const VoteTable = () => {
                 onClick={submitVote}
                 style={{ whiteSpace: 'nowrap', padding: isMobile ? 0 : '0 16px' }}
               >
-                Submit vote
+                {t('Submit vote')}
               </Button>
             </>
           )}

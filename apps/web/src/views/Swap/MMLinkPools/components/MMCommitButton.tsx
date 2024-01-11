@@ -232,7 +232,7 @@ export function MMSwapCommitButton({
   if (showWrap) {
     return (
       <CommitButton width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
-        {wrapInputError ?? (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
+        {wrapInputError ?? (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
       </CommitButton>
     )
   }
