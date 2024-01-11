@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Flex, Link, OpenNewIcon, Text, useIsomorphicEffect, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import React, { memo, useCallback, useLayoutEffect, useRef } from 'react'
+import React, { memo, useCallback, useRef } from 'react'
 import { css, styled } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
 import { useDrawSequenceImages } from '../../hooks/useDrawSequence'
@@ -320,7 +320,7 @@ const CakeSection: React.FC = () => {
   const seqIntervalRef = useRef(0)
   const { isMobile, isTablet } = useMatchBreakpoints()
 
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (checkIsIOS() || isMobile) return
     const video = document.createElement('video')
     video.autoplay = true
@@ -380,7 +380,7 @@ const CakeSection: React.FC = () => {
     }
   }, [])
 
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     triggerAnimation()
     return () => {
       cancelAnimationFrame(internalRef.current)

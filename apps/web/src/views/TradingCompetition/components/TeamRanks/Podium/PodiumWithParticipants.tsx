@@ -37,9 +37,9 @@ const PodiumWithParticipants: React.FC<React.PropsWithChildren<MoboxPodiumProps>
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]
   const thirdTeam = teamsSortedByVolume && teamsSortedByVolume[2]
 
-  const firstTeamParticipants = participants[firstTeam.teamId - 1]
-  const secondTeamParticipants = participants[secondTeam.teamId - 1]
-  const thirdTeamParticipants = participants[thirdTeam.teamId - 1]
+  const firstTeamParticipants = firstTeam && participants[firstTeam.teamId - 1]
+  const secondTeamParticipants = secondTeam && participants[secondTeam.teamId - 1]
+  const thirdTeamParticipants = thirdTeam && participants[thirdTeam.teamId - 1]
 
   return (
     <Wrapper>

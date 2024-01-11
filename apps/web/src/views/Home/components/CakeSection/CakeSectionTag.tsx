@@ -12,9 +12,10 @@ import {
   SwapIcon,
   Text,
   TrophyIcon,
+  useIsomorphicEffect,
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import { cloneElement, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { cloneElement, useMemo, useRef, useState } from 'react'
 import Marquee from 'react-fast-marquee'
 import { styled } from 'styled-components'
 
@@ -193,7 +194,7 @@ export const CakePartnerWrapper = styled.div<{ $bgWidth: number }>`
 export const CakeSectionTag: React.FC<{ icon: React.ReactElement; text: string }> = ({ icon, text }) => {
   const { theme } = useTheme()
   const textRef = useRef<HTMLDivElement>(null)
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (textRef?.current) {
       setBgWidth(textRef.current.offsetWidth)
     }
@@ -216,7 +217,7 @@ export const CakePartnerTag: React.FC<{
 }> = ({ icon, width, text }) => {
   const { theme } = useTheme()
   const textRef = useRef<HTMLDivElement>(null)
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (textRef?.current) {
       setBgWidth(textRef.current.offsetWidth)
     }

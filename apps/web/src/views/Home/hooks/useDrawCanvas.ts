@@ -1,4 +1,5 @@
-import { useCallback, useLayoutEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
+import { useIsomorphicEffect } from '@pancakeswap/uikit'
 
 export const useDrawCanvas = (
   videoRef: React.MutableRefObject<HTMLVideoElement | undefined> | React.RefObject<HTMLVideoElement>,
@@ -29,7 +30,7 @@ export const useDrawCanvas = (
     onVideoStartCallback?.()
   }, [canvas, video, height, width, additionalVideoRefs, onVideoStartCallback])
 
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (isElementReady) {
       video.onpause = () => {
         cancelAnimationFrame(intervalRef.current)
