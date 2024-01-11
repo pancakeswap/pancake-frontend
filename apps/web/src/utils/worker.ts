@@ -46,8 +46,8 @@ class WorkerProxy {
     })
   }
 
-  public terminate = async () => {
-    return this.terminate()
+  public destroy = async () => {
+    return this.worker.terminate()
   }
 }
 

@@ -353,7 +353,7 @@ function createUseWorkerGetBestTrade() {
       workerRef.current = createWorker()
 
       return () => {
-        workerRef.current?.terminate()
+        workerRef.current?.destroy()
       }
     }, [])
 
