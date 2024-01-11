@@ -2230,7 +2230,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 226,
-    pairName: 'BTCB-FDUSD',
+    pairName: 'FDUSD-BTC',
     address: '0x6AA9c4eDA3BF8ac038aD5C243133d6D25aA9cc73',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
@@ -2340,7 +2340,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 237,
-    pairName: 'CKP-BNB',
+    pairName: 'IRL-USDT',
     address: '0xce44eBE42ABc496eACBd6582b6e14f3937116B23',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
