@@ -1,8 +1,7 @@
-import { useTranslation, Trans } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { ERC20Token, Token } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import {
+  AutoRenewIcon,
   Button,
   Dots,
   Flex,
@@ -11,17 +10,18 @@ import {
   RefreshIcon,
   Tag,
   Text,
-  useTooltip,
   promotedGradient,
-  AutoRenewIcon,
+  useTooltip,
 } from '@pancakeswap/uikit'
-import { useEffect, useMemo, useState } from 'react'
-import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
+import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useAllLists } from 'state/lists/hooks'
+import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { styled } from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
-import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
-import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
+import { SwapFeaturesContext } from 'views/Swap/SwapFeaturesContext'
 
 const AnimatedButton = styled(Button)`
   animation: ${promotedGradient} 1.5s ease infinite;
@@ -95,8 +95,9 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
 }
 
 export function useTokenRisk(token?: Token) {
+  const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   return useSWRImmutable(
-    token && token.address && token.chainId === ChainId.BSC && ['risk', token.chainId, token.address],
+    token && token.address && isAccessTokenSupported && ['risk', token.chainId, token.address],
     () => {
       return token && fetchRiskToken(token.address, token.chainId)
     },
