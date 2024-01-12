@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'components/AccessRisk/config/supportedChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import React, { createContext, useEffect, useMemo, useState } from 'react'
 import { useExchangeChartManager } from 'state/user/hooks'
@@ -29,7 +30,6 @@ const CHART_SUPPORT_CHAIN_IDS = [
   ChainId.BSC_TESTNET,
   // ChainId.ETHEREUM
 ]
-export const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
 const STABLE_SUPPORT_CHAIN_IDS = [ChainId.BSC_TESTNET, ChainId.BSC]
 const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
 

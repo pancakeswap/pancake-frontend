@@ -15,13 +15,13 @@ import {
 } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
+import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'components/AccessRisk/config/supportedChains'
 import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
 import { useEffect, useMemo, useState } from 'react'
 import { useAllLists } from 'state/lists/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { styled } from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
-import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'views/Swap/SwapFeaturesContext'
 
 const AnimatedButton = styled(Button)`
   animation: ${promotedGradient} 1.5s ease infinite;

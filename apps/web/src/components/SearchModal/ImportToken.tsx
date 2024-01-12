@@ -20,6 +20,7 @@ import {
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ListLogo } from '@pancakeswap/widgets-internal'
 import AccessRisk, { TOKEN_RISK } from 'components/AccessRisk'
+import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'components/AccessRisk/config/supportedChains'
 import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useState } from 'react'
@@ -28,7 +29,6 @@ import { useAddUserToken } from 'state/user/hooks'
 import useSWRImmutable from 'swr/immutable'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { chains } from 'utils/wagmi'
-import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'views/Swap/SwapFeaturesContext'
 
 interface ImportProps {
   tokens: Token[]
