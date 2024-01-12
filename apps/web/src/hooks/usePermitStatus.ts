@@ -61,7 +61,7 @@ const useTokenPermit = (token?: Token, owner?: Address, spender?: Address) => {
   const defaultPermit = useMemo(() => {
     return {
       expiration: 0,
-      permitAmount: CurrencyAmount.fromRawAmount(token!, '0'),
+      permitAmount: token ? CurrencyAmount.fromRawAmount(token, '0') : undefined,
       nonce: 0,
     }
   }, [token])
@@ -138,16 +138,10 @@ enum PermitState {
   DONE,
 }
 
-export const usePermit = <T extends Token>(amount: CurrencyAmount<T> | undefined, spender?: Address) => {
-  const { account, chainId } = useAccountActiveChain()
-  const [permitState, setPermitState] = useState<PermitState>(PermitState.IDLE)
-  const { allowance, permitAmount, nonce, expiration } = usePermitStatus(amount?.currency, account, spender)
-
-  const [permit2Signature, setPermit2Signature] = useState<Permit2Signature>()
-  const permitCallback = useWritePermit(amount?.currency, spender, nonce)
+export const usePermitRequirements = (amount: CurrencyAmount<Token> | undefined, spender?: Address) => {
+  const { account } = useAccountActiveChain()
+  const { allowance, permitAmount, expiration } = usePermitStatus(amount?.currency, account, spender)
   const now = useCurrentBlockTimestamp() ?? 0n
-
-  const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, getPermit2Address(chainId))
 
   const requireRevoke = useMemo(() => {
     const isMainnetUSDT =
@@ -167,8 +161,35 @@ export const usePermit = <T extends Token>(amount: CurrencyAmount<T> | undefined
     return (amount && permitAmount?.lessThan(amount)) || now >= expiration
   }, [permitAmount, amount, now, expiration])
 
+  return useMemo(
+    () => ({
+      requireRevoke,
+      requireApprove,
+      requirePermit,
+    }),
+    [requireApprove, requirePermit, requireRevoke],
+  )
+}
+
+export const usePermit = <T extends Token>(
+  amount: CurrencyAmount<T> | undefined,
+  spender?: Address,
+  onPermitDone?: () => unknown,
+) => {
+  const { account, chainId } = useAccountActiveChain()
+
+  const [permitState, setPermitState] = useState<PermitState>(PermitState.IDLE)
+  const [permit2Signature, setPermit2Signature] = useState<Permit2Signature>()
+
+  const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(amount, spender)
+  const { nonce } = usePermitStatus(amount?.currency, account, spender)
+  const permitCallback = useWritePermit(amount?.currency, spender, nonce)
+
+  const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, getPermit2Address(chainId))
+
   // execution of the permit state machine
   const execute = useCallback(async (): Promise<SendTransactionResult | undefined> => {
+    console.debug('debug execute permitState', PermitState[permitState])
     // still pending confirming the approval, prevent trigger
     if (approvalState === ApprovalState.PENDING) return undefined
 
@@ -195,6 +216,7 @@ export const usePermit = <T extends Token>(amount: CurrencyAmount<T> | undefined
         break
       // APPROVING_ALLOWANCE => APPROVING_PERMIT_AMOUNT
       case PermitState.APPROVING_ALLOWANCE:
+      case PermitState.APPROVING_PERMIT_AMOUNT:
         if (approvalState === ApprovalState.APPROVED) {
           // setPermitState(PermitState.APPROVING_PERMIT_AMOUNT)
           const sig = await permitCallback()
@@ -202,12 +224,25 @@ export const usePermit = <T extends Token>(amount: CurrencyAmount<T> | undefined
           return undefined
         }
         break
+      case PermitState.DONE:
+        // todo allowance and permit are enough, call swap
+        if (onPermitDone) onPermitDone()
+        break
       default:
         break
     }
 
     return undefined
-  }, [approvalState, approveCallback, permitCallback, permitState, requireApprove, requireRevoke, revokeCallback])
+  }, [
+    approvalState,
+    approveCallback,
+    onPermitDone,
+    permitCallback,
+    permitState,
+    requireApprove,
+    requireRevoke,
+    revokeCallback,
+  ])
 
   // permit state machine, the only place to change the state
   useEffect(() => {

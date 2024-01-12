@@ -79,7 +79,7 @@ export function useApproveCallback(
   const addTransaction = useTransactionAdder()
 
   const approve = useCallback(
-    async (overrideAmountApprove?: bigint): Promise<SendTransactionResult> => {
+    async (overrideAmountApprove?: bigint): Promise<SendTransactionResult | undefined> => {
       if (approvalState !== ApprovalState.NOT_APPROVED && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Approve was called unnecessarily'))
         console.error('approve was called unnecessarily')

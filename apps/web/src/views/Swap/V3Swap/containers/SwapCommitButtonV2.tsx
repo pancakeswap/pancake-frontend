@@ -2,9 +2,10 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
-import React, { memo, useMemo } from 'react'
+import React, { memo, useCallback, useMemo, useState } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
+import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
@@ -15,6 +16,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { usePermitStatus } from 'hooks/usePermitStatus'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
@@ -24,7 +26,9 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
 import { useAccount, useChainId } from 'wagmi'
-import { useParsedAmounts, useSwapInputError } from '../hooks'
+import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
+import { useConfirmModalStateV2 } from '../hooks/useConfirmModalStateV2'
+import { useSwapCallback } from '../hooks/useSwapCallback'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModalV2 } from './ConfirmSwapModalV2'
 
@@ -45,11 +49,6 @@ const useSettingModal = () => {
     />,
   )
   return openSettingsModal
-}
-
-const useConfirmSwapModal = () => {
-  const [openConfirmSwapModal] = useModal(<ConfirmSwapModalV2 />, true, true, 'confirmSwapModal')
-  return openConfirmSwapModal
 }
 
 const useSwapCurrencies = () => {
@@ -132,10 +131,16 @@ const SwapCommitButton = memo(function SwapCommitButton({
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
+  console.debug('x', typedValue)
   const inputCurrency = useCurrency(inputCurrencyId) as Currency
   const outputCurrency = useCurrency(outputCurrencyId) as Currency
   const [isExpertMode] = useExpertMode()
   const deadline = useTransactionDeadline()
+
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
+  const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
+
+  const { allowance } = usePermitStatus(inputCurrency, account, getUniversalRouterAddress(chainId))
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -149,17 +154,54 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const parsedIndependentFieldAmount = parsedAmounts[independentField]
   const swapInputError = useSwapInputError(trade, currencyBalances)
 
-  // modals
-  const openSettingModal = useSettingModal()
-  const openConfirmSwapModal = useConfirmSwapModal()
+  const [txHash, setTxHash] = useState<string | undefined>(undefined)
+  const [swapErrorMessage, setSwapErrorMessage] = useState<string | undefined>(undefined)
+  const statusWallchain: string = '@TODO'
+  const fn = useCallback(() => undefined, [])
+  const {
+    callback: swapCallback,
+    error: swapCallbackError,
+    reason: swapCallbackRevertReason,
+  } = useSwapCallback({
+    trade,
+    deadline,
+    permitSignature: undefined, // TODO
+    onWallchainDrop: fn, // TODO
+    wallchainMasterInput: undefined, // TODO
+    statusWallchain: 'not-found', // TODO
+  })
+  const onConfirmSwap = useCallback(async () => {
+    // @todo preflight check
+
+    if (!swapCallback) {
+      if (swapCallbackRevertReason === 'insufficient allowance') {
+        // TODO
+      }
+      return undefined
+    }
+    try {
+      const result = await swapCallback()
+      setTxHash(result.hash)
+      return result.hash
+    } catch (error: any) {
+      setSwapErrorMessage(typeof error === 'string' ? error : error?.message)
+
+      throw error
+    }
+  }, [swapCallback, swapCallbackRevertReason])
 
   // todo
-  const statusWallchain: string = '@TODO'
-  const swapCallbackError = undefined // TODO
-  const handleSwap = () => {
-    openConfirmSwapModal()
-    logGTMClickSwapEvent()
-  }
+
+  const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalStateV2(
+    amountToApprove,
+    getUniversalRouterAddress(chainId),
+    onConfirmSwap,
+  )
+  const reset = useCallback(() => {
+    resetConfirmModalState()
+    setTxHash(undefined)
+    setSwapErrorMessage(undefined)
+  }, [resetConfirmModalState])
 
   const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   // warnings on slippage
@@ -178,6 +220,41 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndependentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
+
+  // modals
+  const openSettingModal = useSettingModal()
+  const [openConfirmSwapModal] = useModal(
+    <ConfirmSwapModalV2
+      trade={trade}
+      txHash={txHash}
+      confirmModalState={confirmModalState}
+      pendingModalSteps={pendingModalSteps}
+      swapErrorMessage={swapErrorMessage}
+      allowance={allowance}
+      currencyBalances={currencyBalances}
+      onAcceptChanges={console.debug}
+      onConfirm={startSwap}
+      openSettingModal={openSettingModal}
+      customOnDismiss={reset}
+    />,
+    true,
+    true,
+    'confirmSwapModal',
+  )
+
+  const handleSwap = useCallback(() => {
+    resetConfirmModalState()
+
+    // if expert mode turn-on, will not show preview modal
+    // start swap directly
+    console.debug('debug: isExpertMode', isExpertMode)
+    if (isExpertMode) {
+      startSwap()
+    }
+
+    openConfirmSwapModal()
+    logGTMClickSwapEvent()
+  }, [isExpertMode, openConfirmSwapModal, resetConfirmModalState, startSwap])
 
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return <ResetRoutesButton />
