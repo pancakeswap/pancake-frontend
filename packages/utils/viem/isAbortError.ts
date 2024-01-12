@@ -1,3 +1,5 @@
-export function isAbortError(e: any) {
-  return e instanceof Error && e.message.startsWith('The request took too long to respond.')
+import { TimeoutError, BaseError } from 'viem'
+
+export function isViemAbortError(e: any) {
+  return e instanceof BaseError && e.walk((err) => err instanceof TimeoutError) instanceof TimeoutError
 }

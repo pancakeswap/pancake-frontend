@@ -1,6 +1,6 @@
 import { toBigInt } from '@pancakeswap/utils/toBigInt'
 import { AbortControl, AbortError, abortInvariant } from '@pancakeswap/utils/abortControl'
-import { isAbortError } from '@pancakeswap/utils/viem/isAbortError'
+import { isViemAbortError } from '@pancakeswap/utils/viem/isAbortError'
 
 import { GetGasLimitParams, getDefaultGasBuffer, getGasLimit } from './getGasLimit'
 import { MulticallRequestWithGas } from './types'
@@ -132,7 +132,7 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
       blockNumber: nextBlockNumber,
     }
   } catch (e: any) {
-    if (isAbortError(e)) {
+    if (isViemAbortError(e)) {
       throw new AbortError(e.message)
     }
     throw e

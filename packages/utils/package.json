@@ -9,17 +9,22 @@
     "@pancakeswap/localization": "workspace:*",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
-    "styled-components": "^6.0.7"
+    "styled-components": "^6.0.7",
+    "viem": "1.19.11"
   },
   "devDependencies": {
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@types/lodash": "^4.14.168",
     "bignumber.js": "^9.0.0",
     "jotai": "^2.4.3",
-    "styled-components": "6.0.7"
+    "styled-components": "6.0.7",
+    "viem": "1.19.11"
   },
   "peerDependenciesMeta": {
     "@pancakeswap/localization": {
+      "optional": true
+    },
+    "viem": {
       "optional": true
     }
   },
