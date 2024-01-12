@@ -323,6 +323,8 @@ const LimitOrders = () => {
 
   const isSideFooter = isChartExpanded || isChartDisplayed
 
+  const isAccessTokenSupported = chainId && ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId)
+
   return (
     <Page
       removePadding={isChartExpanded}
@@ -389,10 +391,9 @@ const LimitOrders = () => {
                     />
 
                     <Box id="yo">
-                      {chainId &&
-                        ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId) &&
-                        currencies.input &&
-                        currencies.input.isToken && <AccessRisk token={currencies.input} />}
+                      {isAccessTokenSupported && currencies.input && currencies.input.isToken && (
+                        <AccessRisk token={currencies.input} />
+                      )}
                     </Box>
 
                     <SwitchTokensButton
@@ -413,10 +414,9 @@ const LimitOrders = () => {
                       showUSDPrice
                     />
                     <Box>
-                      {chainId &&
-                        ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId) &&
-                        currencies.output &&
-                        currencies.output.isToken && <AccessRisk token={currencies.output} />}
+                      {isAccessTokenSupported && currencies.output && currencies.output.isToken && (
+                        <AccessRisk token={currencies.output} />
+                      )}
                     </Box>
                     <LimitOrderPrice
                       id="limit-order-desired-rate-input"
