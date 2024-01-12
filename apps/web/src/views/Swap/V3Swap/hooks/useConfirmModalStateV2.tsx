@@ -42,14 +42,20 @@ export const useConfirmModalStateV2 = (
   const performStep = useCallback(async () => {
     console.debug('debug performStep', 'confirmModalState', ConfirmModalState[confirmModalState], { confirmModalState })
     try {
-      const hasStart = confirmModalState !== ConfirmModalState.REVIEWING
-      if (!hasStart) {
-        setConfirmModalState(pendingModalSteps[0])
-      } else {
-        const currentStep = pendingModalSteps.findIndex((step) => step === confirmModalState)
-        const nextStep = pendingModalSteps[currentStep + 1]
+      const isLastStep = confirmModalState === ConfirmModalState.PENDING_CONFIRMATION
+      if (!isLastStep) {
+        const hasStart = confirmModalState !== ConfirmModalState.REVIEWING
+        console.debug('debug performStep', 'currentStep', { currentStep: ConfirmModalState[confirmModalState] })
+        if (!hasStart) {
+          console.debug('debug performStep', 'nextStep', { nextStep: ConfirmModalState[pendingModalSteps[0]] })
+          setConfirmModalState(pendingModalSteps[0] ?? ConfirmModalState.PENDING_CONFIRMATION)
+        } else {
+          const currentStep = pendingModalSteps.findIndex((step) => step === confirmModalState)
+          const nextStep = pendingModalSteps[currentStep + 1]
+          console.debug('debug performStep', 'nextStep', { nextStep: ConfirmModalState[nextStep] })
 
-        setConfirmModalState(nextStep ?? ConfirmModalState.PENDING_CONFIRMATION)
+          setConfirmModalState(nextStep ?? ConfirmModalState.PENDING_CONFIRMATION)
+        }
       }
 
       await execute()
