@@ -19,7 +19,7 @@ export const livePools: SerializedPool[] = [
     earningToken: bscTokens.irl,
     contractAddress: '0x41cD0Fad28F8531De22617959bc943F1B3E12Bd8',
     poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.06944',
+    tokenPerBlock: '0.0694444444444445',
     isFinished: false,
     version: 3,
   },
