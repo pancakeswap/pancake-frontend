@@ -22,13 +22,13 @@ import { ListLogo } from '@pancakeswap/widgets-internal'
 import AccessRisk, { TOKEN_RISK } from 'components/AccessRisk'
 import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { useAddUserToken } from 'state/user/hooks'
 import useSWRImmutable from 'swr/immutable'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { chains } from 'utils/wagmi'
-import { SwapFeaturesContext } from 'views/Swap/SwapFeaturesContext'
+import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'views/Swap/SwapFeaturesContext'
 
 interface ImportProps {
   tokens: Token[]
@@ -37,7 +37,6 @@ interface ImportProps {
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
   const { chainId } = useActiveChainId()
-  const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
 
   const { t } = useTranslation()
 
@@ -115,7 +114,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                 </>
               )}
             </Grid>
-            {token && isAccessTokenSupported && (
+            {token && chainId && ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId) && (
               <Flex mt={['20px', '20px', '0']}>
                 <AccessRisk token={token} />
               </Flex>

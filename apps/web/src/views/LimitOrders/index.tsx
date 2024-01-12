@@ -15,12 +15,12 @@ import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
 import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/useApproveCallback'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { Field } from 'state/limitOrders/types'
 import { useExchangeChartManager } from 'state/user/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { SwapFeaturesContext } from 'views/Swap/SwapFeaturesContext'
+import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'views/Swap/SwapFeaturesContext'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
 
 import { CommonBasesType } from 'components/SearchModal/types'
@@ -323,8 +323,6 @@ const LimitOrders = () => {
 
   const isSideFooter = isChartExpanded || isChartDisplayed
 
-  const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
-
   return (
     <Page
       removePadding={isChartExpanded}
@@ -391,9 +389,10 @@ const LimitOrders = () => {
                     />
 
                     <Box id="yo">
-                      {isAccessTokenSupported && currencies.input && currencies.input.isToken && (
-                        <AccessRisk token={currencies.input} />
-                      )}
+                      {chainId &&
+                        ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId) &&
+                        currencies.input &&
+                        currencies.input.isToken && <AccessRisk token={currencies.input} />}
                     </Box>
 
                     <SwitchTokensButton
@@ -414,9 +413,10 @@ const LimitOrders = () => {
                       showUSDPrice
                     />
                     <Box>
-                      {isAccessTokenSupported && currencies.output && currencies.output.isToken && (
-                        <AccessRisk token={currencies.output} />
-                      )}
+                      {chainId &&
+                        ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId) &&
+                        currencies.output &&
+                        currencies.output.isToken && <AccessRisk token={currencies.output} />}
                     </Box>
                     <LimitOrderPrice
                       id="limit-order-desired-rate-input"
