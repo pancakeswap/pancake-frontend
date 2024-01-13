@@ -17,8 +17,8 @@ export function Controls() {
     <ControlsContainer>
       <ControlGroup>
         {/* <ViewSwitch /> */}
-        <StakeOnlyToggle />
         <LiveSwitch />
+        <StakeOnlyToggle />
       </ControlGroup>
       <ControlGroup justifyContent="flex-end">
         <SortFilter />
@@ -27,12 +27,12 @@ export function Controls() {
     </ControlsContainer>
   ) : (
     <ControlsContainer justifyContent="flex-start" flexDirection="column">
+      <ControlGroup justifyContent="flex-start">
+        <LiveSwitch />
+      </ControlGroup>
       <ControlGroup>
         {/* <ViewSwitch /> */}
         <StakeOnlyToggle />
-      </ControlGroup>
-      <ControlGroup justifyContent="flex-start">
-        <LiveSwitch />
       </ControlGroup>
       <ControlGroup>
         <SortFilter />
