@@ -8,7 +8,7 @@ type BenefitItem = {
   headImg: string
   title: React.ReactNode
   subTitle?: React.ReactNode
-  desc: string[]
+  desc: React.ReactNode[]
   btnText?: React.ReactNode
   link?: string
 }
@@ -19,7 +19,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     title: <Trans>Earn CAKE</Trans>,
     subTitle: <Trans>Total Distributed</Trans>,
     btnText: <Trans>Check Reward</Trans>,
-    desc: ['Weekly revenue sharing', 'Weekly CAKE pool rewards'],
+    desc: [<Trans>Weekly revenue sharing</Trans>, <Trans>Weekly CAKE pool rewards</Trans>],
   },
   gaugesVoting: {
     headImg: '/images/cake-staking/benefit-gauges-voting.png',
@@ -27,7 +27,10 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     subTitle: <Trans>Number of Gauges to Vote</Trans>,
     btnText: <Trans>Check Gauges</Trans>,
     link: '/gauges-voting',
-    desc: ['Boost rewards on your favorite farms', 'Claim additional incentives from other protocols'],
+    desc: [
+      <Trans>Boost rewards on your favorite farms</Trans>,
+      <Trans>Claim additional incentives from other protocols</Trans>,
+    ],
   },
   farmBoost: {
     headImg: '/images/cake-staking/benefit-farm-boost.png',
@@ -35,7 +38,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     subTitle: <Trans>Farming Boost Up To</Trans>,
     btnText: <Trans>Check Farms</Trans>,
     link: '/farms',
-    desc: ['Boost your farm earnings', 'Supports multi-chain boosts'],
+    desc: [<Trans>Boost your farm earnings</Trans>, <Trans>Supports multi-chain boosts</Trans>],
   },
   snapshotVoting: {
     headImg: '/images/cake-staking/benefit-snapshot-voting.png',
@@ -43,7 +46,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     subTitle: <Trans>Number of Proposals</Trans>,
     btnText: <Trans>Check Snapshot Voting</Trans>,
     link: '/voting',
-    desc: ['Use your veCAKE to vote on important governance proposals'],
+    desc: [<Trans>Use your veCAKE to vote on important governance proposals</Trans>],
   },
   ifo: {
     headImg: '/images/cake-staking/benefit-ifo.png',
@@ -51,16 +54,16 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     subTitle: <Trans>Tokens Sold Through IFOs</Trans>,
     btnText: <Trans>Check IFOs</Trans>,
     link: '/ifo',
-    desc: ['Participate in IFO public sales', 'Supports multi-chain IFOs'],
+    desc: [<Trans>Participate in IFO public sales</Trans>, <Trans>Supports multi-chain IFOs</Trans>],
   },
   more: {
     headImg: '/images/cake-staking/benefit-more.png',
     title: <Trans>And So Much More...</Trans>,
     btnText: <Trans>Learn more</Trans>,
     desc: [
-      'Boost your winning in Trading Rewards campaigns. Regardless which chain you are trading on.',
-      'Boost your earnings in fixed staking.',
-      'More to come...',
+      <Trans>Boost your winning in Trading Rewards campaigns. Regardless which chain you are trading on.</Trans>,
+      <Trans>Boost your earnings in fixed staking.</Trans>,
+      <Trans>More to come...</Trans>,
     ],
     link: 'https://docs.pancakeswap.finance/products',
   },
@@ -134,7 +137,7 @@ export const BenefitCard: React.FC<{
           <Text lineHeight="130%">
             <StyleUl>
               {info.desc.map((item) => (
-                <li key={item}>{t(item)}</li>
+                <li key={item?.toString()}>{item}</li>
               ))}
             </StyleUl>
           </Text>

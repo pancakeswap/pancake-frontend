@@ -1,8 +1,8 @@
-import Path from 'path'
-import fs from 'fs'
-import { describe, it, expect } from 'vitest'
 import teams from 'config/constants/teams'
+import fs from 'fs'
+import Path from 'path'
 import { NftLocation } from 'state/nftMarket/types'
+import { describe, expect, it } from 'vitest'
 
 // FIXME: should move this test file inside localization pkg
 import { translations } from '@pancakeswap/localization'
@@ -96,18 +96,6 @@ const whitelist = [
   'Buy Squad / Bunnies',
   'Swap Token',
   "Your browser doesn't support iframe",
-  'Weekly revenue sharing',
-  'Weekly CAKE pool rewards',
-  'Boost rewards on your favorite farms',
-  'Claim additional incentives from other protocols',
-  'Boost your farm earnings',
-  'Supports multi-chain boosts',
-  'Use your veCAKE to vote on important governance proposals',
-  'Participate in IFO public sales',
-  'Supports multi-chain IFOs',
-  'Boost your winning in Trading Rewards campaigns. Regardless which chain you are trading on.',
-  'Boost your earnings in fixed staking.',
-  'More to come...',
 ]
 
 describe.concurrent('Check translations integrity', () => {
