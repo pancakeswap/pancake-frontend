@@ -281,8 +281,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                       <Apr
                         {...props.apr}
                         hideButton
-                        strikethrough={props?.details?.boosted}
-                        boosted={props?.details?.boosted}
+                        strikethrough={false}
+                        boosted={false}
                         farmCakePerSecond={multiplier.farmCakePerSecond}
                         totalMultipliers={multiplier.totalMultipliers}
                       />
