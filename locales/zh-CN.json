@@ -3067,7 +3067,7 @@
   "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.": "Boost multiplier is calculated based on the staking conditions from both Farms and veCAKE. Numbers will be automatically updated upon user actions.",
   "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "铭文是区块链上一种新近的发展。$APTS 使用锁定销毁机制（lock-and-burn ），将非同质化和不可交易的 Aptos 链铭文转换为同质化和可交易的表示形式。与大多数智能合约一样，使用有一定的风险。请务必先自行研究。",
   "CAKE Pool:": "CAKE Pool:",
-  "Revenue Sharing:": "Revenue Sharing:",
+  "Revenue Sharing:": "收入分成：",
   "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "收入分成的 APR 受到多种外部因素的影响，包括交易量，每周可能有所不同。",
   "Claim Your Exclusive NFTs Now!": "Claim Your Exclusive NFTs Now!",
