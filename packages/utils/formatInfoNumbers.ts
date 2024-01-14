@@ -53,7 +53,7 @@ export const formatAmount = (
 
   let precision = 2
   if (tokenPrecision) {
-    precision = amount < 1 || tokenPrecision === 'enhanced' ? 3 : 2
+    precision = amount < 1 || tokenPrecision === 'enhanced' ? 5 : 2
   }
 
   const amountWithPrecision = parseFloat(amount?.toFixed(precision))

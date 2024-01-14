@@ -98,7 +98,7 @@ const BasicChart = ({
             outputSymbol={outputCurrency?.symbol}
           >
             <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" ml="4px" bold>
-              {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
+              {`${isChangePositive ? '+' : ''}${changeValue.toFixed(5)} (${changePercentage}%)`}
             </Text>
           </PairPriceDisplay>
           <Text small color="secondary">
