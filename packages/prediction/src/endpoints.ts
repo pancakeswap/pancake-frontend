@@ -16,6 +16,12 @@ export const GRAPH_API_PREDICTION_CAKE = {
 
 export const GRAPH_API_PREDICTION_ETH = {
   [ChainId.BSC]: '',
-  [ChainId.ARBITRUM_ONE]: '',
   [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/48759/prediction-v2-zksync-era/version/latest',
+  [ChainId.ARBITRUM_ONE]: 'https://thegraph.com/hosted-service/subgraph/chef-cannoli/prediction-v2-arbitrum-one',
+} as const satisfies EndPointType<SupportedChainId>
+
+export const GRAPH_API_PREDICTION_WBTC = {
+  [ChainId.BSC]: '',
+  [ChainId.ZKSYNC]: '',
+  [ChainId.ARBITRUM_ONE]: 'https://thegraph.com/hosted-service/subgraph/chef-cannoli/prediction-v2-arbitrum-one',
 } as const satisfies EndPointType<SupportedChainId>
