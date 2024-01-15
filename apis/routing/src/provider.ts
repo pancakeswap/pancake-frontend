@@ -1,10 +1,14 @@
-import { ChainId, V3_SUBGRAPHS } from '@pancakeswap/chains'
+import { ChainId, getV3Subgraphs } from '@pancakeswap/chains'
 import { OnChainProvider, SubgraphProvider } from '@pancakeswap/smart-router/evm'
 import { createPublicClient, http } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
 import { GraphQLClient } from 'graphql-request'
 
 import { SupportedChainId } from './constants'
+
+const V3_SUBGRAPHS = getV3Subgraphs({
+  noderealApiKey: NODE_REAL_SUBGRAPH_API_KEY,
+})
 
 const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE]
 requireCheck.forEach((node) => {
