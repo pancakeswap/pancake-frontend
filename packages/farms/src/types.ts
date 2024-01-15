@@ -53,7 +53,6 @@ export interface FarmConfigBaseProps {
   auctionHostingStartSeconds?: number
   auctionHostingEndDate?: string
   dual?: {
-    earnLabel: string
     token: SerializedWrappedToken
   }
   boosted?: boolean

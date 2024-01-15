@@ -61,7 +61,6 @@ const farms: SerializedFarmConfig[] = [
     token: L0_USDC[ChainId.TESTNET],
     quoteToken: testnetTokens.apt,
     dual: {
-      earnLabel: 'CAKE + APT + Fees',
       token: testnetTokens.apt,
     },
   },

@@ -1,15 +1,17 @@
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { LightGreyCard } from 'components/Card'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { styled } from 'styled-components'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { HarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
 import { StakedContainer } from '../FarmTable/Actions/StakedAction'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
 
-const Action = styled.div`
-  padding-top: 16px;
+const GreyLine = styled.div`
+  margin: 24px 0;
+  border-top: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
 interface FarmCardActionsProps {
@@ -28,23 +30,22 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const { pid, lpAddress } = farm
-  const { earnings } = farm.userData || {}
+  const { pid, lpAddress, dual } = farm
+  const { earnings, earningsDualTokenBalance } = farm.userData || {}
   const isReady = farm.multiplier !== undefined
 
   return (
-    <Action>
-      <Flex>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-          CAKE
-        </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Earned')}
-        </Text>
-      </Flex>
-      <HarvestActionContainer earnings={earnings} pid={pid} lpAddress={lpAddress}>
+    <LightGreyCard mt="24px" padding="16px">
+      <HarvestActionContainer
+        pid={pid}
+        lpAddress={lpAddress}
+        earnings={earnings}
+        dual={dual}
+        earningsDualTokenBalance={earningsDualTokenBalance}
+      >
         {(props) => <HarvestAction {...props} />}
       </HarvestActionContainer>
+      <GreyLine />
       {isReady ? (
         <Flex>
           <Text bold color="secondary" fontSize="12px" pr="4px">
@@ -64,7 +65,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           {(props) => <StakeAction {...props} />}
         </StakedContainer>
       )}
-    </Action>
+    </LightGreyCard>
   )
 }
 

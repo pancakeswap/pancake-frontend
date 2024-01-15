@@ -1,17 +1,17 @@
+import { TransactionResponse } from '@pancakeswap/awgmi/core'
+import type { DeserializedFarmUserData } from '@pancakeswap/farms'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { usePriceCakeUsdc } from 'hooks/useStablePrice'
-import type { DeserializedFarmUserData } from '@pancakeswap/farms'
-import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { usePriceCakeUsdc } from 'hooks/useStablePrice'
+import { useRouter } from 'next/router'
+import { styled } from 'styled-components'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -111,6 +111,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const renderStakingButtons = () => {
     return stakedBalance.eq(0) ? (
       <Button
+        mt="16px"
         onClick={onPresentDeposit}
         disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
       >
@@ -133,7 +134,11 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   }
 
   return (
-    <Flex justifyContent="space-between" alignItems="center">
+    <Flex
+      justifyContent="space-between"
+      flexDirection={stakedBalance.eq(0) ? 'column' : 'row'}
+      alignItems={stakedBalance.eq(0) ? 'none' : 'center'}
+    >
       <FarmWidget.StakedLP
         decimals={FARM_DEFAULT_DECIMALS}
         stakedBalance={stakedBalance}
