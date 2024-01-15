@@ -192,11 +192,16 @@ const SwapCommitButton = memo(function SwapCommitButton({
   }, [swapCallback, swapCallbackRevertReason])
 
   // todo
-  const { execute: onStep } = usePermit(amountToApprove, getUniversalRouterAddress(chainId), onConfirmSwap)
+  const { execute: onStep, approvalState } = usePermit(
+    amountToApprove,
+    getUniversalRouterAddress(chainId),
+    onConfirmSwap,
+  )
 
   const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalStateV2(
     onStep,
     amountToApprove,
+    approvalState,
     getUniversalRouterAddress(chainId),
   )
   const reset = useCallback(() => {
