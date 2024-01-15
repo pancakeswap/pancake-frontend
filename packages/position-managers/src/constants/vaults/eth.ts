@@ -8,7 +8,7 @@ export const vaults: VaultConfig[] = [
     id: 4,
     idByManager: 1,
     name: 'BRIL',
-    address: '0x6F8D43f50c20cf01dFa3DaE0577447933fc5D7c5',
+    address: '0x2b0Ca7A851aAc56fcACAB3ee85B8Dd96DE799aCa',
     adapterAddress: '0x260911533F8c42DCaAea4cAE62234284CdDbFa64',
     currencyA: ethereumTokens.weth,
     currencyB: ethereumTokens.usdt,
