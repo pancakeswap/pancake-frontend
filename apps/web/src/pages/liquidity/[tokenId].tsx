@@ -32,7 +32,7 @@ import { MasterChefV3, NonfungiblePositionManager, Pool, Position, isPoolTickInR
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import { useFarm } from 'hooks/useFarm'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'

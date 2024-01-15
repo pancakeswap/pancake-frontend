@@ -1,7 +1,7 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { Balance, Text } from '@pancakeswap/uikit'
 
-import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
+import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import toNumber from 'lodash/toNumber'
 import React from 'react'
 

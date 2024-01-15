@@ -17,7 +17,7 @@ import { styled } from 'styled-components'
 
 import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 import { Bound } from 'config/constants/types'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useFarm } from 'hooks/useFarm'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'

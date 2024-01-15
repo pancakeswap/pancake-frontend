@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { FeeAmount, Position } from '@pancakeswap/v3-sdk'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useMemo } from 'react'
 import { PositionDetails } from '@pancakeswap/farms'
 import { usePool } from './usePools'
