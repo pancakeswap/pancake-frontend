@@ -20,6 +20,7 @@ const Leaderboard = () => {
   const { address: account } = useAccount()
   const filters = useGetLeaderboardFilters()
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
+  const [isReady, setIsReady] = useState<boolean>(false)
   const [pickedChainId, setPickedChainId] = useState<ChainId>(ChainId.BSC)
   const [pickedTokenSymbol, setPickedTokenSymbol] = useState<PredictionSupportedSymbol>(PredictionSupportedSymbol.BNB)
   const predictionConfigs = usePredictionConfigs(pickedChainId)
@@ -40,15 +41,17 @@ const Leaderboard = () => {
           : (Object.values(predictionConfigs)?.[0]?.token?.symbol as PredictionSupportedSymbol)
 
       setPickedTokenSymbol(defaultPickedTokenSymbol)
+      setIsReady(true)
     }
   }, [query, predictionConfigs, pickedChainId])
 
   useEffect(() => {
-    if (predictionConfigs) {
+    if (predictionConfigs && isReady) {
       const extra = predictionConfigs?.[pickedTokenSymbol] ?? Object.values(predictionConfigs)?.[0]
       dispatch(filterLeaderboard({ filters, extra }))
+      setIsReady(false)
     }
-  }, [account, filters, dispatch, predictionConfigs, pickedChainId, pickedTokenSymbol])
+  }, [isReady, account, filters, dispatch, predictionConfigs, pickedChainId, pickedTokenSymbol])
 
   if (leaderboardLoadingState === FetchStatus.Idle) {
     return <PageLoader />
