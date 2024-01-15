@@ -17,11 +17,11 @@ export const GRAPH_API_PREDICTION_CAKE = {
 export const GRAPH_API_PREDICTION_ETH = {
   [ChainId.BSC]: '',
   [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/48759/prediction-v2-zksync-era/version/latest',
-  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/chef-cannoli/prediction-v2-arbitrum-one',
+  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-v2-arbitrum',
 } as const satisfies EndPointType<SupportedChainId>
 
 export const GRAPH_API_PREDICTION_WBTC = {
   [ChainId.BSC]: '',
   [ChainId.ZKSYNC]: '',
-  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/chef-cannoli/prediction-v2-arbitrum-one',
+  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-v2-arbitrum',
 } as const satisfies EndPointType<SupportedChainId>
