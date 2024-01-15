@@ -8,6 +8,7 @@ import { getDisplayFarmCakePerSecond } from '../getDisplayFarmCakePerSecond'
 import ApyButton from './ApyButton'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
+import { EarnedUsdPrice } from './EarnedUsdPrice'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -89,7 +90,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
         />
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
-          <Text>TODO</Text>
+          <EarnedUsdPrice />
         </Flex>
         {!removed && (
           <>
