@@ -11,6 +11,7 @@ type BenefitItem = {
   desc: React.ReactNode[]
   btnText?: React.ReactNode
   link?: string
+  key?: string
 }
 
 export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
@@ -20,6 +21,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     subTitle: <Trans>Total Distributed</Trans>,
     btnText: <Trans>Check Reward</Trans>,
     desc: [<Trans>Weekly revenue sharing</Trans>, <Trans>Weekly CAKE pool rewards</Trans>],
+    key: 'benefit-earn-cake',
   },
   gaugesVoting: {
     headImg: '/images/cake-staking/benefit-gauges-voting.png',
@@ -31,6 +33,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
       <Trans>Boost rewards on your favorite farms</Trans>,
       <Trans>Claim additional incentives from other protocols</Trans>,
     ],
+    key: 'benefit-gauges-voting.',
   },
   farmBoost: {
     headImg: '/images/cake-staking/benefit-farm-boost.png',
@@ -39,6 +42,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     btnText: <Trans>Check Farms</Trans>,
     link: '/farms',
     desc: [<Trans>Boost your farm earnings</Trans>, <Trans>Supports multi-chain boosts</Trans>],
+    key: 'benefit-farm-boost',
   },
   snapshotVoting: {
     headImg: '/images/cake-staking/benefit-snapshot-voting.png',
@@ -47,6 +51,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     btnText: <Trans>Check Snapshot Voting</Trans>,
     link: '/voting',
     desc: [<Trans>Use your veCAKE to vote on important governance proposals</Trans>],
+    key: 'benefit-snapshot-voting',
   },
   ifo: {
     headImg: '/images/cake-staking/benefit-ifo.png',
@@ -55,6 +60,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     btnText: <Trans>Check IFOs</Trans>,
     link: '/ifo',
     desc: [<Trans>Participate in IFO public sales</Trans>, <Trans>Supports multi-chain IFOs</Trans>],
+    key: 'benefit-ifo',
   },
   more: {
     headImg: '/images/cake-staking/benefit-more.png',
@@ -66,6 +72,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
       <Trans>More to come...</Trans>,
     ],
     link: 'https://docs.pancakeswap.finance/products',
+    key: 'benefit-more',
   },
 }
 
@@ -136,8 +143,9 @@ export const BenefitCard: React.FC<{
         <div>
           <Text lineHeight="130%">
             <StyleUl>
-              {info.desc.map((item) => (
-                <li key={item?.toString()}>{item}</li>
+              {info.desc.map((item, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <li key={`${info.key}-${index}`}>{item}</li>
               ))}
             </StyleUl>
           </Text>
