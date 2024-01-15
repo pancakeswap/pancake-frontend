@@ -57,6 +57,7 @@ export type V3RowProps = {
 
 type RowPropsWithLoading = {
   userDataReady: boolean
+  isLastFarm: boolean
 } & RowProps
 
 const cells = {
@@ -303,9 +304,19 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
         <tr>
           <td colSpan={9}>
             {props.type === 'v3' ? (
-              <ActionPanelV3 {...props} expanded={actionPanelExpanded} alignLinksToRight={isMobile} />
+              <ActionPanelV3
+                {...props}
+                expanded={actionPanelExpanded}
+                alignLinksToRight={isMobile}
+                isLastFarm={props.isLastFarm}
+              />
             ) : (
-              <ActionPanelV2 {...props} expanded={actionPanelExpanded} alignLinksToRight={isMobile} />
+              <ActionPanelV2
+                {...props}
+                expanded={actionPanelExpanded}
+                alignLinksToRight={isMobile}
+                isLastFarm={props.isLastFarm}
+              />
             )}
           </td>
         </tr>
