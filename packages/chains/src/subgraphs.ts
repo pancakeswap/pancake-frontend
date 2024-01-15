@@ -34,3 +34,15 @@ export const V2_SUBGRAPHS = {
   [ChainId.BASE]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-base/version/latest',
   [ChainId.OPBNB]: 'https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/exchange-v2',
 }
+
+export const BLOCKS_SUBGRAPHS = {
+  [ChainId.BSC]:
+    'https://open-platform-ap.nodereal.io/19bd2b3f75c24e23bb8a0e9d4f55b271/opbnb-mainnet-graph-query/subgraphs/name/pancakeswap/blocks',
+  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
+  [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
+  [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest',
+  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
+  [ChainId.LINEA]: 'https://graph-query.linea.build/subgraphs/name/kybernetwork/linea-blocks',
+  [ChainId.BASE]: 'https://api.studio.thegraph.com/query/48211/base-blocks/version/latest',
+  [ChainId.OPBNB]: 'https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/blocks',
+}
