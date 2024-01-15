@@ -2908,7 +2908,7 @@ export const bscTokens = {
     'Rebase (IRL)',
     'https://rebase.gg/',
   ),
-  ords: new ERC20Token(
+  huahua: new ERC20Token(
     ChainId.BSC,
     '0x9fD470124903957f299a1C90fEdA9043A4619cc6',
     6,
