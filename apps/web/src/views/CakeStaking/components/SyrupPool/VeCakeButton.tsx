@@ -1,18 +1,17 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans } from '@pancakeswap/localization'
 import { Button } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { memo } from 'react'
 
 const BUTTON_TEXT = {
-  get: 'Get veCAKE now!',
-  migrate: 'Migrate to veCAKE',
-  check: 'Check out veCAKE',
+  get: <Trans>Get veCAKE now!</Trans>,
+  migrate: <Trans>Migrate to veCAKE</Trans>,
+  check: <Trans>Check out veCAKE</Trans>,
 }
 
 export const VeCakeButton: React.FC<{ type: 'get' | 'migrate' | 'check'; style?: React.CSSProperties }> = memo(
   ({ type, style }) => {
     const { push } = useRouter()
-    const { t } = useTranslation()
     return (
       <Button
         width="100%"
@@ -21,7 +20,7 @@ export const VeCakeButton: React.FC<{ type: 'get' | 'migrate' | 'check'; style?:
           push('/cake-staking')
         }}
       >
-        {t(BUTTON_TEXT[type])}
+        {BUTTON_TEXT[type]}
       </Button>
     )
   },
