@@ -16,7 +16,8 @@ export const V3_SUBGRAPHS = {
     'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exchange-v3-linea-goerli',
   [ChainId.BASE]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest',
   [ChainId.BASE_TESTNET]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-base-testnet/version/latest',
-  [ChainId.OPBNB]: 'https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/exchange-v3',
+  [ChainId.OPBNB]:
+    'https://open-platform-ap.nodereal.io/19bd2b3f75c24e23bb8a0e9d4f55b271/opbnb-mainnet-graph-query/subgraphs/name/pancakeswap/exchange-v3',
   [ChainId.OPBNB_TESTNET]: null,
   [ChainId.SCROLL_SEPOLIA]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-scroll-sepolia/version/latest',
 } satisfies Record<ChainId, string | null>
