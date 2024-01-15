@@ -1,27 +1,36 @@
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { ConfirmModalState } from '@pancakeswap/widgets-internal'
-import { usePermit, usePermitRequirements } from 'hooks/usePermitStatus'
-import { useCallback, useState } from 'react'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { usePermitRequirements } from 'hooks/usePermitStatus'
+import { useCallback, useEffect, useState } from 'react'
 import { isUserRejected } from 'utils/sentry'
 import { Address, UserRejectedRequestError } from 'viem'
+import { usePublicClient } from 'wagmi'
+import { SendTransactionResult } from 'wagmi/actions'
 import { PendingConfirmModalState } from '../types'
 import { TransactionRejectedError } from './useSendSwapTransaction'
 
 export const useConfirmModalStateV2 = (
-  amount: CurrencyAmount<Token> | undefined,
+  onStep: () => Promise<SendTransactionResult | undefined>,
+  amount: CurrencyAmount<Currency> | undefined,
   spender?: Address,
-  onConfirm?: () => void,
 ) => {
+  const { chainId } = useActiveChainId()
+  const provider = usePublicClient({ chainId })
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalState[]>([])
+  const [txHash, setTxHash] = useState<string | undefined>(undefined)
   const [swapErrorMessage, setSwapErrorMessage] = useState<string | undefined>(undefined)
-  const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(amount, spender)
-  const { execute } = usePermit(amount, spender, onConfirm)
+  const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(
+    amount?.currency.isToken ? (amount as CurrencyAmount<Token>) : undefined,
+    spender,
+  )
 
   const resetConfirmModalState = useCallback(() => {
     console.debug('debug resetConfirmModalState')
     setConfirmModalState(ConfirmModalState.REVIEWING)
     setSwapErrorMessage(undefined)
+    setTxHash(undefined)
   }, [])
 
   const generateRequiredSteps = useCallback(() => {
@@ -58,23 +67,26 @@ export const useConfirmModalStateV2 = (
         }
       }
 
-      await execute()
+      const result = await onStep()
+      if (result && result.hash) {
+        setTxHash(result.hash)
+      }
     } catch (error: any) {
       console.debug('debug performStep', error)
+      console.error(error)
       if (
         error instanceof UserRejectedRequestError ||
         error instanceof TransactionRejectedError ||
-        isUserRejected(error)
+        (typeof error !== 'string' && isUserRejected(error))
       ) {
         console.debug('debug performStep', 'UserRejectedRequestError')
         resetConfirmModalState()
       } else {
-        console.error(error)
         setSwapErrorMessage(typeof error === 'string' ? error : error?.message)
         throw error
       }
     }
-  }, [confirmModalState, execute, pendingModalSteps, resetConfirmModalState])
+  }, [confirmModalState, onStep, pendingModalSteps, resetConfirmModalState])
 
   const startSwap = useCallback(() => {
     const steps = generateRequiredSteps()
@@ -85,6 +97,22 @@ export const useConfirmModalStateV2 = (
     )
     performStep()
   }, [generateRequiredSteps, performStep])
+
+  const checkHashIsReceipted = useCallback(
+    async (hash) => {
+      const receipt: any = await provider.waitForTransactionReceipt({ hash })
+      if (receipt.status === 'success') {
+        setConfirmModalState(ConfirmModalState.COMPLETED)
+      }
+    },
+    [setConfirmModalState, provider],
+  )
+
+  useEffect(() => {
+    if (txHash && confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
+      checkHashIsReceipted(txHash)
+    }
+  }, [checkHashIsReceipted, confirmModalState, txHash])
 
   return {
     confirmModalState,
