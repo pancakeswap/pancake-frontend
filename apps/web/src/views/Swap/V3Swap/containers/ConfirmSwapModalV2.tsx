@@ -1,19 +1,25 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
-import { Box, Flex, InjectedModalProps } from '@pancakeswap/uikit'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import {
   ApproveModalContent,
   ConfirmModalState,
   PendingApproveModalState,
   SwapPendingModalContent,
+  SwapTransactionReceiptModalContent,
 } from '@pancakeswap/widgets-internal'
+import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
+import { getBlockExploreLink, getBlockExploreName } from 'utils'
+import { wrappedCurrency } from 'utils/wrappedCurrency'
 import ConfirmSwapModalContainer from 'views/Swap/components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from 'views/Swap/components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
@@ -34,7 +40,7 @@ type ConfirmSwapModalV2Props = InjectedModalProps & {
   txHash?: string
   swapErrorMessage?: string
   onAcceptChanges: () => void
-  onConfirm: () => void
+  onConfirm: (setConfirmModalState?: () => void) => void
   openSettingModal?: () => void
 }
 
@@ -48,6 +54,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
   isRFQReady,
   trade,
   originalTrade,
+  txHash,
   currencyBalances,
   openSettingModal,
   onAcceptChanges,
@@ -66,6 +73,10 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
   }, [confirmModalState])
 
   const stepContents = useApprovalPhaseStepTitles({ trade })
+  const token: Token | undefined = useMemo(
+    () => wrappedCurrency(trade?.outputAmount?.currency, chainId),
+    [chainId, trade?.outputAmount?.currency],
+  )
 
   const handleDismiss = useCallback(() => {
     if (typeof customOnDismiss === 'function') {
@@ -114,15 +125,60 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
     ) {
       return (
         <SwapPendingModalContent
-          title={t('Confirm Swap')}
+          title={txHash ? t('Transaction Submitted') : t('Confirm Swap')}
           currencyA={currencyA}
           currencyB={currencyB}
           amountA={amountA}
           amountB={amountB}
           currentStep={confirmModalState}
         >
-          TODO
+          {txHash ? (
+            <AddToWalletButton
+              mt="39px"
+              height="auto"
+              variant="tertiary"
+              width="fit-content"
+              padding="6.5px 20px"
+              marginTextBetweenLogo="6px"
+              textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
+              tokenAddress={token?.address}
+              tokenSymbol={currencyB?.symbol}
+              tokenDecimals={token?.decimals}
+              tokenLogo={token instanceof WrappedTokenInfo ? (token as WrappedTokenInfo)?.logoURI : undefined}
+            />
+          ) : null}
         </SwapPendingModalContent>
+      )
+    }
+
+    if (confirmModalState === ConfirmModalState.COMPLETED && txHash) {
+      return (
+        <SwapTransactionReceiptModalContent
+          explorerLink={
+            chainId ? (
+              <Link external small href={getBlockExploreLink(txHash, 'transaction', chainId)}>
+                {t('View on %site%', { site: getBlockExploreName(chainId) })}: {truncateHash(txHash, 8, 0)}
+                {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />}
+              </Link>
+            ) : (
+              <></>
+            )
+          }
+        >
+          <AddToWalletButton
+            mt="39px"
+            height="auto"
+            variant="tertiary"
+            width="fit-content"
+            padding="6.5px 20px"
+            marginTextBetweenLogo="6px"
+            textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
+            tokenAddress={token?.address}
+            tokenSymbol={currencyB?.symbol}
+            tokenDecimals={token?.decimals}
+            tokenLogo={token instanceof WrappedTokenInfo ? (token as WrappedTokenInfo)?.logoURI : undefined}
+          />
+        </SwapTransactionReceiptModalContent>
       )
     }
 
@@ -141,6 +197,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
     )
   }, [
     allowedSlippage,
+    chainId,
     confirmModalState,
     currencyBalances,
     handleDismiss,
@@ -155,7 +212,9 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
     stepContents,
     swapErrorMessage,
     t,
+    token,
     trade,
+    txHash,
   ])
 
   if (!chainId) return null
@@ -164,11 +223,13 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
     <ConfirmSwapModalContainer
       minHeight="415px"
       width={['100%', '100%', '100%', '367px']}
+      hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING || swapErrorMessage !== undefined}
       headerPadding={loadingAnimationVisible ? '12px 24px 0px 24px !important' : '12px 24px'}
       bodyPadding={loadingAnimationVisible ? '0 24px 24px 24px' : '24px'}
       bodyTop={loadingAnimationVisible ? '-15px' : '0'}
       handleDismiss={handleDismiss}
     >
+      <>txHash:{txHash}</>
       confirmModalState: {ConfirmModalState[confirmModalState]}
       <Box>{modalContent}</Box>
       {loadingAnimationVisible ? (

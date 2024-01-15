@@ -6,7 +6,6 @@ import React, { memo, useCallback, useMemo, useState } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
-import { useExpertMode } from '@pancakeswap/utils/user'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -16,8 +15,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { usePermitStatus } from 'hooks/usePermitStatus'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { usePermit, usePermitStatus } from 'hooks/usePermitStatus'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
@@ -29,6 +27,8 @@ import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
 import { useConfirmModalStateV2 } from '../hooks/useConfirmModalStateV2'
 import { useSwapCallback } from '../hooks/useSwapCallback'
+import { useSwapConfig } from '../hooks/useSwapConfig'
+import { useSwapCurrency } from '../hooks/useSwapCurrency'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModalV2 } from './ConfirmSwapModalV2'
 
@@ -125,22 +125,22 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const { t } = useTranslation()
   const chainId = useChainId()
   // form data
-  const {
-    typedValue,
-    independentField,
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
-  } = useSwapState()
+  const { typedValue, independentField } = useSwapState()
   console.debug('x', typedValue)
-  const inputCurrency = useCurrency(inputCurrencyId) as Currency
-  const outputCurrency = useCurrency(outputCurrencyId) as Currency
-  const [isExpertMode] = useExpertMode()
-  const deadline = useTransactionDeadline()
+  const [inputCurrency, outputCurrency] = useSwapCurrency()
+  const { isExpertMode, deadline } = useSwapConfig()
 
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
-  const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
+  const amountToApprove = useMemo(
+    () => (inputCurrency?.isNative ? undefined : slippageAdjustedAmounts[Field.INPUT]),
+    [inputCurrency?.isNative, slippageAdjustedAmounts],
+  )
 
-  const { allowance } = usePermitStatus(inputCurrency, account, getUniversalRouterAddress(chainId))
+  const { allowance } = usePermitStatus(
+    inputCurrency?.isToken ? inputCurrency : undefined,
+    account,
+    getUniversalRouterAddress(chainId),
+  )
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -182,8 +182,9 @@ const SwapCommitButton = memo(function SwapCommitButton({
     try {
       const result = await swapCallback()
       setTxHash(result.hash)
-      return result.hash
+      return result
     } catch (error: any) {
+      console.error(error)
       setSwapErrorMessage(typeof error === 'string' ? error : error?.message)
 
       throw error
@@ -191,11 +192,12 @@ const SwapCommitButton = memo(function SwapCommitButton({
   }, [swapCallback, swapCallbackRevertReason])
 
   // todo
+  const { execute: onStep } = usePermit(amountToApprove, getUniversalRouterAddress(chainId), onConfirmSwap)
 
   const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalStateV2(
+    onStep,
     amountToApprove,
     getUniversalRouterAddress(chainId),
-    onConfirmSwap,
   )
   const reset = useCallback(() => {
     resetConfirmModalState()

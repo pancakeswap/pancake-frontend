@@ -5,7 +5,7 @@ import {
   generatePermitTypedData,
   getPermit2Address,
 } from '@pancakeswap/permit2-sdk'
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { useQuery } from '@tanstack/react-query'
@@ -45,9 +45,9 @@ export const usePermitStatus = (token?: Token, owner?: Address, spender?: Addres
   )
 }
 
-const useTokenAllowanceToPermit = (token?: Token, owner?: Address) => {
+const useTokenAllowanceToPermit = (token?: Currency, owner?: Address) => {
   const { chainId } = useActiveChainId()
-  const { allowance } = useTokenAllowance(token, owner, getPermit2Address(chainId))
+  const { allowance } = useTokenAllowance(token?.isNative ? undefined : token, owner, getPermit2Address(chainId))
   return allowance
 }
 
@@ -69,7 +69,7 @@ const useTokenPermit = (token?: Token, owner?: Address, spender?: Address) => {
   const { data: permit } = useQuery(
     ['/token-permit/', chainId, token?.address, owner, spender],
     () =>
-      chainId
+      chainId && !token?.isNative
         ? publicClient({ chainId }).readContract({
             abi: Permit2ABI,
             address: getPermit2Address(chainId),
@@ -83,7 +83,7 @@ const useTokenPermit = (token?: Token, owner?: Address, spender?: Address) => {
       refetchOnWindowFocus: false,
       enabled: Boolean(token && spender && owner),
       select: (data) => {
-        if (!data) return undefined
+        if (!data || token?.isNative) return undefined
         const [amount, expiration, nonce] = data
         return {
           permitAmount: CurrencyAmount.fromRawAmount(token!, amount),
@@ -158,32 +158,38 @@ export const usePermitRequirements = (amount: CurrencyAmount<Token> | undefined,
   }, [allowance, amount])
 
   const requirePermit = useMemo(() => {
-    return (amount && permitAmount?.lessThan(amount)) || now >= expiration
+    return (amount && permitAmount?.lessThan(amount)) || (Boolean(expiration) && now >= expiration)
   }, [permitAmount, amount, now, expiration])
 
-  return useMemo(
-    () => ({
+  return useMemo(() => {
+    console.debug('debug permit requirements', {
       requireRevoke,
       requireApprove,
       requirePermit,
-    }),
-    [requireApprove, requirePermit, requireRevoke],
-  )
+    })
+    return {
+      requireApprove,
+      requireRevoke,
+      requirePermit,
+    }
+  }, [requireApprove, requirePermit, requireRevoke])
 }
 
-export const usePermit = <T extends Token>(
-  amount: CurrencyAmount<T> | undefined,
+export const usePermit = (
+  amount: CurrencyAmount<Currency> | undefined,
   spender?: Address,
-  onPermitDone?: () => unknown,
+  onPermitDone?: () => Promise<SendTransactionResult | undefined>,
 ) => {
   const { account, chainId } = useAccountActiveChain()
 
   const [permitState, setPermitState] = useState<PermitState>(PermitState.IDLE)
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature>()
 
-  const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(amount, spender)
-  const { nonce } = usePermitStatus(amount?.currency, account, spender)
-  const permitCallback = useWritePermit(amount?.currency, spender, nonce)
+  const tokenAmount = amount?.currency.isToken ? (amount as CurrencyAmount<Token>) : undefined
+
+  const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(tokenAmount, spender)
+  const { nonce } = usePermitStatus(tokenAmount?.currency, account, spender)
+  const permitCallback = useWritePermit(tokenAmount?.currency, spender, nonce)
 
   const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, getPermit2Address(chainId))
 
@@ -226,7 +232,7 @@ export const usePermit = <T extends Token>(
         break
       case PermitState.DONE:
         // todo allowance and permit are enough, call swap
-        if (onPermitDone) onPermitDone()
+        if (onPermitDone) return onPermitDone()
         break
       default:
         break
