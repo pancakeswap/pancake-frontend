@@ -73,6 +73,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
   }, [confirmModalState])
 
   const stepContents = useApprovalPhaseStepTitles({ trade })
+  console.debug('debug stepContents', stepContents)
   const token: Token | undefined = useMemo(
     () => wrappedCurrency(trade?.outputAmount?.currency, chainId),
     [chainId, trade?.outputAmount?.currency],
@@ -104,12 +105,17 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
         </Flex>
       )
     }
-    if (confirmModalState === ConfirmModalState.APPROVING_TOKEN) {
+    if (
+      confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+      confirmModalState === ConfirmModalState.PERMITTING ||
+      confirmModalState === ConfirmModalState.RESETTING_APPROVAL
+    ) {
       return (
         <ApproveModalContent
           title={stepContents}
           isMM={isMM}
-          isBonus={Boolean('TODO')}
+          // TODO
+          isBonus={false}
           currencyA={currencyA as Currency}
           asBadge
           currentStep={confirmModalState}
@@ -118,11 +124,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
       )
     }
 
-    if (
-      confirmModalState === ConfirmModalState.PERMITTING ||
-      confirmModalState === ConfirmModalState.RESETTING_APPROVAL ||
-      confirmModalState === ConfirmModalState.PENDING_CONFIRMATION
-    ) {
+    if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
       return (
         <SwapPendingModalContent
           title={txHash ? t('Transaction Submitted') : t('Confirm Swap')}
