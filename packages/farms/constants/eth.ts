@@ -48,6 +48,7 @@ export const farmsV3 = defineFarmV3Configs([
     feeAmount: FeeAmount.MEDIUM,
   },
   // Keep those farms on top
+
   {
     pid: 54,
     lpAddress: '0xBc1a2e1B745497D214B99F359369d304D0aCf935',
