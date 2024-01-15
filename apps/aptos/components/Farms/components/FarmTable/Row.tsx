@@ -28,6 +28,7 @@ export interface RowProps {
 
 interface RowPropsWithLoading extends RowProps {
   userDataReady: boolean
+  isLastFarm: boolean
 }
 
 const cells = {
@@ -218,7 +219,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {shouldRenderChild && (
         <tr>
           <td colSpan={7}>
-            <ActionPanel {...props} expanded={actionPanelExpanded} alignLinksToRight={isMobile} />
+            <ActionPanel
+              {...props}
+              expanded={actionPanelExpanded}
+              alignLinksToRight={isMobile}
+              isLastFarm={props.isLastFarm}
+            />
           </td>
         </tr>
       )}

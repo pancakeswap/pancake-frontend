@@ -19,6 +19,7 @@ export interface ActionPanelProps {
   userDataReady: boolean
   expanded: boolean
   alignLinksToRight?: boolean
+  isLastFarm: boolean
 }
 
 const expandAnimation = keyframes`
@@ -39,7 +40,7 @@ const collapseAnimation = keyframes`
   }
 `
 
-const Container = styled.div<{ expanded }>`
+const Container = styled.div<{ expanded; isLastFarm }>`
   animation: ${({ expanded }) =>
     expanded
       ? css`
@@ -60,6 +61,7 @@ const Container = styled.div<{ expanded }>`
     align-items: center;
     padding: 16px 32px;
   }
+  ${({ isLastFarm }) => isLastFarm && `border-radius: 0 0 32px 32px;`}
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
@@ -111,6 +113,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   userDataReady,
   expanded,
   alignLinksToRight = true,
+  isLastFarm,
 }) => {
   const farm = details
   const { isDesktop } = useMatchBreakpoints()
@@ -128,7 +131,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   })
 
   return (
-    <Container expanded={expanded}>
+    <Container expanded={expanded} isLastFarm={isLastFarm}>
       <InfoContainer>
         <ValueContainer>
           {farm.isCommunity && farm.auctionHostingEndDate && (

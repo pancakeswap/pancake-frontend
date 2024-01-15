@@ -192,9 +192,18 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <TableBody>
-              {sortedRows?.map((row) => (
-                <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}`} />
-              ))}
+              {sortedRows?.map((row, index) => {
+                const isLastFarm = index === sortedRows.length - 1
+
+                return (
+                  <Row
+                    {...row}
+                    userDataReady={userDataReady}
+                    key={`table-row-${row.farm.pid}`}
+                    isLastFarm={isLastFarm}
+                  />
+                )
+              })}
             </TableBody>
           </StyledTable>
         </TableWrapper>
