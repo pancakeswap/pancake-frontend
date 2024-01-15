@@ -209,6 +209,9 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
   lpTokenStakedAmount?: BigNumber
+  dual?: {
+    token: Token
+  }
 }
 
 export interface DeserializedFarmsState {

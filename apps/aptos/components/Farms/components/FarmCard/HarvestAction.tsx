@@ -2,7 +2,7 @@ import { Token } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount } from '@pancakeswap/awgmi'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, useToast } from '@pancakeswap/uikit'
+import { Box, Button, Flex, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
@@ -14,8 +14,10 @@ import { CAKE } from 'config/coins'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useActiveChainId } from 'hooks/useNetwork'
 import { usePriceCakeUsdc, useTokenUsdcPrice } from 'hooks/useStablePrice'
+import { useMemo } from 'react'
 
 interface FarmCardActionsProps {
+  isTableView?: boolean
   pid?: number
   earnings?: BigNumber
   dual?: {
@@ -27,6 +29,7 @@ interface FarmCardActionsProps {
 }
 
 const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
+  isTableView,
   earnings,
   dual,
   earningsDualTokenBalance,
@@ -36,6 +39,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { t } = useTranslation()
   const chainId = useActiveChainId()
   const { account } = useAccount()
+  const { isDesktop, isTablet } = useMatchBreakpoints()
   const isUserIpPass = useCheckIsUserIpPass()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -67,24 +71,28 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
     }
   }
 
+  const showCustomTableCss = useMemo(() => isTableView && (isDesktop || isTablet), [isDesktop, isTablet, isTableView])
+
   return (
     <Flex mb="8px" flexDirection="column">
-      <EarnedTokenInfo
-        token={CAKE[chainId]}
-        displayBalance={displayBalance}
-        earningsBalance={rawEarningsBalance}
-        earningsBusd={earningsBusd}
-      />
-      {dual?.token && (
-        <Box mt="16px">
-          <EarnedTokenInfo
-            token={dual.token}
-            displayBalance={dualTokenDisplayBalance}
-            earningsBalance={dualEarningsBalance}
-            earningsBusd={dualTokenUsdc}
-          />
-        </Box>
-      )}
+      <Flex flexDirection={showCustomTableCss ? 'row' : 'column'}>
+        <EarnedTokenInfo
+          token={CAKE[chainId]}
+          displayBalance={displayBalance}
+          earningsBalance={rawEarningsBalance}
+          earningsBusd={earningsBusd}
+        />
+        {dual?.token && (
+          <Box width={showCustomTableCss ? '50%' : '100%'} mt={showCustomTableCss ? '0' : '16px'}>
+            <EarnedTokenInfo
+              token={dual.token}
+              displayBalance={dualTokenDisplayBalance}
+              earningsBalance={dualEarningsBalance}
+              earningsBusd={dualTokenUsdc}
+            />
+          </Box>
+        )}
+      </Flex>
       <Button mt="16px" disabled={rawEarningsBalance.eq(0) || pendingTx || !isUserIpPass} onClick={handleHarvest}>
         {pendingTx ? t('Harvesting') : t('Harvest')}
       </Button>

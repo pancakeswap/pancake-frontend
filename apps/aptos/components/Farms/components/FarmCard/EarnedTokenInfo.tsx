@@ -20,9 +20,9 @@ export const EarnedTokenInfo: React.FC<React.PropsWithChildren<EarnedTokenInfoPr
   const { t } = useTranslation()
 
   return (
-    <Flex flexDirection="column">
+    <Flex flex={1} flexDirection="column">
       <Flex>
-        <TokenImage width={16} height={16} token={token} />
+        <TokenImage style={{ minWidth: '16px' }} width={16} height={16} token={token} />
         <Text ml="4px" bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           {token.symbol}
         </Text>

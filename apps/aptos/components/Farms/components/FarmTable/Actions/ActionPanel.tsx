@@ -1,12 +1,12 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { LinkExternal, Text, useMatchBreakpoints, Flex } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { styled, css, keyframes } from 'styled-components'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
+import { css, keyframes, styled } from 'styled-components'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
 import Apr, { AprProps } from '../Apr'
-import { HarvestAction, HarvestActionContainer } from './HarvestAction'
+import { HarvestActionContainer, TableHarvestAction } from './HarvestAction'
 import StakedAction, { StakedContainer } from './StakedAction'
 
 const { Multiplier, Liquidity } = FarmWidget.FarmTable
@@ -81,7 +81,7 @@ const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
     align-items: center;
     flex-grow: 1;
@@ -114,7 +114,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
 }) => {
   const farm = details
   const { isDesktop } = useMatchBreakpoints()
-
+  console.log('farm', farm)
   const {
     t,
     currentLanguage: { locale },
@@ -171,8 +171,14 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
         )}
       </InfoContainer>
       <ActionContainer>
-        <HarvestActionContainer {...farm} userDataReady={userDataReady}>
-          {(props) => <HarvestAction {...props} />}
+        <HarvestActionContainer
+          pid={farm.pid}
+          lpAddress={farm.lpAddress}
+          earnings={farm?.userData?.earnings}
+          dual={farm.dual}
+          earningsDualTokenBalance={farm?.userData?.earningsDualTokenBalance}
+        >
+          {(props) => <TableHarvestAction {...props} />}
         </HarvestActionContainer>
         <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
           {(props) => <StakedAction {...props} />}
