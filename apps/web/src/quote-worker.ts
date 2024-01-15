@@ -2,7 +2,7 @@ import 'utils/workerPolyfill'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
-import { getViemClients } from 'utils/viem'
+import { createViemPublicClientGetter } from 'utils/viem'
 import { getLogger } from 'utils/datadog'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
@@ -65,6 +65,10 @@ export type WorkerMultiChunkEvent = [
 
 export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent
 
+// Assume the worker is single threaded
+// If there're multiple get best trade requests, should create multiple worker instances
+let getBestTradeAbortController: AbortController | undefined
+
 // eslint-disable-next-line no-restricted-globals
 addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   const { data } = event
@@ -102,6 +106,9 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       ])
       return
     }
+    getBestTradeAbortController?.abort()
+    getBestTradeAbortController = new AbortController()
+
     const {
       amount,
       chainId,
@@ -117,7 +124,8 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       nativeCurrencyUsdPrice,
       quoteCurrencyUsdPrice,
     } = parsed.data
-    const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients, gasLimit })
+    const onChainProvider = createViemPublicClientGetter({ transportSignal: getBestTradeAbortController.signal })
+    const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider, gasLimit })
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
     const currencyB = parseCurrency(chainId, currency)
 
@@ -125,7 +133,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
 
     const gasPrice = gasPriceWei
       ? BigInt(gasPriceWei)
-      : async () => BigInt(await (await getViemClients({ chainId }).getGasPrice()).toString())
+      : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
 
     SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
       gasPriceWei: gasPrice,
@@ -138,6 +146,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       quoterOptimization: false,
       quoteCurrencyUsdPrice,
       nativeCurrencyUsdPrice,
+      signal: getBestTradeAbortController.signal,
     })
       .then((res) => {
         postMessage([
