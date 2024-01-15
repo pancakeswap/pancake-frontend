@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/ifos",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "sideEffects": false,
   "private": true,
   "scripts": {

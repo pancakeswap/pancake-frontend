@@ -1,5 +1,13 @@
 # @pancakeswap/ifos
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [ec7e469ca]
+  - @pancakeswap/utils@6.0.0
+  - @pancakeswap/tokens@0.5.8
+
 ## 0.0.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @pancakeswap/multicall
 
+## 3.4.0
+
+### Minor Changes
+
+- ec7e469ca: Add support for abort control
+
 ## 3.3.4
 
 ### Patch Changes
