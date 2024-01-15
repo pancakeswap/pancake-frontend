@@ -1,5 +1,19 @@
 # @pancakeswap/smart-router
 
+## 4.13.0
+
+### Minor Changes
+
+- ec7e469ca: Add support for abort control
+
+### Patch Changes
+
+- Updated dependencies [ec7e469ca]
+  - @pancakeswap/multicall@3.4.0
+  - @pancakeswap/token-lists@0.0.9
+  - @pancakeswap/tokens@0.5.8
+  - @pancakeswap/v3-sdk@3.7.4
+
 ## 4.12.4
 
 ### Patch Changes
