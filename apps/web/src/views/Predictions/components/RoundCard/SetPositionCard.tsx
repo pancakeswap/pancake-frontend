@@ -111,7 +111,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   }, [isNativeToken, userNativeTokenBalance, userBalance])
 
   const maxBalance = useMemo(() => (balance > dust ? balance - dust : 0n), [balance])
-  const balanceDisplay = formatBigInt(balance)
+  const balanceDisplay = formatBigInt(balance, config?.token?.decimals, config?.token?.decimals)
 
   const valueAsBn = getValueAsEthersBn(value)
   const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
