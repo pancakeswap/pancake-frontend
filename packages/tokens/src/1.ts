@@ -377,4 +377,20 @@ export const ethereumTokens = {
     'swETH',
     'https://www.swellnetwork.io/',
   ),
+  osak: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xa21Af1050F7B26e0cfF45ee51548254C41ED6b5c',
+    18,
+    'OSAK',
+    'Osaka Protocol',
+    'https://osaka.win/',
+  ),
+  ords: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x8AB2ff0116A279a99950C66A12298962D152B83c',
+    18,
+    'ORDS',
+    'Ordiswap',
+    'https://ordiswap.fi/',
+  ),
 }
