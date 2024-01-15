@@ -6,15 +6,15 @@ import { GraphQLClient } from 'graphql-request'
 
 import { SupportedChainId } from './constants'
 
-const V3_SUBGRAPHS = getV3Subgraphs({
-  noderealApiKey: NODE_REAL_SUBGRAPH_API_KEY,
-})
-
-const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE]
+const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE, NODE_REAL_SUBGRAPH_API_KEY]
 requireCheck.forEach((node) => {
   if (!node) {
     throw new Error('Missing env var')
   }
+})
+
+const V3_SUBGRAPHS = getV3Subgraphs({
+  noderealApiKey: NODE_REAL_SUBGRAPH_API_KEY,
 })
 
 const mainnetClient = createPublicClient({
