@@ -114,7 +114,6 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
 }) => {
   const farm = details
   const { isDesktop } = useMatchBreakpoints()
-  console.log('farm', farm)
   const {
     t,
     currentLanguage: { locale },

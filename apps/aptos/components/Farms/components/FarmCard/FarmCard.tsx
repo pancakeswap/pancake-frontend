@@ -85,12 +85,10 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
-          farmCakePerSecond={farmCakePerSecond}
-          totalMultipliers={totalMultipliers}
         />
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
-          <EarnedUsdPrice />
+          <EarnedUsdPrice isCardView {...farm} />
         </Flex>
         {!removed && (
           <>

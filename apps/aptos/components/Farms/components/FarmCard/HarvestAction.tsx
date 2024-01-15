@@ -48,7 +48,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.times(cakePrice ?? 0).toNumber() : 0
 
-  // Dual token
+  // Dual Token
   const dualEarningsBalance = account
     ? getBalanceAmount(earningsDualTokenBalance as BigNumber, dual?.token?.decimals)
     : BIG_ZERO

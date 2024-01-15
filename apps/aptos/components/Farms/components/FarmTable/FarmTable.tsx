@@ -1,13 +1,13 @@
-import { useRef, useMemo } from 'react'
-import { styled } from 'styled-components'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { RowType } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
-import BigNumber from 'bignumber.js'
-import { useRouter } from 'next/router'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
+import BigNumber from 'bignumber.js'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { useRouter } from 'next/router'
+import { useMemo, useRef } from 'react'
+import { styled } from 'styled-components'
 import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
 
@@ -92,7 +92,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
               }
               return 0
             case 'earned':
-              return a.original.earned.earnings - b.original.earned.earnings
+              return Number(a?.original?.earned?.userData?.earnings) - Number(b?.original?.earned?.userData?.earnings)
             default:
               return 1
           }
@@ -143,10 +143,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         isReady: farm.multiplier !== undefined,
         isStaking: farm.userData?.stakedBalance.gt(0),
       },
-      earned: {
-        pid: farm.pid,
-        earnings: getFarmEarnings(farm),
-      },
+      earned: farm,
       liquidity: {
         liquidity: farm?.liquidity,
       },
