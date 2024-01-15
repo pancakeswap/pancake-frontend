@@ -6,6 +6,7 @@ import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
+import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -48,6 +49,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
+  const isUserIpPass = useCheckIsUserIpPass()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { stakedBalance, tokenBalance } = (userData as DeserializedFarmUserData) || {}
@@ -95,6 +97,11 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       decimals={FARM_DEFAULT_DECIMALS}
+      showTopMessageText={
+        isUserIpPass
+          ? null
+          : t('The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.')
+      }
     />,
   )
 

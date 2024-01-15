@@ -1,36 +1,36 @@
-import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
-import { usePriceCakeUsdc } from 'hooks/useStablePrice'
+import type { DeserializedFarm } from '@pancakeswap/farms'
+import { FarmWithStakedValue, filterFarmsByQuery } from '@pancakeswap/farms'
+import { useIntersectionObserver } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Image,
-  Heading,
-  Toggle,
-  Text,
-  Flex,
   Box,
-  PageHeader,
+  Flex,
   FlexLayout,
-  Select,
-  OptionProps,
+  Heading,
+  Image,
   Loading,
+  OptionProps,
+  PageHeader,
   SearchInput,
+  Select,
+  Text,
+  Toggle,
   ToggleView,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { styled } from 'styled-components'
-import orderBy from 'lodash/orderBy'
-import Page from 'components/Layout/Page'
-import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
-import NoSSR from 'components/NoSSR'
+import BigNumber from 'bignumber.js'
 import useLpRewardsAprs from 'components/Farms/hooks/useLpRewardsAprs'
+import Page from 'components/Layout/Page'
+import NoSSR from 'components/NoSSR'
+import { usePriceCakeUsdc } from 'hooks/useStablePrice'
+import orderBy from 'lodash/orderBy'
+import { useRouter } from 'next/router'
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFarms } from 'state/farms/hook'
-import { useIntersectionObserver } from '@pancakeswap/hooks'
+import { ViewMode, useFarmViewMode, useFarmsStakedOnly } from 'state/user'
+import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/farmApr'
-import type { DeserializedFarm } from '@pancakeswap/farms'
-import { FarmWithStakedValue, filterFarmsByQuery } from '@pancakeswap/farms'
 import Table from './FarmTable/FarmTable'
 
 const ControlContainer = styled.div`

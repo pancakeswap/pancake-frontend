@@ -1,12 +1,15 @@
 import { useAccountBalance } from '@pancakeswap/awgmi'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import type { DeserializedFarmUserData } from '@pancakeswap/farms'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { useModal, useToast } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
+import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -14,9 +17,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 
@@ -86,6 +87,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { account } = useActiveWeb3React()
+  const isUserIpPass = useCheckIsUserIpPass()
 
   const { stakedBalance, tokenBalance } = (userData as DeserializedFarmUserData) || {}
 
@@ -143,6 +145,11 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       decimals={FARM_DEFAULT_DECIMALS}
+      showTopMessageText={
+        isUserIpPass
+          ? null
+          : t('The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.')
+      }
     />,
   )
 

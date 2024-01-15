@@ -1,5 +1,6 @@
 import { useAccount } from '@pancakeswap/awgmi'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { useTranslation } from '@pancakeswap/localization'
 import { Balance, Box, Flex, Text, TooltipText, WarningIcon, useTooltip } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -18,6 +19,7 @@ export const EarnedUsdPrice: React.FC<React.PropsWithChildren<EarnedUsdPriceProp
   dual,
   userData,
 }) => {
+  const { t } = useTranslation()
   const { account } = useAccount()
   const isUserIpPass = useCheckIsUserIpPass()
   const { earnings, earningsDualTokenBalance } = userData ?? {}
@@ -37,8 +39,24 @@ export const EarnedUsdPrice: React.FC<React.PropsWithChildren<EarnedUsdPriceProp
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
-      <Text>{`${displayBalance} CAKE (~${formatNumber(earningsBusd, 2, 2)} USD)`}</Text>
-      <Text>{`${dualTokenDisplayBalance} ${dual?.token?.symbol} (~${formatNumber(dualTokenUsdc, 2, 2)} USD)`}</Text>
+      <Box>
+        <Text bold as="span">{`${displayBalance} CAKE`}</Text>
+        <Text as="span" ml="4px">{`(~${formatNumber(earningsBusd, 2, 2)} USD)`}</Text>
+      </Box>
+      <Box>
+        <Text bold as="span">{`${dualTokenDisplayBalance} ${dual?.token?.symbol}`}</Text>
+        <Text as="span" ml="4px">{`(~${formatNumber(dualTokenUsdc, 2, 2)} USD)`}</Text>
+      </Box>
+      {!isUserIpPass && (
+        <Box mt="4px">
+          <Text lineHeight="110%" as="span">
+            {t('The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by')}
+          </Text>
+          <Text bold lineHeight="110%" ml="4px" as="span" color="failure">
+            {t('U.S.-based users.')}
+          </Text>
+        </Box>
+      )}
     </Box>,
     {
       placement: 'top',
