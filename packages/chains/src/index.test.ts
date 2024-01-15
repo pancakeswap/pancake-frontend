@@ -15,6 +15,7 @@ test('exports', () => {
       "isTestnetChainId",
       "V3_SUBGRAPHS",
       "V2_SUBGRAPHS",
+      "BLOCKS_SUBGRAPHS",
     ]
   `)
 })
