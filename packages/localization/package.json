@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/localization",
   "license": "MIT",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "description": "A minimal internationalization library",
   "main": "./src/index.tsx",
   "types": "./src/index.tsx",

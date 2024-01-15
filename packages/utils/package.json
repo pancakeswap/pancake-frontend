@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/utils",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "scripts": {
     "test": "vitest --run --globals"
   },

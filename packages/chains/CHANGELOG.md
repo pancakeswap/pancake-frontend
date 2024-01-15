@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.4.0
+
+### Minor Changes
+
+- 8fcd67c85: Add getters for subgraph endpoints by chain
+
 ## 0.3.1
 
 ### Patch Changes
