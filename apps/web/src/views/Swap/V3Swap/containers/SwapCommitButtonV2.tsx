@@ -1,18 +1,23 @@
 import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { Currency } from '@pancakeswap/swap-sdk-core'
+import { Currency, Percent } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { Permit2Signature, getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
+import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { AutoRow } from 'components/Layout/Row'
 import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
+import {
+  ALLOWED_PRICE_IMPACT_HIGH,
+  BIG_INT_ZERO,
+  PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+} from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { usePermit } from 'hooks/usePermitStatus'
@@ -127,8 +132,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const { t } = useTranslation()
   const chainId = useChainId()
   // form data
-  const { typedValue, independentField } = useSwapState()
-  console.debug('x', typedValue)
+  const { independentField } = useSwapState()
   const [inputCurrency, outputCurrency] = useSwapCurrency()
   const { isExpertMode, deadline } = useSwapConfig()
 
@@ -136,6 +140,12 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const amountToApprove = useMemo(
     () => (inputCurrency?.isNative ? undefined : slippageAdjustedAmounts[Field.INPUT]),
     [inputCurrency?.isNative, slippageAdjustedAmounts],
+  )
+
+  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  // warnings on slippage
+  const priceImpactSeverity = warningSeverity(
+    tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : undefined,
   )
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
@@ -165,13 +175,23 @@ const SwapCommitButton = memo(function SwapCommitButton({
   } = useSwapCallback({
     trade,
     deadline,
-    permitSignature: signature, // TODO
+    permitSignature: signature,
     onWallchainDrop: fn, // TODO
     wallchainMasterInput: undefined, // TODO
     statusWallchain: 'not-found', // TODO
   })
   const onConfirmSwap = useCallback(async () => {
-    // @todo preflight check
+    if (
+      tradePriceBreakdown &&
+      !confirmPriceImpactWithoutFee(
+        tradePriceBreakdown.priceImpactWithoutFee as Percent,
+        PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+        ALLOWED_PRICE_IMPACT_HIGH,
+        t,
+      )
+    ) {
+      return undefined
+    }
 
     if (!swapCallback) {
       if (swapCallbackRevertReason === 'insufficient allowance') {
@@ -180,6 +200,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
       return undefined
     }
     try {
+      setTxHash(undefined)
       const result = await swapCallback()
       setTxHash(result.hash)
       return result
@@ -191,9 +212,8 @@ const SwapCommitButton = memo(function SwapCommitButton({
 
       throw error
     }
-  }, [swapCallback, swapCallbackRevertReason])
+  }, [swapCallback, swapCallbackRevertReason, t, tradePriceBreakdown])
 
-  // todo
   const {
     execute: onStep,
     approvalState,
@@ -220,12 +240,6 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const handleAcceptChanges = useCallback(() => {
     setTradeToConfirm(trade)
   }, [trade])
-
-  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
-  // warnings on slippage
-  const priceImpactSeverity = warningSeverity(
-    tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : undefined,
-  )
 
   const noRoute = useMemo(() => !((trade?.routes?.length ?? 0) > 0) || tradeError, [trade?.routes?.length, tradeError])
   const isValid = useMemo(() => !swapInputError && !tradeLoading, [swapInputError, tradeLoading])
@@ -269,7 +283,6 @@ const SwapCommitButton = memo(function SwapCommitButton({
 
     // if expert mode turn-on, will not show preview modal
     // start swap directly
-    console.debug('debug: isExpertMode', isExpertMode)
     if (isExpertMode) {
       startSwap()
     }

@@ -87,7 +87,6 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
   }, [customOnDismiss, onDismiss])
 
   const modalContent = useMemo(() => {
-    console.debug('debug modalContent', { confirmModalState: ConfirmModalState[confirmModalState] })
     const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
     const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
     const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
@@ -230,9 +229,6 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
       bodyTop={loadingAnimationVisible ? '-15px' : '0'}
       handleDismiss={handleDismiss}
     >
-      <>txHash:{txHash}</>
-      <>confirmModalState: {ConfirmModalState[confirmModalState]}</>
-      <>error: {swapErrorMessage}</>
       <Box>{modalContent}</Box>
       {loadingAnimationVisible ? (
         <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
