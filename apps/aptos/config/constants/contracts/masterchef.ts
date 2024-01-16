@@ -2,7 +2,7 @@
 import { Types } from 'aptos'
 
 // export const ADDRESS = '0x7968a225eba6c99f5f1070aeec1b405757dee939eabcfda43ba91588bf5fccf3' as const
-export const ADDRESS = '0xe2d46b292780a31bf4731b5f9ae65d3f0048f8e262f7c916dbe5be87030ce73c' as const
+export const ADDRESS = '0x4886f00f0167b6e02a933a771000c668c1d5496feb6c5a992fa9f3da6de9317c' as const
 
 export const MASTERCHEF_MODULE_NAME = 'masterchef' as const
 
