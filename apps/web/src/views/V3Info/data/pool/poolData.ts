@@ -188,11 +188,8 @@ export async function fetchPoolDatas(
        * Grafted sync pending fix now.
        * @chef-jojo: should be fixed on our version, but leaving this in for now
        */
-      const feePercent = current ? parseFloat(current.feeTier) / 10000 / 100 : 0
-      const tvlAdjust0 = current?.volumeToken0 ? (parseFloat(current.volumeToken0) * feePercent) / 2 : 0
-      const tvlAdjust1 = current?.volumeToken1 ? (parseFloat(current.volumeToken1) * feePercent) / 2 : 0
-      const tvlToken0 = current ? parseFloat(current.totalValueLockedToken0) - tvlAdjust0 : 0
-      const tvlToken1 = current ? parseFloat(current.totalValueLockedToken1) - tvlAdjust1 : 0
+      const tvlToken0 = current ? parseFloat(current.totalValueLockedToken0) : 0
+      const tvlToken1 = current ? parseFloat(current.totalValueLockedToken1) : 0
       let tvlUSD = current ? parseFloat(current.totalValueLockedUSD) : 0
 
       const tvlUSDChange =
