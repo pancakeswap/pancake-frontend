@@ -47,7 +47,11 @@ export const usePermitStatus = (token?: Token, owner?: Address, spender?: Addres
 
 const useTokenAllowanceToPermit = (token?: Currency, owner?: Address) => {
   const { chainId } = useActiveChainId()
-  const { allowance } = useTokenAllowance(token?.isNative ? undefined : token, owner, getPermit2Address(chainId))
+  const { allowance } = useTokenAllowance(
+    token?.isNative ? undefined : (token as Token),
+    owner,
+    getPermit2Address(chainId),
+  )
   return allowance
 }
 
@@ -242,7 +246,6 @@ export const usePermit = (
     permitCallback,
     permitState,
     requireApprove,
-    requirePermit,
     requireRevoke,
     revokeCallback,
   ])
