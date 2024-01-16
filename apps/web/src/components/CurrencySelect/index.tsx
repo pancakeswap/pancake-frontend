@@ -116,7 +116,7 @@ export const CurrencySelect = ({
           </AutoRow>
           <RowBetween>
             <div />
-            {Number.isFinite(+quoted?.toExact()) && (
+            {quoted && Number.isFinite(+quoted?.toExact()) && (
               <Text fontSize="12px" color="textSubtle">
                 ~${formatNumber(+quoted.toExact())}
               </Text>

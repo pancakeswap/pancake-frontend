@@ -35,11 +35,15 @@ export function useV3LiquidityTotal({
   return useMemo(() => {
     if (!price0 || !price1) return null
 
-    const liqArr = positions.map((position) => {
-      const amount0 = price0.quote(position.amount0)
-      const amount1 = price1.quote(position.amount1)
-      return amount0.add(amount1)
-    })
+    const liqArr = positions
+      .filter((position): position is Position => {
+        return Boolean(position)
+      })
+      .map((position) => {
+        const amount0 = price0.quote(position.amount0)
+        const amount1 = price1.quote(position.amount1)
+        return amount0.add(amount1)
+      })
 
     return liqArr.reduce((sum, liquidity) => (sum ? sum.add(liquidity) : sum))
   }, [positions, price0, price1])
