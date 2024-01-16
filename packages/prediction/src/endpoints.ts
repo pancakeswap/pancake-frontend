@@ -23,5 +23,5 @@ export const GRAPH_API_PREDICTION_ETH = {
 export const GRAPH_API_PREDICTION_WBTC = {
   [ChainId.BSC]: '',
   [ChainId.ZKSYNC]: '',
-  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-v2-arbitrum',
+  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-v2-arbitrum-wbtc',
 } as const satisfies EndPointType<SupportedChainId>
