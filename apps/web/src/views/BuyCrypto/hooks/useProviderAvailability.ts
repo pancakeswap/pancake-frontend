@@ -13,6 +13,6 @@ export async function fetchProviderAvailabilities(): Promise<{ [provider in keyo
     return result.result
   } catch (error) {
     console.error(error)
-    return { MoonPay: true, Mercuryo: true, Transak: true }
+    return { MoonPay: false, Mercuryo: false, Transak: false }
   }
 }
