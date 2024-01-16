@@ -181,13 +181,6 @@ export async function fetchPoolDatas(
               .minus(current?.protocolFeesUSD)
               .minus(new BigNumber(oneDay?.feesUSD).minus(oneDay?.protocolFeesUSD))
           : new BigNumber(current?.feesUSD).minus(current?.protocolFeesUSD)
-      // Hotifx: Subtract fees from TVL to correct data while subgraph is fixed.
-      /**
-       * Note: see issue desribed here https://github.com/Uniswap/v3-subgraph/issues/74
-       * During subgraph deploy switch this month we lost logic to fix this accounting.
-       * Grafted sync pending fix now.
-       * @chef-jojo: should be fixed on our version, but leaving this in for now
-       */
       const tvlToken0 = current ? parseFloat(current.totalValueLockedToken0) : 0
       const tvlToken1 = current ? parseFloat(current.totalValueLockedToken1) : 0
       let tvlUSD = current ? parseFloat(current.totalValueLockedUSD) : 0
