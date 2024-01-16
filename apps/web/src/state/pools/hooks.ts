@@ -188,6 +188,7 @@ export const useFetchIfo = () => {
           dispatch(fetchIfoPublicDataAsync(chainId))
         })
       }
+      return null
     },
     {
       enabled: Boolean(chainId && ifoSupported),
@@ -208,6 +209,7 @@ export const useFetchIfo = () => {
           dispatch(fetchUserIfoCreditDataAsync({ account, chainId }))
         })
       }
+      return null
     },
     {
       enabled: Boolean(account && chainId && cakeVaultChain),
@@ -224,6 +226,7 @@ export const useFetchIfo = () => {
       if (cakeVaultChain) {
         dispatch(fetchCakeVaultFees(cakeVaultChain))
       }
+      return null
     },
     {
       enabled: Boolean(cakeVaultChain && ifoSupported),
@@ -238,7 +241,7 @@ export const useCakeVault = () => {
   return useVaultPoolByKey(VaultKey.CakeVault)
 }
 
-export const useVaultPoolByKey = (key: VaultKey) => {
+export const useVaultPoolByKey = (key?: VaultKey) => {
   const vaultPoolByKey = useMemo(() => makeVaultPoolByKey(key), [key])
 
   return useSelector(vaultPoolByKey)

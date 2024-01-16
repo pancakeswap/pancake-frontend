@@ -1,9 +1,9 @@
+import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
-import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
@@ -48,6 +48,10 @@ const isMetamaskInstalled = () => {
   return false
 }
 
+function isBinanceWeb3WalletInstalled() {
+  return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBinance)
+}
+
 const walletsConfig = ({
   chainId,
   connect,
@@ -74,7 +78,14 @@ const walletsConfig = ({
       id: 'BinanceW3W',
       title: 'Binance Web3 Wallet',
       icon: `${ASSET_CDN}/web/wallets/binance-w3w.png`,
-      connectorId: ConnectorNames.BinanceW3W,
+      connectorId: isBinanceWeb3WalletInstalled() ? ConnectorNames.Injected : ConnectorNames.BinanceW3W,
+      get installed() {
+        if (isBinanceWeb3WalletInstalled()) {
+          return true
+        }
+        // still showing the SDK if not installed
+        return undefined
+      },
     },
     {
       id: 'binance',

@@ -3,10 +3,8 @@ import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import Trans from 'components/Trans'
 import { Box, Card, CardBody, CardHeader, Flex, Text, Image, IfoNotTokens } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
 
 import { useAccount } from 'wagmi'
-import { Token } from '@pancakeswap/sdk'
 import { VestingStatus } from './types'
 import TokenInfo from './VestingPeriod/TokenInfo'
 import VestingEnded from './VestingEnded'
@@ -61,7 +59,6 @@ const IfoVestingStatus = {
 }
 
 interface IfoVestingProps {
-  pool: Pool.DeserializedPool<Token>
   ifoBasicSaleType?: number
 }
 

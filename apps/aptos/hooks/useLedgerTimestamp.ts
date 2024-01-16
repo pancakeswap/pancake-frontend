@@ -1,6 +1,6 @@
-import { useCallback } from 'react'
 import { useQuery, useQueryClient } from '@pancakeswap/awgmi'
 import { fetchLedgerInfo } from '@pancakeswap/awgmi/core'
+import { useCallback } from 'react'
 import { useActiveChainId } from './useNetwork'
 
 export const useLedgerTimestamp = () => {

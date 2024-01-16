@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Currency, CurrencyAmount, Fraction, Percent, Token } from '@pancakeswap/sdk'
 import { InjectedModalProps, Button } from '@pancakeswap/uikit'
-import { TransactionErrorContent, ConfirmationModalContent } from '@pancakeswap/widgets-internal'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Field } from 'state/burn/actions'
@@ -67,13 +67,6 @@ const ConfirmAddLiquidityModal: React.FC<
     percent = normalizedAmountCurrencyA / (normalizedAmountCurrencyA + amountCurrencyB)
   }
 
-  const handleDismiss = useCallback(() => {
-    if (customOnDismiss) {
-      customOnDismiss()
-    }
-    onDismiss?.()
-  }, [customOnDismiss, onDismiss])
-
   const modalHeader = useCallback(() => {
     return (
       <AddLiquidityModalHeader
@@ -105,13 +98,8 @@ const ConfirmAddLiquidityModal: React.FC<
   }, [noLiquidity, onAdd, t])
 
   const confirmationContent = useCallback(
-    () =>
-      liquidityErrorMessage ? (
-        <TransactionErrorContent onDismiss={handleDismiss} message={liquidityErrorMessage} />
-      ) : (
-        <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
-      ),
-    [liquidityErrorMessage, handleDismiss, modalHeader, modalBottom],
+    () => <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />,
+    [modalHeader, modalBottom],
   )
 
   return (
@@ -122,6 +110,7 @@ const ConfirmAddLiquidityModal: React.FC<
       customOnDismiss={customOnDismiss}
       attemptingTxn={attemptingTxn}
       currencyToAdd={currencyToAdd}
+      errorMessage={liquidityErrorMessage}
       hash={hash}
       content={confirmationContent}
       pendingText={pendingText}

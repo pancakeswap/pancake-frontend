@@ -1,8 +1,9 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
-import { useExchangeChartManager } from 'state/user/hooks'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'components/AccessRisk/config/supportedChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import React, { createContext, useEffect, useMemo, useState } from 'react'
+import { useExchangeChartManager } from 'state/user/hooks'
 
 export const SwapFeaturesContext = createContext<{
   isHotTokenSupported: boolean
@@ -29,7 +30,6 @@ const CHART_SUPPORT_CHAIN_IDS = [
   ChainId.BSC_TESTNET,
   // ChainId.ETHEREUM
 ]
-const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 const STABLE_SUPPORT_CHAIN_IDS = [ChainId.BSC_TESTNET, ChainId.BSC]
 const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
 
@@ -49,9 +49,9 @@ export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ childr
 
   const isStableSupported = useMemo(() => !chainId || STABLE_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
 
-  const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
+  const isAccessTokenSupported = useMemo(() => chainId && ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
 
-  const isHotTokenSupported = useMemo(() => HOT_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
+  const isHotTokenSupported = useMemo(() => chainId && HOT_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
@@ -79,5 +79,5 @@ export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ childr
     setIsChartExpanded,
   ])
 
-  return <SwapFeaturesContext.Provider value={value}>{children}</SwapFeaturesContext.Provider>
+  return <SwapFeaturesContext.Provider value={value as any}>{children}</SwapFeaturesContext.Provider>
 }

@@ -1,8 +1,9 @@
 import { PublicClient } from 'viem'
-import { CONFIG_PROD, CONFIG_TESTNET } from './constants/config'
+import { CONFIG_PROD } from './constants/config/prod'
+import { CONFIG_TESTNET } from './constants/config/testnet'
 import { fetchAllGauges } from './fetchAllGauges'
 import { fetchAllGaugesVoting } from './fetchGaugeVoting'
-import { Gauge, GaugeInfoConfig } from './types'
+import { Gauge, GaugeConfig, GaugeInfoConfig } from './types'
 
 export type getAllGaugesOptions = {
   testnet?: boolean
@@ -23,9 +24,15 @@ export const getAllGauges = async (
 
   const allGaugeInfos = await fetchAllGauges(client)
   const allGaugeInfoConfigs = allGaugeInfos.reduce((prev, gauge) => {
-    const preset = presets.find((p) => p.address === gauge.pairAddress && Number(p.chainId) === gauge.chainId)
+    const filters = presets.filter((p) => p.address === gauge.pairAddress && Number(p.chainId) === gauge.chainId)
+    let preset: GaugeConfig
 
-    if (!preset) return prev
+    if (!filters.length) return prev
+    if (filters.length > 1) {
+      preset = filters[filters.length - 1]
+    } else {
+      preset = filters[0]
+    }
 
     return [
       ...prev,

@@ -1,48 +1,79 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, chainNames, isTestnetChainId } from '@pancakeswap/chains'
 import { Pool } from '@pancakeswap/v3-sdk'
-import { describe, it, expect } from 'vitest'
-import { farmsV3ConfigChainMap } from '../constants/v3'
+import groupBy from 'lodash/groupBy'
+import { isAddressEqual } from 'viem'
+import { describe, expect, it } from 'vitest'
 import { priceHelperTokens } from '../constants/common'
+import { farmsV3ConfigChainMap } from '../constants/v3'
+import { supportedChainIdV3 } from '../src'
 import { CommonPrice, getFarmsPrices } from '../src/fetchFarmsV3'
 
-const mainnetFarms = [
-  farmsV3ConfigChainMap[ChainId.BSC],
-  farmsV3ConfigChainMap[ChainId.ETHEREUM],
-  farmsV3ConfigChainMap[ChainId.POLYGON_ZKEVM],
-  farmsV3ConfigChainMap[ChainId.ZKSYNC],
-  farmsV3ConfigChainMap[ChainId.ARBITRUM_ONE],
-  farmsV3ConfigChainMap[ChainId.LINEA],
-  farmsV3ConfigChainMap[ChainId.BASE],
-]
-
-function hasDuplicates(array: any[]) {
-  return new Set(array).size !== array.length
+const tokenListMap = {
+  [ChainId.BSC]: 'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
+  [ChainId.ETHEREUM]: 'https://tokens.pancakeswap.finance/pancakeswap-eth-default.json',
+  [ChainId.ZKSYNC]: 'https://tokens.pancakeswap.finance/pancakeswap-zksync-default.json',
+  [ChainId.POLYGON_ZKEVM]: 'https://tokens.pancakeswap.finance/pancakeswap-polygon-zkevm-default.json',
+  [ChainId.ARBITRUM_ONE]: 'https://tokens.pancakeswap.finance/pancakeswap-arbitrum-default.json',
+  [ChainId.LINEA]: 'https://tokens.pancakeswap.finance/pancakeswap-linea-default.json',
+  [ChainId.BASE]: 'https://tokens.pancakeswap.finance/pancakeswap-base-default.json',
+  [ChainId.OPBNB]: 'https://tokens.pancakeswap.finance/pancakeswap-opbnb-default.json',
 }
 
-describe('Config farms V3', () => {
-  it.each(mainnetFarms)('All farm has an unique pid', (...farms) => {
-    const pids = farms.map((farm) => farm.pid)
-    expect(hasDuplicates(pids)).toBeFalsy()
-  })
+describe('Config farms V3', async () => {
+  const tokenListByChain = {}
 
-  it.each(mainnetFarms.flat())('All tokens same chainId', (farm) => {
-    expect(farm.token.chainId === farm.quoteToken.chainId).toBeTruthy()
-  })
+  await Promise.all(
+    Object.entries(tokenListMap).map(async ([chainId, url]) => {
+      try {
+        const resp = await fetch(url)
+        const json = await resp.json()
+        tokenListByChain[chainId] = json
+      } catch (error) {
+        console.error('chainId', url, error.message)
+        throw error
+      }
+    }),
+  )
+  Object.entries(farmsV3ConfigChainMap).forEach(([_chainId, farms]) => {
+    const chainId = Number(_chainId)
+    if (!supportedChainIdV3.filter((id) => !isTestnetChainId(id)).includes(chainId)) return
+    const tokenList = tokenListByChain[chainId]
+    it(`${chainNames[chainId]}.ts have config in token-list`, () => {
+      expect(tokenList).not.toBeUndefined()
+    })
 
-  it.each(mainnetFarms.flat())('should has correct lpAddress', (farm) => {
-    expect(Pool.getAddress(farm.token, farm.quoteToken, farm.feeAmount)).toEqual(farm.lpAddress)
-  })
+    const groups = groupBy(farms, 'pid')
+    Object.entries(groups).forEach(([pid, c]) => {
+      it(`${chainNames[chainId]}.ts farms with pid #${pid} should unique`, () => {
+        expect(c.length).toBe(1)
+      })
+    })
+    farms.forEach((farm) => {
+      it(`${chainNames[chainId]}.ts pid #${farm.pid} tokens should has correct chainId`, () => {
+        expect(farm.token0.chainId).toBe(chainId)
+        expect(farm.token1.chainId).toBe(chainId)
+      })
+      const token0InList = tokenList.tokens.find((t) => isAddressEqual(t.address, farm.token0.address))
+      const token1InList = tokenList.tokens.find((t) => isAddressEqual(t.address, farm.token1.address))
 
-  it.each(mainnetFarms.flat())('should be sorted', (farm) => {
-    expect(farm.token0.sortsBefore(farm.token1)).toBeTruthy()
-  })
+      it(`${chainNames[chainId]}.ts pid #${farm.pid} tokens should add to tokenlist`, () => {
+        expect(token0InList, `${farm.token0.symbol}#${farm.token0.address}`).toBeDefined()
+        expect(token1InList, `${farm.token1.symbol}#${farm.token1.address}`).toBeDefined()
+      })
 
-  it.each(mainnetFarms)('should has related common price', (...farms) => {
+      it(`${chainNames[chainId]}.ts pid #${farm.pid} should has correct lpAddress`, () => {
+        expect(Pool.getAddress(farm.token, farm.quoteToken, farm.feeAmount)).toEqual(farm.lpAddress)
+      })
+
+      it(`${chainNames[chainId]}.ts pid #${farm.pid} should has correct token order`, () => {
+        expect(farm.token0.sortsBefore(farm.token1)).toBeTruthy()
+      })
+    })
+
     const commonPrice: CommonPrice = {}
-    for (const commonToken of priceHelperTokens[farms[0].token.chainId as keyof typeof priceHelperTokens].list) {
+    for (const commonToken of priceHelperTokens[chainId].list) {
       commonPrice[commonToken.address] = '1'
     }
-
     const farmPrices = getFarmsPrices(
       farms.map((f) => ({
         ...f,
@@ -57,11 +88,12 @@ describe('Config farms V3', () => {
     )
 
     for (const farmPrice of farmPrices) {
-      expect(farmPrice.tokenPriceBusd, `${farmPrice.token.chainId} ${farmPrice.token.address} price`).not.toEqual('0')
-      expect(
-        farmPrice.quoteTokenPriceBusd,
-        `${farmPrice.quoteToken.chainId} ${farmPrice.quoteToken.address} price`,
-      ).not.toEqual('0')
+      it(`${chainNames[chainId]}.ts should have correct farm price for token ${farmPrice.token.address}`, () => {
+        expect(farmPrice.tokenPriceBusd).not.toEqual('0')
+      })
+      it(`${chainNames[chainId]}.ts should have correct farm price for quoteToken ${farmPrice.quoteToken.address}`, () => {
+        expect(farmPrice.quoteTokenPriceBusd).not.toEqual('0')
+      })
     }
   })
 })

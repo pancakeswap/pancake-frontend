@@ -15,8 +15,8 @@ import webNotificationBunny from './images/web3-notification-bunny.png'
 import webNotificationCheck from './images/web3-notification-check.png'
 
 const { liquidStakingBunnyBg3, liquidStakingBunnyBg4 } = {
-  liquidStakingBunnyBg3: `${ASSET_CDN}/web/banners/liquidStakingBunnyBg3.png`,
-  liquidStakingBunnyBg4: `${ASSET_CDN}/web/banners/liquidStakingBunnyBg4.png`,
+  liquidStakingBunnyBg3: `${ASSET_CDN}/web/banners/star-1.png`,
+  liquidStakingBunnyBg4: `${ASSET_CDN}/web/banners/star-2.png`,
 }
 
 const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`

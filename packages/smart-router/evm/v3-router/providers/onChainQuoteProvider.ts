@@ -2,7 +2,7 @@ import { BigintIsh, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { Abi, Address } from 'viem'
 import retry from 'async-retry'
-// import uniq from 'lodash/uniq.js'
+import { AbortControl, isAbortError } from '@pancakeswap/utils/abortControl'
 
 import {
   GasModel,
@@ -102,11 +102,12 @@ interface GetQuotesConfig {
   gasLimitPerCall: number
 }
 
-const retryControllerFactory = ({ retries }: QuoteRetryOptions) => {
+const retryControllerFactory = ({ retries }: QuoteRetryOptions & AbortControl) => {
   const errors: Error[] = []
   let remainingRetries = retries || 0
   return {
-    shouldRetry: (error: Error) => remainingRetries > 0 && errors.every((err) => err.name !== error.name),
+    shouldRetry: (error: Error) =>
+      !isAbortError(error) && remainingRetries > 0 && errors.every((err) => err.name !== error.name),
     onRetry: (error: Error) => {
       errors.push(error)
       remainingRetries -= 1
@@ -132,7 +133,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
 
       return async function getRoutesWithQuote(
         routes: RouteWithoutQuote[],
-        { blockNumber: blockNumberFromConfig, gasModel, retry: retryOptions }: QuoterOptions,
+        { blockNumber: blockNumberFromConfig, gasModel, retry: retryOptions, signal }: QuoterOptions,
       ): Promise<RouteWithQuote[]> {
         if (!routes.length) {
           return []
@@ -183,6 +184,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                   dropUnexecutedCalls,
                   gasLimitPerCall,
                   gasLimit,
+                  signal,
                 },
               })
             const successRateError = validateSuccessRate(results, minSuccessRate)
@@ -196,7 +198,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
               approxGasUsedPerSuccessCall,
             }
           } catch (err: any) {
-            if (err instanceof SuccessRateError || err instanceof BlockConflictError) {
+            if (err instanceof SuccessRateError || err instanceof BlockConflictError || isAbortError(err)) {
               throw err
             }
 

@@ -18,22 +18,17 @@ import {
   StepStatus,
   Stepper,
   Text,
-  TooltipText,
-  useTooltip,
 } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter as RouterLink } from '@pancakeswap/widgets-internal'
+import { NextLinkFromReactRouter as RouterLink, Ifo } from '@pancakeswap/widgets-internal'
 import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Address, useAccount } from 'wagmi'
 import { useMemo, ReactNode } from 'react'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { useProfile } from 'state/profile/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { getICakeWeekDisplay } from 'views/Pools/helpers'
 
-import { useIfoCeiling } from '../hooks/useIfoCredit'
 import { useChainName } from '../hooks/useChainNames'
 
 interface TypeProps {
@@ -66,10 +61,6 @@ const Wrapper = styled(Container)`
     margin-left: -24px;
     margin-right: -24px;
   }
-`
-
-const InlineLink = styled(Link)`
-  display: inline;
 `
 
 function ICakeCard({
@@ -107,7 +98,6 @@ function ICakeCard({
 }
 
 const Step1 = ({
-  srcChainId,
   hasProfile,
   sourceChainIfoCredit,
 }: {
@@ -121,53 +111,42 @@ const Step1 = ({
     () => sourceChainIfoCredit && Number(sourceChainIfoCredit.toExact()),
     [sourceChainIfoCredit],
   )
-  const ceiling = useIfoCeiling({ chainId: srcChainId })
   const creditDollarValue = cakePrice.multipliedBy(balanceNumber ?? 1).toNumber()
-  const weeksDisplay = getICakeWeekDisplay(ceiling ?? BIG_ZERO)
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <Box>
-      <Text>
-        {t(
-          'The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.',
-          {
-            weeks: weeksDisplay,
-          },
-        )}
-      </Text>
-      <InlineLink external href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
-        {t('Learn more about iCAKE')}
-      </InlineLink>
-    </Box>,
-    {},
-  )
 
   return (
     <CardBody>
-      {tooltipVisible && tooltip}
       <Heading as="h4" color="secondary" mb="16px">
         {t('Lock CAKE in the CAKE pool')}
       </Heading>
       <Box>
         <Text mb="4px" color="textSubtle" small>
           {t(
-            'The maximum amount of CAKE you can commit to the Public Sale equals the number of your iCAKE. Lock more CAKE for longer durations to increase the maximum CAKE you can commit to the sale.',
+            'The maximum amount of CAKE you can commit to the Public Sale equals the number of your iCAKE, which is based on your veCAKE balance at the snapshot time of each IFO. Lock more CAKE for longer durations to increase the maximum CAKE you can commit to the sale.',
           )}
         </Text>
-        <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
+        <Link
+          external
+          fontWeight={700}
+          color="textSubtle"
+          small
+          href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake#how-is-icake-calculated"
+        >
           {t('How does the number of iCAKE calculated?')}
-        </TooltipText>
+        </Link>
         <Text mt="4px" color="textSubtle" small>
-          {t(
-            'Missed this IFO? You will enjoy the same amount of iCAKE for future IFOs if your locked-staking position is not unlocked.',
-          )}
+          {t('Missed this IFO? Lock CAKE today for the next IFO, while enjoying a wide range of veCAKE benefits!')}
         </Text>
       </Box>
       {hasProfile && (
         <ICakeCard
-          icon={<LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />}
+          icon={
+            <Ifo.IfoSalesLogo
+              size={66}
+              hasICake={Boolean(sourceChainIfoCredit && sourceChainIfoCredit.quotient > 0n)}
+            />
+          }
           credit={sourceChainIfoCredit}
-          title={t('Your max CAKE entry')}
+          title={t('Your ICAKE')}
           more={
             <Text fontSize="12px" color="textSubtle">
               {creditDollarValue !== undefined ? (
@@ -194,17 +173,17 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
   const { t } = useTranslation()
   return (
     <CardBody>
-      <Heading as="h4" color="secondary" mb="16px">
+      <Heading as="h4" color="secondary" mb="1rem">
         {t('Commit CAKE')}
       </Heading>
       <Text color="textSubtle" small>
-        {t(
-          'Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.',
-        )}{' '}
-        <br />
+        {t('When the IFO sales are live, you can click “commit” to commit CAKE and buy the tokens being sold.')}
+      </Text>
+      <Text color="textSubtle" small mt="1rem">
+        {t('You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.')}
       </Text>
       {hasProfile && isLive && !isCommitted && (
-        <Button as="a" href="#current-ifo" mt="16px">
+        <Button as="a" href="#current-ifo" mt="1rem">
           {t('Commit CAKE')}
         </Button>
       )}
@@ -276,12 +255,10 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
     const renderClaimStep = () => (
       <CardBody>
         <Heading as="h4" color="secondary" mb="16px">
-          {t('Claim your tokens and achievement')}
+          {t('Claim your tokens')}
         </Heading>
         <Text color="textSubtle" small>
-          {t(
-            'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.',
-          )}
+          {t('After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE.')}
         </Text>
       </CardBody>
     )

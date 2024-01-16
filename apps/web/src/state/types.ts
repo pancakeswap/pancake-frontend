@@ -1,6 +1,6 @@
 import { SerializedFarmsState } from '@pancakeswap/farms'
 import { SerializedPoolWithInfo } from '@pancakeswap/pools'
-import { Token } from '@pancakeswap/sdk'
+import { BetPosition, PredictionStatus, PredictionsChartView } from '@pancakeswap/prediction'
 import BigNumber from 'bignumber.js'
 import {
   CampaignType,
@@ -175,29 +175,6 @@ export interface Achievement {
 }
 
 // Predictions
-
-export enum BetPosition {
-  BULL = 'Bull',
-  BEAR = 'Bear',
-  HOUSE = 'House',
-}
-
-export enum PredictionStatus {
-  INITIAL = 'initial',
-  LIVE = 'live',
-  PAUSED = 'paused',
-  ERROR = 'error',
-}
-
-export enum PredictionSupportedSymbol {
-  BNB = 'BNB',
-  CAKE = 'CAKE',
-}
-
-export enum PredictionsChartView {
-  TradingView = 'TradingView',
-  Chainlink = 'Chainlink Oracle',
-}
 
 export interface Round {
   id: string
@@ -500,14 +477,6 @@ export interface UserRound {
   endTime: string
   totalTickets: string
   tickets?: LotteryTicket[]
-}
-
-export interface PredictionConfig {
-  address: Address
-  api: string
-  chainlinkOracleAddress: Address
-  displayedDecimals: number
-  token: Token
 }
 
 // Pottery

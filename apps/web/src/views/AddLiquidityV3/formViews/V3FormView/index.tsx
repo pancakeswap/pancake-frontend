@@ -57,6 +57,7 @@ import { getViemClients } from 'utils/viem'
 import { calculateGasMargin } from 'utils'
 
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
@@ -120,6 +121,7 @@ export default function V3FormView({
   const { data: signer } = useWalletClient()
   const { sendTransactionAsync } = useSendTransaction()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
+  const [txnErrorMessage, setTxnErrorMessage] = useState<string | undefined>()
 
   const {
     t,
@@ -305,11 +307,11 @@ export default function V3FormView({
             })
             .catch((error) => {
               console.error('Failed to send transaction', error)
-              setAttemptingTxn(false)
               // we only care if the error is something _other_ than the user rejected the tx
               if (!isUserRejected(error)) {
-                console.error(error)
+                setTxnErrorMessage(transactionErrorToUserReadableMessage(error, t))
               }
+              setAttemptingTxn(false)
             })
         })
     }
@@ -329,6 +331,7 @@ export default function V3FormView({
     quoteCurrency,
     sendTransactionAsync,
     signer,
+    t,
   ])
 
   const handleDismissConfirmation = useCallback(() => {
@@ -391,6 +394,7 @@ export default function V3FormView({
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
+      errorMessage={txnErrorMessage}
       content={() => (
         <ConfirmationModalContent
           topContent={() =>

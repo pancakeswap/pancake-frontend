@@ -1,12 +1,9 @@
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
-import { PageMeta } from 'components/Layout/Page'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
 import TransactionsDetailModal from 'components/TransactionDetailModal'
-import { XmasEffect } from 'components/XmasEffect'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
@@ -15,12 +12,14 @@ import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
 import useUserAgent from 'hooks/useUserAgent'
 import { NextPage } from 'next'
-import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
+import { DefaultSeo } from 'next-seo'
+import { PageMeta } from 'components/Layout/Page'
+import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
@@ -29,8 +28,8 @@ import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
-import Providers from '../Providers'
 import Menu from '../components/Menu'
+import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
@@ -132,7 +131,6 @@ type NextPageWithLayout = NextPage & {
    * */
   chains?: number[]
   isShowScrollToTopButton?: true
-  snowEffect?: boolean
   /**
    * Meta component for page, hacky solution for static build page to avoid `PersistGate` which blocks the page from rendering
    */
@@ -168,7 +166,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
-      {Component.snowEffect && <XmasEffect />}
     </ProductionErrorBoundary>
   )
 }

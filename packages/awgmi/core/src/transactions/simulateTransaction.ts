@@ -1,7 +1,7 @@
 import { HexString, TxnBuilderTypes, Types } from 'aptos'
 import { getAccount } from '../accounts/account'
 import { getClient } from '../client'
-import { WalletProviderError, SimulateTransactionError } from '../errors'
+import { SimulateTransactionError, WalletProviderError } from '../errors'
 import { getProvider } from '../providers'
 
 export type SimulateTransactionArgs = {
@@ -9,7 +9,7 @@ export type SimulateTransactionArgs = {
   networkName?: string
   throwOnError?: boolean
   payload: Types.EntryFunctionPayload
-  options?: Omit<Types.SubmitTransactionRequest, 'payload' | 'signature'>
+  options?: Partial<Omit<Types.SubmitTransactionRequest, 'payload' | 'signature'>>
   query?: {
     estimateGasUnitPrice?: boolean
     estimateMaxGasAmount?: boolean

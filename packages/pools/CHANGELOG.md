@@ -1,5 +1,28 @@
 # @pancakeswap/pools
 
+## 5.1.2
+
+### Patch Changes
+
+- Updated dependencies [8fcd67c85]
+  - @pancakeswap/chains@0.4.0
+  - @pancakeswap/tokens@0.5.8
+  - @pancakeswap/token-lists@0.0.9
+
+## 5.1.1
+
+### Patch Changes
+
+- Updated dependencies [49730e609]
+  - @pancakeswap/chains@0.3.1
+  - @pancakeswap/tokens@0.5.7
+
+## 5.1.0
+
+### Minor Changes
+
+- 0d60f672c: Move Alp Arb pool to finished
+
 ## 5.0.4
 
 ### Patch Changes

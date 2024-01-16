@@ -1,8 +1,6 @@
-import { ChainId, V2_SUBGRAPHS, V3_SUBGRAPHS } from '@pancakeswap/chains'
+import { ChainId, V2_SUBGRAPHS, V3_SUBGRAPHS, BLOCKS_SUBGRAPHS } from '@pancakeswap/chains'
 
 export const GRAPH_API_PROFILE = 'https://api.thegraph.com/subgraphs/name/pancakeswap/profile'
-export const GRAPH_API_PREDICTION_BNB = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-v2'
-export const GRAPH_API_PREDICTION_CAKE = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction-cake'
 
 export const GRAPH_API_LOTTERY = 'https://api.thegraph.com/subgraphs/name/pancakeswap/lottery'
 export const SNAPSHOT_BASE_URL = process.env.NEXT_PUBLIC_SNAPSHOT_BASE_URL
@@ -26,14 +24,13 @@ export const V3_BSC_INFO_CLIENT = `https://open-platform.nodereal.io/${
 }/pancakeswap-v3/graphql`
 
 export const INFO_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth'
-export const BLOCKS_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
-export const BLOCKS_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks'
-export const BLOCKS_CLIENT_POLYGON_ZKEVM =
-  'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest'
-export const BLOCKS_CLIENT_ZKSYNC = 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest'
-export const BLOCKS_CLIENT_LINEA = 'https://graph-query.linea.build/subgraphs/name/kybernetwork/linea-blocks'
-export const BLOCKS_CLIENT_BASE = 'https://api.studio.thegraph.com/query/48211/base-blocks/version/latest'
-export const BLOCKS_CLIENT_OPBNB = 'https://opbnb-mainnet-graph.nodereal.io/subgraphs/name/pancakeswap/blocks'
+export const BLOCKS_CLIENT = BLOCKS_SUBGRAPHS[ChainId.BSC]
+export const BLOCKS_CLIENT_ETH = BLOCKS_SUBGRAPHS[ChainId.ETHEREUM]
+export const BLOCKS_CLIENT_POLYGON_ZKEVM = BLOCKS_SUBGRAPHS[ChainId.POLYGON_ZKEVM]
+export const BLOCKS_CLIENT_ZKSYNC = BLOCKS_SUBGRAPHS[ChainId.ZKSYNC]
+export const BLOCKS_CLIENT_LINEA = BLOCKS_SUBGRAPHS[ChainId.LINEA]
+export const BLOCKS_CLIENT_BASE = BLOCKS_SUBGRAPHS[ChainId.BASE]
+export const BLOCKS_CLIENT_OPBNB = BLOCKS_SUBGRAPHS[ChainId.OPBNB]
 export const STABLESWAP_SUBGRAPH_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap'
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/pancakeswap/nft-market'
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
@@ -49,16 +46,7 @@ export const CELER_API = 'https://api.celerscan.com/scan'
 
 export const INFO_CLIENT_WITH_CHAIN = V2_SUBGRAPHS
 
-export const BLOCKS_CLIENT_WITH_CHAIN = {
-  [ChainId.BSC]: BLOCKS_CLIENT,
-  [ChainId.ETHEREUM]: BLOCKS_CLIENT_ETH,
-  [ChainId.POLYGON_ZKEVM]: BLOCKS_CLIENT_POLYGON_ZKEVM,
-  [ChainId.ZKSYNC]: BLOCKS_CLIENT_ZKSYNC,
-  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
-  [ChainId.LINEA]: BLOCKS_CLIENT_LINEA,
-  [ChainId.BASE]: BLOCKS_CLIENT_BASE,
-  [ChainId.OPBNB]: BLOCKS_CLIENT_OPBNB,
-}
+export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPHS
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 

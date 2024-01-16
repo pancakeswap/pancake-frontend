@@ -54,6 +54,10 @@ const StyledButton = styled(Button)`
 
 const DesktopButton = styled(Button)`
   align-self: flex-end;
+
+  &:hover {
+    opacity: 1 !important;
+  }
 `
 
 const StyledSubTitle = styled(Text)`

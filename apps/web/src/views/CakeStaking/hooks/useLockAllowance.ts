@@ -5,12 +5,16 @@ import { useApproveCallback } from 'hooks/useApproveCallback'
 import useTokenAllowance from 'hooks/useTokenAllowance'
 import { useMemo } from 'react'
 import { getVeCakeContract } from 'utils/contractHelpers'
-import { useAccount } from 'wagmi'
+import { useAccount, useWalletClient } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+
 import { useBSCCakeToken } from './useBSCCakeToken'
 
 export const useLockAllowance = () => {
+  const { data: walletClient } = useWalletClient()
+  const { chainId } = useActiveChainId()
   const cakeToken = useBSCCakeToken()
-  const veCakeContract = getVeCakeContract()
+  const veCakeContract = getVeCakeContract(walletClient ?? undefined, chainId)
   const { address: account } = useAccount()
 
   return useTokenAllowance(cakeToken, account, veCakeContract.address)
@@ -22,8 +26,10 @@ export const useShouldGrantAllowance = (targetAmount: bigint) => {
 }
 
 export const useLockApproveCallback = (amount: string) => {
+  const { data: walletClient } = useWalletClient()
+  const { chainId } = useActiveChainId()
   const cakeToken = useBSCCakeToken()
-  const veCakeContract = getVeCakeContract()
+  const veCakeContract = getVeCakeContract(walletClient ?? undefined, chainId)
   const rawAmount = useMemo(
     () => getDecimalAmount(new BN(amount || 0), cakeToken?.decimals),
     [amount, cakeToken?.decimals],

@@ -1,34 +1,36 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
 import {
   Box,
+  BunnyPlaceholderIcon,
   Card,
   CardBody,
   CardRibbon,
   Flex,
-  ProfileAvatar,
   LaurelLeftIcon,
   LaurelRightIcon,
   Link,
-  Text,
+  ProfileAvatar,
   SubMenu,
   SubMenuItem,
+  Text,
   useModal,
-  BscScanIcon,
 } from '@pancakeswap/uikit'
-import { PredictionUser } from 'state/types'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useStatModalProps } from 'state/predictions/hooks'
 import { useProfileForAddress } from 'state/profile/hooks'
+import { PredictionUser } from 'state/types'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import truncateHash from '@pancakeswap/utils/truncateHash'
-import { useTranslation } from '@pancakeswap/localization'
-import { useStatModalProps } from 'state/predictions/hooks'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { useDomainNameForAddress } from 'hooks/useDomain'
 import WalletStatsModal from '../WalletStatsModal'
 import { NetWinningsRow, Row } from './styles'
 
 interface RankingCardProps {
   rank: 1 | 2 | 3
   user: PredictionUser
+  token: Token | undefined
+  api: string
 }
 
 const RotatedLaurelLeftIcon = styled(LaurelLeftIcon)`
@@ -51,13 +53,16 @@ const getRankingColor = (rank: number) => {
   return 'gold'
 }
 
-const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user }) => {
+const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user, token, api }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
   const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
-  const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
-  const { token, api } = useConfig()
+  const { result, address, leaderboardLoadingState } = useStatModalProps({
+    account: user.id,
+    api,
+    tokenSymbol: token?.symbol ?? '',
+  })
 
   const [onPresentWalletStatsModal] = useModal(
     <WalletStatsModal
@@ -82,7 +87,11 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
                 <Flex mb="4px">
                   <RotatedLaurelLeftIcon color={rankColor} width="32px" />
                   <Box width={['40px', null, null, '64px']} height={['40px', null, null, '64px']}>
-                    <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={64} width={64} />
+                    {profile?.nft?.image?.thumbnail ?? avatar ? (
+                      <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={64} width={64} />
+                    ) : (
+                      <BunnyPlaceholderIcon height={64} width={64} />
+                    )}
                   </Box>
                   <RotatedLaurelRightIcon color={rankColor} width="32px" />
                 </Flex>
@@ -94,9 +103,14 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
             options={{ placement: 'bottom' }}
           >
             <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
-            <SubMenuItem as={Link} href={getBlockExploreLink(user.id, 'address')} bold={false} color="text" external>
-              {t('View on BscScan')}
-              <BscScanIcon ml="4px" width="20px" color="textSubtle" />
+            <SubMenuItem
+              as={Link}
+              href={getBlockExploreLink(user.id, 'address', token?.chainId)}
+              bold={false}
+              color="text"
+              external
+            >
+              {t('View on %site%', { site: t('Explorer') })}
             </SubMenuItem>
           </SubMenu>
         </Flex>
@@ -108,7 +122,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
             {`${user.winRate.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}%`}
           </Text>
         </Row>
-        <NetWinningsRow amount={user.netBNB} />
+        <NetWinningsRow amount={user.netBNB} token={token} />
         <Row>
           <Text fontSize="12px" color="textSubtle">
             {t('Rounds Won')}

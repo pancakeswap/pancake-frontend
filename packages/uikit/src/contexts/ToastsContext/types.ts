@@ -1,10 +1,17 @@
+import { ExternalToast } from "sonner";
 import { ToastData } from "../../components/Toast";
 
-type ToastSignature = (title: ToastData["title"], description?: ToastData["description"]) => void;
+type ToastId = string | number;
+
+type ToastSignature = (
+  title: ToastData["title"],
+  description?: ToastData["description"],
+  externalData?: ExternalToast
+) => ToastId;
+
 export interface ToastContextApi {
-  toasts: ToastData[];
   clear: () => void;
-  remove: (id: string) => void;
+  remove: (id: string | number) => void;
   toastError: ToastSignature;
   toastInfo: ToastSignature;
   toastSuccess: ToastSignature;

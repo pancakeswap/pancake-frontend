@@ -2,9 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallback, useState } from 'react'
-import { WaitForTransactionResult, SendTransactionResult } from 'wagmi/actions'
+import { getViemErrorMessage, parseViemError } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
-import { BaseError, Hash, UnknownRpcError } from 'viem'
+import { Hash } from 'viem'
+import { SendTransactionResult, WaitForTransactionResult } from 'wagmi/actions'
 import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
 
 export type CatchTxErrorReturn = {
@@ -14,30 +15,16 @@ export type CatchTxErrorReturn = {
   txResponseLoading: boolean
 }
 
-/// only show corrected parsed viem error
-export function parseError<TError>(err: TError): BaseError | null {
-  if (err instanceof BaseError) {
-    return err
-  }
-  if (typeof err === 'string') {
-    return new UnknownRpcError(new Error(err))
-  }
-  if (err instanceof Error) {
-    return new UnknownRpcError(err)
-  }
-  return null
-}
-
 const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
 
 type Params = {
   throwUserRejectError?: boolean
   waitForTransactionTimeout?: number
-  throwCustomeError?: () => void
+  throwCustomError?: () => void
 }
 
 export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
-  const { throwUserRejectError = false, throwCustomeError, waitForTransactionTimeout } = params || {}
+  const { throwUserRejectError = false, throwCustomError, waitForTransactionTimeout } = params || {}
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const [loading, setLoading] = useState(false)
@@ -47,7 +34,7 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
   const handleNormalError = useCallback(
     (error) => {
       logError(error)
-      const err = parseError(error)
+      const err = parseViemError(error)
       if (err) {
         toastError(
           t('Error'),
@@ -65,13 +52,13 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
   const handleTxError = useCallback(
     (error, hash) => {
       logError(error)
-      const err = parseError(error)
+      const err = parseViemError(error)
       toastError(
         t('Failed'),
         <ToastDescriptionWithTx txHash={hash}>
           {err
             ? t('Transaction failed with error: %reason%', {
-                reason: notPreview ? err.shortMessage || err.message : err.message,
+                reason: notPreview ? getViemErrorMessage(err) : err.message,
               })
             : t('Transaction failed. For detailed error message:')}
         </ToastDescriptionWithTx>,
@@ -105,8 +92,8 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
-          } else if (throwCustomeError) {
-            throwCustomeError()
+          } else if (throwCustomError) {
+            throwCustomError()
           } else {
             handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
           }
@@ -126,7 +113,7 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
       waitForTransaction,
       waitForTransactionTimeout,
       throwUserRejectError,
-      throwCustomeError,
+      throwCustomError,
       handleNormalError,
       handleTxError,
     ],

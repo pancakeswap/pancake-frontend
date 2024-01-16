@@ -1,3 +1,5 @@
+import { ASSET_CDN } from 'config/constants/endpoints'
+
 export function getBannerUrl(ifoId: string) {
-  return `/images/ifos/${ifoId}-bg.png`
+  return `${ASSET_CDN}/web/ifos/bg/${ifoId}-bg.png`
 }

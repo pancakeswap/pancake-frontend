@@ -1,15 +1,15 @@
-import { styled } from 'styled-components'
-import { useAccount } from 'wagmi'
-import { Box, Flex, Heading, Text, Button, Link, BscScanIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { getRoundResult, Result } from 'state/predictions/helpers'
-import { REWARD_RATE } from 'state/predictions/config'
-import { getBlockExploreLink } from 'utils'
-import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
+import { BetPosition, REWARD_RATE } from '@pancakeswap/prediction'
+import { Box, BscScanIcon, Button, Flex, Heading, Link, Text } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { Result, getRoundResult } from 'state/predictions/helpers'
 import { useGetCurrentEpoch } from 'state/predictions/hooks'
-import { Bet, BetPosition } from 'state/types'
+import { Bet } from 'state/types'
+import { styled } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-
+import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
+import { useAccount } from 'wagmi'
 import { formatBnb, getMultiplier, getNetPayout } from '../helpers'
 import PnlChart from './PnlChart'
 import SummaryRow from './SummaryRow'
@@ -64,7 +64,7 @@ const getPnlSummary = (bets: Bet[], currentEpoch: number): PnlSummary => {
     if (roundResult === Result.WIN) {
       const payout = getNetPayout(bet, REWARD_RATE)
       let { bestRound } = summary.won
-      if (payout > bestRound.payout) {
+      if (payout > bestRound.payout && bet.round) {
         const { bullAmount, bearAmount, totalAmount } = bet.round
         const multiplier = getMultiplier(totalAmount, bet.position === BetPosition.BULL ? bullAmount : bearAmount)
         bestRound = { id: bet.round.epoch.toString(), payout, multiplier }
@@ -104,9 +104,10 @@ const getPnlSummary = (bets: Bet[], currentEpoch: number): PnlSummary => {
 const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory, bets }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const currentEpoch = useGetCurrentEpoch()
-  const { token, displayedDecimals } = useConfig()
-  const tokenPrice = useTokenPrice(token)
+  const config = useConfig()
+  const tokenPrice = useTokenPrice(config?.token)
 
   const summary = getPnlSummary(bets, currentEpoch)
 
@@ -140,7 +141,9 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
             {t('Net results')}
           </Text>
           <Text bold fontSize="24px" lineHeight="1" color={netResultIsPositive ? 'success' : 'failure'}>
-            {`${netResultIsPositive ? '+' : ''}${formatBnb(netResultAmount, displayedDecimals)} ${token.symbol}`}
+            {`${netResultIsPositive ? '+' : ''}${formatBnb(netResultAmount, config?.displayedDecimals ?? 0)} ${
+              config?.token?.symbol
+            }`}
           </Text>
           <Text small color="textSubtle">
             {`~$${netResultInUsd.toFixed(2)}`}
@@ -152,7 +155,9 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
           {t('Average return / round')}
         </Text>
         <Text bold color={avgBnbWonIsPositive ? 'success' : 'failure'}>
-          {`${avgBnbWonIsPositive ? '+' : ''}${formatBnb(avgBnbWonPerRound, displayedDecimals)} ${token.symbol}`}
+          {`${avgBnbWonIsPositive ? '+' : ''}${formatBnb(avgBnbWonPerRound, config?.displayedDecimals ?? 0)} ${
+            config?.token?.symbol
+          }`}
         </Text>
         <Text small color="textSubtle">
           {avgBnbWonInUsdDisplay}
@@ -164,9 +169,10 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
               {t('Best round: #%roundId%', { roundId: summary.won.bestRound.id })}
             </Text>
             <Flex alignItems="flex-end">
-              <Text bold color="success">{`+${formatBnb(summary.won.bestRound.payout, displayedDecimals)} ${
-                token.symbol
-              }`}</Text>
+              <Text bold color="success">{`+${formatBnb(
+                summary.won.bestRound.payout,
+                config?.displayedDecimals ?? 0,
+              )} ${config?.token?.symbol}`}</Text>
               <Text ml="4px" small color="textSubtle">
                 ({summary.won.bestRound.multiplier.toFixed(2)}x)
               </Text>
@@ -180,7 +186,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
         <Text mt="16px" bold color="textSubtle">
           {t('Average position entered / round')}
         </Text>
-        <Text bold>{`${formatBnb(avgPositionEntered, displayedDecimals)} ${token.symbol}`}</Text>
+        <Text bold>{`${formatBnb(avgPositionEntered, config?.displayedDecimals ?? 0)} ${config?.token?.symbol}`}</Text>
         <Text small color="textSubtle">
           {avgPositionEnteredInUsdDisplay}
         </Text>
@@ -192,12 +198,14 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
         <SummaryRow type="entered" summary={summary} tokenPrice={tokenPrice} />
 
         <Flex justifyContent="center" mt="24px">
-          <Link href={`${getBlockExploreLink(account, 'address')}#internaltx`} mb="16px" external>
-            <Button mt="8px" width="100%">
-              {t('View Reclaimed & Won')}
-              <BscScanIcon color="invertedContrast" ml="4px" />
-            </Button>
-          </Link>
+          {account && (
+            <Link href={`${getBlockExploreLink(account, 'address', chainId)}`} mb="16px" external>
+              <Button mt="8px" width="100%">
+                {t('View Reclaimed & Won')}
+                <BscScanIcon color="invertedContrast" ml="4px" />
+              </Button>
+            </Link>
+          )}
         </Flex>
       </Box>
     </Box>

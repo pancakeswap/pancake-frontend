@@ -8,8 +8,10 @@ import { Pool } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { BigNumber } from 'bignumber.js'
 import { DeserializedLockedVaultUser } from 'state/types'
-import { VeCakeMigrateCard } from 'views/CakeStaking/components/SyrupPool'
+import { VeCakeDelegatedCard, VeCakeMigrateCard } from 'views/CakeStaking/components/SyrupPool'
+import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
 import OriginalLockedInfo from '../OriginalLockedInfo'
 import LockedActions from './Common/LockedActions'
 import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
@@ -20,13 +22,13 @@ const HelpIconWrapper = styled.div`
 
 interface LockedStakingProps {
   buttonVariant?: ButtonVariant
-  pool: Pool.DeserializedPool<Token>
-  userData: DeserializedLockedVaultUser
+  pool?: Pool.DeserializedPool<Token>
+  userData?: DeserializedLockedVaultUser
 }
 
 const LockedStaking: React.FC<React.PropsWithChildren<LockedStakingProps>> = ({ buttonVariant, pool, userData }) => {
   const { t } = useTranslation()
-
+  const isUserDelegated = useIsUserDelegated()
   const position = useMemo(
     // () => VaultPosition.LockedEnd,
     () =>
@@ -57,8 +59,8 @@ const LockedStaking: React.FC<React.PropsWithChildren<LockedStakingProps>> = ({ 
   )
 
   const { lockEndDate, remainingTime, burnStartTime } = useUserDataInVaultPresenter({
-    lockStartTime: userData?.lockStartTime,
-    lockEndTime: userData?.lockEndTime,
+    lockStartTime: userData?.lockStartTime ?? '',
+    lockEndTime: userData?.lockEndTime ?? '',
     burnStartTime: userData?.burnStartTime,
   })
 
@@ -97,7 +99,7 @@ const LockedStaking: React.FC<React.PropsWithChildren<LockedStakingProps>> = ({ 
             </HelpIconWrapper>
           </Flex>
           <BalanceWithLoading
-            value={usdValueStaked}
+            value={usdValueStaked ?? 0}
             fontSize="12px"
             color="textSubtle"
             decimals={2}
@@ -110,32 +112,41 @@ const LockedStaking: React.FC<React.PropsWithChildren<LockedStakingProps>> = ({ 
             {t('Unlocks In')}
           </Text>
           <Flex>
-            <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} bold fontSize="16px">
-              {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+            <Text
+              color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
+              bold
+              fontSize="16px"
+              mr={isUserDelegated ? '10px' : '0px'}
+            >
+              {isUserDelegated ? t('Converted') : position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
             </Text>
             {tagTooltipVisibleOfBurn && tagTooltipOfBurn}
-            <span ref={tagTargetRefOfBurn}>
-              <HelpIcon ml="4px" mt="2px" width="20px" height="20px" color="textSubtle" />
-            </span>
+            {!isUserDelegated && (
+              <span ref={tagTargetRefOfBurn}>
+                <HelpIcon ml="4px" mt="2px" width="20px" height="20px" color="textSubtle" />
+              </span>
+            )}
           </Flex>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} fontSize="12px">
-            {t('On %date%', { date: lockEndDate })}
+            {isUserDelegated ? '-' : t('On %date%', { date: lockEndDate })}
           </Text>
         </Box>
       </Flex>
       <Box mb="16px">
-        {position < VaultPosition.LockedEnd ? (
+        {isUserDelegated ? (
+          <VeCakeDelegatedCard />
+        ) : position < VaultPosition.LockedEnd ? (
           <VeCakeMigrateCard lockEndTime={userData?.lockEndTime} />
         ) : (
           <LockedActions
             userShares={userData?.userShares}
             locked={userData?.locked}
             lockEndTime={userData?.lockEndTime}
-            lockStartTime={userData?.lockStartTime}
+            lockStartTime={userData?.lockStartTime ?? ''}
             stakingToken={stakingToken}
-            stakingTokenBalance={stakingTokenBalance}
-            stakingTokenPrice={pool?.stakingTokenPrice}
-            lockedAmount={currentLockedAmountAsBigNumber}
+            stakingTokenBalance={stakingTokenBalance ?? new BigNumber(0)}
+            stakingTokenPrice={pool?.stakingTokenPrice ?? 0}
+            lockedAmount={currentLockedAmountAsBigNumber ?? new BigNumber(0)}
             variant={buttonVariant}
           />
         )}

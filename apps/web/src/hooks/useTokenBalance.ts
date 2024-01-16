@@ -44,6 +44,19 @@ export const useGetBnbBalance = () => {
   return { balance: data?.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
 }
 
+export const useGetNativeTokenBalance = () => {
+  const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
+  const { status, refetch, data } = useBalance({
+    chainId,
+    address: account,
+    watch: true,
+    enabled: !!account,
+  })
+
+  return { balance: data?.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
+}
+
 export const useBSCCakeBalance = () => {
   const { balance, fetchStatus } = useTokenBalance(CAKE[ChainId.BSC]?.address, true)
 

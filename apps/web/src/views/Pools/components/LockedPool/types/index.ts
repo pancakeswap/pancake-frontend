@@ -28,7 +28,7 @@ export interface ValidatorReturn {
 }
 
 export interface ExtendDurationModal {
-  stakingToken: Token
+  stakingToken?: Token
   stakingTokenPrice: number
   currentLockedAmount: number
   onDismiss?: VoidFn
@@ -43,7 +43,7 @@ export interface ExtendDurationModal {
 
 export interface AddButtonProps {
   currentBalance: BigNumber
-  stakingToken: Token
+  stakingToken?: Token
   currentLockedAmount: BigNumber
   lockEndTime: string
   lockStartTime: string
@@ -109,7 +109,7 @@ export interface LockedModalBodyPropsType {
 }
 
 export interface ExtendDurationButtonPropsType {
-  stakingToken: Token
+  stakingToken?: Token
   stakingTokenPrice: number
   currentLockedAmount: number
   currentBalance?: BigNumber
@@ -125,7 +125,7 @@ export interface AfterLockedActionsPropsType {
   lockEndTime: string
   lockStartTime: string
   currentLockedAmount: number
-  stakingToken: Token
+  stakingToken?: Token
   stakingTokenPrice: number
   position: VaultPosition
   isInline?: boolean
@@ -135,10 +135,10 @@ export interface AfterLockedActionsPropsType {
 
 export interface LockedActionsPropsType extends VaultPositionParams {
   lockStartTime: string
-  stakingToken: Token
-  stakingTokenBalance: BigNumber
+  stakingToken?: Token
+  stakingTokenBalance?: BigNumber
   stakingTokenPrice: number
-  lockedAmount: BigNumber
+  lockedAmount?: BigNumber
 }
 
 export interface StaticAmountPropsType {

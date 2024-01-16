@@ -34,13 +34,11 @@ const NotificationMenu: React.FC<
   UserMenuProps & {
     isMenuOpen: boolean
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
-    isRegistered: boolean
-    handleRegistration: () => Promise<void>
     viewIndex: PAGE_VIEW
     subscriptionId: string | undefined
     account: string | undefined
   }
-> = ({ children, isMenuOpen, setIsMenuOpen, isRegistered, handleRegistration, viewIndex, subscriptionId, account }) => {
+> = ({ children, isMenuOpen, setIsMenuOpen, viewIndex, subscriptionId, account }) => {
   const hasUnread = useHasUnreadNotifications(subscriptionId)
   const dispatch = useAppDispatch()
   const { messages: notifications } = useMessages(account)
@@ -57,20 +55,12 @@ const NotificationMenu: React.FC<
   }, [dispatch, notifications, subscriptionId])
 
   const toggleMenu = useCallback(() => {
-    if (isRegistered) handleRegistration()
     if (!isMenuOpen) {
       requestNotificationPermission()
       markAllNotificationsAsRead()
     }
     setIsMenuOpen(!isMenuOpen)
-  }, [
-    setIsMenuOpen,
-    isMenuOpen,
-    isRegistered,
-    handleRegistration,
-    markAllNotificationsAsRead,
-    requestNotificationPermission,
-  ])
+  }, [setIsMenuOpen, isMenuOpen, markAllNotificationsAsRead, requestNotificationPermission])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {

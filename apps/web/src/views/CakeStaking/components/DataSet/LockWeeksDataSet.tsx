@@ -6,9 +6,9 @@ import { WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
-import { getVeCakeAmount } from 'utils/getVeCakeAmount'
-import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
-import { useRoundedUnlockTimestamp } from 'views/CakeStaking/hooks/useRoundedUnlockTimestamp'
+import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
+import { useTargetUnlockTime } from 'views/CakeStaking/hooks/useTargetUnlockTime'
+import { useVeCakeAmount } from 'views/CakeStaking/hooks/useVeCakeAmount'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Tooltips } from '../Tooltips'
 import { DataBox, DataHeader, DataRow } from './DataBox'
@@ -18,25 +18,32 @@ export const LockWeeksDataSet = () => {
   const { t } = useTranslation()
   const { cakeLockWeeks } = useLockCakeData()
   const { cakeLockExpired, cakeUnlockTime, nativeCakeLockedAmount } = useCakeLockStatus()
-  const currentTimestamp = useCurrentBlockTimestamp()
+  const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
+  const unlockTimestamp = useTargetUnlockTime(
+    Number(cakeLockWeeks) * WEEK,
+    cakeLockExpired ? undefined : Number(cakeUnlockTime),
+  )
+  const veCakeAmountFromNative = useVeCakeAmount(nativeCakeLockedAmount.toString(), unlockTimestamp)
+  const veCakeAmountFromNativeBN = useMemo(() => {
+    return new BN(veCakeAmountFromNative)
+  }, [veCakeAmountFromNative])
+
   const veCakeAmountBN = useMemo(() => {
-    const duration = cakeUnlockTime - currentTimestamp + Number(cakeLockWeeks || 0) * WEEK
-    return new BN(getVeCakeAmount(nativeCakeLockedAmount.toString(), duration))
-  }, [cakeLockWeeks, cakeUnlockTime, currentTimestamp, nativeCakeLockedAmount])
+    return proxyVeCakeBalance.plus(veCakeAmountFromNativeBN)
+  }, [veCakeAmountFromNativeBN, proxyVeCakeBalance])
 
   const factor =
-    veCakeAmountBN && veCakeAmountBN.gt(0)
-      ? `${veCakeAmountBN.div(nativeCakeLockedAmount.toString()).toPrecision(2)}x`
+    veCakeAmountFromNativeBN && veCakeAmountFromNativeBN.gt(0)
+      ? `${veCakeAmountFromNativeBN.div(nativeCakeLockedAmount.toString()).toPrecision(2)}x`
       : '0.00x'
 
-  const newUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? undefined : Number(cakeUnlockTime))
   const newUnlockTime = useMemo(() => {
-    return formatDate(dayjs.unix(Number(newUnlockTimestamp)))
-  }, [newUnlockTimestamp])
+    return formatDate(dayjs.unix(Number(unlockTimestamp)))
+  }, [unlockTimestamp])
 
   return (
     <DataBox gap="8px">
-      <DataHeader value={String(getBalanceAmount(veCakeAmountBN).toFixed(2))} />
+      <DataHeader value={getBalanceAmount(veCakeAmountBN)} />
       <DataRow
         label={
           <Tooltips

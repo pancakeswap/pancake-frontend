@@ -1,9 +1,12 @@
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { useCallback } from 'react'
+import { useLedgerTimestamp } from './useLedgerTimestamp'
 
 const SAFE_FACTOR = 1.5
 
 export default function useSimulationAndSendTransaction() {
+  const getNow = useLedgerTimestamp()
+
   const { simulateTransactionAsync } = useSimulateTransaction()
 
   const { sendTransactionAsync } = useSendTransaction()
@@ -15,7 +18,13 @@ export default function useSimulationAndSendTransaction() {
       let results
 
       try {
-        results = await simulateTransactionAsync({ payload })
+        results = await simulateTransactionAsync({
+          payload,
+          options: {
+            // only use for simulation
+            expiration_timestamp_secs: Math.floor(getNow() / 1000 + 5000).toString(),
+          },
+        })
       } catch (error) {
         // ignore error
         if (simulateError) {
@@ -37,7 +46,7 @@ export default function useSimulationAndSendTransaction() {
         options,
       })
     },
-    [sendTransactionAsync, simulateTransactionAsync],
+    [sendTransactionAsync, simulateTransactionAsync, getNow],
   )
 
   return execute

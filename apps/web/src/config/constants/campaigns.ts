@@ -427,6 +427,12 @@ const campaigns: Campaign[] = [
     badge: 'ifo-sable.svg',
   },
   {
+    id: '512300000',
+    type: 'ifo',
+    title: 'CAKEPIE',
+    badge: 'ifo-ckp.svg',
+  },
+  {
     id: '512030001',
     type: 'teambattle',
     title: 'Mobox Champion: Gold',

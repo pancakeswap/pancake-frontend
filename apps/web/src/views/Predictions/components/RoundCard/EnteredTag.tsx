@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
-import { CheckmarkCircleIcon, CheckmarkCircleFillIcon, Tag, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { REWARD_RATE } from '@pancakeswap/prediction'
+import { CheckmarkCircleFillIcon, CheckmarkCircleIcon, Tag, useTooltip } from '@pancakeswap/uikit'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
-import { REWARD_RATE } from 'state/predictions/config'
+import { useMemo } from 'react'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatTokenv2 } from '../../helpers'
 
@@ -14,7 +14,7 @@ interface EnteredTagProps {
 
 const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount, hasClaimed = false, multiplier }) => {
   const { t } = useTranslation()
-  const { token, displayedDecimals } = useConfig()
+  const config = useConfig()
 
   const formattedAmount = useMemo(() => {
     let tokenAmount
@@ -28,11 +28,11 @@ const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount
     } else {
       tokenAmount = amount
     }
-    return formatTokenv2(tokenAmount, token.decimals, displayedDecimals)
-  }, [amount, displayedDecimals, hasClaimed, multiplier, token])
+    return formatTokenv2(tokenAmount, config?.token?.decimals ?? 0, config?.displayedDecimals ?? 0)
+  }, [amount, config, hasClaimed, multiplier])
 
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formattedAmount} ${token.symbol}`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formattedAmount} ${config?.token?.symbol}`}</div>,
     { placement: 'bottom' },
   )
 
@@ -44,7 +44,13 @@ const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount
           fontWeight="bold"
           textTransform="uppercase"
           outline={!hasClaimed}
-          startIcon={hasClaimed ? <CheckmarkCircleFillIcon width="18px" /> : <CheckmarkCircleIcon width="18px" />}
+          startIcon={
+            hasClaimed ? (
+              <CheckmarkCircleFillIcon color="white" width="18px" />
+            ) : (
+              <CheckmarkCircleIcon color="secondary" width="18px" />
+            )
+          }
         >
           {hasClaimed ? t('Claimed') : t('Entered')}
         </Tag>{' '}

@@ -1,8 +1,8 @@
 import { Percent } from '@pancakeswap/sdk'
 
-import { Address, useContractReads } from 'wagmi'
-import { stableSwapABI } from 'config/abi/stableSwapAbi'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
+import { stableSwapABI } from 'config/abi/stableSwapAbi'
+import { Address, useContractReads } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddress: Address | undefined) {

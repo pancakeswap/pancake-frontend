@@ -1,5 +1,19 @@
 # @pancakeswap/sdk
 
+## 5.7.5
+
+### Patch Changes
+
+- Updated dependencies [8fcd67c85]
+  - @pancakeswap/chains@0.4.0
+
+## 5.7.4
+
+### Patch Changes
+
+- Updated dependencies [49730e609]
+  - @pancakeswap/chains@0.3.1
+
 ## 5.7.3
 
 ### Patch Changes

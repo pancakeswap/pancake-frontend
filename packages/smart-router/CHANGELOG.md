@@ -1,5 +1,48 @@
 # @pancakeswap/smart-router
 
+## 4.13.0
+
+### Minor Changes
+
+- ec7e469ca: Add support for abort control
+
+### Patch Changes
+
+- Updated dependencies [ec7e469ca]
+  - @pancakeswap/multicall@3.4.0
+  - @pancakeswap/token-lists@0.0.9
+  - @pancakeswap/tokens@0.5.8
+  - @pancakeswap/v3-sdk@3.7.4
+
+## 4.12.4
+
+### Patch Changes
+
+- Updated dependencies [8fcd67c85]
+  - @pancakeswap/chains@0.4.0
+  - @pancakeswap/multicall@3.3.4
+  - @pancakeswap/sdk@5.7.5
+  - @pancakeswap/tokens@0.5.8
+  - @pancakeswap/v3-sdk@3.7.4
+  - @pancakeswap/token-lists@0.0.9
+
+## 4.12.3
+
+### Patch Changes
+
+- efa27e63f: refactor: Add undefined type to public provider
+
+## 4.12.2
+
+### Patch Changes
+
+- Updated dependencies [49730e609]
+  - @pancakeswap/chains@0.3.1
+  - @pancakeswap/multicall@3.3.3
+  - @pancakeswap/sdk@5.7.4
+  - @pancakeswap/tokens@0.5.7
+  - @pancakeswap/v3-sdk@3.7.3
+
 ## 4.12.1
 
 ### Patch Changes

@@ -1,24 +1,24 @@
-import { useState, useEffect, useMemo } from 'react'
+import { ChainId } from '@pancakeswap/chains'
+import { Currency, Token, TradeType } from '@pancakeswap/sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { useUserSlippage } from '@pancakeswap/utils/user'
+import { FeeOptions } from '@pancakeswap/v3-sdk'
+import { captureException } from '@sentry/nextjs'
+import { useQuery } from '@tanstack/react-query'
 import type WallchainSDK from '@wallchain/sdk'
 import type { TMEVFoundResponse } from '@wallchain/sdk'
 import { TOptions } from '@wallchain/sdk'
-import { Token, TradeType, Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { useWalletClient } from 'wagmi'
-import { useQuery } from '@tanstack/react-query'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { basisPointsToPercent } from 'utils/exchange'
-import { FeeOptions } from '@pancakeswap/v3-sdk'
-import { captureException } from '@sentry/nextjs'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { atom, useAtom } from 'jotai'
+import { useEffect, useMemo, useState } from 'react'
+import { basisPointsToPercent } from 'utils/exchange'
+import { useWalletClient } from 'wagmi'
 
 import Bottleneck from 'bottleneck'
-import { Address, Hex } from 'viem'
 import { WALLCHAIN_ENABLED, WallchainKeys, WallchainTokens } from 'config/wallchain'
+import { Address, Hex } from 'viem'
 import { useSwapCallArguments } from './useSwapCallArguments'
 
 interface SwapCall {
@@ -31,7 +31,7 @@ interface WallchainSwapCall {
 }
 
 export type WallchainStatus = 'found' | 'pending' | 'not-found'
-export type TWallchainMasterInput = [TMEVFoundResponse['searcherRequest'], string] | undefined
+export type TWallchainMasterInput = [TMEVFoundResponse['searcherRequest'], string | undefined] | undefined
 
 const limiter = new Bottleneck({
   maxConcurrent: 1, // only allow one request at a time

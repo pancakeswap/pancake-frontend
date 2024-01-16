@@ -1,44 +1,75 @@
-import { useState, useMemo, useEffect } from 'react'
+import { ChainId } from '@pancakeswap/chains'
+import { PredictionSupportedSymbol } from '@pancakeswap/prediction'
 import LocalReduxProvider from 'contexts/LocalRedux/Provider'
 import makeStore from 'contexts/LocalRedux/makeStore'
-import { PredictionSupportedSymbol } from 'state/types'
-import reducers, { initialState } from 'state/predictions'
-import { useRouter } from 'next/router'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import _toUpper from 'lodash/toUpper'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useState } from 'react'
+import reducers, { initialState } from 'state/predictions'
+import { usePredictionConfigs } from 'views/Predictions/hooks/usePredictionConfigs'
+import { usePredictionToken } from 'views/Predictions/hooks/usePredictionToken'
 import ConfigProvider from './ConfigProvider'
-import configs from './config'
-
-const PREDICTION_TOKEN_KEY = 'prediction-token'
 
 const PredictionConfigProviders = ({ children }) => {
-  const { query } = useRouter()
-  const { token } = query
-  const [selectedToken, setConfig] = useState(() => {
-    const initToken = localStorage?.getItem(PREDICTION_TOKEN_KEY) as PredictionSupportedSymbol
+  const router = useRouter()
+  const { chainId } = useActiveChainId()
+  const predictionConfigs = usePredictionConfigs()
+  const [selectedPickedToken, setSelectedPickedToken] = useState('')
+  const [prevSelectedToken, setPrevSelectedToken] = usePredictionToken()
 
-    if ([PredictionSupportedSymbol.BNB, PredictionSupportedSymbol.CAKE].includes(initToken)) {
-      return initToken
-    }
-
-    return PredictionSupportedSymbol.CAKE
-  })
+  const supportedSymbol = useMemo(() => (predictionConfigs ? Object.keys(predictionConfigs) : []), [predictionConfigs])
 
   useEffect(() => {
-    const upperToken = _toUpper(token as string) as PredictionSupportedSymbol
+    const upperToken = _toUpper(router?.query?.token as string) as PredictionSupportedSymbol
 
-    if ([PredictionSupportedSymbol.BNB, PredictionSupportedSymbol.CAKE].includes(upperToken)) {
-      setConfig(upperToken)
-      localStorage?.setItem(PREDICTION_TOKEN_KEY, upperToken)
+    if (supportedSymbol.includes(upperToken)) {
+      setSelectedPickedToken(upperToken)
+
+      const newData = {
+        ...prevSelectedToken,
+        ...(chainId && {
+          [chainId]: upperToken,
+        }),
+      } as Record<ChainId, PredictionSupportedSymbol>
+      setPrevSelectedToken(newData)
+
+      return
     }
-  }, [token])
 
-  const config = useMemo(() => {
-    return configs[selectedToken]
-  }, [selectedToken])
+    // Set default to the first supported chain config.
+    if (supportedSymbol.length) {
+      const defaultTokenSymbol = supportedSymbol?.[0]
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            token: defaultTokenSymbol,
+          },
+        },
+        undefined,
+        { shallow: true },
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId, supportedSymbol, router, setPrevSelectedToken])
 
-  const store = useMemo(() => {
-    return makeStore(reducers, initialState, config)
-  }, [config])
+  const selectedToken = useMemo(() => {
+    if (supportedSymbol.includes(chainId && prevSelectedToken?.[chainId])) {
+      return chainId && prevSelectedToken?.[chainId]
+    }
+
+    return selectedPickedToken || supportedSymbol?.[0]
+  }, [chainId, prevSelectedToken, selectedPickedToken, supportedSymbol])
+
+  const config = useMemo(() => predictionConfigs?.[selectedToken], [predictionConfigs, selectedToken])
+
+  const store = useMemo(() => makeStore(reducers, initialState, config), [config])
+
+  if (!config) {
+    return null
+  }
 
   return (
     <ConfigProvider config={config}>

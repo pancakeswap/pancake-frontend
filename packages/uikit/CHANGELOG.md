@@ -1,5 +1,19 @@
 # Change Log
 
+## 0.65.3
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.22
+- @pancakeswap/localization@6.0.0
+
+## 0.65.2
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.21
+- @pancakeswap/localization@5.0.8
+
 ## 0.65.1
 
 ### Patch Changes

@@ -17,6 +17,7 @@ export enum Strategy {
   PASSIVE,
   PEGGED,
   ALO,
+  ASCEND,
 }
 
 export interface OnChainActionResponse {

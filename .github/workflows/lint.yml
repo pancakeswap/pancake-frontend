@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v2.2.4
@@ -39,17 +39,5 @@ jobs:
       - name: Install dependencies
         run: pnpm i --ignore-scripts
 
-      - name: Get changed files
-        id: changed-files
-        uses: Ana06/get-changed-files@v2.1.0
-        with:
-          format: space-delimited
-          filter: |
-            **/*.ts
-            **/*.tsx
-            **/*.js
-            **/*.jsx
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run ESLint
-        run: pnpm lint:report ${{ steps.changed-files.outputs.added_modified }}
+        run: pnpm lint:report

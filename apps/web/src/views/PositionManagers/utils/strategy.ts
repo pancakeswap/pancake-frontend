@@ -15,6 +15,8 @@ export function getStrategyName(t: TranslateFunction, strategy: Strategy) {
       return t('Pegged')
     case Strategy.ALO:
       return t('Automated Liquidity Optimization')
+    case Strategy.ASCEND:
+      return t('Ascend')
     default:
       return ''
   }

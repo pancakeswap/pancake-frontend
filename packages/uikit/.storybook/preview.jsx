@@ -1,28 +1,54 @@
-import React, { useEffect } from "react";
-import { withThemesProvider } from "themeprovider-storybook";
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from "next-themes";
-import light from "../src/theme/light";
-import dark from "../src/theme/dark";
-import ResetCSS from "../src/ResetCSS";
-import { ModalProvider } from "../src/widgets/Modal";
-import { MatchBreakpointsProvider } from "../src";
+import React, { useEffect } from "react";
 import { ThemeProvider } from "styled-components";
+import { MatchBreakpointsProvider, ToastListener } from "../src";
+import ResetCSS from "../src/ResetCSS";
+import dark from "../src/theme/dark";
+import light from "../src/theme/light";
+import { ModalProvider } from "../src/widgets/Modal";
 
-const globalDecorator = (StoryFn) => (
-  <MatchBreakpointsProvider>
-    <ModalProvider>
-      <ResetCSS />
-      <StoryFn />
-    </ModalProvider>
-  </MatchBreakpointsProvider>
-);
+export const globalTypes = {
+  theme: {
+    name: "Theme",
+    description: "Global theme for components",
+    defaultValue: "dark",
+    toolbar: {
+      // The icon for the toolbar item
+      icon: "circlehollow",
+      // Array of options
+      items: [
+        { value: "light", icon: "circlehollow", title: "light" },
+        { value: "dark", icon: "circle", title: "dark" },
+      ],
+      // Property that specifies if the name of the item will be displayed
+      showName: true,
+    },
+  },
+};
+
+const globalDecorator = (StoryFn, context) => {
+  const theme = context.parameters.theme || context.globals.theme;
+  const storyTheme = theme === "dark" ? "dark" : "light";
+
+  return (
+    <StorybookThemeProvider themeName={storyTheme}>
+      <MatchBreakpointsProvider>
+        <ModalProvider>
+          <ResetCSS />
+          <ToastListener />
+          <StoryFn />
+        </ModalProvider>
+      </MatchBreakpointsProvider>
+    </StorybookThemeProvider>
+  );
+};
 
 const StyledThemeProvider = (props) => {
   const { setTheme } = useNextTheme();
 
   useEffect(() => {
-    setTheme(props.theme.name);
-  }, [props.theme.name]);
+    setTheme(props.themeName);
+  }, [props.themeName]);
 
   return <ThemeProvider {...props}>{props.children}</ThemeProvider>;
 };
@@ -30,7 +56,7 @@ const StyledThemeProvider = (props) => {
 const StorybookThemeProvider = (props) => {
   return (
     <NextThemeProvider>
-      <StyledThemeProvider {...props} />
+      <StyledThemeProvider theme={props.themeName === "dark" ? dark : light} {...props} />
     </NextThemeProvider>
   );
 };
@@ -40,22 +66,4 @@ export const parameters = {
   layout: "fullscreen",
 };
 
-const themes = [
-  {
-    name: "light",
-    backgroundColor: light.colors.background,
-    ...light,
-  },
-  {
-    name: "dark",
-    backgroundColor: dark.colors.background,
-    ...dark,
-  },
-];
-
-export const decorators = [
-  globalDecorator,
-  withThemesProvider(themes, {
-    CustomThemeProvider: StorybookThemeProvider,
-  }),
-];
+export const decorators = [globalDecorator];

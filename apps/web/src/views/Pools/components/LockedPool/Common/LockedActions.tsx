@@ -1,14 +1,14 @@
-import { useMemo } from 'react'
-import { Flex, Box, ButtonProps } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
-import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, ButtonProps, Flex } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useMemo } from 'react'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import AddCakeButton from '../Buttons/AddCakeButton'
 import ExtendButton from '../Buttons/ExtendDurationButton'
-import AfterLockedActions from './AfterLockedActions'
 import { LockedActionsPropsType } from '../types'
+import AfterLockedActions from './AfterLockedActions'
 
 const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType & ButtonProps>> = ({
   userShares,
@@ -45,19 +45,19 @@ const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType & B
         <Box width="100%" mr="4px">
           <AddCakeButton
             variant={variant || 'primary'}
-            lockEndTime={lockEndTime}
+            lockEndTime={lockEndTime ?? ''}
             lockStartTime={lockStartTime}
-            currentLockedAmount={lockedAmount}
+            currentLockedAmount={lockedAmount ?? new BigNumber(0)}
             stakingToken={stakingToken}
             currentBalance={currentBalance}
-            stakingTokenBalance={stakingTokenBalance}
+            stakingTokenBalance={stakingTokenBalance ?? new BigNumber(0)}
             stakingTokenPrice={stakingTokenPrice}
           />
         </Box>
         <Box width="100%" ml="4px">
           <ExtendButton
             variant={variant || 'primary'}
-            lockEndTime={lockEndTime}
+            lockEndTime={lockEndTime ?? ''}
             lockStartTime={lockStartTime}
             stakingToken={stakingToken}
             stakingTokenPrice={stakingTokenPrice}
@@ -73,7 +73,7 @@ const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType & B
 
   return (
     <AfterLockedActions
-      lockEndTime={lockEndTime}
+      lockEndTime={lockEndTime ?? ''}
       lockStartTime={lockStartTime}
       position={position}
       currentLockedAmount={lockedAmountAsNumber}

@@ -1,5 +1,5 @@
-import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Text } from '@pancakeswap/uikit'
 
 const LockDurationRow = ({ weekDuration }) => {
   const { t } = useTranslation()

@@ -27,10 +27,10 @@ const Positions: React.FC<React.PropsWithChildren<{ view?: PageView }>> = ({ vie
   const { setSwiper, swiper } = useSwiper()
   const { currentEpoch, rounds } = useGetSortedRoundsCurrentEpoch()
   const previousEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch
-  const swiperIndex = rounds.findIndex((round) => round.epoch === previousEpoch)
+  const swiperIndex = rounds?.findIndex((round) => round.epoch === previousEpoch)
 
   useOnNextRound()
-  useOnViewChange(swiperIndex, view)
+  useOnViewChange(swiperIndex ?? 0, view)
 
   useEffect(() => {
     const handleChartDotClick = () => {
@@ -61,7 +61,7 @@ const Positions: React.FC<React.PropsWithChildren<{ view?: PageView }>> = ({ vie
         keyboard
         resizeObserver
       >
-        {rounds.map((round) => (
+        {rounds?.map((round) => (
           <SwiperSlide key={round.epoch}>
             {({ isActive }) => <RoundCard round={round} isActive={isChangeTransition && isActive} />}
           </SwiperSlide>

@@ -18,8 +18,8 @@ export const logSwap = ({
 }: {
   input: Currency
   output: Currency
-  inputAmount: string
-  outputAmount: string
+  inputAmount?: string
+  outputAmount?: string
   chainId: number
   account: `0x${string}`
   hash: `0x${string}`

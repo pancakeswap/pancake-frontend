@@ -11,7 +11,7 @@
   "packageManager": "pnpm@8.x",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "turbo run dev --filter=web... --concurrency=25",
+    "dev": "turbo run dev --filter=web... --concurrency=26",
     "dev:aptos": "pnpm turbo run dev --filter=aptos-web... --concurrency=20",
     "dev:blog": "pnpm turbo run dev --filter=blog... --concurrency=11",
     "dev:bridge": "pnpm turbo run dev --filter=bridge... --concurrency=16",
@@ -27,8 +27,8 @@
     "start": "turbo run start --filter=web",
     "test:config": "pnpm turbo run test:config --filter=web...[HEAD^1]",
     "test:ci": "pnpm turbo run test --filter=[HEAD^1]",
-    "lint": "turbo run lint --filter=web",
-    "lint:report": "eslint --no-error-on-unmatched-pattern --max-warnings=0",
+    "lint": "turbo run lint",
+    "lint:report": "turbo run lint --log-prefix=none",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:check:staged": "lint-staged",
@@ -69,14 +69,12 @@
     "turbo": "1.10.2",
     "typescript": "5.2.2",
     "vitest": "^0.30.1",
-    "wrangler": "^2.0.6"
+    "wrangler": "2.20.2"
   },
   "volta": {
     "node": "18.16.0"
   },
   "dependencies": {
-    "@svgr/webpack": "^8.0.1",
-    "crypto": "^1.0.1",
     "encoding": "^0.1.13",
     "ws": "^8.13.0"
   },

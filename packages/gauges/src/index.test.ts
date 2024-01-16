@@ -8,8 +8,6 @@ test('exports', () => {
       "gaugesVotingABI",
       "GAUGES_ADDRESS",
       "GAUGES_CALC_ADDRESS",
-      "CONFIG_TESTNET",
-      "CONFIG_PROD",
       "GAUGES_CONFIG",
       "getAllGauges",
       "GaugeType",

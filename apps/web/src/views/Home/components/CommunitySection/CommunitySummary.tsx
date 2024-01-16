@@ -45,7 +45,7 @@ const CommunitySummary = () => {
           {t('Community Members')}
         </Text>
         <StyledText fontSize="40px" bold mb="27px">
-          1.8M +
+          2.0M +
         </StyledText>
         <Text color="white" bold fontSize="16px">
           {t('Multilingual Communities')}

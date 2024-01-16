@@ -1,21 +1,31 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  BulbIcon,
   EarnIcon,
   GovernanceIcon,
   InsertChartOutlinedIcon,
   NftIcon,
+  PieChartIcon,
   PoolIcon,
+  RocketIcon,
   StoreIcon,
   SwapIcon,
   Text,
   TrophyIcon,
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import { cloneElement, useMemo, useRef, useLayoutEffect, useState } from 'react'
+import { cloneElement, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Marquee from 'react-fast-marquee'
 import { styled } from 'styled-components'
 
-import { PartnerApolloX, PartnerAlpaca, PartnerVenus, PartnerLedger, PartnerMetaMask } from './PartnerLogos'
+import {
+  PartnerAlpaca,
+  PartnerApolloX,
+  PartnerLedger,
+  PartnerMetaMask,
+  PartnerMobox,
+  PartnerVenus,
+} from './PartnerLogos'
 
 const MARQUEE_WIDTH = 210
 
@@ -28,6 +38,7 @@ export const usePartnerData = () => {
       { icon: <PartnerVenus />, width: 20, text: t('Venus') },
       { icon: <PartnerAlpaca />, width: 20, text: t('Alpaca Finance') },
       { icon: <PartnerApolloX />, width: 20, text: t('ApolloX') },
+      { icon: <PartnerMobox />, width: 24, text: t('Mobox') },
     ]
   }, [t])
 }
@@ -50,6 +61,9 @@ export const useEcosystemTagData = () => {
       },
       { icon: <GovernanceIcon />, text: t('Governance') },
       { icon: <StoreIcon />, text: t('IFO') },
+      { icon: <PieChartIcon />, text: t('Gauges Voting') },
+      { icon: <BulbIcon />, text: t('Revenue Sharing') },
+      { icon: <RocketIcon />, text: t('Farm Booster') },
     ]
   }, [t])
 }

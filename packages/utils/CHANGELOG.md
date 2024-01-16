@@ -1,5 +1,23 @@
 # @pancakeswap/utils
 
+## 6.0.0
+
+### Minor Changes
+
+- ec7e469ca: Add support for abort control
+
+### Patch Changes
+
+- @pancakeswap/localization@6.0.0
+
+## 5.0.8
+
+### Patch Changes
+
+- Updated dependencies [8fcd67c85]
+  - @pancakeswap/chains@0.4.0
+  - @pancakeswap/localization@5.0.8
+
 ## 5.0.7
 
 ### Patch Changes

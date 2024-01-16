@@ -1,47 +1,16 @@
-import { Flex, Text, Box, ChevronRightIcon, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
-import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import { styled } from 'styled-components'
-import { useMemo } from 'react'
+import { Box, ChevronRightIcon, Flex, Text, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
-import { getPerpetualUrl } from 'utils/getPerpetualUrl'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
+import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import Image, { StaticImageData } from 'next/image'
-import tradeBunny from '../../images/trade-bunny.png'
-import earnNftBunny from '../../images/earn-bunny.png'
-import gameNftBunny from '../../images/game-nft-bunny.png'
-import tradeSwap from '../../images/trade-swap.png'
-import tradeLiquidity from '../../images/trade-liquidity.png'
-import tradeBridge from '../../images/trade-bridge.png'
-import tradePerpetual from '../../images/trade-perpetual.png'
-import tradeBuy from '../../images/trade-buy-crypto.png'
-import earnFarm from '../../images/earn-farm.png'
-import earnPools from '../../images/earn-pools.png'
-import earnLiquidStaking from '../../images/earn-liquidity-staking.png'
-import earnFixedStaking from '../../images/earn-fixed-staking.png'
-import gamePrediction from '../../images/game-prediction.png'
-import gamePancakeProtectors from '../../images/game-pancake-protectors.png'
-import gameLottery from '../../images/game-lottery.png'
-import gamePottery from '../../images/game-pottery.png'
-import nftMarketplace from '../../images/nft-marketplace.png'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import { styled } from 'styled-components'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import GradientLogo from '../GradientLogoSvg'
-
-import tradeSwapPurple from '../../images/trade-swap-purple.png'
-import tradeLiquidityPurple from '../../images/trade-liquidity-purple.png'
-import tradeBridgePurple from '../../images/trade-bridge-purple.png'
-import tradePerpetualPurple from '../../images/trade-perpetual-purple.png'
-import tradeBuyPurple from '../../images/trade-buy-crypto-purple.png'
-import earnFarmPurple from '../../images/earn-farm-purple.png'
-import earnPoolsPurple from '../../images/earn-pools-purple.png'
-import earnLiquidStakingPurple from '../../images/earn-liquidity-staking-purple.png'
-import earnFixedStakingPurple from '../../images/earn-fixed-staking-purple.png'
-import gamePredictionPurple from '../../images/game-prediction-purple.png'
-import gamePancakeProtectorsPurple from '../../images/game-pancake-protectors-purple.png'
-import gameLotteryPurple from '../../images/game-lottery-purple.png'
-import gamePotteryPurple from '../../images/game-pottery-purple.png'
-import nftMarketplacePurple from '../../images/nft-marketplace-purple.png'
 
 export const CardWrapper = styled.div`
   border-radius: 24px;
@@ -114,13 +83,29 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
 
   &.type-a {
     height: 246px;
+    &.adjust-height {
+      margin-top: 20px;
+      height: 220px;
+    }
     ${({ theme }) => theme.mediaQueries.sm} {
+      &.adjust-height {
+        margin-top: 0px;
+        height: 246px;
+      }
       flex-basis: calc(33.3% - 48px);
     }
     ${({ theme }) => theme.mediaQueries.xl} {
       height: 286px;
+      &.adjust-height {
+        margin-top: 0px;
+        height: 286px;
+      }
       &.higher {
         height: 292px;
+        &.adjust-height {
+          margin-top: 0px;
+          height: 292px;
+        }
       }
     }
     ${({ theme }) => theme.mediaQueries.xxl} {
@@ -187,32 +172,32 @@ const useTradeBlockData = () => {
         title: t('Swap'),
         description: t('Trade crypto instantly across multiple chains'),
         ctaTitle: t('Trade Now'),
-        image: tradeSwap,
-        defaultImage: tradeSwapPurple,
+        image: `${ASSET_CDN}/web/landing/trade-swap.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-swap-purple.png`,
         path: '/swap',
       },
       {
         title: t('Liquidity'),
         description: t('Fund liquidity pools, earn trading fees'),
         ctaTitle: t('Add Now'),
-        image: tradeLiquidity,
-        defaultImage: tradeLiquidityPurple,
+        image: `${ASSET_CDN}/web/landing/trade-liquidity.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-liquidity-purple.png`,
         path: '/liquidity',
       },
       {
         title: t('Bridge'),
         description: t('Seamlessly transfer assets across chains'),
         ctaTitle: t('Bridge Now'),
-        image: tradeBridge,
-        defaultImage: tradeBridgePurple,
+        image: `${ASSET_CDN}/web/landing/trade-bridge.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-bridge-purple.png`,
         path: 'https://bridge.pancakeswap.finance/',
       },
       {
         title: t('Perpetual'),
         description: t('Trade endlessly without expiration dates'),
         ctaTitle: t('Trade Now'),
-        image: tradePerpetual,
-        defaultImage: tradePerpetualPurple,
+        image: `${ASSET_CDN}/web/landing/trade-perpetual.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-perpetual-purple.png`,
         onClick: () => {
           if (!userNotUsCitizenAcknowledgement) {
             onUSCitizenModalPresent()
@@ -225,8 +210,8 @@ const useTradeBlockData = () => {
         title: t('Buy Crypto'),
         description: t('Buy crypto with your preferred currency and payment method'),
         ctaTitle: t('Buy Now'),
-        image: tradeBuy,
-        defaultImage: tradeBuyPurple,
+        image: `${ASSET_CDN}/web/landing/trade-buy-crypto.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/trade-buy-crypto-purple.png`,
         path: '/buy-crypto',
       },
     ]
@@ -241,33 +226,42 @@ const useEarnBlockData = () => {
         title: t('Farm'),
         description: t('Stake LP tokens, harvest CAKE'),
         ctaTitle: t('Stake Now'),
-        image: earnFarm,
-        defaultImage: earnFarmPurple,
+        image: `${ASSET_CDN}/web/landing/earn-farm.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/earn-farm-purple.png`,
         path: '/farms',
       },
       {
         title: t('Pools'),
         description: t('Stake CAKE, earn various rewards'),
         ctaTitle: t('Stake Now'),
-        image: earnPools,
-        defaultImage: earnPoolsPurple,
+        image: `${ASSET_CDN}/web/landing/earn-pools.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/earn-pools-purple.png`,
         path: '/pools',
       },
       {
         title: t('Liquid Staking'),
         description: t('Earn rewards while retaining asset flexibility'),
         ctaTitle: t('Add Now'),
-        image: earnLiquidStaking,
-        defaultImage: earnLiquidStakingPurple,
+        image: `${ASSET_CDN}/web/landing/earn-liquidity-staking.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/earn-liquidity-staking-purple.png`,
         path: '/liquid-staking',
       },
       {
         title: t('Simple Staking'),
         description: t('Earn rewards hassle-free with single-sided staking'),
         ctaTitle: t('Stake Now'),
-        image: earnFixedStaking,
-        defaultImage: earnFixedStakingPurple,
+        image: `${ASSET_CDN}/web/landing/earn-fixed-staking.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/earn-fixed-staking-purple.png`,
         path: '/simple-staking',
+      },
+      {
+        title: t('Position Manager'),
+        description: t('Automate your PancakeSwap v3 liquidity'),
+        ctaTitle: t('Stake Now'),
+        image: `${ASSET_CDN}/web/landing/earn-pm.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/earn-pm-purple.png`,
+        path: '/position-managers',
+        className: 'adjust-height',
       },
     ]
   }, [t])
@@ -278,44 +272,29 @@ const useNftGameBlockData = () => {
   return useMemo(() => {
     return [
       {
+        title: t('Gaming Marketplace'),
+        description: t('Play, Build and Connect on PancakeSwap'),
+        ctaTitle: t('Play Now'),
+        image: `${ASSET_CDN}/web/landing/game-pancake-protectors.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/game-pancake-protectors-purple.png`,
+        path: 'https://pancakeswap.games/',
+      },
+      {
         title: t('Prediction'),
         description: t('Forecast token prices within minutes'),
         ctaTitle: t('Try Now'),
-        image: gamePrediction,
-        defaultImage: gamePredictionPurple,
+        image: `${ASSET_CDN}/web/landing/game-prediction.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/game-prediction-purple.png`,
         path: '/prediction',
-      },
-      {
-        title: t('Pancake Protectors'),
-        description: t('Immersive PvP & PvE tower-defense GameFi'),
-        ctaTitle: t('Play Now'),
-        image: gamePancakeProtectors,
-        defaultImage: gamePancakeProtectorsPurple,
-        path: 'https://protectors.pancakeswap.finance/',
-      },
-      {
-        title: t('Lottery'),
-        description: t('Enter for a chance to win CAKE prize pools'),
-        ctaTitle: t('Try Now'),
-        image: gameLottery,
-        defaultImage: gameLotteryPurple,
-        path: '/lottery',
-      },
-      {
-        title: t('Pottery'),
-        description: t('Stake CAKE, acquire pottery tickets, win prizes'),
-        ctaTitle: t('Try Now'),
-        image: gamePottery,
-        defaultImage: gamePotteryPurple,
-        path: '/pottery',
       },
       {
         title: t('NFT Marketplace'),
         description: t('Trade unique NFTs on BNB Chain'),
         ctaTitle: t('Trade Now'),
-        image: nftMarketplace,
-        defaultImage: nftMarketplacePurple,
+        image: `${ASSET_CDN}/web/landing/nft-marketplace.png`,
+        defaultImage: `${ASSET_CDN}/web/landing/nft-marketplace-purple.png`,
         path: '/nfts',
+        className: 'adjust-height',
       },
     ]
   }, [t])
@@ -324,8 +303,8 @@ const useNftGameBlockData = () => {
 const FeatureBox: React.FC<{
   title: string
   description: string
-  image: StaticImageData
-  defaultImage: StaticImageData
+  image: StaticImageData | string
+  defaultImage: StaticImageData | string
   width: number
   ctaTitle: string
   className?: string
@@ -341,8 +320,8 @@ const FeatureBox: React.FC<{
       onClick={onClick ? () => onClick() : () => path && push(path)}
     >
       <ImageBox>
-        <Image className="default" src={defaultImage} width={108} height={108} alt={title} />
-        <Image className="hover" src={image} width={108} height={108} alt={title} />
+        <Image className="default" src={defaultImage} width={108} height={108} alt={title} unoptimized />
+        <Image className="hover" src={image} width={108} height={108} alt={title} unoptimized />
       </ImageBox>
       <Box>
         <Text fontSize="20px" mb="8px" lineHeight="110%" fontWeight={600} color={theme.colors.text}>
@@ -402,11 +381,11 @@ const EcoSystemSection: React.FC = () => {
         >
           <Image
             style={{ marginLeft: isMobile ? -32 : -72 }}
-            src={tradeBunny}
-            alt="tradeBunny"
+            src={`${ASSET_CDN}/web/landing/trade-bunny.png`}
+            alt="trade-bunny"
             width={340}
             height={340}
-            placeholder="blur"
+            unoptimized
           />
           <Flex flexDirection="column">
             <Title>{t('Trade')}</Title>
@@ -437,18 +416,18 @@ const EcoSystemSection: React.FC = () => {
         >
           <Image
             style={{ marginRight: isMobile || isMd ? 'auto' : -72, marginLeft: isMobile || isMd ? 0 : 'auto' }}
-            src={earnNftBunny}
-            alt="earnNftBunny"
+            src={`${ASSET_CDN}/web/landing/earn-bunny.png`}
+            alt="earn-bunny"
             width={296}
             height={360}
-            placeholder="blur"
+            unoptimized
           />
           <Flex flexDirection="column">
             <Title>{t('Earn')}</Title>
             <FeatureBoxesWrapper>
               {earnBlockData.map((item) => (
                 <FeatureBox
-                  className="type-b"
+                  className={`type-a${item?.className ? ` ${item?.className}` : ''}`}
                   key={`${item.title}Block`}
                   title={item.title}
                   description={item.description}
@@ -471,18 +450,18 @@ const EcoSystemSection: React.FC = () => {
         >
           <Image
             style={{ marginLeft: isMobile ? -32 : -72 }}
-            src={gameNftBunny}
-            alt="gameNftBunny"
+            src={`${ASSET_CDN}/web/landing/game-nft-bunny.png`}
+            alt="game-nft-bunny"
             width={344}
             height={360}
-            placeholder="blur"
+            unoptimized
           />
           <Flex flexDirection="column">
             <Title>{t('Game & NFT')}</Title>
             <FeatureBoxesWrapper>
               {nftGameBlockData.map((item) => (
                 <FeatureBox
-                  className="type-a higher"
+                  className={`type-a higher${item?.className ? ` ${item?.className}` : ''}`}
                   key={`${item.title}Block`}
                   title={item.title}
                   description={item.description}

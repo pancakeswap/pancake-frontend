@@ -45,10 +45,10 @@ export const multiChainQueryMainToken: Record<MultiChainName, string> = {
   ETH: 'ETH',
   POLYGON_ZKEVM: 'ETH',
   ZKSYNC: 'ETH',
-  ARB: 'ARB',
+  ARB: 'ETH',
   LINEA: 'ETH',
   BASE: 'ETH',
-  OPBNB: 'BNB',
+  OPBNB: 'ETH',
 }
 
 export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {

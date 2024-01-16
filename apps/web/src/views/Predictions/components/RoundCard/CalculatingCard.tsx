@@ -1,6 +1,7 @@
 import { Card, CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { NodeRound, BetPosition } from 'state/types'
+import { NodeRound } from 'state/types'
+import { BetPosition } from '@pancakeswap/prediction'
 import useTheme from 'hooks/useTheme'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'

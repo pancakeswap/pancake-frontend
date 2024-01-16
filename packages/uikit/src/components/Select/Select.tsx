@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import { styled, css } from "styled-components";
+import { useEffect, useState } from "react";
+import { css, styled } from "styled-components";
 import { Box, BoxProps } from "../Box";
+import { Image } from "../Image";
 import { ArrowDropDownIcon } from "../Svg";
 import { Text } from "../Text";
 
@@ -9,7 +10,6 @@ const DropDownHeader = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0px 16px;
   box-shadow: ${({ theme }) => theme.shadows.inset};
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
@@ -79,6 +79,7 @@ const DropDownList = styled.ul`
 `;
 
 const ListItem = styled.li`
+  display: flex;
   list-style: none;
   padding: 8px 16px;
   &:hover {
@@ -96,6 +97,7 @@ export interface SelectProps extends BoxProps {
 export interface OptionProps {
   label: string;
   value: any;
+  imageUrl?: string;
 }
 
 const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
@@ -146,8 +148,18 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
   return (
     <DropDownContainer isOpen={isOpen} {...props}>
       <DropDownHeader onClick={toggling}>
+        {options?.[selectedOptionIndex]?.imageUrl && (
+          <Image
+            mr="4px"
+            width={24}
+            height={24}
+            alt="picked-image"
+            style={{ borderRadius: "50%", overflow: "hidden" }}
+            src={options?.[selectedOptionIndex]?.imageUrl}
+          />
+        )}
         <Text color={!optionSelected && placeHolderText ? "text" : undefined}>
-          {!optionSelected && placeHolderText ? placeHolderText : options[selectedOptionIndex].label}
+          {!optionSelected && placeHolderText ? placeHolderText : options[selectedOptionIndex]?.label}
         </Text>
       </DropDownHeader>
       <ArrowDropDownIcon color="text" onClick={toggling} />
@@ -156,6 +168,16 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
           {options.map((option, index) =>
             placeHolderText || index !== selectedOptionIndex ? (
               <ListItem onClick={onOptionClicked(index)} key={option.label}>
+                {option?.imageUrl && (
+                  <Image
+                    mr="4px"
+                    width={24}
+                    height={24}
+                    alt={`picked-image-${option.label}`}
+                    style={{ borderRadius: "50%", overflow: "hidden" }}
+                    src={option.imageUrl}
+                  />
+                )}
                 <Text>{option.label}</Text>
               </ListItem>
             ) : null

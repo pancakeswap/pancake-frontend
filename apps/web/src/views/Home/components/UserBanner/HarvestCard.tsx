@@ -50,7 +50,7 @@ interface HarvestCardProps extends TextProps {
 const HarvestCard: React.FC<React.PropsWithChildren<HarvestCardProps>> = ({ onHarvestStart, onHarvestEnd }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { fetchWithCatchTxError, loading: v2PendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
 
   const cakePriceBusd = useCakePrice()
@@ -65,7 +65,9 @@ const HarvestCard: React.FC<React.PropsWithChildren<HarvestCardProps>> = ({ onHa
 
   const earningsText = getEarningsText(numFarmsToCollect, hasCakePoolToCollect, earningsBusd, t)
   const [preText, toCollectText] = earningsText.split(earningsBusd.toString())
-  const { onHarvestAll } = useFarmsV3BatchHarvest()
+  const { onHarvestAll, harvesting: v3PendingTx } = useFarmsV3BatchHarvest()
+
+  const pendingTx = v2PendingTx || v3PendingTx
 
   const harvestAllFarms = useCallback(async () => {
     onHarvestStart?.()

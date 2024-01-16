@@ -15,7 +15,6 @@ module.exports = {
     },
     "@storybook/addon-links",
     "@storybook/addon-a11y",
-    "themeprovider-storybook/register",
   ],
   async viteFinal(config) {
     const finalConfig = mergeConfig(config, {

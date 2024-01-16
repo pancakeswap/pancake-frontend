@@ -1,5 +1,27 @@
 # @pancakeswap/multicall
 
+## 3.4.0
+
+### Minor Changes
+
+- ec7e469ca: Add support for abort control
+
+## 3.3.4
+
+### Patch Changes
+
+- Updated dependencies [8fcd67c85]
+  - @pancakeswap/chains@0.4.0
+  - @pancakeswap/sdk@5.7.5
+
+## 3.3.3
+
+### Patch Changes
+
+- Updated dependencies [49730e609]
+  - @pancakeswap/chains@0.3.1
+  - @pancakeswap/sdk@5.7.4
+
 ## 3.3.2
 
 ### Patch Changes

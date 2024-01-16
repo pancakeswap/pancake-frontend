@@ -20,30 +20,14 @@ export const getIfoCreditAddressContract = (
   }
   const publicClient = provider({ chainId })
 
-  // TODO: Fix viem
   // @ts-ignore
   return getContract({ abi: iCakeABI, address, publicClient, walletClient })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const fetchPublicIfoData = async (chainId: ChainId | undefined, provider: OnChainProvider) => {
-  if (!chainId) {
-    return {
-      ceiling: BIG_ZERO.toJSON(),
-    }
-  }
-
-  try {
-    const ifoCreditAddressContract = getIfoCreditAddressContract(chainId, provider)
-    // TODO: Fix viem
-    // @ts-ignore
-    const ceiling = await ifoCreditAddressContract.read.ceiling()
-    return {
-      ceiling: new BigNumber(ceiling.toString()).toJSON(),
-    }
-  } catch (error) {
-    return {
-      ceiling: BIG_ZERO.toJSON(),
-    }
+  return {
+    ceiling: BIG_ZERO.toJSON(),
   }
 }
 
@@ -53,6 +37,7 @@ interface Params {
   provider: OnChainProvider
 }
 
+// @deprecated
 export const fetchUserIfoCredit = async ({ account, chainId, provider }: Params) => {
   if (!account || !chainId) {
     return BIG_ZERO.toJSON()
@@ -60,11 +45,75 @@ export const fetchUserIfoCredit = async ({ account, chainId, provider }: Params)
   try {
     const ifoCreditAddressContract = getIfoCreditAddressContract(chainId, provider)
     // @ts-ignore
-    const credit = await ifoCreditAddressContract.read.getUserCredit([account])
+    const credit = await ifoCreditAddressContract.read.getUserCreditForNextIfo([account])
     return new BigNumber(credit.toString()).toJSON()
   } catch (error) {
     console.error(error)
     return BIG_ZERO.toJSON()
+  }
+}
+
+type GetIfoInfoParams = Params & {
+  ifo?: Address
+}
+
+export async function getUserIfoInfo({ account, ifo, chainId, provider }: GetIfoInfoParams) {
+  const client = provider({ chainId })
+  if (!chainId || !account || !client) {
+    return {
+      credit: 0n,
+      endTimestamp: 0,
+    }
+  }
+
+  const ifoCreditContract = getIfoCreditAddressContract(chainId, provider)
+  if (!ifo) {
+    // @ts-ignore
+    const credit = await ifoCreditContract.read.getUserCreditForNextIfo([account])
+    return {
+      credit: BigInt(credit.toString()),
+      endTimestamp: 0,
+    }
+  }
+
+  const [endTimestamp, credit] = await client.multicall({
+    contracts: [
+      {
+        abi: ifoV7ABI,
+        address: ifo,
+        functionName: 'endTimestamp',
+      },
+      {
+        abi: ifoCreditContract.abi,
+        address: ifoCreditContract.address,
+        functionName: 'getUserCreditWithIfoAddr',
+        args: [account, ifo],
+      },
+    ],
+    allowFailure: false,
+  })
+  return {
+    credit: BigInt(credit.toString()),
+    endTimestamp: Number(endTimestamp.toString()),
+  }
+}
+
+export async function getCurrentIfoRatio({ chainId, provider }: Omit<Params, 'account'>): Promise<number> {
+  if (!chainId) {
+    return 0
+  }
+  try {
+    const ifoCreditContract = getIfoCreditAddressContract(chainId, provider)
+    const [ratio, precision] = await Promise.all([
+      // @ts-ignore
+      ifoCreditContract.read.ratio(),
+      // @ts-ignore
+      ifoCreditContract.read.RATION_PRECISION(),
+    ])
+    return new BigNumber(ratio.toString()).div(new BigNumber(precision.toString())).toNumber()
+  } catch (error) {
+    console.error(error)
+    return 0
   }
 }
 

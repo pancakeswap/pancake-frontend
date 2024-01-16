@@ -1,11 +1,10 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useUserSlippage } from '@pancakeswap/utils/user'
-import { SendTransactionResult } from 'wagmi/actions'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useMemo } from 'react'
 import { useSwapState } from 'state/swap/hooks'
@@ -16,9 +15,11 @@ import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { viemClients } from 'utils/viem'
-import { Address, Hex, hexToBigInt } from 'viem'
+import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
+import { SendTransactionResult } from 'wagmi/actions'
 
+import { logger } from 'utils/datadog'
 import { isZero } from '../utils/isZero'
 
 interface SwapCall {
@@ -51,7 +52,7 @@ export class TransactionRejectedError extends Error {}
 export default function useSendSwapTransaction(
   account?: Address,
   chainId?: number,
-  trade?: SmartRouterTrade<TradeType>, // trade to execute, required
+  trade?: SmartRouterTrade<TradeType> | null, // trade to execute, required
   swapCalls: SwapCall[] | WallchainSwapCall[] = [],
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()
@@ -97,7 +98,7 @@ export default function useSendSwapTransaction(
                 }
               })
               .catch((gasError) => {
-                console.debug('Gas estimate failed, trying eth_call to extract error', call)
+                console.debug('Gas estimate failed, trying to extract error', call, gasError)
                 return { call, error: transactionErrorToUserReadableMessage(gasError, t) }
               })
           }),
@@ -212,7 +213,18 @@ export default function useSendSwapTransaction(
               throw new TransactionRejectedError(t('Transaction rejected'))
             } else {
               // otherwise, the error was unexpected and we need to convey that
-              console.error(`Swap failed`, error, call.address, call.calldata, call.value)
+              logger.warn(
+                'Swap failed',
+                {
+                  chainId,
+                  input: trade.inputAmount.currency,
+                  output: trade.outputAmount.currency,
+                  address: call.address,
+                  value: call.value,
+                  cause: error instanceof TransactionExecutionError ? error.cause : undefined,
+                },
+                error,
+              )
 
               throw new Error(`Swap failed: ${transactionErrorToUserReadableMessage(error, t)}`)
             }

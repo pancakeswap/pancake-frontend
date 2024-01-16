@@ -89,22 +89,6 @@ export default {
     [ChainId.BSC]: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
     [ChainId.BSC_TESTNET]: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
   },
-  predictionsBNB: {
-    [ChainId.BSC]: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
-    [ChainId.BSC_TESTNET]: '0x',
-  },
-  predictionsCAKE: {
-    [ChainId.BSC]: '0x0E3A8078EDD2021dadcdE733C6b4a86E51EE8f07',
-    [ChainId.BSC_TESTNET]: '0x',
-  },
-  chainlinkOracleBNB: {
-    [ChainId.BSC]: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE',
-    [ChainId.BSC_TESTNET]: '0x',
-  },
-  chainlinkOracleCAKE: {
-    [ChainId.BSC]: '0xB6064eD41d4f67e353768aA239cA86f4F73665a1',
-    [ChainId.BSC_TESTNET]: '0x',
-  },
   predictionsV1: {
     [ChainId.BSC]: '0x516ffd7D1e0Ca40b1879935B2De87cb20Fc1124b',
     [ChainId.BSC_TESTNET]: '0x',
@@ -260,7 +244,7 @@ export default {
   },
   veCake: {
     [ChainId.BSC]: '0x5692DB8177a81A6c6afc8084C2976C9933EC1bAB',
-    [ChainId.BSC_TESTNET]: '0x279957513FC505F8Cb16f4b6783D170C9BEcE322',
+    [ChainId.BSC_TESTNET]: '0x4879fcB447E7F4c7843A6D15dF5526061304dcFb',
   },
   gaugesVoting: GAUGES_ADDRESS,
   gaugesVotingCalc: GAUGES_CALC_ADDRESS,

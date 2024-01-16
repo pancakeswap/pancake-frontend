@@ -15,7 +15,7 @@ import {
   RowBetween,
   Text,
 } from '@pancakeswap/uikit'
-import { formatBigInt, formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, formatNumber, getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -53,13 +53,14 @@ export const LockedVeCakeStatus: React.FC<{
   const { balance: proxyBalance } = useProxyVeCakeBalance()
   const balanceBN = useMemo(() => getBalanceNumber(balance), [balance])
   const proxyCake = useMemo(() => getBalanceNumber(proxyBalance), [proxyBalance])
+  const nativeCake = useMemo(() => getBalanceNumber(balance.minus(proxyBalance)), [balance, proxyBalance])
 
   if (status === CakeLockStatus.NotLocked) return null
 
   const balanceText =
     balanceBN > 0 && balanceBN < 0.01 ? (
       <UnderlineText fontSize="20px" bold color={balance.eq(0) ? 'failure' : 'secondary'}>
-        {`< 0.01`}
+        {getBalanceAmount(balance).sd(2).toString()}
       </UnderlineText>
     ) : (
       <UnderlinedBalance
@@ -81,7 +82,7 @@ export const LockedVeCakeStatus: React.FC<{
               <Tooltips
                 content={
                   proxyBalance.gt(0) ? (
-                    <DualStakeTooltip nativeBalance={balanceBN} proxyBalance={proxyCake} />
+                    <DualStakeTooltip nativeBalance={nativeCake} proxyBalance={proxyCake} />
                   ) : (
                     <SingleStakeTooltip />
                   )
@@ -218,10 +219,10 @@ const DualStakeTooltip: React.FC<{
       <br />
       <ul>
         <li>
-          {t('Native:')} {formatNumber(nativeBalance)} veCAKE
+          {t('Native:')} {formatNumber(nativeBalance, 2, 4)} veCAKE
         </li>
         <li>
-          {t('Migrated:')} {formatNumber(proxyBalance)} veCAKE
+          {t('Migrated:')} {formatNumber(proxyBalance, 2, 4)} veCAKE
         </li>
       </ul>
       <br />

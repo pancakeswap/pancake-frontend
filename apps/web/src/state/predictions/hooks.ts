@@ -1,19 +1,22 @@
-import { useEffect, useMemo } from 'react'
-import { safeGetAddress } from 'utils'
+import { TFetchStatus } from 'config/constants/types'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import useSelector from 'contexts/LocalRedux/useSelector'
-import { TFetchStatus } from 'config/constants/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useEffect, useMemo } from 'react'
+import { safeGetAddress } from 'utils'
+import { Address } from 'viem'
 
-import { PredictionsState, PredictionUser } from '../types'
 import { fetchAddressResult } from '.'
+import { PredictionsState, PredictionUser } from '../types'
 import {
+  getCurrentRoundCloseTimestampSelector,
+  getInternalTimeInMinutes,
+  getMinBetAmountSelector,
   getRoundsByCloseOracleIdSelector,
+  getSortedRoundsCurrentEpochSelector,
   getSortedRoundsSelector,
   makeGetBetByEpochSelector,
   makeGetIsClaimableSelector,
-  getMinBetAmountSelector,
-  getSortedRoundsCurrentEpochSelector,
-  getCurrentRoundCloseTimestampSelector,
 } from './selectors'
 
 export const useGetRoundsByCloseOracleId = () => {
@@ -28,7 +31,7 @@ export const useGetSortedRoundsCurrentEpoch = () => {
   return useSelector(getSortedRoundsCurrentEpochSelector)
 }
 
-export const useGetBetByEpoch = (account: string, epoch: number) => {
+export const useGetBetByEpoch = (account: Address, epoch: number) => {
   const getBetByEpochSelector = useMemo(() => makeGetBetByEpochSelector(account, epoch), [account, epoch])
   return useSelector(getBetByEpochSelector)
 }
@@ -122,32 +125,55 @@ export const useGetAddressResult = (account: string) => {
   return useSelector((state: PredictionsState) => state.leaderboard.addressResults[account])
 }
 
-export const useGetOrFetchLeaderboardAddressResult = (account: string): PredictionUser => {
+export const useGetOrFetchLeaderboardAddressResult = ({
+  account,
+  api,
+  tokenSymbol,
+}: {
+  account: string
+  api: string
+  tokenSymbol: string
+}): PredictionUser | any => {
   const addressResult = useGetAddressResult(account)
   const dispatch = useLocalDispatch()
+  const { chainId } = useActiveChainId()
 
   useEffect(() => {
-    const address = safeGetAddress(account)
+    if (account) {
+      const address = safeGetAddress(account)
 
-    // If address result is null it means we already tried fetching the results and none came back
-    if (!addressResult && addressResult !== null && address) {
-      dispatch(fetchAddressResult(account))
+      // If address result is null it means we already tried fetching the results and none came back
+      if (!addressResult && addressResult !== null && address) {
+        dispatch(fetchAddressResult({ account, api, tokenSymbol, chainId }))
+      }
     }
-  }, [dispatch, account, addressResult])
+  }, [dispatch, account, addressResult, api, tokenSymbol, chainId])
 
   return addressResult
 }
 
-export const useGetSelectedAddress = (): string => {
+export const useGetSelectedAddress = (): string | any => {
   return useSelector((state: PredictionsState) => state.leaderboard.selectedAddress)
 }
 
 // Because Modal Component is rendered outside the Prediction Page contexts
 // We have to pass local state as props instead of retrieving directly in component
-export const useStatModalProps = (account?: string) => {
+export const useStatModalProps = ({
+  account,
+  api,
+  tokenSymbol,
+}: {
+  account?: string
+  api: string
+  tokenSymbol: string
+}) => {
   const selectedAddress = useGetSelectedAddress()
   const address = account || selectedAddress
-  const result = useGetOrFetchLeaderboardAddressResult(address)
+  const result = useGetOrFetchLeaderboardAddressResult({
+    account: address ?? '',
+    api,
+    tokenSymbol,
+  })
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
 
   return {
@@ -165,4 +191,8 @@ export const useCollectWinningModalProps = () => {
     isLoadingHistory,
     history,
   }
+}
+
+export const useGetInternalTimeInMinutes = () => {
+  return useSelector(getInternalTimeInMinutes)
 }

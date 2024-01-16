@@ -46,13 +46,12 @@ import {
 } from 'utils/addressHelpers'
 
 // ABI
-import { cakePredictionsABI } from 'config/abi/cakePredictions'
+import { predictionsV1ABI, predictionsV2ABI, predictionsV3ABI } from '@pancakeswap/prediction'
 import { crossFarmingProxyABI } from 'config/abi/crossFarmingProxy'
 import { crossFarmingSenderABI } from 'config/abi/crossFarmingSender'
 import { nftSaleABI } from 'config/abi/nftSale'
 import { nonBscVaultABI } from 'config/abi/nonBscVault'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
-import { predictionsV1ABI } from 'config/abi/predictionsV1'
 import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
 import { ChainId } from '@pancakeswap/chains'
@@ -83,7 +82,6 @@ import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { pancakeSquadABI } from 'config/abi/pancakeSquad'
 import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
-import { predictionsV2ABI } from 'config/abi/predictionsV2'
 import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
 import { revenueSharingPoolGatewayABI } from 'config/abi/revenueSharingPoolGateway'
 import { revenueSharingPoolProxyABI } from 'config/abi/revenueSharingPoolProxy'
@@ -211,16 +209,16 @@ export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient, chainI
   })
 }
 
-export const getPredictionsV2Contract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: predictionsV2ABI, address, signer })
+export const getPredictionsV3Contract = (address: Address, chainId?: number, signer?: WalletClient) => {
+  return getContract({ abi: predictionsV3ABI, address, signer, chainId })
+}
+
+export const getPredictionsV2Contract = (address: Address, chainId?: number, signer?: WalletClient) => {
+  return getContract({ abi: predictionsV2ABI, address, signer, chainId })
 }
 
 export const getPredictionsV1Contract = (signer?: WalletClient) => {
   return getContract({ abi: predictionsV1ABI, address: getPredictionsV1Address(), signer })
-}
-
-export const getCakePredictionsContract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: cakePredictionsABI, address, signer })
 }
 
 export const getChainlinkOracleContract = (address: Address, signer?: WalletClient, chainId?: number) => {

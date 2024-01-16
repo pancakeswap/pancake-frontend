@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react'
 import CountUp from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
-import { BetPosition } from 'state/types'
+import { BetPosition } from '@pancakeswap/prediction'
 
 interface LiveRoundPriceProps {
   betPosition: BetPosition

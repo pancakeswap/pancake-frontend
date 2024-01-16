@@ -168,6 +168,25 @@ const isNativeFarm = (
   return true
 }
 
+export function getFarmLpTokenPrice(farm: FarmData, tokenPrice: BN, quoteTokenPrice: BN, decimals: number) {
+  return isStableFarm(farm)
+    ? getStableLpTokenPrice(
+        new BN(farm.lpTotalSupply),
+        new BN(farm.tokenAmountTotal),
+        tokenPrice,
+        new BN(farm.quoteTokenAmountTotal),
+        quoteTokenPrice,
+        decimals,
+      )
+    : getLpTokenPrice(
+        new BN(farm.lpTotalSupply),
+        new BN(farm.lpTotalInQuoteToken),
+        new BN(farm.tokenAmountTotal),
+        tokenPrice,
+        decimals,
+      )
+}
+
 export const getFarmsPrices = (
   farms: FarmData[],
   nativeStableLp: {
@@ -213,23 +232,7 @@ export const getFarmsPrices = (
       quoteTokenPriceBusd,
     )
 
-    const lpTokenPrice = isStableFarm(farm)
-      ? getStableLpTokenPrice(
-          new BN(farm.lpTotalSupply),
-          new BN(farm.tokenAmountTotal),
-          tokenPriceBusd,
-          new BN(farm.quoteTokenAmountTotal),
-          quoteTokenPriceBusd,
-          decimals,
-        )
-      : getLpTokenPrice(
-          new BN(farm.lpTotalSupply),
-          new BN(farm.lpTotalInQuoteToken),
-          new BN(farm.tokenAmountTotal),
-          tokenPriceBusd,
-          decimals,
-        )
-
+    const lpTokenPrice = getFarmLpTokenPrice(farm, tokenPriceBusd, quoteTokenPriceBusd, decimals)
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),

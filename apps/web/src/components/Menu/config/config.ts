@@ -2,6 +2,7 @@ import { SUPPORTED_CHAIN_IDS as IFO_SUPPORTED_CHAINS } from '@pancakeswap/ifos'
 import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { SUPPORTED_CHAIN_IDS as POSITION_MANAGERS_SUPPORTED_CHAINS } from '@pancakeswap/position-managers'
+import { SUPPORTED_CHAIN_IDS as PREDICTION_SUPPORTED_CHAINS } from '@pancakeswap/prediction'
 import {
   DropdownMenuItemType,
   DropdownMenuItems,
@@ -116,7 +117,6 @@ const config: (
           label: t('CAKE Staking'),
           href: '/cake-staking',
           supportChainIds: SUPPORT_CAKE_STAKING,
-          status: { text: t('New'), color: 'success' },
         },
         {
           label: t('Pools'),
@@ -155,6 +155,7 @@ const config: (
           label: t('Prediction (BETA)'),
           href: '/prediction',
           image: '/images/decorations/prediction.png',
+          supportChainIds: PREDICTION_SUPPORTED_CHAINS,
         },
         {
           label: t('Lottery'),

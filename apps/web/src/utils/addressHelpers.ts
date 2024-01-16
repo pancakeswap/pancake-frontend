@@ -55,11 +55,11 @@ export const getTradingCompetitionAddressMoD = () => {
   return getAddressFromMap(addresses.tradingCompetitionMoD)
 }
 
-export const getVaultPoolAddress = (vaultKey?: VaultKey) => {
+export const getVaultPoolAddress = (vaultKey: VaultKey, chainId?: ChainId) => {
   if (!vaultKey) {
     return null
   }
-  return getAddressFromMap(addresses[vaultKey])
+  return getAddressFromMap(addresses[vaultKey], chainId)
 }
 
 export const getCakeVaultAddress = (chainId?: number) => {

@@ -1,14 +1,8 @@
+import { ASSET_CDN } from 'config/constants/endpoints'
+
 import { styled } from 'styled-components'
-import Image from 'next/image'
-import discord from '../../images/socials/1.png'
-import twitter from '../../images/socials/2.png'
-import telegram from '../../images/socials/3.png'
-import instagram from '../../images/socials/4.png'
-import pinkBubble from '../../images/community-items/1.png'
-import ring from '../../images/community-items/2.png'
-import heart from '../../images/community-items/3.png'
-import speaker from '../../images/community-items/4.png'
-import yellowBubble from '../../images/community-items/5.png'
+
+export const Image = styled.img``
 
 export const LeftImageWrapper = styled.div`
   display: none;
@@ -152,11 +146,11 @@ export const RightImageWrapper = styled.div`
 export const RightTopBox: React.FC = () => {
   return (
     <RightImageWrapper>
-      <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
-      <Image className="ring" src={ring} alt="ring" />
-      <Image className="heart" src={heart} alt="heart" />
-      <Image className="speaker" src={speaker} alt="speaker" />
-      <Image className="yellowBubble" src={yellowBubble} alt="yellowBubble" />
+      <Image className="pinkBubble" src={`${ASSET_CDN}/web/landing/community-items/1.png`} alt="pink-bubble" />
+      <Image className="ring" src={`${ASSET_CDN}/web/landing/community-items/2.png`} alt="ring" />
+      <Image className="heart" src={`${ASSET_CDN}/web/landing/community-items/3.png`} />
+      <Image className="speaker" src={`${ASSET_CDN}/web/landing/community-items/4.png`} alt="speaker" />
+      <Image className="yellowBubble" src={`${ASSET_CDN}/web/landing/community-items/5.png`} alt="yellow-bubble" />
     </RightImageWrapper>
   )
 }
@@ -164,8 +158,8 @@ export const RightTopBox: React.FC = () => {
 export const RightBottomBox: React.FC = () => {
   return (
     <RightShadowWrapper>
-      <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
-      <Image className="ring" src={ring} alt="ring" />
+      <Image className="pinkBubble" src={`${ASSET_CDN}/web/landing/community-items/1.png`} alt="pink-bubble" />
+      <Image className="ring" src={`${ASSET_CDN}/web/landing/community-items/2.png`} alt="ring" />
     </RightShadowWrapper>
   )
 }
@@ -173,10 +167,10 @@ export const RightBottomBox: React.FC = () => {
 export const LeftBottomBox: React.FC = () => {
   return (
     <LeftImageWrapper>
-      <Image className="discord" src={discord} alt="discord" />
-      <Image className="twitter" src={twitter} alt="twitter" />
-      <Image className="telegram" src={telegram} alt="telegram" />
-      <Image className="instagram" src={instagram} alt="instagram" />
+      <Image className="discord" src={`${ASSET_CDN}/web/landing/socials/1.png`} alt="discord" />
+      <Image className="twitter" src={`${ASSET_CDN}/web/landing/socials/2.png`} alt="twitter" />
+      <Image className="telegram" src={`${ASSET_CDN}/web/landing/socials/3.png`} alt="telegram" />
+      <Image className="instagram" src={`${ASSET_CDN}/web/landing/socials/4.png`} alt="instagram" />
     </LeftImageWrapper>
   )
 }

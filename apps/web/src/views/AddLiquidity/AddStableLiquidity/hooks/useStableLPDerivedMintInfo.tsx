@@ -1,19 +1,19 @@
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useAccount } from 'wagmi'
 
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { PairState } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useContext, useMemo } from 'react'
 import { Field } from 'state/mint/actions'
-import { useCurrencyBalances } from 'state/wallet/hooks'
-import { useSingleCallResult } from 'state/multicall/hooks'
-import { StableConfigContext, UseStableSwapInfoContract } from 'views/Swap/hooks/useStableConfig'
-import { useEstimatedAmount } from 'views/Swap/hooks/useEstimatedAmount'
-import { Address } from 'viem'
 import { useAddLiquidityV2FormState } from 'state/mint/reducer'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import { useCurrencyBalances } from 'state/wallet/hooks'
+import { Address } from 'viem'
+import { useEstimatedAmount } from 'views/Swap/hooks/useEstimatedAmount'
+import { StableConfigContext, UseStableSwapInfoContract } from 'views/Swap/hooks/useStableConfig'
 
 export interface StablePair {
   liquidityToken: Token | null
