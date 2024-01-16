@@ -157,8 +157,7 @@ export const fixtureAddresses = async (chainId: ChainId, liquidity: bigint) => {
       reserve: liquidity,
       feeAmount: FeeAmount.LOW,
     }),
-    WBNB_USDC_V3_MEDIUM: fixturePool({
-    }),
+    WBNB_USDC_V3_MEDIUM: fixturePool({}),
     USDC_USDT_V3_LOW: fixturePool({ tokenA: USDC, tokenB: USDT, feeAmount: FeeAmount.LOW, reserve: liquidity }),
     USDC_USDT_V3_LOW_ADDRESS: computePoolAddress({
       deployerAddress: DEPLOYER_ADDRESSES[chainId],
