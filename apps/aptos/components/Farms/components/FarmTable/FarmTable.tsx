@@ -1,10 +1,8 @@
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { RowType } from '@pancakeswap/uikit'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
-import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { useRouter } from 'next/router'
 import { useMemo, useRef } from 'react'
 import { styled } from 'styled-components'
@@ -103,11 +101,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
   )
 
   const totalMultipliers = totalRegularAllocPoint ? (Number(totalRegularAllocPoint) / 100).toString() : '-'
-
-  const getFarmEarnings = (farm) => {
-    const earnings = new BigNumber(farm?.userData?.earnings)
-    return getBalanceNumber(earnings, FARM_DEFAULT_DECIMALS)
-  }
 
   const generateRow = (farm) => {
     const { token, quoteToken } = farm
