@@ -274,7 +274,7 @@ export function useFarmUserInfoCache(pid: string) {
   )
 }
 
-export async function useFarmsPendingAptosReward(farmConfig: SerializedFarmConfig[]) {
+export function useFarmsPendingAptosReward(farmConfig: SerializedFarmConfig[]) {
   const { account } = useAccount()
   const { networkName } = useActiveNetwork()
   const userPendingAptosQueries = useQueries({
