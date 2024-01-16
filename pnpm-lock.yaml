@@ -1286,6 +1286,15 @@ importers:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
+      '@pancakeswap/sdk':
+        specifier: workspace:^
+        version: link:../swap-sdk
+      '@types/lodash':
+        specifier: ^4.14.202
+        version: 4.14.202
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.3.96)(postcss@8.4.31)(typescript@5.2.2)
@@ -10194,6 +10203,10 @@ packages:
 
   /@types/lodash@4.14.201:
     resolution: {integrity: sha512-y9euML0cim1JrykNxADLfaG0FgD1g/yTHwUs/Jg9ZIU7WKj2/4IW9Lbb1WZbvck78W/lfGXFfe+u2EGfIJXdLQ==}
+
+  /@types/lodash@4.14.202:
+    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
+    dev: true
 
   /@types/long@4.0.2:
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
