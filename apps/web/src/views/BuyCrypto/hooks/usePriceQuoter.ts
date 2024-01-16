@@ -22,9 +22,9 @@ const usePriceQuotes = () => {
     () => fetchProviderAvailabilities(),
     {
       initialData: {
-        MoonPay: true,
-        Mercuryo: true,
-        Transak: true,
+        MoonPay: false,
+        Mercuryo: false,
+        Transak: false,
       },
     },
   )
