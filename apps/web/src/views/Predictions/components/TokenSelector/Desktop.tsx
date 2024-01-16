@@ -57,6 +57,7 @@ export const DesktopPredictionTokenSelector: React.FC<React.PropsWithChildren<De
                 {`${list?.token?.symbol}USD`}
               </Text>
               <Price
+                displayedDecimals={list?.displayedDecimals}
                 chainlinkOracleAddress={list?.chainlinkOracleAddress}
                 galetoOracleAddress={list?.galetoOracleAddress}
               />

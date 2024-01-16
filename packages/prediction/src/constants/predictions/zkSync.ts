@@ -11,7 +11,7 @@ export const predictions: Record<string, PredictionConfig> = {
     address: predictionsETH[ChainId.ZKSYNC],
     api: GRAPH_API_PREDICTION_ETH[ChainId.ZKSYNC],
     galetoOracleAddress: galetoOracleETH[ChainId.ZKSYNC],
-    displayedDecimals: 4,
+    displayedDecimals: 2,
     token: Native.onChain(ChainId.ZKSYNC),
     tokenBackgroundColor: '#647ceb',
   },

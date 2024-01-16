@@ -1,15 +1,20 @@
-import React, { memo, useMemo } from 'react'
-import CountUp from 'react-countup'
+import { BetPosition } from '@pancakeswap/prediction'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
-import { BetPosition } from '@pancakeswap/prediction'
+import React, { memo, useMemo } from 'react'
+import CountUp from 'react-countup'
 
 interface LiveRoundPriceProps {
+  displayedDecimals: number
   betPosition: BetPosition
   price: bigint
 }
 
-const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = ({ betPosition, price }) => {
+const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = ({
+  displayedDecimals,
+  betPosition,
+  price,
+}) => {
   const priceAsNumber = useMemo(() => parseFloat(formatBigIntToFixed(price, 4, 8)), [price])
 
   const priceColor = useMemo(() => {
@@ -33,7 +38,7 @@ const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = (
   }
 
   return (
-    <CountUp start={0} preserveValue delay={0} end={priceAsNumber} prefix="$" decimals={4} duration={1}>
+    <CountUp start={0} preserveValue delay={0} end={priceAsNumber} prefix="$" decimals={displayedDecimals} duration={1}>
       {({ countUpRef }) => (
         <TooltipText bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
           <span ref={countUpRef} />
