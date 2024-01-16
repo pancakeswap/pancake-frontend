@@ -42,10 +42,10 @@ interface SwapCommitButtonPropsType {
   tradeLoading?: boolean
 }
 
-const useSettingModal = () => {
+const useSettingModal = (onDismiss) => {
   const [openSettingsModal] = useModal(
     <SettingsModalWithCustomDismiss
-      customOnDismiss={() => console.debug('TODO')}
+      customOnDismiss={onDismiss}
       // customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
       mode={SettingsMode.SWAP_LIQUIDITY}
     />,
@@ -154,7 +154,9 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const [swapErrorMessage, setSwapErrorMessage] = useState<string | undefined>(undefined)
   const [signature, setSignature] = useState<Permit2Signature | undefined>(undefined)
   const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
+  const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
   const statusWallchain: string = '@TODO'
+
   const fn = useCallback(() => undefined, [])
   const {
     callback: swapCallback,
@@ -238,7 +240,10 @@ const SwapCommitButton = memo(function SwapCommitButton({
   )
 
   // modals
-  const openSettingModal = useSettingModal()
+  const onSettingModalDismiss = useCallback(() => {
+    setIndirectlyOpenConfirmModalState(true)
+  }, [])
+  const openSettingModal = useSettingModal(onSettingModalDismiss)
   const [openConfirmSwapModal] = useModal(
     <ConfirmSwapModalV2
       trade={trade}
@@ -272,6 +277,14 @@ const SwapCommitButton = memo(function SwapCommitButton({
     openConfirmSwapModal()
     logGTMClickSwapEvent()
   }, [isExpertMode, openConfirmSwapModal, resetConfirmModalState, startSwap, trade])
+
+  useEffect(() => {
+    if (indirectlyOpenConfirmModalState) {
+      setIndirectlyOpenConfirmModalState(false)
+      setSwapErrorMessage(undefined)
+      openConfirmSwapModal()
+    }
+  }, [indirectlyOpenConfirmModalState, openConfirmSwapModal])
 
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return <ResetRoutesButton />
