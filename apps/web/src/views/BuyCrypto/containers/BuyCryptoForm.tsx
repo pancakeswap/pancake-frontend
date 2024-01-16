@@ -160,7 +160,7 @@ export function BuyCryptoForm({
             </Text>
           </Message>
         ) : null}
-        {disabledProviders.length > 0 ? (
+        {disabledProviders.length > 0 && !isAvailabilitiesLoading ? (
           <Message variant="warning" padding="16px">
             <Text fontSize="15px" color="#D67E0B">
               {`Due to your location, quotes from ${parseDisabledProviders(
