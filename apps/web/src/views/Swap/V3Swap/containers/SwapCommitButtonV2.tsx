@@ -23,6 +23,7 @@ import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
+import { isUserRejected } from 'utils/sentry'
 import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
 import { useConfirmModalStateV2 } from '../hooks/useConfirmModalStateV2'
@@ -186,7 +187,9 @@ const SwapCommitButton = memo(function SwapCommitButton({
       return result
     } catch (error: any) {
       console.error(error)
-      setSwapErrorMessage(typeof error === 'string' ? error : error?.message)
+      const userReject = isUserRejected(error) || error instanceof TransactionRejectedError
+
+      if (!userReject) setSwapErrorMessage(typeof error === 'string' ? error : error?.message)
 
       throw error
     }
