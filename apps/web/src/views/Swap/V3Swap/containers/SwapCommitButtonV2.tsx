@@ -15,7 +15,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { usePermit, usePermitStatus } from 'hooks/usePermitStatus'
+import { usePermit } from 'hooks/usePermitStatus'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
@@ -27,6 +27,7 @@ import { isUserRejected } from 'utils/sentry'
 import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
 import { useConfirmModalStateV2 } from '../hooks/useConfirmModalStateV2'
+import { TransactionRejectedError } from '../hooks/useSendSwapTransaction'
 import { useSwapCallback } from '../hooks/useSwapCallback'
 import { useSwapConfig } from '../hooks/useSwapConfig'
 import { useSwapCurrency } from '../hooks/useSwapCurrency'
@@ -137,12 +138,6 @@ const SwapCommitButton = memo(function SwapCommitButton({
     [inputCurrency?.isNative, slippageAdjustedAmounts],
   )
 
-  const { allowance } = usePermitStatus(
-    inputCurrency?.isToken ? inputCurrency : undefined,
-    account,
-    getUniversalRouterAddress(chainId),
-  )
-
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
@@ -158,6 +153,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const [txHash, setTxHash] = useState<string | undefined>(undefined)
   const [swapErrorMessage, setSwapErrorMessage] = useState<string | undefined>(undefined)
   const [signature, setSignature] = useState<Permit2Signature | undefined>(undefined)
+  const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
   const statusWallchain: string = '@TODO'
   const fn = useCallback(() => undefined, [])
   const {
@@ -216,7 +212,12 @@ const SwapCommitButton = memo(function SwapCommitButton({
     resetConfirmModalState()
     setTxHash(undefined)
     setSwapErrorMessage(undefined)
+    setTradeToConfirm(undefined)
   }, [resetConfirmModalState])
+
+  const handleAcceptChanges = useCallback(() => {
+    setTradeToConfirm(trade)
+  }, [trade])
 
   const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   // warnings on slippage
@@ -241,13 +242,13 @@ const SwapCommitButton = memo(function SwapCommitButton({
   const [openConfirmSwapModal] = useModal(
     <ConfirmSwapModalV2
       trade={trade}
+      originalTrade={tradeToConfirm}
       txHash={txHash}
       confirmModalState={confirmModalState}
       pendingModalSteps={pendingModalSteps}
       swapErrorMessage={swapErrorMessage}
-      allowance={allowance}
       currencyBalances={currencyBalances}
-      onAcceptChanges={console.debug}
+      onAcceptChanges={handleAcceptChanges}
       onConfirm={startSwap}
       openSettingModal={openSettingModal}
       customOnDismiss={reset}
@@ -258,6 +259,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
   )
 
   const handleSwap = useCallback(() => {
+    setTradeToConfirm(trade)
     resetConfirmModalState()
 
     // if expert mode turn-on, will not show preview modal
@@ -269,7 +271,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
 
     openConfirmSwapModal()
     logGTMClickSwapEvent()
-  }, [isExpertMode, openConfirmSwapModal, resetConfirmModalState, startSwap])
+  }, [isExpertMode, openConfirmSwapModal, resetConfirmModalState, startSwap, trade])
 
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return <ResetRoutesButton />
