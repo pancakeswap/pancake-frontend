@@ -1,5 +1,12 @@
 # @pancakeswap/v3-sdk
 
+## 3.7.5
+
+### Patch Changes
+
+- Updated dependencies [205c08713]
+  - @pancakeswap/tokens@0.6.0
+
 ## 3.7.4
 
 ### Patch Changes
