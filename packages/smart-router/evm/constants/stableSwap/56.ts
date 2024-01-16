@@ -100,7 +100,7 @@ export const pools: StableSwapPool[] = [
     quoteToken: bscTokens.mcake,
     stableSwapAddress: '0xc54d35a8Cfd9f6dAe50945Df27A91C9911A03ab1',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.001,
+    stableLpFee: 0.005,
     stableLpFeeRateOfTotalFee: 0.5,
   },
 ]
