@@ -1,11 +1,11 @@
+import { useAccountBalance } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, TooltipText, useModal, useTooltip, RoiCalculatorModal } from '@pancakeswap/uikit'
+import { RoiCalculatorModal, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useFarmUserInfoCache } from 'state/farms/hook'
-import { useAccountBalance } from '@pancakeswap/awgmi'
 import { FARM_DEFAULT_DECIMALS } from '../../constants'
 
 export interface ApyButtonProps {
@@ -68,6 +68,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       <Text ml="5px">
         *{t('Base APR (CAKE yield only)')}: {`${apr.toFixed(2)}%`}
       </Text>
+      {/* <Text ml="5px">*{t('Base APR (APT yield only)')}: TODO</Text> */}
       <Text ml="5px">
         *{t('LP Rewards APR')}: {lpRewardsApr === 0 ? '-' : lpRewardsApr}%
       </Text>

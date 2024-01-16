@@ -52,6 +52,7 @@ export const deserializeFarm = (
     vaultPid,
     ...(dual && {
       dual: {
+        ...dual,
         token: deserializeToken(dual?.token),
       },
     }),

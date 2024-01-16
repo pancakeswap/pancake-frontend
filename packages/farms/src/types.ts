@@ -54,6 +54,7 @@ export interface FarmConfigBaseProps {
   auctionHostingEndDate?: string
   dual?: {
     token: SerializedWrappedToken
+    aptIncentiveInfo: number
   }
   boosted?: boolean
 }
@@ -211,6 +212,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   lpTokenStakedAmount?: BigNumber
   dual?: {
     token: Token
+    aptIncentiveInfo: number
   }
 }
 

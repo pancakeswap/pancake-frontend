@@ -16,7 +16,7 @@ import BigNumber from 'bignumber.js'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { APT, L0_USDC } from 'config/coins'
 import { CAKE_PID } from 'config/constants'
-import { masterchefGetPendingApt } from 'config/constants/contracts/masterchef'
+import { masterchefGetAptIncentiveInfo, masterchefGetPendingApt } from 'config/constants/contracts/masterchef'
 import { getFarmConfig } from 'config/constants/farms'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
@@ -165,6 +165,7 @@ export const useFarms = () => {
 
   // Aptos Reward
   const userAptosReward = useFarmsPendingAptosReward(farmConfig)
+  const aptIncentiveInfo = useGetAptIncentiveInfo()
 
   return useMemo(() => {
     return {
@@ -190,6 +191,12 @@ export const useFarms = () => {
 
           return {
             ...f,
+            ...(f.dual && {
+              dual: {
+                ...f.dual,
+                aptIncentiveInfo,
+              },
+            }),
             userData: {
               earnings: earningToken.gte(0) ? earningToken : BIG_ZERO,
               stakedBalance: stakedBalance.gte(0) ? stakedBalance : BIG_ZERO,
@@ -208,6 +215,7 @@ export const useFarms = () => {
     getNow,
     userInfos,
     userAptosReward,
+    aptIncentiveInfo,
   ])
 }
 
@@ -306,4 +314,25 @@ export function useFarmsPendingAptosReward(farmConfig: SerializedFarmConfig[]) {
   }, [userPendingAptosQueries])
 
   return userAptosReward
+}
+
+export function useGetAptIncentiveInfo() {
+  const { networkName } = useActiveNetwork()
+
+  const { data: aptIncentiveInfo } = useQuery(
+    ['apt-incentive-info', networkName],
+    async () => {
+      const params = await masterchefGetAptIncentiveInfo()
+      const response = await fetchAptosView({ networkName, params })
+      return response?.[0] ?? 0
+    },
+    {
+      enabled: Boolean(networkName),
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  )
+
+  return aptIncentiveInfo ?? 0
 }

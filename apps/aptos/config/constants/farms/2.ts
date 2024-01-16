@@ -62,6 +62,7 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: testnetTokens.dai,
     dual: {
       token: testnetTokens.apt,
+      aptIncentiveInfo: 0,
     },
   },
   {
@@ -73,6 +74,7 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: testnetTokens.usdt,
     dual: {
       token: testnetTokens.apt,
+      aptIncentiveInfo: 0,
     },
   },
   {
@@ -84,6 +86,7 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: testnetTokens.bnb,
     dual: {
       token: testnetTokens.apt,
+      aptIncentiveInfo: 0,
     },
   },
   {
@@ -95,6 +98,7 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: testnetTokens.usdc,
     dual: {
       token: testnetTokens.apt,
+      aptIncentiveInfo: 0,
     },
   },
   {
@@ -106,6 +110,7 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: testnetTokens.apt,
     dual: {
       token: testnetTokens.apt,
+      aptIncentiveInfo: 0,
     },
   },
 ].map((p) => ({
