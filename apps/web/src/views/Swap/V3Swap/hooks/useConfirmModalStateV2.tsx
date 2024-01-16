@@ -33,7 +33,6 @@ export const useConfirmModalStateV2 = (
   const prevApprovalState = usePrevious(approvalState)
 
   const resetConfirmModalState = useCallback(() => {
-    console.debug('debug resetConfirmModalState')
     setConfirmModalState(ConfirmModalState.REVIEWING)
     setSwapErrorMessage(undefined)
     setTxHash(undefined)
@@ -55,19 +54,12 @@ export const useConfirmModalStateV2 = (
   }, [requireApprove, requireRevoke, requirePermit])
 
   const updateStep = useCallback(() => {
-    console.debug(
-      'debug update step',
-      'pendingModalSteps',
-      pendingModalSteps.current.map((step) => ConfirmModalState[step]),
-    )
-    console.debug('debug update step', 'currentStep', ConfirmModalState[confirmModalState])
     const isFinalStep = confirmModalState === ConfirmModalState.PENDING_CONFIRMATION
     const steps = pendingModalSteps.current
     if (!isFinalStep) {
       const finalStep = ConfirmModalState.PENDING_CONFIRMATION
       const inProgressStep = steps.findIndex((step) => step === confirmModalState)
       const nextStep = (inProgressStep > -1 ? steps[inProgressStep + 1] : steps[0]) ?? finalStep
-      console.debug('debug update step', 'nextStep', ConfirmModalState[nextStep], nextStep)
       setConfirmModalState(nextStep)
     }
   }, [confirmModalState])
@@ -76,19 +68,16 @@ export const useConfirmModalStateV2 = (
       setTxHash(undefined)
       updateStep()
       const result = await onStep()
-      console.debug('debug performStep', 'result', result)
       if (result && result.hash) {
         setTxHash(result.hash)
       }
     } catch (error: any) {
-      console.debug('debug performStep', error)
       console.error(error)
       if (
         error instanceof UserRejectedRequestError ||
         error instanceof TransactionRejectedError ||
         (typeof error !== 'string' && isUserRejected(error))
       ) {
-        console.debug('debug performStep', 'UserRejectedRequestError')
         resetConfirmModalState()
       } else {
         setSwapErrorMessage(typeof error === 'string' ? error : error?.message)
@@ -100,10 +89,6 @@ export const useConfirmModalStateV2 = (
   const startSwap = () => {
     const steps = generateRequiredSteps()
     pendingModalSteps.current = steps
-    console.debug(
-      'debug steps',
-      steps.map((step) => ConfirmModalState[step]),
-    )
     performStep()
   }
 
@@ -112,11 +97,9 @@ export const useConfirmModalStateV2 = (
       const receipt: any = await provider.waitForTransactionReceipt({ hash })
       if (receipt.status === 'success') {
         if (ConfirmModalState.PENDING_CONFIRMATION === confirmModalState) {
-          console.debug('debug checkHashIsReceipted', 'completed from pending confirmation')
           setConfirmModalState(ConfirmModalState.COMPLETED)
         }
         if (ConfirmModalState.APPROVING_TOKEN === confirmModalState) {
-          console.debug('debug checkHashIsReceipted', 'completed from approving token')
           setConfirmModalState(ConfirmModalState.PERMITTING)
           performStep()
         }
@@ -136,7 +119,6 @@ export const useConfirmModalStateV2 = (
   useEffect(() => {
     // allowance approved
     if (prevApprovalState === ApprovalState.PENDING && approvalState === ApprovalState.APPROVED) {
-      console.debug('debug allowance approved', 'txHash', txHash)
       if (txHash) {
         checkHashIsReceipted(txHash)
       } else {
@@ -151,7 +133,6 @@ export const useConfirmModalStateV2 = (
 
   // permit
   useEffect(() => {
-    console.debug('debug permit', permit2Signature)
     if (permit2Signature && confirmModalState === ConfirmModalState.PERMITTING) {
       performStep()
     }

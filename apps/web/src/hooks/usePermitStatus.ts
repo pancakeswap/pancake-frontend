@@ -162,11 +162,6 @@ export const usePermitRequirements = (amount: CurrencyAmount<Token> | undefined,
   }, [permitAmount, amount, now, expiration])
 
   return useMemo(() => {
-    console.debug('debug permit requirements', {
-      requireRevoke,
-      requireApprove,
-      requirePermit,
-    })
     return {
       requireApprove,
       requireRevoke,
@@ -202,13 +197,6 @@ export const usePermit = (
 
   // execution of the permit state machine
   const execute = useCallback(async (): Promise<SendTransactionResult | undefined> => {
-    console.debug('debug execute permitState', {
-      permitState: PermitState[permitState],
-      approvalState: ApprovalState[approvalState],
-      requireApprove,
-      requireRevoke,
-      requirePermit,
-    })
     // still pending confirming the approval, prevent trigger
     if (approvalState === ApprovalState.PENDING) return undefined
 
