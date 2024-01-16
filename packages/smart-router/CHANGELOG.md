@@ -1,5 +1,17 @@
 # @pancakeswap/smart-router
 
+## 4.14.0
+
+### Minor Changes
+
+- 205c08713: List mPENDLE on arbitrum
+
+### Patch Changes
+
+- Updated dependencies [205c08713]
+  - @pancakeswap/tokens@0.6.0
+  - @pancakeswap/v3-sdk@3.7.5
+
 ## 4.13.0
 
 ### Minor Changes
