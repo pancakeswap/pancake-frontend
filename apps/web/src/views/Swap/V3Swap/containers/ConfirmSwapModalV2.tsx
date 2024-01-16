@@ -73,7 +73,6 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
   }, [confirmModalState])
 
   const stepContents = useApprovalPhaseStepTitles({ trade })
-  console.debug('debug stepContents', stepContents)
   const token: Token | undefined = useMemo(
     () => wrappedCurrency(trade?.outputAmount?.currency, chainId),
     [chainId, trade?.outputAmount?.currency],
@@ -232,7 +231,8 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
       handleDismiss={handleDismiss}
     >
       <>txHash:{txHash}</>
-      confirmModalState: {ConfirmModalState[confirmModalState]}
+      <>confirmModalState: {ConfirmModalState[confirmModalState]}</>
+      <>error: {swapErrorMessage}</>
       <Box>{modalContent}</Box>
       {loadingAnimationVisible ? (
         <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />

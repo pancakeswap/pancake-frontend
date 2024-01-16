@@ -2,10 +2,10 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
-import React, { memo, useCallback, useMemo, useState } from 'react'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
+import { Permit2Signature, getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -156,6 +156,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
 
   const [txHash, setTxHash] = useState<string | undefined>(undefined)
   const [swapErrorMessage, setSwapErrorMessage] = useState<string | undefined>(undefined)
+  const [signature, setSignature] = useState<Permit2Signature | undefined>(undefined)
   const statusWallchain: string = '@TODO'
   const fn = useCallback(() => undefined, [])
   const {
@@ -165,7 +166,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
   } = useSwapCallback({
     trade,
     deadline,
-    permitSignature: undefined, // TODO
+    permitSignature: signature, // TODO
     onWallchainDrop: fn, // TODO
     wallchainMasterInput: undefined, // TODO
     statusWallchain: 'not-found', // TODO
@@ -192,16 +193,20 @@ const SwapCommitButton = memo(function SwapCommitButton({
   }, [swapCallback, swapCallbackRevertReason])
 
   // todo
-  const { execute: onStep, approvalState } = usePermit(
-    amountToApprove,
-    getUniversalRouterAddress(chainId),
-    onConfirmSwap,
-  )
+  const {
+    execute: onStep,
+    approvalState,
+    permit2Signature,
+  } = usePermit(amountToApprove, getUniversalRouterAddress(chainId), onConfirmSwap)
+  useEffect(() => {
+    setSignature(permit2Signature)
+  }, [permit2Signature])
 
   const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalStateV2(
     onStep,
     amountToApprove,
     approvalState,
+    permit2Signature,
     getUniversalRouterAddress(chainId),
   )
   const reset = useCallback(() => {

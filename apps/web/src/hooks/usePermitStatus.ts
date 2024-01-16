@@ -10,7 +10,7 @@ import { ethereumTokens } from '@pancakeswap/tokens'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { publicClient } from 'utils/client'
 import { Address, isAddressEqual, zeroAddress } from 'viem'
 import { useSignTypedData } from 'wagmi'
@@ -130,7 +130,7 @@ export const useWritePermit = (token?: Token, spender?: Address, nonce?: number)
   }, [account, chainId, nonce, signTypedDataAsync, spender, token])
 }
 
-enum PermitState {
+export enum PermitState {
   IDLE,
   REVOKING_ALLOWANCE,
   APPROVING_ALLOWANCE,
@@ -181,13 +181,20 @@ export const usePermit = (
   onPermitDone?: () => Promise<SendTransactionResult | undefined>,
 ) => {
   const { account, chainId } = useAccountActiveChain()
-
-  const [permitState, setPermitState] = useState<PermitState>(PermitState.IDLE)
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature>()
 
   const tokenAmount = amount?.currency.isToken ? (amount as CurrencyAmount<Token>) : undefined
 
   const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(tokenAmount, spender)
+  const permitState = useMemo((): PermitState => {
+    if (requireRevoke || requireApprove) {
+      return PermitState.IDLE
+    }
+    if (requirePermit) {
+      return PermitState.APPROVING_PERMIT_AMOUNT
+    }
+    return PermitState.DONE
+  }, [requireApprove, requireRevoke, requirePermit])
   const { nonce } = usePermitStatus(tokenAmount?.currency, account, spender)
   const permitCallback = useWritePermit(tokenAmount?.currency, spender, nonce)
 
@@ -198,6 +205,9 @@ export const usePermit = (
     console.debug('debug execute permitState', {
       permitState: PermitState[permitState],
       approvalState: ApprovalState[approvalState],
+      requireApprove,
+      requireRevoke,
+      requirePermit,
     })
     // still pending confirming the approval, prevent trigger
     if (approvalState === ApprovalState.PENDING) return undefined
@@ -208,18 +218,15 @@ export const usePermit = (
       // if require revoke, revoke first
       case PermitState.IDLE:
         if (requireRevoke) {
-          // setPermitState(PermitState.REVOKING_ALLOWANCE)
           return revokeCallback()
         }
         if (requireApprove) {
-          // setPermitState(PermitState.APPROVING_ALLOWANCE)
           return approveCallback()
         }
         break
       // REVOKING_ALLOWANCE => APPROVING_ALLOWANCE
       case PermitState.REVOKING_ALLOWANCE:
         if (approvalState === ApprovalState.NOT_APPROVED) {
-          // setPermitState(PermitState.APPROVING_ALLOWANCE)
           return approveCallback()
         }
         break
@@ -227,14 +234,12 @@ export const usePermit = (
       case PermitState.APPROVING_ALLOWANCE:
       case PermitState.APPROVING_PERMIT_AMOUNT:
         if (approvalState === ApprovalState.APPROVED) {
-          // setPermitState(PermitState.APPROVING_PERMIT_AMOUNT)
           const sig = await permitCallback()
           setPermit2Signature(sig)
           return undefined
         }
         break
       case PermitState.DONE:
-        // todo allowance and permit are enough, call swap
         if (onPermitDone) return onPermitDone()
         break
       default:
@@ -249,20 +254,10 @@ export const usePermit = (
     permitCallback,
     permitState,
     requireApprove,
+    requirePermit,
     requireRevoke,
     revokeCallback,
   ])
-
-  // permit state machine, the only place to change the state
-  useEffect(() => {
-    if (requireRevoke || requireApprove) {
-      setPermitState(PermitState.IDLE)
-    } else if (requirePermit) {
-      setPermitState(PermitState.APPROVING_PERMIT_AMOUNT)
-    } else {
-      setPermitState(PermitState.DONE)
-    }
-  }, [requireRevoke, requireApprove, requirePermit])
 
   return useMemo(() => {
     return {

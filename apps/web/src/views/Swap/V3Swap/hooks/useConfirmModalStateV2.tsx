@@ -1,4 +1,5 @@
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
@@ -16,6 +17,7 @@ export const useConfirmModalStateV2 = (
   onStep: () => Promise<SendTransactionResult | undefined>,
   amount: CurrencyAmount<Currency> | undefined,
   approvalState: ApprovalState,
+  permit2Signature: Permit2Signature | undefined,
   spender?: Address,
 ) => {
   const { chainId } = useActiveChainId()
@@ -48,37 +50,33 @@ export const useConfirmModalStateV2 = (
     if (requirePermit) {
       steps.push(ConfirmModalState.PERMITTING)
     }
-    steps.push(ConfirmModalState.PENDING_CONFIRMATION)
+    // steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
   }, [requireApprove, requireRevoke, requirePermit])
 
-  const performStep = useCallback(async () => {
-    console.debug('debug performStep', 'confirmModalState', ConfirmModalState[confirmModalState], { confirmModalState })
+  const updateStep = useCallback(() => {
     console.debug(
-      'debug performStep',
+      'debug update step',
       'pendingModalSteps',
       pendingModalSteps.current.map((step) => ConfirmModalState[step]),
     )
+    console.debug('debug update step', 'currentStep', ConfirmModalState[confirmModalState])
+    const isFinalStep = confirmModalState === ConfirmModalState.PENDING_CONFIRMATION
     const steps = pendingModalSteps.current
+    if (!isFinalStep) {
+      const finalStep = ConfirmModalState.PENDING_CONFIRMATION
+      const inProgressStep = steps.findIndex((step) => step === confirmModalState)
+      const nextStep = (inProgressStep > -1 ? steps[inProgressStep + 1] : steps[0]) ?? finalStep
+      console.debug('debug update step', 'nextStep', ConfirmModalState[nextStep], nextStep)
+      setConfirmModalState(nextStep)
+    }
+  }, [confirmModalState])
+  const performStep = useCallback(async () => {
     try {
-      // refactor: create new callback to set state tp next step
-      const isLastStep = confirmModalState === ConfirmModalState.PENDING_CONFIRMATION
-      if (!isLastStep) {
-        const hasStart = confirmModalState !== ConfirmModalState.REVIEWING
-        console.debug('debug performStep', 'currentStep', { currentStep: ConfirmModalState[confirmModalState] })
-        if (!hasStart) {
-          console.debug('debug performStep', 'nextStep', { nextStep: ConfirmModalState[steps[0]] })
-          setConfirmModalState(steps[0] ?? ConfirmModalState.PENDING_CONFIRMATION)
-        } else {
-          const currentStep = steps.findIndex((step) => step === confirmModalState)
-          const nextStep = steps[currentStep + 1]
-          console.debug('debug performStep', 'nextStep', { nextStep: ConfirmModalState[nextStep] })
-
-          setConfirmModalState(nextStep ?? ConfirmModalState.PENDING_CONFIRMATION)
-        }
-      }
-
+      setTxHash(undefined)
+      updateStep()
       const result = await onStep()
+      console.debug('debug performStep', 'result', result)
       if (result && result.hash) {
         setTxHash(result.hash)
       }
@@ -97,7 +95,7 @@ export const useConfirmModalStateV2 = (
         throw error
       }
     }
-  }, [confirmModalState, onStep, resetConfirmModalState])
+  }, [onStep, resetConfirmModalState, updateStep])
 
   const startSwap = () => {
     const steps = generateRequiredSteps()
@@ -114,9 +112,11 @@ export const useConfirmModalStateV2 = (
       const receipt: any = await provider.waitForTransactionReceipt({ hash })
       if (receipt.status === 'success') {
         if (ConfirmModalState.PENDING_CONFIRMATION === confirmModalState) {
+          console.debug('debug checkHashIsReceipted', 'completed from pending confirmation')
           setConfirmModalState(ConfirmModalState.COMPLETED)
         }
         if (ConfirmModalState.APPROVING_TOKEN === confirmModalState) {
+          console.debug('debug checkHashIsReceipted', 'completed from approving token')
           setConfirmModalState(ConfirmModalState.PERMITTING)
           performStep()
         }
@@ -136,13 +136,26 @@ export const useConfirmModalStateV2 = (
   useEffect(() => {
     // allowance approved
     if (prevApprovalState === ApprovalState.PENDING && approvalState === ApprovalState.APPROVED) {
-      performStep()
+      console.debug('debug allowance approved', 'txHash', txHash)
+      if (txHash) {
+        checkHashIsReceipted(txHash)
+      } else {
+        performStep()
+      }
     }
     // allowance approved but the amount not enough
     if (prevApprovalState === ApprovalState.PENDING && approvalState === ApprovalState.NOT_APPROVED) {
       resetConfirmModalState()
     }
-  }, [prevApprovalState, approvalState, performStep, resetConfirmModalState])
+  }, [prevApprovalState, approvalState, performStep, resetConfirmModalState, txHash, checkHashIsReceipted])
+
+  // permit
+  useEffect(() => {
+    console.debug('debug permit', permit2Signature)
+    if (permit2Signature && confirmModalState === ConfirmModalState.PERMITTING) {
+      performStep()
+    }
+  }, [confirmModalState, permit2Signature, performStep])
 
   return {
     confirmModalState,
