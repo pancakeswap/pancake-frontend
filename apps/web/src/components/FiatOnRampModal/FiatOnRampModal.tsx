@@ -13,23 +13,23 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 
+import { nanoid } from '@reduxjs/toolkit'
 import { CommitButton } from 'components/CommitButton'
 import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
-import { Dispatch, SetStateAction, memo, useCallback, useEffect, useState, useMemo } from 'react'
+import { Dispatch, SetStateAction, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import { ONRAMP_PROVIDERS, chainIdToMercuryoNetworkId } from 'views/BuyCrypto/constants'
-import { CryptoFormView } from 'views/BuyCrypto/types'
-import { ErrorText } from 'views/Swap/components/styleds'
-import { useAccount } from 'wagmi'
-import { nanoid } from '@reduxjs/toolkit'
 import {
   fetchMercuryoSignedUrl,
   fetchMoonPaySignedUrl,
   fetchTransakSignedUrl,
 } from 'views/BuyCrypto/hooks/useIframeUrlFetcher'
+import { CryptoFormView } from 'views/BuyCrypto/types'
+import { ErrorText } from 'views/Swap/components/styleds'
+import { useAccount } from 'wagmi'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
@@ -146,6 +146,14 @@ export const FiatOnRampModalButton = ({
     />,
   )
 
+  const toggleFiatOnRampModal = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      onPresentConfirmModal()
+    },
+    [onPresentConfirmModal],
+  )
+
   const buttonText = useMemo(() => {
     if (disabled) {
       return (
@@ -164,7 +172,7 @@ export const FiatOnRampModalButton = ({
 
   return (
     <AutoColumn gap="md">
-      <CommitButton onClick={onPresentConfirmModal} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
+      <CommitButton onClick={toggleFiatOnRampModal} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
         {buttonText}
       </CommitButton>
     </AutoColumn>
