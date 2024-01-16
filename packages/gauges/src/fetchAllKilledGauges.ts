@@ -21,7 +21,7 @@ export const filterKilledGauges = async (client: PublicClient, gauges: GaugeInfo
     allowFailure: false,
   })) as ContractFunctionResult<typeof gaugesVotingABI, 'gaugeIsKilled_'>[]
 
-  return gauges.filter((gauge, index) => {
+  return gauges.filter((_, index) => {
     return !response[index]
   })
 }
