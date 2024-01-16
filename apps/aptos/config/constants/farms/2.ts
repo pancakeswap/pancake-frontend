@@ -54,6 +54,17 @@ const farms: SerializedFarmConfig[] = [
   //   quoteToken: testnetTokens.moon,
   // },
   {
+    pid: 3,
+    lpSymbol: 'APT-USDT LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetUSDT>',
+    token: L0_USDC[ChainId.TESTNET],
+    quoteToken: testnetTokens.usdt,
+    dual: {
+      token: testnetTokens.apt,
+    },
+  },
+  {
     pid: 2,
     lpSymbol: 'CAKE-BNB LP',
     lpAddress:
