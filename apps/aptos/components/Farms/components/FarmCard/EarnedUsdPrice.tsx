@@ -41,13 +41,15 @@ export const EarnedUsdPrice: React.FC<React.PropsWithChildren<EarnedUsdPriceProp
     <Box>
       <Box>
         <Text bold as="span">{`${displayBalance} CAKE`}</Text>
-        <Text as="span" ml="4px">{`(~${formatNumber(earningsBusd, 2, 2)} USD)`}</Text>
+        <Text as="span" ml="4px">{`(~$${formatNumber(earningsBusd, 2, 2)} USD)`}</Text>
       </Box>
-      <Box>
-        <Text bold as="span">{`${dualTokenDisplayBalance} ${dual?.token?.symbol}`}</Text>
-        <Text as="span" ml="4px">{`(~${formatNumber(dualTokenUsdc, 2, 2)} USD)`}</Text>
-      </Box>
-      {!isUserIpPass && (
+      {dual && (
+        <Box>
+          <Text bold as="span">{`${dualTokenDisplayBalance} ${dual?.token?.symbol}`}</Text>
+          <Text as="span" ml="4px">{`(~$${formatNumber(dualTokenUsdc, 2, 2)} USD)`}</Text>
+        </Box>
+      )}
+      {account && !isUserIpPass && (
         <Box mt="4px">
           <Text lineHeight="110%" as="span">
             {t('The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by')}
@@ -72,8 +74,8 @@ export const EarnedUsdPrice: React.FC<React.PropsWithChildren<EarnedUsdPriceProp
     <Box>
       <TooltipText ref={targetRef}>
         <Flex flexDirection={isCardView ? 'row-reverse' : 'row'}>
-          {!isUserIpPass && <WarningIcon m="0 4px" color="failure" width="20px" />}
-          <Balance prefix="~" value={totalUsdPrice} decimals={2} unit=" USD" />
+          {account && !isUserIpPass && <WarningIcon m="0 4px" color="failure" width="20px" />}
+          <Balance prefix="~$" value={totalUsdPrice} decimals={2} unit=" USD" />
         </Flex>
       </TooltipText>
       {tooltipVisible && tooltip}
