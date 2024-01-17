@@ -76,6 +76,15 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     placement: 'bottom',
   })
 
+  const {
+    targetRef: totalValueTargetRef,
+    tooltip: totalValueTooltip,
+    tooltipVisible: totalValueTooltipVisible,
+  } = useTooltip(t('Total value of the funds in this farm’s liquidity pair'), {
+    placement: 'top-end',
+    tooltipOffset: [20, 10],
+  })
+
   return (
     <StyledCard isActive={isPromotedFarm}>
       <FarmCardInnerContainer>
@@ -121,7 +130,17 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             </Flex>
             <Flex justifyContent="space-between">
               <Text>{t('Staked Liquidity')}:</Text>
-              {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
+              {totalValueFormatted ? (
+                <Flex>
+                  <Text>{totalValueFormatted}</Text>
+                  {totalValueTooltipVisible && totalValueTooltip}
+                  <Flex ref={totalValueTargetRef}>
+                    <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                  </Flex>
+                </Flex>
+              ) : (
+                <Skeleton width={75} height={25} />
+              )}
             </Flex>
           </>
         )}
