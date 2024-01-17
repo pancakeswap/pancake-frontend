@@ -43,9 +43,6 @@ export function useStablecoinPrice(
     enabled: shouldEnabled,
   })
 
-  const enableLlama =
-    (currency?.chainId === ChainId.ETHEREUM || currency?.chainId === ChainId.POLYGON_ZKEVM) && shouldEnabled
-
   const amountOut = useMemo(
     () => (stableCoin ? CurrencyAmount.fromRawAmount(stableCoin, 5 * 10 ** stableCoin.decimals) : undefined),
     [stableCoin],
@@ -57,7 +54,7 @@ export function useStablecoinPrice(
     baseCurrency: stableCoin,
     tradeType: TradeType.EXACT_OUTPUT,
     maxSplits: 0,
-    enabled: Boolean(enableLlama ? !isLoading && !priceFromApi : shouldEnabled),
+    enabled: Boolean(!isLoading && !priceFromApi && shouldEnabled),
     autoRevalidate: false,
     type: 'api',
   })
@@ -81,7 +78,7 @@ export function useStablecoinPrice(
       return new Price(stableCoin, stableCoin, '1', '1')
     }
 
-    if (priceFromApi && enableLlama) {
+    if (priceFromApi) {
       return new Price(
         currency,
         stableCoin,
@@ -106,18 +103,7 @@ export function useStablecoinPrice(
     }
 
     return undefined
-  }, [
-    currency,
-    stableCoin,
-    enabled,
-    isCake,
-    cakePrice,
-    isStableCoin,
-    priceFromApi,
-    enableLlama,
-    trade,
-    hideIfPriceImpactTooHigh,
-  ])
+  }, [currency, stableCoin, enabled, isCake, cakePrice, isStableCoin, priceFromApi, trade, hideIfPriceImpactTooHigh])
 
   return price
 }
