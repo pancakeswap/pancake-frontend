@@ -47,6 +47,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
+import { useInitialRange } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useInitialRange'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 import RangeSelector from './formViews/V3FormView/components/RangeSelector'
 import RateToggle from './formViews/V3FormView/components/RateToggle'
@@ -122,6 +123,8 @@ function V2PairMigrate({
   const { reserve0, reserve1 } = pair
 
   const { signTypedDataAsync } = useSignTypedData()
+
+  useInitialRange(reserve0?.currency, reserve1?.currency)
 
   const token0Value = useMemo(
     () =>
