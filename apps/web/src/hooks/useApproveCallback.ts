@@ -149,14 +149,14 @@ export function useApproveCallback(
         gas: calculateGasMargin(estimatedGas),
       })
         .then((response) => {
-          if (addToTransaction) {
+          if (addToTransaction && token?.address) {
             addTransaction(response, {
               summary: `Approve ${overrideAmountApprove ?? amountToApprove?.currency?.symbol}`,
               translatableSummary: {
                 text: 'Approve %symbol%',
                 data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
               },
-              approval: { tokenAddress: `${token?.address}`, spender, amount: finalAmount.toString() },
+              approval: { tokenAddress: token?.address, spender, amount: finalAmount.toString() },
               type: 'approve',
             })
           }
