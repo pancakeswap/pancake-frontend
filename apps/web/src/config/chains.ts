@@ -39,10 +39,6 @@ const bsc = {
   ...bsc_,
   rpcUrls: {
     ...bsc_.rpcUrls,
-    public: {
-      ...bsc_.rpcUrls.public,
-      http: ['https://bsc-dataseed.binance.org/'],
-    },
     default: {
       ...bsc_.rpcUrls.default,
       http: ['https://bsc-dataseed.binance.org/'],
@@ -89,4 +85,4 @@ export const CHAINS = [
   opBNB,
   opBNBTestnet,
   scrollSepolia,
-]
+] as const

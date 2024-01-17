@@ -1,4 +1,4 @@
-import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
+// import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
@@ -223,7 +223,7 @@ const walletsConfig = ({
           : undefined // undefined to show SDK
       },
     },
-    {
+    /* {
       id: 'cyberwallet',
       title: 'CyberWallet',
       icon: `${ASSET_CDN}/web/wallets/cyberwallet.png`,
@@ -235,7 +235,7 @@ const walletsConfig = ({
       guide: {
         desktop: 'https://docs.cyber.co/sdk/cyber-account#supported-chains',
       },
-    },
+    }, */
     {
       id: 'ledger',
       title: 'Ledger',

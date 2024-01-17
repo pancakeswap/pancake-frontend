@@ -14,8 +14,8 @@
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
-    "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "viem": "2.1.0",
+    "wagmi": "2.2.1"
   },
   "devDependencies": {
     "@pancakeswap/sdk": "workspace:*",
