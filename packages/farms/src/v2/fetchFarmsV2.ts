@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { CurrencyParams, getCurrencyListUsdPrice } from '@pancakeswap/utils/getCurrencyPrice'
+import { CurrencyParams, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/utils/getCurrencyPrice'
 import BN from 'bignumber.js'
 import { Address, PublicClient, formatUnits } from 'viem'
 import { FarmV2SupportedChainId, supportedChainIdV2 } from '../const'
@@ -148,8 +148,10 @@ export async function farmV2FetchFarms({
       if (f.tokenPriceBusd !== '0' && f.quoteTokenPriceBusd !== '0') {
         return f
       }
-      const tokenPrice = new BN(prices[f.token.address] ?? 0)
-      const quoteTokenPrice = new BN(prices[f.quoteToken.address] ?? 0)
+      const tokenKey = getCurrencyKey(f.token)
+      const quoteTokenKey = getCurrencyKey(f.quoteToken)
+      const tokenPrice = new BN(tokenKey ? prices[tokenKey] ?? 0 : 0)
+      const quoteTokenPrice = new BN(quoteTokenKey ? prices[quoteTokenKey] ?? 0 : 0)
       const lpTokenPrice = getFarmLpTokenPrice(f, tokenPrice, quoteTokenPrice, decimals)
       return {
         ...f,

@@ -4,13 +4,13 @@ const PRICE_API = 'https://alpha.wallet-api.pancakeswap.com/v1/prices/list/'
 
 const zeroAddress = '0x0000000000000000000000000000000000000000' as const
 
+// duck typing for native currency, token, token info
 export type CurrencyParams =
   | {
       chainId: ChainId
       address: `0x${string}`
       isNative?: false
     }
-  // duck typing for native currency
   | {
       chainId: ChainId
       isNative: true
