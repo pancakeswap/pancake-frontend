@@ -44,6 +44,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   tokenAmountTotal = BIG_ZERO,
   quoteTokenAmountTotal = BIG_ZERO,
   userData,
+  dualTokenRewardApr,
   onStake,
   onUnstake,
 }) => {
@@ -97,6 +98,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       decimals={FARM_DEFAULT_DECIMALS}
+      dualTokenRewardApr={dualTokenRewardApr}
       showTopMessageText={
         isUserIpPass
           ? null
