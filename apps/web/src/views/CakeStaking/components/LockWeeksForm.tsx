@@ -36,6 +36,7 @@ const weeks = [
 
 const ButtonBlocked = styled(Button)`
   flex: 1;
+  white-space: nowrap;
 `
 
 const WeekInput: React.FC<{
