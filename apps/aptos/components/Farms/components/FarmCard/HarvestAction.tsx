@@ -44,14 +44,17 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const cakePrice = usePriceCakeUsdc()
-  const rawEarningsBalance = account ? getBalanceAmount(earnings as BigNumber, FARM_DEFAULT_DECIMALS) : BIG_ZERO
+  // Smaller than 0.00000001 should show 0.
+  const rawEarningsBalance =
+    account && earnings?.gte(1) ? getBalanceAmount(earnings as BigNumber, FARM_DEFAULT_DECIMALS) : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.times(cakePrice ?? 0).toNumber() : 0
 
   // Dual Token
-  const dualEarningsBalance = account
-    ? getBalanceAmount(earningsDualTokenBalance as BigNumber, dual?.token?.decimals)
-    : BIG_ZERO
+  const dualEarningsBalance =
+    account && earningsDualTokenBalance?.gte(1)
+      ? getBalanceAmount(earningsDualTokenBalance as BigNumber, dual?.token?.decimals)
+      : BIG_ZERO
   const dualTokenDisplayBalance = dualEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const dualTokenPrice = useTokenUsdcPrice(dual?.token)
   const dualTokenUsdc = dualTokenDisplayBalance ? dualEarningsBalance.times(dualTokenPrice ?? 0).toNumber() : 0
