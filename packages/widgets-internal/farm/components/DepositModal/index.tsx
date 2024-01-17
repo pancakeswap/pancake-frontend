@@ -63,6 +63,7 @@ interface DepositModalProps {
   allowance?: BigNumber;
   enablePendingTx?: boolean;
   showTopMessageText?: null | string;
+  dualTokenRewardApr?: number;
   onDismiss?: () => void;
   onConfirm: (amount: string) => void;
   handleApprove?: () => void;
@@ -89,6 +90,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   allowance,
   enablePendingTx,
   showTopMessageText,
+  dualTokenRewardApr,
   onConfirm,
   onDismiss,
   handleApprove,
@@ -182,6 +184,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           linkHref={addLiquidityUrl}
           isFarm
           initialValue={val}
+          dualTokenRewardApr={dualTokenRewardApr}
           onBack={() => setShowRoiCalculator(false)}
           bCakeCalculatorSlot={bCakeCalculatorSlot}
         />

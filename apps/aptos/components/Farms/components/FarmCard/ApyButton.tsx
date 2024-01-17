@@ -25,6 +25,7 @@ export interface ApyButtonProps {
   hideButton?: boolean
   farmCakePerSecond?: string
   totalMultipliers?: string
+  dualTokenRewardApr?: number
 }
 
 const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
@@ -44,6 +45,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   hideButton,
   farmCakePerSecond,
   totalMultipliers,
+  dualTokenRewardApr = 0,
 }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
@@ -68,7 +70,11 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       <Text ml="5px">
         *{t('Base APR (CAKE yield only)')}: {`${apr.toFixed(2)}%`}
       </Text>
-      {/* <Text ml="5px">*{t('Base APR (APT yield only)')}: TODO</Text> */}
+      {dualTokenRewardApr > 0 && (
+        <Text ml="5px">
+          *{t('Base APR (APT yield only)')}: {`${dualTokenRewardApr.toFixed(2)}%`}
+        </Text>
+      )}
       <Text ml="5px">
         *{t('LP Rewards APR')}: {lpRewardsApr === 0 ? '-' : lpRewardsApr}%
       </Text>
@@ -96,6 +102,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       rewardCakePerSecond
       farmCakePerSecond={farmCakePerSecond}
       totalMultipliers={totalMultipliers}
+      dualTokenRewardApr={dualTokenRewardApr}
     />,
     false,
     true,

@@ -115,7 +115,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
 
     const row: RowProps = {
       apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr) || '0',
+        value: getDisplayApr(farm.apr, farm.lpRewardsApr, farm.dualTokenRewardApr) || '0',
         pid: farm.pid,
         multiplier: farm.multiplier,
         lpLabel,
@@ -127,6 +127,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         cakePrice,
         lpRewardsApr: farm.lpRewardsApr,
         originalValue: farm.apr,
+        dualTokenRewardApr: farm.dualTokenRewardApr,
       },
       farm: {
         label: lpLabel,

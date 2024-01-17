@@ -230,6 +230,7 @@ export interface FarmWithStakedValue extends DeserializedFarm {
   apr?: number
   lpRewardsApr?: number
   liquidity?: BigNumber
+  dualTokenRewardApr?: number
 }
 
 // V3

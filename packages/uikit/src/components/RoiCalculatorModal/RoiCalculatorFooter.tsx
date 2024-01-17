@@ -51,6 +51,7 @@ interface RoiCalculatorFooterProps {
   stableLpFee?: number;
   farmCakePerSecond?: string;
   totalMultipliers?: string;
+  dualTokenRewardApr?: number;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -69,6 +70,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   stableLpFee,
   farmCakePerSecond,
   totalMultipliers,
+  dualTokenRewardApr,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -89,10 +91,10 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
     () =>
       isFarm
         ? Number.isFinite(Number(displayApr)) && Number.isFinite(apr)
-          ? Math.max(Number(displayApr) - apr, 0).toFixed(2)
+          ? Math.max(Number(displayApr) - Number(dualTokenRewardApr ?? 0) - apr, 0).toFixed(2)
           : null
         : null,
-    [isFarm, displayApr, apr]
+    [isFarm, displayApr, apr, dualTokenRewardApr]
   );
 
   return (
@@ -127,6 +129,16 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                 <Text small textAlign="right">
                   {apr.toFixed(2)}%
                 </Text>
+                {dualTokenRewardApr && (
+                  <>
+                    <Text color="textSubtle" small>
+                      *{t("Base APR (APT yield only)")}
+                    </Text>
+                    <Text small textAlign="right">
+                      {`${dualTokenRewardApr.toFixed(2)}%`}
+                    </Text>
+                  </>
+                )}
                 <Text color="textSubtle" small>
                   *{t("LP Rewards APR")}
                 </Text>

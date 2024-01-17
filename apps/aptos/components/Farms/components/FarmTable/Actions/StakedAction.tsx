@@ -80,6 +80,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   tokenAmountTotal = BIG_ZERO,
   quoteTokenAmountTotal = BIG_ZERO,
   userData,
+  dualTokenRewardApr,
   onStake,
   onUnstake,
 }) => {
@@ -145,6 +146,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       decimals={FARM_DEFAULT_DECIMALS}
+      dualTokenRewardApr={dualTokenRewardApr}
       showTopMessageText={
         isUserIpPass
           ? null

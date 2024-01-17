@@ -3,6 +3,16 @@ import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import BigNumber from "bignumber.js";
 import { useEffect, useMemo, useRef } from "react";
 import { styled } from "styled-components";
+import { useTooltip } from "../../hooks/useTooltip";
+import Modal from "../../widgets/Modal/Modal";
+import { BalanceInput } from "../BalanceInput";
+import { Flex } from "../Box";
+import { Button } from "../Button";
+import { ButtonMenu, ButtonMenuItem } from "../ButtonMenu";
+import { Checkbox } from "../Checkbox";
+import { HelpIcon } from "../Svg";
+import { Text } from "../Text";
+import AnimatedArrow from "./AnimatedArrow";
 import RoiCalculatorFooter from "./RoiCalculatorFooter";
 import RoiCard from "./RoiCard";
 import useRoiCalculatorReducer, {
@@ -10,16 +20,6 @@ import useRoiCalculatorReducer, {
   DefaultCompoundStrategy,
   EditingCurrency,
 } from "./useRoiCalculatorReducer";
-import AnimatedArrow from "./AnimatedArrow";
-import { Flex } from "../Box";
-import { Text } from "../Text";
-import { HelpIcon } from "../Svg";
-import { Button } from "../Button";
-import { Checkbox } from "../Checkbox";
-import { BalanceInput } from "../BalanceInput";
-import { useTooltip } from "../../hooks/useTooltip";
-import { ButtonMenu, ButtonMenuItem } from "../ButtonMenu";
-import Modal from "../../widgets/Modal/Modal";
 
 const StyledModal = styled(Modal)`
   & > :nth-child(2) {
@@ -82,6 +82,7 @@ export interface RoiCalculatorModalProps {
   stableLpFee?: number;
   farmCakePerSecond?: string;
   totalMultipliers?: string;
+  dualTokenRewardApr?: number;
 }
 
 const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalProps>> = ({
@@ -115,6 +116,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   stableLpFee,
   farmCakePerSecond,
   totalMultipliers,
+  dualTokenRewardApr,
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);
@@ -319,6 +321,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
         stableLpFee={stableLpFee}
         farmCakePerSecond={farmCakePerSecond}
         totalMultipliers={totalMultipliers}
+        dualTokenRewardApr={dualTokenRewardApr}
       />
     </StyledModal>
   );
