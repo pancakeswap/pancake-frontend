@@ -112,6 +112,10 @@ export const useConfirmModalStateV2 = (
           setConfirmModalState(ConfirmModalState.PERMITTING)
           performStep()
         }
+        if (ConfirmModalState.RESETTING_APPROVAL === confirmModalState) {
+          setConfirmModalState(ConfirmModalState.APPROVING_TOKEN)
+          performStep()
+        }
       }
     },
     [provider, confirmModalState, performStep],
@@ -126,24 +130,45 @@ export const useConfirmModalStateV2 = (
 
   // approve
   useEffect(() => {
+    const allowanceUpdate = prevApprovalState === ApprovalState.PENDING && approvalState === ApprovalState.APPROVED
+    const allowanceResetUpdate =
+      prevApprovalState === ApprovalState.PENDING &&
+      approvalState === ApprovalState.NOT_APPROVED &&
+      confirmModalState === ConfirmModalState.RESETTING_APPROVAL
+    const allowanceNotEnoughUpdate =
+      prevApprovalState === ApprovalState.PENDING &&
+      approvalState === ApprovalState.NOT_APPROVED &&
+      confirmModalState === ConfirmModalState.APPROVING_TOKEN
+
     // console.debug('debug: useEffect approvalState', {
+    //   confirmModalState: ConfirmModalState[confirmModalState],
     //   prevApprovalState: ApprovalState[prevApprovalState!],
     //   approvalState: ApprovalState[approvalState],
+    //   allowanceUpdate,
+    //   allowanceResetUpdate,
+    //   allowanceNotEnoughUpdate,
     //   txHash,
     // })
-    // allowance approved
-    if (prevApprovalState === ApprovalState.PENDING && approvalState === ApprovalState.APPROVED) {
+
+    if (allowanceUpdate || allowanceResetUpdate) {
       if (txHash) {
         checkHashIsReceipted(txHash)
-      } else {
-        performStep()
       }
-    }
-    // allowance approved but the amount not enough
-    if (prevApprovalState === ApprovalState.PENDING && approvalState === ApprovalState.NOT_APPROVED) {
+    } else if (
+      // allowance approved but the amount not enough
+      allowanceNotEnoughUpdate
+    ) {
       resetConfirmModalState()
     }
-  }, [prevApprovalState, approvalState, performStep, resetConfirmModalState, txHash, checkHashIsReceipted])
+  }, [
+    prevApprovalState,
+    approvalState,
+    performStep,
+    resetConfirmModalState,
+    txHash,
+    checkHashIsReceipted,
+    confirmModalState,
+  ])
 
   // permit
   useEffect(() => {

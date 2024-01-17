@@ -202,6 +202,13 @@ export const usePermit = (
 
   // execution of the permit state machine
   const execute = useCallback(async (): Promise<SendTransactionResult | undefined> => {
+    // console.debug('debug execute', {
+    //   requireApprove,
+    //   requireRevoke,
+    //   requirePermit,
+    //   permitState: PermitState[permitState],
+    //   approvalState: ApprovalState[approvalState],
+    // })
     // still pending confirming the approval, prevent trigger
     if (approvalState === ApprovalState.PENDING) return undefined
 
