@@ -23,11 +23,14 @@ import BigNumber from 'bignumber.js'
 import useLpRewardsAprs from 'components/Farms/hooks/useLpRewardsAprs'
 import Page from 'components/Layout/Page'
 import NoSSR from 'components/NoSSR'
-import { usePriceCakeUsdc } from 'hooks/useStablePrice'
+import { APT } from 'config/coins'
+import { useActiveChainId } from 'hooks/useNetwork'
+import { usePriceCakeUsdc, useTokenUsdcPrice } from 'hooks/useStablePrice'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFarms } from 'state/farms/hook'
+import { calcPendingRewardApt } from 'state/farms/utils/pendingApt'
 import { ViewMode, useFarmViewMode, useFarmsStakedOnly } from 'state/user'
 import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/farmApr'
@@ -132,7 +135,9 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
+  const chainId = useActiveChainId()
   const cakePrice = usePriceCakeUsdc()
+  const aptPrice = useTokenUsdcPrice(APT[chainId])
   const { pathname, query: urlQuery } = useRouter()
   const [viewMode, setViewMode] = useFarmViewMode()
   const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
@@ -195,12 +200,25 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
         const lpRewardsApr = lpRewardsAprs?.[farm.lpAddress?.toLowerCase()] ?? 0
 
-        return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
+        const dualTokenRewardApr = calcPendingRewardApt(
+          regularCakePerBlock ?? 0,
+          aptPrice,
+          farm?.dual?.aptIncentiveInfo ?? 0,
+          totalLiquidity,
+        )
+
+        return {
+          ...farm,
+          apr: cakeRewardsApr,
+          lpRewardsApr,
+          liquidity: totalLiquidity,
+          dualTokenRewardApr,
+        }
       })
 
       return filterFarmsByQuery(farmsToDisplayWithAPR, query)
     },
-    [query, isActive, cakePrice, regularCakePerBlock, lpRewardsAprs],
+    [query, isActive, cakePrice, aptPrice, regularCakePerBlock, lpRewardsAprs],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
