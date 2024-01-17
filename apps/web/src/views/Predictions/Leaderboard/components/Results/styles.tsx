@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import { Flex, FlexProps, Text } from '@pancakeswap/uikit'
-import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
+import { useTokenUsdPriceBigNumber } from 'views/Predictions/hooks/useTokenPrice'
 
 export const Row: React.FC<React.PropsWithChildren<FlexProps>> = ({ children, ...props }) => {
   return (
@@ -29,7 +29,7 @@ export const NetWinningsView: React.FC<React.PropsWithChildren<NetWinningsProps>
   textColor = 'text',
   ...props
 }) => {
-  const tokenPrice = useTokenPrice(token, !!amount)
+  const tokenPrice = useTokenUsdPriceBigNumber(token, !!amount)
   if (!amount) {
     return null
   }

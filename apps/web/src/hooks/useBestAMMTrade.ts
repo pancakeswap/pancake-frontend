@@ -158,8 +158,10 @@ function bestTradeHookFactory({
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
     const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
-    const quoteCurrencyUsdPrice = useCurrencyUsdPrice(currency ?? undefined)
-    const nativeCurrencyUsdPrice = useCurrencyUsdPrice(currency?.chainId ? Native.onChain(currency.chainId) : undefined)
+    const { data: quoteCurrencyUsdPrice } = useCurrencyUsdPrice(currency ?? undefined)
+    const { data: nativeCurrencyUsdPrice } = useCurrencyUsdPrice(
+      currency?.chainId ? Native.onChain(currency.chainId) : undefined,
+    )
 
     const poolTypes = useMemo(() => {
       const types: PoolType[] = []

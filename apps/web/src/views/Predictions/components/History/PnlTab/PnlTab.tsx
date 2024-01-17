@@ -8,7 +8,7 @@ import { Bet } from 'state/types'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
+import { useTokenUsdPriceBigNumber } from 'views/Predictions/hooks/useTokenPrice'
 import { useAccount } from 'wagmi'
 import { formatBnb, getMultiplier, getNetPayout } from '../helpers'
 import PnlChart from './PnlChart'
@@ -107,7 +107,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
   const { chainId } = useActiveChainId()
   const currentEpoch = useGetCurrentEpoch()
   const config = useConfig()
-  const tokenPrice = useTokenPrice(config?.token)
+  const tokenPrice = useTokenUsdPriceBigNumber(config?.token)
 
   const summary = getPnlSummary(bets, currentEpoch)
 
