@@ -1,4 +1,3 @@
-import useSWR from 'swr'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { Ifo, PoolIds } from '@pancakeswap/ifos'
@@ -7,6 +6,7 @@ import BigNumber from 'bignumber.js'
 import { useIfoConfigsAcrossChains } from 'hooks/useIfoConfig'
 import { FAST_INTERVAL } from 'config/constants'
 
+import { useQuery } from '@tanstack/react-query'
 import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 
 const useFetchVestingData = () => {
@@ -17,8 +17,8 @@ const useFetchVestingData = () => {
     [configs],
   )
 
-  const { data, mutate } = useSWR(
-    account ? ['vestingData'] : null,
+  const { data, refetch } = useQuery(
+    ['vestingData', account],
     async () => {
       const allData = await Promise.all(
         allVestingIfo.map(async (ifo) => {
@@ -61,15 +61,16 @@ const useFetchVestingData = () => {
       )
     },
     {
-      revalidateOnFocus: false,
-      refreshInterval: FAST_INTERVAL,
-      dedupingInterval: FAST_INTERVAL,
+      enabled: Boolean(account),
+      refetchOnWindowFocus: false,
+      refetchInterval: FAST_INTERVAL,
+      staleTime: FAST_INTERVAL,
     },
   )
 
   return {
     data: data || [],
-    fetchUserVestingData: mutate,
+    fetchUserVestingData: refetch,
   }
 }
 
