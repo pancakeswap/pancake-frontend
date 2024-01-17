@@ -22,6 +22,7 @@ import styled from 'styled-components'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
 import { GaugesList, GaugesTable } from '../GaugesTable'
+import { THeader, TRow } from '../styled'
 import { Filter, FilterValue, Gauges, OptionsModal, OptionsType } from './OptionsModal'
 
 const FilterButton = styled(Button)`
@@ -35,6 +36,12 @@ const ScrollableGaugesList = styled(GaugesList).attrs({ pagination: false })`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     max-height: calc(90vh - 390px);
+  }
+`
+
+const AddGaugesTable = styled(GaugesTable)`
+  ${THeader}, ${TRow} {
+    grid-template-columns: 4fr 1.5fr 0.8fr 0.8fr;
   }
 `
 
@@ -110,7 +117,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   }
 
   const gaugesTable = isDesktop ? (
-    <GaugesTable
+    <AddGaugesTable
       selectable
       selectRows={selectRows}
       onRowSelect={onGaugeAdd}
@@ -145,7 +152,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       <ModalV2 isOpen={isOpen} onDismiss={onDismiss}>
         <ModalWrapper
           maxHeight="90vh"
-          minWidth="50vw"
+          minWidth={['80vw', null, null, null, null, null, '55vw']}
           height={isMobile ? '90vh' : undefined}
           style={{ overflowY: 'auto' }}
         >

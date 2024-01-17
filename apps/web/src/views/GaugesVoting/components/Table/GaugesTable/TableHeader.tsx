@@ -1,14 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { SortArrowIcon, Text, Th } from '@pancakeswap/uikit'
+import { Flex, SortArrowIcon, Text, Th } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { SortButton } from 'views/V3Info/components/SortButton'
 import { THeader } from '../styled'
 
-const Touchable = styled.div`
+const Touchable = styled(Flex)`
   cursor: pointer;
-  display: flex;
-  justify-content: start;
+  white-space: nowrap;
   gap: 5px;
 `
 
@@ -73,7 +72,7 @@ export const TableHeader: React.FC<{
         </Touchable>
       </Th>
       <Th>
-        <Touchable onClick={onBoostSort}>
+        <Touchable onClick={onBoostSort} justifyContent="center">
           <Text color="secondary" textTransform="uppercase" fontWeight={600}>
             {t('boost')}
           </Text>
