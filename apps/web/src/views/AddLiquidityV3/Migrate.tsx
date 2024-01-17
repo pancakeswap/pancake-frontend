@@ -248,36 +248,6 @@ function V2PairMigrate({
   const currency1 = unwrappedToken(token1)
 
   useEffect(() => {
-    if (
-      minPrice &&
-      typeof minPrice === 'string' &&
-      leftRangeTypedValue &&
-      typeof leftRangeTypedValue === 'object' &&
-      !leftRangeTypedValue.equalTo(minPrice)
-    ) {
-      onLeftRangeInput(tryParsePrice(token0, token1, minPrice))
-    }
-    if (
-      maxPrice &&
-      typeof maxPrice === 'string' &&
-      rightRangeTypedValue &&
-      typeof rightRangeTypedValue === 'object' &&
-      !rightRangeTypedValue.equalTo(maxPrice)
-    ) {
-      onRightRangeInput(tryParsePrice(token0, token1, maxPrice))
-    }
-  }, [
-    minPrice,
-    maxPrice,
-    onRightRangeInput,
-    onLeftRangeInput,
-    leftRangeTypedValue,
-    rightRangeTypedValue,
-    token0,
-    token1,
-  ])
-
-  useEffect(() => {
     if (!isError && !isLoading && largestUsageFeeTier) {
       setFeeAmount(largestUsageFeeTier)
     }
