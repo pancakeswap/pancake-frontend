@@ -112,6 +112,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     useTooltipText
                     farmCakePerSecond={farmCakePerSecond}
                     totalMultipliers={totalMultipliers}
+                    dualTokenRewardApr={farm.dualTokenRewardApr}
                   />
                 ) : (
                   <Skeleton height={24} width={80} />

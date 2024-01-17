@@ -87,15 +87,15 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   } = useTooltip(multiplierTooltipContent, { placement: "top-end", tooltipOffset: [20, 10] });
 
   const gridRowCount = isFarm ? 4 : 2;
-  const lpRewardsAPR = useMemo(
-    () =>
-      isFarm
-        ? Number.isFinite(Number(displayApr)) && Number.isFinite(apr)
-          ? Math.max(Number(displayApr) - Number(dualTokenRewardApr ?? 0) - apr, 0).toFixed(2)
-          : null
-        : null,
-    [isFarm, displayApr, apr, dualTokenRewardApr]
-  );
+  const lpRewardsAPR = useMemo(() => {
+    const displayAprNumber = Number(displayApr?.replace(/,/g, ""));
+
+    return isFarm
+      ? Number.isFinite(displayAprNumber) && Number.isFinite(apr)
+        ? Math.max(displayAprNumber - Number(dualTokenRewardApr ?? 0) - apr, 0).toFixed(2)
+        : null
+      : null;
+  }, [isFarm, displayApr, apr, dualTokenRewardApr]);
 
   return (
     <Footer p="16px" flexDirection="column">

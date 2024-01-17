@@ -61,7 +61,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       {!account ? (
         <ConnectWalletButton mt="8px" width="100%" />
       ) : (
-        <StakedContainer {...farm} lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} displayApr={displayApr}>
+        <StakedContainer {...farm} lpLabel={lpLabel} displayApr={displayApr}>
           {(props) => <StakeAction {...props} />}
         </StakedContainer>
       )}
