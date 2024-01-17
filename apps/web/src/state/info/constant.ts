@@ -110,7 +110,7 @@ export const multiChainQueryClient = {
 
 export const multiChainQueryStableClient = {
   BSC: infoStableSwapClients[ChainId.BSC],
-  ARB: v2Clients[ChainId.ARBITRUM_ONE],
+  ARB: infoStableSwapClients[ChainId.ARBITRUM_ONE],
 }
 
 export const multiChainScan: Record<MultiChainName, string> = {
