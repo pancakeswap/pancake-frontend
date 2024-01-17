@@ -8,6 +8,7 @@ export type CurrencyParams =
   | {
       chainId: ChainId
       address: `0x${string}`
+      isNative?: false
     }
   // duck typing for native currency
   | {
@@ -24,7 +25,7 @@ export function getCurrencyKey(currencyParams?: CurrencyParams): CurrencyKey | u
     return undefined
   }
 
-  if ('isNative' in currencyParams) {
+  if ('isNative' in currencyParams && currencyParams.isNative === true) {
     return `${currencyParams.chainId}:${zeroAddress}`
   }
   const { chainId, address } = currencyParams
