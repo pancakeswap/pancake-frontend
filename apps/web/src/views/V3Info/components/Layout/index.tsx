@@ -1,7 +1,8 @@
-import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { SubMenuItems } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import { multiChainQueryStableClient } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { v3InfoPath } from '../../constants'
 import InfoNav from './InfoNav'
@@ -23,9 +24,9 @@ export const InfoPageLayout = ({ children }) => {
         label: t('V2'),
         href: `/info${chainPath}`,
       },
-      chainName === 'BSC' && {
+      Boolean(multiChainQueryStableClient[chainName]) && {
         label: t('StableSwap'),
-        href: '/info?type=stableSwap',
+        href: `/info${chainPath}?type=stableSwap`,
       },
     ],
     [t, chainPath, chainName],
