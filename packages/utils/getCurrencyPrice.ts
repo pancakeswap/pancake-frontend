@@ -1,58 +1,54 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Currency } from '@pancakeswap/swap-sdk-core'
 
 const PRICE_API = 'https://alpha.wallet-api.pancakeswap.com/v1/prices/list/'
 
-export type TokenInfo = {
-  chainId: ChainId
-  address: string
-}
+const zeroAddress = '0x0000000000000000000000000000000000000000' as const
 
-function getTokenInfoKey(info?: TokenInfo) {
-  if (!info) {
+export type CurrencyParams =
+  | {
+      chainId: ChainId
+      address: `0x${string}`
+    }
+  // duck typing for native currency
+  | {
+      chainId: ChainId
+      isNative: true
+    }
+
+export type CurrencyKey = `${number}:${string}`
+
+export type CurrencyUsdResult = Record<CurrencyKey, number>
+
+export function getCurrencyKey(currencyParams?: CurrencyParams): CurrencyKey | undefined {
+  if (!currencyParams) {
     return undefined
   }
-  const { chainId, address } = info
+
+  if ('isNative' in currencyParams) {
+    return `${currencyParams.chainId}:${zeroAddress}`
+  }
+  const { chainId, address } = currencyParams
   return `${chainId}:${address.toLowerCase()}`
 }
 
-function getTokenInfoListKey(infoList?: TokenInfo[]): string | undefined {
-  if (!infoList) {
+export function getCurrencyListKey(currencyListParams?: CurrencyParams[]): string | undefined {
+  if (!currencyListParams) {
     return undefined
   }
-  return infoList
-    .map(getTokenInfoKey)
-    .filter((key): key is string => !!key)
-    .join(',')
+
+  const currencyKeys = currencyListParams.map(getCurrencyKey).filter((key): key is CurrencyKey => !!key)
+
+  const uniqueKeys = [...new Set(currencyKeys)]
+
+  return uniqueKeys.join(',')
 }
 
-function getCurrencyKey(currency?: Currency): string | undefined {
-  if (!currency) {
+function getRequestUrl(params?: CurrencyParams | CurrencyParams[]): string | undefined {
+  if (!params) {
     return undefined
   }
-  const { chainId } = currency
-  return getTokenInfoKey({
-    chainId,
-    address: currency.wrapped.address,
-  })
-}
-
-function getCurrencyListKey(currencies?: Currency[]): string | undefined {
-  if (!currencies) {
-    return undefined
-  }
-  return currencies
-    .map(getCurrencyKey)
-    .filter((key): key is string => !!key)
-    .join(',')
-}
-
-function getRequestUrl(currencies?: Currency | Currency[]): string | undefined {
-  if (!currencies) {
-    return undefined
-  }
-  const currencyList = Array.isArray(currencies) ? currencies : [currencies]
-  const key = getCurrencyListKey(currencyList)
+  const infoList = Array.isArray(params) ? params : [params]
+  const key = getCurrencyListKey(infoList)
   if (!key) {
     return undefined
   }
@@ -60,56 +56,18 @@ function getRequestUrl(currencies?: Currency | Currency[]): string | undefined {
   return `${PRICE_API}${encodedKey}`
 }
 
-function getRequestUrlByInfo(info?: TokenInfo | TokenInfo[]): string | undefined {
-  if (!info) {
-    return undefined
-  }
-  const infoList = Array.isArray(info) ? info : [info]
-  const key = getTokenInfoListKey(infoList)
-  if (!key) {
-    return undefined
-  }
-  const encodedKey = encodeURIComponent(key)
-  return `${PRICE_API}${encodedKey}`
+export async function getCurrencyUsdPrice(currencyParams?: CurrencyParams) {
+  const prices = await getCurrencyListUsdPrice(currencyParams && [currencyParams])
+  const key = getCurrencyKey(currencyParams)
+  return (key && prices[key]) ?? 0
 }
 
-export async function getCurrencyPrice(currency?: Currency) {
-  const prices = getCurrencyPrices(currency && [currency])
-  return (currency && prices[currency.wrapped.address]) ?? 0
-}
-
-export async function getCurrencyPrices(currencies?: Currency[]): Promise<{ [address: string]: number }> {
-  const requestUrl = getRequestUrl(currencies)
-
-  if (!requestUrl || !currencies) {
+export async function getCurrencyListUsdPrice(currencyListParams?: CurrencyParams[]): Promise<CurrencyUsdResult> {
+  const requestUrl = getRequestUrl(currencyListParams)
+  if (!requestUrl || !currencyListParams) {
     throw new Error(`Invalid request for currency prices, request url: ${requestUrl}`)
   }
   const res = await fetch(requestUrl)
   const data = await res.json()
-  const result: { [address: string]: number } = {}
-  for (const currency of currencies) {
-    const key = getCurrencyKey(currency)
-    result[currency.wrapped.address] = (key && data[key]) ?? 0
-  }
-  return result
-}
-
-export async function getTokenUsdPrice(tokenInfo?: TokenInfo) {
-  const prices = await getCurrencyPricesByTokenInfoList(tokenInfo && [tokenInfo])
-  return (tokenInfo && prices[tokenInfo.address]) ?? 0
-}
-
-export async function getCurrencyPricesByTokenInfoList(infoList?: TokenInfo[]): Promise<{ [address: string]: number }> {
-  const requestUrl = getRequestUrlByInfo(infoList)
-  if (!requestUrl || !infoList) {
-    throw new Error(`Invalid request for currency prices, request url: ${requestUrl}`)
-  }
-  const res = await fetch(requestUrl)
-  const data = await res.json()
-  const result: { [address: string]: number } = {}
-  for (const tokenInfo of infoList) {
-    const key = getTokenInfoKey(tokenInfo)
-    result[tokenInfo.address] = (key && data[key]) ?? 0
-  }
-  return result
+  return data
 }
