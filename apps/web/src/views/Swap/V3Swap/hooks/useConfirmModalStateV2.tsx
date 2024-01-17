@@ -52,7 +52,7 @@ export const useConfirmModalStateV2 = (
     if (requirePermit) {
       steps.push(ConfirmModalState.PERMITTING)
     }
-    // steps.push(ConfirmModalState.PENDING_CONFIRMATION)
+    steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
   }, [requireApprove, requireRevoke, requirePermit])
 

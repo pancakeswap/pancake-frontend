@@ -71,6 +71,17 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
       ConfirmModalState.PERMITTING,
     ].includes(confirmModalState)
   }, [confirmModalState])
+  const stepsVisible = useMemo(() => {
+    return (
+      (pendingModalSteps.length > 0 &&
+        [
+          ConfirmModalState.RESETTING_APPROVAL,
+          ConfirmModalState.APPROVING_TOKEN,
+          ConfirmModalState.PERMITTING,
+        ].includes(confirmModalState)) ||
+      (ConfirmModalState.PENDING_CONFIRMATION === confirmModalState && !txHash)
+    )
+  }, [confirmModalState, pendingModalSteps.length, txHash])
 
   const stepContents = useApprovalPhaseStepTitles({ trade })
   const token: Token | undefined = useMemo(
@@ -230,7 +241,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalV2Props> = ({
       handleDismiss={handleDismiss}
     >
       <Box>{modalContent}</Box>
-      {loadingAnimationVisible ? (
+      {stepsVisible ? (
         <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
       ) : null}
     </ConfirmSwapModalContainer>
