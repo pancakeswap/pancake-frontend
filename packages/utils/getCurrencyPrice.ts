@@ -74,7 +74,7 @@ function getRequestUrlByInfo(info?: TokenInfo | TokenInfo[]): string | undefined
 }
 
 export async function getCurrencyPrice(currency?: Currency) {
-  const prices = getCurrencyPrices(currency && [currency])
+  const prices = await getCurrencyPrices(currency && [currency])
   return (currency && prices[currency.wrapped.address]) ?? 0
 }
 
