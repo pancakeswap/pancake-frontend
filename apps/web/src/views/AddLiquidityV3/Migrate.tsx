@@ -24,7 +24,6 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
@@ -120,8 +119,6 @@ function V2PairMigrate({
   const { account, chainId } = useAccountActiveChain()
   const { balance: pairBalance } = useTokenBalance(v2PairAddress)
 
-  const router = useRouter()
-
   const { reserve0, reserve1 } = pair
 
   const { signTypedDataAsync } = useSignTypedData()
@@ -155,7 +152,6 @@ function V2PairMigrate({
 
   // mint state
   const formState = useV3FormState()
-  const { rightRangeTypedValue, leftRangeTypedValue } = formState
 
   const [baseToken, setBaseToken] = useState(token0)
 
@@ -241,8 +237,6 @@ function V2PairMigrate({
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feeAmount])
-
-  const { minPrice, maxPrice } = router.query
 
   const currency0 = unwrappedToken(token0)
   const currency1 = unwrappedToken(token1)
@@ -493,7 +487,7 @@ function V2PairMigrate({
                 type: 'migrate-v3',
                 translatableSummary: {
                   text: 'Migrated %symbolA% %symbolB% V2 liquidity to V3',
-                  data: { symbolA: currency0.symbol, symbolB: currency1.symbol },
+                  data: { symbolA: currency0?.symbol, symbolB: currency1?.symbol },
                 },
               },
             )
@@ -642,10 +636,12 @@ function V2PairMigrate({
                 <AutoColumn gap="sm" style={{ marginTop: '12px' }}>
                   <RowBetween>
                     <Text>
-                      <Text>V2 {invertPrice ? currency1.symbol : currency0.symbol} Price:</Text>{' '}
+                      <Text>
+                        V2 {invertPrice ? currency1?.symbol : currency0?.symbol} {t('Price')}:
+                      </Text>{' '}
                       {invertPrice
-                        ? `${v2SpotPrice?.invert()?.toSignificant(6)} ${currency0.symbol}`
-                        : `${v2SpotPrice?.toSignificant(6)} ${currency1.symbol}`}
+                        ? `${v2SpotPrice?.invert()?.toSignificant(6)} ${currency0?.symbol}`
+                        : `${v2SpotPrice?.toSignificant(6)} ${currency1?.symbol}`}
                     </Text>
                   </RowBetween>
                 </AutoColumn>
@@ -656,20 +652,24 @@ function V2PairMigrate({
             <GreyCard>
               <AutoColumn gap="sm">
                 <RowBetween>
-                  <Text fontSize={14}>V2 {invertPrice ? currency1.symbol : currency0.symbol} Price:</Text>
+                  <Text fontSize={14}>
+                    V2 {invertPrice ? currency1?.symbol : currency0?.symbol} {t('Price')}:
+                  </Text>
                   <Text fontSize={14}>
                     {invertPrice
-                      ? `${v2SpotPrice?.invert()?.toSignificant(6)} ${currency0.symbol}`
-                      : `${v2SpotPrice?.toSignificant(6)} ${currency1.symbol}`}
+                      ? `${v2SpotPrice?.invert()?.toSignificant(6)} ${currency0?.symbol}`
+                      : `${v2SpotPrice?.toSignificant(6)} ${currency1?.symbol}`}
                   </Text>
                 </RowBetween>
 
                 <RowBetween>
-                  <Text fontSize={14}>V3 {invertPrice ? currency1.symbol : currency0.symbol} Price:</Text>
+                  <Text fontSize={14}>
+                    V3 {invertPrice ? currency1?.symbol : currency0?.symbol} {t('Price')}:
+                  </Text>
                   <Text fontSize={14}>
                     {invertPrice
-                      ? `${v3SpotPrice?.invert()?.toSignificant(6)} ${currency0.symbol}`
-                      : `${v3SpotPrice?.toSignificant(6)} ${currency1.symbol}`}
+                      ? `${v3SpotPrice?.invert()?.toSignificant(6)} ${currency0?.symbol}`
+                      : `${v3SpotPrice?.toSignificant(6)} ${currency1?.symbol}`}
                   </Text>
                 </RowBetween>
 
@@ -691,11 +691,13 @@ function V2PairMigrate({
             </GreyCard>
           ) : !noLiquidity && v3SpotPrice ? (
             <RowBetween>
-              <Text fontSize={14}>V3 {invertPrice ? currency1.symbol : currency0.symbol} Price:</Text>
+              <Text fontSize={14}>
+                V3 {invertPrice ? currency1?.symbol : currency0?.symbol} {t('Price')}:
+              </Text>
               <Text fontSize={14}>
                 {invertPrice
-                  ? `${v3SpotPrice?.invert()?.toSignificant(6)} ${currency0.symbol}`
-                  : `${v3SpotPrice?.toSignificant(6)} ${currency1.symbol}`}
+                  ? `${v3SpotPrice?.invert()?.toSignificant(6)} ${currency0?.symbol}`
+                  : `${v3SpotPrice?.toSignificant(6)} ${currency1?.symbol}`}
               </Text>
             </RowBetween>
           ) : null}
