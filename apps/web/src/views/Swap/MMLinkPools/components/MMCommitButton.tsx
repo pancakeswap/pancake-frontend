@@ -17,7 +17,7 @@ import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { Address } from 'viem'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
-import { ConfirmSwapModal } from '../../V3Swap/containers/ConfirmSwapModal'
+import { LegacyConfirmSwapModal } from '../../V3Swap/containers/LegacyConfirmSwapModal'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
 import { MMRfqTrade } from '../types'
@@ -168,7 +168,7 @@ export function MMSwapCommitButton({
   })
 
   const [onPresentConfirmModal] = useModal(
-    <ConfirmSwapModal
+    <LegacyConfirmSwapModal
       isMM
       trade={rfqTrade.trade} // show the info while refresh RFQ
       txHash={txHash}
