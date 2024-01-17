@@ -10,7 +10,7 @@ import { ethereumTokens } from '@pancakeswap/tokens'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { publicClient } from 'utils/client'
 import { Address, isAddressEqual, zeroAddress } from 'viem'
 import { useSignTypedData } from 'wagmi'
@@ -178,9 +178,10 @@ export const usePermit = (
   amount: CurrencyAmount<Currency> | undefined,
   spender?: Address,
   onPermitDone?: () => Promise<SendTransactionResult | undefined>,
+  permit2signature?: Permit2Signature,
+  onUpdatePermit2Signature?: (signature: Permit2Signature) => void,
 ) => {
   const { account, chainId } = useAccountActiveChain()
-  const [permit2Signature, setPermit2Signature] = useState<Permit2Signature>()
 
   const tokenAmount = amount?.currency.isToken ? (amount as CurrencyAmount<Token>) : undefined
 
@@ -189,11 +190,11 @@ export const usePermit = (
     if (requireRevoke || requireApprove) {
       return PermitState.IDLE
     }
-    if (requirePermit) {
+    if (requirePermit && !permit2signature) {
       return PermitState.APPROVING_PERMIT_AMOUNT
     }
     return PermitState.DONE
-  }, [requireApprove, requireRevoke, requirePermit])
+  }, [requireRevoke, requireApprove, requirePermit, permit2signature])
   const { nonce } = usePermitStatus(tokenAmount?.currency, account, spender)
   const permitCallback = useWritePermit(tokenAmount?.currency, spender, nonce)
 
@@ -227,7 +228,7 @@ export const usePermit = (
       case PermitState.APPROVING_PERMIT_AMOUNT:
         if (approvalState === ApprovalState.APPROVED) {
           const sig = await permitCallback()
-          setPermit2Signature(sig)
+          onUpdatePermit2Signature?.(sig)
           return undefined
         }
         break
@@ -243,6 +244,7 @@ export const usePermit = (
     approvalState,
     approveCallback,
     onPermitDone,
+    onUpdatePermit2Signature,
     permitCallback,
     permitState,
     requireApprove,
@@ -253,9 +255,8 @@ export const usePermit = (
   return useMemo(() => {
     return {
       execute,
-      permit2Signature,
       permitState,
       approvalState,
     }
-  }, [approvalState, execute, permit2Signature, permitState])
+  }, [approvalState, execute, permitState])
 }

@@ -162,7 +162,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
 
   const [txHash, setTxHash] = useState<string | undefined>(undefined)
   const [swapErrorMessage, setSwapErrorMessage] = useState<string | undefined>(undefined)
-  const [signature, setSignature] = useState<Permit2Signature | undefined>(undefined)
+  const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
   const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
   const statusWallchain: string = '@TODO'
@@ -175,7 +175,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
   } = useSwapCallback({
     trade,
     deadline,
-    permitSignature: signature,
+    permitSignature: permit2Signature,
     onWallchainDrop: fn, // TODO
     wallchainMasterInput: undefined, // TODO
     statusWallchain: 'not-found', // TODO
@@ -215,20 +215,20 @@ const SwapCommitButton = memo(function SwapCommitButton({
     }
   }, [swapCallback, swapCallbackRevertReason, t, tradePriceBreakdown])
 
-  const {
-    execute: onStep,
-    approvalState,
+  const { execute: onStep, approvalState } = usePermit(
+    amountToApprove,
+    getUniversalRouterAddress(chainId),
+    onConfirmSwap,
     permit2Signature,
-  } = usePermit(amountToApprove, getUniversalRouterAddress(chainId), onConfirmSwap)
-  useEffect(() => {
-    setSignature(permit2Signature)
-  }, [permit2Signature])
+    setPermit2Signature,
+  )
 
   const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalStateV2(
     onStep,
     amountToApprove,
     approvalState,
     permit2Signature,
+    setPermit2Signature,
     getUniversalRouterAddress(chainId),
   )
   const reset = useCallback(() => {
@@ -236,6 +236,7 @@ const SwapCommitButton = memo(function SwapCommitButton({
     setTxHash(undefined)
     setSwapErrorMessage(undefined)
     setTradeToConfirm(undefined)
+    setPermit2Signature(undefined)
   }, [resetConfirmModalState])
 
   const handleAcceptChanges = useCallback(() => {

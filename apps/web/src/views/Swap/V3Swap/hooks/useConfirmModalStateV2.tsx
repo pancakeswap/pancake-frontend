@@ -18,6 +18,7 @@ export const useConfirmModalStateV2 = (
   amount: CurrencyAmount<Currency> | undefined,
   approvalState: ApprovalState,
   permit2Signature: Permit2Signature | undefined,
+  setPermit2Signature: (signature: Permit2Signature | undefined) => void,
   spender?: Address,
 ) => {
   const { chainId } = useActiveChainId()
@@ -36,9 +37,11 @@ export const useConfirmModalStateV2 = (
     setConfirmModalState(ConfirmModalState.REVIEWING)
     setSwapErrorMessage(undefined)
     setTxHash(undefined)
-  }, [])
+    setPermit2Signature(undefined)
+  }, [setPermit2Signature])
 
   const generateRequiredSteps = useCallback(() => {
+    // console.debug('debug: generateRequiredSteps', { requireApprove, requireRevoke, requirePermit })
     const steps: PendingConfirmModalState[] = []
     if (requireRevoke) {
       steps.push(ConfirmModalState.RESETTING_APPROVAL)
@@ -54,12 +57,18 @@ export const useConfirmModalStateV2 = (
   }, [requireApprove, requireRevoke, requirePermit])
 
   const updateStep = useCallback(() => {
-    const isFinalStep = confirmModalState === ConfirmModalState.PENDING_CONFIRMATION
     const steps = pendingModalSteps.current
+    // console.debug(
+    //   'debug: updateStep steps',
+    //   steps.map((step) => ConfirmModalState[step]),
+    // )
+    // console.debug('debug: updateStep current', ConfirmModalState[confirmModalState])
+    const isFinalStep = confirmModalState === ConfirmModalState.PENDING_CONFIRMATION
     if (!isFinalStep) {
       const finalStep = ConfirmModalState.PENDING_CONFIRMATION
       const inProgressStep = steps.findIndex((step) => step === confirmModalState)
       const nextStep = (inProgressStep > -1 ? steps[inProgressStep + 1] : steps[0]) ?? finalStep
+      // console.debug('debug: updateStep next', ConfirmModalState[nextStep])
       setConfirmModalState(nextStep)
     }
   }, [confirmModalState])
@@ -117,6 +126,11 @@ export const useConfirmModalStateV2 = (
 
   // approve
   useEffect(() => {
+    // console.debug('debug: useEffect approvalState', {
+    //   prevApprovalState: ApprovalState[prevApprovalState!],
+    //   approvalState: ApprovalState[approvalState],
+    //   txHash,
+    // })
     // allowance approved
     if (prevApprovalState === ApprovalState.PENDING && approvalState === ApprovalState.APPROVED) {
       if (txHash) {
@@ -133,6 +147,10 @@ export const useConfirmModalStateV2 = (
 
   // permit
   useEffect(() => {
+    // console.debug('debug: useEffect permit2Signature', {
+    //   permit2Signature,
+    //   confirmModalState: ConfirmModalState[confirmModalState],
+    // })
     if (permit2Signature && confirmModalState === ConfirmModalState.PERMITTING) {
       performStep()
     }
