@@ -99,6 +99,7 @@ const whitelist = [
   'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by',
   'U.S.-based users.',
   'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.',
+  'Base APR (APT yield only)',
 ]
 
 describe.concurrent('Check translations integrity', () => {
