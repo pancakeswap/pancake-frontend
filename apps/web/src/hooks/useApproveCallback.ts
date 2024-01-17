@@ -34,8 +34,8 @@ export function useApproveCallback(
   },
 ): {
   approvalState: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  approveCallback: () => Promise<SendTransactionResult | undefined>
+  revokeCallback: () => Promise<SendTransactionResult | undefined>
   currentAllowance: CurrencyAmount<Currency> | undefined
   isPendingError: boolean
 } {
@@ -156,7 +156,7 @@ export function useApproveCallback(
                 text: 'Approve %symbol%',
                 data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
               },
-              approval: { tokenAddress: token?.address, spender, amount: finalAmount.toString() },
+              approval: { tokenAddress: `${token?.address}`, spender, amount: finalAmount.toString() },
               type: 'approve',
             })
           }

@@ -206,7 +206,8 @@ const SwapCommitButton = memo(function SwapCommitButton({
       return result
     } catch (error: any) {
       console.error(error)
-      const userReject = isUserRejected(error) || error instanceof TransactionRejectedError
+      const userReject =
+        (typeof error !== 'string' && isUserRejected(error)) || error instanceof TransactionRejectedError
 
       if (!userReject) setSwapErrorMessage(typeof error === 'string' ? error : error?.message)
 

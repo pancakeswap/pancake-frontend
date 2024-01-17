@@ -43,7 +43,9 @@ export function V3SwapForm() {
       <FormHeader onRefresh={throttledHandleRefresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
       <FormMain
         tradeLoading={mm.isMMBetter ? false : !tradeLoaded}
-        pricingAndSlippage={<PricingAndSlippage priceLoading={isLoading} price={price} showSlippage={!mm.isMMBetter} />}
+        pricingAndSlippage={
+          <PricingAndSlippage priceLoading={isLoading} price={price ?? undefined} showSlippage={!mm.isMMBetter} />
+        }
         inputAmount={finalTrade?.inputAmount}
         outputAmount={finalTrade?.outputAmount}
         swapCommitButton={
