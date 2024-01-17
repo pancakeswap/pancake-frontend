@@ -8,9 +8,9 @@ import {
   SmartRouter,
   SmartRouterTrade,
 } from '@pancakeswap/smart-router/evm'
-import { useQuery } from '@tanstack/react-query'
-import { useDeferredValue, useEffect, useMemo, useRef, useCallback } from 'react'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
+import { useQuery } from '@tanstack/react-query'
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
 
 import { QUOTING_API } from 'config/constants/endpoints'
 import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
@@ -28,7 +28,7 @@ import {
   useCommonPoolsLite,
   useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
-import { useCurrencyPrice } from './useCurrencyPrice'
+import { useCurrencyUsdPrice } from './useCurrencyPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 
 SmartRouter.logger.enable('error,log')
@@ -158,8 +158,8 @@ function bestTradeHookFactory({
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
     const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
-    const quoteCurrencyUsdPrice = useCurrencyPrice(currency ?? undefined)
-    const nativeCurrencyUsdPrice = useCurrencyPrice(currency?.chainId ? Native.onChain(currency.chainId) : undefined)
+    const quoteCurrencyUsdPrice = useCurrencyUsdPrice(currency ?? undefined)
+    const nativeCurrencyUsdPrice = useCurrencyUsdPrice(currency?.chainId ? Native.onChain(currency.chainId) : undefined)
 
     const poolTypes = useMemo(() => {
       const types: PoolType[] = []

@@ -8,7 +8,7 @@ type Config = {
   enabled?: boolean
 }
 
-export function useCurrencyPrice(currency: Currency | undefined, { enabled = true }: Config = {}) {
+export function useCurrencyUsdPrice(currency: Currency | undefined, { enabled = true }: Config = {}) {
   const { data } = useQuery<number>({
     queryKey: ['currencyPrice', currency?.chainId, currency?.wrapped.address],
     queryFn: async () => getCurrencyUsdPrice(currency),
