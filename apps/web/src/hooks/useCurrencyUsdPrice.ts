@@ -8,8 +8,8 @@ type Config = {
   enabled?: boolean
 }
 
-export function useCurrencyUsdPrice(currency: Currency | undefined, { enabled = true }: Config = {}) {
-  const { data } = useQuery<number>({
+export function useCurrencyUsdPrice(currency: Currency | undefined | null, { enabled = true }: Config = {}) {
+  return useQuery<number>({
     queryKey: ['currencyPrice', currency?.chainId, currency?.wrapped.address],
     queryFn: async () => {
       if (!currency) {
@@ -21,6 +21,4 @@ export function useCurrencyUsdPrice(currency: Currency | undefined, { enabled = 
     refetchInterval: SLOW_INTERVAL,
     enabled: Boolean(enabled && currency),
   })
-
-  return data
 }

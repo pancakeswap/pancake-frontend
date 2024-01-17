@@ -5,13 +5,12 @@ import { CAKE, STABLE_COIN } from '@pancakeswap/tokens'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
 import { warningSeverity } from 'utils/exchange'
-import { fetchTokenUSDValue } from 'utils/llamaPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
+import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 
 type UseStablecoinPriceConfig = {
   enabled?: boolean
@@ -36,27 +35,16 @@ export function useStablecoinPrice(
 
   const isStableCoin = currency && stableCoin && currency.wrapped.equals(stableCoin)
 
-  const shouldEnabled = currency && stableCoin && enabled && currentChainId === chainId && !isCake && !isStableCoin
+  const shouldEnabled = Boolean(
+    currency && stableCoin && enabled && currentChainId === chainId && !isCake && !isStableCoin,
+  )
+
+  const { data: priceFromApi, isLoading } = useCurrencyUsdPrice(currency, {
+    enabled: shouldEnabled,
+  })
 
   const enableLlama =
     (currency?.chainId === ChainId.ETHEREUM || currency?.chainId === ChainId.POLYGON_ZKEVM) && shouldEnabled
-
-  // we don't have too many AMM pools on ethereum yet, try to get it from api
-  const { data: priceFromLlama, isLoading } = useSWRImmutable<string | undefined>(
-    currency && enableLlama && ['fiat-price-llama', currency],
-    async () => {
-      if (!currency) {
-        return undefined
-      }
-      const tokenAddress = currency.wrapped.address
-      const result = await fetchTokenUSDValue(currency.chainId, [tokenAddress])
-      return result.get(tokenAddress)
-    },
-    {
-      dedupingInterval: 30_000,
-      refreshInterval: 30_000,
-    },
-  )
 
   const amountOut = useMemo(
     () => (stableCoin ? CurrencyAmount.fromRawAmount(stableCoin, 5 * 10 ** stableCoin.decimals) : undefined),
@@ -69,7 +57,7 @@ export function useStablecoinPrice(
     baseCurrency: stableCoin,
     tradeType: TradeType.EXACT_OUTPUT,
     maxSplits: 0,
-    enabled: Boolean(enableLlama ? !isLoading && !priceFromLlama : shouldEnabled),
+    enabled: Boolean(enableLlama ? !isLoading && !priceFromApi : shouldEnabled),
     autoRevalidate: false,
     type: 'api',
   })
@@ -93,14 +81,12 @@ export function useStablecoinPrice(
       return new Price(stableCoin, stableCoin, '1', '1')
     }
 
-    if (priceFromLlama && enableLlama) {
+    if (priceFromApi && enableLlama) {
       return new Price(
         currency,
         stableCoin,
         1 * 10 ** currency.decimals,
-        getFullDecimalMultiplier(stableCoin.decimals)
-          .times(parseFloat(priceFromLlama).toFixed(stableCoin.decimals))
-          .toString(),
+        getFullDecimalMultiplier(stableCoin.decimals).times(priceFromApi.toFixed(stableCoin.decimals)).toString(),
       )
     }
 
@@ -127,7 +113,7 @@ export function useStablecoinPrice(
     isCake,
     cakePrice,
     isStableCoin,
-    priceFromLlama,
+    priceFromApi,
     enableLlama,
     trade,
     hideIfPriceImpactTooHigh,

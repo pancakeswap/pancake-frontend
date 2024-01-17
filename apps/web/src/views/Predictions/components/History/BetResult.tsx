@@ -10,7 +10,7 @@ import { Bet } from 'state/types'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
+import { useTokenUsdPriceBigNumber } from 'views/Predictions/hooks/useTokenPrice'
 import { useAccount } from 'wagmi'
 
 import useIsRefundable from '../../hooks/useIsRefundable'
@@ -42,7 +42,7 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   const { isRefundable } = useIsRefundable(bet?.round?.epoch ?? 0)
   const canClaim = useGetIsClaimable(bet?.round?.epoch)
   const config = useConfig()
-  const tokenPrice = useTokenPrice(config?.token)
+  const tokenPrice = useTokenUsdPriceBigNumber(config?.token)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
   )
