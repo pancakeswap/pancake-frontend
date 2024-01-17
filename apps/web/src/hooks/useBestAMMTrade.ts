@@ -28,7 +28,7 @@ import {
   useCommonPoolsLite,
   useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
-import { useCurrencyUsdPrice } from './useCurrencyPrice'
+import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 
 SmartRouter.logger.enable('error,log')
