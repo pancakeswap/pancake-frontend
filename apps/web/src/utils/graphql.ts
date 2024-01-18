@@ -1,10 +1,9 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
 import {
   BIT_QUERY,
   INFO_CLIENT,
   INFO_CLIENT_ETH,
   STABLESWAP_SUBGRAPH_CLIENT,
-  STABLESWAP_SUBGRAPH_CLIENT_ARBITRUM,
   V3_BSC_INFO_CLIENT,
   V3_SUBGRAPH_URLS,
 } from 'config/constants/endpoints'
@@ -68,8 +67,8 @@ export const v2Clients = {
 }
 
 export const infoStableSwapClients = {
-  [ChainId.BSC]: new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT),
-  [ChainId.ARBITRUM_ONE]: new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT_ARBITRUM),
+  [ChainId.BSC]: new GraphQLClient(STABLESWAP_SUBGRAPHS[ChainId.BSC]),
+  [ChainId.ARBITRUM_ONE]: new GraphQLClient(STABLESWAP_SUBGRAPHS[ChainId.ARBITRUM_ONE]),
 }
 
 export const infoServerClient = new GraphQLClient(INFO_CLIENT, {

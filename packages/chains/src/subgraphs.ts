@@ -15,6 +15,15 @@ export const V2_SUBGRAPHS = getV2Subgraphs(publicSubgraphParams)
 
 export const BLOCKS_SUBGRAPHS = getBlocksSubgraphs(publicSubgraphParams)
 
+export const STABLESWAP_SUBGRAPHS = {
+  [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap',
+  [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap-arb',
+}
+
+export const STABLESWAP_SUBGRAPHS_START_BLOCK = {
+  [ChainId.ARBITRUM_ONE]: 169319653,
+}
+
 export function getV3Subgraphs({ noderealApiKey }: SubgraphParams) {
   return {
     [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
