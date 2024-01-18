@@ -64,6 +64,8 @@ interface DepositModalProps {
   enablePendingTx?: boolean;
   showTopMessageText?: null | string;
   dualTokenRewardApr?: number;
+  farmCakePerSecond?: string;
+  totalMultipliers?: string;
   onDismiss?: () => void;
   onConfirm: (amount: string) => void;
   handleApprove?: () => void;
@@ -91,6 +93,8 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   enablePendingTx,
   showTopMessageText,
   dualTokenRewardApr,
+  farmCakePerSecond,
+  totalMultipliers,
   onConfirm,
   onDismiss,
   handleApprove,
@@ -185,6 +189,8 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           isFarm
           initialValue={val}
           dualTokenRewardApr={dualTokenRewardApr}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
           onBack={() => setShowRoiCalculator(false)}
           bCakeCalculatorSlot={bCakeCalculatorSlot}
         />

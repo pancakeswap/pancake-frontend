@@ -164,6 +164,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           account={account}
           addLiquidityUrl={addLiquidityUrl}
           displayApr={displayApr}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
         />
       </FarmCardInnerContainer>
       <LinkExternal margin="0 auto 24px auto" fontWeight={400} href={addLiquidityUrl}>

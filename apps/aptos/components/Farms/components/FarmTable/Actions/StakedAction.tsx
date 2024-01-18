@@ -25,6 +25,8 @@ interface StackedActionProps extends FarmWithStakedValue {
   userDataReady: boolean
   lpLabel?: string
   displayApr?: string
+  farmCakePerSecond?: string
+  totalMultipliers?: string
   onStake: (value: string) => Promise<TransactionResponse>
   onUnstake: (value: string) => Promise<TransactionResponse>
 }
@@ -81,6 +83,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   quoteTokenAmountTotal = BIG_ZERO,
   userData,
   dualTokenRewardApr,
+  farmCakePerSecond,
+  totalMultipliers,
   onStake,
   onUnstake,
 }) => {
@@ -156,6 +160,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       cakePrice={cakePrice}
       decimals={FARM_DEFAULT_DECIMALS}
       dualTokenRewardApr={dualTokenRewardApr}
+      farmCakePerSecond={farmCakePerSecond}
+      totalMultipliers={totalMultipliers}
       showTopMessageText={
         isUserIpPass
           ? null

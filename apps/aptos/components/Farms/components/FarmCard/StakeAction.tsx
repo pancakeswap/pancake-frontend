@@ -27,6 +27,8 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
   lpLabel?: string
   addLiquidityUrl?: string
   displayApr?: string
+  farmCakePerSecond?: string
+  totalMultipliers?: string
   onStake: (value: string) => Promise<TransactionResponse>
   onUnstake: (value: string) => Promise<TransactionResponse>
 }
@@ -47,6 +49,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   quoteTokenAmountTotal = BIG_ZERO,
   userData,
   dualTokenRewardApr,
+  farmCakePerSecond,
+  totalMultipliers,
   onStake,
   onUnstake,
 }) => {
@@ -110,6 +114,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       cakePrice={cakePrice}
       decimals={FARM_DEFAULT_DECIMALS}
       dualTokenRewardApr={dualTokenRewardApr}
+      farmCakePerSecond={farmCakePerSecond}
+      totalMultipliers={totalMultipliers}
       showTopMessageText={
         isUserIpPass
           ? null

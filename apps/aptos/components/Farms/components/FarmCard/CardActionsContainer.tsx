@@ -20,6 +20,8 @@ interface FarmCardActionsProps {
   addLiquidityUrl?: string
   lpLabel?: string
   displayApr?: string
+  farmCakePerSecond?: string
+  totalMultipliers?: string
 }
 
 const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
@@ -28,6 +30,8 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   addLiquidityUrl,
   lpLabel,
   displayApr,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const { t } = useTranslation()
   const { pid, lpAddress, dual } = farm
@@ -61,7 +65,14 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       {!account ? (
         <ConnectWalletButton mt="8px" width="100%" />
       ) : (
-        <StakedContainer {...farm} lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} displayApr={displayApr}>
+        <StakedContainer
+          {...farm}
+          lpLabel={lpLabel}
+          displayApr={displayApr}
+          addLiquidityUrl={addLiquidityUrl}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
+        >
           {(props) => <StakeAction {...props} />}
         </StakedContainer>
       )}

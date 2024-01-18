@@ -2,6 +2,8 @@ import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
+import { getDisplayFarmCakePerSecond } from 'components/Farms/components/getDisplayFarmCakePerSecond'
+import { useFarms } from 'state/farms/hook'
 import { css, keyframes, styled } from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
@@ -19,6 +21,8 @@ export interface ActionPanelProps {
   userDataReady: boolean
   expanded: boolean
   alignLinksToRight?: boolean
+  farmCakePerSecond?: string
+  totalMultipliers?: string
 }
 
 const expandAnimation = keyframes`
@@ -126,6 +130,10 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
     tokenAddress: token?.address,
   })
 
+  const { totalRegularAllocPoint, cakePerBlock } = useFarms()
+  const totalMultipliers = totalRegularAllocPoint ? (Number(totalRegularAllocPoint) / 100).toString() : '0'
+  const farmCakePerSecond = getDisplayFarmCakePerSecond(farm.poolWeight?.toNumber(), cakePerBlock)
+
   return (
     <Container expanded={expanded}>
       <InfoContainer>
@@ -179,7 +187,14 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
         >
           {(props) => <TableHarvestAction {...props} />}
         </HarvestActionContainer>
-        <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+        <StakedContainer
+          {...farm}
+          userDataReady={userDataReady}
+          lpLabel={lpLabel}
+          displayApr={apr.value}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
+        >
           {(props) => <StakedAction {...props} />}
         </StakedContainer>
       </ActionContainer>
