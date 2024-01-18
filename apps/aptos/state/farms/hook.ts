@@ -324,8 +324,12 @@ export function useGetAptIncentiveInfo() {
     async () => {
       const params = await masterchefGetAptIncentiveInfo()
       const response = await fetchAptosView({ networkName, params })
+      // if(rate == 0 ) it means not start ,
+      // if(rate > 0 && close == false) it means start , not closed yet
+      // if (rate > 0 && close == true ) it means closed
       // response?.[1] True = Aptos Reward close.
-      return response?.[1] ? 0 : response?.[0] ?? 0
+      const rate = response?.[0] ?? 0
+      return rate === 0 || (rate > 0 && response?.[1] === true) ? 0 : rate
     },
     {
       enabled: Boolean(networkName),
