@@ -124,18 +124,17 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   {displayApr}%
                 </Text>
                 <Text color="textSubtle" small>
-                  *{t("Base APR (CAKE yield only)")}
+                  {`*${t("Base APR (CAKE yield only)")}`}
                 </Text>
                 <Text small textAlign="right">
-                  {apr.toLocaleString("en-US", {
+                  {`${(apr - Number(dualTokenRewardApr) ?? 0).toLocaleString("en-US", {
                     maximumFractionDigits: 2,
-                  })}
-                  %
+                  })}%`}
                 </Text>
                 {dualTokenRewardApr && (
                   <>
                     <Text color="textSubtle" small>
-                      *{t("Base APR (APT yield only)")}
+                      {`*${t("Base APR (APT yield only)")}`}
                     </Text>
                     <Text small textAlign="right">
                       {`${dualTokenRewardApr.toLocaleString("en-US", {
