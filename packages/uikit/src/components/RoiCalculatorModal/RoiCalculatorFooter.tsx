@@ -95,8 +95,8 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
     let total = new BigNumber(apr);
     // TODO: In APTOS APR is combine APR (Cake APR + Apt APR + lp APR).
     // Soon EVM (v2 Farm & pools) also will change to  combine APR.
-    if (dualTokenRewardApr && lpRewardsApr) {
-      total = new BigNumber(apr).minus(dualTokenRewardApr).minus(lpRewardsApr ?? 0);
+    if (dualTokenRewardApr !== undefined && lpRewardsApr) {
+      total = new BigNumber(apr).minus(Number(dualTokenRewardApr)).minus(lpRewardsApr ?? 0);
     }
 
     return total.toNumber();
@@ -140,13 +140,13 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                     maximumFractionDigits: 2,
                   })}%`}
                 </Text>
-                {dualTokenRewardApr && (
+                {Number(dualTokenRewardApr) > 0 && (
                   <>
                     <Text color="textSubtle" small>
                       {`*${t("Base APR (APT yield only)")}`}
                     </Text>
                     <Text small textAlign="right">
-                      {`${dualTokenRewardApr.toLocaleString("en-US", {
+                      {`${dualTokenRewardApr?.toLocaleString("en-US", {
                         maximumFractionDigits: 2,
                       })}%`}
                     </Text>

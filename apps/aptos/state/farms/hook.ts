@@ -324,7 +324,8 @@ export function useGetAptIncentiveInfo() {
     async () => {
       const params = await masterchefGetAptIncentiveInfo()
       const response = await fetchAptosView({ networkName, params })
-      return response?.[0] ?? 0
+      // response?.[1] True = Aptos Reward close.
+      return response?.[1] ? 0 : response?.[0] ?? 0
     },
     {
       enabled: Boolean(networkName),
