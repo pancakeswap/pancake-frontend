@@ -2456,7 +2456,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 248,
+    gid: 249,
     pairName: 'BTC-ETH',
     address: '0xbD3bc396C9393e63bBc935786Dd120B17F58Df4c',
     chainId: ChainId.LINEA,
@@ -2466,7 +2466,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOW,
   },
   {
-    gid: 249,
+    gid: 250,
     pairName: 'USDC-DAI',
     address: '0xA48E0630B7b9dCb250112143C9D0fe47d26CB1e4',
     chainId: ChainId.LINEA,
@@ -2476,7 +2476,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 250,
+    gid: 251,
     pairName: 'USDC-axlUSDC',
     address: '0x85164B6d8a74bA481AB6D02D2C4e779ECCBAF982',
     chainId: ChainId.LINEA,
@@ -2486,7 +2486,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 251,
+    gid: 252,
     pairName: 'wstETH-ETH',
     address: '0x3f63a467C54c96538bD36A7DF1b9E7C4719DcaC9',
     chainId: ChainId.LINEA,
@@ -2496,7 +2496,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOWEST,
   },
   {
-    gid: 252,
+    gid: 253,
     pairName: 'AI-BNB',
     address: '0x85Bf2332c9033624B5d6f2607D8f07f22Bc86345',
     chainId: ChainId.BSC,
@@ -2506,7 +2506,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.HIGH,
   },
   {
-    gid: 253,
+    gid: 254,
     pairName: 'wROSE-USDT',
     address: '0x9dD70024FF211bA754c089CDee47BdeDc17C4CBe',
     chainId: ChainId.BSC,
@@ -2516,7 +2516,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOW,
   },
   {
-    gid: 253,
+    gid: 255,
     pairName: 'wstETH-ETH',
     address: '0x5631fE6d29E3CB717517DA05A9970e499DEF5e31',
     chainId: ChainId.ZKSYNC,
