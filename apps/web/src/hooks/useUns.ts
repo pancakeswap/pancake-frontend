@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
-import { FetchStatus } from 'config/constants/types'
+import { useQuery } from '@tanstack/react-query'
 import { polygonRpcProvider } from 'utils/providers'
 import { Address } from 'wagmi'
 import { ChainId } from '@pancakeswap/chains'
@@ -20,8 +19,8 @@ export const useUnsNameForAddress = (address: Address, fetchData = true) => {
   const unsEtherContract = useUNSContract(getUnsAddress(1), ChainId.ETHEREUM, undefined)
   const unsPolygonContract = useUNSContract(getUnsAddress(137), undefined, polygonRpcProvider)
 
-  const { data: unsName, status } = useSWRImmutable(
-    fetchData && address ? ['unsName', address.toLowerCase()] : null,
+  const { data: unsName, status } = useQuery(
+    ['unsName', address?.toLowerCase()],
     async () => {
       const etherDomainName = await unsEtherContract.read.reverseNameOf([address])
       if (!etherDomainName) {
@@ -39,9 +38,15 @@ export const useUnsNameForAddress = (address: Address, fetchData = true) => {
         name: etherDomainName,
       }
     },
+    {
+      enabled: Boolean(fetchData && address),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+    },
   )
 
   return useMemo(() => {
-    return { unsName: unsName?.name, isLoading: status !== FetchStatus.Fetched }
+    return { unsName: unsName?.name, isLoading: status !== 'success' }
   }, [unsName, status])
 }
