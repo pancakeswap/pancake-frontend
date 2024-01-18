@@ -72,6 +72,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     ].includes(confirmModalState)
   }, [confirmModalState])
   const stepsVisible = useMemo(() => {
+    if (swapErrorMessage) return false
     return (
       (pendingModalSteps.length > 0 &&
         [
@@ -81,7 +82,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
         ].includes(confirmModalState)) ||
       (ConfirmModalState.PENDING_CONFIRMATION === confirmModalState && !txHash)
     )
-  }, [confirmModalState, pendingModalSteps.length, txHash])
+  }, [confirmModalState, pendingModalSteps.length, swapErrorMessage, txHash])
 
   const stepContents = useApprovalPhaseStepTitles({ trade })
   const token: Token | undefined = useMemo(

@@ -54,7 +54,7 @@ interface SwapCommitButtonPropsType {
   // currentAllowance?: CurrencyAmount<Currency>
 }
 
-export function MMSwapCommitButtonV2({
+export function MMSwapCommitButton({
   mmTradeInfo,
   swapIsUnsupported,
   account,
@@ -89,25 +89,6 @@ SwapCommitButtonPropsType) {
   })
 
   // Handlers
-  // const handleSwap = useCallback(async () => {
-  //   if (!swapCallback) {
-  //     return undefined
-  //   }
-  //   setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
-  //   return swapCallback()
-  //     .then((hash) => {
-  //       setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
-  //       return hash
-  //     })
-  //     .catch((error) => {
-  //       setSwapState({
-  //         attemptingTxn: false,
-  //         tradeToConfirm,
-  //         swapErrorMessage: error.message,
-  //         txHash: undefined,
-  //       })
-  //     })
-  // }, [swapCallback, tradeToConfirm, setSwapState])
 
   const onConfirmSwap = useCallback(async () => {
     // @TODO should mm trade add price impact limit?
@@ -159,22 +140,6 @@ SwapCommitButtonPropsType) {
     />,
   )
 
-  // const {
-  //   confirmModalState,
-  //   pendingModalSteps,
-  //   startSwapFlow,
-  //   onCancel: resetSwapFlow,
-  // } = useConfirmModalState({
-  //   txHash,
-  //   chainId,
-  //   approval,
-  //   approvalToken: rfqTrade?.trade?.inputAmount.currency,
-  //   isPendingError,
-  //   isExpertMode,
-  //   currentAllowance,
-  //   allowance,
-  //   onConfirm: handleSwap,
-  // })
   const amountToApprove = useMemo(() => {
     return mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT]
   }, [mmTradeInfo])

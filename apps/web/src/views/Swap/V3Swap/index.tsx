@@ -16,7 +16,7 @@ import {
   SwapCommitButton,
   TradeDetails,
 } from './containers'
-import { MMCommitButtonV2 } from './containers/MMCommitButtonV2'
+import { MMCommitButton } from './containers/MMCommitButton'
 import { useSwapBestTrade } from './hooks'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 
@@ -50,7 +50,7 @@ export function V3SwapForm() {
         outputAmount={finalTrade?.outputAmount}
         swapCommitButton={
           mm?.isMMBetter ? (
-            <MMCommitButtonV2 {...mm} />
+            <MMCommitButton {...mm} />
           ) : (
             <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
           )
