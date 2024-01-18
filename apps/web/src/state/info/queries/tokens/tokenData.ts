@@ -91,21 +91,21 @@ const fetchTokenData = async (
       query tokens {
         now: ${TOKEN_AT_BLOCK(chainName, undefined, tokenAddresses)}
         oneDayAgo: ${TOKEN_AT_BLOCK(chainName, block24h, tokenAddresses)}
-       ${
-         (Boolean(startBlock) && startBlock <= block48h) || !startBlock
-           ? `twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}`
-           : ''
-       }
-      ${
-        (Boolean(startBlock) && startBlock <= block7d) || !startBlock
-          ? `oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}`
-          : ''
-      }
-      ${
-        (Boolean(startBlock) && startBlock <= block14d) || !startBlock
-          ? `twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}`
-          : ''
-      }
+        ${
+          (Boolean(startBlock) && startBlock <= block48h) || !startBlock
+            ? `twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}`
+            : ''
+        }
+        ${
+          (Boolean(startBlock) && startBlock <= block7d) || !startBlock
+            ? `oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}`
+            : ''
+        }
+        ${
+          (Boolean(startBlock) && startBlock <= block14d) || !startBlock
+            ? `twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}`
+            : ''
+        }
       }
     `
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)

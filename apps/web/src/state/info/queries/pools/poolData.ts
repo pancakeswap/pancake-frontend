@@ -12,6 +12,7 @@ import {
   checkIsStableSwap,
   getMultiChainQueryEndPointWithStableSwap,
   multiChainQueryMainToken,
+  multiChanStableSwapStartBlock,
 } from '../../constant'
 import { fetchTopPoolAddresses } from './topPools'
 
@@ -105,14 +106,28 @@ export const fetchPoolData = async (
   poolAddresses: string[],
   chainName: MultiChainName = 'BSC',
 ) => {
+  const isStableSwap = checkIsStableSwap()
+  const startBlock = isStableSwap ? multiChanStableSwapStartBlock[chainName] : undefined
   try {
     const query = gql`
       query pools {
         now: ${POOL_AT_BLOCK(chainName, null, poolAddresses)}
         oneDayAgo: ${POOL_AT_BLOCK(chainName, block24h, poolAddresses)}
-        twoDaysAgo: ${POOL_AT_BLOCK(chainName, block48h, poolAddresses)}
-        oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)}
-        twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}
+        ${
+          (Boolean(startBlock) && startBlock <= block48h) || !startBlock
+            ? `twoDaysAgo: ${POOL_AT_BLOCK(chainName, block48h, poolAddresses)}`
+            : ''
+        }
+        ${
+          (Boolean(startBlock) && startBlock <= block7d) || !startBlock
+            ? `oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)}`
+            : ''
+        }
+        ${
+          (Boolean(startBlock) && startBlock <= block14d) || !startBlock
+            ? `twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}`
+            : ''
+        }
       }
     `
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<PoolsQueryResponse>(query)
