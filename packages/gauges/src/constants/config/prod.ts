@@ -2521,8 +2521,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     address: '0x5631fE6d29E3CB717517DA05A9970e499DEF5e31',
     chainId: ChainId.ZKSYNC,
     type: GaugeType.V3,
-    token0Address: zksyncTokens.wstETH.address,
-    token1Address: zksyncTokens.weth.address,
+    token0Address: zksyncTokens.weth.address,
+    token1Address: zksyncTokens.wstETH.address,
     feeTier: FeeAmount.LOW,
   },
 ]
