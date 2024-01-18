@@ -2366,7 +2366,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.HIGH,
   },
   {
-    gid: 241,
+    gid: 240,
     pairName: 'MGP-WETH',
     address: '0x4E910E367C2DbF42cdB8D6b041033793fe480803',
     chainId: ChainId.ARBITRUM_ONE,
@@ -2376,7 +2376,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.MEDIUM,
   },
   {
-    gid: 240,
+    gid: 241,
     pairName: 'MGP-BNB',
     address: '0x2b3DBbA2D1F5158c7BA4b645B7ea187F7F1763af',
     chainId: ChainId.BSC,
