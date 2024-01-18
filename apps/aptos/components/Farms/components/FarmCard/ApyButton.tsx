@@ -109,6 +109,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       stakingTokenDecimals={FARM_DEFAULT_DECIMALS}
       earningTokenPrice={cakePrice.toNumber()}
       apr={combineApr}
+      lpRewardsApr={lpRewardsApr}
       multiplier={multiplier}
       displayApr={displayApr}
       linkHref={addLiquidityUrl}

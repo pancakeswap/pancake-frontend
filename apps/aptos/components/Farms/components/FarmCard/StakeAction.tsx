@@ -110,6 +110,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={combineApr}
+      lpRewardsApr={lpRewardsApr}
       displayApr={displayApr}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}

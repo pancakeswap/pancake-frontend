@@ -56,6 +56,7 @@ export interface RoiCalculatorModalProps {
   pid?: number;
   earningTokenPrice: number;
   apr?: number;
+  lpRewardsApr?: number;
   apy?: number;
   displayApr?: string;
   linkLabel: string;
@@ -117,6 +118,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   farmCakePerSecond,
   totalMultipliers,
   dualTokenRewardApr,
+  lpRewardsApr,
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);
@@ -308,6 +310,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
       <RoiCalculatorFooter
         isFarm={isFarm}
         apr={apr}
+        lpRewardsApr={lpRewardsApr}
         apy={apy}
         displayApr={displayApr}
         autoCompoundFrequency={autoCompoundFrequency}

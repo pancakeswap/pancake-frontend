@@ -152,6 +152,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={combineApr}
+      lpRewardsApr={lpRewardsApr}
       displayApr={displayApr}
       stakedBalance={stakedBalance}
       onConfirm={handleStake}

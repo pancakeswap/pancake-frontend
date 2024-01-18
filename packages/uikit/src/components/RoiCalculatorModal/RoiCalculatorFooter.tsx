@@ -38,6 +38,7 @@ export const BulletList = styled.ul`
 interface RoiCalculatorFooterProps {
   isFarm: boolean;
   apr?: number;
+  lpRewardsApr?: number;
   apy?: number;
   displayApr?: string;
   autoCompoundFrequency: number;
@@ -71,6 +72,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   farmCakePerSecond,
   totalMultipliers,
   dualTokenRewardApr,
+  lpRewardsApr,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -87,15 +89,9 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   } = useTooltip(multiplierTooltipContent, { placement: "top-end", tooltipOffset: [20, 10] });
 
   const gridRowCount = isFarm ? 4 : 2;
-  const lpRewardsAPR = useMemo(() => {
-    const displayAprNumber = Number(displayApr?.replace(/,/g, ""));
-
-    return isFarm
-      ? Number.isFinite(displayAprNumber) && Number.isFinite(apr)
-        ? Math.max(displayAprNumber - apr, 0).toFixed(2)
-        : null
-      : null;
-  }, [isFarm, displayApr, apr]);
+  const lpRewardsAPRDisplay = useMemo(() => {
+    return isFarm ? (lpRewardsApr ? Math.max(lpRewardsApr).toFixed(2) : null) : null;
+  }, [isFarm, lpRewardsApr]);
 
   return (
     <Footer p="16px" flexDirection="column">
@@ -127,7 +123,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   {`*${t("Base APR (CAKE yield only)")}`}
                 </Text>
                 <Text small textAlign="right">
-                  {`${(apr - Number(dualTokenRewardApr) ?? 0).toLocaleString("en-US", {
+                  {`${(apr - Number(dualTokenRewardApr ?? 0)).toLocaleString("en-US", {
                     maximumFractionDigits: 2,
                   })}%`}
                 </Text>
@@ -147,7 +143,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   *{t("LP Rewards APR")}
                 </Text>
                 <Text small textAlign="right">
-                  {lpRewardsAPR === "0" || !lpRewardsAPR ? "-" : lpRewardsAPR}%
+                  {lpRewardsAPRDisplay === "0" || !lpRewardsAPRDisplay ? "-" : lpRewardsAPRDisplay}%
                 </Text>
               </>
             )}

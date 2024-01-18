@@ -51,6 +51,7 @@ interface DepositModalProps {
   lpLabel?: string;
   tokenName?: string;
   apr?: number;
+  lpRewardsApr?: number;
   displayApr?: string;
   addLiquidityUrl?: string;
   cakePrice?: BigNumber;
@@ -97,6 +98,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   farmCakePerSecond,
   totalMultipliers,
   rewardCakePerSecond,
+  lpRewardsApr,
   onConfirm,
   onDismiss,
   handleApprove,
@@ -194,6 +196,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
           rewardCakePerSecond={rewardCakePerSecond}
+          lpRewardsApr={lpRewardsApr}
           onBack={() => setShowRoiCalculator(false)}
           bCakeCalculatorSlot={bCakeCalculatorSlot}
         />
