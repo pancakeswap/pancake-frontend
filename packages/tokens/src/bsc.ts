@@ -2916,4 +2916,12 @@ export const bscTokens = {
     'Chihuahua native asset',
     'https://www.chihuahua.wtf/',
   ),
+  anyInu: new ERC20Token(
+    ChainId.BSC,
+    '0x2598c30330D5771AE9F983979209486aE26dE875',
+    18,
+    'AI',
+    'Any Inu',
+    'https://www.anyinu.xyz/',
+  ),
 }
