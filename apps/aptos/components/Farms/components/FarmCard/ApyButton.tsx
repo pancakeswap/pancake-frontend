@@ -5,6 +5,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
 import { useFarmUserInfoCache } from 'state/farms/hook'
 import { FARM_DEFAULT_DECIMALS } from '../../constants'
 
@@ -88,6 +89,15 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     },
   )
 
+  const combineApr = useMemo(() => {
+    let total = new BigNumber(apr).plus(lpRewardsApr ?? 0)
+    if (dualTokenRewardApr) {
+      total = new BigNumber(apr).plus(lpRewardsApr ?? 0).plus(dualTokenRewardApr)
+    }
+
+    return total.toNumber()
+  }, [apr, dualTokenRewardApr, lpRewardsApr])
+
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
       account={account || ''}
@@ -98,7 +108,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       stakingTokenPrice={lpTokenPrice.toNumber()}
       stakingTokenDecimals={FARM_DEFAULT_DECIMALS}
       earningTokenPrice={cakePrice.toNumber()}
-      apr={apr}
+      apr={combineApr}
       multiplier={multiplier}
       displayApr={displayApr}
       linkHref={addLiquidityUrl}

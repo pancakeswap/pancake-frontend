@@ -85,6 +85,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   dualTokenRewardApr,
   farmCakePerSecond,
   totalMultipliers,
+  lpRewardsApr,
   onStake,
   onUnstake,
 }) => {
@@ -133,6 +134,15 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     }
   }
 
+  const combineApr = useMemo(() => {
+    let total = new BigNumber(apr ?? 0).plus(lpRewardsApr ?? 0)
+    if (dualTokenRewardApr) {
+      total = new BigNumber(apr ?? 0).plus(lpRewardsApr ?? 0).plus(dualTokenRewardApr)
+    }
+
+    return total.toNumber()
+  }, [apr, dualTokenRewardApr, lpRewardsApr])
+
   const [onPresentDeposit] = useModal(
     <FarmWidget.DepositModal
       account={account || ''}
@@ -141,7 +151,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       max={tokenBalance}
       lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
-      apr={apr}
+      apr={combineApr}
       displayApr={displayApr}
       stakedBalance={stakedBalance}
       onConfirm={handleStake}
