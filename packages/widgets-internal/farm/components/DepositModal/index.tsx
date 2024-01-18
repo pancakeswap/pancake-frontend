@@ -66,6 +66,7 @@ interface DepositModalProps {
   dualTokenRewardApr?: number;
   farmCakePerSecond?: string;
   totalMultipliers?: string;
+  rewardCakePerSecond?: boolean;
   onDismiss?: () => void;
   onConfirm: (amount: string) => void;
   handleApprove?: () => void;
@@ -95,6 +96,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   dualTokenRewardApr,
   farmCakePerSecond,
   totalMultipliers,
+  rewardCakePerSecond,
   onConfirm,
   onDismiss,
   handleApprove,
@@ -191,6 +193,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           dualTokenRewardApr={dualTokenRewardApr}
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
+          rewardCakePerSecond={rewardCakePerSecond}
           onBack={() => setShowRoiCalculator(false)}
           bCakeCalculatorSlot={bCakeCalculatorSlot}
         />

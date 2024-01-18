@@ -153,6 +153,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       dualTokenRewardApr={dualTokenRewardApr}
       farmCakePerSecond={farmCakePerSecond}
       totalMultipliers={totalMultipliers}
+      rewardCakePerSecond
       showTopMessageText={
         isUserIpPass
           ? null

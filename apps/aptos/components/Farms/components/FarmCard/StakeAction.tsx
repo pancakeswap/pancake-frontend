@@ -105,6 +105,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       dualTokenRewardApr={dualTokenRewardApr}
       farmCakePerSecond={farmCakePerSecond}
       totalMultipliers={totalMultipliers}
+      rewardCakePerSecond
       showTopMessageText={
         isUserIpPass
           ? null
