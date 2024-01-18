@@ -328,7 +328,7 @@ function V2PairMigrate({
   } | null>(null)
   const { approvalState, approveCallback } = useApproveCallback(
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
-    chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
+    migrator.address,
   )
 
   const pairContractRead = usePairContract(pair?.liquidityToken?.address)
