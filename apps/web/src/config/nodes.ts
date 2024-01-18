@@ -91,6 +91,7 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.BSC_TESTNET]: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
   [ChainId.ETHEREUM]: [
+    'https://rpc.tenderly.co/fork/8976e7bb-9ce8-4be4-a91e-50c1e896eee0',
     getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_ETH || '',
     getGroveUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',

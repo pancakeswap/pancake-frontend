@@ -4,7 +4,7 @@ import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { usePermitRequirements } from 'hooks/usePermitStatus'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { isUserRejected } from 'utils/sentry'
 import { Address, Hex, UserRejectedRequestError } from 'viem'
 import usePrevious from 'views/V3Info/hooks/usePrevious'
@@ -18,7 +18,7 @@ export const useConfirmModalStateV2 = (
   amount: CurrencyAmount<Currency> | undefined,
   approvalState: ApprovalState,
   permit2Signature: Permit2Signature | undefined,
-  setPermit2Signature: (signature: Permit2Signature | undefined) => void,
+  setPermit2Signature?: (signature: Permit2Signature | undefined) => void,
   spender?: Address,
 ) => {
   const { chainId } = useActiveChainId()
@@ -31,17 +31,20 @@ export const useConfirmModalStateV2 = (
     amount?.currency.isToken ? (amount as CurrencyAmount<Token>) : undefined,
     spender,
   )
+  const requirePermit2 = useMemo(() => {
+    return requirePermit && typeof setPermit2Signature === 'function'
+  }, [requirePermit, setPermit2Signature])
   const prevApprovalState = usePrevious(approvalState)
 
   const resetConfirmModalState = useCallback(() => {
     setConfirmModalState(ConfirmModalState.REVIEWING)
     setSwapErrorMessage(undefined)
     setTxHash(undefined)
-    setPermit2Signature(undefined)
+    setPermit2Signature?.(undefined)
   }, [setPermit2Signature])
 
   const generateRequiredSteps = useCallback(() => {
-    // console.debug('debug: generateRequiredSteps', { requireApprove, requireRevoke, requirePermit })
+    // console.debug('debug: generateRequiredSteps', { requireApprove, requireRevoke, requirePermit2 })
     const steps: PendingConfirmModalState[] = []
     if (requireRevoke) {
       steps.push(ConfirmModalState.RESETTING_APPROVAL)
@@ -49,12 +52,12 @@ export const useConfirmModalStateV2 = (
     if (requireApprove) {
       steps.push(ConfirmModalState.APPROVING_TOKEN)
     }
-    if (requirePermit) {
+    if (requirePermit2) {
       steps.push(ConfirmModalState.PERMITTING)
     }
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [requireApprove, requireRevoke, requirePermit])
+  }, [requireApprove, requireRevoke, requirePermit2])
 
   const updateStep = useCallback(() => {
     const steps = pendingModalSteps.current
@@ -90,7 +93,7 @@ export const useConfirmModalStateV2 = (
         resetConfirmModalState()
       } else {
         setSwapErrorMessage(typeof error === 'string' ? error : error?.message)
-        throw error
+        // throw error
       }
     }
   }, [onStep, resetConfirmModalState, updateStep])

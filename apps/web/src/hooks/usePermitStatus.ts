@@ -267,3 +267,103 @@ export const usePermit = (
     }
   }, [approvalState, execute, permitState])
 }
+
+export const usePermitOrApprove = (
+  amount: CurrencyAmount<Currency> | undefined,
+  spender?: Address,
+  onFinished?: () => Promise<SendTransactionResult | undefined>,
+  // only used for permit2
+  permit2signature?: Permit2Signature,
+  // only used for permit2
+  onUpdatePermit2Signature?: (signature: Permit2Signature) => void,
+) => {
+  const { account, chainId } = useAccountActiveChain()
+
+  const tokenAmount = amount?.currency.isToken ? (amount as CurrencyAmount<Token>) : undefined
+
+  const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(tokenAmount, spender)
+  const requirePermit2 = useMemo(() => {
+    return requirePermit && typeof onUpdatePermit2Signature === 'function'
+  }, [requirePermit, onUpdatePermit2Signature])
+  const permitState = useMemo((): PermitState => {
+    if (requireRevoke || requireApprove) {
+      return PermitState.IDLE
+    }
+    if (requirePermit2 && !permit2signature) {
+      return PermitState.APPROVING_PERMIT_AMOUNT
+    }
+    return PermitState.DONE
+  }, [requireRevoke, requireApprove, requirePermit2, permit2signature])
+  const { nonce } = usePermitStatus(tokenAmount?.currency, account, spender)
+  const permitCallback = useWritePermit(tokenAmount?.currency, spender, nonce)
+
+  const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, getPermit2Address(chainId))
+
+  // execution of the permit state machine
+  const execute = useCallback(async (): Promise<SendTransactionResult | undefined> => {
+    console.debug('debug execute', {
+      requireApprove,
+      requireRevoke,
+      requirePermit2,
+      permitState: PermitState[permitState],
+      approvalState: ApprovalState[approvalState],
+    })
+    // still pending confirming the approval, prevent trigger
+    if (approvalState === ApprovalState.PENDING) return undefined
+
+    // state case to match the permit flow
+    switch (permitState) {
+      // IDLE => APPROVING_ALLOWANCE
+      // if require revoke, revoke first
+      case PermitState.IDLE:
+        if (requireRevoke) {
+          return revokeCallback()
+        }
+        if (requireApprove) {
+          return approveCallback()
+        }
+        break
+      // REVOKING_ALLOWANCE => APPROVING_ALLOWANCE
+      case PermitState.REVOKING_ALLOWANCE:
+        if (approvalState === ApprovalState.NOT_APPROVED) {
+          return approveCallback()
+        }
+        break
+      // APPROVING_ALLOWANCE => APPROVING_PERMIT_AMOUNT
+      case PermitState.APPROVING_ALLOWANCE:
+      case PermitState.APPROVING_PERMIT_AMOUNT:
+        if (approvalState === ApprovalState.APPROVED) {
+          const sig = await permitCallback()
+          onUpdatePermit2Signature?.(sig)
+          return undefined
+        }
+        break
+      case PermitState.DONE:
+        if (onFinished) return onFinished()
+        break
+      default:
+        break
+    }
+
+    return undefined
+  }, [
+    approvalState,
+    approveCallback,
+    onFinished,
+    onUpdatePermit2Signature,
+    permitCallback,
+    permitState,
+    requireApprove,
+    requirePermit2,
+    requireRevoke,
+    revokeCallback,
+  ])
+
+  return useMemo(() => {
+    return {
+      execute,
+      permitState,
+      approvalState,
+    }
+  }, [approvalState, execute, permitState])
+}
