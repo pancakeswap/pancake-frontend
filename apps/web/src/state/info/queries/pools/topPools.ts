@@ -26,7 +26,6 @@ const fetchTopPools = async (chainName: MultiChainName, timestamp24hAgo: number)
       ? `where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: ${timestamp24hAgo} }`
       : `where: { date_gt: ${timestamp24hAgo}, token0_not_in: $blacklist, token1_not_in: $blacklist, dailyVolumeUSD_gt: 2000 }`
   if (isStableSwap) whereCondition = `where: { date_gt: ${timestamp24hAgo}}`
-  console.log(isStableSwap, 'isStableSwap')
   try {
     const query = gql`
       query topPools($blacklist: [String!]) {
