@@ -30,7 +30,7 @@ import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { Bet } from 'state/types'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
-import { useTokenPrice } from 'views/Predictions/hooks/useTokenPrice'
+import { useTokenUsdPriceBigNumber } from 'views/Predictions/hooks/useTokenPrice'
 import { useAccount } from 'wagmi'
 import { getPayout } from './History/helpers'
 
@@ -102,7 +102,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract(predictionsAddress, isNativeToken)
-  const tokenPrice = useTokenPrice(token)
+  const tokenPrice = useTokenUsdPriceBigNumber(token)
 
   const { epochs, total } = calculateClaimableRounds(history)
   const totalToken = tokenPrice.multipliedBy(total).toNumber()

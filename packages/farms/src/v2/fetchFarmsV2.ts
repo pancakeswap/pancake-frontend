@@ -1,14 +1,14 @@
-import { Address, PublicClient, formatUnits } from 'viem'
-import BN from 'bignumber.js'
-import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { TokenInfo, getCurrencyPricesByTokenInfoList } from '@pancakeswap/utils/getCurrencyPrice'
 import { ChainId } from '@pancakeswap/chains'
-import { getFarmsPrices, getFarmLpTokenPrice } from './farmPrices'
+import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { CurrencyParams, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/utils/getCurrencyPrice'
+import BN from 'bignumber.js'
+import { Address, PublicClient, formatUnits } from 'viem'
+import { FarmV2SupportedChainId, supportedChainIdV2 } from '../const'
+import { SerializedFarmConfig, isStableFarm } from '../types'
+import { getFarmLpTokenPrice, getFarmsPrices } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchStableFarmData } from './fetchStableFarmData'
-import { isStableFarm, SerializedFarmConfig } from '../types'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
-import { FarmV2SupportedChainId, supportedChainIdV2 } from '../const'
 
 const evmNativeStableLpMap: Record<
   FarmV2SupportedChainId,
@@ -131,7 +131,7 @@ export async function farmV2FetchFarms({
     decimals,
   )
 
-  const tokensWithoutPrice = farmsDataWithPrices.reduce<Map<string, TokenInfo>>((acc, cur) => {
+  const tokensWithoutPrice = farmsDataWithPrices.reduce<Map<string, CurrencyParams>>((acc, cur) => {
     if (cur.tokenPriceBusd === '0') {
       acc.set(cur.token.address, cur.token)
     }
@@ -139,17 +139,19 @@ export async function farmV2FetchFarms({
       acc.set(cur.quoteToken.address, cur.quoteToken)
     }
     return acc
-  }, new Map<string, TokenInfo>())
+  }, new Map<string, CurrencyParams>())
   const tokenInfoList = Array.from(tokensWithoutPrice.values())
   if (tokenInfoList.length) {
-    const prices = await getCurrencyPricesByTokenInfoList(tokenInfoList)
+    const prices = await getCurrencyListUsdPrice(tokenInfoList)
 
     return farmsDataWithPrices.map((f) => {
       if (f.tokenPriceBusd !== '0' && f.quoteTokenPriceBusd !== '0') {
         return f
       }
-      const tokenPrice = new BN(prices[f.token.address] ?? 0)
-      const quoteTokenPrice = new BN(prices[f.quoteToken.address] ?? 0)
+      const tokenKey = getCurrencyKey(f.token)
+      const quoteTokenKey = getCurrencyKey(f.quoteToken)
+      const tokenPrice = new BN(tokenKey ? prices[tokenKey] ?? 0 : 0)
+      const quoteTokenPrice = new BN(quoteTokenKey ? prices[quoteTokenKey] ?? 0 : 0)
       const lpTokenPrice = getFarmLpTokenPrice(f, tokenPrice, quoteTokenPrice, decimals)
       return {
         ...f,

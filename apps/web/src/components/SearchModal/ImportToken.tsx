@@ -26,9 +26,9 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useState } from 'react'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { useAddUserToken } from 'state/user/hooks'
-import useSWRImmutable from 'swr/immutable'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { chains } from 'utils/wagmi'
+import { useQuery } from '@tanstack/react-query'
 
 interface ImportProps {
   tokens: Token[]
@@ -47,10 +47,19 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
   // use for showing import source on inactive tokens
   const inactiveTokenList = useCombinedInactiveList()
 
-  const { data: hasRiskToken } = useSWRImmutable(tokens && ['has-risks', tokens], async () => {
-    const result = await Promise.all(tokens.map((token) => fetchRiskToken(token.address, token.chainId)))
-    return result.some((r) => r.riskLevel >= TOKEN_RISK.MEDIUM)
-  })
+  const { data: hasRiskToken } = useQuery(
+    ['has-risks', tokens],
+    async () => {
+      const result = await Promise.all(tokens.map((token) => fetchRiskToken(token.address, token.chainId)))
+      return result.some((r) => r.riskLevel >= TOKEN_RISK.MEDIUM)
+    },
+    {
+      enabled: Boolean(tokens),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+    },
+  )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('I have read the scanning result, understood the risk and want to proceed with token importing.'),

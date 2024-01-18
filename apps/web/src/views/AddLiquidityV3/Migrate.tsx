@@ -24,7 +24,6 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
@@ -33,7 +32,7 @@ import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancak
 import { Address, useContractRead, useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
-import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
+// import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -41,13 +40,18 @@ import { useIsTransactionPending, useTransactionAdder } from 'state/transactions
 import { calculateGasMargin } from 'utils'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { splitSignature } from 'utils/splitSignature'
-import { encodeFunctionData, Hex, toHex } from 'viem'
-import { isUserRejected } from 'utils/sentry'
+// import { splitSignature } from 'utils/splitSignature'
+import {
+  encodeFunctionData,
+  Hex,
+  // toHex
+} from 'viem'
+// import { isUserRejected } from 'utils/sentry'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
+import { useInitialRange } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useInitialRange'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 import RangeSelector from './formViews/V3FormView/components/RangeSelector'
 import RateToggle from './formViews/V3FormView/components/RateToggle'
@@ -120,11 +124,11 @@ function V2PairMigrate({
   const { account, chainId } = useAccountActiveChain()
   const { balance: pairBalance } = useTokenBalance(v2PairAddress)
 
-  const router = useRouter()
-
   const { reserve0, reserve1 } = pair
 
   const { signTypedDataAsync } = useSignTypedData()
+
+  useInitialRange(reserve0?.currency, reserve1?.currency)
 
   const token0Value = useMemo(
     () =>
@@ -155,7 +159,6 @@ function V2PairMigrate({
 
   // mint state
   const formState = useV3FormState()
-  const { rightRangeTypedValue, leftRangeTypedValue } = formState
 
   const [baseToken, setBaseToken] = useState(token0)
 
@@ -242,40 +245,8 @@ function V2PairMigrate({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feeAmount])
 
-  const { minPrice, maxPrice } = router.query
-
   const currency0 = unwrappedToken(token0)
   const currency1 = unwrappedToken(token1)
-
-  useEffect(() => {
-    if (
-      minPrice &&
-      typeof minPrice === 'string' &&
-      leftRangeTypedValue &&
-      typeof leftRangeTypedValue === 'object' &&
-      !leftRangeTypedValue.equalTo(minPrice)
-    ) {
-      onLeftRangeInput(tryParsePrice(token0, token1, minPrice))
-    }
-    if (
-      maxPrice &&
-      typeof maxPrice === 'string' &&
-      rightRangeTypedValue &&
-      typeof rightRangeTypedValue === 'object' &&
-      !rightRangeTypedValue.equalTo(maxPrice)
-    ) {
-      onRightRangeInput(tryParsePrice(token0, token1, maxPrice))
-    }
-  }, [
-    minPrice,
-    maxPrice,
-    onRightRangeInput,
-    onLeftRangeInput,
-    leftRangeTypedValue,
-    rightRangeTypedValue,
-    token0,
-    token1,
-  ])
 
   useEffect(() => {
     if (!isError && !isLoading && largestUsageFeeTier) {
@@ -353,7 +324,10 @@ function V2PairMigrate({
   const isMigrationPending = useIsTransactionPending(pendingMigrationHash ?? undefined)
 
   const migrator = useV3MigratorContract()
-  const [signatureData, setSignatureData] = useState<{
+  const [
+    signatureData,
+    // setSignatureData
+  ] = useState<{
     v: number
     r: `0x${string}`
     s: `0x${string}`
@@ -361,67 +335,68 @@ function V2PairMigrate({
   } | null>(null)
   const { approvalState, approveCallback } = useApproveCallback(
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
-    chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
+    migrator.address,
   )
 
   const pairContractRead = usePairContract(pair?.liquidityToken?.address)
 
   const approve = useCallback(async () => {
-    // try to gather a signature for permission
-    const nonce = await pairContractRead?.read.nonces([account!])
+    return approveCallback()
+    // // try to gather a signature for permission
+    // const nonce = await pairContractRead?.read.nonces([account!])
 
-    const EIP712Domain = [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
-    ]
-    const domain = {
-      name: 'Pancake LPs',
-      version: '1',
-      chainId,
-      verifyingContract: pair.liquidityToken.address as `0x${string}`,
-    }
-    const Permit = [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
-      { name: 'value', type: 'uint256' },
-      { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' },
-    ]
-    const message = {
-      owner: account,
-      spender: migrator.address,
-      value: pairBalance.toString(),
-      nonce: toHex(nonce ?? 0),
-      deadline: Number(deadline),
-    }
+    // const EIP712Domain = [
+    //   { name: 'name', type: 'string' },
+    //   { name: 'version', type: 'string' },
+    //   { name: 'chainId', type: 'uint256' },
+    //   { name: 'verifyingContract', type: 'address' },
+    // ]
+    // const domain = {
+    //   name: 'Pancake LPs',
+    //   version: '1',
+    //   chainId,
+    //   verifyingContract: pair.liquidityToken.address as `0x${string}`,
+    // }
+    // const Permit = [
+    //   { name: 'owner', type: 'address' },
+    //   { name: 'spender', type: 'address' },
+    //   { name: 'value', type: 'uint256' },
+    //   { name: 'nonce', type: 'uint256' },
+    //   { name: 'deadline', type: 'uint256' },
+    // ]
+    // const message = {
+    //   owner: account,
+    //   spender: migrator.address,
+    //   value: pairBalance.toString(),
+    //   nonce: toHex(nonce ?? 0),
+    //   deadline: Number(deadline),
+    // }
 
-    signTypedDataAsync({
-      // @ts-ignore
-      domain,
-      primaryType: 'Permit',
-      types: {
-        EIP712Domain,
-        Permit,
-      },
-      message,
-    })
-      .then(splitSignature)
-      .then((signature) => {
-        setSignatureData({
-          v: signature.v,
-          r: signature.r,
-          s: signature.s,
-          deadline: Number(deadline),
-        })
-      })
-      .catch((err) => {
-        // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-        if (!isUserRejected(err)) {
-          approveCallback()
-        }
-      })
+    // signTypedDataAsync({
+    //   // @ts-ignore
+    //   domain,
+    //   primaryType: 'Permit',
+    //   types: {
+    //     EIP712Domain,
+    //     Permit,
+    //   },
+    //   message,
+    // })
+    //   .then(splitSignature)
+    //   .then((signature) => {
+    //     setSignatureData({
+    //       v: signature.v,
+    //       r: signature.r,
+    //       s: signature.s,
+    //       deadline: Number(deadline),
+    //     })
+    //   })
+    //   .catch((err) => {
+    //     // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
+    //     if (!isUserRejected(err)) {
+    //       approveCallback()
+    //     }
+    //   })
   }, [
     pairContractRead,
     account,
@@ -523,7 +498,7 @@ function V2PairMigrate({
                 type: 'migrate-v3',
                 translatableSummary: {
                   text: 'Migrated %symbolA% %symbolB% V2 liquidity to V3',
-                  data: { symbolA: currency0.symbol, symbolB: currency1.symbol },
+                  data: { symbolA: currency0?.symbol, symbolB: currency1?.symbol },
                 },
               },
             )
@@ -672,10 +647,12 @@ function V2PairMigrate({
                 <AutoColumn gap="sm" style={{ marginTop: '12px' }}>
                   <RowBetween>
                     <Text>
-                      <Text>V2 {invertPrice ? currency1.symbol : currency0.symbol} Price:</Text>{' '}
+                      <Text>
+                        V2 {invertPrice ? currency1?.symbol : currency0?.symbol} {t('Price')}:
+                      </Text>{' '}
                       {invertPrice
-                        ? `${v2SpotPrice?.invert()?.toSignificant(6)} ${currency0.symbol}`
-                        : `${v2SpotPrice?.toSignificant(6)} ${currency1.symbol}`}
+                        ? `${v2SpotPrice?.invert()?.toSignificant(6)} ${currency0?.symbol}`
+                        : `${v2SpotPrice?.toSignificant(6)} ${currency1?.symbol}`}
                     </Text>
                   </RowBetween>
                 </AutoColumn>
@@ -686,20 +663,24 @@ function V2PairMigrate({
             <GreyCard>
               <AutoColumn gap="sm">
                 <RowBetween>
-                  <Text fontSize={14}>V2 {invertPrice ? currency1.symbol : currency0.symbol} Price:</Text>
+                  <Text fontSize={14}>
+                    V2 {invertPrice ? currency1?.symbol : currency0?.symbol} {t('Price')}:
+                  </Text>
                   <Text fontSize={14}>
                     {invertPrice
-                      ? `${v2SpotPrice?.invert()?.toSignificant(6)} ${currency0.symbol}`
-                      : `${v2SpotPrice?.toSignificant(6)} ${currency1.symbol}`}
+                      ? `${v2SpotPrice?.invert()?.toSignificant(6)} ${currency0?.symbol}`
+                      : `${v2SpotPrice?.toSignificant(6)} ${currency1?.symbol}`}
                   </Text>
                 </RowBetween>
 
                 <RowBetween>
-                  <Text fontSize={14}>V3 {invertPrice ? currency1.symbol : currency0.symbol} Price:</Text>
+                  <Text fontSize={14}>
+                    V3 {invertPrice ? currency1?.symbol : currency0?.symbol} {t('Price')}:
+                  </Text>
                   <Text fontSize={14}>
                     {invertPrice
-                      ? `${v3SpotPrice?.invert()?.toSignificant(6)} ${currency0.symbol}`
-                      : `${v3SpotPrice?.toSignificant(6)} ${currency1.symbol}`}
+                      ? `${v3SpotPrice?.invert()?.toSignificant(6)} ${currency0?.symbol}`
+                      : `${v3SpotPrice?.toSignificant(6)} ${currency1?.symbol}`}
                   </Text>
                 </RowBetween>
 
@@ -721,11 +702,13 @@ function V2PairMigrate({
             </GreyCard>
           ) : !noLiquidity && v3SpotPrice ? (
             <RowBetween>
-              <Text fontSize={14}>V3 {invertPrice ? currency1.symbol : currency0.symbol} Price:</Text>
+              <Text fontSize={14}>
+                V3 {invertPrice ? currency1?.symbol : currency0?.symbol} {t('Price')}:
+              </Text>
               <Text fontSize={14}>
                 {invertPrice
-                  ? `${v3SpotPrice?.invert()?.toSignificant(6)} ${currency0.symbol}`
-                  : `${v3SpotPrice?.toSignificant(6)} ${currency1.symbol}`}
+                  ? `${v3SpotPrice?.invert()?.toSignificant(6)} ${currency0?.symbol}`
+                  : `${v3SpotPrice?.toSignificant(6)} ${currency1?.symbol}`}
               </Text>
             </RowBetween>
           ) : null}

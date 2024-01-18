@@ -87,6 +87,14 @@ export const arbitrumTokens = {
     'Pendle',
     'https://www.pendle.finance/',
   ),
+  mpendle: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xB688BA096b7Bb75d7841e47163Cd12D18B36A5bF',
+    18,
+    'mPENDLE',
+    'mPendle',
+    'https://www.pendle.magpiexyz.io/stake',
+  ),
   rdnt: new ERC20Token(
     ChainId.ARBITRUM_ONE,
     '0x3082CC23568eA640225c2467653dB90e9250AaA0',

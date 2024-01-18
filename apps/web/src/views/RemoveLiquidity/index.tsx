@@ -32,7 +32,7 @@ import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/useLPApr'
 import { formattedCurrencyAmount } from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
-import { splitSignature } from 'utils/splitSignature'
+// import { splitSignature } from 'utils/splitSignature'
 import { Hash } from 'viem'
 
 import { MinimalPositionCard } from 'components/PositionCard'
@@ -154,61 +154,63 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       throw new Error('missing liquidity amount')
     }
 
-    // try to gather a signature for permission
-    const nonce = await pairContractRead.read.nonces([account])
+    return approveCallback()
 
-    const EIP712Domain = [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
-    ]
-    const domain = {
-      name: 'Pancake LPs',
-      version: '1',
-      chainId,
-      verifyingContract: pair.liquidityToken.address as `0x${string}`,
-    }
-    const Permit = [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
-      { name: 'value', type: 'uint256' },
-      { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' },
-    ]
-    const message = {
-      owner: account,
-      spender: chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
-      value: liquidityAmount.quotient.toString(),
-      nonce,
-      deadline: Number(deadline),
-    }
+    // // try to gather a signature for permission
+    // const nonce = await pairContractRead.read.nonces([account])
 
-    signTypedDataAsync({
-      // @ts-ignore
-      domain,
-      primaryType: 'Permit',
-      types: {
-        EIP712Domain,
-        Permit,
-      },
-      message,
-    })
-      .then(splitSignature)
-      .then((signature) => {
-        setSignatureData({
-          v: signature.v,
-          r: signature.r,
-          s: signature.s,
-          deadline: Number(deadline),
-        })
-      })
-      .catch((err) => {
-        // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-        if (!isUserRejected(err)) {
-          approveCallback()
-        }
-      })
+    // const EIP712Domain = [
+    //   { name: 'name', type: 'string' },
+    //   { name: 'version', type: 'string' },
+    //   { name: 'chainId', type: 'uint256' },
+    //   { name: 'verifyingContract', type: 'address' },
+    // ]
+    // const domain = {
+    //   name: 'Pancake LPs',
+    //   version: '1',
+    //   chainId,
+    //   verifyingContract: pair.liquidityToken.address as `0x${string}`,
+    // }
+    // const Permit = [
+    //   { name: 'owner', type: 'address' },
+    //   { name: 'spender', type: 'address' },
+    //   { name: 'value', type: 'uint256' },
+    //   { name: 'nonce', type: 'uint256' },
+    //   { name: 'deadline', type: 'uint256' },
+    // ]
+    // const message = {
+    //   owner: account,
+    //   spender: chainId ? V2_ROUTER_ADDRESS[chainId] : undefined,
+    //   value: liquidityAmount.quotient.toString(),
+    //   nonce,
+    //   deadline: Number(deadline),
+    // }
+
+    // signTypedDataAsync({
+    //   // @ts-ignore
+    //   domain,
+    //   primaryType: 'Permit',
+    //   types: {
+    //     EIP712Domain,
+    //     Permit,
+    //   },
+    //   message,
+    // })
+    //   .then(splitSignature)
+    //   .then((signature) => {
+    //     setSignatureData({
+    //       v: signature.v,
+    //       r: signature.r,
+    //       s: signature.s,
+    //       deadline: Number(deadline),
+    //     })
+    //   })
+    //   .catch((err) => {
+    //     // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
+    //     if (!isUserRejected(err)) {
+    //       approveCallback()
+    //     }
+    //   })
   }
 
   // wrapped onUserInput to clear signatures

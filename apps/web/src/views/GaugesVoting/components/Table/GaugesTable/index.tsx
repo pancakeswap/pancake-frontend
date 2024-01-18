@@ -46,20 +46,23 @@ export const GaugesTable: React.FC<
     setSortBy(by)
   }
 
-  const Row = ({ data: rows, index, style }): JSX.Element => {
-    const row = rows[index]
-    return (
-      <TableRow
-        style={style}
-        data={row}
-        locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
-        selectable={selectable}
-        selected={selectRows?.some((r) => r.hash === row.hash)}
-        onSelect={onRowSelect}
-        totalGaugesWeight={totalGaugesWeight}
-      />
-    )
-  }
+  const Row = useCallback(
+    ({ data: rows, index, style }): JSX.Element => {
+      const row = rows[index]
+      return (
+        <TableRow
+          style={style}
+          data={row}
+          locked={selectRows?.find((r) => r.hash === row.hash)?.locked}
+          selectable={selectable}
+          selected={selectRows?.some((r) => r.hash === row.hash)}
+          onSelect={onRowSelect}
+          totalGaugesWeight={totalGaugesWeight}
+        />
+      )
+    },
+    [onRowSelect, selectRows, selectable, totalGaugesWeight],
+  )
 
   const itemKey = useCallback((index: number, row: Gauge[]) => row[index].hash, [])
   const expandHeight = useMemo(

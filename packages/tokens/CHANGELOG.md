@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.0
+
+### Minor Changes
+
+- 205c08713: List mPENDLE on arbitrum
+
 ## 0.5.8
 
 ### Patch Changes
