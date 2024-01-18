@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
+import BigNumber from "bignumber.js";
 import { useMemo, useState } from "react";
 import { styled } from "styled-components";
 
@@ -89,6 +90,18 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   } = useTooltip(multiplierTooltipContent, { placement: "top-end", tooltipOffset: [20, 10] });
 
   const gridRowCount = isFarm ? 4 : 2;
+
+  const cakeRewardAPRDisplay = useMemo(() => {
+    let total = new BigNumber(apr);
+    // TODO: In APTOS APR is combine APR (Cake APR + Apt APR + lp APR).
+    // Soon EVM (v2 Farm & pools) also will change to  combine APR.
+    if (dualTokenRewardApr && lpRewardsApr) {
+      total = new BigNumber(apr).minus(dualTokenRewardApr).minus(lpRewardsApr ?? 0);
+    }
+
+    return total.toNumber();
+  }, [apr, dualTokenRewardApr, lpRewardsApr]);
+
   const lpRewardsAPRDisplay = useMemo(() => {
     return isFarm ? (lpRewardsApr ? Math.max(lpRewardsApr).toFixed(2) : null) : null;
   }, [isFarm, lpRewardsApr]);
@@ -123,7 +136,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   {`*${t("Base APR (CAKE yield only)")}`}
                 </Text>
                 <Text small textAlign="right">
-                  {`${(apr - Number(dualTokenRewardApr ?? 0)).toLocaleString("en-US", {
+                  {`${cakeRewardAPRDisplay?.toLocaleString("en-US", {
                     maximumFractionDigits: 2,
                   })}%`}
                 </Text>
