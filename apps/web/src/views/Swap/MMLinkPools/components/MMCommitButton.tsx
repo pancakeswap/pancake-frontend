@@ -76,15 +76,9 @@ export function MMSwapCommitButton({
 
   const { t } = useTranslation()
   // the callback to execute the swap
-  // @ts-ignore
-  const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq, recipient)
+  const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq ?? undefined, recipient ?? undefined)
 
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
-    rfqTrade.trade,
-    recipient,
-    // @ts-ignore
-    swapCalls,
-  )
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(rfqTrade.trade, recipient, swapCalls)
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm?: SmartRouterTrade<TradeType>
     attemptingTxn: boolean

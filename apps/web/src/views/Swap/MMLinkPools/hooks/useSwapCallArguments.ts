@@ -1,10 +1,10 @@
 import { SwapParameters, TradeType } from '@pancakeswap/sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { toHex } from '@pancakeswap/v3-sdk'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { MM_SIGNER, NATIVE_CURRENCY_ADDRESS } from '../constants'
 import { RFQResponse } from '../types'
 import { useMMSwapContract } from '../utils/exchange'
@@ -22,15 +22,15 @@ export interface SwapCall {
  */
 export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | null | undefined, // trade to execute, required
-  rfq: RFQResponse['message'],
-  recipientAddress: string, // the address of the recipient of the trade, or null if swap should be returned to sender
+  rfq: RFQResponse['message'] | undefined,
+  recipientAddress: string | undefined, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
   const { account, chainId } = useAccountActiveChain()
 
   const recipient = recipientAddress ?? account
   const deadline = useTransactionDeadline()
   const contract = useMMSwapContract()
-  const mmSigner = MM_SIGNER?.[chainId]?.[rfq?.mmId] ?? ''
+  const mmSigner = chainId && rfq?.mmId ? MM_SIGNER?.[chainId]?.[rfq?.mmId] ?? '' : ''
 
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId || !deadline || !mmSigner || !rfq) return []
@@ -38,7 +38,7 @@ export function useSwapCallArguments(
     if (!contract) {
       return []
     }
-    const swapMethods = []
+    const swapMethods: SwapParameters[] = []
 
     swapMethods.push(swapCallParameters(mmSigner, trade, rfq, recipient))
 
@@ -81,8 +81,7 @@ function swapCallParameters(
 
   return {
     methodName,
-    // @ts-ignore
     args,
-    value: value ? toHex(value) : undefined,
+    value: value ? toHex(value) : toHex(0),
   }
 }
