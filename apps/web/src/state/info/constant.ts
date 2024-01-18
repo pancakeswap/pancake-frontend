@@ -113,6 +113,10 @@ export const multiChainQueryStableClient = {
   ARB: infoStableSwapClients[ChainId.ARBITRUM_ONE],
 }
 
+export const multiChanStableSwapStartBlock = {
+  ARB: 169319653,
+}
+
 export const multiChainScan: Record<MultiChainName, string> = {
   BSC: bsc.blockExplorers.etherscan.name,
   ETH: mainnet.blockExplorers.etherscan.name,
