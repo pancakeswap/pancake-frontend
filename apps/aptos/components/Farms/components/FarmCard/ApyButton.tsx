@@ -5,6 +5,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
 import { useFarmUserInfoCache } from 'state/farms/hook'
 import { FARM_DEFAULT_DECIMALS } from '../../constants'
 
@@ -68,11 +69,15 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
         {t('APR (incl. LP rewards)')}: <Text style={{ display: 'inline-block' }}>{`${displayApr}%`}</Text>
       </Text>
       <Text ml="5px">
-        *{t('Base APR (CAKE yield only)')}: {`${apr.toFixed(2)}%`}
+        {`*${t('Base APR (CAKE yield only)')}: ${apr.toLocaleString('en-US', {
+          maximumFractionDigits: 2,
+        })}%`}
       </Text>
       {dualTokenRewardApr > 0 && (
         <Text ml="5px">
-          *{t('Base APR (APT yield only)')}: {`${dualTokenRewardApr.toFixed(2)}%`}
+          {`*${t('Base APR (APT yield only)')}: ${dualTokenRewardApr.toLocaleString('en-US', {
+            maximumFractionDigits: 2,
+          })}%`}
         </Text>
       )}
       <Text ml="5px">
@@ -84,6 +89,15 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     },
   )
 
+  const totalApr = useMemo(() => {
+    let finalApr = apr ?? 0
+    if (dualTokenRewardApr) {
+      finalApr = new BigNumber(dualTokenRewardApr).plus(apr ?? 0).toNumber() ?? 0
+    }
+
+    return finalApr
+  }, [dualTokenRewardApr, apr])
+
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
       account={account || ''}
@@ -94,7 +108,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       stakingTokenPrice={lpTokenPrice.toNumber()}
       stakingTokenDecimals={FARM_DEFAULT_DECIMALS}
       earningTokenPrice={cakePrice.toNumber()}
-      apr={apr}
+      apr={totalApr}
       multiplier={multiplier}
       displayApr={displayApr}
       linkHref={addLiquidityUrl}

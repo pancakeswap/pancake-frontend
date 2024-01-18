@@ -5,6 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
+import BigNumber from 'bignumber.js'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -12,6 +13,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 
 const IconButtonWrapper = styled.div`
@@ -81,6 +83,15 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     }
   }
 
+  const totalApr = useMemo(() => {
+    let finalApr = apr ?? 0
+    if (dualTokenRewardApr) {
+      finalApr = new BigNumber(dualTokenRewardApr).plus(apr ?? 0).toNumber() ?? 0
+    }
+
+    return finalApr
+  }, [dualTokenRewardApr, apr])
+
   const [onPresentDeposit] = useModal(
     <FarmWidget.DepositModal
       account={account || ''}
@@ -93,7 +104,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       multiplier={multiplier}
       lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
-      apr={apr}
+      apr={totalApr}
       displayApr={displayApr}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}

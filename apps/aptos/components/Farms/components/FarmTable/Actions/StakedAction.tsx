@@ -129,6 +129,15 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     }
   }
 
+  const totalApr = useMemo(() => {
+    let finalApr = apr ?? 0
+    if (dualTokenRewardApr) {
+      finalApr = new BigNumber(dualTokenRewardApr).plus(apr ?? 0).toNumber() ?? 0
+    }
+
+    return finalApr
+  }, [dualTokenRewardApr, apr])
+
   const [onPresentDeposit] = useModal(
     <FarmWidget.DepositModal
       account={account || ''}
@@ -137,7 +146,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       max={tokenBalance}
       lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
-      apr={apr}
+      apr={totalApr}
       displayApr={displayApr}
       stakedBalance={stakedBalance}
       onConfirm={handleStake}

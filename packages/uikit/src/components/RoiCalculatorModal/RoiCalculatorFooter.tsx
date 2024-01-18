@@ -92,10 +92,10 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
 
     return isFarm
       ? Number.isFinite(displayAprNumber) && Number.isFinite(apr)
-        ? Math.max(displayAprNumber - Number(dualTokenRewardApr ?? 0) - apr, 0).toFixed(2)
+        ? Math.max(displayAprNumber - apr, 0).toFixed(2)
         : null
       : null;
-  }, [isFarm, displayApr, apr, dualTokenRewardApr]);
+  }, [isFarm, displayApr, apr]);
 
   return (
     <Footer p="16px" flexDirection="column">
@@ -127,7 +127,10 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   *{t("Base APR (CAKE yield only)")}
                 </Text>
                 <Text small textAlign="right">
-                  {apr.toFixed(2)}%
+                  {apr.toLocaleString("en-US", {
+                    maximumFractionDigits: 2,
+                  })}
+                  %
                 </Text>
                 {dualTokenRewardApr && (
                   <>
@@ -135,7 +138,9 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                       *{t("Base APR (APT yield only)")}
                     </Text>
                     <Text small textAlign="right">
-                      {`${dualTokenRewardApr.toFixed(2)}%`}
+                      {`${dualTokenRewardApr.toLocaleString("en-US", {
+                        maximumFractionDigits: 2,
+                      })}%`}
                     </Text>
                   </>
                 )}
