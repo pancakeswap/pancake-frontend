@@ -1,6 +1,6 @@
-import { WETH9, ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { USDC, USDT, CAKE } from './common'
+import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
+import { CAKE, USDC, USDT } from './common'
 
 export const zksyncTokens = {
   weth: WETH9[ChainId.ZKSYNC],
@@ -39,5 +39,13 @@ export const zksyncTokens = {
     'USD+',
     'USD Plus',
     'http://usdplus.co',
+  ),
+  wstETH: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x703b52F2b28fEbcB60E1372858AF5b18849FE867',
+    18,
+    'wstETH',
+    'Wrapped liquid staked Ether 2.0',
+    'https://lido.fi/',
   ),
 }
