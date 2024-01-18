@@ -184,14 +184,14 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           </FarmMobileCell>
         </tr>
         <StyledTr onClick={toggleActionPanel}>
-          <td width="33%">
+          <td width="50%">
             <EarnedMobileCell>
               <CellLayout label={t('Earned')}>
                 <EarnedUsdPrice {...props.earned} />
               </CellLayout>
             </EarnedMobileCell>
           </td>
-          <td width="33%">
+          <td>
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 <Apr
@@ -203,7 +203,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               </CellLayout>
             </AprMobileCell>
           </td>
-          <td width="33%">
+          <td width="10%">
             <CellInner style={{ justifyContent: 'flex-end' }}>
               <Details actionPanelToggled={actionPanelExpanded} />
             </CellInner>
