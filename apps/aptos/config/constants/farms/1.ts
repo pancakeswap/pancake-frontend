@@ -65,10 +65,6 @@ const farms: SerializedFarmConfig[] = [
       token: mainnetTokens.apt,
       aptIncentiveInfo: 0,
     },
-    dual: {
-      token: mainnetTokens.apt,
-      aptIncentiveInfo: 0,
-    },
   },
   {
     pid: 21,
