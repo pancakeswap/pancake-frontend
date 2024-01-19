@@ -14,8 +14,8 @@ export const InfoPageLayout = ({ children }) => {
   const isV3 = router?.pathname?.includes(v3InfoPath)
   const { t } = useTranslation()
 
-  const subMenuItems = useMemo(
-    () => [
+  const subMenuItems = useMemo(() => {
+    const config = [
       {
         label: t('V3'),
         href: `/info/v3${chainPath}`,
@@ -24,13 +24,14 @@ export const InfoPageLayout = ({ children }) => {
         label: t('V2'),
         href: `/info${chainPath}`,
       },
-      Boolean(multiChainQueryStableClient[chainName]) && {
+    ]
+    if (multiChainQueryStableClient[chainName])
+      config.push({
         label: t('StableSwap'),
         href: `/info${chainPath}?type=stableSwap`,
-      },
-    ],
-    [t, chainPath, chainName],
-  )
+      })
+    return config
+  }, [t, chainPath, chainName])
 
   return (
     <>

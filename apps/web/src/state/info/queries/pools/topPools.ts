@@ -18,7 +18,8 @@ interface TopPoolsResponse {
 /**
  * Initial pools to display on the home page
  */
-const fetchTopPools = async (chainName: MultiChainName, timestamp24hAgo: number): Promise<string[]> => {
+const fetchTopPools = async (chainName: MultiChainName | null, timestamp24hAgo: number): Promise<string[]> => {
+  if (!chainName) return []
   const isStableSwap = checkIsStableSwap()
   const firstCount = isStableSwap ? 100 : 30
   let whereCondition =
@@ -54,7 +55,7 @@ const fetchTopPools = async (chainName: MultiChainName, timestamp24hAgo: number)
  * Fetch top addresses by volume
  */
 const useTopPoolAddresses = (): string[] => {
-  const [topPoolAddresses, setTopPoolAddresses] = useState([])
+  const [topPoolAddresses, setTopPoolAddresses] = useState<string[]>([])
   const [timestamp24hAgo] = getDeltaTimestamps()
   const chainName = useGetChainName()
 
