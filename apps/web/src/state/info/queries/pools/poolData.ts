@@ -12,7 +12,6 @@ import {
   checkIsStableSwap,
   getMultiChainQueryEndPointWithStableSwap,
   multiChainQueryMainToken,
-  multiChanStableSwapStartBlock,
 } from '../../constant'
 import { fetchTopPoolAddresses } from './topPools'
 
@@ -107,7 +106,7 @@ export const fetchPoolData = async (
   chainName: MultiChainName = 'BSC',
 ) => {
   const isStableSwap = checkIsStableSwap()
-  const startBlock = isStableSwap ? multiChanStableSwapStartBlock[chainName] : undefined
+  const startBlock = isStableSwap ? STABLESWAP_SUBGRAPHS_START_BLOCK[chainName] : undefined
   try {
     const query = gql`
       query pools {

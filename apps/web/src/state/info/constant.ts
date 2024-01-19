@@ -113,7 +113,7 @@ export const multiChainQueryStableClient = {
   ARB: infoStableSwapClients[ChainId.ARBITRUM_ONE],
 }
 
-export const multiChanStableSwapStartBlock = {
+export const STABLESWAP_SUBGRAPHS_START_BLOCK = {
   ARB: 169319653,
 }
 

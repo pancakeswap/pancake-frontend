@@ -9,10 +9,10 @@ import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelp
 import {
   MultiChainName,
   MultiChainNameExtend,
+  STABLESWAP_SUBGRAPHS_START_BLOCK,
   checkIsStableSwap,
   getMultiChainQueryEndPointWithStableSwap,
   multiChainQueryMainToken,
-  multiChanStableSwapStartBlock,
 } from '../../constant'
 import { fetchTokenAddresses } from './topTokens'
 
@@ -85,7 +85,7 @@ const fetchTokenData = async (
   tokenAddresses: string[],
 ) => {
   const isStableSwap = checkIsStableSwap()
-  const startBlock = isStableSwap ? multiChanStableSwapStartBlock[chainName] : undefined
+  const startBlock = isStableSwap ? STABLESWAP_SUBGRAPHS_START_BLOCK[chainName] : undefined
   try {
     const query = gql`
       query tokens {
