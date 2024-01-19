@@ -15,20 +15,7 @@ interface TopPoolsResponse {
   }[]
 }
 
-/**
- * Initial pools to display on the home page
- */
-const fetchTopPools = async (chainName: MultiChainName | null, timestamp24hAgo: number): Promise<string[]> => {
-  if (!chainName) return []
-  const isStableSwap = checkIsStableSwap()
-  const firstCount = isStableSwap ? 100 : 30
-  let whereCondition =
-    chainName === 'BSC'
-      ? `where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: ${timestamp24hAgo} }`
-      : `where: { date_gt: ${timestamp24hAgo}, token0_not_in: $blacklist, token1_not_in: $blacklist, dailyVolumeUSD_gt: 2000 }`
-  if (isStableSwap) whereCondition = ''
-  try {
-    const query = gql`
+const getQuery = (firstCount: number, whereCondition: string) => gql`
       query topPools($blacklist: [String!]) {
         pairDayDatas(
           first: ${firstCount}
@@ -40,9 +27,31 @@ const fetchTopPools = async (chainName: MultiChainName | null, timestamp24hAgo: 
         }
       }
     `
-    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(query, {
+
+/**
+ * Initial pools to display on the home page
+ */
+const fetchTopPools = async (chainName: MultiChainName | null, timestamp24hAgo: number): Promise<string[]> => {
+  if (!chainName) return []
+  const isStableSwap = checkIsStableSwap()
+  const firstCount = isStableSwap ? 100 : 30
+  let whereCondition =
+    chainName === 'BSC'
+      ? `where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: ${timestamp24hAgo} }`
+      : `where: { date_gt: ${timestamp24hAgo}, token0_not_in: $blacklist, token1_not_in: $blacklist, dailyVolumeUSD_gt: 2000 }`
+  if (isStableSwap) whereCondition = `where: { date_gt: ${timestamp24hAgo}}`
+  try {
+    const query = getQuery(firstCount, whereCondition)
+    let data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(query, {
       blacklist: multiChainTokenBlackList[chainName],
     })
+    if (data.pairDayDatas.length === 0)
+      data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(
+        getQuery(firstCount, ''),
+        {
+          blacklist: multiChainTokenBlackList[chainName],
+        },
+      )
     // pairDayDatas id has compound id "0xPOOLADDRESS-NUMBERS", extracting pool address with .split('-')
     return data.pairDayDatas.map((p) => p.id.split('-')[0])
   } catch (error) {
