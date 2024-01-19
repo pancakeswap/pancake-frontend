@@ -1,7 +1,7 @@
-import { Pair, ChainId } from '@pancakeswap/aptos-swap-sdk'
+import { ChainId, Pair } from '@pancakeswap/aptos-swap-sdk'
 import type { SerializedFarmConfig } from '@pancakeswap/farms'
-import { testnetTokens } from '../tokens/index'
 import { L0_USDC } from '../../coins'
+import { testnetTokens } from '../tokens/index'
 
 const farms: SerializedFarmConfig[] = [
   /**

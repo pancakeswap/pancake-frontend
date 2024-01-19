@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
+import { Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import { styled } from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { Skeleton } from '@pancakeswap/uikit'
 import ApyButton from '../FarmCard/ApyButton'
 
 export interface AprProps {
@@ -22,6 +22,7 @@ export interface AprProps {
   useTooltipText?: boolean
   farmCakePerSecond?: string
   totalMultipliers?: string
+  dualTokenRewardApr?: number
 }
 
 const Container = styled.div`
@@ -63,6 +64,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   useTooltipText = true,
   farmCakePerSecond,
   totalMultipliers,
+  dualTokenRewardApr,
 }) => {
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
@@ -86,6 +88,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           hideButton={hideButton}
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
+          dualTokenRewardApr={dualTokenRewardApr}
         />
       ) : (
         <AprWrapper>

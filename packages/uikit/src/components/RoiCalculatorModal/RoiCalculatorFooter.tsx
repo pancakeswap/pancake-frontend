@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
+import BigNumber from "bignumber.js";
 import { useMemo, useState } from "react";
 import { styled } from "styled-components";
 
@@ -38,6 +39,7 @@ export const BulletList = styled.ul`
 interface RoiCalculatorFooterProps {
   isFarm: boolean;
   apr?: number;
+  lpRewardsApr?: number;
   apy?: number;
   displayApr?: string;
   autoCompoundFrequency: number;
@@ -51,6 +53,7 @@ interface RoiCalculatorFooterProps {
   stableLpFee?: number;
   farmCakePerSecond?: string;
   totalMultipliers?: string;
+  dualTokenRewardApr?: number;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -69,6 +72,8 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   stableLpFee,
   farmCakePerSecond,
   totalMultipliers,
+  dualTokenRewardApr,
+  lpRewardsApr,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -85,15 +90,21 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   } = useTooltip(multiplierTooltipContent, { placement: "top-end", tooltipOffset: [20, 10] });
 
   const gridRowCount = isFarm ? 4 : 2;
-  const lpRewardsAPR = useMemo(
-    () =>
-      isFarm
-        ? Number.isFinite(Number(displayApr)) && Number.isFinite(apr)
-          ? Math.max(Number(displayApr) - apr, 0).toFixed(2)
-          : null
-        : null,
-    [isFarm, displayApr, apr]
-  );
+
+  const cakeRewardAPRDisplay = useMemo(() => {
+    let total = new BigNumber(apr);
+    // TODO: In APTOS APR is combine APR (Cake APR + Apt APR + lp APR).
+    // Soon EVM (v2 Farm & pools) also will change to  combine APR.
+    if (dualTokenRewardApr !== undefined && lpRewardsApr) {
+      total = new BigNumber(apr).minus(Number(dualTokenRewardApr)).minus(lpRewardsApr ?? 0);
+    }
+
+    return total.toNumber();
+  }, [apr, dualTokenRewardApr, lpRewardsApr]);
+
+  const lpRewardsAPRDisplay = useMemo(() => {
+    return isFarm ? (lpRewardsApr ? Math.max(lpRewardsApr).toFixed(2) : null) : null;
+  }, [isFarm, lpRewardsApr]);
 
   return (
     <Footer p="16px" flexDirection="column">
@@ -122,16 +133,30 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   {displayApr}%
                 </Text>
                 <Text color="textSubtle" small>
-                  *{t("Base APR (CAKE yield only)")}
+                  {`*${t("Base APR (CAKE yield only)")}`}
                 </Text>
                 <Text small textAlign="right">
-                  {apr.toFixed(2)}%
+                  {`${cakeRewardAPRDisplay?.toLocaleString("en-US", {
+                    maximumFractionDigits: 2,
+                  })}%`}
                 </Text>
+                {Number(dualTokenRewardApr) > 0 && (
+                  <>
+                    <Text color="textSubtle" small>
+                      {`*${t("Base APR (APT yield only)")}`}
+                    </Text>
+                    <Text small textAlign="right">
+                      {`${dualTokenRewardApr?.toLocaleString("en-US", {
+                        maximumFractionDigits: 2,
+                      })}%`}
+                    </Text>
+                  </>
+                )}
                 <Text color="textSubtle" small>
                   *{t("LP Rewards APR")}
                 </Text>
                 <Text small textAlign="right">
-                  {lpRewardsAPR === "0" || !lpRewardsAPR ? "-" : lpRewardsAPR}%
+                  {lpRewardsAPRDisplay === "0" || !lpRewardsAPRDisplay ? "-" : lpRewardsAPRDisplay}%
                 </Text>
               </>
             )}

@@ -1,13 +1,11 @@
-import { useRef, useMemo } from 'react'
-import { styled } from 'styled-components'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { RowType } from '@pancakeswap/uikit'
+import latinise from '@pancakeswap/utils/latinise'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import latinise from '@pancakeswap/utils/latinise'
-import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { useMemo, useRef } from 'react'
+import { styled } from 'styled-components'
 import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
 
@@ -92,7 +90,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
               }
               return 0
             case 'earned':
-              return a.original.earned.earnings - b.original.earned.earnings
+              return Number(a?.original?.earned?.userData?.earnings) - Number(b?.original?.earned?.userData?.earnings)
             default:
               return 1
           }
@@ -103,11 +101,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
   )
 
   const totalMultipliers = totalRegularAllocPoint ? (Number(totalRegularAllocPoint) / 100).toString() : '-'
-
-  const getFarmEarnings = (farm) => {
-    const earnings = new BigNumber(farm?.userData?.earnings)
-    return getBalanceNumber(earnings, FARM_DEFAULT_DECIMALS)
-  }
 
   const generateRow = (farm) => {
     const { token, quoteToken } = farm
@@ -122,7 +115,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
 
     const row: RowProps = {
       apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr) || '0',
+        value: getDisplayApr(farm.apr, farm.lpRewardsApr, farm.dualTokenRewardApr) || '0',
         pid: farm.pid,
         multiplier: farm.multiplier,
         lpLabel,
@@ -134,6 +127,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         cakePrice,
         lpRewardsApr: farm.lpRewardsApr,
         originalValue: farm.apr,
+        dualTokenRewardApr: farm.dualTokenRewardApr,
       },
       farm: {
         label: lpLabel,
@@ -143,10 +137,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         isReady: farm.multiplier !== undefined,
         isStaking: farm.userData?.stakedBalance.gt(0),
       },
-      earned: {
-        pid: farm.pid,
-        earnings: getFarmEarnings(farm),
-      },
+      earned: farm,
       liquidity: {
         liquidity: farm?.liquidity,
       },

@@ -1,32 +1,32 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import useCatchTxError from 'hooks/useCatchTxError'
-import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
-import { useCallback, useContext, useState, useMemo } from 'react'
-import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
-import { useFarmFromPid } from 'state/farms/hooks'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { useAppDispatch } from 'state'
-import { WNATIVE, NATIVE } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { SendTransactionResult } from 'wagmi/actions'
-import BigNumber from 'bignumber.js'
-import { useIsBloctoETH } from 'views/Farms'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
-import { pickFarmTransactionTx } from 'state/global/actions'
-import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
-import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
-import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { useTranslation } from '@pancakeswap/localization'
+import { NATIVE, WNATIVE } from '@pancakeswap/sdk'
+import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
+import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
+import BigNumber from 'bignumber.js'
+import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useCakePrice } from 'hooks/useCakePrice'
+import useCatchTxError from 'hooks/useCatchTxError'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useRouter } from 'next/router'
+import { useCallback, useContext, useMemo, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { useFarmFromPid } from 'state/farms/hooks'
+import { pickFarmTransactionTx } from 'state/global/actions'
+import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
+import { useNonBscFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
+import { styled } from 'styled-components'
+import { useIsBloctoETH } from 'views/Farms'
+import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
+import { SendTransactionResult } from 'wagmi/actions'
+import { useFirstTimeCrossFarming } from '../../hooks/useFirstTimeCrossFarming'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
-import { useFirstTimeCrossFarming } from '../../hooks/useFirstTimeCrossFarming'
 
 interface FarmCardActionsProps extends FarmWithStakedValue {
   lpLabel?: string
@@ -63,6 +63,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   tokenAmountTotal,
   quoteTokenAmountTotal,
   userData,
+  lpRewardsApr,
   onStake,
   onUnstake,
   onDone,
@@ -261,6 +262,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       decimals={18}
       allowance={allowance}
       enablePendingTx={pendingTx}
+      lpRewardsApr={lpRewardsApr}
       onConfirm={handleStake}
       handleApprove={handleApprove}
       bCakeCalculatorSlot={bCakeCalculatorSlot}

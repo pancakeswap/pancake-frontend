@@ -1,17 +1,14 @@
-import { useState, useCallback } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { Card, FarmMultiplierInfo, Flex, HelpIcon, LinkExternal, Skeleton, Text, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useFarms } from 'state/farms/hook'
 import { styled } from 'styled-components'
-import { Card, Flex, Text, Skeleton, ExpandableSectionButton } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { useTranslation } from '@pancakeswap/localization'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import CardHeading from './CardHeading'
-import CardActionsContainer from './CardActionsContainer'
-import ApyButton from './ApyButton'
 import { getDisplayFarmCakePerSecond } from '../getDisplayFarmCakePerSecond'
-
-const { DetailsSection } = FarmWidget.FarmCard
+import ApyButton from './ApyButton'
+import CardActionsContainer from './CardActionsContainer'
+import CardHeading from './CardHeading'
+import { EarnedUsdPrice } from './EarnedUsdPrice'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -27,12 +24,6 @@ const FarmCardInnerContainer = styled(Flex)`
   flex-direction: column;
   justify-content: space-around;
   padding: 24px;
-`
-
-const ExpandingWrapper = styled.div`
-  padding: 24px;
-  border-top: 2px solid ${({ theme }) => theme.colors.cardBorder};
-  overflow: hidden;
 `
 
 interface FarmCardProps {
@@ -59,8 +50,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
 
   const farmCakePerSecond = getDisplayFarmCakePerSecond(farm.poolWeight?.toNumber(), cakePerBlock)
 
-  const [showExpandableSection, setShowExpandableSection] = useState(false)
-
   const liquidity =
     farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity
 
@@ -70,7 +59,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
       : ''
 
   const lpLabel = farm.lpSymbol
-  const earnLabel = farm.dual ? farm.dual.earnLabel : t('CAKE + Fees')
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: farm.quoteToken?.address,
@@ -79,9 +67,23 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const addLiquidityUrl = `/add/${liquidityUrlPathParts}`
   const isPromotedFarm = farm.token?.symbol === 'CAKE'
 
-  const toggleExpandableSection = useCallback(() => {
-    setShowExpandableSection((prev) => !prev)
-  }, [])
+  const multiplierTooltipContent = FarmMultiplierInfo({
+    farmCakePerSecond: farmCakePerSecond ?? '-',
+    totalMultipliers: totalMultipliers ?? '-',
+  })
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(multiplierTooltipContent, {
+    placement: 'bottom',
+  })
+
+  const {
+    targetRef: totalValueTargetRef,
+    tooltip: totalValueTooltip,
+    tooltipVisible: totalValueTooltipVisible,
+  } = useTooltip(t('Total value of the funds in this farm’s liquidity pair'), {
+    placement: 'top-end',
+    tooltipOffset: [20, 10],
+  })
 
   return (
     <StyledCard isActive={isPromotedFarm}>
@@ -92,40 +94,69 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
-          farmCakePerSecond={farmCakePerSecond}
-          totalMultipliers={totalMultipliers}
         />
-        {!removed && (
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text>{t('APR')}:</Text>
-            <Text bold style={{ display: 'flex', alignItems: 'center' }}>
-              {farm.apr ? (
-                <ApyButton
-                  variant="text-and-button"
-                  pid={farm.pid}
-                  lpAddress={farm.lpAddress}
-                  lpTokenPrice={farm.lpTokenPrice}
-                  lpSymbol={farm.lpSymbol}
-                  multiplier={farm.multiplier}
-                  lpLabel={lpLabel}
-                  addLiquidityUrl={addLiquidityUrl}
-                  cakePrice={cakePrice}
-                  apr={farm.apr}
-                  displayApr={displayApr}
-                  lpRewardsApr={farm.lpRewardsApr}
-                  useTooltipText
-                  farmCakePerSecond={farmCakePerSecond}
-                  totalMultipliers={totalMultipliers}
-                />
-              ) : (
-                <Skeleton height={24} width={80} />
-              )}
-            </Text>
-          </Flex>
-        )}
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
-          <Text>{earnLabel}</Text>
+          <EarnedUsdPrice isCardView {...farm} />
+        </Flex>
+        {!removed && (
+          <>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Text>{t('APR')}:</Text>
+              <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+                {farm.apr ? (
+                  <ApyButton
+                    variant="text-and-button"
+                    pid={farm.pid}
+                    lpAddress={farm.lpAddress}
+                    lpTokenPrice={farm.lpTokenPrice}
+                    lpSymbol={farm.lpSymbol}
+                    multiplier={farm.multiplier}
+                    lpLabel={lpLabel}
+                    addLiquidityUrl={addLiquidityUrl}
+                    cakePrice={cakePrice}
+                    apr={farm.apr}
+                    displayApr={displayApr}
+                    lpRewardsApr={farm.lpRewardsApr}
+                    useTooltipText
+                    farmCakePerSecond={farmCakePerSecond}
+                    totalMultipliers={totalMultipliers}
+                    dualTokenRewardApr={farm.dualTokenRewardApr}
+                  />
+                ) : (
+                  <Skeleton height={24} width={80} />
+                )}
+              </Text>
+            </Flex>
+            <Flex justifyContent="space-between">
+              <Text>{t('Staked Liquidity')}:</Text>
+              {totalValueFormatted ? (
+                <Flex>
+                  <Text>{totalValueFormatted}</Text>
+                  {totalValueTooltipVisible && totalValueTooltip}
+                  <Flex ref={totalValueTargetRef}>
+                    <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                  </Flex>
+                </Flex>
+              ) : (
+                <Skeleton width={75} height={25} />
+              )}
+            </Flex>
+          </>
+        )}
+        <Flex justifyContent="space-between">
+          <Text>{t('Multiplier')}:</Text>
+          {farm.multiplier ? (
+            <Flex>
+              <Text>{farm.multiplier}</Text>
+              {tooltipVisible && tooltip}
+              <Flex ref={targetRef}>
+                <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+              </Flex>
+            </Flex>
+          ) : (
+            <Skeleton width={75} height={25} />
+          )}
         </Flex>
         <CardActionsContainer
           farm={farm}
@@ -133,24 +164,13 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           account={account}
           addLiquidityUrl={addLiquidityUrl}
           displayApr={displayApr}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
         />
       </FarmCardInnerContainer>
-      <ExpandingWrapper>
-        <ExpandableSectionButton onClick={toggleExpandableSection} expanded={showExpandableSection} />
-        {showExpandableSection && (
-          <DetailsSection
-            removed={removed}
-            totalValueFormatted={totalValueFormatted}
-            lpLabel={lpLabel}
-            onAddLiquidity={addLiquidityUrl}
-            isCommunity={farm.isCommunity}
-            auctionHostingEndDate={farm.auctionHostingEndDate}
-            multiplier={farm.multiplier}
-            farmCakePerSecond={farmCakePerSecond}
-            totalMultipliers={totalMultipliers}
-          />
-        )}
-      </ExpandingWrapper>
+      <LinkExternal margin="0 auto 24px auto" fontWeight={400} href={addLiquidityUrl}>
+        {t('Add %symbol%', { symbol: lpLabel })}
+      </LinkExternal>
     </StyledCard>
   )
 }

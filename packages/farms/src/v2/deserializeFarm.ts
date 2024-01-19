@@ -1,11 +1,11 @@
+import { deserializeToken } from '@pancakeswap/token-lists'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
-import { deserializeToken } from '@pancakeswap/token-lists'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { SerializedFarm, DeserializedFarm } from '../types'
-import { deserializeFarmUserData } from './deserializeFarmUserData'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../const'
+import { DeserializedFarm, SerializedFarm } from '../types'
+import { deserializeFarmUserData } from './deserializeFarmUserData'
 
 export const deserializeFarm = (
   farm: SerializedFarm,
@@ -50,7 +50,12 @@ export const deserializeFarm = (
     lpSymbol,
     pid,
     vaultPid,
-    dual,
+    ...(dual && {
+      dual: {
+        ...dual,
+        token: deserializeToken(dual?.token),
+      },
+    }),
     multiplier,
     isCommunity: isFarmCommunity,
     auctionHostingEndDate: auctionHostingEndDate?.toJSON(),
