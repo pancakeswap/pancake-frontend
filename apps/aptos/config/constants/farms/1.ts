@@ -14,6 +14,14 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: mainnetTokens.cake,
   },
   {
+    pid: 22,
+    lpSymbol: 'APT-stAPT',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::stapt_token::StakedApt, 0x1::aptos_coin::AptosCoin>',
+    token: mainnetTokens.apt,
+    quoteToken: mainnetTokens.stAPT,
+  },
+  {
     pid: 1,
     lpSymbol: 'CAKE-APT LP',
     lpAddress:

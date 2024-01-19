@@ -146,4 +146,12 @@ export const mainnetTokens = {
     'GUI',
     'GUI INU',
   ),
+  stAPT: new Coin(
+    ChainId.MAINNET,
+    '0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::stapt_token::StakedApt',
+    8,
+    'stAPT',
+    'staked Aptos Coin',
+    'https://stake.amnis.finance/',
+  ),
 }
