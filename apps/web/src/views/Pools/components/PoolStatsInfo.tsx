@@ -52,10 +52,9 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
-  const { totalCakeInVault, totalLockedAmount, fees, userData } = useVaultPoolByKey(
+  const { totalCakeInVault, totalLockedAmount } = useVaultPoolByKey(
     vaultKey as Pool.VaultKey,
   ) as DeserializedLockedCakeVault
-  const performanceFeeAsDecimal = fees?.performanceFeeAsDecimal
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = contractAddress
