@@ -41,10 +41,12 @@ const fetchTopPools = async (chainName: MultiChainName | null, timestamp24hAgo: 
       : `where: { date_gt: ${timestamp24hAgo}, token0_not_in: $blacklist, token1_not_in: $blacklist, dailyVolumeUSD_gt: 2000 }`
   if (isStableSwap) whereCondition = `where: { date_gt: ${timestamp24hAgo}}`
   try {
-    const query = getQuery(firstCount, whereCondition)
-    let data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(query, {
-      blacklist: multiChainTokenBlackList[chainName],
-    })
+    let data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(
+      getQuery(firstCount, whereCondition),
+      {
+        blacklist: multiChainTokenBlackList[chainName],
+      },
+    )
     if (data.pairDayDatas.length === 0)
       data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(
         getQuery(firstCount, ''),
