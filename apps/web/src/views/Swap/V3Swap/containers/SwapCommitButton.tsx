@@ -20,7 +20,7 @@ import {
 } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { usePermit } from 'hooks/usePermitStatus'
+import { usePermitOrApprove } from 'hooks/usePermitStatus'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
@@ -216,7 +216,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
     }
   }, [swapCallback, swapCallbackRevertReason, t, tradePriceBreakdown])
 
-  const { execute: onStep, approvalState } = usePermit(
+  const { execute: onStep, approvalState } = usePermitOrApprove(
     amountToApprove,
     getUniversalRouterAddress(chainId),
     onConfirmSwap,
