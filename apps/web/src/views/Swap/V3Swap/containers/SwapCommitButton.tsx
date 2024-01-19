@@ -24,6 +24,7 @@ import { usePermitOrApprove } from 'hooks/usePermitStatus'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
@@ -49,11 +50,7 @@ interface SwapCommitButtonPropsType {
 
 const useSettingModal = (onDismiss) => {
   const [openSettingsModal] = useModal(
-    <SettingsModalWithCustomDismiss
-      customOnDismiss={onDismiss}
-      // customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
-      mode={SettingsMode.SWAP_LIQUIDITY}
-    />,
+    <SettingsModalWithCustomDismiss customOnDismiss={onDismiss} mode={SettingsMode.SWAP_LIQUIDITY} />,
   )
   return openSettingsModal
 }
@@ -232,13 +229,17 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
     setPermit2Signature,
     getUniversalRouterAddress(chainId),
   )
+  const { onUserInput } = useSwapActionHandlers()
   const reset = useCallback(() => {
+    if (txHash) {
+      onUserInput(Field.INPUT, '')
+    }
     resetConfirmModalState()
     setTxHash(undefined)
     setSwapErrorMessage(undefined)
     setTradeToConfirm(undefined)
     setPermit2Signature(undefined)
-  }, [resetConfirmModalState])
+  }, [onUserInput, resetConfirmModalState, txHash])
 
   const handleAcceptChanges = useCallback(() => {
     setTradeToConfirm(trade)
