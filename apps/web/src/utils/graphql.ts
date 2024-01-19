@@ -3,7 +3,6 @@ import {
   BIT_QUERY,
   INFO_CLIENT,
   INFO_CLIENT_ETH,
-  STABLESWAP_SUBGRAPH_CLIENT,
   V3_BSC_INFO_CLIENT,
   V3_SUBGRAPH_URLS,
 } from 'config/constants/endpoints'
@@ -78,7 +77,7 @@ export const infoServerClient = new GraphQLClient(INFO_CLIENT, {
   },
 })
 
-export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
+export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPHS[ChainId.BSC])
 
 export const bitQueryServerClient = new GraphQLClient(BIT_QUERY, {
   headers: {
