@@ -16,7 +16,7 @@ import { isUserRejected } from 'utils/sentry'
 import { Address } from 'viem'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { ConfirmSwapModal } from 'views/Swap/V3Swap/containers/ConfirmSwapModal'
-import { useConfirmModalStateV2 } from 'views/Swap/V3Swap/hooks/useConfirmModalStateV2'
+import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
 import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
 import { MMTradeInfo } from '../hooks'
 import { useSwapCallArgumentsV2 } from '../hooks/useSwapCallArguments'
@@ -148,7 +148,7 @@ SwapCommitButtonPropsType) {
   }, [mmTradeInfo])
   const { execute: onStep, approvalState } = usePermitOrApprove(amountToApprove, mmSpender, onConfirmSwap)
 
-  const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalStateV2(
+  const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalState(
     onStep,
     amountToApprove,
     approvalState,

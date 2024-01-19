@@ -31,7 +31,7 @@ import { warningSeverity } from 'utils/exchange'
 import { isUserRejected } from 'utils/sentry'
 import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
-import { useConfirmModalStateV2 } from '../hooks/useConfirmModalStateV2'
+import { useConfirmModalState } from '../hooks/useConfirmModalState'
 import { TransactionRejectedError } from '../hooks/useSendSwapTransaction'
 import { useSwapCallback } from '../hooks/useSwapCallback'
 import { useSwapConfig } from '../hooks/useSwapConfig'
@@ -224,7 +224,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
     setPermit2Signature,
   )
 
-  const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalStateV2(
+  const { confirmModalState, pendingModalSteps, resetConfirmModalState, startSwap } = useConfirmModalState(
     onStep,
     amountToApprove,
     approvalState,
