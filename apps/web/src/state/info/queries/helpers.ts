@@ -1,11 +1,11 @@
-import fromPairs from 'lodash/fromPairs'
 import { ONE_DAY_UNIX } from 'config/constants/info'
+import fromPairs from 'lodash/fromPairs'
 
 import dayjs from 'dayjs'
 import { TransactionType } from 'state/info/types'
-import { ChartEntry } from '../types'
 import { MultiChainName, multiChainStartTime } from '../constant'
-import { MintResponse, SwapResponse, BurnResponse, TokenDayData, PairDayData, PancakeDayData } from './types'
+import { ChartEntry } from '../types'
+import { BurnResponse, MintResponse, PairDayData, PancakeDayData, SwapResponse, TokenDayData } from './types'
 
 export const mapMints = (mint: MintResponse) => {
   return {
@@ -111,8 +111,6 @@ export const fetchChartData = async (
     }),
   )
 
-  console.warn(formattedDayDatas)
-
   const availableDays = Object.keys(formattedDayDatas).map((dayOrdinal) => parseInt(dayOrdinal, 10))
 
   const firstAvailableDayData = formattedDayDatas[availableDays[0]]
@@ -174,7 +172,6 @@ export const fetchChartDataWithAddress = async (
       return [dayOrdinal, dayData]
     }),
   )
-  console.warn(formattedDayDatas)
 
   const availableDays = Object.keys(formattedDayDatas).map((dayOrdinal) => parseInt(dayOrdinal, 10))
 

@@ -111,7 +111,7 @@ const TableRowItem: React.FC<{
               {data.pairName}
             </Text>
           </FlexGap>
-          <FlexGap gap="5px" alignItems="center">
+          <FlexGap gap="5px" alignItems="center" flexWrap="wrap">
             <NetworkBadge chainId={Number(data.chainId)} />
             {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
               <Tag outline variant="secondary">
@@ -141,16 +141,17 @@ const TableRowItem: React.FC<{
           </Flex>
         </Tooltips>
       </Flex>
-      <Flex alignItems="center" pr="25px">
+      <Flex alignItems="center">
         <Text bold fontSize={16} color={data.boostMultiplier > 100n ? '#1BC59C' : undefined}>
           {Number(data.boostMultiplier) / 100}x
         </Text>
       </Flex>
-
-      <Text bold={hitMaxCap}>
-        {hitMaxCap ? 'MAX ' : ''}
-        {maxCapPercent.toSignificant(2)}%
-      </Text>
+      <Flex alignItems="center">
+        <Text bold={hitMaxCap}>
+          {hitMaxCap ? 'MAX ' : ''}
+          {maxCapPercent.toSignificant(2)}%
+        </Text>
+      </Flex>
     </TRow>
   )
 }

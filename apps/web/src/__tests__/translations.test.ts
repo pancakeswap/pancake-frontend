@@ -1,8 +1,8 @@
-import Path from 'path'
-import fs from 'fs'
-import { describe, it, expect } from 'vitest'
 import teams from 'config/constants/teams'
+import fs from 'fs'
+import Path from 'path'
 import { NftLocation } from 'state/nftMarket/types'
+import { describe, expect, it } from 'vitest'
 
 // FIXME: should move this test file inside localization pkg
 import { translations } from '@pancakeswap/localization'
@@ -96,6 +96,10 @@ const whitelist = [
   'Buy Squad / Bunnies',
   'Swap Token',
   "Your browser doesn't support iframe",
+  'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by',
+  'U.S.-based users.',
+  'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.',
+  'Base APR (APT yield only)',
 ]
 
 describe.concurrent('Check translations integrity', () => {

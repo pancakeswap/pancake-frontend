@@ -1,5 +1,43 @@
 # @pancakeswap/smart-router
 
+## 4.14.0
+
+### Minor Changes
+
+- 205c08713: List mPENDLE on arbitrum
+
+### Patch Changes
+
+- Updated dependencies [205c08713]
+  - @pancakeswap/tokens@0.6.0
+  - @pancakeswap/v3-sdk@3.7.5
+
+## 4.13.0
+
+### Minor Changes
+
+- ec7e469ca: Add support for abort control
+
+### Patch Changes
+
+- Updated dependencies [ec7e469ca]
+  - @pancakeswap/multicall@3.4.0
+  - @pancakeswap/token-lists@0.0.9
+  - @pancakeswap/tokens@0.5.8
+  - @pancakeswap/v3-sdk@3.7.4
+
+## 4.12.4
+
+### Patch Changes
+
+- Updated dependencies [8fcd67c85]
+  - @pancakeswap/chains@0.4.0
+  - @pancakeswap/multicall@3.3.4
+  - @pancakeswap/sdk@5.7.5
+  - @pancakeswap/tokens@0.5.8
+  - @pancakeswap/v3-sdk@3.7.4
+  - @pancakeswap/token-lists@0.0.9
+
 ## 4.12.3
 
 ### Patch Changes

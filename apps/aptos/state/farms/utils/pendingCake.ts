@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
-import { MapFarmResource, FarmResourcePoolInfo } from 'state/farms/types'
+import { FarmResourcePoolInfo, MapFarmResource } from 'state/farms/types'
 
 const ACC_CAKE_PRECISION = 1000000000000
-const TOTAL_CAKE_RATE_PRECISION = 100000
+export const TOTAL_CAKE_RATE_PRECISION = 100000
 
 export function calcPendingRewardCake(userAmount, userRewardDebt, accCakePerShare) {
   // ((user_info.amount * acc_cake_per_share / ACC_CAKE_PRECISION - user_info.reward_debt) as u64)

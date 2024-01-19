@@ -16,7 +16,6 @@ import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
 import { useIsWindowVisible } from '@pancakeswap/hooks'
-import useSWRImmutable from 'swr/immutable'
 import { FAST_INTERVAL } from 'config/constants'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState, useMemo } from 'react'
@@ -24,6 +23,7 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { styled } from 'styled-components'
 import { requiresApproval } from 'utils/requiresApproval'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import { useQuery } from '@tanstack/react-query'
 import useIfoApprove from '../../hooks/useIfoApprove'
 import { CardsWrapper } from '../IfoCardStyles'
 import IfoAchievement from './Achievement'
@@ -237,28 +237,22 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
     )
   }, [account, ifo, publicIfoData, walletIfoData])
 
-  useSWRImmutable(
-    currentBlock
-      ? isRecentlyActive
-        ? ['fetchPublicIfoData', currentBlock, ifo.id]
-        : !isPublicIfoDataInitialized
-        ? ['fetchPublicIfoData', ifo.id]
-        : null
-      : null,
-    async () => fetchPublicIfoData(currentBlock),
-  )
+  useQuery(['fetchPublicIfoData', currentBlock, ifo.id], async () => fetchPublicIfoData(currentBlock), {
+    enabled: Boolean(currentBlock && (isRecentlyActive || !isPublicIfoDataInitialized)),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
-  useSWRImmutable(
-    isWindowVisible &&
-      (isRecentlyActive || !isWalletDataInitialized || hasVesting) &&
-      account && ['fetchWalletIfoData', account, ifo.id],
-    async () => fetchWalletIfoData(),
-    isRecentlyActive || hasVesting
-      ? {
-          refreshInterval: FAST_INTERVAL,
-        }
-      : {},
-  )
+  useQuery(['fetchWalletIfoData', account, ifo.id], async () => fetchWalletIfoData(), {
+    enabled: Boolean(isWindowVisible && (isRecentlyActive || !isWalletDataInitialized || hasVesting) && account),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    ...((isRecentlyActive || hasVesting) && {
+      refetchInterval: FAST_INTERVAL,
+    }),
+  })
 
   useEffect(() => {
     if (!account && isWalletDataInitialized) {

@@ -52,6 +52,7 @@
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
     "@pancakeswap/position-managers": "workspace:*",
+    "@pancakeswap/prediction": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
@@ -63,7 +64,7 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/wagmi": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
-    "@pancakeswap/prediction": "workspace:*",
+    "@pythnetwork/pyth-evm-js": "^1.29.2",
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^7.52.1",
     "@snapshot-labs/snapshot.js": "^0.4.40",
@@ -72,6 +73,7 @@
     "@wallchain/sdk": "^0.6.8",
     "@web3inbox/core": "0.0.25",
     "@web3inbox/widget-react": "0.6.26",
+    "@yornaath/batshit": "^0.9.0",
     "ajv": "^6.12.3",
     "bignumber.js": "^9.0.0",
     "bottleneck": "^2.19.5",
@@ -122,8 +124,7 @@
     "uuid": "^8.0.0",
     "viem": "1.19.11",
     "wagmi": "1.4.7",
-    "zod": "^3.22.3",
-    "@pythnetwork/pyth-evm-js": "^1.29.2"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@angleprotocol/sdk": "^3.0.121",

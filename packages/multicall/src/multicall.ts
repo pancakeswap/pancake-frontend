@@ -1,23 +1,33 @@
 import { toBigInt } from '@pancakeswap/utils/toBigInt'
+import { AbortControl, AbortError, abortInvariant } from '@pancakeswap/utils/abortControl'
+import { isViemAbortError } from '@pancakeswap/utils/viem/isAbortError'
 
 import { GetGasLimitParams, getDefaultGasBuffer, getGasLimit } from './getGasLimit'
 import { MulticallRequestWithGas } from './types'
 import { getMulticallContract } from './getMulticallContract'
 import { getBlockConflictTolerance } from './getBlockConflictTolerance'
 
-export type CallByGasLimitParams = GetGasLimitParams & {
-  // Normally we expect to get quotes from within the same block
-  // But for some chains like BSC the block time is quite short so need some extra tolerance
-  // 0 means no block conflict and all the multicall results should be queried within the same block
-  blockConflictTolerance?: number
+export type CallByGasLimitParams = AbortControl &
+  GetGasLimitParams & {
+    // Normally we expect to get quotes from within the same block
+    // But for some chains like BSC the block time is quite short so need some extra tolerance
+    // 0 means no block conflict and all the multicall results should be queried within the same block
+    blockConflictTolerance?: number
 
-  // Treat unexecuted calls as failed calls
-  dropUnexecutedCalls?: boolean
-}
+    // Treat unexecuted calls as failed calls
+    dropUnexecutedCalls?: boolean
+  }
 
 export async function multicallByGasLimit(
   calls: MulticallRequestWithGas[],
-  { chainId, gasBuffer = getDefaultGasBuffer(chainId), client, dropUnexecutedCalls, ...rest }: CallByGasLimitParams,
+  {
+    chainId,
+    gasBuffer = getDefaultGasBuffer(chainId),
+    client,
+    dropUnexecutedCalls,
+    signal,
+    ...rest
+  }: CallByGasLimitParams,
 ) {
   const gasLimit = await getGasLimit({
     chainId,
@@ -26,12 +36,12 @@ export async function multicallByGasLimit(
     ...rest,
   })
   const callChunks = splitCallsIntoChunks(calls, gasLimit)
-  return callByChunks(callChunks, { gasBuffer, client, chainId, dropUnexecutedCalls })
+  return callByChunks(callChunks, { gasBuffer, client, chainId, dropUnexecutedCalls, signal })
 }
 
 type CallParams = Pick<
   CallByGasLimitParams,
-  'chainId' | 'client' | 'gasBuffer' | 'blockConflictTolerance' | 'dropUnexecutedCalls'
+  'chainId' | 'client' | 'gasBuffer' | 'blockConflictTolerance' | 'dropUnexecutedCalls' | 'signal'
 >
 
 export type SingleCallResult = {
@@ -72,6 +82,7 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
     gasBuffer = getDefaultGasBuffer(chainId),
     blockConflictTolerance = getBlockConflictTolerance(chainId),
     dropUnexecutedCalls = false,
+    signal,
   } = params
   if (!calls.length) {
     return {
@@ -80,42 +91,51 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
     }
   }
 
+  abortInvariant(signal, 'Multicall aborted')
+
   const contract = getMulticallContract({ chainId, client })
-  const { result } = await contract.simulate.multicallWithGasLimitation([calls, gasBuffer])
-  const { results, lastSuccessIndex, blockNumber } = formatCallReturn(result as CallReturnFromContract)
-  if (lastSuccessIndex === calls.length - 1) {
-    return {
-      results,
-      blockNumber,
+  try {
+    const { result } = await contract.simulate.multicallWithGasLimitation([calls, gasBuffer])
+    const { results, lastSuccessIndex, blockNumber } = formatCallReturn(result as CallReturnFromContract)
+    if (lastSuccessIndex === calls.length - 1) {
+      return {
+        results,
+        blockNumber,
+      }
     }
-  }
-  console.warn(
-    `Gas limit reached. Total num of ${calls.length} calls. First ${
-      lastSuccessIndex + 1
-    } calls executed. The remaining ${
-      calls.length - lastSuccessIndex - 1
-    } calls are not executed. Pls try adjust the gas limit per call.`,
-  )
-  const remainingCalls = calls.slice(lastSuccessIndex + 1)
-  if (dropUnexecutedCalls) {
-    return {
-      results: [...results, ...remainingCalls.map(() => ({ result: '0x', gasUsed: 0n, success: false }))],
-      blockNumber,
-    }
-  }
-  const { results: remainingResults, blockNumber: nextBlockNumber } = await call(
-    calls.slice(lastSuccessIndex + 1),
-    params,
-  )
-  if (Number(nextBlockNumber - blockNumber) > blockConflictTolerance) {
-    throw new Error(
-      `Multicall failed because of block conflict. Latest calls are made at block ${nextBlockNumber} while last calls made at block ${blockNumber}. Block conflict tolerance is ${blockConflictTolerance}`,
+    console.warn(
+      `Gas limit reached. Total num of ${calls.length} calls. First ${
+        lastSuccessIndex + 1
+      } calls executed. The remaining ${
+        calls.length - lastSuccessIndex - 1
+      } calls are not executed. Pls try adjust the gas limit per call.`,
     )
-  }
-  return {
-    results: [...results, ...remainingResults],
-    // Use the latest block number
-    blockNumber: nextBlockNumber,
+    const remainingCalls = calls.slice(lastSuccessIndex + 1)
+    if (dropUnexecutedCalls) {
+      return {
+        results: [...results, ...remainingCalls.map(() => ({ result: '0x', gasUsed: 0n, success: false }))],
+        blockNumber,
+      }
+    }
+    const { results: remainingResults, blockNumber: nextBlockNumber } = await call(
+      calls.slice(lastSuccessIndex + 1),
+      params,
+    )
+    if (Number(nextBlockNumber - blockNumber) > blockConflictTolerance) {
+      throw new Error(
+        `Multicall failed because of block conflict. Latest calls are made at block ${nextBlockNumber} while last calls made at block ${blockNumber}. Block conflict tolerance is ${blockConflictTolerance}`,
+      )
+    }
+    return {
+      results: [...results, ...remainingResults],
+      // Use the latest block number
+      blockNumber: nextBlockNumber,
+    }
+  } catch (e: any) {
+    if (isViemAbortError(e)) {
+      throw new AbortError(e.message)
+    }
+    throw e
   }
 }
 

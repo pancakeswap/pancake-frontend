@@ -162,6 +162,10 @@ export const ADDITIONAL_BASES: {
     [baseTokens.axlusdc.address]: [baseTokens.usdbc],
     [baseTokens.usdbc.address]: [baseTokens.axlusdc],
   },
+  [ChainId.ARBITRUM_ONE]: {
+    [arbitrumTokens.mpendle.address]: [arbitrumTokens.pendle],
+    [arbitrumTokens.pendle.address]: [arbitrumTokens.mpendle],
+  },
 }
 
 /**

@@ -1,5 +1,20 @@
 # @pancakeswap/tokens
 
+## 0.6.0
+
+### Minor Changes
+
+- 205c08713: List mPENDLE on arbitrum
+
+## 0.5.8
+
+### Patch Changes
+
+- Updated dependencies [8fcd67c85]
+  - @pancakeswap/chains@0.4.0
+  - @pancakeswap/sdk@5.7.5
+  - @pancakeswap/token-lists@0.0.9
+
 ## 0.5.7
 
 ### Patch Changes

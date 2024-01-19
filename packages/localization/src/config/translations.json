@@ -223,7 +223,6 @@
   "Unstaking Fee": "Unstaking Fee",
   "unstaking fee before": "unstaking fee before",
   "Unstaking fee: %fee%%": "Unstaking fee: %fee%%",
-  "Performance Fee": "Performance Fee",
   "%position% Entered": "%position% Entered",
   "Sort by": "Sort by",
   "Expired": "Expired",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Apply to run an IFO!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.",
   "Follow our social channels to learn more about the next IFO.": "Follow our social channels to learn more about the next IFO.",
-  "Performance fee only applies to the flexible staking rewards.": "Performance fee only applies to the flexible staking rewards.",
   "Total locked": "Total locked",
   "What’s the difference?": "What’s the difference?",
   "My Position": "My Position",
@@ -3139,5 +3137,10 @@
   "Submit vote": "Submit vote",
   "Ascend": "Ascend",
   "Get veCAKE now!": "Get veCAKE now!",
-  "Check out veCAKE": "Check out veCAKE"
+  "Check out veCAKE": "Check out veCAKE",
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

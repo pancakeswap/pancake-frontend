@@ -1,12 +1,12 @@
-import { useRef, useEffect, useState } from "react";
-import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
-import { CalculatorMode, RoiCalculatorDataState } from "./useRoiCalculatorReducer";
+import { useEffect, useRef, useState } from "react";
+import { styled } from "styled-components";
 import { Box, Flex } from "../Box";
-import { Text } from "../Text";
-import { Input } from "../Input";
 import { IconButton } from "../Button";
+import { Input } from "../Input";
 import { CheckmarkIcon, PencilIcon } from "../Svg";
+import { Text } from "../Text";
+import { CalculatorMode, RoiCalculatorDataState } from "./useRoiCalculatorReducer";
 
 export const MILLION = 1000000;
 export const TRILLION = 1000000000000;
@@ -87,14 +87,13 @@ interface RoiCardProps {
 }
 
 const RoiCard: React.FC<React.PropsWithChildren<RoiCardProps>> = ({
-  earningTokenSymbol,
   calculatorState,
   setTargetRoi,
   setCalculatorMode,
 }) => {
   const [expectedRoi, setExpectedRoi] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { roiUSD, roiTokens, roiPercentage } = calculatorState.data;
+  const { roiUSD, roiPercentage } = calculatorState.data;
   const { mode } = calculatorState.controls;
 
   const { t } = useTranslation();
@@ -173,7 +172,6 @@ const RoiCard: React.FC<React.PropsWithChildren<RoiCardProps>> = ({
           )}
         </Flex>
         <Text fontSize="12px" color="textSubtle">
-          ~ {roiTokens} {earningTokenSymbol}
           <Text
             fontSize="12px"
             color="textSubtle"
@@ -182,8 +180,7 @@ const RoiCard: React.FC<React.PropsWithChildren<RoiCardProps>> = ({
             maxWidth="100%"
             style={{ lineBreak: "anywhere" }}
           >
-            ({roiPercentage.toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            %)
+            {`${roiPercentage.toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`}
           </Text>
         </Text>
       </RoiCardInner>

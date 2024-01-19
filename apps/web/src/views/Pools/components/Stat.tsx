@@ -4,41 +4,8 @@ import { Pool } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import { isLocked, isStaked } from 'utils/cakePool'
 import Apr from './Apr'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
-
-export const PerformanceFee: React.FC<
-  React.PropsWithChildren<{ userData?: Pool.DeserializedVaultUser; performanceFeeAsDecimal?: number }>
-> = ({ userData, performanceFeeAsDecimal }) => {
-  const { t } = useTranslation()
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Performance fee only applies to the flexible staking rewards.'),
-    { placement: 'bottom-start' },
-  )
-
-  const isLock = userData ? isLocked(userData) : false
-  const isStake = userData ? isStaked(userData) : false
-
-  if (!performanceFeeAsDecimal || isLock) {
-    return null
-  }
-
-  return (
-    <Pool.StatWrapper
-      label={
-        <TooltipText ref={targetRef} small>
-          {t('Performance Fee')}
-        </TooltipText>
-      }
-    >
-      {tooltipVisible && tooltip}
-      <Text ml="4px" small>
-        {isStake ? `${performanceFeeAsDecimal}%` : `0~${performanceFeeAsDecimal}%`}
-      </Text>
-    </Pool.StatWrapper>
-  )
-}
 
 export const TotalLocked: React.FC<React.PropsWithChildren<{ totalLocked?: BigNumber; lockedToken: Token }>> = ({
   totalLocked,

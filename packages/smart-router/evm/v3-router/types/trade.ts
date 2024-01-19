@@ -1,4 +1,5 @@
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { AbortControl } from '@pancakeswap/utils/abortControl'
 
 import { Route } from './route'
 import { PoolProvider, QuoteProvider } from './providers'
@@ -32,7 +33,8 @@ export type TradeConfig = {
   distributionPercent?: number
   allowedPoolTypes?: PoolType[]
   quoterOptimization?: boolean
-} & PriceReferences
+} & PriceReferences &
+  AbortControl
 
 export type RouteConfig = TradeConfig & {
   blockNumber?: number

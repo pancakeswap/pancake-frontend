@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign, no-await-in-loop */
-import { ChainId, V3_SUBGRAPHS } from '@pancakeswap/chains'
+import { ChainId, getV3Subgraphs } from '@pancakeswap/chains'
 import { FarmV3SupportedChainId, masterChefV3Addresses } from '@pancakeswap/farms'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
@@ -28,6 +28,10 @@ export const V3_SUBGRAPH_CLIENTS_CHAIN_IDS = [
 ] as const
 
 type SupportChainId = (typeof V3_SUBGRAPH_CLIENTS_CHAIN_IDS)[number]
+
+const V3_SUBGRAPHS = getV3Subgraphs({
+  noderealApiKey: NODE_REAL_SUBGRAPH_API_KEY,
+})
 
 export const V3_SUBGRAPH_CLIENTS = V3_SUBGRAPH_CLIENTS_CHAIN_IDS.reduce((acc, chainId) => {
   acc[chainId] = new GraphQLClient(V3_SUBGRAPHS[chainId], { fetch })

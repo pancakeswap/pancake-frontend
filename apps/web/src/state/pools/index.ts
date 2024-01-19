@@ -24,8 +24,8 @@ import {
 } from '@pancakeswap/pools'
 import { bscTokens } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { getTokenUsdPrice } from '@pancakeswap/utils/getCurrencyPrice'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { getCurrencyUsdPrice } from '@pancakeswap/utils/getCurrencyPrice'
 import { PayloadAction, createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import keyBy from 'lodash/keyBy'
@@ -217,7 +217,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
           stakingTokenPrice = await fetchTokenAplPrice()
         } else {
           // eslint-disable-next-line no-await-in-loop
-          stakingTokenPrice = await getTokenUsdPrice({ chainId, address: stakingTokenAddress })
+          stakingTokenPrice = await getCurrencyUsdPrice({ chainId, address: stakingTokenAddress })
         }
       }
 
@@ -225,7 +225,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
       if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
         // eslint-disable-next-line no-await-in-loop
-        earningTokenPrice = await getTokenUsdPrice({ chainId, address: earningTokenAddress })
+        earningTokenPrice = await getCurrencyUsdPrice({ chainId, address: earningTokenAddress })
       }
       const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
       const apr = !isPoolFinished

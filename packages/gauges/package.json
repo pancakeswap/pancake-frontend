@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/gauges",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "dev": "tsup --watch",
@@ -22,6 +22,9 @@
     "./package.json": "./package.json"
   },
   "devDependencies": {
+    "@pancakeswap/sdk": "workspace:^",
+    "@types/lodash": "^4.14.202",
+    "lodash": "^4.17.21",
     "tsup": "^6.7.0"
   },
   "dependencies": {

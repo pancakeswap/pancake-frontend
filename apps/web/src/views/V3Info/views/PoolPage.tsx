@@ -250,7 +250,11 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                           {poolData.token0.symbol}
                         </Text>
                       </RowFixed>
-                      <Text fontSize="14px">{formatAmount(poolData.tvlToken0)}</Text>
+                      <Text fontSize="14px">
+                        {formatAmount(poolData.tvlToken0, {
+                          displayThreshold: 0.001,
+                        })}
+                      </Text>
                     </RowBetween>
                     <RowBetween>
                       <RowFixed>
@@ -259,7 +263,11 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                           {poolData.token1.symbol}
                         </Text>
                       </RowFixed>
-                      <Text fontSize="14px">{formatAmount(poolData.tvlToken1)}</Text>
+                      <Text fontSize="14px">
+                        {formatAmount(poolData.tvlToken1, {
+                          displayThreshold: 0.001,
+                        })}
+                      </Text>
                     </RowBetween>
                   </AutoColumn>
                 </Card>
