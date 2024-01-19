@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { CONFIG_PROD } from '../constants/config/prod'
 import { GaugeType } from '../types'
 
-describe('Gauges Config', async () => {
+describe('Gauges Config', () => {
   const chainName = chainNames[1]
 
   const gidGroups = groupBy(CONFIG_PROD, 'gid')
