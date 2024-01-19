@@ -9,6 +9,7 @@ import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelp
 import { safeGetAddress } from 'utils'
 import {
   MultiChainName,
+  STABLESWAP_SUBGRAPHS_START_BLOCK,
   checkIsStableSwap,
   getMultiChainQueryEndPointWithStableSwap,
   multiChainQueryMainToken,
