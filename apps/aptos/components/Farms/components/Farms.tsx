@@ -201,7 +201,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         const lpRewardsApr = lpRewardsAprs?.[farm.lpAddress?.toLowerCase()] ?? 0
 
         const dualTokenRewardApr = isActive
-          ? calcPendingRewardApt(regularCakePerBlock ?? 0, aptPrice, farm?.dual?.aptIncentiveInfo ?? 0, totalLiquidity)
+          ? calcPendingRewardApt(
+              new BigNumber(farm.poolWeight ?? 0),
+              regularCakePerBlock ?? 0,
+              aptPrice,
+              farm?.dual?.aptIncentiveInfo ?? 0,
+              totalLiquidity,
+            )
           : 0
 
         return {
