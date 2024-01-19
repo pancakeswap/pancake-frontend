@@ -1,8 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-// export const ADDRESS = '0x7968a225eba6c99f5f1070aeec1b405757dee939eabcfda43ba91588bf5fccf3' as const
-export const ADDRESS = '0x7c00653b67c9a7b65a4318a7380545e77b1850ea332f91e44474b9bb5a393570' as const
+export const ADDRESS = '0x7968a225eba6c99f5f1070aeec1b405757dee939eabcfda43ba91588bf5fccf3' as const
 
 export const MASTERCHEF_MODULE_NAME = 'masterchef' as const
 
