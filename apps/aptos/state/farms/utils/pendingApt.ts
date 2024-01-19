@@ -13,6 +13,6 @@ export const calcPendingRewardApt = (
     .times(new BigNumber(poolWeight).times(100))
   const aptPerSecond = new BigNumber(yearlyAptRewardAllocation).times(new BigNumber(aptIncentiveInfo).div(100000))
   const aptRewardPerYear = aptPerSecond.times(SECONDS_IN_YEAR)
-  const aptAPR = aptRewardPerYear.times(aptPrice).div(tvlUSD).times(aptPrice)
+  const aptAPR = aptRewardPerYear.times(aptPrice).div(tvlUSD).times(100)
   return aptAPR.toNumber()
 }
