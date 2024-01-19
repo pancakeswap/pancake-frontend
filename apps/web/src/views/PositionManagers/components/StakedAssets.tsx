@@ -1,12 +1,12 @@
-import { memo, useMemo } from 'react'
-import { Button, Text, RowBetween, Row, Flex, MinusIcon, AddIcon } from '@pancakeswap/uikit'
-import { CurrencyLogo } from '@pancakeswap/widgets-internal'
-import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
+import type { AtomBoxProps } from '@pancakeswap/uikit'
+import { AddIcon, Button, Flex, MinusIcon, Row, RowBetween, Text } from '@pancakeswap/uikit'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
+import { memo, useMemo } from 'react'
 import { styled } from 'styled-components'
-import { useTotalAssetInUsd, useTotalAssetInSingleDepositTokenAmount } from '../hooks'
+import { useTotalAssetInSingleDepositTokenAmount, useTotalAssetInUsd } from '../hooks'
 
 const Title = styled(Text).attrs({
   bold: true,
@@ -113,7 +113,7 @@ export const CurrencyAmountDisplay = memo(function CurrencyAmountDisplay({
   const amountDisplay = useMemo(() => formatAmount(amount) || '0', [amount])
 
   const amountInUsd = useMemo(() => {
-    return Number(formatAmount(amount)) * (priceUSD ?? 0)
+    return Number(formatAmount(amount)) * (priceUSD ?? 0) || 0
   }, [amount, priceUSD])
 
   return (
