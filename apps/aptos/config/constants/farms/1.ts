@@ -290,3 +290,5 @@ const farms: SerializedFarmConfig[] = [
     ? p.quoteToken.serialize
     : Pair.sortToken(p.token, p.quoteToken)[0].serialize,
 }))
+
+export default farms
