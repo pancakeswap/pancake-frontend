@@ -293,7 +293,7 @@ export function useWBETHContract() {
     [chainId],
   )
 
-  return useContract(chainId ? WBETH[chainId] : undefined, abi)
+  return useContract(chainId ? WBETH[chainId] : undefined, abi as Abi)
 }
 
 export function useBytes32TokenContract(tokenAddress?: Address) {
