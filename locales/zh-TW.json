@@ -2665,7 +2665,7 @@
   "approving": "approving",
   "this?": "this?",
   "Pancakeswap AMM includes V3, V2 and stable swap.": "Pancakeswap 自動做市商資金池內含 V3、V2、稳定幣對",
-  "Swapping thru:": "交換經過：",
+  "Swapping thru:": "交換經由：",
   "Pancakeswap MM": "PancakeSwap MM",
   "Pancakeswap AMM": "PancakeSwap AMM",
   "Why resetting approval": "Why resetting approval",
@@ -3120,5 +3120,9 @@
   "Update Positions": "更新倉位",
   "Increase Liquidity": "添加流動性",
   "Migrate Liquidity": "遷移流動性",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }
