@@ -3,7 +3,6 @@ import { Box, CardBody, Flex, Image, RowBetween, Text } from '@pancakeswap/uikit
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -15,8 +14,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
-import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingButton'
-import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
+import { RequestWithdrawButton } from 'views/LiquidStaking/components/RequestWithdrawButton'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
@@ -50,11 +48,11 @@ const LiquidStakingStakePage = () => {
 
   const { exchangeRateList } = useExchangeRate({ decimals: selectedList?.token0?.decimals })
 
-  const inputCurrency = useCurrency(selectedList?.token0?.address || selectedList?.token0?.symbol)
+  const inputCurrency = useCurrency(selectedList?.token1?.address)
   const currencyBalance = useCurrencyBalance(account, inputCurrency)
   const currentAmount = useMemo(() => (stakeAmount ? new BigNumber(stakeAmount) : BIG_ZERO), [stakeAmount])
 
-  const outputCurrency = useCurrency(selectedList?.token1?.address)
+  const outputCurrency = useCurrency(selectedList?.token0?.address || selectedList?.token0?.symbol)
   const outputCurrencyBalance = useCurrencyBalance(account, outputCurrency)
 
   const quoteAmount = useMemo(() => {
@@ -62,14 +60,12 @@ const LiquidStakingStakePage = () => {
       (i) => i?.contract?.toLowerCase() === selectedList?.contract?.toLowerCase(),
     )?.exchangeRate
 
-    return currentAmount && pickedRate ? currentAmount.dividedBy(pickedRate?.toString()) : BIG_ZERO
+    return currentAmount && pickedRate ? currentAmount.multipliedBy(pickedRate?.toString()) : BIG_ZERO
   }, [currentAmount, exchangeRateList, selectedList?.contract])
 
   if (!showPage) {
     return null
   }
-
-  const isClient = typeof window === 'object'
 
   return (
     <Page>
@@ -83,7 +79,7 @@ const LiquidStakingStakePage = () => {
         />
         <CardBody>
           <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-            {t('Deposit Amount')}
+            {t('Request Withdaw Amount')}
           </Text>
 
           <Box mb="16px">
@@ -92,12 +88,7 @@ const LiquidStakingStakePage = () => {
               maxAmount={currencyBalance}
               disableCurrencySelect
               value={stakeAmount}
-              onMax={() => {
-                const max = maxAmountSpend(currencyBalance)?.toExact()
-                if (max) {
-                  setStakeAmount(max)
-                }
-              }}
+              onMax={() => setStakeAmount(maxAmountSpend(currencyBalance)?.toExact() || '')}
               onUserInput={setStakeAmount}
               showQuickInputButton
               showMaxButton
@@ -111,22 +102,6 @@ const LiquidStakingStakePage = () => {
               {t('You will receive')}
             </Text>
             <Flex>
-              <AddToWalletButton
-                variant="text"
-                p="0"
-                pb="8px"
-                pr="4px"
-                height="auto"
-                width="fit-content"
-                tokenAddress={selectedList?.token1?.address}
-                tokenSymbol={outputCurrency?.symbol}
-                tokenDecimals={outputCurrency?.decimals}
-                tokenLogo={
-                  isClient
-                    ? `${window?.location?.origin}/images/tokens/${selectedList?.token1?.address}.png`
-                    : undefined
-                }
-              />
               <Text color="textSubtle" fontSize="12px" ellipsis>
                 {t('Balance: %balance%', {
                   balance: outputCurrencyBalance
@@ -144,32 +119,28 @@ const LiquidStakingStakePage = () => {
             <RowBetween>
               <Text>
                 {quoteAmount && quoteAmount.isGreaterThan(0)
-                  ? getFullDisplayBalance(quoteAmount, 0, selectedList?.token0?.decimals)
+                  ? getFullDisplayBalance(quoteAmount, 0, outputCurrency?.wrapped?.decimals)
                   : '0'}
               </Text>
               <Flex>
                 <Box width={24} height={24}>
                   <Image
-                    src={`/images/tokens/${selectedList?.token1?.address}.png`}
+                    src={`/images/tokens/${outputCurrency?.wrapped?.address}.png`}
                     width={24}
                     height={24}
-                    alt={selectedList?.token1?.symbol}
+                    alt={outputCurrency?.symbol}
                   />
                 </Box>
-                <Text ml="4px">{selectedList?.token1?.symbol}</Text>
+                <Text ml="4px">{outputCurrency?.symbol}</Text>
               </Flex>
             </RowBetween>
           </LightGreyCard>
-          <Box mb="16px">{selectedList ? <StakeInfo selectedList={selectedList} /> : null}</Box>
-          {inputCurrency && selectedList && currencyBalance ? (
-            <LiquidStakingButton
-              quoteAmount={quoteAmount}
-              inputCurrency={inputCurrency}
-              currentAmount={currentAmount}
-              selectedList={selectedList}
-              currencyBalance={currencyBalance}
-            />
-          ) : null}
+
+          <RequestWithdrawButton
+            inputCurrency={inputCurrency}
+            currentAmount={currentAmount}
+            selectedList={selectedList}
+          />
         </CardBody>
       </AppBody>
       {selectedList?.FAQs ? (

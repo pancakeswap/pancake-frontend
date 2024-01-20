@@ -1,14 +1,14 @@
-import { NATIVE, WETH9 } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { NATIVE, WETH9 } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
-import { LiquidStakingList, FunctionName } from 'views/LiquidStaking/constants/types'
-import { WBETH, SNBNB } from 'config/constants/liquidStaking'
+import { SNBNB, WBETH } from 'config/constants/liquidStaking'
+import { FunctionName, LiquidStakingList } from 'views/LiquidStaking/constants/types'
 // FAQs
-import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 import { BnbSnbnbFaq } from 'views/LiquidStaking/constants/FAQs/BnbSnbnbFaq'
+import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 // ABI
-import { wbethBscABI } from 'config/abi/wbethBSC'
 import { snBnbABI } from 'config/abi/snBNB'
+import { wbethBscABI } from 'config/abi/wbethBSC'
 
 const liquidStaking: LiquidStakingList[] = [
   {
@@ -28,6 +28,7 @@ const liquidStaking: LiquidStakingList[] = [
       },
     ],
     stakingMethodArgs: ['convertedStakeAmount', 'masterChefAddress'],
+    requestWithdrawFn: 'requestWithdrawEth',
     stakingOverrides: [],
     FAQs: EthWbethFaq(),
   },
@@ -49,6 +50,7 @@ const liquidStaking: LiquidStakingList[] = [
       },
     ],
     stakingMethodArgs: [],
+    requestWithdrawFn: 'requestWithdraw',
     stakingOverrides: ['value'],
     FAQs: BnbSnbnbFaq(),
   },

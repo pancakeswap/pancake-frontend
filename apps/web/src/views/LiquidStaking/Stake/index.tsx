@@ -1,9 +1,12 @@
-import NextLink from 'next/link'
-import { CardBody, Text, Select, Button } from '@pancakeswap/uikit'
-import { AppHeader } from 'components/App'
 import { useTranslation } from '@pancakeswap/localization'
-import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
+import { Box, Button, CardBody, RowBetween, Select, Text } from '@pancakeswap/uikit'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { AppHeader } from 'components/App'
+import useTokenBalance from 'hooks/useTokenBalance'
+import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
+import { Address } from 'wagmi'
+import StakeInfo from '../components/StakeInfo'
 
 interface LiquidStakingPageStakeProps {
   selectedList: OptionProps
@@ -17,6 +20,8 @@ export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
   handleSortOptionChange,
 }) => {
   const { t } = useTranslation()
+  const { balance: stakedTokenBalance } = useTokenBalance(selectedList.token1.address as Address)
+  const userCakeDisplayBalance = getFullDisplayBalance(stakedTokenBalance, selectedList.token1.decimals, 6)
 
   return (
     <>
@@ -32,8 +37,26 @@ export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
         </Text>
         {optionsList.length > 0 && <Select mb="24px" options={optionsList} onOptionChange={handleSortOptionChange} />}
         <StakeInfo selectedList={selectedList} />
-        <NextLink href={`/liquid-staking/${selectedList?.contract}`}>
-          <Button width="100%">{t('Proceed')}</Button>
+
+        <RowBetween mb="16px">
+          <Text color="textSubtle" bold>
+            {t('Your Staked Amount')}
+          </Text>
+
+          <Text ml="4px">
+            {userCakeDisplayBalance} {selectedList?.token1?.symbol}
+          </Text>
+        </RowBetween>
+
+        <Box mb="16px">
+          <NextLink href={`/liquid-staking/${selectedList?.contract}`}>
+            <Button width="100%">{t('Proceed')}</Button>
+          </NextLink>
+        </Box>
+        <NextLink href={`/liquid-staking/request-withdraw/${selectedList?.contract}`}>
+          <Button variant="secondary" disabled={stakedTokenBalance.eq(0)} width="100%">
+            {t('Request Withdraw')}
+          </Button>
         </NextLink>
       </CardBody>
     </>
