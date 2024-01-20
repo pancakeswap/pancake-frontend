@@ -198,6 +198,7 @@ export function useCurrency(currencyId: string | undefined): Currency | ERC20Tok
   const native = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
+
   const token = useToken(isNative ? undefined : currencyId)
   return isNative ? native : token
 }

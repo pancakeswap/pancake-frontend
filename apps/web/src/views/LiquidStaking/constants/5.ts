@@ -1,8 +1,8 @@
-import { WETH9, NATIVE } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { NATIVE, WETH9 } from '@pancakeswap/sdk'
 import { ethereumTokens } from '@pancakeswap/tokens'
-import { LiquidStakingList, FunctionName } from 'views/LiquidStaking/constants/types'
 import { WBETH } from 'config/constants/liquidStaking'
+import { FunctionName, LiquidStakingList } from 'views/LiquidStaking/constants/types'
 // FAQs
 import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 // ABI
@@ -25,6 +25,8 @@ const liquidStaking: LiquidStakingList[] = [
         functionName: FunctionName.exchangeRate,
       },
     ],
+    requestWithdrawFn: 'requestWithdrawEth',
+
     stakingMethodArgs: ['masterChefAddress'],
     stakingOverrides: ['value'],
     FAQs: EthWbethFaq(),

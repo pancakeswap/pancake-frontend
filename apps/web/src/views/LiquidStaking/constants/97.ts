@@ -1,8 +1,8 @@
-import { WETH9 } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { WETH9 } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
-import { LiquidStakingList, FunctionName } from 'views/LiquidStaking/constants/types'
 import { WBETH } from 'config/constants/liquidStaking'
+import { FunctionName, LiquidStakingList } from 'views/LiquidStaking/constants/types'
 // FAQs
 import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 // ABI
@@ -28,6 +28,7 @@ const liquidStaking: LiquidStakingList[] = [
     stakingMethodArgs: ['convertedStakeAmount', 'masterChefAddress'],
     stakingOverrides: [],
     FAQs: EthWbethFaq(),
+    requestWithdrawFn: 'requestWithdrawEth',
   },
 ]
 

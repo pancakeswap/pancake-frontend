@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, CardBody, Flex, Image, RowBetween, Text } from '@pancakeswap/uikit'
+import { Box, CardBody, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
@@ -123,14 +124,7 @@ const LiquidStakingStakePage = () => {
                   : '0'}
               </Text>
               <Flex>
-                <Box width={24} height={24}>
-                  <Image
-                    src={`/images/tokens/${outputCurrency?.wrapped?.address}.png`}
-                    width={24}
-                    height={24}
-                    alt={outputCurrency?.symbol}
-                  />
-                </Box>
+                {outputCurrency ? <CurrencyLogo currency={outputCurrency} /> : null}
                 <Text ml="4px">{outputCurrency?.symbol}</Text>
               </Flex>
             </RowBetween>

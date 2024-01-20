@@ -1,16 +1,25 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { BigNumber } from 'ethers'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useContract } from 'hooks/useContract'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
+import { LiquidStakingList } from '../constants/types'
 
-function useRequestWithdraw({ inputCurrency, currentAmount, selectedList }) {
+interface RequestWithdrawButtonProps {
+  inputCurrency: Currency | ERC20Token
+  currentAmount: BigNumber
+  selectedList: LiquidStakingList
+}
+
+function useRequestWithdraw({ inputCurrency, currentAmount, selectedList }: RequestWithdrawButtonProps) {
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
@@ -54,13 +63,16 @@ function useRequestWithdraw({ inputCurrency, currentAmount, selectedList }) {
     toastSuccess,
   ])
 
-  return {
-    loading,
-    requestWithdraw,
-  }
+  return useMemo(
+    () => ({
+      loading,
+      requestWithdraw,
+    }),
+    [loading, requestWithdraw],
+  )
 }
 
-export function RequestWithdrawButton({ inputCurrency, currentAmount, selectedList }) {
+export function RequestWithdrawButton({ inputCurrency, currentAmount, selectedList }: RequestWithdrawButtonProps) {
   const { t } = useTranslation()
 
   const { loading, requestWithdraw } = useRequestWithdraw({
@@ -74,6 +86,7 @@ export function RequestWithdrawButton({ inputCurrency, currentAmount, selectedLi
       width="100%"
       endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
       isLoading={loading}
+      disabled={currentAmount.eq(0)}
       onClick={requestWithdraw}
     >
       {loading ? `${t('Requesting')}` : t('Request')}

@@ -1,14 +1,14 @@
 // import { useTranslation } from '@pancakeswap/localization'
 // import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
-import { useState, useCallback, useEffect, useMemo } from 'react'
 import { AppBody } from 'components/App'
 import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
-import Page from 'views/Page'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { LiquidStakingPageStake } from 'views/LiquidStaking/Stake'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
+import Page from 'views/Page'
 // import { LiquidStakingPageHistory } from 'views/LiquidStaking/History'
 
 // enum ACTIONS {
@@ -59,25 +59,14 @@ const LiquidStakingPage = () => {
 
   return (
     <Page>
-      {/* <ButtonMenu
-        mb="32px"
-        scale="sm"
-        activeIndex={selectedTypeIndex}
-        onItemClick={(index) => setSelectedTypeIndex(index)}
-        variant="subtle"
-      >
-        <ButtonMenuItem>{t('Stake')}</ButtonMenuItem>
-        <ButtonMenuItem>{t('Unstake')}</ButtonMenuItem>
-        <ButtonMenuItem>{t('History')}</ButtonMenuItem>
-      </ButtonMenu> */}
       <AppBody mb="24px">
-        <LiquidStakingPageStake
-          selectedList={selectedList}
-          optionsList={optionsList}
-          handleSortOptionChange={handleSortOptionChange}
-        />
-        {/* {ACTIONS.STAKE === selectedTypeIndex && <LiquidStakingPageStake />}
-        {ACTIONS.HISTORY === selectedTypeIndex && <LiquidStakingPageHistory />} */}
+        {selectedList ? (
+          <LiquidStakingPageStake
+            selectedList={selectedList}
+            optionsList={optionsList}
+            handleSortOptionChange={handleSortOptionChange}
+          />
+        ) : null}
       </AppBody>
       <AppBody>
         <LiquidStakingFAQs config={selectedList?.FAQs} />
