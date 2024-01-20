@@ -39,7 +39,7 @@ export const ChartLabel: React.FC<{
       </Text>
       {gauge?.weight ? (
         <Text fontSize={14} color="textSubtle">
-          {t('%percent% of total supply', { percent })}
+          {t('%percent%% of total supply', { percent })}
         </Text>
       ) : null}
     </AutoColumn>
