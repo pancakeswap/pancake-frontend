@@ -13,6 +13,7 @@ export const Th = styled(Td).attrs({ as: "th" })<TypographyProps>`
   color: ${({ theme }) => theme.colors.secondary};
   font-size: 12px;
   text-transform: uppercase;
+  white-space: nowrap;
 
   ${typography}
 `;

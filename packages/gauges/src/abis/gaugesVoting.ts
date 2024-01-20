@@ -1,9 +1,6 @@
 export const gaugesVotingABI = [
   {
-    inputs: [
-      { internalType: 'address', name: '_token', type: 'address' },
-      { internalType: 'address', name: '_votingEscrow', type: 'address' },
-    ],
+    inputs: [{ internalType: 'address', name: '_votingEscrow', type: 'address' }],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
@@ -14,6 +11,46 @@ export const gaugesVotingABI = [
       { indexed: false, internalType: 'uint256', name: 'type_id', type: 'uint256' },
     ],
     name: 'AddType',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'allocation', type: 'uint256' },
+    ],
+    name: 'AdminAllocationChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'period', type: 'uint256' },
+    ],
+    name: 'AdminOnlyPeriodUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'gauage_addr', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'chainId', type: 'uint256' },
+      { indexed: false, internalType: 'bytes32', name: 'hash', type: 'bytes32' },
+    ],
+    name: 'GaugeKilled',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'gauage_addr', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'chainId', type: 'uint256' },
+      { indexed: false, internalType: 'bytes32', name: 'hash', type: 'bytes32' },
+    ],
+    name: 'GaugeUnKilled',
     type: 'event',
   },
   {
@@ -110,9 +147,32 @@ export const gaugesVotingABI = [
     type: 'event',
   },
   {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'delay', type: 'uint256' },
+    ],
+    name: 'WeightVoteDelayChanged',
+    type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'ADMIN_VOTE_PERIOD',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'WEIGHT_VOTE_DELAY',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       { internalType: 'address', name: 'gauge_addr', type: 'address' },
-      { internalType: 'uint256', name: '_type', type: 'uint256' },
+      { internalType: 'uint256', name: 'gauge_type', type: 'uint256' },
       { internalType: 'uint256', name: '_weight', type: 'uint256' },
       { internalType: 'uint256', name: '_pid', type: 'uint256' },
       { internalType: 'address', name: '_masterChef', type: 'address' },
@@ -136,6 +196,27 @@ export const gaugesVotingABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'adminAllocation',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    name: 'adminSlopes',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_numerator', type: 'uint256' }],
+    name: 'changeAdminAllocation',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [
       { internalType: 'address', name: 'gauge_addr', type: 'address' },
       { internalType: 'uint256', name: 'weight', type: 'uint256' },
@@ -152,6 +233,13 @@ export const gaugesVotingABI = [
       { internalType: 'uint256', name: 'weight', type: 'uint256' },
     ],
     name: 'changeTypeWeight',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_delay', type: 'uint256' }],
+    name: 'changeWeightVoteDelay',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -188,6 +276,13 @@ export const gaugesVotingABI = [
     inputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     name: 'gaugeIndex_',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    name: 'gaugeIsKilled_',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -359,6 +454,16 @@ export const gaugesVotingABI = [
   },
   {
     inputs: [
+      { internalType: 'address', name: '_gauge_addr', type: 'address' },
+      { internalType: 'uint256', name: '_chainId', type: 'uint256' },
+    ],
+    name: 'killGauge',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
       { internalType: 'address', name: '', type: 'address' },
       { internalType: 'bytes32', name: '', type: 'bytes32' },
     ],
@@ -384,13 +489,6 @@ export const gaugesVotingABI = [
   { inputs: [], name: 'renounceOwnership', outputs: [], stateMutability: 'nonpayable', type: 'function' },
   {
     inputs: [],
-    name: 'token',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'totalLastScheduled',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
@@ -399,6 +497,23 @@ export const gaugesVotingABI = [
   {
     inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
     name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_gauge_addr', type: 'address' },
+      { internalType: 'uint256', name: '_chainId', type: 'uint256' },
+    ],
+    name: 'unkillGauge',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_newAdminOnlyPeriod', type: 'uint256' }],
+    name: 'updateAdminOnlyPeriod',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -451,6 +566,18 @@ export const gaugesVotingABI = [
       { internalType: 'uint256', name: '_chainId', type: 'uint256' },
     ],
     name: 'voteFromAdmin',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address[]', name: '_gauge_addrs', type: 'address[]' },
+      { internalType: 'uint256[]', name: '_admin_weights', type: 'uint256[]' },
+      { internalType: 'uint256[]', name: '_ends', type: 'uint256[]' },
+      { internalType: 'uint256[]', name: '_chainIds', type: 'uint256[]' },
+    ],
+    name: 'voteFromAdminBulk',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

@@ -1,7 +1,7 @@
+import { Balance, Flex, Heading, RefreshIcon } from "@pancakeswap/uikit";
+import { formatLpBalance, getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import { BigNumber } from "bignumber.js";
 import { useMemo } from "react";
-import { formatLpBalance, getBalanceNumber } from "@pancakeswap/utils/formatBalance";
-import { Flex, Balance, Heading, RefreshIcon } from "@pancakeswap/uikit";
 
 interface StakedLPProps {
   stakedBalance: BigNumber;
@@ -48,7 +48,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
             unit=" USD"
             prefix="~"
           />
-          <Flex style={{ gap: "4px" }}>
+          <Flex flexDirection={["column", "column", "row"]}>
             <Balance
               fontSize="12px"
               color="textSubtle"
@@ -60,6 +60,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
               fontSize="12px"
               color="textSubtle"
               decimals={2}
+              ml={["0", "0", "4px"]}
               value={stakedBalance.div(lpTotalSupply).times(quoteTokenAmountTotal).toNumber()}
               unit={` ${quoteTokenSymbol}`}
             />

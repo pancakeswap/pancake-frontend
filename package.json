@@ -13,7 +13,7 @@
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web... --concurrency=26",
     "dev:aptos": "pnpm turbo run dev --filter=aptos-web... --concurrency=20",
-    "dev:blog": "pnpm turbo run dev --filter=blog... --concurrency=11",
+    "dev:blog": "pnpm turbo run dev --filter=blog... --concurrency=12",
     "dev:bridge": "pnpm turbo run dev --filter=bridge... --concurrency=16",
     "dev:games": "pnpm turbo run dev --filter=games... --concurrency=20",
     "storybook": "turbo run start --filter=uikit...",

@@ -2,6 +2,7 @@ import { PublicClient } from 'viem'
 import { CONFIG_PROD } from './constants/config/prod'
 import { CONFIG_TESTNET } from './constants/config/testnet'
 import { fetchAllGauges } from './fetchAllGauges'
+import { filterKilledGauges } from './fetchAllKilledGauges'
 import { fetchAllGaugesVoting } from './fetchGaugeVoting'
 import { Gauge, GaugeConfig, GaugeInfoConfig } from './types'
 
@@ -9,6 +10,8 @@ export type getAllGaugesOptions = {
   testnet?: boolean
   inCap?: boolean
   bothCap?: boolean
+  // include killed gauges if true
+  killed?: boolean
 }
 
 export const getAllGauges = async (
@@ -17,13 +20,18 @@ export const getAllGauges = async (
     testnet: false,
     inCap: true,
     bothCap: false,
+    killed: false,
   },
 ): Promise<Gauge[]> => {
-  const { testnet, inCap, bothCap } = options
+  const { testnet, inCap, bothCap, killed } = options
   const presets = testnet ? CONFIG_TESTNET : CONFIG_PROD
 
   const allGaugeInfos = await fetchAllGauges(client)
-  const allGaugeInfoConfigs = allGaugeInfos.reduce((prev, gauge) => {
+  let allActiveGaugeInfos = allGaugeInfos
+
+  if (!killed) allActiveGaugeInfos = await filterKilledGauges(client, allGaugeInfos)
+
+  const allGaugeInfoConfigs = allActiveGaugeInfos.reduce((prev, gauge) => {
     const filters = presets.filter((p) => p.address === gauge.pairAddress && Number(p.chainId) === gauge.chainId)
     let preset: GaugeConfig
 

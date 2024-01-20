@@ -1,12 +1,12 @@
-import { useContext, useState, MouseEvent } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, TooltipText, useModal, useTooltip, RoiCalculatorModal } from '@pancakeswap/uikit'
+import { RoiCalculatorModal, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
+import { MouseEvent, useContext, useState } from 'react'
 
-import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
+import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 
 import { useAccount } from 'wagmi'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
@@ -89,6 +89,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       multiplier={multiplier}
       displayApr={bCakeMultiplier ? (_toNumber(displayApr) - apr + apr * bCakeMultiplier).toFixed(2) : displayApr}
       linkHref={addLiquidityUrl}
+      lpRewardsApr={lpRewardsApr}
       isFarm
       bCakeCalculatorSlot={(calculatorBalance) =>
         boosted ? (

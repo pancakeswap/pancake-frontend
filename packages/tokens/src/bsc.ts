@@ -2908,4 +2908,20 @@ export const bscTokens = {
     'Rebase (IRL)',
     'https://rebase.gg/',
   ),
+  huahua: new ERC20Token(
+    ChainId.BSC,
+    '0x9fD470124903957f299a1C90fEdA9043A4619cc6',
+    6,
+    'HUAHUA',
+    'Chihuahua native asset',
+    'https://www.chihuahua.wtf/',
+  ),
+  anyInu: new ERC20Token(
+    ChainId.BSC,
+    '0x2598c30330D5771AE9F983979209486aE26dE875',
+    18,
+    'AI',
+    'Any Inu',
+    'https://www.anyinu.xyz/',
+  ),
 }

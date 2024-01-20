@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { Tag, Flex, Heading, Box, Skeleton, useTooltip, FarmMultiplierInfo } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/aptos-swap-sdk'
+import { Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
+import { styled } from 'styled-components'
 
 const { FarmAuctionTag, CoreTag } = FarmWidget.Tags
 
@@ -22,29 +22,14 @@ const Wrapper = styled(Flex)`
   }
 `
 
-const MultiplierTag = styled(Tag)`
-  margin-left: 4px;
-`
-
 const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   lpLabel,
   multiplier,
   isCommunityFarm,
   token,
   quoteToken,
-  farmCakePerSecond,
-  totalMultipliers,
 }) => {
   const isReady = multiplier !== undefined
-
-  const multiplierTooltipContent = FarmMultiplierInfo({
-    farmCakePerSecond: farmCakePerSecond ?? '-',
-    totalMultipliers: totalMultipliers ?? '-',
-  })
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(multiplierTooltipContent, {
-    placement: 'bottom',
-  })
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
@@ -57,14 +42,6 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         {isReady ? <Heading mb="4px">{lpLabel?.split(' ')[0]}</Heading> : <Skeleton mb="4px" width={60} height={18} />}
         <Flex justifyContent="center">
           {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
-          {isReady ? (
-            <Flex ref={targetRef}>
-              <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
-              {tooltipVisible && tooltip}
-            </Flex>
-          ) : (
-            <Skeleton ml="4px" width={42} height={28} />
-          )}
         </Flex>
       </Flex>
     </Wrapper>

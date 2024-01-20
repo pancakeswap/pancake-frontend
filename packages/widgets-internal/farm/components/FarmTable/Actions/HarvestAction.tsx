@@ -1,9 +1,9 @@
 import { useTranslation } from "@pancakeswap/localization";
+import { Balance, Button, Heading, Skeleton, Text, TooltipText, useTooltip } from "@pancakeswap/uikit";
 import BigNumber from "bignumber.js";
-import { Button, Heading, Text, TooltipText, Balance, Skeleton, useTooltip } from "@pancakeswap/uikit";
 
-import { ActionContainer, ActionContent, ActionTitles } from "./styles";
 import { FARMS_SMALL_AMOUNT_THRESHOLD } from "../../../constants";
+import { ActionContainer, ActionContent, ActionTitles } from "./styles";
 
 export interface HarvestActionProps {
   earnings: BigNumber;
@@ -11,6 +11,7 @@ export interface HarvestActionProps {
   displayBalance: string | JSX.Element;
   pendingTx: boolean;
   userDataReady: boolean;
+  disabled: boolean;
   proxyCakeBalance?: number;
   handleHarvest: () => void;
 }
@@ -22,6 +23,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
   pendingTx,
   userDataReady,
   proxyCakeBalance,
+  disabled,
   handleHarvest,
 }) => {
   const { t } = useTranslation();
@@ -69,7 +71,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
         </div>
-        <Button ml="4px" disabled={earnings.eq(0) || pendingTx || !userDataReady} onClick={handleHarvest}>
+        <Button ml="4px" disabled={disabled} onClick={handleHarvest}>
           {pendingTx ? t("Harvesting") : t("Harvest")}
         </Button>
       </ActionContent>

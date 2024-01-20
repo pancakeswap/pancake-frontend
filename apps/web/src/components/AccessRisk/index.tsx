@@ -21,7 +21,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useAllLists } from 'state/lists/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { styled } from 'styled-components'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 
 const AnimatedButton = styled(Button)`
   animation: ${promotedGradient} 1.5s ease infinite;
@@ -95,12 +95,16 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
 }
 
 export function useTokenRisk(token?: Token) {
-  return useSWRImmutable(
-    token &&
-      token.address &&
-      ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(token.chainId) && ['risk', token.chainId, token.address],
+  return useQuery(
+    ['risk', token?.chainId, token?.address],
     () => {
       return token && fetchRiskToken(token.address, token.chainId)
+    },
+    {
+      enabled: Boolean(token && token.address && ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(token.chainId)),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
     },
   )
 }
@@ -114,15 +118,15 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ token }) => {
 const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   const { t } = useTranslation()
 
-  const { data, mutate } = useTokenRisk(token)
+  const { data, refetch } = useTokenRisk(token)
 
   useEffect(() => {
     if (data?.pollingInterval) {
-      const refresh = setTimeout(() => mutate(), data?.pollingInterval)
+      const refresh = setTimeout(() => refetch(), data?.pollingInterval)
       return () => clearTimeout(refresh)
     }
     return undefined
-  }, [data?.pollingInterval, mutate])
+  }, [data?.pollingInterval, refetch])
 
   const lists = useAllLists()
   const tokenInLists = useMemo(() => {
@@ -213,7 +217,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
           </Tag>
         </div>
         <RetryRisk
-          onClick={() => mutate()}
+          onClick={() => refetch()}
           // key for resetting retry state
           key={token.chainId + token.address}
         />

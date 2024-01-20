@@ -16,7 +16,7 @@ import { getBlockExploreLink } from 'utils'
 import { getVaultPoolAddress } from 'utils/addressHelpers'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import MaxStakeRow from './MaxStakeRow'
-import { AprInfo, DurationAvg, PerformanceFee, TotalLocked } from './Stat'
+import { AprInfo, DurationAvg, TotalLocked } from './Stat'
 
 interface ExpandedFooterProps {
   pool: Pool.DeserializedPool<Token>
@@ -52,10 +52,9 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
-  const { totalCakeInVault, totalLockedAmount, fees, userData } = useVaultPoolByKey(
+  const { totalCakeInVault, totalLockedAmount } = useVaultPoolByKey(
     vaultKey as Pool.VaultKey,
   ) as DeserializedLockedCakeVault
-  const performanceFeeAsDecimal = fees?.performanceFeeAsDecimal
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = contractAddress
@@ -119,7 +118,6 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           )}
         </Flex>
       )}
-      {vaultKey && <PerformanceFee userData={userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />}
       <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
         <LinkExternal href={tokenInfoPath || undefined} bold={false} small>
           {t('See Token Info')}

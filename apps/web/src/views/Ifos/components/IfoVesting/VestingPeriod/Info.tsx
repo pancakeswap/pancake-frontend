@@ -8,9 +8,9 @@ import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useCurrentBlock } from 'state/block/hooks'
 import useGetPublicIfoV3Data from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import BigNumber from 'bignumber.js'
-import useSWRImmutable from 'swr/immutable'
 import dayjs from 'dayjs'
 
+import { useQuery } from '@tanstack/react-query'
 import Claim from './Claim'
 import { isBasicSale } from '../../../hooks/v7/helpers'
 
@@ -61,10 +61,12 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({
   const currentBlock = useCurrentBlock()
   const publicIfoData = useGetPublicIfoV3Data(data.ifo)
   const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized } = publicIfoData
-  useSWRImmutable(
-    !isPublicIfoDataInitialized && currentBlock ? ['fetchPublicIfoData', currentBlock, data.ifo.id] : null,
-    async () => fetchPublicIfoData(currentBlock),
-  )
+  useQuery(['fetchPublicIfoData', currentBlock, data?.ifo?.id], async () => fetchPublicIfoData(currentBlock), {
+    enabled: Boolean(!isPublicIfoDataInitialized && currentBlock),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   const { cliff } = publicIfoData[poolId]?.vestingInformation || {}
   const currentTimeStamp = Date.now()
