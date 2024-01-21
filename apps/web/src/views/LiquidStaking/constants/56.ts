@@ -44,7 +44,7 @@ const liquidStaking: LiquidStakingList[] = [
     aprUrl: 'https://www.synclub.io/staas/v1/public/staking/snbnb/apy',
     exchangeRateMultiCall: [
       {
-        abi: snBnbABI,
+        abi: snBnbABI as Abi,
         address: SNBNB[ChainId.BSC],
         functionName: FunctionName.convertSnBnbToBnb,
         args: [1000000000000000000], // 1 SnBNB

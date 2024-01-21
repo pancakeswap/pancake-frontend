@@ -21,7 +21,7 @@ const liquidStaking: LiquidStakingList[] = [
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     exchangeRateMultiCall: [
       {
-        abi: wbethBscABI,
+        abi: wbethBscABI as Abi,
         address: WBETH[ChainId.BSC_TESTNET],
         functionName: FunctionName.exchangeRate,
       },
