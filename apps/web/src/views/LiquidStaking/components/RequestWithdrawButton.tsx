@@ -4,6 +4,7 @@ import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -74,12 +75,17 @@ function useRequestWithdraw({ inputCurrency, currentAmount, selectedList }: Requ
 
 export function RequestWithdrawButton({ inputCurrency, currentAmount, selectedList }: RequestWithdrawButtonProps) {
   const { t } = useTranslation()
+  const { account } = useAccountActiveChain()
 
   const { loading, requestWithdraw } = useRequestWithdraw({
     inputCurrency,
     currentAmount,
     selectedList,
   })
+
+  if (!account) {
+    return <ConnectWalletButton width="100%" />
+  }
 
   return (
     <Button

@@ -130,7 +130,7 @@ const LiquidStakingStakePage = () => {
             </RowBetween>
           </LightGreyCard>
 
-          {selectedList ? (
+          {selectedList?.token0 && selectedList?.token1 ? (
             <RequestWithdrawButton
               inputCurrency={inputCurrency}
               currentAmount={currentAmount}

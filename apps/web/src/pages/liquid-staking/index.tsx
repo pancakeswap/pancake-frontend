@@ -1,5 +1,3 @@
-// import { useTranslation } from '@pancakeswap/localization'
-// import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -9,13 +7,6 @@ import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
 import Page from 'views/Page'
-// import { LiquidStakingPageHistory } from 'views/LiquidStaking/History'
-
-// enum ACTIONS {
-//   STAKE = 0,
-//   UNSTAKE = 1,
-//   HISTORY = 2,
-// }
 
 export interface OptionProps extends LiquidStakingList {
   label: string
@@ -25,7 +16,7 @@ export interface OptionProps extends LiquidStakingList {
 const LiquidStakingPage = () => {
   // const [selectedTypeIndex, setSelectedTypeIndex] = useState(ACTIONS.STAKE)
   const { chainId } = useActiveChainId()
-  const { data: liquidStakingList, isFetching } = useLiquidStakingList()
+  const { data: liquidStakingList } = useLiquidStakingList()
 
   const initState = useMemo(
     () => ({

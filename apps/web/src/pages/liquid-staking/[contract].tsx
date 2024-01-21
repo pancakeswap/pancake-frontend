@@ -161,7 +161,7 @@ const LiquidStakingStakePage = () => {
             </RowBetween>
           </LightGreyCard>
           <Box mb="16px">{selectedList ? <StakeInfo selectedList={selectedList} /> : null}</Box>
-          {inputCurrency && selectedList && currencyBalance ? (
+          {selectedList?.token0 && selectedList?.token1 ? (
             <LiquidStakingButton
               quoteAmount={quoteAmount}
               inputCurrency={inputCurrency}
