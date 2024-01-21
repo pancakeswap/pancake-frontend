@@ -80,7 +80,7 @@ const LiquidStakingStakePage = () => {
         />
         <CardBody>
           <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-            {t('Request Withdaw Amount')}
+            {t('Request Withdraw Amount')}
           </Text>
 
           <Box mb="16px">
@@ -130,11 +130,13 @@ const LiquidStakingStakePage = () => {
             </RowBetween>
           </LightGreyCard>
 
-          <RequestWithdrawButton
-            inputCurrency={inputCurrency}
-            currentAmount={currentAmount}
-            selectedList={selectedList}
-          />
+          {selectedList ? (
+            <RequestWithdrawButton
+              inputCurrency={inputCurrency}
+              currentAmount={currentAmount}
+              selectedList={selectedList}
+            />
+          ) : null}
         </CardBody>
       </AppBody>
       {selectedList?.FAQs ? (
