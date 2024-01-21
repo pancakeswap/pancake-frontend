@@ -6,6 +6,7 @@ import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { useCurrency } from 'hooks/Tokens'
@@ -130,13 +131,18 @@ const LiquidStakingStakePage = () => {
             </RowBetween>
           </LightGreyCard>
 
-          {selectedList?.token0 && selectedList?.token1 ? (
-            <RequestWithdrawButton
-              inputCurrency={inputCurrency}
-              currentAmount={currentAmount}
-              selectedList={selectedList}
-            />
-          ) : null}
+          {account ? (
+            selectedList?.token0 &&
+            selectedList?.token1 && (
+              <RequestWithdrawButton
+                inputCurrency={inputCurrency}
+                currentAmount={currentAmount}
+                selectedList={selectedList}
+              />
+            )
+          ) : (
+            <ConnectWalletButton width="100%" />
+          )}
         </CardBody>
       </AppBody>
       {selectedList?.FAQs ? (
