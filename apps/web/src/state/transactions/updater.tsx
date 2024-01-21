@@ -54,7 +54,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       (transaction) => {
         const getTransaction = async () => {
           try {
-            const receipt: any = await provider.waitForTransactionReceipt({ hash: transaction.hash, timeout: 60_000 })
+            const receipt: any = await provider.getTransactionReceipt({ hash: transaction.hash })
 
             dispatch(
               finalizeTransaction({
@@ -97,6 +97,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
           n: 10,
           minWait: 5000,
           maxWait: 10000,
+          trailing: true,
         })
       },
     )
@@ -114,7 +115,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   )
 
   useSWRImmutable(
-    chainId && Boolean(nonBscFarmPendingTxns?.length) && ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
+    chainId && Boolean(nonBscFarmPendingTxns?.length) ? ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId] : null,
     () => {
       nonBscFarmPendingTxns.forEach((hash) => {
         const steps = transactions[hash]?.nonBscFarm?.steps || []

@@ -28,16 +28,22 @@ export class RetryableError extends Error {}
  * @param n how many times to retry
  * @param minWait min wait between retries in ms
  * @param maxWait max wait between retries in ms
+ * @param trailing the function should be run after some time without running the function
  */
 export function retry<T>(
   fn: () => Promise<T>,
-  { n, minWait, maxWait }: { n: number; minWait: number; maxWait: number },
+  { n, minWait, maxWait, trailing }: { n: number; minWait: number; maxWait: number; trailing?: boolean },
 ): { promise: Promise<T>; cancel: () => void } {
   let completed = false
+  let firstRun = true
   let rejectCancelled: (error: Error) => void
   const promise = new Promise<T>(async (resolve, reject) => {
     rejectCancelled = reject
     while (true) {
+      if (trailing && firstRun) {
+        await waitRandom(minWait, maxWait)
+        firstRun = false
+      }
       let result: T
       try {
         result = await fn()
