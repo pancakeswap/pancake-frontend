@@ -20,6 +20,7 @@ export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
   handleSortOptionChange,
 }) => {
   const { t } = useTranslation()
+
   const { balance: stakedTokenBalance } = useTokenBalance(selectedList.token1.address as Address)
   const userCakeDisplayBalance = getFullDisplayBalance(stakedTokenBalance, selectedList.token1.decimals, 6)
 

@@ -25,7 +25,7 @@ export interface OptionProps extends LiquidStakingList {
 const LiquidStakingPage = () => {
   // const [selectedTypeIndex, setSelectedTypeIndex] = useState(ACTIONS.STAKE)
   const { chainId } = useActiveChainId()
-  const { data: liquidStakingList } = useLiquidStakingList()
+  const { data: liquidStakingList, isFetching } = useLiquidStakingList()
 
   const initState = useMemo(
     () => ({
@@ -60,7 +60,7 @@ const LiquidStakingPage = () => {
   return (
     <Page>
       <AppBody mb="24px">
-        {selectedList ? (
+        {selectedList.token0 && selectedList.token1 ? (
           <LiquidStakingPageStake
             selectedList={selectedList}
             optionsList={optionsList}
