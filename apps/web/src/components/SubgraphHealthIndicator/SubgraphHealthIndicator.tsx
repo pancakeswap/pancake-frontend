@@ -152,6 +152,7 @@ export const SubgraphHealthIndicator: React.FC<SubgraphHealthIndicatorProps> = (
       position="fixed"
       bottom="calc(55px + env(safe-area-inset-bottom))"
       right="18px"
+      zIndex="2"
       ref={targetRef}
       data-test="subgraph-health-indicator"
     >
