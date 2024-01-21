@@ -39,7 +39,9 @@
     "stylelint",
     "tilg",
     "vecake",
+    "viem",
     "wagmi",
+    "WBETH",
     "wbnb",
     "ZKSYNC"
   ]

@@ -7,6 +7,7 @@ import { FunctionName, LiquidStakingList } from 'views/LiquidStaking/constants/t
 import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 // ABI
 import { wbethBscABI } from 'config/abi/wbethBSC'
+import { Abi } from 'viem'
 
 const liquidStaking: LiquidStakingList[] = [
   {
@@ -14,7 +15,7 @@ const liquidStaking: LiquidStakingList[] = [
     contract: WBETH[ChainId.BSC],
     token0: WETH9[ChainId.BSC_TESTNET],
     token1: bscTokens.wbeth,
-    abi: wbethBscABI,
+    abi: wbethBscABI as Abi,
     shouldCheckApproval: true,
     approveToken: WETH9[ChainId.BSC_TESTNET],
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',

@@ -9,6 +9,7 @@ import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 // ABI
 import { snBnbABI } from 'config/abi/snBNB'
 import { wbethBscABI } from 'config/abi/wbethBSC'
+import { Abi } from 'viem'
 
 const liquidStaking: LiquidStakingList[] = [
   {
@@ -16,13 +17,13 @@ const liquidStaking: LiquidStakingList[] = [
     contract: WBETH[ChainId.BSC],
     token0: WETH9[ChainId.BSC],
     token1: bscTokens.wbeth,
-    abi: wbethBscABI,
+    abi: wbethBscABI as Abi,
     shouldCheckApproval: true,
     approveToken: WETH9[ChainId.BSC],
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     exchangeRateMultiCall: [
       {
-        abi: wbethBscABI,
+        abi: wbethBscABI as Abi,
         address: WBETH[ChainId.BSC],
         functionName: FunctionName.exchangeRate,
       },
@@ -37,7 +38,7 @@ const liquidStaking: LiquidStakingList[] = [
     contract: SNBNB[ChainId.BSC],
     token0: NATIVE[ChainId.BSC],
     token1: bscTokens.snbnb,
-    abi: snBnbABI,
+    abi: snBnbABI as Abi,
     shouldCheckApproval: false,
     approveToken: null,
     aprUrl: 'https://www.synclub.io/staas/v1/public/staking/snbnb/apy',

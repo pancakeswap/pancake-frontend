@@ -7,6 +7,7 @@ import { FunctionName, LiquidStakingList } from 'views/LiquidStaking/constants/t
 import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 // ABI
 import { wbethEthABI } from 'config/abi/wbethETH'
+import { Abi } from 'viem'
 
 const liquidStaking: LiquidStakingList[] = [
   {
@@ -14,13 +15,13 @@ const liquidStaking: LiquidStakingList[] = [
     contract: WBETH[ChainId.ETHEREUM],
     token0: NATIVE[ChainId.ETHEREUM],
     token1: ethereumTokens.wbeth,
-    abi: wbethEthABI,
+    abi: wbethEthABI as Abi,
     shouldCheckApproval: true,
     approveToken: WETH9[ChainId.ETHEREUM],
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     exchangeRateMultiCall: [
       {
-        abi: wbethEthABI,
+        abi: wbethEthABI as Abi,
         address: WBETH[ChainId.ETHEREUM],
         functionName: FunctionName.exchangeRate,
       },
