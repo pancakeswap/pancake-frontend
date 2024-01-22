@@ -65,7 +65,7 @@ const Container = styled.div<{ expanded; isLastFarm }>`
     align-items: center;
     padding: 16px 32px;
   }
-  ${({ isLastFarm }) => isLastFarm && `border-radius: 0 0 32px 32px;`}
+  ${({ isLastFarm }) => isLastFarm && `border-radius: 0 0 16px 16px;`}
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
