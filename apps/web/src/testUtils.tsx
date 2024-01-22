@@ -91,6 +91,12 @@ export const createSWRWrapper =
       </WagmiConfig>
     )
 
+export const createQueryClientWrapper =
+  (queryClient) =>
+  ({ children }) => {
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  }
+
 export const createWagmiWrapper =
   () =>
   ({ children }) => {

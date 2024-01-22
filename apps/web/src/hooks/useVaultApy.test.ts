@@ -1,7 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks'
 import BigNumber from 'bignumber.js'
-import { createSWRWrapper } from 'testUtils'
-import { describe, expect, it, vi } from 'vitest'
+import { createQueryClientWrapper } from 'testUtils'
+import { vi } from 'vitest'
+import { QueryClient } from '@tanstack/react-query'
 import * as PoolHooks from '../state/pools/hooks'
 import { useVaultApy } from './useVaultApy'
 
@@ -35,6 +36,8 @@ describe('useVaultApy', () => {
       totalShares: cases.totalShares,
       pricePerFullShare: cases.pricePerFullShare,
     })
+    const queryClient = new QueryClient()
+    queryClient.setQueryData(['masterChef-total-cake-pool-emission'], cases.emission)
     const { result } = renderHook(
       () => {
         const { flexibleApy, getLockedApy, lockedApy } = useVaultApy()
@@ -45,9 +48,7 @@ describe('useVaultApy', () => {
         }
       },
       {
-        wrapper: createSWRWrapper({
-          'masterChef-total-cake-pool-emission': cases.emission,
-        }),
+        wrapper: createQueryClientWrapper(queryClient),
       },
     )
 
