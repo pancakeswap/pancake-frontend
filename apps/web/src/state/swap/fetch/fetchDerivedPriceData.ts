@@ -1,11 +1,5 @@
-import { ChainId } from '@pancakeswap/chains'
-import {
-  INFO_CLIENT,
-  INFO_CLIENT_ETH,
-  INFO_CLIENT_WITH_CHAIN,
-  STABLESWAP_SUBGRAPH_CLIENT,
-  V3_SUBGRAPH_URLS,
-} from 'config/constants/endpoints'
+import { ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
+import { INFO_CLIENT, INFO_CLIENT_ETH, INFO_CLIENT_WITH_CHAIN, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import dayjs from 'dayjs'
 import request from 'graphql-request'
@@ -15,7 +9,7 @@ import { multiChainName } from 'state/info/constant'
 import { Block } from 'state/info/types'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
-import { getTVL, getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/getDerivedPrices'
+import { getDerivedPrices, getDerivedPricesQueryConstructor, getTVL } from '../queries/getDerivedPrices'
 import { PairDataTimeWindowEnum } from '../types'
 
 const PROTOCOL = ['v2', 'v3', 'stable'] as const
@@ -26,7 +20,7 @@ type ProtocolEndpoint = Record<Protocol, string>
 const SWAP_INFO_BY_CHAIN = {
   [ChainId.BSC]: {
     v2: INFO_CLIENT,
-    stable: STABLESWAP_SUBGRAPH_CLIENT,
+    stable: STABLESWAP_SUBGRAPHS[ChainId.BSC],
     // v3: V3_SUBGRAPH_URLS[ChainId.BSC],
   },
   [ChainId.ETHEREUM]: {
@@ -40,6 +34,7 @@ const SWAP_INFO_BY_CHAIN = {
   [ChainId.ARBITRUM_ONE]: {
     v2: INFO_CLIENT_WITH_CHAIN[ChainId.ARBITRUM_ONE],
     v3: V3_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE],
+    stable: STABLESWAP_SUBGRAPHS[ChainId.ARBITRUM_ONE],
   },
   [ChainId.ARBITRUM_GOERLI]: {},
   [ChainId.POLYGON_ZKEVM]: {

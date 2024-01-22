@@ -1,15 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { TokenData, Block } from 'state/info/types'
-import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { Block, TokenData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import {
-  getMultiChainQueryEndPointWithStableSwap,
   MultiChainName,
   MultiChainNameExtend,
+  STABLESWAP_SUBGRAPHS_START_BLOCK,
+  checkIsStableSwap,
+  getMultiChainQueryEndPointWithStableSwap,
   multiChainQueryMainToken,
 } from '../../constant'
 import { fetchTokenAddresses } from './topTokens'
@@ -82,14 +84,28 @@ const fetchTokenData = async (
   block14d: number,
   tokenAddresses: string[],
 ) => {
+  const isStableSwap = checkIsStableSwap()
+  const startBlock = isStableSwap ? STABLESWAP_SUBGRAPHS_START_BLOCK[chainName] : undefined
   try {
     const query = gql`
       query tokens {
-        now: ${TOKEN_AT_BLOCK(chainName, null, tokenAddresses)}
+        now: ${TOKEN_AT_BLOCK(chainName, undefined, tokenAddresses)}
         oneDayAgo: ${TOKEN_AT_BLOCK(chainName, block24h, tokenAddresses)}
-        twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}
-        oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}
-        twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}
+        ${
+          (Boolean(startBlock) && startBlock <= block48h) || !startBlock
+            ? `twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}`
+            : ''
+        }
+        ${
+          (Boolean(startBlock) && startBlock <= block7d) || !startBlock
+            ? `oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}`
+            : ''
+        }
+        ${
+          (Boolean(startBlock) && startBlock <= block14d) || !startBlock
+            ? `twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}`
+            : ''
+        }
       }
     `
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)

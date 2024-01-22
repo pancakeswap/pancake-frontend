@@ -1,25 +1,25 @@
 import {
   BLOCKS_CLIENT,
-  BLOCKS_CLIENT_ETH,
-  BLOCKS_CLIENT_ZKSYNC,
-  BLOCKS_CLIENT_LINEA,
   BLOCKS_CLIENT_BASE,
+  BLOCKS_CLIENT_ETH,
+  BLOCKS_CLIENT_LINEA,
   BLOCKS_CLIENT_OPBNB,
+  BLOCKS_CLIENT_ZKSYNC,
 } from 'config/constants/endpoints'
-import { infoClientETH, infoClient, infoStableSwapClient, v2Clients } from 'utils/graphql'
 import { GraphQLClient } from 'graphql-request'
+import { infoClient, infoClientETH, infoStableSwapClients, v2Clients } from 'utils/graphql'
 
 import { ChainId } from '@pancakeswap/chains'
 import {
+  BSC_TOKEN_WHITELIST,
   ETH_TOKEN_BLACKLIST,
+  ETH_TOKEN_WHITELIST,
   PCS_ETH_START,
   PCS_V2_START,
   TOKEN_BLACKLIST,
-  BSC_TOKEN_WHITELIST,
-  ETH_TOKEN_WHITELIST,
 } from 'config/constants/info'
-import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync, linea, base, opBNB } from 'wagmi/chains'
 import mapValues from 'lodash/mapValues'
+import { arbitrum, base, bsc, linea, mainnet, opBNB, polygonZkEvm, zkSync } from 'wagmi/chains'
 
 export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB' | 'LINEA' | 'BASE' | 'OPBNB'
 
@@ -108,6 +108,15 @@ export const multiChainQueryClient = {
   OPBNB: v2Clients[ChainId.OPBNB],
 }
 
+export const multiChainQueryStableClient = {
+  BSC: infoStableSwapClients[ChainId.BSC],
+  ARB: infoStableSwapClients[ChainId.ARBITRUM_ONE],
+}
+
+export const STABLESWAP_SUBGRAPHS_START_BLOCK = {
+  ARB: 169319653,
+}
+
 export const multiChainScan: Record<MultiChainName, string> = {
   BSC: bsc.blockExplorers.etherscan.name,
   ETH: mainnet.blockExplorers.etherscan.name,
@@ -149,7 +158,7 @@ export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = mapVal
 
 export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNameExtend): GraphQLClient => {
   const isStableSwap = checkIsStableSwap()
-  if (isStableSwap) return infoStableSwapClient
+  if (isStableSwap) return multiChainQueryStableClient[chainName]
   return multiChainQueryClient[chainName]
 }
 

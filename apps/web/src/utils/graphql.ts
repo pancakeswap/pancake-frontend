@@ -1,11 +1,10 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
 import {
   BIT_QUERY,
   INFO_CLIENT,
-  STABLESWAP_SUBGRAPH_CLIENT,
   INFO_CLIENT_ETH,
-  V3_SUBGRAPH_URLS,
   V3_BSC_INFO_CLIENT,
+  V3_SUBGRAPH_URLS,
 } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 import { INFO_CLIENT_WITH_CHAIN } from '../config/constants/endpoints'
@@ -66,7 +65,10 @@ export const v2Clients = {
   [ChainId.OPBNB]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.OPBNB]),
 }
 
-export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
+export const infoStableSwapClients = {
+  [ChainId.BSC]: new GraphQLClient(STABLESWAP_SUBGRAPHS[ChainId.BSC]),
+  [ChainId.ARBITRUM_ONE]: new GraphQLClient(STABLESWAP_SUBGRAPHS[ChainId.ARBITRUM_ONE]),
+}
 
 export const infoServerClient = new GraphQLClient(INFO_CLIENT, {
   timeout: 5000,
@@ -75,7 +77,7 @@ export const infoServerClient = new GraphQLClient(INFO_CLIENT, {
   },
 })
 
-export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
+export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPHS[ChainId.BSC])
 
 export const bitQueryServerClient = new GraphQLClient(BIT_QUERY, {
   headers: {

@@ -19,6 +19,7 @@ import {
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { getChainName } from '@pancakeswap/chains'
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -26,7 +27,7 @@ import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPools
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { NextSeo } from 'next-seo'
 import { useMemo, useState } from 'react'
-import { checkIsStableSwap, multiChainId, multiChainScan, ChainLinkSupportChains } from 'state/info/constant'
+import { ChainLinkSupportChains, checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
 import {
   useChainIdByQuery,
   useChainNameByQuery,
@@ -37,7 +38,6 @@ import {
   useStableSwapPath,
 } from 'state/info/hooks'
 import { styled } from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -114,7 +114,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const feeDisplay = useMemo(() => {
     if (isStableSwap && farmConfig) {
       const stableLpFee =
-        farmConfig?.default.find((d: any) => d.stableSwapAddress?.toLowerCase() === address)?.stableLpFee ?? 0
+        farmConfig?.default?.find((d: any) => d.stableSwapAddress?.toLowerCase() === address)?.stableLpFee ?? 0
       return new BigNumber(stableLpFee)
         .times((showWeeklyData ? poolData?.volumeOutUSDWeek : poolData?.volumeOutUSD) ?? 0)
         .toNumber()
