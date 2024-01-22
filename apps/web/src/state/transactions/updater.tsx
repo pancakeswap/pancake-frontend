@@ -97,7 +97,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
           n: 10,
           minWait: 5000,
           maxWait: 10000,
-          delay: BSC_BLOCK_TIME + 1000,
+          delay: BSC_BLOCK_TIME * 1000 + 1000,
         })
       },
     )
