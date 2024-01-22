@@ -77,11 +77,15 @@ export const fetchTransakSignedUrl = async (
 
 export const fetchMercuryoSignedUrl = async (account: `0x${string}`) => {
   try {
-    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-mercuryo-sig?walletAddress=${account}`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-mercuryo-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
+      method: 'POST',
+      body: JSON.stringify({
+        walletAddress: account,
+      }),
     })
     const signature = await res.json()
 
