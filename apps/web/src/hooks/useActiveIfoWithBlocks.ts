@@ -1,17 +1,17 @@
-import useSWRImmutable from 'swr/immutable'
 import { ChainId } from '@pancakeswap/chains'
 import { Ifo } from '@pancakeswap/ifos'
 
 import { publicClient } from 'utils/wagmi'
 
+import { useQuery } from '@tanstack/react-query'
 import { ifoV3ABI } from '../config/abi/ifoV3'
 import { useActiveIfoConfig } from './useIfoConfig'
 
 export const useActiveIfoWithBlocks = (): (Ifo & { startBlock: number; endBlock: number }) | null => {
   const { activeIfo } = useActiveIfoConfig()
 
-  const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useSWRImmutable(
-    activeIfo ? ['ifo', 'currentIfo'] : null,
+  const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useQuery(
+    ['ifo', 'currentIfo'],
     async () => {
       if (!activeIfo?.address) {
         return {
@@ -40,6 +40,12 @@ export const useActiveIfoWithBlocks = (): (Ifo & { startBlock: number; endBlock:
         startBlock: startBlockResponse.status === 'success' ? Number(startBlockResponse.result) : 0,
         endBlock: endBlockResponse.status === 'success' ? Number(endBlockResponse.result) : 0,
       }
+    },
+    {
+      enabled: Boolean(activeIfo),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
     },
   )
 
