@@ -7,7 +7,6 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useAllLists } from 'state/lists/hooks'
-import useSWRImmutable from 'swr/immutable'
 import { useQuery } from '@tanstack/react-query'
 import { useActiveListUrls } from './hooks'
 import { useListState, useListStateReady, initialState } from './lists'
@@ -39,14 +38,23 @@ export default function Updater(): null {
   const fetchList = useFetchListCallback(dispatch)
 
   // whenever a list is not loaded and not loading, try again to load it
-  useSWRImmutable(isReady && ['first-fetch-token-list', lists], () => {
-    Object.keys(lists).forEach((listUrl) => {
-      const list = lists[listUrl]
-      if (!list.current && !list.loadingRequestId && !list.error) {
-        fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
-      }
-    })
-  })
+  useQuery(
+    ['first-fetch-token-list', lists],
+    () => {
+      Object.keys(lists).forEach((listUrl) => {
+        const list = lists[listUrl]
+        if (!list.current && !list.loadingRequestId && !list.error) {
+          fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
+        }
+      })
+    },
+    {
+      enabled: Boolean(isReady),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+    },
+  )
 
   useQuery(
     ['token-list'],
