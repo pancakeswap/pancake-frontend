@@ -223,7 +223,6 @@
   "Unstaking Fee": "Avgift för att dra tillbaka",
   "unstaking fee before": "avgift för hävd insats före",
   "Unstaking fee: %fee%%": "Avgift för hävd satsning: %fee% %",
-  "Performance Fee": "Prestandaavgift",
   "%position% Entered": "%position% angiven",
   "Sort by": "Sortera efter",
   "Expired": "Förfallen",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Ansök för att utfärda ett inledande farmerbjudande!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "Vid flexibel satsning delas belöningar ut och inkluderas i ditt totala satsningssaldo. Vid låst satsning är belöningarna låsta till slutet av satsningspositionen.",
   "Follow our social channels to learn more about the next IFO.": "Följ oss på våra sociala mediekanaler för att få mer information om nästa inledande farmerbjudande.",
-  "Performance fee only applies to the flexible staking rewards.": "Resultatbaserade avgifter gäller endast för de flexibla insatsbelöningarna.",
   "Total locked": "Totalt låst",
   "What’s the difference?": "Vad är skillnaden?",
   "My Position": "Min position",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

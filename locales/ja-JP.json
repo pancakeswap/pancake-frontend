@@ -223,7 +223,6 @@
   "Unstaking Fee": "スーテク解除手数料",
   "unstaking fee before": "次の前のステーク解除手数料:",
   "Unstaking fee: %fee%%": "ステーク解除手数料: %fee%%",
-  "Performance Fee": "パフォーマンス手数料",
   "%position% Entered": "%position%を入力",
   "Sort by": "並べ替え:",
   "Expired": "期限切れ",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "IFOの実行を申請！",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "フレキシブルステーキングでは、報酬は分配されて、合計ステーキング残高に含められます。ロックステーキングでは、報酬は、ステーキングポジションの終了までロックされます。",
   "Follow our social channels to learn more about the next IFO.": "次回のIFOについての詳細は、ソーシャルチャンネルをフォローしてください。",
-  "Performance fee only applies to the flexible staking rewards.": "パフォーマンス手数料は、フレキシブルステーキング報酬にのみ適用されます。",
   "Total locked": "ロック合計",
   "What’s the difference?": "違いは？",
   "My Position": "自分のポジション",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

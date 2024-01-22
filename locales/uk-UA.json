@@ -223,7 +223,6 @@
   "Unstaking Fee": "Комісія за виведення зі стейкінгу",
   "unstaking fee before": "комісія за виведення зі стейкінгу до",
   "Unstaking fee: %fee%%": "Комісія за виведення зі стейкінгу: %fee%%",
-  "Performance Fee": "Комісія за характеристики",
   "%position% Entered": "Ваша вхідна позиція: %position%",
   "Sort by": "Сортування",
   "Expired": "Недійсні",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Подайте заявку на запуск IFO!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "У випадку гнучкого стейкінгу нагороди роздаються та потрапляють вам на загальний баланс стейкінгу. У випадку стейкінгу з блокуванням нагороди блокуються до завершення дії позиції стейкінгу.",
   "Follow our social channels to learn more about the next IFO.": "Підпишіться на наші канали та сторінки в соцмережах, щоб стежити за новинами про наступний IFO.",
-  "Performance fee only applies to the flexible staking rewards.": "Комісія за виконання стягується тільки з нагород за гнучкий стейкінг.",
   "Total locked": "Усього заблоковано",
   "What’s the difference?": "У чому різниця?",
   "My Position": "Моя позиція",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

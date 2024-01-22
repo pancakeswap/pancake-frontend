@@ -223,7 +223,6 @@
   "Unstaking Fee": "언스테이킹 수수료",
   "unstaking fee before": "다음 전에 언스테이킹 수수료:",
   "Unstaking fee: %fee%%": "언스테이킹 수수료: %fee%%",
-  "Performance Fee": "성과 수수료",
   "%position% Entered": "%position% 입력함",
   "Sort by": "정렬 기준",
   "Expired": "만료됨",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "IFO 실행을 신청하세요!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "유연한 스테이킹에서는 리워드가 배분되고 총 스테이킹 잔액에 포함됩니다. 잠긴 스테이킹에서 리워드는 스테이킹 포지션이 끝날 때까지 잠겨 있습니다.",
   "Follow our social channels to learn more about the next IFO.": "다음 IFO에 대해 자세히 알아보려면 소셜 채널을 팔로우하세요.",
-  "Performance fee only applies to the flexible staking rewards.": "성과 수수료는 유연한 예치 리워드에만 적용됩니다.",
   "Total locked": "총 잠금",
   "What’s the difference?": "차이점이 무엇인가요?",
   "My Position": "내 포지션",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

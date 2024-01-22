@@ -223,7 +223,6 @@
   "Unstaking Fee": "Panostuksen perumismaksu",
   "unstaking fee before": "panostuksen perumismaksu ennen",
   "Unstaking fee: %fee%%": "Panostuksen perumismaksu: %fee%%",
-  "Performance Fee": "Suoriutumismaksu",
   "%position% Entered": "%position% syötetty",
   "Sort by": "Lajittelu",
   "Expired": "Erääntynyt",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Hae järjestämään IFO!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "Joustavassa panostamisessa palkkiot jaetaan ja lisätään kokonaispanostussaldoosi. Lukitussa panostamisessa palkkiot lukitaan panostusposition loppuun saakka.",
   "Follow our social channels to learn more about the next IFO.": "Seuraa sosiaalisen median kanaviamme saadaksesi lisätietoja seuraavasta IFO:sta.",
-  "Performance fee only applies to the flexible staking rewards.": "Suoriutumismaksu koskee vain joustavia panostuspalkkioita.",
   "Total locked": "Lukittu yhteensä",
   "What’s the difference?": "Mitä eroa näillä on?",
   "My Position": "Oma positio",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

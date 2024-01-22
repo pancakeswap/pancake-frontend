@@ -223,7 +223,6 @@
   "Unstaking Fee": "Τέλος διακοπής stake",
   "unstaking fee before": "χρέωση για την κατάργηση stake πριν τις",
   "Unstaking fee: %fee%%": "Χρέωση κατάργησης stake: %fee%%",
-  "Performance Fee": "Τέλος απόδοσης",
   "%position% Entered": "Τοποθετήθηκε %position%",
   "Sort by": "Ταξινόμηση κατά",
   "Expired": "Έχει λήξει",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Αίτηση για εκτέλεση IFO!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "Στο ευέλικτο staking, οι ανταμοιβές διανέμονται και περιλαμβάνονται στο συνολικό υπόλοιπο του staking σας. Στο κλειδωμένο staking, οι ανταμοιβές είναι κλειδωμένες μέχρι το τέλος του staking.",
   "Follow our social channels to learn more about the next IFO.": "Ακολουθήστε τα κοινωνικά μας κανάλια για να μάθετε περισσότερα για την επόμενη IFO.",
-  "Performance fee only applies to the flexible staking rewards.": "Το τέλος απόδοσης ισχύει μόνο για τα έπαθλα ευέλικτου staking.",
   "Total locked": "Σύνολο κλειδωμένων",
   "What’s the difference?": "Ποια είναι η διαφορά;",
   "My Position": "Η θέση μου",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

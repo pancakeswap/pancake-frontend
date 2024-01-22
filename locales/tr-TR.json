@@ -223,7 +223,6 @@
   "Unstaking Fee": "Yatırımı geri alma (unstaking) ücreti",
   "unstaking fee before": "şundan önce yatırımı geri alma (unstake yapma):",
   "Unstaking fee: %fee%%": "Yatırımı geri alma (unstaking) ücreti: %%fee%",
-  "Performance Fee": "Performans Ücreti",
   "%position% Entered": "%position% Pozisyonuna Girildi",
   "Sort by": "Sıralama ölçütü:",
   "Expired": "Süresi doldu",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Bir IFO çalıştırmak için başvurun!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "Esnek staking'de ödüller dağıtılır ve toplam stake bakiyene dahil edilir. Kilitli staking'de Ödüller, staking pozisyonunun sonuna kadar kilitlenir.",
   "Follow our social channels to learn more about the next IFO.": "Bir sonraki IFO hakkında daha fazla bilgi edinmek için sosyal medya hesaplarımızı takip edin.",
-  "Performance fee only applies to the flexible staking rewards.": "Performans ücreti, sadece esnek stake etme ödülleri için geçerlidir.",
   "Total locked": "Kilitli toplam",
   "What’s the difference?": "Fark nedir?",
   "My Position": "Pozisyonum",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

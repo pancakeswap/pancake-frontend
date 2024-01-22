@@ -223,7 +223,6 @@
   "Unstaking Fee": "Biaya Pembongkaran",
   "unstaking fee before": "biaya pembongkaran sebelum",
   "Unstaking fee: %fee%%": "Biaya pembongkaran %fee%",
-  "Performance Fee": "Biaya Kinerja",
   "%position% Entered": "%position% Dimasuki",
   "Sort by": "Pilah menurut",
   "Expired": "Kedaluwarsa",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Ajukan untuk menjalankan IFO!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "Dalam penumpukan fleksibel, hadiah dibagikan dan disertakan di dalam total saldo penumpukan Anda. Dalam penumpukan terkunci, Hadiah dikunci hingga akhir posisi penumpukan.",
   "Follow our social channels to learn more about the next IFO.": "Ikuti saluran sosial media kami untuk mengetahui lebih lanjut tentang IFO berikutnya.",
-  "Performance fee only applies to the flexible staking rewards.": "Biaya kinerja hanya berlaku pada hadiah penumpukan yang fleksibel.",
   "Total locked": "Total terkunci",
   "What’s the difference?": "Apa perbedaannya?",
   "My Position": "Posisi Saya",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

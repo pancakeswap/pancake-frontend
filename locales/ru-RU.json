@@ -223,7 +223,6 @@
   "Unstaking Fee": "Комиссия за возврат токенов",
   "unstaking fee before": "комиссия за возврат токенов ранее",
   "Unstaking fee: %fee%%": "Комиссия за возврат токенов: %fee%%",
-  "Performance Fee": "Комиссия за работу",
   "%position% Entered": "Позиция: %position%",
   "Sort by": "Сортировать по",
   "Expired": "Срок истек",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Подайте заявку на запуск IFO!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "При гибком вложении вознаграждения распределяются и включаются в общий баланс вложения. При заблокированном вложении вознаграждения блокируются до окончания срока позиции вложения.",
   "Follow our social channels to learn more about the next IFO.": "О следующем IFO можно будет узнать на наших каналах в социальных сетях.",
-  "Performance fee only applies to the flexible staking rewards.": "Комиссия за работу применяется только к гибким вознаграждениям за вложение.",
   "Total locked": "Всего заблокировано",
   "What’s the difference?": "В чем разница?",
   "My Position": "Моя позиция",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

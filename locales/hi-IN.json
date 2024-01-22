@@ -223,7 +223,6 @@
   "Unstaking Fee": "अनस्टेकिंग फीस",
   "unstaking fee before": "स्टेक से हटाने की फ़ीस, इससे पहले के लिए:",
   "Unstaking fee: %fee%%": "स्टेक से हटाने की फ़ीस: %fee%%",
-  "Performance Fee": "परफ़ॉर्मेंस फ़ीस",
   "%position% Entered": "%position% एंटर किया गया",
   "Sort by": "ऐसे सॉर्टिंग करें",
   "Expired": "समाप्त",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "IFO रन करने के लिए आवेदन करें!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "फ्लेक्सिबल स्टेकिंग में, पुरस्कार आपके कुल स्टेकिंग शेष राशि में वितरित और शामिल किए जाते हैं। लॉक की गई स्टेकिंग में, स्टेकिंग पोजीशन के समाप्त होने तक पुरस्कारों को लॉक किया जाता है।",
   "Follow our social channels to learn more about the next IFO.": "अगले IFO के बारे में अधिक जानने के लिए हमारा सोशल चैनल फ़ॉलो करें।",
-  "Performance fee only applies to the flexible staking rewards.": "परफ़ॉर्मेंस फ़ीस केवल लचीले स्टैकिंग रिवॉर्ड पर लागू होती है।",
   "Total locked": "लॉक किए गए कुल",
   "What’s the difference?": "अंतर क्या है?",
   "My Position": "मेरी पोजीशन",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }

@@ -223,7 +223,6 @@
   "Unstaking Fee": "Taxa de Resgate",
   "unstaking fee before": "comissão de unstaking até",
   "Unstaking fee: %fee%%": "Comissão de rescisão: %fee%%",
-  "Performance Fee": "Comissão de desempenho",
   "%position% Entered": "%position% Introduzida",
   "Sort by": "Ordenar por",
   "Expired": "Expirado",
@@ -1608,7 +1607,6 @@
   "Apply to run an IFO!": "Inscreva-se para executar um IFO!",
   "In flexible staking, rewards are distributed and included in your total staking balance. In locked staking, Rewards are locked until the end of the staking position.": "No stake flexível, as recompensas são distribuídas e incluídas no saldo total do stake. No stake bloqueado, as recompensas são bloqueadas até o final da posição de stake.",
   "Follow our social channels to learn more about the next IFO.": "Siga os nossos canais nas redes sociais para saber mais sobre o próximo IFO.",
-  "Performance fee only applies to the flexible staking rewards.": "A taxa de desempenho só se aplica às recompensas de stakes flexíveis.",
   "Total locked": "Total bloqueado",
   "What’s the difference?": "Qual é a diferença?",
   "My Position": "A minha posição",
@@ -3122,5 +3120,9 @@
   "Update Positions": "Update Positions",
   "Increase Liquidity": "Increase Liquidity",
   "Migrate Liquidity": "Migrate Liquidity",
-  "Ascend": "Ascend"
+  "Ascend": "Ascend",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "U.S.-based users.": "U.S.-based users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.",
+  "Base APR (APT yield only)": "Base APR (APT yield only)"
 }
