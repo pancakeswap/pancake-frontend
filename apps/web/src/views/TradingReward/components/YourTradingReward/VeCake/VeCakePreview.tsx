@@ -1,26 +1,9 @@
-import { Box, Text, Flex, useTooltip, TooltipText, Link, Message, Button, BoxProps, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Button, Flex, Link, Message, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
 import Image from 'next/image'
 import { NoLockingCakeModal } from 'views/TradingReward/components/YourTradingReward/VeCake/NoLockingCakeModal'
-
-interface VeCakePreviewTextInfoProps extends BoxProps {
-  title: string
-  value: string
-  bold?: boolean
-}
-
-const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePreviewTextInfoProps>> = (props) => {
-  const { title, value, bold } = props
-  return (
-    <Flex justifyContent="space-between" {...props}>
-      <Text maxWidth={170} lineHeight="120%" color="textSubtle" fontSize="14px">
-        {title}
-      </Text>
-      <Text bold={bold}>{value}</Text>
-    </Flex>
-  )
-}
+import { VeCakePreviewTextInfo } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakePreviewTextInfo'
 
 export const VeCakePreview = () => {
   const { t } = useTranslation()
