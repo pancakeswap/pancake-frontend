@@ -143,9 +143,9 @@ export const BenefitCard: React.FC<{
         <div>
           <Text lineHeight="130%">
             <StyleUl>
-              {info.desc.map((item, index) => (
+              {info.desc.map((item) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <li key={`${info.key}-${index}`}>{item}</li>
+                <li key={info.key}>{item}</li>
               ))}
             </StyleUl>
           </Text>
