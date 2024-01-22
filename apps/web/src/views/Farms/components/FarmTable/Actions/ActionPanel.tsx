@@ -44,6 +44,7 @@ export interface ActionPanelProps {
   userDataReady: boolean
   expanded: boolean
   alignLinksToRight?: boolean
+  isLastFarm: boolean
 }
 
 export interface ActionPanelV3Props {
@@ -58,6 +59,7 @@ export interface ActionPanelV3Props {
   userDataReady: boolean
   expanded: boolean
   alignLinksToRight?: boolean
+  isLastFarm: boolean
 }
 
 const expandAnimation = keyframes`
@@ -78,7 +80,7 @@ const collapseAnimation = keyframes`
   }
 `
 
-const Container = styled.div<{ expanded }>`
+const Container = styled.div<{ expanded; isLastFarm }>`
   animation: ${({ expanded }) =>
     expanded
       ? css`
@@ -100,6 +102,7 @@ const Container = styled.div<{ expanded }>`
     align-items: center;
     padding: 16px 24px;
   }
+  ${({ isLastFarm }) => isLastFarm && `border-radius: 0 0 32px 32px;`}
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
@@ -147,9 +150,9 @@ const StyledText = styled(Text)`
   }
 `
 
-const ActionPanelContainer = ({ expanded, values, infos, children }) => {
+const ActionPanelContainer = ({ expanded, values, infos, children, isLastFarm }) => {
   return (
-    <Container expanded={expanded}>
+    <Container expanded={expanded} isLastFarm={isLastFarm}>
       <InfoContainer>
         <ValueContainer>{values}</ValueContainer>
         {infos}
@@ -198,6 +201,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   stakedLiquidity,
   alignLinksToRight,
   userDataReady,
+  isLastFarm,
 }) => {
   const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
@@ -241,6 +245,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
       />
       <ActionPanelContainer
         expanded={expanded}
+        isLastFarm={isLastFarm}
         values={
           <>
             {!isDesktop && (
@@ -311,6 +316,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   liquidity,
   userDataReady,
   expanded,
+  isLastFarm,
   alignLinksToRight = true,
 }) => {
   const { chainId } = useActiveChainId()
@@ -351,6 +357,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
       />
       <ActionPanelContainer
         expanded={expanded}
+        isLastFarm={isLastFarm}
         values={
           <>
             {farm.isCommunity && farm.auctionHostingEndDate && (

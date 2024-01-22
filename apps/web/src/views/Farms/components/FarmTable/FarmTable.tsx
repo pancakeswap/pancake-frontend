@@ -272,13 +272,20 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <TableBody>
-              {sortedRows.map((row) => {
+              {sortedRows.map((row, index) => {
+                const isLastFarm = index === sortedRows.length - 1
+
                 return row.type === 'v2' && row?.details?.boosted ? (
                   <ProxyFarmContainer key={`table-row-${row.farm.pid}-${row.type}`} farm={row.details}>
-                    <Row {...row} userDataReady={userDataReady} />
+                    <Row {...row} userDataReady={userDataReady} isLastFarm={isLastFarm} />
                   </ProxyFarmContainer>
                 ) : (
-                  <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}-${row.type}`} />
+                  <Row
+                    {...row}
+                    userDataReady={userDataReady}
+                    key={`table-row-${row.farm.pid}-${row.type}`}
+                    isLastFarm={isLastFarm}
+                  />
                 )
               })}
             </TableBody>
