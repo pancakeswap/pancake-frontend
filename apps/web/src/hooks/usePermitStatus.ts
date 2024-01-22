@@ -33,7 +33,7 @@ type PermitStatus<T extends Token> = {
 
 // return current wallet's permit status
 export const usePermitStatus = (token?: Token, owner?: Address, spender?: Address) => {
-  const allowance = useTokenAllowanceToPermit(token, owner)
+  const allowance = useTokenAllowanceToPermit2(token, owner)
   const permit = useTokenPermit(token, owner, spender)
 
   return useMemo<PermitStatus<Token>>(
@@ -45,7 +45,7 @@ export const usePermitStatus = (token?: Token, owner?: Address, spender?: Addres
   )
 }
 
-const useTokenAllowanceToPermit = (token?: Currency, owner?: Address) => {
+const useTokenAllowanceToPermit2 = (token?: Currency, owner?: Address) => {
   const { chainId } = useActiveChainId()
   const { allowance } = useTokenAllowance(
     token?.isNative ? undefined : (token as Token),
@@ -142,14 +142,24 @@ export enum PermitState {
   DONE,
 }
 
-export const usePermitRequirements = (amount: CurrencyAmount<Token> | undefined, spender?: Address) => {
+export const useAllowanceRequirements = (
+  approveByPermit2: boolean,
+  amount: CurrencyAmount<Token> | undefined,
+  spender?: Address,
+) => {
   const { account } = useAccountActiveChain()
-  const { allowance, permitAmount, expiration } = usePermitStatus(amount?.currency, account, spender)
+  const { allowance: tokenAllowance } = useTokenAllowance(amount?.currency, account, spender)
+  const { allowance: permit2Allowance, permitAmount, expiration } = usePermitStatus(amount?.currency, account, spender)
   const now = useCurrentBlockTimestamp() ?? 0n
+
+  const allowance = useMemo(
+    () => (approveByPermit2 ? permit2Allowance : tokenAllowance),
+    [approveByPermit2, permit2Allowance, tokenAllowance],
+  )
 
   const requireRevoke = useMemo(() => {
     const isMainnetUSDT =
-      amount?.currency.chainId === ethereumTokens.usdt.chainId &&
+      amount?.currency?.chainId === ethereumTokens.usdt.chainId &&
       isAddressEqual(amount?.currency.address, ethereumTokens.usdt.address)
 
     if (!isMainnetUSDT) return false
@@ -162,8 +172,8 @@ export const usePermitRequirements = (amount: CurrencyAmount<Token> | undefined,
   }, [allowance, amount])
 
   const requirePermit = useMemo(() => {
-    return (amount && permitAmount?.lessThan(amount)) || (Boolean(expiration) && now >= expiration)
-  }, [permitAmount, amount, now, expiration])
+    return (approveByPermit2 && amount && permitAmount?.lessThan(amount)) || (Boolean(expiration) && now >= expiration)
+  }, [approveByPermit2, amount, permitAmount, expiration, now])
 
   return useMemo(() => {
     return {
@@ -176,6 +186,8 @@ export const usePermitRequirements = (amount: CurrencyAmount<Token> | undefined,
 
 export const usePermitOrApprove = (
   amount: CurrencyAmount<Currency> | undefined,
+  // if use approve, spender is the target address to grant allowance through erc20 SC
+  // if use permit2, spender is the target address to set permit amount through permit2 SC
   spender?: Address,
   onFinished?: () => Promise<SendTransactionResult | undefined>,
   // only used for permit2
@@ -184,13 +196,17 @@ export const usePermitOrApprove = (
   onUpdatePermit2Signature?: (signature: Permit2Signature) => void,
 ) => {
   const { account, chainId } = useAccountActiveChain()
-
   const tokenAmount = amount?.currency.isToken ? (amount as CurrencyAmount<Token>) : undefined
 
-  const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(tokenAmount, spender)
+  const approveByPermit2 = useMemo(() => typeof onUpdatePermit2Signature === 'function', [onUpdatePermit2Signature])
+  const { requireApprove, requireRevoke, requirePermit } = useAllowanceRequirements(
+    approveByPermit2,
+    tokenAmount,
+    spender,
+  )
   const requirePermit2 = useMemo(() => {
-    return requirePermit && typeof onUpdatePermit2Signature === 'function'
-  }, [requirePermit, onUpdatePermit2Signature])
+    return requirePermit && approveByPermit2
+  }, [approveByPermit2, requirePermit])
   const permitState = useMemo((): PermitState => {
     if (requireRevoke || requireApprove) {
       return PermitState.IDLE
@@ -203,7 +219,12 @@ export const usePermitOrApprove = (
   const { nonce } = usePermitStatus(tokenAmount?.currency, account, spender)
   const permitCallback = useWritePermit(tokenAmount?.currency, spender, nonce)
 
-  const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, getPermit2Address(chainId))
+  const approveTarget = useMemo(
+    () => (approveByPermit2 ? getPermit2Address(chainId) : spender),
+    [approveByPermit2, chainId, spender],
+  )
+
+  const { approveCallback, revokeCallback, approvalState } = useApproveCallback(amount, approveTarget)
 
   // execution of the permit state machine
   const execute = useCallback(async (): Promise<SendTransactionResult | undefined> => {

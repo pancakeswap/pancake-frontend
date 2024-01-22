@@ -33,6 +33,12 @@ export function V3SwapForm() {
 
   const finalTrade = mm.isMMBetter ? mm?.mmTradeInfo?.trade : trade
 
+  // console.debug('debug trade', {
+  //   trade,
+  //   mm,
+  //   finalTrade,
+  // })
+
   const tradeLoaded = !isLoading
   const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
 

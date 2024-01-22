@@ -5,7 +5,7 @@ import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
-import { usePermitRequirements } from 'hooks/usePermitStatus'
+import { useAllowanceRequirements } from 'hooks/usePermitStatus'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { isUserRejected } from 'utils/sentry'
 import { Address, Hex, UserRejectedRequestError } from 'viem'
@@ -44,13 +44,16 @@ export const useConfirmModalState = (
   const pendingModalSteps = useRef<PendingConfirmModalState[]>([])
   const [txHash, setTxHash] = useState<Hex | undefined>(undefined)
   const [swapErrorMessage, setSwapErrorMessage] = useState<string | undefined>(undefined)
-  const { requireApprove, requireRevoke, requirePermit } = usePermitRequirements(
+
+  const approveByPermit2 = useMemo(() => typeof setPermit2Signature === 'function', [setPermit2Signature])
+  const { requireApprove, requireRevoke, requirePermit } = useAllowanceRequirements(
+    approveByPermit2,
     amount?.currency.isToken ? (amount as CurrencyAmount<Token>) : undefined,
     spender,
   )
   const requirePermit2 = useMemo(() => {
-    return requirePermit && typeof setPermit2Signature === 'function'
-  }, [requirePermit, setPermit2Signature])
+    return requirePermit && approveByPermit2
+  }, [requirePermit, approveByPermit2])
   const prevApprovalState = usePrevious(approvalState)
 
   const resetConfirmModalState = useCallback(() => {
