@@ -40,7 +40,7 @@ export const YieldInfo = memo(function YieldInfo({
   const { t } = useTranslation()
 
   const earning = useMemo(
-    () => (withCakeReward && apr.isInCakeRewardDateRange ? ['CAKE', t('Fees')].join(' + ') : t('Fees')),
+    () => (withCakeReward && apr.isInCakeRewardDateRange ? t('CAKE + Fees') : t('Fees')),
     [withCakeReward, t, apr.isInCakeRewardDateRange],
   )
 
