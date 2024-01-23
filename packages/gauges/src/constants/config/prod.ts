@@ -2547,7 +2547,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 258,
-    pairName: 'MANTA-BNB',
+    pairName: 'pxETH-ETH',
     address: '0x3733493eC5D2C181Dcd7C54ed100641c0f07BB0e',
     chainId: ChainId.ETHEREUM,
     type: GaugeType.V3,
