@@ -16,7 +16,7 @@ import PrevNextNav from './PrevNextNav'
 const SetCol = styled.div`
   position: relative;
   flex: none;
-  width: auto;
+  width: 170px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 270px;
