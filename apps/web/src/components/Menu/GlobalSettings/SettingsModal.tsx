@@ -34,7 +34,7 @@ import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
-import { ReactNode, lazy, useCallback, useState } from 'react'
+import { ReactNode, lazy, useCallback, useState, Suspense } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
@@ -192,7 +192,9 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   />
                   <BetaTag>{t('BETA')}</BetaTag>
                 </Flex>
-                <WebNotiToggle enabled={enabled} />
+                <Suspense fallback={null}>
+                  <WebNotiToggle enabled={enabled} />
+                </Suspense>
               </Flex>
               {chainId === ChainId.BSC && (
                 <>
