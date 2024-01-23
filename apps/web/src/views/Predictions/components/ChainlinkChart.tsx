@@ -146,6 +146,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
       flexWrap="wrap"
       alignItems="center"
       columnGap="12px"
+      zIndex={2}
     >
       {hoverData && (
         <FlexGap minWidth="51%" alignItems="flex-end" gap="12px" height="22px">
