@@ -31,4 +31,12 @@ export const polygonZkEvmTokens = {
     'Wrapped BTC',
     'https://bitcoin.org/',
   ),
+  usdce: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5',
+    6,
+    'USDC.E',
+    'USD Coin',
+    'https://www.centre.io/',
+  ),
 }

@@ -2924,4 +2924,20 @@ export const bscTokens = {
     'Any Inu',
     'https://www.anyinu.xyz/',
   ),
+  ovn: new ERC20Token(
+    ChainId.BSC,
+    '0x259B30C916e440FB79747cD559207FfdaBBae057',
+    18,
+    'OVN',
+    'OVN',
+    'https://overnight.fi/',
+  ),
+  manta: new ERC20Token(
+    ChainId.BSC,
+    '0x8581cc815e40615998F4561F3e24e68066293595',
+    18,
+    'MANTA',
+    'Manta',
+    'https://manta.network/',
+  ),
 }
