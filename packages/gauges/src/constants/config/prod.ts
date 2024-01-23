@@ -2508,7 +2508,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 254,
     pairName: 'OVN-USD+',
-    address: '0x5631fE6d29E3CB717517DA05A9970e499DEF5e31',
+    address: '0x714D48cb99b87F274B33A89fBb16EaD191B40b6C',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.V3,
     token0Address: arbitrumTokens.ovn.address,
