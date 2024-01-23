@@ -8,7 +8,6 @@ import { useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Events } from '../constants'
 import useSendPushNotification from '../hooks/sendPushNotification'
-import { BuilderNames } from '../types'
 import { parseErrorMessage } from '../utils/errorBuilder'
 import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
 
@@ -65,22 +64,19 @@ const OnBoardingView = ({
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { subscribe } = useManageSubscription(`eip155:1:${account}`)
-  const { sendPushNotification, subscribeToPushNotifications } = useSendPushNotification()
+  const { subscribeToPushNotifications } = useSendPushNotification()
 
   const handleSubscribe = useCallback(async () => {
     setIsSubscribing(true)
     try {
       await subscribeToPushNotifications()
       await subscribe()
-      setTimeout(async () => {
-        await sendPushNotification(BuilderNames.OnBoardNotification, [], `eip155:1:${account}`)
-      }, 1200)
     } catch (error) {
       setIsSubscribing(false)
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
       toast.toastError(Events.SubscriptionRequestError.title, errMessage)
     }
-  }, [account, toast, sendPushNotification, subscribe, subscribeToPushNotifications, setIsSubscribing])
+  }, [toast, subscribe, subscribeToPushNotifications, setIsSubscribing])
 
   const handleOnBoarding = useCallback(async () => {
     setIsOnBoarding(true)

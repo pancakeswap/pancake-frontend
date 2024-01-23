@@ -61,20 +61,12 @@ export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
 export const PancakeNotifications: {
   [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(args: T[]) => pushNotification
 } = {
-  OnBoardNotification: (): pushNotification => {
-    return {
-      title: 'Welcome Aboard',
-      body: 'You have successfully subscribed to notifications!',
-      icon: `https://pancakeswap.finance/logo.png`,
-      type: SubsctiptionType.Alerts,
-    }
-  },
   newLpNotification: (): pushNotification => {
     return {
       title: 'New LP Position Added',
       body: `New LP position successfully added. you will be notified on important updates.`,
       icon: `https://pancakeswap.finance/logo.png`,
-      url: 'https://pc-custom-web.vercel.app',
+      url: 'https://pancakeswap.finance',
       type: SubsctiptionType.Liquidity,
     }
     // ... add more as we create use cases

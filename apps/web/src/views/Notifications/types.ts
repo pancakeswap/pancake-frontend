@@ -81,7 +81,6 @@ export type NotificationPayload = {
 }
 
 export interface PancakeNotificationBuilders {
-  ['OnBoardNotification']: { onBoardNotification: () => pushNotification }
   ['newLpNotification']: {
     newLpPositionNotification: (
       token1: string,
