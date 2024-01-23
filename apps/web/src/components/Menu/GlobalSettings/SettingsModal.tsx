@@ -34,7 +34,7 @@ import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode, lazy, useCallback, useState, Suspense } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
@@ -51,6 +51,8 @@ import { styled } from 'styled-components'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
 import { SettingsMode } from './types'
+
+const WebNotiToggle = lazy(() => import('./WebNotiToggle'))
 
 const BetaTag = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.success};
@@ -104,7 +106,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, setAudioMode] = useAudioPlay()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
-  const { enabled, toggle } = useWebNotifications()
+  const { enabled } = useWebNotifications()
 
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
@@ -190,8 +192,9 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   />
                   <BetaTag>{t('BETA')}</BetaTag>
                 </Flex>
-
-                <Toggle id="toggle-username-visibility" checked={enabled} scale="md" onChange={toggle} />
+                <Suspense fallback={null}>
+                  <WebNotiToggle enabled={enabled} />
+                </Suspense>
               </Flex>
               {chainId === ChainId.BSC && (
                 <>
@@ -213,7 +216,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                       />
                     </Flex>
                     <Toggle
-                      id="toggle-username-visibility"
+                      id="toggle-token-risk"
                       checked={tokenRisk}
                       scale="md"
                       onChange={() => {

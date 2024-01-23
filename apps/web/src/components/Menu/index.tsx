@@ -12,13 +12,14 @@ import useTheme from 'hooks/useTheme'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
-import Notifications from 'views/Notifications'
+import { lazy, useMemo, Suspense } from 'react'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import UserMenu from './UserMenu'
 import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
+
+const Notifications = lazy(() => import('views/Notifications'))
 
 const LinkComponent = (linkProps) => {
   return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
@@ -60,7 +61,11 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
-            {enabled && <Notifications />}
+            {enabled && (
+              <Suspense fallback={null}>
+                <Notifications />
+              </Suspense>
+            )}
             <NetworkSwitcher />
             <UserMenu />
           </>
