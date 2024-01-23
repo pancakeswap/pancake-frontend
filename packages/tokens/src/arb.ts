@@ -216,4 +216,12 @@ export const arbitrumTokens = {
     'ETH+',
     'https://www.swellnetwork.io/',
   ),
+  ovn: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xA3d1a8DEB97B111454B294E2324EfAD13a9d8396',
+    18,
+    'OVN',
+    'OVN',
+    'https://overnight.fi/',
+  ),
 }
