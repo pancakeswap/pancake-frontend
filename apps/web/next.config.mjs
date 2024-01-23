@@ -48,6 +48,7 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
+    fallbackNodePolyfills: false,
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
       '*': [],

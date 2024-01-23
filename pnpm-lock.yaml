@@ -638,11 +638,11 @@ importers:
         specifier: 2.4.4
         version: 2.4.4(@types/node@13.13.52)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       '@datadog/browser-logs':
-        specifier: ^5.1.0
-        version: 5.2.0(@datadog/browser-rum@5.5.1)
+        specifier: ^5.8.0
+        version: 5.8.0(@datadog/browser-rum@5.8.0)
       '@datadog/browser-rum':
-        specifier: ^5.5.1
-        version: 5.5.1(@datadog/browser-logs@5.2.0)
+        specifier: ^5.8.0
+        version: 5.8.0(@datadog/browser-logs@5.8.0)
       '@gelatonetwork/limit-orders-lib':
         specifier: ^4.1.0
         version: 4.5.0(encoding@0.1.13)
@@ -4319,43 +4319,39 @@ packages:
       - supports-color
     dev: true
 
-  /@datadog/browser-core@5.2.0:
-    resolution: {integrity: sha512-/4kgRCaSJQoOFJpIx7H+ope3bpBaS55rZzoLwXNwjQyZW5wBH1wzs4JZdIexbogNLfvj6BqiAEZ+oCDbQf1a/Q==}
+  /@datadog/browser-core@5.8.0:
+    resolution: {integrity: sha512-aNMSB+tLu5aKm/uzswy5d6KDgGtMs2uMxsGWdZ3lmqorEHLXk5kPNTEVRJfeE49EJaWaxiTYQuuuLo0c5S0rUA==}
     dev: false
 
-  /@datadog/browser-core@5.5.1:
-    resolution: {integrity: sha512-dOzCmh8JDDadSHlzErTt0pQuLZ0HKSRq3lWvL3ilTluc/DZ5akbea0RBpwbxZtog+xYVxHR7hS/EfQ9lt2N09w==}
-    dev: false
-
-  /@datadog/browser-logs@5.2.0(@datadog/browser-rum@5.5.1):
-    resolution: {integrity: sha512-JPAfTu9ojo703mCj7J7CnD7p6HygoLVZTkJDX8W/uUh2a+JaZ+glhwTU8zzjMczGkxRo/WY4KKVdZuxugMICDw==}
+  /@datadog/browser-logs@5.8.0(@datadog/browser-rum@5.8.0):
+    resolution: {integrity: sha512-7UnLrYEICdY4KLGct9q88f5Xxaad+47He1H7PPnfj1p6HDHtadjRYxb/+NQxoezWFLDpqIIgQgqr4GDQYgtOFQ==}
     peerDependencies:
-      '@datadog/browser-rum': 5.2.0
+      '@datadog/browser-rum': 5.8.0
     peerDependenciesMeta:
       '@datadog/browser-rum':
         optional: true
     dependencies:
-      '@datadog/browser-core': 5.2.0
-      '@datadog/browser-rum': 5.5.1(@datadog/browser-logs@5.2.0)
+      '@datadog/browser-core': 5.8.0
+      '@datadog/browser-rum': 5.8.0(@datadog/browser-logs@5.8.0)
     dev: false
 
-  /@datadog/browser-rum-core@5.5.1:
-    resolution: {integrity: sha512-8B5sRDvu/mcpiTNLVhFJ/+RxYY2fB/dzsFkDXgw/cze6wskhC3XmqcsOrCDPv0+6ORL7DgLHSp+KpJqqdLfVBw==}
+  /@datadog/browser-rum-core@5.8.0:
+    resolution: {integrity: sha512-UtWVR7z8qXvt0Ik10KjjG6Ueck1JLOXcfY00Vv2TttQ73hepL1NUlSDjdMyobySc/990ROvWkCYTIvhtqWFDFw==}
     dependencies:
-      '@datadog/browser-core': 5.5.1
+      '@datadog/browser-core': 5.8.0
     dev: false
 
-  /@datadog/browser-rum@5.5.1(@datadog/browser-logs@5.2.0):
-    resolution: {integrity: sha512-DP84wO1Uov2iqpzmNVQmRe75unZCwJVDbQ1eWlH6GKqhnM7kZ9qetU7ljSZxDSYQHBv3VhKtWuIxcP4X22GNvA==}
+  /@datadog/browser-rum@5.8.0(@datadog/browser-logs@5.8.0):
+    resolution: {integrity: sha512-WtWRQa41d/G4TRs4PwbMM82i56Fsjov9b/B1go0ocqIqUkaJYdTBqQCIcJo3xmCZrgmxSlPiPgEgB5shhVDXxA==}
     peerDependencies:
-      '@datadog/browser-logs': 5.5.1
+      '@datadog/browser-logs': 5.8.0
     peerDependenciesMeta:
       '@datadog/browser-logs':
         optional: true
     dependencies:
-      '@datadog/browser-core': 5.5.1
-      '@datadog/browser-logs': 5.2.0(@datadog/browser-rum@5.5.1)
-      '@datadog/browser-rum-core': 5.5.1
+      '@datadog/browser-core': 5.8.0
+      '@datadog/browser-logs': 5.8.0(@datadog/browser-rum@5.8.0)
+      '@datadog/browser-rum-core': 5.8.0
     dev: false
 
   /@discoveryjs/json-ext@0.5.7:
