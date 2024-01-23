@@ -393,5 +393,12 @@ export const ethereumTokens = {
     'Ordiswap',
     'https://ordiswap.fi/',
   ),
-  pxETH: new ERC20Token(ChainId.ETHEREUM, '0x04C154b66CB340F3Ae24111CC767e0184Ed00Cc6', 18, 'pxETH', 'Pirex Ether', ''),
+  pxETH: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x04C154b66CB340F3Ae24111CC767e0184Ed00Cc6',
+    18,
+    'pxETH',
+    'Pirex Ether',
+    'https://dineroismoney.com/',
+  ),
 }
