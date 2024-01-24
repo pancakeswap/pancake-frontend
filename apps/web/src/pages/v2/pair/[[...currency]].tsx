@@ -22,7 +22,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchef } from 'hooks/useContract'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -43,7 +43,7 @@ export default function PoolV2Page() {
   const baseCurrency = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const [, pair] = useV2Pair(baseCurrency, currencyB)
+  const [, pair] = useV2Pair(baseCurrency ?? undefined, currencyB ?? undefined)
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair?.liquidityToken)
 
@@ -62,12 +62,12 @@ export default function PoolV2Page() {
 
   const masterchefV2Contract = useMasterchef()
 
-  const { data: isFarmExistActiveForPair } = useSWRImmutable(
-    chainId && pair && masterchefV2Contract && ['isFarmExistActiveForPair', chainId, pair.liquidityToken.address],
+  const { data: isFarmExistActiveForPair } = useQuery(
+    ['isFarmExistActiveForPair', chainId, pair?.liquidityToken?.address],
     async () => {
       const farmsConfig = (await getFarmConfig(chainId)) || []
       const farmPair = farmsConfig.find(
-        (farm) => farm.lpAddress.toLowerCase() === pair.liquidityToken.address.toLowerCase(),
+        (farm) => farm.lpAddress.toLowerCase() === pair?.liquidityToken?.address?.toLowerCase(),
       )
       if (farmPair) {
         const poolInfo = await masterchefV2Contract.read.poolInfo([BigInt(farmPair.pid)])
@@ -75,6 +75,12 @@ export default function PoolV2Page() {
         return allocPoint > 0 ? 'exist' : 'notexist'
       }
       return 'exist'
+    },
+    {
+      enabled: Boolean(chainId && pair && masterchefV2Contract),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
     },
   )
 
@@ -137,7 +143,7 @@ export default function PoolV2Page() {
                 </Button>
               </NextLinkFromReactRouter>
               {isFarmExistActiveForPair === 'notexist' && (
-                <NextLinkFromReactRouter to={`/v2/migrate/${pair.liquidityToken.address}`}>
+                <NextLinkFromReactRouter to={`/v2/migrate/${pair?.liquidityToken?.address}`}>
                   <Button variant="secondary" width="100%" mb="8px" disabled={!pair}>
                     {t('Migrate')}
                   </Button>
