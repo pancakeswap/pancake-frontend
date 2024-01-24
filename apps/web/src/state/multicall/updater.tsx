@@ -4,7 +4,7 @@ import { useAtom } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { multicallReducerAtom, MulticallState } from 'state/multicall/reducer'
-import { createWorker } from 'utils/worker'
+import { worker2 } from 'utils/worker'
 import { useMulticallContract } from '../../hooks/useContract'
 import {
   Call,
@@ -19,7 +19,7 @@ import { CancelledError, retry } from './retry'
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
 
-const worker = createWorker()
+const worker = worker2
 
 /**
  * From the current all listeners state, return each call key mapped to the

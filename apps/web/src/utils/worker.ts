@@ -51,6 +51,10 @@ class WorkerProxy {
   }
 }
 
+export const worker = createWorker()
+
+export const worker2 = createWorker()
+
 export function createWorker() {
   return typeof window !== 'undefined' && typeof Worker !== 'undefined'
     ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
