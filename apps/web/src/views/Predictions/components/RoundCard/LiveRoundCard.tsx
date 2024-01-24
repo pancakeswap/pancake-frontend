@@ -124,7 +124,11 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
           </Text>
           <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
             <div ref={targetRef}>
-              <LiveRoundPrice betPosition={betPosition} price={price} />
+              <LiveRoundPrice
+                betPosition={betPosition}
+                price={price}
+                displayedDecimals={config?.displayedDecimals ?? 4}
+              />
             </div>
             <PositionTag betPosition={betPosition}>
               {formatUsdv2(priceDifference, config?.displayedDecimals ?? 0)}

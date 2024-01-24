@@ -34,6 +34,7 @@ export const MobilePredictionTokenSelector: React.FC<React.PropsWithChildren<Des
             </Text>
             <Price
               color="secondary"
+              displayedDecimals={config?.displayedDecimals}
               chainlinkOracleAddress={config?.chainlinkOracleAddress}
               galetoOracleAddress={config?.galetoOracleAddress}
             />
@@ -62,6 +63,7 @@ export const MobilePredictionTokenSelector: React.FC<React.PropsWithChildren<Des
                 <Text fontSize={20} bold color="textSubtle">{`${list?.token?.symbol}USD`}</Text>
               </Flex>
               <Price
+                displayedDecimals={list?.displayedDecimals}
                 chainlinkOracleAddress={list?.chainlinkOracleAddress}
                 galetoOracleAddress={list?.galetoOracleAddress}
               />

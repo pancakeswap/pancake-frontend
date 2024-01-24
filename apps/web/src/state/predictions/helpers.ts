@@ -407,7 +407,10 @@ export const makeLedgerData = (account: string, ledgers: PredictionsLedgerRespon
 /**
  * Serializes the return from the "rounds" call for redux
  */
-export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): ReduxNodeRound => {
+export const serializePredictionsRoundsResponse = (
+  response: PredictionsRoundsResponse,
+  chainId: ChainId,
+): ReduxNodeRound => {
   const {
     epoch,
     startTimestamp,
@@ -425,14 +428,23 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
     closeOracleId,
   } = response
 
+  let lockPriceAmount = lockPrice === 0n ? null : lockPrice.toString()
+  let closePriceAmount = closePrice === 0n ? null : closePrice.toString()
+
+  // Chainlink in ARBITRUM lockPrice & closePrice will return 18 decimals, other chain is return 8 decimals.
+  if (chainId === ChainId.ARBITRUM_ONE) {
+    lockPriceAmount = lockPrice === 0n ? null : (Number(lockPrice) / Number(1e10)).toFixed()
+    closePriceAmount = closePrice === 0n ? null : (Number(closePrice) / Number(1e10)).toFixed()
+  }
+
   return {
     oracleCalled,
     epoch: Number(epoch),
     startTimestamp: startTimestamp === 0n ? null : Number(startTimestamp),
     lockTimestamp: lockTimestamp === 0n ? null : Number(lockTimestamp),
     closeTimestamp: closeTimestamp === 0n ? null : Number(closeTimestamp),
-    lockPrice: lockPrice === 0n ? null : lockPrice.toString(),
-    closePrice: closePrice === 0n ? null : closePrice.toString(),
+    lockPrice: lockPriceAmount,
+    closePrice: closePriceAmount,
     totalAmount: totalAmount.toString(),
     bullAmount: bullAmount.toString(),
     bearAmount: bearAmount.toString(),

@@ -128,6 +128,7 @@ export const TokenSelector = () => {
           <Flex>
             <Price
               fontSize={['12px', '12px', '12px', '12px', '16px']}
+              displayedDecimals={config?.displayedDecimals}
               chainlinkOracleAddress={config?.chainlinkOracleAddress}
               galetoOracleAddress={config?.galetoOracleAddress}
             />

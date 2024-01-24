@@ -6,11 +6,13 @@ import { Address } from 'viem'
 import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
 
 interface PriceProps extends TextProps {
+  displayedDecimals?: number
   chainlinkOracleAddress?: Address
   galetoOracleAddress?: Address
 }
 
 export const Price: React.FC<React.PropsWithChildren<PriceProps>> = ({
+  displayedDecimals,
   chainlinkOracleAddress,
   galetoOracleAddress,
   ...props
@@ -27,7 +29,7 @@ export const Price: React.FC<React.PropsWithChildren<PriceProps>> = ({
   }
 
   return (
-    <CountUp start={0} preserveValue delay={0} end={priceAsNumber} prefix="$" decimals={4} duration={1}>
+    <CountUp start={0} preserveValue delay={0} end={priceAsNumber} prefix="$" decimals={displayedDecimals} duration={1}>
       {({ countUpRef }) => (
         <Text lineHeight="110%" style={{ alignSelf: 'center' }} bold fontSize="16px" {...props}>
           <span ref={countUpRef} />
