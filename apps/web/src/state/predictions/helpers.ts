@@ -432,9 +432,9 @@ export const serializePredictionsRoundsResponse = (
   let closePriceAmount = closePrice === 0n ? null : closePrice.toString()
 
   // Chainlink in ARBITRUM lockPrice & closePrice will return 18 decimals, other chain is return 8 decimals.
-  if (chainId === ChainId.ARBITRUM_ONE && (lockPrice > 0n || closePrice > 0n)) {
-    lockPriceAmount = (Number(lockPrice) / Number(1e10)).toFixed()
-    closePriceAmount = (Number(closePrice) / Number(1e10)).toFixed()
+  if (chainId === ChainId.ARBITRUM_ONE) {
+    lockPriceAmount = lockPrice === 0n ? null : (Number(lockPrice) / Number(1e10)).toFixed()
+    closePriceAmount = closePrice === 0n ? null : (Number(closePrice) / Number(1e10)).toFixed()
   }
 
   return {
