@@ -10,9 +10,19 @@ interface Props {
   balance?: CurrencyAmount<Currency>
   balanceText?: ReactNode
   maxText?: ReactNode
+  useTrustWalletUrl?: boolean
 }
 
-export function CurrencyInput({ currency, balance, value, onChange, balanceText, maxText = 'Max', ...rest }: Props) {
+export function CurrencyInput({
+  currency,
+  balance,
+  value,
+  onChange,
+  balanceText,
+  maxText = 'Max',
+  useTrustWalletUrl,
+  ...rest
+}: Props) {
   const isMax = useMemo(() => balance && value && balance.toExact() === value, [balance, value])
   const onMaxClick = useCallback(
     (e: MouseEvent) => {
@@ -25,7 +35,7 @@ export function CurrencyInput({ currency, balance, value, onChange, balanceText,
 
   const currencyDisplay = currency ? (
     <Flex justifyContent="flex-end">
-      <CurrencyLogo currency={currency} />
+      <CurrencyLogo currency={currency} useTrustWalletUrl={useTrustWalletUrl} />
       <Text bold ml="4px">
         {currency.symbol}
       </Text>
