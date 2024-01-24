@@ -48,6 +48,20 @@ export const farmsV3 = defineFarmV3Configs([
   // new lps should follow after the top fixed lps
   // latest first
   {
+    pid: 135,
+    lpAddress: '0x93bA6af467c7B46B44D5C0BB300270c732510C9C',
+    token0: bscTokens.manta,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 134,
+    lpAddress: '0xb624FE83Dfc393aAB921EbBc2Bf38Fdd238F2380',
+    token0: bscTokens.ovn,
+    token1: bscTokens.usdt,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 133,
     lpAddress: '0x9dD70024FF211bA754c089CDee47BdeDc17C4CBe',
     token0: bscTokens.usdt,
