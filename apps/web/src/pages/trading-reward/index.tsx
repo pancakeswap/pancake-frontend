@@ -1,3 +1,3 @@
-import TradingReward from '../../views/TradingReward'
+import TradingRewardTopTraders from '../../views/TradingReward/top-traders'
 
-export default TradingReward
+export default TradingRewardTopTraders
