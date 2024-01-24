@@ -7,7 +7,6 @@ import { usePublicClient } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
 import { BSC_BLOCK_TIME, FAST_INTERVAL } from 'config/constants'
-import useSWRImmutable from 'swr/immutable'
 import {
   BlockNotFoundError,
   TransactionNotFoundError,
@@ -16,6 +15,7 @@ import {
 } from 'viem'
 import { retry, RetryableError } from 'state/multicall/retry'
 import { useAppDispatch } from 'state'
+import { useQuery } from '@tanstack/react-query'
 import {
   finalizeTransaction,
   FarmTransactionStatus,
@@ -114,8 +114,8 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
     [transactions],
   )
 
-  useSWRImmutable(
-    chainId && Boolean(nonBscFarmPendingTxns?.length) ? ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId] : null,
+  useQuery(
+    ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
     () => {
       nonBscFarmPendingTxns.forEach((hash) => {
         const steps = transactions[hash]?.nonBscFarm?.steps || []
@@ -202,11 +202,15 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       })
     },
     {
-      refreshInterval: FAST_INTERVAL,
-      errorRetryInterval: FAST_INTERVAL,
+      enabled: Boolean(chainId && Boolean(nonBscFarmPendingTxns?.length)),
+      refetchInterval: FAST_INTERVAL,
+      retryDelay: FAST_INTERVAL,
       onError: (error) => {
         console.error('[ERROR] updater checking non BSC farm transaction error: ', error)
       },
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
     },
   )
 
