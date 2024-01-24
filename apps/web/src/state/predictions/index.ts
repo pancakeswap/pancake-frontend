@@ -185,7 +185,7 @@ export const fetchNodeHistory = createAsyncThunk<
     let lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
 
     // Chainlink in ARBITRUM lockPrice & closePrice will return 18 decimals, other chain is return 8 decimals.
-    if (chainId === ChainId.ARBITRUM_ONE && (round.closePrice || lockPrice)) {
+    if (chainId === ChainId.ARBITRUM_ONE && (round.closePrice || round.lockPrice)) {
       closePrice = parseFloat(formatUnits(round.closePrice, 18))
       lockPrice = parseFloat(formatUnits(round.lockPrice, 18))
     }
