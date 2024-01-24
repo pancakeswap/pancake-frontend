@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { usePublicClient } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
-import { FAST_INTERVAL } from 'config/constants'
+import { BSC_BLOCK_TIME, FAST_INTERVAL } from 'config/constants'
 import useSWRImmutable from 'swr/immutable'
 import {
   BlockNotFoundError,
@@ -54,7 +54,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       (transaction) => {
         const getTransaction = async () => {
           try {
-            const receipt: any = await provider.waitForTransactionReceipt({ hash: transaction.hash, timeout: 60_000 })
+            const receipt: any = await provider.getTransactionReceipt({ hash: transaction.hash })
 
             dispatch(
               finalizeTransaction({
@@ -97,6 +97,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
           n: 10,
           minWait: 5000,
           maxWait: 10000,
+          delay: BSC_BLOCK_TIME * 1000 + 1000,
         })
       },
     )
@@ -114,7 +115,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   )
 
   useSWRImmutable(
-    chainId && Boolean(nonBscFarmPendingTxns?.length) && ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
+    chainId && Boolean(nonBscFarmPendingTxns?.length) ? ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId] : null,
     () => {
       nonBscFarmPendingTxns.forEach((hash) => {
         const steps = transactions[hash]?.nonBscFarm?.steps || []
@@ -148,15 +149,17 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                   return { ...step, ...newObj }
                 })
 
+                const newStatus = isFinalStepComplete ? FarmTransactionStatus.SUCCESS : transaction?.nonBscFarm?.status
+
                 dispatch(
                   finalizeTransaction({
                     chainId,
                     hash: transaction.hash,
-                    receipt: { ...transaction.receipt },
+                    receipt: { ...transaction.receipt! },
                     nonBscFarm: {
-                      ...transaction.nonBscFarm,
-                      steps: newSteps,
-                      status: isFinalStepComplete ? FarmTransactionStatus.SUCCESS : transaction?.nonBscFarm?.status,
+                      ...transaction.nonBscFarm!,
+                      ...(newSteps && { steps: newSteps }),
+                      ...(newStatus && { status: newStatus }),
                     },
                   }),
                 )
