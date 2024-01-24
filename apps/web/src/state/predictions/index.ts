@@ -99,7 +99,7 @@ export const fetchPredictionData = createAsyncThunk<
   // Round data
   const roundsResponse = await getRoundsData(epochs, extra.address, chainId)
   const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
-    const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
+    const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse, chainId)
 
     return {
       ...accum,
