@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
-import { AutoRow, Balance, BalanceInput, BalanceInputProps, Box, Button, Flex, FlexGap, Text } from '@pancakeswap/uikit'
+import { AutoRow, Balance, BalanceInput, BalanceInputProps, Button, Flex, FlexGap, Text } from '@pancakeswap/uikit'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { TokenImage } from 'components/TokenImage'
@@ -70,7 +70,7 @@ const CakeInput: React.FC<{
   )
 
   return (
-    <Box mt="-16px">
+    <>
       <BalanceInput
         width="100%"
         value={value}
@@ -81,7 +81,7 @@ const CakeInput: React.FC<{
         appendComponent={appendComponent}
       />
       {!disabled && balance ? (
-        <FlexGap mt="16px" justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
+        <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {percentShortcuts.map((p) => {
             return (
               <Button
@@ -105,7 +105,7 @@ const CakeInput: React.FC<{
           </Button>
         </FlexGap>
       ) : null}
-    </Box>
+    </>
   )
 }
 
@@ -119,7 +119,7 @@ export const LockCakeForm: React.FC<{
 
   return (
     <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center" height="40px">
+      <FlexGap gap="8px" alignItems="center">
         <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
           {t('add')}
         </Text>

@@ -77,7 +77,7 @@ const WeekInput: React.FC<{
     </Box>
   )
   return (
-    <Box mt="-16px">
+    <>
       <BalanceInput
         width="100%"
         inputProps={{
@@ -92,7 +92,7 @@ const WeekInput: React.FC<{
         unit={t('Weeks')}
       />
       {disabled ? null : (
-        <FlexGap mt="16px" justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
+        <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {weekOptions.map(({ value: v, label }) => (
             <ButtonBlocked
               key={v}
@@ -119,7 +119,7 @@ const WeekInput: React.FC<{
           ) : null}
         </FlexGap>
       )}
-    </Box>
+    </>
   )
 }
 
@@ -132,7 +132,7 @@ export const LockWeeksForm: React.FC<{
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
   return (
     <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center" height="40px">
+      <FlexGap gap="8px" alignItems="center">
         <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
           {t('add')}
         </Text>
