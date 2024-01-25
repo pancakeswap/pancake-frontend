@@ -77,7 +77,7 @@ const WeekInput: React.FC<{
     </Box>
   )
   return (
-    <>
+    <Box mt="-16px">
       <BalanceInput
         width="100%"
         inputProps={{
@@ -119,7 +119,7 @@ const WeekInput: React.FC<{
           ) : null}
         </FlexGap>
       )}
-    </>
+    </Box>
   )
 }
 
