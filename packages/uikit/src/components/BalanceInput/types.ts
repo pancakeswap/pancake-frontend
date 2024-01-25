@@ -13,6 +13,7 @@ export interface BalanceInputProps extends BoxProps {
   isWarning?: boolean;
   decimals?: number;
   unit?: ReactNode;
+  appendComponent?: ReactNode;
   switchEditingUnits?: () => void;
 }
 

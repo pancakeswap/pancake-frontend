@@ -70,6 +70,12 @@ const WeekInput: React.FC<{
     },
     [onInput],
   )
+
+  const appendComponent = (
+    <Box width={40} mr={12}>
+      <Image src="/images/cake-staking/lock.png" height={37} width={34} />
+    </Box>
+  )
   return (
     <>
       <BalanceInput
@@ -81,6 +87,7 @@ const WeekInput: React.FC<{
           pattern: '^[0-9]*$',
         }}
         value={value}
+        appendComponent={appendComponent}
         onUserInput={onInput}
         unit={t('Weeks')}
       />
@@ -125,18 +132,13 @@ export const LockWeeksForm: React.FC<{
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
   return (
     <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center" height="40px">
-        <Box width={40}>
-          <Image src="/images/cake-staking/lock.png" height={37} width={34} mx="auto" />
-        </Box>
-        <FlexGap gap="4px">
-          <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
-            {t('add')}
-          </Text>
-          <Text color="secondary" textTransform="uppercase" fontSize={16} bold>
-            {t('duration')}
-          </Text>
-        </FlexGap>
+      <FlexGap gap="8px" alignItems="center">
+        <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
+          {t('add')}
+        </Text>
+        <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
+          {t('duration')}
+        </Text>
       </FlexGap>
 
       <WeekInput value={value} onUserInput={onChange} disabled={disabled} />
