@@ -13,6 +13,12 @@ import { useTargetUnlockTime } from 'views/CakeStaking/hooks/useTargetUnlockTime
 import { useVeCakeAmount } from 'views/CakeStaking/hooks/useVeCakeAmount'
 import { PreviewOfVeCakeSnapShotTime } from 'views/TradingReward/components/YourTradingReward/VeCake/PreviewOfVeCakeSnapShotTime'
 
+const StyledModal = styled(Modal)`
+  > div > div > div > div:first-child {
+    margin-top: 0;
+  }
+`
+
 const ValueText = styled(Text)`
   font-size: 16px;
   font-weight: 400;
@@ -36,7 +42,7 @@ export const NoLockingCakeModal: React.FC<React.PropsWithChildren<InjectedModalP
   const veCake = veCakeAmount ? getFullDisplayBalance(new BigNumber(veCakeAmount), 18, 3) : '0'
 
   return (
-    <Modal title="Lock CAKE to get veCAKE" maxWidth={777} onDismiss={onDismiss}>
+    <StyledModal title="Lock CAKE to get veCAKE" headerBorderColor="transparent" maxWidth={777} onDismiss={onDismiss}>
       <NotLockingCard
         hideTitle
         hideCardPadding
@@ -52,6 +58,6 @@ export const NoLockingCakeModal: React.FC<React.PropsWithChildren<InjectedModalP
           />
         }
       />
-    </Modal>
+    </StyledModal>
   )
 }
