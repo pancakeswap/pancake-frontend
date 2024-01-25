@@ -1,4 +1,4 @@
-import { TradeType, Token, CurrencyAmount, Currency, Percent } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { Address, Hex } from 'viem'
 import { Trade } from './entities'
@@ -48,7 +48,7 @@ export interface SwapParameters {
   /**
    * The arguments to pass to the method, all hex encoded.
    */
-  args: (Hex | Hex[])[]
+  args: Array<Hex | Hex[] | unknown>
   /**
    * The amount of wei to send in hex.
    */

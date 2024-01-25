@@ -2,7 +2,8 @@ import { BigintIsh, Token } from '@pancakeswap/sdk'
 import { PermitSingle } from '../allowanceTransfer'
 import { MaxAllowanceTransferAmount, PERMIT_EXPIRATION, PERMIT_SIG_EXPIRATION } from '../constants'
 
-interface Permit extends PermitSingle {
+// @TODO: remove this type, use `PermitSingle` only
+export interface Permit extends PermitSingle {
   sigDeadline: string
 }
 
