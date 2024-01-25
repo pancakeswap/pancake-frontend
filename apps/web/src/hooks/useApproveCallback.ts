@@ -34,8 +34,8 @@ export function useApproveCallback(
   },
 ): {
   approvalState: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  approveCallback: () => Promise<SendTransactionResult | undefined>
+  revokeCallback: () => Promise<SendTransactionResult | undefined>
   currentAllowance: CurrencyAmount<Currency> | undefined
   isPendingError: boolean
 } {
@@ -79,7 +79,7 @@ export function useApproveCallback(
   const addTransaction = useTransactionAdder()
 
   const approve = useCallback(
-    async (overrideAmountApprove?: bigint): Promise<SendTransactionResult> => {
+    async (overrideAmountApprove?: bigint): Promise<SendTransactionResult | undefined> => {
       if (approvalState !== ApprovalState.NOT_APPROVED && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Approve was called unnecessarily'))
         console.error('approve was called unnecessarily')
@@ -149,7 +149,7 @@ export function useApproveCallback(
         gas: calculateGasMargin(estimatedGas),
       })
         .then((response) => {
-          if (addToTransaction) {
+          if (addToTransaction && token?.address) {
             addTransaction(response, {
               summary: `Approve ${overrideAmountApprove ?? amountToApprove?.currency?.symbol}`,
               translatableSummary: {
