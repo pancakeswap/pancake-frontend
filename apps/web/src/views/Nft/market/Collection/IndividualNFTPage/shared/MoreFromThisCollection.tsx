@@ -10,6 +10,7 @@ import { Address } from 'wagmi'
 import { getNftsFromCollectionApi, getMarketDataForTokenIds } from 'state/nftMarket/helpers'
 import Trans from 'components/Trans'
 import { useQuery } from '@tanstack/react-query'
+import { NftToken } from 'state/nftMarket/types'
 import { pancakeBunniesAddress } from '../../../constants'
 import { CollectibleLinkCard } from '../../../components/CollectibleCard'
 import useAllPancakeBunnyNfts from '../../../hooks/useAllPancakeBunnyNfts'
@@ -62,7 +63,9 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
           return []
         }
 
-        const tokenIds = Object.values(nfts.data).map((nft) => nft.tokenId)
+        const tokenIds = Object.values(nfts.data)
+          .map((nft) => nft.tokenId)
+          .filter(Boolean) as string[]
         const nftsMarket = await getMarketDataForTokenIds(collectionAddress, tokenIds)
 
         return tokenIds.map((id) => {
@@ -97,18 +100,20 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
     let shuffled = shuffle(
       allPancakeBunnyNfts
         ? allPancakeBunnyNfts.filter((nft) => nft.name !== currentTokenName)
-        : collectionNfts?.filter((nft) => nft.name !== currentTokenName && nft.marketData?.isTradable),
-    )
+        : collectionNfts
+        ? collectionNfts.filter((nft) => nft.name !== currentTokenName && nft.marketData?.isTradable)
+        : [],
+    ) as NftToken[]
 
     if (isPBCollection) {
       // PancakeBunnies should display 1 card per bunny id
       shuffled = shuffled.reduce((nftArray, current) => {
-        const bunnyId = current.attributes[0].value
-        if (!nftArray.find((nft) => nft.attributes[0].value === bunnyId)) {
+        const bunnyId = current?.attributes?.[0].value
+        if (!nftArray.find((nft) => nft?.attributes?.[0].value === bunnyId)) {
           nftArray.push(current)
         }
         return nftArray
-      }, [])
+      }, [] as NftToken[])
     }
     return shuffled.slice(0, 12)
   }, [allPancakeBunnyNfts, collectionNfts, currentTokenName, isPBCollection])
@@ -188,7 +193,13 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
               <SwiperSlide key={nft.tokenId}>
                 <CollectibleLinkCard
                   nft={nft}
-                  currentAskPrice={isPBCollection ? null : parseFloat(nft?.marketData?.currentAskPrice)}
+                  currentAskPrice={
+                    isPBCollection
+                      ? undefined
+                      : nft?.marketData?.currentAskPrice
+                      ? parseFloat(nft?.marketData?.currentAskPrice)
+                      : undefined
+                  }
                 />
               </SwiperSlide>
             ))}
