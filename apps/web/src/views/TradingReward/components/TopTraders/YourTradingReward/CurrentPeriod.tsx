@@ -126,7 +126,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                       {t('Keep trading to rank')}
                     </Text>
                     <Text fontSize="14px" color="primary" as="span" bold m="0 4px">
-                      {t('#50 or less')}
+                      {t('#100 or less')}
                     </Text>
                     <Text fontSize="14px" color="primary" as="span">
                       {t('and maintain till the end of the campaign to win and claim your rewards.')}

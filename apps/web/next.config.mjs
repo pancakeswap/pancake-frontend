@@ -190,6 +190,11 @@ const config = {
         destination: 'https://tokens.pancakeswap.finance/images/:address',
         permanent: false,
       },
+      {
+        source: '/trading-reward',
+        destination: '/trading-reward/top-traders',
+        permanent: true,
+      },
     ]
   },
   webpack: (webpackConfig, { webpack, isServer }) => {
