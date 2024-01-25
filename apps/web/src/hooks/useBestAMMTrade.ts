@@ -19,8 +19,8 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
-
 import { tracker } from 'utils/datadog'
+
 import {
   CommonPoolsParams,
   PoolsWithState,
@@ -29,7 +29,7 @@ import {
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
-import { useWorker } from './useWorker'
+import { useGlobalWorker } from './useWorker'
 
 SmartRouter.logger.enable('error,log')
 
@@ -349,7 +349,7 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
 
 function createUseWorkerGetBestTrade() {
   return function useWorkerGetBestTrade(): typeof SmartRouter.getBestTrade {
-    const worker = useWorker()
+    const worker = useGlobalWorker()
 
     return useCallback(
       async (
@@ -365,6 +365,7 @@ function createUseWorkerGetBestTrade() {
           quoteProvider,
           nativeCurrencyUsdPrice,
           quoteCurrencyUsdPrice,
+          signal,
         },
       ) => {
         if (!worker) {
@@ -393,6 +394,7 @@ function createUseWorkerGetBestTrade() {
           onChainQuoterGasLimit: quoterConfig?.gasLimit?.toString(),
           quoteCurrencyUsdPrice,
           nativeCurrencyUsdPrice,
+          signal,
         })
         return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
       },

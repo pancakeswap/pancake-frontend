@@ -1,32 +1,47 @@
 import { useEffect, useRef, useState } from 'react'
+import { atom, useAtom, useAtomValue } from 'jotai'
 
 import { WorkerInstance, createWorker } from 'utils/worker'
 
-export function useWorker(dedicatedWorker?: WorkerInstance) {
-  const workerRef = useRef<WorkerInstance | undefined>(dedicatedWorker)
-  const [worker, setWorker] = useState<WorkerInstance | undefined>(workerRef.current)
+const globalWorkerAtom = atom<WorkerInstance | undefined>(undefined)
 
-  useEffect(() => {
-    if (workerRef.current) {
-      return () => {}
-    }
+function createUseWorkerHook(shared?: boolean) {
+  const useWorkerState = shared ? () => useAtom(globalWorkerAtom) : useState
 
-    const abortController = new AbortController()
-    async function initWorkerInstance() {
-      workerRef.current = await createWorker()
-      if (abortController.signal.aborted) {
-        workerRef.current?.destroy()
-        return
+  return function useWorker() {
+    const [worker, setWorker] = useWorkerState<WorkerInstance | undefined>()
+    const workerRef = useRef<WorkerInstance | undefined>(worker)
+
+    useEffect(() => {
+      if (workerRef.current) {
+        return () => {}
       }
-      setWorker(workerRef.current)
-    }
-    initWorkerInstance()
 
-    return () => {
-      abortController.abort()
-      workerRef.current?.destroy()
-    }
-  }, [])
+      const abortController = new AbortController()
+      async function initWorkerInstance() {
+        workerRef.current = await createWorker()
+        if (abortController.signal.aborted) {
+          workerRef.current?.destroy()
+          return
+        }
+        setWorker(workerRef.current)
+      }
+      initWorkerInstance()
 
-  return worker
+      return () => {
+        abortController.abort()
+        workerRef.current?.destroy()
+      }
+    }, [])
+
+    return worker
+  }
+}
+
+export const useWorker = createUseWorkerHook(false)
+
+export const useInitGlobalWorker = createUseWorkerHook(true)
+
+export function useGlobalWorker() {
+  return useAtomValue(globalWorkerAtom)
 }

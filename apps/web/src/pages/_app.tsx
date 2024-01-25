@@ -23,6 +23,7 @@ import { SentryErrorBoundary } from 'components/ErrorBoundary'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
+import { useInitGlobalWorker } from 'hooks/useWorker'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -41,6 +42,7 @@ BigNumber.config({
 })
 
 function GlobalHooks() {
+  useInitGlobalWorker()
   useDataDogRUM()
   useLoadExperimentalFeatures()
   usePollBlockNumber()

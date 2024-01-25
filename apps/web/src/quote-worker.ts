@@ -51,6 +51,14 @@ const fetchWithLogging = async (url: RequestInfo | URL, init?: RequestInit) => {
 
 globalThis.fetch = fetchWithLogging
 
+export type AbortEvent = [
+  id: number,
+  message: {
+    cmd: 'abort'
+    params: number
+  },
+]
+
 export type WorkerMultiChunkEvent = [
   id: number,
   message: {
@@ -63,16 +71,36 @@ export type WorkerMultiChunkEvent = [
   },
 ]
 
-export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent
+export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent | AbortEvent
 
-// Assume the worker is single threaded
-// If there're multiple get best trade requests, should create multiple worker instances
-let getBestTradeAbortController: AbortController | undefined
+// Manage the abort actions for each message
+const messageAbortControllers = new Map<number, AbortController>()
 
 // eslint-disable-next-line no-restricted-globals
 addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   const { data } = event
   const [id, message] = data
+
+  const abortController = new AbortController()
+  messageAbortControllers.set(id, abortController)
+  const cleanupAbortController = () => {
+    messageAbortControllers.delete(id)
+  }
+
+  if (message.cmd === 'abort') {
+    const ac = messageAbortControllers.get(message.params)
+    ac?.abort()
+    postMessage([
+      id,
+      {
+        success: Boolean(ac),
+        result: ac ? undefined : new Error(`Abort controller not found for event id: ${id}`),
+      },
+    ])
+    cleanupAbortController()
+    return
+  }
+
   if (message.cmd === 'multicallChunk') {
     fetchChunk(message.params.chainId, message.params.chunk, message.params.minBlockNumber)
       .then((res) => {
@@ -93,7 +121,10 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
           },
         ])
       })
+      .finally(cleanupAbortController)
+    return
   }
+
   if (message.cmd === 'getBestTrade') {
     const parsed = SmartRouter.APISchema.zRouterPostParams.safeParse(message.params)
     if (parsed.success === false) {
@@ -104,10 +135,9 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
           error: parsed.error.message,
         },
       ])
+      cleanupAbortController()
       return
     }
-    getBestTradeAbortController?.abort()
-    getBestTradeAbortController = new AbortController()
 
     const {
       amount,
@@ -124,7 +154,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       nativeCurrencyUsdPrice,
       quoteCurrencyUsdPrice,
     } = parsed.data
-    const onChainProvider = createViemPublicClientGetter({ transportSignal: getBestTradeAbortController.signal })
+    const onChainProvider = createViemPublicClientGetter({ transportSignal: abortController.signal })
     const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider, gasLimit })
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
     const currencyB = parseCurrency(chainId, currency)
@@ -146,7 +176,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       quoterOptimization: false,
       quoteCurrencyUsdPrice,
       nativeCurrencyUsdPrice,
-      signal: getBestTradeAbortController.signal,
+      signal: abortController.signal,
     })
       .then((res) => {
         postMessage([
@@ -166,5 +196,6 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
           },
         ])
       })
+      .finally(cleanupAbortController)
   }
 })
