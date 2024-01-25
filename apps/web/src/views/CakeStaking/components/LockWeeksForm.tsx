@@ -136,7 +136,7 @@ export const LockWeeksForm: React.FC<{
         <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
           {t('add')}
         </Text>
-        <Text color="secondary" textTransform="uppercase" fontSize={16} bold>
+        <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
           {t('duration')}
         </Text>
       </FlexGap>
