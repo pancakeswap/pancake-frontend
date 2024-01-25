@@ -45,7 +45,7 @@ function useRequestWithdraw({ inputCurrency, currentAmount, selectedList }: Requ
       toastSuccess(
         t('Withdrawal Request Submitted!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {`${t('You will receive your')} ${selectedList?.token0.symbol} ${t('soon.')}`}
+          {`${t('Your withdrawal request might take 7 days.')}`}
         </ToastDescriptionWithTx>,
       )
 
@@ -59,7 +59,6 @@ function useRequestWithdraw({ inputCurrency, currentAmount, selectedList }: Requ
     fetchWithCatchTxError,
     router,
     selectedList?.requestWithdrawFn,
-    selectedList?.token0.symbol,
     t,
     toastSuccess,
   ])

@@ -2,6 +2,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, CardBody, RowBetween, Select, Text } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { AppHeader } from 'components/App'
+import { SNBNB } from 'config/constants/liquidStaking'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTokenBalance from 'hooks/useTokenBalance'
 import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
@@ -20,6 +22,7 @@ export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
   handleSortOptionChange,
 }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const { balance: stakedTokenBalance } = useTokenBalance(selectedList.token1.address as Address)
   const userCakeDisplayBalance = getFullDisplayBalance(stakedTokenBalance, selectedList.token1.decimals, 6)
@@ -54,11 +57,13 @@ export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
             <Button width="100%">{t('Proceed')}</Button>
           </NextLink>
         </Box>
-        <NextLink href={`/liquid-staking/request-withdraw/${selectedList?.contract}`}>
-          <Button variant="secondary" disabled={stakedTokenBalance.eq(0)} width="100%">
-            {t('Request Withdraw')}
-          </Button>
-        </NextLink>
+        {chainId && selectedList?.contract !== SNBNB[chainId] ? (
+          <NextLink href={`/liquid-staking/request-withdraw/${selectedList?.contract}`}>
+            <Button variant="secondary" disabled={stakedTokenBalance.eq(0)} width="100%">
+              {t('Request Withdraw')}
+            </Button>
+          </NextLink>
+        ) : null}
       </CardBody>
     </>
   )
