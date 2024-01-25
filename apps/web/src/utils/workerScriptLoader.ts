@@ -16,8 +16,7 @@ export function createWorkerScriptLoader() {
             const originalImportScripts = self.importScripts;
             self.importScripts = (url) => originalImportScripts.call(self, new URL(url, "${base}").toString());
           `
-          const blob = new Blob([addtionalWorkerSource], { type: 'application/javascript' })
-          return new Blob([blob, b], { type: 'application/javascript' })
+          return new Blob([addtionalWorkerSource, b], { type: 'application/javascript' })
         })
         .then((b) => URL.createObjectURL(b))
     }

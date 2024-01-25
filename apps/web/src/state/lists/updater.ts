@@ -47,6 +47,7 @@ export default function Updater(): null {
           fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
         }
       })
+      return null
     },
     {
       enabled: Boolean(isReady),
