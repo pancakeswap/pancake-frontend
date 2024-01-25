@@ -4,7 +4,8 @@ import { useAtom } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { multicallReducerAtom, MulticallState } from 'state/multicall/reducer'
-import { worker2 } from 'utils/worker'
+import { useWorker } from 'hooks/useWorker'
+
 import { useMulticallContract } from '../../hooks/useContract'
 import {
   Call,
@@ -18,8 +19,6 @@ import { CancelledError, retry } from './retry'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
-
-const worker = worker2
 
 /**
  * From the current all listeners state, return each call key mapped to the
@@ -93,6 +92,7 @@ export default function Updater(): null {
   const { chainId } = useActiveChainId()
   const multicallContract = useMulticallContract()
   const cancellations = useRef<{ blockNumber: number; cancellations: (() => void)[] }>()
+  const worker = useWorker()
 
   const listeningKeys: { [callKey: string]: number } = useMemo(() => {
     return activeListeningKeys(debouncedListeners, chainId)
@@ -207,7 +207,7 @@ export default function Updater(): null {
         return cancel
       }),
     }
-  }, [chainId, multicallContract, dispatch, serializedOutdatedCallKeys, currentBlock])
+  }, [worker, chainId, multicallContract, dispatch, serializedOutdatedCallKeys, currentBlock])
 
   return null
 }
