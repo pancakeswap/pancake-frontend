@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
-import { AutoRow, Balance, BalanceInput, BalanceInputProps, Box, Button, Flex, FlexGap, Text } from '@pancakeswap/uikit'
+import { AutoRow, Balance, BalanceInput, BalanceInputProps, Button, Flex, FlexGap, Text } from '@pancakeswap/uikit'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { TokenImage } from 'components/TokenImage'
@@ -64,9 +64,9 @@ const CakeInput: React.FC<{
   )
 
   const appendComponent = (
-    <Box width={40} mr={12}>
+    <Flex alignSelf="center" width={40} mr={12}>
       <TokenImage width={40} height={40} token={CAKE[ChainId.BSC]} />
-    </Box>
+    </Flex>
   )
 
   return (
