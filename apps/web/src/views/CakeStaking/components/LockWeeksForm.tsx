@@ -92,7 +92,7 @@ const WeekInput: React.FC<{
         unit={t('Weeks')}
       />
       {disabled ? null : (
-        <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
+        <FlexGap mt="16px" justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {weekOptions.map(({ value: v, label }) => (
             <ButtonBlocked
               key={v}

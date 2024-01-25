@@ -81,7 +81,7 @@ const CakeInput: React.FC<{
         appendComponent={appendComponent}
       />
       {!disabled && balance ? (
-        <FlexGap justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
+        <FlexGap mt="16px" justifyContent="space-between" flexWrap="wrap" gap="4px" width="100%">
           {percentShortcuts.map((p) => {
             return (
               <Button
