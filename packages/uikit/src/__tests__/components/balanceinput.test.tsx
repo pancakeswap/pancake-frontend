@@ -10,7 +10,7 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c6 {
+      .c7 {
       color: var(--colors-textSubtle);
       font-weight: 400;
       line-height: 1.5;
@@ -29,10 +29,14 @@ it("renders correctly", () => {
 
     .c3 {
       display: flex;
-      align-items: center;
     }
 
     .c4 {
+      display: flex;
+      align-items: center;
+    }
+
+    .c5 {
       background-color: var(--colors-input);
       border-radius: 16px;
       box-shadow: var(--shadows-inset);
@@ -46,18 +50,18 @@ it("renders correctly", () => {
       border: 1px solid var(--colors-inputSecondary);
     }
 
-    .c4::placeholder {
+    .c5::placeholder {
       color: var(--colors-textSubtle);
     }
 
-    .c4:disabled {
+    .c5:disabled {
       background-color: var(--colors-backgroundDisabled);
       box-shadow: none;
       color: var(--colors-textDisabled);
       cursor: not-allowed;
     }
 
-    .c4:focus:not(:disabled) {
+    .c5:focus:not(:disabled) {
       box-shadow: var(--shadows-focus);
     }
 
@@ -69,7 +73,7 @@ it("renders correctly", () => {
       padding: 8px 16px;
     }
 
-    .c5 {
+    .c6 {
       background: transparent;
       border-radius: 0;
       box-shadow: none;
@@ -79,11 +83,11 @@ it("renders correctly", () => {
       border: none;
     }
 
-    .c5 ::placeholder {
+    .c6 ::placeholder {
       color: var(--colors-textSubtle);
     }
 
-    .c5:focus:not(:disabled) {
+    .c6:focus:not(:disabled) {
       box-shadow: none;
     }
 
@@ -94,24 +98,28 @@ it("renders correctly", () => {
           class="c1"
         >
           <div
-            class="c2"
+            class="c2 c3"
           >
             <div
-              class="c3"
+              class="c2"
             >
-              <input
-                class="c4 c5"
-                inputmode="decimal"
-                min="0"
-                pattern="^[0-9]*[.,]?[0-9]{0,18}$"
-                placeholder="0.0"
-                value="14"
-              />
-            </div>
-            <div
-              class="c6"
-            >
-              15 USD
+              <div
+                class="c4"
+              >
+                <input
+                  class="c5 c6"
+                  inputmode="decimal"
+                  min="0"
+                  pattern="^[0-9]*[.,]?[0-9]{0,18}$"
+                  placeholder="0.0"
+                  value="14"
+                />
+              </div>
+              <div
+                class="c7"
+              >
+                15 USD
+              </div>
             </div>
           </div>
         </div>
@@ -126,14 +134,14 @@ it("renders correctly with unit prop", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c6 {
+      .c7 {
       color: var(--colors-text);
       font-weight: 400;
       line-height: 1.5;
       font-size: 16px;
     }
 
-    .c8 {
+    .c9 {
       color: var(--colors-textSubtle);
       font-weight: 400;
       line-height: 1.5;
@@ -152,10 +160,14 @@ it("renders correctly with unit prop", () => {
 
     .c3 {
       display: flex;
-      align-items: center;
     }
 
     .c4 {
+      display: flex;
+      align-items: center;
+    }
+
+    .c5 {
       background-color: var(--colors-input);
       border-radius: 16px;
       box-shadow: var(--shadows-inset);
@@ -169,22 +181,22 @@ it("renders correctly with unit prop", () => {
       border: 1px solid var(--colors-inputSecondary);
     }
 
-    .c4::placeholder {
+    .c5::placeholder {
       color: var(--colors-textSubtle);
     }
 
-    .c4:disabled {
+    .c5:disabled {
       background-color: var(--colors-backgroundDisabled);
       box-shadow: none;
       color: var(--colors-textDisabled);
       cursor: not-allowed;
     }
 
-    .c4:focus:not(:disabled) {
+    .c5:focus:not(:disabled) {
       box-shadow: var(--shadows-focus);
     }
 
-    .c7 {
+    .c8 {
       margin-left: 4px;
       text-align: right;
       color: var(--colors-textSubtle);
@@ -199,7 +211,7 @@ it("renders correctly with unit prop", () => {
       padding: 8px 16px;
     }
 
-    .c5 {
+    .c6 {
       background: transparent;
       border-radius: 0;
       box-shadow: none;
@@ -209,11 +221,11 @@ it("renders correctly with unit prop", () => {
       border: none;
     }
 
-    .c5 ::placeholder {
+    .c6 ::placeholder {
       color: var(--colors-textSubtle);
     }
 
-    .c5:focus:not(:disabled) {
+    .c6:focus:not(:disabled) {
       box-shadow: none;
     }
 
@@ -224,29 +236,33 @@ it("renders correctly with unit prop", () => {
           class="c1"
         >
           <div
-            class="c2"
+            class="c2 c3"
           >
             <div
-              class="c3"
+              class="c2"
             >
-              <input
-                class="c4 c5"
-                inputmode="decimal"
-                min="0"
-                pattern="^[0-9]*[.,]?[0-9]{0,18}$"
-                placeholder="0.0"
-                value="14"
-              />
               <div
-                class="c6 c7"
+                class="c4"
               >
-                CAKE
+                <input
+                  class="c5 c6"
+                  inputmode="decimal"
+                  min="0"
+                  pattern="^[0-9]*[.,]?[0-9]{0,18}$"
+                  placeholder="0.0"
+                  value="14"
+                />
+                <div
+                  class="c7 c8"
+                >
+                  CAKE
+                </div>
               </div>
-            </div>
-            <div
-              class="c8"
-            >
-              15 USD
+              <div
+                class="c9"
+              >
+                15 USD
+              </div>
             </div>
           </div>
         </div>
@@ -267,21 +283,21 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c13 {
+      .c14 {
       align-self: center;
       fill: var(--colors-textSubtle);
       color: var(--colors-textSubtle);
       flex-shrink: 0;
     }
 
-    .c6 {
+    .c7 {
       color: var(--colors-text);
       font-weight: 400;
       line-height: 1.5;
       font-size: 16px;
     }
 
-    .c8 {
+    .c9 {
       color: var(--colors-textSubtle);
       font-weight: 400;
       line-height: 1.5;
@@ -289,7 +305,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       text-align: right;
     }
 
-    .c10 {
+    .c11 {
       position: relative;
       align-items: center;
       border: 0;
@@ -313,19 +329,19 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       box-shadow: none;
     }
 
-    .c10:focus-visible {
+    .c11:focus-visible {
       outline: none;
       box-shadow: var(--shadows-focus);
     }
 
-    .c10:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+    .c11:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       transform: translateY(1px);
       box-shadow: none;
     }
 
-    .c10:disabled,
-    .c10.pancake-button--disabled {
+    .c11:disabled,
+    .c11.pancake-button--disabled {
       background-color: var(--colors-backgroundDisabled);
       border-color: var(--colors-backgroundDisabled);
       box-shadow: none;
@@ -333,7 +349,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       cursor: not-allowed;
     }
 
-    .c11 {
+    .c12 {
       padding: 2px;
       width: 32px;
     }
@@ -342,7 +358,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       width: 100%;
     }
 
-    .c9 {
+    .c10 {
       padding-left: 12px;
     }
 
@@ -353,10 +369,14 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
 
     .c3 {
       display: flex;
-      align-items: center;
     }
 
     .c4 {
+      display: flex;
+      align-items: center;
+    }
+
+    .c5 {
       background-color: var(--colors-input);
       border-radius: 16px;
       box-shadow: var(--shadows-inset);
@@ -370,26 +390,26 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       border: 1px solid var(--colors-inputSecondary);
     }
 
-    .c4::placeholder {
+    .c5::placeholder {
       color: var(--colors-textSubtle);
     }
 
-    .c4:disabled {
+    .c5:disabled {
       background-color: var(--colors-backgroundDisabled);
       box-shadow: none;
       color: var(--colors-textDisabled);
       cursor: not-allowed;
     }
 
-    .c4:focus:not(:disabled) {
+    .c5:focus:not(:disabled) {
       box-shadow: var(--shadows-focus);
     }
 
-    .c12 {
+    .c13 {
       width: 16px;
     }
 
-    .c7 {
+    .c8 {
       margin-left: 4px;
       text-align: right;
       color: var(--colors-textSubtle);
@@ -404,7 +424,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       padding: 8px 16px;
     }
 
-    .c5 {
+    .c6 {
       background: transparent;
       border-radius: 0;
       box-shadow: none;
@@ -414,22 +434,22 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       border: none;
     }
 
-    .c5 ::placeholder {
+    .c6 ::placeholder {
       color: var(--colors-textSubtle);
     }
 
-    .c5:focus:not(:disabled) {
+    .c6:focus:not(:disabled) {
       box-shadow: none;
     }
 
     @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
-      .c13 {
+      .c14 {
         filter: none!important;
       }
     }
 
     @media (hover: hover) {
-      .c10:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+      .c11:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
         opacity: 0.65;
       }
     }
@@ -441,41 +461,45 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
           class="c1"
         >
           <div
-            class="c2"
+            class="c2 c3"
           >
             <div
-              class="c3"
+              class="c2"
             >
-              <input
-                class="c4 c5"
-                inputmode="decimal"
-                min="0"
-                pattern="^[0-9]*[.,]?[0-9]{0,18}$"
-                placeholder="0.0"
-                value="14"
-              />
               <div
-                class="c6 c7"
+                class="c4"
               >
-                CAKE
+                <input
+                  class="c5 c6"
+                  inputmode="decimal"
+                  min="0"
+                  pattern="^[0-9]*[.,]?[0-9]{0,18}$"
+                  placeholder="0.0"
+                  value="14"
+                />
+                <div
+                  class="c7 c8"
+                >
+                  CAKE
+                </div>
               </div>
-            </div>
-            <div
-              class="c8"
-            >
-              15 USD
+              <div
+                class="c9"
+              >
+                15 USD
+              </div>
             </div>
           </div>
           <div
-            class="c9 c3"
+            class="c10 c4"
           >
             <button
-              class="c10 c11 c12"
+              class="c11 c12 c13"
               scale="sm"
               variant="text"
             >
               <svg
-                class="c13"
+                class="c14"
                 color="textSubtle"
                 viewBox="0 0 24 25"
                 width="20px"
