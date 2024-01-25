@@ -10,6 +10,15 @@ export function createWorkerScriptLoader() {
     if (!loadScriptPromise) {
       loadScriptPromise = fetch(worker.url, { cache: 'force-cache' })
         .then((r) => r.blob())
+        .then((b) => {
+          const base = typeof window !== 'undefined' ? window.location.href : undefined
+          const addtionalWorkerSource = `
+            const originalImportScripts = self.importScripts;
+            self.importScripts = (url) => originalImportScripts.call(self, new URL(url, "${base}").toString());
+          `
+          const blob = new Blob([addtionalWorkerSource], { type: 'application/javascript' })
+          return new Blob([blob, b], { type: 'application/javascript' })
+        })
         .then((b) => URL.createObjectURL(b))
     }
     return loadScriptPromise
