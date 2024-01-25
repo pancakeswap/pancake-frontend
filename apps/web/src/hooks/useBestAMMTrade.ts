@@ -19,7 +19,6 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
-import { createWorker, worker, worker2 } from 'utils/worker'
 
 import { tracker } from 'utils/datadog'
 import {
@@ -30,6 +29,7 @@ import {
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
+import { useWorker } from './useWorker'
 
 SmartRouter.logger.enable('error,log')
 
@@ -347,21 +347,9 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
   quoterOptimization: false,
 })
 
-function createUseWorkerGetBestTrade(dedicatedWorker?: ReturnType<typeof createWorker>) {
+function createUseWorkerGetBestTrade() {
   return function useWorkerGetBestTrade(): typeof SmartRouter.getBestTrade {
-    const workerRef = useRef<ReturnType<typeof createWorker> | undefined>(dedicatedWorker)
-
-    useEffect(() => {
-      if (dedicatedWorker) {
-        return () => {}
-      }
-
-      workerRef.current = createWorker()
-
-      return () => {
-        workerRef.current?.destroy()
-      }
-    }, [])
+    const worker = useWorker()
 
     return useCallback(
       async (
@@ -379,7 +367,7 @@ function createUseWorkerGetBestTrade(dedicatedWorker?: ReturnType<typeof createW
           quoteCurrencyUsdPrice,
         },
       ) => {
-        if (!workerRef.current) {
+        if (!worker) {
           throw new Error('Quote worker not initialized')
         }
         const candidatePools = await poolProvider.getCandidatePools({
@@ -389,7 +377,7 @@ function createUseWorkerGetBestTrade(dedicatedWorker?: ReturnType<typeof createW
         })
 
         const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig?.()
-        const result = await workerRef.current.getBestTrade({
+        const result = await worker.getBestTrade({
           chainId: currency.chainId,
           currency: SmartRouter.Transformer.serializeCurrency(currency),
           tradeType,
@@ -408,7 +396,7 @@ function createUseWorkerGetBestTrade(dedicatedWorker?: ReturnType<typeof createW
         })
         return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
       },
-      [],
+      [worker],
     )
   }
 }
@@ -417,7 +405,7 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterWorker',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider,
-  useGetBestTrade: createUseWorkerGetBestTrade(worker),
+  useGetBestTrade: createUseWorkerGetBestTrade(),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
@@ -443,7 +431,7 @@ export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterWorker2',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider: createQuoteProvider2,
-  useGetBestTrade: createUseWorkerGetBestTrade(worker2),
+  useGetBestTrade: createUseWorkerGetBestTrade(),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })

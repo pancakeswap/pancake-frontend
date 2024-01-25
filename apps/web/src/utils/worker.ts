@@ -1,6 +1,8 @@
 import type { WorkerGetBestTradeEvent, WorkerMultiChunkEvent } from 'quote-worker'
 import type { FetchChunkResult } from 'state/multicall/fetchChunk'
 
+import { createWorkerScriptLoader } from './workerScriptLoader'
+
 class WorkerProxy {
   id = 0
 
@@ -14,7 +16,7 @@ class WorkerProxy {
 
     const id = this.id++
     const promise = new Promise<T>((resolve, reject) => {
-      const handler = (e) => {
+      const handler = (e: any) => {
         const [eventId, data] = e.data
         if (id === eventId) {
           this.worker.removeEventListener('message', handler)
@@ -51,12 +53,22 @@ class WorkerProxy {
   }
 }
 
-export const worker = createWorker()
-
-export const worker2 = createWorker()
-
-export function createWorker() {
-  return typeof window !== 'undefined' && typeof Worker !== 'undefined'
-    ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
-    : undefined
+function createWorkerInstance(script: string) {
+  return new WorkerProxy(new Worker(new URL(script)))
 }
+
+function createWorkerCreator() {
+  const loadWorkerScript = createWorkerScriptLoader()
+
+  return async function createWorker() {
+    if (typeof window === 'undefined' || typeof Worker === 'undefined') {
+      return undefined
+    }
+    const script = await loadWorkerScript()
+    return createWorkerInstance(script)
+  }
+}
+
+export const createWorker = createWorkerCreator()
+
+export type WorkerInstance = Awaited<ReturnType<typeof createWorker>>
