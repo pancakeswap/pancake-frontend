@@ -67,7 +67,7 @@ export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent
 
 // Assume the worker is single threaded
 // If there're multiple get best trade requests, should create multiple worker instances
-let getBestTradeAbortController: AbortController | undefined
+// let getBestTradeAbortController: AbortController | undefined
 
 // eslint-disable-next-line no-restricted-globals
 addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
@@ -106,8 +106,8 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       ])
       return
     }
-    getBestTradeAbortController?.abort()
-    getBestTradeAbortController = new AbortController()
+    // getBestTradeAbortController?.abort()
+    // getBestTradeAbortController = new AbortController()
 
     const {
       amount,
@@ -124,7 +124,8 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       nativeCurrencyUsdPrice,
       quoteCurrencyUsdPrice,
     } = parsed.data
-    const onChainProvider = createViemPublicClientGetter({ transportSignal: getBestTradeAbortController.signal })
+    // const onChainProvider = createViemPublicClientGetter({ transportSignal: getBestTradeAbortController.signal })
+    const onChainProvider = createViemPublicClientGetter()
     const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider, gasLimit })
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
     const currencyB = parseCurrency(chainId, currency)
@@ -146,7 +147,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       quoterOptimization: false,
       quoteCurrencyUsdPrice,
       nativeCurrencyUsdPrice,
-      signal: getBestTradeAbortController.signal,
+      // signal: getBestTradeAbortController.signal,
     })
       .then((res) => {
         postMessage([
