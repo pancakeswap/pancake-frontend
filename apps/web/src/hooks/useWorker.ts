@@ -13,7 +13,7 @@ export function useWorker(dedicatedWorker?: WorkerInstance) {
 
     const abortController = new AbortController()
     async function initWorkerInstance() {
-      workerRef.current = await createWorker({ signal: abortController.signal })
+      workerRef.current = await createWorker()
       if (abortController.signal.aborted) {
         workerRef.current?.destroy()
         return

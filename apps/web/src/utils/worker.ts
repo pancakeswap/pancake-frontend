@@ -53,26 +53,19 @@ class WorkerProxy {
   }
 }
 
-type CreateWorkerParams = {
-  signal?: AbortSignal
-}
-
-function createWorkerInstance(script: string, signal?: AbortSignal) {
-  if (signal?.aborted) {
-    return undefined
-  }
+function createWorkerInstance(script: string) {
   return new WorkerProxy(new Worker(new URL(script)))
 }
 
 function createWorkerCreator() {
   const loadWorkerScript = createWorkerScriptLoader()
 
-  return async function createWorker({ signal }: CreateWorkerParams = {}) {
+  return async function createWorker() {
     if (typeof window === 'undefined' || typeof Worker === 'undefined') {
       return undefined
     }
     const script = await loadWorkerScript()
-    return createWorkerInstance(script, signal)
+    return createWorkerInstance(script)
   }
 }
 
