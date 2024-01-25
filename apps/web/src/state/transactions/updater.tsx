@@ -202,7 +202,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       })
     },
     {
-      enabled: Boolean(chainId && Boolean(nonBscFarmPendingTxns?.length)),
+      enabled: Boolean(chainId && nonBscFarmPendingTxns?.length),
       refetchInterval: FAST_INTERVAL,
       retryDelay: FAST_INTERVAL,
       onError: (error) => {
