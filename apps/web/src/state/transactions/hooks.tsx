@@ -215,7 +215,7 @@ export function useHasPendingRevocation(token?: Token, spender?: string) {
       const tx = allTransactions[txHash]
       if (!tx || tx.receipt || tx.type === 'approve' || !tx.approval) continue
       if (tx.approval.spender === spender && tx.approval.tokenAddress === token.address && isTransactionRecent(tx)) {
-        return BigInt(tx.approval.amount)
+        return BigInt(tx.approval.amount ?? 0)
       }
     }
     return undefined

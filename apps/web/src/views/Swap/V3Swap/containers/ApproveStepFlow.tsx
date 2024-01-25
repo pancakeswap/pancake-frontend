@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, LinkExternal, Text, useTooltip } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { Flex, Text, Box, LinkExternal, useTooltip } from '@pancakeswap/uikit'
 import { ConfirmModalState, PendingConfirmModalState } from '../types'
 
 const StyledLinkExternal = styled(LinkExternal)`
@@ -37,6 +37,7 @@ const ApprovalSteps = ({ pendingModalSteps, confirmModalState }: ApproveStepFlow
       {pendingModalSteps.map((pendingStep: PendingConfirmModalState) => {
         return (
           <Step
+            key={pendingStep}
             active={
               Object.values(ConfirmModalState)[confirmModalState] === Object.values(ConfirmModalState)[pendingStep]
             }

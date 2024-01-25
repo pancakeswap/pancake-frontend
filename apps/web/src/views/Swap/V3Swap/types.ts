@@ -1,12 +1,6 @@
-export enum ConfirmModalState {
-  REVIEWING,
-  WRAPPING,
-  RESETTING_APPROVAL,
-  APPROVING_TOKEN,
-  PERMITTING,
-  PENDING_CONFIRMATION,
-  COMPLETED,
-}
+import { ConfirmModalState } from '@pancakeswap/widgets-internal'
+
+export { ConfirmModalState } from '@pancakeswap/widgets-internal'
 
 export type PendingConfirmModalState = Extract<
   ConfirmModalState,
