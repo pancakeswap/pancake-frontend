@@ -1,6 +1,5 @@
 import { useAccount } from 'wagmi'
 import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
-import useSWR from 'swr'
 import {
   getNftsMarketData,
   getMetadataWithFallback,
@@ -8,8 +7,8 @@ import {
   combineApiAndSgResponseToNftToken,
 } from 'state/nftMarket/helpers'
 import { FAST_INTERVAL } from 'config/constants'
-import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { useQuery } from '@tanstack/react-query'
 import { pancakeBunniesAddress } from '../constants'
 import { getLowestUpdatedToken } from './useGetLowestPrice'
 
@@ -43,8 +42,8 @@ const fetchCheapestBunny = async (
 
 export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResponseCollectionTokens) => {
   const { address: account } = useAccount()
-  const { data, status, mutate } = useSWR(
-    nftMetadata && bunnyId ? ['cheapestBunny', bunnyId, account] : null,
+  const { data, status, refetch } = useQuery(
+    ['cheapestBunny', bunnyId, account],
     async () => {
       const allCheapestBunnyClause = {
         collection: pancakeBunniesAddress.toLowerCase(),
@@ -64,12 +63,15 @@ export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResp
       const cheapestBunnyOtherSellers = await fetchCheapestBunny(cheapestBunnyOtherSellersClause, nftMetadata)
       return cheapestBunnyOtherSellers ?? fetchCheapestBunny(allCheapestBunnyClause, nftMetadata)
     },
-    { refreshInterval: FAST_INTERVAL },
+    {
+      enabled: Boolean(nftMetadata && bunnyId),
+      refetchInterval: FAST_INTERVAL,
+    },
   )
 
   return {
     data,
-    isFetched: ([FetchStatus.Failed, FetchStatus.Fetched] as TFetchStatus[]).includes(status),
-    refresh: mutate,
+    isFetched: ['error', 'success'].includes(status),
+    refresh: refetch,
   }
 }

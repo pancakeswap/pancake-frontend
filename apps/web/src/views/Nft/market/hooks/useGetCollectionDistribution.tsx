@@ -2,23 +2,28 @@ import { useEffect, useState } from 'react'
 import { getCollectionDistributionApi, getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiCollectionDistribution, ApiResponseCollectionTokens, ApiSingleTokenData } from 'state/nftMarket/types'
 import { getPancakeBunniesAddress } from 'utils/addressHelpers'
-import useSWRImmutable from 'swr/immutable'
-import { FetchStatus } from 'config/constants/types'
 import mapValues from 'lodash/mapValues'
 import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
 import { pancakeBunniesABI } from 'config/abi/pancakeBunnies'
+import { useQuery } from '@tanstack/react-query'
 import { pancakeBunniesAddress } from '../constants'
 
 const useGetCollectionDistribution = (collectionAddress: string | undefined) => {
-  const { data, status } = useSWRImmutable(
-    collectionAddress ? ['distribution', collectionAddress] : null,
+  const { data, status } = useQuery(
+    ['distribution', collectionAddress],
     async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress)).data,
+    {
+      enabled: Boolean(collectionAddress),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+    },
   )
 
   return {
     data,
-    isFetching: status !== FetchStatus.Fetched,
+    isFetching: status !== 'success',
   }
 }
 

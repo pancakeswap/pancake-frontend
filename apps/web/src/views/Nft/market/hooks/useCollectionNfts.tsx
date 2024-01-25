@@ -7,7 +7,6 @@ import {
   Collection,
 } from 'state/nftMarket/types'
 import { useGetNftFilters, useGetNftOrdering, useGetNftShowOnlyOnSale, useGetCollection } from 'state/nftMarket/hooks'
-import { FetchStatus } from 'config/constants/types'
 import {
   fetchNftsFiltered,
   getMarketDataForTokenIds,
@@ -15,10 +14,10 @@ import {
   getNftsFromCollectionApi,
   getNftsMarketData,
 } from 'state/nftMarket/helpers'
-import useSWRInfinite from 'swr/infinite'
 import isEmpty from 'lodash/isEmpty'
 import uniqBy from 'lodash/uniqBy'
 import fromPairs from 'lodash/fromPairs'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { REQUEST_SIZE } from '../Collection/config'
 
 interface ItemListingSettings {
@@ -219,19 +218,15 @@ export const useCollectionNfts = (collectionAddress: string) => {
   const {
     data: nfts,
     status,
-    size,
-    setSize,
-  } = useSWRInfinite(
-    (pageIndex, previousPageData) => {
-      if (pageIndex !== 0 && previousPageData && !previousPageData.length) return null
-      return [collectionAddress, itemListingSettingsJson, pageIndex, 'collectionNfts'] as const
-    },
-    async ([, settingsJson, page]) => {
-      const settings: ItemListingSettings = JSON.parse(settingsJson)
+    fetchNextPage,
+  } = useInfiniteQuery(
+    [collectionAddress, itemListingSettingsJson, 'collectionNfts'],
+    async ({ pageParam = 0 }) => {
+      const settings: ItemListingSettings = JSON.parse(itemListingSettingsJson)
       const tokenIdsFromFilter = await fetchTokenIdsFromFilter(collection?.address, settings)
       let newNfts: NftToken[] = []
       if (settings.showOnlyNftsOnSale) {
-        newNfts = await fetchMarketDataNfts(collection, settings, page, tokenIdsFromFilter)
+        newNfts = await fetchMarketDataNfts(collection, settings, pageParam, tokenIdsFromFilter)
       } else {
         const {
           nfts: allNewNfts,
@@ -240,7 +235,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
         } = await fetchAllNfts(
           collection,
           settings,
-          page,
+          pageParam,
           tokenIdsFromFilter,
           fetchedNfts.current,
           fallbackMode.current,
@@ -253,19 +248,33 @@ export const useCollectionNfts = (collectionAddress: string) => {
       if (newNfts.length < REQUEST_SIZE) {
         isLastPage.current = true
       }
-      return newNfts
+      return { data: newNfts, pageParam }
     },
-    { revalidateAll: true },
+    {
+      getNextPageParam: (lastPage) => {
+        if (isLastPage.current) {
+          return undefined
+        }
+        return lastPage.pageParam + 1
+      },
+      getPreviousPageParam: (firstPage) => {
+        if (firstPage.pageParam === 1) {
+          return undefined
+        }
+        return firstPage.pageParam - 1
+      },
+    },
   )
 
-  const uniqueNftList: NftToken[] = useMemo(() => (nfts ? uniqBy(nfts.flat(), 'tokenId') : []), [nfts])
+  const uniqueNftList: NftToken[] = useMemo(() => {
+    return uniqBy(nfts?.pages?.map((page) => page.data).flat() || [], 'tokenId')
+  }, [nfts])
   fetchedNfts.current = uniqueNftList
 
   return {
     nfts: uniqueNftList,
-    isFetchingNfts: status !== FetchStatus.Fetched,
-    page: size,
-    setPage: setSize,
+    isFetchingNfts: status !== 'success',
+    fetchNextPage,
     resultSize,
     isLastPage: isLastPage.current,
   }

@@ -6,11 +6,10 @@ import 'swiper/css'
 import type SwiperCore from 'swiper'
 import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { safeGetAddress } from 'utils'
-import useSWRImmutable from 'swr/immutable'
 import { Address } from 'wagmi'
 import { getNftsFromCollectionApi, getMarketDataForTokenIds } from 'state/nftMarket/helpers'
-import { NftToken } from 'state/nftMarket/types'
 import Trans from 'components/Trans'
+import { useQuery } from '@tanstack/react-query'
 import { pancakeBunniesAddress } from '../../../constants'
 import { CollectibleLinkCard } from '../../../components/CollectibleCard'
 import useAllPancakeBunnyNfts from '../../../hooks/useAllPancakeBunnyNfts'
@@ -53,10 +52,8 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
   const isPBCollection = safeGetAddress(collectionAddress) === safeGetAddress(pancakeBunniesAddress)
   const checkSummedCollectionAddress = safeGetAddress(collectionAddress) || collectionAddress
 
-  const { data: collectionNfts } = useSWRImmutable<NftToken[]>(
-    !isPBCollection && checkSummedCollectionAddress
-      ? ['nft', 'moreFromCollection', checkSummedCollectionAddress]
-      : null,
+  const { data: collectionNfts } = useQuery(
+    ['nft', 'moreFromCollection', checkSummedCollectionAddress],
     async () => {
       try {
         const nfts = await getNftsFromCollectionApi(collectionAddress, 100, 1)
@@ -87,6 +84,12 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
         console.error(`Failed to fetch collection NFTs for ${collectionAddress}`, error)
         return []
       }
+    },
+    {
+      enabled: Boolean(!isPBCollection && checkSummedCollectionAddress),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
     },
   )
 

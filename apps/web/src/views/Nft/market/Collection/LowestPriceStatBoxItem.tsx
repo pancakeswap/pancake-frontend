@@ -1,6 +1,6 @@
-import useSWR from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
 import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
+import { useQuery } from '@tanstack/react-query'
 import { StatBoxItem, StatBoxItemProps } from '../components/StatBox'
 
 interface LowestPriceStatBoxItemProps extends Omit<StatBoxItemProps, 'title' | 'stat'> {
@@ -12,9 +12,12 @@ const LowestPriceStatBoxItem: React.FC<React.PropsWithChildren<LowestPriceStatBo
   ...props
 }) => {
   const { t } = useTranslation()
-  const { data: lowestCollectionPrice = null } = useSWR(
-    collectionAddress ? [collectionAddress, 'lowestPrice'] : null,
+  const { data: lowestCollectionPrice = null } = useQuery(
+    [collectionAddress, 'lowestPrice'],
     () => getLeastMostPriceInCollection(collectionAddress),
+    {
+      enabled: Boolean(collectionAddress),
+    },
   )
 
   const formattedLowestPrice =

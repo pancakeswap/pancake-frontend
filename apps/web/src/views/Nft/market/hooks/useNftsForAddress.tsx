@@ -1,14 +1,12 @@
-import { useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import { useGetCollections } from 'state/nftMarket/hooks'
 import { NftLocation, ApiCollections } from 'state/nftMarket/types'
 import { Profile } from 'state/types'
 import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
-import useSWR from 'swr'
-import { FetchStatus } from 'config/constants/types'
-import { usePreviousValue } from '@pancakeswap/hooks'
 import { safeGetAddress } from 'utils'
 import { isAddress } from 'viem'
+import { useQuery } from '@tanstack/react-query'
 
 export const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
   const { data: collections } = useGetCollections()
@@ -23,12 +21,6 @@ export const useCollectionsNftsForAddress = (
   isProfileFetching: boolean,
   collections: ApiCollections,
 ) => {
-  const resetLaggyRef = useRef(null)
-  const previousAccount = usePreviousValue(account)
-
-  if (resetLaggyRef.current && previousAccount !== account) {
-    resetLaggyRef.current()
-  }
   const hasProfileNft = profile?.tokenId
   const profileNftTokenId = profile?.tokenId?.toString()
   const profileNftCollectionAddress = profile?.collectionAddress
@@ -45,15 +37,14 @@ export const useCollectionsNftsForAddress = (
   }, [profileNftTokenId, profileNftCollectionAddress, hasProfileNft])
 
   // @ts-ignore
-  const { status, data, mutate, resetLaggy } = useSWR(
-    !isProfileFetching && !isEmpty(collections) && isAddress(account) ? [account, 'userNfts'] : null,
+  const { status, data, refetch } = useQuery(
+    [account, 'userNfts'],
     async () => getCompleteAccountNftData(safeGetAddress(account), collections, profileNftWithCollectionAddress),
     {
+      enabled: Boolean(!isProfileFetching && !isEmpty(collections) && isAddress(account)),
       keepPreviousData: true,
     },
   )
 
-  resetLaggyRef.current = resetLaggy
-
-  return { nfts: data ?? [], isLoading: status !== FetchStatus.Fetched, refresh: mutate }
+  return { nfts: data ?? [], isLoading: status !== 'success', refresh: refetch }
 }

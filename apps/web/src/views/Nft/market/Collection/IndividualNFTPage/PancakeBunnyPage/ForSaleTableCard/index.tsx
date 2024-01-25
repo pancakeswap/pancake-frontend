@@ -56,7 +56,7 @@ const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>>
     nfts,
     refresh,
     page,
-    setPage,
+    fetchNextPage,
     direction: priceSort,
     setDirection,
     isFetchingNfts,
@@ -100,9 +100,9 @@ const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>>
 
   useEffect(() => {
     if (maxInternalPage === internalPage && !isValidating && !isLastPage) {
-      setPage(page + 1)
+      fetchNextPage()
     }
-  }, [internalPage, isLastPage, isValidating, maxInternalPage, page, setPage])
+  }, [internalPage, isLastPage, isValidating, maxInternalPage, page, fetchNextPage])
 
   useEffect(() => {
     setInternalPage(1)
@@ -113,7 +113,7 @@ const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>>
     if (nfts && !isValidating && maxInternalPage < internalPage) {
       setInternalPage(maxInternalPage)
     }
-  }, [nfts, page, setPage, isValidating, maxInternalPage, internalPage])
+  }, [nfts, page, isValidating, maxInternalPage, internalPage])
 
   return (
     <StyledCard hasManyPages>

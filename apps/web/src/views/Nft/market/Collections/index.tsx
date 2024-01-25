@@ -21,19 +21,18 @@ import {
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
 import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
 import { ViewMode } from 'state/user/actions'
 import { Collection } from 'state/nftMarket/types'
 import { styled } from 'styled-components'
-import { FetchStatus } from 'config/constants/types'
 import { useGetShuffledCollections } from 'state/nftMarket/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import Page from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
+import { useQuery } from '@tanstack/react-query'
 import CollectionCardWithVolume from '../components/CollectibleCard/CollectionCardWithVolume'
 
 export const ITEMS_PER_PAGE = 9
@@ -118,10 +117,10 @@ const Collectible = () => {
     ]
   }, [t])
 
-  const { data: collections = [], status } = useSWRImmutable<
+  const { data: collections = [], status } = useQuery<
     (Collection & Partial<{ lowestPrice: number; highestPrice: number }>)[]
   >(
-    shuffledCollections && shuffledCollections.length ? ['collectionsWithPrice', viewMode, sortField] : null,
+    ['collectionsWithPrice', viewMode, sortField],
     async () => {
       if (viewMode === ViewMode.CARD && sortField !== SORT_FIELD.lowestPrice && sortField !== SORT_FIELD.highestPrice)
         return shuffledCollections
@@ -140,6 +139,7 @@ const Collectible = () => {
       )
     },
     {
+      enabled: Boolean(shuffledCollections && shuffledCollections.length),
       keepPreviousData: true,
     },
   )
@@ -205,7 +205,7 @@ const Collectible = () => {
         </Heading>
       </PageHeader>
       <Page>
-        {status !== FetchStatus.Fetched ? (
+        {status !== 'success' ? (
           <PageLoader />
         ) : (
           <>

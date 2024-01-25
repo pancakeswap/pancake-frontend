@@ -4,8 +4,8 @@ import { useErc721CollectionContract } from 'hooks/useContract'
 import { NftToken } from 'state/nftMarket/types'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
-import useSWR from 'swr'
 import { safeGetAddress } from 'utils'
+import { useQuery } from '@tanstack/react-query'
 
 const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const { address: account } = useAccount()
@@ -15,9 +15,12 @@ const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const currentSeller = nft.marketData?.currentSeller
   const pancakeProfileAddress = getPancakeProfileAddress()
   const { collectionAddress, tokenId } = nft
-  const { data: tokenOwner } = useSWR(
-    collectionContract ? ['nft', 'ownerOf', collectionAddress, tokenId] : null,
+  const { data: tokenOwner } = useQuery(
+    ['nft', 'ownerOf', collectionAddress, tokenId],
     async () => collectionContract.read.ownerOf([BigInt(tokenId)]),
+    {
+      enabled: Boolean(collectionAddress && tokenId),
+    },
   )
 
   useEffect(() => {

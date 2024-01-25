@@ -13,11 +13,11 @@ interface CollectionNftsProps {
 const CollectionNfts: React.FC<React.PropsWithChildren<CollectionNftsProps>> = ({ collection }) => {
   const { address: collectionAddress } = collection || {}
   const { t } = useTranslation()
-  const { nfts, isFetchingNfts, page, setPage, resultSize, isLastPage } = useCollectionNfts(collectionAddress)
+  const { nfts, isFetchingNfts, fetchNextPage, resultSize, isLastPage } = useCollectionNfts(collectionAddress)
 
   const handleLoadMore = useCallback(() => {
-    setPage(page + 1)
-  }, [setPage, page])
+    fetchNextPage()
+  }, [fetchNextPage])
 
   if ((!nfts || nfts?.length === 0) && isFetchingNfts) {
     return <GridPlaceholder />
