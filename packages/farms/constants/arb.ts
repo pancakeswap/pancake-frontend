@@ -4,6 +4,13 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
   {
+    pid: 38,
+    lpAddress: '0x753bA05488Cac9B3f7D59Ff7D3f13F31bB5eDf22',
+    token0: arbitrumTokens.weth,
+    token1: arbitrumTokens.wbnb,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 37,
     lpAddress: '0x714D48cb99b87F274B33A89fBb16EaD191B40b6C',
     token0: arbitrumTokens.ovn,

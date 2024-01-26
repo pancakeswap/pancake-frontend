@@ -2565,4 +2565,15 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: polygonZkEvmTokens.usdc.address,
     feeTier: FeeAmount.LOWEST,
   },
+
+  {
+    gid: 260,
+    pairName: 'WETH-WBNB',
+    address: '0x753bA05488Cac9B3f7D59Ff7D3f13F31bB5eDf22',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.V3,
+    token0Address: arbitrumTokens.weth.address,
+    token1Address: arbitrumTokens.wbnb.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
 ]
