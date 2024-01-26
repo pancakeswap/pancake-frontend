@@ -141,6 +141,12 @@ export const ADDITIONAL_BASES: {
     [bscTokens.tusd.address]: [bscTokens.usdd],
     [bscTokens.usdd.address]: [bscTokens.tusd],
 
+    [bscTokens.mpendle.address]: [bscTokens.pendle],
+    [bscTokens.pendle.address]: [bscTokens.mpendle],
+
+    [bscTokens.mdlp.address]: [bscTokens.dlp],
+    [bscTokens.dlp.address]: [bscTokens.mdlp],
+
     // pancakeswap/pancake-frontend#7909
     // LSDT
     '0xAa83Bb1Be2a74AaA8795a8887054919A0Ea96BFA': [czusd],
