@@ -906,19 +906,16 @@ export const fetchNftsFiltered = async (
  * OTHER HELPERS
  */
 
-export const getMetadataWithFallback = (apiMetadata: ApiResponseCollectionTokens['data'], bunnyId: string) => {
+export const getMetadataWithFallback = (apiMetadata: ApiResponseCollectionTokens['data'], bunnyId?: string) => {
   // The fallback is just for the testnet where some bunnies don't exist
-  return (
-    apiMetadata[bunnyId] ?? {
-      name: '',
-      description: '',
-      collection: { name: 'Pancake Bunnies' },
-      image: {
-        original: '',
-        thumbnail: '',
-      },
-    }
-  )
+  return bunnyId
+    ? apiMetadata[bunnyId] ?? {
+        name: '',
+        description: '',
+        collection: { name: 'Pancake Bunnies' },
+        image: { original: '', thumbnail: '' },
+      }
+    : { name: '', description: '', collection: { name: 'Pancake Bunnies' }, image: { original: '', thumbnail: '' } }
 }
 
 export const getPancakeBunniesAttributesField = (bunnyId: string) => {

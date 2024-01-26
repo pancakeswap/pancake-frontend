@@ -17,6 +17,7 @@ import {
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import ForSaleTableRows from './ForSaleTableRows'
 import { StyledSortButton, TableHeading } from '../../shared/styles'
 import UpdateIndicator from './UpdateIndicator'
@@ -78,8 +79,8 @@ const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>>
   const totalNfts = useMemo(() => {
     return nfts
       ? nfts.flat().sort((nftA, nftB) => {
-          const priceA = new BigNumber(nftA.marketData.currentAskPrice)
-          const priceB = new BigNumber(nftB.marketData.currentAskPrice)
+          const priceA = nftA.marketData ? new BigNumber(nftA.marketData.currentAskPrice) : BIG_ZERO
+          const priceB = nftB.marketData ? new BigNumber(nftB.marketData.currentAskPrice) : BIG_ZERO
           return priceA.gt(priceB)
             ? 1 * (priceSort === 'desc' ? -1 : 1)
             : priceA.eq(priceB)
