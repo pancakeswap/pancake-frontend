@@ -79,8 +79,8 @@ const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>>
   const totalNfts = useMemo(() => {
     return nfts
       ? nfts.flat().sort((nftA, nftB) => {
-          const priceA = nftA.marketData ? new BigNumber(nftA.marketData.currentAskPrice) : BIG_ZERO
-          const priceB = nftB.marketData ? new BigNumber(nftB.marketData.currentAskPrice) : BIG_ZERO
+          const priceA = nftA.marketData?.currentAskPrice ? new BigNumber(nftA.marketData.currentAskPrice) : BIG_ZERO
+          const priceB = nftB.marketData?.currentAskPrice ? new BigNumber(nftB.marketData.currentAskPrice) : BIG_ZERO
           return priceA.gt(priceB)
             ? 1 * (priceSort === 'desc' ? -1 : 1)
             : priceA.eq(priceB)
