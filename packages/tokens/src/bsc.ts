@@ -2643,6 +2643,14 @@ export const bscTokens = {
     'Pendle',
     'https://www.pendle.finance/',
   ),
+  mpendle: new ERC20Token(
+    ChainId.BSC,
+    '0x0465aad9da170798433F4aB7fa7Ec8b9b9bf0Bb1',
+    18,
+    'mPENDLE',
+    'mPendle',
+    'https://www.pendle.magpiexyz.io/stake',
+  ),
   usdd: new ERC20Token(
     ChainId.BSC,
     '0xd17479997F34dd9156Deef8F95A52D81D265be9c',
@@ -2939,5 +2947,21 @@ export const bscTokens = {
     'MANTA',
     'Manta',
     'https://manta.network/',
+  ),
+  dlp: new ERC20Token(
+    ChainId.BSC,
+    '0x346575fC7f07E6994D76199E41D13dC1575322E1',
+    18,
+    'DLP',
+    'WBNB-RDNT Pancake LP',
+    'https://pancakeswap.finance',
+  ),
+  mdlp: new ERC20Token(
+    ChainId.BSC,
+    '0x11727E5b7Fa33FF4D380F3E7E877F19876c25b97',
+    18,
+    'mDLP',
+    'Magpie locked DLP',
+    'https://www.radiant.magpiexyz.io/stake',
   ),
 }
