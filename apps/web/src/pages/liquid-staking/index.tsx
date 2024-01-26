@@ -66,7 +66,7 @@ const LiquidStakingPage = () => {
       selectedList.token1 &&
       chainId &&
       selectedList?.contract !== SNBNB[chainId] ? (
-        <AppBody>
+        <AppBody mb="24px">
           <WithdrawRequest selectedList={selectedList} />
         </AppBody>
       ) : null}

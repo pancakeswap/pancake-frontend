@@ -42,10 +42,8 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
           {t('Withdraw')}
         </Text>
 
-        <RowBetween mb="8px">
-          <Text color="textSubtle" bold>
-            {t('Staked Amount')}
-          </Text>
+        <RowBetween mb="8px" alignItems="start">
+          <Text color="textSubtle">{t('Staked Amount')}</Text>
 
           <Flex flexDirection="column" alignItems="end">
             <Text>
@@ -59,10 +57,8 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
           </Flex>
         </RowBetween>
 
-        <RowBetween mb="8px">
-          <Text color="textSubtle" bold>
-            {t('Withdraw Amount')}
-          </Text>
+        <RowBetween mb="8px" alignItems="start">
+          <Text color="textSubtle">{t('Withdraw Amount')}</Text>
           <Flex flexDirection="column" alignItems="end">
             <Text>
               {withdrawRequestAmount} {selectedList?.token1?.symbol}
@@ -76,9 +72,7 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
         </RowBetween>
 
         <RowBetween mb="8px">
-          <Text color="textSubtle" bold>
-            {t('Date of withdraw request')}
-          </Text>
+          <Text color="textSubtle">{t('Date of withdraw request')}</Text>
 
           <Text ml="4px">
             {userWithdrawRequest ? formatUnixTime(userWithdrawRequest.latestTriggerTime.toNumber()) : '-'}
@@ -86,19 +80,19 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
         </RowBetween>
 
         <RowBetween mb="16px">
-          <Text color="textSubtle" bold>
-            {t('Withdrawal state')}
-          </Text>
+          <Text color="textSubtle">{t('Withdrawal state')}</Text>
 
           <Text ml="4px">{t('Pending (in the queue)')}</Text>
         </RowBetween>
 
         <Message variant="warning" mb="16px">
-          <MessageText>{t('It might takes up to 7 days.')}</MessageText>
+          <MessageText>{t('Withdrawal request might takes up to 7 days.')}</MessageText>
         </Message>
         <NextLink href={`/liquid-staking/request-withdraw/${selectedList.contract}`}>
           <Button disabled={stakedTokenBalance.eq(0)} width="100%">
-            {t('Withdraw')}
+            {stakedTokenBalance.eq(0) && withdrawRequestAmountToken?.greaterThan(0)
+              ? t('Pending Withdraw')
+              : t('Withdraw')}
           </Button>
         </NextLink>
       </CardBody>
