@@ -5,6 +5,26 @@ import { MANAGER } from '../managers'
 
 export const vaults: VaultConfig[] = [
   {
+    id: 15,
+    idByManager: 1,
+    name: 'ALPACA',
+    bCakeWrapper: '0x98385EBAC7055a569b76C66Dd559055263Bc88da',
+    address: '0x98385EBAC7055a569b76C66Dd559055263Bc88da',
+    adapterAddress: '0x778E55EeAA3cC7F590272aC4E173d43012271bad',
+    currencyA: bscTokens.eth,
+    currencyB: bscTokens.btcb,
+    earningToken: bscTokens.cake,
+    feeTier: FeeAmount.MEDIUM,
+    strategy: Strategy.YIELD_IQ,
+    manager: MANAGER.ALPACA,
+    isSingleDepositToken: true,
+    allowDepositToken0: false,
+    allowDepositToken1: true,
+    managerInfoUrl: 'https://www.alpacafinance.org/',
+    strategyInfoUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies',
+    learnMoreAboutUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies/pancakeswap-farms',
+  },
+  {
     id: 14,
     idByManager: 8,
     name: 'BRIL',

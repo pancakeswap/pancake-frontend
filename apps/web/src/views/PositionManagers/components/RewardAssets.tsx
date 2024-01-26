@@ -1,18 +1,19 @@
-import { useCallback, useMemo } from 'react'
-import { Address } from 'viem'
-import { Button, Text, Box, Flex, Balance, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { Currency } from '@pancakeswap/sdk'
+import { Balance, Box, Button, Flex, Text, useToast } from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import BigNumber from 'bignumber.js'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { InnerCard } from './InnerCard'
+import { useCallback, useMemo } from 'react'
+import { Address } from 'viem'
 import { useEarningTokenPriceInfo } from '../hooks'
+import { InnerCard } from './InnerCard'
 
 interface RewardAssetsProps {
   contractAddress: Address
+  bCakeWrapper?: Address
   earningToken: Currency
   pendingReward: bigint | undefined
   isInCakeRewardDateRange: boolean

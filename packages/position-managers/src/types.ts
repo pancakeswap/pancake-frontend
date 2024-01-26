@@ -122,6 +122,7 @@ export interface DuoTokenVault {
   learnMoreUrl?: string
   learnMoreAboutUrl?: string
   aprTimeWindow?: number
+  bCakeWrapper?: Address
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

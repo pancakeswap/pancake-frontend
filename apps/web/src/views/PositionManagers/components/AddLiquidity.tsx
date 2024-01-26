@@ -11,7 +11,7 @@ import { CurrencyInput } from 'components/CurrencyInput'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { usePositionManagerWrapperContract } from 'hooks/useContract'
+import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
@@ -72,6 +72,7 @@ interface Props {
   learnMoreAboutUrl?: string
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  bCakeWrapper?: Address
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -112,6 +113,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   learnMoreAboutUrl,
   lpTokenDecimals,
   aprTimeWindow,
+  bCakeWrapper,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -242,20 +244,40 @@ export const AddLiquidity = memo(function AddLiquidity({
       (allowDepositToken1 && (amountB.equalTo('0') || balanceAmountMoreThenValueB))
     )
   }, [allowDepositToken0, allowDepositToken1, amountA, amountB, userCurrencyBalances])
-
+  const bCakeWrapperAddress = bCakeWrapper ?? '0x'
   const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
+  const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
 
   const mintThenDeposit = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() =>
-      positionManagerWrapperContract.write.mintThenDeposit(
-        [allowDepositToken0 ? amountA?.numerator ?? 0n : 0n, allowDepositToken1 ? amountB?.numerator ?? 0n : 0n, '0x'],
-        {
-          account: account ?? '0x',
-          chain,
-        },
-      ),
+    const receipt = await fetchWithCatchTxError(
+      bCakeWrapper
+        ? () =>
+            positionManagerBCakeWrapperContract.write.mintThenDeposit(
+              [
+                allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
+                allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
+                false,
+                '0x',
+              ],
+              {
+                account: account ?? '0x',
+                chain,
+              },
+            )
+        : () =>
+            positionManagerWrapperContract.write.mintThenDeposit(
+              [
+                allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
+                allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
+                '0x',
+              ],
+              {
+                account: account ?? '0x',
+                chain,
+              },
+            ),
     )
 
     if (receipt?.status) {
@@ -268,17 +290,19 @@ export const AddLiquidity = memo(function AddLiquidity({
       onDone()
     }
   }, [
-    amountA,
-    amountB,
-    positionManagerWrapperContract,
+    fetchWithCatchTxError,
+    bCakeWrapper,
+    positionManagerBCakeWrapperContract.write,
+    allowDepositToken0,
+    amountA?.numerator,
+    allowDepositToken1,
+    amountB?.numerator,
     account,
     chain,
+    positionManagerWrapperContract.write,
     toastSuccess,
     t,
-    fetchWithCatchTxError,
     onDone,
-    allowDepositToken0,
-    allowDepositToken1,
   ])
 
   const translationData = useMemo(

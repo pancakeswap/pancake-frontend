@@ -65,6 +65,7 @@ interface Props {
   learnMoreAboutUrl?: string
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  bCakeWrapper?: Address
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -104,6 +105,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   learnMoreAboutUrl,
   lpTokenDecimals,
   aprTimeWindow,
+  bCakeWrapper,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -148,6 +150,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
           </InnerCard>
           <RewardAssets
             contractAddress={contractAddress}
+            bCakeWrapper={bCakeWrapper}
             pendingReward={pendingReward}
             earningToken={earningToken}
             isInCakeRewardDateRange={isInCakeRewardDateRange}
@@ -198,6 +201,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         learnMoreAboutUrl={learnMoreAboutUrl}
         lpTokenDecimals={lpTokenDecimals}
         aprTimeWindow={aprTimeWindow}
+        bCakeWrapper={bCakeWrapper}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

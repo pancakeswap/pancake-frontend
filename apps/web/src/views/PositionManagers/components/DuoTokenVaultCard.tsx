@@ -77,6 +77,7 @@ interface Props {
   precision?: bigint
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  bCakeWrapper?: Address
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -120,6 +121,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   totalStakedInUsd,
   learnMoreAboutUrl,
   lpTokenDecimals,
+  bCakeWrapper,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -208,6 +210,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           learnMoreAboutUrl={learnMoreAboutUrl}
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
+          bCakeWrapper={bCakeWrapper}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

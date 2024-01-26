@@ -35,6 +35,7 @@ import {
   getNonBscVaultContract,
   getPointCenterIfoContract,
   getPositionManagerAdapterContract,
+  getPositionManagerBCakeWrapperContract,
   getPositionManagerWrapperContract,
   getPotteryDrawContract,
   getPotteryVaultContract,
@@ -345,6 +346,15 @@ export function usePositionManagerWrapperContract(address: Address) {
   const { data: signer } = useWalletClient()
   return useMemo(
     () => getPositionManagerWrapperContract(address, signer ?? undefined, chainId),
+    [signer, chainId, address],
+  )
+}
+
+export function usePositionManagerBCakeWrapperContract(address: Address) {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(
+    () => getPositionManagerBCakeWrapperContract(address, signer ?? undefined, chainId),
     [signer, chainId, address],
   )
 }

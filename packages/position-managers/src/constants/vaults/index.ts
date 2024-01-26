@@ -27,5 +27,10 @@ export function isPCSVaultConfig(config: VaultConfig): config is PCSDuoTokenVaul
 }
 
 export function isThirdPartyVaultConfig(config: VaultConfig): config is PCSDuoTokenVaultConfig {
-  return config.manager === MANAGER.BRIL || config.manager === MANAGER.RANGE || config.manager === MANAGER.DEFIEDGE
+  return (
+    config.manager === MANAGER.BRIL ||
+    config.manager === MANAGER.RANGE ||
+    config.manager === MANAGER.DEFIEDGE ||
+    config.manager === MANAGER.ALPACA
+  )
 }
