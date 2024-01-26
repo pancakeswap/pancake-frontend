@@ -16,7 +16,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
-import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
+import { ApiResponseCollectionTokens, NftToken } from 'state/nftMarket/types'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import ForSaleTableRows from './ForSaleTableRows'
 import { StyledSortButton, TableHeading } from '../../shared/styles'
@@ -147,7 +147,7 @@ const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>>
         <>
           <Flex flex="1 1 auto" flexDirection="column" justifyContent="space-between" height="100%">
             <ForSaleTableRows
-              nftsForSale={nftsOnCurrentPage}
+              nftsForSale={nftsOnCurrentPage as NftToken[]}
               onSuccessSale={() => {
                 refresh()
                 onSuccessSale?.()
