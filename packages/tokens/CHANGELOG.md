@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.1
+
+### Patch Changes
+
+- 48ac84692: Add new stable pairs
+
 ## 0.6.0
 
 ### Minor Changes
