@@ -57,33 +57,36 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
           </Flex>
         </RowBetween>
 
-        <RowBetween mb="8px" alignItems="start">
-          <Text color="textSubtle">{t('Withdraw Amount')}</Text>
-          <Flex flexDirection="column" alignItems="end">
-            <Text>
-              {withdrawRequestAmount} {selectedList?.token1?.symbol}
-            </Text>
-            <Text fontSize="10px" color="textSubtle">
-              {withdrawRequestAmountToken && tokenUSDPrice
-                ? `~$${tokenUSDPrice.quote(withdrawRequestAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
-                : ''}
-            </Text>
-          </Flex>
-        </RowBetween>
+        {withdrawRequestAmountToken?.greaterThan(0) ? (
+          <>
+            <RowBetween mb="8px" alignItems="start">
+              <Text color="textSubtle">{t('Withdraw Amount')}</Text>
+              <Flex flexDirection="column" alignItems="end">
+                <Text>
+                  {withdrawRequestAmount} {selectedList?.token1?.symbol}
+                </Text>
+                <Text fontSize="10px" color="textSubtle">
+                  {withdrawRequestAmountToken && tokenUSDPrice
+                    ? `~$${tokenUSDPrice.quote(withdrawRequestAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
+                    : ''}
+                </Text>
+              </Flex>
+            </RowBetween>
+            <RowBetween mb="8px">
+              <Text color="textSubtle">{t('Date of withdraw request')}</Text>
 
-        <RowBetween mb="8px">
-          <Text color="textSubtle">{t('Date of withdraw request')}</Text>
+              <Text ml="4px">
+                {userWithdrawRequest ? formatUnixTime(userWithdrawRequest.latestTriggerTime.toNumber()) : '-'}
+              </Text>
+            </RowBetween>
 
-          <Text ml="4px">
-            {userWithdrawRequest ? formatUnixTime(userWithdrawRequest.latestTriggerTime.toNumber()) : '-'}
-          </Text>
-        </RowBetween>
+            <RowBetween mb="16px">
+              <Text color="textSubtle">{t('Withdrawal state')}</Text>
 
-        <RowBetween mb="16px">
-          <Text color="textSubtle">{t('Withdrawal state')}</Text>
-
-          <Text ml="4px">{t('Pending (in the queue)')}</Text>
-        </RowBetween>
+              <Text ml="4px">{t('Pending (in the queue)')}</Text>
+            </RowBetween>
+          </>
+        ) : null}
 
         <Message variant="warning" mb="16px">
           <MessageText>{t('Withdrawal request might takes up to 7 days.')}</MessageText>

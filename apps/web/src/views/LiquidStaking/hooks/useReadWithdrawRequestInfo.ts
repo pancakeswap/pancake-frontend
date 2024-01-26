@@ -1,3 +1,4 @@
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { unwrappedEth } from 'config/abi/unwrappedEth'
 import { UNWRAPPED_ETH_ADDRESS } from 'config/constants/liquidStaking'
@@ -39,8 +40,8 @@ export function useReadWithdrawRequestInfo():
       totalWbethAmount: last.totalWbethAmount.plus(d.wbethAmount),
     }),
     {
-      latestTriggerTime: new BigNumber(0),
-      totalWbethAmount: new BigNumber(0),
+      latestTriggerTime: BIG_ZERO,
+      totalWbethAmount: BIG_ZERO,
     },
   )
 }
