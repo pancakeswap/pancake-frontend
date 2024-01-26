@@ -1,18 +1,18 @@
-import { useMemo } from 'react'
-import { Box, Card, Text, Message, MessageText, LightBulbIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { GreyCard } from 'components/Card'
-import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { Box, Card, LightBulbIcon, Message, MessageText, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
-import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import BigNumber from 'bignumber.js'
+import { GreyCard } from 'components/Card'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useMemo } from 'react'
+import ComingSoon from 'views/TradingReward/components/YourTradingReward/ComingSoon'
 import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
+import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
 import { useUserTradeRank } from 'views/TradingReward/hooks/useUserTradeRank'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import ComingSoon from 'views/TradingReward/components/YourTradingReward/ComingSoon'
 
 interface CurrentPeriodProps {
   campaignStart: number
@@ -21,7 +21,7 @@ interface CurrentPeriodProps {
   currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
-const TOP_RANK = 50
+const TOP_RANK = 100
 
 const TimeText = ({ text }: { text: string }) => {
   return (
@@ -126,7 +126,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                       {t('Keep trading to rank')}
                     </Text>
                     <Text fontSize="14px" color="primary" as="span" bold m="0 4px">
-                      {t('#50 or less')}
+                      {t('#100 or less')}
                     </Text>
                     <Text fontSize="14px" color="primary" as="span">
                       {t('and maintain till the end of the campaign to win and claim your rewards.')}
