@@ -8,12 +8,12 @@ import { pancakeBunniesAddress } from '../constants'
 
 export interface LowestNftPrice {
   isFetching: boolean
-  lowestPrice: number
+  lowestPrice?: number
 }
 
-const getBunnyIdFromNft = (nft: NftToken): string => {
+const getBunnyIdFromNft = (nft: NftToken): string | undefined => {
   const bunnyId = nft.attributes?.find((attr) => attr.traitType === 'bunnyId')?.value
-  return bunnyId ? bunnyId.toString() : null
+  return bunnyId ? bunnyId.toString() : undefined
 }
 
 export const getLowestUpdatedToken = async (collectionAddress: Address, nftsMarketTokenIds: string[]) => {
@@ -40,7 +40,7 @@ export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice =
     async () => {
       const response = await getNftsMarketData({ otherId: bunnyId, isTradable: true }, 100, 'currentAskPrice', 'asc')
 
-      if (!response.length) return null
+      if (!response.length) return undefined
 
       const nftsMarketTokenIds = response.map((marketData) => marketData.tokenId)
       const lowestPriceUpdatedBunny = await getLowestUpdatedToken(pancakeBunniesAddress, nftsMarketTokenIds)
@@ -48,7 +48,7 @@ export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice =
       if (lowestPriceUpdatedBunny) {
         return parseFloat(formatBigInt(lowestPriceUpdatedBunny.currentAskPrice))
       }
-      return null
+      return undefined
     },
     {
       enabled: Boolean(bunnyId),
@@ -61,7 +61,7 @@ export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice =
 export const useGetLowestPriceFromNft = (nft: NftToken): LowestNftPrice => {
   const isPancakeBunny = safeGetAddress(nft.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
 
-  const bunnyIdAttr = isPancakeBunny && getBunnyIdFromNft(nft)
+  const bunnyIdAttr = isPancakeBunny ? getBunnyIdFromNft(nft) : undefined
 
   return useGetLowestPriceFromBunnyId(bunnyIdAttr)
 }
