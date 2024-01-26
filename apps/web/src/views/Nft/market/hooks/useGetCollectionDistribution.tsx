@@ -12,7 +12,7 @@ import { pancakeBunniesAddress } from '../constants'
 const useGetCollectionDistribution = (collectionAddress: string | undefined) => {
   const { data, status } = useQuery(
     ['distribution', collectionAddress],
-    async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress)).data,
+    async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress!)).data,
     {
       enabled: Boolean(collectionAddress),
       refetchOnWindowFocus: false,
@@ -33,7 +33,7 @@ interface StatePB {
 }
 
 export const useGetCollectionDistributionPB = () => {
-  const [state, setState] = useState<StatePB>({ isFetching: false, data: null })
+  const [state, setState] = useState<StatePB>({ isFetching: false, data: {} })
 
   useEffect(() => {
     const fetchTokens = async () => {
@@ -67,7 +67,7 @@ export const useGetCollectionDistributionPB = () => {
         const tokenListResponse = response.reduce((obj, tokenCount, index) => {
           return {
             ...obj,
-            [tokenIds[index]]: { ...apiResponse.data[index], tokenCount: Number(tokenCount) },
+            [tokenIds[index]]: { ...apiResponse?.data[index], tokenCount: Number(tokenCount) },
           }
         }, {})
         setState({
@@ -78,7 +78,7 @@ export const useGetCollectionDistributionPB = () => {
         // Use nft api data if on chain multicall fails
         const tokenListResponse = mapValues(apiResponse.data, (tokenData, tokenId) => ({
           ...tokenData,
-          tokenCount: apiResponse.attributesDistribution[tokenId],
+          tokenCount: apiResponse?.attributesDistribution[tokenId] ?? 0,
         }))
         setState({ isFetching: false, data: tokenListResponse })
       }
