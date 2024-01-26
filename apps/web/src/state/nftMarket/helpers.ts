@@ -921,7 +921,7 @@ export const getMetadataWithFallback = (apiMetadata: ApiResponseCollectionTokens
     : { name: '', description: '', collection: { name: 'Pancake Bunnies' }, image: { original: '', thumbnail: '' } }
 }
 
-export const getPancakeBunniesAttributesField = (bunnyId: string) => {
+export const getPancakeBunniesAttributesField = (bunnyId?: string) => {
   // Generating attributes field that is not returned by API
   // but can be "faked" since objects are keyed with bunny id
   return [
