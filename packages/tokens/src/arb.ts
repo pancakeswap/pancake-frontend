@@ -207,7 +207,14 @@ export const arbitrumTokens = {
     'USD Coin (Arb1)',
     'https://www.centre.io/',
   ),
-  usdtplus: new ERC20Token(ChainId.ARBITRUM_ONE, '0xb1084db8D3C05CEbd5FA9335dF95EE4b8a0edc30', 6, 'USDT+', 'USDT+'),
+  usdtplus: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xb1084db8D3C05CEbd5FA9335dF95EE4b8a0edc30',
+    6,
+    'USDT+',
+    'USDT+',
+    'https://overnight.fi/',
+  ),
   ethplus: new ERC20Token(
     ChainId.ARBITRUM_ONE,
     '0xD4939D69B31fbE981ed6904A3aF43Ee1dc777Aab',
@@ -223,5 +230,13 @@ export const arbitrumTokens = {
     'OVN',
     'OVN',
     'https://overnight.fi/',
+  ),
+  wbnb: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xa9004A5421372E1D83fB1f85b0fc986c912f91f3',
+    18,
+    'WBNB',
+    'Wrapped BNB',
+    'https://www.bnbchain.org/en',
   ),
 }
