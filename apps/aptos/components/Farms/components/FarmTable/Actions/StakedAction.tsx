@@ -168,7 +168,9 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       showTopMessageText={
         isUserIpPass
           ? null
-          : t('The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.')
+          : t(
+              'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.',
+            )
       }
     />,
   )

@@ -97,8 +97,8 @@ const whitelist = [
   'Swap Token',
   "Your browser doesn't support iframe",
   'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by',
-  'U.S.-based users.',
-  'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based users.',
+  'U.S.-based and VPN users.',
+  'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.',
   'Base APR (APT yield only)',
 ]
 

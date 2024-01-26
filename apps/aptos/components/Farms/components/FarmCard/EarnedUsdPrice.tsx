@@ -55,7 +55,7 @@ export const EarnedUsdPrice: React.FC<React.PropsWithChildren<EarnedUsdPriceProp
             {t('The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by')}
           </Text>
           <Text bold lineHeight="110%" ml="4px" as="span" color="failure">
-            {t('U.S.-based users.')}
+            {t('U.S.-based and VPN users.')}
           </Text>
         </Box>
       )}
