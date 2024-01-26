@@ -1,9 +1,10 @@
 import { styled } from 'styled-components'
 import { Box, BoxProps, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 
 export interface StatBoxItemProps extends BoxProps {
   title: string
-  stat: string
+  stat?: string | null
 }
 
 export const StatBoxItem: React.FC<React.PropsWithChildren<StatBoxItemProps>> = ({ title, stat, ...props }) => (
@@ -11,7 +12,7 @@ export const StatBoxItem: React.FC<React.PropsWithChildren<StatBoxItemProps>> = 
     <Text fontSize="12px" color="textSubtle" textAlign="center">
       {title}
     </Text>
-    {stat === null ? (
+    {isUndefinedOrNull(stat) ? (
       <Skeleton height="24px" width="50%" mx="auto" />
     ) : (
       <Text fontWeight="600" textAlign="center">
