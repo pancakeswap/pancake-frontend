@@ -1,11 +1,5 @@
 import { useEffect, useState, useRef, useMemo } from 'react'
-import {
-  ApiResponseCollectionTokens,
-  ApiSingleTokenData,
-  NftAttribute,
-  NftToken,
-  Collection,
-} from 'state/nftMarket/types'
+import { ApiResponseCollectionTokens, NftAttribute, NftToken, Collection } from 'state/nftMarket/types'
 import { useGetNftFilters, useGetNftOrdering, useGetNftShowOnlyOnSale, useGetCollection } from 'state/nftMarket/hooks'
 import {
   fetchNftsFiltered,
@@ -18,6 +12,7 @@ import isEmpty from 'lodash/isEmpty'
 import uniqBy from 'lodash/uniqBy'
 import fromPairs from 'lodash/fromPairs'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { REQUEST_SIZE } from '../Collection/config'
 
 interface ItemListingSettings {
@@ -29,7 +24,11 @@ interface ItemListingSettings {
 
 const fetchTokenIdsFromFilter = async (address: string, settings: ItemListingSettings) => {
   const filterObject: Record<string, NftAttribute> = settings.nftFilters
-  const attrParams = fromPairs(Object.values(filterObject).map((attr) => [attr.traitType, attr.value]))
+  const attrParams = fromPairs(
+    Object.values(filterObject)
+      .filter((attr) => !isUndefinedOrNull(attr.value))
+      .map((attr) => [attr.traitType, attr.value as string | number]),
+  )
   const attrFilters = !isEmpty(attrParams) ? await fetchNftsFiltered(address, attrParams) : null
   return attrFilters
     ? (Object.values(attrFilters.data)
@@ -154,7 +153,7 @@ const fetchAllNfts = async (
     const nftsMarket = await getMarketDataForTokenIds(collection.address, tokenIds)
 
     const responsesPromises = tokenIds.map(async (id) => {
-      const apiMetadata: ApiSingleTokenData = collectionNftsResponse
+      const apiMetadata = collectionNftsResponse
         ? collectionNftsResponse.data[id]
         : await getNftApi(collection.address, id)
       if (apiMetadata) {
