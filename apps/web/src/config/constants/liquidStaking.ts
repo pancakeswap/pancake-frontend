@@ -11,3 +11,5 @@ export const WBETH: Record<number, Address> = {
 export const SNBNB: Record<number, Address> = {
   [ChainId.BSC]: '0x1adB950d8bB3dA4bE104211D5AB038628e477fE6',
 }
+
+export const UNWRAPPED_ETH_ADDRESS: Address = '0x79973d557CD9dd87eb61E250cc2572c990e20196'

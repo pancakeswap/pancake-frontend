@@ -1,9 +1,11 @@
 import { AppBody } from 'components/App'
+import { SNBNB } from 'config/constants/liquidStaking'
 import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { LiquidStakingPageStake } from 'views/LiquidStaking/Stake'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
+import { WithdrawRequest } from 'views/LiquidStaking/components/WithdrawRequest'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
 import Page from 'views/Page'
@@ -59,6 +61,15 @@ const LiquidStakingPage = () => {
           />
         ) : null}
       </AppBody>
+      {selectedList &&
+      selectedList.token0 &&
+      selectedList.token1 &&
+      chainId &&
+      selectedList?.contract !== SNBNB[chainId] ? (
+        <AppBody>
+          <WithdrawRequest selectedList={selectedList} />
+        </AppBody>
+      ) : null}
       <AppBody>
         <LiquidStakingFAQs config={selectedList?.FAQs} />
       </AppBody>
