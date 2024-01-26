@@ -2568,7 +2568,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
 
   {
     gid: 260,
-    pairName: 'ETH-BNB',
+    pairName: 'WETH-WBNB',
     address: '0x753bA05488Cac9B3f7D59Ff7D3f13F31bB5eDf22',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.V3,
