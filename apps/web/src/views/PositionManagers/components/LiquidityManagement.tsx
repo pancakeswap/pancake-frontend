@@ -54,7 +54,6 @@ interface Props {
   refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
-
   // TODO: replace with needed returned information
   onRemoveLiquidity?: (params: { assets: BaseAssets; percentage: Percent }) => Promise<void>
   userLpAmounts?: bigint

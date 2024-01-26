@@ -5,7 +5,7 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { usePositionManagerWrapperContract } from 'hooks/useContract'
+import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
 import { useCallback, useMemo } from 'react'
 import { Address } from 'viem'
 import { useEarningTokenPriceInfo } from '../hooks'
@@ -26,23 +26,32 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   earningToken,
   refetch,
   isInCakeRewardDateRange,
+  bCakeWrapper,
 }) => {
   const { t } = useTranslation()
   const { account, chain } = useWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({ waitForTransactionTimeout: 25_000 })
   const { earningUsdValue, earningsBalance } = useEarningTokenPriceInfo(earningToken, pendingReward)
-
+  const bCakeWrapperAddress = bCakeWrapper ?? '0x'
+  const bCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress)
   const wrapperContract = usePositionManagerWrapperContract(contractAddress)
 
   const isDisabled = useMemo(() => pendingTx || new BigNumber(earningsBalance).lte(0), [pendingTx, earningsBalance])
 
   const onClickHarvest = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() =>
-      wrapperContract.write.deposit([BigInt(0)], {
-        account: account ?? '0x',
-        chain,
-      }),
+    const receipt = await fetchWithCatchTxError(
+      bCakeWrapper
+        ? () =>
+            bCakeWrapperContract.write.deposit([BigInt(0), false], {
+              account: account ?? '0x',
+              chain,
+            })
+        : () =>
+            wrapperContract.write.deposit([BigInt(0)], {
+              account: account ?? '0x',
+              chain,
+            }),
     )
 
     if (receipt?.status) {
@@ -54,7 +63,18 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
         </ToastDescriptionWithTx>,
       )
     }
-  }, [earningToken, account, chain, wrapperContract, t, refetch, fetchWithCatchTxError, toastSuccess])
+  }, [
+    fetchWithCatchTxError,
+    bCakeWrapper,
+    bCakeWrapperContract.write,
+    account,
+    chain,
+    wrapperContract.write,
+    refetch,
+    toastSuccess,
+    t,
+    earningToken.symbol,
+  ])
   if (!isInCakeRewardDateRange && earningsBalance <= 0) return null
   return (
     <InnerCard>
