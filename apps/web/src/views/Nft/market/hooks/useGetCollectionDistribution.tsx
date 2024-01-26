@@ -12,7 +12,7 @@ import { pancakeBunniesAddress } from '../constants'
 const useGetCollectionDistribution = (collectionAddress: string | undefined) => {
   const { data, status } = useQuery(
     ['distribution', collectionAddress],
-    async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress!)).data,
+    async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress!))?.data,
     {
       enabled: Boolean(collectionAddress),
       refetchOnWindowFocus: false,

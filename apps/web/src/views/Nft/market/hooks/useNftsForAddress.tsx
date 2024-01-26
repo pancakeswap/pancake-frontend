@@ -29,17 +29,17 @@ export const useCollectionsNftsForAddress = (
     if (hasProfileNft) {
       return {
         tokenId: profileNftTokenId,
-        collectionAddress: safeGetAddress(profileNftCollectionAddress),
+        collectionAddress: safeGetAddress(profileNftCollectionAddress)!,
         nftLocation: NftLocation.PROFILE,
       }
     }
-    return null
+    return undefined
   }, [profileNftTokenId, profileNftCollectionAddress, hasProfileNft])
 
   // @ts-ignore
   const { status, data, refetch } = useQuery(
     [account, 'userNfts'],
-    async () => getCompleteAccountNftData(safeGetAddress(account), collections, profileNftWithCollectionAddress),
+    async () => getCompleteAccountNftData(safeGetAddress(account)!, collections, profileNftWithCollectionAddress),
     {
       enabled: Boolean(!isProfileFetching && !isEmpty(collections) && isAddress(account)),
       keepPreviousData: true,

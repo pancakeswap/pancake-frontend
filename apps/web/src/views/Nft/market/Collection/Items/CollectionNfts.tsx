@@ -46,7 +46,9 @@ const CollectionNfts: React.FC<React.PropsWithChildren<CollectionNftsProps>> = (
                 <CollectibleLinkCard
                   key={nft.tokenId}
                   nft={nft}
-                  currentAskPrice={currentAskPriceAsNumber > 0 ? currentAskPriceAsNumber : undefined}
+                  currentAskPrice={
+                    currentAskPriceAsNumber && currentAskPriceAsNumber > 0 ? currentAskPriceAsNumber : undefined
+                  }
                   data-test="collection-detail-page-card"
                 />
               )
