@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 
 const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const { address: account } = useAccount()
-  const [owner, setOwner] = useState(null)
+  const [owner, setOwner] = useState<string | null>(null)
   const [isLoadingOwner, setIsLoadingOwner] = useState(true)
   const collectionContract = useErc721CollectionContract(nft.collectionAddress)
   const currentSeller = nft.marketData?.currentSeller
@@ -17,7 +17,10 @@ const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const { collectionAddress, tokenId } = nft
   const { data: tokenOwner } = useQuery(
     ['nft', 'ownerOf', collectionAddress, tokenId],
-    async () => collectionContract.read.ownerOf([BigInt(tokenId)]),
+    async () => {
+      if (!collectionContract) return undefined
+      return collectionContract.read.ownerOf([BigInt(tokenId)])
+    },
     {
       enabled: Boolean(collectionAddress && tokenId),
     },
