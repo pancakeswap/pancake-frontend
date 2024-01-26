@@ -72,7 +72,7 @@ export const Arrow = styled.div`
   }
 `
 
-const getNewSortDirection = (oldSortField: string, newSortField: string, oldSortDirection: boolean) => {
+const getNewSortDirection = (oldSortField: string | null, newSortField: string, oldSortDirection: boolean) => {
   if (oldSortField !== newSortField) {
     return newSortField !== SORT_FIELD.lowestPrice
   }
@@ -83,7 +83,7 @@ const Collectible = () => {
   const { t } = useTranslation()
   const { data: shuffledCollections } = useGetShuffledCollections()
   const { isMobile } = useMatchBreakpoints()
-  const [sortField, setSortField] = useState(null)
+  const [sortField, setSortField] = useState<string | null>(null)
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
   const [viewMode, setViewMode] = useState(ViewMode.CARD)
@@ -183,7 +183,7 @@ const Collectible = () => {
           }
           return null
         }
-        return parseFloat(collection[sortField])
+        return sortField ? parseFloat(collection[sortField]) : undefined
       },
       sortDirection ? 'desc' : 'asc',
     ).filter((collection) => !DELIST_COLLECTIONS[collection.address])
@@ -224,7 +224,7 @@ const Collectible = () => {
                 <Select
                   options={options}
                   placeHolderText={t('Select')}
-                  defaultOptionIndex={SORT_FIELD_INDEX_MAP.get(sortField)}
+                  defaultOptionIndex={sortField ? SORT_FIELD_INDEX_MAP.get(sortField) : undefined}
                   onOptionChange={(option: OptionProps) => handleSort(option.value)}
                 />
               </Flex>

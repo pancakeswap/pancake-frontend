@@ -17,7 +17,7 @@ type WhereClause = Record<string, string | number | boolean | string[]>
 const fetchCheapestBunny = async (
   whereClause: WhereClause = {},
   nftMetadata: ApiResponseCollectionTokens,
-): Promise<NftToken> => {
+): Promise<NftToken | null> => {
   const nftsMarket = await getNftsMarketData(whereClause, 100, 'currentAskPrice', 'asc')
 
   if (!nftsMarket.length) return null
@@ -31,7 +31,7 @@ const fetchCheapestBunny = async (
       const apiMetadata = getMetadataWithFallback(nftMetadata.data, marketData.otherId)
       const attributes = getPancakeBunniesAttributesField(marketData.otherId)
       const bunnyToken = combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
-      const updatedPrice = formatBigInt(lowestPriceUpdatedBunny.currentAskPrice)
+      const updatedPrice = formatBigInt(lowestPriceUpdatedBunny!.currentAskPrice)
       return {
         ...bunnyToken,
         marketData: { ...bunnyToken.marketData, ...lowestPriceUpdatedBunny, currentAskPrice: updatedPrice },
