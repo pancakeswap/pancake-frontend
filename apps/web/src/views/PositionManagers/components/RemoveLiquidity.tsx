@@ -9,7 +9,7 @@ import { ConfirmationPendingContent, CurrencyLogo } from '@pancakeswap/widgets-i
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { usePositionManagerWrapperContract } from 'hooks/useContract'
+import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { SpaceProps } from 'styled-system'
 import { Address } from 'viem'
@@ -37,6 +37,7 @@ interface Props {
     amountB: CurrencyAmount<Currency>
     liquidity: bigint
   }) => Promise<void>
+  bCakeWrapper?: Address
 }
 
 export const RemoveLiquidity = memo(function RemoveLiquidity({
@@ -52,11 +53,13 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   feeTier,
   contractAddress,
   refetch,
+  bCakeWrapper,
 }: Props) {
   const { t } = useTranslation()
   const { account, chain } = useWeb3React()
   const [percent, setPercent] = useState(0)
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
+  const bCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapper ?? '0x')
   const wrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
@@ -65,17 +68,39 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   const amountB = useMemo(() => staked1Amount?.multiply(percent)?.divide(100), [staked1Amount, percent])
 
   const withdrawThenBurn = useCallback(async () => {
+    const bCakeUserInfoAmount = await bCakeWrapperContract.read.userInfo([account ?? '0x'], {})
     const userInfoAmount = await wrapperContract.read.userInfo([account ?? '0x'], {})
 
-    const receipt = await fetchWithCatchTxError(() => {
-      const withdrawAmount = new BigNumber(userInfoAmount?.[0]?.toString() ?? 0)
-        .multipliedBy(percent)
-        .div(100)
-        .toNumber()
+    const receipt = await fetchWithCatchTxError(
+      bCakeWrapper
+        ? () => {
+            const withdrawAmount = new BigNumber(bCakeUserInfoAmount?.[0]?.toString() ?? 0)
+              .multipliedBy(percent)
+              .div(100)
+              .toNumber()
 
-      const avoidDecimalsProblem = percent === 100 ? BigInt(userInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
-      return wrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, '0x'], { account: account ?? '0x', chain })
-    })
+            const avoidDecimalsProblem =
+              percent === 100 ? BigInt(bCakeUserInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
+            console.log(avoidDecimalsProblem, '?????')
+            return bCakeWrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, false, '0x'], {
+              account: account ?? '0x',
+              chain,
+            })
+          }
+        : () => {
+            const withdrawAmount = new BigNumber(userInfoAmount?.[0]?.toString() ?? 0)
+              .multipliedBy(percent)
+              .div(100)
+              .toNumber()
+
+            const avoidDecimalsProblem =
+              percent === 100 ? BigInt(userInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
+            return wrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, '0x'], {
+              account: account ?? '0x',
+              chain,
+            })
+          },
+    )
 
     if (receipt?.status) {
       refetch?.()
@@ -87,7 +112,21 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
         </ToastDescriptionWithTx>,
       )
     }
-  }, [chain, wrapperContract, percent, account, fetchWithCatchTxError, refetch, onDismiss, toastSuccess, t])
+  }, [
+    bCakeWrapperContract.read,
+    bCakeWrapperContract.write,
+    account,
+    wrapperContract.read,
+    wrapperContract.write,
+    fetchWithCatchTxError,
+    bCakeWrapper,
+    percent,
+    chain,
+    refetch,
+    onDismiss,
+    toastSuccess,
+    t,
+  ])
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>

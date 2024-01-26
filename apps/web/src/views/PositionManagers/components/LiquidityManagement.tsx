@@ -127,7 +127,6 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   }
 
   const isSingleDepositToken0 = isSingleDepositToken && allowDepositToken0
-
   return (
     <>
       {hasStaked ? (
@@ -215,6 +214,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         token1PriceUSD={token1PriceUSD}
         contractAddress={contractAddress}
         refetch={refetch}
+        bCakeWrapper={bCakeWrapper}
       />
     </>
   )
