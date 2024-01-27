@@ -3,15 +3,15 @@ import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
 import {
-  FlexGap,
-  AutoColumn,
-  CardBody,
-  Card,
   AddIcon,
-  PreTitle,
+  AutoColumn,
+  Card,
+  CardBody,
   DynamicSection,
-  RefreshIcon,
+  FlexGap,
   IconButton,
+  PreTitle,
+  RefreshIcon,
 } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -37,6 +37,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
 import { resetMintState } from 'state/mint/actions'
 import { safeGetAddress } from 'utils'
+import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
@@ -393,6 +394,7 @@ export function AddLiquidityV3Layout({
   handleRefresh?: () => void
   children: React.ReactNode
 }) {
+  const router = useRouter()
   const { t } = useTranslation()
 
   const [selectType] = useAtom(selectTypeAtom)
@@ -403,12 +405,32 @@ export function AddLiquidityV3Layout({
 
   const title = SELECTOR_TYPE_T[selectType] || t('Add Liquidity')
 
+  const lpTokens = useStableSwapPairs()
+
+  const backToLink = useMemo(() => {
+    const isIncrease = Boolean(router.query.increase)
+    if (isIncrease) {
+      if (selectType === SELECTOR_TYPE.V2) {
+        return `/v2/pair/${currencyIdA}/${currencyIdB}`
+      }
+      if (selectType === SELECTOR_TYPE.STABLE) {
+        const selectedLp = lpTokens.find(
+          ({ token0, token1 }) =>
+            token0?.wrapped?.address?.toLowerCase() === baseCurrency?.wrapped?.address?.toLowerCase() &&
+            token1?.wrapped?.address?.toLowerCase() === quoteCurrency?.wrapped?.address?.toLowerCase(),
+        )
+        return `/stable/${selectedLp?.lpAddress}`
+      }
+    }
+    return '/liquidity'
+  }, [selectType, lpTokens, baseCurrency, quoteCurrency, router])
+
   return (
     <Page>
       <BodyWrapper>
         <AppHeader
           title={title}
-          backTo="/liquidity"
+          backTo={backToLink}
           IconSlot={
             <>
               {selectType === SELECTOR_TYPE.V3 && (

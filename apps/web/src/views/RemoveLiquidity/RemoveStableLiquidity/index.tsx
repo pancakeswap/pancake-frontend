@@ -590,7 +590,7 @@ export const RemoveLiquidityStableLayout = ({ currencyA, currencyB, children }) 
   const { pair } = useStableDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   return (
-    <RemoveLiquidityLayout currencyA={currencyA} currencyB={currencyB} pair={pair}>
+    <RemoveLiquidityLayout currencyA={currencyA} currencyB={currencyB} pair={pair} isStable>
       {children}
     </RemoveLiquidityLayout>
   )

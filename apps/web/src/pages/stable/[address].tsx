@@ -112,7 +112,7 @@ export default function StablePoolPage() {
           buttons={
             !isMobile && (
               <>
-                <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1`}>
+                <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1&increase=1`}>
                   <Button width="100%">{t('Add')}</Button>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}?stable=1`}>
@@ -127,7 +127,7 @@ export default function StablePoolPage() {
         <CardBody>
           {isMobile && (
             <>
-              <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1`}>
+              <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1&increase=1`}>
                 <Button mb="8px" width="100%">
                   {t('Add')}
                 </Button>
