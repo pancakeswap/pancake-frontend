@@ -1,6 +1,15 @@
 import { Categories } from '@pancakeswap/blog'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, InputGroup, PaginationButton, SearchIcon, SearchInput, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  Flex,
+  InputGroup,
+  PaginationButton,
+  SearchIcon,
+  SearchInput,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
 import ArticleSortSelect from 'components/Article/ArticleSortSelect'
 import CardArticle from 'components/Article/CardArticle'
@@ -65,6 +74,8 @@ const StyledCard = styled(Flex)`
 
 const AllArticle = () => {
   const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
+
   const router = useRouter()
   const [query, setQuery] = useState('')
   const articlesWrapperEl = useRef<HTMLDivElement>(null)
@@ -141,16 +152,18 @@ const AllArticle = () => {
       >
         {t('All articles')}
       </Text>
+      {isDesktop && (
+        <StyledTagContainer>
+          <CategoriesSelector
+            selected={selectedCategories}
+            categoriesData={categoriesData ?? []}
+            setSelected={setSelectCategoriesSelected}
+            childMargin="0 0 28px 0"
+          />
+        </StyledTagContainer>
+      )}
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
         <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
-          {/* <StyledTagContainer width="100%" m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
-            <CategoriesSelector
-              selected={selectedCategories}
-              categoriesData={categoriesData ?? []}
-              setSelected={setSelectCategoriesSelected}
-              childMargin="0 0 28px 0"
-            />
-          </StyledTagContainer> */}
           <Flex
             mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
