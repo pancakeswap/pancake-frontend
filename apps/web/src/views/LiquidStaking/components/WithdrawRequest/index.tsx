@@ -91,12 +91,12 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
 
               <Text ml="4px">{t('Pending (in the queue)')}</Text>
             </RowBetween>
+
+            <Message variant="warning" mb="16px">
+              <MessageText>{t('Withdrawal request will take at least 7 days')}</MessageText>
+            </Message>
           </>
         ) : null}
-
-        <Message variant="warning" mb="16px">
-          <MessageText>{t('Withdrawal request will take at least 7 days')}</MessageText>
-        </Message>
         <NextLink href={`/liquid-staking/request-withdraw/${selectedList.contract}`}>
           <Button disabled={stakedTokenBalance.eq(0)} width="100%">
             {stakedTokenBalance.eq(0) && withdrawRequestAmountToken?.greaterThan(0)
