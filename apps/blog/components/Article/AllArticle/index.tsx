@@ -142,15 +142,15 @@ const AllArticle = () => {
         {t('All articles')}
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
-        <StyledTagContainer>
-          <CategoriesSelector
-            selected={selectedCategories}
-            categoriesData={categoriesData ?? []}
-            setSelected={setSelectCategoriesSelected}
-            childMargin="0 0 28px 0"
-          />
-        </StyledTagContainer>
         <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
+          <StyledTagContainer>
+            <CategoriesSelector
+              selected={selectedCategories}
+              categoriesData={categoriesData ?? []}
+              setSelected={setSelectCategoriesSelected}
+              childMargin="0 0 28px 0"
+            />
+          </StyledTagContainer>
           <Flex
             mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
