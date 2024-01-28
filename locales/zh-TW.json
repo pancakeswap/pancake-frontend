@@ -303,7 +303,7 @@
   "No tokens to stake": "沒有可質押的代幣",
   "Error": "錯誤",
   "View Contract": "查看合約",
-  "See Pair Info": "檢視貨幣對的資訊",
+  "See Pair Info": "檢視代幣對資訊",
   "Stake LP": "質押 LP",
   "Multiplier": "權重",
   "Start Farming": "開始挖礦",
@@ -3133,9 +3133,9 @@
   "Ascend": "Ascend",
   "Get veCAKE now!": "Get veCAKE now!",
   "Check out veCAKE": "Check out veCAKE",
-  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by": "此農場的 CAKE 和 APT 獎勵無法參與活動也無法領取，受影響：",
   "U.S.-based and VPN users.": "U.S.-based and VPN users.",
-  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.",
+  "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.": "此農場的 CAKE 和 APT 獎勵，美國用戶和 VPN 使用者，不能參與活動也不能領取。",
   "Base APR (APT yield only)": "Base APR (APT yield only)",
   "%percent%% of total supply": "%percent%% of total supply"
 }
