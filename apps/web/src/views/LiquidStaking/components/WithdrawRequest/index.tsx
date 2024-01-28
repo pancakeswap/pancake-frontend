@@ -80,6 +80,12 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
               </Text>
             </RowBetween>
 
+            <RowBetween mb="8px">
+              <Text color="textSubtle">{t('Number of requests')}</Text>
+
+              <Text ml="4px">{userWithdrawRequest ? userWithdrawRequest.totalRequest : '-'}</Text>
+            </RowBetween>
+
             <RowBetween mb="16px">
               <Text color="textSubtle">{t('Withdrawal state')}</Text>
 

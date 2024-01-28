@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 import { unwrappedEth } from 'config/abi/unwrappedEth'
 import { UNWRAPPED_ETH_ADDRESS } from 'config/constants/liquidStaking'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
 import { Address, useContractRead } from 'wagmi'
 
 interface UserWithdrawRequest {
@@ -18,6 +19,7 @@ export function useReadWithdrawRequestInfo():
   | {
       latestTriggerTime: BigNumber
       totalWbethAmount: BigNumber
+      totalRequest: number
     }
   | undefined {
   const { account, chainId } = useActiveWeb3React()
@@ -32,16 +34,23 @@ export function useReadWithdrawRequestInfo():
     watch: true,
   })
 
-  if (!Array.isArray(data)) return undefined
-
-  return (data as UserWithdrawRequest[]).reduce(
-    (last, d) => ({
-      latestTriggerTime: new BigNumber(d.triggerTime),
-      totalWbethAmount: last.totalWbethAmount.plus(d.wbethAmount),
-    }),
-    {
-      latestTriggerTime: BIG_ZERO,
-      totalWbethAmount: BIG_ZERO,
-    },
+  return useMemo(
+    () =>
+      !Array.isArray(data)
+        ? undefined
+        : {
+            ...(data as UserWithdrawRequest[]).reduce(
+              (last, d) => ({
+                latestTriggerTime: new BigNumber(d.triggerTime),
+                totalWbethAmount: last.totalWbethAmount.plus(d.wbethAmount),
+              }),
+              {
+                latestTriggerTime: BIG_ZERO,
+                totalWbethAmount: BIG_ZERO,
+              },
+            ),
+            totalRequest: data.length,
+          },
+    [data],
   )
 }
