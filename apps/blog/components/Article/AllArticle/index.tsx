@@ -143,7 +143,7 @@ const AllArticle = () => {
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
         <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
-          <StyledTagContainer>
+          <StyledTagContainer width="100%" m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
             <CategoriesSelector
               selected={selectedCategories}
               categoriesData={categoriesData ?? []}
