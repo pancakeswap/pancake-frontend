@@ -3,10 +3,5 @@
     "chainId": 1,
     "address": "0x2201d2400d30BFD8172104B4ad046d019CA4E7bd",
     "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1%2C"
-  },
-  {
-    "chainId": 1,
-    "address": "0xEd4D5317823Ff7BC8BB868C1612Bb270a8311179",
-    "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1%2C"
   }
 ]
