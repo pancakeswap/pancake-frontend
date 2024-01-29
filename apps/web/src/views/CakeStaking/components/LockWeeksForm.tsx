@@ -127,8 +127,10 @@ export const LockWeeksForm: React.FC<{
   fieldOnly?: boolean
   expired?: boolean
   disabled?: boolean
+  hideLockWeeksDataSetStyle?: boolean
+  customVeCakeCard?: JSX.Element
   onDismiss?: () => void
-}> = ({ fieldOnly, expired, disabled, onDismiss }) => {
+}> = ({ fieldOnly, expired, disabled, customVeCakeCard, hideLockWeeksDataSetStyle, onDismiss }) => {
   const { t } = useTranslation()
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
   return (
@@ -144,9 +146,11 @@ export const LockWeeksForm: React.FC<{
 
       <WeekInput value={value} onUserInput={onChange} disabled={disabled} />
 
+      {customVeCakeCard}
+
       {fieldOnly ? null : (
         <>
-          {disabled ? null : <LockWeeksDataSet />}
+          {disabled ? null : <LockWeeksDataSet hideLockWeeksDataSetStyle={hideLockWeeksDataSetStyle} />}
 
           {expired ? (
             <FlexGap width="100%" gap="16px">

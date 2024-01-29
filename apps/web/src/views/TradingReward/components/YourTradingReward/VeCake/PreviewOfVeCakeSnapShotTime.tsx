@@ -6,7 +6,7 @@ import { styled } from 'styled-components'
 const SnapShotTimeContainer = styled(Flex)<{ $isValid: boolean }>`
   width: 100%;
   flex-direction: column;
-  padding: 16px 24px;
+  padding: 16px;
   border-radius: 24px;
   border: ${({ $isValid, theme }) => ($isValid ? '2px dashed #e7e3eb' : `1px solid ${theme.colors.warning}`)};
   background-color: ${({ theme, $isValid }) => ($isValid ? theme.colors.tertiary : 'rgba(255, 178, 55, 0.10)')};
@@ -18,13 +18,13 @@ export const PreviewOfVeCakeSnapShotTime = () => {
 
   return (
     <SnapShotTimeContainer $isValid={valid}>
-      <Flex justifyContent={['space-between']}>
+      <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent={['space-between']}>
         <Box>
           <Text bold as="span" color="textSubtle" fontSize={12}>
-            Preview of
+            {t('Preview of')}
           </Text>
           <Text bold as="span" color="secondary" ml="4px" fontSize={12}>
-            *veCAKE at snapshot time:
+            {t('*veCAKE at snapshot time:')}
           </Text>
         </Box>
         <Text>16 Feb 2024, 21:45</Text>
@@ -38,7 +38,7 @@ export const PreviewOfVeCakeSnapShotTime = () => {
             src="/images/trading-reward/trading-reward-vecake-icon.png"
           />
           <Text style={{ alignSelf: 'center' }} bold ml="8px" fontSize="20px">
-            veCAKE⌛
+            {`${t('veCAKE')}⌛`}
           </Text>
         </Flex>
         <Flex>
@@ -49,11 +49,11 @@ export const PreviewOfVeCakeSnapShotTime = () => {
         </Flex>
       </Flex>
       {valid ? (
-        <Text mt="8px" bold textAlign="right" color="success">
+        <Text fontSize={14} mt="8px" bold textAlign="right" color="success">
           {t('Min. veCAKE will be reached at snapshot time')}
         </Text>
       ) : (
-        <Text mt="8px" bold textAlign="right" color="warning">
+        <Text fontSize={14} mt="8px" bold textAlign="right" color="warning">
           {t('Min. veCAKE won’t be reached at snapshot time')}
         </Text>
       )}

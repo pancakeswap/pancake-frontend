@@ -14,7 +14,13 @@ import { Tooltips } from '../Tooltips'
 import { DataBox, DataHeader, DataRow } from './DataBox'
 import { formatDate } from './format'
 
-export const LockWeeksDataSet = () => {
+interface LockCakeDataSetProps {
+  hideLockWeeksDataSetStyle?: boolean
+}
+
+export const LockWeeksDataSet: React.FC<React.PropsWithChildren<LockCakeDataSetProps>> = ({
+  hideLockWeeksDataSetStyle,
+}) => {
   const { t } = useTranslation()
   const { cakeLockWeeks } = useLockCakeData()
   const { cakeLockExpired, cakeUnlockTime, nativeCakeLockedAmount } = useCakeLockStatus()
@@ -42,8 +48,8 @@ export const LockWeeksDataSet = () => {
   }, [unlockTimestamp])
 
   return (
-    <DataBox gap="8px">
-      <DataHeader value={getBalanceAmount(veCakeAmountBN)} />
+    <DataBox $hideStyle={hideLockWeeksDataSetStyle} gap="8px">
+      <DataHeader value={getBalanceAmount(veCakeAmountBN)} hideVeCakeIcon={hideLockWeeksDataSetStyle} />
       <DataRow
         label={
           <Tooltips

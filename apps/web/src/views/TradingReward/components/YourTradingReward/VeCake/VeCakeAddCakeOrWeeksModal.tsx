@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowUpDownIcon, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
+import { ArrowUpDownIcon, Flex, InjectedModalProps, Modal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { LockCakeForm } from 'views/CakeStaking/components/LockCakeForm'
 import { LockWeeksForm } from 'views/CakeStaking/components/LockWeeksForm'
+import { PreviewOfVeCakeSnapShotTime } from 'views/TradingReward/components/YourTradingReward/VeCake/PreviewOfVeCakeSnapShotTime'
 
 const StyledSwitchTextContainer = styled(Flex)`
   position: absolute;
@@ -29,6 +30,7 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
   onDismiss,
 }) => {
   const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
   const [modalViewMode, setModalViewMode] = useState(VeCakeModalView.CAKE_FORM_VIEW)
 
   useEffect(() => {
@@ -45,8 +47,22 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
     setModalViewMode(mode)
   }
 
+  const customVeCakeCard = (
+    <>
+      <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
+        {t('lock overview')}
+      </Text>
+      <PreviewOfVeCakeSnapShotTime />
+    </>
+  )
+
   return (
-    <Modal title="Increase your veCAKE" headerBorderColor="transparent" maxWidth={500} onDismiss={onDismiss}>
+    <Modal
+      title="Increase your veCAKE"
+      headerBorderColor="transparent"
+      maxWidth={['100%', '100%', '100%', '500px']}
+      onDismiss={onDismiss}
+    >
       {showSwitchButton && (
         <StyledSwitchTextContainer onClick={toggleViewMode}>
           <ArrowUpDownIcon mr="4px" color="primary" style={{ rotate: '90deg' }} />
@@ -57,12 +73,11 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
       )}
       <Flex position="relative">
         {modalViewMode === VeCakeModalView.CAKE_FORM_VIEW ? (
-          <LockCakeForm onDismiss={onDismiss} />
+          <LockCakeForm hideLockCakeDataSetStyle customVeCakeCard={customVeCakeCard} onDismiss={onDismiss} />
         ) : (
-          <LockWeeksForm onDismiss={onDismiss} />
+          <LockWeeksForm hideLockWeeksDataSetStyle customVeCakeCard={customVeCakeCard} onDismiss={onDismiss} />
         )}
       </Flex>
-      {/* <PreviewOfVeCakeSnapShotTime /> */}
     </Modal>
   )
 }
