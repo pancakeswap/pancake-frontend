@@ -2964,4 +2964,12 @@ export const bscTokens = {
     'Magpie locked DLP',
     'https://www.radiant.magpiexyz.io/stake',
   ),
+  rbnb: new ERC20Token(
+    ChainId.BSC,
+    '0xF027E525D491ef6ffCC478555FBb3CFabB3406a6',
+    18,
+    'rBNB',
+    'StaFi rBNB',
+    'https://www.stafi.io/',
+  ),
 }
