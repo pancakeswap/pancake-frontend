@@ -68,12 +68,10 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   const amountB = useMemo(() => staked1Amount?.multiply(percent)?.divide(100), [staked1Amount, percent])
 
   const withdrawThenBurn = useCallback(async () => {
-    const bCakeUserInfoAmount = await bCakeWrapperContract.read.userInfo([account ?? '0x'], {})
-    const userInfoAmount = await wrapperContract.read.userInfo([account ?? '0x'], {})
-
     const receipt = await fetchWithCatchTxError(
       bCakeWrapper
-        ? () => {
+        ? async () => {
+            const bCakeUserInfoAmount = await bCakeWrapperContract.read.userInfo([account ?? '0x'], {})
             const message = encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
             const withdrawAmount = new BigNumber(bCakeUserInfoAmount?.[0]?.toString() ?? 0)
               .multipliedBy(percent)
@@ -86,7 +84,8 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
               chain,
             })
           }
-        : () => {
+        : async () => {
+            const userInfoAmount = await wrapperContract.read.userInfo([account ?? '0x'], {})
             const withdrawAmount = new BigNumber(userInfoAmount?.[0]?.toString() ?? 0)
               .multipliedBy(percent)
               .div(100)
