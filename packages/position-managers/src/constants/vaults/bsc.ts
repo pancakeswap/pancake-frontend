@@ -23,6 +23,7 @@ export const vaults: VaultConfig[] = [
     managerInfoUrl: 'https://www.alpacafinance.org/',
     strategyInfoUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies',
     learnMoreAboutUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies/pancakeswap-farms',
+    priceFromV3FarmPid: 8,
   },
   {
     id: 14,
