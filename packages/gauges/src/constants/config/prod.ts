@@ -2576,4 +2576,31 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: arbitrumTokens.wbnb.address,
     feeTier: FeeAmount.MEDIUM,
   },
+
+  {
+    gid: 261,
+    pairName: 'mPENDLE-PENDLE',
+    address: '0x183F325b33d190597D80d1B46D865d0250fD9BF2',
+    chainId: ChainId.BSC,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [bscTokens.mpendle.address, bscTokens.pendle.address],
+  },
+  {
+    gid: 262,
+    pairName: 'mDLP-DLP',
+    address: '0xA2915ae3bc8C6C03f59496B6Dd26aa6a4335b788',
+    chainId: ChainId.BSC,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [bscTokens.mdlp.address, bscTokens.dlp.address],
+  },
+  {
+    gid: 263,
+    pairName: 'rBNB-BNB',
+    address: '0x5b46fC8392cDEd6A91A79d85eFabFD51C7956cA0',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.rbnb.address,
+    token1Address: bscTokens.wbnb.address,
+    feeTier: FeeAmount.LOWEST,
+  },
 ]
