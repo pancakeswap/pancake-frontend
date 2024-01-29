@@ -1,13 +1,13 @@
-import { useMemo } from 'react'
-import { Box, Card, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { VaultKey, DeserializedLockedVaultUser } from 'state/types'
+import { Box, Card, Text } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import { useDeserializedPoolByVaultKey } from 'state/pools/hooks'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import QualifiedPreview from 'views/TradingReward/components/YourTradingReward/QualifiedPreview'
-import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
+import { DeserializedLockedVaultUser, VaultKey } from 'state/types'
 import ComingSoon from 'views/TradingReward/components/YourTradingReward/ComingSoon'
+import QualifiedPreview from 'views/TradingReward/components/YourTradingReward/QualifiedPreview'
+import { VeCakePreview } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakePreview'
+import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 
 interface CurrentPeriodProps {
   incentives: Incentives
@@ -67,14 +67,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                   currentUserCampaignInfo={currentUserCampaignInfo}
                 />
               ) : (
-                <NoCakeLockedOrExtendLock
-                  pool={pool}
-                  userData={userData}
-                  incentives={incentives}
-                  isLockPosition={isLockPosition}
-                  isValidLockDuration={isValidLockDuration}
-                  thresholdLockTime={thresholdLockTime}
-                />
+                <VeCakePreview />
               )}
             </>
           )}
