@@ -1,12 +1,12 @@
-import { styled } from 'styled-components'
-import { Box, Flex, Text, Skeleton } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { Incentives, Qualification, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
+import { Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import RewardPeriod from 'views/TradingReward/components/TopTraders/YourTradingReward/RewardPeriod'
+import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
+import { Incentives, Qualification, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import { useAccount } from 'wagmi'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 

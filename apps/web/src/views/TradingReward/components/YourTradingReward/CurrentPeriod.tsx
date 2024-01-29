@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { useDeserializedPoolByVaultKey } from 'state/pools/hooks'
-import { DeserializedLockedVaultUser, VaultKey } from 'state/types'
+import { VaultKey } from 'state/types'
 import ComingSoon from 'views/TradingReward/components/YourTradingReward/ComingSoon'
 import QualifiedPreview from 'views/TradingReward/components/YourTradingReward/QualifiedPreview'
 import { VeCakePreview } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakePreview'
@@ -13,25 +13,21 @@ interface CurrentPeriodProps {
   incentives: Incentives
   campaignStart: number
   campaignClaimTime: number
-  userData: DeserializedLockedVaultUser
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail
   isQualified: boolean
-  isLockPosition: boolean
   isValidLockDuration: boolean
   thresholdLockTime: number
   totalAvailableClaimData: UserCampaignInfoDetail[]
 }
 
 const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
-  userData,
   incentives,
   rewardInfo,
   campaignStart,
   campaignClaimTime,
   currentUserCampaignInfo,
   isQualified,
-  isLockPosition,
   isValidLockDuration,
   thresholdLockTime,
 }) => {
@@ -60,7 +56,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
               {isQualified ? (
                 <QualifiedPreview
                   pool={pool}
-                  userData={userData}
                   rewardInfo={rewardInfo}
                   timeRemaining={timeRemaining}
                   campaignClaimTime={campaignClaimTime}

@@ -14,7 +14,6 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { GreyCard } from 'components/Card'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { DeserializedLockedVaultUser } from 'state/types'
 import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
@@ -24,14 +23,12 @@ interface QualifiedPreviewProps {
   timeRemaining: number
   campaignClaimTime: number
   pool: Pool.DeserializedPool<Token>
-  userData: DeserializedLockedVaultUser
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
 const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>> = ({
   pool,
-  userData,
   rewardInfo,
   timeRemaining,
   campaignClaimTime,
