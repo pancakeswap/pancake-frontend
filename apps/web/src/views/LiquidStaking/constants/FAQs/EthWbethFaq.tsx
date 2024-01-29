@@ -22,7 +22,7 @@ export const EthWbethFaq = () => [
           Post-merge, the APR is hovering at around 3-5% for Ethereum validators. For wBETH, the daily APR is published
           by the Binance Earn team
         </Trans>
-        <LinkExternal style={{ display: 'inline-flex' }} href="https://www.binance.com/en/eth2">
+        <LinkExternal ml="4px" style={{ display: 'inline-flex' }} href="https://www.binance.com/en/eth2">
           <Trans>here.</Trans>
         </LinkExternal>
       </>
