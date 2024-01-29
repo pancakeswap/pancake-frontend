@@ -1,5 +1,14 @@
 # @pancakeswap/smart-router
 
+## 4.14.1
+
+### Patch Changes
+
+- 48ac84692: Add new stable pairs
+- Updated dependencies [48ac84692]
+  - @pancakeswap/tokens@0.6.1
+  - @pancakeswap/v3-sdk@3.7.6
+
 ## 4.14.0
 
 ### Minor Changes
