@@ -12,7 +12,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { SpaceProps } from 'styled-system'
-import { Address } from 'viem'
+import { Address, encodePacked } from 'viem'
 
 import { InnerCard } from './InnerCard'
 import { PercentSlider } from './PercentSlider'
@@ -74,15 +74,14 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
     const receipt = await fetchWithCatchTxError(
       bCakeWrapper
         ? () => {
+            const message = encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
             const withdrawAmount = new BigNumber(bCakeUserInfoAmount?.[0]?.toString() ?? 0)
               .multipliedBy(percent)
               .div(100)
               .toNumber()
-
             const avoidDecimalsProblem =
               percent === 100 ? BigInt(bCakeUserInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
-            console.log(avoidDecimalsProblem, '?????')
-            return bCakeWrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, false, '0x'], {
+            return bCakeWrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, false, message], {
               account: account ?? '0x',
               chain,
             })
