@@ -8,7 +8,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import IncreaseLiquidityV3 from 'views/AddLiquidityV3/IncreaseLiquidityV3'
 
-const AddLiquidityPage = () => {
+const IncreaseLiquidityPage = () => {
   const router = useRouter()
   const { chainId } = useActiveChainId()
 
@@ -29,9 +29,9 @@ const AddLiquidityPage = () => {
   )
 }
 
-AddLiquidityPage.chains = CHAIN_IDS
+IncreaseLiquidityPage.chains = CHAIN_IDS
 
-export default AddLiquidityPage
+export default IncreaseLiquidityPage
 
 const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/
 

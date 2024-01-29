@@ -2,17 +2,21 @@ import { useCurrency } from 'hooks/Tokens'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { CHAIN_IDS } from 'utils/wagmi'
-import RemoveLiquidity, { RemoveLiquidityV2Layout } from 'views/RemoveLiquidity'
 import RemoveStableLiquidity, { RemoveLiquidityStableLayout } from 'views/RemoveLiquidity/RemoveStableLiquidity'
 import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import RemoveLiquidityV2FormProvider from 'views/RemoveLiquidity/RemoveLiquidityV2FormProvider'
 
-const RemoveLiquidityPage = () => {
+const RemoveStableLiquidityPage = () => {
   const router = useRouter()
 
   const [currencyIdA, currencyIdB] = router.query.currency || []
 
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
+
+  const stableConfig = useStableConfig({
+    tokenA: currencyA,
+    tokenB: currencyB,
+  })
 
   const props = {
     currencyIdA,
@@ -22,17 +26,21 @@ const RemoveLiquidityPage = () => {
   }
 
   return (
-    <RemoveLiquidityV2FormProvider>
-      <RemoveLiquidityV2Layout {...props}>
-        <RemoveLiquidity {...props} />
-      </RemoveLiquidityV2Layout>
-    </RemoveLiquidityV2FormProvider>
+    stableConfig.stableSwapConfig && (
+      <RemoveLiquidityV2FormProvider>
+        <StableConfigContext.Provider value={stableConfig}>
+          <RemoveLiquidityStableLayout {...props}>
+            <RemoveStableLiquidity {...props} />
+          </RemoveLiquidityStableLayout>
+        </StableConfigContext.Provider>
+      </RemoveLiquidityV2FormProvider>
+    )
   )
 }
 
-RemoveLiquidityPage.chains = CHAIN_IDS
+RemoveStableLiquidityPage.chains = CHAIN_IDS
 
-export default RemoveLiquidityPage
+export default RemoveStableLiquidityPage
 
 const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40})-(0x[a-fA-F0-9]{40})$/
 
@@ -68,7 +76,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       return {
         redirect: {
           statusCode: 307,
-          destination: `/v2/remove/${currency0}/${currency1}`,
+          destination: `/stable/remove/${currency0}/${currency1}`,
         },
       }
     }

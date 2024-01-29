@@ -76,13 +76,11 @@ const selectTypeAtom = atom(SELECTOR_TYPE.V3)
 interface UniversalAddLiquidityPropsType {
   currencyIdA: string
   currencyIdB: string
-  isV2?: boolean
   preferredSelectType?: SELECTOR_TYPE
   preferredFeeAmount?: FeeAmount
 }
 
 export function UniversalAddLiquidity({
-  isV2,
   currencyIdA,
   currencyIdB,
   preferredSelectType,
@@ -154,7 +152,7 @@ export function UniversalAddLiquidity({
       if (idB === undefined) {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
             query: {
               ...router.query,
               currency: [idA],
@@ -166,7 +164,7 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
             query: {
               ...router.query,
               currency: [idA, idB],
@@ -186,7 +184,7 @@ export function UniversalAddLiquidity({
       if (idA === undefined) {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
             query: {
               ...router.query,
               currency: [idB],
@@ -198,7 +196,7 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
             query: {
               ...router.query,
               currency: [idA, idB],
@@ -225,17 +223,20 @@ export function UniversalAddLiquidity({
 
     // if fee selection from url, don't change the selector type to avoid keep selecting stable when url changes, e.g. toggle rate
     if (!stableConfig.stableSwapConfig && feeAmountFromUrl) return
-    if (stableConfig.stableSwapConfig) {
-      setSelectorType(SELECTOR_TYPE.STABLE)
+    if (preferredSelectType === SELECTOR_TYPE.STABLE) {
+      if (stableConfig.stableSwapConfig) {
+        setSelectorType(SELECTOR_TYPE.STABLE)
+      } else {
+        setSelectorType(SELECTOR_TYPE.V2)
+      }
     } else {
-      setSelectorType(preferredSelectType || isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
+      setSelectorType(preferredSelectType || SELECTOR_TYPE.V3)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currencyIdA,
     currencyIdB,
     feeAmountFromUrl,
-    isV2,
     preferredSelectType,
     prevPreferredSelectType,
     setSelectorType,
@@ -248,7 +249,7 @@ export function UniversalAddLiquidity({
       if (newFeeAmount) {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: router.pathname.replace('/stable', ''),
             query: {
               ...router.query,
               currency: [currencyIdA, currencyIdB, newFeeAmount.toString()],
@@ -260,7 +261,7 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname.replace('/v2', ''),
+            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
             query: {
               ...router.query,
               currency: [currencyIdA, currencyIdB],
@@ -318,7 +319,7 @@ export function UniversalAddLiquidity({
               />
             </FlexGap>
             <DynamicSection disabled={!baseCurrency || !currencyB}>
-              {!isV2 &&
+              {preferredSelectType !== SELECTOR_TYPE.V2 &&
                 stableConfig.stableSwapConfig &&
                 [SELECTOR_TYPE.STABLE, SELECTOR_TYPE.V3].includes(selectorType) && (
                   <StableV3Selector
@@ -330,7 +331,8 @@ export function UniversalAddLiquidity({
                   />
                 )}
 
-              {((isV2 && selectorType !== SELECTOR_TYPE.V3) || selectorType === SELECTOR_TYPE.V2) && (
+              {((preferredSelectType === SELECTOR_TYPE.V2 && selectorType !== SELECTOR_TYPE.V3) ||
+                selectorType === SELECTOR_TYPE.V2) && (
                 <V2Selector
                   isStable={Boolean(stableConfig.stableSwapConfig)}
                   selectorType={selectorType}
@@ -387,14 +389,15 @@ const SELECTOR_TYPE_T = {
 
 export function AddLiquidityV3Layout({
   showRefreshButton = false,
+  preferredSelectType,
   handleRefresh,
   children,
 }: {
   showRefreshButton?: boolean
+  preferredSelectType?: SELECTOR_TYPE
   handleRefresh?: () => void
   children: React.ReactNode
 }) {
-  const router = useRouter()
   const { t } = useTranslation()
 
   const [selectType] = useAtom(selectTypeAtom)
@@ -408,22 +411,19 @@ export function AddLiquidityV3Layout({
   const lpTokens = useStableSwapPairs()
 
   const backToLink = useMemo(() => {
-    const isIncrease = Boolean(router.query.increase)
-    if (isIncrease) {
-      if (selectType === SELECTOR_TYPE.V2) {
-        return `/v2/pair/${currencyIdA}/${currencyIdB}`
-      }
-      if (selectType === SELECTOR_TYPE.STABLE) {
-        const selectedLp = lpTokens.find(
-          ({ token0, token1 }) =>
-            token0?.wrapped?.address?.toLowerCase() === baseCurrency?.wrapped?.address?.toLowerCase() &&
-            token1?.wrapped?.address?.toLowerCase() === quoteCurrency?.wrapped?.address?.toLowerCase(),
-        )
-        return `/stable/${selectedLp?.lpAddress}`
-      }
+    if (preferredSelectType === SELECTOR_TYPE.V2) {
+      return `/v2/pair/${currencyIdA}/${currencyIdB}`
+    }
+    if (preferredSelectType === SELECTOR_TYPE.STABLE) {
+      const selectedLp = lpTokens.find(
+        ({ token0, token1 }) =>
+          token0?.wrapped?.address?.toLowerCase() === baseCurrency?.wrapped?.address?.toLowerCase() &&
+          token1?.wrapped?.address?.toLowerCase() === quoteCurrency?.wrapped?.address?.toLowerCase(),
+      )
+      return `/stable/${selectedLp?.lpAddress}`
     }
     return '/liquidity'
-  }, [selectType, lpTokens, baseCurrency, quoteCurrency, router])
+  }, [lpTokens, baseCurrency, quoteCurrency, currencyIdA, currencyIdB, preferredSelectType])
 
   return (
     <Page>

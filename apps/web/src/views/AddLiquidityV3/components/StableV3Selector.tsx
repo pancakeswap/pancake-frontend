@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Message, MessageText, Text } from '@pancakeswap/uikit'
 import { useEffect, useMemo, useState } from 'react'
+import { AutoColumn, Message, MessageText, Text } from '@pancakeswap/uikit'
 
 import { Currency } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -68,7 +68,7 @@ export function StableV3Selector({
   )
 
   useEffect(() => {
-    if (feeAmount || isPending || isError) {
+      if (feeAmount || isPending || isError || selectorType === SELECTOR_TYPE.STABLE) {
       return
     }
 

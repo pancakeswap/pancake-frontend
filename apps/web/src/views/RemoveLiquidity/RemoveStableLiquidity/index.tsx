@@ -275,9 +275,9 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
   const handleSelectCurrencyA = useCallback(
     (currency: Currency) => {
       if (currencyIdB && currencyId(currency) === currencyIdB) {
-        router.replace(`/v2/remove/${currencyId(currency)}/${currencyIdA}?stable=1`, undefined, { shallow: true })
+        router.replace(`/stable/remove/${currencyId(currency)}/${currencyIdA}`, undefined, { shallow: true })
       } else {
-        router.replace(`/v2/remove/${currencyId(currency)}/${currencyIdB}?stable=1`, undefined, { shallow: true })
+        router.replace(`/stable/remove/${currencyId(currency)}/${currencyIdB}`, undefined, { shallow: true })
       }
     },
     [currencyIdA, currencyIdB, router],
@@ -285,9 +285,9 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
   const handleSelectCurrencyB = useCallback(
     (currency: Currency) => {
       if (currencyIdA && currencyId(currency) === currencyIdA) {
-        router.replace(`/v2/remove/${currencyIdB}/${currencyId(currency)}?stable=1`, undefined, { shallow: true })
+        router.replace(`/stable/remove/${currencyIdB}/${currencyId(currency)}`, undefined, { shallow: true })
       } else {
-        router.replace(`/v2/remove/${currencyIdA}/${currencyId(currency)}?stable=1`, undefined, { shallow: true })
+        router.replace(`/stable/remove/${currencyIdA}/${currencyId(currency)}`, undefined, { shallow: true })
       }
     },
     [currencyIdA, currencyIdB, router],
@@ -420,17 +420,17 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                   <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
                     {oneCurrencyIsNative ? (
                       <StyledInternalLink
-                        href={`/v2/remove/${currencyA?.isNative ? WNATIVE[chainId]?.address : currencyIdA}/${
+                        href={`/stable/remove/${currencyA?.isNative ? WNATIVE[chainId]?.address : currencyIdA}/${
                           currencyB?.isNative ? WNATIVE[chainId]?.address : currencyIdB
-                        }?stable=1`}
+                        }`}
                       >
                         {t('Receive %currency%', { currency: WNATIVE[chainId]?.symbol })}
                       </StyledInternalLink>
                     ) : oneCurrencyIsWNative ? (
                       <StyledInternalLink
-                        href={`/v2/remove/${
+                        href={`/stable/remove/${
                           currencyA && currencyA.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdA
-                        }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}?stable=1`}
+                        }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}`}
                       >
                         {t('Receive %currency%', { currency: native?.symbol })}
                       </StyledInternalLink>

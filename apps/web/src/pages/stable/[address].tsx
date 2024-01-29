@@ -112,10 +112,10 @@ export default function StablePoolPage() {
           buttons={
             !isMobile && (
               <>
-                <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1&increase=1`}>
+                <NextLinkFromReactRouter to={`/stable/add/${currencyIdA}/${currencyIdB}`}>
                   <Button width="100%">{t('Add')}</Button>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}?stable=1`}>
+                <NextLinkFromReactRouter to={`/stable/remove/${currencyIdA}/${currencyIdB}`}>
                   <Button ml="16px" variant="secondary" width="100%">
                     {t('Remove')}
                   </Button>
@@ -127,12 +127,12 @@ export default function StablePoolPage() {
         <CardBody>
           {isMobile && (
             <>
-              <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1&increase=1`}>
+              <NextLinkFromReactRouter to={`/stable/add/${currencyIdA}/${currencyIdB}`}>
                 <Button mb="8px" width="100%">
                   {t('Add')}
                 </Button>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}?stable=1`}>
+              <NextLinkFromReactRouter to={`/stable/remove/${currencyIdA}/${currencyIdB}`}>
                 <Button mb="8px" variant="secondary" width="100%">
                   {t('Remove')}
                 </Button>
