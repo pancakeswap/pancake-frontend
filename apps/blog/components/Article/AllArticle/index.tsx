@@ -36,27 +36,19 @@ const StyledArticleContainer = styled(Box)`
   }
 `
 
-const StyledTagContainer = styled(Box)`
-  display: none;
+const StyledTagContainer = styled(Box)<{ isMobile: boolean }>`
+  display: ${({ isMobile }) => (isMobile ? 'none' : 'flex')};
+  flex-direction: ${({ isMobile }) => (isMobile ? null : 'column')};
   width: 194px;
   min-width: 194px;
   margin-right: 25px;
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    display: flex;
-    flex-direction: column;
-  }
 `
 
-const StyledMobileTagContainer = styled(Box)`
-  display: flex;
+const StyledMobileTagContainer = styled(Box)<{ isMobile: boolean }>`
+  display: ${({ isMobile }) => (isMobile ? 'flex' : 'none')};
   flex-direction: column;
   padding: 0 16px;
   margin-bottom: 24px;
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    display: none;
-  }
 `
 
 const StyledCard = styled(Flex)`
@@ -152,17 +144,15 @@ const AllArticle = () => {
         {t('All articles')}
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
-        {!isMobile && (
-          <StyledTagContainer>
-            <CategoriesSelector
-              selected={selectedCategories}
-              categoriesData={categoriesData ?? []}
-              setSelected={setSelectCategoriesSelected}
-              childMargin="0 0 28px 0"
-            />
-          </StyledTagContainer>
-        )}
-        <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection={['column', 'column']}>
+        <StyledTagContainer isMobile={isMobile}>
+          <CategoriesSelector
+            selected={selectedCategories}
+            categoriesData={categoriesData ?? []}
+            setSelected={setSelectCategoriesSelected}
+            childMargin="0 0 28px 0"
+          />
+        </StyledTagContainer>
+        <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
           <Flex
             mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
@@ -190,7 +180,7 @@ const AllArticle = () => {
               </InputGroup>
             </Box>
           </Flex>
-          <StyledMobileTagContainer>
+          <StyledMobileTagContainer isMobile={isMobile}>
             <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
               {t('Filter by')}
             </Text>
