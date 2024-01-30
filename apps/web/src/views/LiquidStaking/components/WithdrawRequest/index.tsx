@@ -8,6 +8,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
 import { formatUnixTime } from 'utils/formatTime'
+import { useCallClaimContract } from 'views/LiquidStaking/hooks/useCallStakingContract'
 import { useReadWithdrawRequestInfo } from 'views/LiquidStaking/hooks/useReadWithdrawRequestInfo'
 import { Address } from 'wagmi'
 
@@ -20,20 +21,31 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
   const userWithdrawRequest = useReadWithdrawRequestInfo()
 
   const withdrawRequestAmount = userWithdrawRequest
-    ? getFullDisplayBalance(userWithdrawRequest?.totalWbethAmount, selectedList.token1.decimals, 6)
+    ? getFullDisplayBalance(userWithdrawRequest?.totalWbethAmountPending, selectedList.token1.decimals, 6)
+    : '0'
+
+  const claimableAmount = userWithdrawRequest
+    ? getFullDisplayBalance(userWithdrawRequest?.totalWbethAmountClaimable, selectedList.token1.decimals, 6)
     : '0'
 
   const currency1 = useCurrency(selectedList.token1.address)
 
   const withdrawRequestAmountToken =
-    currency1 && userWithdrawRequest?.totalWbethAmount
-      ? CurrencyAmount.fromRawAmount(currency1, userWithdrawRequest.totalWbethAmount.toString())
+    currency1 && userWithdrawRequest?.totalWbethAmountPending
+      ? CurrencyAmount.fromRawAmount(currency1, userWithdrawRequest.totalWbethAmountPending.toString())
+      : undefined
+
+  const claimableAmountToken =
+    currency1 && userWithdrawRequest?.totalWbethAmountClaimable
+      ? CurrencyAmount.fromRawAmount(currency1, userWithdrawRequest.totalWbethAmountClaimable.toString())
       : undefined
 
   const stakedAmountToken =
     currency1 && stakedTokenBalance ? CurrencyAmount.fromRawAmount(currency1, stakedTokenBalance.toString()) : undefined
 
   const tokenUSDPrice = useStablecoinPrice(currency1)
+
+  const { onClaim, attemptingTxn } = useCallClaimContract(claimableAmountToken, userWithdrawRequest?.claimableIndexes)
 
   return (
     <>
@@ -57,10 +69,10 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
           </Flex>
         </RowBetween>
 
-        {withdrawRequestAmountToken?.greaterThan(0) ? (
+        {userWithdrawRequest?.totalRequest ? (
           <>
             <RowBetween mb="8px" alignItems="start">
-              <Text color="textSubtle">{t('Withdraw Amount')}</Text>
+              <Text color="textSubtle">{t('Pending Withdrawal Amount')}</Text>
               <Flex flexDirection="column" alignItems="end">
                 <Text>
                   {withdrawRequestAmount} {selectedList?.token1?.symbol}
@@ -72,6 +84,21 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
                 </Text>
               </Flex>
             </RowBetween>
+
+            <RowBetween mb="8px" alignItems="start">
+              <Text color="textSubtle">{t('Claimable Amount')}</Text>
+              <Flex flexDirection="column" alignItems="end">
+                <Text>
+                  {claimableAmount} {selectedList?.token1?.symbol}
+                </Text>
+                <Text fontSize="10px" color="textSubtle">
+                  {claimableAmountToken && tokenUSDPrice
+                    ? `~$${tokenUSDPrice.quote(claimableAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
+                    : ''}
+                </Text>
+              </Flex>
+            </RowBetween>
+
             <RowBetween mb="8px">
               <Text color="textSubtle">{t('Date of latest request')}</Text>
 
@@ -80,30 +107,28 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
               </Text>
             </RowBetween>
 
-            <RowBetween mb="8px">
+            <RowBetween mb="16px">
               <Text color="textSubtle">{t('Number of requests')}</Text>
 
               <Text ml="4px">{userWithdrawRequest ? userWithdrawRequest.totalRequest : '-'}</Text>
             </RowBetween>
 
-            <RowBetween mb="16px">
-              <Text color="textSubtle">{t('Withdrawal state')}</Text>
-
-              <Text ml="4px">{t('Pending (in the queue)')}</Text>
-            </RowBetween>
-
-            <Message variant="warning" mb="16px">
+            <Message variant="warning" mb="24px">
               <MessageText>{t('Withdrawal request will take at least 7 days')}</MessageText>
             </Message>
           </>
         ) : null}
         <NextLink href={`/liquid-staking/request-withdraw/${selectedList.contract}`}>
-          <Button disabled={stakedTokenBalance.eq(0)} width="100%">
+          <Button disabled={stakedTokenBalance.eq(0)} width="100%" mb="8px">
             {stakedTokenBalance.eq(0) && withdrawRequestAmountToken?.greaterThan(0)
               ? t('Pending Withdraw')
               : t('Withdraw')}
           </Button>
         </NextLink>
+
+        <Button onClick={onClaim} disabled={claimableAmountToken?.equalTo(0) || attemptingTxn} width="100%">
+          {attemptingTxn ? t('Claiming') : t('Claim')}
+        </Button>
       </CardBody>
     </>
   )
