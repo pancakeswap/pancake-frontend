@@ -1,8 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { useDeserializedPoolByVaultKey } from 'state/pools/hooks'
-import { VaultKey } from 'state/types'
 import ComingSoon from 'views/TradingReward/components/YourTradingReward/ComingSoon'
 import QualifiedPreview from 'views/TradingReward/components/YourTradingReward/QualifiedPreview'
 import { VeCakePreview } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakePreview'
@@ -32,7 +30,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   thresholdLockTime,
 }) => {
   const { t } = useTranslation()
-  const pool = useDeserializedPoolByVaultKey(VaultKey.CakeVault)
 
   const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
@@ -55,7 +52,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             <>
               {isQualified ? (
                 <QualifiedPreview
-                  pool={pool}
                   rewardInfo={rewardInfo}
                   timeRemaining={timeRemaining}
                   campaignClaimTime={campaignClaimTime}

@@ -1,5 +1,4 @@
 import { Flex, InfoIcon, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
 import { Header } from 'views/TradingReward/components/YourTradingReward/VeCake/Header'
@@ -9,7 +8,6 @@ import {
 } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakeAddCakeOrWeeksModal'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { Token } from '@pancakeswap/sdk'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { GreyCard } from 'components/Card'
@@ -22,13 +20,11 @@ import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
 interface QualifiedPreviewProps {
   timeRemaining: number
   campaignClaimTime: number
-  pool: Pool.DeserializedPool<Token>
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
 const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>> = ({
-  pool,
   rewardInfo,
   timeRemaining,
   campaignClaimTime,

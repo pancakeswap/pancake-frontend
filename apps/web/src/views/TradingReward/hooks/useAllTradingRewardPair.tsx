@@ -32,6 +32,7 @@ export interface Incentives {
 
 export interface Qualification {
   thresholdLockTime: number
+  thresholdLockAmount: number
   minAmountUSD: string
 }
 
@@ -116,7 +117,8 @@ const fetUserQualification = async (tradingRewardContract: ReturnType<typeof get
   const result = await tradingRewardContract.read.getUserQualification()
   return {
     thresholdLockTime: new BigNumber(result[0].toString()).toNumber(),
-    minAmountUSD: new BigNumber(result[0].toString()).toJSON(),
+    thresholdLockAmount: new BigNumber(result[1].toString()).toNumber(),
+    minAmountUSD: new BigNumber(result[3].toString()).toJSON(),
   } as Qualification
 }
 
@@ -138,6 +140,7 @@ const initialAllTradingRewardState = {
   campaignIdsIncentive: [],
   qualification: {
     thresholdLockTime: 0,
+    thresholdLockAmount: 0,
     minAmountUSD: '0',
   },
   rewardInfo: {},

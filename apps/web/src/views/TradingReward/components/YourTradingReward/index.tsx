@@ -2,9 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
-import { useCakeVault, useFetchIfo as useCakeVaultPool } from 'state/pools/hooks'
 import { useProfile } from 'state/profile/hooks'
-import { DeserializedLockedCakeVault } from 'state/types'
 import { styled } from 'styled-components'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
@@ -170,13 +168,13 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { profile } = useProfile()
-  const { cakeLocked, cakeUnlockTime } = useCakeLockStatus()
+  const { cakeLocked, cakeLockedAmount, cakeUnlockTime } = useCakeLockStatus()
 
-  const { thresholdLockTime } = qualification
+  const { thresholdLockTime, thresholdLockAmount } = qualification
 
-  useCakeVaultPool()
-
-  const { userData } = useCakeVault() as DeserializedLockedCakeVault
+  const isValidLockAmount = useMemo(() => {
+    return new BigNumber(cakeLockedAmount.toString()).gte(thresholdLockAmount)
+  }, [cakeLockedAmount, thresholdLockAmount])
 
   const isValidLockDuration = useMemo(() => {
     const minLockTime = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime)
@@ -184,8 +182,8 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   }, [incentives, thresholdLockTime, cakeUnlockTime])
 
   const isQualified = useMemo(
-    () => Boolean(account && profile?.isActive && cakeLocked && isValidLockDuration),
-    [account, profile, cakeLocked, isValidLockDuration],
+    () => Boolean(account && profile?.isActive && cakeLocked && isValidLockDuration && isValidLockAmount),
+    [account, profile, cakeLocked, isValidLockDuration, isValidLockAmount],
   )
 
   return (
