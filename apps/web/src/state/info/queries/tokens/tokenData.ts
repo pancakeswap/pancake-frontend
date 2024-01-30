@@ -1,13 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { gql } from 'graphql-request'
-import { useEffect, useState } from 'react'
 import { Block, TokenData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
-import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import {
-  MultiChainName,
   MultiChainNameExtend,
   STABLESWAP_SUBGRAPHS_START_BLOCK,
   checkIsStableSwap,
@@ -92,17 +88,17 @@ const fetchTokenData = async (
         now: ${TOKEN_AT_BLOCK(chainName, undefined, tokenAddresses)}
         oneDayAgo: ${TOKEN_AT_BLOCK(chainName, block24h, tokenAddresses)}
         ${
-          (Boolean(startBlock) && startBlock <= block48h) || !startBlock
+          ((Boolean(startBlock) && startBlock <= block48h) || !startBlock) && block48h > 0
             ? `twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}`
             : ''
         }
         ${
-          (Boolean(startBlock) && startBlock <= block7d) || !startBlock
+          ((Boolean(startBlock) && startBlock <= block7d) || !startBlock) && block7d > 0
             ? `oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}`
             : ''
         }
         ${
-          (Boolean(startBlock) && startBlock <= block14d) || !startBlock
+          ((Boolean(startBlock) && startBlock <= block14d) || !startBlock) && block14d > 0
             ? `twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}`
             : ''
         }
@@ -138,104 +134,6 @@ const parseTokenData = (tokens?: TokenFields[]) => {
   }, {})
 }
 
-interface TokenDatas {
-  error: boolean
-  data?: {
-    [address: string]: TokenData
-  }
-}
-
-/**
- * Fetch top addresses by volume
- */
-const useFetchedTokenDatas = (chainName: MultiChainName, tokenAddresses: string[]): TokenDatas => {
-  const [fetchState, setFetchState] = useState<TokenDatas>({ error: false })
-  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
-  const [block24h, block48h, block7d, block14d] = blocks ?? []
-
-  useEffect(() => {
-    const fetch = async () => {
-      const { error, data } = await fetchTokenData(
-        chainName,
-        block24h.number,
-        block48h.number,
-        block7d.number,
-        block14d.number,
-        tokenAddresses,
-      )
-
-      if (error) {
-        setFetchState({ error: true })
-      } else {
-        const parsed = parseTokenData(data?.now)
-        const parsed24 = parseTokenData(data?.oneDayAgo)
-        const parsed48 = parseTokenData(data?.twoDaysAgo)
-        const parsed7d = parseTokenData(data?.oneWeekAgo)
-        const parsed14d = parseTokenData(data?.twoWeeksAgo)
-
-        // Calculate data and format
-        const formatted = tokenAddresses.reduce((accum: { [address: string]: TokenData }, address) => {
-          const current: FormattedTokenFields | undefined = parsed[address]
-          const oneDay: FormattedTokenFields | undefined = parsed24[address]
-          const twoDays: FormattedTokenFields | undefined = parsed48[address]
-          const week: FormattedTokenFields | undefined = parsed7d[address]
-          const twoWeeks: FormattedTokenFields | undefined = parsed14d[address]
-
-          const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
-            current?.tradeVolumeUSD,
-            oneDay?.tradeVolumeUSD,
-            twoDays?.tradeVolumeUSD,
-          )
-          const [volumeUSDWeek] = getChangeForPeriod(
-            current?.tradeVolumeUSD,
-            week?.tradeVolumeUSD,
-            twoWeeks?.tradeVolumeUSD,
-          )
-          const liquidityUSD = current ? current.totalLiquidity * current.derivedUSD : 0
-          const liquidityUSDOneDayAgo = oneDay ? oneDay.totalLiquidity * oneDay.derivedUSD : 0
-          const liquidityUSDChange = getPercentChange(liquidityUSD, liquidityUSDOneDayAgo)
-          const liquidityToken = current ? current.totalLiquidity : 0
-          // Prices of tokens for now, 24h ago and 7d ago
-          const priceUSD = current ? current.derivedUSD : 0
-          const priceUSDOneDay = oneDay ? oneDay.derivedUSD : 0
-          const priceUSDWeek = week ? week.derivedUSD : 0
-          const priceUSDChange = getPercentChange(priceUSD, priceUSDOneDay)
-          const priceUSDChangeWeek = getPercentChange(priceUSD, priceUSDWeek)
-          const txCount = getAmountChange(current?.totalTransactions, oneDay?.totalTransactions)
-
-          accum[address] = {
-            exists: !!current,
-            address,
-            name: current ? current.name : '',
-            symbol: current ? current.symbol : '',
-            volumeUSD,
-            volumeUSDChange,
-            volumeUSDWeek,
-            txCount,
-            liquidityUSD,
-            liquidityUSDChange,
-            liquidityToken,
-            priceUSD,
-            priceUSDChange,
-            priceUSDChangeWeek,
-            decimals: current ? current.decimals : 18,
-          }
-
-          return accum
-        }, {})
-        setFetchState({ data: formatted, error: false })
-      }
-    }
-    const allBlocksAvailable = block24h?.number && block48h?.number && block7d?.number && block14d?.number
-    if (tokenAddresses.length > 0 && allBlocksAvailable && !blockError) {
-      fetch()
-    }
-  }, [tokenAddresses, block24h, block48h, block7d, block14d, blockError, chainName])
-
-  return fetchState
-}
-
 export const fetchAllTokenDataByAddresses = async (
   chainName: MultiChainNameExtend,
   blocks: Block[],
@@ -245,10 +143,10 @@ export const fetchAllTokenDataByAddresses = async (
 
   const { data } = await fetchTokenData(
     chainName,
-    block24h.number,
-    block48h.number,
-    block7d.number,
-    block14d.number,
+    block24h?.number ?? 0,
+    block48h?.number ?? 0,
+    block7d?.number ?? 0,
+    block14d?.number ?? 0,
     tokenAddresses,
   )
 
@@ -315,5 +213,3 @@ export const fetchAllTokenData = async (chainName: MultiChainNameExtend, blocks:
   const data = await fetchAllTokenDataByAddresses(chainName, blocks, tokenAddresses)
   return data
 }
-
-export default useFetchedTokenDatas
