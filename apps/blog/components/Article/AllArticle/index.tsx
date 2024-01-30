@@ -162,7 +162,7 @@ const AllArticle = () => {
             />
           </StyledTagContainer>
         )}
-        <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
+        <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection={['column', 'column']}>
           <Flex
             mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
