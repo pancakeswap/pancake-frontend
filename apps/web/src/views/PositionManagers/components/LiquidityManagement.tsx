@@ -65,6 +65,7 @@ interface Props {
   lpTokenDecimals?: number
   aprTimeWindow?: number
   bCakeWrapper?: Address
+  minDepositUSD?: number
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -105,6 +106,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   lpTokenDecimals,
   aprTimeWindow,
   bCakeWrapper,
+  minDepositUSD,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -200,6 +202,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         lpTokenDecimals={lpTokenDecimals}
         aprTimeWindow={aprTimeWindow}
         bCakeWrapper={bCakeWrapper}
+        minDepositUSD={minDepositUSD}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

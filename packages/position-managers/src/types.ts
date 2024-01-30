@@ -123,12 +123,12 @@ export interface DuoTokenVault {
   learnMoreAboutUrl?: string
   aprTimeWindow?: number
   bCakeWrapper?: Address
+  minDepositUSD?: number
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {
   address: Address
   autoCompound?: boolean
-
   // Auto farm with lp
   autoFarm?: boolean
 }

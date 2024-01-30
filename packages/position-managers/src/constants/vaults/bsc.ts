@@ -24,6 +24,7 @@ export const vaults: VaultConfig[] = [
     strategyInfoUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies',
     learnMoreAboutUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies/pancakeswap-farms',
     priceFromV3FarmPid: 8,
+    minDepositUSD: 50,
   },
   {
     id: 14,

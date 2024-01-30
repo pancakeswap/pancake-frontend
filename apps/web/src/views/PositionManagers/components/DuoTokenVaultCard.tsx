@@ -78,6 +78,7 @@ interface Props {
   lpTokenDecimals?: number
   aprTimeWindow?: number
   bCakeWrapper?: Address
+  minDepositUSD?: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -122,6 +123,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   learnMoreAboutUrl,
   lpTokenDecimals,
   bCakeWrapper,
+  minDepositUSD,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -211,6 +213,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
           bCakeWrapper={bCakeWrapper}
+          minDepositUSD={minDepositUSD}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

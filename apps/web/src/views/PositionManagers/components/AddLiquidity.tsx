@@ -73,6 +73,7 @@ interface Props {
   lpTokenDecimals?: number
   aprTimeWindow?: number
   bCakeWrapper?: Address
+  minDepositUSD?: number
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -114,6 +115,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   lpTokenDecimals,
   aprTimeWindow,
   bCakeWrapper,
+  minDepositUSD,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -185,23 +187,21 @@ export const AddLiquidity = memo(function AddLiquidity({
     [valueB, currencyB],
   )
 
-  const userVaultPercentage = useMemo(() => {
-    const totalPoolToken0Usd = new BigNumber(amountA?.toSignificant() ?? 0).times(token0PriceUSD ?? 0)?.toNumber()
-    const totalPoolToken1Usd = new BigNumber(amountB?.toSignificant() ?? 0).times(token1PriceUSD ?? 0)?.toNumber()
-    const userTotalDepositUSD =
-      (allowDepositToken0 ? totalPoolToken0Usd : 0) + (allowDepositToken1 ? totalPoolToken1Usd : 0)
+  const totalPoolToken0Usd = useMemo(() => {
+    return new BigNumber(amountA?.toSignificant() ?? 0).times(token0PriceUSD ?? 0)?.toNumber()
+  }, [amountA, token0PriceUSD])
 
+  const totalPoolToken1Usd = useMemo(() => {
+    return new BigNumber(amountB?.toSignificant() ?? 0).times(token1PriceUSD ?? 0)?.toNumber()
+  }, [amountB, token1PriceUSD])
+
+  const userTotalDepositUSD = useMemo(() => {
+    return (allowDepositToken0 ? totalPoolToken0Usd : 0) + (allowDepositToken1 ? totalPoolToken1Usd : 0)
+  }, [allowDepositToken0, allowDepositToken1, totalPoolToken0Usd, totalPoolToken1Usd])
+
+  const userVaultPercentage = useMemo(() => {
     return ((userTotalDepositUSD + totalAssetsInUsd) / (totalStakedInUsd + userTotalDepositUSD)) * 100
-  }, [
-    allowDepositToken0,
-    allowDepositToken1,
-    amountA,
-    amountB,
-    token0PriceUSD,
-    token1PriceUSD,
-    totalStakedInUsd,
-    totalAssetsInUsd,
-  ])
+  }, [totalStakedInUsd, totalAssetsInUsd, userTotalDepositUSD])
 
   const apr = useApr({
     currencyA,
@@ -241,9 +241,19 @@ export const AddLiquidity = memo(function AddLiquidity({
       Number(userCurrencyBalances?.token1Balance?.toSignificant()) < Number(amountB?.toSignificant())
     return (
       (allowDepositToken0 && (amountA.equalTo('0') || balanceAmountMoreThenValueA)) ||
-      (allowDepositToken1 && (amountB.equalTo('0') || balanceAmountMoreThenValueB))
+      (allowDepositToken1 && (amountB.equalTo('0') || balanceAmountMoreThenValueB)) ||
+      (Boolean(minDepositUSD) && userTotalDepositUSD < (minDepositUSD ?? 0))
     )
-  }, [allowDepositToken0, allowDepositToken1, amountA, amountB, userCurrencyBalances])
+  }, [
+    allowDepositToken0,
+    allowDepositToken1,
+    amountA,
+    amountB,
+    minDepositUSD,
+    userCurrencyBalances?.token0Balance,
+    userCurrencyBalances?.token1Balance,
+    userTotalDepositUSD,
+  ])
   const bCakeWrapperAddress = bCakeWrapper ?? '0x'
   const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress)
@@ -375,6 +385,18 @@ export const AddLiquidity = memo(function AddLiquidity({
               </Flex>
             )}
             <Flex mt="1.5em" flexDirection="column">
+              {minDepositUSD && (
+                <RowBetween>
+                  <Text color="text">{t('your deposit value in USD')}:</Text>
+                  <Text color="text">{`${userTotalDepositUSD.toFixed(2)}`}</Text>
+                </RowBetween>
+              )}
+              {minDepositUSD && (
+                <RowBetween>
+                  <Text color="text">{t('min deposit USD')}:</Text>
+                  <Text color="text">{`${minDepositUSD}`}</Text>
+                </RowBetween>
+              )}
               <RowBetween>
                 <Text color="text">{t('Your share in the vault')}:</Text>
                 <Text color="text">{`${userVaultPercentage?.toFixed(2)}%`}</Text>
@@ -407,6 +429,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                 onAddLiquidity={mintThenDeposit}
                 isLoading={pendingTx}
                 learnMoreAboutUrl={learnMoreAboutUrl}
+                bCakeWrapper={bCakeWrapper}
               />
             </Flex>
           </>
@@ -424,6 +447,7 @@ interface AddLiquidityButtonProps {
   onAddLiquidity?: () => void
   isLoading?: boolean
   learnMoreAboutUrl?: string
+  bCakeWrapper?: Address
 }
 
 export const AddLiquidityButton = memo(function AddLiquidityButton({
@@ -434,16 +458,17 @@ export const AddLiquidityButton = memo(function AddLiquidityButton({
   onAddLiquidity,
   isLoading,
   learnMoreAboutUrl,
+  bCakeWrapper,
 }: AddLiquidityButtonProps) {
   const { t } = useTranslation()
 
   const { approvalState: approvalStateToken0, approveCallback: approveCallbackToken0 } = useApproveCallback(
     amountA,
-    contractAddress,
+    bCakeWrapper ?? contractAddress,
   )
   const { approvalState: approvalStateToken1, approveCallback: approveCallbackToken1 } = useApproveCallback(
     amountB,
-    contractAddress,
+    bCakeWrapper ?? contractAddress,
   )
 
   const showAmountButtonA = useMemo(
