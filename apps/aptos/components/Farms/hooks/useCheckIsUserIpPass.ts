@@ -20,5 +20,5 @@ export const useCheckIsUserIpPass = (): boolean => {
       enabled: Boolean(account?.address),
     },
   )
-  return false
+  return data
 }
