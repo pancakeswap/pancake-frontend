@@ -149,10 +149,11 @@ export function UniversalAddLiquidity({
   const handleCurrencyASelect = useCallback(
     (currencyANew: Currency) => {
       const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
+      const newPathname = router.pathname.replace('/v2', '').replace('/stable', '')
       if (idB === undefined) {
         router.replace(
           {
-            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
+            pathname: newPathname,
             query: {
               ...router.query,
               currency: [idA],
@@ -164,7 +165,7 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
+            pathname: newPathname,
             query: {
               ...router.query,
               currency: [idA, idB],
@@ -181,10 +182,11 @@ export function UniversalAddLiquidity({
   const handleCurrencyBSelect = useCallback(
     (currencyBNew: Currency) => {
       const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA)
+      const newPathname = router.pathname.replace('/v2', '').replace('/stable', '')
       if (idA === undefined) {
         router.replace(
           {
-            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
+            pathname: newPathname,
             query: {
               ...router.query,
               currency: [idB],
@@ -196,7 +198,7 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
+            pathname: newPathname,
             query: {
               ...router.query,
               currency: [idA, idB],
@@ -223,12 +225,8 @@ export function UniversalAddLiquidity({
 
     // if fee selection from url, don't change the selector type to avoid keep selecting stable when url changes, e.g. toggle rate
     if (!stableConfig.stableSwapConfig && feeAmountFromUrl) return
-    if (preferredSelectType === SELECTOR_TYPE.STABLE) {
-      if (stableConfig.stableSwapConfig) {
-        setSelectorType(SELECTOR_TYPE.STABLE)
-      } else {
-        setSelectorType(SELECTOR_TYPE.V2)
-      }
+    if (preferredSelectType === SELECTOR_TYPE.STABLE && stableConfig.stableSwapConfig) {
+      setSelectorType(SELECTOR_TYPE.STABLE)
     } else {
       setSelectorType(preferredSelectType || SELECTOR_TYPE.V3)
     }
@@ -246,13 +244,14 @@ export function UniversalAddLiquidity({
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(
     ({ type, feeAmount: newFeeAmount }) => {
       setSelectorType(type)
-      if (newFeeAmount) {
+      if (type === SELECTOR_TYPE.V3) {
+        const newPathname = router.pathname.replace('/stable', '').replace('/v2', '')
         router.replace(
           {
-            pathname: router.pathname.replace('/stable', ''),
+            pathname: newPathname,
             query: {
               ...router.query,
-              currency: [currencyIdA, currencyIdB, newFeeAmount.toString()],
+              currency: newFeeAmount ? [currencyIdA, currencyIdB, newFeeAmount.toString()] : [currencyIdA, currencyIdB],
             },
           },
           undefined,
@@ -261,31 +260,18 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname.replace('/v2', '').replace('/stable', ''),
-            query: {
-              ...router.query,
-              currency: [currencyIdA, currencyIdB],
-            },
+            pathname: router.pathname,
+            query: router.query,
           },
-          undefined,
+          type === SELECTOR_TYPE.STABLE
+            ? `/stable/add/${currencyIdA}/${currencyIdB}`
+            : `/v2/add/${currencyIdA}/${currencyIdB}`,
           { shallow: true },
         )
       }
     },
     [currencyIdA, currencyIdB, router, setSelectorType],
   )
-
-  const handleSelectV2 = useCallback(() => {
-    setSelectorType(SELECTOR_TYPE.V2)
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: router.query,
-      },
-      `/v2/add/${currencyIdA}/${currencyIdB}`,
-      { shallow: true },
-    )
-  }, [currencyIdA, currencyIdB, router, setSelectorType])
 
   useEffect(() => {
     if (preferredFeeAmount && !feeAmountFromUrl && selectorType === SELECTOR_TYPE.V3) {
@@ -349,7 +335,7 @@ export function UniversalAddLiquidity({
                   currencyB={quoteCurrency ?? undefined}
                   handleFeePoolSelect={handleFeePoolSelect}
                   feeAmount={feeAmount}
-                  handleSelectV2={handleSelectV2}
+                  handleSelectV2={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V2 })}
                 />
               )}
             </DynamicSection>
