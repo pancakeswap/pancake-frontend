@@ -1,14 +1,18 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { Multicall, toHex } from '@pancakeswap/v3-sdk'
+import { unwrappedEth } from 'config/abi/unwrappedEth'
 import { UNWRAPPED_ETH_ADDRESS } from 'config/constants/liquidStaking'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useContract } from 'hooks/useContract'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
+import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import { getViemClients } from 'utils/viem'
+import { encodeFunctionData } from 'viem'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
-import { useSendTransaction } from 'wagmi'
+import { useSendTransaction, useWaitForTransaction } from 'wagmi'
 
 export const useCallStakingContract = (selectedList: LiquidStakingList | null) => {
   const contract = useContract(selectedList?.contract, selectedList?.abi)
@@ -40,15 +44,27 @@ export const useCallStakingContract = (selectedList: LiquidStakingList | null) =
 }
 
 export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, indexes?: number[]) => {
-  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
-  const { sendTransactionAsync } = useSendTransaction()
-
+  const { data, sendTransactionAsync, isLoading } = useSendTransaction()
+  const { isLoading: isConfirming } = useWaitForTransaction({
+    hash: data?.hash,
+  })
   const { account, chainId } = useAccountActiveChain()
+  const addTransaction = useTransactionAdder()
 
-  const calldata = '0x'
+  const calldata = useMemo(() => {
+    return Multicall.encodeMulticall(
+      indexes?.map((i) =>
+        encodeFunctionData({
+          abi: unwrappedEth,
+          functionName: 'claimWithdraw',
+          args: [toHex(i)],
+        }),
+      ) || [],
+    )
+  }, [indexes])
 
   const onClaim = useCallback(async () => {
-    if (!account || !claimedAmount) return
+    if (!account || !claimedAmount || !indexes?.length) return
 
     getViemClients({ chainId })
       ?.estimateGas({
@@ -65,20 +81,22 @@ export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, i
           chainId,
         })
       })
-      .then(() => {
-        setAttemptingTxn(false)
+      .then((response) => {
+        addTransaction(
+          { hash: response.hash },
+          {
+            type: 'claim-liquid-staking',
+            summary: `Claim ${claimedAmount?.toSignificant(6)} ${claimedAmount?.currency?.symbol}`,
+          },
+        )
       })
-      .catch((err) => {
-        setAttemptingTxn(false)
-        console.error(err)
-      })
-  }, [account, chainId, claimedAmount, sendTransactionAsync])
+  }, [account, addTransaction, calldata, chainId, claimedAmount, indexes?.length, sendTransactionAsync])
 
   return useMemo(
     () => ({
       onClaim,
-      attemptingTxn,
+      isLoading: isConfirming || isLoading,
     }),
-    [attemptingTxn, onClaim],
+    [isConfirming, isLoading, onClaim],
   )
 }

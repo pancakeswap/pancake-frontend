@@ -2,7 +2,9 @@ import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { Button, CardBody, Flex, Message, MessageText, RowBetween, Text } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useCurrency } from 'hooks/Tokens'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import useTokenBalance from 'hooks/useTokenBalance'
 import NextLink from 'next/link'
@@ -14,7 +16,7 @@ import { Address } from 'wagmi'
 
 export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps }) => {
   const { t } = useTranslation()
-
+  const { account } = useActiveWeb3React()
   const { balance: stakedTokenBalance } = useTokenBalance(selectedList.token1.address as Address)
   const userCakeDisplayBalance = getFullDisplayBalance(stakedTokenBalance, selectedList.token1.decimals, 6)
 
@@ -45,7 +47,7 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
 
   const tokenUSDPrice = useStablecoinPrice(currency1)
 
-  const { onClaim, attemptingTxn } = useCallClaimContract(claimableAmountToken, userWithdrawRequest?.claimableIndexes)
+  const { onClaim, isLoading } = useCallClaimContract(claimableAmountToken, userWithdrawRequest?.claimableIndexes)
 
   return (
     <>
@@ -118,17 +120,23 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
             </Message>
           </>
         ) : null}
-        <NextLink href={`/liquid-staking/request-withdraw/${selectedList.contract}`}>
-          <Button disabled={stakedTokenBalance.eq(0)} width="100%" mb="8px">
-            {stakedTokenBalance.eq(0) && withdrawRequestAmountToken?.greaterThan(0)
-              ? t('Pending Withdraw')
-              : t('Withdraw')}
-          </Button>
-        </NextLink>
+        {account ? (
+          <>
+            <NextLink href={`/liquid-staking/request-withdraw/${selectedList.contract}`}>
+              <Button disabled={stakedTokenBalance.eq(0)} width="100%" mb="8px">
+                {stakedTokenBalance.eq(0) && withdrawRequestAmountToken?.greaterThan(0)
+                  ? t('Pending Withdraw')
+                  : t('Withdraw')}
+              </Button>
+            </NextLink>
 
-        <Button onClick={onClaim} disabled={claimableAmountToken?.equalTo(0) || attemptingTxn} width="100%">
-          {attemptingTxn ? t('Claiming') : t('Claim')}
-        </Button>
+            <Button onClick={onClaim} disabled={claimableAmountToken?.equalTo(0) || isLoading} width="100%">
+              {isLoading ? t('Claiming') : t('Claim')}
+            </Button>
+          </>
+        ) : (
+          <ConnectWalletButton width="100%" />
+        )}
       </CardBody>
     </>
   )

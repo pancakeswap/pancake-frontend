@@ -133,7 +133,8 @@ const LiquidStakingStakePage = () => {
 
           {account ? (
             selectedList?.token0 &&
-            selectedList?.token1 && (
+            selectedList?.token1 &&
+            inputCurrency && (
               <RequestWithdrawButton
                 inputCurrency={inputCurrency}
                 currentAmount={currentAmount}
