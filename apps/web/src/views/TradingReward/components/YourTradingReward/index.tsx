@@ -225,6 +225,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             campaignStart={incentives?.campaignStart}
             campaignClaimTime={incentives?.campaignClaimTime}
             isQualified={isQualified}
+            isValidLockAmount={isValidLockAmount}
             isValidLockDuration={isValidLockDuration}
             thresholdLockTime={thresholdLockTime}
             qualification={qualification}

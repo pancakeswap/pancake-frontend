@@ -13,6 +13,7 @@ interface RewardPeriodProps {
   totalAvailableClaimData: UserCampaignInfoDetail[]
   currentUserCampaignInfo: UserCampaignInfoDetail
   isQualified: boolean
+  isValidLockAmount: boolean
   isValidLockDuration: boolean
   thresholdLockTime: number
   qualification: Qualification
@@ -28,6 +29,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   rewardInfo,
   totalAvailableClaimData,
   isQualified,
+  isValidLockAmount,
   isValidLockDuration,
   thresholdLockTime,
   qualification,
@@ -48,6 +50,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
         campaignClaimTime={campaignClaimTime}
         currentUserCampaignInfo={currentUserCampaignInfo}
         isQualified={isQualified}
+        isValidLockAmount={isValidLockAmount}
         isValidLockDuration={isValidLockDuration}
         thresholdLockTime={thresholdLockTime}
         totalAvailableClaimData={totalAvailableClaimData}

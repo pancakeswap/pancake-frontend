@@ -1,17 +1,17 @@
+import { ChainId } from '@pancakeswap/chains'
 import { Box } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import Banner from 'views/TradingReward/components/Banner'
-import { ChainId } from '@pancakeswap/chains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
 import CurrentRewardPool from 'views/TradingReward/components/CurrentRewardPool'
 import HowToEarn from 'views/TradingReward/components/HowToEarn'
-import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
 import Questions from 'views/TradingReward/components/Questions'
-import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
-import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
 import SubMenu from 'views/TradingReward/components/SubMenu'
+import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
+import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 
 const TradingReward = () => {
   const { chainId } = useActiveChainId()
@@ -39,7 +39,7 @@ const TradingReward = () => {
   const currentUserIncentive = useMemo(
     () =>
       allTradingRewardPairData.campaignIdsIncentive.find(
-        (campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase(),
+        (campaign) => campaign?.campaignId?.toLowerCase() === campaignId.toLowerCase(),
       ),
     [campaignId, allTradingRewardPairData],
   )
@@ -64,7 +64,7 @@ const TradingReward = () => {
           campaignClaimEndTime: tradingRewardPair?.campaignClaimEndTime,
         }
       })
-      .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
+      .filter((item) => currentTime > Number(item?.campaignClaimTime ?? 0))
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
   if (chainId !== ChainId.BSC) {

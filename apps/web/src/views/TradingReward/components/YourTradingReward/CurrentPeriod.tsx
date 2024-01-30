@@ -14,6 +14,7 @@ interface CurrentPeriodProps {
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail
   isQualified: boolean
+  isValidLockAmount: boolean
   isValidLockDuration: boolean
   thresholdLockTime: number
   totalAvailableClaimData: UserCampaignInfoDetail[]
@@ -26,6 +27,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   campaignClaimTime,
   currentUserCampaignInfo,
   isQualified,
+  isValidLockAmount,
   isValidLockDuration,
   thresholdLockTime,
 }) => {
@@ -46,7 +48,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
           <Text bold textAlign="right" mb="24px">
             {t('Current Period')}
           </Text>
-          {!isCampaignLive ? (
+          {isCampaignLive ? (
             <ComingSoon />
           ) : (
             <>
@@ -58,7 +60,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                   currentUserCampaignInfo={currentUserCampaignInfo}
                 />
               ) : (
-                <VeCakePreview />
+                <VeCakePreview isValidLockAmount={isValidLockAmount} />
               )}
             </>
           )}
