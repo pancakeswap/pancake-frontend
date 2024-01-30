@@ -175,7 +175,13 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
         />
-        <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
+        <ManagerInfo
+          mt="1.5em"
+          id={manager.id}
+          name={manager.name}
+          strategy={strategy}
+          allowTokenName={`${allowDepositToken0 ? currencyA.symbol : ''}${allowDepositToken1 ? currencyB.symbol : ''}`}
+        />
         <LiquidityManagement
           manager={manager}
           currencyA={currencyA}

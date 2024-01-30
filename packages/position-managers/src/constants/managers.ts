@@ -28,7 +28,7 @@ export const baseManagers: { [manager in MANAGER]: BaseManager } = {
     introLink: 'https://www.rangeprotocol.com/',
   },
   [MANAGER.DEFIEDGE]: { id: MANAGER.DEFIEDGE, name: 'DefiEdge', introLink: 'https://www.defiedge.io/' },
-  [MANAGER.ALPACA]: { id: MANAGER.ALPACA, name: 'Alpaca', introLink: 'https://www.alpacafinance.org/' },
+  [MANAGER.ALPACA]: { id: MANAGER.ALPACA, name: 'Alpaca Finance', introLink: 'https://www.alpacafinance.org/' },
 }
 
 export const VERIFIED_MANAGERS = [MANAGER.PCS]
