@@ -38,23 +38,19 @@ export function V2Selector({
       content={
         <EvenWidthAutoRow gap="4px">
           {isStable ? (
-            <>
-              <SelectButton
-                isActive={selectorType === SELECTOR_TYPE.STABLE}
-                onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}
-              >
-                StableSwap LP
-              </SelectButton>
-            </>
+            <SelectButton
+              isActive={selectorType === SELECTOR_TYPE.STABLE}
+              onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}
+            >
+              StableSwap LP
+            </SelectButton>
           ) : (
-            <>
-              <SelectButton
-                isActive={selectorType === SELECTOR_TYPE.V3}
-                onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
-              >
-                V3 LP
-              </SelectButton>
-            </>
+            <SelectButton
+              isActive={selectorType === SELECTOR_TYPE.V3}
+              onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
+            >
+              V3 LP
+            </SelectButton>
           )}
           <SelectButton
             isActive={selectorType === SELECTOR_TYPE.V2}
