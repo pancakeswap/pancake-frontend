@@ -204,11 +204,13 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
     }
   }, [gutterRef, chartRef, dispatch, isChartPaneOpen])
 
-  let sourceUrl = ''
-  if (chartView === PredictionsChartView.TradingView)
-    sourceUrl = `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
-  else if (chartView === PredictionsChartView.Chainlink) sourceUrl = 'https://chain.link/data-feeds'
-  else if (chartView === PredictionsChartView.Pyth) sourceUrl = 'https://pyth.network/'
+  const sourceUrl = useMemo(() => {
+    let url = chartView === PredictionsChartView.Chainlink ? 'https://chain.link/data-feeds' : 'https://pyth.network/'
+    if (chartView === PredictionsChartView.TradingView) {
+      url = `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
+    }
+    return url
+  }, [chartView, tokenSymbol])
 
   return (
     <>
