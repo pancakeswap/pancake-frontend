@@ -31,6 +31,7 @@ const handler: NextApiHandler = async (req, res) => {
   const testnet = Boolean(queryParsed.testnet ?? false)
   const inCap = Boolean(queryParsed.inCap ?? true)
   const bothCap = Boolean(queryParsed.bothCap ?? false)
+  const killed = Boolean(queryParsed.killed ?? false)
 
   try {
     const gauges = await getAllGauges(
@@ -41,6 +42,7 @@ const handler: NextApiHandler = async (req, res) => {
         testnet,
         inCap,
         bothCap,
+        killed,
       },
     )
 
