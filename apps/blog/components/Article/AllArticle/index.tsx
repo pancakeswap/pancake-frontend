@@ -79,7 +79,10 @@ const AllArticle = () => {
     { label: t('Sort Title A-Z'), value: 'title:asc' },
     { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
-  const { data: categoriesData } = useQuery<Categories[]>(['/categories'], { enabled: false })
+  const { data: categoriesData } = useQuery<Categories[]>({
+    queryKey: ['/categories'],
+    enabled: false,
+  })
 
   useEffect(() => {
     setCurrentPage(1)

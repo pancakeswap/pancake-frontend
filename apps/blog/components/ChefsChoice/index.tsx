@@ -21,7 +21,10 @@ const StyledChefsChoiceContainer = styled(Flex)`
 
 const ChefsChoice = () => {
   const { t } = useTranslation()
-  const { data: articlesData } = useQuery<ArticleDataType[]>(['/chefChoiceArticle'], { enabled: false })
+  const { data: articlesData } = useQuery<ArticleDataType[]>({
+    queryKey: ['/chefChoiceArticle'],
+    enabled: false,
+  })
 
   return (
     <StyledChefsChoiceContainer justifyContent="center">

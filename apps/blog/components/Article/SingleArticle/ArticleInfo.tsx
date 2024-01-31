@@ -34,7 +34,10 @@ const StyledTagGroup = styled(Flex)`
 
 const ArticleInfo = () => {
   const router = useRouter()
-  const { data: article } = useQuery<ArticleDataType>(['/article'], { enabled: false })
+  const { data: article } = useQuery<ArticleDataType>({
+    queryKey: ['/article'],
+    enabled: false,
+  })
 
   const handleClickTag = (category: string) => {
     router.push(`/?category=${category}#all`)

@@ -13,7 +13,10 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 const SimilarArticles = () => {
   const { t } = useTranslation()
-  const { data: similarArticles } = useQuery<ArticleDataType[]>(['/similarArticles'], { enabled: false })
+  const { data: similarArticles } = useQuery<ArticleDataType[]>({
+    queryKey: ['/similarArticles'],
+    enabled: false,
+  })
 
   return (
     <Flex maxWidth="100%" m="50px auto" flexDirection="column">

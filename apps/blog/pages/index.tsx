@@ -1,52 +1,59 @@
-import { InferGetServerSidePropsType } from 'next'
-import { getArticle, getCategories } from 'hooks/getArticle'
 import { Box } from '@pancakeswap/uikit'
-import NewBlog from 'components/NewBlog'
-import ChefsChoice from 'components/ChefsChoice'
+import { QueryClient, dehydrate } from '@tanstack/react-query'
 import AllArticle from 'components/Article/AllArticle'
+import ChefsChoice from 'components/ChefsChoice'
+import NewBlog from 'components/NewBlog'
+import { getArticle, getCategories } from 'hooks/getArticle'
+import { InferGetServerSidePropsType } from 'next'
 import { filterTagArray } from 'utils/filterTagArray'
-import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 export async function getStaticProps() {
   const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery(['/latestArticles'], () =>
-    getArticle({
-      url: '/articles',
-      urlParamsObject: {
-        populate: 'categories,image',
-        sort: 'createAt:desc',
-        pagination: { limit: 1 },
-        filters: {
-          categories: {
-            name: {
-              $notIn: filterTagArray,
+  await queryClient.prefetchQuery({
+    queryKey: ['/latestArticles'],
+    queryFn: async () =>
+      getArticle({
+        url: '/articles',
+        urlParamsObject: {
+          populate: 'categories,image',
+          sort: 'createAt:desc',
+          pagination: { limit: 1 },
+          filters: {
+            categories: {
+              name: {
+                $notIn: filterTagArray,
+              },
             },
           },
         },
-      },
-    }).then((latestArticles) => latestArticles.data),
-  )
+      }).then((latestArticles) => latestArticles.data),
+  })
 
-  await queryClient.prefetchQuery(['/chefChoiceArticle'], () =>
-    getArticle({
-      url: '/articles',
-      urlParamsObject: {
-        populate: 'categories,image',
-        sort: 'createAt:desc',
-        pagination: { limit: 9 },
-        filters: {
-          categories: {
-            name: {
-              $eq: 'Chef’s choice',
+  await queryClient.prefetchQuery({
+    queryKey: ['/chefChoiceArticle'],
+    queryFn: async () =>
+      getArticle({
+        url: '/articles',
+        urlParamsObject: {
+          populate: 'categories,image',
+          sort: 'createAt:desc',
+          pagination: { limit: 9 },
+          filters: {
+            categories: {
+              name: {
+                $eq: 'Chef’s choice',
+              },
             },
           },
         },
-      },
-    }).then((article) => article.data),
-  )
+      }).then((article) => article.data),
+  })
 
-  await queryClient.prefetchQuery(['/categories'], () => getCategories())
+  await queryClient.prefetchQuery({
+    queryKey: ['/categories'],
+    queryFn: getCategories,
+  })
 
   return {
     props: {

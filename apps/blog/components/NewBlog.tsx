@@ -63,7 +63,10 @@ const StyledTagGroup = styled(Flex)`
 
 const NewBlog = () => {
   const { t } = useTranslation()
-  const { data: articlesData } = useQuery<ArticleDataType[]>(['/latestArticles'], { enabled: false })
+  const { data: articlesData } = useQuery<ArticleDataType[]>({
+    queryKey: ['/latestArticles'],
+    enabled: false,
+  })
   const article = useMemo(() => articlesData?.[0], [articlesData])
 
   return (
