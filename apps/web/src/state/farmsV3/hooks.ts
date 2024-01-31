@@ -16,7 +16,7 @@ import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterVeCake'
 import { TvlMap, fetchCommonTokenUSDValue } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
 import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -240,7 +240,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
     },
 
     enabled: Boolean(account),
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   })
 
   return { tokenIdResults: data || [], isLoading: harvestCalls.length > 0 && !data }

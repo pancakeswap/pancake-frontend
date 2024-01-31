@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useRevenueSharingCakePoolContract, useRevenueSharingVeCakeContract } from './useContract'
 
 const INITIAL_INCENTIVE = 0n
@@ -20,7 +20,7 @@ export const useCakeDistributed = (): bigint => {
       }
     },
 
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   })
   const { data: fromVeCake = 0n } = useQuery({
     queryKey: ['cakeDistributed/veCake', veCake.address, veCake.chain?.id],
@@ -35,7 +35,7 @@ export const useCakeDistributed = (): bigint => {
       }
     },
 
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   })
 
   return INITIAL_INCENTIVE + fromCakePool + fromVeCake

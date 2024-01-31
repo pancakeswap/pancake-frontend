@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { SNAPSHOT_API } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
 
@@ -27,7 +27,7 @@ export const useSnapshotProposalsCount = (): number | undefined => {
       return count
     },
 
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   })
 
   return data

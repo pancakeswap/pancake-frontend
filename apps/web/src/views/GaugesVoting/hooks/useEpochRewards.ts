@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { WEEK } from 'config/constants/veCake'
 import { useRevenueSharingVeCakeContract } from 'hooks/useContract'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
@@ -16,7 +16,7 @@ export const useEpochRewards = (): number => {
       return Number(amount)
     },
 
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   })
 
   return data ?? 0

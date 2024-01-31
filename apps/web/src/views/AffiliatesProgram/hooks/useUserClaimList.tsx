@@ -2,7 +2,7 @@ import { useAccount } from 'wagmi'
 import qs from 'qs'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
 import { FAST_INTERVAL } from 'config/constants'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 export type ClaimStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
 
@@ -54,7 +54,7 @@ const useUserClaimList = ({ currentPage }) => {
 
     enabled: Boolean(address && isUserExist),
     refetchInterval: FAST_INTERVAL * 3,
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   })
 
   return {

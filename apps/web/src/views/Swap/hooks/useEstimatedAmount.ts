@@ -1,6 +1,6 @@
 import { CurrencyAmount } from '@pancakeswap/sdk'
 import { useDeferredValue } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 export function useEstimatedAmount({ estimatedCurrency, stableSwapConfig, quotient, stableSwapContract }) {
   const deferQuotient = useDeferredValue(quotient)
@@ -19,6 +19,6 @@ export function useEstimatedAmount({ estimatedCurrency, stableSwapConfig, quotie
     },
 
     enabled: Boolean(stableSwapConfig?.stableSwapAddress && estimatedCurrency && !!deferQuotient),
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   })
 }

@@ -4,7 +4,7 @@ import useAuthAffiliate from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
 import { UserClaimListResponse, MAX_PER_PAGE } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 import { FAST_INTERVAL } from 'config/constants'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 const useAffiliateClaimList = ({ currentPage }) => {
   const { address } = useAccount()
@@ -37,7 +37,7 @@ const useAffiliateClaimList = ({ currentPage }) => {
 
     enabled: Boolean(address && isAffiliateExist && isAffiliate),
     refetchInterval: FAST_INTERVAL * 3,
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   })
 
   return {
