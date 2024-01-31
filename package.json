@@ -75,7 +75,8 @@
   },
   "dependencies": {
     "encoding": "^0.1.13",
-    "ws": "^8.13.0"
+    "ws": "^8.13.0",
+    "zod": "^3.22.3"
   },
   "pnpm": {
     "patchedDependencies": {

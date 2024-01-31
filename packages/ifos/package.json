@@ -25,6 +25,6 @@
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.13"
   }
 }

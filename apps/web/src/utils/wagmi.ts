@@ -8,7 +8,7 @@ import memoize from 'lodash/memoize'
 import { createConfig, createStorage } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { LedgerConnector } from 'wagmi/connectors/ledger'
+// import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { chains, publicClient } from './client'
@@ -63,12 +63,12 @@ const bloctoConnector = new BloctoConnector({
   },
 })
 
-const ledgerConnector = new LedgerConnector({
-  chains,
-  options: {
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
-  },
-})
+// const ledgerConnector = new LedgerConnector({
+//   chains,
+//   options: {
+//     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+//   },
+// })
 
 export const bscConnector = new BinanceWalletConnector({ chains })
 
@@ -119,7 +119,7 @@ export const wagmiConfig = createConfig({
     bscConnector,
     // @ts-ignore FIXME: wagmi
     bloctoConnector,
-    ledgerConnector,
+    // ledgerConnector,
     trustWalletConnector,
     binanceWeb3WalletConnector,
     ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
