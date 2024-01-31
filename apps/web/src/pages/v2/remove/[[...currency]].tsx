@@ -3,8 +3,6 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { CHAIN_IDS } from 'utils/wagmi'
 import RemoveLiquidity, { RemoveLiquidityV2Layout } from 'views/RemoveLiquidity'
-import RemoveStableLiquidity, { RemoveLiquidityStableLayout } from 'views/RemoveLiquidity/RemoveStableLiquidity'
-import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import RemoveLiquidityV2FormProvider from 'views/RemoveLiquidity/RemoveLiquidityV2FormProvider'
 
 const RemoveLiquidityPage = () => {

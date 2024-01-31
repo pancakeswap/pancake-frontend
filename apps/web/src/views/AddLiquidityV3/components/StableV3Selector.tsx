@@ -83,7 +83,7 @@ export function StableV3Selector({
         feeAmount: largestUsageFeeTier,
       })
     }
-  }, [feeAmount, isPending, isError, largestUsageFeeTier, handleFeePoolSelect])
+  }, [feeAmount, isPending, isError, largestUsageFeeTier, handleFeePoolSelect, selectorType])
 
   return (
     <HideShowSelectorSection
