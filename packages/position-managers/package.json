@@ -8,19 +8,19 @@
   },
   "type": "module",
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
-    "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
-    "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/v3-sdk": "workspace:*",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
     "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.13"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.168",
     "@pancakeswap/tsconfig": "workspace:*",
-    "@pancakeswap/utils": "workspace:*"
+    "@pancakeswap/utils": "workspace:*",
+    "@types/lodash": "^4.14.168"
   }
 }
