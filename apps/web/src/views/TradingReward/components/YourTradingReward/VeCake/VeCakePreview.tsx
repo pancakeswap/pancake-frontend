@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
 import { useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { useVeCakeUserCreditWithTime } from 'views/Pools/hooks/useVeCakeUserCreditWithTime'
 import { Header } from 'views/TradingReward/components/YourTradingReward/VeCake/Header'
 import { NoLockingCakeModal } from 'views/TradingReward/components/YourTradingReward/VeCake/NoLockingCakeModal'
 import {
@@ -33,6 +34,8 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
     currentLanguage: { locale },
   } = useTranslation()
   const { cakeLocked, cakeUnlockTime } = useCakeLockStatus()
+  const { userCreditWithTime } = useVeCakeUserCreditWithTime(endTime)
+
   const [onPresentNoLockingCakeModal] = useModal(<NoLockingCakeModal />)
   const [onPresentVeCakeAddCakeModal] = useModal(
     <VeCakeAddCakeOrWeeksModal viewMode={VeCakeModalView.CAKE_FORM_VIEW} showSwitchButton />,
@@ -41,6 +44,11 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
   const minVeCake = useMemo(
     () => formatNumber(getBalanceNumber(new BigNumber(thresholdLockAmount)), 2, 2),
     [thresholdLockAmount],
+  )
+
+  const previewVeCakeAtSnapshot = useMemo(
+    () => formatNumber(getBalanceNumber(new BigNumber(userCreditWithTime)), 2, 2),
+    [userCreditWithTime],
   )
 
   // const minLockWeek = useMemo(() => {
@@ -55,11 +63,15 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
     <Flex flexDirection={['column']}>
       <Header />
       <GreyCard mb="24px">
-        <VeCakePreviewTextInfo title={t('Min. veCAKE at snapshot time:')} value={minVeCake} bold mb="18px" />
-        <VeCakePreviewTextInfo title={t('Preview of your veCAKE⌛ at snapshot time:')} value="0" mb="18px" />
+        <VeCakePreviewTextInfo bold mb="18px" title={t('Min. veCAKE at snapshot time:')} value={minVeCake} />
+        <VeCakePreviewTextInfo
+          mb="18px"
+          title={t('Preview of your veCAKE⌛ at snapshot time:')}
+          value={previewVeCakeAtSnapshot}
+        />
         <VeCakePreviewTextInfo title={t('Snapshot at / Campaign Ends:')} value={timeFormat(locale, endTime)} />
       </GreyCard>
-      {!cakeLocked && !isValidLockAmount ? (
+      {!cakeLocked ? (
         <VeCakeButtonWithMessage
           messageText={t('Get veCAKE to start earning')}
           buttonText={t('Get veCAKE')}

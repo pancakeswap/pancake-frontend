@@ -48,7 +48,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             <ComingSoon />
           ) : (
             <>
-              {isQualified ? (
+              {!isQualified ? (
                 <QualifiedPreview
                   rewardInfo={rewardInfo}
                   timeRemaining={timeRemaining}
