@@ -224,6 +224,11 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
                 <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
               </PowerLinkStyle>
             )}
+            {config?.galetoOracleAddress && (
+              <PowerLinkStyle href="https://pyth.network/" external>
+                <img src="/images/powered-by-pyth.svg" alt="Powered by PYTH" width="170px" height="48px" />
+              </PowerLinkStyle>
+            )}
             <ExpandButtonGroup>
               <TabToggle
                 height="42px"
