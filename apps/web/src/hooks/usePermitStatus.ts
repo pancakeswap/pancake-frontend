@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useCallback, useMemo } from 'react'
 import { publicClient } from 'utils/client'
-import { Address, isAddressEqual, zeroAddress } from 'viem'
+import { Address, isAddressEqual, isHex, toHex, zeroAddress } from 'viem'
 import { useSignTypedData } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import useAccountActiveChain from './useAccountActiveChain'
@@ -119,13 +119,15 @@ export const useWritePermit = (token?: Token, spender?: Address, nonce?: number)
       values: message,
     } = AllowanceTransfer.getPermitData(permit, getPermit2Address(chainId), chainId)
 
-    const signature = await signTypedDataAsync({
+    let signature = await signTypedDataAsync({
       account,
       domain,
       primaryType: 'PermitSingle',
       types,
       message,
     })
+
+    signature = isHex(signature) ? signature : toHex(signature)
 
     return {
       ...permit,
