@@ -2,7 +2,7 @@ import { MINUTE_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { createSelector } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import orderBy from 'lodash/orderBy'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { NodeLedger, NodeRound, PredictionsState } from '../types'
 import { deserializeRound } from './helpers'
 

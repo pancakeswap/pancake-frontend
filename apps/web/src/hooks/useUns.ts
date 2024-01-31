@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { polygonRpcProvider } from 'utils/providers'
-import { Address } from 'wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
+import { polygonRpcProvider } from 'utils/providers'
+import { Address } from 'viem'
 import { useUNSContract } from './useContract'
 
 function getUnsAddress(networkId) {

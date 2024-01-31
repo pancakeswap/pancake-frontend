@@ -3,16 +3,16 @@ import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { viemClients } from 'utils/viem'
-import { useBlockNumber, usePublicClient } from 'wagmi'
+import { useBlockNumber, usePublicClient, useWatchBlockNumber } from 'wagmi'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const queryClient = useQueryClient()
   const { chainId } = useActiveChainId()
-  const { data: blockNumber } = useBlockNumber({
+  useWatchBlockNumber({
     chainId,
-    onBlock: (data) => {
+    onBlockNumber: (data) => {
       queryClient.setQueryData(['blockNumber', chainId], Number(data))
     },
     onSuccess: (data) => {
@@ -39,6 +39,31 @@ export const usePollBlockNumber = () => {
       }
     },
   })
+  const { data: blockNumber } = useBlockNumber({
+    chainId,
+    watch: true,
+  })
+  // const { data: blockNumber } = useBlockNumber({
+  //   chainId,
+  //   onBlock: (data) => {
+  //     queryClient.setQueryData(['blockNumber', chainId], Number(data))
+  //   },
+  //   onSuccess: (data) => {
+  //     if (!queryClient.getQueryCache().find<number>(['initialBlockNumber', chainId])?.state?.data) {
+  //       queryClient.setQueryData(['initialBlockNumber', chainId], Number(data))
+  //     }
+  //     if (!queryClient.getQueryCache().find<number>(['initialBlockTimestamp', chainId])?.state?.data) {
+  //       const fetchInitialBlockTimestamp = async () => {
+  //         const provider = viemClients[chainId as keyof typeof viemClients]
+  //         if (provider) {
+  //           const block = await provider.getBlock({ blockNumber: data })
+  //           queryClient.setQueryData(['initialBlockTimestamp', chainId], Number(block.timestamp))
+  //         }
+  //       }
+  //       fetchInitialBlockTimestamp()
+  //     }
+  //   },
+  // })
 
   useQuery({
     queryKey: ['blockNumberFetcher', chainId],
@@ -71,7 +96,7 @@ export const usePollBlockNumber = () => {
 
 export const useCurrentBlock = (): number => {
   const { chainId } = useActiveChainId()
-  const { data: currentBlock = 0 } = useQuery({
+  const { data: currentBlock = 0 } = useQuery<number>({
     queryKey: ['blockNumber', chainId],
     enabled: false,
     refetchOnReconnect: false,
@@ -87,7 +112,6 @@ export const useChainCurrentBlock = (chainId: number): number => {
 
   const { data: currentBlock = 0 } = useQuery({
     queryKey: activeChainId === chainId ? ['blockNumber', chainId] : ['chainBlockNumber', chainId],
-
     queryFn: async () => {
       const blockNumber = await provider.getBlockNumber()
       return Number(blockNumber)
@@ -100,7 +124,7 @@ export const useChainCurrentBlock = (chainId: number): number => {
 
 export const useInitialBlock = (): number => {
   const { chainId } = useActiveChainId()
-  const { data: initialBlock = 0 } = useQuery({
+  const { data: initialBlock = 0 } = useQuery<number>({
     queryKey: ['initialBlockNumber', chainId],
     enabled: false,
     refetchOnReconnect: false,
@@ -112,7 +136,7 @@ export const useInitialBlock = (): number => {
 
 export const useInitialBlockTimestamp = (): number => {
   const { chainId } = useActiveChainId()
-  const { data: initialBlockTimestamp = 0 } = useQuery({
+  const { data: initialBlockTimestamp = 0 } = useQuery<number>({
     queryKey: ['initialBlockTimestamp', chainId],
     enabled: false,
     refetchOnReconnect: false,

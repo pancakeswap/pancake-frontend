@@ -1,11 +1,11 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
-import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
-import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
-import { isChainSupported } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
 import { CHAIN_QUERY_NAME, getChainId } from 'config/chains'
+import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
+import { useRouter } from 'next/router'
+import { useEffect, useRef } from 'react'
 import { getHashFromRouter } from 'utils/getHashFromRouter'
+import { isChainSupported } from 'utils/wagmi'
+import { useAccount } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
@@ -55,11 +55,15 @@ export function useNetworkConnectorUpdater() {
  * Recreate web3 instance only if the provider change
  */
 const useActiveWeb3React = () => {
-  const web3React = useWeb3React()
+  const { address: account, connector, isConnected, isConnecting, chain } = useAccount()
   const { chainId, isWrongNetwork } = useActiveChainId()
 
   return {
-    ...web3React,
+    isConnected,
+    isConnecting,
+    chain,
+    connector,
+    account,
     chainId,
     isWrongNetwork,
   }

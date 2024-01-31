@@ -1,6 +1,6 @@
+import { ChainId } from '@pancakeswap/chains'
 import { createFarmFetcher, SerializedFarm, SerializedFarmsState } from '@pancakeswap/farms'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { ChainId } from '@pancakeswap/chains'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import type {
   UnknownAsyncThunkFulfilledAction,
@@ -12,10 +12,10 @@ import stringify from 'fast-json-stable-stringify'
 import keyBy from 'lodash/keyBy'
 import type { AppState } from 'state'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
-import { chains } from 'utils/wagmi'
 import { getViemClients } from 'utils/viem'
+import { chains } from 'utils/wagmi'
+import { Address } from 'viem'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
-import { Address } from 'wagmi'
 import { resetUserState } from '../global/actions'
 import {
   fetchFarmUserAllowances,

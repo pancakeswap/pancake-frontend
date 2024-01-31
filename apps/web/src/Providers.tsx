@@ -8,7 +8,7 @@ import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'ne
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import { wagmiConfig } from 'utils/wagmi'
-import { WagmiConfig } from 'wagmi'
+import { WagmiProvider } from 'wagmi'
 
 // Create a client
 const queryClient = new QueryClient()
@@ -28,7 +28,7 @@ const Providers: React.FC<
   return (
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>
-        <WagmiConfig config={wagmiConfig}>
+        <WagmiProvider config={wagmiConfig}>
           <Provider store={store}>
             <NextThemeProvider>
               <LanguageProvider>
@@ -46,7 +46,7 @@ const Providers: React.FC<
               </LanguageProvider>
             </NextThemeProvider>
           </Provider>
-        </WagmiConfig>
+        </WagmiProvider>
       </HydrationBoundary>
     </QueryClientProvider>
   )

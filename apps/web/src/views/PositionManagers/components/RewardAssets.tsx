@@ -1,15 +1,15 @@
-import { useCallback, useMemo } from 'react'
-import { Address } from 'viem'
-import { Button, Text, Box, Flex, Balance, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { Currency } from '@pancakeswap/sdk'
+import { Balance, Box, Button, Flex, Text, useToast } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { InnerCard } from './InnerCard'
+import { useCallback, useMemo } from 'react'
+import { Address } from 'viem'
 import { useEarningTokenPriceInfo } from '../hooks'
+import { InnerCard } from './InnerCard'
 
 interface RewardAssetsProps {
   contractAddress: Address
@@ -27,7 +27,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   isInCakeRewardDateRange,
 }) => {
   const { t } = useTranslation()
-  const { account, chain } = useWeb3React()
+  const { account, chain } = useActiveWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError({ waitForTransactionTimeout: 25_000 })
   const { earningUsdValue, earningsBalance } = useEarningTokenPriceInfo(earningToken, pendingReward)

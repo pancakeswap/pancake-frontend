@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useAccount, useSignMessage as useSignMessageWagmi } from 'wagmi'
-import { SignMessageArgs } from 'wagmi/actions'
+import { SignMessageParameters } from 'wagmi/actions'
 
 export function useSignMessage() {
   const { address, connector } = useAccount()
@@ -8,7 +8,7 @@ export function useSignMessage() {
 
   return {
     signMessageAsync: useCallback(
-      async (args: SignMessageArgs) => {
+      async (args: SignMessageParameters) => {
         // @ts-ignore
         if (connector?.id === 'bsc' && window.BinanceChain && address) {
           // @ts-ignore

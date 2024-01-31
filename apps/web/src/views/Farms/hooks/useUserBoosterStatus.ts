@@ -1,6 +1,6 @@
-import { useBCakeFarmBoosterContract } from 'hooks/useContract'
-import { Address } from 'wagmi'
 import { useQuery } from '@tanstack/react-query'
+import { useBCakeFarmBoosterContract } from 'hooks/useContract'
+import { Address } from 'viem'
 
 export const useUserBoosterStatus = (account: Address) => {
   const farmBoosterContract = useBCakeFarmBoosterContract()

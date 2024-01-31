@@ -1,25 +1,25 @@
-import { Address } from 'wagmi'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppState } from 'state'
 import {
-  PotteryState,
-  SerializedPotteryUserData,
-  SerializedPotteryPublicData,
   PotteryDepositStatus,
   PotteryRoundInfo,
+  PotteryState,
+  SerializedPotteryPublicData,
+  SerializedPotteryUserData,
 } from 'state/types'
+import { Address } from 'viem'
 import { resetUserState } from '../global/actions'
-import { fetchPotteryFinishedRound } from './fetchPotteryRound'
 import {
   fetchLastVaultAddress,
+  fetchLatestRoundId,
   fetchPublicPotteryValue,
   fetchTotalLockedValue,
-  fetchLatestRoundId,
 } from './fetchPottery'
+import { fetchPotteryFinishedRound } from './fetchPotteryRound'
 import {
   fetchPotterysAllowance,
-  fetchVaultUserData,
   fetchUserDrawData,
+  fetchVaultUserData,
   fetchWithdrawAbleData,
 } from './fetchUserPottery'
 

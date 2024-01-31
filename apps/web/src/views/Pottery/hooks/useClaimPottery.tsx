@@ -1,16 +1,16 @@
-import { useCallback } from 'react'
-import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { usePotterytDrawContract } from 'hooks/useContract'
+import { useCallback } from 'react'
+import { useAppDispatch } from 'state'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
-import { useWeb3React } from '@pancakeswap/wagmi'
 
 export const useClaimPottery = () => {
   const { t } = useTranslation()
-  const { account, chain } = useWeb3React()
+  const { account, chain } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const contract = usePotterytDrawContract()

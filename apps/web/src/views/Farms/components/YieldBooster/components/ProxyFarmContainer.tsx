@@ -1,6 +1,6 @@
-import { ReactElement, createContext, useMemo, memo } from 'react'
 import _noop from 'lodash/noop'
-import { Address } from 'wagmi'
+import { ReactElement, createContext, memo, useMemo } from 'react'
+import { Address } from 'viem'
 
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import useYieldBoosterState, { YieldBoosterState } from '../hooks/useYieldBoosterState'

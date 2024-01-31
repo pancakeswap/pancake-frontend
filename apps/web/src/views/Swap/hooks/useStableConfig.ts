@@ -1,14 +1,14 @@
-import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
+import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { createContext, useMemo } from 'react'
 
-import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+import { infoStableSwapABI } from 'config/abi/infoStableSwap'
 import { stableLPABI } from 'config/abi/stableLP'
+import { stableSwapABI } from 'config/abi/stableSwapAbi'
 import { useContract } from 'hooks/useContract'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
-import { stableSwapABI } from 'config/abi/stableSwapAbi'
-import { infoStableSwapABI } from 'config/abi/infoStableSwap'
-import { Address } from 'wagmi'
+import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+import { Address } from 'viem'
 
 interface StableSwapConfigType extends LegacyStableSwapPair {
   liquidityToken: ERC20Token

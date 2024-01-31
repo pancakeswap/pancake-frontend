@@ -24,8 +24,7 @@ import {
   ReduxNodeRound,
 } from 'state/types'
 import { PredictionsRoundsResponse } from 'utils/types'
-import { formatUnits } from 'viem'
-import { Address } from 'wagmi'
+import { Address, formatUnits } from 'viem'
 import { resetUserState } from '../global/actions'
 import {
   fetchUserRounds,

@@ -1,5 +1,5 @@
 import { useERC20 } from 'hooks/useContract'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 export const requiresApproval = async (
   contract: ReturnType<typeof useERC20>,

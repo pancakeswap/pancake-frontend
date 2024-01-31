@@ -1,11 +1,11 @@
-import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useDepositPottery } from 'views/Pottery/hooks/useDepositPottery'
-import { PotteryDepositStatus } from 'state/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import { Address } from 'wagmi'
+import { useCallback } from 'react'
+import { PotteryDepositStatus } from 'state/types'
+import { Address } from 'viem'
+import { useDepositPottery } from 'views/Pottery/hooks/useDepositPottery'
 
 interface DepositButtonProps {
   status: PotteryDepositStatus

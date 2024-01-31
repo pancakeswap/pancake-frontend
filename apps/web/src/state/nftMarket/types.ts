@@ -1,5 +1,5 @@
 import { BigintIsh } from '@pancakeswap/swap-sdk-core'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
