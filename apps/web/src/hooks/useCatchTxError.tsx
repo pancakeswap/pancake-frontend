@@ -85,7 +85,10 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
         const receipt = await waitForTransaction({
           hash,
         })
-        return receipt
+        if (receipt?.status === 'success') {
+          return receipt
+        }
+        throw Error(t('Failed'))
       } catch (error: any) {
         if (!isUserRejected(error)) {
           if (!tx) {
