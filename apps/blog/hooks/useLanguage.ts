@@ -36,7 +36,7 @@ const useLanguage = () => {
 
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    refetchOnMount: false
+    refetchOnMount: false,
   })
 
   return data || []

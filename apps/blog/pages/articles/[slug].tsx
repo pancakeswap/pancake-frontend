@@ -106,20 +106,22 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   const { title, description, imgUrl } = fallback['/article']
 
-  return (<>
-    <PageMeta title={title} description={description} imgUrl={imgUrl} />
-    <HydrationBoundary state={dehydratedState}>
-      <Box>
-        <ArticleInfo />
-        {!fallback.isPreviewMode && (
-          <>
-            <HowItWork />
-            <SimilarArticles />
-          </>
-        )}
-      </Box>
-    </HydrationBoundary>
-  </>);
+  return (
+    <>
+      <PageMeta title={title} description={description} imgUrl={imgUrl} />
+      <HydrationBoundary state={dehydratedState}>
+        <Box>
+          <ArticleInfo />
+          {!fallback.isPreviewMode && (
+            <>
+              <HowItWork />
+              <SimilarArticles />
+            </>
+          )}
+        </Box>
+      </HydrationBoundary>
+    </>
+  )
 }
 
 export default ArticlePage
