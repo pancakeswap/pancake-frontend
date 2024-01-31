@@ -48,4 +48,12 @@ export const zksyncTokens = {
     'Wrapped liquid staked Ether 2.0',
     'https://lido.fi/',
   ),
+  meow: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x79db8c67d0c33203da4Efb58F7D325E1e0d4d692',
+    18,
+    'MEOW',
+    'Zeek Coin',
+    'https://zeekcoin.com/',
+  ),
 }
