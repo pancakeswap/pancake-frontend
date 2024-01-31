@@ -73,7 +73,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     enabled: !!adapterContract,
     refetchInterval: 6000,
     staleTime: 6000,
-    cacheTime: 6000,
+    gcTime: 6000,
   }).data
   const priceFromSubgraph = useTokenPriceFromSubgraph(
     priceFromV3FarmPid ? undefined : currencyA.isToken ? currencyA.address.toLowerCase() : undefined,

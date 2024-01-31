@@ -81,7 +81,7 @@ export function UpdatePositionsReminder_() {
         })),
       [chainId, masterchefV3, stakedTokenIds],
     ),
-    cacheTime: 0,
+    gcTime: 0,
     enabled: Boolean(!loading && stakedTokenIds.length > 0 && masterchefV3),
   })
 

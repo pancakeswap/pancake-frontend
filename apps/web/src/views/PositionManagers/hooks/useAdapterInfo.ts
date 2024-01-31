@@ -101,7 +101,7 @@ export const useAdapterTokensAmounts = (adapterAddress: Address) => {
     enabled: !!adapterAddress && !!chainId,
     refetchInterval: 3000,
     staleTime: 3000,
-    cacheTime: 3000,
+    gcTime: 3000,
   })
   return { data, refetch }
 }
@@ -115,7 +115,7 @@ export const useUserAmounts = (wrapperAddress: Address) => {
     enabled: !!wrapperAddress && !!account,
     refetchInterval: 3000,
     staleTime: 3000,
-    cacheTime: 3000,
+    gcTime: 3000,
   })
   return { data, refetch }
 }
@@ -128,7 +128,7 @@ export const useWrapperStaticData = (wrapperAddress: Address) => {
     enabled: !!wrapperAddress && !!chainId,
     refetchInterval: 30000,
     staleTime: 30000,
-    cacheTime: 30000,
+    gcTime: 30000,
   })
   return { data, refetch }
 }
@@ -194,7 +194,7 @@ export const useUserPendingRewardAmounts = (wrapperAddress: Address) => {
     enabled: !!account,
     refetchInterval: 3000,
     staleTime: 3000,
-    cacheTime: 3000,
+    gcTime: 3000,
   })
   return { data, refetch }
 }
