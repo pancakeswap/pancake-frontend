@@ -13,7 +13,7 @@ export const useGetRFQId = (
   isMMBetter: boolean,
   rfqUserInputPath: MutableRefObject<string> | null | undefined,
   isRFQLive: MutableRefObject<boolean> | null | undefined,
-): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isPending: boolean } => {
+): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isLoading: boolean } => {
   const { address: account } = useAccount()
 
   if (rfqUserInputPath)

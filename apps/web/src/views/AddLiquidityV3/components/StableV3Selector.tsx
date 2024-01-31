@@ -1,14 +1,14 @@
-import { useState, useMemo, useEffect } from 'react'
-import { AutoColumn, Message, MessageText, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { AutoColumn, Message, MessageText, Text } from '@pancakeswap/uikit'
+import { useEffect, useMemo, useState } from 'react'
 
+import { Currency } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
+import { SelectButton } from 'components/SelectButton'
+import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { usePools } from 'hooks/v3/usePools'
-import { PoolState } from 'hooks/v3/types'
-import { SelectButton } from 'components/SelectButton'
-import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
-import { Currency } from '@pancakeswap/sdk'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeOption } from '../formViews/V3FormView/components/FeeOption'
@@ -33,7 +33,7 @@ export function StableV3Selector({
   const [showOptions, setShowOptions] = useState(false)
   const { chainId } = useActiveChainId()
 
-  const { isLoading, isError, largestUsageFeeTier, distributions } = useFeeTierDistribution(currencyA, currencyB)
+  const { isPending, isError, largestUsageFeeTier, distributions } = useFeeTierDistribution(currencyA, currencyB)
 
   const pools = usePools(
     useMemo(
@@ -68,7 +68,7 @@ export function StableV3Selector({
   )
 
   useEffect(() => {
-    if (feeAmount || isLoading || isError) {
+    if (feeAmount || isPending || isError) {
       return
     }
 
@@ -83,7 +83,7 @@ export function StableV3Selector({
         feeAmount: largestUsageFeeTier,
       })
     }
-  }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect])
+  }, [feeAmount, isPending, isError, largestUsageFeeTier, handleFeePoolSelect])
 
   return (
     <HideShowSelectorSection

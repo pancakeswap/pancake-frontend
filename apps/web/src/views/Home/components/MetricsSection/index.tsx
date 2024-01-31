@@ -50,15 +50,15 @@ const AptosBallRocket = styled.div`
 
 const Stats = () => {
   const { t } = useTranslation()
-  const { data: tvl = 0 } = useQuery({
+  const { data: tvl = 0 } = useQuery<number>({
     queryKey: ['tvl'],
     enabled: false,
   })
-  const { data: txCount = 0 } = useQuery({
+  const { data: txCount = 0 } = useQuery<number>({
     queryKey: ['totalTx30Days'],
     enabled: false,
   })
-  const { data: addressCount = 0 } = useQuery({
+  const { data: addressCount = 0 } = useQuery<number>({
     queryKey: ['addressCount30Days'],
     enabled: false,
   })

@@ -19,7 +19,8 @@ export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }
   const { address: account } = useAccount()
   const { t } = useTranslation()
 
-  const { mutate, isPending } = useMutation(fetchQuotes, {
+  const { mutate, isPending } = useMutation({
+    mutationFn: fetchQuotes,
     onSuccess: () => {
       setModalView(CryptoFormView.Quote)
     },

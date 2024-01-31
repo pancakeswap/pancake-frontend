@@ -1,9 +1,10 @@
-import { useFarmAuctionContract } from 'hooks/useContract'
-import { AUCTION_BIDDERS_TO_FETCH } from 'config'
 import { useQuery } from '@tanstack/react-query'
+import { AUCTION_BIDDERS_TO_FETCH } from 'config'
+import { FAST_INTERVAL } from 'config/constants'
+import { useFarmAuctionContract } from 'hooks/useContract'
 import { processAuctionData, sortAuctionBidders } from '../helpers'
 
-export const useFarmAuction = (auctionId: number, configuration?: any) => {
+export const useFarmAuction = (auctionId: number, watch?: boolean) => {
   const farmAuctionContract = useFarmAuctionContract()
 
   const {
@@ -34,7 +35,7 @@ export const useFarmAuction = (auctionId: number, configuration?: any) => {
     },
 
     enabled: Boolean(Number.isFinite(auctionId) && auctionId > 0),
-    ...configuration,
+    refetchInterval: watch ? FAST_INTERVAL : false,
   })
 
   return { data, mutate: refetch }

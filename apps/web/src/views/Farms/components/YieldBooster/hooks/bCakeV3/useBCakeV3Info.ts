@@ -1,5 +1,5 @@
 import { bCakeSupportedChainId } from '@pancakeswap/farms'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import BN from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -16,7 +16,7 @@ export const USER_ESTIMATED_MULTIPLIER = 2
 const QUERY_SETTINGS_WITHOUT_REFETCH = {
   retry: 3,
   retryDelay: 3000,
-  keepPreviousData: true,
+  placeholderData: keepPreviousData,
 }
 
 export const useBakeV3farmCanBoost = (farmPid: number) => {

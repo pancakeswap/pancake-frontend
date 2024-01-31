@@ -12,7 +12,8 @@
     "test:config": "vitest --run --config vitest-config-test.config.ts",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:style": "npx stylelint '**/*.{ts,tsx}'",
-    "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\""
+    "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
+    "typechecks": "tsc --noEmit -p ./tsconfig.build.json"
   },
   "browserslist": {
     "production": [

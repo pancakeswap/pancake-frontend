@@ -1,10 +1,11 @@
+import { ChainId } from '@pancakeswap/chains'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { AtomBox, AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PairState, useV2Pair } from 'hooks/usePairs'
 import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
@@ -12,7 +13,6 @@ import { usePools } from 'hooks/v3/usePools'
 import { useEffect, useMemo, useState } from 'react'
 import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeOption } from './FeeOption'
 import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL, SelectContainer } from './shared'
@@ -48,7 +48,7 @@ export default function FeeSelector({
     return null
   }, [currencyA, currencyB, farmV3Config])
 
-  const { isLoading, isError, largestUsageFeeTier, distributions, largestUsageFeeTierTvl } = useFeeTierDistribution(
+  const { isPending, isError, largestUsageFeeTier, distributions, largestUsageFeeTierTvl } = useFeeTierDistribution(
     currencyA,
     currencyB,
   )
@@ -94,7 +94,7 @@ export default function FeeSelector({
   const v2PairHasBetterTokenAmounts = useMemo(() => {
     if (!handleSelectV2) return false
     if (
-      isLoading ||
+      isPending ||
       isError ||
       !currencyA ||
       !currencyB ||
@@ -105,7 +105,7 @@ export default function FeeSelector({
 
     // Show Add V2 button when no v2 pool or no v3 pool
     if (
-      (!isLoading && !largestUsageFeeTier) ||
+      (!isPending && !largestUsageFeeTier) ||
       pairState === PairState.NOT_EXISTS ||
       FEE_TIERS.every((tier) => poolsByFeeTier[tier] === PoolState.NOT_EXISTS)
     ) {
@@ -129,7 +129,7 @@ export default function FeeSelector({
     currencyB,
     handleSelectV2,
     isError,
-    isLoading,
+    isPending,
     largestUsageFeeTier,
     largestUsageFeeTierTvl,
     pair,
@@ -149,7 +149,7 @@ export default function FeeSelector({
       return
     }
 
-    if (isLoading || isError) {
+    if (isPending || isError) {
       return
     }
 
@@ -164,7 +164,7 @@ export default function FeeSelector({
         feeAmount: largestUsageFeeTier,
       })
     }
-  }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect, v2PairHasBetterTokenAmounts, farmV3])
+  }, [feeAmount, isPending, isError, largestUsageFeeTier, handleFeePoolSelect, v2PairHasBetterTokenAmounts, farmV3])
 
   return (
     <HideShowSelectorSection
@@ -188,7 +188,7 @@ export default function FeeSelector({
         ) : (
           <>
             <Text>V3 LP</Text>
-            {isLoading && <CircleLoader />}
+            {isPending && <CircleLoader />}
           </>
         )
       }
@@ -200,7 +200,7 @@ export default function FeeSelector({
               if (supportedChains.includes(chainId)) {
                 return (
                   <FeeOption
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     largestUsageFeeTier={largestUsageFeeTier}
                     feeAmount={_feeAmount}
                     active={feeAmount === _feeAmount}

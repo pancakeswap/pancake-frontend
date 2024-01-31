@@ -1,10 +1,10 @@
 // eslint-disable-next-line camelcase
-import { GetStaticPaths, GetStaticProps } from 'next'
-import TeamPageRouter from 'views/Teams/TeamPageRouter'
+import { QueryClient, dehydrate } from '@tanstack/react-query'
 import teams from 'config/constants/teams'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { getTeam } from 'state/teams/helpers'
 import { teamsById } from 'utils/teamsById'
-import { dehydrate, QueryClient } from '@tanstack/react-query'
+import TeamPageRouter from 'views/Teams/TeamPageRouter'
 
 const TeamPage = () => {
   return <TeamPageRouter />
@@ -35,10 +35,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  const fetchedTeam = await queryClient.fetchQuery(['team', id], () => getTeam(idNumber))
+  const fetchedTeam = await queryClient.fetchQuery({ queryKey: ['team', id], queryFn: () => getTeam(idNumber) })
 
   if (!fetchedTeam) {
-    await queryClient.prefetchQuery(['team', id], () => teamsById[id])
+    await queryClient.prefetchQuery({ queryKey: ['team', id], queryFn: () => teamsById[id] })
 
     return {
       props: {

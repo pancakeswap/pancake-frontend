@@ -141,7 +141,7 @@ function V2PairMigrate({
     [token1, pairBalance, reserve1.quotient, v2LPTotalSupply.quotient],
   )
 
-  const { isLoading, isError, largestUsageFeeTier } = useFeeTierDistribution(token0, token1)
+  const { isPending, isError, largestUsageFeeTier } = useFeeTierDistribution(token0, token1)
 
   const [feeAmount, setFeeAmount] = useState(FeeAmount.MEDIUM)
 
@@ -243,10 +243,10 @@ function V2PairMigrate({
   const currency1 = unwrappedToken(token1)
 
   useEffect(() => {
-    if (!isError && !isLoading && largestUsageFeeTier) {
+    if (!isError && !isPending && largestUsageFeeTier) {
       setFeeAmount(largestUsageFeeTier)
     }
-  }, [isError, isLoading, largestUsageFeeTier])
+  }, [isError, isPending, largestUsageFeeTier])
 
   // txn values
   const deadline = useTransactionDeadline() // custom from users settings

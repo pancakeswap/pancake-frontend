@@ -9,7 +9,7 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useMemo, useState } from 'react'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
-import { encodeFunctionData } from 'viem'
+import { Hex, encodeFunctionData } from 'viem'
 import { useAccount, useContractReads, useSendTransaction } from 'wagmi'
 
 const lmPoolABI = [
@@ -81,7 +81,7 @@ export function UpdatePositionsReminder_() {
         })),
       [chainId, masterchefV3, stakedTokenIds],
     ),
-    gcTime: 0,
+    cacheTime: 0,
     enabled: Boolean(!loading && stakedTokenIds.length > 0 && masterchefV3),
   })
 
@@ -119,7 +119,7 @@ export function UpdatePositionsReminder_() {
       }
     }),
     cacheTime: 0,
-    enabled: isOverRewardGrowthGlobalUserInfos?.length > 0,
+    enabled: (isOverRewardGrowthGlobalUserInfos?.length ?? 0) > 0,
   })
 
   const needRetrigger = isOverRewardGrowthGlobalUserInfos
@@ -150,7 +150,7 @@ export function UpdatePositionsReminder_() {
   // eslint-disable-next-line consistent-return
   const handleUpdateAll = async () => {
     if (!needRetrigger || !sendTransactionAsync) return null
-    const calldata = []
+    const calldata: (Hex | Hex[])[] = []
     needRetrigger.forEach((userInfo) => {
       if (userInfo.needReduce) {
         calldata.push(
@@ -179,7 +179,7 @@ export function UpdatePositionsReminder_() {
 
     const resp = await fetchWithCatchTxError(() =>
       sendTransactionAsync({
-        to: masterChefV3Address,
+        to: masterChefV3Address!,
         data: Multicall.encodeMulticall(calldata.flat()),
         value: 0n,
         account,

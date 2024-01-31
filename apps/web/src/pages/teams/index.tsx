@@ -1,7 +1,7 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { GetStaticProps } from 'next'
-import { teamsById } from 'utils/teamsById'
 import { getTeams } from 'state/teams/helpers'
+import { teamsById } from 'utils/teamsById'
 import Teams from '../../views/Teams'
 
 const TeamsPage = () => {
@@ -11,10 +11,10 @@ const TeamsPage = () => {
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
 
-  const fetchedTeams = await queryClient.fetchQuery(['teams'], getTeams)
+  const fetchedTeams = await queryClient.fetchQuery({ queryKey: ['teams'], queryFn: getTeams })
 
   if (fetchedTeams) {
-    await queryClient.prefetchQuery(['teams'], () => teamsById)
+    await queryClient.prefetchQuery({ queryKey: ['teams'], queryFn: () => teamsById })
     return {
       props: {
         dehydratedState: dehydrate(queryClient),

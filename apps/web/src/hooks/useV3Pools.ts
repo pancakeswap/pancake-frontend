@@ -23,7 +23,7 @@ export interface V3PoolsResult {
   loading: boolean
   syncing: boolean
   blockNumber?: number
-  error?: Error
+  error: Error | null
 }
 
 export function useV3CandidatePools(
@@ -85,13 +85,7 @@ export function useV3CandidatePoolsWithoutTicks(
     return POOLS_FAST_REVALIDATE[currencyA.chainId] || 0
   }, [currencyA?.chainId])
 
-  const {
-    data,
-    refetch,
-    isPending,
-    isFetching,
-    error: errorMsg,
-  } = useQuery({
+  const { data, refetch, isPending, isFetching, error } = useQuery({
     queryKey: ['v3_candidate_pools', key],
     queryFn: async () => {
       const pools = await SmartRouter.getV3CandidatePools({
@@ -113,8 +107,6 @@ export function useV3CandidatePoolsWithoutTicks(
     refetchOnWindowFocus: false,
     enabled: Boolean(currencyA && currencyB && key && options?.enabled),
   })
-
-  const error = useMemo(() => (errorMsg ? (new Error(errorMsg as string) as Error) : undefined), [errorMsg])
 
   return {
     refresh: refetch,
