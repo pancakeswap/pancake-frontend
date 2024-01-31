@@ -9,30 +9,26 @@ import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCamp
 
 interface CurrentPeriodProps {
   incentives: Incentives
-  campaignStart: number
-  campaignClaimTime: number
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail
   isQualified: boolean
   isValidLockAmount: boolean
-  isValidLockDuration: boolean
   thresholdLockTime: number
+  thresholdLockAmount: number
   totalAvailableClaimData: UserCampaignInfoDetail[]
 }
 
 const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   incentives,
   rewardInfo,
-  campaignStart,
-  campaignClaimTime,
   currentUserCampaignInfo,
   isQualified,
   isValidLockAmount,
-  isValidLockDuration,
   thresholdLockTime,
+  thresholdLockAmount,
 }) => {
   const { t } = useTranslation()
-
+  const { campaignClaimTime, campaignStart } = incentives
   const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
 
@@ -48,7 +44,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
           <Text bold textAlign="right" mb="24px">
             {t('Current Period')}
           </Text>
-          {isCampaignLive ? (
+          {!isCampaignLive ? (
             <ComingSoon />
           ) : (
             <>
@@ -60,7 +56,12 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                   currentUserCampaignInfo={currentUserCampaignInfo}
                 />
               ) : (
-                <VeCakePreview isValidLockAmount={isValidLockAmount} />
+                <VeCakePreview
+                  isValidLockAmount={isValidLockAmount}
+                  thresholdLockAmount={thresholdLockAmount}
+                  thresholdLockTime={thresholdLockTime}
+                  endTime={campaignClaimTime}
+                />
               )}
             </>
           )}

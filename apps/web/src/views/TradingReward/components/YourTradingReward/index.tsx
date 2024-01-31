@@ -168,22 +168,18 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { profile } = useProfile()
-  const { cakeLocked, cakeLockedAmount, cakeUnlockTime } = useCakeLockStatus()
+  const { cakeLocked, cakeLockedAmount } = useCakeLockStatus()
 
   const { thresholdLockTime, thresholdLockAmount } = qualification
 
-  const isValidLockAmount = useMemo(() => {
-    return new BigNumber(cakeLockedAmount.toString()).gte(thresholdLockAmount)
-  }, [cakeLockedAmount, thresholdLockAmount])
-
-  const isValidLockDuration = useMemo(() => {
-    const minLockTime = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime)
-    return new BigNumber(cakeUnlockTime).gte(minLockTime)
-  }, [incentives, thresholdLockTime, cakeUnlockTime])
+  const isValidLockAmount = useMemo(
+    () => new BigNumber(cakeLockedAmount.toString()).gte(thresholdLockAmount),
+    [cakeLockedAmount, thresholdLockAmount],
+  )
 
   const isQualified = useMemo(
-    () => Boolean(account && profile?.isActive && cakeLocked && isValidLockDuration && isValidLockAmount),
-    [account, profile, cakeLocked, isValidLockDuration, isValidLockAmount],
+    () => Boolean(account && profile?.isActive && cakeLocked && isValidLockAmount),
+    [account, profile, cakeLocked, isValidLockAmount],
   )
 
   return (
@@ -222,12 +218,10 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             rewardInfo={rewardInfo}
             currentUserCampaignInfo={currentUserCampaignInfo}
             totalAvailableClaimData={totalAvailableClaimData}
-            campaignStart={incentives?.campaignStart}
-            campaignClaimTime={incentives?.campaignClaimTime}
             isQualified={isQualified}
             isValidLockAmount={isValidLockAmount}
-            isValidLockDuration={isValidLockDuration}
             thresholdLockTime={thresholdLockTime}
+            thresholdLockAmount={thresholdLockAmount}
             qualification={qualification}
             campaignIdsIncentive={campaignIdsIncentive}
           />

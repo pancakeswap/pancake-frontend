@@ -6,32 +6,28 @@ import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCamp
 
 interface RewardPeriodProps {
   campaignIds: Array<string>
-  campaignStart: number
-  campaignClaimTime: number
   incentives: Incentives
   rewardInfo: { [key in string]: RewardInfo }
   totalAvailableClaimData: UserCampaignInfoDetail[]
   currentUserCampaignInfo: UserCampaignInfoDetail
   isQualified: boolean
   isValidLockAmount: boolean
-  isValidLockDuration: boolean
   thresholdLockTime: number
+  thresholdLockAmount: number
   qualification: Qualification
   campaignIdsIncentive: Incentives[]
 }
 
 const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   campaignIds,
-  campaignStart,
-  campaignClaimTime,
   incentives,
   currentUserCampaignInfo,
   rewardInfo,
   totalAvailableClaimData,
   isQualified,
   isValidLockAmount,
-  isValidLockDuration,
   thresholdLockTime,
+  thresholdLockAmount,
   qualification,
   campaignIdsIncentive,
 }) => {
@@ -46,13 +42,11 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
       <CurrentPeriod
         incentives={incentives}
         rewardInfo={rewardInfo}
-        campaignStart={campaignStart}
-        campaignClaimTime={campaignClaimTime}
         currentUserCampaignInfo={currentUserCampaignInfo}
         isQualified={isQualified}
         isValidLockAmount={isValidLockAmount}
-        isValidLockDuration={isValidLockDuration}
         thresholdLockTime={thresholdLockTime}
+        thresholdLockAmount={thresholdLockAmount}
         totalAvailableClaimData={totalAvailableClaimData}
       />
       <TotalPeriod
