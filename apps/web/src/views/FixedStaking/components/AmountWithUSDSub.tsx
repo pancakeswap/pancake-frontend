@@ -23,12 +23,7 @@ export function AmountWithUSDSub({
     undefined,
     <>
       <Text fontSize={fontSize} bold mb={mb}>
-        <Balance
-          fontSize="16px"
-          value={toNumber(amount.toSignificant(6))}
-          decimals={0}
-          unit={` ${amount.currency.wrapped.symbol}`}
-        />
+        {amount.toSignificant(6)} {amount.currency.symbol}
       </Text>
       <Balance
         unit=" USD"
