@@ -46,11 +46,6 @@
       "import": "./dist/connectors/miniProgram.mjs",
       "require": "./dist/connectors/miniProgram.js"
     },
-    "./connectors/binanceWallet": {
-      "types": "./dist/connectors/binanceWallet.d.ts",
-      "import": "./dist/connectors/binanceWallet.mjs",
-      "require": "./dist/connectors/binanceWallet.js"
-    },
     "./connectors/blocto": {
       "types": "./dist/connectors/blocto.d.ts",
       "import": "./dist/connectors/blocto.mjs",
