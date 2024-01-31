@@ -2046,9 +2046,6 @@ importers:
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@uniswap/v3-staker':
-        specifier: 1.0.0
-        version: 1.0.0
       big.js:
         specifier: ^5.2.2
         version: 5.2.2
@@ -7009,14 +7006,6 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  /@openzeppelin/contracts@3.4.1-solc-0.7-2:
-    resolution: {integrity: sha512-tAG9LWg8+M2CMu7hIsqHPaTyG4uDzjr6mhvH96LvOpLZZj6tgzTluBt+LsCf1/QaYrlis6pITvpIaIhE+iZB+Q==}
-    dev: false
-
-  /@openzeppelin/contracts@3.4.2-solc-0.7:
-    resolution: {integrity: sha512-W6QmqgkADuFcTLzHL8vVoNBtkwjvQRpYIAom7KiUNoLKghyx3FgH0GBjt8NRvigV1ZmMOBllvE1By1C+bi8WpA==}
-    dev: false
-
   /@parcel/watcher-android-arm64@2.3.0:
     resolution: {integrity: sha512-f4o9eA3dgk0XRT3XhB0UWpWpLnKgrh1IwNJKJ7UJek7eTYccQ8LR7XUWFKqw6aEq5KUNlCcGvSzKqSX/vtWVVA==}
     engines: {node: '>= 10.0.0'}
@@ -10678,11 +10667,6 @@ packages:
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  /@uniswap/lib@4.0.1-alpha:
-    resolution: {integrity: sha512-f6UIliwBbRsgVLxIaBANF6w09tYqc6Y/qXdsrbEmXHyFA7ILiKrIwRFXe1yOg8M3cksgVsO9N7yuL2DdCGQKBA==}
-    engines: {node: '>=10'}
-    dev: false
-
   /@uniswap/permit2-sdk@1.2.0:
     resolution: {integrity: sha512-Ietv3FxN7+RCXcPSED/i/8b0a2GUZrMdyX05k3FsSztvYKyPFAMS/hBXojF0NZqYB1bHecqYc7Ej+7tV/rdYXg==}
     dependencies:
@@ -10691,37 +10675,6 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-    dev: false
-
-  /@uniswap/v2-core@1.0.1:
-    resolution: {integrity: sha512-MtybtkUPSyysqLY2U210NBDeCHX+ltHt3oADGdjqoThZaFRDKwM6k1Nb3F0A3hk5hwuQvytFWhrWHOEq6nVJ8Q==}
-    engines: {node: '>=10'}
-    dev: false
-
-  /@uniswap/v3-core@1.0.0:
-    resolution: {integrity: sha512-kSC4djMGKMHj7sLMYVnn61k9nu+lHjMIxgg9CDQT+s2QYLoA56GbSK9Oxr+qJXzzygbkrmuY6cwgP6cW2JXPFA==}
-    engines: {node: '>=10'}
-    dev: false
-
-  /@uniswap/v3-periphery@1.4.4:
-    resolution: {integrity: sha512-S4+m+wh8HbWSO3DKk4LwUCPZJTpCugIsHrWR86m/OrUyvSqGDTXKFfc2sMuGXCZrD1ZqO3rhQsKgdWg3Hbb2Kw==}
-    engines: {node: '>=10'}
-    dependencies:
-      '@openzeppelin/contracts': 3.4.2-solc-0.7
-      '@uniswap/lib': 4.0.1-alpha
-      '@uniswap/v2-core': 1.0.1
-      '@uniswap/v3-core': 1.0.0
-      base64-sol: 1.0.1
-    dev: false
-
-  /@uniswap/v3-staker@1.0.0:
-    resolution: {integrity: sha512-JV0Qc46Px5alvg6YWd+UIaGH9lDuYG/Js7ngxPit1SPaIP30AlVer1UYB7BRYeUVVxE+byUyIeN5jeQ7LLDjIw==}
-    engines: {node: '>=10'}
-    deprecated: Please upgrade to 1.0.1
-    dependencies:
-      '@openzeppelin/contracts': 3.4.1-solc-0.7-2
-      '@uniswap/v3-core': 1.0.0
-      '@uniswap/v3-periphery': 1.4.4
     dev: false
 
   /@vanilla-extract/babel-plugin-debug-ids@1.0.3:
@@ -13362,10 +13315,6 @@ packages:
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
-
-  /base64-sol@1.0.1:
-    resolution: {integrity: sha512-ld3cCNMeXt4uJXmLZBHFGMvVpK9KsLVEhPpFRXnvSVAqABKbuNZg/+dsq3NuM+wxFLb/UrVkz7m1ciWmkMfTbg==}
-    dev: false
 
   /bcrypt-pbkdf@1.0.2:
     resolution: {integrity: sha512-qeFIXtP4MSoi6NLqO12WfqARWWuCKi2Rn/9hJLEmtB5yTNr9DqFWkJRCf2qShWzPeAMRnOgCrq0sg/KLv5ES9w==}
