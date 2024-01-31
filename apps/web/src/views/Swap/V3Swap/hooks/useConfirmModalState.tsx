@@ -4,8 +4,8 @@ import { ethereumTokens } from '@pancakeswap/tokens'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { useCallback, useEffect, useState } from 'react'
 import { ConfirmModalState, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
-import { usePublicClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
+import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { TransactionRejectedError } from './useSendSwapTransaction'
 
 interface UseConfirmModalStateProps {
@@ -37,7 +37,7 @@ export const useConfirmModalState = ({
   approveCallback,
   revokeCallback,
 }: UseConfirmModalStateProps) => {
-  const provider = usePublicClient({ chainId })
+  const { waitForTransaction } = usePublicNodeWaitForTransaction()
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalState[]>([])
   const [previouslyPending, setPreviouslyPending] = useState<boolean>(false)
@@ -123,12 +123,12 @@ export const useConfirmModalState = ({
 
   const checkHashIsReceipted = useCallback(
     async (hash) => {
-      const receipt: any = await provider.waitForTransactionReceipt({ hash })
+      const receipt: any = await waitForTransaction({ hash, chainId })
       if (receipt.status === 'success') {
         performStep(ConfirmModalState.COMPLETED)
       }
     },
-    [performStep, provider],
+    [performStep, waitForTransaction],
   )
 
   useEffect(() => {

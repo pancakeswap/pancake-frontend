@@ -64,9 +64,8 @@ export function usePublicNodeWaitForTransaction() {
           } else if (error instanceof WaitForTransactionReceiptTimeoutError) {
             throw new RetryableError(`Timeout reached when fetching transaction receipt: ${opts.hash}`)
           }
+          throw error
         }
-        // It will not reach here, so it is ok to assert non-null type
-        return undefined
       }
       return retry(getTransaction, {
         n: 10,
