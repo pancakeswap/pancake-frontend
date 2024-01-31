@@ -52,6 +52,7 @@
     "@pancakeswap/ifos": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
+    "@pancakeswap/permit2-sdk": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
     "@pancakeswap/position-managers": "workspace:*",
     "@pancakeswap/prediction": "workspace:*",
@@ -68,7 +69,6 @@
     "@pancakeswap/wagmi": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
     "@pythnetwork/pyth-evm-js": "^1.29.2",
-    "@pancakeswap/permit2-sdk": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^7.52.1",
     "@snapshot-labs/snapshot.js": "^0.4.40",
@@ -126,7 +126,7 @@
     "tiny-invariant": "^1.3.0",
     "uuid": "^8.0.0",
     "viem": "1.19.11",
-    "wagmi": "1.4.7",
+    "wagmi": "1.4.13",
     "zod": "^3.22.3"
   },
   "devDependencies": {

@@ -32,7 +32,7 @@
     "react-dom": "^18.0.0",
     "tsup": "^6.7.0",
     "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.13"
   },
   "exports": {
     "./package.json": "./package.json",
