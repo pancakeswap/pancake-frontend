@@ -19,7 +19,7 @@ export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }
   const { address: account } = useAccount()
   const { t } = useTranslation()
 
-  const { mutate, isLoading } = useMutation(fetchQuotes, {
+  const { mutate, isPending } = useMutation(fetchQuotes, {
     onSuccess: () => {
       setModalView(CryptoFormView.Quote)
     },
@@ -34,7 +34,7 @@ export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }
   if (errorText) {
     buttonText = errorText
   }
-  if (isLoading) {
+  if (isPending) {
     buttonText = (
       <>
         <Flex alignItems="center">
@@ -52,7 +52,7 @@ export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }
         variant={errorText ? 'danger' : 'primary'}
         onClick={next}
         disabled={Boolean(errorText)}
-        isLoading={isLoading}
+        isLoading={isPending}
         height="55px"
       >
         {buttonText}

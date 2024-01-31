@@ -63,7 +63,7 @@ export const useOrderBookQuote = (
   rfqRequest: OrderBookRequest | null,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
-): { data: OrderBookResponse; isLoading: boolean } => {
+): { data: OrderBookResponse; isPending: boolean } => {
   const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const inputPath = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
   const rfqInputPath = `${rfqRequest?.networkId}/${rfqRequest?.makerSideToken}/${rfqRequest?.takerSideToken}/${rfqRequest?.makerSideTokenAmount}/${rfqRequest?.takerSideTokenAmount}`
@@ -76,13 +76,13 @@ export const useOrderBookQuote = (
       request.takerSideTokenAmount !== '0' &&
       checkOrderBookShouldRefetch(rfqInputPath, rfqUserInputPath, isRFQLive),
   )
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: [`orderBook/${inputPath}`],
     queryFn: () => getMMOrderBook(request as OrderBookRequest),
     refetchInterval: 5000,
     enabled,
   })
-  return { data: isMMLinkedPoolByDefault ? data : undefined, isLoading: enabled && isLoading }
+  return { data: isMMLinkedPoolByDefault ? data : undefined, isLoading: enabled && isPending }
 }
 
 export const useMMTrade = (

@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { MetricDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
-import { useQuery } from '@tanstack/react-query'
 
 export interface ListType {
   address: string
@@ -18,7 +18,7 @@ interface Leaderboard {
 const useLeaderboard = (): Leaderboard => {
   const cakePriceBusd = useCakePrice()
 
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['affiliates-program', 'affiliate-program-leaderboard', cakePriceBusd],
 
     queryFn: async () => {
@@ -40,7 +40,7 @@ const useLeaderboard = (): Leaderboard => {
   })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     list: data ?? [],
   }
 }

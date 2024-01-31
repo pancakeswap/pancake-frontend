@@ -8,7 +8,7 @@ interface AllArticleType {
 }
 
 export const useAllNewsArticle = (): AllArticleType => {
-  const { data: articlesData, isLoading } = useQuery({
+  const { data: articlesData, isPending } = useQuery({
     queryKey: ['/allNews'],
 
     queryFn: async () =>
@@ -33,7 +33,7 @@ export const useAllNewsArticle = (): AllArticleType => {
   })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? {
       data: [],
       pagination: {
@@ -47,7 +47,7 @@ export const useAllNewsArticle = (): AllArticleType => {
 }
 
 export const useLatestArticle = (): AllArticleType => {
-  const { data: articlesData, isLoading } = useQuery({
+  const { data: articlesData, isPending } = useQuery({
     queryKey: ['/latestArticle'],
 
     queryFn: () =>
@@ -65,7 +65,7 @@ export const useLatestArticle = (): AllArticleType => {
   })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? {
       data: [],
       pagination: {

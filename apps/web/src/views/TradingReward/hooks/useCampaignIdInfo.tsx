@@ -1,8 +1,8 @@
+import { ChainId } from '@pancakeswap/chains'
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
-import { ChainId } from '@pancakeswap/chains'
 import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import { useQuery } from '@tanstack/react-query'
 
 export interface CampaignVolume {
   pool: string
@@ -45,7 +45,7 @@ interface UseCampaignIdInfoProps {
 }
 
 const useCampaignIdInfo = ({ campaignId, type }: UseCampaignIdInfoProps): CampaignIdInfo => {
-  const { data: campaignIdInfo, isLoading } = useQuery({
+  const { data: campaignIdInfo, isPending } = useQuery({
     queryKey: ['tradingReward', 'campaign-id-info', campaignId, type],
 
     queryFn: async () => {
@@ -84,7 +84,7 @@ const useCampaignIdInfo = ({ campaignId, type }: UseCampaignIdInfoProps): Campai
   })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     data: campaignIdInfo,
   }
 }

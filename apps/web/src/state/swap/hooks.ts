@@ -329,7 +329,7 @@ export const useFetchPairPricesV3 = ({
   const {
     data: normalizedDerivedPairData,
     error,
-    isLoading,
+    isPending,
   } = useQuery({
     queryKey: ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1, timeWindow }],
 
@@ -369,6 +369,6 @@ export const useFetchPairPricesV3 = ({
   return {
     data: normalizedDerivedPairDataWithCurrentSwapPrice,
     error,
-    isLoading,
+    isPending,
   }
 }

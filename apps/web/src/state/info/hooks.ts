@@ -163,7 +163,7 @@ export const useAllTokenHighLight = ({
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d], undefined, undefined, chainName)
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: [`info/token/data/${type}`, chainName],
     queryFn: () => fetchAllTokenData(chainName, blocks ?? []),
     enabled: Boolean(enable && blocks && chainName),
@@ -181,8 +181,8 @@ export const useAllTokenHighLight = ({
       : []
   }, [data])
   return useMemo(() => {
-    return isLoading ? [] : tokensWithData ?? []
-  }, [isLoading, tokensWithData])
+    return isPending ? [] : tokensWithData ?? []
+  }, [isPending, tokensWithData])
 }
 
 export const useAllTokenDataQuery = (): {
@@ -219,7 +219,7 @@ export const useTokenDatasQuery = (addresses?: string[], withSettings = true): T
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: [`info/token/data/${name}/${type}`, chainName],
     queryFn: () => fetcher(addresses || [], chainName, blocks ?? []),
     enabled: Boolean(blocks && chainName),
@@ -242,8 +242,8 @@ export const useTokenDatasQuery = (addresses?: string[], withSettings = true): T
   }, [addresses, allData])
 
   return useMemo(() => {
-    return isLoading ? [] : tokensWithData ?? undefined
-  }, [isLoading, tokensWithData])
+    return isPending ? [] : tokensWithData ?? undefined
+  }, [isPending, tokensWithData])
 }
 
 export const useTokenDataQuery = (address: string | undefined): TokenData | undefined => {

@@ -1,17 +1,17 @@
-import { useAccount } from 'wagmi'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { FAST_INTERVAL } from 'config/constants'
 import qs from 'qs'
 import useAuthAffiliate from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
-import { UserClaimListResponse, MAX_PER_PAGE } from 'views/AffiliatesProgram/hooks/useUserClaimList'
-import { FAST_INTERVAL } from 'config/constants'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { MAX_PER_PAGE, UserClaimListResponse } from 'views/AffiliatesProgram/hooks/useUserClaimList'
+import { useAccount } from 'wagmi'
 
 const useAffiliateClaimList = ({ currentPage }) => {
   const { address } = useAccount()
   const { isAffiliate } = useAuthAffiliate()
   const { isAffiliateExist } = useAuthAffiliateExist()
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isPending, refetch } = useQuery({
     queryKey: ['affiliates-program', 'affiliate-claim-list', isAffiliateExist, isAffiliate, address, currentPage],
 
     queryFn: async () => {
@@ -42,7 +42,7 @@ const useAffiliateClaimList = ({ currentPage }) => {
 
   return {
     data,
-    isFetching: isLoading,
+    isFetching: isPending,
     mutate: refetch,
   }
 }

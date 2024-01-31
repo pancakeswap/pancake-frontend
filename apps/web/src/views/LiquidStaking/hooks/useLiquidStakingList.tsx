@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
-import { useQuery } from '@tanstack/react-query'
 
 interface UseLiquidStakingList {
   data: LiquidStakingList[]
@@ -14,7 +14,7 @@ export const fetchLiquidStaking = async (chainId: number) => {
 export const useLiquidStakingList = (): UseLiquidStakingList => {
   const { chainId } = useActiveChainId()
 
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['liquidStaking', 'liquidStaking-list', chainId],
 
     queryFn: async () => {
@@ -32,6 +32,6 @@ export const useLiquidStakingList = (): UseLiquidStakingList => {
 
   return {
     data,
-    isFetching: isLoading,
+    isFetching: isPending,
   }
 }

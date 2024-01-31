@@ -88,7 +88,7 @@ export function useV3CandidatePoolsWithoutTicks(
   const {
     data,
     refetch,
-    isLoading,
+    isPending,
     isFetching,
     error: errorMsg,
   } = useQuery({
@@ -119,7 +119,7 @@ export function useV3CandidatePoolsWithoutTicks(
   return {
     refresh: refetch,
     pools: data?.pools,
-    loading: isLoading,
+    loading: isPending,
     syncing: isFetching,
     blockNumber: data?.blockNumber,
     key: data?.key,

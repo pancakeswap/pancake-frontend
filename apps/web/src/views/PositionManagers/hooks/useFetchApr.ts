@@ -58,7 +58,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
     return Boolean(chainId && chainIds.includes(chainId))
   }, [chainId])
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isPending, refetch } = useQuery({
     queryKey: ['/fetch-position-manager-apr', chainId],
 
     queryFn: async () => {
@@ -86,7 +86,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
     refetchOnWindowFocus: false,
   })
 
-  const { data: fallbackData, isLoading: isFallbackLoading } = useQuery({
+  const { data: fallbackData, isPending: isFallbackLoading } = useQuery({
     queryKey: ['/fetch-position-manager-apr-fallback', chainId],
 
     queryFn: async () => {
@@ -114,7 +114,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
     refetchOnWindowFocus: false,
   })
 
-  const { data: specificData, isLoading: isSpecificLoading } = useQuery({
+  const { data: specificData, isPending: isSpecificLoading } = useQuery({
     queryKey: ['/fetch-position-manager-apr-specific', chainId],
 
     queryFn: async () => {
@@ -133,7 +133,7 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
 
   return {
     data: data ?? [],
-    isLoading: isLoading || isFallbackLoading || isSpecificLoading,
+    isLoading: isPending || isFallbackLoading || isSpecificLoading,
     refetch,
     fallbackData: fallbackData ?? [],
     specificData: specificData ?? {},

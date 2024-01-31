@@ -13,7 +13,7 @@ export const useGetRFQId = (
   isMMBetter: boolean,
   rfqUserInputPath: MutableRefObject<string> | null | undefined,
   isRFQLive: MutableRefObject<boolean> | null | undefined,
-): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isLoading: boolean } => {
+): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isPending: boolean } => {
   const { address: account } = useAccount()
 
   if (rfqUserInputPath)
@@ -29,7 +29,7 @@ export const useGetRFQId = (
         (param?.takerSideTokenAmount && param?.takerSideTokenAmount !== '0')),
   )
 
-  const { data, refetch, isLoading } = useQuery({
+  const { data, refetch, isPending } = useQuery({
     queryKey: [`RFQ/${rfqUserInputPath?.current}`],
     queryFn: () => sendRFQAndGetRFQId(param as QuoteRequest),
     refetchInterval: 20000,
@@ -44,7 +44,7 @@ export const useGetRFQId = (
     rfqId: data?.message?.rfqId ?? '',
     refreshRFQ: refetch,
     rfqUserInputCache: rfqUserInputPath?.current,
-    isLoading: enabled && isLoading,
+    isLoading: enabled && isPending,
   }
 }
 
@@ -60,7 +60,7 @@ export const useGetRFQTrade = (
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)
-  const [{ error, data, isLoading }, setRfqState] = useState<{ error: unknown; data: RFQResponse; isLoading: boolean }>(
+  const [{ error, data, isPending }, setRfqState] = useState<{ error: unknown; data: RFQResponse; isLoading: boolean }>(
     {
       error: null,
       data: null,
@@ -70,7 +70,7 @@ export const useGetRFQTrade = (
   const {
     error: errorResponse,
     data: dataResponse,
-    isLoading: isLoadingResponse,
+    isPending: isLoadingResponse,
   } = useQuery({
     queryKey: [`RFQ/${deferredRfqId}`],
     queryFn: () => getRFQById(deferredRfqId),
@@ -98,7 +98,7 @@ export const useGetRFQTrade = (
       return {
         error: errorResponse,
         data: !prevState ? dataResponse : isLoadingResponse ? prevData : dataResponse,
-        isLoading: isLoadingResponse,
+        isLoading: isPending,
       }
     })
   }, [errorResponse, dataResponse, isLoadingResponse, enabled])
@@ -114,7 +114,7 @@ export const useGetRFQTrade = (
         refreshRFQ: null,
         error,
         rfqId,
-        isLoading: enabled && isLoading,
+        isLoading: enabled && isPending,
       }
     }
     if (data?.messageType === MessageType.RFQ_RESPONSE) {
@@ -132,7 +132,7 @@ export const useGetRFQTrade = (
         ),
         quoteExpiry: data?.message?.quoteExpiry ?? null,
         refreshRFQ,
-        isLoading: enabled && isLoading,
+        isLoading: enabled && isPending,
       }
     }
     // eslint-disable-next-line no-param-reassign
@@ -141,7 +141,7 @@ export const useGetRFQTrade = (
       rfq: null,
       trade: null,
       quoteExpiry: null,
-      isLoading: enabled && isLoading,
+      isLoading: enabled && isPending,
       refreshRFQ: null,
     }
   }, [
@@ -151,7 +151,7 @@ export const useGetRFQTrade = (
     error,
     inputCurrency,
     isExactIn,
-    isLoading,
+    isPending,
     isRFQLive,
     outputCurrency,
     refreshRFQ,

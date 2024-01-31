@@ -13,7 +13,7 @@ const initialState = {
 
 export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
   const { address: account } = useAccount()
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['tradingReward', 'user-trade-rank', campaignId, account],
 
     queryFn: async () => {
@@ -43,6 +43,6 @@ export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
 
   return {
     data,
-    isFetching: isLoading,
+    isFetching: isPending,
   }
 }

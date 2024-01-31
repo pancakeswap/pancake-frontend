@@ -877,7 +877,7 @@ function PositionHistory_({
   const [isExpanded, setIsExpanded] = useState(false)
   const { chainId } = useActiveChainId()
   const client = v3Clients[chainId as ChainId]
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['positionHistory', chainId, tokenId],
 
     queryFn: async () => {
@@ -929,7 +929,7 @@ function PositionHistory_({
     refetchOnWindowFocus: false,
   })
 
-  if (isLoading || !data?.length) {
+  if (isPending || !data?.length) {
     return null
   }
 

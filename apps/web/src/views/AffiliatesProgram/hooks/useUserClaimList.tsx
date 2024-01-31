@@ -1,8 +1,8 @@
-import { useAccount } from 'wagmi'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { FAST_INTERVAL } from 'config/constants'
 import qs from 'qs'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
-import { FAST_INTERVAL } from 'config/constants'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { useAccount } from 'wagmi'
 
 export type ClaimStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
 
@@ -29,7 +29,7 @@ const useUserClaimList = ({ currentPage }) => {
   const { address } = useAccount()
   const { isUserExist } = useUserExist()
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isPending, refetch } = useQuery({
     queryKey: ['affiliates-program', 'user-claim-list', isUserExist, address, currentPage],
 
     queryFn: async () => {
@@ -59,7 +59,7 @@ const useUserClaimList = ({ currentPage }) => {
 
   return {
     data,
-    isFetching: isLoading,
+    isFetching: isPending,
     mutate: refetch,
   }
 }

@@ -43,7 +43,7 @@ const useRewardBreakdown = ({
 }: UseRewardBreakdownProps): RewardBreakdown => {
   const { address: account } = useAccount()
 
-  const { data: rewardBreakdownList, isLoading } = useQuery({
+  const { data: rewardBreakdownList, isPending } = useQuery({
     queryKey: ['tradingReward', 'rewards-breakdown', allUserCampaignInfo, allTradingRewardPairData, account],
 
     queryFn: async () => {
@@ -101,7 +101,7 @@ const useRewardBreakdown = ({
   })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     data: rewardBreakdownList,
   }
 }

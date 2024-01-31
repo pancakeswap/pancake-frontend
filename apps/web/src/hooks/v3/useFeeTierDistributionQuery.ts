@@ -39,7 +39,7 @@ export default function useFeeTierDistributionQuery(
   interval: number,
 ) {
   const { chainId } = useActiveChainId()
-  const { data, isLoading, error } = useQuery({
+  const { data, isPending, error } = useQuery({
     queryKey: [`useFeeTierDistributionQuery-${token0}-${token1}`],
 
     queryFn: async () => {
@@ -60,9 +60,9 @@ export default function useFeeTierDistributionQuery(
   return useMemo(
     () => ({
       error,
-      isLoading,
+      isPending,
       data,
     }),
-    [data, error, isLoading],
+    [data, error, isPending],
   )
 }

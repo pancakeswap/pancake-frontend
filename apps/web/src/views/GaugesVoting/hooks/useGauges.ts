@@ -11,7 +11,7 @@ type Response = {
 export const useGauges = () => {
   const { chainId } = useActiveChainId()
 
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['gaugesVoting', chainId],
 
     queryFn: async (): Promise<Gauge[]> => {
@@ -36,6 +36,6 @@ export const useGauges = () => {
 
   return {
     data,
-    isLoading: isLoading || data?.length === 0,
+    isLoading: isPending || data?.length === 0,
   }
 }
