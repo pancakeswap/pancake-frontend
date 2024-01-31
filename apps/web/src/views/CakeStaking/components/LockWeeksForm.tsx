@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Image, Text } from '@pancakeswap/uikit'
 import { MAX_VECAKE_LOCK_WEEKS } from 'config/constants/veCake'
 import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { cakeLockWeeksAtom } from 'state/vecake/atoms'
 import styled from 'styled-components'
 import { useWriteIncreaseLockWeeksCallback } from '../hooks/useContractWrite'
@@ -123,16 +123,34 @@ const WeekInput: React.FC<{
   )
 }
 
-export const LockWeeksForm: React.FC<{
+interface LockWeeksFormProps {
   fieldOnly?: boolean
   expired?: boolean
   disabled?: boolean
   hideLockWeeksDataSetStyle?: boolean
   customVeCakeCard?: JSX.Element
+  customWeeks?: string
   onDismiss?: () => void
-}> = ({ fieldOnly, expired, disabled, customVeCakeCard, hideLockWeeksDataSetStyle, onDismiss }) => {
+}
+
+export const LockWeeksForm: React.FC<React.PropsWithChildren<LockWeeksFormProps>> = ({
+  fieldOnly,
+  expired,
+  disabled,
+  customVeCakeCard,
+  customWeeks,
+  hideLockWeeksDataSetStyle,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
+
+  useEffect(() => {
+    if (customWeeks) {
+      onChange(customWeeks)
+    }
+  }, [])
+
   return (
     <AutoRow alignSelf="start" gap="16px">
       <FlexGap gap="8px" alignItems="center">

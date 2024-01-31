@@ -24,7 +24,14 @@ const ValueText = styled(Text)`
   font-weight: 400;
 `
 
-export const NoLockingCakeModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
+interface NoLockingCakeModalProps extends InjectedModalProps {
+  customWeeks?: string
+}
+
+export const NoLockingCakeModal: React.FC<React.PropsWithChildren<NoLockingCakeModalProps>> = ({
+  customWeeks,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
   const unlockTimestamp = useTargetUnlockTime(Number(cakeLockWeeks) * WEEK)
@@ -47,6 +54,7 @@ export const NoLockingCakeModal: React.FC<React.PropsWithChildren<InjectedModalP
         hideTitle
         hideCardPadding
         customVeCakeCard={<PreviewOfVeCakeSnapShotTime />}
+        customWeeks={customWeeks}
         customDataRow={
           <DataRow
             label={
