@@ -22,7 +22,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.13"
   },
   "devDependencies": {
     "@blocto/sdk": "^0.5.4",
