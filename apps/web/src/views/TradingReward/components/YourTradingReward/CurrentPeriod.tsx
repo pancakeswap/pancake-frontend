@@ -48,7 +48,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             <ComingSoon />
           ) : (
             <>
-              {!isQualified ? (
+              {isQualified ? (
                 <QualifiedPreview
                   rewardInfo={rewardInfo}
                   timeRemaining={timeRemaining}
@@ -59,7 +59,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                 <VeCakePreview
                   isValidLockAmount={isValidLockAmount}
                   thresholdLockAmount={thresholdLockAmount}
-                  thresholdLockTime={thresholdLockTime}
                   endTime={campaignClaimTime}
                 />
               )}

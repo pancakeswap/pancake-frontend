@@ -26,10 +26,14 @@ const ValueText = styled(Text)`
 
 interface NoLockingCakeModalProps extends InjectedModalProps {
   customWeeks?: string
+  isValidLockAmount: boolean
+  endTime: number
 }
 
 export const NoLockingCakeModal: React.FC<React.PropsWithChildren<NoLockingCakeModalProps>> = ({
+  endTime,
   customWeeks,
+  isValidLockAmount,
   onDismiss,
 }) => {
   const { t } = useTranslation()
@@ -53,7 +57,7 @@ export const NoLockingCakeModal: React.FC<React.PropsWithChildren<NoLockingCakeM
       <NotLockingCard
         hideTitle
         hideCardPadding
-        customVeCakeCard={<PreviewOfVeCakeSnapShotTime />}
+        customVeCakeCard={<PreviewOfVeCakeSnapShotTime endTime={endTime} isValidLockAmount={isValidLockAmount} />}
         customWeeks={customWeeks}
         customDataRow={
           <DataRow

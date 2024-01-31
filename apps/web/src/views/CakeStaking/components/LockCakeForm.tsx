@@ -114,7 +114,7 @@ export const LockCakeForm: React.FC<{
   fieldOnly?: boolean
   disabled?: boolean
   hideLockCakeDataSetStyle?: boolean
-  customVeCakeCard?: JSX.Element
+  customVeCakeCard?: null | JSX.Element
   onDismiss?: () => void
 }> = ({ fieldOnly, disabled, customVeCakeCard, hideLockCakeDataSetStyle, onDismiss }) => {
   const { t } = useTranslation()

@@ -23,12 +23,16 @@ interface VeCakeAddCakeOrWeeksModalProps extends InjectedModalProps {
   viewMode?: VeCakeModalView
   showSwitchButton?: boolean
   customWeeks?: string
+  endTime?: number
+  isValidLockAmount?: boolean
 }
 
 export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeAddCakeOrWeeksModalProps>> = ({
   viewMode,
   showSwitchButton,
   customWeeks,
+  endTime,
+  isValidLockAmount,
   onDismiss,
 }) => {
   const { t } = useTranslation()
@@ -49,14 +53,15 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
     setModalViewMode(mode)
   }
 
-  const customVeCakeCard = (
-    <>
-      <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
-        {t('lock overview')}
-      </Text>
-      <PreviewOfVeCakeSnapShotTime />
-    </>
-  )
+  const customVeCakeCard =
+    endTime && isValidLockAmount !== undefined ? (
+      <>
+        <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
+          {t('lock overview')}
+        </Text>
+        <PreviewOfVeCakeSnapShotTime endTime={endTime} isValidLockAmount={isValidLockAmount} />
+      </>
+    ) : null
 
   return (
     <Modal
