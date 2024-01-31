@@ -1,12 +1,12 @@
-import qs from 'qs'
-import { useQuery } from '@tanstack/react-query'
 import {
-  ResponseArticleType,
-  ResponseArticleDataType,
-  transformArticle,
   ArticleType,
+  ResponseArticleDataType,
+  ResponseArticleType,
   fetchAPI,
+  transformArticle,
 } from '@pancakeswap/blog'
+import { useQuery } from '@tanstack/react-query'
+import qs from 'qs'
 
 interface UseAllGamesArticleProps {
   query: string
@@ -28,7 +28,7 @@ export const useAllGamesArticle = ({
   languageOption,
   selectedGamesCategories,
 }: UseAllGamesArticleProps): AllGamesArticleType => {
-  const { data: articlesData, isLoading } = useQuery({
+  const { data: articlesData, isPending } = useQuery({
     queryKey: ['games-articles', query, currentPage, selectedGamesCategories, sortBy, languageOption],
 
     queryFn: async () => {
@@ -83,7 +83,7 @@ export const useAllGamesArticle = ({
   })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? {
       data: [],
       pagination: {

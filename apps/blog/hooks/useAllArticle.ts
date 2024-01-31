@@ -23,7 +23,7 @@ const useAllArticle = ({
   languageOption,
   selectedCategories,
 }: UseAllArticleProps): AllArticleType => {
-  const { data: articlesData, isLoading } = useQuery({
+  const { data: articlesData, isPending } = useQuery({
     queryKey: ['/articles', query, currentPage, selectedCategories, sortBy, languageOption],
 
     queryFn: async () => {
@@ -73,11 +73,11 @@ const useAllArticle = ({
 
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? {
       data: [],
       pagination: {

@@ -8,7 +8,7 @@ interface SearchBarArticle {
 }
 
 const useSearchBarArticle = (searchKey: string): SearchBarArticle => {
-  const { data: articlesData, isLoading } = useQuery({
+  const { data: articlesData, isPending } = useQuery({
     queryKey: [`/searchBarArticles`, searchKey],
 
     queryFn: async () => {
@@ -27,11 +27,11 @@ const useSearchBarArticle = (searchKey: string): SearchBarArticle => {
       return result.data
     },
 
-    enabled: Boolean(searchKey)
+    enabled: Boolean(searchKey),
   })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? [],
   }
 }
