@@ -1,22 +1,22 @@
 import { ArrowForwardIcon, Button, Heading, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import BigNumber from 'bignumber.js'
-import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/legacy/image'
-import { memo } from 'react'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { LotteryResponse } from 'state/types'
-import { styled } from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { useQuery } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
+import { LotteryStatus } from 'config/constants/types'
+import { useCakePrice } from 'hooks/useCakePrice'
+import Image from 'next/legacy/image'
+import { memo } from 'react'
+import { LotteryResponse } from 'state/types'
+import { styled } from 'styled-components'
 import Timer from 'views/Lottery/components/Countdown/Timer'
 import useGetNextLotteryEvent from 'views/Lottery/hooks/useGetNextLotteryEvent'
+import * as S from './Styled'
 import useNextEventCountdown from './hooks/useNextEventCountdown'
 import { lotteryImage, lotteryMobileImage } from './images'
-import * as S from './Styled'
 
 const RightWrapper = styled.div`
   position: absolute;
@@ -69,7 +69,7 @@ export const StyledSubheading = styled(Heading)`
 const isLotteryLive = (status?: LotteryStatus) => (status ? status === LotteryStatus.OPEN : false)
 
 const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
-  const { data } = useQuery({
+  const { data } = useQuery<LotteryResponse>({
     queryKey: ['currentLottery'],
   })
   const cakePriceBusd = useCakePrice()
@@ -94,7 +94,7 @@ const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
 }
 
 const LotteryCountDownTimer = () => {
-  const { data } = useQuery({
+  const { data } = useQuery<LotteryResponse>({
     queryKey: ['currentLottery'],
   })
   const endTimeAsInt = data ? parseInt(data.endTime, 10) : undefined
@@ -109,7 +109,7 @@ const LotteryCountDownTimer = () => {
 const LotteryBanner = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const { data, status } = useQuery({
+  const { data, status } = useQuery<LotteryResponse>({
     queryKey: ['currentLottery'],
   })
 

@@ -1,11 +1,11 @@
-import { Currency } from '@pancakeswap/sdk'
-import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { useDebounce } from '@pancakeswap/hooks'
-import { Field } from 'state/swap/actions'
+import { Currency } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
+import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
+import { Field } from 'state/swap/actions'
 import { useAccount } from 'wagmi'
-import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
-import { MessageType, MMRfqTrade, QuoteRequest, RFQResponse } from '../types'
+import { MMError, getRFQById, sendRFQAndGetRFQId } from '../apis'
+import { MMRfqTrade, MessageType, QuoteRequest, RFQResponse } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 
 export const useGetRFQId = (
@@ -60,7 +60,7 @@ export const useGetRFQTrade = (
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)
-  const [{ error, data, isPending }, setRfqState] = useState<{ error: unknown; data: RFQResponse; isLoading: boolean }>(
+  const [{ error, data, isLoading }, setRfqState] = useState<{ error: unknown; data: RFQResponse; isLoading: boolean }>(
     {
       error: null,
       data: null,
@@ -98,7 +98,7 @@ export const useGetRFQTrade = (
       return {
         error: errorResponse,
         data: !prevState ? dataResponse : isLoadingResponse ? prevData : dataResponse,
-        isLoading: isPending,
+        isLoading: isLoadingResponse,
       }
     })
   }, [errorResponse, dataResponse, isLoadingResponse, enabled])
@@ -114,7 +114,7 @@ export const useGetRFQTrade = (
         refreshRFQ: null,
         error,
         rfqId,
-        isLoading: enabled && isPending,
+        isLoading: enabled && isLoading,
       }
     }
     if (data?.messageType === MessageType.RFQ_RESPONSE) {
@@ -132,7 +132,7 @@ export const useGetRFQTrade = (
         ),
         quoteExpiry: data?.message?.quoteExpiry ?? null,
         refreshRFQ,
-        isLoading: enabled && isPending,
+        isLoading: enabled && isLoading,
       }
     }
     // eslint-disable-next-line no-param-reassign
@@ -141,7 +141,7 @@ export const useGetRFQTrade = (
       rfq: null,
       trade: null,
       quoteExpiry: null,
-      isLoading: enabled && isPending,
+      isLoading: enabled && isLoading,
       refreshRFQ: null,
     }
   }, [
@@ -151,7 +151,7 @@ export const useGetRFQTrade = (
     error,
     inputCurrency,
     isExactIn,
-    isPending,
+    isLoading,
     isRFQLive,
     outputCurrency,
     refreshRFQ,

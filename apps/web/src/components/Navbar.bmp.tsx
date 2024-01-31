@@ -1,11 +1,11 @@
-import { Flex, Box, Image, Text, WalletIcon } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
+import { Box, Flex, Image, Text, WalletIcon } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useTheme from 'hooks/useTheme'
-import { useSystemInfo, bridgeUtils } from 'utils/mpBridge'
 import useAuth from 'hooks/useAuth'
 import { useActiveHandle } from 'hooks/useEagerConnect.bmp'
+import useTheme from 'hooks/useTheme'
 import { useEffect } from 'react'
+import { styled } from 'styled-components'
+import { bridgeUtils, useSystemInfo } from 'utils/mpBridge'
 
 const title = {
   dark: '/images/nav-title-dark.png',
@@ -32,7 +32,9 @@ const Wallet = () => {
     })
   }
   useEffect(() => {
+    // @ts-ignore
     window.bn.connect = active
+    // @ts-ignore
     window.bn.disconnect = logout
   }, [logout, active])
   const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 2)}` : null

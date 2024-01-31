@@ -3,6 +3,7 @@ import duration from 'dayjs/plugin/duration'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import { fetchAllPoolData, fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
@@ -19,7 +20,6 @@ import { Block, Transaction } from 'state/info/types'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { useQuery } from '@tanstack/react-query'
 import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
@@ -364,7 +364,7 @@ const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
 export const useStableSwapTopPoolsAPR = (addresses: string[]): Record<string, number> => {
   const isStableSwap = checkIsStableSwap()
   const chainName = useChainNameByQuery()
-  const { data } = useQuery({
+  const { data } = useQuery<BigNumber[]>({
     queryKey: [`info/pool/stableAPRs/Addresses/`, chainName],
     queryFn: () => stableSwapAPRWithAddressesFetcher(addresses),
     enabled: Boolean(isStableSwap && addresses?.length > 0),
