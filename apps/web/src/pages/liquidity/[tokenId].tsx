@@ -877,9 +877,10 @@ function PositionHistory_({
   const [isExpanded, setIsExpanded] = useState(false)
   const { chainId } = useActiveChainId()
   const client = v3Clients[chainId as ChainId]
-  const { data, isLoading } = useQuery(
-    ['positionHistory', chainId, tokenId],
-    async () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['positionHistory', chainId, tokenId],
+
+    queryFn: async () => {
       const result = await client.request<PositionHistoryResult>(
         gql`
           query positionHistory($tokenId: String!) {
@@ -921,13 +922,12 @@ function PositionHistory_({
         return transaction.mints.length > 0 || transaction.burns.length > 0 || transaction.collects.length > 0
       })
     },
-    {
-      enabled: Boolean(client && tokenId),
-      refetchInterval: 30_000,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(client && tokenId),
+    refetchInterval: 30_000,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   if (isLoading || !data?.length) {
     return null

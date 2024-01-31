@@ -1,12 +1,12 @@
-import { useBCakeFarmBoosterContract, useMasterchef } from 'hooks/useContract'
-import BN from 'bignumber.js'
-import { useCallback } from 'react'
-import _toNumber from 'lodash/toNumber'
-import { Address, useAccount } from 'wagmi'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
-import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { useQuery } from '@tanstack/react-query'
+import BN from 'bignumber.js'
+import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
+import { useBCakeFarmBoosterContract, useMasterchef } from 'hooks/useContract'
+import _toNumber from 'lodash/toNumber'
+import { useCallback } from 'react'
+import { publicClient } from 'utils/wagmi'
+import { Address, useAccount } from 'wagmi'
 import { YieldBoosterState } from './useYieldBoosterState'
 
 const PRECISION_FACTOR = new BN('1000000000000') // 1e12
@@ -119,7 +119,10 @@ export default function useBoostMultiplier({ pid, boosterState, proxyAddress }):
 
   const cacheName = shouldGetFromSC ? `proxy${pid}` : should1X ? `user${pid}` : `public${pid}`
 
-  const { data } = useQuery(['boostMultiplier', cacheName], getMultiplier)
+  const { data } = useQuery({
+    queryKey: ['boostMultiplier', cacheName],
+    queryFn: getMultiplier,
+  })
 
   return data || 0
 }

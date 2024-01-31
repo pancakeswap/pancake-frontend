@@ -9,9 +9,10 @@ interface UserExistResponse {
 const useUserExist = () => {
   const { address } = useAccount()
 
-  const { data: isUserExist, isLoading } = useQuery(
-    ['affiliates-program', 'user-exist', address],
-    async () => {
+  const { data: isUserExist, isLoading } = useQuery({
+    queryKey: ['affiliates-program', 'user-exist', address],
+
+    queryFn: async () => {
       try {
         const queryString = qs.stringify({ address })
         const response = await fetch(`/api/affiliates-program/user-exist?${queryString}`)
@@ -22,12 +23,11 @@ const useUserExist = () => {
         return true
       }
     },
-    {
-      enabled: !!address,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: !!address,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return {
     isUserExist: isUserExist ?? true,

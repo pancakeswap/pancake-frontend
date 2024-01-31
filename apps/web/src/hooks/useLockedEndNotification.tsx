@@ -39,7 +39,9 @@ const useLockedEndNotification = () => {
     if (account) {
       if (!isUndefinedOrNull(isUserLockedEnd)) {
         setLockedNotificationShow(true)
-        queryClient.invalidateQueries(['userCakeLockStatus', account])
+        queryClient.invalidateQueries({
+          queryKey: ['userCakeLockStatus', account],
+        })
       }
     } else {
       setLockedNotificationShow(true)

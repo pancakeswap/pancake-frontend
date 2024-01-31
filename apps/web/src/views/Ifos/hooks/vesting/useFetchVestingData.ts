@@ -17,9 +17,10 @@ const useFetchVestingData = () => {
     [configs],
   )
 
-  const { data, refetch } = useQuery(
-    ['vestingData', account],
-    async () => {
+  const { data, refetch } = useQuery({
+    queryKey: ['vestingData', account],
+
+    queryFn: async () => {
       const allData = await Promise.all(
         allVestingIfo.map(async (ifo) => {
           const response = await fetchUserWalletIfoData(ifo, account)
@@ -60,13 +61,12 @@ const useFetchVestingData = () => {
         },
       )
     },
-    {
-      enabled: Boolean(account),
-      refetchOnWindowFocus: false,
-      refetchInterval: FAST_INTERVAL,
-      staleTime: FAST_INTERVAL,
-    },
-  )
+
+    enabled: Boolean(account),
+    refetchOnWindowFocus: false,
+    refetchInterval: FAST_INTERVAL,
+    staleTime: FAST_INTERVAL,
+  })
 
   return {
     data: data || [],

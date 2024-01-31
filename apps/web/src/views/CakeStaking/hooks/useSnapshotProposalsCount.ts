@@ -19,16 +19,16 @@ const getSnapshotCount = async (space: string) => {
 const SPACE_ID = 'cakevote.eth'
 
 export const useSnapshotProposalsCount = (): number | undefined => {
-  const { data } = useQuery(
-    ['snapshotVotingCount', SPACE_ID],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['snapshotVotingCount', SPACE_ID],
+
+    queryFn: async () => {
       const count = await getSnapshotCount(SPACE_ID)
       return count
     },
-    {
-      keepPreviousData: true,
-    },
-  )
+
+    keepPreviousData: true,
+  })
 
   return data
 }

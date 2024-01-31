@@ -148,9 +148,10 @@ const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps)
   const tradingRewardTopTradersContract = useTradingRewardTopTraderContract({ chainId: ChainId.BSC })
   const contract = type === RewardType.CAKE_STAKERS ? tradingRewardContract : tradingRewardTopTradersContract
 
-  const { data: allPairs, isLoading } = useQuery(
-    ['tradingReward', 'all-activated-trading-reward-pair', status, type],
-    async () => {
+  const { data: allPairs, isLoading } = useQuery({
+    queryKey: ['tradingReward', 'all-activated-trading-reward-pair', status, type],
+
+    queryFn: async () => {
       try {
         const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}/type/${type}`)
         const campaignsResult = await campaignsResponse.json()
@@ -175,13 +176,12 @@ const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps)
         return initialAllTradingRewardState
       }
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      initialData: initialAllTradingRewardState,
-      enabled: Boolean(status && type),
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: initialAllTradingRewardState,
+    enabled: Boolean(status && type),
+  })
 
   return {
     isFetching: isLoading,

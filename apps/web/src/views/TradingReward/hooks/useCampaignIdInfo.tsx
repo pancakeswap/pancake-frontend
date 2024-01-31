@@ -45,9 +45,10 @@ interface UseCampaignIdInfoProps {
 }
 
 const useCampaignIdInfo = ({ campaignId, type }: UseCampaignIdInfoProps): CampaignIdInfo => {
-  const { data: campaignIdInfo, isLoading } = useQuery(
-    ['tradingReward', 'campaign-id-info', campaignId, type],
-    async () => {
+  const { data: campaignIdInfo, isLoading } = useQuery({
+    queryKey: ['tradingReward', 'campaign-id-info', campaignId, type],
+
+    queryFn: async () => {
       try {
         const response = await fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}/address/0x/type/${type}`)
         const { data }: { data: CampaignIdInfoResponse } = await response.json()
@@ -75,13 +76,12 @@ const useCampaignIdInfo = ({ campaignId, type }: UseCampaignIdInfoProps): Campai
         return initialState
       }
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      initialData: initialState,
-      enabled: Boolean(campaignId && type),
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: initialState,
+    enabled: Boolean(campaignId && type),
+  })
 
   return {
     isFetching: isLoading,

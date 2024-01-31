@@ -12,9 +12,10 @@ export const useFarmAuction = (auctionId: number, configuration?: any) => {
       bidders: null,
     },
     refetch,
-  } = useQuery(
-    ['farmAuction', auctionId],
-    async () => {
+  } = useQuery({
+    queryKey: ['farmAuction', auctionId],
+
+    queryFn: async () => {
       const auctionData = await farmAuctionContract.read.auctions([BigInt(auctionId)])
       const processedAuction = await processAuctionData(auctionId, {
         status: auctionData[0],
@@ -31,11 +32,10 @@ export const useFarmAuction = (auctionId: number, configuration?: any) => {
       ])
       return { auction: processedAuction, bidders: sortAuctionBidders(currentAuctionBidders, processedAuction) }
     },
-    {
-      enabled: Boolean(Number.isFinite(auctionId) && auctionId > 0),
-      ...configuration,
-    },
-  )
+
+    enabled: Boolean(Number.isFinite(auctionId) && auctionId > 0),
+    ...configuration,
+  })
 
   return { data, mutate: refetch }
 }

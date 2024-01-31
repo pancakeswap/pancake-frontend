@@ -14,9 +14,10 @@ export const fetchLiquidStaking = async (chainId: number) => {
 export const useLiquidStakingList = (): UseLiquidStakingList => {
   const { chainId } = useActiveChainId()
 
-  const { data, isLoading } = useQuery(
-    ['liquidStaking', 'liquidStaking-list', chainId],
-    async () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['liquidStaking', 'liquidStaking-list', chainId],
+
+    queryFn: async () => {
       try {
         return fetchLiquidStaking(chainId)
       } catch (error) {
@@ -24,11 +25,10 @@ export const useLiquidStakingList = (): UseLiquidStakingList => {
         return []
       }
     },
-    {
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return {
     data,

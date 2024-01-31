@@ -6,12 +6,10 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export function usePredictionConfigs(pickedChainId?: ChainId) {
   const { chainId } = useActiveChainId()
-  const { data } = useQuery(
-    [chainId, pickedChainId, 'prediction-configs'],
-    () => getPredictionConfig(pickedChainId || chainId),
-    {
-      enabled: Boolean(chainId),
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [chainId, pickedChainId, 'prediction-configs'],
+    queryFn: () => getPredictionConfig(pickedChainId || chainId),
+    enabled: Boolean(chainId),
+  })
   return data
 }

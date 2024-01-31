@@ -16,15 +16,13 @@ const usePollPredictions = () => {
   const config = useConfig()
   const predictionsAddress = config?.address
 
-  useQuery(
-    ['predictions', account, chainId, predictionsAddress],
-    () => chainId && dispatch(fetchPredictionData({ account, chainId })),
-    {
-      enabled: Boolean(initialBlock > 0 && predictionsAddress && chainId),
-      refetchInterval: POLL_TIME_IN_SECONDS * 1000,
-      refetchIntervalInBackground: true,
-    },
-  )
+  useQuery({
+    queryKey: ['predictions', account, chainId, predictionsAddress],
+    queryFn: () => chainId && dispatch(fetchPredictionData({ account, chainId })),
+    enabled: Boolean(initialBlock > 0 && predictionsAddress && chainId),
+    refetchInterval: POLL_TIME_IN_SECONDS * 1000,
+    refetchIntervalInBackground: true,
+  })
 }
 
 export default usePollPredictions

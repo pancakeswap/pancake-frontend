@@ -237,18 +237,23 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
     )
   }, [account, ifo, publicIfoData, walletIfoData])
 
-  useQuery(['fetchPublicIfoData', currentBlock, ifo.id], async () => fetchPublicIfoData(currentBlock), {
+  useQuery({
+    queryKey: ['fetchPublicIfoData', currentBlock, ifo.id],
+    queryFn: async () => fetchPublicIfoData(currentBlock),
     enabled: Boolean(currentBlock && (isRecentlyActive || !isPublicIfoDataInitialized)),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
   })
 
-  useQuery(['fetchWalletIfoData', account, ifo.id], async () => fetchWalletIfoData(), {
+  useQuery({
+    queryKey: ['fetchWalletIfoData', account, ifo.id],
+    queryFn: async () => fetchWalletIfoData(),
     enabled: Boolean(isWindowVisible && (isRecentlyActive || !isWalletDataInitialized || hasVesting) && account),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
+
     ...((isRecentlyActive || hasVesting) && {
       refetchInterval: FAST_INTERVAL,
     }),

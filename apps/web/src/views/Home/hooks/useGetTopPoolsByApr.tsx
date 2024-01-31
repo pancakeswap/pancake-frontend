@@ -19,9 +19,10 @@ const useGetTopPoolsByApr = (isIntersecting: boolean, chainId: number) => {
   const [topPools, setTopPools] = useState<(Pool.DeserializedPool<Token> | any)[]>(() => [null, null, null, null, null])
   const { pools } = usePoolsWithVault()
 
-  const { status: fetchStatus, isFetching } = useQuery(
-    [chainId, 'fetchTopPoolsByApr'],
-    async () => {
+  const { status: fetchStatus, isFetching } = useQuery({
+    queryKey: [chainId, 'fetchTopPoolsByApr'],
+
+    queryFn: async () => {
       await dispatch(setInitialPoolConfig({ chainId }))
       return Promise.all([
         dispatch(fetchCakeVaultFees(chainId)),
@@ -29,12 +30,11 @@ const useGetTopPoolsByApr = (isIntersecting: boolean, chainId: number) => {
         dispatch(fetchPoolsPublicDataAsync(chainId)),
       ])
     },
-    {
-      enabled: Boolean(isIntersecting && chainId),
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(isIntersecting && chainId),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   useEffect(() => {
     const [cakePools, otherPools] = partition(pools, (pool) => pool.sousId === 0)

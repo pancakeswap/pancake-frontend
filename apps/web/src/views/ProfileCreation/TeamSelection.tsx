@@ -11,7 +11,10 @@ import useProfileCreation from './contexts/hook'
 const Team: React.FC<React.PropsWithChildren> = () => {
   const { teamId: currentTeamId, actions } = useProfileCreation()
   const { t } = useTranslation()
-  const { data: teams } = useQuery(['teams'], async () => getTeams())
+  const { data: teams } = useQuery({
+    queryKey: ['teams'],
+    queryFn: async () => getTeams(),
+  })
   const teamValues = useMemo(() => (teams ? shuffle(Object.values(teams)) : []), [teams])
   const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
 

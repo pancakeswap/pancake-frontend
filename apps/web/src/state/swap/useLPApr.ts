@@ -23,9 +23,10 @@ interface PoolReserveVolumeResponse {
 }
 
 export const useLPApr = (pair?: Pair | null) => {
-  const { data: poolData } = useQuery(
-    ['LP7dApr', pair?.liquidityToken.address],
-    async () => {
+  const { data: poolData } = useQuery({
+    queryKey: ['LP7dApr', pair?.liquidityToken.address],
+
+    queryFn: async () => {
       if (!pair) return undefined
       const timestampsArray = getDeltaTimestamps()
       const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
@@ -44,14 +45,13 @@ export const useLPApr = (pair?: Pair | null) => {
       const lpApr7d = liquidityUSD > 0 ? (volumeUSDWeek * LP_HOLDERS_FEE * WEEKS_IN_YEAR * 100) / liquidityUSD : 0
       return lpApr7d ? { lpApr7d } : undefined
     },
-    {
-      enabled: Boolean(pair && pair.chainId === ChainId.BSC),
-      refetchInterval: SLOW_INTERVAL,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    enabled: Boolean(pair && pair.chainId === ChainId.BSC),
+    refetchInterval: SLOW_INTERVAL,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  })
 
   return poolData
 }

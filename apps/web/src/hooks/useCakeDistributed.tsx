@@ -7,9 +7,10 @@ export const useCakeDistributed = (): bigint => {
   const cakePool = useRevenueSharingCakePoolContract()
   const veCake = useRevenueSharingVeCakeContract()
 
-  const { data: fromCakePool = 0n } = useQuery(
-    ['cakeDistributed/cakePool', cakePool.address, cakePool.chain?.id],
-    async () => {
+  const { data: fromCakePool = 0n } = useQuery({
+    queryKey: ['cakeDistributed/cakePool', cakePool.address, cakePool.chain?.id],
+
+    queryFn: async () => {
       try {
         const amount = (await cakePool.read.totalDistributed()) ?? 0n
         return amount
@@ -18,13 +19,13 @@ export const useCakeDistributed = (): bigint => {
         return 0n
       }
     },
-    {
-      keepPreviousData: true,
-    },
-  )
-  const { data: fromVeCake = 0n } = useQuery(
-    ['cakeDistributed/veCake', veCake.address, veCake.chain?.id],
-    async () => {
+
+    keepPreviousData: true,
+  })
+  const { data: fromVeCake = 0n } = useQuery({
+    queryKey: ['cakeDistributed/veCake', veCake.address, veCake.chain?.id],
+
+    queryFn: async () => {
       try {
         const amount = (await veCake.read.totalDistributed()) ?? 0n
         return amount
@@ -33,10 +34,9 @@ export const useCakeDistributed = (): bigint => {
         return 0n
       }
     },
-    {
-      keepPreviousData: true,
-    },
-  )
+
+    keepPreviousData: true,
+  })
 
   return INITIAL_INCENTIVE + fromCakePool + fromVeCake
 }

@@ -59,14 +59,12 @@ export const useBlockFromTimeStampQuery = (
   const chainId = multiChainId[chainName]
   const timestampsString = JSON.stringify(timestamps)
   const timestampsArray = JSON.parse(timestampsString)
-  const { data } = useQuery(
-    [`info/blocks/${timestampsString}/${chainId}`, multiChainName[chainId] ?? chainName],
-    () => getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount, chainName),
-    {
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [`info/blocks/${timestampsString}/${chainId}`, multiChainName[chainId] ?? chainName],
+    queryFn: () => getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount, chainName),
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
   return { blocks: data }
 }

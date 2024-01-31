@@ -18,9 +18,10 @@ interface Leaderboard {
 const useLeaderboard = (): Leaderboard => {
   const cakePriceBusd = useCakePrice()
 
-  const { data, isLoading } = useQuery(
-    ['affiliates-program', 'affiliate-program-leaderboard', cakePriceBusd],
-    async () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['affiliates-program', 'affiliate-program-leaderboard', cakePriceBusd],
+
+    queryFn: async () => {
       const response = await fetch(`/api/affiliates-program/leader-board`)
       const result = await response.json()
       const list: ListType[] = result.affiliates.map((affiliate) => {
@@ -32,12 +33,11 @@ const useLeaderboard = (): Leaderboard => {
       })
       return list
     },
-    {
-      enabled: cakePriceBusd.gt(0),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    enabled: cakePriceBusd.gt(0),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   return {
     isFetching: isLoading,

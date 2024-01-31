@@ -36,7 +36,9 @@ export default function useWarningImport() {
 
   const defaultTokens = useAllTokens()
 
-  const { data: loadedTokenList } = useQuery<any>(['token-list'])
+  const { data: loadedTokenList } = useQuery({
+    queryKey: ['token-list'],
+  })
 
   const importTokensNotInDefault = useMemo(() => {
     return !isWrongNetwork && urlLoadedTokens && !!loadedTokenList

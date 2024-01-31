@@ -15,16 +15,16 @@ const useBCakeProxyBalance = () => {
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const cakeContract = useCake()
 
-  const { data, status } = useQuery(
-    ['bCakeProxyBalance', account],
-    async () => {
+  const { data, status } = useQuery({
+    queryKey: ['bCakeProxyBalance', account],
+
+    queryFn: async () => {
       const rawBalance = await cakeContract.read.balanceOf([bCakeProxy.address])
       return new BigNumber(rawBalance.toString())
     },
-    {
-      enabled: Boolean(account && bCakeProxy && !isProxyContractAddressLoading),
-    },
-  )
+
+    enabled: Boolean(account && bCakeProxy && !isProxyContractAddressLoading),
+  })
 
   const balanceAmount = useMemo(
     () => (data ? getBalanceAmount(data, CAKE[chainId].decimals) : new BigNumber(NaN)),

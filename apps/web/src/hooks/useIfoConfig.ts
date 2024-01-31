@@ -6,22 +6,32 @@ import { useMemo } from 'react'
 
 export function useIfoConfigs() {
   const { chainId } = useActiveChainId()
-  const { data } = useQuery([chainId, 'ifo-configs'], () => getIfoConfig(chainId))
+  const { data } = useQuery({
+    queryKey: [chainId, 'ifo-configs'],
+    queryFn: () => getIfoConfig(chainId),
+  })
   return data
 }
 
 export function useIfoConfigsAcrossChains() {
   const { chainId } = useActiveChainId()
-  const { data } = useQuery([chainId, 'ifo-configs'], async () => {
-    const configs = await Promise.all(SUPPORTED_CHAIN_IDS.map(getIfoConfig))
-    return configs.reduce<Ifo[]>((acc, cur) => [...acc, ...cur], [])
+  const { data } = useQuery({
+    queryKey: [chainId, 'ifo-configs'],
+
+    queryFn: async () => {
+      const configs = await Promise.all(SUPPORTED_CHAIN_IDS.map(getIfoConfig))
+      return configs.reduce<Ifo[]>((acc, cur) => [...acc, ...cur], [])
+    },
   })
   return data
 }
 
 export function useActiveIfoConfig() {
   const { chainId } = useActiveChainId()
-  const { data, isLoading } = useQuery([chainId, 'active-ifo'], () => getActiveIfo(chainId))
+  const { data, isLoading } = useQuery({
+    queryKey: [chainId, 'active-ifo'],
+    queryFn: () => getActiveIfo(chainId),
+  })
   return {
     activeIfo: data,
     isLoading,
@@ -30,7 +40,10 @@ export function useActiveIfoConfig() {
 
 export function useInActiveIfoConfigs() {
   const { chainId } = useActiveChainId()
-  const { data } = useQuery([chainId, 'inactive-ifo-configs'], () => getInActiveIfos(chainId))
+  const { data } = useQuery({
+    queryKey: [chainId, 'inactive-ifo-configs'],
+    queryFn: () => getInActiveIfos(chainId),
+  })
   return data
 }
 

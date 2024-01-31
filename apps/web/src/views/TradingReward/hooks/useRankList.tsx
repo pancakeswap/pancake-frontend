@@ -39,9 +39,10 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
   const [lastCampaignId, setLastCampaignId] = useState('')
   const [topThreeTraders, setTopThreeTraders] = useState<RankListDetail[]>([])
 
-  const { data } = useQuery(
-    ['tradingReward', 'trader-rank-list', campaignId, currentPage],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['tradingReward', 'trader-rank-list', campaignId, currentPage],
+
+    queryFn: async () => {
       try {
         setIsLoading(true)
         setLastCampaignId(campaignId)
@@ -78,12 +79,11 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
         setIsLoading(false)
       }
     },
-    {
-      enabled: Boolean(Number(campaignId) > 0 && currentPage),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    enabled: Boolean(Number(campaignId) > 0 && currentPage),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   return {
     isLoading,

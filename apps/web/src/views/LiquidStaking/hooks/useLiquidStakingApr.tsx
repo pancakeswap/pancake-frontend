@@ -18,9 +18,10 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
   const { chainId } = useActiveChainId()
   const { data: liquidStakingList } = useLiquidStakingList()
 
-  const { data, isLoading, refetch } = useQuery(
-    ['liquidStaking', 'liquid-staking-apr', chainId, liquidStakingList],
-    async () => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['liquidStaking', 'liquid-staking-apr', chainId, liquidStakingList],
+
+    queryFn: async () => {
       try {
         const result = await Promise.all(
           liquidStakingList.map(async (i) => {
@@ -45,8 +46,9 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
         return []
       }
     },
-    { enabled: Boolean(liquidStakingList?.length) },
-  )
+
+    enabled: Boolean(liquidStakingList?.length),
+  })
 
   return {
     isFetching: isLoading,

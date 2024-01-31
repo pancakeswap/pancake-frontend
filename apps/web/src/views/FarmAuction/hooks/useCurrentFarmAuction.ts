@@ -10,16 +10,16 @@ import { useQuery } from '@tanstack/react-query'
 import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account: Address) => {
-  const { data: currentAuctionId = null } = useQuery(
-    ['farmAuction', 'currentAuctionId'],
-    async () => {
+  const { data: currentAuctionId = null } = useQuery({
+    queryKey: ['farmAuction', 'currentAuctionId'],
+
+    queryFn: async () => {
       const auctionId = await farmAuctionContract.read.currentAuctionId()
       return Number(auctionId)
     },
-    {
-      refetchInterval: FAST_INTERVAL,
-    },
-  )
+
+    refetchInterval: FAST_INTERVAL,
+  })
 
   const {
     data: { auction: currentAuction, bidders },

@@ -178,9 +178,10 @@ export const useFetchIfo = () => {
 
   usePoolsConfigInitialize()
 
-  useQuery(
-    ['fetchIfoPublicData', chainId],
-    async () => {
+  useQuery({
+    queryKey: ['fetchIfoPublicData', chainId],
+
+    queryFn: async () => {
       if (chainId && cakeVaultChain) {
         batch(() => {
           dispatch(fetchCakePoolPublicDataAsync())
@@ -190,18 +191,18 @@ export const useFetchIfo = () => {
       }
       return null
     },
-    {
-      enabled: Boolean(chainId && ifoSupported),
-      refetchInterval: FAST_INTERVAL,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
 
-  useQuery(
-    ['fetchIfoUserData', account, chainId],
-    async () => {
+    enabled: Boolean(chainId && ifoSupported),
+    refetchInterval: FAST_INTERVAL,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
+
+  useQuery({
+    queryKey: ['fetchIfoUserData', account, chainId],
+
+    queryFn: async () => {
       if (chainId && cakeVaultChain && account) {
         batch(() => {
           dispatch(fetchCakePoolUserDataAsync({ account, chainId: cakeVaultChain }))
@@ -211,30 +212,29 @@ export const useFetchIfo = () => {
       }
       return null
     },
-    {
-      enabled: Boolean(account && chainId && cakeVaultChain),
-      refetchInterval: FAST_INTERVAL,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
 
-  useQuery(
-    ['fetchCakeVaultFees', cakeVaultChain],
-    async () => {
+    enabled: Boolean(account && chainId && cakeVaultChain),
+    refetchInterval: FAST_INTERVAL,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
+
+  useQuery({
+    queryKey: ['fetchCakeVaultFees', cakeVaultChain],
+
+    queryFn: async () => {
       if (cakeVaultChain) {
         dispatch(fetchCakeVaultFees(cakeVaultChain))
       }
       return null
     },
-    {
-      enabled: Boolean(cakeVaultChain && ifoSupported),
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    enabled: Boolean(cakeVaultChain && ifoSupported),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 }
 
 export const useCakeVault = () => {

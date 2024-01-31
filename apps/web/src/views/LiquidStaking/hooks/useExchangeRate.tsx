@@ -26,9 +26,10 @@ export const useExchangeRate = ({ decimals }: UseExchangeRateProps): UseExchange
   const { chainId } = useActiveChainId()
   const { data: liquidStakingList } = useLiquidStakingList()
 
-  const { data, isLoading, refetch } = useQuery(
-    ['liquidStaking', 'user-exchange-rate', chainId, liquidStakingList, decimals],
-    async () => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['liquidStaking', 'user-exchange-rate', chainId, liquidStakingList, decimals],
+
+    queryFn: async () => {
       try {
         const client = publicClient({ chainId })
 
@@ -63,10 +64,9 @@ export const useExchangeRate = ({ decimals }: UseExchangeRateProps): UseExchange
         return []
       }
     },
-    {
-      enabled: Boolean(liquidStakingList?.length && decimals),
-    },
-  )
+
+    enabled: Boolean(liquidStakingList?.length && decimals),
+  })
 
   return {
     isFetching: isLoading,

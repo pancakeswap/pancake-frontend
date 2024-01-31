@@ -9,7 +9,10 @@ import TeamHeader from './components/TeamHeader'
 
 const Teams = () => {
   const { t } = useTranslation()
-  const { data, status } = useQuery(['teams'], async () => getTeams())
+  const { data, status } = useQuery({
+    queryKey: ['teams'],
+    queryFn: async () => getTeams(),
+  })
   const teamList = data ? Object.values(data) : []
   const topTeams = orderBy(teamList, ['points', 'id', 'name'], ['desc', 'asc', 'asc'])
 

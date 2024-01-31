@@ -29,9 +29,10 @@ const useUserClaimList = ({ currentPage }) => {
   const { address } = useAccount()
   const { isUserExist } = useUserExist()
 
-  const { data, isLoading, refetch } = useQuery(
-    ['affiliates-program', 'user-claim-list', isUserExist, address, currentPage],
-    async () => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['affiliates-program', 'user-claim-list', isUserExist, address, currentPage],
+
+    queryFn: async () => {
       try {
         const skip = currentPage === 1 ? 0 : (currentPage - 1) * MAX_PER_PAGE
         const urlParamsObject = { address, skip, take: MAX_PER_PAGE }
@@ -50,12 +51,11 @@ const useUserClaimList = ({ currentPage }) => {
         }
       }
     },
-    {
-      enabled: Boolean(address && isUserExist),
-      refetchInterval: FAST_INTERVAL * 3,
-      keepPreviousData: true,
-    },
-  )
+
+    enabled: Boolean(address && isUserExist),
+    refetchInterval: FAST_INTERVAL * 3,
+    keepPreviousData: true,
+  })
 
   return {
     data,

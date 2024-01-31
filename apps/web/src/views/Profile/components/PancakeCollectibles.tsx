@@ -14,7 +14,9 @@ const CollectionCardWithVolume = dynamic(
 
 const PancakeCollectibles = () => {
   const { t } = useTranslation()
-  const { data: collections, status } = useQuery<Collection[]>(['pancakeCollectibles'])
+  const { data: collections, status } = useQuery({
+    queryKey: ['pancakeCollectibles'],
+  })
 
   return (
     <>

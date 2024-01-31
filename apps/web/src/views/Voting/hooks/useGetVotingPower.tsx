@@ -21,9 +21,10 @@ interface State {
 
 const useGetVotingPower = (block?: number): State & { isLoading: boolean; isError: boolean } => {
   const { address: account } = useAccount()
-  const { data, status, error } = useQuery(
-    [account, block, 'votingPower'],
-    async () => {
+  const { data, status, error } = useQuery({
+    queryKey: [account, block, 'votingPower'],
+
+    queryFn: async () => {
       if (!account) {
         throw new Error('No account')
       }
@@ -59,13 +60,12 @@ const useGetVotingPower = (block?: number): State & { isLoading: boolean; isErro
         lockedEndTime,
       }
     },
-    {
-      enabled: Boolean(account),
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  )
+
+    enabled: Boolean(account),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
   if (error) console.error(error)
 
   return { total: 0, ...data, isLoading: status !== 'success', isError: status === 'error' }

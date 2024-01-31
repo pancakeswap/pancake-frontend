@@ -63,9 +63,10 @@ const farmFetcherV3 = createFarmFetcherV3(getViemClients)
 export const useFarmsV3Public = () => {
   const { chainId } = useActiveChainId()
 
-  return useQuery(
-    [chainId, 'farmV3ApiFetch'],
-    async () => {
+  return useQuery({
+    queryKey: [chainId, 'farmV3ApiFetch'],
+
+    queryFn: async () => {
       if (API_FLAG && chainId) {
         return farmV3ApiFetch(chainId).catch((err) => {
           console.error(err)
@@ -92,12 +93,11 @@ export const useFarmsV3Public = () => {
         return fallback
       }
     },
-    {
-      enabled: Boolean(farmFetcherV3.isChainSupported(chainId ?? -1)),
-      refetchInterval: FAST_INTERVAL * 3,
-      initialData: fallback,
-    },
-  )
+
+    enabled: Boolean(farmFetcherV3.isChainSupported(chainId ?? -1)),
+    refetchInterval: FAST_INTERVAL * 3,
+    initialData: fallback,
+  })
 }
 
 interface UseFarmsOptions {
@@ -112,9 +112,10 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
 
   const cakePrice = useCakePrice()
 
-  const { data } = useQuery<FarmsV3Response<FarmV3DataWithPriceTVL>>(
-    [chainId, 'cake-apr-tvl'],
-    async () => {
+  const { data } = useQuery({
+    queryKey: [chainId, 'cake-apr-tvl'],
+
+    queryFn: async () => {
       if (chainId !== farmV3?.data.chainId) {
         throw new Error('ChainId mismatch')
       }
@@ -170,12 +171,11 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
         farmsWithPrice: farmWithPriceAndCakeAPR,
       }
     },
-    {
-      enabled: Boolean(farmV3.data.farmsWithPrice.length > 0),
-      refetchInterval: FAST_INTERVAL * 3,
-      staleTime: FAST_INTERVAL,
-    },
-  )
+
+    enabled: Boolean(farmV3.data.farmsWithPrice.length > 0),
+    refetchInterval: FAST_INTERVAL * 3,
+    staleTime: FAST_INTERVAL,
+  })
 
   return {
     data: useMemo(() => {
@@ -220,9 +220,10 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
     return callData
   }, [account, masterchefV3?.abi, stakedTokenIds, chainId])
 
-  const { data } = useQuery(
-    ['mcv3-harvest', harvestCalls],
-    () => {
+  const { data } = useQuery({
+    queryKey: ['mcv3-harvest', harvestCalls],
+
+    queryFn: () => {
       return masterchefV3?.simulate.multicall([harvestCalls], { account, value: 0n }).then((res) => {
         return res.result
           .map((r) =>
@@ -237,11 +238,10 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
           })
       })
     },
-    {
-      enabled: Boolean(account),
-      keepPreviousData: true,
-    },
-  )
+
+    enabled: Boolean(account),
+    keepPreviousData: true,
+  })
 
   return { tokenIdResults: data || [], isLoading: harvestCalls.length > 0 && !data }
 }
@@ -364,20 +364,20 @@ const useV3BoostedFarm = (pids?: number[]) => {
   const { chainId } = useActiveChainId()
   const farmBoosterVeCakeContract = useBCakeFarmBoosterVeCakeContract()
 
-  const { data } = useQuery(
-    ['v3/boostedFarm', chainId, pids?.join('-')],
-    () =>
+  const { data } = useQuery({
+    queryKey: ['v3/boostedFarm', chainId, pids?.join('-')],
+
+    queryFn: () =>
       getV3FarmBoosterWhiteList({
         farmBoosterContract: farmBoosterVeCakeContract,
         chainId: chainId ?? -1,
         pids: pids ?? [],
       }),
-    {
-      enabled: Boolean(chainId && pids && pids.length > 0 && bCakeSupportedChainId.includes(chainId)),
-      retry: 3,
-      retryDelay: 3000,
-    },
-  )
+
+    enabled: Boolean(chainId && pids && pids.length > 0 && bCakeSupportedChainId.includes(chainId)),
+    retry: 3,
+    retryDelay: 3000,
+  })
   return { data }
 }
 

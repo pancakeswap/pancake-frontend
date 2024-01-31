@@ -139,9 +139,10 @@ export function useV3PoolsWithTicks(
     return POOLS_SLOW_REVALIDATE[chainId] || 0
   }, [pools])
 
-  const poolsWithTicks = useQuery(
-    ['v3_pool_ticks', key],
-    async () => {
+  const poolsWithTicks = useQuery({
+    queryKey: ['v3_pool_ticks', key],
+
+    queryFn: async () => {
       if (!pools) {
         throw new Error('Invalid pools to get ticks')
       }
@@ -168,15 +169,14 @@ export function useV3PoolsWithTicks(
         blockNumber,
       }
     },
-    {
-      enabled: Boolean(key && pools && enabled),
-      refetchInterval: refreshInterval,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      retry: 3,
-    },
-  )
+
+    enabled: Boolean(key && pools && enabled),
+    refetchInterval: refreshInterval,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 3,
+  })
 
   return poolsWithTicks
 }

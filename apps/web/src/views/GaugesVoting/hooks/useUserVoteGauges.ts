@@ -32,9 +32,16 @@ export const useUserVoteSlopes = () => {
   const { account, chainId } = useAccountActiveChain()
   const publicClient = usePublicClient({ chainId })
 
-  const { data, refetch } = useQuery(
-    ['/vecake/user-vote-slopes', gaugesVotingContract.address, account, gauges?.length, userInfo?.cakePoolProxy],
-    async (): Promise<VoteSlope[]> => {
+  const { data, refetch } = useQuery({
+    queryKey: [
+      '/vecake/user-vote-slopes',
+      gaugesVotingContract.address,
+      account,
+      gauges?.length,
+      userInfo?.cakePoolProxy,
+    ],
+
+    queryFn: async (): Promise<VoteSlope[]> => {
       if (!gauges || gauges.length === 0 || !account) return []
 
       const hasProxy = userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress)
@@ -78,10 +85,9 @@ export const useUserVoteSlopes = () => {
         }
       })
     },
-    {
-      enabled: Boolean(gauges && gauges.length) && account && account !== '0x',
-    },
-  )
+
+    enabled: Boolean(gauges && gauges.length) && account && account !== '0x',
+  })
 
   return {
     data: data ?? [],

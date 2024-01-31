@@ -11,9 +11,10 @@ const useDefaultLinkId = () => {
 
   const queryClient = useQueryClient()
 
-  const { data: defaultLinkId, refetch } = useQuery(
-    ['affiliates-program', 'affiliate-fee-exist'],
-    async () => {
+  const { data: defaultLinkId, refetch } = useQuery({
+    queryKey: ['affiliates-program', 'affiliate-fee-exist'],
+
+    queryFn: async () => {
       try {
         const queryString = qs.stringify({ linkId: randomNanoId })
         const response = await fetch(`/api/affiliates-program/affiliate-fee-exist?${queryString}`)
@@ -22,7 +23,9 @@ const useDefaultLinkId = () => {
         const regex = /^[a-zA-Z0-9_]+$/
         if (result.exist || !regex.test(randomNanoId)) {
           randomNanoId = nanoid(20)
-          queryClient.invalidateQueries(['affiliates-program', 'affiliate-fee-exist'])
+          queryClient.invalidateQueries({
+            queryKey: ['affiliates-program', 'affiliate-fee-exist'],
+          })
         }
         return randomNanoId
       } catch (error) {
@@ -30,12 +33,11 @@ const useDefaultLinkId = () => {
         return ''
       }
     },
-    {
-      enabled: !!randomNanoId,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    enabled: !!randomNanoId,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   return {
     defaultLinkId,

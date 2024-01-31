@@ -9,19 +9,19 @@ export const useFirstTimeCrossFarming = (vaultPid: number | undefined) => {
     return vaultPid && chainId ? getCrossFarmingSenderContract(null, chainId) : null
   }, [chainId, vaultPid])
 
-  const { data, refetch } = useQuery(
-    ['isFirstTimeCrossFarming', account, chainId],
-    async () => {
+  const { data, refetch } = useQuery({
+    queryKey: ['isFirstTimeCrossFarming', account, chainId],
+
+    queryFn: async () => {
       const firstTimeDeposit = await crossFarmingAddress.read.is1st([account])
       return !firstTimeDeposit
     },
-    {
-      enabled: Boolean(account && crossFarmingAddress),
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(account && crossFarmingAddress),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return { isFirstTime: data, refresh: refetch }
 }

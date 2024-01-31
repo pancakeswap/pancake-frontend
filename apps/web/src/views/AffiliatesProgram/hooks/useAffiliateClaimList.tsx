@@ -11,9 +11,10 @@ const useAffiliateClaimList = ({ currentPage }) => {
   const { isAffiliate } = useAuthAffiliate()
   const { isAffiliateExist } = useAuthAffiliateExist()
 
-  const { data, isLoading, refetch } = useQuery(
-    ['affiliates-program', 'affiliate-claim-list', isAffiliateExist, isAffiliate, address, currentPage],
-    async () => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['affiliates-program', 'affiliate-claim-list', isAffiliateExist, isAffiliate, address, currentPage],
+
+    queryFn: async () => {
       try {
         const skip = currentPage === 1 ? 0 : (currentPage - 1) * MAX_PER_PAGE
         const urlParamsObject = { skip, take: MAX_PER_PAGE }
@@ -33,12 +34,11 @@ const useAffiliateClaimList = ({ currentPage }) => {
         }
       }
     },
-    {
-      enabled: Boolean(address && isAffiliateExist && isAffiliate),
-      refetchInterval: FAST_INTERVAL * 3,
-      keepPreviousData: true,
-    },
-  )
+
+    enabled: Boolean(address && isAffiliateExist && isAffiliate),
+    refetchInterval: FAST_INTERVAL * 3,
+    keepPreviousData: true,
+  })
 
   return {
     data,

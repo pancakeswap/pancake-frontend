@@ -11,9 +11,10 @@ const initialState = {
 const useTradingFeeClaimedRecord = ({ type, campaignId }: { type: RewardType; campaignId: string }) => {
   const { address: account } = useAccount()
 
-  const { data } = useQuery(
-    ['tradingReward', 'trading-fee-claimed-record', account],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['tradingReward', 'trading-fee-claimed-record', account],
+
+    queryFn: async () => {
       try {
         // campaignId & type will not affect API value
         const response = await fetch(
@@ -26,13 +27,12 @@ const useTradingFeeClaimedRecord = ({ type, campaignId }: { type: RewardType; ca
         return initialState
       }
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      initialData: initialState,
-      enabled: Boolean(account && type),
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: initialState,
+    enabled: Boolean(account && type),
+  })
 
   return data
 }

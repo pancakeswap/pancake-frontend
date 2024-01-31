@@ -49,9 +49,10 @@ const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoPro
       ? getTradingRewardAddress(ChainId.BSC)
       : getTradingRewardTopTradesAddress(ChainId.BSC)
 
-  const { data: allUserCampaignInfoData, isLoading } = useQuery(
-    ['tradingReward', 'all-campaign-id-info', account, campaignIds, type],
-    async () => {
+  const { data: allUserCampaignInfoData, isLoading } = useQuery({
+    queryKey: ['tradingReward', 'all-campaign-id-info', account, campaignIds, type],
+
+    queryFn: async () => {
       try {
         const allUserCampaignInfo = await Promise.all(
           campaignIds.map(async (campaignId: string) => {
@@ -135,12 +136,11 @@ const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoPro
         return []
       }
     },
-    {
-      refetchInterval: SLOW_INTERVAL,
-      initialData: [],
-      enabled: Boolean(campaignIds.length > 0 && account && type),
-    },
-  )
+
+    refetchInterval: SLOW_INTERVAL,
+    initialData: [],
+    enabled: Boolean(campaignIds.length > 0 && account && type),
+  })
 
   return {
     isFetching: isLoading,

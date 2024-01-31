@@ -58,9 +58,10 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
     return Boolean(chainId && chainIds.includes(chainId))
   }, [chainId])
 
-  const { data, isLoading, refetch } = useQuery(
-    ['/fetch-position-manager-apr', chainId],
-    async () => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['/fetch-position-manager-apr', chainId],
+
+    queryFn: async () => {
       try {
         const response = await fetch(`${POSITION_MANAGER_API}?chainId=${chainId}&item=feeAvg`, {
           method: 'POST',
@@ -80,15 +81,15 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
         return []
       }
     },
-    {
-      enabled: supportedChain,
-      refetchOnWindowFocus: false,
-    },
-  )
 
-  const { data: fallbackData, isLoading: isFallbackLoading } = useQuery(
-    ['/fetch-position-manager-apr-fallback', chainId],
-    async () => {
+    enabled: supportedChain,
+    refetchOnWindowFocus: false,
+  })
+
+  const { data: fallbackData, isLoading: isFallbackLoading } = useQuery({
+    queryKey: ['/fetch-position-manager-apr-fallback', chainId],
+
+    queryFn: async () => {
       try {
         const response = await fetch(`${POSITION_MANAGER_API}?chainId=${chainId}&item=feeAvg`, {
           method: 'POST',
@@ -108,15 +109,15 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
         return []
       }
     },
-    {
-      enabled: supportedChain,
-      refetchOnWindowFocus: false,
-    },
-  )
 
-  const { data: specificData, isLoading: isSpecificLoading } = useQuery(
-    ['/fetch-position-manager-apr-specific', chainId],
-    async () => {
+    enabled: supportedChain,
+    refetchOnWindowFocus: false,
+  })
+
+  const { data: specificData, isLoading: isSpecificLoading } = useQuery({
+    queryKey: ['/fetch-position-manager-apr-specific', chainId],
+
+    queryFn: async () => {
       try {
         const result = await fetchAllSpecificTimeWindow(timeWindows, chainId)
         return result
@@ -125,11 +126,10 @@ export const useFetchApr = (timeWindows: number[]): AprData => {
         return []
       }
     },
-    {
-      enabled: supportedChain,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: supportedChain,
+    refetchOnWindowFocus: false,
+  })
 
   return {
     data: data ?? [],

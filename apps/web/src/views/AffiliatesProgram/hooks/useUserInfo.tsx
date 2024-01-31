@@ -12,9 +12,10 @@ interface UserInfoResponse {
 const useUserInfo = () => {
   const { address } = useAccount()
 
-  const { data: userInfo } = useQuery(
-    ['affiliates-program', 'user-info', address],
-    async () => {
+  const { data: userInfo } = useQuery({
+    queryKey: ['affiliates-program', 'user-info', address],
+
+    queryFn: async () => {
       try {
         const queryString = qs.stringify({ address })
         const response = await fetch(`/api/affiliates-program/user-info?${queryString}`)
@@ -29,10 +30,9 @@ const useUserInfo = () => {
         }
       }
     },
-    {
-      enabled: !!address,
-    },
-  )
+
+    enabled: !!address,
+  })
 
   return {
     userInfo: userInfo ?? {

@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
+import { useV3AirdropContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { useV3AirdropContract } from 'hooks/useContract'
-import { useQuery } from '@tanstack/react-query'
 
 interface AirdropModalStatus {
   shouldShowModal: boolean
@@ -14,30 +14,28 @@ const useAirdropModalStatus = (): AirdropModalStatus => {
   const { address: account } = useAccount()
   const v3Airdrop = useV3AirdropContract()
 
-  const { data: isAccountClaimed, status: accountClaimedStatus } = useQuery(
-    [account, '/airdrop-claimed'],
-    async () => {
+  const { data: isAccountClaimed, status: accountClaimedStatus } = useQuery({
+    queryKey: [account, '/airdrop-claimed'],
+
+    queryFn: async () => {
       if (!account) return undefined
       return v3Airdrop.read.isClaimed([account])
     },
-    {
-      enabled: Boolean(account),
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
 
-  const { data: v3WhitelistAddress } = useQuery(
-    ['/airdrop-whitelist-json'],
-    async () => (await fetch(`${GITHUB_ENDPOINT}/forFE.json`)).json(),
-    {
-      enabled: Boolean(!isAccountClaimed && accountClaimedStatus === 'success'),
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+    enabled: Boolean(account),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
+
+  const { data: v3WhitelistAddress } = useQuery({
+    queryKey: ['/airdrop-whitelist-json'],
+    queryFn: async () => (await fetch(`${GITHUB_ENDPOINT}/forFE.json`)).json(),
+    enabled: Boolean(!isAccountClaimed && accountClaimedStatus === 'success'),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   const shouldShowModal = useMemo(() => {
     return (

@@ -10,9 +10,10 @@ const CMC_ENDPOINT = 'https://3rdparty-apis.coinmarketcap.com/v1/cryptocurrency/
  * @param address token address (all lowercase, checksummed are not supported by CMC)
  */
 const useCMCLink = (address: string): string | undefined => {
-  const { data: cmcPageUrl } = useQuery(
-    ['cmcLink', address],
-    async () => {
+  const { data: cmcPageUrl } = useQuery({
+    queryKey: ['cmcLink', address],
+
+    queryFn: async () => {
       const response = await fetch(`${CMC_ENDPOINT}${address}`)
 
       if (response.ok) {
@@ -20,13 +21,12 @@ const useCMCLink = (address: string): string | undefined => {
       }
       return undefined
     },
-    {
-      enabled: Boolean(address),
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(address),
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
 
   return cmcPageUrl
 }

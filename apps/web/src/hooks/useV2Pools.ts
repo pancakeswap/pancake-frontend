@@ -48,13 +48,10 @@ export function useV2CandidatePools(
   const fetchingBlock = useRef<string | undefined>(undefined)
   const queryEnabled = Boolean(options?.enabled && key)
 
-  const result = useQuery<{
-    pools: V2Pool[]
-    key?: string
-    blockNumber?: number
-  }>(
-    ['V2_Candidate_Pools', key],
-    async () => {
+  const result = useQuery({
+    queryKey: ['V2_Candidate_Pools', key],
+
+    queryFn: async () => {
       fetchingBlock.current = options?.blockNumber?.toString()
       try {
         const pools = await SmartRouter.getV2CandidatePools({
@@ -73,13 +70,12 @@ export function useV2CandidatePools(
         fetchingBlock.current = undefined
       }
     },
-    {
-      enabled: Boolean(queryEnabled && key),
-      refetchInterval: refreshInterval,
-      refetchOnWindowFocus: false,
-      retry: 3,
-    },
-  )
+
+    enabled: Boolean(queryEnabled && key),
+    refetchInterval: refreshInterval,
+    refetchOnWindowFocus: false,
+    retry: 3,
+  })
 
   const { refetch, data, isLoading, isFetching } = result
 

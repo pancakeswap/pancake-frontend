@@ -69,7 +69,9 @@ export const StyledSubheading = styled(Heading)`
 const isLotteryLive = (status?: LotteryStatus) => (status ? status === LotteryStatus.OPEN : false)
 
 const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
-  const { data } = useQuery<LotteryResponse>(['currentLottery'])
+  const { data } = useQuery({
+    queryKey: ['currentLottery'],
+  })
   const cakePriceBusd = useCakePrice()
   const prizeInBusd = new BigNumber(data?.amountCollectedInCake || Number.NaN).times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
@@ -92,7 +94,9 @@ const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
 }
 
 const LotteryCountDownTimer = () => {
-  const { data } = useQuery<LotteryResponse>(['currentLottery'])
+  const { data } = useQuery({
+    queryKey: ['currentLottery'],
+  })
   const endTimeAsInt = data ? parseInt(data.endTime, 10) : undefined
   const { nextEventTime } = useGetNextLotteryEvent(endTimeAsInt, data?.status)
   const secondsRemaining = useNextEventCountdown(nextEventTime)
@@ -105,7 +109,9 @@ const LotteryCountDownTimer = () => {
 const LotteryBanner = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const { data, status } = useQuery<LotteryResponse>(['currentLottery'])
+  const { data, status } = useQuery({
+    queryKey: ['currentLottery'],
+  })
 
   return (
     <S.Wrapper>

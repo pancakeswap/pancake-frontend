@@ -21,7 +21,9 @@ export function useIfoCredit({ chainId, ifoAddress }: IfoCreditParams) {
 }
 
 export function useIfoCeiling({ chainId }: { chainId?: ChainId }): BigNumber | undefined {
-  const { data } = useQuery([chainId, 'ifo-ceiling'], () => fetchPublicIfoData(chainId, getViemClients), {
+  const { data } = useQuery({
+    queryKey: [chainId, 'ifo-ceiling'],
+    queryFn: () => fetchPublicIfoData(chainId, getViemClients),
     enabled: !!chainId,
   })
   return useMemo(() => (data?.ceiling ? new BigNumber(data.ceiling) : undefined), [data])

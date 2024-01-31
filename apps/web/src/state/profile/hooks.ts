@@ -1,10 +1,10 @@
-import { useAccount } from 'wagmi'
-import { getAchievements } from 'state/achievements/helpers'
 import { useTranslation } from '@pancakeswap/localization'
-import { FetchStatus } from 'config/constants/types'
 import { QueryObserverResult, useQuery } from '@tanstack/react-query'
-import { getProfile, GetProfileResponse } from './helpers'
+import { FetchStatus } from 'config/constants/types'
+import { getAchievements } from 'state/achievements/helpers'
+import { useAccount } from 'wagmi'
 import { Profile } from '../types'
+import { GetProfileResponse, getProfile } from './helpers'
 
 export const useProfileForAddress = (
   address: string,
@@ -20,7 +20,9 @@ export const useProfileForAddress = (
   isValidating: boolean
   refresh: () => Promise<QueryObserverResult<GetProfileResponse>>
 } => {
-  const { data, status, refetch, isFetching } = useQuery([address, 'profile'], () => getProfile(address), {
+  const { data, status, refetch, isFetching } = useQuery({
+    queryKey: [address, 'profile'],
+    queryFn: () => getProfile(address),
     enabled: Boolean(address),
     refetchOnMount: fetchConfiguration.revalidateIfStale,
     refetchOnWindowFocus: fetchConfiguration.revalidateOnFocus,
@@ -41,7 +43,9 @@ export const useProfileForAddress = (
 export const useAchievementsForAddress = (address: string) => {
   const { t } = useTranslation()
 
-  const { data, status, refetch } = useQuery([address, 'achievements'], () => getAchievements(address, t), {
+  const { data, status, refetch } = useQuery({
+    queryKey: [address, 'achievements'],
+    queryFn: () => getAchievements(address, t),
     enabled: Boolean(address),
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -50,7 +54,7 @@ export const useAchievementsForAddress = (address: string) => {
 
   return {
     achievements: data || [],
-    isFetching: status === 'loading',
+    isFetching: status === 'pending',
     refresh: refetch,
   }
 }
@@ -64,19 +68,19 @@ export const useProfile = (): {
   refresh: () => Promise<QueryObserverResult<GetProfileResponse | undefined>>
 } => {
   const { address: account } = useAccount()
-  const { data, status, refetch } = useQuery(
-    [account, 'profile'],
-    () => {
+  const { data, status, refetch } = useQuery({
+    queryKey: [account, 'profile'],
+
+    queryFn: () => {
       if (!account) return undefined
       return getProfile(account)
     },
-    {
-      enabled: Boolean(account),
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(account),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   const { profile, hasRegistered } = data ?? ({ profile: undefined, hasRegistered: false } as GetProfileResponse)
 

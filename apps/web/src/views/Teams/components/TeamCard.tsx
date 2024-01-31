@@ -75,7 +75,10 @@ const StatRow = styled.div`
 const TeamCard: React.FC<React.PropsWithChildren<TeamCardProps>> = ({ id }) => {
   const { t } = useTranslation()
   const idNumber = Number(id)
-  const { data: team, status } = useQuery(['team', id], async () => getTeam(idNumber))
+  const { data: team, status } = useQuery({
+    queryKey: ['team', id],
+    queryFn: async () => getTeam(idNumber),
+  })
 
   return (
     <Wrapper>

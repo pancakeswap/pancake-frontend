@@ -9,9 +9,10 @@ const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
   const { chainId } = useActiveChainId()
   const { connector } = useAccount()
 
-  const { data: gelatoLimitOrder } = useQuery(
-    ['limitOrders', 'gelatoLimitOrder'],
-    async () => {
+  const { data: gelatoLimitOrder } = useQuery({
+    queryKey: ['limitOrders', 'gelatoLimitOrder'],
+
+    queryFn: async () => {
       const Web3Provider = await import('ethers').then(({ providers }) => {
         return providers.Web3Provider
       })
@@ -21,12 +22,11 @@ const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
         return lib
       })
     },
-    {
-      enabled: Boolean(chainId === ChainId.BSC && connector),
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(chainId === ChainId.BSC && connector),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return gelatoLimitOrder
 }

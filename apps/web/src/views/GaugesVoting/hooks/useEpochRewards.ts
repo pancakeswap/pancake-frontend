@@ -7,17 +7,17 @@ export const useEpochRewards = (): number => {
   const revenueSharingPoolContract = useRevenueSharingVeCakeContract()
   const currentTimestamp = useCurrentBlockTimestamp()
 
-  const { data } = useQuery(
-    ['epochRewards', revenueSharingPoolContract.address],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['epochRewards', revenueSharingPoolContract.address],
+
+    queryFn: async () => {
       const week = Math.floor(currentTimestamp / WEEK) * WEEK
       const amount = (await revenueSharingPoolContract.read.tokensPerWeek([BigInt(week)])) ?? 0n
       return Number(amount)
     },
-    {
-      keepPreviousData: true,
-    },
-  )
+
+    keepPreviousData: true,
+  })
 
   return data ?? 0
 }

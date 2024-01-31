@@ -299,40 +299,41 @@ export const useFetchPairPricesV3 = ({
   currentSwapPrice,
 }: useFetchPairPricesParams) => {
   const { chainId } = useActiveChainId()
-  const { data: protocol0 } = useQuery(
-    ['protocol', token0Address, chainId],
-    async () => {
+  const { data: protocol0 } = useQuery({
+    queryKey: ['protocol', token0Address, chainId],
+
+    queryFn: async () => {
       if (!chainId) return undefined
       return getTokenBestTvlProtocol(token0Address, chainId)
     },
-    {
-      enabled: Boolean(token0Address && chainId),
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    },
-  )
-  const { data: protocol1 } = useQuery(
-    ['protocol', token1Address, chainId],
-    async () => {
+
+    enabled: Boolean(token0Address && chainId),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  })
+  const { data: protocol1 } = useQuery({
+    queryKey: ['protocol', token1Address, chainId],
+
+    queryFn: async () => {
       if (!chainId) return undefined
       return getTokenBestTvlProtocol(token1Address, chainId)
     },
-    {
-      enabled: Boolean(token1Address && chainId),
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    enabled: Boolean(token1Address && chainId),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  })
 
   const {
     data: normalizedDerivedPairData,
     error,
     isLoading,
-  } = useQuery(
-    ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1, timeWindow }],
-    async () => {
+  } = useQuery({
+    queryKey: ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1, timeWindow }],
+
+    queryFn: async () => {
       if (!chainId) return undefined
       const data = await fetchDerivedPriceData(
         token0Address,
@@ -347,15 +348,14 @@ export const useFetchPairPricesV3 = ({
         pairData: normalizeDerivedChartData(data),
       })
     },
-    {
-      enabled: Boolean(protocol0 && protocol1 && token0Address && chainId && token1Address),
-      refetchInterval: SLOW_INTERVAL,
-      staleTime: SLOW_INTERVAL,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    enabled: Boolean(protocol0 && protocol1 && token0Address && chainId && token1Address),
+    refetchInterval: SLOW_INTERVAL,
+    staleTime: SLOW_INTERVAL,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  })
 
   const hasSwapPrice = currentSwapPrice && currentSwapPrice[token0Address] > 0
   const normalizedDerivedPairDataWithCurrentSwapPrice = useMemo(

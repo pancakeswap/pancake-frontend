@@ -11,9 +11,10 @@ export const useEpochVotePower = () => {
   const { account } = useAccountActiveChain()
   const { data: userInfo } = useVeCakeUserInfo()
 
-  const { data } = useQuery(
-    ['epochVotePower', nextEpoch, contract.address, contract.chain?.id],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['epochVotePower', nextEpoch, contract.address, contract.chain?.id],
+
+    queryFn: async () => {
       if (!contract || !nextEpoch) return 0n
       const votePower = await contract.read.balanceOfAtTime([account!, BigInt(nextEpoch)])
       const proxyVotePower =
@@ -25,10 +26,9 @@ export const useEpochVotePower = () => {
       // const proxyVotePower = await contract.read.balanceOfAtForProxy([account!, BigInt(nextEpoch)])
       return votePower + proxyVotePower
     },
-    {
-      enabled: !!nextEpoch && !!contract.address && !!account,
-    },
-  )
+
+    enabled: !!nextEpoch && !!contract.address && !!account,
+  })
 
   return data ?? 0n
 }

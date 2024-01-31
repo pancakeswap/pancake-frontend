@@ -61,7 +61,9 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, typ
     )
 
     if (receipt?.status) {
-      await queryClient.invalidateQueries(['tradingReward', 'all-campaign-id-info', account, campaignIds])
+      await queryClient.invalidateQueries({
+        queryKey: ['tradingReward', 'all-campaign-id-info', account, campaignIds],
+      })
       toastSuccess(
         t('Success!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
