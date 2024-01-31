@@ -1,19 +1,19 @@
-import React, { Fragment } from 'react'
-import { NextPage } from 'next'
-import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
-import { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
-import Script from 'next/script'
-import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { LanguageProvider } from '@pancakeswap/localization'
-import { createGlobalStyle } from 'styled-components'
-import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
-import Head from 'next/head'
+import { ModalProvider, PancakeTheme, ResetCSS, UIKitProvider, dark, light } from '@pancakeswap/uikit'
+import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { NextPage } from 'next'
 import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import Menu from '../components/Menu'
+import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
+import { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
+import Head from 'next/head'
+import Script from 'next/script'
+import React, { Fragment } from 'react'
+import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
+import { createGlobalStyle } from 'styled-components'
 import Footer from '../components/Footer'
+import Menu from '../components/Menu'
 
 // Create a client
 const queryClient = new QueryClient()
@@ -79,7 +79,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <DefaultSeo {...SEO} />
       <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
+        <HydrationBoundary state={pageProps.dehydratedState}>
           <NextThemeProvider>
             <StyledThemeProvider>
               <LanguageProvider>
@@ -97,19 +97,19 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
               </LanguageProvider>
             </StyledThemeProvider>
           </NextThemeProvider>
-        </Hydrate>
+        </HydrationBoundary>
       </QueryClientProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"
         dangerouslySetInnerHTML={{
           __html: `
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTM}');
-          `,
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTM}');
+        `,
         }}
       />
     </>

@@ -1,11 +1,11 @@
-import { styled } from 'styled-components'
-import { useTranslation, Trans } from '@pancakeswap/localization'
-import { Flex, Text, Heading, Card, PageSection, Box } from '@pancakeswap/uikit'
-import Image from 'next/image'
-import GradientLogo from 'components/Game/GradientLogoSvg'
-import { LIGHT_BG, DARK_BG } from 'components/Game/pageSectionStyles'
+import { Trans, useTranslation } from '@pancakeswap/localization'
+import { Box, Card, Flex, Heading, PageSection, Text } from '@pancakeswap/uikit'
 import { Decorations } from 'components/Game/Developers/Decorations'
+import GradientLogo from 'components/Game/GradientLogoSvg'
+import { DARK_BG, LIGHT_BG } from 'components/Game/pageSectionStyles'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import Image from 'next/image'
+import { styled } from 'styled-components'
 
 const StyledContainer = styled(PageSection)`
   padding: 0px 16px 24px 16px;

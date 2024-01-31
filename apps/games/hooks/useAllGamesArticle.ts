@@ -28,9 +28,10 @@ export const useAllGamesArticle = ({
   languageOption,
   selectedGamesCategories,
 }: UseAllGamesArticleProps): AllGamesArticleType => {
-  const { data: articlesData, isLoading } = useQuery(
-    ['games-articles', query, currentPage, selectedGamesCategories, sortBy, languageOption],
-    async () => {
+  const { data: articlesData, isLoading } = useQuery({
+    queryKey: ['games-articles', query, currentPage, selectedGamesCategories, sortBy, languageOption],
+
+    queryFn: async () => {
       try {
         const urlParamsObject = {
           ...(query && { _q: query }),
@@ -76,11 +77,10 @@ export const useAllGamesArticle = ({
         }
       }
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   return {
     isFetching: isLoading,
