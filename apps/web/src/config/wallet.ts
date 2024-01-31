@@ -15,7 +15,7 @@ export enum ConnectorNames {
   BinanceW3W = 'BinanceW3W',
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
-  Ledger = 'ledger',
+  // Ledger = 'ledger',
   TrustWallet = 'trustWallet',
   CyberWallet = 'cyberwallet',
 }
@@ -235,12 +235,12 @@ const walletsConfig = ({
         desktop: 'https://docs.cyber.co/sdk/cyber-account#supported-chains',
       },
     },
-    {
-      id: 'ledger',
-      title: 'Ledger',
-      icon: `${ASSET_CDN}/web/wallets/ledger.png`,
-      connectorId: ConnectorNames.Ledger,
-    },
+    // {
+    //   id: 'ledger',
+    //   title: 'Ledger',
+    //   icon: `${ASSET_CDN}/web/wallets/ledger.png`,
+    //   connectorId: ConnectorNames.Ledger,
+    // },
   ]
 }
 
