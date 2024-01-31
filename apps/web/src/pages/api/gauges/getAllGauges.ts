@@ -10,6 +10,7 @@ const MAX_CACHE_SECONDS = 60 * 5
 const handler: NextApiHandler = async (req, res) => {
   const queryString = qs.stringify(req.query)
   const queryParsed = qs.parse(queryString)
+
   const testnet = Boolean(queryParsed.testnet ?? false)
   const inCap = Boolean(queryParsed.inCap ?? true)
   const bothCap = Boolean(queryParsed.bothCap ?? false)
