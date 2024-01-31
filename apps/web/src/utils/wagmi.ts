@@ -1,9 +1,8 @@
+import { getWagmiConnector } from '@binance/w3w-wagmi-connector'
+import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
-import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
-import { getWagmiConnector } from '@binance/w3w-wagmi-connector'
 import memoize from 'lodash/memoize'
 import { createConfig, createStorage } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -68,8 +67,6 @@ const bloctoConnector = new BloctoConnector({
 //   },
 // })
 
-export const bscConnector = new BinanceWalletConnector({ chains })
-
 export const trustWalletConnector = new TrustWalletConnector({
   chains,
   options: {
@@ -114,7 +111,6 @@ export const wagmiConfig = createConfig({
     injectedConnector,
     coinbaseConnector,
     walletConnectConnector,
-    bscConnector,
     // @ts-ignore FIXME: wagmi
     bloctoConnector,
     // ledgerConnector,
