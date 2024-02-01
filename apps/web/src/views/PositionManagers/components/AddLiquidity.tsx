@@ -386,16 +386,17 @@ export const AddLiquidity = memo(function AddLiquidity({
             )}
             <Flex mt="1.5em" flexDirection="column">
               {minDepositUSD && (
-                <RowBetween>
-                  <Text color="text">{t('Your deposit value in USD')}:</Text>
-                  <Text color="text">{`${userTotalDepositUSD.toFixed(2)}`}</Text>
-                </RowBetween>
-              )}
-              {minDepositUSD && (
-                <RowBetween>
-                  <Text color="text">{t('Min deposit USD')}:</Text>
-                  <Text color="text">{`${minDepositUSD}`}</Text>
-                </RowBetween>
+                <>
+                  <RowBetween>
+                    <Text color="text">{t('Your deposit value in USD')}:</Text>
+                    <Text color="text">{`${userTotalDepositUSD.toFixed(2)}`}</Text>
+                  </RowBetween>
+
+                  <RowBetween>
+                    <Text color="text">{t('Min deposit USD')}:</Text>
+                    <Text color="text">{`${minDepositUSD}`}</Text>
+                  </RowBetween>
+                </>
               )}
               <RowBetween>
                 <Text color="text">{t('Your share in the vault')}:</Text>
