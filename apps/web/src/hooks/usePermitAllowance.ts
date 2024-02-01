@@ -8,6 +8,7 @@ import {
 } from '@pancakeswap/permit2-sdk'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
+import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useCallback, useMemo } from 'react'
 import { isUserRejected } from 'utils/sentry'
@@ -15,7 +16,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { publicClient } from 'utils/wagmi'
 import { Address, zeroAddress } from 'viem'
 import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
-import { useQuery, useSignTypedData } from 'wagmi'
+import { useSignTypedData } from 'wagmi'
 import useAccountActiveChain from './useAccountActiveChain'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -27,9 +28,9 @@ export function usePermitAllowance(token?: Token, owner?: Address, spender?: Add
     [owner, spender, token?.address],
   )
 
-  const { data: allowance } = useQuery(
-    [chainId, token?.address, owner, spender],
-    () =>
+  const { data: allowance } = useQuery({
+    queryKey: [chainId, token?.address, owner, spender],
+    queryFn: async () =>
       chainId
         ? publicClient({ chainId }).readContract({
             abi: Permit2ABI,
@@ -38,13 +39,11 @@ export function usePermitAllowance(token?: Token, owner?: Address, spender?: Add
             args: inputs,
           })
         : undefined,
-    {
-      refetchInterval: SLOW_INTERVAL,
-      retry: true,
-      refetchOnWindowFocus: false,
-      enabled: Boolean(spender && owner),
-    },
-  )
+    refetchInterval: SLOW_INTERVAL,
+    retry: true,
+    refetchOnWindowFocus: false,
+    enabled: Boolean(spender && owner),
+  })
   return useMemo(
     () => ({
       permitAllowance:
