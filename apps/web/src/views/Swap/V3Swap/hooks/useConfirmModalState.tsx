@@ -128,7 +128,7 @@ export const useConfirmModalState = ({
         performStep(ConfirmModalState.COMPLETED)
       }
     },
-    [performStep, waitForTransaction],
+    [performStep, waitForTransaction, chainId],
   )
 
   useEffect(() => {
