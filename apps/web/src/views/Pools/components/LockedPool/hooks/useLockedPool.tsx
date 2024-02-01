@@ -88,7 +88,9 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
         )
         onDismiss?.()
         dispatch(fetchCakeVaultUserData({ account, chainId }))
-        queryClient.invalidateQueries(['userCakeLockStatus', account])
+        queryClient.invalidateQueries({
+          queryKey: ['userCakeLockStatus', account],
+        })
       }
     },
     [

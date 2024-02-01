@@ -61,7 +61,9 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({
   const currentBlock = useCurrentBlock()
   const publicIfoData = useGetPublicIfoV3Data(data.ifo)
   const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized } = publicIfoData
-  useQuery(['fetchPublicIfoData', currentBlock, data?.ifo?.id], async () => fetchPublicIfoData(currentBlock), {
+  useQuery({
+    queryKey: ['fetchPublicIfoData', currentBlock, data?.ifo?.id],
+    queryFn: async () => fetchPublicIfoData(currentBlock),
     enabled: Boolean(!isPublicIfoDataInitialized && currentBlock),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

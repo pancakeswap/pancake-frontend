@@ -79,9 +79,10 @@ const useFarmsWithBalance = () => {
       farmsWithStakedBalance: [] as FarmWithBalance[],
       earningsSum: null,
     },
-  } = useQuery(
-    [account, 'farmsWithBalance', chainId, poolLength],
-    async () => {
+  } = useQuery({
+    queryKey: [account, 'farmsWithBalance', chainId, poolLength],
+
+    queryFn: async () => {
       if (!account || !poolLength || !chainId) return undefined
       const farmsConfig = await getFarmConfig(chainId)
       const farmsCanFetch = farmsConfig?.filter((f) => poolLength > f.pid)
@@ -100,11 +101,10 @@ const useFarmsWithBalance = () => {
         earningsSum: normalBalances.totalEarned,
       }
     },
-    {
-      enabled: Boolean(account && poolLength && chainId && !isProxyContractAddressLoading),
-      refetchInterval: FAST_INTERVAL,
-    },
-  )
+
+    enabled: Boolean(account && poolLength && chainId && !isProxyContractAddressLoading),
+    refetchInterval: FAST_INTERVAL,
+  })
 
   const v3FarmsWithBalance = useMemo(
     () =>

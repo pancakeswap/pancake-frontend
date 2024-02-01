@@ -22,9 +22,10 @@ export const useCakePoolLockInfo = () => {
   const cakeVaultContract = useCakeVaultContract()
   const currentTimestamp = useCurrentBlockTimestamp()
 
-  const { data: info } = useQuery(
-    ['cakePoolLockInfo', cakeVaultContract.address, chainId, account],
-    async (): Promise<CakePoolInfo> => {
+  const { data: info } = useQuery({
+    queryKey: ['cakePoolLockInfo', cakeVaultContract.address, chainId, account],
+
+    queryFn: async (): Promise<CakePoolInfo> => {
       if (!account) return {} as CakePoolInfo
       const [
         shares,
@@ -53,9 +54,8 @@ export const useCakePoolLockInfo = () => {
         lockedAmount,
       }
     },
-    {
-      enabled: Boolean(account) && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET),
-    },
-  )
+
+    enabled: Boolean(account) && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET),
+  })
   return info || ({} as CakePoolInfo)
 }

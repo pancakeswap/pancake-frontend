@@ -8,9 +8,10 @@ interface AllArticleType {
 }
 
 export const useAllNewsArticle = (): AllArticleType => {
-  const { data: articlesData, isLoading } = useQuery(
-    ['/allNews'],
-    async () =>
+  const { data: articlesData, isPending } = useQuery({
+    queryKey: ['/allNews'],
+
+    queryFn: async () =>
       getArticle({
         url: '/articles',
         urlParamsObject: {
@@ -26,14 +27,13 @@ export const useAllNewsArticle = (): AllArticleType => {
           },
         },
       }),
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? {
       data: [],
       pagination: {
@@ -47,9 +47,10 @@ export const useAllNewsArticle = (): AllArticleType => {
 }
 
 export const useLatestArticle = (): AllArticleType => {
-  const { data: articlesData, isLoading } = useQuery(
-    ['/latestArticle'],
-    () =>
+  const { data: articlesData, isPending } = useQuery({
+    queryKey: ['/latestArticle'],
+
+    queryFn: () =>
       getArticle({
         url: '/articles',
         urlParamsObject: {
@@ -58,14 +59,13 @@ export const useLatestArticle = (): AllArticleType => {
           pagination: { limit: 1 },
         },
       }),
-    {
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? {
       data: [],
       pagination: {

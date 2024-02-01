@@ -1,9 +1,9 @@
-import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/chains'
-import { TRADING_REWARD_API } from 'config/constants/endpoints'
-import { getTradingRewardContract } from 'utils/contractHelpers'
-import { useTradingRewardContract, useTradingRewardTopTraderContract } from 'hooks/useContract'
 import { useQuery } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
+import { TRADING_REWARD_API } from 'config/constants/endpoints'
+import { useTradingRewardContract, useTradingRewardTopTraderContract } from 'hooks/useContract'
+import { getTradingRewardContract } from 'utils/contractHelpers'
 
 export enum RewardStatus {
   ALL = '0',
@@ -148,9 +148,10 @@ const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps)
   const tradingRewardTopTradersContract = useTradingRewardTopTraderContract({ chainId: ChainId.BSC })
   const contract = type === RewardType.CAKE_STAKERS ? tradingRewardContract : tradingRewardTopTradersContract
 
-  const { data: allPairs, isLoading } = useQuery(
-    ['tradingReward', 'all-activated-trading-reward-pair', status, type],
-    async () => {
+  const { data: allPairs, isPending } = useQuery({
+    queryKey: ['tradingReward', 'all-activated-trading-reward-pair', status, type],
+
+    queryFn: async () => {
       try {
         const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}/type/${type}`)
         const campaignsResult = await campaignsResponse.json()
@@ -175,16 +176,15 @@ const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps)
         return initialAllTradingRewardState
       }
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      initialData: initialAllTradingRewardState,
-      enabled: Boolean(status && type),
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: initialAllTradingRewardState,
+    enabled: Boolean(status && type),
+  })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     data: allPairs,
   }
 }

@@ -33,9 +33,10 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
   const blockTimestamp = useInitialBlockTimestamp()
   const currencyBlockTimestamp = useCurrentBlockTimestamp()
 
-  const { data } = useQuery(
-    ['/revenue-sharing-pool', account, chainId],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['/revenue-sharing-pool', account, chainId],
+
+    queryFn: async () => {
       if (!account) return undefined
       try {
         const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
@@ -79,10 +80,9 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
         return initialData
       }
     },
-    {
-      enabled: Boolean(account && chainId),
-    },
-  )
+
+    enabled: Boolean(account && chainId),
+  })
 
   return data ?? initialData
 }

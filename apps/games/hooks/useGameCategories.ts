@@ -13,9 +13,10 @@ export interface GameCategoriesType {
 }
 
 export const useGameCategories = ({ languageOption }: UseGameCategoriesProps): GameCategoriesType[] => {
-  const { data } = useQuery(
-    ['game-categories'],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['game-categories'],
+
+    queryFn: async () => {
       try {
         const urlParamsObject = {
           populate: '*',
@@ -35,11 +36,10 @@ export const useGameCategories = ({ languageOption }: UseGameCategoriesProps): G
         return []
       }
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   return data || []
 }

@@ -94,7 +94,8 @@ type ChartData = {
 }
 
 function useChartHover() {
-  const { data } = useQuery<ChartData>(['chainlinkChartHover'], {
+  const { data } = useQuery<ChartData>({
+    queryKey: ['chainlinkChartHover'],
     enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

@@ -1,12 +1,12 @@
-import { useAccount } from 'wagmi'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Button, ButtonMenu, ButtonMenuItem, Flex, Link, Message, Text } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { FetchStatusV1, TFetchStatusV1 } from 'config/constants/types'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
-import { FetchStatus, TFetchStatus } from 'config/constants/types'
+import { useAccount } from 'wagmi'
 import { Divider, RoundedImage } from '../shared/styles'
-import { BorderedBox, BnbAmountCell } from './styles'
+import { BnbAmountCell, BorderedBox } from './styles'
 import { PaymentCurrency } from './types'
 
 interface ReviewStageProps {
@@ -15,7 +15,7 @@ interface ReviewStageProps {
   setPaymentCurrency: (index: number) => void
   nftPrice: number
   walletBalance: number
-  walletFetchStatus: TFetchStatus
+  walletFetchStatus: TFetchStatusV1
   notEnoughBnbForPurchase: boolean
   continueToNextStage: () => void
 }
@@ -87,12 +87,12 @@ const ReviewStage: React.FC<React.PropsWithChildren<ReviewStageProps>> = ({
           ) : (
             <BnbAmountCell
               bnbAmount={walletBalance}
-              isLoading={walletFetchStatus !== FetchStatus.Fetched}
-              isInsufficient={walletFetchStatus === FetchStatus.Fetched && notEnoughBnbForPurchase}
+              isLoading={walletFetchStatus !== FetchStatusV1.Fetched}
+              isInsufficient={walletFetchStatus === FetchStatusV1.Fetched && notEnoughBnbForPurchase}
             />
           )}
         </BorderedBox>
-        {walletFetchStatus === FetchStatus.Fetched && notEnoughBnbForPurchase && (
+        {walletFetchStatus === FetchStatusV1.Fetched && notEnoughBnbForPurchase && (
           <Message p="8px" variant="danger">
             <Text>
               {t('Not enough %symbol% to purchase this NFT', {
@@ -121,7 +121,7 @@ const ReviewStage: React.FC<React.PropsWithChildren<ReviewStageProps>> = ({
       <Flex px="24px" pb="24px" flexDirection="column">
         <Button
           onClick={continueToNextStage}
-          disabled={walletFetchStatus !== FetchStatus.Fetched || notEnoughBnbForPurchase}
+          disabled={walletFetchStatus !== FetchStatusV1.Fetched || notEnoughBnbForPurchase}
           mb="8px"
         >
           {t('Checkout')}

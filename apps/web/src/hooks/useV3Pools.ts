@@ -23,7 +23,7 @@ export interface V3PoolsResult {
   loading: boolean
   syncing: boolean
   blockNumber?: number
-  error?: Error
+  error: Error | null
 }
 
 export function useV3CandidatePools(
@@ -85,13 +85,7 @@ export function useV3CandidatePoolsWithoutTicks(
     return POOLS_FAST_REVALIDATE[currencyA.chainId] || 0
   }, [currencyA?.chainId])
 
-  const {
-    data,
-    refetch,
-    isLoading,
-    isFetching,
-    error: errorMsg,
-  } = useQuery({
+  const { data, refetch, isPending, isFetching, error } = useQuery({
     queryKey: ['v3_candidate_pools', key],
     queryFn: async () => {
       const pools = await SmartRouter.getV3CandidatePools({
@@ -114,12 +108,10 @@ export function useV3CandidatePoolsWithoutTicks(
     enabled: Boolean(currencyA && currencyB && key && options?.enabled),
   })
 
-  const error = useMemo(() => (errorMsg ? (new Error(errorMsg as string) as Error) : undefined), [errorMsg])
-
   return {
     refresh: refetch,
     pools: data?.pools,
-    loading: isLoading,
+    loading: isPending,
     syncing: isFetching,
     blockNumber: data?.blockNumber,
     key: data?.key,
@@ -139,9 +131,10 @@ export function useV3PoolsWithTicks(
     return POOLS_SLOW_REVALIDATE[chainId] || 0
   }, [pools])
 
-  const poolsWithTicks = useQuery(
-    ['v3_pool_ticks', key],
-    async () => {
+  const poolsWithTicks = useQuery({
+    queryKey: ['v3_pool_ticks', key],
+
+    queryFn: async () => {
       if (!pools) {
         throw new Error('Invalid pools to get ticks')
       }
@@ -168,15 +161,14 @@ export function useV3PoolsWithTicks(
         blockNumber,
       }
     },
-    {
-      enabled: Boolean(key && pools && enabled),
-      refetchInterval: refreshInterval,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      retry: 3,
-    },
-  )
+
+    enabled: Boolean(key && pools && enabled),
+    refetchInterval: refreshInterval,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 3,
+  })
 
   return poolsWithTicks
 }

@@ -19,9 +19,10 @@ function useTokenAllowance(
 
   const inputs = useMemo(() => [owner, spender] as [`0x${string}`, `0x${string}`], [owner, spender])
 
-  const { data: allowance, refetch } = useQuery(
-    [chainId, token?.address, owner, spender],
-    () => {
+  const { data: allowance, refetch } = useQuery({
+    queryKey: [chainId, token?.address, owner, spender],
+
+    queryFn: () => {
       if (!token) {
         throw new Error('No token')
       }
@@ -32,13 +33,12 @@ function useTokenAllowance(
         args: inputs,
       })
     },
-    {
-      refetchInterval: FAST_INTERVAL,
-      retry: true,
-      refetchOnWindowFocus: false,
-      enabled: Boolean(spender && owner && token),
-    },
-  )
+
+    refetchInterval: FAST_INTERVAL,
+    retry: true,
+    refetchOnWindowFocus: false,
+    enabled: Boolean(spender && owner && token),
+  })
 
   return useMemo(
     () => ({

@@ -25,20 +25,20 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const cakePriceBusd = useCakePrice()
   const { chainId } = useActiveChainId()
 
-  const { status: fetchStatus, isFetching } = useQuery(
-    [chainId, 'fetchTopFarmsByApr'],
-    async () => {
+  const { status: fetchStatus, isFetching } = useQuery({
+    queryKey: [chainId, 'fetchTopFarmsByApr'],
+
+    queryFn: async () => {
       if (!chainId) return undefined
       const farmsConfig = await getFarmConfig(chainId)
       const activeFarms = farmsConfig?.filter((farm) => farm.pid !== 0)
       return dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms?.map((farm) => farm.pid) ?? [], chainId }))
     },
-    {
-      enabled: Boolean(isIntersecting && chainId),
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(isIntersecting && chainId),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   useEffect(() => {
     if (fetchStatus === 'success' && farms?.length > 0 && !isLoading) {

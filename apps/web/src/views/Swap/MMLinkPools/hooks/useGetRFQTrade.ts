@@ -1,11 +1,11 @@
-import { Currency } from '@pancakeswap/sdk'
-import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { useDebounce } from '@pancakeswap/hooks'
-import { Field } from 'state/swap/actions'
+import { Currency } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
+import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
+import { Field } from 'state/swap/actions'
 import { useAccount } from 'wagmi'
-import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
-import { MessageType, MMRfqTrade, QuoteRequest, RFQResponse } from '../types'
+import { MMError, getRFQById, sendRFQAndGetRFQId } from '../apis'
+import { MMRfqTrade, MessageType, QuoteRequest, RFQResponse } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 
 export const useGetRFQId = (
@@ -29,16 +29,14 @@ export const useGetRFQId = (
         (param?.takerSideTokenAmount && param?.takerSideTokenAmount !== '0')),
   )
 
-  const { data, refetch, isLoading } = useQuery(
-    [`RFQ/${rfqUserInputPath?.current}`],
-    () => sendRFQAndGetRFQId(param as QuoteRequest),
-    {
-      refetchInterval: 20000,
-      retry: true,
-      refetchOnWindowFocus: false,
-      enabled,
-    }, // 20sec
-  )
+  const { data, refetch, isPending } = useQuery({
+    queryKey: [`RFQ/${rfqUserInputPath?.current}`],
+    queryFn: () => sendRFQAndGetRFQId(param as QuoteRequest),
+    refetchInterval: 20000,
+    retry: true,
+    refetchOnWindowFocus: false,
+    enabled,
+  })
   // eslint-disable-next-line no-param-reassign
   if (!data?.message?.rfqId && isRFQLive) isRFQLive.current = false
 
@@ -46,7 +44,7 @@ export const useGetRFQId = (
     rfqId: data?.message?.rfqId ?? '',
     refreshRFQ: refetch,
     rfqUserInputCache: rfqUserInputPath?.current,
-    isLoading: enabled && isLoading,
+    isLoading: enabled && isPending,
   }
 }
 
@@ -72,10 +70,13 @@ export const useGetRFQTrade = (
   const {
     error: errorResponse,
     data: dataResponse,
-    isLoading: isLoadingResponse,
-  } = useQuery([`RFQ/${deferredRfqId}`], () => getRFQById(deferredRfqId), {
+    isPending: isLoadingResponse,
+  } = useQuery({
+    queryKey: [`RFQ/${deferredRfqId}`],
+    queryFn: () => getRFQById(deferredRfqId),
     enabled,
     staleTime: Infinity,
+
     retry: (failureCount, err) => {
       if (err instanceof MMError) {
         return err.shouldRetry

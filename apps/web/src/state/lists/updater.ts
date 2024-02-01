@@ -38,9 +38,10 @@ export default function Updater(): null {
   const fetchList = useFetchListCallback(dispatch)
 
   // whenever a list is not loaded and not loading, try again to load it
-  useQuery(
-    ['first-fetch-token-list', lists],
-    () => {
+  useQuery({
+    queryKey: ['first-fetch-token-list', lists],
+
+    queryFn: () => {
       Object.keys(lists).forEach((listUrl) => {
         const list = lists[listUrl]
         if (!list.current && !list.loadingRequestId && !list.error) {
@@ -49,32 +50,31 @@ export default function Updater(): null {
       })
       return null
     },
-    {
-      enabled: Boolean(isReady),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
 
-  useQuery(
-    ['token-list'],
-    async () => {
+    enabled: Boolean(isReady),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
+
+  useQuery({
+    queryKey: ['token-list'],
+
+    queryFn: async () => {
       return Promise.all(
         Object.keys(lists).map((url) =>
           fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
         ),
       )
     },
-    {
-      enabled: Boolean(includeListUpdater && isReady && listState !== initialState),
-      refetchInterval: 1000 * 60 * 10,
-      staleTime: 1000 * 60 * 10,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+
+    enabled: Boolean(includeListUpdater && isReady && listState !== initialState),
+    refetchInterval: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   // if any lists from unsupported lists are loaded, check them too (in case new updates since last visit)
   useEffect(() => {

@@ -12,9 +12,10 @@ interface UseBoostedPoolApr {
 export const useBoostedPoolApr = ({ contractAddress, chainId, enabled }: UseBoostedPoolApr): number => {
   const client = getViemClients({ chainId })
 
-  const { data } = useQuery(
-    ['boostedPoolsApr', contractAddress, chainId],
-    () => {
+  const { data } = useQuery({
+    queryKey: ['boostedPoolsApr', contractAddress, chainId],
+
+    queryFn: () => {
       if (client) {
         return getBoostedPoolApr({
           client,
@@ -25,10 +26,9 @@ export const useBoostedPoolApr = ({ contractAddress, chainId, enabled }: UseBoos
 
       return 0
     },
-    {
-      enabled: Boolean(enabled && client && contractAddress && chainId),
-    },
-  )
+
+    enabled: Boolean(enabled && client && contractAddress && chainId),
+  })
 
   return data ?? 0
 }

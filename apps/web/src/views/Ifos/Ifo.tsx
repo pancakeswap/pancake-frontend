@@ -5,8 +5,8 @@ import { IfoPlaceholder } from './IfoPlaceholder'
 import SoonIfo from './SoonIfo'
 
 const Ifo = () => {
-  const { activeIfo, isLoading } = useActiveIfoConfig()
-  return activeIfo ? <CurrentIfo activeIfo={activeIfo} /> : isLoading ? <IfoPlaceholder /> : <SoonIfo />
+  const { activeIfo, isPending } = useActiveIfoConfig()
+  return activeIfo ? <CurrentIfo activeIfo={activeIfo} /> : isPending ? <IfoPlaceholder /> : <SoonIfo />
 }
 
 export default Ifo

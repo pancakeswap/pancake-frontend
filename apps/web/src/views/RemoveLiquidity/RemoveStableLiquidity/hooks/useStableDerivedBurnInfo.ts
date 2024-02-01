@@ -37,16 +37,16 @@ export function useGetRemovedTokenAmountsNoContext({
   token1?: Token
   stableSwapInfoContract?: ReturnType<typeof useInfoStableSwapContract>
 }) {
-  const { data } = useQuery(
-    ['stableSwapInfoContract', 'calc_coins_amount', stableSwapAddress, lpAmount],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['stableSwapInfoContract', 'calc_coins_amount', stableSwapAddress, lpAmount],
+
+    queryFn: async () => {
       if (!stableSwapInfoContract || !lpAmount) return undefined
       return stableSwapInfoContract.read.calc_coins_amount([stableSwapAddress as Address, BigInt(lpAmount)])
     },
-    {
-      enabled: Boolean(lpAmount),
-    },
-  )
+
+    enabled: Boolean(lpAmount),
+  })
 
   if (!Array.isArray(data) || !token0 || !token1) return []
 

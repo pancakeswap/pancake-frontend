@@ -1,33 +1,33 @@
-import { useEffect, useState } from 'react'
-import isEqual from 'lodash/isEqual'
-import { useFarmAuctionContract } from 'hooks/useContract'
-import { ConnectedBidder } from 'config/constants/types'
-import { getBidderInfo } from 'config/constants/farmAuctions'
-import { Address } from 'wagmi'
-import { FAST_INTERVAL } from 'config/constants'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useQuery } from '@tanstack/react-query'
+import { FAST_INTERVAL } from 'config/constants'
+import { getBidderInfo } from 'config/constants/farmAuctions'
+import { ConnectedBidder } from 'config/constants/types'
+import { useFarmAuctionContract } from 'hooks/useContract'
+import isEqual from 'lodash/isEqual'
+import { useEffect, useState } from 'react'
+import { Address } from 'wagmi'
 import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account: Address) => {
-  const { data: currentAuctionId = null } = useQuery(
-    ['farmAuction', 'currentAuctionId'],
-    async () => {
+  const farmAuctionContract = useFarmAuctionContract()
+
+  const { data: currentAuctionId = null } = useQuery({
+    queryKey: ['farmAuction', 'currentAuctionId'],
+
+    queryFn: async () => {
       const auctionId = await farmAuctionContract.read.currentAuctionId()
       return Number(auctionId)
     },
-    {
-      refetchInterval: FAST_INTERVAL,
-    },
-  )
+
+    refetchInterval: FAST_INTERVAL,
+  })
 
   const {
     data: { auction: currentAuction, bidders },
     mutate: refreshBidders,
-  } = useFarmAuction(currentAuctionId, { refetchInterval: FAST_INTERVAL })
+  } = useFarmAuction(currentAuctionId, true)
   const [connectedBidder, setConnectedBidder] = useState<ConnectedBidder | null>(null)
-
-  const farmAuctionContract = useFarmAuctionContract()
 
   // Check if connected wallet is whitelisted
   useEffect(() => {

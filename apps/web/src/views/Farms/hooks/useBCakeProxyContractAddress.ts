@@ -7,16 +7,14 @@ import { useQuery } from '@tanstack/react-query'
 export const useBCakeProxyContractAddress = (account?: Address, chainId?: number) => {
   const bCakeFarmBoosterContract = useBCakeFarmBoosterContract()
   const isSupportedChain = chainId ? bCakeSupportedChainId.includes(chainId) : false
-  const { data, status, refetch } = useQuery(
-    ['bProxyAddress', account, chainId],
-    async () => bCakeFarmBoosterContract.read.proxyContract([account]),
-    {
-      enabled: Boolean(account && isSupportedChain),
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+  const { data, status, refetch } = useQuery({
+    queryKey: ['bProxyAddress', account, chainId],
+    queryFn: async () => bCakeFarmBoosterContract.read.proxyContract([account]),
+    enabled: Boolean(account && isSupportedChain),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
   const isLoading = isSupportedChain ? status !== 'success' : false
 
   return {

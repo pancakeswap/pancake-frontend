@@ -45,9 +45,10 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
   const currentTimestamp = useCurrentBlockTimestamp()
   const nextEpochStart = useNextEpochStart()
 
-  const { data } = useQuery(
-    ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
-    async (): Promise<VotedSlope> => {
+  const { data } = useQuery({
+    queryKey: ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
+
+    queryFn: async (): Promise<VotedSlope> => {
       const hasProxy = useProxyPool && userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress)
       const calls = [
         {
@@ -181,9 +182,8 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
         voteLocked,
       }
     },
-    {
-      enabled: !!account && Boolean(gauge?.hash),
-    },
-  )
+
+    enabled: !!account && Boolean(gauge?.hash),
+  })
   return data
 }

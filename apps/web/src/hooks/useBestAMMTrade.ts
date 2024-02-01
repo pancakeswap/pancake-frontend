@@ -9,7 +9,7 @@ import {
   SmartRouterTrade,
 } from '@pancakeswap/smart-router/evm'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
 
 import { QUOTING_API } from 'config/constants/endpoints'
@@ -17,9 +17,9 @@ import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
+import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
-import { tracker } from 'utils/datadog'
 
 import {
   CommonPoolsParams,
@@ -181,7 +181,7 @@ function bestTradeHookFactory({
       data: trade,
       status,
       fetchStatus,
-      isPreviousData,
+      isPlaceholderData,
       error,
     } = useQuery({
       queryKey: [
@@ -256,7 +256,7 @@ function bestTradeHookFactory({
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
       refetchOnWindowFocus: false,
-      keepPreviousData: keepPreviousDataRef.current,
+      placeholderData: keepPreviousDataRef.current ? keepPreviousData : undefined,
       retry: false,
       staleTime: autoRevalidate && amount?.currency.chainId ? POOLS_NORMAL_REVALIDATE[amount.currency.chainId] : 0,
       refetchInterval:
@@ -270,7 +270,7 @@ function bestTradeHookFactory({
     }, [trade, keepPreviousDataRef])
 
     const isValidating = fetchStatus === 'fetching'
-    const isLoading = status === 'loading' || isPreviousData
+    const isLoading = status === 'pending' || isPlaceholderData
 
     return {
       refresh,

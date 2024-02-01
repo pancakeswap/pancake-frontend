@@ -16,9 +16,10 @@ export const useLanguage = (): UseLanguageType[] => {
   const { t } = useTranslation()
   const defaultLanguage = { label: t('All'), value: 'all' }
 
-  const { data } = useQuery(
-    ['game-language'],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['game-language'],
+
+    queryFn: async () => {
       try {
         const result: ResponseLanguageType[] = await fetchAPI(`/i18n/locales`)
         const languages = result.map((i) => ({
@@ -31,11 +32,10 @@ export const useLanguage = (): UseLanguageType[] => {
         return []
       }
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   return data || []
 }

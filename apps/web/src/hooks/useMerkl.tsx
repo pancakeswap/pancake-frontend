@@ -20,7 +20,7 @@ export const MERKL_API_V2 = 'https://api.angle.money/v2/merkl'
 
 export function useMerklInfo(poolAddress: string | null): {
   rewardsPerToken: CurrencyAmount<Currency>[]
-  isLoading: boolean
+  isPending: boolean
   transactionData: {
     claim: string
     token: string
@@ -32,7 +32,7 @@ export function useMerklInfo(poolAddress: string | null): {
 } {
   const { account, chainId } = useAccountActiveChain()
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isPending, refetch } = useQuery({
     queryKey: [`fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}`],
     queryFn: async () => {
       const responsev2 = await fetch(
@@ -76,7 +76,7 @@ export function useMerklInfo(poolAddress: string | null): {
         rewardsPerToken,
         rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
         transactionData,
-        isLoading,
+        isPending,
       }
     },
   })

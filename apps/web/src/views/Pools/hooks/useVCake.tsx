@@ -12,9 +12,10 @@ const useVCake = (): UseVCake => {
   const { account, chainId } = useAccountActiveChain()
   const vCakeContract = useVCakeContract({ chainId })
 
-  const { data, refetch } = useQuery(
-    ['/v-cake-initialization', account, chainId],
-    async () => {
+  const { data, refetch } = useQuery({
+    queryKey: ['/v-cake-initialization', account, chainId],
+
+    queryFn: async () => {
       if (!account) return undefined
       try {
         return await vCakeContract.read.initialization([account])
@@ -23,10 +24,9 @@ const useVCake = (): UseVCake => {
         return undefined
       }
     },
-    {
-      enabled: Boolean(account && chainId === ChainId.BSC),
-    },
-  )
+
+    enabled: Boolean(account && chainId === ChainId.BSC),
+  })
 
   return {
     isInitialization: data,

@@ -8,9 +8,10 @@ import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 export const useIfoStatus = () => {
   const { activeIfo } = useActiveIfoConfig()
 
-  const { data = { startTime: 0, endTime: 0 } } = useQuery(
-    ['ifo', 'currentIfo_timestamps', activeIfo?.chainId],
-    async () => {
+  const { data = { startTime: 0, endTime: 0 } } = useQuery({
+    queryKey: ['ifo', 'currentIfo_timestamps', activeIfo?.chainId],
+
+    queryFn: async () => {
       const client = publicClient({ chainId: activeIfo?.chainId })
       if (!client || !activeIfo?.chainId) {
         return {
@@ -39,13 +40,12 @@ export const useIfoStatus = () => {
         endTime: endTimeResponse.status === 'success' ? Number(endTimeResponse.result) : 0,
       }
     },
-    {
-      enabled: Boolean(activeIfo),
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(activeIfo),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return useMemo(() => {
     const { startTime, endTime } = data

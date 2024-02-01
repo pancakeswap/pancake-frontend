@@ -43,7 +43,9 @@ const WithdrawAllButton: React.FC<React.PropsWithChildren<ButtonProps>> = (props
         </ToastDescriptionWithTx>,
       )
       dispatch(fetchCakeVaultUserData({ account, chainId }))
-      queryClient.invalidateQueries(['userCakeLockStatus', account])
+      queryClient.invalidateQueries({
+        queryKey: ['userCakeLockStatus', account],
+      })
     }
   }, [
     t,

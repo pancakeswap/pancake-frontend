@@ -11,9 +11,10 @@ type Response = {
 export const useGauges = () => {
   const { chainId } = useActiveChainId()
 
-  const { data, isLoading } = useQuery(
-    ['gaugesVoting', chainId],
-    async (): Promise<Gauge[]> => {
+  const { data, isPending } = useQuery({
+    queryKey: ['gaugesVoting', chainId],
+
+    queryFn: async (): Promise<Gauge[]> => {
       const response = await fetch(`/api/gauges/getAllGauges?testnet=${chainId === ChainId.BSC_TESTNET ? 1 : ''}`)
       if (response.ok) {
         const result = (await response.json()) as Response
@@ -27,15 +28,14 @@ export const useGauges = () => {
       }
       return [] as Gauge[]
     },
-    {
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  )
+
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
   return {
     data,
-    isLoading: isLoading || data?.length === 0,
+    isLoading: isPending || data?.length === 0,
   }
 }

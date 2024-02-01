@@ -28,9 +28,10 @@ const useCakeBenefits = () => {
   const cakeVaultAddress = getCakeVaultAddress()
   const currentBscBlock = useChainCurrentBlock(ChainId.BSC)
 
-  const { data, status } = useQuery(
-    ['cakeBenefits', account],
-    async () => {
+  const { data, status } = useQuery({
+    queryKey: ['cakeBenefits', account],
+
+    queryFn: async () => {
       if (!account) return undefined
       const [userInfo, currentPerformanceFee, currentOverdueFee, sharePrice] = await bscClient.multicall({
         contracts: [
@@ -130,10 +131,9 @@ const useCakeBenefits = () => {
         vCake,
       }
     },
-    {
-      enabled: Boolean(account && currentBscBlock),
-    },
-  )
+
+    enabled: Boolean(account && currentBscBlock),
+  })
 
   return { data, status }
 }

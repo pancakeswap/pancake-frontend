@@ -104,7 +104,9 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
   const stableAPR = useStableSwapAPR(isStableSwap ? address : undefined)
-  const { data: farmConfig } = useQuery([`info/getFarmConfig/${chainId}`], () => getFarmConfig(chainId), {
+  const { data: farmConfig } = useQuery({
+    queryKey: [`info/getFarmConfig/${chainId}`],
+    queryFn: () => getFarmConfig(chainId),
     enabled: Boolean(isStableSwap && chainId),
     refetchOnReconnect: false,
     refetchOnMount: false,

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
 import { atom, useAtom, useAtomValue } from 'jotai'
+import { useEffect, useRef, useState } from 'react'
 
 import { WorkerInstance, createWorker } from 'utils/worker'
 
@@ -32,7 +32,7 @@ function createUseWorkerHook(shared?: boolean) {
         abortController.abort()
         workerRef.current?.destroy()
       }
-    }, [])
+    }, [setWorker])
 
     return worker
   }

@@ -1,30 +1,30 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { BSC_BLOCK_TIME, FAST_INTERVAL } from 'config/constants'
+import forEach from 'lodash/forEach'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
-import forEach from 'lodash/forEach'
-import { useTranslation } from '@pancakeswap/localization'
-import { usePublicClient } from 'wagmi'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { Box, Text, useToast } from '@pancakeswap/uikit'
-import { BSC_BLOCK_TIME, FAST_INTERVAL } from 'config/constants'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { useAppDispatch } from 'state'
+import { RetryableError, retry } from 'state/multicall/retry'
 import {
   BlockNotFoundError,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
   WaitForTransactionReceiptTimeoutError,
 } from 'viem'
-import { retry, RetryableError } from 'state/multicall/retry'
-import { useAppDispatch } from 'state'
-import { useQuery } from '@tanstack/react-query'
+import { usePublicClient } from 'wagmi'
 import {
-  finalizeTransaction,
   FarmTransactionStatus,
-  NonBscFarmTransactionStep,
   MsgStatus,
   NonBscFarmStepType,
+  NonBscFarmTransactionStep,
+  finalizeTransaction,
 } from './actions'
-import { useAllChainTransactions } from './hooks'
 import { fetchCelerApi } from './fetchCelerApi'
+import { useAllChainTransactions } from './hooks'
 import { TransactionDetails } from './reducer'
 
 export function shouldCheck(
@@ -114,9 +114,10 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
     [transactions],
   )
 
-  useQuery(
-    ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
-    () => {
+  useQuery({
+    queryKey: ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
+
+    queryFn: () => {
       nonBscFarmPendingTxns.forEach((hash) => {
         const steps = transactions[hash]?.nonBscFarm?.steps || []
         if (steps.length) {
@@ -201,18 +202,15 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         }
       })
     },
-    {
-      enabled: Boolean(chainId && nonBscFarmPendingTxns?.length),
-      refetchInterval: FAST_INTERVAL,
-      retryDelay: FAST_INTERVAL,
-      onError: (error) => {
-        console.error('[ERROR] updater checking non BSC farm transaction error: ', error)
-      },
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+
+    enabled: Boolean(chainId && nonBscFarmPendingTxns?.length),
+    refetchInterval: FAST_INTERVAL,
+    retryDelay: FAST_INTERVAL,
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   return null
 }

@@ -28,9 +28,10 @@ export const useSidNameForAddress = (address: string, fetchData = true) => {
   const { chainId } = useActiveChainId()
   const sidContract = useSIDContract(getSidAddress(chainId), chainId)
 
-  const { data: sidName, status } = useQuery(
-    ['sidName', chainId, address?.toLowerCase()],
-    async () => {
+  const { data: sidName, status } = useQuery({
+    queryKey: ['sidName', chainId, address?.toLowerCase()],
+
+    queryFn: async () => {
       const reverseNode = `${address.toLowerCase().slice(2)}.addr.reverse`
       const reverseNameHash = namehash(reverseNode)
       const resolverAddress = await sidContract.read.resolver([reverseNameHash])
@@ -45,13 +46,12 @@ export const useSidNameForAddress = (address: string, fetchData = true) => {
         name: resolvedName,
       }
     },
-    {
-      enabled: Boolean(fetchData && address),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+
+    enabled: Boolean(fetchData && address),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   return useMemo(() => {
     return { sidName: sidName?.name, isLoading: status !== 'success' }

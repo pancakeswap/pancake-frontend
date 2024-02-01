@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
-import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Balance } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Balance, Button, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { useEffect, useState } from 'react'
 
-import { useTranslation } from '@pancakeswap/localization'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { styled } from 'styled-components'
-import { fetchLottery, fetchCurrentLotteryId } from 'state/lottery/helpers'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { SLOW_INTERVAL } from 'config/constants'
 import { useQuery } from '@tanstack/react-query'
+import { SLOW_INTERVAL } from 'config/constants'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { fetchCurrentLotteryId, fetchLottery } from 'state/lottery/helpers'
+import { styled } from 'styled-components'
 
 const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
@@ -26,24 +26,25 @@ const LotteryCardContent = () => {
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const cakePriceBusd = useCakePrice()
-  const { data: currentLotteryId } = useQuery(['currentLotteryId'], fetchCurrentLotteryId, {
+  const { data: currentLotteryId } = useQuery({
+    queryKey: ['currentLotteryId'],
+    queryFn: fetchCurrentLotteryId,
     enabled: Boolean(loadData),
     refetchInterval: SLOW_INTERVAL,
     refetchOnReconnect: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
-  const { data: currentLottery } = useQuery(
-    ['currentLottery'],
-    async () => fetchLottery(currentLotteryId?.toString() ?? ''),
-    {
-      enabled: Boolean(loadData),
-      refetchInterval: SLOW_INTERVAL,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+  const { data: currentLottery } = useQuery({
+    queryKey: ['currentLottery'],
+    queryFn: async () => fetchLottery(currentLotteryId?.toString() ?? ''),
+    enabled: Boolean(loadData),
+    refetchInterval: SLOW_INTERVAL,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
 
   const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusd.toString() })
   const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusd.toString())

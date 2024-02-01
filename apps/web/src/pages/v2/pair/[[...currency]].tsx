@@ -62,9 +62,10 @@ export default function PoolV2Page() {
 
   const masterchefV2Contract = useMasterchef()
 
-  const { data: isFarmExistActiveForPair } = useQuery(
-    ['isFarmExistActiveForPair', chainId, pair?.liquidityToken?.address],
-    async () => {
+  const { data: isFarmExistActiveForPair } = useQuery({
+    queryKey: ['isFarmExistActiveForPair', chainId, pair?.liquidityToken?.address],
+
+    queryFn: async () => {
       const farmsConfig = (await getFarmConfig(chainId)) || []
       const farmPair = farmsConfig.find(
         (farm) => farm.lpAddress.toLowerCase() === pair?.liquidityToken?.address?.toLowerCase(),
@@ -76,13 +77,12 @@ export default function PoolV2Page() {
       }
       return 'exist'
     },
-    {
-      enabled: Boolean(chainId && pair && masterchefV2Contract),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+
+    enabled: Boolean(chainId && pair && masterchefV2Contract),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   const { isMobile } = useMatchBreakpoints()
 

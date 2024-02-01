@@ -7,9 +7,10 @@ export const useGaugesVotingCount = (): bigint | undefined => {
   const { chainId } = useActiveChainId()
   const gaugesVotingContract = useGaugesVotingContract()
 
-  const { data } = useQuery(
-    ['gaugesVotingCount', gaugesVotingContract.address],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['gaugesVotingCount', gaugesVotingContract.address],
+
+    queryFn: async () => {
       try {
         const count = (await gaugesVotingContract.read.gaugeCount()) ?? 0n
         return count
@@ -18,10 +19,9 @@ export const useGaugesVotingCount = (): bigint | undefined => {
         return 0n
       }
     },
-    {
-      enabled: Boolean(gaugesVotingContract && chainId && SUPPORT_CAKE_STAKING.includes(chainId)),
-    },
-  )
+
+    enabled: Boolean(gaugesVotingContract && chainId && SUPPORT_CAKE_STAKING.includes(chainId)),
+  })
 
   return data
 }

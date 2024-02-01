@@ -32,9 +32,10 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
     return farm ?? null
   }, [chainId, currencyA, currencyB, feeAmount])
 
-  return useQuery(
-    [chainId, farmConfig?.token0.symbol, farmConfig?.token1.symbol, farmConfig?.feeAmount],
-    async () => {
+  return useQuery({
+    queryKey: [chainId, farmConfig?.token0.symbol, farmConfig?.token1.symbol, farmConfig?.feeAmount],
+
+    queryFn: async () => {
       if (!farmConfig || !chainId) {
         throw new Error('Invalid farm config')
       }
@@ -67,10 +68,9 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
         return null
       }
     },
-    {
-      enabled: Boolean(chainId && farmConfig),
-      refetchInterval: FAST_INTERVAL * 3,
-      staleTime: FAST_INTERVAL,
-    },
-  )
+
+    enabled: Boolean(chainId && farmConfig),
+    refetchInterval: FAST_INTERVAL * 3,
+    staleTime: FAST_INTERVAL,
+  })
 }

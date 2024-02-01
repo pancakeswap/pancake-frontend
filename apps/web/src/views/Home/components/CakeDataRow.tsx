@@ -81,9 +81,10 @@ const CakeDataRow = () => {
       burnedBalance: 0,
       circulatingSupply: 0,
     },
-  } = useQuery(
-    ['cakeDataRow'],
-    async () => {
+  } = useQuery({
+    queryKey: ['cakeDataRow'],
+
+    queryFn: async () => {
       const [totalSupply, burned, totalLockedAmount] = await publicClient({ chainId: ChainId.BSC }).multicall({
         contracts: [
           { abi: erc20ABI, address: bscTokens.cake.address, functionName: 'totalSupply' },
@@ -110,11 +111,10 @@ const CakeDataRow = () => {
         circulatingSupply: circulating ? +formatBigInt(circulating) : 0,
       }
     },
-    {
-      enabled: Boolean(loadData),
-      refetchInterval: SLOW_INTERVAL,
-    },
-  )
+
+    enabled: Boolean(loadData),
+    refetchInterval: SLOW_INTERVAL,
+  })
   const cakePriceBusd = useCakePrice()
   const mcap = cakePriceBusd.times(circulatingSupply)
   const mcapString = formatLocalisedCompactNumber(mcap.toNumber(), isMobile)

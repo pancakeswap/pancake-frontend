@@ -1,17 +1,17 @@
-import { ArrowBackIcon, Box, Button, Flex, Heading, NotFound, ReactMarkdown } from '@pancakeswap/uikit'
-import { getAllVotes, getProposal } from 'state/voting/helpers'
-import { useAccount } from 'wagmi'
-import { useQuery } from '@tanstack/react-query'
-import { ProposalState } from 'state/types'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
+import { ArrowBackIcon, Box, Button, Flex, Heading, NotFound, ReactMarkdown } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
 import Container from 'components/Layout/Container'
 import PageLoader from 'components/Loader/PageLoader'
 import { NextSeo } from 'next-seo'
-import { isCoreProposal } from '../helpers'
-import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { ProposalState } from 'state/types'
+import { getAllVotes, getProposal } from 'state/voting/helpers'
+import { useAccount } from 'wagmi'
 import Layout from '../components/Layout'
+import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
+import { isCoreProposal } from '../helpers'
 import Details from './Details'
 import Results from './Results'
 import Vote from './Vote'
@@ -27,7 +27,9 @@ const Overview = () => {
     status: proposalLoadingStatus,
     data: proposal,
     error,
-  } = useQuery(['voting', 'proposal', id], () => getProposal(id), {
+  } = useQuery({
+    queryKey: ['voting', 'proposal', id],
+    queryFn: () => getProposal(id),
     enabled: Boolean(id),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -38,7 +40,14 @@ const Overview = () => {
     status: votesLoadingStatus,
     data: votes,
     refetch,
-  } = useQuery(['voting', 'proposal', proposal, 'votes'], async () => getAllVotes(proposal), {
+  } = useQuery({
+    queryKey: ['voting', 'proposal', proposal, 'votes'],
+    queryFn: async () => {
+      if (!proposal) {
+        throw new Error('No proposal')
+      }
+      return getAllVotes(proposal)
+    },
     enabled: Boolean(proposal),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -46,7 +55,7 @@ const Overview = () => {
   })
   const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
-  const isPageLoading = votesLoadingStatus === 'loading' || proposalLoadingStatus === 'loading'
+  const isPageLoading = votesLoadingStatus === 'pending' || proposalLoadingStatus === 'pending'
 
   if (!proposal && error) {
     return (

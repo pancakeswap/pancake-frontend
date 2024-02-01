@@ -7,16 +7,20 @@ import { useQuery } from '@tanstack/react-query'
 const useWhitelistedAddresses = (): FarmAuctionBidderConfig[] => {
   const farmAuctionContract = useFarmAuctionContract()
 
-  const { data } = useQuery(['farmAuction', 'whitelistedAddresses'], async () => {
-    try {
-      const [bidderAddresses] = await farmAuctionContract.read.viewBidders([
-        0n,
-        BigInt(AUCTION_WHITELISTED_BIDDERS_TO_FETCH),
-      ])
-      return bidderAddresses.map((address) => getBidderInfo(address))
-    } catch (error) {
-      throw Error('Failed to fetch list of whitelisted addresses')
-    }
+  const { data } = useQuery({
+    queryKey: ['farmAuction', 'whitelistedAddresses'],
+
+    queryFn: async () => {
+      try {
+        const [bidderAddresses] = await farmAuctionContract.read.viewBidders([
+          0n,
+          BigInt(AUCTION_WHITELISTED_BIDDERS_TO_FETCH),
+        ])
+        return bidderAddresses.map((address) => getBidderInfo(address))
+      } catch (error) {
+        throw Error('Failed to fetch list of whitelisted addresses')
+      }
+    },
   })
 
   return data

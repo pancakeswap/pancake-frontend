@@ -20,9 +20,10 @@ export const getCoreProposal = async (type: ProposalState): Promise<Proposal[]> 
 }
 
 export const useVotingStatus = () => {
-  const { data: votingStatus = null } = useQuery(
-    ['anyActiveSoonCoreProposals'],
-    async () => {
+  const { data: votingStatus = null } = useQuery({
+    queryKey: ['anyActiveSoonCoreProposals'],
+
+    queryFn: async () => {
       const activeProposals = await getCoreProposal(ProposalState.ACTIVE)
       if (activeProposals.length) {
         return 'vote_now'
@@ -33,11 +34,10 @@ export const useVotingStatus = () => {
       }
       return null
     },
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
   return votingStatus
 }

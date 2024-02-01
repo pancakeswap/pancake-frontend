@@ -30,9 +30,10 @@ export const useRevenueSharingProxy = (
   const blockTimestamp = useInitialBlockTimestamp()
   const currencyBlockTimestamp = useCurrentBlockTimestamp()
 
-  const { data } = useQuery(
-    ['/revenue-sharing-pool-for-cake', contract.address, contract.chain?.id, account],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['/revenue-sharing-pool-for-cake', contract.address, contract.chain?.id, account],
+
+    queryFn: async () => {
       if (!account) return undefined
       try {
         const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
@@ -74,7 +75,7 @@ export const useRevenueSharingProxy = (
         return initialData
       }
     },
-  )
+  })
 
   return data ?? initialData
 }

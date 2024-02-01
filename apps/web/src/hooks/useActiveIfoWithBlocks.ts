@@ -10,9 +10,10 @@ import { useActiveIfoConfig } from './useIfoConfig'
 export const useActiveIfoWithBlocks = (): (Ifo & { startBlock: number; endBlock: number }) | null => {
   const { activeIfo } = useActiveIfoConfig()
 
-  const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useQuery(
-    ['ifo', 'currentIfo'],
-    async () => {
+  const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useQuery({
+    queryKey: ['ifo', 'currentIfo'],
+
+    queryFn: async () => {
       if (!activeIfo?.address) {
         return {
           startBlock: 0,
@@ -41,13 +42,12 @@ export const useActiveIfoWithBlocks = (): (Ifo & { startBlock: number; endBlock:
         endBlock: endBlockResponse.status === 'success' ? Number(endBlockResponse.result) : 0,
       }
     },
-    {
-      enabled: Boolean(activeIfo),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+
+    enabled: Boolean(activeIfo),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   return activeIfo ? { ...activeIfo, ...currentIfoBlocks } : null
 }

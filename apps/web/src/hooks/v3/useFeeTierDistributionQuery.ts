@@ -39,30 +39,30 @@ export default function useFeeTierDistributionQuery(
   interval: number,
 ) {
   const { chainId } = useActiveChainId()
-  const { data, isLoading, error } = useQuery(
-    [`useFeeTierDistributionQuery-${token0}-${token1}`],
-    async () => {
+  const { data, isPending, error } = useQuery({
+    queryKey: [`useFeeTierDistributionQuery-${token0}-${token1}`],
+
+    queryFn: async () => {
       if (!chainId) return undefined
       return v3Clients[chainId].request(query, {
         token0: token0?.toLowerCase(),
         token1: token1?.toLowerCase(),
       })
     },
-    {
-      enabled: Boolean(token0 && token1 && chainId && v3Clients[chainId]),
-      refetchInterval: interval,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(token0 && token1 && chainId && v3Clients[chainId]),
+    refetchInterval: interval,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return useMemo(
     () => ({
       error,
-      isLoading,
+      isPending,
       data,
     }),
-    [data, error, isLoading],
+    [data, error, isPending],
   )
 }

@@ -1,16 +1,16 @@
-import { useCallback } from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
+import { useCallback } from 'react'
 
+import { Currency, Price } from '@pancakeswap/sdk'
+import { useQueryClient } from '@tanstack/react-query'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useOrderActionHandlers } from 'state/limitOrders/hooks'
 import { Field, Rate } from 'state/limitOrders/types'
-import { Currency, Price } from '@pancakeswap/sdk'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useQueryClient } from '@tanstack/react-query'
 import {
-  OPEN_ORDERS_QUERY_KEY,
   EXECUTED_CANCELLED_ORDERS_QUERY_KEY,
+  OPEN_ORDERS_QUERY_KEY,
 } from 'views/LimitOrders/hooks/useGelatoLimitOrdersHistory'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useGelatoLimitOrdersLib from './useGelatoLimitOrdersLib'
 
 export interface GelatoLimitOrdersHandlers {
@@ -102,8 +102,12 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         } as Order,
       })
 
-      queryClient.invalidateQueries(OPEN_ORDERS_QUERY_KEY)
-      queryClient.invalidateQueries(EXECUTED_CANCELLED_ORDERS_QUERY_KEY)
+      queryClient.invalidateQueries({
+        queryKey: OPEN_ORDERS_QUERY_KEY,
+      })
+      queryClient.invalidateQueries({
+        queryKey: EXECUTED_CANCELLED_ORDERS_QUERY_KEY,
+      })
 
       return tx
     },
@@ -179,8 +183,12 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         },
       })
 
-      queryClient.invalidateQueries(OPEN_ORDERS_QUERY_KEY)
-      queryClient.invalidateQueries(EXECUTED_CANCELLED_ORDERS_QUERY_KEY)
+      queryClient.invalidateQueries({
+        queryKey: OPEN_ORDERS_QUERY_KEY,
+      })
+      queryClient.invalidateQueries({
+        queryKey: EXECUTED_CANCELLED_ORDERS_QUERY_KEY,
+      })
 
       return tx
     },

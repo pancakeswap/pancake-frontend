@@ -12,7 +12,8 @@
     "test:config": "vitest --run --config vitest-config-test.config.ts",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:style": "npx stylelint '**/*.{ts,tsx}'",
-    "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\""
+    "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
+    "typechecks": "tsc --noEmit -p ./tsconfig.build.json"
   },
   "browserslist": {
     "production": [
@@ -68,7 +69,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^7.52.1",
     "@snapshot-labs/snapshot.js": "^0.4.40",
-    "@tanstack/react-query": "^4.28.0",
+    "@tanstack/react-query": "^5.18.0",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@wallchain/sdk": "^0.6.8",
     "@web3inbox/core": "0.0.25",

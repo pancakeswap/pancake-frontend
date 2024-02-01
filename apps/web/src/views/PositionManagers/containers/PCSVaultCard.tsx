@@ -59,22 +59,22 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   } = vault
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
-  const tokenRatio = useQuery(
-    ['adapterAddress', adapterAddress, id],
-    async () => {
+  const tokenRatio = useQuery({
+    queryKey: ['adapterAddress', adapterAddress, id],
+
+    queryFn: async () => {
       const result = await adapterContract.read.tokenPerShare()
       return new BigNumber(result[0].toString())
         .div(new BigNumber(10).pow(currencyA.decimals))
         .div(new BigNumber(result[1].toString()).div(new BigNumber(10).pow(currencyB.decimals)))
         .toNumber()
     },
-    {
-      enabled: !!adapterContract,
-      refetchInterval: 6000,
-      staleTime: 6000,
-      cacheTime: 6000,
-    },
-  ).data
+
+    enabled: !!adapterContract,
+    refetchInterval: 6000,
+    staleTime: 6000,
+    gcTime: 6000,
+  }).data
   const priceFromSubgraph = useTokenPriceFromSubgraph(
     priceFromV3FarmPid ? undefined : currencyA.isToken ? currencyA.address.toLowerCase() : undefined,
     priceFromV3FarmPid ? undefined : currencyB.isToken ? currencyB.address.toLowerCase() : undefined,

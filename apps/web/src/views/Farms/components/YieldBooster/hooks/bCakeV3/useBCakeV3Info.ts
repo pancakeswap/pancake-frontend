@@ -1,5 +1,5 @@
 import { bCakeSupportedChainId } from '@pancakeswap/farms'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import BN from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -16,7 +16,7 @@ export const USER_ESTIMATED_MULTIPLIER = 2
 const QUERY_SETTINGS_WITHOUT_REFETCH = {
   retry: 3,
   retryDelay: 3000,
-  keepPreviousData: true,
+  placeholderData: keepPreviousData,
 }
 
 export const useBakeV3farmCanBoost = (farmPid: number) => {
@@ -36,42 +36,36 @@ export const useBakeV3farmCanBoost = (farmPid: number) => {
 export const useIsBoostedPoolLegacy = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data, refetch } = useQuery(
-    [`v3/bcake/isBoostedPoolLegacy/${chainId}/${tokenId}`],
-    () => farmBoosterV3Contract.read.isBoostedPool([BigInt(tokenId ?? 0)]),
-    {
-      enabled: Boolean(chainId && tokenId && tokenId !== 'undefined'),
-      ...QUERY_SETTINGS_WITHOUT_REFETCH,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: [`v3/bcake/isBoostedPoolLegacy/${chainId}/${tokenId}`],
+    queryFn: () => farmBoosterV3Contract.read.isBoostedPool([BigInt(tokenId ?? 0)]),
+    enabled: Boolean(chainId && tokenId && tokenId !== 'undefined'),
+    ...QUERY_SETTINGS_WITHOUT_REFETCH,
+  })
   return { isBoosted: data?.[0], pid: Number(data?.[1]), mutate: refetch }
 }
 
 export const useIsBoostedPool = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
-  const { data, refetch } = useQuery(
-    [`v3/bcake/isBoostedPool/${chainId}/${tokenId}`],
-    () => farmBoosterV3Contract.read.isBoostedPool([BigInt(tokenId ?? 0)]),
-    {
-      enabled: Boolean(chainId && tokenId && tokenId !== 'undefined'),
-      ...QUERY_SETTINGS_WITHOUT_REFETCH,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: [`v3/bcake/isBoostedPool/${chainId}/${tokenId}`],
+    queryFn: () => farmBoosterV3Contract.read.isBoostedPool([BigInt(tokenId ?? 0)]),
+    enabled: Boolean(chainId && tokenId && tokenId !== 'undefined'),
+    ...QUERY_SETTINGS_WITHOUT_REFETCH,
+  })
   return { isBoosted: data?.[0], pid: Number(data?.[1]), mutate: refetch }
 }
 
 export const useUserPositionInfo = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const masterChefV3 = useMasterchefV3()
-  const { data, refetch } = useQuery(
-    [`v3/masterChef/userPositionInfos/${chainId}/${tokenId}`],
-    () => masterChefV3?.read.userPositionInfos([BigInt(tokenId ?? 0)]),
-    {
-      enabled: Boolean(chainId && tokenId),
-      ...QUERY_SETTINGS_WITHOUT_REFETCH,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: [`v3/masterChef/userPositionInfos/${chainId}/${tokenId}`],
+    queryFn: () => masterChefV3?.read.userPositionInfos([BigInt(tokenId ?? 0)]),
+    enabled: Boolean(chainId && tokenId),
+    ...QUERY_SETTINGS_WITHOUT_REFETCH,
+  })
   return {
     data: {
       liquidity: data?.[0],
@@ -93,23 +87,19 @@ export const useUserBoostedPoolsTokenId = () => {
   const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
   const farmBoosterV3ContractLegacy = useBCakeFarmBoosterV3Contract()
 
-  const { data, refetch } = useQuery(
-    [`v3/bcake/userBoostedPools/${chainId}/${account}`],
-    () => farmBoosterV3Contract.read.activedPositions([account ?? '0x']),
-    {
-      enabled: Boolean(chainId && account),
-      ...QUERY_SETTINGS_WITHOUT_REFETCH,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: [`v3/bcake/userBoostedPools/${chainId}/${account}`],
+    queryFn: () => farmBoosterV3Contract.read.activedPositions([account ?? '0x']),
+    enabled: Boolean(chainId && account),
+    ...QUERY_SETTINGS_WITHOUT_REFETCH,
+  })
 
-  const { data: dataLegacy, refetch: refetchLegacy } = useQuery(
-    [`v3/bcake/userBoostedPoolsLegacy/${chainId}/${account}`],
-    () => farmBoosterV3ContractLegacy.read.activedPositions([account ?? '0x']),
-    {
-      enabled: Boolean(chainId && account),
-      ...QUERY_SETTINGS_WITHOUT_REFETCH,
-    },
-  )
+  const { data: dataLegacy, refetch: refetchLegacy } = useQuery({
+    queryKey: [`v3/bcake/userBoostedPoolsLegacy/${chainId}/${account}`],
+    queryFn: () => farmBoosterV3ContractLegacy.read.activedPositions([account ?? '0x']),
+    enabled: Boolean(chainId && account),
+    ...QUERY_SETTINGS_WITHOUT_REFETCH,
+  })
   const tokenIds = data?.map((tokenId) => Number(tokenId)) ?? []
   const tokenIdsLegacy = dataLegacy?.map((tokenId) => Number(tokenId)) ?? []
 
@@ -125,14 +115,12 @@ export const useUserBoostedPoolsTokenId = () => {
 export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
-  const { data, refetch } = useQuery(
-    [`v3/bcake/useUserMultiplierBeforeBoosted/${chainId}/${tokenId}`],
-    () => getUserMultiplier({ address: farmBoosterV3Contract.address, tokenId, chainId }),
-    {
-      enabled: Boolean(chainId && tokenId),
-      ...QUERY_SETTINGS_WITHOUT_REFETCH,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: [`v3/bcake/useUserMultiplierBeforeBoosted/${chainId}/${tokenId}`],
+    queryFn: () => getUserMultiplier({ address: farmBoosterV3Contract.address, tokenId, chainId }),
+    enabled: Boolean(chainId && tokenId),
+    ...QUERY_SETTINGS_WITHOUT_REFETCH,
+  })
 
   return {
     veCakeUserMultiplierBeforeBoosted: data ? (data > 2 ? 2 : data) : 1,

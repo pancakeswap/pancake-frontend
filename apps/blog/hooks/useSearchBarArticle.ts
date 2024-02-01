@@ -8,9 +8,10 @@ interface SearchBarArticle {
 }
 
 const useSearchBarArticle = (searchKey: string): SearchBarArticle => {
-  const { data: articlesData, isLoading } = useQuery(
-    [`/searchBarArticles`, searchKey],
-    async () => {
+  const { data: articlesData, isPending } = useQuery({
+    queryKey: [`/searchBarArticles`, searchKey],
+
+    queryFn: async () => {
       const result = await getArticle({
         url: '/articles',
         urlParamsObject: {
@@ -25,13 +26,12 @@ const useSearchBarArticle = (searchKey: string): SearchBarArticle => {
       })
       return result.data
     },
-    {
-      enabled: Boolean(searchKey),
-    },
-  )
+
+    enabled: Boolean(searchKey),
+  })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? [],
   }
 }

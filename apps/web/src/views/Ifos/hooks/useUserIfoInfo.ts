@@ -14,17 +14,17 @@ type ICakeRatioParams = {
 }
 
 export function useICakeRatio({ chainId }: ICakeRatioParams) {
-  const { data } = useQuery(
-    [chainId, 'current-ifo-ratio'],
-    () =>
+  const { data } = useQuery({
+    queryKey: [chainId, 'current-ifo-ratio'],
+
+    queryFn: () =>
       getCurrentIfoRatio({
         chainId,
         provider: getViemClients,
       }),
-    {
-      enabled: Boolean(chainId),
-    },
-  )
+
+    enabled: Boolean(chainId),
+  })
 
   return data
 }
@@ -37,19 +37,19 @@ type Params = {
 export function useUserIfoInfo({ chainId, ifoAddress }: Params) {
   const { address: account } = useAccount()
   const ratio = useICakeRatio({ chainId })
-  const { data } = useQuery(
-    [account, chainId, ifoAddress, 'user-ifo-info'],
-    () =>
+  const { data } = useQuery({
+    queryKey: [account, chainId, ifoAddress, 'user-ifo-info'],
+
+    queryFn: () =>
       getUserIfoInfo({
         account,
         chainId,
         ifo: ifoAddress,
         provider: getViemClients,
       }),
-    {
-      enabled: Boolean(account && chainId),
-    },
-  )
+
+    enabled: Boolean(account && chainId),
+  })
 
   const snapshotTime = useMemo(() => {
     const now = Math.floor(Date.now() / 1000)

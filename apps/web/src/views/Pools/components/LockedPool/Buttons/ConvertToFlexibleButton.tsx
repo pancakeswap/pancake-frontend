@@ -45,7 +45,9 @@ const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = 
         </ToastDescriptionWithTx>,
       )
       dispatch(fetchCakeVaultUserData({ account, chainId }))
-      queryClient.invalidateQueries(['userCakeLockStatus', account])
+      queryClient.invalidateQueries({
+        queryKey: ['userCakeLockStatus', account],
+      })
     }
   }, [
     t,

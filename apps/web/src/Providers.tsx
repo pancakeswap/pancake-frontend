@@ -1,7 +1,7 @@
 import { LanguageProvider } from '@pancakeswap/localization'
 import { ModalProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { Store } from '@reduxjs/toolkit'
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
@@ -27,7 +27,7 @@ const Providers: React.FC<
 > = ({ children, store, dehydratedState }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={dehydratedState}>
+      <HydrationBoundary state={dehydratedState}>
         <WagmiConfig config={wagmiConfig}>
           <Provider store={store}>
             <NextThemeProvider>
@@ -47,7 +47,7 @@ const Providers: React.FC<
             </NextThemeProvider>
           </Provider>
         </WagmiConfig>
-      </Hydrate>
+      </HydrationBoundary>
     </QueryClientProvider>
   )
 }

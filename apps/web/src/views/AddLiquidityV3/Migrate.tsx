@@ -1,3 +1,5 @@
+import { Trans, useTranslation } from '@pancakeswap/localization'
+import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import {
   AtomBox,
   AutoColumn,
@@ -13,9 +15,11 @@ import {
   Spinner,
   Text,
 } from '@pancakeswap/uikit'
+import { useUserSlippagePercent } from '@pancakeswap/utils/user'
+import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
 import { LiquidityChartRangeInput } from '@pancakeswap/widgets-internal'
-import { tryParsePrice } from 'hooks/v3/utils'
 import { GreyCard } from 'components/Card'
+import { CommitButton } from 'components/CommitButton'
 import { CurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
 import { useToken } from 'hooks/Tokens'
@@ -24,14 +28,10 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
+import { tryParsePrice } from 'hooks/v3/utils'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Trans, useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
-import { useUserSlippagePercent } from '@pancakeswap/utils/user'
-import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
-import { Address, useContractRead } from 'wagmi'
-import { CommitButton } from 'components/CommitButton'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
+import { Address, useContractRead } from 'wagmi'
 // import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useV2Pair } from 'hooks/usePairs'
@@ -41,24 +41,20 @@ import { calculateGasMargin } from 'utils'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 // import { splitSignature } from 'utils/splitSignature'
-import {
-  encodeFunctionData,
-  Hex,
-  // toHex
-} from 'viem'
+import { encodeFunctionData, Hex } from 'viem'
 // import { isUserRejected } from 'utils/sentry'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
+import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import { useInitialRange } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useInitialRange'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 import RangeSelector from './formViews/V3FormView/components/RangeSelector'
 import RateToggle from './formViews/V3FormView/components/RateToggle'
 import { useRangeHopCallbacks } from './formViews/V3FormView/form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
-import { HandleFeePoolSelectFn } from './types'
 import { useV3FormState } from './formViews/V3FormView/form/reducer'
+import { HandleFeePoolSelectFn } from './types'
 
 export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   const pairContract = usePairContract(v2PairAddress)
@@ -145,7 +141,7 @@ function V2PairMigrate({
     [token1, pairBalance, reserve1.quotient, v2LPTotalSupply.quotient],
   )
 
-  const { isLoading, isError, largestUsageFeeTier } = useFeeTierDistribution(token0, token1)
+  const { isPending, isError, largestUsageFeeTier } = useFeeTierDistribution(token0, token1)
 
   const [feeAmount, setFeeAmount] = useState(FeeAmount.MEDIUM)
 
@@ -247,10 +243,10 @@ function V2PairMigrate({
   const currency1 = unwrappedToken(token1)
 
   useEffect(() => {
-    if (!isError && !isLoading && largestUsageFeeTier) {
+    if (!isError && !isPending && largestUsageFeeTier) {
       setFeeAmount(largestUsageFeeTier)
     }
-  }, [isError, isLoading, largestUsageFeeTier])
+  }, [isError, isPending, largestUsageFeeTier])
 
   // txn values
   const deadline = useTransactionDeadline() // custom from users settings

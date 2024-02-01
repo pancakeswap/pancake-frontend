@@ -1,5 +1,5 @@
 import { Box, NotFound } from '@pancakeswap/uikit'
-import { Hydrate, QueryClient, dehydrate } from '@tanstack/react-query'
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query'
 import ArticleInfo from 'components/Article/SingleArticle/ArticleInfo'
 import HowItWork from 'components/Article/SingleArticle/HowItWork'
 import SimilarArticles from 'components/Article/SingleArticle/SimilarArticles'
@@ -38,44 +38,48 @@ export const getStaticProps = (async ({ params, previewData }) => {
     name = { $eq: 'Preview' }
   }
 
-  const article = await queryClient.fetchQuery(['/article'], () =>
-    getSingleArticle({
-      url: `/slugify/slugs/article/${slug}`,
-      urlParamsObject: {
-        populate: 'categories,image',
-        locale: 'all',
-        filters: {
-          categories: {
-            name,
+  const article = await queryClient.fetchQuery({
+    queryKey: ['/article'],
+    queryFn: async () =>
+      getSingleArticle({
+        url: `/slugify/slugs/article/${slug}`,
+        urlParamsObject: {
+          populate: 'categories,image',
+          locale: 'all',
+          filters: {
+            categories: {
+              name,
+            },
           },
         },
-      },
-    }),
-  )
+      }),
+  })
 
-  const similarArticles = await queryClient.fetchQuery(['/similarArticles'], () =>
-    getArticle({
-      url: '/articles',
-      urlParamsObject: {
-        locale: article.locale,
-        sort: 'createAt:desc',
-        populate: 'categories,image',
-        pagination: { limit: 6 },
-        filters: {
-          id: {
-            $not: article.id,
-          },
-          categories: {
-            $or: article.categories.map((category) => ({
-              name: {
-                $eq: category,
-              },
-            })),
+  const similarArticles = await queryClient.fetchQuery({
+    queryKey: ['/similarArticles'],
+    queryFn: async () =>
+      getArticle({
+        url: '/articles',
+        urlParamsObject: {
+          locale: article.locale,
+          sort: 'createAt:desc',
+          populate: 'categories,image',
+          pagination: { limit: 6 },
+          filters: {
+            id: {
+              $not: article.id,
+            },
+            categories: {
+              $or: article.categories.map((category) => ({
+                name: {
+                  $eq: category,
+                },
+              })),
+            },
           },
         },
-      },
-    }).then((result) => result.data),
-  )
+      }).then((result) => result.data),
+  })
 
   return {
     props: {
@@ -105,7 +109,7 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <>
       <PageMeta title={title} description={description} imgUrl={imgUrl} />
-      <Hydrate state={dehydratedState}>
+      <HydrationBoundary state={dehydratedState}>
         <Box>
           <ArticleInfo />
           {!fallback.isPreviewMode && (
@@ -115,7 +119,7 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
             </>
           )}
         </Box>
-      </Hydrate>
+      </HydrationBoundary>
     </>
   )
 }

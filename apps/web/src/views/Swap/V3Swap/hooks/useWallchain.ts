@@ -89,9 +89,10 @@ const extractTokensFromTrade = (trade: SmartRouterTrade<TradeType> | undefined |
 function useWallchainSDK() {
   const { data: walletClient } = useWalletClient()
   const { chainId } = useActiveChainId()
-  const { data: wallchainSDK } = useQuery(
-    ['wallchainSDK', walletClient?.account, walletClient?.chain],
-    async () => {
+  const { data: wallchainSDK } = useQuery({
+    queryKey: ['wallchainSDK', walletClient?.account, walletClient?.chain],
+
+    queryFn: async () => {
       const WallchainSDK = (await import('@wallchain/sdk')).default
       return new WallchainSDK({
         keys: WallchainKeys as { [key: string]: string },
@@ -101,13 +102,12 @@ function useWallchainSDK() {
         originators,
       })
     },
-    {
-      enabled: Boolean(chainId === ChainId.BSC && walletClient && WALLCHAIN_ENABLED),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+
+    enabled: Boolean(chainId === ChainId.BSC && walletClient && WALLCHAIN_ENABLED),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   return wallchainSDK
 }

@@ -1,6 +1,6 @@
 import { Currency, Trade, TradeType, ZERO } from '@pancakeswap/sdk'
-import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 
@@ -37,8 +37,10 @@ export const useIsTradeWithMMBetter = ({
         if (tradeWithMM) return true
       }
       return (
-        (isExactIn && tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO)) || // exactIn
-        (!isExactIn && tradeWithMM.inputAmount.lessThan(v2Trade?.inputAmount ?? ZERO)) // exactOut
+        // exactIn
+        (isExactIn && tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO)) ||
+        // exactOut
+        (!isExactIn && tradeWithMM.inputAmount.lessThan(v2Trade?.inputAmount ?? ZERO))
       )
     }
     if (!v2Trade && trade) {
@@ -47,8 +49,10 @@ export const useIsTradeWithMMBetter = ({
         if (tradeWithMM) return true
       }
       return (
-        (isExactIn && tradeWithMM.outputAmount.greaterThan(trade?.outputAmount ?? ZERO)) || // exactIn
-        (!isExactIn && tradeWithMM.inputAmount.lessThan(trade?.inputAmount ?? ZERO)) // exactOut
+        // exactIn
+        (isExactIn && tradeWithMM.outputAmount.greaterThan(trade?.outputAmount ?? ZERO)) ||
+        // exactOut
+        (!isExactIn && tradeWithMM.inputAmount.lessThan(trade?.inputAmount ?? ZERO))
       )
     }
     // compare with smart router and v2 at same time

@@ -47,33 +47,37 @@ export const useCakePoolEmission = () => {
     })
   }, [chainId])
 
-  const { data } = useQuery(['vecake/cakePoolEmission', client.chain.id], async () => {
-    const response = await client.multicall({
-      contracts: [
-        {
-          address: getMasterChefV2Address(client.chain.id),
-          abi: masterChefV2ABI,
-          functionName: 'cakeRateToSpecialFarm',
-        } as const,
-        {
-          address: getMasterChefV2Address(client.chain.id),
-          abi: masterChefV2ABI,
-          functionName: 'poolInfo',
-          args: [pid],
-        } as const,
-        {
-          address: getMasterChefV2Address(client.chain.id),
-          abi: masterChefV2ABI,
-          functionName: 'totalSpecialAllocPoint',
-        } as const,
-      ],
-      allowFailure: false,
-    })
+  const { data } = useQuery({
+    queryKey: ['vecake/cakePoolEmission', client.chain.id],
 
-    const cakeRateToSpecialFarm = response[0] ?? 0n
-    const allocPoint = response[1][2] ?? 0n
-    const totalSpecialAllocPoint = response[2] ?? 0n
-    return [cakeRateToSpecialFarm, allocPoint, totalSpecialAllocPoint]
+    queryFn: async () => {
+      const response = await client.multicall({
+        contracts: [
+          {
+            address: getMasterChefV2Address(client.chain.id),
+            abi: masterChefV2ABI,
+            functionName: 'cakeRateToSpecialFarm',
+          } as const,
+          {
+            address: getMasterChefV2Address(client.chain.id),
+            abi: masterChefV2ABI,
+            functionName: 'poolInfo',
+            args: [pid],
+          } as const,
+          {
+            address: getMasterChefV2Address(client.chain.id),
+            abi: masterChefV2ABI,
+            functionName: 'totalSpecialAllocPoint',
+          } as const,
+        ],
+        allowFailure: false,
+      })
+
+      const cakeRateToSpecialFarm = response[0] ?? 0n
+      const allocPoint = response[1][2] ?? 0n
+      const totalSpecialAllocPoint = response[2] ?? 0n
+      return [cakeRateToSpecialFarm, allocPoint, totalSpecialAllocPoint]
+    },
   })
 
   return useMemo(() => {

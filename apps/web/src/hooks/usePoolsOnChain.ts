@@ -50,9 +50,10 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     }, [currencyA, currencyB])
 
     const queryEnabled = !!(enabled && blockNumber && key && pairs)
-    const poolState = useQuery(
-      [poolType, 'pools', key],
-      async () => {
+    const poolState = useQuery({
+      queryKey: [poolType, 'pools', key],
+
+      queryFn: async () => {
         if (!blockNumber || !pairs) {
           throw new Error('Failed to get pools on chain. Missing valid params')
         }
@@ -72,11 +73,10 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
           fetchingBlock.current = null
         }
       },
-      {
-        enabled: queryEnabled,
-        refetchOnWindowFocus: false,
-      },
-    )
+
+      enabled: queryEnabled,
+      refetchOnWindowFocus: false,
+    })
 
     const { refetch, data, isLoading, isFetching: isValidating } = poolState
     useEffect(() => {

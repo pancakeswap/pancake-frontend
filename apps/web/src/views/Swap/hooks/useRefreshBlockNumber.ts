@@ -17,7 +17,9 @@ export const useRefreshBlockNumber = () => {
   useEffect(() => {
     if (!isLoading) return
 
-    queryClient.invalidateQueries(['blockNumberFetcher', chainId])
+    queryClient.invalidateQueries({
+      queryKey: ['blockNumberFetcher', chainId],
+    })
 
     // setTimeout is used to demonstrate the loading
     // because the real loading state occurs on multicall state

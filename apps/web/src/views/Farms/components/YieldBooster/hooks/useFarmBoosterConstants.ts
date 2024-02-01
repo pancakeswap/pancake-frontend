@@ -9,9 +9,10 @@ import { useQuery } from '@tanstack/react-query'
 const useFarmBoosterConstants = () => {
   const bCakeFarmBoosterAddress = getBCakeFarmBoosterAddress()
 
-  const { data, status } = useQuery(
-    ['farmBoosterConstants'],
-    async () => {
+  const { data, status } = useQuery({
+    queryKey: ['farmBoosterConstants'],
+
+    queryFn: async () => {
       return publicClient({ chainId: ChainId.BSC }).multicall({
         contracts: [
           {
@@ -33,12 +34,11 @@ const useFarmBoosterConstants = () => {
         allowFailure: false,
       })
     },
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
   return useMemo(() => {
     return {
       constants: data && {

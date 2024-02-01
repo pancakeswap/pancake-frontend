@@ -11,7 +11,7 @@ import { usePool } from './usePools'
 const MAX_DATA_BLOCK_AGE = 20
 
 interface FeeTierDistribution {
-  isLoading: boolean
+  isPending: boolean
   isError: boolean
   largestUsageFeeTier?: FeeAmount | undefined
   largestUsageFeeTierTvl?: [number, number]
@@ -24,7 +24,7 @@ export function useFeeTierDistribution(
   currencyA: Currency | undefined,
   currencyB: Currency | undefined,
 ): FeeTierDistribution {
-  const { isLoading, error, distributions, tvlByFeeTier } = usePoolTVL(currencyA?.wrapped, currencyB?.wrapped)
+  const { isPending, error, distributions, tvlByFeeTier } = usePoolTVL(currencyA?.wrapped, currencyB?.wrapped)
 
   // fetch all pool states to determine pool state
   const [poolStateVeryLow] = usePool(currencyA, currencyB, FeeAmount.LOWEST)
@@ -33,9 +33,9 @@ export function useFeeTierDistribution(
   const [poolStateHigh] = usePool(currencyA, currencyB, FeeAmount.HIGH)
 
   return useMemo(() => {
-    if (isLoading || error || !distributions) {
+    if (isPending || error || !distributions) {
       return {
-        isLoading,
+        isPending,
         isError: Boolean(error),
         distributions,
       }
@@ -47,7 +47,7 @@ export function useFeeTierDistribution(
       .reduce((a: FeeAmount, b: FeeAmount) => ((distributions[a] ?? 0) > (distributions[b] ?? 0) ? a : b), -1)
 
     const percentages =
-      !isLoading &&
+      !isPending &&
       !error &&
       distributions &&
       poolStateVeryLow !== PoolState.LOADING &&
@@ -66,32 +66,32 @@ export function useFeeTierDistribution(
         : undefined
 
     return {
-      isLoading,
+      isPending,
       isError: Boolean(error),
       distributions: percentages,
       largestUsageFeeTier: largestUsageFeeTier === -1 ? undefined : largestUsageFeeTier,
       largestUsageFeeTierTvl: tvlByFeeTier[largestUsageFeeTier],
     }
-  }, [isLoading, error, distributions, tvlByFeeTier, poolStateVeryLow, poolStateLow, poolStateMedium, poolStateHigh])
+  }, [isPending, error, distributions, tvlByFeeTier, poolStateVeryLow, poolStateLow, poolStateMedium, poolStateHigh])
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
   const latestBlock = useCurrentBlock()
-  const { isLoading, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, 30000)
+  const { isPending, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, 30000)
 
   const { asToken0, asToken1, _meta } = data ?? {}
 
   return useMemo(() => {
     if (!latestBlock || !_meta || !asToken0 || !asToken1) {
       return {
-        isLoading,
+        isPending,
         error,
       }
     }
 
     if (latestBlock - (_meta?.block?.number ?? 0) > MAX_DATA_BLOCK_AGE) {
       return {
-        isLoading,
+        isPending,
         error,
       }
     }
@@ -156,10 +156,10 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
     }
 
     return {
-      isLoading,
+      isPending,
       error,
       distributions,
       tvlByFeeTier,
     }
-  }, [_meta, asToken0, asToken1, isLoading, error, latestBlock])
+  }, [_meta, asToken0, asToken1, isPending, error, latestBlock])
 }

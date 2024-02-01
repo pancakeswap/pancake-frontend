@@ -34,9 +34,10 @@ const defaultInfo: Info = {
 }
 
 export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UsePoolAvgInfoParams) {
-  const { data } = useQuery(
-    [address, chainId],
-    async () => {
+  const { data } = useQuery({
+    queryKey: [address, chainId],
+
+    queryFn: async () => {
       if (!chainId) return undefined
       const client = v3Clients[chainId]
       if (!client) {
@@ -68,11 +69,10 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
         feeUSD: averageArray(feeUSDs),
       }
     },
-    {
-      enabled: Boolean(address && chainId),
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(address && chainId),
+    refetchOnWindowFocus: false,
+  })
 
   return data || defaultInfo
 }

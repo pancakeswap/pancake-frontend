@@ -303,21 +303,21 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
   const chainId = chainIdOverride ?? chainId_
   const { data: signer } = useWalletClient({ chainId })
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useQuery(
-    ['bscProviderGasPrice', signer],
-    async () => {
+  const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useQuery({
+    queryKey: ['bscProviderGasPrice', signer],
+
+    queryFn: async () => {
       // @ts-ignore
       const gasPrice = await signer?.request({
         method: 'eth_gasPrice' as any,
       })
       return hexToBigInt(gasPrice as Hex)
     },
-    {
-      enabled: Boolean(signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault),
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
   if (chainId === ChainId.BSC) {
     return userGas === GAS_PRICE_GWEI.rpcDefault ? bscProviderGasPrice : BigInt(userGas ?? GAS_PRICE_GWEI.default)
   }
@@ -378,9 +378,10 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
-  const { data: farmPairs = [] } = useQuery(
-    ['track-farms-pairs', chainId],
-    async () => {
+  const { data: farmPairs = [] } = useQuery({
+    queryKey: ['track-farms-pairs', chainId],
+
+    queryFn: async () => {
       const farms = await getFarmConfig(chainId)
 
       const fPairs: [ERC20Token, ERC20Token][] | undefined = farms
@@ -389,13 +390,12 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
 
       return fPairs
     },
-    {
-      enabled: Boolean(chainId),
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    enabled: Boolean(chainId),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   // pairs for every token against every base
   const generatedPairs: [ERC20Token, ERC20Token][] = useMemo(

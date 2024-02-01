@@ -14,9 +14,10 @@ const useLanguage = () => {
   const { t } = useTranslation()
   const defaultLanguage = { label: t('All'), value: 'all' }
 
-  const { data } = useQuery(
-    ['/language', defaultLanguage],
-    async () => {
+  const { data } = useQuery({
+    queryKey: ['/language', defaultLanguage],
+
+    queryFn: async () => {
       try {
         const response = await fetch(`/api/locales`)
         const result: ResponseLanguageType[] = await response.json()
@@ -32,12 +33,11 @@ const useLanguage = () => {
         return [defaultLanguage]
       }
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   return data || []
 }

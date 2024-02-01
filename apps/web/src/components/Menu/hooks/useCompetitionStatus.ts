@@ -6,18 +6,18 @@ import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 export const useCompetitionStatus = () => {
   const tradingCompetitionContract = useTradingCompetitionContractMoD()
 
-  const { data: state } = useQuery(
-    ['competitionStatus'],
-    async () => {
+  const { data: state } = useQuery({
+    queryKey: ['competitionStatus'],
+
+    queryFn: async () => {
       const competitionStatus = await tradingCompetitionContract.read.currentStatus()
       return SmartContractPhases[competitionStatus].state
     },
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    },
-  )
+
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   return useMemo(() => {
     if (state === REGISTRATION) {

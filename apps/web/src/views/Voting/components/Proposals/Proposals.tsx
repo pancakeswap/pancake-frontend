@@ -26,9 +26,11 @@ const Proposals = () => {
 
   const { proposalType, filterState } = state
 
-  const { data, status } = useQuery(['voting', 'proposals', filterState], async () =>
-    getProposals(1000, 0, filterState),
-  )
+  const { data, status } = useQuery({
+    queryKey: ['voting', 'proposals', filterState],
+
+    queryFn: async () => getProposals(1000, 0, filterState),
+  })
 
   const handleProposalTypeChange = (newProposalType: ProposalType) => {
     setState((prevState) => ({

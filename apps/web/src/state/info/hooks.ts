@@ -3,6 +3,7 @@ import duration from 'dayjs/plugin/duration'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import { fetchAllPoolData, fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
@@ -19,7 +20,6 @@ import { Block, Transaction } from 'state/info/types'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { useQuery } from '@tanstack/react-query'
 import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
@@ -49,43 +49,39 @@ export const useProtocolDataQuery = (): ProtocolData | undefined => {
   const { blocks } = useBlockFromTimeStampQuery([t24, t48])
   const [block24, block48] = blocks ?? []
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: protocolData } = useQuery(
-    [`info/protocol/updateProtocolData/${type}`, chainName],
-    () => fetchProtocolData(chainName, block24, block48),
-    {
-      enabled: Boolean(chainName && block24 && block48),
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-    },
-  )
+  const { data: protocolData } = useQuery({
+    queryKey: [`info/protocol/updateProtocolData/${type}`, chainName],
+    queryFn: () => fetchProtocolData(chainName, block24, block48),
+    enabled: Boolean(chainName && block24 && block48),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
   return protocolData ?? undefined
 }
 
 export const useProtocolChartDataQuery = (): ChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: chartData } = useQuery(
-    [`info/protocol/updateProtocolChartData/${type}`, chainName],
-    () => fetchGlobalChartData(chainName),
-    {
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-    },
-  )
+  const { data: chartData } = useQuery({
+    queryKey: [`info/protocol/updateProtocolChartData/${type}`, chainName],
+    queryFn: () => fetchGlobalChartData(chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
   return chartData ?? undefined
 }
 
 export const useProtocolTransactionsQuery = (): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: transactions } = useQuery(
-    [`info/protocol/updateProtocolTransactionsData/${type}`, chainName],
-    () => fetchTopTransactions(chainName),
-    {
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_INTERVAL_REFETCH, // update latest Transactions per 15s
-    },
-  )
+  const { data: transactions } = useQuery({
+    queryKey: [`info/protocol/updateProtocolTransactionsData/${type}`, chainName],
+    queryFn: () => fetchTopTransactions(chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+
+    // update latest Transactions per 15s
+    ...QUERY_SETTINGS_INTERVAL_REFETCH,
+  })
   return transactions ?? undefined
 }
 
@@ -94,7 +90,9 @@ export const useAllPoolDataQuery = () => {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery([`info/pools/data/${type}`, chainName], () => fetchAllPoolData(blocks ?? [], chainName), {
+  const { data } = useQuery({
+    queryKey: [`info/pools/data/${type}`, chainName],
+    queryFn: () => fetchAllPoolData(blocks ?? [], chainName),
     enabled: Boolean(blocks && chainName),
     ...QUERY_SETTINGS_IMMUTABLE,
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
@@ -110,15 +108,13 @@ export const usePoolDatasQuery = (poolAddresses: string[]): (PoolData | undefine
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery(
-    [`info/pool/data/${name}/${type}`, chainName],
-    () => fetchAllPoolDataWithAddress(blocks ?? [], chainName, poolAddresses),
-    {
-      enabled: Boolean(blocks && chainName),
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_INTERVAL_REFETCH,
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [`info/pool/data/${name}/${type}`, chainName],
+    queryFn: () => fetchAllPoolDataWithAddress(blocks ?? [], chainName, poolAddresses),
+    enabled: Boolean(blocks && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_INTERVAL_REFETCH,
+  })
 
   return useMemo(() => {
     return poolAddresses
@@ -132,28 +128,24 @@ export const usePoolDatasQuery = (poolAddresses: string[]): (PoolData | undefine
 export const usePoolChartDataQuery = (address: string): ChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery(
-    [`info/pool/chartData/${address}/${type}`, chainName],
-    () => fetchPoolChartData(chainName, address),
-    {
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [`info/pool/chartData/${address}/${type}`, chainName],
+    queryFn: () => fetchPoolChartData(chainName, address),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
   return data?.data ?? undefined
 }
 
 export const usePoolTransactionsQuery = (address: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery(
-    [`info/pool/transactionsData/${address}/${type}`, chainName],
-    () => fetchPoolTransactions(chainName, address),
-    {
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [`info/pool/transactionsData/${address}/${type}`, chainName],
+    queryFn: () => fetchPoolTransactions(chainName, address),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
   return data?.data ?? undefined
 }
 
@@ -171,15 +163,13 @@ export const useAllTokenHighLight = ({
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d], undefined, undefined, chainName)
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data, isLoading } = useQuery(
-    [`info/token/data/${type}`, chainName],
-    () => fetchAllTokenData(chainName, blocks ?? []),
-    {
-      enabled: Boolean(enable && blocks && chainName),
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-    },
-  )
+  const { data, isPending } = useQuery({
+    queryKey: [`info/token/data/${type}`, chainName],
+    queryFn: () => fetchAllTokenData(chainName, blocks ?? []),
+    enabled: Boolean(enable && blocks && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
 
   const tokensWithData = useMemo(() => {
     return data
@@ -191,8 +181,8 @@ export const useAllTokenHighLight = ({
       : []
   }, [data])
   return useMemo(() => {
-    return isLoading ? [] : tokensWithData ?? []
-  }, [isLoading, tokensWithData])
+    return isPending ? [] : tokensWithData ?? []
+  }, [isPending, tokensWithData])
 }
 
 export const useAllTokenDataQuery = (): {
@@ -202,7 +192,9 @@ export const useAllTokenDataQuery = (): {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery([`info/token/data/${type}`, chainName], () => fetchAllTokenData(chainName, blocks ?? []), {
+  const { data } = useQuery({
+    queryKey: [`info/token/data/${type}`, chainName],
+    queryFn: () => fetchAllTokenData(chainName, blocks ?? []),
     enabled: Boolean(blocks && chainName),
     ...QUERY_SETTINGS_IMMUTABLE,
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
@@ -227,15 +219,13 @@ export const useTokenDatasQuery = (addresses?: string[], withSettings = true): T
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data, isLoading } = useQuery(
-    [`info/token/data/${name}/${type}`, chainName],
-    () => fetcher(addresses || [], chainName, blocks ?? []),
-    {
-      enabled: Boolean(blocks && chainName),
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...(withSettings ? QUERY_SETTINGS_INTERVAL_REFETCH : QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH),
-    },
-  )
+  const { data, isPending } = useQuery({
+    queryKey: [`info/token/data/${name}/${type}`, chainName],
+    queryFn: () => fetcher(addresses || [], chainName, blocks ?? []),
+    enabled: Boolean(blocks && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...(withSettings ? QUERY_SETTINGS_INTERVAL_REFETCH : QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH),
+  })
   const allData = useMemo(() => {
     return data && data.length > 0
       ? data.reduce((a, b) => {
@@ -252,8 +242,8 @@ export const useTokenDatasQuery = (addresses?: string[], withSettings = true): T
   }, [addresses, allData])
 
   return useMemo(() => {
-    return isLoading ? [] : tokensWithData ?? undefined
-  }, [isLoading, tokensWithData])
+    return isPending ? [] : tokensWithData ?? undefined
+  }, [isPending, tokensWithData])
 }
 
 export const useTokenDataQuery = (address: string | undefined): TokenData | undefined => {
@@ -264,14 +254,12 @@ export const useTokenDataQuery = (address: string | undefined): TokenData | unde
 export const usePoolsForTokenQuery = (address: string): string[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery(
-    [`info/token/poolAddress/${address}/${type}`, chainName],
-    () => fetchPoolsForToken(chainName, address),
-    {
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [`info/token/poolAddress/${address}/${type}`, chainName],
+    queryFn: () => fetchPoolsForToken(chainName, address),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
 
   return data?.addresses ?? undefined
 }
@@ -279,15 +267,13 @@ export const usePoolsForTokenQuery = (address: string): string[] | undefined => 
 export const useTokenChartDataQuery = (address: string): ChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery(
-    [`info/token/chartData/${address}/${type}`, chainName],
-    () => fetchTokenChartData(chainName, address),
-    {
-      enabled: Boolean(address && chainName),
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_INTERVAL_REFETCH,
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [`info/token/chartData/${address}/${type}`, chainName],
+    queryFn: () => fetchTokenChartData(chainName, address),
+    enabled: Boolean(address && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_INTERVAL_REFETCH,
+  })
 
   return data?.data ?? undefined
 }
@@ -300,28 +286,24 @@ export const useTokenPriceDataQuery = (
   const startTimestamp = dayjs().subtract(timeWindow).startOf('hours').unix()
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery(
-    [`info/token/priceData/${address}/${type}`, chainName],
-    () => fetchTokenPriceData(chainName, address, interval, startTimestamp),
-    {
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_INTERVAL_REFETCH,
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [`info/token/priceData/${address}/${type}`, chainName],
+    queryFn: () => fetchTokenPriceData(chainName, address, interval, startTimestamp),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_INTERVAL_REFETCH,
+  })
   return data?.data ?? undefined
 }
 
 export const useTokenTransactionsQuery = (address: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery(
-    [`info/token/transactionsData/${address}/${type}`, chainName],
-    () => fetchTokenTransactions(chainName, address),
-    {
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_INTERVAL_REFETCH,
-    },
-  )
+  const { data } = useQuery({
+    queryKey: [`info/token/transactionsData/${address}/${type}`, chainName],
+    queryFn: () => fetchTokenTransactions(chainName, address),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_INTERVAL_REFETCH,
+  })
   return data?.data ?? undefined
 }
 
@@ -382,15 +364,13 @@ const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
 export const useStableSwapTopPoolsAPR = (addresses: string[]): Record<string, number> => {
   const isStableSwap = checkIsStableSwap()
   const chainName = useChainNameByQuery()
-  const { data } = useQuery<BigNumber[]>(
-    [`info/pool/stableAPRs/Addresses/`, chainName],
-    () => stableSwapAPRWithAddressesFetcher(addresses),
-    {
-      enabled: Boolean(isStableSwap && addresses?.length > 0),
-      ...QUERY_SETTINGS_IMMUTABLE,
-      ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-    },
-  )
+  const { data } = useQuery<BigNumber[]>({
+    queryKey: [`info/pool/stableAPRs/Addresses/`, chainName],
+    queryFn: () => stableSwapAPRWithAddressesFetcher(addresses),
+    enabled: Boolean(isStableSwap && addresses?.length > 0),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
   const addressWithAPR = useMemo(() => {
     const result: Record<string, number> = {}
     data?.forEach((d, index) => {

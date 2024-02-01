@@ -23,9 +23,10 @@ const useAllArticle = ({
   languageOption,
   selectedCategories,
 }: UseAllArticleProps): AllArticleType => {
-  const { data: articlesData, isLoading } = useQuery(
-    ['/articles', query, currentPage, selectedCategories, sortBy, languageOption],
-    async () => {
+  const { data: articlesData, isPending } = useQuery({
+    queryKey: ['/articles', query, currentPage, selectedCategories, sortBy, languageOption],
+
+    queryFn: async () => {
       try {
         const urlParamsObject = {
           ...(query && { _q: query }),
@@ -69,15 +70,14 @@ const useAllArticle = ({
         }
       }
     },
-    {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  )
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
   return {
-    isFetching: isLoading,
+    isFetching: isPending,
     articlesData: articlesData ?? {
       data: [],
       pagination: {

@@ -42,7 +42,9 @@ const LoginButton = () => {
         const { status } = await response.json()
 
         if (status === 'success') {
-          await queryClient.invalidateQueries(['affiliates-program', 'auth-affiliate', address])
+          await queryClient.invalidateQueries({
+            queryKey: ['affiliates-program', 'auth-affiliate', address],
+          })
         }
       }
     } catch (error) {

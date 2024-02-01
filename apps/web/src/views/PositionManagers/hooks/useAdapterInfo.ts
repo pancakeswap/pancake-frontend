@@ -95,60 +95,52 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
 
 export const useAdapterTokensAmounts = (adapterAddress: Address) => {
   const { chainId } = useActiveChainId()
-  const { data, refetch } = useQuery(
-    ['AdapterTokensAmounts', adapterAddress, chainId],
-    () => getAdapterTokensAmounts({ address: adapterAddress, chainId }),
-    {
-      enabled: !!adapterAddress && !!chainId,
-      refetchInterval: 3000,
-      staleTime: 3000,
-      cacheTime: 3000,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: ['AdapterTokensAmounts', adapterAddress, chainId],
+    queryFn: () => getAdapterTokensAmounts({ address: adapterAddress, chainId }),
+    enabled: !!adapterAddress && !!chainId,
+    refetchInterval: 3000,
+    staleTime: 3000,
+    gcTime: 3000,
+  })
   return { data, refetch }
 }
 
 export const useUserAmounts = (wrapperAddress: Address) => {
   const { account } = useActiveWeb3React()
   const contract = usePositionManagerWrapperContract(wrapperAddress)
-  const { data, refetch } = useQuery(
-    ['useUserAmounts', wrapperAddress, account],
-    () => contract.read.userInfo([account ?? '0x']),
-    {
-      enabled: !!wrapperAddress && !!account,
-      refetchInterval: 3000,
-      staleTime: 3000,
-      cacheTime: 3000,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: ['useUserAmounts', wrapperAddress, account],
+    queryFn: () => contract.read.userInfo([account ?? '0x']),
+    enabled: !!wrapperAddress && !!account,
+    refetchInterval: 3000,
+    staleTime: 3000,
+    gcTime: 3000,
+  })
   return { data, refetch }
 }
 
 export const useWrapperStaticData = (wrapperAddress: Address) => {
   const { chainId } = useActiveChainId()
-  const { data, refetch } = useQuery(
-    ['useWrapperStaticData', wrapperAddress, chainId],
-    () => getWrapperStaticData({ address: wrapperAddress, chainId }),
-    {
-      enabled: !!wrapperAddress && !!chainId,
-      refetchInterval: 30000,
-      staleTime: 30000,
-      cacheTime: 30000,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: ['useWrapperStaticData', wrapperAddress, chainId],
+    queryFn: () => getWrapperStaticData({ address: wrapperAddress, chainId }),
+    enabled: !!wrapperAddress && !!chainId,
+    refetchInterval: 30000,
+    staleTime: 30000,
+    gcTime: 30000,
+  })
   return { data, refetch }
 }
 
 export const useVaultStaticData = (vaultAddress?: Address) => {
   const { chainId } = useActiveChainId()
   const vaultContract = useContract(vaultAddress, erc20ABI)
-  const { data, refetch } = useQuery(
-    ['useVaultStaticData', vaultAddress, chainId],
-    () => vaultContract?.read.decimals(),
-    {
-      enabled: !!vaultAddress && !!chainId,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: ['useVaultStaticData', vaultAddress, chainId],
+    queryFn: () => vaultContract?.read.decimals(),
+    enabled: !!vaultAddress && !!chainId,
+  })
   return { data, refetch }
 }
 
@@ -196,16 +188,14 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
 export const useUserPendingRewardAmounts = (wrapperAddress: Address) => {
   const { account } = useActiveWeb3React()
   const contract = usePositionManagerWrapperContract(wrapperAddress)
-  const { data, refetch } = useQuery(
-    ['useUserPendingRewardAmounts', account, wrapperAddress],
-    () => contract.read.pendingReward([account ?? '0x']),
-    {
-      enabled: !!account,
-      refetchInterval: 3000,
-      staleTime: 3000,
-      cacheTime: 3000,
-    },
-  )
+  const { data, refetch } = useQuery({
+    queryKey: ['useUserPendingRewardAmounts', account, wrapperAddress],
+    queryFn: () => contract.read.pendingReward([account ?? '0x']),
+    enabled: !!account,
+    refetchInterval: 3000,
+    staleTime: 3000,
+    gcTime: 3000,
+  })
   return { data, refetch }
 }
 
