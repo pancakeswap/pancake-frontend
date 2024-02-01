@@ -1,5 +1,12 @@
 # @pancakeswap/gauges
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [a270af13a]
+  - @pancakeswap/v3-sdk@3.7.7
+
 ## 0.0.6
 
 ### Patch Changes

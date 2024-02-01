@@ -1,5 +1,12 @@
 # @pancakeswap/farms
 
+## 1.0.35
+
+### Patch Changes
+
+- Updated dependencies [a270af13a]
+  - @pancakeswap/v3-sdk@3.7.7
+
 ## 1.0.34
 
 ### Patch Changes
