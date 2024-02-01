@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { useVeCakeUserCreditWithTime } from 'views/Pools/hooks/useVeCakeUserCreditWithTime'
+import { useVeCakeUserCreditWithTime } from 'views/CakeStaking/hooks/useVeCakeUserCreditWithTime'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 const SnapShotTimeContainer = styled(Flex)<{ $isValid: boolean }>`

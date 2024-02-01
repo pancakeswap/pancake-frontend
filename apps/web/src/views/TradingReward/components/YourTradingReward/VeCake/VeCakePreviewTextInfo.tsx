@@ -4,7 +4,7 @@ import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance
 import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
 import { useMemo } from 'react'
-import { useVeCakeUserCreditWithTime } from 'views/Pools/hooks/useVeCakeUserCreditWithTime'
+import { useVeCakeUserCreditWithTime } from 'views/CakeStaking/hooks/useVeCakeUserCreditWithTime'
 import {
   VeCakeAddCakeOrWeeksModal,
   VeCakeModalView,

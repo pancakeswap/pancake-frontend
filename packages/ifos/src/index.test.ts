@@ -38,7 +38,6 @@ test('exports', () => {
       "fetchUserVestingData",
       "getBridgeICakeGasFee",
       "getCrossChainMessage",
-      "getUserCreditWithTime,
       "iCakeABI",
       "pancakeInfoSenderABI",
       "ifoV7ABI",
