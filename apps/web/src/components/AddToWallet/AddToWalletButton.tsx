@@ -9,7 +9,9 @@ import {
   TokenPocketIcon,
   TrustWalletIcon,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { Address } from 'viem'
+import { watchAsset } from 'viem/actions'
+import { useAccount, useWalletClient } from 'wagmi'
 import { canRegisterToken } from '../../utils/wallet'
 import { BAD_SRCS } from '../Logo/constants'
 
@@ -56,15 +58,19 @@ const getWalletIcon = (marginTextBetweenLogo: string, name?: string) => {
     const Icon = Icons[name]
     return <Icon {...iconProps} />
   }
+  // @ts-ignore FIXME: wagmiv2
   if (window?.ethereum?.isTrust) {
     return <TrustWalletIcon {...iconProps} />
   }
+  // @ts-ignore FIXME: wagmiv2
   if (window?.ethereum?.isCoinbaseWallet) {
     return <CoinbaseWalletIcon {...iconProps} />
   }
+  // @ts-ignore FIXME: wagmiv2
   if (window?.ethereum?.isTokenPocket) {
     return <TokenPocketIcon {...iconProps} />
   }
+  // @ts-ignore FIXME: wagmiv2
   if (window?.ethereum?.isMetaMask) {
     return <MetamaskIcon {...iconProps} />
   }
@@ -81,11 +87,11 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
   ...props
 }) => {
   const { t } = useTranslation()
-  const { connector, isConnected } = useAccount()
+  const { connector } = useAccount()
+  const { data: walletClient } = useWalletClient()
   const isCanRegisterToken = canRegisterToken()
 
-  if (connector && connector.name === 'Binance') return null
-  if (!(connector && connector.watchAsset && isConnected)) return null
+  if (!walletClient) return null
   if (!isCanRegisterToken) return null
 
   return (
@@ -93,13 +99,16 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
       {...props}
       onClick={() => {
         const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
-        if (!tokenAddress || !tokenSymbol) return
-        connector.watchAsset?.({
-          address: tokenAddress,
-          symbol: tokenSymbol,
-          image,
-          // @ts-ignore
-          decimals: tokenDecimals,
+        if (!tokenAddress || !tokenSymbol || !walletClient) return
+        // @ts-ignore FIXME: wagmiv2
+        watchAsset?.(walletClient, {
+          options: {
+            address: tokenAddress as Address,
+            symbol: tokenSymbol,
+            image,
+            // @ts-ignore
+            decimals: tokenDecimals,
+          },
         })
       }}
     >

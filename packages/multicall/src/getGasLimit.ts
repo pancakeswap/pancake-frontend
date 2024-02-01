@@ -1,5 +1,5 @@
-import { BigintIsh } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { BigintIsh } from '@pancakeswap/sdk'
 import { toBigInt } from '@pancakeswap/utils/toBigInt'
 import { PublicClient } from 'viem'
 
@@ -13,7 +13,7 @@ import { getMulticallContract } from './getMulticallContract'
 
 export type GetGasLimitParams = {
   chainId: ChainId
-  client?: PublicClient
+  client: PublicClient
 
   // If provided then would override the gas limit got from on chain
   gasLimit?: BigintIsh

@@ -1,10 +1,10 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { getContract } from 'viem'
 
-import { isNativeIfoSupported } from './isIfoSupported'
-import { INFO_SENDER } from '../constants/contracts'
 import { pancakeInfoSenderABI } from '../abis/PancakeInfoSender'
+import { INFO_SENDER } from '../constants/contracts'
 import { OnChainProvider } from '../types'
+import { isNativeIfoSupported } from './isIfoSupported'
 
 type Params = {
   chainId?: ChainId
@@ -21,6 +21,6 @@ export function getInfoSenderContract({ chainId, provider }: Params) {
     address: senderContractAddress,
     // TODO: Fix viem
     // @ts-ignore
-    publicClient: provider({ chainId }),
+    client: provider({ chainId }),
   })
 }

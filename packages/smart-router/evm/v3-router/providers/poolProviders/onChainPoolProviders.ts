@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { BigintIsh, Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { DEPLOYER_ADDRESSES, FeeAmount, pancakeV3PoolABI, parseProtocolFees } from '@pancakeswap/v3-sdk'
-import { Abi, Address, ContractFunctionConfig } from 'viem'
+import { Abi, Address, ContractFunctionParameters } from 'viem'
 
 import { pancakePairABI } from '../../../abis/IPancakePair'
 import { stableSwapPairABI } from '../../../abis/StableSwapPair'
@@ -161,7 +161,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
 interface OnChainPoolFactoryParams<TPool extends Pool, TPoolMeta extends PoolMeta, TAbi extends Abi | unknown[] = Abi> {
   abi: TAbi
   getPossiblePoolMetas: (pair: [Currency, Currency]) => TPoolMeta[]
-  buildPoolInfoCalls: (poolAddress: Address) => Omit<ContractFunctionConfig<TAbi>, 'abi'>[]
+  buildPoolInfoCalls: (poolAddress: Address) => Omit<ContractFunctionParameters<TAbi>, 'abi'>[]
   buildPool: (poolMeta: TPoolMeta, data: any[]) => TPool | null
 }
 
@@ -198,7 +198,7 @@ function createOnChainPoolFactory<
       }
     }
 
-    let calls: Omit<ContractFunctionConfig<TAbi>, 'abi'>[] = []
+    let calls: Omit<ContractFunctionParameters<TAbi>, 'abi'>[] = []
     let poolCallSize = 0
     for (const { address } of poolMetas) {
       const poolCalls = buildPoolInfoCalls(address)
@@ -216,10 +216,11 @@ function createOnChainPoolFactory<
     }
 
     const results = await client.multicall({
+      // @ts-ignore
       contracts: calls.map((call) => ({
-        abi: abi as any,
+        abi,
         address: call.address as `0x${string}`,
-        functionName: call.functionName,
+        functionName: call.functionName as string,
         args: call.args as any,
       })),
       allowFailure: true,

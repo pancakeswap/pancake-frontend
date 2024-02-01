@@ -12,7 +12,7 @@ export const getContract = (client: PublicClient): GetContractReturnType<typeof 
   return getContractInstance({
     address: GAUGES_ADDRESS[chainId as keyof typeof GAUGES_ADDRESS],
     abi: gaugesVotingABI,
-    publicClient: client,
+    client,
   })
 }
 
@@ -28,6 +28,6 @@ export const getCalcContract = (
   return getContractInstance({
     address: GAUGES_CALC_ADDRESS[chainId as keyof typeof GAUGES_CALC_ADDRESS],
     abi: calcGaugesVotingABI,
-    publicClient: client,
+    client,
   })
 }

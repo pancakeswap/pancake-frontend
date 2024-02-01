@@ -2,9 +2,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { multicallByGasLimit } from '@pancakeswap/multicall'
 import { BigintIsh } from '@pancakeswap/sdk'
+import { AbortControl } from '@pancakeswap/utils/abortControl'
 import stats from 'stats-lite'
 import { PublicClient, decodeFunctionResult, encodeFunctionData } from 'viem'
-import { AbortControl } from '@pancakeswap/utils/abortControl'
 
 import IMulticallABI from '../../abis/InterfaceMulticall'
 import {
@@ -79,7 +79,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       gasBuffer: additionalConfig?.gasBuffer,
       dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
       chainId: this.chainId,
-      client: this.provider,
+      client: this.provider!,
       signal: additionalConfig?.signal,
     })
 
@@ -160,7 +160,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       gasBuffer: additionalConfig?.gasBuffer,
       dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
       chainId: this.chainId,
-      client: this.provider,
+      client: this.provider!,
       signal: additionalConfig?.signal,
     })
 
@@ -239,7 +239,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       gasBuffer: additionalConfig?.gasBuffer,
       dropUnexecutedCalls: additionalConfig?.dropUnexecutedCalls,
       chainId: this.chainId,
-      client: this.provider,
+      client: this.provider!,
       signal: additionalConfig?.signal,
     })
 
