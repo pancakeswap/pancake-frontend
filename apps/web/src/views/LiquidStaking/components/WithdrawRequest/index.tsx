@@ -1,24 +1,33 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
 import { Button, CardBody, Flex, Message, MessageText, RowBetween, Text } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import useTokenBalance from 'hooks/useTokenBalance'
 import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
 import { formatUnixTime } from 'utils/formatTime'
+import { NativeToken } from 'views/LiquidStaking/constants/types'
 import { useCallClaimContract } from 'views/LiquidStaking/hooks/useCallStakingContract'
 import { useReadWithdrawRequestInfo } from 'views/LiquidStaking/hooks/useReadWithdrawRequestInfo'
 import { Address } from 'wagmi'
+
+function passCheckNativeToken(currency: Token | NativeToken, native: NativeCurrency) {
+  if (currency.symbol.toUpperCase() === native.symbol.toUpperCase()) return currency.symbol
+
+  return currency.address
+}
 
 export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const { balance: stakedTokenBalance } = useTokenBalance(selectedList.token1.address as Address)
   const userCakeDisplayBalance = getFullDisplayBalance(stakedTokenBalance, selectedList.token1.decimals, 6)
+  const native = useNativeCurrency()
 
   const userWithdrawRequest = useReadWithdrawRequestInfo()
 
@@ -27,10 +36,11 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
     : '0'
 
   const claimableAmount = userWithdrawRequest
-    ? getFullDisplayBalance(userWithdrawRequest?.totalWbethAmountClaimable, selectedList.token1.decimals, 6)
+    ? getFullDisplayBalance(userWithdrawRequest?.totalEthAmountClaimable, selectedList.token0.decimals, 6)
     : '0'
 
-  const currency1 = useCurrency(selectedList.token1.address)
+  const currency0 = useCurrency(passCheckNativeToken(selectedList.token0, native))
+  const currency1 = useCurrency(passCheckNativeToken(selectedList.token1, native))
 
   const withdrawRequestAmountToken =
     currency1 && userWithdrawRequest?.totalWbethAmountPending
@@ -38,14 +48,15 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
       : undefined
 
   const claimableAmountToken =
-    currency1 && userWithdrawRequest?.totalWbethAmountClaimable
-      ? CurrencyAmount.fromRawAmount(currency1, userWithdrawRequest.totalWbethAmountClaimable.toString())
+    currency0 && userWithdrawRequest?.totalEthAmountClaimable
+      ? CurrencyAmount.fromRawAmount(currency0, userWithdrawRequest.totalEthAmountClaimable.toString())
       : undefined
 
   const stakedAmountToken =
     currency1 && stakedTokenBalance ? CurrencyAmount.fromRawAmount(currency1, stakedTokenBalance.toString()) : undefined
 
-  const tokenUSDPrice = useStablecoinPrice(currency1)
+  const token1USDPrice = useStablecoinPrice(currency1)
+  const token0USDPrice = useStablecoinPrice(currency0)
 
   const { onClaim, isLoading } = useCallClaimContract(claimableAmountToken, userWithdrawRequest?.claimableIndexes)
 
@@ -64,8 +75,8 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
               {userCakeDisplayBalance} {selectedList?.token1?.symbol}
             </Text>
             <Text fontSize="10px" color="textSubtle">
-              {stakedAmountToken && tokenUSDPrice
-                ? `~$${tokenUSDPrice.quote(stakedAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
+              {stakedAmountToken && token1USDPrice
+                ? `~$${token1USDPrice.quote(stakedAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
                 : ''}
             </Text>
           </Flex>
@@ -80,8 +91,8 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
                   {withdrawRequestAmount} {selectedList?.token1?.symbol}
                 </Text>
                 <Text fontSize="10px" color="textSubtle">
-                  {withdrawRequestAmountToken && tokenUSDPrice
-                    ? `~$${tokenUSDPrice.quote(withdrawRequestAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
+                  {withdrawRequestAmountToken && token1USDPrice
+                    ? `~$${token1USDPrice.quote(withdrawRequestAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
                     : ''}
                 </Text>
               </Flex>
@@ -91,11 +102,11 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
               <Text color="textSubtle">{t('Claimable Amount')}</Text>
               <Flex flexDirection="column" alignItems="end">
                 <Text>
-                  {claimableAmount} {selectedList?.token1?.symbol}
+                  {claimableAmount} {selectedList?.token0?.symbol}
                 </Text>
                 <Text fontSize="10px" color="textSubtle">
-                  {claimableAmountToken && tokenUSDPrice
-                    ? `~$${tokenUSDPrice.quote(claimableAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
+                  {claimableAmountToken && token0USDPrice
+                    ? `~$${token0USDPrice.quote(claimableAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
                     : ''}
                 </Text>
               </Flex>

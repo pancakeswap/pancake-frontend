@@ -20,7 +20,7 @@ export function useReadWithdrawRequestInfo():
   | {
       latestTriggerTime: BigNumber
       totalWbethAmountPending: BigNumber
-      totalWbethAmountClaimable: BigNumber
+      totalEthAmountClaimable: BigNumber
       totalRequest: number
       claimableIndexes: number[]
     }
@@ -56,7 +56,7 @@ export function useReadWithdrawRequestInfo():
                     ? {
                         ...last,
                         latestTriggerTime: triggerTime,
-                        totalWbethAmountClaimable: last.totalWbethAmountClaimable.plus(d.wbethAmount),
+                        totalEthAmountClaimable: last.totalEthAmountClaimable.plus(d.ethAmount),
                         claimableIndexes: [...last.claimableIndexes, currentIndex],
                       }
                     : {
@@ -68,7 +68,7 @@ export function useReadWithdrawRequestInfo():
                 {
                   latestTriggerTime: BIG_ZERO,
                   totalWbethAmountPending: BIG_ZERO,
-                  totalWbethAmountClaimable: BIG_ZERO,
+                  totalEthAmountClaimable: BIG_ZERO,
                   claimableIndexes: [] as number[],
                 },
               ),
