@@ -26,6 +26,7 @@ export enum PredictionStatus {
 export enum PredictionsChartView {
   TradingView = 'TradingView',
   Chainlink = 'Chainlink Oracle',
+  Pyth = 'Pyth Oracle',
 }
 
 export interface PredictionConfig {

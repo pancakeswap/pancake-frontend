@@ -128,6 +128,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   useEffect(() => {
     if (config?.galetoOracleAddress) {
       dispatch(setChartPaneState(false))
+      dispatch(setChartView(PredictionsChartView.TradingView))
     }
   }, [config, dispatch])
 
@@ -203,6 +204,14 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
     }
   }, [gutterRef, chartRef, dispatch, isChartPaneOpen])
 
+  const sourceUrl = useMemo(() => {
+    let url = chartView === PredictionsChartView.Chainlink ? 'https://chain.link/data-feeds' : 'https://pyth.network/'
+    if (chartView === PredictionsChartView.TradingView) {
+      url = `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
+    }
+    return url
+  }, [chartView, tokenSymbol])
+
   return (
     <>
       <StyledDesktop>
@@ -222,6 +231,11 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             {config?.chainlinkOracleAddress && (
               <PowerLinkStyle href="https://chain.link/" external>
                 <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
+              </PowerLinkStyle>
+            )}
+            {config?.galetoOracleAddress && (
+              <PowerLinkStyle href="https://pyth.network/" external>
+                <img src="/images/powered-by-pyth.svg" alt="Powered by PYTH" width="170px" height="48px" />
               </PowerLinkStyle>
             )}
             <ExpandButtonGroup>
@@ -261,22 +275,12 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
                 by={chartView}
                 linkProps={{
                   onMouseDown: (e) => {
-                    window.open(
-                      chartView === PredictionsChartView.TradingView
-                        ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
-                        : 'https://chain.link/data-feeds',
-                      '_blank',
-                      'noopener noreferrer',
-                    )
+                    window.open(sourceUrl, '_blank', 'noopener noreferrer')
                     e.stopPropagation()
                     e.preventDefault()
                   },
                 }}
-                link={
-                  chartView === PredictionsChartView.TradingView
-                    ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${tokenSymbol}USD`
-                    : 'https://chain.link/data-feeds'
-                }
+                link={sourceUrl}
               />
             )}
           </Gutter>

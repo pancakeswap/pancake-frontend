@@ -71,6 +71,17 @@ const Mobile: React.FC<React.PropsWithChildren> = () => {
                     </PowerLinkStyle>
                   </Flex>
                 )}
+                {config?.galetoOracleAddress && (
+                  <Flex justifyContent="right">
+                    <PowerLinkStyle href="https://pyth.network/" external>
+                      <img
+                        src="/images/powered-by-pyth.svg"
+                        alt="Powered by PYTH"
+                        style={{ width: '170px', maxHeight: '100%' }}
+                      />
+                    </PowerLinkStyle>
+                  </Flex>
+                )}
               </Box>
             )}
           </Flex>
