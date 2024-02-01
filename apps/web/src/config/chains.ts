@@ -78,8 +78,6 @@ export const CHAINS = [
   arbitrumGoerli,
   linea,
   lineaTestnet,
-  arbitrumGoerli,
-  arbitrum,
   base,
   baseGoerli,
   opBNB,

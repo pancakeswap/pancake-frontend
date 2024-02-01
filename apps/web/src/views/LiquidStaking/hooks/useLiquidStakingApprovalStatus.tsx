@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
-import { Address, erc20ABI, useAccount, useContractRead } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { Address, erc20Abi } from 'viem'
+import { useAccount, useContractRead } from 'wagmi'
 
 interface UseLiquidStakingApprovalProps {
   approveToken: string
@@ -18,7 +19,7 @@ export const useLiquidStakingApprovalStatus = ({
 
   const { data, refetch } = useContractRead({
     chainId,
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: approveToken as Address,
     functionName: 'allowance',
     args: [account, contractAddress],

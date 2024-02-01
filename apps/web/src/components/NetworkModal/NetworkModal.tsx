@@ -1,12 +1,11 @@
-import { ModalV2 } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { CHAIN_IDS } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
-import { useMemo } from 'react'
-import { useNetwork } from 'wagmi'
-import { atom, useAtom } from 'jotai'
+import { ModalV2 } from '@pancakeswap/uikit'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { atom, useAtom } from 'jotai'
 import dynamic from 'next/dynamic'
+import { useMemo } from 'react'
+import { CHAIN_IDS, chains, isChainSupported } from 'utils/wagmi'
 
 export const hideWrongNetworkModalAtom = atom(false)
 
@@ -23,8 +22,7 @@ const UnsupportedNetworkModal = dynamic(
 )
 
 export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageSupportedChains?: number[] }) => {
-  const { chainId, chain, isWrongNetwork } = useActiveWeb3React()
-  const { chains } = useNetwork()
+  const { chainId, isWrongNetwork } = useActiveWeb3React()
   const [dismissWrongNetwork, setDismissWrongNetwork] = useAtom(hideWrongNetworkModalAtom)
 
   const isBNBOnlyPage = useMemo(() => {
@@ -55,7 +53,7 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
     )
   }
 
-  if ((chain?.unsupported ?? false) || isPageNotSupported) {
+  if ((chainId && isChainSupported(chainId)) || isPageNotSupported) {
     return (
       <ModalV2 isOpen closeOnOverlayClick={false}>
         <UnsupportedNetworkModal pageSupportedChains={pageSupportedChains?.length ? pageSupportedChains : CHAIN_IDS} />

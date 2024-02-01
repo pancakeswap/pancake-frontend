@@ -1,11 +1,11 @@
 /* eslint-disable consistent-return */
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import { useCallback, useMemo } from 'react'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
 import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useCallback, useMemo } from 'react'
+import { useAccount, useSwitchChain as useSwitchNetworkWallet } from 'wagmi'
 import { useSessionChainId } from './useSessionChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
@@ -23,9 +23,10 @@ export function useSwitchNetworkLocal() {
 export function useSwitchNetwork() {
   const [loading, setLoading] = useSwitchNetworkLoading()
   const {
-    switchNetworkAsync: _switchNetworkAsync,
-    isLoading: _isLoading,
-    switchNetwork: _switchNetwork,
+    // switchNetworkAsync: _switchNetworkAsync,
+    switchChain: _switchNetwork,
+    switchChainAsync: _switchNetworkAsync,
+    isPending: _isPending,
     ...switchNetworkArgs
   } = useSwitchNetworkWallet()
   const { t } = useTranslation()
@@ -33,20 +34,17 @@ export function useSwitchNetwork() {
   const { isConnected } = useAccount()
 
   const switchNetworkLocal = useSwitchNetworkLocal()
-  const isLoading = _isLoading || loading
+  const isLoading = _isPending || loading
 
   const switchNetworkAsync = useCallback(
     async (chainId: number) => {
       if (isConnected && typeof _switchNetworkAsync === 'function') {
         if (isLoading) return
         setLoading(true)
-        return _switchNetworkAsync(chainId)
+        return _switchNetworkAsync({
+          chainId,
+        })
           .then((c) => {
-            // well token pocket
-            if (window.ethereum?.isTokenPocket === true) {
-              switchNetworkLocal(chainId)
-              window.location.reload()
-            }
             return c
           })
           .catch(() => {
@@ -65,7 +63,9 @@ export function useSwitchNetwork() {
   const switchNetwork = useCallback(
     (chainId: number) => {
       if (isConnected && typeof _switchNetwork === 'function') {
-        return _switchNetwork(chainId)
+        return _switchNetwork({
+          chainId,
+        })
       }
       return switchNetworkLocal(chainId)
     },

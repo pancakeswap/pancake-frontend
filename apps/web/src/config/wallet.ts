@@ -1,7 +1,6 @@
 // import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
-import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
@@ -110,22 +109,22 @@ const walletsConfig = ({
       icon: `${ASSET_CDN}/web/wallets/coinbase.png`,
       connectorId: ConnectorNames.WalletLink,
     },
-    {
-      id: 'trust',
-      title: 'Trust Wallet',
-      icon: `${ASSET_CDN}/web/wallets/trust.png`,
-      connectorId: ConnectorNames.TrustWallet,
-      get installed() {
-        return !!getTrustWalletProvider()
-      },
-      deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
-      downloadLink: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph',
-      guide: {
-        desktop: 'https://trustwallet.com/browser-extension',
-        mobile: 'https://trustwallet.com/',
-      },
-      qrCode,
-    },
+    // {
+    //   id: 'trust',
+    //   title: 'Trust Wallet',
+    //   icon: `${ASSET_CDN}/web/wallets/trust.png`,
+    //   connectorId: ConnectorNames.TrustWallet,
+    //   get installed() {
+    //     return !!getTrustWalletProvider()
+    //   },
+    //   deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
+    //   downloadLink: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph',
+    //   guide: {
+    //     desktop: 'https://trustwallet.com/browser-extension',
+    //     mobile: 'https://trustwallet.com/',
+    //   },
+    //   qrCode,
+    // },
     {
       id: 'walletconnect',
       title: 'WalletConnect',

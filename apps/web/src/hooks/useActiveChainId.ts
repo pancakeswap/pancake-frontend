@@ -47,14 +47,14 @@ export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
   const queryChainId = useAtomValue(queryChainIdAtom)
 
-  const { chain } = useAccount()
+  const { chain, address } = useAccount()
   const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
 
   const isNotMatched = useDeferredValue(chain && localChainId && chain.id !== localChainId)
 
   return {
     chainId,
-    isWrongNetwork: !chain || isNotMatched,
+    isWrongNetwork: address && (!chain || isNotMatched),
     isNotMatched,
   }
 }

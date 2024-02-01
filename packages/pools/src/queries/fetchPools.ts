@@ -1,15 +1,15 @@
-import BigNumber from 'bignumber.js'
-import fromPairs from 'lodash/fromPairs'
-import chunk from 'lodash/chunk'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ChainId } from '@pancakeswap/chains'
-import { erc20ABI } from 'wagmi'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BigNumber from 'bignumber.js'
+import chunk from 'lodash/chunk'
+import fromPairs from 'lodash/fromPairs'
+import { erc20Abi } from 'viem'
 
-import { BSC_BLOCK_TIME, getPoolsConfig } from '../constants'
+import { smartChefABI } from '../abis/ISmartChef'
 import { sousChefABI } from '../abis/ISousChef'
 import { sousChefV2ABI } from '../abis/ISousChefV2'
-import { smartChefABI } from '../abis/ISmartChef'
 import { sousChefV3ABI } from '../abis/ISousChefV3'
+import { BSC_BLOCK_TIME, getPoolsConfig } from '../constants'
 import { LegacySerializedPool, OnChainProvider, UpgradedSerializedPool } from '../types'
 import { isLegacyPool, isUpgradedPool } from '../utils'
 
@@ -154,7 +154,7 @@ export const fetchPoolsTotalStaking = async (chainId: ChainId, provider: OnChain
   }
   const poolsBalanceOf = poolsConfig.map(({ contractAddress, stakingToken }) => {
     return {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: stakingToken.address,
       functionName: 'balanceOf',
       args: [contractAddress],

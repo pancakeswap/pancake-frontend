@@ -1,11 +1,11 @@
-import { Token, CurrencyAmount } from '@pancakeswap/sdk'
-import { erc20ABI } from 'wagmi'
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
+import { erc20Abi } from 'viem'
 
 import { useQuery } from '@tanstack/react-query'
+import { FAST_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
-import { FAST_INTERVAL } from 'config/constants'
 
 function useTokenAllowance(
   token?: Token,
@@ -27,7 +27,7 @@ function useTokenAllowance(
         throw new Error('No token')
       }
       return publicClient({ chainId }).readContract({
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: token?.address,
         functionName: 'allowance',
         args: inputs,

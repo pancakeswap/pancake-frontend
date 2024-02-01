@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
-import { erc20ABI } from 'wagmi'
+import { SerializedFarm } from '@pancakeswap/farms'
 import chunk from 'lodash/chunk'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
-import { SerializedFarm } from '@pancakeswap/farms'
+import { erc20Abi } from 'viem'
 import { SerializedFarmConfig } from '../../config/constants/types'
 
 const fetchFarmCalls = (farm: SerializedFarm, chainId: number) => {
@@ -11,40 +11,40 @@ const fetchFarmCalls = (farm: SerializedFarm, chainId: number) => {
   return [
     // Balance of token in the LP contract
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: token.address,
       functionName: 'balanceOf',
       args: [lpAddress],
     },
     // Balance of quote token on LP contract
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: quoteToken.address,
       functionName: 'balanceOf',
       args: [lpAddress],
     },
     // Balance of LP tokens in the master chef contract
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: lpAddress,
       functionName: 'balanceOf',
       args: [getMasterChefV2Address(chainId)],
     },
     // Total supply of LP tokens
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: lpAddress,
       functionName: 'totalSupply',
     },
     // Token decimals
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: token.address,
       functionName: 'decimals',
     },
     // Quote token decimals
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: quoteToken.address,
       functionName: 'decimals',
     },

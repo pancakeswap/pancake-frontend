@@ -1,12 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
 import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers'
-import { usePositionManagerWrapperContract, useContract } from 'hooks/useContract'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { publicClient } from 'utils/wagmi'
-import { Address } from 'viem'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Percent } from '@pancakeswap/sdk'
-import { erc20ABI } from 'wagmi'
+import { useQuery } from '@tanstack/react-query'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useContract, usePositionManagerWrapperContract } from 'hooks/useContract'
+import { publicClient } from 'utils/wagmi'
+import { Address, erc20Abi } from 'viem'
 
 export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   token0Amounts: bigint
@@ -135,7 +134,7 @@ export const useWrapperStaticData = (wrapperAddress: Address) => {
 
 export const useVaultStaticData = (vaultAddress?: Address) => {
   const { chainId } = useActiveChainId()
-  const vaultContract = useContract(vaultAddress, erc20ABI)
+  const vaultContract = useContract(vaultAddress, erc20Abi)
   const { data, refetch } = useQuery({
     queryKey: ['useVaultStaticData', vaultAddress, chainId],
     queryFn: () => vaultContract?.read.decimals(),

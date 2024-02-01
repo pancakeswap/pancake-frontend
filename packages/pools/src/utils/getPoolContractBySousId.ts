@@ -1,12 +1,12 @@
 import { ChainId } from '@pancakeswap/chains'
-import { WalletClient, getContract, PublicClient, Address, GetContractReturnType, Account, Chain } from 'viem'
+import { Account, Address, Chain, GetContractReturnType, PublicClient, WalletClient, getContract } from 'viem'
 
-import { getPoolsConfig } from '../constants'
-import { isLegacyPool } from './isLegacyPool'
 import { smartChefABI } from '../abis/ISmartChef'
-import { PoolCategory } from '../types'
-import { sousChefV2ABI } from '../abis/ISousChefV2'
 import { sousChefBnbABI } from '../abis/ISousChefBNB'
+import { sousChefV2ABI } from '../abis/ISousChefV2'
+import { getPoolsConfig } from '../constants'
+import { PoolCategory } from '../types'
+import { isLegacyPool } from './isLegacyPool'
 
 interface Params {
   chainId?: ChainId
@@ -16,8 +16,6 @@ interface Params {
 }
 
 type GetContractReturnType_<TAbi extends readonly unknown[]> = GetContractReturnType<TAbi, any, any> & {
-  abi: TAbi
-  address: Address
   account?: Account
   chain?: Chain
 }
@@ -29,17 +27,17 @@ export function getSousChefBNBContract({
 }: {
   address: Address
   signer?: WalletClient
-  publicClient?: PublicClient
+  publicClient: PublicClient
 }): GetContractReturnType_<typeof sousChefBnbABI> {
   return {
     ...getContract({
       abi: sousChefBnbABI,
       address,
-      walletClient: signer,
-      publicClient,
+      client: {
+        public: publicClient,
+        wallet: signer,
+      },
     }),
-    abi: sousChefBnbABI,
-    address,
     account: signer?.account,
     chain: signer?.chain,
   }
@@ -52,17 +50,17 @@ export function getSousChefV2Contract({
 }: {
   address: Address
   signer?: WalletClient
-  publicClient?: PublicClient
+  publicClient: PublicClient
 }): GetContractReturnType_<typeof sousChefV2ABI> {
   return {
     ...getContract({
       abi: sousChefV2ABI,
       address,
-      walletClient: signer,
-      publicClient,
+      client: {
+        public: publicClient,
+        wallet: signer,
+      },
     }),
-    abi: sousChefV2ABI,
-    address,
     account: signer?.account,
     chain: signer?.chain,
   }
@@ -75,17 +73,17 @@ export function getSmartChefChefV2Contract({
 }: {
   address: Address
   signer?: WalletClient
-  publicClient?: PublicClient
+  publicClient: PublicClient
 }): GetContractReturnType_<typeof smartChefABI> {
   return {
     ...getContract({
       abi: smartChefABI,
       address,
-      walletClient: signer,
-      publicClient,
+      client: {
+        public: publicClient,
+        wallet: signer,
+      },
     }),
-    abi: smartChefABI,
-    address,
     account: signer?.account,
     chain: signer?.chain,
   }

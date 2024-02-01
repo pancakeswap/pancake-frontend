@@ -1,15 +1,14 @@
-import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/chains'
+import BigNumber from 'bignumber.js'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { nonBscVaultABI } from 'config/abi/nonBscVault'
-import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'
-import { verifyBscNetwork } from 'utils/verifyBscNetwork'
-import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
 import { farmFetcher } from 'state/farms'
-import { Address, erc20ABI } from 'wagmi'
+import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
+import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { publicClient } from 'utils/wagmi'
-import { ContractFunctionResult } from 'viem'
+import { Address, ReadContractReturnType, erc20Abi } from 'viem'
 
 export const fetchFarmUserAllowances = async (
   account: Address,
@@ -24,7 +23,7 @@ export const fetchFarmUserAllowances = async (
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: lpContractAddress,
         functionName: 'allowance',
         args: [account, proxyAddress || masterChefAddress] as const,
@@ -49,7 +48,7 @@ export const fetchFarmUserTokenBalances = async (
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: lpContractAddress,
         functionName: 'balanceOf',
         args: [account as Address] as const,
@@ -82,7 +81,7 @@ export const fetchFarmUserStakedBalances = async (
       } as const
     }),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof masterChefV2ABI, 'userInfo'>[]
+  })) as ReadContractReturnType<typeof masterChefV2ABI, 'userInfo'>[]
 
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0].toString()).toJSON()

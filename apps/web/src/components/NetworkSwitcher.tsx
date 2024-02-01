@@ -25,7 +25,7 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 
 import { ChainLogo } from './Logo/ChainLogo'
 
@@ -100,7 +100,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
       hideTimeout: 0,
     },
   )
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const localChainId = useLocalNetworkChain() || ChainId.BSC
   const [, setSessionChainId] = useSessionChainId()
 
