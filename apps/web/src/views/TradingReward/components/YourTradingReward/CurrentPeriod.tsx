@@ -53,6 +53,8 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                   rewardInfo={rewardInfo}
                   timeRemaining={timeRemaining}
                   campaignClaimTime={campaignClaimTime}
+                  isValidLockAmount={isValidLockAmount}
+                  thresholdLockAmount={thresholdLockAmount}
                   currentUserCampaignInfo={currentUserCampaignInfo}
                 />
               ) : (

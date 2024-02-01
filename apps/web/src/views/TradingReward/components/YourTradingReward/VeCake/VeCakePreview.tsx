@@ -1,13 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
-import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
-import { useVeCakeUserCreditWithTime } from 'views/Pools/hooks/useVeCakeUserCreditWithTime'
 import { Header } from 'views/TradingReward/components/YourTradingReward/VeCake/Header'
 import { NoLockingCakeModal } from 'views/TradingReward/components/YourTradingReward/VeCake/NoLockingCakeModal'
 import {
@@ -20,7 +18,6 @@ import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
 import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
-import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 interface VeCakePreviewProps {
   isValidLockAmount: boolean
@@ -39,14 +36,10 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
   rewardInfo,
   currentUserCampaignInfo,
 }) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const cakePriceBusd = useCakePrice()
   const { cakeLocked } = useCakeLockStatus()
   const timeUntil = getTimePeriods(timeRemaining)
-  const { userCreditWithTime } = useVeCakeUserCreditWithTime(endTime)
 
   const [onPresentNoLockingCakeModal] = useModal(
     <NoLockingCakeModal endTime={endTime} isValidLockAmount={isValidLockAmount} />,
@@ -59,16 +52,6 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
       endTime={endTime}
       isValidLockAmount={isValidLockAmount}
     />,
-  )
-
-  const minVeCake = useMemo(
-    () => formatNumber(getBalanceNumber(new BigNumber(thresholdLockAmount)), 2, 2),
-    [thresholdLockAmount],
-  )
-
-  const previewVeCakeAtSnapshot = useMemo(
-    () => formatNumber(getBalanceNumber(new BigNumber(userCreditWithTime)), 2, 2),
-    [userCreditWithTime],
   )
 
   const currentRewardInfo = useMemo(
@@ -139,15 +122,13 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
         </GreyCard>
       )}
 
-      <GreyCard mb="24px">
-        <VeCakePreviewTextInfo bold mb="18px" title={t('Min. veCAKE at snapshot time:')} value={minVeCake} />
-        <VeCakePreviewTextInfo
-          mb="18px"
-          title={t('Preview of your veCAKE⌛ at snapshot time:')}
-          value={previewVeCakeAtSnapshot}
-        />
-        <VeCakePreviewTextInfo title={t('Snapshot at / Campaign Ends:')} value={timeFormat(locale, endTime)} />
-      </GreyCard>
+      <VeCakePreviewTextInfo
+        mb="24px"
+        endTime={endTime}
+        isValidLockAmount={isValidLockAmount}
+        thresholdLockAmount={thresholdLockAmount}
+      />
+
       {!cakeLocked ? (
         <VeCakeButtonWithMessage
           messageText={t('Get veCAKE to start earning')}

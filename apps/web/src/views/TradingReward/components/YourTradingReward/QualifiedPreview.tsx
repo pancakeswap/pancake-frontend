@@ -1,10 +1,17 @@
-import { Box, Flex, InfoIcon, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
+import {
+  Box,
+  Flex,
+  InfoIcon,
+  Message,
+  MessageText,
+  Text,
+  TooltipText,
+  WarningIcon,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
-import {
-  VeCakeAddCakeOrWeeksModal,
-  VeCakeModalView,
-} from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakeAddCakeOrWeeksModal'
+import { VeCakePreviewTextInfo } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakePreviewTextInfo'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 import { useTranslation } from '@pancakeswap/localization'
@@ -20,6 +27,8 @@ import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
 interface QualifiedPreviewProps {
   timeRemaining: number
   campaignClaimTime: number
+  isValidLockAmount: boolean
+  thresholdLockAmount: number
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail | undefined
 }
@@ -29,15 +38,13 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
   timeRemaining,
   campaignClaimTime,
   currentUserCampaignInfo,
+  isValidLockAmount,
+  thresholdLockAmount,
 }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
-
-  const [onPresentVeCakeAddCakeModal] = useModal(
-    <VeCakeAddCakeOrWeeksModal viewMode={VeCakeModalView.CAKE_FORM_VIEW} showSwitchButton />,
-  )
 
   const { totalVolume, tradingFeeArr } = currentUserCampaignInfo ?? {}
 
@@ -68,11 +75,39 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
   })
 
   // Additional Amount
+  const totalMapCap = useMemo(
+    () => tradingFeeArr?.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0) ?? 0,
+    [tradingFeeArr],
+  )
+
+  const totalMapCapCovertCakeAmount = useMemo(
+    () => new BigNumber(totalMapCap).dividedBy(cakePriceBusd).toNumber() ?? 0,
+    [totalMapCap, cakePriceBusd],
+  )
+
   const additionalAmount = useMemo(() => {
-    const totalMapCap =
-      tradingFeeArr?.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0) ?? 0
     return new BigNumber(totalMapCap).minus(currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0).toNumber() ?? 0
-  }, [currentUserCampaignInfo, tradingFeeArr])
+  }, [currentUserCampaignInfo, totalMapCap])
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Box>
+      <Box mb="12px">
+        <Text lineHeight="110%" as="span">
+          {t('The maximum amount of CAKE reward you may earn is capped at')}
+        </Text>
+        <Text lineHeight="110%" as="span" bold m="0 4px">
+          0.1%
+        </Text>
+        <Text lineHeight="110%" as="span">
+          {t('of your veCAKE balance at the snapshot time.')}
+        </Text>
+      </Box>
+      <Text lineHeight="110%">{t('Increase your veCAKE to continue earning.')}</Text>
+    </Box>,
+    {
+      placement: 'top',
+    },
+  )
 
   return (
     <>
@@ -80,7 +115,10 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
         <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
           {t('Your Current trading rewards')}
         </Text>
-        <Text bold fontSize="40px">{`$${formatNumber(rewardInUSD)}`}</Text>
+        <Flex>
+          <Text bold fontSize="40px">{`$${formatNumber(rewardInUSD)}`}</Text>
+          {additionalAmount >= 0.01 && <WarningIcon ml="10px" width={24} color="warning" />}
+        </Flex>
         <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} CAKE`}</Text>
 
         <Box>
@@ -120,18 +158,37 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
         {additionalAmount >= 0.01 && (
           <Message variant="warning" mt="10px">
             <MessageText>
-              <Text as="span">{t('An additional amount of reward of')}</Text>
-              <Text as="span" bold m="0 4px">{`~$${formatNumber(additionalAmount)}`}</Text>
-              <Text as="span" mr="4px">
-                {t('can not be claim due to the max reward cap.')}
+              <TooltipText ref={targetRef} bold as="span" mr="4px" fontSize={14}>
+                {t('Your Max Reward Capped')}
+              </TooltipText>
+              {tooltipVisible && tooltip}
+              <Text as="span" mr="4px" fontSize={14}>
+                {t('at')}
               </Text>
-              <Text as="span" bold>
-                {t('Lock more CAKE to keep earning.')}
+              <Text color="warning" as="span" bold mr="4px" fontSize={14}>
+                {`$${formatNumber(totalMapCap)} (~${formatNumber(totalMapCapCovertCakeAmount)} CAKE)`}
+              </Text>
+              <Text as="span" mr="4px" fontSize={14}>
+                {t('An additional amount of reward of')}
+              </Text>
+              <Text as="span" bold mr="4px" fontSize={14}>
+                {`~$${formatNumber(additionalAmount)}`}
+              </Text>
+              <Text as="span" fontSize={14}>
+                {t('can not be claim.')}
               </Text>
             </MessageText>
           </Message>
         )}
       </GreyCard>
+
+      <VeCakePreviewTextInfo
+        mt="24px"
+        showIncreaseButton
+        endTime={campaignClaimTime}
+        isValidLockAmount={isValidLockAmount}
+        thresholdLockAmount={thresholdLockAmount}
+      />
 
       <GreyCard mt="24px">
         <Flex>
