@@ -17,6 +17,7 @@ import { usePublicClient } from 'wagmi'
 import { retry, RetryableError } from 'state/multicall/retry'
 import { useQuery } from '@tanstack/react-query'
 import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
+import { BSC_BLOCK_TIME } from 'config'
 import {
   FarmTransactionStatus,
   MsgStatus,
@@ -98,7 +99,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
           n: 10,
           minWait: 5000,
           maxWait: 10000,
-          delay: AVERAGE_CHAIN_BLOCK_TIMES[chainId] * 1000 + 1000,
+          delay: (AVERAGE_CHAIN_BLOCK_TIMES[chainId] ?? BSC_BLOCK_TIME) * 1000 + 1000,
         })
       },
     )
