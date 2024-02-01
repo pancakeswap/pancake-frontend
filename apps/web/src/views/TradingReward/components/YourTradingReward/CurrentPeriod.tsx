@@ -8,12 +8,11 @@ import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingR
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 
 interface CurrentPeriodProps {
-  incentives: Incentives
+  incentives: Incentives | undefined
   rewardInfo: { [key in string]: RewardInfo }
-  currentUserCampaignInfo: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail | undefined
   isQualified: boolean
   isValidLockAmount: boolean
-  thresholdLockTime: number
   thresholdLockAmount: number
   totalAvailableClaimData: UserCampaignInfoDetail[]
 }
@@ -24,11 +23,12 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   currentUserCampaignInfo,
   isQualified,
   isValidLockAmount,
-  thresholdLockTime,
   thresholdLockAmount,
 }) => {
   const { t } = useTranslation()
-  const { campaignClaimTime, campaignStart } = incentives
+  const campaignClaimTime = incentives?.campaignClaimTime ?? 0
+  const campaignStart = incentives?.campaignStart ?? 0
+
   const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
 
@@ -60,6 +60,9 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                   isValidLockAmount={isValidLockAmount}
                   thresholdLockAmount={thresholdLockAmount}
                   endTime={campaignClaimTime}
+                  rewardInfo={rewardInfo}
+                  timeRemaining={timeRemaining}
+                  currentUserCampaignInfo={currentUserCampaignInfo}
                 />
               )}
             </>

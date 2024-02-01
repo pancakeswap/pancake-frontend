@@ -6,6 +6,7 @@ import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
+import { useVeCakeUserCreditWithTime } from 'views/Pools/hooks/useVeCakeUserCreditWithTime'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
 import RewardPeriod from 'views/TradingReward/components/YourTradingReward/RewardPeriod'
@@ -146,9 +147,9 @@ const BaseContainer = styled(Flex)<{ showBackgroundColor: boolean }>`
 
 interface YourTradingRewardProps {
   isFetching: boolean
-  incentives: Incentives
+  incentives: Incentives | undefined
   campaignIds: Array<string>
-  currentUserCampaignInfo: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail | undefined
   totalAvailableClaimData: UserCampaignInfoDetail[]
   qualification: Qualification
   rewardInfo: { [key in string]: RewardInfo }
@@ -168,18 +169,18 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { profile } = useProfile()
-  const { cakeLocked, cakeLockedAmount } = useCakeLockStatus()
-
-  const { thresholdLockTime, thresholdLockAmount } = qualification
+  const { cakeLocked } = useCakeLockStatus()
+  const { userCreditWithTime } = useVeCakeUserCreditWithTime(currentUserCampaignInfo?.campaignClaimTime ?? 0)
+  const { thresholdLockAmount } = qualification
 
   const isValidLockAmount = useMemo(
-    () => new BigNumber(cakeLockedAmount.toString()).gte(thresholdLockAmount),
-    [cakeLockedAmount, thresholdLockAmount],
+    () => new BigNumber(userCreditWithTime.toString()).gte(thresholdLockAmount),
+    [userCreditWithTime, thresholdLockAmount],
   )
 
   const isQualified = useMemo(
     () => Boolean(account && profile?.isActive && cakeLocked && isValidLockAmount),
-    [account, profile, cakeLocked, isValidLockAmount],
+    [account, cakeLocked, isValidLockAmount, profile?.isActive],
   )
 
   return (
@@ -220,7 +221,6 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             totalAvailableClaimData={totalAvailableClaimData}
             isQualified={isQualified}
             isValidLockAmount={isValidLockAmount}
-            thresholdLockTime={thresholdLockTime}
             thresholdLockAmount={thresholdLockAmount}
             qualification={qualification}
             campaignIdsIncentive={campaignIdsIncentive}
