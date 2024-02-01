@@ -41,6 +41,7 @@ export const vaults: VaultConfig[] = [
     managerInfoUrl: 'https://www.bril.finance/',
     strategyInfoUrl: 'https://docs.bril.finance/ascend/overview',
     learnMoreAboutUrl: 'https://docs.bril.finance/yield-iq/faqs',
+    priceFromV3FarmPid: 52,
   },
   {
     id: 1,
