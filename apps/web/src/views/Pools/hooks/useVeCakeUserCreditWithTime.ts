@@ -15,9 +15,6 @@ export const useVeCakeUserCreditWithTime = (endTime: number): UseVeCakeUserCredi
     ['vecake-user-credit-with-time', account, chainId],
     async () => {
       try {
-        if (!account) {
-          return 0
-        }
         const response = await getUserCreditWithTime({ account, chainId, endTime, provider: getViemClients })
         return Number(response)
       } catch (error) {
