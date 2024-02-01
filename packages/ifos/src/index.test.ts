@@ -41,6 +41,7 @@ test('exports', () => {
       "iCakeABI",
       "pancakeInfoSenderABI",
       "ifoV7ABI",
+      "getUserCreditWithTime
     ]
   `)
 })
