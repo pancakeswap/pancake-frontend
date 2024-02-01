@@ -389,7 +389,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                 <>
                   <RowBetween>
                     <Text color="text">{t('Your deposit value in USD')}:</Text>
-                    <Text color="text">{`${userTotalDepositUSD.toFixed(2)}`}</Text>
+                    <Text color="text">{`${userTotalDepositUSD.toString().substring(0, 5)}`}</Text>
                   </RowBetween>
 
                   <RowBetween>
