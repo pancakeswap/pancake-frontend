@@ -123,7 +123,7 @@ export interface DuoTokenVault {
   learnMoreUrl?: string
   learnMoreAboutUrl?: string
   aprTimeWindow?: number
-  bCakeWrapper?: Address
+  bCakeWrapperAddress?: Address
   minDepositUSD?: number
 }
 

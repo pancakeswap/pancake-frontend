@@ -56,7 +56,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     projectVaultUrl,
     learnMoreAboutUrl,
     aprTimeWindow,
-    bCakeWrapper,
+    bCakeWrapperAddress,
     minDepositUSD,
   } = vault
 
@@ -220,7 +220,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       totalStakedInUsd={totalStakedInUsd}
       learnMoreAboutUrl={learnMoreAboutUrl}
       lpTokenDecimals={info?.lpTokenDecimals}
-      bCakeWrapper={bCakeWrapper}
+      bCakeWrapper={bCakeWrapperAddress}
       minDepositUSD={minDepositUSD}
     >
       {id}

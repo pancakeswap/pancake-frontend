@@ -8,7 +8,7 @@ export const vaults: VaultConfig[] = [
     id: 15,
     idByManager: 1,
     name: 'ALPACA',
-    bCakeWrapper: '0x98385EBAC7055a569b76C66Dd559055263Bc88da',
+    bCakeWrapperAddress: '0x98385EBAC7055a569b76C66Dd559055263Bc88da',
     address: '0x98385EBAC7055a569b76C66Dd559055263Bc88da',
     adapterAddress: '0x778E55EeAA3cC7F590272aC4E173d43012271bad',
     currencyA: bscTokens.eth,

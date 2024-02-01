@@ -281,11 +281,7 @@ export const getPositionManagerWrapperContract = (address: `0x${string}`, signer
   })
 }
 
-export const getPositionManagerBCakeWrapperContract = (
-  address: `0x${string}`,
-  signer?: WalletClient,
-  chainId?: number,
-) => {
+export const getPositionManagerBCakeWrapperContract = (address: Address, signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: positionManagerVeBCakeWrapperABI,
     address,
