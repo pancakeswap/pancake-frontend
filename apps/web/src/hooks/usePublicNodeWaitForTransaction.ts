@@ -13,8 +13,9 @@ import {
 } from 'viem'
 import { useCallback } from 'react'
 import { retry, RetryableError } from 'state/multicall/retry'
-import { BSC_BLOCK_TIME } from 'config/constants'
 import { usePublicClient } from 'wagmi'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
+import { BSC_BLOCK_TIME } from 'config'
 import { useActiveChainId } from './useActiveChainId'
 
 const viemClientsPublicNodes = CHAINS.reduce((prev, cur) => {
@@ -71,7 +72,7 @@ export function usePublicNodeWaitForTransaction() {
         n: 10,
         minWait: 5000,
         maxWait: 10000,
-        delay: BSC_BLOCK_TIME * 1000 + 1000,
+        delay: (chainId ? AVERAGE_CHAIN_BLOCK_TIMES[chainId] : BSC_BLOCK_TIME) * 1000 + 1000,
       }).promise as Promise<TransactionReceipt>
     },
     [chainId, provider],

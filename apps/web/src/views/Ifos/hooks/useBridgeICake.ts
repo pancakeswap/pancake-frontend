@@ -261,7 +261,7 @@ export function useLatestBridgeTx(ifoId: string, chainId?: ChainId) {
 
   const { data: receipt } = useQuery({
     queryKey: [tx, 'bridge-icake-tx-receipt'],
-    queryFn: () => tx && getViemClients({ chainId })?.waitForTransactionReceipt({ hash: tx }),
+    queryFn: () => tx && waitForTransaction({ hash: tx, chainId }),
     enabled: Boolean(tx && chainId),
   })
 

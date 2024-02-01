@@ -15,8 +15,6 @@ export const INITIAL_ALLOWED_SLIPPAGE = 50
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
 export const L2_DEADLINE_FROM_NOW = 60 * 5
 
-export const BSC_BLOCK_TIME = 3
-
 export const FAST_INTERVAL = 10000
 export const SLOW_INTERVAL = 60000
 
