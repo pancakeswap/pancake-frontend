@@ -17,6 +17,7 @@ import {
   polygonZkEvm,
   polygonZkEvmTestnet,
   scrollSepolia,
+  sepolia,
   zkSync,
   zkSyncTestnet,
 } from 'wagmi/chains'
@@ -89,4 +90,5 @@ export const CHAINS = [
   opBNB,
   opBNBTestnet,
   scrollSepolia,
+  sepolia,
 ]

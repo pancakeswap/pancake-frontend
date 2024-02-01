@@ -1,22 +1,23 @@
 import { ChainId } from '@pancakeswap/chains'
 
-import { bscTokens } from './constants/bsc'
-import { goerliTestnetTokens } from './constants/goerli'
-import { bscTestnetTokens } from './constants/bscTestnet'
-import { ethereumTokens } from './constants/eth'
 import { arbitrumTokens } from './constants/arb'
-import { polygonZkEvmTokens } from './constants/polygonZkEVM'
-import { polygonZkEvmTestnetTokens } from './constants/polygonZkEVMTestnet'
-import { zksyncTokens } from './constants/zkSync'
-import { zkSyncTestnetTokens } from './constants/zkSyncTestnet'
-import { lineaTestnetTokens } from './constants/lineaTestnet'
-import { lineaTokens } from './constants/linea'
 import { arbitrumGoerliTokens } from './constants/arbGoerli'
-import { opBnbTokens } from './constants/opBNB'
-import { opBnbTestnetTokens } from './constants/opBnbTestnet'
 import { baseTokens } from './constants/base'
 import { baseTestnetTokens } from './constants/baseTestnet'
+import { bscTokens } from './constants/bsc'
+import { bscTestnetTokens } from './constants/bscTestnet'
+import { ethereumTokens } from './constants/eth'
+import { goerliTestnetTokens } from './constants/goerli'
+import { lineaTokens } from './constants/linea'
+import { lineaTestnetTokens } from './constants/lineaTestnet'
+import { opBnbTokens } from './constants/opBNB'
+import { opBnbTestnetTokens } from './constants/opBnbTestnet'
+import { polygonZkEvmTokens } from './constants/polygonZkEVM'
+import { polygonZkEvmTestnetTokens } from './constants/polygonZkEVMTestnet'
 import { scrollSepoliaTokens } from './constants/scrollSepolia'
+import { sepoliaTokens } from './constants/sepolia'
+import { zksyncTokens } from './constants/zkSync'
+import { zkSyncTestnetTokens } from './constants/zkSyncTestnet'
 
 export const allTokens = {
   [ChainId.GOERLI]: goerliTestnetTokens,
@@ -36,4 +37,5 @@ export const allTokens = {
   [ChainId.BASE]: baseTokens,
   [ChainId.BASE_TESTNET]: baseTestnetTokens,
   [ChainId.SCROLL_SEPOLIA]: scrollSepoliaTokens,
+  [ChainId.SEPOLIA]: sepoliaTokens,
 }

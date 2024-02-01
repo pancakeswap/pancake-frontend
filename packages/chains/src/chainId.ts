@@ -16,6 +16,7 @@ export enum ChainId {
   LINEA_TESTNET = 59140,
   BASE = 8453,
   BASE_TESTNET = 84531,
+  SEPOLIA = 11155111,
 }
 
 export const testnetChainIds = [
@@ -28,4 +29,5 @@ export const testnetChainIds = [
   ChainId.SCROLL_SEPOLIA,
   ChainId.LINEA_TESTNET,
   ChainId.BASE_TESTNET,
+  ChainId.SEPOLIA,
 ]

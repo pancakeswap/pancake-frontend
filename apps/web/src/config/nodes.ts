@@ -12,6 +12,7 @@ import {
   polygonZkEvm,
   polygonZkEvmTestnet,
   scrollSepolia,
+  sepolia,
   zkSync,
   zkSyncTestnet,
 } from 'wagmi/chains'
@@ -76,6 +77,7 @@ export const SERVER_NODES = {
   ],
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
   [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
+  [ChainId.SEPOLIA]: sepolia.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
@@ -145,4 +147,5 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
   [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
+  [ChainId.SEPOLIA]: sepolia.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>

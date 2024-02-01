@@ -302,6 +302,13 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
+  [ChainId.SEPOLIA]: new ERC20Token(
+    ChainId.SEPOLIA,
+    '0x6f14C02Fc1F78322cFd7d707aB90f18baD3B54f5',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
 }
 
 export const USDT = {
@@ -378,4 +385,5 @@ export const STABLE_COIN = {
   [ChainId.BASE]: USDC[ChainId.BASE],
   [ChainId.BASE_TESTNET]: USDC[ChainId.BASE_TESTNET],
   [ChainId.SCROLL_SEPOLIA]: USDC[ChainId.SCROLL_SEPOLIA],
+  [ChainId.SEPOLIA]: USDC[ChainId.SEPOLIA],
 } satisfies Record<ChainId, ERC20Token>
