@@ -54,7 +54,6 @@ interface Props {
   refetch?: () => void
   // TODO: replace with needed returned information
   onAddLiquidity?: (amounts: CurrencyAmount<Currency>[]) => Promise<void>
-
   // TODO: replace with needed returned information
   onRemoveLiquidity?: (params: { assets: BaseAssets; percentage: Percent }) => Promise<void>
   userLpAmounts?: bigint
@@ -65,6 +64,8 @@ interface Props {
   learnMoreAboutUrl?: string
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  bCakeWrapper?: Address
+  minDepositUSD?: number
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -104,6 +105,8 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   learnMoreAboutUrl,
   lpTokenDecimals,
   aprTimeWindow,
+  bCakeWrapper,
+  minDepositUSD,
 }: Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -126,7 +129,6 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   }
 
   const isSingleDepositToken0 = isSingleDepositToken && allowDepositToken0
-
   return (
     <>
       {hasStaked ? (
@@ -148,6 +150,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
           </InnerCard>
           <RewardAssets
             contractAddress={contractAddress}
+            bCakeWrapper={bCakeWrapper}
             pendingReward={pendingReward}
             earningToken={earningToken}
             isInCakeRewardDateRange={isInCakeRewardDateRange}
@@ -198,6 +201,8 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         learnMoreAboutUrl={learnMoreAboutUrl}
         lpTokenDecimals={lpTokenDecimals}
         aprTimeWindow={aprTimeWindow}
+        bCakeWrapper={bCakeWrapper}
+        minDepositUSD={minDepositUSD}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}
@@ -212,6 +217,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         token1PriceUSD={token1PriceUSD}
         contractAddress={contractAddress}
         refetch={refetch}
+        bCakeWrapper={bCakeWrapper}
       />
     </>
   )

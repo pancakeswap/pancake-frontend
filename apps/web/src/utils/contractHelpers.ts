@@ -60,7 +60,11 @@ import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/b
 import { calcGaugesVotingABI, gaugesVotingABI } from '@pancakeswap/gauges'
 import { getIfoCreditAddressContract as getIfoCreditAddressContract_ } from '@pancakeswap/ifos'
 import { cakeFlexibleSideVaultV2ABI, cakeVaultV2ABI } from '@pancakeswap/pools'
-import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers'
+import {
+  positionManagerAdapterABI,
+  positionManagerVeBCakeWrapperABI,
+  positionManagerWrapperABI,
+} from '@pancakeswap/position-managers'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { sidABI } from 'config/abi/SID'
 import { SIDResolverABI } from 'config/abi/SIDResolver'
@@ -271,6 +275,15 @@ export const getBCakeFarmBoosterVeCakeContract = (signer?: WalletClient, chainId
 export const getPositionManagerWrapperContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: positionManagerWrapperABI,
+    address,
+    signer,
+    chainId,
+  })
+}
+
+export const getPositionManagerBCakeWrapperContract = (address: Address, signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: positionManagerVeBCakeWrapperABI,
     address,
     signer,
     chainId,

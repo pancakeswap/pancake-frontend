@@ -1,11 +1,12 @@
-import { useMemo } from 'react'
 import { Currency } from '@pancakeswap/sdk'
-import BigNumber from 'bignumber.js'
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { useTotalStakedInUsd } from 'views/PositionManagers/hooks/useTotalStakedInUsd'
-import { YEAR_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
-import { useCakePrice } from 'hooks/useCakePrice'
+
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { YEAR_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
+import BigNumber from 'bignumber.js'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useMemo } from 'react'
+import { useTotalStakedInUsd } from 'views/PositionManagers/hooks/useTotalStakedInUsd'
 
 interface AprProps {
   currencyA: Currency
@@ -20,6 +21,7 @@ interface AprProps {
   earningToken: Currency
   rewardEndTime: number
   rewardStartTime: number
+  farmRewardAmount?: number
 }
 
 export interface AprResult {
@@ -44,6 +46,7 @@ export const useApr = ({
   earningToken,
   rewardEndTime,
   rewardStartTime,
+  farmRewardAmount,
 }: AprProps): AprResult => {
   const cakePriceBusd = useCakePrice()
 
@@ -68,11 +71,22 @@ export const useApr = ({
     const totalToken1Usd = getBalanceAmount(new BigNumber(avgToken1Amount), currencyB.decimals).times(
       token1PriceUSD ?? 0,
     )
+    const cakeRewardUsd = getBalanceAmount(new BigNumber(farmRewardAmount ?? 0), 18).times(cakePriceBusd)
 
-    const totalAvgStakedInUsd = totalToken0Usd.plus(totalToken1Usd)
+    const totalAvgStakedInUsd = totalToken0Usd.plus(totalToken1Usd).plus(cakeRewardUsd)
 
     return totalAvgStakedInUsd.times(ONE_YEAR).div(totalStakedInUsd).times(100)
-  }, [avgToken0Amount, avgToken1Amount, currencyA, currencyB, token0PriceUSD, token1PriceUSD, totalStakedInUsd])
+  }, [
+    avgToken0Amount,
+    avgToken1Amount,
+    currencyA,
+    currencyB,
+    token0PriceUSD,
+    token1PriceUSD,
+    totalStakedInUsd,
+    farmRewardAmount,
+    cakePriceBusd,
+  ])
 
   const cakeYieldApr = useMemo(() => {
     if (!isInCakeRewardDateRange) {

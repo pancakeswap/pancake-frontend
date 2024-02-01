@@ -56,6 +56,8 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     projectVaultUrl,
     learnMoreAboutUrl,
     aprTimeWindow,
+    bCakeWrapperAddress,
+    minDepositUSD,
   } = vault
 
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
@@ -218,6 +220,8 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       totalStakedInUsd={totalStakedInUsd}
       learnMoreAboutUrl={learnMoreAboutUrl}
       lpTokenDecimals={info?.lpTokenDecimals}
+      bCakeWrapper={bCakeWrapperAddress}
+      minDepositUSD={minDepositUSD}
     >
       {id}
     </DuoTokenVaultCard>

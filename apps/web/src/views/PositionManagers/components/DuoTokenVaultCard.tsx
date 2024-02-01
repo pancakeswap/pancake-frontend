@@ -77,6 +77,8 @@ interface Props {
   precision?: bigint
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  bCakeWrapper?: Address
+  minDepositUSD?: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -120,6 +122,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   totalStakedInUsd,
   learnMoreAboutUrl,
   lpTokenDecimals,
+  bCakeWrapper,
+  minDepositUSD,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -132,6 +136,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     earningToken,
     avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
     avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
+    farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
     rewardEndTime,
     rewardStartTime,
   })
@@ -171,7 +176,13 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
         />
-        <ManagerInfo mt="1.5em" id={manager.id} name={manager.name} strategy={strategy} />
+        <ManagerInfo
+          mt="1.5em"
+          id={manager.id}
+          name={manager.name}
+          strategy={strategy}
+          allowTokenName={`${allowDepositToken0 ? currencyA.symbol : ''}${allowDepositToken1 ? currencyB.symbol : ''}`}
+        />
         <LiquidityManagement
           manager={manager}
           currencyA={currencyA}
@@ -208,6 +219,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           learnMoreAboutUrl={learnMoreAboutUrl}
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
+          bCakeWrapper={bCakeWrapper}
+          minDepositUSD={minDepositUSD}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

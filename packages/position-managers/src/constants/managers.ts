@@ -3,6 +3,7 @@ export enum MANAGER {
   BRIL = 'bril-position-manager',
   RANGE = 'range-protocol-pr-position-manager',
   DEFIEDGE = 'defiedge-position-manager',
+  ALPACA = 'alpaca-position-manager',
 }
 
 export interface BaseManager {
@@ -27,6 +28,7 @@ export const baseManagers: { [manager in MANAGER]: BaseManager } = {
     introLink: 'https://www.rangeprotocol.com/',
   },
   [MANAGER.DEFIEDGE]: { id: MANAGER.DEFIEDGE, name: 'DefiEdge', introLink: 'https://www.defiedge.io/' },
+  [MANAGER.ALPACA]: { id: MANAGER.ALPACA, name: 'Alpaca Finance', introLink: 'https://www.alpacafinance.org/' },
 }
 
 export const VERIFIED_MANAGERS = [MANAGER.PCS]
