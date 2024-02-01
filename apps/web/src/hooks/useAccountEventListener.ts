@@ -1,14 +1,28 @@
-// import { useEffect, useMemo } from 'react'
-// import { ExtendEthereum } from 'global'
-// import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-// import { ConnectorData, useAccount } from 'wagmi'
-// import { CHAIN_QUERY_NAME } from 'config/chains'
-// import { useAppDispatch } from '../state'
-// import { clearUserStates } from '../utils/clearUserStates'
-// import { useSessionChainId } from './useSessionChainId'
-// import { useActiveChainId } from './useActiveChainId'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import { isChainSupported } from 'utils/wagmi'
+import { useAccountEffect } from 'wagmi'
+import { useAppDispatch } from '../state'
+import { clearUserStates } from '../utils/clearUserStates'
+import { useActiveChainId } from './useActiveChainId'
+import { useSessionChainId } from './useSessionChainId'
 
 export const useAccountEventListener = () => {
+  const { chainId } = useActiveChainId()
+  const dispatch = useAppDispatch()
+  const [, setSessionChainId] = useSessionChainId()
+
+  useAccountEffect({
+    onConnect(data) {
+      if (data.chainId && isChainSupported(data.chainId)) {
+        replaceBrowserHistory('chain', CHAIN_QUERY_NAME[data.chainId])
+        setSessionChainId(data.chainId)
+      }
+    },
+    onDisconnect: () => {
+      clearUserStates(dispatch, { chainId })
+    },
+  })
   // const { account, chainId, connector } = useActiveWeb3React()
   // const { chainId } = useActiveChainId()
   // const { connector, address } = useAccount()

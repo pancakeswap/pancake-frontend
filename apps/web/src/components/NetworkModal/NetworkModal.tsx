@@ -53,7 +53,7 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
     )
   }
 
-  if ((chainId && isChainSupported(chainId)) || isPageNotSupported) {
+  if ((chainId && !isChainSupported(chainId)) || isPageNotSupported) {
     return (
       <ModalV2 isOpen closeOnOverlayClick={false}>
         <UnsupportedNetworkModal pageSupportedChains={pageSupportedChains?.length ? pageSupportedChains : CHAIN_IDS} />
