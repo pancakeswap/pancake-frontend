@@ -14,12 +14,12 @@ interface Params {
 
 export const getUserCreditWithTime = async ({ account, chainId, endTime, provider }: Params) => {
   try {
-    if (!account || !chainId || !endTime) {
+    if (!account || !chainId || !endTime || !provider) {
       return BIG_ZERO.toJSON()
     }
 
     const ifoCreditContract = getIfoCreditAddressContract(chainId, provider)
-    const credit = await ifoCreditContract?.read?.getUserCreditWithTime([account, BigInt(endTime)])
+    const credit = await ifoCreditContract.read.getUserCreditWithTime([account, BigInt(endTime)])
     return new BigNumber(credit.toString()).toJSON()
   } catch (error) {
     console.error(error)
