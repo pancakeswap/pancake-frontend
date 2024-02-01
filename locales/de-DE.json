@@ -3137,5 +3137,8 @@
   "U.S.-based and VPN users.": "U.S.-based and VPN users.",
   "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.": "The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.",
   "Base APR (APT yield only)": "Base APR (APT yield only)",
-  "%percent%% of total supply": "%percent%% of total supply"
+  "%percent%% of total supply": "%percent%% of total supply",
+  "Your deposit value in USD": "Your deposit value in USD",
+  "Min deposit USD": "Min deposit USD",
+  "Savings": "Savings"
 }
