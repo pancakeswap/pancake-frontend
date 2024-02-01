@@ -1,5 +1,11 @@
 # @pancakeswap/v3-sdk
 
+## 3.7.7
+
+### Patch Changes
+
+- a270af13a: Remove no used v3 staker
+
 ## 3.7.6
 
 ### Patch Changes

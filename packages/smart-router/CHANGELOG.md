@@ -1,5 +1,12 @@
 # @pancakeswap/smart-router
 
+## 4.14.2
+
+### Patch Changes
+
+- Updated dependencies [a270af13a]
+  - @pancakeswap/v3-sdk@3.7.7
+
 ## 4.14.1
 
 ### Patch Changes
