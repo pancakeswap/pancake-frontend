@@ -6,7 +6,7 @@ import { CurrencyAmount, Price } from "@pancakeswap/sdk";
 
 import mockData from "./mockData.json";
 import { LiquidityChartRangeInput } from "./LiquidityChartRangeInput";
-import { cakeToken, bscToken } from "../../mockData";
+import { cakeToken, bscToken } from "../mockData";
 import { TickDataRaw } from "./types";
 
 export default {

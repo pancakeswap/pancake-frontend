@@ -11,7 +11,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { tryParsePrice, tryParseTick } from "../utils";
-import { Bound } from "../../swap/LiquidityChartRangeInput";
+import { Bound } from "../../liquidityChart";
 
 interface Params {
   feeAmount?: FeeAmount;

@@ -2,16 +2,9 @@ import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, memo } from "react";
 import { styled } from "styled-components";
 import { SpaceProps } from "styled-system";
+import { SwapLineChart, PairDataTimeWindowEnum } from "@pancakeswap/uikit/chart";
 
-import {
-  Flex,
-  ButtonMenuItem,
-  SwapLineChart,
-  PairDataTimeWindowEnum,
-  Box,
-  Text,
-  BunnyKnownPlaceholder,
-} from "@pancakeswap/uikit";
+import { Flex, ButtonMenuItem, Box, Text, BunnyKnownPlaceholder } from "@pancakeswap/uikit";
 import { PriceData } from "./types";
 import { FullWidthButtonMenu } from "./FullWidthButtonMenu";
 

@@ -15,13 +15,7 @@ import {
   DynamicSection,
   Flex,
 } from '@pancakeswap/uikit'
-import {
-  LiquidityChartRangeInput,
-  ZOOM_LEVELS,
-  ZoomLevels,
-  ConfirmationModalContent,
-  NumericalInput,
-} from '@pancakeswap/widgets-internal'
+import { ConfirmationModalContent, NumericalInput } from '@pancakeswap/widgets-internal'
 
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 import { tryParsePrice } from 'hooks/v3/utils'
@@ -58,6 +52,11 @@ import { calculateGasMargin } from 'utils'
 
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import {
+  LiquidityChartRangeInput,
+  ZOOM_LEVELS,
+  ZoomLevels,
+} from '../../../../../../../packages/widgets-internal/liquidityChart'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'

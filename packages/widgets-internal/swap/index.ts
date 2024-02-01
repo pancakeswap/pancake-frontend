@@ -13,4 +13,3 @@ export * from "./TokenRowButton";
 export * from "./ApproveModalContent";
 export * from "./SwapPendingModalContent";
 export * from "./SwapTransactionReceiptModalContent";
-export * from "./LiquidityChartRangeInput/InfoBox";

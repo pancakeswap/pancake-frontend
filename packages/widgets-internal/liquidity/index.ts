@@ -6,3 +6,4 @@ export * from "./NoLiquidity";
 export * from "./AddLiquidity/FirstLP";
 export * from "./AddLiquidity/ChoosePairView";
 export * from "./PercentSlider";
+export * from "./InfoBox";

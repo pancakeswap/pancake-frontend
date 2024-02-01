@@ -4,7 +4,7 @@ import { CurrencyAmount, Price } from "@pancakeswap/sdk";
 import { ethereumTokens } from "@pancakeswap/tokens";
 import { FeeAmount } from "@pancakeswap/v3-sdk";
 import { Button, MatchBreakpointsProvider } from "@pancakeswap/uikit";
-import mockData from "swap/LiquidityChartRangeInput/mockData.json";
+import mockData from "../liquidityChart/mockData.json";
 
 import { RoiCalculator } from "./RoiCalculator";
 import { RoiCalculatorModal } from "./RoiCalculatorModal";

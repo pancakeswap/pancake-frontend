@@ -26,8 +26,8 @@ import { TwoColumns } from "./TwoColumns";
 import { PriceChart } from "./PriceChart";
 import { PriceInvertSwitch } from "./PriceInvertSwitch";
 import { FarmingRewardsToggle } from "./FarmingRewardsToggle";
-import { LiquidityChartRangeInput } from "../swap/LiquidityChartRangeInput";
-import { useDensityChartData } from "../swap/LiquidityChartRangeInput/hooks";
+import { LiquidityChartRangeInput } from "../liquidityChart";
+import { useDensityChartData } from "../liquidityChart/hooks";
 
 export interface RoiCalculatorPositionInfo {
   priceLower?: Price<Token, Token>;

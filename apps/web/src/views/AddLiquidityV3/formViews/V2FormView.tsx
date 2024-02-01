@@ -30,7 +30,7 @@ import { getBlockExploreLink } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import ApproveLiquidityTokens from 'views/AddLiquidityV3/components/ApproveLiquidityTokens'
-import { InfoBox } from '@pancakeswap/widgets-internal'
+import { Liquidity } from '@pancakeswap/widgets-internal'
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 import RangeSelector from './V3FormView/components/RangeSelector'
 
@@ -196,7 +196,7 @@ export default function V2FormView({
       <RightContainer>
         <AutoColumn pt="12px" gap="24px">
           <DynamicSection disabled gap="12px">
-            <InfoBox message={t('Your position will appear here.')} icon={<BunnyKnownPlaceholder />} />
+            <Liquidity.InfoBox message={t('Your position will appear here.')} icon={<BunnyKnownPlaceholder />} />
             <RangeSelector
               getDecrementLower={mockFn}
               getIncrementLower={mockFn}

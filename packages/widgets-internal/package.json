@@ -6,8 +6,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": "./index.ts",
+    "./liquidityChart": "./liquidityChart/index.tsx",
     "./roi": "./roi/index.ts"
   },
+  "sideEffects": false,
   "dependencies": {
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/localization": "workspace:*",

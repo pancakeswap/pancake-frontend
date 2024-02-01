@@ -4,7 +4,7 @@ import { formatPrice } from "@pancakeswap/utils/formatFractions";
 import { memo } from "react";
 
 import { FlexGap } from "@pancakeswap/uikit";
-import { Bound } from "../swap/LiquidityChartRangeInput";
+import { Bound } from "../liquidityChart";
 import { StepCounter } from "./StepCounter";
 
 // currencyA is the base token

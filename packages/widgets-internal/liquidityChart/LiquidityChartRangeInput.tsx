@@ -9,7 +9,7 @@ import { saturate } from "polished";
 import { AutoColumn, BunnyKnownPlaceholder, ChartDisableIcon, LineGraphIcon } from "@pancakeswap/uikit";
 
 import { Bound, ChartEntry, TickDataRaw, ZOOM_LEVELS, ZoomLevels } from "./types";
-import { InfoBox } from "./InfoBox";
+import { InfoBox } from "../liquidity/InfoBox";
 import Loader from "./Loader";
 import { Chart } from "./Chart";
 

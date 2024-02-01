@@ -1,4 +1,5 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Text, SwapLineChart } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { SwapLineChart } from '@pancakeswap/uikit/chart'
 import { useTranslation } from '@pancakeswap/localization'
 import { useState, memo, useMemo } from 'react'
 import { useFetchPairPricesV3 } from 'state/swap/hooks'

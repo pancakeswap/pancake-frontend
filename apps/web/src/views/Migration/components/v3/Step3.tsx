@@ -1,6 +1,5 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { AtomBox, AutoColumn, AutoRow, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
-import { Chart } from '@pancakeswap/widgets-internal'
 import { format } from 'd3'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
@@ -22,6 +21,7 @@ import { FEE_AMOUNT_DETAIL, SelectContainer } from 'views/AddLiquidityV3/formVie
 import { useRangeHopCallbacks } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
+import { Chart } from '../../../../../../../packages/widgets-internal/liquidityChart'
 import mockData from './mock.json'
 
 const MOCK = {
