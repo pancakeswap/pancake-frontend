@@ -19,7 +19,7 @@ export const getUserCreditWithTime = async ({ account, chainId, endTime, provide
     }
 
     const ifoCreditContract = getIfoCreditAddressContract(chainId, provider)
-    const credit = await ifoCreditContract.read.getUserCreditWithTime([account, BigInt(endTime)])
+    const credit = await ifoCreditContract?.read?.getUserCreditWithTime([account, BigInt(endTime)])
     return new BigNumber(credit.toString()).toJSON()
   } catch (error) {
     console.error(error)
