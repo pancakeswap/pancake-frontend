@@ -29,7 +29,7 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
-import { Address, useContractRead, useSignTypedData } from 'wagmi'
+import { Address, useContractRead } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
 // import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
@@ -125,8 +125,6 @@ function V2PairMigrate({
   const { balance: pairBalance } = useTokenBalance(v2PairAddress)
 
   const { reserve0, reserve1 } = pair
-
-  const { signTypedDataAsync } = useSignTypedData()
 
   useInitialRange(reserve0?.currency, reserve1?.currency)
 
@@ -338,8 +336,6 @@ function V2PairMigrate({
     migrator.address,
   )
 
-  const pairContractRead = usePairContract(pair?.liquidityToken?.address)
-
   const approve = useCallback(async () => {
     return approveCallback()
     // // try to gather a signature for permission
@@ -397,17 +393,7 @@ function V2PairMigrate({
     //       approveCallback()
     //     }
     //   })
-  }, [
-    pairContractRead,
-    account,
-    chainId,
-    pair.liquidityToken.address,
-    migrator.address,
-    pairBalance,
-    deadline,
-    signTypedDataAsync,
-    approveCallback,
-  ])
+  }, [approveCallback])
 
   const migrate = useCallback(() => {
     if (
