@@ -13,7 +13,7 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:style": "npx stylelint '**/*.{ts,tsx}'",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
-    "typechecks": "tsc --noEmit -p ./tsconfig.build.json"
+    "typechecks": "tsc --noEmit"
   },
   "browserslist": {
     "production": [

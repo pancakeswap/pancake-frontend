@@ -79,10 +79,6 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           content="Cheaper and faster than Uniswap? Discover PancakeSwap, the leading DEX on BNB Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE."
         />
         <meta name="theme-color" content="#1FC7D4" />
-        {(Component as NextPageWithLayout).mp && (
-          // eslint-disable-next-line @next/next/no-sync-scripts
-          <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
-        )}
       </Head>
       <DefaultSeo {...SEO} />
       <Providers store={store} dehydratedState={pageProps.dehydratedState}>
@@ -123,8 +119,6 @@ type NextPageWithLayout = NextPage & {
   Layout?: React.FC<React.PropsWithChildren<unknown>>
   /** render component without all layouts */
   pure?: true
-  /** is mini program */
-  mp?: boolean
   /**
    * allow chain per page, empty array bypass chain block modal
    * @default [ChainId.BSC]
@@ -150,16 +144,15 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
-  const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
 
   return (
     <ProductionErrorBoundary>
-      <ShowMenu>
+      <Menu>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </ShowMenu>
+      </Menu>
       <EasterEgg iterations={2} />
       <ToastListener />
       <FixedSubgraphHealthIndicator />

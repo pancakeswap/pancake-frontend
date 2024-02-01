@@ -114,8 +114,8 @@ export const getContract = <TAbi extends Abi | unknown[]>({
     abi,
     address,
     client: {
-      public: publicClient ?? viemClients[chainId],
-      wallet: signer!,
+      public: publicClient ?? (viemClients[chainId] as PublicClient),
+      wallet: signer as WalletClient,
     },
   })
   return {
