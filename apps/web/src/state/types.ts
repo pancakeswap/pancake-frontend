@@ -10,8 +10,7 @@ import {
   Team,
   TranslatableText,
 } from 'config/constants/types'
-import { parseEther } from 'viem'
-import { Address } from 'wagmi'
+import { Address, parseEther } from 'viem'
 import { NftToken } from './nftMarket/types'
 
 export enum GAS_PRICE {

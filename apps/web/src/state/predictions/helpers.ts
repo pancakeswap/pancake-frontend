@@ -20,7 +20,7 @@ import {
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
 import { publicClient } from 'utils/wagmi'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { BetResponseBNB } from './bnbQueries'
 import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
 import { BetResponseCAKE } from './cakeQueries'

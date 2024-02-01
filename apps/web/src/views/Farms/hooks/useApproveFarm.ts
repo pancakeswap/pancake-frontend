@@ -1,10 +1,10 @@
-import { useCallback } from 'react'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { useERC20 } from 'hooks/useContract'
-import { Address } from 'wagmi'
+import { useCallback } from 'react'
+import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
+import { Address } from 'viem'
 
 const useApproveFarm = (lpContract: ReturnType<typeof useERC20>, chainId: number) => {
   const isBscNetwork = verifyBscNetwork(chainId)

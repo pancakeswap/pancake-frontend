@@ -7,7 +7,7 @@ import { Token } from '@pancakeswap/sdk'
 import { DeserializedLockedVaultUser } from 'state/types'
 import RevenueSharing from 'views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing'
 import SharingPoolNameCell from 'views/Pools/components/RevenueSharing/BenefitsModal/SharingPoolNameCell'
-import { useAccount } from 'wagmi'
+import { useAccountEffect } from 'wagmi'
 
 const Container = styled(ModalContainer)`
   width: 100%;
@@ -39,10 +39,7 @@ interface BenefitsModalProps {
 const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsModalProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
 
-  useAccount({
-    onConnect: ({ connector }) => {
-      connector?.addListener('change', () => onDismiss?.())
-    },
+  useAccountEffect({
     onDisconnect: () => onDismiss?.(),
   })
 

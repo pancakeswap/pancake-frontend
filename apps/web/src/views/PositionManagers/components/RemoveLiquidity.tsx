@@ -4,7 +4,6 @@ import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { Box, Button, Flex, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { ConfirmationPendingContent, CurrencyLogo } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -14,6 +13,7 @@ import { memo, useCallback, useMemo, useState } from 'react'
 import { SpaceProps } from 'styled-system'
 import { Address } from 'viem'
 
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { InnerCard } from './InnerCard'
 import { PercentSlider } from './PercentSlider'
 import { StyledModal } from './StyledModal'
@@ -54,7 +54,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   refetch,
 }: Props) {
   const { t } = useTranslation()
-  const { account, chain } = useWeb3React()
+  const { account, chain } = useActiveWeb3React()
   const [percent, setPercent] = useState(0)
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
   const wrapperContract = usePositionManagerWrapperContract(contractAddress)

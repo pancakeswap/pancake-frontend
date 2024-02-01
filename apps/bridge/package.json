@@ -23,7 +23,7 @@
     "react-dom": "^18.2.0",
     "styled-components": "6.0.7",
     "styled-jsx": "^5.1.2",
-    "viem": "1.19.11"
+    "viem": "2.1.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.4.2",

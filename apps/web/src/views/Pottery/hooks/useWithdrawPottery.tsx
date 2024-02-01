@@ -1,18 +1,18 @@
-import { useCallback } from 'react'
-import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { usePotterytVaultContract } from 'hooks/useContract'
-import { Address } from 'wagmi'
+import { useCallback } from 'react'
+import { useAppDispatch } from 'state'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { Address } from 'viem'
 
 export const useWithdrawPottery = (redeemShare: string, vaultAddress: Address) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { account, chain } = useWeb3React()
+  const { account, chain } = useActiveWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const contract = usePotterytVaultContract(vaultAddress)

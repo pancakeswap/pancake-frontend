@@ -4,11 +4,11 @@ import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { Button, Flex, LinkExternal, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { CurrencyInput } from 'components/CurrencyInput'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerWrapperContract } from 'hooks/useContract'
@@ -119,7 +119,7 @@ export const AddLiquidity = memo(function AddLiquidity({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { account, chain } = useWeb3React()
+  const { account, chain } = useActiveWeb3React()
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
 
   const onInputChange = useCallback(

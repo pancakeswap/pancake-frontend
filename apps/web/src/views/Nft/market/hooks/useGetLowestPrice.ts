@@ -1,10 +1,10 @@
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { FetchStatus } from 'config/constants/types'
 import { getNftsMarketData, getNftsUpdatedMarketData } from 'state/nftMarket/helpers'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { NftToken } from 'state/nftMarket/types'
-import { Address } from 'wagmi'
 import useSWR from 'swr'
 import { safeGetAddress } from 'utils'
+import { Address } from 'viem'
 import { pancakeBunniesAddress } from '../constants'
 
 export interface LowestNftPrice {

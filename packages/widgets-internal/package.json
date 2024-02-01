@@ -22,7 +22,7 @@
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
-    "viem": "1.19.11",
+    "viem": "2.1.0",
     "d3": "^7.8.2",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.10"

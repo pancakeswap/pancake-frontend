@@ -1,11 +1,10 @@
-import { useState, useMemo } from 'react'
-import { SiweMessage } from 'siwe'
-import { useAccount } from 'wagmi'
-import { useSignMessage } from '@pancakeswap/wagmi'
-import { Button } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { Button } from '@pancakeswap/uikit'
 import { useQueryClient } from '@tanstack/react-query'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMemo, useState } from 'react'
+import { SiweMessage } from 'siwe'
+import { useAccount, useSignMessage } from 'wagmi'
 
 const LoginButton = () => {
   const { t } = useTranslation()

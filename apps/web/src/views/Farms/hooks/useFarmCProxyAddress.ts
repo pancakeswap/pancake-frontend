@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
-import { fetchCProxyAddress } from 'state/farms/fetchFarmUser'
-import { farmFetcher } from 'state/farms'
-import { Address } from 'wagmi'
 import { useQuery } from '@tanstack/react-query'
+import { farmFetcher } from 'state/farms'
+import { fetchCProxyAddress } from 'state/farms/fetchFarmUser'
+import { Address } from 'viem'
 
 export const useFarmCProxyAddress = (account?: string, chainId?: number) => {
   const multiCallChainId = farmFetcher.isTestnet(chainId) ? ChainId.BSC_TESTNET : ChainId.BSC

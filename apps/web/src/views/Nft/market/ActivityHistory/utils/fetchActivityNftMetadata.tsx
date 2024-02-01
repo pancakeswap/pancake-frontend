@@ -1,9 +1,9 @@
-import { Activity, NftToken, TokenIdWithCollectionAddress } from 'state/nftMarket/types'
-import { getNftsFromCollectionApi, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
-import uniqBy from 'lodash/uniqBy'
 import partition from 'lodash/partition'
-import { Address } from 'wagmi'
+import uniqBy from 'lodash/uniqBy'
+import { getNftsFromCollectionApi, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
+import { Activity, NftToken, TokenIdWithCollectionAddress } from 'state/nftMarket/types'
 import { safeGetAddress } from 'utils'
+import { Address } from 'viem'
 import { pancakeBunniesAddress } from '../../constants'
 
 export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<NftToken[]> => {

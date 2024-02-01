@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
-import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
+import { Button, ChevronRightIcon, Flex, Grid, Heading } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { useEffect, useState } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
-import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
-import { Address } from 'wagmi'
+import { NftToken } from 'state/nftMarket/types'
 import { safeGetAddress } from 'utils'
+import { Address } from 'viem'
+import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { CollectibleLinkCard } from '../components/CollectibleCard'
 import GridPlaceholder from '../components/GridPlaceholder'
 

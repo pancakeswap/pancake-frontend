@@ -1,6 +1,7 @@
 import { WETH9 } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import { Address, erc20ABI, useAccount, useContractRead } from 'wagmi'
+import { Address, erc20Abi } from 'viem'
+import { useAccount, useContractRead } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 export const useETHApprovalStatus = (spender: Address) => {
@@ -9,7 +10,7 @@ export const useETHApprovalStatus = (spender: Address) => {
 
   const { data, refetch } = useContractRead({
     chainId,
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: WETH9[chainId]?.address,
     functionName: 'allowance',
     args: [account, spender],
