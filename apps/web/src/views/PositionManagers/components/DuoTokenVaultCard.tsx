@@ -136,6 +136,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     earningToken,
     avgToken0Amount: aprDataInfo?.info?.token0 ?? 0,
     avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
+    farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
     rewardEndTime,
     rewardStartTime,
   })

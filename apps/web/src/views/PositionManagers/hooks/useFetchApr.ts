@@ -11,6 +11,7 @@ import { Address } from 'viem'
 export interface AprDataInfo {
   token0: number
   token1: number
+  rewardAmount: number
   chainId: ChainId
   lpAddress: Address
   calculationDays: number
