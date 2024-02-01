@@ -8,6 +8,7 @@ import NewIFOBanner from '../NewIFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import UserBanner from '../UserBanner'
 import VeCakeBanner from '../VeCakeBanner'
+import { TopTraderBanner } from '../TopTraderBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
@@ -38,6 +39,10 @@ export const useMultipleBannerConfig = () => {
   const countdown = useCountdown(1704369600)
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      {
+        shouldRender: true,
+        banner: <TopTraderBanner />,
+      },
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
