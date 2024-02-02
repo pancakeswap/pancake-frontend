@@ -23,7 +23,6 @@ import {
   updateUserPredictionChartDisclaimerShow,
   updateUserPredictionChainlinkChartDisclaimerShow,
   updateUserUsernameVisibility,
-  setIsExchangeChartDisplayed,
   setSubgraphHealthIndicatorDisplayed,
   updateUserLimitOrderAcceptedWarning,
 } from './actions'
@@ -50,7 +49,6 @@ export interface UserState {
       [key: string]: SerializedPair
     }
   }
-  isExchangeChartDisplayed: boolean
   isSubgraphHealthIndicatorDisplayed: boolean
   userFarmStakedOnly: FarmStakedOnly
   userPoolStakedOnly: boolean
@@ -64,7 +62,7 @@ export interface UserState {
   gasPrice: string
   watchlistTokens: string[]
   watchlistPools: string[]
-  hideTimestampPhishingWarningBanner: number
+  hideTimestampPhishingWarningBanner: number | null
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -75,7 +73,6 @@ export const initialState: UserState = {
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
   tokens: {},
   pairs: {},
-  isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
   userPoolStakedOnly: false,
@@ -195,9 +192,6 @@ export default createReducer(initialState, (builder) =>
         const newPools = state.watchlistPools.filter((x) => x !== address)
         state.watchlistPools = newPools
       }
-    })
-    .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
-      state.isExchangeChartDisplayed = payload
     })
     .addCase(setSubgraphHealthIndicatorDisplayed, (state, { payload }) => {
       state.isSubgraphHealthIndicatorDisplayed = payload
