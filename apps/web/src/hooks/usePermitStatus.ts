@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useCallback, useMemo } from 'react'
 import { publicClient } from 'utils/client'
-import { Address, isAddressEqual, isHex, toHex, zeroAddress } from 'viem'
+import { Address, isAddressEqual, isHex, zeroAddress } from 'viem'
 import { useSignTypedData } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import useAccountActiveChain from './useAccountActiveChain'
@@ -125,7 +125,8 @@ export const useWritePermit = (token?: Token, spender?: Address, nonce?: number)
       message,
     })
 
-    signature = isHex(signature) ? signature : toHex(signature)
+    // @hack: trust extension wallet doesn't prefix the signature with 0x
+    signature = isHex(signature) ? signature : `0x${signature}`
 
     return {
       ...permit,
