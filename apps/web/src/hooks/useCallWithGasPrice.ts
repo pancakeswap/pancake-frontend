@@ -1,6 +1,8 @@
 import { useCallback } from 'react'
 import { useGasPrice } from 'state/user/hooks'
+import { calculateGasMargin } from 'utils'
 import { publicClient } from 'utils/wagmi'
+import type { EstimateContractGasParameters } from 'viem'
 import {
   Abi,
   Account,
@@ -11,7 +13,6 @@ import {
   InferFunctionName,
   WriteContractParameters,
 } from 'viem'
-import type { EstimateContractGasParameters } from 'viem'
 import { useWalletClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import { useActiveChainId } from './useActiveChainId'
@@ -100,7 +101,7 @@ export function useCallWithGasPrice() {
         args: methodArgs,
         gasPrice,
         // for some reason gas price is insamely high when using maxuint approval, so commenting out for now
-        // gas: calculateGasMargin(gas),
+        gas: calculateGasMargin(gas),
         value: 0n,
         ...overrides_,
       } as unknown as WriteContractParameters)
