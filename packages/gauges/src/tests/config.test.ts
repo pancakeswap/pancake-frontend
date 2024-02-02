@@ -15,6 +15,13 @@ describe('Gauges Config', () => {
       expect(gauge.length).toBe(1)
     })
   })
+  let index = 0
+  CONFIG_PROD.forEach((gauge) => {
+    it(`${chainName} gid #${gauge.gid} should follow the index`, () => {
+      expect(gauge.gid).toBe(index)
+      if (gauge.gid === index) index++
+    })
+  })
 
   CONFIG_PROD.forEach((gauge) => {
     it(`${chainName} gid #${gauge.gid} tokens chainId-lpAddress-feeTier should be matched`, () => {

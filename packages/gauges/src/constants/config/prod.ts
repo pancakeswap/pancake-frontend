@@ -1053,6 +1053,15 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
 
   {
+    gid: 104,
+    address: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
+    pairName: 'HAY-USDT',
+    chainId: ChainId.BSC,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [bscTokens.hay.address, bscTokens.usdt.address],
+  },
+
+  {
     gid: 105,
     address: '0x1ac1A8FEaAEa1900C4166dEeed0C11cC10669D36',
     pairName: 'USDC-ETH',
@@ -2060,6 +2069,26 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.MEDIUM,
   },
   {
+    gid: 206,
+    pairName: 'ordi-BNB',
+    address: '0x442EFB99C2727c6000727C3cf672e3d77C9cDEaD',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.ordi.address,
+    token1Address: bscTokens.wbnb.address,
+    feeTier: FeeAmount.HIGH,
+  },
+  {
+    gid: 207,
+    pairName: 'MUBI-BNB',
+    address: '0x961C19a53e5EA0e43B8F9020553F94623Ce475B6',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.mubi.address,
+    token1Address: bscTokens.bnb.address,
+    feeTier: FeeAmount.HIGH,
+  },
+  {
     gid: 208,
     pairName: 'NFP-USDT',
     address: '0x4b36782B47a28Ee003013E7C56174CB5812F418B',
@@ -2214,6 +2243,16 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: bscTokens.usdt.address,
     token1Address: bscTokens.cgpt.address,
     feeTier: FeeAmount.LOW,
+  },
+  {
+    gid: 224,
+    pairName: 'wROSE-USDT',
+    address: '0x5B56eea565dad4E72B8ea6a6567834E144fb7a93',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.wrose.address,
+    token1Address: bscTokens.usdt.address,
+    feeTier: FeeAmount.MEDIUM,
   },
   {
     gid: 225,
