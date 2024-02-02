@@ -81,6 +81,7 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
           displayTooltip()
           onClick()
         }}
+        data-dd-action-name="Risk scan retry button"
         disabled={retry}
         variant="text"
         size="sm"

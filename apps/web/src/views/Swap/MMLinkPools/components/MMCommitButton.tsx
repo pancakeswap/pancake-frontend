@@ -231,7 +231,12 @@ export function MMSwapCommitButton({
 
   if (showWrap) {
     return (
-      <CommitButton width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
+      <CommitButton
+        width="100%"
+        disabled={Boolean(wrapInputError)}
+        onClick={onWrap}
+        data-dd-action-name="Swap wrap button"
+      >
         {wrapInputError ?? (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
       </CommitButton>
     )
@@ -246,6 +251,7 @@ export function MMSwapCommitButton({
       variant="primary"
       disabled={!rfqTrade.rfq || !isValid || !!swapCallbackError}
       onClick={onSwapHandler}
+      data-dd-action-name="Swap mm commit button"
     >
       {parseMMError(swapInputError) || t('Swap')}
     </CommitButton>

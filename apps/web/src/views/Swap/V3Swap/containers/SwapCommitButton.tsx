@@ -309,7 +309,12 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   if (showWrap) {
     return (
-      <CommitButton width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
+      <CommitButton
+        width="100%"
+        disabled={Boolean(wrapInputError)}
+        onClick={onWrap}
+        data-dd-action-name="Swap wrap button"
+      >
         {wrapInputError ?? (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
       </CommitButton>
     )
@@ -342,7 +347,13 @@ export const SwapCommitButton = memo(function SwapCommitButton({
                   {t('Check your settings')}
                 </RoutingSettingsButton>
                 <MessageText>{t('or')}</MessageText>
-                <Button variant="text" scale="xs" p="0" onClick={resetRoutingSetting}>
+                <Button
+                  variant="text"
+                  scale="xs"
+                  p="0"
+                  onClick={resetRoutingSetting}
+                  data-dd-action-name="Swap reset routing settings button"
+                >
                   {t('Reset to default')}
                 </Button>
               </AutoRow>
@@ -365,6 +376,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || statusWallchain === 'pending'
         }
         onClick={onSwapHandler}
+        data-dd-action-name="Swap commit button"
       >
         {swapInputError ||
           (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||

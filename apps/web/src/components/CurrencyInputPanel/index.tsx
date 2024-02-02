@@ -1,6 +1,18 @@
 import { useMemo, memo, useCallback } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, Text, useModal, Flex, Box, CopyButton, Loading, Skeleton, ArrowDropDownIcon } from '@pancakeswap/uikit'
+import { zksyncTokens } from '@pancakeswap/tokens'
+import {
+  Button,
+  Text,
+  useModal,
+  Flex,
+  Box,
+  CopyButton,
+  Loading,
+  Skeleton,
+  ArrowDropDownIcon,
+  LinkExternal,
+} from '@pancakeswap/uikit'
 import { Swap as SwapUI, CurrencyLogo, DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
@@ -164,6 +176,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
             {beforeButton}
             <CurrencySelectButton
               className="open-currency-select-button"
+              data-dd-action-name="Select currency"
               selected={!!currency}
               onClick={onCurrencySelectClick}
             >
@@ -199,12 +212,14 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
             {token && tokenAddress ? (
               <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
                 <CopyButton
+                  data-dd-action-name="Copy token address"
                   width="16px"
                   buttonColor="textSubtle"
                   text={tokenAddress}
                   tooltipMessage={t('Token address copied')}
                 />
                 <AddToWalletButton
+                  data-dd-action-name="Add to wallet"
                   variant="text"
                   p="0"
                   height="auto"
@@ -216,9 +231,21 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 />
               </Flex>
             ) : null}
+            {token && tokenAddress && token.equals(zksyncTokens.meow) ? (
+              <LinkExternal
+                ml="4px"
+                data-dd-action-name="Token campaign"
+                style={{ textDecoration: 'none' }}
+                showExternalIcon={false}
+                href="https://blog.pancakeswap.finance/articles/airdrop-carnival-trade-and-add-lp-to-win-9-billion-zeek-coin-meow-airdrop-on-zk-sync-pancake-swap-1?utm_source=swappage&utm_medium=button&utm_campaign=meow&utm_id=meow"
+              >
+                🎁
+              </LinkExternal>
+            ) : null}
           </Flex>
           {account && !hideBalanceComp && (
             <Text
+              data-dd-action-name="Token balance"
               onClick={!disabled ? onMax : undefined}
               color="textSubtle"
               fontSize="12px"
@@ -266,6 +293,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                     return (
                       <Button
                         key={`btn_quickCurrency${percent}`}
+                        data-dd-action-name={`Balance percent ${percent}`}
                         onClick={() => {
                           onPercentInput(percent)
                         }}
@@ -280,6 +308,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   })}
                 {maxAmount?.greaterThan(0) && showMaxButton && (
                   <Button
+                    data-dd-action-name="Balance percent max"
                     onClick={(e) => {
                       e.stopPropagation()
                       e.preventDefault()
