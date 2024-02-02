@@ -52,6 +52,7 @@ test('exports', () => {
       "DEPLOYER_ADDRESSES",
       "ADDRESS_ZERO",
       "POOL_INIT_CODE_HASHES",
+      "NFT_POSITION_MANAGER_ADDRESSES",
       "FeeAmount",
       "TICK_SPACINGS",
       "MasterChefV3",
