@@ -401,4 +401,12 @@ export const ethereumTokens = {
     'Pirex Ether',
     'https://dineroismoney.com/',
   ),
+  weETH: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee',
+    18,
+    'weETH',
+    'Wrapped eETH',
+    'https://www.ether.fi/',
+  ),
 }
