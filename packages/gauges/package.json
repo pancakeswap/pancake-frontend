@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "test": "vitest --run --globals"
+    "test": "vitest --run"
   },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

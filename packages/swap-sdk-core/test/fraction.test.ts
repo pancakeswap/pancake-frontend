@@ -1,4 +1,4 @@
-import {} from 'vitest/globals'
+import { describe, expect, it } from 'vitest'
 import { Fraction } from '../src'
 
 describe('Fraction', () => {

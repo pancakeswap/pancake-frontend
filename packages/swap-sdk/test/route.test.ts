@@ -1,7 +1,8 @@
-import { Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
-import { Pair, Route, Native } from '../src/entities'
+import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { describe, expect, it } from 'vitest'
 import { WNATIVE } from '../src/constants'
+import { Native, Pair, Route } from '../src/entities'
 
 describe('Route', () => {
   const ETHER = Native.onChain(ChainId.BSC)

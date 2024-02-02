@@ -2,7 +2,7 @@
   "name": "@pancakeswap/utils",
   "version": "6.0.0",
   "scripts": {
-    "test": "vitest --run --globals"
+    "test": "vitest --run"
   },
   "private": true,
   "peerDependencies": {
