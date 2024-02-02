@@ -169,7 +169,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { profile } = useProfile()
-  const { cakeLocked, cakeLockExpired } = useCakeLockStatus()
+  const { cakeLockExpired } = useCakeLockStatus()
   const { userCreditWithTime } = useVeCakeUserCreditWithTime(currentUserCampaignInfo?.campaignClaimTime ?? 0)
   const { thresholdLockAmount } = qualification
 
@@ -179,8 +179,8 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   )
 
   const isQualified = useMemo(
-    () => Boolean(account && profile?.isActive && cakeLocked && isValidLockAmount && !cakeLockExpired),
-    [account, cakeLocked, isValidLockAmount, cakeLockExpired, profile?.isActive],
+    () => Boolean(account && profile?.isActive && isValidLockAmount && !cakeLockExpired),
+    [account, isValidLockAmount, cakeLockExpired, profile?.isActive],
   )
 
   return (
