@@ -21,10 +21,12 @@ import { convertPoolToV3Pool, fixtureAddresses, getStablePool } from './fixtures
 import { getPublicClient, getWalletClient } from './fixtures/clients'
 import { buildMixedRouteTrade, buildStableTrade, buildV2Trade, buildV3Trade } from './utils/buildTrade'
 import { decodeUniversalCalldata } from './utils/calldataDecode'
-import { makePermit, signEIP2098Permit, signPermit } from './utils/permit'
+import { makePermit } from './utils/permit'
 
 const TEST_RECIPIENT_ADDRESS = '0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa' as const
 const TEST_FEE_RECIPIENT_ADDRESS = '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB' as const
+const PERMIT2_SIG =
+  '0x92ff2b035c8005213bd910849532da0f4adde9e35393c8ed4872db90eef2c153492dec30a70476e98f21d28398396669fbef6f9785c903ef83810673ec96fc8d1b'
 
 const swapOptions = (options: Partial<PancakeSwapOptions>): PancakeSwapOptions => {
   let slippageTolerance = new Percent(5, 100)
@@ -669,10 +671,10 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV2Trade(v2Trade, [v2Pool])
 
       const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
-      const signature = await signPermit(permit, wallet, PERMIT2)
+
       const permit2Permit: Permit2Signature = {
         ...permit,
-        signature,
+        signature: PERMIT2_SIG,
       }
 
       const options = swapOptions({
@@ -719,10 +721,11 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV2Trade(v2Trade, [v2Pool])
 
       const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
-      const signature = await signEIP2098Permit(permit, wallet, PERMIT2)
+
       const permit2Permit: Permit2Signature = {
         ...permit,
-        signature,
+        signature:
+          '0x92ff2b035c8005213bd910849532da0f4adde9e35393c8ed4872db90eef2c153492dec30a70476e98f21d28398396669fbef6f9785c903ef83810673ec96fc8d',
       }
 
       const options = swapOptions({
@@ -1187,10 +1190,10 @@ describe('PancakeSwap Universal Router Trade', () => {
       const trade = buildV3Trade(v3Trade, [v3Pool])
 
       const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
-      const signature = await signPermit(permit, wallet, PERMIT2)
+
       const permit2Permit: Permit2Signature = {
         ...permit,
-        signature,
+        signature: PERMIT2_SIG,
       }
       const options = swapOptions({
         inputTokenPermit: permit2Permit,
@@ -2241,10 +2244,10 @@ describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', ()
     const trade = buildStableTrade(USDT, USDC, CurrencyAmount.fromRawAmount(USDT, amountIn), [stablePool])
 
     const permit = makePermit(USDC.address, UNIVERSAL_ROUTER)
-    const signature = await signPermit(permit, wallet, PERMIT2)
     const permit2Permit: Permit2Signature = {
       ...permit,
-      signature,
+      signature:
+        '0x777406b366e3539754d5ea1056d11c8f7482c7f095b48cc3520051169c6e0e1f49116cbe67f45bfe7c1af7599e7c6c5c93565294bcc0fb2f42699d2845b11da41b',
     }
     const options = swapOptions({
       inputTokenPermit: permit2Permit,
