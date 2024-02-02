@@ -1,6 +1,18 @@
 import { useMemo, memo, useCallback } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, Text, useModal, Flex, Box, CopyButton, Loading, Skeleton, ArrowDropDownIcon } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/chains'
+import {
+  Button,
+  Text,
+  useModal,
+  Flex,
+  Box,
+  CopyButton,
+  Loading,
+  Skeleton,
+  ArrowDropDownIcon,
+  LinkExternal,
+} from '@pancakeswap/uikit'
 import { Swap as SwapUI, CurrencyLogo, DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
@@ -215,6 +227,19 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
                 />
               </Flex>
+            ) : null}
+            {token &&
+            tokenAddress &&
+            token.chainId === ChainId.ZKSYNC &&
+            tokenAddress === '0x79db8c67d0c33203da4Efb58F7D325E1e0d4d692' ? (
+              <LinkExternal
+                ml="4px"
+                style={{ textDecoration: 'none' }}
+                showExternalIcon={false}
+                href="https://blog.pancakeswap.finance/articles/airdrop-carnival-trade-and-add-lp-to-win-9-billion-zeek-coin-meow-airdrop-on-zk-sync-pancake-swap-1?utm_source=swappage&utm_medium=button&utm_campaign=meow&utm_id=meow"
+              >
+                🎁
+              </LinkExternal>
             ) : null}
           </Flex>
           {account && !hideBalanceComp && (
