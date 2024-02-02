@@ -1,6 +1,6 @@
 import { useMemo, memo, useCallback } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
+import { zksyncTokens } from '@pancakeswap/tokens'
 import {
   Button,
   Text,
@@ -231,10 +231,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 />
               </Flex>
             ) : null}
-            {token &&
-            tokenAddress &&
-            token.chainId === ChainId.ZKSYNC &&
-            tokenAddress === '0x79db8c67d0c33203da4Efb58F7D325E1e0d4d692' ? (
+            {token && tokenAddress && token.equals(zksyncTokens.meow) ? (
               <LinkExternal
                 ml="4px"
                 data-dd-action-name="Token campaign"
