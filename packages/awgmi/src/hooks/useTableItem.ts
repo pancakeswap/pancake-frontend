@@ -1,22 +1,22 @@
 /* eslint-disable camelcase */
 import { FetchTableItemArgs, fetchTableItem } from '@pancakeswap/awgmi/core'
-import { useQueries } from '@tanstack/react-query'
+import { QueryFunction, useQueries, useQuery } from '@tanstack/react-query'
 import { Types } from 'aptos'
 import { useMemo } from 'react'
-import { queryClientContext } from '../context'
 
-import { QueryConfig, QueryFunctionArgs } from '../types'
+import { QueryConfig } from '../types'
 import { useNetwork } from './useNetwork'
-import { useQuery } from './utils/useQuery'
 
 export type FetchTableItemResult = Types.MoveResource[]
 
-export type UseTableItemConfig<TData = unknown> = QueryConfig<FetchTableItemResult, Error, TData>
+export type UseTableItemConfig<TData = unknown> = QueryConfig<FetchTableItemResult, Error, TData, QueryKey>
+
+type QueryKey = ReturnType<typeof queryKey>
 
 export const queryKey = (params: { networkName?: string } & Partial<FetchTableItemArgs>) =>
   [{ entity: 'tableItem', ...params }] as const
 
-const queryFn = ({ queryKey: [{ networkName, handle, data }] }: QueryFunctionArgs<typeof queryKey>) => {
+const queryFn: QueryFunction<FetchTableItemResult, QueryKey> = ({ queryKey: [{ networkName, handle, data }] }) => {
   if (!handle || !data) throw new Error('Handle and data are required.')
 
   return fetchTableItem({ networkName, handle, data })
@@ -40,7 +40,6 @@ export function useTableItems({
   const { chain } = useNetwork()
 
   return useQueries({
-    context: queryClientContext,
     queries: useMemo(
       () =>
         handles?.length && data_?.length
@@ -58,31 +57,25 @@ export function useTableItems({
 }
 
 export function useTableItem<TData = unknown>({
-  cacheTime,
-  keepPreviousData,
+  gcTime,
   enabled = true,
   networkName: networkName_,
   staleTime,
-  suspense,
-  onError,
-  onSettled,
-  onSuccess,
   select,
   handle,
   data: data_,
+  ...query
 }: Partial<FetchTableItemArgs> & UseTableItemConfig<TData>) {
   const { chain } = useNetwork()
 
-  return useQuery(queryKey({ networkName: networkName_ ?? chain?.network, handle, data: data_ }), queryFn, {
-    cacheTime,
+  return useQuery({
+    ...query,
+    gcTime,
+    queryKey: queryKey({ networkName: networkName_ ?? chain?.network, handle, data: data_ }),
+    queryFn,
     enabled: enabled && !!handle && !!data_,
     staleTime,
-    suspense,
-    onError,
-    onSettled,
-    onSuccess,
     select,
-    keepPreviousData,
     refetchInterval: (data) => {
       if (!data) return 6_000
       return 3_000

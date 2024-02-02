@@ -1,6 +1,7 @@
-import { ModalProvider, light, dark, UIKitProvider } from '@pancakeswap/uikit'
-import { LanguageProvider } from '@pancakeswap/localization'
 import { AwgmiConfig } from '@pancakeswap/awgmi'
+import { LanguageProvider } from '@pancakeswap/localization'
+import { ModalProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import { client } from '../client'
 
@@ -13,16 +14,32 @@ const StyledUIKitProvider: React.FC<React.PropsWithChildren> = ({ children, ...p
   )
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1_000 * 60 * 60 * 24, // 24 hours
+      networkMode: 'offlineFirst',
+      refetchOnWindowFocus: false,
+      retry: 0,
+    },
+    mutations: {
+      networkMode: 'offlineFirst',
+    },
+  },
+})
+
 const Providers: React.FC<React.PropsWithChildren<{ children: React.ReactNode }>> = ({ children }) => {
   return (
     <AwgmiConfig client={client}>
-      <NextThemeProvider>
-        <StyledUIKitProvider>
-          <LanguageProvider>
-            <ModalProvider>{children}</ModalProvider>
-          </LanguageProvider>
-        </StyledUIKitProvider>
-      </NextThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <NextThemeProvider>
+          <StyledUIKitProvider>
+            <LanguageProvider>
+              <ModalProvider>{children}</ModalProvider>
+            </LanguageProvider>
+          </StyledUIKitProvider>
+        </NextThemeProvider>
+      </QueryClientProvider>
     </AwgmiConfig>
   )
 }

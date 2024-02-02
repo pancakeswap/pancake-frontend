@@ -1,32 +1,48 @@
 # @pancakeswap/awgmi
 
+## Install
+
+```bash
+pnpm i @pancakeswap/awgmi @tanstack/react-query
+```
+
 Connect to Aptos with similar [wagmi](https://github.com/wagmi-dev/wagmi) React hooks.
 
 Support Aptos Wallet Connectors:
+
 - Petra
 - Martian
 - Pontem
 - Fewcha
 - SafePal
 - Trust Wallet
-
+- Msafe
 
 ```jsx
-import {
-  createClient,
-  AwgmiConfig,
-  useConnect,
-  getDefaultProviders,
-  defaultChains,
-} from '@pancakeswap/awgmi';
+import { createClient, AwgmiConfig, useConnect, getDefaultProviders, defaultChains } from '@pancakeswap/awgmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PetraConnector } from '@pancakeswap/awgmi/connectors/petra'
 import { MartianConnector } from '@pancakeswap/awgmi/connectors/martain'
 import { SafePalConnector } from '@pancakeswap/awgmi/connectors/safePal'
 import { BloctoConnector } from '@pancakeswap/awgmi/connectors/blocto'
 import { FewchaConnector } from '@pancakeswap/awgmi/connectors/fewcha'
 
- // import { mainnet, testnet } from '@pancakeswap/awgmi/core'
+// import { mainnet, testnet } from '@pancakeswap/awgmi/core'
 const chains = defaultChains // mainnet, testnet, devnet
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1_000 * 60 * 60 * 24, // 24 hours
+      networkMode: 'offlineFirst',
+      refetchOnWindowFocus: false,
+      retry: 0,
+    },
+    mutations: {
+      networkMode: 'offlineFirst',
+    },
+  },
+})
 
 export const client = createClient({
   connectors: [
@@ -39,20 +55,21 @@ export const client = createClient({
   ],
   provider: getDefaultProviders,
   autoConnect: true,
-});
-
+})
 
 function App() {
   return (
     <AwgmiConfig client={client}>
-      <YourApp />
+      <QueryClientProvider client={queryClient}>
+        <YourApp />
+      </QueryClientProvider>
     </AwgmiConfig>
   )
 }
 ```
 
-
 ## Connector
+
 ```jsx
 import { useConnect, useDisconnect } from '@pancakeswap/awgmi'
 
@@ -71,8 +88,8 @@ function ConnectButton() {
 }
 ```
 
-
 ## Hooks
+
 ```jsx
 import {
   useAccountBalance,
@@ -89,15 +106,17 @@ import {
 ```
 
 ### Balance
+
 ```js
 const { data } = useAccountBalance({
   address: Address,
   coin: '0x1::aptos_coin::AptosCoin',
-  watch: true
+  watch: true,
 })
 ```
 
 ### Send Transaction
+
 ```js
 import { UserRejectedRequestError } from '@pancakeswap/awgmi'
 
@@ -110,7 +129,7 @@ sendTransactionAsync({
     arguments: ['are we gonna make it?'],
     type_arguments: [],
   },
-}).catch(err => {
+}).catch((err) => {
   if (err instanceof UserRejectedRequestError) {
     // handle user reject
   }

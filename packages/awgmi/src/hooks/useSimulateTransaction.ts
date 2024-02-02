@@ -1,8 +1,7 @@
-import * as React from 'react'
 import { simulateTransaction, SimulateTransactionArgs, SimulateTransactionResult } from '@pancakeswap/awgmi/core'
-
+import { useMutation } from '@tanstack/react-query'
+import * as React from 'react'
 import { MutationConfig } from '../types'
-import { useMutation } from './utils/useMutation'
 import { useNetwork } from './useNetwork'
 
 export type UseSimulateTransactionArgs = Partial<SimulateTransactionArgs>
@@ -40,23 +39,15 @@ export function useSimulateTransaction({
   const { chain } = useNetwork()
   const networkName = networkName_ ?? chain?.network
 
-  const { data, error, isError, isIdle, isLoading, isSuccess, mutate, mutateAsync, reset, status, variables } =
-    useMutation(
-      mutationKey({
-        networkName,
-        payload,
-        options,
-        query,
-        throwOnError,
-      } as SimulateTransactionArgs),
+  const { data, error, isError, isIdle, isPending, isSuccess, mutate, mutateAsync, reset, status, variables } =
+    useMutation({
+      mutationKey: mutationKey({ networkName, payload, options, query, throwOnError }),
       mutationFn,
-      {
-        onError,
-        onMutate,
-        onSettled,
-        onSuccess,
-      },
-    )
+      onError,
+      onMutate,
+      onSettled,
+      onSuccess,
+    })
 
   const _simulateTransaction = React.useCallback(
     (args: UseSimulateTransactionMutationArgs) =>
@@ -89,7 +80,7 @@ export function useSimulateTransaction({
     error,
     isError,
     isIdle,
-    isLoading,
+    isPending,
     isSuccess,
     reset,
     simulateTransaction: _simulateTransaction,

@@ -1,36 +1,36 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  AutoColumn,
   Button,
   CheckmarkIcon,
   CogIcon,
+  Column,
   Input,
   LinkExternal,
-  Text,
-  Toggle,
-  useTooltip,
-  Column,
-  AutoColumn,
   Row,
   RowBetween,
   RowFixed,
+  Text,
+  Toggle,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { ListLogo } from '@pancakeswap/widgets-internal'
 
 import { TokenList, Version } from '@pancakeswap/token-lists'
+import {
+  acceptListUpdate,
+  disableList,
+  enableList,
+  removeList,
+  useFetchListCallback,
+} from '@pancakeswap/token-lists/react'
+import uriToHttp from '@pancakeswap/utils/uriToHttp'
 import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists'
 import { styled } from 'styled-components'
-import {
-  useFetchListCallback,
-  acceptListUpdate,
-  disableList,
-  enableList,
-  removeList,
-} from '@pancakeswap/token-lists/react'
-import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from 'state/lists/hooks'
 

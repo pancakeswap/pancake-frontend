@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountResource, useCoins, useQueries, useQuery } from '@pancakeswap/awgmi'
+import { useAccount, useAccountResource, useCoins } from '@pancakeswap/awgmi'
 import {
   FetchAccountResourceResult,
   fetchAptosView,
@@ -12,6 +12,7 @@ import { DeserializedFarmsState, deserializeFarm, SerializedFarmConfig } from '@
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { APT, L0_USDC } from 'config/coins'
@@ -274,12 +275,10 @@ const nativeStableLpMap = {
 export function useFarmUserInfoCache(pid: string) {
   const { account } = useAccount()
   const { networkName } = useActiveNetwork()
-  return useQuery<{ amount: string; reward_debt: string }>(
-    [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
-    {
-      enabled: Boolean(account?.address),
-    },
-  )
+  return useQuery<{ amount: string; reward_debt: string }>({
+    queryKey: [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
+    enabled: Boolean(account?.address),
+  })
 }
 
 export function useFarmsPendingAptosReward(farmConfig: SerializedFarmConfig[]) {
@@ -319,9 +318,9 @@ export function useFarmsPendingAptosReward(farmConfig: SerializedFarmConfig[]) {
 export function useGetAptIncentiveInfo() {
   const { networkName } = useActiveNetwork()
 
-  const { data: aptIncentiveInfo } = useQuery(
-    ['apt-incentive-info', networkName],
-    async () => {
+  const { data: aptIncentiveInfo } = useQuery({
+    queryKey: ['apt-incentive-info', networkName],
+    queryFn: async () => {
       const params = await masterchefGetAptIncentiveInfo()
       const response = await fetchAptosView({ networkName, params })
       // if(rate == 0 ) it means not start ,
@@ -331,13 +330,11 @@ export function useGetAptIncentiveInfo() {
       const rate = response?.[0] ?? 0
       return rate === 0 || (rate > 0 && response?.[1] === true) ? 0 : rate
     },
-    {
-      enabled: Boolean(networkName),
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  )
+    enabled: Boolean(networkName),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
   return aptIncentiveInfo ?? 0
 }

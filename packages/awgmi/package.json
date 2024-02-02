@@ -8,9 +8,6 @@
   "sideEffects": false,
   "dependencies": {
     "@ethersproject/units": "^5.7.0",
-    "@tanstack/query-sync-storage-persister": "^4.27.1",
-    "@tanstack/react-query": "^4.28.0",
-    "@tanstack/react-query-persist-client": "^4.28.0",
     "eventemitter3": "^4.0.7",
     "use-sync-external-store": "^1.2.0",
     "zustand": "^4.1.1"
@@ -22,18 +19,20 @@
   ],
   "peerDependencies": {
     "@blocto/sdk": "^0.5.4",
-    "aptos": "1.3.16",
+    "@tanstack/react-query": "5.x",
     "@msafe/aptos-wallet": "^3.0.6",
-    "react": "^18.0.0"
+    "aptos": "1.x",
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@blocto/sdk": "^0.5.4",
     "@msafe/aptos-wallet": "^3.0.6",
+    "@tanstack/react-query": "^5.18.0",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "@types/react": "^18.2.21",
     "@types/use-sync-external-store": "^0.0.3",
-    "aptos": "1.3.16",
+    "aptos": "1.21.0",
     "tsup": "^6.7.0"
   },
   "files": [

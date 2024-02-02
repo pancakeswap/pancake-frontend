@@ -1,7 +1,7 @@
-import { useQueries } from '@pancakeswap/awgmi'
 import { isUserTransaction } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
+import { useQueries } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
@@ -31,9 +31,8 @@ export default function Updater(): null {
           .map((hash) => {
             return {
               enabled: Boolean(chainId && provider),
-              queryFn: () => provider.waitForTransactionWithResult(hash),
-              queryKey: [{ entity: 'transaction', hash, networkName }],
-              onSuccess: (receipt) => {
+              queryFn: async () => {
+                const receipt = await provider.waitForTransactionWithResult(hash)
                 if (receipt && isUserTransaction(receipt)) {
                   dispatch(
                     finalizeTransaction({
@@ -54,10 +53,9 @@ export default function Updater(): null {
                   const toast = receipt.success ? toastSuccess : toastError
                   toast(t('Transaction receipt'), <ToastDescriptionWithTx txHash={receipt.hash} />)
                 }
+                return receipt
               },
-              onError: (err) => {
-                console.error(`failed to check transaction hash: ${hash}`, err)
-              },
+              queryKey: [{ entity: 'transaction', hash, networkName }],
             }
           }),
       [chainId, dispatch, networkName, provider, t, toastError, toastSuccess, transactions],
