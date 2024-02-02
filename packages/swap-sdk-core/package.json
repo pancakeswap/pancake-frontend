@@ -29,7 +29,7 @@
     "lint": "eslint src test",
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest --globals --run",
+    "test": "vitest --run",
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
@@ -42,10 +42,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@swc/core": "^1.2.215",
-    "@swc/jest": "^0.2.21",
     "@types/big.js": "^4.0.5",
-    "@types/jest": "^24.0.25",
     "tsup": "^6.7.0"
   },
   "engines": {

@@ -1,6 +1,6 @@
-import { vi } from "vitest";
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it, vi } from "vitest";
 import BalanceInput from "../../components/BalanceInput/BalanceInput";
+import { renderWithProvider } from "../../testHelpers";
 
 const handleChange = vi.fn();
 
@@ -10,15 +10,7 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c7 {
-      color: var(--colors-textSubtle);
-      font-weight: 400;
-      line-height: 1.5;
-      font-size: 12px;
-      text-align: right;
-    }
-
-    .c2 {
+      .c2 {
       width: 100%;
     }
 
@@ -34,6 +26,14 @@ it("renders correctly", () => {
     .c4 {
       display: flex;
       align-items: center;
+    }
+
+    .c7 {
+      color: var(--colors-textSubtle);
+      font-weight: 400;
+      line-height: 1.5;
+      font-size: 12px;
+      text-align: right;
     }
 
     .c5 {
@@ -134,22 +134,7 @@ it("renders correctly with unit prop", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c7 {
-      color: var(--colors-text);
-      font-weight: 400;
-      line-height: 1.5;
-      font-size: 16px;
-    }
-
-    .c9 {
-      color: var(--colors-textSubtle);
-      font-weight: 400;
-      line-height: 1.5;
-      font-size: 12px;
-      text-align: right;
-    }
-
-    .c2 {
+      .c2 {
       width: 100%;
     }
 
@@ -165,6 +150,21 @@ it("renders correctly with unit prop", () => {
     .c4 {
       display: flex;
       align-items: center;
+    }
+
+    .c7 {
+      color: var(--colors-text);
+      font-weight: 400;
+      line-height: 1.5;
+      font-size: 16px;
+    }
+
+    .c9 {
+      color: var(--colors-textSubtle);
+      font-weight: 400;
+      line-height: 1.5;
+      font-size: 12px;
+      text-align: right;
     }
 
     .c5 {
@@ -283,7 +283,29 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c14 {
+      .c2 {
+      width: 100%;
+    }
+
+    .c10 {
+      padding-left: 12px;
+    }
+
+    .c1 {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .c3 {
+      display: flex;
+    }
+
+    .c4 {
+      display: flex;
+      align-items: center;
+    }
+
+    .c14 {
       align-self: center;
       fill: var(--colors-textSubtle);
       color: var(--colors-textSubtle);
@@ -303,6 +325,35 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       line-height: 1.5;
       font-size: 12px;
       text-align: right;
+    }
+
+    .c5 {
+      background-color: var(--colors-input);
+      border-radius: 16px;
+      box-shadow: var(--shadows-inset);
+      color: var(--colors-text);
+      display: block;
+      font-size: 16px;
+      height: 40px;
+      outline: 0;
+      padding: 0 16px;
+      width: 100%;
+      border: 1px solid var(--colors-inputSecondary);
+    }
+
+    .c5::placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5:disabled {
+      background-color: var(--colors-backgroundDisabled);
+      box-shadow: none;
+      color: var(--colors-textDisabled);
+      cursor: not-allowed;
+    }
+
+    .c5:focus:not(:disabled) {
+      box-shadow: var(--shadows-focus);
     }
 
     .c11 {
@@ -352,57 +403,6 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
     .c12 {
       padding: 2px;
       width: 32px;
-    }
-
-    .c2 {
-      width: 100%;
-    }
-
-    .c10 {
-      padding-left: 12px;
-    }
-
-    .c1 {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .c3 {
-      display: flex;
-    }
-
-    .c4 {
-      display: flex;
-      align-items: center;
-    }
-
-    .c5 {
-      background-color: var(--colors-input);
-      border-radius: 16px;
-      box-shadow: var(--shadows-inset);
-      color: var(--colors-text);
-      display: block;
-      font-size: 16px;
-      height: 40px;
-      outline: 0;
-      padding: 0 16px;
-      width: 100%;
-      border: 1px solid var(--colors-inputSecondary);
-    }
-
-    .c5::placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c5:disabled {
-      background-color: var(--colors-backgroundDisabled);
-      box-shadow: none;
-      color: var(--colors-textDisabled);
-      cursor: not-allowed;
-    }
-
-    .c5:focus:not(:disabled) {
-      box-shadow: var(--shadows-focus);
     }
 
     .c13 {

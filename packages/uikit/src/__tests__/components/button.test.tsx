@@ -1,5 +1,6 @@
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it } from "vitest";
 import Button from "../../components/Button/Button";
+import { renderWithProvider } from "../../testHelpers";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(<Button>Submit</Button>);

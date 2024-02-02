@@ -1,6 +1,6 @@
-import React from "react";
-import { renderWithProvider, setupMockIntersectionObserver } from "../../testHelpers";
+import { expect, it } from "vitest";
 import TokenImage from "../../components/Image/TokenImage";
+import { renderWithProvider, setupMockIntersectionObserver } from "../../testHelpers";
 
 it("renders correctly", () => {
   setupMockIntersectionObserver();

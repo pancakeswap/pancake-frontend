@@ -55,7 +55,9 @@ describe('connect', () => {
 
     it('is already connected', async () => {
       await connect({ connector })
-      await expect(connect({ connector })).rejects.toThrowErrorMatchingInlineSnapshot(`"Connector already connected"`)
+      await expect(connect({ connector })).rejects.toThrowErrorMatchingInlineSnapshot(
+        `[ConnectorAlreadyConnectedError: Connector already connected]`,
+      )
     })
 
     it('throws when user rejects request', async () => {
@@ -68,7 +70,7 @@ describe('connect', () => {
             },
           }),
         }),
-      ).rejects.toThrowErrorMatchingInlineSnapshot(`"User rejected request"`)
+      ).rejects.toThrowErrorMatchingInlineSnapshot(`[UserRejectedRequestError: User rejected request]`)
       expect(getClient().status).toEqual('disconnected')
     })
 

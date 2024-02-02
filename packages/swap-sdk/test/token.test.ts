@@ -1,5 +1,6 @@
-import { Token } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
+import { Token } from '@pancakeswap/swap-sdk-core'
+import { describe, expect, it } from 'vitest'
 
 describe('Token', () => {
   const ADDRESS_ONE = '0x0000000000000000000000000000000000000001'

@@ -1,6 +1,6 @@
-import { vi } from "vitest";
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it, vi } from "vitest";
 import Input from "../../components/Input/Input";
+import { renderWithProvider } from "../../testHelpers";
 
 const handleChange = vi.fn();
 

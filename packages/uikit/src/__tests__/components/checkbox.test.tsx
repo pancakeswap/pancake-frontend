@@ -1,6 +1,6 @@
-import { vi } from "vitest";
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it, vi } from "vitest";
 import Checkbox from "../../components/Checkbox/Checkbox";
+import { renderWithProvider } from "../../testHelpers";
 
 const handleChange = vi.fn();
 
@@ -65,7 +65,6 @@ it("renders correctly", () => {
     }
 
     <input
-        checked=""
         class="c0"
         scale="md"
         type="checkbox"

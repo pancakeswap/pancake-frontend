@@ -1,6 +1,6 @@
-import React from "react";
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it } from "vitest";
 import Skeleton from "../../components/Skeleton/Skeleton";
+import { renderWithProvider } from "../../testHelpers";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(<Skeleton />);

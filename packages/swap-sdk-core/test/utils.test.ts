@@ -1,4 +1,5 @@
-import { Token, CurrencyAmount, getTokenComparator } from '../src'
+import { describe, expect, it } from 'vitest'
+import { CurrencyAmount, Token, getTokenComparator } from '../src'
 
 describe('Utils', () => {
   const ADDRESS_ONE = '0x0000000000000000000000000000000000000001'
