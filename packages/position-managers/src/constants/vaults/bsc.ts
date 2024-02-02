@@ -14,7 +14,7 @@ export const vaults: VaultConfig[] = [
     currencyA: bscTokens.usdt,
     currencyB: bscTokens.wbnb,
     earningToken: bscTokens.cake,
-    feeTier: FeeAmount.MEDIUM,
+    feeTier: FeeAmount.LOW,
     strategy: Strategy.SAVINGS,
     manager: MANAGER.ALPACA,
     isSingleDepositToken: true,
