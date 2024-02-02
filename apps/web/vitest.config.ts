@@ -23,7 +23,6 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.js'],
     environment: 'happy-dom',
     globals: true,
-    dangerouslyIgnoreUnhandledErrors: true, // wallet connect v2
     exclude: ['src/config/__tests__', 'node_modules'],
   },
 })
