@@ -89,6 +89,8 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
     return new BigNumber(totalMapCap).minus(currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0).toNumber() ?? 0
   }, [currentUserCampaignInfo, totalMapCap])
 
+  const isAdditionalAmountHit = useMemo(() => new BigNumber(additionalAmount).gte(0.01), [additionalAmount])
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
       <Box mb="12px">
@@ -117,7 +119,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
         </Text>
         <Flex>
           <Text bold fontSize="40px">{`$${formatNumber(rewardInUSD)}`}</Text>
-          {additionalAmount >= 0.01 && <WarningIcon ml="10px" width={24} color="warning" />}
+          {isAdditionalAmountHit && <WarningIcon ml="10px" width={24} color="warning" />}
         </Flex>
         <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} CAKE`}</Text>
 
@@ -155,7 +157,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
           </Text>
         </Box>
 
-        {additionalAmount >= 0.01 && (
+        {isAdditionalAmountHit && (
           <Message variant="warning" mt="10px">
             <MessageText>
               <TooltipText ref={targetRef} bold as="span" mr="4px" fontSize={14}>
@@ -182,13 +184,15 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
         )}
       </GreyCard>
 
-      <VeCakePreviewTextInfo
-        mt="24px"
-        showIncreaseButton
-        endTime={campaignClaimTime}
-        isValidLockAmount={isValidLockAmount}
-        thresholdLockAmount={thresholdLockAmount}
-      />
+      {isAdditionalAmountHit && (
+        <VeCakePreviewTextInfo
+          mt="24px"
+          showIncreaseButton
+          endTime={campaignClaimTime}
+          isValidLockAmount={isValidLockAmount}
+          thresholdLockAmount={thresholdLockAmount}
+        />
+      )}
 
       <GreyCard mt="24px">
         <Flex>
