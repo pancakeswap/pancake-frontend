@@ -10,16 +10,14 @@ import { useQuery } from '@tanstack/react-query'
 import { pancakeBunniesAddress } from '../constants'
 
 const useGetCollectionDistribution = (collectionAddress: string | undefined) => {
-  const { data, status } = useQuery(
-    ['distribution', collectionAddress],
-    async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress!))?.data,
-    {
-      enabled: Boolean(collectionAddress),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+  const { data, status } = useQuery({
+    queryKey: ['distribution', collectionAddress],
+    queryFn: async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress!))?.data,
+    enabled: Boolean(collectionAddress),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   return {
     data,

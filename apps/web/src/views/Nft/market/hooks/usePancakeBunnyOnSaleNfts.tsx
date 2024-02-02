@@ -59,9 +59,10 @@ export const usePancakeBunnyOnSaleNfts = (
     fetchNextPage,
     refetch,
     isRefetching,
-  } = useInfiniteQuery(
-    [bunnyId, direction, 'pancakeBunnyOnSaleNfts'],
-    async ({ pageParam = 0 }) => {
+  } = useInfiniteQuery({
+    initialPageParam: 0,
+    queryKey: [bunnyId, direction, 'pancakeBunnyOnSaleNfts'],
+    queryFn: async ({ pageParam }) => {
       const { newNfts, isPageLast } = await fetchMarketDataNfts(
         bunnyId,
         nftMetadata,
@@ -98,22 +99,20 @@ export const usePancakeBunnyOnSaleNfts = (
 
       return { data: nftsWithMarketData, pageParam }
     },
-    {
-      getNextPageParam: (lastPage) => {
-        if (isLastPage.current) {
-          return undefined
-        }
-        return lastPage.pageParam + 1
-      },
-      getPreviousPageParam: (firstPage) => {
-        if (firstPage.pageParam === 1) {
-          return undefined
-        }
-        return firstPage.pageParam - 1
-      },
-      refetchInterval: 10000,
+    getNextPageParam: (lastPage) => {
+      if (isLastPage.current) {
+        return undefined
+      }
+      return lastPage.pageParam + 1
     },
-  )
+    getPreviousPageParam: (firstPage) => {
+      if (firstPage.pageParam === 1) {
+        return undefined
+      }
+      return firstPage.pageParam - 1
+    },
+    refetchInterval: 10000,
+  })
 
   return {
     nfts: nfts?.pages?.map((page) => page.data) || [],

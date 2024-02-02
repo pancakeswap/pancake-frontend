@@ -32,7 +32,7 @@ import Page from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import CollectionCardWithVolume from '../components/CollectibleCard/CollectionCardWithVolume'
 
 export const ITEMS_PER_PAGE = 9
@@ -119,9 +119,9 @@ const Collectible = () => {
 
   const { data: collections = [], status } = useQuery<
     (Collection & Partial<{ lowestPrice: number; highestPrice: number }>)[]
-  >(
-    ['collectionsWithPrice', viewMode, sortField],
-    async () => {
+  >({
+    queryKey: ['collectionsWithPrice', viewMode, sortField],
+    queryFn: async () => {
       if (viewMode === ViewMode.CARD && sortField !== SORT_FIELD.lowestPrice && sortField !== SORT_FIELD.highestPrice)
         return shuffledCollections
       return Promise.all(
@@ -138,11 +138,9 @@ const Collectible = () => {
         }),
       )
     },
-    {
-      enabled: Boolean(shuffledCollections && shuffledCollections.length),
-      keepPreviousData: true,
-    },
-  )
+    enabled: Boolean(shuffledCollections && shuffledCollections.length),
+    placeholderData: keepPreviousData,
+  })
 
   const arrow = useCallback(
     (field: string) => {

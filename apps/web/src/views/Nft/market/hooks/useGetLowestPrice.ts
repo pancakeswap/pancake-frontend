@@ -35,9 +35,9 @@ export const getLowestUpdatedToken = async (collectionAddress: Address, nftsMark
 }
 
 export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice => {
-  const { data, status } = useQuery(
-    ['bunnyLowestPrice', bunnyId],
-    async () => {
+  const { data, status } = useQuery({
+    queryKey: ['bunnyLowestPrice', bunnyId],
+    queryFn: async () => {
       const response = await getNftsMarketData({ otherId: bunnyId, isTradable: true }, 100, 'currentAskPrice', 'asc')
 
       if (!response.length) return undefined
@@ -50,10 +50,8 @@ export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice =
       }
       return undefined
     },
-    {
-      enabled: Boolean(bunnyId),
-    },
-  )
+    enabled: Boolean(bunnyId),
+  })
 
   return { isFetching: status !== 'success', lowestPrice: data }
 }

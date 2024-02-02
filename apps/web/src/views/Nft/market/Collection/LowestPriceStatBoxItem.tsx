@@ -12,13 +12,11 @@ const LowestPriceStatBoxItem: React.FC<React.PropsWithChildren<LowestPriceStatBo
   ...props
 }) => {
   const { t } = useTranslation()
-  const { data: lowestCollectionPrice = null } = useQuery(
-    [collectionAddress, 'lowestPrice'],
-    () => getLeastMostPriceInCollection(collectionAddress),
-    {
-      enabled: Boolean(collectionAddress),
-    },
-  )
+  const { data: lowestCollectionPrice = null } = useQuery({
+    queryKey: [collectionAddress, 'lowestPrice'],
+    queryFn: () => getLeastMostPriceInCollection(collectionAddress),
+    enabled: Boolean(collectionAddress),
+  })
 
   const formattedLowestPrice =
     lowestCollectionPrice !== null

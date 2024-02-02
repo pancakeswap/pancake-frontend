@@ -6,7 +6,7 @@ import { Profile } from 'state/types'
 import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
 import { safeGetAddress } from 'utils'
 import { isAddress } from 'viem'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 export const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
   const { data: collections } = useGetCollections()
@@ -37,14 +37,13 @@ export const useCollectionsNftsForAddress = (
   }, [profileNftTokenId, profileNftCollectionAddress, hasProfileNft])
 
   // @ts-ignore
-  const { status, data, refetch } = useQuery(
-    [account, 'userNfts'],
-    async () => getCompleteAccountNftData(safeGetAddress(account)!, collections, profileNftWithCollectionAddress),
-    {
-      enabled: Boolean(!isProfileFetching && !isEmpty(collections) && isAddress(account)),
-      keepPreviousData: true,
-    },
-  )
+  const { status, data, refetch } = useQuery({
+    queryKey: [account, 'userNfts'],
+    queryFn: async () =>
+      getCompleteAccountNftData(safeGetAddress(account)!, collections, profileNftWithCollectionAddress),
+    enabled: Boolean(!isProfileFetching && !isEmpty(collections) && isAddress(account)),
+    placeholderData: keepPreviousData,
+  })
 
   return { nfts: data ?? [], isLoading: status !== 'success', refresh: refetch }
 }

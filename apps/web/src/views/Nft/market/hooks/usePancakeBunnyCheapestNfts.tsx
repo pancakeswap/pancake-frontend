@@ -42,9 +42,9 @@ const fetchCheapestBunny = async (
 
 export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResponseCollectionTokens) => {
   const { address: account } = useAccount()
-  const { data, status, refetch } = useQuery(
-    ['cheapestBunny', bunnyId, account],
-    async () => {
+  const { data, status, refetch } = useQuery({
+    queryKey: ['cheapestBunny', bunnyId, account],
+    queryFn: async () => {
       const allCheapestBunnyClause = {
         collection: pancakeBunniesAddress.toLowerCase(),
         otherId: bunnyId,
@@ -63,11 +63,9 @@ export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResp
       const cheapestBunnyOtherSellers = await fetchCheapestBunny(cheapestBunnyOtherSellersClause, nftMetadata)
       return cheapestBunnyOtherSellers ?? fetchCheapestBunny(allCheapestBunnyClause, nftMetadata)
     },
-    {
-      enabled: Boolean(nftMetadata && bunnyId),
-      refetchInterval: FAST_INTERVAL,
-    },
-  )
+    enabled: Boolean(nftMetadata && bunnyId),
+    refetchInterval: FAST_INTERVAL,
+  })
 
   return {
     data,

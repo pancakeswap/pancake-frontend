@@ -15,16 +15,14 @@ const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const currentSeller = nft.marketData?.currentSeller
   const pancakeProfileAddress = getPancakeProfileAddress()
   const { collectionAddress, tokenId } = nft
-  const { data: tokenOwner } = useQuery(
-    ['nft', 'ownerOf', collectionAddress, tokenId],
-    async () => {
+  const { data: tokenOwner } = useQuery({
+    queryKey: ['nft', 'ownerOf', collectionAddress, tokenId],
+    queryFn: async () => {
       if (!collectionContract) return undefined
       return collectionContract.read.ownerOf([BigInt(tokenId)])
     },
-    {
-      enabled: Boolean(collectionAddress && tokenId),
-    },
-  )
+    enabled: Boolean(collectionAddress && tokenId),
+  })
 
   useEffect(() => {
     const getOwner = async () => {

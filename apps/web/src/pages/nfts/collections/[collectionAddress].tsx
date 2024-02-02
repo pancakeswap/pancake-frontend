@@ -25,10 +25,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   try {
-    const collectionData = await queryClient.fetchQuery(
-      ['nftMarket', 'collections', collectionAddress.toLowerCase()],
-      () => getCollection(collectionAddress),
-    )
+    const collectionData = await queryClient.fetchQuery({
+      queryKey: ['nftMarket', 'collections', collectionAddress.toLowerCase()],
+      queryFn: () => getCollection(collectionAddress),
+    })
 
     if (collectionData) {
       return {

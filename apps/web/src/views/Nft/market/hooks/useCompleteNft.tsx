@@ -14,17 +14,15 @@ const useNftOwn = (collectionAddress: Address | undefined, tokenId: string, mark
   const collectionContract = useErc721CollectionContract(collectionAddress)
   const { isInitialized: isProfileInitialized, profile } = useProfile()
 
-  const { data: tokenOwner } = useQuery(
-    ['nft', 'ownerOf', collectionAddress, tokenId],
-    async () => collectionContract?.read.ownerOf([BigInt(tokenId)]),
-    {
-      enabled: Boolean(collectionAddress && tokenId),
-    },
-  )
+  const { data: tokenOwner } = useQuery({
+    queryKey: ['nft', 'ownerOf', collectionAddress, tokenId],
+    queryFn: async () => collectionContract?.read.ownerOf([BigInt(tokenId)]),
+    enabled: Boolean(collectionAddress && tokenId),
+  })
 
-  return useQuery(
-    ['nft', 'own', collectionAddress, tokenId, marketData?.currentSeller],
-    async () => {
+  return useQuery({
+    queryKey: ['nft', 'own', collectionAddress, tokenId, marketData?.currentSeller],
+    queryFn: async () => {
       const nftIsProfilePic =
         tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
       const nftIsOnSale = marketData ? marketData?.currentSeller !== NOT_ON_SALE_SELLER : false
@@ -48,16 +46,14 @@ const useNftOwn = (collectionAddress: Address | undefined, tokenId: string, mark
         location: NftLocation.WALLET,
       }
     },
-    {
-      enabled: Boolean(account && isProfileInitialized && tokenOwner && collectionAddress && tokenId),
-    },
-  )
+    enabled: Boolean(account && isProfileInitialized && tokenOwner && collectionAddress && tokenId),
+  })
 }
 
 export const useCompleteNft = (collectionAddress: Address | undefined, tokenId: string) => {
-  const { data: nft, refetch: refetchNftMetadata } = useQuery(
-    ['nft', collectionAddress, tokenId],
-    async () => {
+  const { data: nft, refetch: refetchNftMetadata } = useQuery({
+    queryKey: ['nft', collectionAddress, tokenId],
+    queryFn: async () => {
       const metadata = await getNftApi(collectionAddress!, tokenId)
       if (metadata) {
         const basicNft: NftToken = {
@@ -73,14 +69,12 @@ export const useCompleteNft = (collectionAddress: Address | undefined, tokenId: 
       }
       return null
     },
-    {
-      enabled: Boolean(collectionAddress && tokenId),
-    },
-  )
+    enabled: Boolean(collectionAddress && tokenId),
+  })
 
-  const { data: marketData, refetch: refetchNftMarketData } = useQuery(
-    ['nft', 'marketData', collectionAddress, tokenId],
-    async () => {
+  const { data: marketData, refetch: refetchNftMarketData } = useQuery({
+    queryKey: ['nft', 'marketData', collectionAddress, tokenId],
+    queryFn: async () => {
       const [onChainMarketDatas, marketDatas] = await Promise.all([
         getNftsOnChainMarketData(collectionAddress!, [tokenId]),
         getNftsMarketData({ collection: collectionAddress?.toLowerCase(), tokenId }, 1),
@@ -93,10 +87,8 @@ export const useCompleteNft = (collectionAddress: Address | undefined, tokenId: 
 
       return { ...marketDatas[0], ...onChainMarketData }
     },
-    {
-      enabled: Boolean(collectionAddress && tokenId),
-    },
-  )
+    enabled: Boolean(collectionAddress && tokenId),
+  })
 
   const { data: nftOwn, refetch: refetchNftOwn, status } = useNftOwn(collectionAddress, tokenId, marketData)
 

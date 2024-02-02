@@ -53,9 +53,9 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
   const isPBCollection = safeGetAddress(collectionAddress) === safeGetAddress(pancakeBunniesAddress)
   const checkSummedCollectionAddress = safeGetAddress(collectionAddress) || collectionAddress
 
-  const { data: collectionNfts } = useQuery(
-    ['nft', 'moreFromCollection', checkSummedCollectionAddress],
-    async () => {
+  const { data: collectionNfts } = useQuery({
+    queryKey: ['nft', 'moreFromCollection', checkSummedCollectionAddress],
+    queryFn: async () => {
       try {
         const nfts = await getNftsFromCollectionApi(collectionAddress, 100, 1)
 
@@ -88,13 +88,11 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
         return []
       }
     },
-    {
-      enabled: Boolean(!isPBCollection && checkSummedCollectionAddress),
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+    enabled: Boolean(!isPBCollection && checkSummedCollectionAddress),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   const nftsToShow = useMemo(() => {
     let shuffled = shuffle(

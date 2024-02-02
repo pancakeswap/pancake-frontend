@@ -224,9 +224,10 @@ export const useCollectionNfts = (collectionAddress: string) => {
     data: nfts,
     status,
     fetchNextPage,
-  } = useInfiniteQuery(
-    [collectionAddress, itemListingSettingsJson, 'collectionNfts'],
-    async ({ pageParam = 0 }) => {
+  } = useInfiniteQuery({
+    queryKey: [collectionAddress, itemListingSettingsJson, 'collectionNfts'],
+    initialPageParam: 0,
+    queryFn: async ({ pageParam }) => {
       const settings: ItemListingSettings = JSON.parse(itemListingSettingsJson)
       const tokenIdsFromFilter = collection?.address ? await fetchTokenIdsFromFilter(collection?.address, settings) : []
       let newNfts: NftToken[] = []
@@ -257,21 +258,19 @@ export const useCollectionNfts = (collectionAddress: string) => {
       }
       return { data: newNfts, pageParam }
     },
-    {
-      getNextPageParam: (lastPage) => {
-        if (isLastPage.current) {
-          return undefined
-        }
-        return lastPage.pageParam + 1
-      },
-      getPreviousPageParam: (firstPage) => {
-        if (firstPage.pageParam === 1) {
-          return undefined
-        }
-        return firstPage.pageParam - 1
-      },
+    getNextPageParam: (lastPage) => {
+      if (isLastPage.current) {
+        return undefined
+      }
+      return lastPage.pageParam + 1
     },
-  )
+    getPreviousPageParam: (firstPage) => {
+      if (firstPage.pageParam === 1) {
+        return undefined
+      }
+      return firstPage.pageParam - 1
+    },
+  })
 
   const uniqueNftList: NftToken[] = useMemo(() => {
     return uniqBy(nfts?.pages?.map((page) => page.data).flat() || [], 'tokenId')

@@ -38,19 +38,25 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const collection = await getCollection(collectionAddress)
 
   if (collection) {
-    await queryClient.prefetchQuery(['nftMarket', 'collections', collectionAddress.toLowerCase()], () => collection)
+    await queryClient.prefetchQuery({
+      queryKey: ['nftMarket', 'collections', collectionAddress.toLowerCase()],
+      queryFn: () => collection,
+    })
   }
 
-  await queryClient.prefetchQuery(['nft', collectionAddress, tokenId], async () => {
-    return {
-      tokenId,
-      collectionAddress: collectionAddress as Address,
-      collectionName: metadata.collection.name,
-      name: metadata.name,
-      description: metadata.description,
-      image: metadata.image,
-      attributes: metadata.attributes,
-    }
+  await queryClient.prefetchQuery({
+    queryKey: ['nft', collectionAddress, tokenId],
+    queryFn: async () => {
+      return {
+        tokenId,
+        collectionAddress: collectionAddress as Address,
+        collectionName: metadata.collection.name,
+        name: metadata.name,
+        description: metadata.description,
+        image: metadata.image,
+        attributes: metadata.attributes,
+      }
+    },
   })
 
   return {
