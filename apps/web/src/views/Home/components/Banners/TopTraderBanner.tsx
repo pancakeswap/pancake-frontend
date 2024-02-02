@@ -7,17 +7,27 @@ import {
   FloatingGraphic,
   LinkExternalAction,
   PancakeSwapBadge,
-  PrimaryGraphic,
-  SecondaryGraphic,
-  TertiaryGraphic,
+  BackgroundGraphic,
+  GraphicDetail,
 } from '@pancakeswap/widgets-internal'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 
-const primaryAsset = `${ASSET_CDN}/web/banners/top-traders/primary-item.png`
-const secondaryAsset = `${ASSET_CDN}/web/banners/top-traders/secondary-item.png`
-const tertiaryAsset = `${ASSET_CDN}/web/banners/top-traders/tertiary-item.png`
 const floatingAsset = `${ASSET_CDN}/web/banners/top-traders/floating-item.png`
+const bgDesktop = `${ASSET_CDN}/web/banners/top-traders/bg-desktop.png`
+const bgMobile = `${ASSET_CDN}/web/banners/top-traders/bg-mobile.png`
+
+const bgSmVariant: GraphicDetail = {
+  src: bgMobile,
+  width: 272,
+  height: 224,
+}
+
+const bgXsVariant: GraphicDetail = {
+  src: bgMobile,
+  width: 221,
+  height: 182,
+}
 
 export function TopTraderBanner() {
   const { t } = useTranslation()
@@ -38,9 +48,7 @@ export function TopTraderBanner() {
         }
       />
       <BannerGraphics>
-        <SecondaryGraphic src={secondaryAsset} width={78} height={129} />
-        <PrimaryGraphic src={primaryAsset} width={257} height={246} />
-        <TertiaryGraphic src={tertiaryAsset} width={161} height={157} />
+        <BackgroundGraphic src={bgDesktop} width={468} height={224} sm={bgSmVariant} xs={bgXsVariant} />
         <FloatingGraphic src={floatingAsset} width={85} height={74} />
       </BannerGraphics>
     </BannerContainer>

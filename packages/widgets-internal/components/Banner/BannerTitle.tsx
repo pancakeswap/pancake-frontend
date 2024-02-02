@@ -1,11 +1,13 @@
-import { Text, TextProps, useMatchBreakpoints, BreakpointChecks } from "@pancakeswap/uikit";
-import { PropsWithChildren, useMemo } from "react";
+import { Text, TextProps, breakpoints } from "@pancakeswap/uikit";
+import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
 type VariantTypes = "purple";
 
 type Props = {
   variant: VariantTypes;
+  fontSize?: number;
+  lineHeight?: number;
   strokeColor?: string;
   strokeSize?: number;
 };
@@ -34,30 +36,61 @@ function getTextShadow(color: string, size = 2) {
   return `-${size}px ${size}px 0px ${color}, ${size}px ${size}px 0px ${color}, ${size}px -${size}px 0 ${color}, -${size}px -${size}px 0 ${color}`;
 }
 
-function getVariant(breakPoint: BreakpointChecks, variant: Variant) {
-  const { fontSize, lineHeight } = variant;
+function getFontSpecs({
+  size,
+  fontSize,
+  lineHeight,
+}: {
+  size: "xxs" | "xs" | "sm" | "md" | "lg";
+  fontSize: number;
+  lineHeight: number;
+}) {
   let multiplier = 1;
-  if (breakPoint.isTablet) {
-    multiplier = 0.85714286;
-  } else if (breakPoint.isMobile) {
-    multiplier = 0.71428571;
-  } else if (breakPoint.isXs) {
-    multiplier = 0.57142857;
+  switch (size) {
+    case "sm":
+      multiplier = 0.85714286;
+      break;
+    case "xs":
+      multiplier = 0.71428571;
+      break;
+    case "xxs":
+      multiplier = 0.57142857;
+      break;
+    default:
+      multiplier = 1;
   }
-
-  return {
-    ...variant,
-    fontSize: Math.ceil(fontSize * multiplier),
-    lineHeight: Math.ceil(lineHeight * multiplier),
-  };
+  return `
+font-size: calc(${fontSize * multiplier} * 1px);
+line-height: calc(${lineHeight * multiplier} * 1px);
+`;
 }
 
 const FancyText = styled(Text)<{
+  fontSize: number;
+  lineHeight: number;
   $strokeSize: number;
   $strokeColor: string;
 }>`
+  ${({ fontSize, lineHeight }) => getFontSpecs({ size: "xxs", fontSize, lineHeight })}
+
   text-shadow: ${(props) => getTextShadow(props.$strokeColor, props.$strokeSize)};
   font-family: "Kanit", sans-serif;
+
+  @media screen and (min-width: ${breakpoints.xs}px) {
+    ${({ fontSize, lineHeight }) => getFontSpecs({ size: "xs", fontSize, lineHeight })}
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    ${({ fontSize, lineHeight }) => getFontSpecs({ size: "sm", fontSize, lineHeight })}
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    ${({ fontSize, lineHeight }) => getFontSpecs({ size: "md", fontSize, lineHeight })}
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    ${({ fontSize, lineHeight }) => getFontSpecs({ size: "lg", fontSize, lineHeight })}
+  }
 `;
 
 export function BannerTitle({
@@ -66,17 +99,13 @@ export function BannerTitle({
   strokeSize: defaultStrokeSize = 2,
   strokeColor: defaultStrokeColor = "#ffffff",
   ...props
-}: PropsWithChildren<TextProps & Props>) {
-  const breakPoints = useMatchBreakpoints();
-  const { color, fontSize, fontWeight, strokeColor, strokeSize, lineHeight } = useMemo(
-    () => getVariant(breakPoints, variants[variant]),
-    [breakPoints, variant]
-  );
+}: PropsWithChildren<Omit<TextProps, "fontSize" | "lineHeight"> & Props>) {
+  const { color, fontSize, fontWeight, strokeSize, strokeColor, lineHeight } = variants[variant];
   return (
     <FancyText
       color={color}
       fontSize={fontSize}
-      lineHeight={`${lineHeight}px`}
+      lineHeight={lineHeight}
       fontWeight={fontWeight}
       $strokeSize={strokeSize || defaultStrokeSize}
       $strokeColor={strokeColor || defaultStrokeColor}

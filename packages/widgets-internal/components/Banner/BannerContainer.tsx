@@ -1,48 +1,33 @@
-import { FlexGap, useMatchBreakpoints, BreakpointChecks } from "@pancakeswap/uikit";
+import { FlexGap } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { PropsWithChildren } from "react";
 
-import { WithBackground, WithBreakPoints } from "./types";
+import { WithBackground } from "./types";
 
 type ContainerProps = PropsWithChildren<{
   background?: string;
 }>;
 
-function getSize(breakPoints: BreakpointChecks) {
-  if (breakPoints.isDesktop) {
-    return "1128px";
-  }
-  return "100%";
-}
-
-function getHeight(breakPoints: BreakpointChecks) {
-  if (breakPoints.isXs) {
-    return "148px";
-  }
-  return "192px";
-}
-
 const Container = styled(FlexGap).attrs({
   flexDirection: "row",
   gap: "0",
   justifyContent: "space-between",
-})<WithBreakPoints & WithBackground>`
+})<WithBackground>`
   border-radius: 32px;
-  width: ${(props) => getSize(props.$breakPoints)};
-  height: ${(props) => getHeight(props.$breakPoints)};
+  max-width: 100%;
+  height: 192px;
 
   ${(props) =>
     props.$background &&
     `
     background: ${props.$background};
   `}
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    max-width: 1128px;
+  }
 `;
 
 export function BannerContainer({ children, background }: ContainerProps) {
-  const breakPoints = useMatchBreakpoints();
-  return (
-    <Container $breakPoints={breakPoints} $background={background}>
-      {children}
-    </Container>
-  );
+  return <Container $background={background}>{children}</Container>;
 }
