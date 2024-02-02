@@ -26,7 +26,12 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
           <SwapInfoLabel>
             {t("Slippage Tolerance")}
             {onSlippageClick ? (
-              <IconButton scale="sm" variant="text" onClick={onSlippageClick}>
+              <IconButton
+                scale="sm"
+                variant="text"
+                onClick={onSlippageClick}
+                data-dd-action-name="Swap slippage button"
+              >
                 <PencilIcon color="primary" width="10px" />
               </IconButton>
             ) : null}

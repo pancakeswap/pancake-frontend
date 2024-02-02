@@ -26,7 +26,12 @@ export const Recipient = memo(function Recipient() {
         <ArrowWrapper clickable={false}>
           <ArrowDownIcon width="16px" />
         </ArrowWrapper>
-        <Button variant="text" id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
+        <Button
+          variant="text"
+          id="remove-recipient-button"
+          onClick={() => onChangeRecipient(null)}
+          data-dd-action-name="Swap remove recipient button"
+        >
           {t('- Remove send')}
         </Button>
       </AutoRow>

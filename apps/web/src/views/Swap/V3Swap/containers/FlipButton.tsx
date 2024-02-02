@@ -35,7 +35,12 @@ export const FlipButton = memo(function FlipButton() {
       <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem', marginTop: '1em' }}>
         <SwapUI.SwitchButton onClick={onFlip} />
         {allowRecipient && recipient === null ? (
-          <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
+          <Button
+            variant="text"
+            id="add-recipient-button"
+            onClick={() => onChangeRecipient('')}
+            data-dd-action-name="Swap flip button"
+          >
             {t('+ Add a send (optional)')}
           </Button>
         ) : null}

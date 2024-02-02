@@ -176,6 +176,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
             {beforeButton}
             <CurrencySelectButton
               className="open-currency-select-button"
+              data-dd-action-name="Select currency"
               selected={!!currency}
               onClick={onCurrencySelectClick}
             >
@@ -211,12 +212,14 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
             {token && tokenAddress ? (
               <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
                 <CopyButton
+                  data-dd-action-name="Copy token address"
                   width="16px"
                   buttonColor="textSubtle"
                   text={tokenAddress}
                   tooltipMessage={t('Token address copied')}
                 />
                 <AddToWalletButton
+                  data-dd-action-name="Add to wallet"
                   variant="text"
                   p="0"
                   height="auto"
@@ -234,6 +237,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
             tokenAddress === '0x79db8c67d0c33203da4Efb58F7D325E1e0d4d692' ? (
               <LinkExternal
                 ml="4px"
+                data-dd-action-name="Token campaign"
                 style={{ textDecoration: 'none' }}
                 showExternalIcon={false}
                 href="https://blog.pancakeswap.finance/articles/airdrop-carnival-trade-and-add-lp-to-win-9-billion-zeek-coin-meow-airdrop-on-zk-sync-pancake-swap-1?utm_source=swappage&utm_medium=button&utm_campaign=meow&utm_id=meow"
@@ -244,6 +248,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
           </Flex>
           {account && !hideBalanceComp && (
             <Text
+              data-dd-action-name="Token balance"
               onClick={!disabled ? onMax : undefined}
               color="textSubtle"
               fontSize="12px"
@@ -291,6 +296,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                     return (
                       <Button
                         key={`btn_quickCurrency${percent}`}
+                        data-dd-action-name={`Balance percent ${percent}`}
                         onClick={() => {
                           onPercentInput(percent)
                         }}
@@ -305,6 +311,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   })}
                 {maxAmount?.greaterThan(0) && showMaxButton && (
                   <Button
+                    data-dd-action-name="Balance percent max"
                     onClick={(e) => {
                       e.stopPropagation()
                       e.preventDefault()
