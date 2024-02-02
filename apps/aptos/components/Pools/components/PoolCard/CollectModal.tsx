@@ -1,8 +1,8 @@
-import { useCallback } from 'react'
 import { Pool } from '@pancakeswap/widgets-internal'
-import { useQueryClient } from '@pancakeswap/awgmi'
+import { useQueryClient } from '@tanstack/react-query'
 import { SMARTCHEF_ADDRESS } from 'contracts/smartchef/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useCallback } from 'react'
 import splitTypeTag from 'utils/splitTypeTag'
 
 import useHarvestPool from '../../hooks/useHarvestPool'

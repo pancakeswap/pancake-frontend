@@ -1,5 +1,4 @@
 import { ClientConfig, Client as CoreClient, createClient as createCoreClient } from '@pancakeswap/awgmi/core'
-import { QueryClient } from '@tanstack/react-query'
 import { AptosClient } from 'aptos'
 
 export type CreateClientConfig<TProvider extends AptosClient> = ClientConfig<TProvider>
@@ -9,6 +8,4 @@ export function createClient<TProvider extends AptosClient>({ ...config }: Creat
   return client
 }
 
-export type Client<TProvider extends AptosClient = AptosClient> = CoreClient<TProvider> & {
-  queryClient: QueryClient
-}
+export type Client<TProvider extends AptosClient = AptosClient> = CoreClient<TProvider>

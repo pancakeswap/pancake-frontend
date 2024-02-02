@@ -1,10 +1,10 @@
 import { Pool } from '@pancakeswap/widgets-internal'
 import { useCallback } from 'react'
 
-import { Coin, ChainId } from '@pancakeswap/aptos-swap-sdk'
-import useUnstakeFarms from 'components/Farms/hooks/useUnstakeFarms'
+import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
+import { useQueryClient } from '@tanstack/react-query'
 import useStakeFarms from 'components/Farms/hooks/useStakeFarms'
-import { useQueryClient } from '@pancakeswap/awgmi'
+import useUnstakeFarms from 'components/Farms/hooks/useUnstakeFarms'
 import cakePoolRelatedQueries from 'components/Pools/utils/cakePoolRelatedQueries'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import StakeModalContainer from './StakeModalContainer'

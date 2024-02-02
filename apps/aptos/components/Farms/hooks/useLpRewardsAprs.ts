@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useNetwork'
-import { useQuery } from '@pancakeswap/awgmi'
 
 const GITHUB_ENDPOINT =
   'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/apps/aptos/config/constants/lpAprs'
@@ -7,9 +7,10 @@ const GITHUB_ENDPOINT =
 const useLpRewardsAprs = () => {
   const chainId = useActiveChainId()
 
-  const { data: lpRewardsAprs } = useQuery(
-    ['aptosLpAprs', chainId],
-    async () => {
+  const { data: lpRewardsAprs } = useQuery({
+    queryKey: ['aptosLpAprs', chainId],
+
+    queryFn: async () => {
       const response = await fetch(`${GITHUB_ENDPOINT}/${chainId}.json`)
 
       if (response.ok) {
@@ -25,13 +26,12 @@ const useLpRewardsAprs = () => {
 
       return {}
     },
-    {
-      enabled: Boolean(chainId),
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  )
+
+    enabled: Boolean(chainId),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
   return lpRewardsAprs ?? {}
 }

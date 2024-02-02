@@ -15,15 +15,15 @@ import {
 import { ExpertModal } from '@pancakeswap/widgets-internal'
 
 import { escapeRegExp } from '@pancakeswap/utils/escapeRegExp'
-import { useTheme } from 'next-themes'
-import { useCallback, useState } from 'react'
 import {
-  useUserSlippage,
+  useAudioPlay,
   useExpertMode,
   useUserExpertModeAcknowledgement,
-  useAudioPlay,
   useUserSingleHopOnly,
+  useUserSlippage,
 } from '@pancakeswap/utils/user'
+import { useTheme } from 'next-themes'
+import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 
 export const withCustomOnDismiss =

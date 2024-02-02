@@ -37,7 +37,6 @@ test('exports', () => {
       "useCoins",
       "useConnect",
       "useDisconnect",
-      "useHealthy",
       "useLedger",
       "useNetwork",
       "useProvider",

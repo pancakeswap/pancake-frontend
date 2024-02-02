@@ -1,11 +1,11 @@
 import { getVersionUpgrade, VersionUpgrade } from '@pancakeswap/token-lists'
 import { acceptListUpdate, updateListVersion, useFetchListCallback } from '@pancakeswap/token-lists/react'
+import { useQuery } from '@tanstack/react-query'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useEffect } from 'react'
 import { useAllLists } from 'state/lists/hooks'
-import { useQuery } from '@pancakeswap/awgmi'
 import { useActiveListUrls } from './hooks'
-import { useListState, initialState, useListStateReady } from './index'
+import { initialState, useListState, useListStateReady } from './index'
 
 export default function Updater(): null {
   const [listState, dispatch] = useListState()
@@ -25,9 +25,9 @@ export default function Updater(): null {
   const fetchList = useFetchListCallback(dispatch)
 
   // whenever a list is not loaded and not loading, try again to load it
-  useQuery(
-    ['first-fetch-token-list', lists],
-    () => {
+  useQuery({
+    queryKey: ['first-fetch-token-list', lists],
+    queryFn: async () => {
       Object.keys(lists).forEach((listUrl) => {
         const list = lists[listUrl]
         if (!list.current && !list.loadingRequestId && !list.error) {
@@ -35,32 +35,28 @@ export default function Updater(): null {
         }
       })
     },
-    {
-      enabled: Boolean(isReady),
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  )
+    enabled: Boolean(isReady),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
-  useQuery(
-    ['token-list'],
-    async () => {
+  useQuery({
+    queryKey: ['token-list'],
+    queryFn: async () => {
       return Promise.all(
         Object.keys(lists).map((url) =>
           fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
         ),
       )
     },
-    {
-      enabled: Boolean(isReady && listState !== initialState),
-      staleTime: 1000 * 60 * 10,
-      refetchInterval: 1000 * 60 * 10,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  )
+    enabled: Boolean(isReady && listState !== initialState),
+    staleTime: 1000 * 60 * 10,
+    refetchInterval: 1000 * 60 * 10,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
   // if any lists from unsupported lists are loaded, check them too (in case new updates since last visit)
   useEffect(() => {

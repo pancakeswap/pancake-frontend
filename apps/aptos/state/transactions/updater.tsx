@@ -1,7 +1,7 @@
-import { useQueries } from '@pancakeswap/awgmi'
 import { isUserTransaction } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
+import { useQueries } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'

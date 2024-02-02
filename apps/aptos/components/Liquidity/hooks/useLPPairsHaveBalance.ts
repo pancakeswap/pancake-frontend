@@ -1,8 +1,8 @@
 import { Pair, PAIR_LP_TYPE_TAG, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
 import {
-  CoinStoreResource,
   COIN_STORE_TYPE_PREFIX,
+  CoinStoreResource,
   createAccountResourceFilter,
   FetchAccountResourcesResult,
   unwrapTypeFromString,
@@ -32,11 +32,7 @@ const selector = (resource: FetchAccountResourcesResult) => {
 export default function useLPPairsHaveBalance(): LPPairsResponse {
   const { account } = useAccount()
 
-  const {
-    data: v2PairsBalances,
-    isLoading,
-    isIdle,
-  } = useAccountResources({
+  const { data: v2PairsBalances, isPending } = useAccountResources({
     watch: true,
     address: account?.address,
     select: selector,
@@ -55,10 +51,8 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
   return useMemo(
     () => ({
       data: filterPair(v2Pairs),
-      loading:
-        (isIdle && isLoading) ||
-        Boolean(v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING)),
+      loading: isPending || Boolean(v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING)),
     }),
-    [v2Pairs, isLoading, isIdle],
+    [v2Pairs, isPending],
   )
 }

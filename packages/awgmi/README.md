@@ -16,9 +16,11 @@ Support Aptos Wallet Connectors:
 - Fewcha
 - SafePal
 - Trust Wallet
+- Msafe
 
 ```jsx
 import { createClient, AwgmiConfig, useConnect, getDefaultProviders, defaultChains } from '@pancakeswap/awgmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PetraConnector } from '@pancakeswap/awgmi/connectors/petra'
 import { MartianConnector } from '@pancakeswap/awgmi/connectors/martain'
 import { SafePalConnector } from '@pancakeswap/awgmi/connectors/safePal'
@@ -27,6 +29,20 @@ import { FewchaConnector } from '@pancakeswap/awgmi/connectors/fewcha'
 
 // import { mainnet, testnet } from '@pancakeswap/awgmi/core'
 const chains = defaultChains // mainnet, testnet, devnet
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1_000 * 60 * 60 * 24, // 24 hours
+      networkMode: 'offlineFirst',
+      refetchOnWindowFocus: false,
+      retry: 0,
+    },
+    mutations: {
+      networkMode: 'offlineFirst',
+    },
+  },
+})
 
 export const client = createClient({
   connectors: [
@@ -44,7 +60,9 @@ export const client = createClient({
 function App() {
   return (
     <AwgmiConfig client={client}>
-      <YourApp />
+      <QueryClientProvider client={queryClient}>
+        <YourApp />
+      </QueryClientProvider>
     </AwgmiConfig>
   )
 }
