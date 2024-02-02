@@ -18,6 +18,7 @@ import {
 } from 'state/user/smartRouter'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import { useUserChart } from 'state/user/hooks/useUserChart'
+import { useIsSwapHotTokenDisplayFlag } from './useSwapHotTokenDisplay'
 
 export function useGlobalSettingsEvaluation() {
   const [gasPrice] = useGasPriceManager()
@@ -29,12 +30,14 @@ export function useGlobalSettingsEvaluation() {
   const [userUsernameVisibility] = useUserUsernameVisibility()
   const { enabled } = useWebNotifications()
   const [userChart] = useUserChart()
+  const isSwapHotTokenDisplay = useIsSwapHotTokenDisplayFlag()
   useFeatureFlagEvaluation('global-settings-expert-mode', expertMode)
   useFeatureFlagEvaluation('global-settings-audio-play', audioPlay)
   useFeatureFlagEvaluation('global-settings-subgraph-health-indicator', subgraphHealth)
   useFeatureFlagEvaluation('global-settings-user-name', userUsernameVisibility)
   useFeatureFlagEvaluation('global-settings-web-notification', enabled)
   useFeatureFlagEvaluation('global-settings-chart', userChart)
+  useFeatureFlagEvaluation('global-settings-hot-token-display', isSwapHotTokenDisplay)
 
   const [tokenRisk] = useUserTokenRisk()
   useFeatureFlagEvaluation('global-settings-token-risk', tokenRisk)
