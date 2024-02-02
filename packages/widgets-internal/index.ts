@@ -7,3 +7,4 @@ export * from "./swap/LiquidityChartRangeInput";
 export * from "./swap";
 export * from "./components/CurrencyLogo";
 export * from "./components/NextLink";
+export * from "./components/Banner";
