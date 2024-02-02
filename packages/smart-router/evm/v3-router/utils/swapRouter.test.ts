@@ -3,32 +3,33 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
   BigintIsh,
-  CurrencyAmount,
   Currency,
+  CurrencyAmount,
   Native,
+  Pair,
   Percent,
   Token,
   TradeType,
-  WNATIVE,
-  Pair,
   Route as V2Route,
   Trade as V2Trade,
+  WNATIVE,
 } from '@pancakeswap/sdk'
 import {
-  encodeSqrtRatioX96,
   FeeAmount,
-  nearestUsableTick,
   Position,
-  Route as V3Route,
-  TickMath,
   TICK_SPACINGS,
-  Trade as V3Trade,
+  TickMath,
   Pool as V3PoolSDK,
+  Route as V3Route,
+  Trade as V3Trade,
+  encodeSqrtRatioX96,
+  nearestUsableTick,
 } from '@pancakeswap/v3-sdk'
-import { SwapRouter } from './swapRouter'
-import { SmartRouterTrade, V3Pool, PoolType, V2Pool, RouteType, Pool } from '../types'
+import { describe, expect, it } from 'vitest'
+import { Pool, PoolType, RouteType, SmartRouterTrade, V2Pool, V3Pool } from '../types'
 import { ApprovalTypes } from './approveAndCall'
 import { isV2Pool, isV3Pool } from './pool'
+import { SwapRouter } from './swapRouter'
 
 describe('SwapRouter', () => {
   const ETHER = Native.onChain(1)

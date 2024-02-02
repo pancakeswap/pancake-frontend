@@ -1,5 +1,6 @@
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it } from "vitest";
 import { Alert } from "../../components/Alert";
+import { renderWithProvider } from "../../testHelpers";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(<Alert title="Alert title">Description</Alert>);

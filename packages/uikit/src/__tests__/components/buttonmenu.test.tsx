@@ -1,7 +1,7 @@
-import { vi } from "vitest";
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it, vi } from "vitest";
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
 import ButtonMenuItem from "../../components/ButtonMenu/ButtonMenuItem";
+import { renderWithProvider } from "../../testHelpers";
 
 const handleClick = vi.fn();
 
@@ -14,7 +14,30 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c1 {
+      .c0 {
+      background-color: var(--colors-tertiary);
+      border-radius: 16px;
+      display: inline-flex;
+      border: 1px solid var(--colors-disabled);
+      width: auto;
+    }
+
+    .c0>button,
+    .c0>a {
+      flex: auto;
+    }
+
+    .c0>button+button,
+    .c0>a+a {
+      margin-left: 2px;
+    }
+
+    .c0>button,
+    .c0 a {
+      box-shadow: none;
+    }
+
+    .c1 {
       position: relative;
       align-items: center;
       border: 0;
@@ -55,29 +78,6 @@ it("renders correctly", () => {
       box-shadow: none;
       color: var(--colors-textDisabled);
       cursor: not-allowed;
-    }
-
-    .c0 {
-      background-color: var(--colors-tertiary);
-      border-radius: 16px;
-      display: inline-flex;
-      border: 1px solid var(--colors-disabled);
-      width: auto;
-    }
-
-    .c0>button,
-    .c0>a {
-      flex: auto;
-    }
-
-    .c0>button+button,
-    .c0>a+a {
-      margin-left: 2px;
-    }
-
-    .c0>button,
-    .c0 a {
-      box-shadow: none;
     }
 
     .c2 {

@@ -1,5 +1,6 @@
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it } from "vitest";
 import Radio from "../../components/Radio/Radio";
+import { renderWithProvider } from "../../testHelpers";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(<Radio name="radio" value="1" />);

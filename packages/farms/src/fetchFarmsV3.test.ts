@@ -1,6 +1,6 @@
-import { describe, it } from 'vitest'
-import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { bscTokens } from '@pancakeswap/tokens'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { describe, expect, it } from 'vitest'
 import { getFarmsPrices } from './fetchFarmsV3'
 import { FarmV3Data } from './types'
 
@@ -8,6 +8,7 @@ describe('fetchFarmsV3', () => {
   it('getFarmsPrices', async () => {
     const farmsData: FarmV3Data[] = [
       // CAKE Pair
+      // @ts-ignore
       {
         pid: 1,
         lpSymbol: 'WBNB-CAKE LP',
@@ -25,6 +26,7 @@ describe('fetchFarmsV3', () => {
       {
         pid: 2,
         lpSymbol: 'SUSHI-CAKE LP',
+        // @ts-ignore
         lpAddress: '',
         token: bscTokens.sushi,
         quoteToken: bscTokens.cake,
@@ -39,6 +41,7 @@ describe('fetchFarmsV3', () => {
       {
         pid: 3,
         lpSymbol: 'USDT-BUSD LP',
+        // @ts-ignore
         lpAddress: '',
         token: bscTokens.usdt,
         quoteToken: bscTokens.busd,
@@ -53,6 +56,7 @@ describe('fetchFarmsV3', () => {
       {
         pid: 4,
         lpSymbol: 'BUSD-BTCB LP',
+        // @ts-ignore
         lpAddress: '',
         token: bscTokens.busd,
         quoteToken: bscTokens.btcb,
@@ -67,6 +71,7 @@ describe('fetchFarmsV3', () => {
       {
         pid: 5,
         lpSymbol: 'DAI-BUSD LP',
+        // @ts-ignore
         lpAddress: '',
         token: bscTokens.dai,
         quoteToken: bscTokens.busd,

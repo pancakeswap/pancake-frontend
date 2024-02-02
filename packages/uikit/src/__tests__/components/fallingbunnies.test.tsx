@@ -1,6 +1,6 @@
-import { vi } from "vitest";
-import { renderWithProvider } from "../../testHelpers";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import FallingBunnies from "../../components/FallingBunnies/FallingBunnies";
+import { renderWithProvider } from "../../testHelpers";
 
 beforeEach(() => {
   vi.spyOn(global.Math, "random").mockReturnValue(0.5);

@@ -1,4 +1,4 @@
-import type {} from "vitest/globals";
+import { expect, it } from "vitest";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import { renderWithProvider } from "../../testHelpers";
 

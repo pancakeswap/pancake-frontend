@@ -1,5 +1,6 @@
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it } from "vitest";
 import { Link, LinkExternal } from "../../components/Link";
+import { renderWithProvider } from "../../testHelpers";
 
 it("renders link correctly", () => {
   const { asFragment } = renderWithProvider(<Link href="https://pancakeswap.finance">Link</Link>);
@@ -37,15 +38,7 @@ it("renders link external link correctly", () => {
   const { asFragment } = renderWithProvider(<LinkExternal href="https://pancakeswap.finance">Link</LinkExternal>);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c2 {
-      align-self: center;
-      fill: var(--colors-primary);
-      color: var(--colors-primary);
-      flex-shrink: 0;
-      margin-left: 4px;
-    }
-
-    .c0 {
+      .c0 {
       color: var(--colors-primary);
       font-weight: 400;
       line-height: 1.5;
@@ -61,6 +54,14 @@ it("renders link external link correctly", () => {
 
     .c1:hover {
       text-decoration: underline;
+    }
+
+    .c2 {
+      align-self: center;
+      fill: var(--colors-primary);
+      color: var(--colors-primary);
+      flex-shrink: 0;
+      margin-left: 4px;
     }
 
     @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {

@@ -1,6 +1,6 @@
-import React from "react";
-import { renderWithProvider } from "../../testHelpers";
+import { expect, it } from "vitest";
 import { Overlay } from "../../components/Overlay";
+import { renderWithProvider } from "../../testHelpers";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(<Overlay />);
