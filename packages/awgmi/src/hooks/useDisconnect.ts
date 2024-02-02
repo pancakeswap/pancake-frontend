@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { disconnect as disconnectCore } from '@pancakeswap/awgmi/core'
-import { useMutation } from './utils/useMutation'
+import { useMutation } from '@tanstack/react-query'
 
 export type UseDisconnectConfig = {
   /** Function to invoke when an error is thrown while connecting. */
@@ -25,13 +25,15 @@ export function useDisconnect({ onError, onMutate, onSettled, onSuccess }: UseDi
     error,
     isError,
     isIdle,
-    isLoading,
+    isPending,
     isSuccess,
     mutate: disconnect,
     mutateAsync: disconnectAsync,
     reset,
     status,
-  } = useMutation<void, Error>(mutationKey, mutationFn, {
+  } = useMutation<void, Error>({
+    mutationKey,
+    mutationFn,
     ...(onError
       ? {
           onError(error, _variables, context) {
@@ -62,7 +64,7 @@ export function useDisconnect({ onError, onMutate, onSettled, onSuccess }: UseDi
     error,
     isError,
     isIdle,
-    isLoading,
+    isPending,
     isSuccess,
     reset,
     status,

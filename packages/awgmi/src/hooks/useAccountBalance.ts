@@ -13,12 +13,10 @@ type UseAccountBalances<TData> = QueryConfig<UseAccountBalancesResult, Error, TD
 
 export function useAccountBalance<TData = unknown>({
   address,
-  cacheTime,
+  gcTime,
   networkName: networkName_,
   enabled = true,
-  keepPreviousData,
   staleTime,
-  suspense,
   coin,
   watch,
   select,
@@ -29,13 +27,11 @@ export function useAccountBalance<TData = unknown>({
   const results = useAccountBalances({
     coinFilter: coin || APTOS_COIN,
     address,
-    cacheTime,
+    gcTime,
     networkName,
     watch,
     enabled: Boolean(enabled && address),
-    keepPreviousData,
     staleTime,
-    suspense,
     select,
   })
 

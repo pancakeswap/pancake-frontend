@@ -1,8 +1,8 @@
-import * as React from 'react'
 import { sendTransaction, SendTransactionArgs, SendTransactionResult } from '@pancakeswap/awgmi/core'
+import { useMutation } from '@tanstack/react-query'
+import * as React from 'react'
 
 import { MutationConfig } from '../types'
-import { useMutation } from './utils/useMutation'
 
 export type UseSendTransactionArgs = Partial<SendTransactionArgs>
 
@@ -28,20 +28,15 @@ export function useSendTransaction({
   onSettled,
   onSuccess,
 }: UseSendTransactionArgs & UseSendTransactionConfig = {}) {
-  const { data, error, isError, isIdle, isLoading, isSuccess, mutate, mutateAsync, reset, status, variables } =
-    useMutation(
-      mutationKey({
-        networkName,
-        payload,
-      } as SendTransactionArgs),
+  const { data, error, isError, isIdle, isPending, isSuccess, mutate, mutateAsync, reset, status, variables } =
+    useMutation({
+      mutationKey: mutationKey({ networkName, payload }),
       mutationFn,
-      {
-        onError,
-        onMutate,
-        onSettled,
-        onSuccess,
-      },
-    )
+      onError,
+      onMutate,
+      onSettled,
+      onSuccess,
+    })
 
   const _sendTransaction = React.useCallback(
     (args: UseSendTransactionMutationArgs) =>
@@ -68,7 +63,7 @@ export function useSendTransaction({
     error,
     isError,
     isIdle,
-    isLoading,
+    isPending,
     isSuccess,
     reset,
     sendTransaction: _sendTransaction,

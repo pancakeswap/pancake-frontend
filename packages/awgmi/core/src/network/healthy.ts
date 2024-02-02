@@ -5,6 +5,8 @@ export type FetchHealthyArgs = {
   durationSecs?: number
 }
 
+export type FetchHealthyResult = ReturnType<typeof fetchHealthy>
+
 export async function fetchHealthy({ networkName, durationSecs }: FetchHealthyArgs) {
   const provider = getProvider({ networkName })
   const healthy = provider.client.general.healthy(durationSecs)

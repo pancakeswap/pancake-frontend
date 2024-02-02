@@ -30,35 +30,25 @@ const accountCoinStoreResourceSelect = (resource: FetchAccountResourcesResult) =
 
 export function useAccountBalances<TData = unknown>({
   address,
-  cacheTime,
+  gcTime,
   enabled,
-  isDataEqual,
-  keepPreviousData,
   networkName: networkName_,
-  onError,
-  onSettled,
-  onSuccess,
   select,
   staleTime,
-  suspense,
   watch,
   coinFilter,
+  ...query
 }: UseAccountResourcesArgs & { coinFilter?: string } & UseAccountBalancesConfig<TData>) {
   const { chain } = useNetwork()
   const networkName = networkName_ ?? chain?.network
 
   const { data } = useAccountResources({
+    ...query,
     address,
-    cacheTime,
+    gcTime,
     enabled,
-    isDataEqual,
-    keepPreviousData,
     networkName,
-    onError,
-    onSettled,
-    onSuccess,
     staleTime,
-    suspense,
     watch,
     select: accountCoinStoreResourceSelect,
   })

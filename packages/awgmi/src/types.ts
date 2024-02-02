@@ -1,4 +1,4 @@
-import { QueryFunctionContext, UseMutationOptions, UseQueryOptions } from '@tanstack/react-query'
+import { QueryFunctionContext, QueryKey, UseMutationOptions, UseQueryOptions } from '@tanstack/react-query'
 
 export type MutationConfig<Data, Error, Variables = void> = {
   /** Function fires if mutation encounters error */
@@ -16,17 +16,7 @@ export type MutationConfig<Data, Error, Variables = void> = {
 
 export type QueryFunctionArgs<T extends (...args: any) => any> = QueryFunctionContext<ReturnType<T>>
 
-export type QueryConfig<Data, Error, TData = Data> = Pick<
-  UseQueryOptions<Data, Error, TData>,
-  | 'cacheTime'
-  | 'enabled'
-  | 'initialData'
-  | 'isDataEqual'
-  | 'keepPreviousData'
-  | 'staleTime'
-  | 'select'
-  | 'suspense'
-  | 'onError'
-  | 'onSettled'
-  | 'onSuccess'
+export type QueryConfig<Data, Error, TData = Data, queryKey extends QueryKey = QueryKey> = Omit<
+  UseQueryOptions<Data, Error, TData, queryKey>,
+  'queryFn' | 'queryHash' | 'queryKey' | 'queryKeyHashFn' | 'throwOnError'
 >

@@ -1,15 +1,20 @@
 import { fetchAccountResource, FetchAccountResourceArgs, FetchAccountResourceResult } from '@pancakeswap/awgmi/core'
-
-import { QueryConfig, QueryFunctionArgs } from '../types'
+import { QueryFunction, useQuery } from '@tanstack/react-query'
+// import { QueryConfig, QueryFunctionArgs } from '../types'
+import { QueryConfig } from '../types'
 import { useNetwork } from './useNetwork'
-import { useQuery } from './utils/useQuery'
 
 type UseAccountResourceArgs = Partial<FetchAccountResourceArgs> & {
   /** Subscribe to changes */
   watch?: boolean
 }
 
-export type UseAccountResourceConfig<TData = unknown> = QueryConfig<FetchAccountResourceResult<unknown>, Error, TData>
+export type UseAccountResourceConfig<TData = unknown> = QueryConfig<
+  FetchAccountResourceResult<unknown>,
+  Error,
+  TData,
+  QueryKey
+>
 
 export const queryKey = ({
   networkName,
@@ -21,40 +26,38 @@ export const queryKey = ({
   resourceType?: string
 }) => [{ entity: 'accountResource', networkName, address, resourceType }] as const
 
-const queryFn = ({ queryKey: [{ networkName, address, resourceType }] }: QueryFunctionArgs<typeof queryKey>) => {
+type QueryKey = ReturnType<typeof queryKey>
+
+const queryFn: QueryFunction<FetchAccountResourceResult, QueryKey> = ({
+  queryKey: [{ networkName, address, resourceType }],
+}) => {
   if (!address) throw new Error('address is required')
   if (!resourceType) throw new Error('resourceType is required')
   return fetchAccountResource({ networkName, address, resourceType })
 }
 
 export function useAccountResource<TData = unknown>({
-  cacheTime,
+  gcTime,
   networkName: networkName_,
   resourceType,
-  keepPreviousData,
   address,
   enabled = true,
   staleTime = 1_000,
-  suspense,
   watch = false,
-  onError,
-  onSettled,
-  onSuccess,
   select,
+  ...query
 }: UseAccountResourceArgs & UseAccountResourceConfig<TData> = {}) {
   const { chain } = useNetwork()
   const networkName = networkName_ ?? chain?.network
 
-  return useQuery(queryKey({ networkName, address, resourceType }), queryFn, {
-    cacheTime,
+  return useQuery({
+    ...query,
+    queryKey: queryKey({ networkName, address, resourceType }),
+    queryFn,
+    gcTime,
     enabled: Boolean(enabled && address),
     staleTime,
-    suspense,
-    onError,
-    onSettled,
-    onSuccess,
     select,
-    keepPreviousData,
     refetchInterval: watch ? 3_000 : 0,
   })
 }
