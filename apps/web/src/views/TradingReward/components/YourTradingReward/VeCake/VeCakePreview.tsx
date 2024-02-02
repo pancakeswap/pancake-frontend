@@ -4,6 +4,7 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { GreyCard } from 'components/Card'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { Header } from 'views/TradingReward/components/YourTradingReward/VeCake/Header'
@@ -37,8 +38,9 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
   currentUserCampaignInfo,
 }) => {
   const { t } = useTranslation()
+  const router = useRouter()
   const cakePriceBusd = useCakePrice()
-  const { cakeLocked } = useCakeLockStatus()
+  const { cakeLocked, cakeLockExpired } = useCakeLockStatus()
   const timeUntil = getTimePeriods(timeRemaining)
 
   const [onPresentNoLockingCakeModal] = useModal(
@@ -75,6 +77,10 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
     rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
   })
+
+  const handleUnlockButton = () => {
+    router.push(`/cake-staking`)
+  }
 
   return (
     <Flex flexDirection={['column']}>
@@ -134,6 +140,14 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
           messageText={t('Get veCAKE to start earning')}
           buttonText={t('Get veCAKE')}
           onClick={onPresentNoLockingCakeModal}
+        />
+      ) : cakeLockExpired ? (
+        <VeCakeButtonWithMessage
+          messageText={t(
+            'Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.',
+          )}
+          buttonText={t('Unlock')}
+          onClick={handleUnlockButton}
         />
       ) : (
         <VeCakeButtonWithMessage
