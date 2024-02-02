@@ -10,7 +10,7 @@ type PriceChartContainerProps = {
   outputCurrencyId: string
   outputCurrency: Currency
   isChartExpanded: boolean
-  setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>>
+  setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>> | null
   isChartDisplayed: boolean
   currentSwapPrice: {
     [key: string]: number
