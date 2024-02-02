@@ -186,6 +186,7 @@ const GraphicsPaintBoard = styled(Box)`
   bottom: 0;
   height: 122%;
   overflow: hidden;
+  border-radius: 0 0 32px 0;
 `;
 
 type GraphicItemProps = {
