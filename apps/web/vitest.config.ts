@@ -1,8 +1,8 @@
-import { defineConfig } from 'vitest/config'
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { resolve } from 'path'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from 'vitest/config'
 
 const r = (p: string) => resolve(__dirname, p)
 
@@ -21,7 +21,7 @@ export default defineConfig({
   },
   test: {
     setupFiles: ['./vitest.setup.js'],
-    environment: 'jsdom',
+    environment: 'happy-dom',
     globals: true,
     dangerouslyIgnoreUnhandledErrors: true, // wallet connect v2
     exclude: ['src/config/__tests__', 'node_modules'],

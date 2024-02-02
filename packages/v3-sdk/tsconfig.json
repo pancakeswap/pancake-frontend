@@ -6,6 +6,7 @@
     "outDir": "./dist",
     "lib": ["ESNext"],
     "target": "es2020",
+    "types": ["vitest/globals"],
     "module": "esnext",
     "importHelpers": true,
     "declaration": true,

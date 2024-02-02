@@ -128,7 +128,6 @@
     "zod": "^3.22.3"
   },
   "devDependencies": {
-    "@angleprotocol/sdk": "^3.0.121",
     "@next/eslint-plugin-next": "13.4.2",
     "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
@@ -138,7 +137,6 @@
     "@testing-library/react-hooks": "^8.0.1",
     "@types/canvas-confetti": "^1.4.2",
     "@types/d3": "^7.4.0",
-    "@types/jest": "^26.0.23",
     "@types/js-cookie": "^3.0.2",
     "@types/lodash": "^4.14.178",
     "@types/node": "^13.13.5",
@@ -152,12 +150,13 @@
     "@types/simplemde": "^1.11.7",
     "@types/styled-system": "^5.1.17",
     "@types/uuid": "^8.0.0",
-    "@vanilla-extract/vite-plugin": "^3.8.0",
-    "@vitejs/plugin-react": "4.0.0",
+    "@vanilla-extract/vite-plugin": "^4.0.2",
+    "@vitejs/plugin-react": "4.2.1",
     "@walletconnect/notify-client": "0.14.6",
     "eslint": "^8.32.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-lodash": "^7.4.0",
+    "happy-dom": "^13.3.8",
     "lint-staged": "^12.3.4",
     "postcss-scss": "^4.0.3",
     "postcss-syntax": "^0.36.2",
@@ -171,7 +170,6 @@
     "stylelint-config-standard": "^25.0.0",
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
-    "typechain": "^6.1.0",
     "vite-tsconfig-paths": "^4.0.3"
   }
 }

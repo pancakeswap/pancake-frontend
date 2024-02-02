@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config'
 import { resolve } from 'path'
+import { defineConfig } from 'vitest/config'
 
 const r = (p: string) => resolve(__dirname, p)
 
@@ -13,7 +13,7 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json', 'html'],
     },
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: ['./core/test/setup.ts'],
   },
 })

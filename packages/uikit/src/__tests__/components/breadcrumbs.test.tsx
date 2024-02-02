@@ -1,6 +1,6 @@
-import {} from "vitest/globals";
-import { renderWithProvider } from "../../testHelpers";
+import type {} from "vitest/globals";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import { renderWithProvider } from "../../testHelpers";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(<Breadcrumbs>Link</Breadcrumbs>);

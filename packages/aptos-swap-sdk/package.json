@@ -38,10 +38,7 @@
     "aptos": "1.x"
   },
   "devDependencies": {
-    "@swc/core": "^1.2.215",
-    "@swc/jest": "^0.2.21",
     "@types/big.js": "^4.0.5",
-    "@types/jest": "^24.0.25",
     "tsup": "^6.7.0"
   },
   "engines": {

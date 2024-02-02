@@ -33,6 +33,7 @@
     "@types/react": "^18.2.21",
     "@types/use-sync-external-store": "^0.0.3",
     "aptos": "1.21.0",
+    "happy-dom": "^13.3.8",
     "tsup": "^6.7.0"
   },
   "files": [

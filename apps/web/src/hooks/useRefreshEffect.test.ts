@@ -1,10 +1,10 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import { useState } from 'react'
-import { waitFor } from '@testing-library/react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createWagmiWrapper } from 'testUtils'
-import { vi, describe, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { useFastRefreshEffect, useSlowRefreshEffect } from './useRefreshEffect'
 
 describe('useRefreshEffect', () => {

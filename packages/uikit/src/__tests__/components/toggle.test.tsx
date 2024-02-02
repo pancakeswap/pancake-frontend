@@ -60,7 +60,6 @@ it("renders correctly", () => {
         scale="md"
       >
         <input
-          checked=""
           class="c1"
           scale="md"
           type="checkbox"
@@ -130,7 +129,6 @@ it("renders correctly scale sm", () => {
         scale="sm"
       >
         <input
-          checked=""
           class="c1"
           scale="sm"
           type="checkbox"

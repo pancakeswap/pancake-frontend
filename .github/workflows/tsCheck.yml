@@ -6,6 +6,7 @@ on:
 jobs:
   ts-check:
     name: Typescript Error Check
+    timeout-minutes: 8
     runs-on: ubuntu-latest
     permissions: write-all
     if: github.event.pull_request.head.repo.full_name == github.repository
@@ -19,7 +20,7 @@ jobs:
       - name: Set up node@18
         uses: actions/setup-node@v3
         with:
-          cache: "pnpm"
+          cache: 'pnpm'
           node-version: 18.18.2
 
       - name: Get pnpm store directory
@@ -66,7 +67,7 @@ jobs:
         uses: chefjackson/action-check-typescript@v1.1.3
         if: steps.files.outputs.changed == 'true'
         env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
+          NODE_OPTIONS: '--max_old_space_size=4096'
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           use-check: true

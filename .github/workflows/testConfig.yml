@@ -3,10 +3,10 @@ name: Test Config
 on:
   pull_request:
     paths:
-      - "apps/web/src/config/**"
-      - "packages/pools/src/**"
-      - "packages/farms/constants/**"
-      - "packages/tokens/src/**"
+      - 'apps/web/src/config/**'
+      - 'packages/pools/src/**'
+      - 'packages/farms/constants/**'
+      - 'packages/tokens/src/**'
   push:
     branches:
       - develop
@@ -14,6 +14,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 4
 
     strategy:
       fail-fast: true
@@ -33,7 +34,7 @@ jobs:
       - name: Set up node@18
         uses: actions/setup-node@v3
         with:
-          cache: "pnpm"
+          cache: 'pnpm'
           node-version: 18.18.2
 
       - name: Get pnpm store directory

@@ -1,9 +1,9 @@
+import { getWagmiConnector } from '@binance/w3w-wagmi-connector'
+import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
-import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
-import { getWagmiConnector } from '@binance/w3w-wagmi-connector'
 import memoize from 'lodash/memoize'
 import { createConfig, createStorage } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -33,7 +33,9 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
 export const walletConnectConnector = new WalletConnectConnector({
   chains,
   options: {
-    showQrModal: true,
+    // ignore the error in test environment
+    // Error: To use QR modal, please install @walletconnect/modal package
+    showQrModal: process.env.NODE_ENV !== 'test',
     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
   },
 })

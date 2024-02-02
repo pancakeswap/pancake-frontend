@@ -53,7 +53,7 @@ describe('MockConnector', () => {
           account,
         },
       })
-      await expect(connector.connect()).rejects.toThrowErrorMatchingInlineSnapshot(`"User rejected request"`)
+      await expect(connector.connect()).rejects.toThrowErrorMatchingInlineSnapshot(`[UserRejectedRequestError: User rejected request]`)
     })
   })
 
@@ -78,7 +78,7 @@ describe('MockConnector', () => {
     })
 
     it('fails', async () => {
-      await expect(connector.account()).rejects.toThrowErrorMatchingInlineSnapshot('"User rejected request"')
+      await expect(connector.account()).rejects.toThrowErrorMatchingInlineSnapshot(`[UserRejectedRequestError: User rejected request]`)
     })
   })
 

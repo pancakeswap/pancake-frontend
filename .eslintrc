@@ -1,8 +1,7 @@
 {
   "env": {
     "es6": true,
-    "browser": true,
-    "jest": true
+    "browser": true
   },
   "plugins": ["lodash", "address"],
   "extends": ["@pancakeswap/eslint-config-pancake", "plugin:react/jsx-runtime"],
