@@ -220,7 +220,6 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             currentUserCampaignInfo={currentUserCampaignInfo}
             totalAvailableClaimData={totalAvailableClaimData}
             isQualified={isQualified}
-            isValidLockAmount={isValidLockAmount}
             thresholdLockAmount={thresholdLockAmount}
             qualification={qualification}
             campaignIdsIncentive={campaignIdsIncentive}

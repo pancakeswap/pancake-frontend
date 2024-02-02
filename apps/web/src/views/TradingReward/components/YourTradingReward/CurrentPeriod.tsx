@@ -12,7 +12,6 @@ interface CurrentPeriodProps {
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail | undefined
   isQualified: boolean
-  isValidLockAmount: boolean
   thresholdLockAmount: number
   totalAvailableClaimData: UserCampaignInfoDetail[]
 }
@@ -22,7 +21,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   rewardInfo,
   currentUserCampaignInfo,
   isQualified,
-  isValidLockAmount,
   thresholdLockAmount,
 }) => {
   const { t } = useTranslation()
@@ -53,13 +51,11 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                   rewardInfo={rewardInfo}
                   timeRemaining={timeRemaining}
                   campaignClaimTime={campaignClaimTime}
-                  isValidLockAmount={isValidLockAmount}
                   thresholdLockAmount={thresholdLockAmount}
                   currentUserCampaignInfo={currentUserCampaignInfo}
                 />
               ) : (
                 <VeCakePreview
-                  isValidLockAmount={isValidLockAmount}
                   thresholdLockAmount={thresholdLockAmount}
                   endTime={campaignClaimTime}
                   rewardInfo={rewardInfo}

@@ -21,7 +21,6 @@ import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
 import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
 
 interface VeCakePreviewProps {
-  isValidLockAmount: boolean
   thresholdLockAmount: number
   endTime: number
   timeRemaining: number
@@ -31,7 +30,6 @@ interface VeCakePreviewProps {
 
 export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>> = ({
   timeRemaining,
-  isValidLockAmount,
   thresholdLockAmount,
   endTime,
   rewardInfo,
@@ -44,7 +42,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
   const timeUntil = getTimePeriods(timeRemaining)
 
   const [onPresentNoLockingCakeModal] = useModal(
-    <NoLockingCakeModal endTime={endTime} isValidLockAmount={isValidLockAmount} />,
+    <NoLockingCakeModal endTime={endTime} thresholdLockAmount={thresholdLockAmount} />,
   )
 
   const [onPresentVeCakeAddCakeModal] = useModal(
@@ -52,7 +50,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
       showSwitchButton
       viewMode={VeCakeModalView.CAKE_FORM_VIEW}
       endTime={endTime}
-      isValidLockAmount={isValidLockAmount}
+      thresholdLockAmount={thresholdLockAmount}
     />,
   )
 
@@ -128,12 +126,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
         </GreyCard>
       )}
 
-      <VeCakePreviewTextInfo
-        mb="24px"
-        endTime={endTime}
-        isValidLockAmount={isValidLockAmount}
-        thresholdLockAmount={thresholdLockAmount}
-      />
+      <VeCakePreviewTextInfo mb="24px" endTime={endTime} thresholdLockAmount={thresholdLockAmount} />
 
       {!cakeLocked ? (
         <VeCakeButtonWithMessage

@@ -12,7 +12,6 @@ import {
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 interface VeCakePreviewTextInfoProps extends BoxProps {
-  isValidLockAmount: boolean
   thresholdLockAmount: number
   endTime: number
   showIncreaseButton?: boolean
@@ -23,7 +22,7 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { endTime, isValidLockAmount, thresholdLockAmount, showIncreaseButton } = props
+  const { endTime, thresholdLockAmount, showIncreaseButton } = props
   const { userCreditWithTime } = useVeCakeUserCreditWithTime(endTime)
 
   const [onPresentVeCakeAddCakeModal] = useModal(
@@ -31,7 +30,7 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
       showSwitchButton
       viewMode={VeCakeModalView.CAKE_FORM_VIEW}
       endTime={endTime}
-      isValidLockAmount={isValidLockAmount}
+      thresholdLockAmount={thresholdLockAmount}
     />,
   )
 

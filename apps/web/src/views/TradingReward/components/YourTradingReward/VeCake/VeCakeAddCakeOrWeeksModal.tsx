@@ -24,7 +24,7 @@ interface VeCakeAddCakeOrWeeksModalProps extends InjectedModalProps {
   showSwitchButton?: boolean
   customWeeks?: string
   endTime?: number
-  isValidLockAmount?: boolean
+  thresholdLockAmount: number
 }
 
 export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeAddCakeOrWeeksModalProps>> = ({
@@ -32,7 +32,7 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
   showSwitchButton,
   customWeeks,
   endTime,
-  isValidLockAmount,
+  thresholdLockAmount,
   onDismiss,
 }) => {
   const { t } = useTranslation()
@@ -53,15 +53,18 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
     setModalViewMode(mode)
   }
 
-  const customVeCakeCard =
-    endTime && isValidLockAmount !== undefined ? (
-      <>
-        <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
-          {t('lock overview')}
-        </Text>
-        <PreviewOfVeCakeSnapShotTime endTime={endTime} isValidLockAmount={isValidLockAmount} />
-      </>
-    ) : null
+  const customVeCakeCard = endTime ? (
+    <>
+      <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
+        {t('lock overview')}
+      </Text>
+      <PreviewOfVeCakeSnapShotTime
+        viewMode={modalViewMode}
+        endTime={endTime}
+        thresholdLockAmount={thresholdLockAmount}
+      />
+    </>
+  ) : null
 
   return (
     <Modal

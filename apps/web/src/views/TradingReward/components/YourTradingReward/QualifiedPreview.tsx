@@ -27,7 +27,6 @@ import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
 interface QualifiedPreviewProps {
   timeRemaining: number
   campaignClaimTime: number
-  isValidLockAmount: boolean
   thresholdLockAmount: number
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail | undefined
@@ -38,7 +37,6 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
   timeRemaining,
   campaignClaimTime,
   currentUserCampaignInfo,
-  isValidLockAmount,
   thresholdLockAmount,
 }) => {
   const {
@@ -184,15 +182,14 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
         )}
       </GreyCard>
 
-      {isAdditionalAmountHit && (
-        <VeCakePreviewTextInfo
-          mt="24px"
-          showIncreaseButton
-          endTime={campaignClaimTime}
-          isValidLockAmount={isValidLockAmount}
-          thresholdLockAmount={thresholdLockAmount}
-        />
-      )}
+      <VeCakePreviewTextInfo
+        mt="24px"
+        showIncreaseButton
+        endTime={campaignClaimTime}
+        thresholdLockAmount={thresholdLockAmount}
+      />
+      {/* {isAdditionalAmountHit && (
+      )} */}
 
       <GreyCard mt="24px">
         <Flex>
