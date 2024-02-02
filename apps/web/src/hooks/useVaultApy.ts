@@ -43,9 +43,9 @@ export function useVaultApy({ duration = MAX_LOCK_DURATION }: { duration?: numbe
   const totalSharesAsEtherBN = useMemo(() => new BN(totalShares.toString()), [totalShares])
   const pricePerFullShareAsEtherBN = useMemo(() => new BN(pricePerFullShare.toString()), [pricePerFullShare])
 
-  const { data: totalCakePoolEmissionPerYear } = useQuery(
-    ['masterChef-total-cake-pool-emission'],
-    async () => {
+  const { data: totalCakePoolEmissionPerYear } = useQuery({
+    queryKey: ['masterChef-total-cake-pool-emission'],
+    queryFn: async () => {
       const bscClient = publicClient({ chainId: ChainId.BSC })
 
       const [specialFarmsPerBlock, cakePoolInfo, totalSpecialAllocPoint] = await bscClient.multicall({
@@ -76,12 +76,10 @@ export function useVaultApy({ duration = MAX_LOCK_DURATION }: { duration?: numbe
       const cakePoolSharesInSpecialFarms = new BN(allocPoint.toString()).div(new BN(totalSpecialAllocPoint.toString()))
       return new BN(specialFarmsPerBlock.toString()).times(BLOCKS_PER_YEAR).times(cakePoolSharesInSpecialFarms)
     },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-    },
-  )
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   const flexibleApy = useMemo(
     () =>
