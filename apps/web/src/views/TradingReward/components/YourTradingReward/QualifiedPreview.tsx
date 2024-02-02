@@ -182,14 +182,14 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
         )}
       </GreyCard>
 
-      <VeCakePreviewTextInfo
-        mt="24px"
-        showIncreaseButton
-        endTime={campaignClaimTime}
-        thresholdLockAmount={thresholdLockAmount}
-      />
-      {/* {isAdditionalAmountHit && (
-      )} */}
+      {isAdditionalAmountHit && (
+        <VeCakePreviewTextInfo
+          mt="24px"
+          showIncreaseButton
+          endTime={campaignClaimTime}
+          thresholdLockAmount={thresholdLockAmount}
+        />
+      )}
 
       <GreyCard mt="24px">
         <Flex>
