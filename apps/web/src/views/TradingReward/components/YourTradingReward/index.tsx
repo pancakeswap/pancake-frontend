@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
+import { useVeCakeUserCreditWithTime } from 'views/CakeStaking/hooks/useVeCakeUserCreditWithTime'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
@@ -170,12 +170,12 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { address: account } = useAccount()
   const { profile } = useProfile()
   const { cakeLocked, cakeLockExpired } = useCakeLockStatus()
-  const { balance } = useVeCakeBalance()
+  const { userCreditWithTime } = useVeCakeUserCreditWithTime(currentUserCampaignInfo?.campaignClaimTime ?? 0)
   const { thresholdLockAmount } = qualification
 
   const isValidLockAmount = useMemo(
-    () => new BigNumber(balance).gte(thresholdLockAmount),
-    [balance, thresholdLockAmount],
+    () => new BigNumber(userCreditWithTime).gte(thresholdLockAmount),
+    [userCreditWithTime, thresholdLockAmount],
   )
 
   const isQualified = useMemo(
