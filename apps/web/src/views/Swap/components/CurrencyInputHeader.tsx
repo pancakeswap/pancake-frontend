@@ -126,7 +126,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
               {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
             </Flex>
           ) : null}
-          {isChartSupported && setIsChartDisplayed && (
+          {isChartSupported && (
             <ColoredIconButton
               onClick={() => {
                 if (!isChartDisplayed && isSwapHotTokenDisplay) {
