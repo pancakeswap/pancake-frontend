@@ -23,6 +23,7 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { isUserRejected } from 'utils/sentry'
 
+import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { useChainName } from './useChainNames'
 
 export enum BRIDGE_STATE {
@@ -256,9 +257,11 @@ export function useLatestBridgeTx(ifoId: string, chainId?: ChainId) {
     }
   }, [storageKey])
 
+  const { waitForTransaction } = usePublicNodeWaitForTransaction()
+
   const { data: receipt } = useQuery({
     queryKey: [tx, 'bridge-icake-tx-receipt'],
-    queryFn: () => tx && getViemClients({ chainId })?.waitForTransactionReceipt({ hash: tx }),
+    queryFn: () => tx && waitForTransaction({ hash: tx, chainId }),
     enabled: Boolean(tx && chainId),
   })
 

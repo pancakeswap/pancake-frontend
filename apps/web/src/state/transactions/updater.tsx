@@ -1,14 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
-import { useQuery } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { BSC_BLOCK_TIME, FAST_INTERVAL } from 'config/constants'
+import { FAST_INTERVAL } from 'config/constants'
 import forEach from 'lodash/forEach'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { useAppDispatch } from 'state'
-import { RetryableError, retry } from 'state/multicall/retry'
 import {
   BlockNotFoundError,
   TransactionNotFoundError,
@@ -16,6 +14,10 @@ import {
   WaitForTransactionReceiptTimeoutError,
 } from 'viem'
 import { usePublicClient } from 'wagmi'
+import { retry, RetryableError } from 'state/multicall/retry'
+import { useQuery } from '@tanstack/react-query'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
+import { BSC_BLOCK_TIME } from 'config'
 import {
   FarmTransactionStatus,
   MsgStatus,
@@ -97,7 +99,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
           n: 10,
           minWait: 5000,
           maxWait: 10000,
-          delay: BSC_BLOCK_TIME * 1000 + 1000,
+          delay: (AVERAGE_CHAIN_BLOCK_TIMES[chainId] ?? BSC_BLOCK_TIME) * 1000 + 1000,
         })
       },
     )
