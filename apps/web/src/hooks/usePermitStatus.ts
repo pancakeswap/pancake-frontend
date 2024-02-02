@@ -73,18 +73,16 @@ const useTokenPermit = (token?: Token, owner?: Address, spender?: Address) => {
   const { data: permit } = useQuery({
     queryKey: ['/token-permit/', chainId, token?.address, owner, spender],
     queryFn: async () =>
-      chainId && !token?.isNative
-        ? publicClient({ chainId }).readContract({
-            abi: Permit2ABI,
-            address: getPermit2Address(chainId),
-            functionName: 'allowance',
-            args: inputs,
-          })
-        : undefined,
+      publicClient({ chainId }).readContract({
+        abi: Permit2ABI,
+        address: getPermit2Address(chainId),
+        functionName: 'allowance',
+        args: inputs,
+      }),
     refetchInterval: SLOW_INTERVAL,
     retry: true,
     refetchOnWindowFocus: false,
-    enabled: Boolean(token && spender && owner),
+    enabled: Boolean(chainId && token && !token.isNative && spender && owner),
     select: (data) => {
       if (!data || token?.isNative) return undefined
       const [amount, expiration, nonce] = data
