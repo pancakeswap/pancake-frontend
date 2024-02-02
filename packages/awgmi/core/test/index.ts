@@ -18,7 +18,7 @@ export function getAptosAccounts() {
 
 class AptosProvider extends AptosClient {
   toJSON() {
-    return `<AptosProvider url={${this.client.general.httpRequest.config.BASE}} />`
+    return `<AptosProvider url={${this.nodeUrl}} />`
   }
 }
 

@@ -23,7 +23,6 @@ test('exports', () => {
       "parseVmStatusError",
       "createClient",
       "Context",
-      "queryClientContext",
       "AwgmiConfig",
       "useClient",
       "useAccount",

@@ -44,7 +44,6 @@ test('exports', () => {
       "RpcError",
       "WalletProviderError",
       "UserRejectedRequestError",
-      "fetchHealthy",
       "fetchLedgerInfo",
       "getNetwork",
       "watchNetwork",
