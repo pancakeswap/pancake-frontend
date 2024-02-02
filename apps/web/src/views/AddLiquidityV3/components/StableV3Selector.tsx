@@ -68,7 +68,7 @@ export function StableV3Selector({
   )
 
   useEffect(() => {
-      if (feeAmount || isPending || isError || selectorType === SELECTOR_TYPE.STABLE) {
+    if (feeAmount || isPending || isError || selectorType === SELECTOR_TYPE.STABLE) {
       return
     }
 
