@@ -12,11 +12,6 @@ export const getSymbolAlias = (
   chainId: number | undefined,
   defaultSymbol?: string,
 ): string | undefined => {
-  console.debug('debug address', {
-    address,
-    chainId,
-    defaultSymbol,
-  })
   const addr = safeGetAddress(address)
   if (!addr || !chainId) {
     return defaultSymbol
