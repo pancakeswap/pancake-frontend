@@ -36,16 +36,16 @@ const StyledArticleContainer = styled(Box)`
   }
 `
 
-const StyledTagContainer = styled(Box)<{ isDesktop: boolean }>`
-  display: ${({ isDesktop }) => (isDesktop ? 'flex' : 'none')};
-  flex-direction: ${({ isDesktop }) => (isDesktop ? 'column' : null)};
+const StyledTagContainer = styled(Box)<{ isMobile: boolean }>`
+  display: ${({ isMobile }) => (isMobile ? 'none' : 'flex')};
+  flex-direction: ${({ isMobile }) => (isMobile ? null : 'column')};
   width: 194px;
   min-width: 194px;
   margin-right: 25px;
 `
 
-const StyledMobileTagContainer = styled(Box)<{ isDesktop: boolean }>`
-  display: ${({ isDesktop }) => (isDesktop ? 'none' : 'flex')};
+const StyledMobileTagContainer = styled(Box)<{ isMobile: boolean }>`
+  display: ${({ isMobile }) => (isMobile ? 'flex' : 'none')};
   flex-direction: column;
   padding: 0 16px;
   margin-bottom: 24px;
@@ -66,7 +66,7 @@ const StyledCard = styled(Flex)`
 
 const AllArticle = () => {
   const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   const router = useRouter()
   const [query, setQuery] = useState('')
   const articlesWrapperEl = useRef<HTMLDivElement>(null)
@@ -144,7 +144,7 @@ const AllArticle = () => {
         {t('All articles')}
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
-        <StyledTagContainer isDesktop={isDesktop}>
+        <StyledTagContainer isMobile={isMobile}>
           <CategoriesSelector
             selected={selectedCategories}
             categoriesData={categoriesData ?? []}
@@ -180,7 +180,7 @@ const AllArticle = () => {
               </InputGroup>
             </Box>
           </Flex>
-          <StyledMobileTagContainer isDesktop={isDesktop}>
+          <StyledMobileTagContainer isMobile={isMobile}>
             <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
               {t('Filter by')}
             </Text>
