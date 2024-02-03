@@ -171,6 +171,7 @@ export const subgraphTokenName = {
 // FIXME: this should be per chain
 export const subgraphTokenSymbol = {
   '0x14016E85a25aeb13065688cAFB43044C2ef86784': 'TUSDOLD',
+  '0x346575fC7f07E6994D76199E41D13dC1575322E1': 'DLP',
 }
 
 export const checkIsStableSwap = () => window.location.href.includes('stableSwap')
