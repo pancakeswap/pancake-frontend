@@ -66,7 +66,7 @@ const StyledCard = styled(Flex)`
 
 const AllArticle = () => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+
   const router = useRouter()
   const [query, setQuery] = useState('')
   const articlesWrapperEl = useRef<HTMLDivElement>(null)
@@ -131,6 +131,8 @@ const AllArticle = () => {
       localStorage.setItem(LS_KEY, language)
     }
   }
+
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <StyledArticleContainer id="all" ref={articlesWrapperEl}>
