@@ -9,11 +9,11 @@ import {
   Flex,
   Heading,
   Input,
+  ReactMarkdown,
+  ScanLink,
   Text,
   useModal,
   useToast,
-  ReactMarkdown,
-  ScanLink,
 } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
 import isEmpty from 'lodash/isEmpty'
@@ -34,7 +34,7 @@ import { useAccount, useWalletClient } from 'wagmi'
 import Layout from '../components/Layout'
 import VoteDetailsModal from '../components/VoteDetailsModal'
 import { ADMINS, PANCAKE_SPACE, VOTE_THRESHOLD } from '../config'
-import Choices, { ChoiceIdValue, makeChoice, MINIMUM_CHOICES } from './Choices'
+import Choices, { ChoiceIdValue, MINIMUM_CHOICES, makeChoice } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormErrors, Label, SecondaryLabel } from './styles'
 import { FormState } from './types'

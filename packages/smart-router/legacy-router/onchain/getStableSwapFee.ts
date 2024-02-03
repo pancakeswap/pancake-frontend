@@ -1,11 +1,11 @@
-import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 
-import { wrappedCurrencyAmount } from '../../evm/utils/currency'
-import { getOutputToken } from '../utils/pair'
-import { StableSwapPair, Provider, StableSwapFeeRaw } from '../types'
-import { STABLE_SWAP_INFO_ADDRESS } from '../../evm/constants'
 import { infoStableSwapABI } from '../../evm/abis/InfoStableSwap'
+import { STABLE_SWAP_INFO_ADDRESS } from '../../evm/constants'
+import { wrappedCurrencyAmount } from '../../evm/utils/currency'
+import { Provider, StableSwapFeeRaw, StableSwapPair } from '../types'
+import { getOutputToken } from '../utils/pair'
 
 export function getStableSwapFeeCall(pair: StableSwapPair, inputAmount: CurrencyAmount<Currency>) {
   const { chainId } = inputAmount.currency
@@ -47,10 +47,10 @@ export async function getStableSwapFee(
 
   const client = provider({ chainId })
 
-  const [[feeRaw, adminFeeRaw]] = await client.multicall({
+  const [[feeRaw, adminFeeRaw]] = (await client.multicall({
     contracts: [call],
     allowFailure: false,
-  })
+  })) as [[bigint, bigint]]
 
   return {
     fee: CurrencyAmount.fromRawAmount(outputToken, feeRaw),

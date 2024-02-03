@@ -1,5 +1,6 @@
 import { LanguageProvider } from "@pancakeswap/localization";
 import { Meta, Story } from "@storybook/react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
 import { Box } from "../Box";
 import { PairDataTimeWindowEnum, SwapLineChart, SwapLineChartNewProps } from "./PairPriceChart";

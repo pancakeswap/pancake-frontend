@@ -3,14 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useMemo } from 'react'
-import {
-  ContractFunctionConfig,
-  ContractFunctionResult,
-  Hex,
-  MulticallContracts,
-  isAddressEqual,
-  zeroAddress,
-} from 'viem'
+import { ContractFunctionConfig, Hex, MulticallContracts, isAddressEqual, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { usePublicClient } from 'wagmi'
 import { useGauges } from './useGauges'
@@ -68,7 +61,7 @@ export const useUserVoteSlopes = () => {
       const response = (await publicClient.multicall({
         contracts,
         allowFailure: false,
-      })) as ContractFunctionResult<typeof gaugesVotingABI, 'voteUserSlopes'>[]
+      })) as [bigint, bigint, bigint][]
 
       const len = gauges.length
       return gauges.map((gauge, index) => {

@@ -1,18 +1,18 @@
-import { AutoRenewIcon, Box, Button, Flex, Modal, Text, ModalV2, useToast } from '@pancakeswap/uikit'
-import confetti from 'canvas-confetti'
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import delay from 'lodash/delay'
-import React, { useRef, useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { AutoRenewIcon, Box, Button, Flex, Modal, ModalV2, Text, useToast } from '@pancakeswap/uikit'
+import confetti from 'canvas-confetti'
 import Dots from 'components/Loader/Dots'
-import { useRouter } from 'next/router'
-import { useAccount } from 'wagmi'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAnniversaryAchievementContract } from 'hooks/useContract'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import { useShowOnceAnniversaryModal } from 'hooks/useShowOnceAnniversaryModal'
+import delay from 'lodash/delay'
+import { useRouter } from 'next/router'
+import React, { useEffect, useRef, useState } from 'react'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 
 const AnniversaryImage = styled.img`
   border-radius: 50%;
@@ -58,8 +58,8 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   // Check claim status
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
-      const canClaimAnniversary = await contract.read.canClaim([account])
-      setCanClaimAnniversaryPoints(canClaimAnniversary)
+      const canClaimAnniversary = account && (await contract.read.canClaim([account]))
+      setCanClaimAnniversaryPoints(Boolean(canClaimAnniversary))
     }
 
     if (account && chainId === ChainId.BSC) {
@@ -117,7 +117,14 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
     setIsLoading(true)
 
     try {
-      const receipt = await fetchWithCatchTxError(() => contract.write.claimAnniversaryPoints({ account, chainId }))
+      const receipt =
+        account &&
+        (await fetchWithCatchTxError(() =>
+          contract.write.claimAnniversaryPoints({
+            account,
+            chain: contract.chain,
+          }),
+        ))
 
       if (receipt?.status) {
         toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
