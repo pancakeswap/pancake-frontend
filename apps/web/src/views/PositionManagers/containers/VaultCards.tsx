@@ -6,6 +6,7 @@ import { CardLayout } from '../components'
 import {
   PositionManagerStatus,
   useFetchApr,
+  usePositionInfo,
   usePositionManagerDetailsData,
   usePositionManagerStatus,
   useSearch,
@@ -46,6 +47,15 @@ export const VaultCards = memo(function VaultCards() {
         return `${d.currencyA.symbol}-${d.currencyB.symbol}${d.name}`.toLowerCase().includes(search.toLowerCase())
       }
       return true
+    })
+    .filter((d) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const info = usePositionInfo(d.address, d.adapterAddress ?? '0x')
+      if (info.startTimestamp <= Date.now() / 1000) {
+        return true
+      }
+
+      return false
     })
     .filter(() => {
       if (status === PositionManagerStatus.FINISHED) {
