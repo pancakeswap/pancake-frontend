@@ -23,6 +23,9 @@ const nextConfig = {
     '@pancakeswap/farms',
     '@pancakeswap/widgets-internal',
   ],
+  experimental: {
+    optimizePackageImports: ['@pancakeswap/widgets-internal', '@pancakeswap/uikit'],
+  },
   async redirects() {
     return [
       {
