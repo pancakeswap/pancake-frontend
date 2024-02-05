@@ -115,21 +115,25 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   const { data } = useQuery({
     queryKey: [chainId, 'cake-apr-tvl'],
 
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       if (chainId !== farmV3?.data.chainId) {
         throw new Error('ChainId mismatch')
       }
       const tvls: TvlMap = {}
       if (supportedChainIdV3.includes(chainId)) {
         const results = await Promise.allSettled(
-          farmV3.data.farmsWithPrice.map((f) =>
-            fetchWithTimeout(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`)
-              .then((r) => r.json())
-              .catch((err) => {
-                console.error(err)
-                throw err
-              }),
-          ),
+          farmV3.data.farmsWithPrice
+            .filter((f) => f.poolWeight !== '0')
+            .map((f) =>
+              fetchWithTimeout(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`, {
+                signal,
+              })
+                .then((r) => r.json())
+                .catch((err) => {
+                  console.error(err)
+                  throw err
+                }),
+            ),
         )
         results.forEach((r, i) => {
           tvls[farmV3.data.farmsWithPrice[i].lpAddress] =
