@@ -170,7 +170,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { address: account } = useAccount()
   const { profile } = useProfile()
   const { cakeLockExpired } = useCakeLockStatus()
-  const { userCreditWithTime } = useVeCakeUserCreditWithTime(currentUserCampaignInfo?.campaignClaimTime ?? 0)
+  const { userCreditWithTime } = useVeCakeUserCreditWithTime(incentives?.campaignClaimTime ?? 0)
   const { thresholdLockAmount } = qualification
 
   const isValidLockAmount = useMemo(
