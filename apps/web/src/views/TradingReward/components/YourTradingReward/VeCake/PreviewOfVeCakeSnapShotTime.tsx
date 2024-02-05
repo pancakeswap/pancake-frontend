@@ -1,11 +1,21 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, CheckmarkCircleFillIcon, ErrorIcon, Flex, Text } from '@pancakeswap/uikit'
-import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { WEEK } from 'config/constants/veCake'
+import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import Image from 'next/image'
 import { useMemo } from 'react'
+import { useLockCakeData } from 'state/vecake/hooks'
 import { styled } from 'styled-components'
+import { getVeCakeAmount } from 'utils/getVeCakeAmount'
+import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
+import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
+import { useTargetUnlockTime } from 'views/CakeStaking/hooks/useTargetUnlockTime'
 import { useVeCakeUserCreditWithTime } from 'views/CakeStaking/hooks/useVeCakeUserCreditWithTime'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { CakeLockStatus } from 'views/CakeStaking/types'
+import { VeCakeModalView } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakeAddCakeOrWeeksModal'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 const SnapShotTimeContainer = styled(Flex)<{ $isValid: boolean }>`
@@ -18,11 +28,13 @@ const SnapShotTimeContainer = styled(Flex)<{ $isValid: boolean }>`
 `
 
 interface PreviewOfVeCakeSnapShotTimeProps {
+  viewMode?: VeCakeModalView
   endTime: number
   thresholdLockAmount: number
 }
 
 export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<PreviewOfVeCakeSnapShotTimeProps>> = ({
+  viewMode,
   endTime,
   thresholdLockAmount,
 }) => {
@@ -32,14 +44,58 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
   } = useTranslation()
   const { userCreditWithTime } = useVeCakeUserCreditWithTime(endTime)
 
-  const valid = useMemo(
-    () => new BigNumber(userCreditWithTime).gte(new BigNumber(thresholdLockAmount)),
-    [thresholdLockAmount, userCreditWithTime],
+  const currentTimestamp = useCurrentBlockTimestamp()
+
+  const { balance: veCakeBalance } = useVeCakeBalance()
+  const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
+  const { cakeUnlockTime, cakeLockExpired, nativeCakeLockedAmount, status } = useCakeLockStatus()
+  const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
+  const unlockTimestamp = useTargetUnlockTime(
+    Number(cakeLockWeeks) * WEEK,
+    cakeLockExpired ? undefined : Number(cakeUnlockTime),
   )
 
-  const previewVeCakeAtSnapshot = useMemo(
-    () => formatNumber(getBalanceNumber(new BigNumber(userCreditWithTime)), 2, 2),
-    [userCreditWithTime],
+  const veCakeAmount = useMemo(() => {
+    const unlockTimeInSec =
+      currentTimestamp > unlockTimestamp ? 0 : new BigNumber(unlockTimestamp).minus(currentTimestamp).toNumber()
+
+    const endTimeInSec = currentTimestamp > endTime ? 0 : new BigNumber(endTime).minus(currentTimestamp).toNumber()
+
+    if (status === CakeLockStatus.NotLocked) {
+      const cakeAmountBN = getDecimalAmount(new BigNumber(cakeLockAmount))
+      const veCakeAmountFromNative = cakeAmountBN.isNaN()
+        ? 0
+        : getVeCakeAmount(cakeAmountBN.toString(), unlockTimeInSec)
+      return getBalanceAmount(proxyVeCakeBalance.plus(veCakeAmountFromNative))
+    }
+
+    if (viewMode === VeCakeModalView.WEEKS_FORM_VIEW) {
+      return getBalanceAmount(
+        proxyVeCakeBalance.plus(getVeCakeAmount(nativeCakeLockedAmount.toString(), unlockTimeInSec || endTimeInSec)),
+      )
+    }
+
+    return getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, endTimeInSec))
+  }, [
+    currentTimestamp,
+    unlockTimestamp,
+    endTime,
+    status,
+    viewMode,
+    veCakeBalance,
+    cakeLockAmount,
+    proxyVeCakeBalance,
+    nativeCakeLockedAmount,
+  ])
+
+  const previewVeCake = useMemo(
+    () => (veCakeAmount?.lt(0.1) ? veCakeAmount.sd(2).toString() : veCakeAmount?.toFixed(2)),
+    [veCakeAmount],
+  )
+
+  const valid = useMemo(
+    () => new BigNumber(veCakeAmount).gte(getBalanceAmount(new BigNumber(thresholdLockAmount))),
+    [thresholdLockAmount, veCakeAmount],
   )
 
   return (
@@ -69,7 +125,7 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
         </Flex>
         <Flex>
           <Text bold mr="4px" fontSize="20px" color={valid ? 'text' : 'warning'} style={{ alignSelf: 'center' }}>
-            {previewVeCakeAtSnapshot}
+            {previewVeCake}
           </Text>
           {valid ? <CheckmarkCircleFillIcon color="success" width={24} /> : <ErrorIcon color="warning" width={24} />}
         </Flex>
