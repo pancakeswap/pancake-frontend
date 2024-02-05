@@ -9,7 +9,7 @@ import uniqBy from 'lodash/uniqBy.js'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../../constants'
 import { wrappedCurrency } from '../../utils/currency'
-import { isCurrenciesSameChain } from '../utils'
+import { isCurrenciesSameChain, log } from '../utils'
 
 const allGuages = GAUGES_CONFIG[ChainId.BSC]
 
@@ -77,7 +77,13 @@ const getTokenBasesFromGauges = memoize(
         )
       }
     }
-    return Array.from(bases)
+    const baseList = Array.from(bases)
+    log(
+      `[ADDITIONAL_BASES] Token ${currency?.symbol}, bases from guages: [${baseList
+        .map((base) => base.symbol)
+        .join(',')}]`,
+    )
+    return baseList
   },
   (c) => `${c?.chainId}_${c?.wrapped.address}`,
 )
