@@ -121,22 +121,21 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
       }
       const tvls: TvlMap = {}
       if (supportedChainIdV3.includes(chainId)) {
+        const farmsToFetch = farmV3.data.farmsWithPrice.filter((f) => f.poolWeight !== '0')
         const results = await Promise.allSettled(
-          farmV3.data.farmsWithPrice
-            .filter((f) => f.poolWeight !== '0')
-            .map((f) =>
-              fetchWithTimeout(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`, {
-                signal,
-              })
-                .then((r) => r.json())
-                .catch((err) => {
-                  console.error(err)
-                  throw err
-                }),
-            ),
+          farmsToFetch.map((f) =>
+            fetchWithTimeout(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`, {
+              signal,
+            })
+              .then((r) => r.json())
+              .catch((err) => {
+                console.error(err)
+                throw err
+              }),
+          ),
         )
         results.forEach((r, i) => {
-          tvls[farmV3.data.farmsWithPrice[i].lpAddress] =
+          tvls[farmsToFetch[i].lpAddress] =
             r.status === 'fulfilled' ? { ...r.value.formatted, updatedAt: r.value.updatedAt } : null
         })
       }

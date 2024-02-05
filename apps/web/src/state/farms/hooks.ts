@@ -71,11 +71,17 @@ export const usePollFarmsWithUserData = () => {
     queryKey: ['publicFarmData', chainId],
 
     queryFn: async () => {
+      if (!chainId) {
+        throw new Error('ChainId is not defined')
+      }
       const farmsConfig = await getFarmConfig(chainId)
-      if (!farmsConfig) return
+      if (!farmsConfig) {
+        throw new Error('Failed to fetch farm config')
+      }
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
 
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
+      return null
     },
 
     enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
