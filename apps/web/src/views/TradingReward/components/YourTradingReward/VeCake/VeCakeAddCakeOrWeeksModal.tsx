@@ -58,11 +58,7 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
       <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
         {t('lock overview')}
       </Text>
-      <PreviewOfVeCakeSnapShotTime
-        viewMode={modalViewMode}
-        endTime={endTime}
-        thresholdLockAmount={thresholdLockAmount}
-      />
+      <PreviewOfVeCakeSnapShotTime endTime={endTime} thresholdLockAmount={thresholdLockAmount} />
     </>
   ) : null
 

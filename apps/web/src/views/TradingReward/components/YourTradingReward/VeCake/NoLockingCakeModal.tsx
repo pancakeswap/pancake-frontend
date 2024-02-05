@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
-import { getBalanceAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { WEEK } from 'config/constants/veCake'
 import React, { useMemo } from 'react'
@@ -40,7 +40,7 @@ export const NoLockingCakeModal: React.FC<React.PropsWithChildren<NoLockingCakeM
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
   const unlockTimestamp = useTargetUnlockTime(Number(cakeLockWeeks) * WEEK)
   const cakeAmountBN = useMemo(
-    () => getBalanceAmount(new BigNumber(Number(cakeLockAmount))).toString(),
+    () => getDecimalAmount(new BigNumber(Number(cakeLockAmount))).toString(),
     [cakeLockAmount],
   )
   const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
