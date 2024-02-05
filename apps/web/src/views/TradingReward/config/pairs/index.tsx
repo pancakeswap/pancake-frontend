@@ -11,12 +11,11 @@ import { farmsV3 as opBNBTestnetFarms } from '@pancakeswap/farms/constants/opBnb
 import { farmsV3 as zkEvmFarm } from '@pancakeswap/farms/constants/polygonZkEVM'
 import { farmsV3 as zkSyncFarm } from '@pancakeswap/farms/constants/zkSync'
 import { ComputedFarmConfigV3, FarmV3SupportedChainId } from '@pancakeswap/farms/src'
-import { tradingRewardV3Pair as tradingRewardV3Pair56 } from './56'
 
 export const tradingRewardPairConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
   [ChainId.ETHEREUM]: ethFarm,
   [ChainId.GOERLI]: farm5,
-  [ChainId.BSC]: [...bscFarm, ...tradingRewardV3Pair56],
+  [ChainId.BSC]: bscFarm,
   [ChainId.BSC_TESTNET]: farm97,
   [ChainId.POLYGON_ZKEVM]: zkEvmFarm,
   [ChainId.POLYGON_ZKEVM_TESTNET]: [],
