@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
+import { Box, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
 import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { WEEK } from 'config/constants/veCake'
@@ -14,7 +14,7 @@ import { useVeCakeAmount } from 'views/CakeStaking/hooks/useVeCakeAmount'
 import { PreviewOfVeCakeSnapShotTime } from 'views/TradingReward/components/YourTradingReward/VeCake/PreviewOfVeCakeSnapShotTime'
 
 const StyledModal = styled(Modal)`
-  > div > div > div > div:first-child {
+  > div > div > div > div:first-child > div {
     margin-top: 0;
   }
 `
@@ -51,23 +51,31 @@ export const NoLockingCakeModal: React.FC<React.PropsWithChildren<NoLockingCakeM
   const veCake = veCakeAmount ? getFullDisplayBalance(new BigNumber(veCakeAmount), 18, 3) : '0'
 
   return (
-    <StyledModal title="Lock CAKE to get veCAKE" headerBorderColor="transparent" maxWidth={777} onDismiss={onDismiss}>
-      <NotLockingCard
-        hideTitle
-        hideCardPadding
-        customVeCakeCard={<PreviewOfVeCakeSnapShotTime endTime={endTime} thresholdLockAmount={thresholdLockAmount} />}
-        customDataRow={
-          <DataRow
-            label={
-              <Text fontSize={14} color="textSubtle" style={{ textTransform: 'initial' }}>
-                {t('veCAKE')}
-              </Text>
-            }
-            value={<ValueText>{veCake}</ValueText>}
-          />
-        }
-        onDismiss={onDismiss}
-      />
+    <StyledModal
+      width="100%"
+      title="Lock CAKE to get veCAKE"
+      headerBorderColor="transparent"
+      maxWidth={['100%', '100%', '100%', '777px']}
+      onDismiss={onDismiss}
+    >
+      <Box width="100%" overflowX="auto">
+        <NotLockingCard
+          hideTitle
+          hideCardPadding
+          customVeCakeCard={<PreviewOfVeCakeSnapShotTime endTime={endTime} thresholdLockAmount={thresholdLockAmount} />}
+          customDataRow={
+            <DataRow
+              label={
+                <Text fontSize={14} color="textSubtle" style={{ textTransform: 'initial' }}>
+                  {t('veCAKE')}
+                </Text>
+              }
+              value={<ValueText>{veCake}</ValueText>}
+            />
+          }
+          onDismiss={onDismiss}
+        />
+      </Box>
     </StyledModal>
   )
 }
