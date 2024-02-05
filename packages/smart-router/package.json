@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/gauges": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
