@@ -22,7 +22,6 @@ export enum VeCakeModalView {
 interface VeCakeAddCakeOrWeeksModalProps extends InjectedModalProps {
   viewMode?: VeCakeModalView
   showSwitchButton?: boolean
-  customWeeks?: string
   endTime?: number
   thresholdLockAmount: number
 }
@@ -30,7 +29,6 @@ interface VeCakeAddCakeOrWeeksModalProps extends InjectedModalProps {
 export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeAddCakeOrWeeksModalProps>> = ({
   viewMode,
   showSwitchButton,
-  customWeeks,
   endTime,
   thresholdLockAmount,
   onDismiss,
@@ -85,12 +83,7 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
         {modalViewMode === VeCakeModalView.CAKE_FORM_VIEW ? (
           <LockCakeForm hideLockCakeDataSetStyle customVeCakeCard={customVeCakeCard} onDismiss={onDismiss} />
         ) : (
-          <LockWeeksForm
-            hideLockWeeksDataSetStyle
-            customWeeks={customWeeks}
-            customVeCakeCard={customVeCakeCard}
-            onDismiss={onDismiss}
-          />
+          <LockWeeksForm hideLockWeeksDataSetStyle customVeCakeCard={customVeCakeCard} onDismiss={onDismiss} />
         )}
       </Flex>
     </Modal>

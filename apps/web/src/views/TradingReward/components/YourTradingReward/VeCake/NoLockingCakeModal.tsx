@@ -25,14 +25,12 @@ const ValueText = styled(Text)`
 `
 
 interface NoLockingCakeModalProps extends InjectedModalProps {
-  customWeeks?: string
   thresholdLockAmount: number
   endTime: number
 }
 
 export const NoLockingCakeModal: React.FC<React.PropsWithChildren<NoLockingCakeModalProps>> = ({
   endTime,
-  customWeeks,
   thresholdLockAmount,
   onDismiss,
 }) => {
@@ -58,7 +56,6 @@ export const NoLockingCakeModal: React.FC<React.PropsWithChildren<NoLockingCakeM
         hideTitle
         hideCardPadding
         customVeCakeCard={<PreviewOfVeCakeSnapShotTime endTime={endTime} thresholdLockAmount={thresholdLockAmount} />}
-        customWeeks={customWeeks}
         customDataRow={
           <DataRow
             label={

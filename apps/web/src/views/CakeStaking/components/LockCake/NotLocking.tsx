@@ -25,7 +25,6 @@ interface NotLockingCardProps {
   hideCardPadding?: boolean
   customVeCakeCard?: JSX.Element
   customDataRow?: JSX.Element
-  customWeeks?: string
   onDismiss?: () => void
 }
 
@@ -34,7 +33,6 @@ export const NotLockingCard: React.FC<React.PropsWithChildren<NotLockingCardProp
   hideCardPadding,
   customVeCakeCard,
   customDataRow,
-  customWeeks,
   onDismiss,
 }) => {
   const { address: account } = useAccount()
@@ -61,7 +59,7 @@ export const NotLockingCard: React.FC<React.PropsWithChildren<NotLockingCardProp
         mb={32}
       >
         <LockCakeForm fieldOnly />
-        <LockWeeksForm fieldOnly customWeeks={customWeeks} />
+        <LockWeeksForm fieldOnly />
       </Grid>
       <NewStakingDataSet
         cakeAmount={Number(cakeLockAmount)}
