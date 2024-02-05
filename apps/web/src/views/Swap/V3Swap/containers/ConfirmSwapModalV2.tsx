@@ -72,7 +72,8 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   }, [confirmModalState])
   const stepsVisible = useMemo(() => {
     if (swapErrorMessage) return false
-    if (confirmModalState === ConfirmModalState.REVIEWING) return false
+    if (confirmModalState === ConfirmModalState.REVIEWING || confirmModalState === ConfirmModalState.COMPLETED)
+      return false
     if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION && txHash) return false
     return pendingModalSteps.length > 0 && pendingModalSteps.some((step) => step.showIndicator)
   }, [confirmModalState, pendingModalSteps, swapErrorMessage, txHash])

@@ -10,19 +10,11 @@ import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { publicClient } from 'utils/client'
-import { isUserRejected } from 'utils/sentry'
-import { Address, BaseError, Hex, UserRejectedRequestError } from 'viem'
+import { UserUnexpectedTxError } from 'utils/errors'
+import { Address, Hex } from 'viem'
 import { computeTradePriceBreakdown } from '../utils/exchange'
-import { TransactionRejectedError } from './useSendSwapTransaction'
+import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallback } from './useSwapCallback'
-
-const userRejectedError = (error: unknown): boolean => {
-  return (
-    error instanceof UserRejectedRequestError ||
-    error instanceof TransactionRejectedError ||
-    (typeof error !== 'string' && isUserRejected(error))
-  )
-}
 
 export type ConfirmAction = {
   step: ConfirmModalState
@@ -53,21 +45,6 @@ const useCreateConfirmSteps = (
   }, [requireRevoke, requireApprove, requirePermit, actions])
 }
 
-class UserUnexpectedTxError extends BaseError {
-  override name = 'UserUnexpectedTxError'
-
-  constructor({ expectedData, actualData }: { expectedData: unknown; actualData: unknown }) {
-    super('User initiated unexpected transaction', {
-      metaMessages: [
-        `User initiated unexpected transaction`,
-        ``,
-        `  Expected data: ${expectedData}`,
-        `  Actual data: ${actualData}`,
-      ],
-    })
-  }
-}
-
 // define the actions of each step
 const useConfirmActions = (
   trade: SmartRouterTrade<TradeType> | undefined,
@@ -78,11 +55,7 @@ const useConfirmActions = (
   const { chainId } = useActiveChainId()
   const deadline = useTransactionDeadline()
   const { revoke, permit, approve, permit2Signature, permit2Allowance, refetch } = usePermit2(amountToApprove, spender)
-  const {
-    callback: swap,
-    error: swapError,
-    reason: swapRevertReason,
-  } = useSwapCallback({
+  const { callback: swap } = useSwapCallback({
     trade,
     deadline,
     permitSignature: permit2Signature,
