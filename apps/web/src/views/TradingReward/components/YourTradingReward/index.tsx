@@ -174,7 +174,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { thresholdLockAmount } = qualification
 
   const isValidLockAmount = useMemo(
-    () => new BigNumber(userCreditWithTime).gte(thresholdLockAmount),
+    () => new BigNumber(userCreditWithTime).gt(0) && new BigNumber(userCreditWithTime).gte(thresholdLockAmount),
     [userCreditWithTime, thresholdLockAmount],
   )
 
