@@ -110,12 +110,14 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
       </Flex>
       <Flex justifyContent={['space-between']}>
         <Flex>
-          <Image
-            width={39}
-            height={39}
-            alt="trading-reward-vecake"
-            src={`${ASSET_CDN}/web/vecake/token-vecake-with-time.png`}
-          />
+          <Box width={39}>
+            <Image
+              width={39}
+              height={39}
+              alt="trading-reward-vecake"
+              src={`${ASSET_CDN}/web/vecake/token-vecake-with-time.png`}
+            />
+          </Box>
           <Text style={{ alignSelf: 'center' }} bold ml="8px" fontSize="20px">
             {`${t('veCAKE')}⌛`}
           </Text>
