@@ -7,6 +7,7 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { CakeLockStatus } from 'views/CakeStaking/types'
 import { Header } from 'views/TradingReward/components/YourTradingReward/VeCake/Header'
 import { NoLockingCakeModal } from 'views/TradingReward/components/YourTradingReward/VeCake/NoLockingCakeModal'
 import {
@@ -38,7 +39,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
   const { t } = useTranslation()
   const router = useRouter()
   const cakePriceBusd = useCakePrice()
-  const { cakeLocked, cakeLockExpired } = useCakeLockStatus()
+  const { status, cakeLockExpired } = useCakeLockStatus()
   const timeUntil = getTimePeriods(timeRemaining)
 
   const [onPresentNoLockingCakeModal] = useModal(
@@ -128,7 +129,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
 
       <VeCakePreviewTextInfo mb="24px" endTime={endTime} thresholdLockAmount={thresholdLockAmount} />
 
-      {!cakeLocked ? (
+      {status === CakeLockStatus.NotLocked ? (
         <VeCakeButtonWithMessage
           messageText={t('Get veCAKE to start earning')}
           buttonText={t('Get veCAKE')}
