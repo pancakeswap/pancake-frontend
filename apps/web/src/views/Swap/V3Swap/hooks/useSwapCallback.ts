@@ -16,7 +16,6 @@ import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
 import type { TWallchainMasterInput, WallchainStatus } from './useWallchain'
-import { useWallchainSwapCallArguments } from './useWallchain'
 
 export enum SwapCallbackState {
   INVALID,
@@ -38,8 +37,8 @@ interface UseSwapCallbackArgs {
   deadline?: bigint
   permitSignature: Permit2Signature | undefined
   feeOptions?: FeeOptions
-  onWallchainDrop: () => void
-  statusWallchain: WallchainStatus
+  onWallchainDrop?: () => void
+  statusWallchain?: WallchainStatus
   wallchainMasterInput?: TWallchainMasterInput
 }
 
@@ -50,9 +49,6 @@ export function useSwapCallback({
   deadline,
   permitSignature,
   feeOptions,
-  onWallchainDrop,
-  statusWallchain,
-  wallchainMasterInput,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
@@ -70,21 +66,16 @@ export function useSwapCallback({
     feeOptions,
   )
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const wallchainSwapCalls = useWallchainSwapCallArguments(
-    trade,
-    swapCalls,
-    account,
-    onWallchainDrop,
-    wallchainMasterInput,
-  )
+  // const wallchainSwapCalls = useWallchainSwapCallArguments(
+  //   trade,
+  //   swapCalls,
+  //   account,
+  //   onWallchainDrop,
+  //   wallchainMasterInput,
+  // )
+  // const wallchainSwapCalls = []
 
-  const { callback } = useSendSwapTransaction(
-    account,
-    chainId,
-    trade ?? undefined,
-    // @ts-ignore
-    statusWallchain === 'found' ? wallchainSwapCalls : swapCalls,
-  )
+  const { callback } = useSendSwapTransaction(account, chainId, trade ?? undefined, swapCalls)
 
   return useMemo(() => {
     if (!trade || !account || !chainId || !callback) {
