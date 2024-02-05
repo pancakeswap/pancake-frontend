@@ -1,5 +1,5 @@
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
-import { ethereumTokens } from '@pancakeswap/tokens'
+import { bscTestnetTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import { Address, isAddressEqual } from 'viem'
 import useAccountActiveChain from './useAccountActiveChain'
@@ -9,7 +9,7 @@ import { usePermit2Details } from './usePermit2Details'
 
 export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, spender?: Address) => {
   const { account } = useAccountActiveChain()
-  const allowance = usePermit2Allowance(account, amount?.currency)
+  const { allowance, refetch } = usePermit2Allowance(account, amount?.currency)
   const { amount: permitAmount, expiration } = usePermit2Details(account, amount?.currency, spender)
   const now = useCurrentBlockTimestamp() ?? 0n
 
@@ -18,7 +18,11 @@ export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, sp
       amount?.currency?.chainId === ethereumTokens.usdt.chainId &&
       isAddressEqual(amount?.currency.address, ethereumTokens.usdt.address)
 
-    if (!isMainnetUSDT) return false
+    const isBSCTestNetBUSD =
+      amount?.currency?.chainId === bscTestnetTokens.busd.chainId &&
+      isAddressEqual(amount?.currency.address, bscTestnetTokens.busd.address)
+
+    if (!isMainnetUSDT || isBSCTestNetBUSD) return false
 
     return !!allowance && allowance.greaterThan(0) && allowance.lessThan(amount)
   }, [allowance, amount])
@@ -35,5 +39,9 @@ export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, sp
     requireApprove,
     requireRevoke,
     requirePermit,
+
+    allowance,
+
+    refetch,
   }
 }

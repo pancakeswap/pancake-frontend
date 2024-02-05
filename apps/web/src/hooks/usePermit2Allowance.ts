@@ -6,10 +6,10 @@ import useTokenAllowance from './useTokenAllowance'
 
 export const usePermit2Allowance = (owner?: Address, token?: Currency) => {
   const { chainId } = useActiveChainId()
-  const { allowance } = useTokenAllowance(
+  const { allowance, refetch } = useTokenAllowance(
     token?.isNative ? undefined : (token as Token),
     owner,
     getPermit2Address(chainId),
   )
-  return allowance
+  return { allowance, refetch }
 }

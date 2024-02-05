@@ -1,6 +1,7 @@
 import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
+import { QueryObserverResult } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { SendTransactionResult } from 'wagmi/actions'
@@ -28,6 +29,8 @@ type Permit2HookCallback = {
   permit: () => Promise<Permit2Signature>
   approve: () => Promise<SendTransactionResult | undefined>
   revoke: () => Promise<SendTransactionResult | undefined>
+
+  refetch: () => Promise<QueryObserverResult<bigint>>
 }
 
 type UsePermit2ReturnType = Permit2HookState & Permit2HookCallback
@@ -41,7 +44,13 @@ export const usePermit2 = (
 
   const permit2Details = usePermit2Details(account, amount?.currency, spender)
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>()
-  const { requireApprove, requirePermit, requireRevoke } = usePermit2Requires(amount, spender)
+  const {
+    requireApprove,
+    requirePermit,
+    requireRevoke,
+    refetch,
+    allowance: permit2Allowance,
+  } = usePermit2Requires(amount, spender)
 
   const [isPermitting, setIsPermitting] = useState(false)
   const [isRevoking, setIsRevoking] = useState(false)
@@ -51,7 +60,7 @@ export const usePermit2 = (
   const {
     approveCallback,
     revokeCallback,
-    currentAllowance: permit2Allowance,
+    // currentAllowance: permit2Allowance,
   } = useApproveCallback(amount, approveTarget)
 
   const permit = useCallback(async () => {
@@ -102,6 +111,8 @@ export const usePermit2 = (
     requireApprove,
     requirePermit,
     requireRevoke,
+
+    refetch,
 
     approve,
     revoke,
