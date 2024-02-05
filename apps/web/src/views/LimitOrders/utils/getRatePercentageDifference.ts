@@ -1,8 +1,8 @@
-import { Percent, Price, Currency } from '@pancakeswap/sdk'
+import { Currency, Percent, Price } from '@pancakeswap/sdk'
 
 const getRatePercentageDifference = (
-  currentMarketRate: Price<Currency, Currency>,
-  price: Price<Currency, Currency>,
+  currentMarketRate?: Price<Currency, Currency>,
+  price?: Price<Currency, Currency>,
 ) => {
   if (currentMarketRate && price) {
     const percentageAsFraction = price.subtract(currentMarketRate).divide(currentMarketRate)

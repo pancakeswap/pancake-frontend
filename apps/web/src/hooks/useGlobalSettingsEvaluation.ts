@@ -1,6 +1,7 @@
 import { useAudioPlay, useExpertMode, useUserSingleHopOnly, useUserSlippage } from '@pancakeswap/utils/user'
 
 import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
+import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import {
   useGasPriceManager,
@@ -8,16 +9,15 @@ import {
   useUserTransactionTTL,
   useUserUsernameVisibility,
 } from 'state/user/hooks'
-import useTheme from 'hooks/useTheme'
+import { useUserChart } from 'state/user/hooks/useUserChart'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
+import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import {
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
   useUserV2SwapEnable,
   useUserV3SwapEnable,
 } from 'state/user/smartRouter'
-import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
-import { useUserChart } from 'state/user/hooks/useUserChart'
 import { useIsSwapHotTokenDisplayFlag } from './useSwapHotTokenDisplay'
 
 export function useGlobalSettingsEvaluation() {
@@ -29,7 +29,7 @@ export function useGlobalSettingsEvaluation() {
   const [subgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility] = useUserUsernameVisibility()
   const { enabled } = useWebNotifications()
-  const [userChart] = useUserChart()
+  const [userChart] = useUserChart(false)
   const isSwapHotTokenDisplay = useIsSwapHotTokenDisplayFlag()
   useFeatureFlagEvaluation('global-settings-expert-mode', expertMode)
   useFeatureFlagEvaluation('global-settings-audio-play', audioPlay)

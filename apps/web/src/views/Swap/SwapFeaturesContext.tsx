@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'components/AccessRisk/config/supportedChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import React, { createContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useMemo, useState } from 'react'
 import { useExchangeChartManager } from 'state/user/hooks'
 
 export const SwapFeaturesContext = createContext<{
@@ -36,8 +36,7 @@ const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
 export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { isMobile } = useMatchBreakpoints()
   const { chainId } = useActiveChainId()
-  const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
-  const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+  const [isChartDisplayed, setIsChartDisplayed] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)
 
   const isChartSupported = useMemo(
@@ -59,10 +58,6 @@ export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ childr
     [chainId],
   )
 
-  useEffect(() => {
-    setUserChartPreference(isChartDisplayed)
-  }, [isChartDisplayed, setUserChartPreference])
-
   const value = useMemo(() => {
     return {
       isHotTokenSupported,
@@ -80,6 +75,7 @@ export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ childr
     isStableSupported,
     isAccessTokenSupported,
     isChartDisplayed,
+    setIsChartDisplayed,
     isChartExpanded,
   ])
 
