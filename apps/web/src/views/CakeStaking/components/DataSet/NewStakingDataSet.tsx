@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, Box, Text, TooltipText, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { getBalanceAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
@@ -26,13 +26,14 @@ export const NewStakingDataSet: React.FC<{
   const { t } = useTranslation()
   const { cakeLockWeeks } = useLockCakeData()
   const unlockTimestamp = useTargetUnlockTime(Number(cakeLockWeeks) * WEEK)
-  const cakeAmountBN = useMemo(() => getBalanceAmount(new BN(cakeAmount)).toString(), [cakeAmount])
+  const cakeAmountBN = useMemo(() => getDecimalAmount(new BN(cakeAmount)).toString(), [cakeAmount])
   const veCakeAmountFromNative = useVeCakeAmount(cakeAmountBN, unlockTimestamp)
   const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
   const veCakeAmount = useMemo(
     () => proxyVeCakeBalance.plus(veCakeAmountFromNative),
     [proxyVeCakeBalance, veCakeAmountFromNative],
   )
+
   const veCake = veCakeAmount ? getFullDisplayBalance(new BN(veCakeAmount), 18, 3) : '0'
   const factor =
     veCakeAmountFromNative && veCakeAmountFromNative
