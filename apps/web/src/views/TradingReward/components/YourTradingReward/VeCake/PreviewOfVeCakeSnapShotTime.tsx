@@ -12,7 +12,6 @@ import { getVeCakeAmount } from 'utils/getVeCakeAmount'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
 import { useTargetUnlockTime } from 'views/CakeStaking/hooks/useTargetUnlockTime'
-import { useVeCakeUserCreditWithTime } from 'views/CakeStaking/hooks/useVeCakeUserCreditWithTime'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from 'views/CakeStaking/types'
 import { VeCakeModalView } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakeAddCakeOrWeeksModal'
@@ -42,8 +41,6 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { userCreditWithTime } = useVeCakeUserCreditWithTime(endTime)
-
   const currentTimestamp = useCurrentBlockTimestamp()
 
   const { balance: veCakeBalance } = useVeCakeBalance()
@@ -71,7 +68,7 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
 
     if (viewMode === VeCakeModalView.WEEKS_FORM_VIEW) {
       return getBalanceAmount(
-        proxyVeCakeBalance.plus(getVeCakeAmount(nativeCakeLockedAmount.toString(), unlockTimeInSec || endTimeInSec)),
+        proxyVeCakeBalance.plus(getVeCakeAmount(nativeCakeLockedAmount.toString(), unlockTimeInSec)),
       )
     }
 
