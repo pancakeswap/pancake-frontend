@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, CheckmarkCircleFillIcon, ErrorIcon, Flex, Text } from '@pancakeswap/uikit'
+import { Box, CheckmarkCircleFillIcon, ErrorIcon, Flex, Image, Text } from '@pancakeswap/uikit'
 import { getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { WEEK } from 'config/constants/veCake'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
-import Image from 'next/image'
 import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { styled } from 'styled-components'
@@ -114,7 +114,7 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
             width={39}
             height={39}
             alt="trading-reward-vecake"
-            src="/images/trading-reward/trading-reward-vecake-icon.png"
+            src={`${ASSET_CDN}/web/vecake/token-vecake-with-time.png`}
           />
           <Text style={{ alignSelf: 'center' }} bold ml="8px" fontSize="20px">
             {`${t('veCAKE')}⌛`}

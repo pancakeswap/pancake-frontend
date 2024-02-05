@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Link, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { Box, Flex, Image, Link, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 export const Header = () => {
   const { t } = useTranslation()
@@ -23,7 +23,7 @@ export const Header = () => {
         width={62}
         height={62}
         alt="trading-reward-vecake"
-        src="/images/trading-reward/trading-reward-vecake-icon.png"
+        src={`${ASSET_CDN}/web/vecake/token-vecake-with-time.png`}
       />
       <Text textAlign="center" lineHeight="120%" m="24px 0 4px 0">
         {t('To earn trading reward, there is a minimum requirement of your')}
