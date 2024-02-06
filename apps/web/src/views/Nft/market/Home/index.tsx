@@ -87,7 +87,7 @@ const Home = () => {
           <SearchBar />
         </StyledHeaderInner>
       </StyledPageHeader>
-      {status !== FetchStatus.Fetched ? (
+      {status !== 'success' ? (
         <PageLoader />
       ) : (
         <PageSection
