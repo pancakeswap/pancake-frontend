@@ -53,10 +53,7 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
   )
 
   const veCakeAmount = useMemo(() => {
-    const unlockTimeInSec =
-      currentTimestamp > unlockTimestamp ? 0 : new BigNumber(unlockTimestamp).minus(currentTimestamp).toNumber()
-
-    const endTimeInSec = currentTimestamp > endTime ? 0 : new BigNumber(endTime).minus(currentTimestamp).toNumber()
+    const unlockTimeInSec = endTime > unlockTimestamp ? 0 : new BigNumber(unlockTimestamp).minus(endTime).toNumber()
 
     if (status === CakeLockStatus.NotLocked) {
       const cakeAmountBN = cakeLockAmount ? getDecimalAmount(new BigNumber(cakeLockAmount)) : 0
@@ -70,9 +67,8 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
       )
     }
 
-    return getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, endTimeInSec))
+    return getBalanceAmount(veCakeBalance).plus(getVeCakeAmount(cakeLockAmount, unlockTimeInSec))
   }, [
-    currentTimestamp,
     unlockTimestamp,
     endTime,
     status,
