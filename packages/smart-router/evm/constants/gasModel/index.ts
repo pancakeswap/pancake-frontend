@@ -1,8 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Token } from '@pancakeswap/sdk'
 import {
+  arbSepoliaTokens,
   arbitrumGoerliTokens,
   arbitrumTokens,
+  baseSepoliaTokens,
   baseTestnetTokens,
   baseTokens,
   bscTestnetTokens,
@@ -39,6 +41,8 @@ export const usdGasTokensByChain = {
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc],
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc],
+  [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc],
+  [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc],
 } satisfies Record<ChainId, Token[]>
 
 export * from './stableSwap'

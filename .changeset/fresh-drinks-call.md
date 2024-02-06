@@ -6,4 +6,4 @@
 '@pancakeswap/v3-sdk': patch
 ---
 
-Add sepolia support
+Add sepolia, base sepolia, arbitrum sepolia support

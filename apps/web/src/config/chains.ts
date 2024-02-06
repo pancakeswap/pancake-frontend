@@ -4,8 +4,10 @@ import {
   Chain,
   arbitrum,
   arbitrumGoerli,
+  arbitrumSepolia,
   base,
   baseGoerli,
+  baseSepolia,
   bscTestnet,
   bsc as bsc_,
   goerli,
@@ -68,6 +70,8 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.BASE_TESTNET,
   ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,
+  ChainId.ARBITRUM_SEPOLIA,
+  ChainId.BASE_SEPOLIA,
 ]
 
 export const CHAINS = [
@@ -82,10 +86,12 @@ export const CHAINS = [
   zkSyncTestnet,
   arbitrum,
   arbitrumGoerli,
+  arbitrumSepolia,
   linea,
   lineaTestnet,
   base,
   baseGoerli,
+  baseSepolia,
   opBNB,
   opBNBTestnet,
   scrollSepolia,

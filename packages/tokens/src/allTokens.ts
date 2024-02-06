@@ -2,7 +2,9 @@ import { ChainId } from '@pancakeswap/chains'
 
 import { arbitrumTokens } from './constants/arb'
 import { arbitrumGoerliTokens } from './constants/arbGoerli'
+import { arbSepoliaTokens } from './constants/arbSepolia'
 import { baseTokens } from './constants/base'
+import { baseSepoliaTokens } from './constants/baseSepolia'
 import { baseTestnetTokens } from './constants/baseTestnet'
 import { bscTokens } from './constants/bsc'
 import { bscTestnetTokens } from './constants/bscTestnet'
@@ -38,4 +40,6 @@ export const allTokens = {
   [ChainId.BASE_TESTNET]: baseTestnetTokens,
   [ChainId.SCROLL_SEPOLIA]: scrollSepoliaTokens,
   [ChainId.SEPOLIA]: sepoliaTokens,
+  [ChainId.ARBITRUM_SEPOLIA]: arbSepoliaTokens,
+  [ChainId.BASE_SEPOLIA]: baseSepoliaTokens,
 }

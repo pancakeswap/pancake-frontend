@@ -4,7 +4,9 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { useEnsAddress } from 'wagmi'
 
-const ENS_SUPPORT_CHAIN_IDS = CHAINS.filter((c) => 'ensUniversalResolver' in c.contracts).map((c) => c.id)
+const ENS_SUPPORT_CHAIN_IDS = CHAINS.filter((c) => 'contracts' in c && 'ensUniversalResolver' in c.contracts).map(
+  (c) => c.id,
+)
 
 const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
 

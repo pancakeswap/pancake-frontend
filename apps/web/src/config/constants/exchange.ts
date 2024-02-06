@@ -5,8 +5,10 @@ import {
   USDC,
   USDT,
   WBTC_ETH,
+  arbSepoliaTokens,
   arbitrumGoerliTokens,
   arbitrumTokens,
+  baseSepoliaTokens,
   baseTestnetTokens,
   baseTokens,
   bscTestnetTokens,
@@ -49,6 +51,8 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.BASE_TESTNET]: 6_000,
   [ChainId.SCROLL_SEPOLIA]: 6_000,
   [ChainId.SEPOLIA]: 12_000,
+  [ChainId.BASE_SEPOLIA]: 6_000,
+  [ChainId.ARBITRUM_SEPOLIA]: 6_000,
 } as const satisfies Record<ChainId, number>
 
 // used for display in the default list when adding liquidity
@@ -76,6 +80,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
+  [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
+  [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -98,6 +104,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
+  [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
+  [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {

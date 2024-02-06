@@ -15,8 +15,8 @@ import {
   QuoteProvider,
   QuoteRetryOptions,
   QuoterOptions,
-  RouteWithoutQuote,
   RouteWithQuote,
+  RouteWithoutQuote,
 } from '../types'
 import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
@@ -43,6 +43,8 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.BASE_TESTNET]: 0.1,
   [ChainId.SCROLL_SEPOLIA]: 0.1,
   [ChainId.SEPOLIA]: 0.1,
+  [ChainId.ARBITRUM_SEPOLIA]: 0.1,
+  [ChainId.BASE_SEPOLIA]: 0.1,
 } as const satisfies Record<ChainId, number>
 
 type V3Inputs = [string, string]
