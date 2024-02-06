@@ -6,7 +6,6 @@ import forEach from 'lodash/forEach'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 import React, { useEffect, useMemo, useRef } from 'react'
-import { useAppDispatch } from 'state'
 import {
   BlockNotFoundError,
   TransactionNotFoundError,

@@ -9,19 +9,11 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { AppState, useAppDispatch } from 'state'
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
-import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
-import { useQuery } from '@tanstack/react-query'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { safeGetAddress } from 'utils'
 import { Hex, hexToBigInt } from 'viem'
 import { useFeeData, useWalletClient } from 'wagmi'
-import { GAS_PRICE_GWEI } from '../../types'
-import { Hex, hexToBigInt } from 'viem'
-import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
 import { useUserState } from 'state/user/reducer'
+import { GAS_PRICE_GWEI } from '../../types'
 import {
   FarmStakedOnly,
   SerializedPair,
@@ -279,9 +271,9 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
   const { chainId: chainId_ } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
   const { data: signer } = useWalletClient({ chainId })
-    const [state] = useUserState()
-    const userGas = state.gasPrice
-    const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useQuery({
+  const [state] = useUserState()
+  const userGas = state.gasPrice
+  const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useQuery({
     queryKey: ['bscProviderGasPrice', signer],
 
     queryFn: async () => {
