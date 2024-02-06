@@ -50,8 +50,7 @@ export function Blocklist() {
       <ModalV2 isOpen closeOnOverlayClick={false} disableOutsidePointerEvents>
         <Modal title={t('Blocked address')} hideCloseButton>
           <Grid style={{ gap: '16px' }} maxWidth={['100%', null, '400px']}>
-            <Text>{t('Blocked address')}</Text>
-            <Text>{address}</Text>
+            <Text style={{ wordBreak: 'break-word' }}>{address}</Text>
             <Text>
               {t('We have detected that this address is associated with a Prohibited Activity')}{' '}
               <Link
