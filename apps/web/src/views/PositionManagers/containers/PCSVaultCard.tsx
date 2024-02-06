@@ -176,8 +176,19 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       earned: earningUsdValue,
       totalStaked: totalStakedInUsd,
       isUserStaked: totalAssetsInUsd > 0,
+      startTime: info.startTimestamp,
+      endTime: info.endTimestamp,
     })
-  }, [earningUsdValue, totalStakedInUsd, id, totalAssetsInUsd, apr, updatePositionMangerDetailsData])
+  }, [
+    earningUsdValue,
+    totalStakedInUsd,
+    id,
+    totalAssetsInUsd,
+    apr,
+    updatePositionMangerDetailsData,
+    info.startTimestamp,
+    info.endTimestamp,
+  ])
   return (
     <DuoTokenVaultCard
       id={id}

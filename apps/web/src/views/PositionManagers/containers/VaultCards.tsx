@@ -21,6 +21,7 @@ export const VaultCards = memo(function VaultCards() {
   const { status } = usePositionManagerStatus()
   const [sortBy] = useSortBy()
   const [stakeOnly] = useStakeOnly()
+
   const { data: positionMangerDetailsData, updateData: updatePositionMangerDetailsData } =
     usePositionManagerDetailsData()
   const aprTimeWindows = useMemo(() => {
@@ -35,6 +36,12 @@ export const VaultCards = memo(function VaultCards() {
   const aprDataList = useFetchApr(aprTimeWindows)
   const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster()
   const cards = configs
+    .filter((d) => {
+      if ((positionMangerDetailsData?.[d.id]?.startTime ?? 0) <= Date.now() / 1000) {
+        return true
+      }
+      return false
+    })
     .filter((d) => {
       if (stakeOnly) {
         return positionMangerDetailsData?.[d.id]?.isUserStaked
