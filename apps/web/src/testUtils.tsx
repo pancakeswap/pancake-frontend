@@ -11,7 +11,6 @@ import noop from 'lodash/noop'
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'
 import { NextRouter } from 'next/router'
 import { initializeStore, makeStore } from 'state'
-import { SWRConfig } from 'swr'
 import { wagmiConfig } from 'utils/wagmi'
 import { vi } from 'vitest'
 import { WagmiConfig } from 'wagmi'
@@ -80,15 +79,6 @@ export const createReduxWrapper =
       <Provider store={makeStore(initState)} dehydratedState={{}}>
         {children}
       </Provider>
-    )
-
-export const createSWRWrapper =
-  (fallbackData: any = undefined) =>
-  ({ children }) =>
-    (
-      <WagmiConfig config={wagmiConfig}>
-        <SWRConfig value={{ fallback: fallbackData }}>{children}</SWRConfig>
-      </WagmiConfig>
     )
 
 export const createQueryClientWrapper =
