@@ -49,7 +49,7 @@ export function Blocklist() {
     return (
       <ModalV2 isOpen closeOnOverlayClick={false} disableOutsidePointerEvents>
         <Modal title={t('Blocked address')} hideCloseButton>
-          <Grid style={{ gap: '16px' }} maxWidth="400px">
+          <Grid style={{ gap: '16px' }} maxWidth={['100%', null, '400px']}>
             <Text>{t('Blocked address')}</Text>
             <Text>{address}</Text>
             <Text>
