@@ -1,13 +1,14 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
+import { veCakeABI } from 'config/abi/veCake'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
 import { Address, isAddressEqual, zeroAddress } from 'viem'
-import { erc20ABI, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
-export const useProxyVeCakeBalance = () => {
+export const useProxyVeCakeBalanceOfAtTime = (timestamp: number) => {
   const { chainId } = useActiveChainId()
   const { data: userInfo } = useVeCakeUserInfo()
 
@@ -18,11 +19,11 @@ export const useProxyVeCakeBalance = () => {
   const { status, refetch, data } = useContractRead({
     chainId,
     address: getVeCakeAddress(chainId),
-    functionName: 'balanceOf',
-    abi: erc20ABI,
-    args: [userInfo?.cakePoolProxy as Address],
+    functionName: 'balanceOfAtTime',
+    abi: veCakeABI,
+    args: [userInfo?.cakePoolProxy as Address, BigInt(timestamp)],
     watch: true,
-    enabled: hasProxy,
+    enabled: Boolean(hasProxy && timestamp),
   })
 
   return {
