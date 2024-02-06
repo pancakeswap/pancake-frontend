@@ -8,7 +8,6 @@ import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { styled } from 'styled-components'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
-import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
 import { useProxyVeCakeBalanceOfAtTime } from 'views/CakeStaking/hooks/useProxyVeCakeBalanceOfAtTime'
 import { useTargetUnlockTime } from 'views/CakeStaking/hooks/useTargetUnlockTime'
 import { useCakeLockStatus, useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
@@ -43,7 +42,6 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
   const { data: userInfo } = useVeCakeUserInfo()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
   const { cakeUnlockTime, cakeLockExpired, nativeCakeLockedAmount, status, cakeLocked } = useCakeLockStatus()
-  const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
   const { balance: proxyVeCakeBalanceOfAtTime } = useProxyVeCakeBalanceOfAtTime(endTime)
 
   const unlockTimestamp = useTargetUnlockTime(
@@ -60,7 +58,7 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
 
     if (status === CakeLockStatus.NotLocked || !cakeLocked) {
       const veCakeAmountFromNative = getVeCakeAmount(cakeAmountBN.toString(), unlockTimeInSec)
-      return getBalanceAmount(proxyVeCakeBalance.plus(veCakeAmountFromNative))
+      return getBalanceAmount(proxyVeCakeBalanceOfAtTime.plus(veCakeAmountFromNative))
     }
 
     if (viewMode === VeCakeModalView.WEEKS_FORM_VIEW) {
@@ -83,7 +81,6 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
     viewMode,
     nativeCakeLockedAmount,
     proxyVeCakeBalanceOfAtTime,
-    proxyVeCakeBalance,
   ])
 
   const previewVeCake = useMemo(
