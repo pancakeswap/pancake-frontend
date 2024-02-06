@@ -39,7 +39,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
   const { t } = useTranslation()
   const router = useRouter()
   const cakePriceBusd = useCakePrice()
-  const { status, cakeLockExpired } = useCakeLockStatus()
+  const { status, cakeLockExpired, cakeLocked } = useCakeLockStatus()
   const timeUntil = getTimePeriods(timeRemaining)
 
   const [onPresentNoLockingCakeModal] = useModal(
@@ -129,7 +129,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
 
       <VeCakePreviewTextInfo mb="24px" endTime={endTime} thresholdLockAmount={thresholdLockAmount} />
 
-      {status === CakeLockStatus.NotLocked ? (
+      {status === CakeLockStatus.NotLocked || !cakeLocked ? (
         <VeCakeButtonWithMessage
           messageText={t('Get veCAKE to start earning')}
           buttonText={t('Get veCAKE')}

@@ -20,7 +20,7 @@ export const LockCake = () => {
   const { isMobile } = useMatchBreakpoints()
 
   const { modal, modalData } = useLockModal()
-
+  console.log('status', status)
   return (
     <>
       <ApproveAndLockModal {...modal} {...modalData} />
