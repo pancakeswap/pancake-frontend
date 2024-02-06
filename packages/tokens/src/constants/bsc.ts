@@ -2972,4 +2972,12 @@ export const bscTokens = {
     'StaFi rBNB',
     'https://www.stafi.io/',
   ),
+  aitech: new ERC20Token(
+    ChainId.BSC,
+    '0x2D060Ef4d6BF7f9e5edDe373Ab735513c0e4F944',
+    18,
+    'AITECH',
+    'AITECH',
+    'https://www.aitech.vision/',
+  ),
 }
