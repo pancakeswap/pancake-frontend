@@ -85,7 +85,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
     <Flex flexDirection={['column']}>
       <Header />
 
-      {rewardInUSD > 0 && (
+      {rewardInUSD > 0.01 && (
         <GreyCard mb="24px">
           <Text textTransform="uppercase" color="secondary" bold mb="4px">
             {t('You have earn some trading REWARDS')}
