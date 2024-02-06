@@ -3,10 +3,8 @@ import { ModalProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { Store } from '@reduxjs/toolkit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
-import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import { Provider } from 'react-redux'
-import { SWRConfig } from 'swr'
 import { wagmiConfig } from 'utils/wagmi'
 import { WagmiConfig } from 'wagmi'
 
@@ -33,15 +31,9 @@ const Providers: React.FC<
             <NextThemeProvider>
               <LanguageProvider>
                 <StyledUIKitProvider>
-                  <SWRConfig
-                    value={{
-                      use: [fetchStatusMiddleware],
-                    }}
-                  >
-                    <HistoryManagerProvider>
-                      <ModalProvider>{children}</ModalProvider>
-                    </HistoryManagerProvider>
-                  </SWRConfig>
+                  <HistoryManagerProvider>
+                    <ModalProvider>{children}</ModalProvider>
+                  </HistoryManagerProvider>
                 </StyledUIKitProvider>
               </LanguageProvider>
             </NextThemeProvider>

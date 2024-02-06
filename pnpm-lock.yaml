@@ -883,9 +883,6 @@ importers:
       swiper:
         specifier: ^11.0.5
         version: 11.0.5
-      swr:
-        specifier: ^2.2.4
-        version: 2.2.4(react@18.2.0)
       tiny-invariant:
         specifier: ^1.3.0
         version: 1.3.1
@@ -22157,16 +22154,6 @@ packages:
   /swiper@11.0.5:
     resolution: {integrity: sha512-rhCwupqSyRnWrtNzWzemnBLMoyYuoDgGgspAm/8iBD3jCvAWycPLH4Z3TB0O5520DHLzMx94yUMH/B9Efpa48w==}
     engines: {node: '>= 4.7.0'}
-    dev: false
-
-  /swr@2.2.4(react@18.2.0):
-    resolution: {integrity: sha512-njiZ/4RiIhoOlAaLYDqwz5qH/KZXVilRLvomrx83HjzCWTfa+InyfAjv05PSFxnmLzZkNO9ZfvgoqzAaEI4sGQ==}
-    peerDependencies:
-      react: ^16.11.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      client-only: 0.0.1
-      react: 18.2.0
-      use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
   /symbol-observable@2.0.3:
