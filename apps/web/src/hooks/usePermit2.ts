@@ -13,7 +13,7 @@ import { useWritePermit } from './useWritePermit'
 
 type Permit2HookState = {
   permit2Allowance: CurrencyAmount<Currency> | undefined
-  permit2Details: Permit2Details
+  permit2Details: Permit2Details | undefined
 
   isPermitting: boolean
   isApproving: boolean
@@ -41,7 +41,7 @@ export const usePermit2 = (
   const { account, chainId } = useAccountActiveChain()
   const approveTarget = useMemo(() => getPermit2Address(chainId), [chainId])
 
-  const permit2Details = usePermit2Details(account, amount?.currency, spender)
+  const { data: permit2Details } = usePermit2Details(account, amount?.currency, spender)
   const {
     requireApprove,
     requirePermit,
@@ -54,7 +54,7 @@ export const usePermit2 = (
   const [isRevoking, setIsRevoking] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
 
-  const writePermit = useWritePermit(amount?.currency, spender, permit2Details.nonce)
+  const writePermit = useWritePermit(amount?.currency, spender, permit2Details?.nonce)
   const { approveCallback, revokeCallback } = useApproveCallback(amount, approveTarget)
 
   const permit = useCallback(async () => {

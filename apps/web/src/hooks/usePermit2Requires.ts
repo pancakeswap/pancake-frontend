@@ -10,7 +10,8 @@ import { usePermit2Details } from './usePermit2Details'
 export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, spender?: Address) => {
   const { account } = useAccountActiveChain()
   const { allowance, refetch } = usePermit2Allowance(account, amount?.currency)
-  const { amount: permitAmount, expiration } = usePermit2Details(account, amount?.currency, spender)
+  const { data } = usePermit2Details(account, amount?.currency, spender)
+  const { amount: permitAmount, expiration = 0n } = data ?? {}
   const now = useCurrentBlockTimestamp() ?? 0n
 
   const requireRevoke = useMemo((): boolean => {

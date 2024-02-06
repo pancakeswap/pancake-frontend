@@ -20,22 +20,18 @@ export const usePermit2Details = (
   owner: Address | undefined,
   token: Token | undefined,
   spender: Address | undefined,
-): Permit2Details => {
+) => {
   const { chainId } = useActiveChainId()
   const inputs = useMemo<[Address, Address, Address]>(
     () => [owner ?? zeroAddress, token?.address ?? zeroAddress, spender ?? zeroAddress],
     [owner, spender, token?.address],
   )
 
-  const defaultPermit = useMemo(() => {
-    return {
-      amount: token ? CurrencyAmount.fromRawAmount(token, '0') : undefined,
-      expiration: 0,
-      nonce: 0,
-    }
-  }, [token])
+  const placeholderData = useMemo(() => {
+    return [0n, 0, 0] as const
+  }, [])
 
-  const { data: permit } = useQuery({
+  return useQuery({
     queryKey: ['/token-permit/', chainId, token?.address, owner, spender],
     queryFn: async () =>
       publicClient({ chainId }).readContract({
@@ -44,11 +40,12 @@ export const usePermit2Details = (
         functionName: 'allowance',
         args: inputs,
       }),
+    placeholderData,
     refetchInterval: FAST_INTERVAL,
     retry: true,
     refetchOnWindowFocus: false,
     enabled: Boolean(chainId && token && !token.isNative && spender && owner),
-    select: (data) => {
+    select: (data): Permit2Details | undefined => {
       if (!data || token?.isNative) return undefined
       const [amount, expiration, nonce] = data
       return {
@@ -58,6 +55,4 @@ export const usePermit2Details = (
       }
     },
   })
-
-  return permit ?? defaultPermit
 }
