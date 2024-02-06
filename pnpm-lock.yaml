@@ -169,6 +169,9 @@ importers:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@pancakeswap/worker-utils':
+        specifier: workspace:*
+        version: link:../../packages/worker-utils
       '@types/itty-router-extras':
         specifier: ^0.4.0
         version: 0.4.3
