@@ -1,6 +1,5 @@
 import { useAccount } from 'wagmi'
 import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
-import useSWR from 'swr'
 import {
   getNftsMarketData,
   getMetadataWithFallback,
@@ -8,8 +7,8 @@ import {
   combineApiAndSgResponseToNftToken,
 } from 'state/nftMarket/helpers'
 import { FAST_INTERVAL } from 'config/constants'
-import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { useQuery } from '@tanstack/react-query'
 import { pancakeBunniesAddress } from '../constants'
 import { getLowestUpdatedToken } from './useGetLowestPrice'
 
@@ -18,7 +17,7 @@ type WhereClause = Record<string, string | number | boolean | string[]>
 const fetchCheapestBunny = async (
   whereClause: WhereClause = {},
   nftMetadata: ApiResponseCollectionTokens,
-): Promise<NftToken> => {
+): Promise<NftToken | null> => {
   const nftsMarket = await getNftsMarketData(whereClause, 100, 'currentAskPrice', 'asc')
 
   if (!nftsMarket.length) return null
@@ -32,7 +31,7 @@ const fetchCheapestBunny = async (
       const apiMetadata = getMetadataWithFallback(nftMetadata.data, marketData.otherId)
       const attributes = getPancakeBunniesAttributesField(marketData.otherId)
       const bunnyToken = combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
-      const updatedPrice = formatBigInt(lowestPriceUpdatedBunny.currentAskPrice)
+      const updatedPrice = formatBigInt(lowestPriceUpdatedBunny!.currentAskPrice)
       return {
         ...bunnyToken,
         marketData: { ...bunnyToken.marketData, ...lowestPriceUpdatedBunny, currentAskPrice: updatedPrice },
@@ -43,9 +42,9 @@ const fetchCheapestBunny = async (
 
 export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResponseCollectionTokens) => {
   const { address: account } = useAccount()
-  const { data, status, mutate } = useSWR(
-    nftMetadata && bunnyId ? ['cheapestBunny', bunnyId, account] : null,
-    async () => {
+  const { data, status, refetch } = useQuery({
+    queryKey: ['cheapestBunny', bunnyId, account],
+    queryFn: async () => {
       const allCheapestBunnyClause = {
         collection: pancakeBunniesAddress.toLowerCase(),
         otherId: bunnyId,
@@ -64,12 +63,13 @@ export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResp
       const cheapestBunnyOtherSellers = await fetchCheapestBunny(cheapestBunnyOtherSellersClause, nftMetadata)
       return cheapestBunnyOtherSellers ?? fetchCheapestBunny(allCheapestBunnyClause, nftMetadata)
     },
-    { refreshInterval: FAST_INTERVAL },
-  )
+    enabled: Boolean(nftMetadata && bunnyId),
+    refetchInterval: FAST_INTERVAL,
+  })
 
   return {
     data,
-    isFetched: ([FetchStatus.Failed, FetchStatus.Fetched] as TFetchStatus[]).includes(status),
-    refresh: mutate,
+    isFetched: ['error', 'success'].includes(status),
+    refresh: refetch,
   }
 }

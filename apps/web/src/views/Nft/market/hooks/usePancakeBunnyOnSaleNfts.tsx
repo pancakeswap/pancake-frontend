@@ -7,11 +7,10 @@ import {
   combineApiAndSgResponseToNftToken,
   getNftsUpdatedMarketData,
 } from 'state/nftMarket/helpers'
-import useSWRInfinite from 'swr/infinite'
-import { FetchStatus } from 'config/constants/types'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { safeGetAddress } from 'utils'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { pancakeBunniesAddress } from '../constants'
 
 const fetchMarketDataNfts = async (
@@ -57,30 +56,32 @@ export const usePancakeBunnyOnSaleNfts = (
   const {
     data: nfts,
     status,
-    size,
-    setSize,
-    isValidating,
-    mutate,
-  } = useSWRInfinite(
-    (pageIndex, previousPageData) => {
-      if (!nftMetadata) return null
-      if (pageIndex !== 0 && previousPageData && !previousPageData.length) return null
-      return [bunnyId, direction, pageIndex, 'pancakeBunnyOnSaleNfts'] as const
-    },
-    async ([id, sortDirection, page]) => {
-      const { newNfts, isPageLast } = await fetchMarketDataNfts(id, nftMetadata, sortDirection, page, itemsPerPage)
+    fetchNextPage,
+    refetch,
+    isRefetching,
+  } = useInfiniteQuery({
+    initialPageParam: 0,
+    queryKey: [bunnyId, direction, 'pancakeBunnyOnSaleNfts'],
+    queryFn: async ({ pageParam }) => {
+      const { newNfts, isPageLast } = await fetchMarketDataNfts(
+        bunnyId,
+        nftMetadata,
+        direction,
+        pageParam,
+        itemsPerPage,
+      )
       isLastPage.current = isPageLast
       const nftsMarketTokenIds = newNfts.map((marketData) => marketData.tokenId)
       const updatedMarketData = await getNftsUpdatedMarketData(pancakeBunniesAddress, nftsMarketTokenIds)
-      if (!updatedMarketData) return newNfts
+      if (!updatedMarketData) return { data: newNfts, pageParam }
 
-      return updatedMarketData
+      const nftsWithMarketData = updatedMarketData
         .sort((askInfoA, askInfoB) => {
           return askInfoA.currentAskPrice > askInfoB.currentAskPrice
-            ? 1 * (sortDirection === 'desc' ? -1 : 1)
+            ? 1 * (direction === 'desc' ? -1 : 1)
             : askInfoA.currentAskPrice === askInfoB.currentAskPrice
             ? 0
-            : -1 * (sortDirection === 'desc' ? -1 : 1)
+            : -1 * (direction === 'desc' ? -1 : 1)
         })
         .map(({ tokenId, currentSeller, currentAskPrice }) => {
           const nftData = newNfts.find((marketData) => marketData.tokenId === tokenId)
@@ -88,29 +89,40 @@ export const usePancakeBunnyOnSaleNfts = (
           return {
             ...nftData,
             marketData: {
-              ...nftData.marketData,
+              ...nftData?.marketData,
               isTradable,
-              currentSeller: isTradable ? currentSeller.toLowerCase() : nftData.marketData.currentSeller,
-              currentAskPrice: isTradable ? formatBigInt(currentAskPrice) : nftData.marketData.currentAskPrice,
+              currentSeller: isTradable ? currentSeller.toLowerCase() : nftData?.marketData?.currentSeller,
+              currentAskPrice: isTradable ? formatBigInt(currentAskPrice) : nftData?.marketData?.currentAskPrice,
             },
           }
         })
+
+      return { data: nftsWithMarketData, pageParam }
     },
-    {
-      refreshInterval: 10000,
-      revalidateAll: true,
+    getNextPageParam: (lastPage) => {
+      if (isLastPage.current) {
+        return undefined
+      }
+      return lastPage.pageParam + 1
     },
-  )
+    getPreviousPageParam: (firstPage) => {
+      if (firstPage.pageParam === 1) {
+        return undefined
+      }
+      return firstPage.pageParam - 1
+    },
+    refetchInterval: 10000,
+  })
 
   return {
-    nfts,
-    refresh: mutate,
-    isFetchingNfts: status !== FetchStatus.Fetched,
-    page: size,
-    setPage: setSize,
+    nfts: nfts?.pages?.map((page) => page.data) || [],
+    refresh: refetch,
+    isFetchingNfts: status !== 'success',
+    page: (nfts?.pageParams?.[nfts?.pageParams?.length - 1] as number) || 0,
+    fetchNextPage,
     direction,
     setDirection,
     isLastPage: isLastPage.current,
-    isValidating,
+    isValidating: isRefetching,
   }
 }

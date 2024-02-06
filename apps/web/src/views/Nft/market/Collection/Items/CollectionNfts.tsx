@@ -13,11 +13,11 @@ interface CollectionNftsProps {
 const CollectionNfts: React.FC<React.PropsWithChildren<CollectionNftsProps>> = ({ collection }) => {
   const { address: collectionAddress } = collection || {}
   const { t } = useTranslation()
-  const { nfts, isFetchingNfts, page, setPage, resultSize, isLastPage } = useCollectionNfts(collectionAddress)
+  const { nfts, isFetchingNfts, fetchNextPage, resultSize, isLastPage } = useCollectionNfts(collectionAddress)
 
   const handleLoadMore = useCallback(() => {
-    setPage(page + 1)
-  }, [setPage, page])
+    fetchNextPage()
+  }, [fetchNextPage])
 
   if ((!nfts || nfts?.length === 0) && isFetchingNfts) {
     return <GridPlaceholder />
@@ -46,7 +46,9 @@ const CollectionNfts: React.FC<React.PropsWithChildren<CollectionNftsProps>> = (
                 <CollectibleLinkCard
                   key={nft.tokenId}
                   nft={nft}
-                  currentAskPrice={currentAskPriceAsNumber > 0 ? currentAskPriceAsNumber : undefined}
+                  currentAskPrice={
+                    currentAskPriceAsNumber && currentAskPriceAsNumber > 0 ? currentAskPriceAsNumber : undefined
+                  }
                   data-test="collection-detail-page-card"
                 />
               )

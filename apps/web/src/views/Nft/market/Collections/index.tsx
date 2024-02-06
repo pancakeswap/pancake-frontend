@@ -21,19 +21,18 @@ import {
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
 import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
 import { ViewMode } from 'state/user/actions'
 import { Collection } from 'state/nftMarket/types'
 import { styled } from 'styled-components'
-import { FetchStatus } from 'config/constants/types'
 import { useGetShuffledCollections } from 'state/nftMarket/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import Page from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import CollectionCardWithVolume from '../components/CollectibleCard/CollectionCardWithVolume'
 
 export const ITEMS_PER_PAGE = 9
@@ -73,7 +72,7 @@ export const Arrow = styled.div`
   }
 `
 
-const getNewSortDirection = (oldSortField: string, newSortField: string, oldSortDirection: boolean) => {
+const getNewSortDirection = (oldSortField: string | null, newSortField: string, oldSortDirection: boolean) => {
   if (oldSortField !== newSortField) {
     return newSortField !== SORT_FIELD.lowestPrice
   }
@@ -84,7 +83,7 @@ const Collectible = () => {
   const { t } = useTranslation()
   const { data: shuffledCollections } = useGetShuffledCollections()
   const { isMobile } = useMatchBreakpoints()
-  const [sortField, setSortField] = useState(null)
+  const [sortField, setSortField] = useState<string | null>(null)
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
   const [viewMode, setViewMode] = useState(ViewMode.CARD)
@@ -118,11 +117,11 @@ const Collectible = () => {
     ]
   }, [t])
 
-  const { data: collections = [], status } = useSWRImmutable<
+  const { data: collections = [], status } = useQuery<
     (Collection & Partial<{ lowestPrice: number; highestPrice: number }>)[]
-  >(
-    shuffledCollections && shuffledCollections.length ? ['collectionsWithPrice', viewMode, sortField] : null,
-    async () => {
+  >({
+    queryKey: ['collectionsWithPrice', viewMode, sortField],
+    queryFn: async () => {
       if (viewMode === ViewMode.CARD && sortField !== SORT_FIELD.lowestPrice && sortField !== SORT_FIELD.highestPrice)
         return shuffledCollections
       return Promise.all(
@@ -139,10 +138,9 @@ const Collectible = () => {
         }),
       )
     },
-    {
-      keepPreviousData: true,
-    },
-  )
+    enabled: Boolean(shuffledCollections && shuffledCollections.length),
+    placeholderData: keepPreviousData,
+  })
 
   const arrow = useCallback(
     (field: string) => {
@@ -183,7 +181,7 @@ const Collectible = () => {
           }
           return null
         }
-        return parseFloat(collection[sortField])
+        return sortField ? parseFloat(collection[sortField]) : undefined
       },
       sortDirection ? 'desc' : 'asc',
     ).filter((collection) => !DELIST_COLLECTIONS[collection.address])
@@ -205,7 +203,7 @@ const Collectible = () => {
         </Heading>
       </PageHeader>
       <Page>
-        {status !== FetchStatus.Fetched ? (
+        {status !== 'success' ? (
           <PageLoader />
         ) : (
           <>
@@ -224,7 +222,7 @@ const Collectible = () => {
                 <Select
                   options={options}
                   placeHolderText={t('Select')}
-                  defaultOptionIndex={SORT_FIELD_INDEX_MAP.get(sortField)}
+                  defaultOptionIndex={sortField ? SORT_FIELD_INDEX_MAP.get(sortField) : undefined}
                   onOptionChange={(option: OptionProps) => handleSort(option.value)}
                 />
               </Flex>

@@ -2,23 +2,26 @@ import { useEffect, useState } from 'react'
 import { getCollectionDistributionApi, getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiCollectionDistribution, ApiResponseCollectionTokens, ApiSingleTokenData } from 'state/nftMarket/types'
 import { getPancakeBunniesAddress } from 'utils/addressHelpers'
-import useSWRImmutable from 'swr/immutable'
-import { FetchStatus } from 'config/constants/types'
 import mapValues from 'lodash/mapValues'
 import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
 import { pancakeBunniesABI } from 'config/abi/pancakeBunnies'
+import { useQuery } from '@tanstack/react-query'
 import { pancakeBunniesAddress } from '../constants'
 
 const useGetCollectionDistribution = (collectionAddress: string | undefined) => {
-  const { data, status } = useSWRImmutable(
-    collectionAddress ? ['distribution', collectionAddress] : null,
-    async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress)).data,
-  )
+  const { data, status } = useQuery({
+    queryKey: ['distribution', collectionAddress],
+    queryFn: async () => (await getCollectionDistributionApi<ApiCollectionDistribution>(collectionAddress!))?.data,
+    enabled: Boolean(collectionAddress),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   return {
     data,
-    isFetching: status !== FetchStatus.Fetched,
+    isFetching: status !== 'success',
   }
 }
 
@@ -28,7 +31,7 @@ interface StatePB {
 }
 
 export const useGetCollectionDistributionPB = () => {
-  const [state, setState] = useState<StatePB>({ isFetching: false, data: null })
+  const [state, setState] = useState<StatePB>({ isFetching: false, data: {} })
 
   useEffect(() => {
     const fetchTokens = async () => {
@@ -62,7 +65,7 @@ export const useGetCollectionDistributionPB = () => {
         const tokenListResponse = response.reduce((obj, tokenCount, index) => {
           return {
             ...obj,
-            [tokenIds[index]]: { ...apiResponse.data[index], tokenCount: Number(tokenCount) },
+            [tokenIds[index]]: { ...apiResponse?.data[index], tokenCount: Number(tokenCount) },
           }
         }, {})
         setState({
@@ -73,7 +76,7 @@ export const useGetCollectionDistributionPB = () => {
         // Use nft api data if on chain multicall fails
         const tokenListResponse = mapValues(apiResponse.data, (tokenData, tokenId) => ({
           ...tokenData,
-          tokenCount: apiResponse.attributesDistribution[tokenId],
+          tokenCount: apiResponse?.attributesDistribution[tokenId] ?? 0,
         }))
         setState({ isFetching: false, data: tokenListResponse })
       }

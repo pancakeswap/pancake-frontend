@@ -236,7 +236,7 @@ export const useNftMarketContract = () => {
   return useMemo(() => getNftMarketContract(signer ?? undefined), [signer])
 }
 
-export const useErc721CollectionContract = (collectionAddress: Address) => {
+export const useErc721CollectionContract = (collectionAddress: Address | undefined) => {
   return useContract(collectionAddress, erc721CollectionABI)
 }
 

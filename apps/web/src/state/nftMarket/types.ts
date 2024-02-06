@@ -102,8 +102,8 @@ export interface TokenIdWithCollectionAddress {
 
 export interface NftAttribute {
   traitType: string
-  value: string | number
-  displayType: string
+  value: string | number | undefined
+  displayType: string | null
 }
 
 // Internal type used to refer to a collection
