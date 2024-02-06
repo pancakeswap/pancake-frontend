@@ -2,8 +2,7 @@ import { safeGetAddress } from 'utils'
 import { useAtom } from 'jotai'
 import { TFetchStatus } from 'config/constants/types'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import useSWR from 'swr'
-import useSWRImmutable from 'swr/immutable'
+import { useQuery } from '@tanstack/react-query'
 import isEmpty from 'lodash/isEmpty'
 import { useContractReads, erc721ABI } from 'wagmi'
 import shuffle from 'lodash/shuffle'
@@ -18,30 +17,42 @@ const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
 const EMPTY_OBJECT = {}
 
 export const useGetCollections = (): { data: ApiCollections; status: TFetchStatus } => {
-  const { data, status } = useSWR(['nftMarket', 'collections'], async () => getCollections())
+  const { data, status } = useQuery({
+    queryKey: ['nftMarket', 'collections'],
+    queryFn: async () => getCollections(),
+  })
   const collections = data ?? ({} as ApiCollections)
   return { data: collections, status }
 }
 
 export const useGetCollection = (collectionAddress: string | undefined): Collection | undefined => {
   const checksummedCollectionAddress = safeGetAddress(collectionAddress) || ''
-  const { data } = useSWR(
-    checksummedCollectionAddress ? ['nftMarket', 'collections', checksummedCollectionAddress.toLowerCase()] : null,
-    async () => getCollection(checksummedCollectionAddress),
-  )
+  const { data } = useQuery({
+    queryKey: ['nftMarket', 'collections', checksummedCollectionAddress?.toLowerCase()],
+    queryFn: async () => getCollection(checksummedCollectionAddress),
+    enabled: Boolean(checksummedCollectionAddress),
+  })
   const collectionObject = data ?? {}
   return collectionObject[checksummedCollectionAddress]
 }
 
-export const useGetShuffledCollections = (): { data: Collection[]; status: TFetchStatus } => {
-  const { data } = useSWRImmutable(['nftMarket', 'collections'], async () => getCollections())
+export const useGetShuffledCollections = (): { data: Collection[]; status: 'pending' | 'success' | 'error' } => {
+  const { data } = useQuery({
+    queryKey: ['nftMarket', 'collections'],
+    queryFn: async () => getCollections(),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
   const collections = data ?? ({} as ApiCollections)
-  const { data: shuffledCollections, status } = useSWRImmutable(
-    !isEmpty(collections) ? ['nftMarket', 'shuffledCollections'] : null,
-    () => {
-      return shuffle(collections)
-    },
-  )
+  const { data: shuffledCollections = [], status } = useQuery({
+    queryKey: ['nftMarket', 'shuffledCollections'],
+    queryFn: () => shuffle(collections),
+    enabled: Boolean(collections && !isEmpty(collections)),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
   return { data: shuffledCollections, status }
 }
 
