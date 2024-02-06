@@ -1,12 +1,12 @@
 import React, { PropsWithChildren, useContext, useRef } from "react";
 import { useTheme } from "styled-components";
-import Heading from "../../components/Heading/Heading";
-import getThemeValue from "../../util/getThemeValue";
-import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, ModalBackButton } from "./styles";
-import { ModalProps, ModalWrapperProps } from "./types";
-import { useMatchBreakpoints } from "../../contexts";
-import { ModalV2Context } from "./ModalV2";
 import { Box } from "../../components/Box";
+import Heading from "../../components/Heading/Heading";
+import { useMatchBreakpoints } from "../../contexts";
+import getThemeValue from "../../util/getThemeValue";
+import { ModalV2Context } from "./ModalV2";
+import { ModalBackButton, ModalBody, ModalCloseButton, ModalContainer, ModalHeader, ModalTitle } from "./styles";
+import { ModalProps, ModalWrapperProps } from "./types";
 
 export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 300;
 
