@@ -8,6 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import useTokenBalance from 'hooks/useTokenBalance'
+import last from 'lodash/last'
 import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
 import { formatUnixTime } from 'utils/formatTime'
@@ -58,7 +59,7 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
   const token1USDPrice = useStablecoinPrice(currency1)
   const token0USDPrice = useStablecoinPrice(currency0)
 
-  const { onClaim, isLoading } = useCallClaimContract(claimableAmountToken, userWithdrawRequest?.claimableIndexes)
+  const { onClaim, isLoading } = useCallClaimContract(claimableAmountToken, last(userWithdrawRequest?.claimableIndexes))
 
   return (
     <>

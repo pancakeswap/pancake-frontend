@@ -43,7 +43,7 @@ export const useCallStakingContract = (selectedList: LiquidStakingList | null) =
   )
 }
 
-export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, indexes?: number[]) => {
+export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, indexNumber?: number) => {
   const { data, sendTransactionAsync, isLoading } = useSendTransaction()
   const { isLoading: isConfirming } = useWaitForTransaction({
     hash: data?.hash,
@@ -52,19 +52,19 @@ export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, i
   const addTransaction = useTransactionAdder()
 
   const calldata = useMemo(() => {
-    return Multicall.encodeMulticall(
-      indexes?.map((i) =>
-        encodeFunctionData({
-          abi: unwrappedEth,
-          functionName: 'claimWithdraw',
-          args: [toHex(i)],
-        }),
-      ) || [],
-    )
-  }, [indexes])
+    return indexNumber !== undefined
+      ? Multicall.encodeMulticall(
+          encodeFunctionData({
+            abi: unwrappedEth,
+            functionName: 'claimWithdraw',
+            args: [toHex(indexNumber)],
+          }),
+        )
+      : ''
+  }, [indexNumber])
 
   const onClaim = useCallback(async () => {
-    if (!account || !claimedAmount || !indexes?.length) return
+    if (!account || !claimedAmount || !calldata) return
 
     getViemClients({ chainId })
       ?.estimateGas({
@@ -90,7 +90,7 @@ export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, i
           },
         )
       })
-  }, [account, addTransaction, calldata, chainId, claimedAmount, indexes?.length, sendTransactionAsync])
+  }, [account, addTransaction, calldata, chainId, claimedAmount, sendTransactionAsync])
 
   return useMemo(
     () => ({
