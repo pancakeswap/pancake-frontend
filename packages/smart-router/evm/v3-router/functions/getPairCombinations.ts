@@ -1,11 +1,92 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency, Token } from '@pancakeswap/sdk'
+import { getTokensByChain } from '@pancakeswap/tokens'
+import type { Address } from 'viem'
+import { GAUGES_CONFIG, GaugeConfig, GaugeType } from '@pancakeswap/gauges'
 import flatMap from 'lodash/flatMap.js'
 import memoize from 'lodash/memoize.js'
+import uniqBy from 'lodash/uniqBy.js'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../../constants'
 import { wrappedCurrency } from '../../utils/currency'
-import { isCurrenciesSameChain } from '../utils'
+import { isCurrenciesSameChain, log } from '../utils'
+
+const allGuages = GAUGES_CONFIG[ChainId.BSC]
+
+const getToken = memoize(
+  (chainId?: ChainId, address?: Address): Token | undefined => {
+    if (!chainId || !address) {
+      return undefined
+    }
+    const tokens = getTokensByChain(chainId)
+    for (const token of tokens) {
+      if (token.address.toLowerCase() === address.toLowerCase()) {
+        return token
+      }
+    }
+    return undefined
+  },
+  (chainId, address) => `${chainId}_${address}`,
+)
+
+// TODO: move to gauges
+const getGaugesByChain = memoize(
+  (chainId?: ChainId): GaugeConfig[] => allGuages.filter((gauge) => gauge.chainId === chainId),
+  (chainId) => chainId,
+)
+
+function isTokenInCommonBases(token?: Token) {
+  return Boolean(token && BASES_TO_CHECK_TRADES_AGAINST[token.chainId as ChainId].find((t) => t.equals(token)))
+}
+
+const getTokenBasesFromGauges = memoize(
+  (currency?: Currency): Token[] => {
+    const chainId: ChainId | undefined = currency?.chainId
+    const address = currency?.wrapped.address
+    const gauges = getGaugesByChain(currency?.chainId)
+    const bases = new Set<Token>()
+    const addTokenToBases = (token?: Token) => token && !isTokenInCommonBases(token) && bases.add(token)
+    const addTokensToBases = (tokens: Token[]) => tokens.forEach(addTokenToBases)
+    const isCurrentToken = (addr: Address) => addr.toLowerCase() === address?.toLowerCase()
+
+    if (currency && chainId && isTokenInCommonBases(currency.wrapped)) {
+      return []
+    }
+    for (const gauge of gauges) {
+      const { type } = gauge
+      if (type === GaugeType.V2 || type === GaugeType.V3) {
+        const { token0Address, token1Address } = gauge
+        if (isCurrentToken(token0Address)) {
+          addTokenToBases(getToken(chainId, token1Address))
+        }
+        if (isCurrentToken(token1Address)) {
+          addTokenToBases(getToken(chainId, token0Address))
+        }
+        continue
+      }
+      if (type === GaugeType.StableSwap) {
+        const { tokenAddresses } = gauge
+        const index = tokenAddresses.findIndex(isCurrentToken)
+        if (index < 0) {
+          continue
+        }
+        addTokensToBases(
+          [...tokenAddresses.slice(0, index), ...tokenAddresses.slice(index + 1)]
+            .map((addr) => getToken(chainId, addr))
+            .filter((token?: Token): token is Token => Boolean(token)),
+        )
+      }
+    }
+    const baseList = Array.from(bases)
+    log(
+      `[ADDITIONAL_BASES] Token ${currency?.symbol}, bases from guages: [${baseList
+        .map((base) => base.symbol)
+        .join(',')}]`,
+    )
+    return baseList
+  },
+  (c) => `${c?.chainId}_${c?.wrapped.address}`,
+)
 
 const resolver = (currencyA?: Currency, currencyB?: Currency) => {
   if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
@@ -15,6 +96,28 @@ const resolver = (currencyA?: Currency, currencyB?: Currency) => {
     ? [currencyA.wrapped, currencyB.wrapped]
     : [currencyB.wrapped, currencyA.wrapped]
   return `${token0.chainId}_${token0.address}_${token1.address}`
+}
+
+type TokenBases = {
+  [tokenAddress: Address]: Token[]
+}
+
+function getAdditionalCheckAgainstBaseTokens(currencyA?: Currency, currencyB?: Currency) {
+  const chainId: ChainId | undefined = currencyA?.chainId
+  const additionalBases: TokenBases = {
+    ...(chainId ? ADDITIONAL_BASES[chainId] ?? {} : {}),
+  }
+  const uniq = (tokens: Token[]) => uniqBy(tokens, (t) => t.address)
+  const additionalA =
+    currencyA && chainId
+      ? uniq([...(additionalBases[currencyA.wrapped.address] || []), ...getTokenBasesFromGauges(currencyA)]) ?? []
+      : []
+  const additionalB =
+    currencyB && chainId
+      ? uniq([...(additionalBases[currencyB.wrapped.address] || []), ...getTokenBasesFromGauges(currencyB)]) ?? []
+      : []
+
+  return [...additionalA, ...additionalB]
 }
 
 export const getCheckAgainstBaseTokens = memoize((currencyA?: Currency, currencyB?: Currency): Token[] => {
@@ -33,10 +136,8 @@ export const getCheckAgainstBaseTokens = memoize((currencyA?: Currency, currency
   }
 
   const common = BASES_TO_CHECK_TRADES_AGAINST[chainId] ?? []
-  const additionalA = tokenA ? ADDITIONAL_BASES[chainId]?.[tokenA.address] ?? [] : []
-  const additionalB = tokenB ? ADDITIONAL_BASES[chainId]?.[tokenB.address] ?? [] : []
 
-  return [...common, ...additionalA, ...additionalB]
+  return [...common, ...getAdditionalCheckAgainstBaseTokens(currencyA, currencyB)]
 }, resolver)
 
 export const getPairCombinations = memoize((currencyA?: Currency, currencyB?: Currency): [Currency, Currency][] => {
