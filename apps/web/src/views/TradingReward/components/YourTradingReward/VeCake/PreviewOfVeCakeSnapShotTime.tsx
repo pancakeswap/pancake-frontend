@@ -12,7 +12,7 @@ import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBloc
 import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
 import { useProxyVeCakeBalanceOfAtTime } from 'views/CakeStaking/hooks/useProxyVeCakeBalanceOfAtTime'
 import { useTargetUnlockTime } from 'views/CakeStaking/hooks/useTargetUnlockTime'
-import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { useCakeLockStatus, useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from 'views/CakeStaking/types'
 import { VeCakeModalView } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakeAddCakeOrWeeksModal'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
@@ -42,7 +42,7 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
     currentLanguage: { locale },
   } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
-
+  const { data: userInfo } = useVeCakeUserInfo()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
   const { cakeUnlockTime, cakeLockExpired, nativeCakeLockedAmount, status } = useCakeLockStatus()
   const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
@@ -54,11 +54,13 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
   )
 
   const veCakeAmount = useMemo(() => {
+    const cakeAmountBN = cakeLockAmount ? getDecimalAmount(new BigNumber(cakeLockAmount)) : 0
     const unlockTimeInSec = endTime > unlockTimestamp ? 0 : new BigNumber(unlockTimestamp).minus(endTime).toNumber()
-    const endTimeInSec = currentTimestamp > endTime ? 0 : endTime - currentTimestamp
+    const endTimeInSec = new BigNumber(endTime).gt(userInfo?.end?.toString() ?? 0)
+      ? 0
+      : new BigNumber(userInfo?.end?.toString() ?? 0).minus(endTime).toNumber()
 
     if (status === CakeLockStatus.NotLocked) {
-      const cakeAmountBN = cakeLockAmount ? getDecimalAmount(new BigNumber(cakeLockAmount)) : 0
       const veCakeAmountFromNative = getVeCakeAmount(cakeAmountBN.toString(), unlockTimeInSec)
       return getBalanceAmount(proxyVeCakeBalance.plus(veCakeAmountFromNative))
     }
@@ -69,11 +71,14 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
       )
     }
 
-    return getBalanceAmount(proxyVeCakeBalanceOfAtTime).plus(getVeCakeAmount(cakeLockAmount, endTimeInSec))
+    const newLockCakeAmount = getBalanceAmount(new BigNumber(nativeCakeLockedAmount.toString()).plus(cakeAmountBN))
+    return getBalanceAmount(proxyVeCakeBalanceOfAtTime).plus(
+      getVeCakeAmount(newLockCakeAmount.toString(), endTimeInSec),
+    )
   }, [
     endTime,
     unlockTimestamp,
-    currentTimestamp,
+    userInfo?.end,
     status,
     viewMode,
     proxyVeCakeBalanceOfAtTime,
