@@ -16,6 +16,7 @@ export const vaultPoolConfig = {
       primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
     },
+    isFinished: true,
   },
   [VaultKey.IfoPool]: {
     name: 'IFO CAKE',
@@ -26,6 +27,7 @@ export const vaultPoolConfig = {
       primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
       secondarySrc: `/images/tokens/ifo-pool-icon.svg`,
     },
+    isFinished: true,
   },
 } as const
 
@@ -42,7 +44,7 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     tokenPerBlock: '10',
     sortOrder: 1,
-    isFinished: false,
+    isFinished: true,
   },
   {
     sousId: 276,
