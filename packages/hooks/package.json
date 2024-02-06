@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/hooks",
   "license": "MIT",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Generic hooks used for common usecases",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

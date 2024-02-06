@@ -1,5 +1,15 @@
 # @pancakeswap/tokens
 
+## 0.6.2
+
+### Patch Changes
+
+- 91969f80f: Add sepolia, base sepolia, arbitrum sepolia support
+- Updated dependencies [91969f80f]
+  - @pancakeswap/sdk@5.7.6
+  - @pancakeswap/chains@0.4.1
+  - @pancakeswap/token-lists@0.0.9
+
 ## 0.6.1
 
 ### Patch Changes

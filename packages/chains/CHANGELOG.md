@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.4.1
+
+### Patch Changes
+
+- 91969f80f: Add sepolia, base sepolia, arbitrum sepolia support
+
 ## 0.4.0
 
 ### Minor Changes
