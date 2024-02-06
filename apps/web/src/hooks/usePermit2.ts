@@ -71,11 +71,9 @@ export const usePermit2 = (
     setIsApproving(true)
     try {
       const result = await approveCallback()
-      setIsApproving(false)
       return result
-    } catch (error) {
+    } finally {
       setIsApproving(false)
-      throw error
     }
   }, [approveCallback])
 
@@ -83,11 +81,9 @@ export const usePermit2 = (
     setIsRevoking(true)
     try {
       const result = await revokeCallback()
-      setIsRevoking(false)
       return result
-    } catch (error) {
+    } finally {
       setIsRevoking(false)
-      throw error
     }
   }, [revokeCallback])
 
