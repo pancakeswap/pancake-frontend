@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import {
   ArrowDownIcon,
@@ -14,12 +15,11 @@ import {
 import { TransactionErrorContent } from '@pancakeswap/widgets-internal'
 import { CurrencyLogo } from 'components/Logo'
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
-import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import LimitOrderDisclaimer from './LimitOrderDisclaimer'
 
 const InfoCardWrapper = styled.div`
@@ -32,24 +32,24 @@ const InfoCardWrapper = styled.div`
 
 interface ConfirmLimitOrderModalProps extends InjectedModalProps {
   currencies: {
-    input: Currency
-    output: Currency
+    input?: Currency
+    output?: Currency
   }
   formattedAmounts: {
     input: string
     output: string
     price: string
   }
-  currentMarketRate: string
-  currentMarketRateInverted: string
-  limitPrice: string
-  limitPriceInverted: string
+  currentMarketRate?: string
+  currentMarketRateInverted?: string
+  limitPrice?: string
+  limitPriceInverted?: string
   percentageRateDifference: string
   onConfirm: () => void
   attemptingTxn: boolean
-  txHash: string
+  txHash?: string
   customOnDismiss: () => void
-  swapErrorMessage: string
+  swapErrorMessage?: string
 }
 
 export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLimitOrderModalProps>> = ({
@@ -77,7 +77,7 @@ export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLim
     if (customOnDismiss) {
       customOnDismiss()
     }
-    onDismiss()
+    onDismiss?.()
   }
   return (
     <Modal
@@ -121,18 +121,18 @@ export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLim
 
 interface OrderContentProps {
   currencies: {
-    input: Currency
-    output: Currency
+    input?: Currency
+    output?: Currency
   }
   formattedAmounts: {
     input: string
     output: string
     price: string
   }
-  currentMarketRate: string
-  currentMarketRateInverted: string
-  limitPrice: string
-  limitPriceInverted: string
+  currentMarketRate?: string
+  currentMarketRateInverted?: string
+  limitPrice?: string
+  limitPriceInverted?: string
   percentageRateDifference: string
 }
 

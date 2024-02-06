@@ -1,61 +1,50 @@
-import { Pair, ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { deserializeToken } from '@pancakeswap/token-lists'
-import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { ERC20Token, Pair } from '@pancakeswap/sdk'
+import { deserializeToken } from '@pancakeswap/token-lists'
+import { useQuery } from '@tanstack/react-query'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
-import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { safeGetAddress } from 'utils'
-import { useFeeData, useWalletClient } from 'wagmi'
-import { Hex, hexToBigInt } from 'viem'
-import { AppState, useAppDispatch } from 'state'
 import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
+import flatMap from 'lodash/flatMap'
+import { useCallback, useMemo } from 'react'
+import { useSelector } from 'react-redux'
+import { AppState, useAppDispatch } from 'state'
+import { safeGetAddress } from 'utils'
+import { Hex, hexToBigInt } from 'viem'
+import { useFeeData, useWalletClient } from 'wagmi'
+import { GAS_PRICE_GWEI } from '../../types'
 import {
+  FarmStakedOnly,
+  SerializedPair,
+  ViewMode,
   addSerializedPair,
   addSerializedToken,
-  FarmStakedOnly,
+  addWatchlistPool,
+  addWatchlistToken,
   removeSerializedToken,
-  SerializedPair,
+  setSubgraphHealthIndicatorDisplayed,
+  updateGasPrice,
   updateUserDeadline,
   updateUserFarmStakedOnly,
-  updateGasPrice,
-  addWatchlistToken,
-  addWatchlistPool,
+  updateUserFarmsViewMode,
+  updateUserLimitOrderAcceptedWarning,
   updateUserPoolStakedOnly,
   updateUserPoolsViewMode,
-  ViewMode,
-  updateUserFarmsViewMode,
-  updateUserPredictionChartDisclaimerShow,
-  updateUserPredictionChainlinkChartDisclaimerShow,
   updateUserPredictionAcceptedRisk,
+  updateUserPredictionChainlinkChartDisclaimerShow,
+  updateUserPredictionChartDisclaimerShow,
   updateUserUsernameVisibility,
-  setIsExchangeChartDisplayed,
-  setSubgraphHealthIndicatorDisplayed,
-  updateUserLimitOrderAcceptedWarning,
 } from '../actions'
-import { GAS_PRICE_GWEI } from '../../types'
+import { useUserChart } from './useUserChart'
 
 // Get user preference for exchange price chart
 // For mobile layout chart is hidden by default
-export function useExchangeChartManager(isMobile: boolean): [boolean, (isDisplayed: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const isChartDisplayed = useSelector<AppState, AppState['user']['isExchangeChartDisplayed']>(
-    (state) => state.user.isExchangeChartDisplayed,
-  )
-
-  const setUserChartPreference = useCallback(
-    (isDisplayed: boolean) => {
-      dispatch(setIsExchangeChartDisplayed(isDisplayed))
-    },
-    [dispatch],
-  )
-
-  return [isMobile ? false : isChartDisplayed, setUserChartPreference]
+export function useExchangeChartManager(isMobile: boolean) {
+  return useUserChart(isMobile)
 }
+
 export function useSubgraphHealthIndicatorManager() {
   const dispatch = useAppDispatch()
   const isSubgraphHealthIndicatorDisplayed = useSelector<
@@ -187,7 +176,11 @@ export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaime
 
   const setPredictionUserChartDisclaimerShow = useCallback(
     (showDisclaimer: boolean) => {
-      dispatch(updateUserPredictionChartDisclaimerShow({ userShowDisclaimer: showDisclaimer }))
+      dispatch(
+        updateUserPredictionChartDisclaimerShow({
+          userShowDisclaimer: showDisclaimer,
+        }),
+      )
     },
     [dispatch],
   )
@@ -206,7 +199,11 @@ export function useUserPredictionChainlinkChartDisclaimerShow(): [boolean, (show
 
   const setPredictionUserChainlinkChartDisclaimerShow = useCallback(
     (showDisclaimer: boolean) => {
-      dispatch(updateUserPredictionChainlinkChartDisclaimerShow({ userShowDisclaimer: showDisclaimer }))
+      dispatch(
+        updateUserPredictionChainlinkChartDisclaimerShow({
+          userShowDisclaimer: showDisclaimer,
+        }),
+      )
     },
     [dispatch],
   )
@@ -222,7 +219,11 @@ export function useUserUsernameVisibility(): [boolean, (usernameVisibility: bool
 
   const setUserUsernameVisibility = useCallback(
     (usernameVisibility: boolean) => {
-      dispatch(updateUserUsernameVisibility({ userUsernameVisibility: usernameVisibility }))
+      dispatch(
+        updateUserUsernameVisibility({
+          userUsernameVisibility: usernameVisibility,
+        }),
+      )
     },
     [dispatch],
   )
@@ -443,7 +444,9 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
 
   return useMemo(() => {
     // dedupes pairs of tokens in the combined list
-    const keyed = combinedList.reduce<{ [key: string]: [ERC20Token, ERC20Token] }>((memo, [tokenA, tokenB]) => {
+    const keyed = combinedList.reduce<{
+      [key: string]: [ERC20Token, ERC20Token]
+    }>((memo, [tokenA, tokenB]) => {
       const sorted = tokenA.sortsBefore(tokenB)
       const key = sorted
         ? `${safeGetAddress(tokenA.address)}:${safeGetAddress(tokenB.address)}`

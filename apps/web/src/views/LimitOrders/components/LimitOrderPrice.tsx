@@ -1,12 +1,12 @@
-import React from 'react'
-import { Currency, Percent, Price } from '@pancakeswap/sdk'
-import { styled } from 'styled-components'
-import { Input, Flex, Text, Button, AutoRenewIcon, SyncAltIcon, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { escapeRegExp } from 'utils'
+import { Currency, Percent, Price } from '@pancakeswap/sdk'
+import { AutoRenewIcon, Button, Flex, HelpIcon, Input, SyncAltIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import React from 'react'
 import { Rate } from 'state/limitOrders/types'
+import { styled } from 'styled-components'
+import { escapeRegExp } from 'utils'
 import ExpiredDate from 'views/LimitOrders/components/ExpiredDate'
-import { getRatePercentageMessage, PercentageDirection } from '../utils/getRatePercentageMessage'
+import { PercentageDirection, getRatePercentageMessage } from '../utils/getRatePercentageMessage'
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
 
@@ -22,14 +22,14 @@ interface LimitOrderPriceProps {
   id: string
   value: string
   onUserInput: (value: string) => void
-  inputCurrency: Currency
-  outputCurrency: Currency
-  percentageRateDifference: Percent
+  inputCurrency?: Currency
+  outputCurrency?: Currency
+  percentageRateDifference?: Percent
   rateType: Rate
   handleRateType: (rateType: Rate, price?: Price<Currency, Currency>) => void
-  price: Price<Currency, Currency>
+  price?: Price<Currency, Currency>
   handleResetToMarketPrice: () => void
-  realExecutionPriceAsString: string
+  realExecutionPriceAsString?: string
   disabled: boolean
 }
 
@@ -98,8 +98,8 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
   }
 
   const isAtMarketPrice = percentageRateDifference?.equalTo(0) ?? true
-  const [ratePercentageMessage, direction] = getRatePercentageMessage(percentageRateDifference, t)
-  const priceLabelColor = DIRECTION_COLORS[direction]
+  const [ratePercentageMessage, direction] = getRatePercentageMessage(t, percentageRateDifference)
+  const priceLabelColor = direction ? DIRECTION_COLORS[direction] : DIRECTION_COLORS[PercentageDirection.MARKET]
   const _realExecutionPriceAsString =
     realExecutionPriceAsString === 'never executes' ? t('never executes') : realExecutionPriceAsString
 

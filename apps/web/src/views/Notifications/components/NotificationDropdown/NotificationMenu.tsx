@@ -74,10 +74,10 @@ const NotificationMenu: React.FC<
 
   if (isMobile) {
     return (
-      <Flex alignItems="center" justifyContent="center" height="100vh" tabIndex={-1}>
+      <Flex alignItems="center" justifyContent="center" tabIndex={-1}>
         <NotificationBell unread={hasUnread} toggleMenu={toggleMenu} />
         <ModalV2 isOpen={isMenuOpen} onDismiss={toggleMenu} closeOnOverlayClick>
-          <ModalWrapper height="100vh" minWidth="320px">
+          <ModalWrapper onDismiss={toggleMenu} height="100vh" minWidth="320px">
             {children?.({ isOpen: isMenuOpen })}
           </ModalWrapper>
         </ModalV2>

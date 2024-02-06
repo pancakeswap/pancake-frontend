@@ -1,5 +1,5 @@
-import { Percent } from '@pancakeswap/sdk'
 import { TranslateFunction } from '@pancakeswap/localization'
+import { Percent } from '@pancakeswap/sdk'
 
 export enum PercentageDirection {
   ABOVE = 'above',
@@ -8,9 +8,9 @@ export enum PercentageDirection {
 }
 
 export const getRatePercentageMessage = (
-  percentageRateDifference: Percent,
   t: TranslateFunction,
-): [string | null, PercentageDirection] => {
+  percentageRateDifference?: Percent,
+): [string | null, PercentageDirection | null] => {
   if (percentageRateDifference) {
     if (percentageRateDifference.equalTo(0)) {
       return [t('at market price'), PercentageDirection.MARKET]

@@ -6,11 +6,11 @@ import PriceChart from './PriceChart'
 
 type PriceChartContainerProps = {
   inputCurrencyId: string
-  inputCurrency: Currency
+  inputCurrency?: Currency
   outputCurrencyId: string
-  outputCurrency: Currency
+  outputCurrency?: Currency
   isChartExpanded: boolean
-  setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>>
+  setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>> | null
   isChartDisplayed: boolean
   currentSwapPrice: {
     [key: string]: number

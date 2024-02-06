@@ -45,13 +45,8 @@ const LimitOrders = () => {
   const router = useRouter()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
   const { theme } = useTheme()
-  const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
+  const [isChartDisplayed, setIsChartDisplayed] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)
-  const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
-
-  useEffect(() => {
-    setUserChartPreference(isChartDisplayed)
-  }, [isChartDisplayed, setUserChartPreference])
 
   const loadedUrlParams = useDefaultsFromURLSearch()
   // token warning stuff
@@ -60,7 +55,7 @@ const LimitOrders = () => {
     useCurrency(loadedUrlParams?.outputCurrencyId),
   ]
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c?.isToken) ?? [],
+    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c?.isToken ?? false) ?? [],
     [loadedInputCurrency, loadedOutputCurrency],
   )
 

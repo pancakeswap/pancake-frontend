@@ -1,5 +1,5 @@
 import { useDelayedUnmount } from "@pancakeswap/hooks";
-import React, { useRef, useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useMatchBreakpoints } from "../../contexts";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
@@ -13,7 +13,7 @@ import { DrawerContainer } from "./styles";
 interface BottomDrawerProps {
   content: React.ReactNode;
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  setIsOpen: (isOpen: boolean) => void | null;
 }
 
 const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({ content, isOpen, setIsOpen }) => {
@@ -23,7 +23,7 @@ const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({ co
 
   useOnClickOutside(
     ref?.current,
-    useCallback(() => setIsOpen(false), [setIsOpen])
+    useCallback(() => setIsOpen?.(false), [setIsOpen])
   );
 
   if (!shouldRender || isDesktop) {
@@ -38,7 +38,7 @@ const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({ co
         <Overlay isUnmounting={!isOpen} />
         <DrawerContainer ref={ref} isUnmounting={!isOpen}>
           <Box position="absolute" right="16px" top="0">
-            <IconButton variant="text" onClick={() => setIsOpen(false)}>
+            <IconButton variant="text" onClick={() => setIsOpen?.(false)}>
               <CloseIcon />
             </IconButton>
           </Box>
