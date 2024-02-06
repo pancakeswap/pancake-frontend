@@ -23,10 +23,10 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
-
 import { ChainLogo } from './Logo/ChainLogo'
 
 const AptosChain = {
@@ -36,6 +36,7 @@ const AptosChain = {
 
 const NetworkSelect = ({ switchNetwork, chainId }) => {
   const { t } = useTranslation()
+  const [showTestnet] = useUserShowTestnet()
 
   return (
     <>
@@ -47,7 +48,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
         .filter((chain) => {
           if (chain.id === chainId) return true
           if ('testnet' in chain && chain.testnet) {
-            return process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
+            return showTestnet
           }
           return true
         })

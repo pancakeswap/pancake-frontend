@@ -34,9 +34,10 @@ import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
-import { ReactNode, lazy, useCallback, useState, Suspense } from 'react'
+import { ReactNode, Suspense, lazy, useCallback, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
+import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import {
@@ -106,6 +107,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, setAudioMode] = useAudioPlay()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
+  const [showTestnet, setShowTestnet] = useUserShowTestnet()
   const { enabled } = useWebNotifications()
 
   const { onChangeRecipient } = useSwapActionHandlers()
@@ -195,6 +197,19 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 <Suspense fallback={null}>
                   <WebNotiToggle enabled={enabled} />
                 </Suspense>
+              </Flex>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Show testnet')}</Text>
+                </Flex>
+                <Toggle
+                  id="toggle-show-testnet"
+                  checked={showTestnet}
+                  scale="md"
+                  onChange={() => {
+                    setShowTestnet((s) => !s)
+                  }}
+                />
               </Flex>
               {chainId === ChainId.BSC && (
                 <>
