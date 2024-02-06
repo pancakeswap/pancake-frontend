@@ -33,7 +33,7 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
   const userWithdrawRequest = useReadWithdrawRequestInfo()
 
   const withdrawRequestAmount = userWithdrawRequest
-    ? getFullDisplayBalance(userWithdrawRequest?.totalWbethAmountPending, selectedList.token1.decimals, 6)
+    ? getFullDisplayBalance(userWithdrawRequest?.totalEthAmountPending, selectedList.token0.decimals, 6)
     : '0'
 
   const claimableAmount = userWithdrawRequest
@@ -44,8 +44,8 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
   const currency1 = useCurrency(passCheckNativeToken(selectedList.token1, native))
 
   const withdrawRequestAmountToken =
-    currency1 && userWithdrawRequest?.totalWbethAmountPending
-      ? CurrencyAmount.fromRawAmount(currency1, userWithdrawRequest.totalWbethAmountPending.toString())
+    currency0 && userWithdrawRequest?.totalEthAmountPending
+      ? CurrencyAmount.fromRawAmount(currency0, userWithdrawRequest.totalEthAmountPending.toString())
       : undefined
 
   const claimableAmountToken =
@@ -89,11 +89,11 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
               <Text color="textSubtle">{t('Pending Withdrawal Amount')}</Text>
               <Flex flexDirection="column" alignItems="end">
                 <Text>
-                  {withdrawRequestAmount} {selectedList?.token1?.symbol}
+                  {withdrawRequestAmount} {selectedList?.token0?.symbol}
                 </Text>
                 <Text fontSize="10px" color="textSubtle">
-                  {withdrawRequestAmountToken && token1USDPrice
-                    ? `~$${token1USDPrice.quote(withdrawRequestAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
+                  {withdrawRequestAmountToken && token0USDPrice
+                    ? `~$${token0USDPrice.quote(withdrawRequestAmountToken).toFixed(2, { groupSeparator: ',' })} USD`
                     : ''}
                 </Text>
               </Flex>

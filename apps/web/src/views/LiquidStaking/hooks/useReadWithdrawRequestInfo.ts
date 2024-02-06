@@ -19,7 +19,7 @@ interface UserWithdrawRequest {
 export function useReadWithdrawRequestInfo():
   | {
       latestTriggerTime: BigNumber
-      totalWbethAmountPending: BigNumber
+      totalEthAmountPending: BigNumber
       totalEthAmountClaimable: BigNumber
       totalRequest: number
       claimableIndexes: number[]
@@ -62,12 +62,12 @@ export function useReadWithdrawRequestInfo():
                     : {
                         ...last,
                         latestTriggerTime: triggerTime,
-                        totalWbethAmountPending: last.totalWbethAmountPending.plus(d.wbethAmount),
+                        totalEthAmountPending: last.totalEthAmountPending.plus(d.ethAmount),
                       }
                 },
                 {
                   latestTriggerTime: BIG_ZERO,
-                  totalWbethAmountPending: BIG_ZERO,
+                  totalEthAmountPending: BIG_ZERO,
                   totalEthAmountClaimable: BIG_ZERO,
                   claimableIndexes: [] as number[],
                 },
