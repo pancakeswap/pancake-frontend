@@ -10,6 +10,7 @@ on:
         options:
           - routing
           - farms
+          - proxy-worker
       environment:
         description: 'Choose an environment to deploy to: <dev|production>'
         required: true
