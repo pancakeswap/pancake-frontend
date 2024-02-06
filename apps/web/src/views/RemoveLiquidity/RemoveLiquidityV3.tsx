@@ -28,7 +28,7 @@ import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContr
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useDerivedV3BurnInfo } from 'hooks/v3/useDerivedV3BurnInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'

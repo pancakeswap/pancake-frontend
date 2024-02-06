@@ -14,7 +14,7 @@ import {
 import { CurrencyAmount, Percent, Currency } from '@pancakeswap/sdk'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
-import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
+import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 
 import { FixedStakingPool } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'

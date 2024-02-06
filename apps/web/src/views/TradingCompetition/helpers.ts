@@ -1,7 +1,7 @@
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { easterPrizes, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import BigNumber from 'bignumber.js'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { bscTokens } from '@pancakeswap/tokens'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useCakePrice } from 'hooks/useCakePrice'

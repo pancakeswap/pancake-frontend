@@ -5,7 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { useCurrencyBalance } from 'state/wallet/hooks'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useAccount } from 'wagmi'
 import { CurrencyLogo } from '../Logo'
 import { RowBetween, AutoRow } from '../Layout/Row'
@@ -116,7 +116,7 @@ export const CurrencySelect = ({
           </AutoRow>
           <RowBetween>
             <div />
-            {Number.isFinite(+quoted?.toExact()) && (
+            {quoted && Number.isFinite(+quoted?.toExact()) && (
               <Text fontSize="12px" color="textSubtle">
                 ~${formatNumber(+quoted.toExact())}
               </Text>

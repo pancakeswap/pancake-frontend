@@ -4,7 +4,7 @@ import { Text, Card, CardBody, Flex, CardProps, TooltipText, useTooltip, Link, A
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
+import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import { useAccount } from 'wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
@@ -50,11 +50,11 @@ export const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) =
 export const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
   const token0USDValue = useStablecoinPriceAmount(
     currency0,
-    token0Deposited ? parseFloat(token0Deposited.toSignificant(6)) : null,
+    token0Deposited ? parseFloat(token0Deposited.toSignificant(6)) : undefined,
   )
   const token1USDValue = useStablecoinPriceAmount(
     currency1,
-    token1Deposited ? parseFloat(token1Deposited.toSignificant(6)) : null,
+    token1Deposited ? parseFloat(token1Deposited.toSignificant(6)) : undefined,
   )
 
   return token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null

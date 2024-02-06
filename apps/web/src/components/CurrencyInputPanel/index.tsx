@@ -20,7 +20,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
-import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
+import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
