@@ -222,7 +222,7 @@ const useConfirmActions = (
   }
 }
 
-export const useConfirmModalStateV2 = (
+export const useConfirmModalState = (
   trade: SmartRouterTrade<TradeType> | undefined,
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,

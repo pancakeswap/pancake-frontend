@@ -16,7 +16,7 @@ import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { ConfirmSwapModal } from 'views/Swap/V3Swap/containers/ConfirmSwapModal'
 import { MMTradeInfo } from '../hooks'
 import { useMMConfirmModalState } from '../hooks/useMMConfirmModalState'
-import { useSwapCallArgumentsV2 } from '../hooks/useSwapCallArguments'
+import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { MMRfqTrade } from '../types'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
@@ -75,7 +75,7 @@ SwapCommitButtonPropsType) {
   const mmSpender = useMemo(() => {
     return mmTradeInfo?.routerAddress as Address | undefined
   }, [mmTradeInfo])
-  const swapCalls = useSwapCallArgumentsV2(rfqTrade.trade, rfqTrade.rfq ?? undefined, recipient ?? undefined)
+  const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq ?? undefined, recipient ?? undefined)
   const { resetState, txHash, confirmState, confirmSteps, callToAction, errorMessage } = useMMConfirmModalState(
     rfqTrade.trade,
     swapCalls,

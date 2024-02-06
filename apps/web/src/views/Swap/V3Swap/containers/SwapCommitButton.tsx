@@ -26,7 +26,7 @@ import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
 import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
-import { useConfirmModalStateV2 } from '../hooks/useConfirmModalState'
+import { useConfirmModalState } from '../hooks/useConfirmModalState'
 import { useSwapConfig } from '../hooks/useSwapConfig'
 import { useSwapCurrency } from '../hooks/useSwapCurrency'
 import { computeTradePriceBreakdown } from '../utils/exchange'
@@ -152,7 +152,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
-  const { callToAction, confirmState, txHash, confirmSteps, errorMessage, resetState } = useConfirmModalStateV2(
+  const { callToAction, confirmState, txHash, confirmSteps, errorMessage, resetState } = useConfirmModalState(
     trade,
     inputCurrency?.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
     getUniversalRouterAddress(chainId),
