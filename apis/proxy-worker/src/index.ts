@@ -1,6 +1,6 @@
-import { Router } from 'itty-router'
-import { missing, error } from 'itty-router-extras'
 import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
+import { Router } from 'itty-router'
+import { error, missing } from 'itty-router-extras'
 
 const _corsMethods = `POST, OPTIONS`
 const _corsHeaders = `referer, origin, content-type, x-sf`
@@ -15,6 +15,25 @@ router.post('/bsc-exchange', async (request, _, headers: Headers) => {
   if (!body) return error(400, 'Missing body')
 
   const response = await fetch(NODE_REAL_DATA_ENDPOINT, {
+    headers: {
+      'X-Forwarded-For': ip,
+      origin: isLocalHost ? 'https://pancakeswap.finance' : headers.get('origin') || '',
+    },
+    body,
+    method: 'POST',
+  })
+
+  return response
+})
+
+router.post('/bsc-exchange-v3', async (request, _, headers: Headers) => {
+  const ip = headers.get('X-Forwarded-For') || headers.get('Cf-Connecting-Ip') || ''
+  const isLocalHost = headers.get('origin') === 'http://localhost:3000'
+  const body = (await request.text?.()) as any
+
+  if (!body) return error(400, 'Missing body')
+
+  const response = await fetch(NODE_REAL_BSC_V3_ENDPOINT, {
     headers: {
       'X-Forwarded-For': ip,
       origin: isLocalHost ? 'https://pancakeswap.finance' : headers.get('origin') || '',
