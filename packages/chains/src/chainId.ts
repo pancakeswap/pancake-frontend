@@ -11,11 +11,14 @@ export enum ChainId {
   POLYGON_ZKEVM_TESTNET = 1442,
   ARBITRUM_ONE = 42161,
   ARBITRUM_GOERLI = 421613,
+  ARBITRUM_SEPOLIA = 421614,
   SCROLL_SEPOLIA = 534351,
   LINEA = 59144,
   LINEA_TESTNET = 59140,
   BASE = 8453,
   BASE_TESTNET = 84531,
+  BASE_SEPOLIA = 84532,
+  SEPOLIA = 11155111,
 }
 
 export const testnetChainIds = [
@@ -28,4 +31,7 @@ export const testnetChainIds = [
   ChainId.SCROLL_SEPOLIA,
   ChainId.LINEA_TESTNET,
   ChainId.BASE_TESTNET,
+  ChainId.SEPOLIA,
+  ChainId.ARBITRUM_SEPOLIA,
+  ChainId.BASE_SEPOLIA,
 ]

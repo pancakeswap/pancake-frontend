@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 
-import { ChainMap, BatchMulticallConfigs } from '../types'
+import { BatchMulticallConfigs, ChainMap } from '../types'
 
 const DEFAULT: BatchMulticallConfigs = {
   defaultConfig: {
@@ -68,4 +68,7 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.OPBNB]: DEFAULT,
   [ChainId.OPBNB_TESTNET]: DEFAULT,
   [ChainId.SCROLL_SEPOLIA]: DEFAULT,
+  [ChainId.SEPOLIA]: DEFAULT,
+  [ChainId.ARBITRUM_SEPOLIA]: DEFAULT,
+  [ChainId.BASE_SEPOLIA]: DEFAULT,
 }

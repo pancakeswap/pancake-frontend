@@ -1,23 +1,25 @@
-import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Token } from '@pancakeswap/sdk'
 import {
-  ethereumTokens,
-  bscTokens,
-  bscTestnetTokens,
-  goerliTestnetTokens,
-  polygonZkEvmTokens,
-  polygonZkEvmTestnetTokens,
-  zkSyncTestnetTokens,
-  zksyncTokens,
-  lineaTokens,
-  lineaTestnetTokens,
+  arbSepoliaTokens,
   arbitrumGoerliTokens,
   arbitrumTokens,
-  baseTokens,
+  baseSepoliaTokens,
   baseTestnetTokens,
-  opBnbTokens,
+  baseTokens,
+  bscTestnetTokens,
+  bscTokens,
+  ethereumTokens,
+  goerliTestnetTokens,
+  lineaTestnetTokens,
+  lineaTokens,
   opBnbTestnetTokens,
+  opBnbTokens,
+  polygonZkEvmTestnetTokens,
+  polygonZkEvmTokens,
   scrollSepoliaTokens,
+  zkSyncTestnetTokens,
+  zksyncTokens,
 } from '@pancakeswap/tokens'
 
 export const usdGasTokensByChain = {
@@ -38,8 +40,11 @@ export const usdGasTokensByChain = {
   [ChainId.BASE]: [baseTokens.usdc],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc],
+  [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc],
+  [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc],
+  [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc],
 } satisfies Record<ChainId, Token[]>
 
+export * from './stableSwap'
 export * from './v2'
 export * from './v3'
-export * from './stableSwap'

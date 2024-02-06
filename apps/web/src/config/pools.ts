@@ -19,6 +19,9 @@ export const POOLS_FAST_REVALIDATE = {
   [ChainId.BASE]: 10_000,
   [ChainId.BASE_TESTNET]: 10_000,
   [ChainId.SCROLL_SEPOLIA]: 10_000,
+  [ChainId.SEPOLIA]: 20_000,
+  [ChainId.ARBITRUM_SEPOLIA]: 10_000,
+  [ChainId.BASE_SEPOLIA]: 10_000,
 } as const satisfies Record<ChainId, number>
 
 // Revalidate interval in milliseconds
@@ -40,6 +43,9 @@ export const POOLS_NORMAL_REVALIDATE = {
   [ChainId.BASE]: 15_000,
   [ChainId.BASE_TESTNET]: 15_000,
   [ChainId.SCROLL_SEPOLIA]: 15_000,
+  [ChainId.SEPOLIA]: 20_000,
+  [ChainId.ARBITRUM_SEPOLIA]: 15_000,
+  [ChainId.BASE_SEPOLIA]: 15_000,
 } as const satisfies Record<ChainId, number>
 
 export const POOLS_SLOW_REVALIDATE = {
@@ -60,4 +66,7 @@ export const POOLS_SLOW_REVALIDATE = {
   [ChainId.BASE]: 20_000,
   [ChainId.BASE_TESTNET]: 20_000,
   [ChainId.SCROLL_SEPOLIA]: 20_000,
+  [ChainId.SEPOLIA]: 40_000,
+  [ChainId.ARBITRUM_SEPOLIA]: 20_000,
+  [ChainId.BASE_SEPOLIA]: 20_000,
 } as const satisfies Record<ChainId, number>
