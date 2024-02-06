@@ -7,6 +7,8 @@ import useCurrentBlockTimestamp from './useCurrentBlockTimestamp'
 import { usePermit2Allowance } from './usePermit2Allowance'
 import { usePermit2Details } from './usePermit2Details'
 
+const EXPIRES_BUFFER = 60n * 15n // 15 minutes in seconds
+
 export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, spender?: Address) => {
   const { account } = useAccountActiveChain()
   const { allowance, refetch } = usePermit2Allowance(account, amount?.currency)
@@ -33,7 +35,9 @@ export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, sp
   }, [allowance, amount])
 
   const requirePermit = useMemo((): boolean => {
-    return (amount && permitAmount?.lessThan(amount)) || (Boolean(expiration) && now >= expiration)
+    return (
+      (amount && permitAmount?.lessThan(amount)) || (Boolean(expiration) && BigInt(expiration) - now < EXPIRES_BUFFER)
+    )
   }, [amount, permitAmount, expiration, now])
 
   return {
