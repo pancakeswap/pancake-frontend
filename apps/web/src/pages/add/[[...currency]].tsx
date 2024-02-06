@@ -87,5 +87,6 @@ const AddLiquidityPage = () => {
 }
 
 AddLiquidityPage.chains = CHAIN_IDS
+AddLiquidityPage.screen = true
 
 export default AddLiquidityPage

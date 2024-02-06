@@ -30,6 +30,7 @@ const IncreaseLiquidityPage = () => {
 }
 
 IncreaseLiquidityPage.chains = CHAIN_IDS
+IncreaseLiquidityPage.screen = true
 
 export default IncreaseLiquidityPage
 
