@@ -3023,7 +3023,7 @@
   "unlocking": "解锁中",
   "You have no locked CAKE.": "您未持有有效的 CAKE 锁仓仓位。",
   "To cast your vote, lock your CAKE for 3 weeks or more.": "要进行投票，请将您的 CAKE 锁定 3 周或更长时间。",
-  "This gauge has hit its voting cap. It can continue to receive votes, however, the vote numbers and allocation % will not increase until other gauges gain more votes.": "此 gauge 已经达到配额上限。您仍然可以给它投票，但是它的得票数和分配比例不会继续增加，除非其他 gauges 获得一些选票。",
+  "This gauge has hit its voting cap. It can continue to receive votes, however, the vote numbers and allocation % will not increase until other gauges gain more votes.": "此 Gauge 已经达到获票上限。您仍然可以向它投票，但是它的得票数和配额 % 数不会继续增加，除非其他 Gauges 获得一些选票。",
   "To cast your vote, ": "如要投票，",
   "extend your lock >>": "extend your lock >>",
   "lock your CAKE": "lock your CAKE",
@@ -3141,6 +3141,7 @@
   "Your deposit value in USD": "Your deposit value in USD",
   "Min deposit USD": "Min deposit USD",
   "Savings": "Savings",
+  "Show testnet": "Show testnet",
   "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!": "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!",
   "Join Now": "Join Now"
 }
