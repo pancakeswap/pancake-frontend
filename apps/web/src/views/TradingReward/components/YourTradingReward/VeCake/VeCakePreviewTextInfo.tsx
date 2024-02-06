@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, BoxProps, Button, Flex, Text, useModal } from '@pancakeswap/uikit'
-import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatNumber, getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
 import { useMemo } from 'react'
@@ -40,7 +40,7 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
   )
 
   const previewVeCakeAtSnapshot = useMemo(
-    () => formatNumber(getBalanceNumber(new BigNumber(userCreditWithTime)), 2, 2),
+    () => getBalanceAmount(new BigNumber(userCreditWithTime)).toFixed(2, BigNumber.ROUND_DOWN),
     [userCreditWithTime],
   )
 

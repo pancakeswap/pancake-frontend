@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
 import { AutoRow, Balance, BalanceInput, BalanceInputProps, Button, Flex, FlexGap, Text } from '@pancakeswap/uikit'
-import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { TokenImage } from 'components/TokenImage'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -147,8 +147,13 @@ export const LockCakeForm: React.FC<{
 
 const SubmitLockButton = ({ onDismiss }: { onDismiss?: () => void }) => {
   const { t } = useTranslation()
+  const _cakeBalance = useBSCCakeBalance()
   const cakeLockAmount = useAtomValue(cakeLockAmountAtom)
-  const disabled = useMemo(() => !cakeLockAmount || cakeLockAmount === '0', [cakeLockAmount])
+  const disabled = useMemo(
+    () =>
+      !cakeLockAmount || cakeLockAmount === '0' || getDecimalAmount(new BN(cakeLockAmount)).gt(_cakeBalance.toString()),
+    [_cakeBalance, cakeLockAmount],
+  )
   const increaseLockAmount = useWriteApproveAndIncreaseLockAmountCallback(onDismiss)
 
   return (
