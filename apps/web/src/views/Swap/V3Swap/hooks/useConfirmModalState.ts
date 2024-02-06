@@ -2,13 +2,14 @@ import { usePreviousValue } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState, confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { Address, Hex } from 'viem'
@@ -22,27 +23,23 @@ export type ConfirmAction = {
   showIndicator: boolean
 }
 
-const useCreateConfirmSteps = (
-  amountToApprove: CurrencyAmount<Token> | undefined,
-  spender: Address | undefined,
-  actions: Record<ConfirmModalState, ConfirmAction>,
-) => {
+const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
   const { requireApprove, requirePermit, requireRevoke } = usePermit2Requires(amountToApprove, spender)
 
   return useCallback(() => {
-    const steps: ConfirmAction[] = []
+    const steps: ConfirmModalState[] = []
     if (requireRevoke) {
-      steps.push(actions[ConfirmModalState.RESETTING_APPROVAL])
+      steps.push(ConfirmModalState.RESETTING_APPROVAL)
     }
     if (requireApprove) {
-      steps.push(actions[ConfirmModalState.APPROVING_TOKEN])
+      steps.push(ConfirmModalState.APPROVING_TOKEN)
     }
     if (requirePermit) {
-      steps.push(actions[ConfirmModalState.PERMITTING])
+      steps.push(ConfirmModalState.PERMITTING)
     }
-    steps.push(actions[ConfirmModalState.PENDING_CONFIRMATION])
+    steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [requireRevoke, requireApprove, requirePermit, actions])
+  }, [requireRevoke, requireApprove, requirePermit])
 }
 
 // define the actions of each step
@@ -54,8 +51,9 @@ const useConfirmActions = (
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const deadline = useTransactionDeadline()
-  const { revoke, permit, approve, permit2Signature, permit2Allowance, refetch } = usePermit2(amountToApprove, spender)
-  const { callback: swap } = useSwapCallback({
+  const { revoke, permit, approve, permit2Allowance, refetch } = usePermit2(amountToApprove, spender)
+  const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
+  const { callback: swap, error: swapError } = useSwapCallback({
     trade,
     deadline,
     permitSignature: permit2Signature,
@@ -68,6 +66,7 @@ const useConfirmActions = (
     setConfirmState(ConfirmModalState.REVIEWING)
     setTxHash(undefined)
     setErrorMessage(undefined)
+    setPermit2Signature(undefined)
   }, [])
 
   // define the action of each step
@@ -113,7 +112,8 @@ const useConfirmActions = (
       action: async (nextState?: ConfirmModalState) => {
         setConfirmState(ConfirmModalState.PERMITTING)
         try {
-          await permit()
+          const result = await permit()
+          setPermit2Signature(result)
           setConfirmState(nextState ?? ConfirmModalState.PENDING_CONFIRMATION)
         } catch (error) {
           if (userRejectedError(error)) {
@@ -135,7 +135,7 @@ const useConfirmActions = (
           const result = await approve()
           if (result?.hash) {
             setTxHash(result.hash)
-            await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+            await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash, confirmations: 1 })
           }
           // check if user really approved the amount trade needs
           const { data } = await refetch()
@@ -187,6 +187,11 @@ const useConfirmActions = (
           return
         }
 
+        if (swapError) {
+          setErrorMessage(swapError)
+          return
+        }
+
         try {
           const result = await swap()
           if (result?.hash) {
@@ -205,16 +210,20 @@ const useConfirmActions = (
       },
       showIndicator: false,
     }
-  }, [chainId, resetState, swap, swapPreflightCheck])
+  }, [chainId, resetState, swap, swapError, swapPreflightCheck])
 
-  return {
-    txHash,
-    actions: {
+  const actions = useMemo(() => {
+    return {
       [ConfirmModalState.RESETTING_APPROVAL]: revokeStep,
       [ConfirmModalState.PERMITTING]: permitStep,
       [ConfirmModalState.APPROVING_TOKEN]: approveStep,
       [ConfirmModalState.PENDING_CONFIRMATION]: swapStep,
-    } as { [k in ConfirmModalState]: ConfirmAction },
+    } as { [k in ConfirmModalState]: ConfirmAction }
+  }, [approveStep, permitStep, revokeStep, swapStep])
+
+  return {
+    txHash,
+    actions,
 
     confirmState,
     resetState,
@@ -229,28 +238,30 @@ export const useConfirmModalState = (
 ) => {
   const { actions, confirmState, txHash, errorMessage, resetState } = useConfirmActions(trade, amountToApprove, spender)
   const preConfirmState = usePreviousValue(confirmState)
-  const confirmSteps = useRef<ConfirmAction[]>()
+  const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()
 
-  const createSteps = useCreateConfirmSteps(amountToApprove, spender, actions)
+  const createSteps = useCreateConfirmSteps(amountToApprove, spender)
+  const confirmActions = useMemo(() => {
+    return confirmSteps?.map((step) => actions[step])
+  }, [confirmSteps, actions])
 
   const performStep = useCallback(
     async (nextStep?: ConfirmModalState) => {
-      if (!confirmSteps.current) {
+      if (!confirmActions) {
         return
       }
 
-      const steps = confirmSteps.current
-      const step = steps.find((s) => s.step === confirmState) ?? steps[0]
+      const step = confirmActions.find((s) => s.step === confirmState) ?? confirmActions[0]
 
       await step.action(nextStep)
     },
-    [confirmState],
+    [confirmActions, confirmState],
   )
 
   const callToAction = useCallback(() => {
     const steps = createSteps()
-    confirmSteps.current = steps
-    const nextStep = steps[1] ? steps[1].step : undefined
+    setConfirmSteps(steps)
+    const nextStep = steps[1] ?? undefined
 
     performStep(nextStep)
   }, [createSteps, performStep])
@@ -260,11 +271,13 @@ export const useConfirmModalState = (
     if (
       preConfirmState !== confirmState &&
       preConfirmState !== ConfirmModalState.REVIEWING &&
-      confirmSteps.current?.some((step) => step.step === confirmState)
+      confirmActions?.some((step) => step.step === confirmState)
     ) {
-      performStep(confirmState)
+      const nextStep = confirmActions.findIndex((step) => step.step === confirmState)
+      const nextStepState = confirmActions[nextStep + 1]?.step ?? ConfirmModalState.PENDING_CONFIRMATION
+      performStep(nextStepState)
     }
-  }, [confirmState, performStep, preConfirmState])
+  }, [confirmActions, confirmState, performStep, preConfirmState])
 
   return {
     callToAction,
@@ -272,6 +285,6 @@ export const useConfirmModalState = (
     confirmState,
     resetState,
     txHash,
-    confirmSteps: confirmSteps.current,
+    confirmActions,
   }
 }

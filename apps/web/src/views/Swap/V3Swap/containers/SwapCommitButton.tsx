@@ -152,7 +152,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
-  const { callToAction, confirmState, txHash, confirmSteps, errorMessage, resetState } = useConfirmModalState(
+  const { callToAction, confirmState, txHash, confirmActions, errorMessage, resetState } = useConfirmModalState(
     trade,
     inputCurrency?.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
     getUniversalRouterAddress(chainId),
@@ -192,7 +192,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
       originalTrade={tradeToConfirm}
       txHash={txHash}
       confirmModalState={confirmState}
-      pendingModalSteps={confirmSteps ?? []}
+      pendingModalSteps={confirmActions ?? []}
       swapErrorMessage={errorMessage}
       currencyBalances={currencyBalances}
       onAcceptChanges={handleAcceptChanges}
