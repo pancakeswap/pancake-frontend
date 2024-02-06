@@ -8,7 +8,6 @@ import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import { styled } from 'styled-components'
 import { getVeCakeAmount } from 'utils/getVeCakeAmount'
-import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'
 import { useProxyVeCakeBalanceOfAtTime } from 'views/CakeStaking/hooks/useProxyVeCakeBalanceOfAtTime'
 import { useTargetUnlockTime } from 'views/CakeStaking/hooks/useTargetUnlockTime'
@@ -41,7 +40,6 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const currentTimestamp = useCurrentBlockTimestamp()
   const { data: userInfo } = useVeCakeUserInfo()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
   const { cakeUnlockTime, cakeLockExpired, nativeCakeLockedAmount, status } = useCakeLockStatus()
