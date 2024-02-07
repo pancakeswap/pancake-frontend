@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 
 import currencyId from 'utils/currencyId'
 import { useRouter } from 'next/router'
@@ -371,7 +371,7 @@ const SELECTOR_TYPE_T = {
   [SELECTOR_TYPE.STABLE]: <Trans>Add Stable Liquidity</Trans>,
   [SELECTOR_TYPE.V2]: <Trans>Add V2 Liquidity</Trans>,
   [SELECTOR_TYPE.V3]: <Trans>Add V3 Liquidity</Trans>,
-} as const satisfies Record<SELECTOR_TYPE, JSX.Element>
+} as const satisfies Record<SELECTOR_TYPE, React.JSX.Element>
 
 export function AddLiquidityV3Layout({
   showRefreshButton = false,

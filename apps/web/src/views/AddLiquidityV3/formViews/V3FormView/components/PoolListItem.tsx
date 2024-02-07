@@ -1,6 +1,6 @@
 import { Position } from '@pancakeswap/v3-sdk'
 import { useToken } from 'hooks/Tokens'
-import { useMemo, useState, SetStateAction, Dispatch } from 'react'
+import React, { useMemo, useState, SetStateAction, Dispatch } from 'react'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { usePool } from 'hooks/v3/usePools'
@@ -30,7 +30,7 @@ interface PositionListItemDisplayProps {
 
 interface PositionListItemProps {
   positionDetails: PositionDetails
-  children: (displayProps: PositionListItemDisplayProps) => JSX.Element
+  children: (displayProps: PositionListItemDisplayProps) => React.JSX.Element
 }
 
 export default function PositionListItem({ positionDetails, children }: PositionListItemProps) {

@@ -1,9 +1,10 @@
 import { ModalHeader, ModalTitle } from 'views/Notifications/styles'
 import { Heading } from '@pancakeswap/uikit'
+import React from 'react'
 
 interface INotifyHeaderprops {
-  leftIcon: JSX.Element
-  rightIcon: JSX.Element
+  leftIcon: React.JSX.Element
+  rightIcon: React.JSX.Element
   text: string
 }
 
