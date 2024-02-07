@@ -3,7 +3,8 @@ import { Box, Flex, Heading, PageSection, Skeleton } from '@pancakeswap/uikit'
 import { LotterySubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { LotteryStatus } from 'config/constants/types'
 import useTheme from 'hooks/useTheme'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
 import { styled } from 'styled-components'
 import AllHistoryCard from './components/AllHistoryCard'
@@ -31,6 +32,52 @@ const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
+export const PortalContainer: React.FC = ({ children }: any) => {
+  const portalRoot = document.getElementById('portal-root')!
+  const portalElement = document.createElement('div')
+
+  useEffect(() => {
+    portalRoot.appendChild(portalElement)
+
+    return () => {
+      portalRoot.removeChild(portalElement)
+    }
+  }, [portalElement, portalRoot])
+
+  return createPortal(children, portalElement)
+}
+
+interface ImagePortalProps {
+  imageUrl: string
+}
+
+const StyledImage = styled.img`
+  position: absolute; /* or absolute depending on your preference */
+  z-index: 9999; /* Adjust this value to ensure the image appears above other content */
+  top: 110px; /* Adjust top position as needed */
+  left: calc(25.4% + 10px); /* Adjust left position as needed */
+  /* Additional styles as needed */
+`
+
+const ImagePortal = () => {
+  const portalRoot = document.getElementById('portal-root')!
+  const portalElement = document.createElement('div')
+
+  useEffect(() => {
+    portalRoot.appendChild(portalElement)
+
+    return () => {
+      portalRoot.removeChild(portalElement)
+    }
+  }, [portalElement, portalRoot])
+
+  return createPortal(
+    <StyledImage src="/images/lottery/cny-bunny.png" alt="" height={159} width={149} />,
+
+    document.body,
+  )
+}
+
 const Lottery = () => {
   useFetchLottery()
   useStatusTransitions()
@@ -49,6 +96,8 @@ const Lottery = () => {
       <LotteryPage>
         <Flex width="100%" height="125px" background={CNY_BANNER_BG} alignItems="center" justifyContent="center">
           <CnyBanner />
+
+          <ImagePortal />
         </Flex>
         <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />

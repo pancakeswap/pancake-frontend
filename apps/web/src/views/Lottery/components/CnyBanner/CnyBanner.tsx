@@ -10,6 +10,7 @@ const BannerContainer = styled.div<{ isDesktop: boolean }>`
 `
 const GenericContainer = styled.div`
   position: absolute;
+  width: 100%;
 `
 const CnyBannerAsset = ({
   asset,
@@ -35,7 +36,7 @@ export const CnyBanner = () => {
   const bannerView = isDesktop ? 'desktopProps' : 'mobileProps'
   return (
     <BannerContainer isDesktop={isDesktop}>
-      <CnyBannerAsset asset={CNY_BANNER_CONFIG.Bunny} bannerView={bannerView} options={{ zIndex: 5 }} />
+      {/* <CnyBannerAsset asset={CNY_BANNER_CONFIG.Bunny} bannerView={bannerView} options={{ zIndex: 5 }} /> */}
       <CnyBannerAsset
         asset={CNY_BANNER_CONFIG.GoldenHat}
         bannerView={bannerView}
