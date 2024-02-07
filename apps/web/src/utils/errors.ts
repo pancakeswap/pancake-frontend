@@ -20,3 +20,18 @@ export function getViemErrorMessage(err: any) {
   }
   return String(err)
 }
+
+export class UserUnexpectedTxError extends BaseError {
+  override name = 'UserUnexpectedTxError'
+
+  constructor({ expectedData, actualData }: { expectedData: unknown; actualData: unknown }) {
+    super('User initiated unexpected transaction', {
+      metaMessages: [
+        `User initiated unexpected transaction`,
+        ``,
+        `  Expected data: ${expectedData}`,
+        `  Actual data: ${actualData}`,
+      ],
+    })
+  }
+}

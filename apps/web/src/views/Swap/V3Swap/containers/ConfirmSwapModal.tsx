@@ -9,7 +9,6 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 import {
   ApproveModalContent,
   ConfirmModalState,
-  PendingApproveModalState,
   SwapPendingModalContent,
   SwapTransactionReceiptModalContent,
 } from '@pancakeswap/widgets-internal'
@@ -23,15 +22,30 @@ import { wrappedCurrency } from 'utils/wrappedCurrency'
 import ConfirmSwapModalContainer from 'views/Swap/components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from 'views/Swap/components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
-import { useApprovalPhaseStepTitles } from '../hooks/useConfirmModalState'
-import { PendingConfirmModalState } from '../types'
+import { ConfirmAction } from '../hooks/useConfirmModalState'
+import { AllowedAllowanceState } from '../types'
 import { ApproveStepFlow } from './ApproveStepFlow'
+
+export const useApprovalPhaseStepTitles: ({ trade }: { trade: SmartRouterTrade<TradeType> | undefined }) => {
+  [step in AllowedAllowanceState]: string
+} = ({ trade }: { trade: SmartRouterTrade<TradeType> | undefined }) => {
+  const { t } = useTranslation()
+  return useMemo(() => {
+    return {
+      [ConfirmModalState.RESETTING_APPROVAL]: t('Reset approval on USDT.'),
+      [ConfirmModalState.APPROVING_TOKEN]: t('Approve %symbol%', {
+        symbol: trade ? trade.inputAmount.currency.symbol : '',
+      }),
+      [ConfirmModalState.PERMITTING]: t('Permit %symbol%', { symbol: trade ? trade.inputAmount.currency.symbol : '' }),
+    }
+  }, [t, trade])
+}
 
 type ConfirmSwapModalProps = InjectedModalProps & {
   customOnDismiss?: () => void
   onDismiss?: () => void
   confirmModalState: ConfirmModalState
-  pendingModalSteps: PendingConfirmModalState[]
+  pendingModalSteps: ConfirmAction[]
   isMM?: boolean
   isRFQReady?: boolean
   trade?: SmartRouterTrade<TradeType>
@@ -73,16 +87,11 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   }, [confirmModalState])
   const stepsVisible = useMemo(() => {
     if (swapErrorMessage) return false
-    return (
-      (pendingModalSteps.length > 0 &&
-        [
-          ConfirmModalState.RESETTING_APPROVAL,
-          ConfirmModalState.APPROVING_TOKEN,
-          ConfirmModalState.PERMITTING,
-        ].includes(confirmModalState)) ||
-      (ConfirmModalState.PENDING_CONFIRMATION === confirmModalState && !txHash)
-    )
-  }, [confirmModalState, pendingModalSteps.length, swapErrorMessage, txHash])
+    if (confirmModalState === ConfirmModalState.REVIEWING || confirmModalState === ConfirmModalState.COMPLETED)
+      return false
+    if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION && txHash) return false
+    return pendingModalSteps.length > 0 && pendingModalSteps.some((step) => step.showIndicator)
+  }, [confirmModalState, pendingModalSteps, swapErrorMessage, txHash])
 
   const stepContents = useApprovalPhaseStepTitles({ trade })
   const token: Token | undefined = useMemo(
@@ -129,7 +138,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
           currencyA={currencyA as Currency}
           asBadge
           currentStep={confirmModalState}
-          approvalModalSteps={pendingModalSteps as PendingApproveModalState[]}
+          approvalModalSteps={pendingModalSteps.map((step) => step.step) as any}
         />
       )
     }
@@ -243,7 +252,10 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     >
       <Box>{modalContent}</Box>
       {stepsVisible ? (
-        <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
+        <ApproveStepFlow
+          confirmModalState={confirmModalState}
+          pendingModalSteps={pendingModalSteps.map((step) => step.step) as any}
+        />
       ) : null}
     </ConfirmSwapModalContainer>
   )

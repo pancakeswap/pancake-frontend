@@ -4,7 +4,7 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
-import { ReactNode, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
@@ -16,7 +16,6 @@ import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
 import type { TWallchainMasterInput, WallchainStatus } from './useWallchain'
-import { useWallchainSwapCallArguments } from './useWallchain'
 
 export enum SwapCallbackState {
   INVALID,
@@ -28,7 +27,7 @@ export enum SwapCallbackState {
 interface UseSwapCallbackReturns {
   state: SwapCallbackState
   callback?: () => Promise<SendTransactionResult>
-  error?: ReactNode
+  error?: string
   reason?: string
 }
 interface UseSwapCallbackArgs {
@@ -38,8 +37,8 @@ interface UseSwapCallbackArgs {
   deadline?: bigint
   permitSignature: Permit2Signature | undefined
   feeOptions?: FeeOptions
-  onWallchainDrop: () => void
-  statusWallchain: WallchainStatus
+  onWallchainDrop?: () => void
+  statusWallchain?: WallchainStatus
   wallchainMasterInput?: TWallchainMasterInput
 }
 
@@ -50,9 +49,6 @@ export function useSwapCallback({
   deadline,
   permitSignature,
   feeOptions,
-  onWallchainDrop,
-  statusWallchain,
-  wallchainMasterInput,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
@@ -70,21 +66,16 @@ export function useSwapCallback({
     feeOptions,
   )
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const wallchainSwapCalls = useWallchainSwapCallArguments(
-    trade,
-    swapCalls,
-    account,
-    onWallchainDrop,
-    wallchainMasterInput,
-  )
+  // const wallchainSwapCalls = useWallchainSwapCallArguments(
+  //   trade,
+  //   swapCalls,
+  //   account,
+  //   onWallchainDrop,
+  //   wallchainMasterInput,
+  // )
+  // const wallchainSwapCalls = []
 
-  const { callback } = useSendSwapTransaction(
-    account,
-    chainId,
-    trade ?? undefined,
-    // @ts-ignore
-    statusWallchain === 'found' ? wallchainSwapCalls : swapCalls,
-  )
+  const { callback } = useSendSwapTransaction(account, chainId, trade ?? undefined, swapCalls)
 
   return useMemo(() => {
     if (!trade || !account || !chainId || !callback) {
