@@ -16,13 +16,18 @@ interface UserWithdrawRequest {
   wbethAmount: BigNumber
 }
 
+interface ClaimableIndex {
+  index: number
+  amount: BigNumber
+}
+
 export function useReadWithdrawRequestInfo():
   | {
       latestTriggerTime: BigNumber
       totalEthAmountPending: BigNumber
       totalEthAmountClaimable: BigNumber
       totalRequest: number
-      claimableIndexes: number[]
+      claimableIndexes: ClaimableIndex[]
     }
   | undefined {
   const { account, chainId } = useActiveWeb3React()
@@ -63,7 +68,13 @@ export function useReadWithdrawRequestInfo():
                         ...last,
                         latestTriggerTime,
                         totalEthAmountClaimable: last.totalEthAmountClaimable.plus(d.ethAmount),
-                        claimableIndexes: [...last.claimableIndexes, currentIndex],
+                        claimableIndexes: [
+                          ...last.claimableIndexes,
+                          {
+                            index: currentIndex,
+                            amount: d.ethAmount,
+                          },
+                        ],
                       }
                     : {
                         ...last,
@@ -75,7 +86,7 @@ export function useReadWithdrawRequestInfo():
                   latestTriggerTime: BIG_ZERO,
                   totalEthAmountPending: BIG_ZERO,
                   totalEthAmountClaimable: BIG_ZERO,
-                  claimableIndexes: [] as number[],
+                  claimableIndexes: [] as ClaimableIndex[],
                 },
               ),
             totalRequest: data.filter((d) => d.allocated).length,

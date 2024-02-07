@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
 import { Button, CardBody, Flex, Message, MessageText, RowBetween, Text } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -8,9 +8,9 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import useTokenBalance from 'hooks/useTokenBalance'
-import last from 'lodash/last'
 import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
+import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { formatUnixTime } from 'utils/formatTime'
 import { NativeToken } from 'views/LiquidStaking/constants/types'
 import { useCallClaimContract } from 'views/LiquidStaking/hooks/useCallStakingContract'
@@ -21,6 +21,25 @@ function passCheckNativeToken(currency: Token | NativeToken, native: NativeCurre
   if (currency.symbol.toUpperCase() === native.symbol.toUpperCase()) return currency.symbol
 
   return currency.address
+}
+
+function ClaimButton({ tokenAmount, claimIndex }: { tokenAmount?: CurrencyAmount<Currency>; claimIndex: number }) {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+  const { onClaim, isLoading } = useCallClaimContract(tokenAmount, claimIndex)
+
+  return (
+    <Button mb="8px" onClick={onClaim} disabled={tokenAmount?.equalTo(0) || isLoading} width="100%">
+      {isLoading
+        ? t('Claiming')
+        : t('Claim %amount% %symbol%', {
+            symbol: tokenAmount?.currency?.symbol,
+            amount: formatCurrencyAmount(tokenAmount, 6, locale),
+          })}
+    </Button>
+  )
 }
 
 export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps }) => {
@@ -58,8 +77,6 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
 
   const token1USDPrice = useStablecoinPrice(currency1)
   const token0USDPrice = useStablecoinPrice(currency0)
-
-  const { onClaim, isLoading } = useCallClaimContract(claimableAmountToken, last(userWithdrawRequest?.claimableIndexes))
 
   return (
     <>
@@ -141,10 +158,15 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
                   : t('Withdraw')}
               </Button>
             </NextLink>
-
-            <Button onClick={onClaim} disabled={claimableAmountToken?.equalTo(0) || isLoading} width="100%">
-              {isLoading ? t('Claiming') : t('Claim')}
-            </Button>
+            {userWithdrawRequest?.claimableIndexes?.map((claimableIndex) => (
+              <ClaimButton
+                key={`${claimableIndex.index}-${claimableIndex.amount.toString()}`}
+                claimIndex={claimableIndex.index}
+                tokenAmount={
+                  currency0 ? CurrencyAmount.fromRawAmount(currency0, claimableIndex.amount.toString()) : undefined
+                }
+              />
+            ))}
           </>
         ) : (
           <ConnectWalletButton width="100%" />
