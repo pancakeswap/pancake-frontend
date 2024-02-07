@@ -15,7 +15,7 @@ import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { viemClients } from 'utils/viem'
-import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
+import { Address, Hex, TransactionExecutionError, UserRejectedRequestError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
@@ -244,4 +244,12 @@ export default function useSendSwapTransaction(
     recipient,
     addTransaction,
   ])
+}
+
+export const userRejectedError = (error: unknown): boolean => {
+  return (
+    error instanceof UserRejectedRequestError ||
+    error instanceof TransactionRejectedError ||
+    (typeof error !== 'string' && isUserRejected(error))
+  )
 }
