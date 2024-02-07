@@ -44,20 +44,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const { account } = useWeb3React()
 
   const stakingTokenContract = useERC20(stakingToken.address || '')
-  const { handleApprove: handlePoolApprove, pendingTx: pendingPoolTx } = useApprovePool(
-    stakingTokenContract,
-    sousId,
-    earningToken.symbol,
-  )
+  const { handleApprove: handlePoolApprove } = useApprovePool(stakingTokenContract, sousId, earningToken.symbol)
 
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
-  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(
-    pool.vaultKey,
-    setLastUpdated,
-  )
+  const { handleApprove: handleVaultApprove } = useVaultApprove(pool.vaultKey, setLastUpdated)
 
   const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
-  const pendingTx = vaultKey ? pendingVaultTx : pendingPoolTx
 
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const allowance = userData?.allowance ? new BigNumber(userData.allowance) : BIG_ZERO
