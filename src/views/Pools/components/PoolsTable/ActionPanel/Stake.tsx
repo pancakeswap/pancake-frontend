@@ -1,4 +1,4 @@
-import { AddIcon, Button, Flex, IconButton, MinusIcon, Skeleton, Text, useModal, useTooltip } from '@pancakeswap/uikit'
+import { Button, Flex, IconButton, MinusIcon, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
@@ -16,7 +16,6 @@ import { convertSharesToCake } from 'views/Pools/helpers'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
-import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import StakeModal from '../../PoolCard/Modals/StakeModal'
 import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
@@ -35,8 +34,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     sousId,
     stakingToken,
     earningToken,
-    stakingLimit,
-    isFinished,
     poolCategory,
     userData,
     stakingTokenPrice,
@@ -47,20 +44,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const { account } = useWeb3React()
 
   const stakingTokenContract = useERC20(stakingToken.address || '')
-  const { handleApprove: handlePoolApprove, pendingTx: pendingPoolTx } = useApprovePool(
-    stakingTokenContract,
-    sousId,
-    earningToken.symbol,
-  )
+  const { handleApprove: handlePoolApprove } = useApprovePool(stakingTokenContract, sousId, earningToken.symbol)
 
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
-  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(
-    pool.vaultKey,
-    setLastUpdated,
-  )
+  const { handleApprove: handleVaultApprove } = useVaultApprove(pool.vaultKey, setLastUpdated)
 
   const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
-  const pendingTx = vaultKey ? pendingVaultTx : pendingPoolTx
 
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const allowance = userData?.allowance ? new BigNumber(userData.allowance) : BIG_ZERO
@@ -87,19 +76,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
 
   const needsApproval = vaultKey ? !isVaultApproved : !allowance.gt(0) && !isBnbPool
 
-  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
-
-  const [onPresentStake] = useModal(
-    <StakeModal
-      isBnbPool={isBnbPool}
-      pool={pool}
-      stakingTokenBalance={stakingTokenBalance}
-      stakingTokenPrice={stakingTokenPrice}
-    />,
-  )
-
-  const [onPresentVaultStake] = useModal(<VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} />)
-
   const [onPresentUnstake] = useModal(
     <StakeModal
       stakingTokenBalance={stakingTokenBalance}
@@ -114,14 +90,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
 
   const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
 
-  const onStake = () => {
-    if (vaultKey) {
-      onPresentVaultStake()
-    } else {
-      onPresentStake()
-    }
-  }
-
   const onUnstake = () => {
     if (vaultKey) {
       onPresentVaultUnstake()
@@ -129,13 +97,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
       onPresentUnstake()
     }
   }
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t("You've already staked the maximum amount you can stake in this pool!"),
-    { placement: 'bottom' },
-  )
-
-  const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit)
 
   if (!account) {
     return (
@@ -191,7 +152,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
           </Text>
         </ActionTitles>
         <ActionContent>
-          <Button width="100%" disabled={pendingTx} onClick={handleApprove} variant="secondary">
+          <Button width="100%" disabled onClick={handleApprove} variant="secondary">
             {t('Enable')}
           </Button>
         </ActionContent>
@@ -234,50 +195,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             <IconButton variant="secondary" onClick={onUnstake} mr="6px">
               <MinusIcon color="primary" width="14px" />
             </IconButton>
-            {reachStakingLimit ? (
-              <span ref={targetRef}>
-                <IconButton variant="secondary" disabled>
-                  <AddIcon color="textDisabled" width="24px" height="24px" />
-                </IconButton>
-              </span>
-            ) : (
-              <IconButton
-                variant="secondary"
-                onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-                disabled={isFinished}
-              >
-                <AddIcon color="primary" width="14px" />
-              </IconButton>
-            )}
           </IconButtonWrapper>
-          {tooltipVisible && tooltip}
         </ActionContent>
       </ActionContainer>
     )
   }
 
-  return (
-    <ActionContainer>
-      <ActionTitles>
-        <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
-          {t('Stake')}{' '}
-        </Text>
-        <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-          {stakingToken.symbol}
-        </Text>
-      </ActionTitles>
-      <ActionContent>
-        <Button
-          width="100%"
-          onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-          variant="secondary"
-          disabled={isFinished}
-        >
-          {t('Stake')}
-        </Button>
-      </ActionContent>
-    </ActionContainer>
-  )
+  return null
 }
 
 export default Staked

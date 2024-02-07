@@ -1,10 +1,7 @@
-import { Button, Flex, Skeleton, useModal } from '@pancakeswap/uikit'
+import { Flex, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
 
 import { DeserializedPool } from 'state/types'
-import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
-import VaultStakeModal from '../VaultStakeModal'
 import HasSharesActions from './HasSharesActions'
 
 interface VaultStakeActionsProps {
@@ -22,19 +19,10 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   performanceFee,
   isLoading = false,
 }) => {
-  const { stakingToken } = pool
-  const { t } = useTranslation()
-  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
-  const [onPresentStake] = useModal(
-    <VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} performanceFee={performanceFee} />,
-  )
-
   const renderStakeAction = () => {
     return accountHasSharesStaked ? (
       <HasSharesActions pool={pool} stakingTokenBalance={stakingTokenBalance} performanceFee={performanceFee} />
-    ) : (
-      <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>
-    )
+    ) : null
   }
 
   return <Flex flexDirection="column">{isLoading ? <Skeleton width="100%" height="52px" /> : renderStakeAction()}</Flex>

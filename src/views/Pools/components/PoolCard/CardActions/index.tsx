@@ -59,27 +59,31 @@ const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance }) => {
             />
           </>
         )}
-        <Box display="inline">
-          <InlineText color={isStaked ? 'secondary' : 'textSubtle'} textTransform="uppercase" bold fontSize="12px">
-            {isStaked ? stakingToken.symbol : t('Stake')}{' '}
-          </InlineText>
-          <InlineText color={isStaked ? 'textSubtle' : 'secondary'} textTransform="uppercase" bold fontSize="12px">
-            {isStaked ? t('Staked') : `${stakingToken.symbol}`}
-          </InlineText>
-        </Box>
-        {notMeetRequired || notMeetThreshold ? (
-          <ProfileRequirementWarning profileRequirement={profileRequirement} />
-        ) : needsApproval ? (
-          <ApprovalAction pool={pool} isLoading={isLoading} />
-        ) : (
-          <StakeActions
-            isLoading={isLoading}
-            pool={pool}
-            stakingTokenBalance={stakingTokenBalance}
-            stakedBalance={stakedBalance}
-            isBnbPool={isBnbPool}
-            isStaked={isStaked}
-          />
+        {isStaked && (
+          <>
+            <Box display="inline">
+              <InlineText color={isStaked ? 'secondary' : 'textSubtle'} textTransform="uppercase" bold fontSize="12px">
+                {isStaked ? stakingToken.symbol : t('Stake')}{' '}
+              </InlineText>
+              <InlineText color={isStaked ? 'textSubtle' : 'secondary'} textTransform="uppercase" bold fontSize="12px">
+                {isStaked ? t('Staked') : `${stakingToken.symbol}`}
+              </InlineText>
+            </Box>
+            {notMeetRequired || notMeetThreshold ? (
+              <ProfileRequirementWarning profileRequirement={profileRequirement} />
+            ) : needsApproval ? (
+              <ApprovalAction pool={pool} isLoading={isLoading} />
+            ) : (
+              <StakeActions
+                isLoading={isLoading}
+                pool={pool}
+                stakingTokenBalance={stakingTokenBalance}
+                stakedBalance={stakedBalance}
+                isBnbPool={isBnbPool}
+                isStaked={isStaked}
+              />
+            )}
+          </>
         )}
       </Flex>
     </Flex>
