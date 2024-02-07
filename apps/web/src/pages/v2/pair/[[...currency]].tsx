@@ -105,7 +105,7 @@ export default function PoolV2Page() {
           buttons={
             !isMobile && (
               <>
-                <NextLinkFromReactRouter to={`/v2/add/${pair?.token0.address}/${pair?.token1.address}`}>
+                <NextLinkFromReactRouter to={`/v2/add/${pair?.token0.address}/${pair?.token1.address}?increase=1`}>
                   <Button width="100%" disabled={!pair}>
                     {t('Add')}
                   </Button>
@@ -132,7 +132,7 @@ export default function PoolV2Page() {
         <CardBody>
           {isMobile && (
             <>
-              <NextLinkFromReactRouter to={`/v2/add/${pair?.token0.address}/${pair?.token1.address}`}>
+              <NextLinkFromReactRouter to={`/v2/add/${pair?.token0.address}/${pair?.token1.address}?increase=1`}>
                 <Button width="100%" mb="8px" disabled={!pair}>
                   {t('Add')}
                 </Button>

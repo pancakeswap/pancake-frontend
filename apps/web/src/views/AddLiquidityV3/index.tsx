@@ -3,15 +3,15 @@ import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
 import {
-  FlexGap,
-  AutoColumn,
-  CardBody,
-  Card,
   AddIcon,
-  PreTitle,
+  AutoColumn,
+  Card,
+  CardBody,
   DynamicSection,
-  RefreshIcon,
+  FlexGap,
   IconButton,
+  PreTitle,
+  RefreshIcon,
 } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -37,6 +37,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
 import { resetMintState } from 'state/mint/actions'
 import { safeGetAddress } from 'utils'
+import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
@@ -75,13 +76,11 @@ const selectTypeAtom = atom(SELECTOR_TYPE.V3)
 interface UniversalAddLiquidityPropsType {
   currencyIdA: string
   currencyIdB: string
-  isV2?: boolean
   preferredSelectType?: SELECTOR_TYPE
   preferredFeeAmount?: FeeAmount
 }
 
 export function UniversalAddLiquidity({
-  isV2,
   currencyIdA,
   currencyIdB,
   preferredSelectType,
@@ -150,10 +149,11 @@ export function UniversalAddLiquidity({
   const handleCurrencyASelect = useCallback(
     (currencyANew: Currency) => {
       const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
+      const newPathname = router.pathname.replace('/v2', '').replace('/stable', '')
       if (idB === undefined) {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: newPathname,
             query: {
               ...router.query,
               currency: [idA],
@@ -165,7 +165,7 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: newPathname,
             query: {
               ...router.query,
               currency: [idA, idB],
@@ -182,10 +182,11 @@ export function UniversalAddLiquidity({
   const handleCurrencyBSelect = useCallback(
     (currencyBNew: Currency) => {
       const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA)
+      const newPathname = router.pathname.replace('/v2', '').replace('/stable', '')
       if (idA === undefined) {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: newPathname,
             query: {
               ...router.query,
               currency: [idB],
@@ -197,7 +198,7 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: newPathname,
             query: {
               ...router.query,
               currency: [idA, idB],
@@ -224,17 +225,16 @@ export function UniversalAddLiquidity({
 
     // if fee selection from url, don't change the selector type to avoid keep selecting stable when url changes, e.g. toggle rate
     if (!stableConfig.stableSwapConfig && feeAmountFromUrl) return
-    if (stableConfig.stableSwapConfig) {
+    if (preferredSelectType === SELECTOR_TYPE.STABLE && stableConfig.stableSwapConfig) {
       setSelectorType(SELECTOR_TYPE.STABLE)
     } else {
-      setSelectorType(preferredSelectType || isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
+      setSelectorType(preferredSelectType || SELECTOR_TYPE.V3)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currencyIdA,
     currencyIdB,
     feeAmountFromUrl,
-    isV2,
     preferredSelectType,
     prevPreferredSelectType,
     setSelectorType,
@@ -244,13 +244,14 @@ export function UniversalAddLiquidity({
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(
     ({ type, feeAmount: newFeeAmount }) => {
       setSelectorType(type)
-      if (newFeeAmount) {
+      if (type === SELECTOR_TYPE.V3) {
+        const newPathname = router.pathname.replace('/stable', '').replace('/v2', '')
         router.replace(
           {
-            pathname: router.pathname,
+            pathname: newPathname,
             query: {
               ...router.query,
-              currency: [currencyIdA, currencyIdB, newFeeAmount.toString()],
+              currency: newFeeAmount ? [currencyIdA, currencyIdB, newFeeAmount.toString()] : [currencyIdA, currencyIdB],
             },
           },
           undefined,
@@ -259,31 +260,18 @@ export function UniversalAddLiquidity({
       } else {
         router.replace(
           {
-            pathname: router.pathname.replace('/v2', ''),
-            query: {
-              ...router.query,
-              currency: [currencyIdA, currencyIdB],
-            },
+            pathname: router.pathname,
+            query: router.query,
           },
-          undefined,
+          type === SELECTOR_TYPE.STABLE
+            ? `/stable/add/${currencyIdA}/${currencyIdB}`
+            : `/v2/add/${currencyIdA}/${currencyIdB}`,
           { shallow: true },
         )
       }
     },
     [currencyIdA, currencyIdB, router, setSelectorType],
   )
-
-  const handleSelectV2 = useCallback(() => {
-    setSelectorType(SELECTOR_TYPE.V2)
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: router.query,
-      },
-      `/v2/add/${currencyIdA}/${currencyIdB}`,
-      { shallow: true },
-    )
-  }, [currencyIdA, currencyIdB, router, setSelectorType])
 
   useEffect(() => {
     if (preferredFeeAmount && !feeAmountFromUrl && selectorType === SELECTOR_TYPE.V3) {
@@ -317,7 +305,7 @@ export function UniversalAddLiquidity({
               />
             </FlexGap>
             <DynamicSection disabled={!baseCurrency || !currencyB}>
-              {!isV2 &&
+              {preferredSelectType !== SELECTOR_TYPE.V2 &&
                 stableConfig.stableSwapConfig &&
                 [SELECTOR_TYPE.STABLE, SELECTOR_TYPE.V3].includes(selectorType) && (
                   <StableV3Selector
@@ -329,7 +317,8 @@ export function UniversalAddLiquidity({
                   />
                 )}
 
-              {((isV2 && selectorType !== SELECTOR_TYPE.V3) || selectorType === SELECTOR_TYPE.V2) && (
+              {((preferredSelectType === SELECTOR_TYPE.V2 && selectorType !== SELECTOR_TYPE.V3) ||
+                selectorType === SELECTOR_TYPE.V2) && (
                 <V2Selector
                   isStable={Boolean(stableConfig.stableSwapConfig)}
                   selectorType={selectorType}
@@ -346,7 +335,7 @@ export function UniversalAddLiquidity({
                   currencyB={quoteCurrency ?? undefined}
                   handleFeePoolSelect={handleFeePoolSelect}
                   feeAmount={feeAmount}
-                  handleSelectV2={handleSelectV2}
+                  handleSelectV2={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V2 })}
                 />
               )}
             </DynamicSection>
@@ -386,10 +375,12 @@ const SELECTOR_TYPE_T = {
 
 export function AddLiquidityV3Layout({
   showRefreshButton = false,
+  preferredSelectType,
   handleRefresh,
   children,
 }: {
   showRefreshButton?: boolean
+  preferredSelectType?: SELECTOR_TYPE
   handleRefresh?: () => void
   children: React.ReactNode
 }) {
@@ -403,12 +394,29 @@ export function AddLiquidityV3Layout({
 
   const title = SELECTOR_TYPE_T[selectType] || t('Add Liquidity')
 
+  const lpTokens = useStableSwapPairs()
+
+  const backToLink = useMemo(() => {
+    if (preferredSelectType === SELECTOR_TYPE.V2) {
+      return `/v2/pair/${currencyIdA}/${currencyIdB}`
+    }
+    if (preferredSelectType === SELECTOR_TYPE.STABLE) {
+      const selectedLp = lpTokens.find(
+        ({ token0, token1 }) =>
+          token0?.wrapped?.address?.toLowerCase() === baseCurrency?.wrapped?.address?.toLowerCase() &&
+          token1?.wrapped?.address?.toLowerCase() === quoteCurrency?.wrapped?.address?.toLowerCase(),
+      )
+      return `/stable/${selectedLp?.lpAddress}`
+    }
+    return '/liquidity'
+  }, [lpTokens, baseCurrency, quoteCurrency, currencyIdA, currencyIdB, preferredSelectType])
+
   return (
     <Page>
       <BodyWrapper>
         <AppHeader
           title={title}
-          backTo="/liquidity"
+          backTo={backToLink}
           IconSlot={
             <>
               {selectType === SELECTOR_TYPE.V3 && (

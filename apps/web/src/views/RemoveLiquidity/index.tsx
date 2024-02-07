@@ -738,13 +738,13 @@ export const RemoveLiquidityV2Layout = ({ currencyA, currencyB, children }) => {
   const { pair } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   return (
-    <RemoveLiquidityLayout currencyA={currencyA} currencyB={currencyB} pair={pair}>
+    <RemoveLiquidityLayout currencyA={currencyA} currencyB={currencyB} pair={pair} isStable={false}>
       {children}
     </RemoveLiquidityLayout>
   )
 }
 
-export const RemoveLiquidityLayout = ({ currencyA, currencyB, children, pair }) => {
+export const RemoveLiquidityLayout = ({ currencyA, currencyB, children, pair, isStable }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
 
@@ -757,7 +757,11 @@ export const RemoveLiquidityLayout = ({ currencyA, currencyB, children, pair }) 
     <Page>
       <AppBody>
         <AppHeader
-          backTo={`/v2/pair/${currencyA?.address}/${currencyB?.address}`}
+          backTo={
+            isStable
+              ? `/stable/${pair?.liquidityToken?.address}`
+              : `/v2/pair/${currencyA?.address}/${currencyB?.address}`
+          }
           title={t('Remove %assetA%-%assetB% Liquidity', {
             assetA: currencyA?.symbol ?? '',
             assetB: currencyB?.symbol ?? '',
