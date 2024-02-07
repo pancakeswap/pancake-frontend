@@ -17,6 +17,18 @@ const StyledModal = styled(Modal)`
   > div > div > div > div:first-child > div {
     margin-top: 0;
   }
+
+  > div > div > div > div:first-child > div:first-child {
+    padding-top: 0;
+  }
+
+  > div > div > div > div:first-child > div:nth-child(2) {
+    padding-left: 0px;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+      padding-left: 16px;
+    }
+  }
 `
 
 const ValueText = styled(Text)`

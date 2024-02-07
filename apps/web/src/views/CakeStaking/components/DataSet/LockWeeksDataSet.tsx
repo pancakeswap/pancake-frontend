@@ -48,7 +48,7 @@ export const LockWeeksDataSet: React.FC<React.PropsWithChildren<LockCakeDataSetP
   }, [unlockTimestamp])
 
   return (
-    <DataBox $hideStyle={hideLockWeeksDataSetStyle} gap="8px">
+    <DataBox $hideStyle={hideLockWeeksDataSetStyle} mt="16px" gap="8px">
       <DataHeader value={getBalanceAmount(veCakeAmountBN)} hideVeCakeIcon={hideLockWeeksDataSetStyle} />
       <DataRow
         label={

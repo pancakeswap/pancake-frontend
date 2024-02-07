@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowUpDownIcon, Flex, InjectedModalProps, Modal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ArrowUpDownIcon, Box, Flex, InjectedModalProps, Modal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { LockCakeForm } from 'views/CakeStaking/components/LockCakeForm'
@@ -52,8 +52,8 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
   }
 
   const customVeCakeCard = endTime ? (
-    <>
-      <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
+    <Box mt="16px" width="100%">
+      <Text mb="8px" fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
         {t('lock overview')}
       </Text>
       <PreviewOfVeCakeSnapShotTime
@@ -61,7 +61,7 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
         endTime={endTime}
         thresholdLockAmount={thresholdLockAmount}
       />
-    </>
+    </Box>
   ) : null
 
   return (

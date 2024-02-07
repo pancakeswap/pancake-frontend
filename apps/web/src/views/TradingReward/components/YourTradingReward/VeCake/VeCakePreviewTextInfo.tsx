@@ -47,23 +47,23 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
   return (
     <Box {...props}>
       <GreyCard>
-        <Flex justifyContent="space-between" mb="12px">
-          <Text maxWidth={170} lineHeight="120%" color="textSubtle" fontSize="14px">
+        <Flex flexDirection={['column', 'column', 'row']} justifyContent="space-between" mb="12px">
+          <Text maxWidth={['100%', '100%', '100%', '170px']} lineHeight="120%" color="textSubtle" fontSize="14px">
             {t('Min. veCAKE at snapshot time:')}
           </Text>
           <Text bold>{minVeCake}</Text>
         </Flex>
-        <Flex justifyContent="space-between" mb="12px">
-          <Text maxWidth={170} lineHeight="120%" color="textSubtle" fontSize="14px">
+        <Flex flexDirection={['column', 'column', 'row']} justifyContent="space-between" mb="12px">
+          <Text maxWidth={['100%', '100%', '100%', '170px']} lineHeight="120%" color="textSubtle" fontSize="14px">
             {t('Preview of your veCAKE⌛ at snapshot time:')}
           </Text>
           <Text>{previewVeCakeAtSnapshot}</Text>
         </Flex>
-        <Flex justifyContent="space-between" {...props}>
-          <Text maxWidth={170} lineHeight="120%" color="textSubtle" fontSize="14px">
+        <Flex flexDirection={['column', 'column', 'row']} justifyContent="space-between">
+          <Text maxWidth={['100%', '100%', '100%', '170px']} lineHeight="120%" color="textSubtle" fontSize="14px">
             {t('Snapshot at / Campaign Ends:')}
           </Text>
-          <Text>{timeFormat(locale, endTime)}</Text>
+          <Text textAlign="center">{timeFormat(locale, endTime)}</Text>
         </Flex>
         {showIncreaseButton && (
           <Box mt="12px">

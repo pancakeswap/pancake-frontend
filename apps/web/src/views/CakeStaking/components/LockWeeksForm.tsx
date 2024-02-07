@@ -80,6 +80,7 @@ const WeekInput: React.FC<{
     <>
       <BalanceInput
         width="100%"
+        mb="8px"
         inputProps={{
           style: { textAlign: 'left', marginTop: '1px', marginBottom: '1px' },
           disabled,
@@ -144,8 +145,8 @@ export const LockWeeksForm: React.FC<React.PropsWithChildren<LockWeeksFormProps>
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
 
   return (
-    <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
+    <AutoRow alignSelf="start">
+      <FlexGap gap="4px" alignItems="center" mb="4px">
         <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
           {t('add')}
         </Text>
@@ -163,7 +164,7 @@ export const LockWeeksForm: React.FC<React.PropsWithChildren<LockWeeksFormProps>
           {disabled ? null : <LockWeeksDataSet hideLockWeeksDataSetStyle={hideLockWeeksDataSetStyle} />}
 
           {expired ? (
-            <FlexGap width="100%" gap="16px">
+            <FlexGap width="100%" mt="16px" gap="16px">
               <SubmitUnlockButton />
               <SubmitRenewButton />
             </FlexGap>
@@ -183,7 +184,7 @@ const SubmitLockButton = ({ disabled, onDismiss }: { disabled?: boolean; onDismi
   const increaseLockWeeks = useWriteIncreaseLockWeeksCallback(onDismiss)
 
   return (
-    <Button disabled={_disabled} width="100%" onClick={increaseLockWeeks}>
+    <Button mt="16px" disabled={_disabled} width="100%" onClick={increaseLockWeeks}>
       {t('Extend Lock')}
     </Button>
   )
@@ -214,8 +215,7 @@ const SubmitRenewButton = () => {
 
   return (
     <ButtonBlocked disabled={disabled} onClick={renew}>
-      {' '}
-      {t('Renew Lock')}{' '}
+      {t('Renew Lock')}
     </ButtonBlocked>
   )
 }

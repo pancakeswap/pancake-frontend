@@ -29,7 +29,6 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
 }) => {
   return (
     <Flex
-      padding="0 16px"
       width={['100%', '100%', '100%', '100%', '900px']}
       margin={['32px auto 61px auto']}
       justifyContent="space-between"

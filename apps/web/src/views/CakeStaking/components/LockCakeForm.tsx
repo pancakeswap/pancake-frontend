@@ -73,6 +73,7 @@ const CakeInput: React.FC<{
     <>
       <BalanceInput
         width="100%"
+        mb="8px"
         value={value}
         onUserInput={onInput}
         inputProps={{ style: { textAlign: 'left', height: '20px' }, disabled }}
@@ -121,8 +122,8 @@ export const LockCakeForm: React.FC<{
   const [value, onChange] = useAtom(cakeLockAmountAtom)
 
   return (
-    <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
+    <AutoRow alignSelf="start">
+      <FlexGap gap="4px" alignItems="center" mb="4px">
         <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
           {t('add')}
         </Text>
@@ -157,7 +158,7 @@ const SubmitLockButton = ({ onDismiss }: { onDismiss?: () => void }) => {
   const increaseLockAmount = useWriteApproveAndIncreaseLockAmountCallback(onDismiss)
 
   return (
-    <Button disabled={disabled} width="100%" onClick={increaseLockAmount}>
+    <Button mt="16px" disabled={disabled} width="100%" onClick={increaseLockAmount}>
       {t('Add CAKE')}
     </Button>
   )

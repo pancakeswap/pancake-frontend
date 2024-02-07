@@ -1,8 +1,8 @@
 import { Flex } from '@pancakeswap/uikit'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import CurrentPeriod from 'views/TradingReward/components/TopTraders/YourTradingReward/CurrentPeriod'
 import TotalPeriod from 'views/TradingReward/components/YourTradingReward/TotalPeriod'
-import { Incentives, RewardInfo, Qualification, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { Incentives, Qualification, RewardInfo, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 
 interface RewardPeriodProps {
   campaignIds: Array<string>
@@ -27,7 +27,6 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
 }) => {
   return (
     <Flex
-      padding="0 16px"
       width={['100%', '100%', '100%', '100%', '900px']}
       margin={['32px auto 61px auto']}
       justifyContent="space-between"
