@@ -1,5 +1,12 @@
 # @pancakeswap/smart-router
 
+## 4.14.4
+
+### Patch Changes
+
+- Updated dependencies [0d67620]
+  - @pancakeswap/gauges@1.0.0
+
 ## 4.14.3
 
 ### Patch Changes
