@@ -4,7 +4,7 @@ import { ethereumTokens } from '@pancakeswap/tokens'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { useCallback, useEffect, useState } from 'react'
-import { ConfirmModalStateV1, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
+import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from 'views/Swap/V3Swap/types'
 import { SendTransactionResult } from 'wagmi/actions'
 import { TransactionRejectedError } from './useSendSwapTransaction'
 
@@ -17,8 +17,8 @@ interface UseConfirmModalStateProps {
   isExpertMode: boolean
   currentAllowance?: CurrencyAmount<Currency>
   onConfirm: () => Promise<void>
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  approveCallback: () => Promise<SendTransactionResult | undefined>
+  revokeCallback: () => Promise<SendTransactionResult | undefined>
 }
 
 function isInApprovalPhase(confirmModalState: ConfirmModalStateV1) {
@@ -40,12 +40,12 @@ export const useConfirmModalStateV1 = ({
 }: UseConfirmModalStateProps) => {
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalStateV1>(ConfirmModalStateV1.REVIEWING)
-  const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalState[]>([])
+  const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalStateV1[]>([])
   const [previouslyPending, setPreviouslyPending] = useState<boolean>(false)
   const [resettingApproval, setResettingApproval] = useState<boolean>(false)
 
   const generateRequiredSteps = useCallback(() => {
-    const steps: PendingConfirmModalState[] = []
+    const steps: PendingConfirmModalStateV1[] = []
 
     // Any existing USDT allowance needs to be reset before we can approve the new amount (mainnet only).
     // See the `approve` function here: https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7#code

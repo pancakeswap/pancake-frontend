@@ -23,13 +23,13 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
-import { ConfirmModalStateV1, PendingConfirmModalState } from '../types'
+import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from '../types'
 
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from '../../components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
 import { useWallchainStatus } from '../hooks/useWallchain'
-import { ApproveStepFlow } from './ApproveStepFlow'
+import { ApproveStepFlowV1 } from './ApproveStepFlowV1'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean
@@ -44,7 +44,7 @@ interface ConfirmSwapModalProps {
   showApproveFlow: boolean
   confirmModalState: ConfirmModalStateV1
   startSwapFlow: () => void
-  pendingModalSteps: PendingConfirmModalState[]
+  pendingModalSteps: PendingConfirmModalStateV1[]
   currentAllowance?: CurrencyAmount<Currency>
   onAcceptChanges: () => void
   customOnDismiss?: () => void
@@ -245,7 +245,7 @@ export const ConfirmSwapModalV1 = memo<InjectedModalProps & ConfirmSwapModalProp
     >
       <Box>{topModal}</Box>
       {isShowingLoadingAnimation && !swapErrorMessage && (
-        <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
+        <ApproveStepFlowV1 confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
       )}
     </ConfirmSwapModalContainer>
   )
