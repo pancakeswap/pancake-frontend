@@ -1,17 +1,17 @@
-import { useCallback, useMemo } from 'react'
-import { Box, Flex, Card, Text, Message, MessageText, TooltipText, Button, useTooltip } from '@pancakeswap/uikit'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/chains'
-import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { Box, Button, Card, Flex, Message, MessageText, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import BigNumber from 'bignumber.js'
+import { GreyCard } from 'components/Card'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCallback, useMemo } from 'react'
+import { Incentives, Qualification, RewardInfo, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
-import { RewardInfo, Qualification, Incentives, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import { minAmountDisplay } from 'views/TradingReward/utils/minAmountDisplay'
 import useTradingFeeClaimedRecord from 'views/TradingReward/hooks/useTradingFeeClaimedRecord'
+import { minAmountDisplay } from 'views/TradingReward/utils/minAmountDisplay'
 
 interface TotalPeriodProps {
   campaignIds: Array<string>
@@ -43,9 +43,9 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
     // eslint-disable-next-line array-callback-return, consistent-return
     return totalAvailableClaimData.filter((campaign) => {
       const campaignIncentive = campaignIdsIncentive.find(
-        (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
+        (incentive) => incentive?.campaignId?.toLowerCase() === campaign.campaignId.toLowerCase(),
       )
-      if (!campaignIncentive.isActivated) {
+      if (!campaignIncentive?.isActivated) {
         return campaign
       }
     })
@@ -64,10 +64,10 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
         // eslint-disable-next-line array-callback-return, consistent-return
         .filter((campaign) => {
           const campaignIncentive = campaignIdsIncentive.find(
-            (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
+            (incentive) => incentive?.campaignId?.toLowerCase() === campaign.campaignId.toLowerCase(),
           )
           const isValid =
-            campaignIncentive.isActivated &&
+            campaignIncentive?.isActivated &&
             !campaign.userClaimedIncentives &&
             new BigNumber(campaign.canClaim).gt(0) &&
             new BigNumber(campaign.totalEstimateRewardUSD).gt(0)
@@ -84,7 +84,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
             return campaign
           }
         })
-        .sort((a, b) => a.campaignClaimEndTime - b.campaignClaimEndTime)
+        .sort((a, b) => Number(a?.campaignClaimEndTime) - Number(b?.campaignClaimEndTime))
     )
   }, [campaignIdsIncentive, claimedRebate, claimedTopTraders, totalAvailableClaimData, type])
 
@@ -98,7 +98,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   const rewardExpiredSoonData = useMemo(() => unclaimData[0], [unclaimData])
 
   const currentDate = Date.now() / 1000
-  const timeRemaining = rewardExpiredSoonData?.campaignClaimEndTime - currentDate
+  const timeRemaining = Number(rewardExpiredSoonData?.campaignClaimEndTime) - currentDate
   const expiredTime = getTimePeriods(timeRemaining)
 
   const getUSDValue = useCallback(
@@ -161,7 +161,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   return (
     <Box width={['100%', '100%', '100%', '48.5%']}>
       <Card style={{ width: '100%' }}>
-        <Box padding={['24px']}>
+        <Box padding={['16px', '16px', '16px', '24px']}>
           <Text bold textAlign="right" mb="24px">
             {t('Previously Ended')}
           </Text>

@@ -83,7 +83,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
       <Card style={{ width: '100%' }}>
-        <Box padding={['24px']}>
+        <Box padding={['16px', '16px', '16px', '24px']}>
           <Text bold textAlign="right" mb="24px">
             {t('Current Period')}
           </Text>
