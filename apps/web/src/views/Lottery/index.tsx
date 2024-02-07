@@ -56,7 +56,7 @@ const StyledImage = styled.img`
   z-index: 9999; /* Adjust this value to ensure the image appears above other content */
   top: 110px; /* Adjust top position as needed */
   left: calc(50% - 75px - 180px);
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     left: calc(50% - 75px - 240px); // calc(50% - 75px) is absolute center alignment
   }
   /* Adjust left position as needed */
