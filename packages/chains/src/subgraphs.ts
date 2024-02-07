@@ -55,7 +55,7 @@ export function getV2Subgraphs({ noderealApiKey }: SubgraphParams) {
     [ChainId.ZKSYNC]: ' https://api.studio.thegraph.com/query/45376/exchange-v2-zksync/version/latest',
     [ChainId.LINEA_TESTNET]: 'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exhange-eth/',
     [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v2-arb',
-    [ChainId.LINEA]: 'https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2',
+    [ChainId.LINEA]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-linea/version/latest',
     [ChainId.BASE]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-base/version/latest',
     [ChainId.OPBNB]: `https://open-platform-ap.nodereal.io/${noderealApiKey}/opbnb-mainnet-graph-query/subgraphs/name/pancakeswap/exchange-v2`,
   }
@@ -68,7 +68,7 @@ export function getBlocksSubgraphs({ noderealApiKey }: SubgraphParams) {
     [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
     [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest',
     [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
-    [ChainId.LINEA]: 'https://graph-query.linea.build/subgraphs/name/kybernetwork/linea-blocks',
+    [ChainId.LINEA]: 'https://api.studio.thegraph.com/query/45376/blocks-linea/version/latest',
     [ChainId.BASE]: 'https://api.studio.thegraph.com/query/48211/base-blocks/version/latest',
     [ChainId.OPBNB]: `https://open-platform-ap.nodereal.io/${noderealApiKey}/opbnb-mainnet-graph-query/subgraphs/name/pancakeswap/blocks`,
   }
