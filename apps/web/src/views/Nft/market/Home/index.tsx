@@ -1,15 +1,14 @@
-import { styled } from 'styled-components'
 import { Box, Button, Flex, Heading, LinkExternal, PageHeader, PageSection } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFoldableText'
-import { useGetCollections } from 'state/nftMarket/hooks'
-import { FetchStatus } from 'config/constants/types'
 import PageLoader from 'components/Loader/PageLoader'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
+import { useGetCollections } from 'state/nftMarket/hooks'
+import { useAccount } from 'wagmi'
 import SearchBar from '../components/SearchBar'
 import Collections from './Collections'
 import Newest from './Newest'
@@ -114,7 +113,11 @@ const Home = () => {
       )}
       <Gradient p="64px 0">
         <SectionsWithFoldableText header={t('FAQs')} config={config(t)} m="auto" />
-        <LinkExternal href="https://docs.pancakeswap.finance/contact-us/nft-market-applications" mx="auto" mt="16px">
+        <LinkExternal
+          href="https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/nft-market-applications"
+          mx="auto"
+          mt="16px"
+        >
           {t('Apply to NFT Marketplace!')}
         </LinkExternal>
       </Gradient>
