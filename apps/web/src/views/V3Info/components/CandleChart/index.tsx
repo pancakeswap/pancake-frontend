@@ -1,8 +1,8 @@
-import { baseColors, lightColors, darkColors } from '@pancakeswap/uikit'
+import { baseColors, darkColors, lightColors } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
-import { ColorType, createChart, IChartApi } from 'lightweight-charts'
+import { ColorType, IChartApi, createChart } from 'lightweight-charts'
 import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import Card from '../Card'
@@ -30,7 +30,7 @@ const Wrapper = styled(Card)`
 const DEFAULT_HEIGHT = 300
 
 export type LineChartProps = {
-  data: any[]
+  data?: any[]
   color?: string | undefined
   height?: number | undefined
   minHeight?: number

@@ -1,19 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
-import dayjs from 'dayjs'
 import {
   AutoColumn,
   Box,
   Breadcrumbs,
+  Button,
   Card,
+  CopyButton,
   Flex,
   Heading,
+  ScanLink,
   Spinner,
   Text,
   useMatchBreakpoints,
-  Button,
-  ScanLink,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import dayjs from 'dayjs'
 
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
@@ -29,9 +30,9 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import BarChart from '../components/BarChart/alt'
-import LineChart from '../components/LineChart/alt'
 import { GreyBadge } from '../components/Card'
 import DensityChart from '../components/DensityChart'
+import LineChart from '../components/LineChart/alt'
 import { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
 import { RowBetween, RowFixed } from '../components/Row'
@@ -168,6 +169,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
               >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </ScanLink>
+              <CopyButton text={address} tooltipMessage={t('Token address copied')} />
               {/* <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} /> */}
             </Flex>
           </Flex>

@@ -7,6 +7,7 @@ import {
   ButtonMenu,
   ButtonMenuItem,
   Card,
+  CopyButton,
   Flex,
   Heading,
   HelpIcon,
@@ -164,6 +165,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </ScanLink>
               <SaveIcon fill={savedPools.includes(address)} onClick={() => addPool(address)} />
+              <CopyButton ml="4px" text={address} tooltipMessage={t('Token address copied')} />
             </Flex>
           </Flex>
           <Flex flexDirection="column">

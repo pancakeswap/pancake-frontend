@@ -5,14 +5,15 @@ import {
   Breadcrumbs,
   Button,
   Card,
+  CopyButton,
   Flex,
   Heading,
   Image,
+  ScanLink,
   Spinner,
   Text,
   Link as UIKitLink,
   useMatchBreakpoints,
-  ScanLink,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
@@ -23,13 +24,15 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import Page from 'components/Layout/Page'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { useMemo } from 'react'
 import {
+  ChainLinkSupportChains,
   multiChainId,
   multiChainScan,
   subgraphTokenName,
   subgraphTokenSymbol,
-  ChainLinkSupportChains,
 } from 'state/info/constant'
 import {
   useChainIdByQuery,
@@ -53,8 +56,6 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
 
 dayjs.extend(duration)
 
@@ -162,11 +163,17 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                   {t('View on %site%', { site: multiChainScan[chainName] })}
                 </ScanLink>
                 {cmcLink && (
-                  <StyledCMCLink href={cmcLink} rel="noopener noreferrer nofollow" target="_blank">
+                  <StyledCMCLink
+                    href={cmcLink}
+                    rel="noopener noreferrer nofollow"
+                    target="_blank"
+                    title="CoinMarketCap"
+                  >
                     <Image src="/images/CMC-logo.svg" height={22} width={22} alt={t('View token on CoinMarketCap')} />
                   </StyledCMCLink>
                 )}
                 <SaveIcon fill={savedTokens.includes(address)} onClick={() => addToken(address)} />
+                <CopyButton ml="4px" text={address} tooltipMessage={t('Token address copied')} />
               </Flex>
             </Flex>
             <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
