@@ -1,7 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
 
-const UNIVERSAL_ROUTER_ADDRESSES: Record<ChainId, Address> = {
+// @fixme convert to ChainId after all chains are updated
+// const UNIVERSAL_ROUTER_ADDRESSES: Record<ChainId, Address> = {
+const UNIVERSAL_ROUTER_ADDRESSES: Record<number, Address> = {
   [ChainId.ETHEREUM]: '0x65b382653f7C31bC0Af67f188122035461ec9C76',
   [ChainId.GOERLI]: '0xC46abF8B66Df4B9Eb0cC0cf6eba24226AC6E6285',
 
