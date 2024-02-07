@@ -52,16 +52,22 @@ export function useReadWithdrawRequestInfo():
 
                   const claimable = currentTime > dayjs.unix(triggerTime.toNumber()).add(7, 'day').unix()
 
+                  const latestTriggerTime = last.latestTriggerTime.eq(0)
+                    ? triggerTime
+                    : last.latestTriggerTime > triggerTime
+                    ? last.latestTriggerTime
+                    : triggerTime
+
                   return claimable
                     ? {
                         ...last,
-                        latestTriggerTime: triggerTime,
+                        latestTriggerTime,
                         totalEthAmountClaimable: last.totalEthAmountClaimable.plus(d.ethAmount),
                         claimableIndexes: [...last.claimableIndexes, currentIndex],
                       }
                     : {
                         ...last,
-                        latestTriggerTime: triggerTime,
+                        latestTriggerTime,
                         totalEthAmountPending: last.totalEthAmountPending.plus(d.ethAmount),
                       }
                 },
