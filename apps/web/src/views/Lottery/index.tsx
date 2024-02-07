@@ -57,7 +57,7 @@ const StyledImage = styled.img`
   top: 110px; /* Adjust top position as needed */
   left: calc(50% - 75px - 180px);
   ${({ theme }) => theme.mediaQueries.md} {
-    left: calc(50% - 75px - 240px);
+    left: calc(50% - 75px - 240px); // calc(50% - 75px) is absolute center alignment
   }
   /* Adjust left position as needed */
   /* Additional styles as needed */
