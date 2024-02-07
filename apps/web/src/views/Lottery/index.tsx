@@ -55,7 +55,11 @@ const StyledImage = styled.img`
   position: absolute; /* or absolute depending on your preference */
   z-index: 9999; /* Adjust this value to ensure the image appears above other content */
   top: 110px; /* Adjust top position as needed */
-  left: calc(25.4% + 10px); /* Adjust left position as needed */
+  left: calc(50% - 75px - 180px);
+  ${({ theme }) => theme.mediaQueries.md} {
+    left: calc(50% - 75px - 240px);
+  }
+  /* Adjust left position as needed */
   /* Additional styles as needed */
 `
 
@@ -96,7 +100,6 @@ const Lottery = () => {
       <LotteryPage>
         <Flex width="100%" height="125px" background={CNY_BANNER_BG} alignItems="center" justifyContent="center">
           <CnyBanner />
-
           <ImagePortal />
         </Flex>
         <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
