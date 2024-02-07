@@ -82,7 +82,6 @@ export const PreviewOfVeCakeSnapShotTime: React.FC<React.PropsWithChildren<Previ
     nativeCakeLockedAmount,
     proxyVeCakeBalanceOfAtTime,
   ])
-  console.log('veCakeAmount', veCakeAmount.toString())
 
   const previewVeCake = useMemo(
     () => (veCakeAmount?.lt(0.1) ? veCakeAmount.sd(2).toString() : veCakeAmount?.toFixed(2)),
