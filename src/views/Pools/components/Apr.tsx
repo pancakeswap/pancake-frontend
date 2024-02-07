@@ -72,14 +72,7 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
         <>
           {hasPoolStarted || !shouldShowBlockCountdown ? (
             <>
-              <Balance
-                onClick={openRoiModal}
-                fontSize="16px"
-                isDisabled={isFinished}
-                value={isFinished ? 0 : apr}
-                decimals={2}
-                unit="%"
-              />
+              <Balance onClick={openRoiModal} fontSize="16px" isDisabled={isFinished} value={0} decimals={2} unit="%" />
               {!isFinished && showIcon && (
                 <Button onClick={openRoiModal} variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
                   <CalculateIcon color="textSubtle" width="20px" />

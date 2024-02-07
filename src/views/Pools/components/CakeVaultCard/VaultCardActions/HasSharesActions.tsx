@@ -1,4 +1,4 @@
-import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box } from '@pancakeswap/uikit'
+import { Flex, Text, IconButton, MinusIcon, useModal, Skeleton, Box } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { DeserializedPool, VaultKey } from 'state/types'
@@ -6,7 +6,6 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
-import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import { convertSharesToCake } from '../../../helpers'
 import VaultStakeModal from '../VaultStakeModal'
 
@@ -16,7 +15,7 @@ interface HasStakeActionProps {
   performanceFee: number
 }
 
-const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBalance, performanceFee }) => {
+const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool }) => {
   const {
     totalShares,
     userData: { userShares, isLoading },
@@ -30,10 +29,6 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
     : 0
   const { t } = useTranslation()
 
-  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
-  const [onPresentStake] = useModal(
-    <VaultStakeModal stakingMax={stakingTokenBalance} performanceFee={performanceFee} pool={pool} />,
-  )
   const [onPresentUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
   const totalSharesPercentage =
@@ -62,9 +57,6 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
       <Flex>
         <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
           <MinusIcon color="primary" width="24px" />
-        </IconButton>
-        <IconButton variant="secondary" onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
-          <AddIcon color="primary" width="24px" height="24px" />
         </IconButton>
       </Flex>
     </Flex>

@@ -23,7 +23,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false
         <Button
           isLoading={pendingTx}
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-          disabled={pendingTx}
+          disabled={pendingTx || pool.isFinished}
           onClick={handleApprove}
           width="100%"
         >
