@@ -47,7 +47,7 @@ interface SwapCommitButtonPropsType {
   tradeLoading?: boolean
 }
 
-export const SwapCommitButton = memo(function SwapCommitButton({
+export const SwapCommitButtonV1 = memo(function SwapCommitButton({
   trade,
   tradeError,
   tradeLoading,

@@ -6,6 +6,8 @@ import { useMemo } from 'react'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 
+import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
+import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
 import {
   BuyCryptoLink,
@@ -17,6 +19,8 @@ import {
   TradeDetails,
 } from './containers'
 import { MMCommitButton } from './containers/MMCommitButton'
+import { MMCommitButtonV1 } from './containers/MMCommitButtonV1'
+import { SwapCommitButtonV1 } from './containers/SwapCommitButtonV1'
 import { useSwapBestTrade } from './hooks'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 
@@ -44,6 +48,22 @@ export function V3SwapForm() {
 
   const insufficientFundCurrency = useCheckInsufficientError(trade)
 
+  const featureEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.UniversalRouter)
+  const commitButton = useMemo(() => {
+    if (featureEnabled) {
+      return mm?.isMMBetter ? (
+        <MMCommitButton {...mm} />
+      ) : (
+        <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+      )
+    }
+    return mm?.isMMBetter ? (
+      <MMCommitButtonV1 {...mm} />
+    ) : (
+      <SwapCommitButtonV1 trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+    )
+  }, [error, featureEnabled, mm, trade, tradeLoaded])
+
   return (
     <>
       <FormHeader onRefresh={throttledHandleRefresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
@@ -54,13 +74,7 @@ export function V3SwapForm() {
         }
         inputAmount={finalTrade?.inputAmount}
         outputAmount={finalTrade?.outputAmount}
-        swapCommitButton={
-          mm?.isMMBetter ? (
-            <MMCommitButton {...mm} />
-          ) : (
-            <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
-          )
-        }
+        swapCommitButton={commitButton}
       />
 
       <BuyCryptoLink currency={insufficientFundCurrency} />
