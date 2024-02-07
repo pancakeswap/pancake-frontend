@@ -1,20 +1,20 @@
 /* eslint-disable no-param-reassign */
-import { createReducer } from '@reduxjs/toolkit'
 import { Order } from '@gelatonetwork/limit-orders-lib'
+import { createReducer } from '@reduxjs/toolkit'
 import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
 import { Hash } from 'viem'
+import { resetUserState } from '../global/actions'
 import {
-  addTransaction,
-  checkedTransaction,
-  clearAllTransactions,
-  finalizeTransaction,
+  FarmTransactionStatus,
+  NonBscFarmTransactionType,
   SerializableTransactionReceipt,
   TransactionType,
+  addTransaction,
+  checkedTransaction,
   clearAllChainTransactions,
-  NonBscFarmTransactionType,
-  FarmTransactionStatus,
+  clearAllTransactions,
+  finalizeTransaction,
 } from './actions'
-import { resetUserState } from '../global/actions'
 
 const now = () => Date.now()
 
@@ -24,7 +24,7 @@ export interface TransactionDetails {
   type?: TransactionType
   order?: Order
   summary?: string
-  translatableSummary?: { text: string; data?: Record<string, string | number> }
+  translatableSummary?: { text: string; data?: Record<string, string | number | undefined> }
   claim?: { recipient: string }
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number
@@ -101,14 +101,14 @@ export default createReducer(initialState, (builder) =>
       } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'non-bsc-farm') {
-        if (tx.nonBscFarm.steps[0].status === FarmTransactionStatus.PENDING) {
+        if (tx.nonBscFarm?.steps[0].status === FarmTransactionStatus.PENDING) {
           if (receipt.status === FarmTransactionStatus.FAIL) {
             tx.nonBscFarm = { ...tx.nonBscFarm, status: receipt.status }
           }
 
           tx.nonBscFarm.steps[0] = {
             ...tx.nonBscFarm.steps[0],
-            status: receipt.status,
+            status: receipt.status ?? FarmTransactionStatus.FAIL,
           }
         } else {
           tx.nonBscFarm = nonBscFarm
