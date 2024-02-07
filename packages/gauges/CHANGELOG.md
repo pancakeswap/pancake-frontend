@@ -1,5 +1,11 @@
 # @pancakeswap/gauges
 
+## 1.0.0
+
+### Major Changes
+
+- 0d67620: Publish gauges
+
 ## 0.0.8
 
 ### Patch Changes
