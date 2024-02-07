@@ -79,8 +79,6 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
               t('Transaction receipt'),
               <ToastDescriptionWithTx txHash={receipt.transactionHash} txChainId={chainId} />,
             )
-
-            merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
           } catch (error) {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {
@@ -92,8 +90,9 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             } else if (error instanceof WaitForTransactionReceiptTimeoutError) {
               throw new RetryableError(`Timeout reached when fetching transaction receipt: ${transaction.hash}`)
             }
+          } finally {
+            merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
           }
-          merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
         }
         retry(getTransaction, {
           n: 10,
