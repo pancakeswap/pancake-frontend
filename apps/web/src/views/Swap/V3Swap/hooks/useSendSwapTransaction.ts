@@ -244,6 +244,7 @@ export default function useSendSwapTransaction(
     recipientAddress,
     recipient,
     addTransaction,
+    type,
   ])
 }
 

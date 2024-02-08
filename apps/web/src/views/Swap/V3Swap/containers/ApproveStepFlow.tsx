@@ -1,8 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, LinkExternal, Text, useTooltip } from '@pancakeswap/uikit'
+import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { ConfirmModalState, PendingConfirmModalState } from '../types'
+import { PendingConfirmModalState } from '../types'
 
 const StyledLinkExternal = styled(LinkExternal)`
   &:hover {
