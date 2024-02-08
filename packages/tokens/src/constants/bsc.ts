@@ -2980,4 +2980,12 @@ export const bscTokens = {
     'AITECH',
     'https://www.aitech.vision/',
   ),
+  gtai: new ERC20Token(
+    ChainId.BSC,
+    '0x003d87d02A2A01E9E8a20f507C83E15DD83A33d1',
+    18,
+    'GTAI',
+    'GT Protocol',
+    'https://www.gt-protocol.io/',
+  ),
 }
