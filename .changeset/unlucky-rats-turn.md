@@ -1,5 +1,5 @@
 ---
-'@pancakeswap/pools': major
+'@pancakeswap/pools': patch
 ---
 
 Add new BSC pool
