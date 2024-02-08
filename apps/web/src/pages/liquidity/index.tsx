@@ -34,7 +34,7 @@ import useStableConfig, {
   StableConfigContext,
   useLPTokensWithBalanceByAccount,
 } from 'views/Swap/hooks/useStableConfig'
-import { ReactNode, useMemo, useState } from 'react'
+import React, { ReactNode, useMemo, useState } from 'react'
 import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
@@ -108,7 +108,7 @@ export default function PoolListPage() {
     return stablePairs.map((pair) => <StableContextProvider key={pair.lpAddress} pair={pair} account={account} />)
   }, [account, stablePairs])
 
-  const v3PairsSection: null | ReactNode[] = useMemo(() => {
+  const v3PairsSection: null | React.JSX.Element[] = useMemo(() => {
     if (!positions?.length) return null
 
     const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
