@@ -13,8 +13,8 @@ import { basisPointsToPercent } from 'utils/exchange'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
-import { useSwapCallArguments } from './useSwapCallArguments'
 
+import { useSwapCallArgumentsV1 } from './useSwapCallArgumentsV1'
 import type { TWallchainMasterInput } from './useWallchain'
 import { useWallchainSwapCallArguments } from './useWallchain'
 
@@ -59,7 +59,7 @@ export function useSwapCallbackV1({
   const { recipient: recipientAddress } = useSwapState()
   const recipient = recipientAddress === null ? account : recipientAddress
 
-  const swapCalls = useSwapCallArguments(
+  const swapCalls = useSwapCallArgumentsV1(
     trade,
     allowedSlippage,
     recipientAddress,
