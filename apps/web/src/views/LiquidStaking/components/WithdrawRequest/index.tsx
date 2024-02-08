@@ -8,6 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import useTokenBalance from 'hooks/useTokenBalance'
+import first from 'lodash/first'
 import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
@@ -34,7 +35,7 @@ function ClaimButton({ tokenAmount, claimIndex }: { tokenAmount?: CurrencyAmount
     <Button mb="8px" onClick={onClaim} disabled={tokenAmount?.equalTo(0) || isLoading} width="100%">
       {isLoading
         ? t('Claiming')
-        : t('Claim %amount% %symbol%', {
+        : t('Claim Requested %amount% %symbol%', {
             symbol: tokenAmount?.currency?.symbol,
             amount: formatCurrencyAmount(tokenAmount, 6, locale),
           })}
@@ -77,6 +78,8 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
 
   const token1USDPrice = useStablecoinPrice(currency1)
   const token0USDPrice = useStablecoinPrice(currency0)
+
+  const lastRequest = first(userWithdrawRequest?.claimableIndexes)
 
   return (
     <>
@@ -158,15 +161,15 @@ export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps })
                   : t('Withdraw')}
               </Button>
             </NextLink>
-            {userWithdrawRequest?.claimableIndexes?.map((claimableIndex) => (
+            {lastRequest ? (
               <ClaimButton
-                key={`${claimableIndex.index}-${claimableIndex.amount.toString()}`}
-                claimIndex={claimableIndex.index}
+                key={`${lastRequest.index}-${lastRequest.amount.toString()}`}
+                claimIndex={lastRequest.index}
                 tokenAmount={
-                  currency0 ? CurrencyAmount.fromRawAmount(currency0, claimableIndex.amount.toString()) : undefined
+                  currency0 ? CurrencyAmount.fromRawAmount(currency0, lastRequest.amount.toString()) : undefined
                 }
               />
-            ))}
+            ) : null}
           </>
         ) : (
           <ConnectWalletButton width="100%" />
