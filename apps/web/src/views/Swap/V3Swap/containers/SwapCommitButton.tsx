@@ -101,7 +101,7 @@ const UnsupportedSwapButtonReplace = ({ children }) => {
   return children
 }
 
-export const SwapCommitButton: React.FC<SwapCommitButtonPropsType> = (props) => {
+const SwapCommitButtonComp: React.FC<SwapCommitButtonPropsType> = (props) => {
   return (
     <UnsupportedSwapButtonReplace>
       <ConnectButtonReplace>
@@ -112,6 +112,8 @@ export const SwapCommitButton: React.FC<SwapCommitButtonPropsType> = (props) => 
     </UnsupportedSwapButtonReplace>
   )
 }
+
+export const SwapCommitButton = memo(SwapCommitButtonComp)
 
 const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   trade,

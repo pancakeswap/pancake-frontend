@@ -3171,6 +3171,7 @@
   "Failed to send": "Failed to send",
   "This product have been upgraded!": "This product have been upgraded!",
   "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "Enable spending %symbol%",
   "Reset approval on USDT.": "Reset approval on USDT.",
   "Go to CAKE Staking": "Go to CAKE Staking"
 }

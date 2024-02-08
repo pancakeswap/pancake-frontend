@@ -54,6 +54,7 @@ export default function useSendSwapTransaction(
   chainId?: number,
   trade?: SmartRouterTrade<TradeType> | null, // trade to execute, required
   swapCalls: SwapCall[] | WallchainSwapCall[] = [],
+  type: 'V3SmartSwap' | 'UniversalRouter' = 'V3SmartSwap',
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
@@ -202,7 +203,7 @@ export default function useSendSwapTransaction(
               outputAmount,
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
-              type: 'V3SmartSwap',
+              type,
             })
             logTx({ account, chainId, hash: response.hash })
             return response
@@ -243,6 +244,7 @@ export default function useSendSwapTransaction(
     recipientAddress,
     recipient,
     addTransaction,
+    type,
   ])
 }
 
