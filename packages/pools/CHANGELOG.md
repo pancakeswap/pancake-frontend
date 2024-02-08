@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 5.1.6
+
+### Patch Changes
+
+- ce2d025: Add new BSC pool
+
 ## 5.1.5
 
 ### Patch Changes
