@@ -1,6 +1,6 @@
 import { Abi, Address } from 'viem'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import React from 'react'
+import { ReactNode } from 'react'
 
 interface NativeToken {
   name: string
@@ -23,8 +23,8 @@ export enum FunctionName {
 
 export interface FAQType {
   id: number
-  title: React.JSX.Element
-  description: React.JSX.Element
+  title: ReactNode
+  description: ReactNode
 }
 
 export interface LiquidStakingList {

@@ -1,7 +1,7 @@
 import { Box, Flex, FlexGap, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
-import React, { Dispatch, SetStateAction, useCallback } from 'react'
+import React, { Dispatch, ReactNode, SetStateAction, useCallback } from 'react'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
 import { Scope, SubsctiptionType } from 'views/Notifications/types'
 
@@ -9,7 +9,7 @@ export const ScopeIcon: React.FC<
   { scope: SubsctiptionType } & (React.SVGProps<SVGSVGElement> &
     React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>)
 > = ({ scope }: any) => {
-  const providerToLogo: { [key: string]: React.JSX.Element } = {
+  const providerToLogo: { [key: string]: ReactNode } = {
     [SubsctiptionType.Alerts]: (
       <Image src="/images/notifications/alerts-scope.svg" alt="alert-scope" width={40} height={40} />
     ),

@@ -34,7 +34,7 @@ import useStableConfig, {
   StableConfigContext,
   useLPTokensWithBalanceByAccount,
 } from 'views/Swap/hooks/useStableConfig'
-import React, { useMemo, useState } from 'react'
+import { ReactNode, useMemo, useState } from 'react'
 import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
@@ -95,20 +95,20 @@ export default function PoolListPage() {
   const isNeedFilterByQuery = useMemo(() => token0 || token1 || fee, [token0, token1, fee])
   const [showAllPositionWithQuery, setShowAllPositionWithQuery] = useState(false)
 
-  const v2PairsSection: null | React.JSX.Element[] = v2Pairs?.length
+  const v2PairsSection: null | ReactNode[] = v2Pairs?.length
     ? v2Pairs.map((pair, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <V2PairCard key={`${pair?.token0}-${pair?.token1}-${index}`} pair={pair} account={account} />
       ))
     : null
 
-  const stablePairsSection: null | React.JSX.Element[] = useMemo(() => {
+  const stablePairsSection: null | ReactNode[] = useMemo(() => {
     if (!stablePairs?.length) return null
 
     return stablePairs.map((pair) => <StableContextProvider key={pair.lpAddress} pair={pair} account={account} />)
   }, [account, stablePairs])
 
-  const v3PairsSection: null | React.JSX.Element[] = useMemo(() => {
+  const v3PairsSection: null | ReactNode[] = useMemo(() => {
     if (!positions?.length) return null
 
     const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
@@ -236,7 +236,7 @@ export default function PoolListPage() {
   ])
 
   const mainSection = useMemo(() => {
-    let resultSection: null | React.JSX.Element | (React.JSX.Element[] | null | undefined)[] = null
+    let resultSection: null | ReactNode | (ReactNode[] | null | undefined)[] = null
     if (v3Loading || v2Loading) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">

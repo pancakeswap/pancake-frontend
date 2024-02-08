@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { ReactNode, useMemo } from 'react'
 import { useTranslation, Trans } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
@@ -39,7 +39,7 @@ interface CommissionInfoProps {
 
 export interface ChartInfo {
   id: string
-  name: React.JSX.Element
+  name: ReactNode
   chartColor: string
   usdValue: string
   cakeValue: string
