@@ -75,7 +75,7 @@ export function useSwapCallback({
   // )
   // const wallchainSwapCalls = []
 
-  const { callback } = useSendSwapTransaction(account, chainId, trade ?? undefined, swapCalls)
+  const { callback } = useSendSwapTransaction(account, chainId, trade ?? undefined, swapCalls, 'UniversalRouter')
 
   return useMemo(() => {
     if (!trade || !account || !chainId || !callback) {

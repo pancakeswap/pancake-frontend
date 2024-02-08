@@ -81,6 +81,7 @@ export function useSwapCallbackV1({
     trade,
     // @ts-expect-error uncompatible types side-by-side cause wrong type assertion
     wallchainSwapCalls,
+    'V3SwapRouter',
   )
 
   return useMemo(() => {
