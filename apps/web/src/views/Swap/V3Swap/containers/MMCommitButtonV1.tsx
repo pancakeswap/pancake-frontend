@@ -4,14 +4,14 @@ import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
-import { useEffect, useMemo, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { MMSwapCommitButtonV1 } from 'views/Swap/MMLinkPools/components/MMCommitButtonV1'
 import { useAccount } from 'wagmi'
 
-export function MMCommitButtonV1({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, mmTradeInfo }) {
+function MMCommitButtonCompV1({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, mmTradeInfo }) {
   const {
     typedValue,
     recipient,
@@ -86,3 +86,5 @@ export function MMCommitButtonV1({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRe
     />
   )
 }
+
+export const MMCommitButtonV1 = memo(MMCommitButtonCompV1)
