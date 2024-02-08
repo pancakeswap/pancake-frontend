@@ -49,6 +49,13 @@ export const farmsV3 = defineFarmV3Configs([
   },
   // Keep those farms on top
   {
+    pid: 57,
+    lpAddress: '',
+    token0: ethereumTokens.weth,
+    token1: ethereumTokens.pandora,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     pid: 56,
     lpAddress: '0x249CfCA66a4F6D02a12376D079E5d131423A6b7a',
     token0: ethereumTokens.weth,

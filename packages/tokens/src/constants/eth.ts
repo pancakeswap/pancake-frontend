@@ -409,4 +409,12 @@ export const ethereumTokens = {
     'Wrapped eETH',
     'https://www.ether.fi/',
   ),
+  pandora: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x9E9FbDE7C7a83c43913BddC8779158F1368F0413',
+    18,
+    'PANDORA',
+    'Pandora',
+    'https://www.ether.fi/',
+  ),
 }

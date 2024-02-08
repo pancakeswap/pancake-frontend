@@ -2702,4 +2702,22 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: arbitrumTokens.usdplus.address,
     feeTier: FeeAmount.LOWEST,
   },
+  {
+    gid: 270,
+    pairName: 'GTAI-USDT',
+    address: '0xb24cd29e32FaCDDf9e73831d5cD1FFcd1e535423',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.gtai.address,
+    token1Address: bscTokens.usdt.address,
+    feeTier: FeeAmount.LOW,
+  },
+  {
+    gid: 271,
+    pairName: 'mPENDLE-PENDLE',
+    address: '0x73ed25e04Aa673ddf7411441098fC5ae19976CE0',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [arbitrumTokens.mpendle.address, arbitrumTokens.pendle.address],
+  },
 ]
