@@ -2710,7 +2710,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.V3,
     token0Address: bscTokens.gtai.address,
     token1Address: bscTokens.usdt.address,
-    feeTier: FeeAmount.LOW,
+    feeTier: FeeAmount.MEDIUM,
   },
   {
     gid: 271,
