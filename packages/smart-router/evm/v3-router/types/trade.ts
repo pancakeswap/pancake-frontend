@@ -23,15 +23,18 @@ export type PriceReferences = {
   nativeCurrencyUsdPrice?: number
 }
 
-export type TradeConfig = {
+export type BaseTradeConfig = {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
-  blockNumber?: number | (() => Promise<number>)
-  poolProvider: PoolProvider
-  quoteProvider: QuoteProvider
   maxHops?: number
   maxSplits?: number
   distributionPercent?: number
   allowedPoolTypes?: PoolType[]
+  poolProvider: PoolProvider
+}
+
+export type TradeConfig = BaseTradeConfig & {
+  blockNumber?: number | (() => Promise<number>)
+  quoteProvider: QuoteProvider
   quoterOptimization?: boolean
 } & PriceReferences &
   AbortControl
