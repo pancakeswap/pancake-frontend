@@ -70,19 +70,6 @@ const Inner = styled.div`
   max-width: 100%;
 `;
 
-const StyledImage = styled.img<{ isDesktop: boolean }>`
-  position: fixed;
-  z-index: -1;
-  top: 40px;
-  left: ${({ isDesktop }) => (isDesktop ? "calc(50% - 75px - 180px)" : "calc(50% - 75px - 100px)")};
-  ${({ theme }) => theme.mediaQueries.lg} {
-    left: calc(50% - 75px - 240px); // calc(50% - 75px) is absolute center alignment
-  }
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    right: 0;
-  }
-`;
-
 const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   linkComponent = "a",
   banner,

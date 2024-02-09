@@ -76,8 +76,6 @@ const PrizeTotalBalance = styled(Balance)`
   background: var(--Linear, linear-gradient(180deg, #ffd800 0%, #fdab32 100%));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke-width: 2;
-  -webkit-text-stroke-color: #000;
   position: relative;
 
   font-family: Kanit;
@@ -86,16 +84,10 @@ const PrizeTotalBalance = styled(Balance)`
   font-weight: 600;
   line-height: 110%;
 
-  &::after {
-    letter-spacing: 0.001em;
-    background: linear-gradient(180deg, #ffb237 0%, #ffeb37 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    content: attr(data-text);
-    -webkit-text-stroke: 5px #7645d9;
-    position: absolute;
-    left: 0;
-    z-index: -1;
+  > span {
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #7645d9;
+  }
 `
 
 const StyledBuyTicketButton = styled(BuyTicketsButton)<{ disabled: boolean }>`
