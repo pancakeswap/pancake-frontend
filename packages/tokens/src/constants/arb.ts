@@ -247,4 +247,20 @@ export const arbitrumTokens = {
     'USDV',
     'https://usdv.money/',
   ),
+  dlp: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x32dF62dc3aEd2cD6224193052Ce665DC18165841',
+    18,
+    'DLP',
+    'RDNT-WETH',
+    'https://pancakeswap.finance',
+  ),
+  mdlp: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xfe14F790DA92971131544d915c4ADa6F1abce3Bd',
+    18,
+    'mDLP',
+    'Magpie locked DLP',
+    'https://www.radiant.magpiexyz.io/stake',
+  ),
 }
