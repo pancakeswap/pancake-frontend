@@ -39,7 +39,7 @@ export const CnyBanner = () => {
       <CnyBannerAsset
         asset={CNY_BANNER_CONFIG.GoldenHat}
         bannerView={bannerView}
-        options={{ zIndex: 5, width: '200px', transform: `rotate(${!isDesktop ? '40deg' : '0deg'})` }}
+        options={{ zIndex: isDesktop ? 5 : 1, width: '200px', transform: `rotate(${!isDesktop ? '40deg' : '0deg'})` }}
       />
       <CnyBannerAsset asset={CNY_BANNER_CONFIG.GoldenCoin} bannerView={bannerView} options={{ zIndex: 1 }} />
       <CnyBannerAsset

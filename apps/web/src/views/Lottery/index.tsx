@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Heading, PageSection, Skeleton } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, PageSection, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { LotterySubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { LotteryStatus } from 'config/constants/types'
 import useTheme from 'hooks/useTheme'
@@ -32,14 +32,12 @@ const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
-const StyledImage = styled.img`
+const StyledImage = styled.img<{ isDesktop: boolean }>`
   position: absolute; /* or absolute depending on your preference */
   z-index: 1; /* Adjust this value to ensure the image appears above other content */
   top: -15px; /* Adjust top position as needed */
   left: calc(50% - 75px - 180px);
-  ${({ theme }) => theme.mediaQueries.lg} {
-    left: calc(50% - 75px - 240px); // calc(50% - 75px) is absolute center alignment
-  }
+  left: ${({ isDesktop }) => (isDesktop ? 'calc(50% - 75px - 180px)' : 'calc(50% - 75px - 100px)')};
   ${({ theme }) => theme.mediaQueries.xxl} {
     right: 0;
   }
@@ -50,6 +48,7 @@ const Lottery = () => {
   useStatusTransitions()
   const { t } = useTranslation()
   const { isDark, theme } = useTheme()
+  const { isDesktop } = useMatchBreakpoints()
   const {
     currentRound: { status, endTime },
   } = useLottery()
@@ -81,7 +80,9 @@ const Lottery = () => {
       <LotteryPage>
         <Flex width="100%" height="125px" background={CNY_BANNER_BG} alignItems="center" justifyContent="center">
           <CnyBanner />
-          {!hideImage && <StyledImage src="/images/lottery/cny-bunny.png" alt="" height={159} width={149} />}
+          {!hideImage && (
+            <StyledImage isDeskptop={isDesktop} src="/images/lottery/cny-bunny.png" alt="" height={159} width={149} />
+          )}
         </Flex>
         <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
