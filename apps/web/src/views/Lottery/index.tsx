@@ -36,8 +36,7 @@ const StyledImage = styled.img<{ isDesktop: boolean }>`
   position: absolute; /* or absolute depending on your preference */
   z-index: 1; /* Adjust this value to ensure the image appears above other content */
   top: -15px; /* Adjust top position as needed */
-  left: calc(50% - 75px - 180px);
-  left: ${({ isDesktop }) => (isDesktop ? 'calc(50% - 75px - 180px)' : 'calc(50% - 75px - 100px)')};
+  left: ${({ isDesktop }) => (isDesktop ? 'calc(50% - 75px - 240px)' : 'calc(50% - 75px - 100px)')};
   ${({ theme }) => theme.mediaQueries.xxl} {
     right: 0;
   }
