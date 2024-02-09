@@ -44,8 +44,8 @@ export const CNY_BANNER_CONFIG: { [asset in CnyBannerAssets]: CnyBannerConfig } 
     desktopProps: {
       height: 100,
       width: 105,
-      left: '81%',
-      bottom: '15px',
+      left: '94%',
+      bottom: '-5px',
     },
     mobileProps: {
       height: 40,
@@ -61,7 +61,7 @@ export const CNY_BANNER_CONFIG: { [asset in CnyBannerAssets]: CnyBannerConfig } 
       height: 108,
       width: 125,
       left: '-37%',
-      bottom: '-15px',
+      bottom: '-30px',
     },
     mobileProps: {
       height: 108,
@@ -75,8 +75,8 @@ export const CNY_BANNER_CONFIG: { [asset in CnyBannerAssets]: CnyBannerConfig } 
     desktopProps: {
       height: 76,
       width: 137,
-      left: '93%',
-      bottom: '-5px',
+      left: '108%',
+      bottom: '-25px',
     },
     mobileProps: {
       height: 76,
@@ -107,11 +107,11 @@ export const CnyBannerImage: {
   desktopProps: {
     imageSrc: '/images/lottery/cny-banner.png',
     height: 106,
-    width: 423,
+    width: 628,
   },
   mobileProps: {
     imageSrc: '/images/lottery/cny-mobile-banner.png',
-    height: 120,
-    width: 200,
+    height: 146,
+    width: 219,
   },
 }

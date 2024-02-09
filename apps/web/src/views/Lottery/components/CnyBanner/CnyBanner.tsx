@@ -7,7 +7,7 @@ import { CNY_BANNER_CONFIG, CnyBannerConfig, CnyBannerImage } from './bannerConf
 const BannerContainer = styled.div<{ isDesktop: boolean }>`
   width: ${({ isDesktop }) => (isDesktop ? '500px' : '220px')};
   position: relative;
-  ${({ isDesktop }) => (isDesktop ? 'margin-left: 155px' : 'margin-left: 150px')};
+  ${({ isDesktop }) => (isDesktop ? 'margin-left: 0px' : 'margin-left: 150px')};
 `
 const GenericContainer = styled.div`
   position: absolute;
@@ -17,8 +17,8 @@ const GenericContainer = styled.div`
 const StyledImage = styled.img<{ isDesktop: boolean }>`
   position: absolute; /* or absolute depending on your preference */
   z-index: 1; /* Adjust this value to ensure the image appears above other content */
-  top: -15px; /* Adjust top position as needed */
-  left: ${({ isDesktop }) => (isDesktop ? 'calc(50% - 75px - 240px)' : 'calc(50% - 75px - 100px)')};
+  top: -10px; /* Adjust top position as needed */
+  left: ${({ isDesktop }) => (isDesktop ? 'calc(50% - 75px - 315px)' : 'calc(50% - 75px - 100px)')};
   ${({ theme }) => theme.mediaQueries.xxl} {
     right: 0;
   }
