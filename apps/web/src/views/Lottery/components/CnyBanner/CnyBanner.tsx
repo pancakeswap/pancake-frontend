@@ -6,7 +6,7 @@ import { CNY_BANNER_CONFIG, CnyBannerConfig, CnyBannerImage } from './bannerConf
 const BannerContainer = styled.div<{ isDesktop: boolean }>`
   width: ${({ isDesktop }) => (isDesktop ? '500px' : '220px')};
   position: relative;
-  ${({ isDesktop }) => isDesktop && 'margin-left: 125px'};
+  ${({ isDesktop }) => (isDesktop ? 'margin-left: 155px' : 'margin-left: 150px')};
 `
 const GenericContainer = styled.div`
   position: absolute;
@@ -36,7 +36,6 @@ export const CnyBanner = () => {
   const bannerView = isDesktop ? 'desktopProps' : 'mobileProps'
   return (
     <BannerContainer isDesktop={isDesktop}>
-      {/* <CnyBannerAsset asset={CNY_BANNER_CONFIG.Bunny} bannerView={bannerView} options={{ zIndex: 5 }} /> */}
       <CnyBannerAsset
         asset={CNY_BANNER_CONFIG.GoldenHat}
         bannerView={bannerView}

@@ -4,6 +4,7 @@ type PropTypes = {
   height?: number
   width?: number
   display?: 'none'
+  top?: string
 }
 export type CnyBannerConfig = {
   imageSrc: string
@@ -89,7 +90,8 @@ export const CNY_BANNER_CONFIG: { [asset in CnyBannerAssets]: CnyBannerConfig } 
     desktopProps: {
       height: 34,
       width: 10,
-      left: '3.2%',
+      left: '-1.9%',
+      top: '20px',
     },
     mobileProps: {
       height: 34,

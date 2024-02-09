@@ -1,11 +1,11 @@
 import { useIsMounted } from "@pancakeswap/hooks";
 import throttle from "lodash/throttle";
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { styled } from "styled-components";
+import { AtomBox } from "../../components/AtomBox";
 import BottomNav from "../../components/BottomNav";
 import { Box } from "../../components/Box";
 import Flex from "../../components/Box/Flex";
-import { AtomBox } from "../../components/AtomBox";
 import CakePrice from "../../components/CakePrice/CakePrice";
 import Footer from "../../components/Footer";
 import LangSelector from "../../components/LangSelector/LangSelector";
@@ -70,6 +70,19 @@ const Inner = styled.div`
   max-width: 100%;
 `;
 
+const StyledImage = styled.img<{ isDesktop: boolean }>`
+  position: absolute;
+  z-index: -1;
+  top: 40px;
+  left: ${({ isDesktop }) => (isDesktop ? "calc(50% - 75px - 180px)" : "calc(50% - 75px - 100px)")};
+  ${({ theme }) => theme.mediaQueries.lg} {
+    left: calc(50% - 75px - 240px); // calc(50% - 75px) is absolute center alignment
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    right: 0;
+  }
+`;
+
 const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   linkComponent = "a",
   banner,
@@ -90,7 +103,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   children,
   chainId,
 }) => {
-  const { isMobile } = useMatchBreakpoints();
+  const { isMobile, isDesktop } = useMatchBreakpoints();
   const isMounted = useIsMounted();
   const [showMenu, setShowMenu] = useState(true);
   const refPrevOffset = useRef(typeof window === "undefined" ? 0 : window.pageYOffset);
@@ -149,6 +162,14 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
             <StyledNav>
               <Flex>
                 <Logo href={homeLink?.href ?? "/"} />
+                <StyledImage
+                  isDesktop={isDesktop}
+                  src="/images/lottery/cny-bunny.png"
+                  alt="cny-bunny"
+                  height={159}
+                  width={149}
+                />
+
                 <AtomBox display={{ xs: "none", md: "block" }}>
                   <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />
                 </AtomBox>
