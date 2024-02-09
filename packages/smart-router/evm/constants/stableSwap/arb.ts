@@ -13,4 +13,14 @@ export const pools: StableSwapPool[] = [
     stableLpFee: 0.0025,
     stableLpFeeRateOfTotalFee: 0.5,
   },
+  {
+    lpSymbol: 'DLP-mDLP LP',
+    lpAddress: '0x0db5e247ab73FBaE16d9301f2977f974EC0AA336',
+    token: arbitrumTokens.dlp,
+    quoteToken: arbitrumTokens.mdlp,
+    stableSwapAddress: '0xd0f0be815a76eFE677c92b07b39a5e972BAf22bD',
+    infoStableSwapAddress: '0x58B2F00f74a1877510Ec37b22f116Bf5D63Ab1b0',
+    stableLpFee: 0.0025,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
 ]
