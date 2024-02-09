@@ -96,7 +96,6 @@ const PrizeTotalBalance = styled(Balance)`
     position: absolute;
     left: 0;
     z-index: -1;
-    // padding-right: 110px;
 `
 
 const StyledBuyTicketButton = styled(BuyTicketsButton)<{ disabled: boolean }>`
