@@ -1,10 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Heading, PageSection, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, PageSection, Skeleton } from '@pancakeswap/uikit'
 import { LotterySubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { LotteryStatus } from 'config/constants/types'
 import useTheme from 'hooks/useTheme'
-import throttle from 'lodash/throttle'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
 import { styled } from 'styled-components'
 import AllHistoryCard from './components/AllHistoryCard'
@@ -21,7 +20,6 @@ import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
 import useStatusTransitions from './hooks/useStatusTransitions'
 import {
   CHECK_PRIZES_BG,
-  CNY_BANNER_BG,
   CNY_TITLE_BG,
   FINISHED_ROUNDS_BG,
   FINISHED_ROUNDS_BG_DARK,
@@ -32,22 +30,11 @@ const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
-const StyledImage = styled.img<{ isDesktop: boolean }>`
-  position: absolute; /* or absolute depending on your preference */
-  z-index: 1; /* Adjust this value to ensure the image appears above other content */
-  top: -15px; /* Adjust top position as needed */
-  left: ${({ isDesktop }) => (isDesktop ? 'calc(50% - 75px - 240px)' : 'calc(50% - 75px - 100px)')};
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    right: 0;
-  }
-`
-
 const Lottery = () => {
   useFetchLottery()
   useStatusTransitions()
   const { t } = useTranslation()
   const { isDark, theme } = useTheme()
-  const { isDesktop } = useMatchBreakpoints()
   const {
     currentRound: { status, endTime },
   } = useLottery()
@@ -55,34 +42,11 @@ const Lottery = () => {
   const endTimeAsInt = parseInt(endTime, 10)
   const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status)
   const { numUserRoundsRequested, handleShowMoreUserRounds } = useShowMoreUserHistory()
-  const [hideImage, setHideImage] = useState(true)
-  const refPrevOffset = useRef(typeof window === 'undefined' ? 0 : window.pageYOffset)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentOffset = window.pageYOffset
-      const isTopOfPage = currentOffset === 0
-      if (isTopOfPage) setHideImage(true)
-      if (!isTopOfPage) setHideImage(false)
-      refPrevOffset.current = currentOffset
-    }
-    const throttledHandleScroll = throttle(handleScroll, 200)
-
-    window.addEventListener('scroll', throttledHandleScroll)
-    return () => {
-      window.removeEventListener('scroll', throttledHandleScroll)
-    }
-  }, [])
 
   return (
     <>
       <LotteryPage>
-        <Flex width="100%" height="125px" background={CNY_BANNER_BG} alignItems="center" justifyContent="center">
-          <CnyBanner />
-          {!hideImage && (
-            <StyledImage isDesktop={isDesktop} src="/images/lottery/cny-bunny.png" alt="" height={159} width={149} />
-          )}
-        </Flex>
+        <CnyBanner />
         <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>

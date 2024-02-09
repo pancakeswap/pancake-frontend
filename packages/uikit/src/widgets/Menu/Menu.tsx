@@ -103,9 +103,8 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   children,
   chainId,
 }) => {
-  const { isMobile, isDesktop } = useMatchBreakpoints();
+  const { isMobile } = useMatchBreakpoints();
   const isMounted = useIsMounted();
-  const [hideImage, setHideImage] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
   const refPrevOffset = useRef(typeof window === "undefined" ? 0 : window.pageYOffset);
 
@@ -120,10 +119,8 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
       const isTopOfPage = currentOffset === 0;
       // Always show the menu when user reach the top
       if (isTopOfPage) {
-        setHideImage(false);
         setShowMenu(true);
       }
-      if (!isTopOfPage) setHideImage(true);
       // Avoid triggering anything at the bottom because of layout shift
       else if (!isBottomOfPage) {
         if (currentOffset < refPrevOffset.current || currentOffset <= totalTopMenuHeight) {
@@ -165,16 +162,6 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
             <StyledNav>
               <Flex>
                 <Logo href={homeLink?.href ?? "/"} />
-                {!hideImage && (
-                  <StyledImage
-                    isDesktop={isDesktop}
-                    src="/images/lottery/cny-bunny.png"
-                    alt="cny-bunny"
-                    height={159}
-                    width={149}
-                  />
-                )}
-
                 <AtomBox display={{ xs: "none", md: "block" }}>
                   <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />
                 </AtomBox>
