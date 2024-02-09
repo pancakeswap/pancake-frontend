@@ -1,15 +1,15 @@
 import { getVersionUpgrade, VersionUpgrade } from '@pancakeswap/token-lists'
 import { acceptListUpdate, updateListVersion, useFetchListCallback } from '@pancakeswap/token-lists/react'
+import { useQuery } from '@tanstack/react-query'
 import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import { usePublicClient } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useAllLists } from 'state/lists/hooks'
-import { useQuery } from '@tanstack/react-query'
+import { usePublicClient } from 'wagmi'
 import { useActiveListUrls } from './hooks'
-import { useListState, useListStateReady, initialState } from './lists'
+import { initialState, useListState, useListStateReady } from './lists'
 
 export default function Updater(): null {
   const { chainId } = useActiveChainId()
