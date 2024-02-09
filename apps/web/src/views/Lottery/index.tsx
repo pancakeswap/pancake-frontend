@@ -81,7 +81,7 @@ const Lottery = () => {
         <Flex width="100%" height="125px" background={CNY_BANNER_BG} alignItems="center" justifyContent="center">
           <CnyBanner />
           {!hideImage && (
-            <StyledImage isDeskptop={isDesktop} src="/images/lottery/cny-bunny.png" alt="" height={159} width={149} />
+            <StyledImage isDesktop={isDesktop} src="/images/lottery/cny-bunny.png" alt="" height={159} width={149} />
           )}
         </Flex>
         <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
