@@ -28,7 +28,6 @@
   "dependencies": {
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
