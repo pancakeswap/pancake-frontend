@@ -14,11 +14,11 @@ import { basisPointsToPercent } from 'utils/exchange'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { viemClients } from 'utils/viem'
 import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
+import { viemClientsPublicNodes } from 'hooks/usePublicNodeWaitForTransaction'
 import { logger } from 'utils/datadog'
 import { isZero } from '../utils/isZero'
 
@@ -58,7 +58,7 @@ export default function useSendSwapTransaction(
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
   const { sendTransactionAsync } = useSendTransaction()
-  const publicClient = viemClients[chainId as ChainId]
+  const publicClient = viemClientsPublicNodes[chainId as ChainId]
   const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const { recipient } = useSwapState()
   const recipientAddress = recipient === null ? account : recipient
