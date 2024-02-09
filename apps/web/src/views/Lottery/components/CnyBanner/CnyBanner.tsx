@@ -61,33 +61,7 @@ const StyledPortalImageHat = styled.img<{ isDesktop: boolean }>`
   transform: rotate(40deg);
 `
 
-export const PortalContainer: React.FC = ({ children }: any) => {
-  const portalRoot = document.getElementById('portal-root')!
-  const portalElement = document.createElement('div')
-
-  useEffect(() => {
-    portalRoot.appendChild(portalElement)
-
-    return () => {
-      portalRoot.removeChild(portalElement)
-    }
-  }, [portalElement, portalRoot])
-
-  return createPortal(children, portalElement)
-}
-
 const ImagePortal = ({ isDesktop }: { isDesktop: boolean }) => {
-  const portalRoot = document.getElementById('portal-root')!
-  const portalElement = document.createElement('div')
-
-  useEffect(() => {
-    portalRoot.appendChild(portalElement)
-
-    return () => {
-      portalRoot.removeChild(portalElement)
-    }
-  }, [portalElement, portalRoot])
-
   return createPortal(
     <>
       <StyledPortalImageBunny

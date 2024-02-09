@@ -27,7 +27,6 @@ import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled
 import { useInitGlobalWorker } from 'hooks/useWorker'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import { PortalContainer } from 'views/Lottery/components/CnyBanner/CnyBanner'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import Providers from '../Providers'
@@ -160,7 +159,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     <ProductionErrorBoundary>
       <ShowMenu>
         <Layout>
-          <PortalContainer />
           <Component {...pageProps} />
         </Layout>
       </ShowMenu>
