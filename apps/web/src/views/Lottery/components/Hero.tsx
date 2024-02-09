@@ -1,10 +1,10 @@
-import { styled, keyframes } from 'styled-components'
-import { Box, Flex, Heading, Skeleton, Balance } from '@pancakeswap/uikit'
-import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
+import { Balance, Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { LotteryStatus } from 'config/constants/types'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useLottery } from 'state/lottery/hooks'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { keyframes, styled } from 'styled-components'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
 
@@ -73,14 +73,26 @@ const TicketContainer = styled(Flex)`
 `
 
 const PrizeTotalBalance = styled(Balance)`
-  background: ${({ theme }) => theme.colors.gradientGold};
+  background: var(--Linear, linear-gradient(180deg, #ffd800 0%, #fdab32 100%));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  position: relative;
+
+  font-family: Kanit;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 110%;
+
+  > span {
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #7645d9;
+  }
 `
 
 const StyledBuyTicketButton = styled(BuyTicketsButton)<{ disabled: boolean }>`
   background: ${({ theme, disabled }) =>
-    disabled ? theme.colors.disabled : 'linear-gradient(180deg, #7645d9 0%, #452a7a 100%)'};
+    disabled ? theme.colors.disabled : 'linear-gradient(180deg, #7645D9 0%, #452A7A 100%)'};
   width: 200px;
   ${({ theme }) => theme.mediaQueries.xs} {
     width: 240px;
@@ -209,6 +221,37 @@ const StarsDecorations = styled(Box)`
     }
   }
 `
+const StyledHeading = styled.div`
+  color: var(--V1-Light-Card, #fff);
+  background: var(--V1-Light-Card, #fff);
+
+  -webkit-text-stroke-width: 2;
+  -webkit-background-clip: text;
+  margin: 0 auto;
+  font-family: Kanit;
+  font-size: 45px;
+  font-weight: 600;
+  line-height: 110%;
+  position: relative;
+  font-family: 'Kanit';
+  font-style: normal;
+  letter-spacing: 0.001em;
+  margin-bottom: 50px;
+
+  &::after {
+    letter-spacing: 0.001em;
+    background: linear-gradient(180deg, #ffb237 0%, #ffeb37 100%);
+    -webkit-background-clip: text;
+    content: attr(data-text);
+    -webkit-text-stroke: 5px #7645d9;
+    position: absolute;
+    left: 0;
+    z-index: -1;
+  }
+`
+function formatNumberWithCommas(number: number) {
+  return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
 
 const Hero = () => {
   const { t } = useTranslation()
@@ -224,16 +267,23 @@ const Hero = () => {
 
   const getHeroHeading = () => {
     if (status === LotteryStatus.OPEN) {
+      const cakePrizeTextData = formatNumberWithCommas(prizeTotal)
       return (
         <>
           {prizeInBusd.isNaN() ? (
             <Skeleton my="7px" height={60} width={190} />
           ) : (
-            <PrizeTotalBalance fontSize="64px" bold prefix="$" value={prizeTotal} mb="8px" decimals={0} />
+            <PrizeTotalBalance
+              data-text={`$${cakePrizeTextData}`}
+              fontSize="64px"
+              bold
+              prefix="$"
+              value={prizeTotal}
+              mb="8px"
+              decimals={0}
+            />
           )}
-          <Heading mb="32px" scale="lg" color="#ffffff">
-            {t('in prizes!')}
-          </Heading>
+          <StyledHeading data-text={t('in Prizes!')}>{t('in Prizes!')}</StyledHeading>
         </>
       )
     }

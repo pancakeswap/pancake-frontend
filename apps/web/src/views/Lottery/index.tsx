@@ -1,29 +1,30 @@
-import { useState } from 'react'
-import { styled } from 'styled-components'
-import { Box, Flex, Heading, Skeleton, PageSection } from '@pancakeswap/uikit'
-import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import { useFetchLottery, useLottery } from 'state/lottery/hooks'
+import { Box, Flex, Heading, PageSection, Skeleton } from '@pancakeswap/uikit'
 import { LotterySubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
-import {
-  TITLE_BG,
-  GET_TICKETS_BG,
-  FINISHED_ROUNDS_BG,
-  FINISHED_ROUNDS_BG_DARK,
-  CHECK_PRIZES_BG,
-} from './pageSectionStyles'
-import useGetNextLotteryEvent from './hooks/useGetNextLotteryEvent'
-import useStatusTransitions from './hooks/useStatusTransitions'
-import Hero from './components/Hero'
-import NextDrawCard from './components/NextDrawCard'
-import Countdown from './components/Countdown'
-import HistoryTabMenu from './components/HistoryTabMenu'
-import YourHistoryCard from './components/YourHistoryCard'
+import { LotteryStatus } from 'config/constants/types'
+import useTheme from 'hooks/useTheme'
+import { useState } from 'react'
+import { useFetchLottery, useLottery } from 'state/lottery/hooks'
+import { styled } from 'styled-components'
 import AllHistoryCard from './components/AllHistoryCard'
 import CheckPrizesSection from './components/CheckPrizesSection'
+import { CnyBanner } from './components/CnyBanner/CnyBanner'
+import Countdown from './components/Countdown'
+import Hero from './components/Hero'
+import HistoryTabMenu from './components/HistoryTabMenu'
 import HowToPlay from './components/HowToPlay'
+import NextDrawCard from './components/NextDrawCard'
+import YourHistoryCard from './components/YourHistoryCard'
+import useGetNextLotteryEvent from './hooks/useGetNextLotteryEvent'
 import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
+import useStatusTransitions from './hooks/useStatusTransitions'
+import {
+  CHECK_PRIZES_BG,
+  CNY_TITLE_BG,
+  FINISHED_ROUNDS_BG,
+  FINISHED_ROUNDS_BG_DARK,
+  GET_TICKETS_BG,
+} from './pageSectionStyles'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -45,7 +46,8 @@ const Lottery = () => {
   return (
     <>
       <LotteryPage>
-        <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
+        <CnyBanner />
+        <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>
         <PageSection
