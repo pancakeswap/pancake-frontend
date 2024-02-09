@@ -1,24 +1,24 @@
 import { ChainId } from '@gelatonetwork/limit-orders-lib'
+import { BSC_BLOCK_TIME } from 'config'
 import { CHAINS } from 'config/chains'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
+import { useCallback } from 'react'
+import { RetryableError, retry } from 'state/multicall/retry'
 import {
-  TransactionReceipt,
+  BlockNotFoundError,
   GetTransactionReceiptParameters,
-  createPublicClient,
-  http,
   PublicClient,
   TransactionNotFoundError,
+  TransactionReceipt,
   TransactionReceiptNotFoundError,
-  BlockNotFoundError,
   WaitForTransactionReceiptTimeoutError,
+  createPublicClient,
+  http,
 } from 'viem'
-import { useCallback } from 'react'
-import { retry, RetryableError } from 'state/multicall/retry'
 import { usePublicClient } from 'wagmi'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
-import { BSC_BLOCK_TIME } from 'config'
 import { useActiveChainId } from './useActiveChainId'
 
-const viemClientsPublicNodes = CHAINS.reduce((prev, cur) => {
+export const viemClientsPublicNodes = CHAINS.reduce((prev, cur) => {
   return {
     ...prev,
     [cur.id]: createPublicClient({
