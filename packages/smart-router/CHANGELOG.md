@@ -1,5 +1,15 @@
 # @pancakeswap/smart-router
 
+## 4.14.5
+
+### Patch Changes
+
+- a8ffc15: Add dlp mdlp stable pair
+- Updated dependencies [a8ffc15]
+  - @pancakeswap/tokens@0.6.3
+  - @pancakeswap/gauges@1.0.1
+  - @pancakeswap/v3-sdk@3.7.9
+
 ## 4.14.4
 
 ### Patch Changes
