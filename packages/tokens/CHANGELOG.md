@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.3
+
+### Patch Changes
+
+- a8ffc15: Add dlp mdlp stable pair
+
 ## 0.6.2
 
 ### Patch Changes
