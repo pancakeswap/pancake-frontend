@@ -1,8 +1,5 @@
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import throttle from 'lodash/throttle'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 import { CNY_BANNER_BG } from 'views/Lottery/pageSectionStyles'
 import { CNY_BANNER_CONFIG, CnyBannerConfig, CnyBannerImage } from './bannerConfig'
@@ -27,62 +24,6 @@ const StyledImage = styled.img<{ isDesktop: boolean }>`
   }
 `
 
-const StyledPortalImageBunny = styled.img<{ isDesktop: boolean }>`
-  position: absolute; /* or absolute depending on your preference */
-  z-index: 1; /* Adjust this value to ensure the image appears above other content */
-  top: ${({ isDesktop }) => (isDesktop ? '50px' : '50px')};
-  left: ${({ isDesktop }) => (isDesktop ? 'calc(50% - 75px - 240px)' : 'calc(50% - 75px - 100px)')};
-  ${({ theme }) => theme.mediaQueries.md} {
-    top: ${({ isDesktop }) => (isDesktop ? '90px' : '110px')};
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    top: ${({ isDesktop }) => (isDesktop ? '100px' : '105px')};
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    top: ${({ isDesktop }) => (isDesktop ? '45px' : '50px')};
-  }
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    right: 0;
-  }
-`
-const StyledPortalImageHat = styled.img<{ isDesktop: boolean }>`
-  position: absolute; /* or absolute depending on your preference */
-  z-index: 1; /* Adjust this value to ensure the image appears above other content */
-  top: ${({ isDesktop }) => (isDesktop ? '216px' : '130px')};
-  display: ${({ isDesktop }) => (isDesktop ? '216px' : '130px')};
-  left: calc(50% - 75px - 98px);
-  ${({ theme }) => theme.mediaQueries.sm} {
-    top: 130px;
-  }
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    right: 0;
-  }
-  display: ${({ isDesktop }) => isDesktop && 'none'};
-  transform: rotate(40deg);
-`
-
-const ImagePortal = ({ isDesktop }: { isDesktop: boolean }) => {
-  return createPortal(
-    <>
-      <StyledPortalImageBunny
-        isDesktop={isDesktop}
-        src="/images/lottery/cny-bunny.png"
-        alt=""
-        height={159}
-        width={149}
-      />
-      <StyledPortalImageHat
-        isDesktop={isDesktop}
-        src="/images/lottery/cny-golden-hat.png"
-        alt=""
-        height={40}
-        width={76}
-      />
-    </>,
-    document.body,
-  )
-}
-
 const CnyBannerAsset = ({
   asset,
   bannerView,
@@ -99,38 +40,6 @@ const CnyBannerAsset = ({
     <GenericContainer style={{ ...styles, ...options }}>
       <Image src={bannerImage} alt={asset.alt} height={height} width={width} />
     </GenericContainer>
-  )
-}
-
-export const CnyBannerBunnyImage = () => {
-  const { isDesktop } = useMatchBreakpoints()
-  const [hideImage, setHideImage] = useState(true)
-  const refPrevOffset = useRef(typeof window === 'undefined' ? 0 : window.pageYOffset)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentOffset = window.pageYOffset
-      const isTopOfPage = currentOffset === 0
-      if (isTopOfPage) setHideImage(true)
-      if (!isTopOfPage) setHideImage(false)
-      refPrevOffset.current = currentOffset
-    }
-    const throttledHandleScroll = throttle(handleScroll, 200)
-
-    window.addEventListener('scroll', throttledHandleScroll)
-    return () => {
-      window.removeEventListener('scroll', throttledHandleScroll)
-    }
-  }, [])
-
-  return (
-    <>
-      {!hideImage ? (
-        <StyledImage isDesktop={isDesktop} src="/images/lottery/cny-bunny.png" alt="" height={159} width={149} />
-      ) : (
-        <ImagePortal isDesktop={isDesktop} />
-      )}
-    </>
   )
 }
 
@@ -159,7 +68,7 @@ export const CnyBanner = () => {
           alt="cny-banner-desktop"
         />
       </BannerContainer>
-      <CnyBannerBunnyImage />
+      <StyledImage isDesktop={isDesktop} src="/images/lottery/cny-bunny.png" alt="" height={159} width={149} />
     </Flex>
   )
 }
