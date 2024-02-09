@@ -104,7 +104,6 @@ const ImagePortal = ({ isDesktop }: { isDesktop: boolean }) => {
         height={40}
         width={76}
       />
-      ,
     </>,
     document.body,
   )
