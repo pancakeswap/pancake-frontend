@@ -1,10 +1,10 @@
-import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
-import { useEffect, useState } from 'react'
-import { AppProps } from 'next/app'
-import Script from 'next/script'
-import { createGlobalStyle } from 'styled-components'
+import { ModalProvider, PancakeTheme, ResetCSS, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
+import { AppProps } from 'next/app'
 import Head from 'next/head'
+import Script from 'next/script'
+import { useEffect, useState } from 'react'
+import { createGlobalStyle } from 'styled-components'
 import { Menu } from '../components/Menu'
 
 declare module 'styled-components' {
@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
   }
   body {
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.gradientBubblegum};
 
     img {
       height: auto;

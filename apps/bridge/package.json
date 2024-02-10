@@ -16,6 +16,7 @@
     "@pancakeswap/utils": "workspace:*",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@wagmi/core": "^0.10.11",
+    "@wormhole-foundation/wormhole-connect": "0.1.4",
     "ethers": "^5.0.0",
     "next": "13.5.6",
     "next-themes": "^0.2.1",
