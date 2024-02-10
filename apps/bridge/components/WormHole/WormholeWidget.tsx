@@ -35,7 +35,7 @@ export const WormholeBridgeWidget = () => {
       cta: undefined,
       bridgeDefaults: {
         fromNetwork: 'bsc',
-        toNetwork: 'goerli',
+        toNetwork: devEnv ? 'goerli' : 'ethereum',
         token: 'BNB',
         requiredNetwork: 'bsc',
       },
