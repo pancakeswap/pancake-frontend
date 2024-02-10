@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { WormholeBridgeWidget } from '../components/WormHole/WormHoleWidget'
+import { WormholeBridgeWidget } from '../components/WormHole/WormholeWidget'
 
 function Wormhole() {
   return <WormholeBridgeWidget />
