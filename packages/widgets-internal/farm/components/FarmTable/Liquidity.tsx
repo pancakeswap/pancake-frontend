@@ -1,15 +1,26 @@
-import { useTranslation } from "@pancakeswap/localization";
+import { TranslateFunction, useTranslation } from "@pancakeswap/localization";
+import { HelpIcon, Skeleton, Text, TooltipRefs, useTooltip } from "@pancakeswap/uikit";
+import getTimePeriods from "@pancakeswap/utils/getTimePeriods";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { styled } from "styled-components";
-import { Skeleton, HelpIcon, Text, TooltipRefs, useTooltip } from "@pancakeswap/uikit";
 import { FarmTableLiquidityProps } from "../../types";
 
 dayjs.extend(relativeTime);
 
-const distanceToNow = (timeInMilliSeconds: number) => {
+const distanceToNow = (t: TranslateFunction, timeInMilliSeconds: number) => {
   const time = new Date(timeInMilliSeconds);
-  return time > new Date() || !Number.isFinite(timeInMilliSeconds) ? `now` : dayjs(time).toNow();
+
+  const secondsRemaining = dayjs(time).diff(dayjs(), "seconds");
+  const { days, hours, minutes, seconds } = getTimePeriods(secondsRemaining);
+
+  let toNowString = "";
+  if (days !== 0) toNowString += `${days} ${t("d")}`;
+  if (hours !== 0) toNowString += `${hours} ${t("h")}`;
+  if (minutes !== 0) toNowString += `${minutes} ${t("m")}`;
+  if (seconds !== 0) toNowString += `${seconds} ${t("s")}`;
+
+  return time > new Date() || !Number.isFinite(timeInMilliSeconds) ? t("Now") : toNowString;
 };
 
 const ReferenceElement = styled.div`
@@ -38,10 +49,15 @@ export const StakedLiquidity: React.FunctionComponent<React.PropsWithChildren<Fa
   inactive,
 }) => {
   const { t } = useTranslation();
+
   const tooltip = useTooltip(
     <>
       <Text>{t("Total active (in-range) liquidity staked in the farm.")}</Text>
-      {updatedAt && <Text>Updated {distanceToNow(updatedAt)}</Text>}
+      {updatedAt && (
+        <Text>
+          {t("Updated")} {distanceToNow(t, updatedAt)}
+        </Text>
+      )}
     </>,
     {
       placement: "top-end",

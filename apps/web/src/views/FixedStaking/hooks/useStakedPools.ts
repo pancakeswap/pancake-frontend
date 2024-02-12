@@ -2,7 +2,7 @@ import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useFixedStakingContract, useVaultPoolContract } from 'hooks/useContract'
 import { getAddress } from 'viem'
-import { useContractRead } from 'wagmi'
+import { useAccount, useContractRead } from 'wagmi'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
@@ -11,13 +11,14 @@ import { VaultKey } from '@pancakeswap/pools'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FixedStakingPool, StakedPosition } from '../type'
 import { DISABLED_POOLS } from '../constant'
 
 export function useCurrentDay(): number {
   const fixedStakingContract = useFixedStakingContract()
 
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const { data } = useContractRead({
     abi: fixedStakingContract.abi,
@@ -75,7 +76,7 @@ export function useIfUserLocked() {
 }
 export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[] {
   const fixedStakingContract = useFixedStakingContract()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const tokens = useOfficialsAndUserAddedTokens()
 
   const results = useSingleContractMultipleData({
@@ -138,7 +139,7 @@ export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[
 export function useStakedPools(): FixedStakingPool[] {
   const fixedStakingContract = useFixedStakingContract()
   const tokens = useOfficialsAndUserAddedTokens()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const { data: poolLength } = useContractRead({
     abi: fixedStakingContract.abi,
