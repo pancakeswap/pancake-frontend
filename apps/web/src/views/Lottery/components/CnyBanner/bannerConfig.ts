@@ -51,7 +51,7 @@ export const CNY_BANNER_CONFIG: { [asset in CnyBannerAssets]: CnyBannerConfig } 
       height: 40,
       width: 76,
       left: '-70%',
-      bottom: '-50px',
+      bottom: '-40px',
     },
   },
   GoldenCoin: {

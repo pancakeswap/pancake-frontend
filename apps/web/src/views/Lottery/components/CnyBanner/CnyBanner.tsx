@@ -47,7 +47,13 @@ export const CnyBanner = () => {
   const { isDesktop } = useMatchBreakpoints()
   const bannerView = isDesktop ? 'desktopProps' : 'mobileProps'
   return (
-    <Flex width="100%" height="125px" background={CNY_BANNER_BG} alignItems="center" justifyContent="center">
+    <Flex
+      width="100%"
+      height={isDesktop ? '125px' : '145px'}
+      background={CNY_BANNER_BG}
+      alignItems="center"
+      justifyContent="center"
+    >
       <BannerContainer isDesktop={isDesktop}>
         <CnyBannerAsset
           asset={CNY_BANNER_CONFIG.GoldenHat}
