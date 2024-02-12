@@ -20,7 +20,7 @@ const distanceToNow = (t: TranslateFunction, timeInMilliSeconds: number) => {
   if (minutes !== 0) toNowString += `${minutes} ${t("m")}`;
   if (seconds !== 0) toNowString += `${seconds} ${t("s")}`;
 
-  return time > new Date() || !Number.isFinite(timeInMilliSeconds) ? t(`now`) : toNowString;
+  return time > new Date() || !Number.isFinite(timeInMilliSeconds) ? t("Now") : toNowString;
 };
 
 const ReferenceElement = styled.div`
