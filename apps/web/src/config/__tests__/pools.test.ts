@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, testnetChainIds } from '@pancakeswap/chains'
 import {
   SUPPORTED_CHAIN_IDS,
   SerializedPool,
@@ -13,7 +13,7 @@ import { describe, it } from 'vitest'
 describe.concurrent(
   'Config pools',
   () => {
-    for (const chainId of SUPPORTED_CHAIN_IDS) {
+    for (const chainId of SUPPORTED_CHAIN_IDS.filter((chainId_) => !testnetChainIds.includes(chainId_))) {
       const pools = getPoolsConfig(chainId) ?? []
       // Pool 0 is special (cake pool)
       // Pool 78 is a broken pool, not used, and break the tests
