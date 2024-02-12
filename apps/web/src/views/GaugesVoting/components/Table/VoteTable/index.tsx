@@ -14,7 +14,6 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Hex } from 'viem'
@@ -24,6 +23,7 @@ import { useEpochOnTally } from 'views/GaugesVoting/hooks/useEpochTime'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
 import { useUserVoteSlopes } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
+import { useAccount } from 'wagmi'
 import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
@@ -46,7 +46,7 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 `
 
 export const VoteTable = () => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   // const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
   const { cakeLockedAmount } = useCakeLockStatus()
