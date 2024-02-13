@@ -43,10 +43,12 @@ export const useWriteIncreaseLockWeeksCallback = () => {
     setTxHash(hash ?? '')
     setStatus(ApproveAndLockStatus.INCREASE_WEEKS_PENDING)
     if (hash) {
-      await waitForTransaction({ hash })
-      setCakeLockWeeks('')
+      const transactionReceipt = await waitForTransaction({ hash })
+      if (transactionReceipt?.status === 'success') {
+        setCakeLockWeeks('')
+        setStatus(ApproveAndLockStatus.CONFIRMED)
+      }
     }
-    setStatus(ApproveAndLockStatus.CONFIRMED)
   }, [
     cakeLockWeeks,
     veCakeContract.simulate,
