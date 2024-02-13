@@ -39,7 +39,6 @@ export const WormholeBridgeWidget = () => {
         token: 'SOL',
         requiredNetwork: 'bsc',
       },
-      pageHeader: 'Pancakeswap/Wormhole',
       showHamburgerMenu: true,
     }
     return config
