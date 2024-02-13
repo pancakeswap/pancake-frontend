@@ -34,9 +34,9 @@ export const WormholeBridgeWidget = () => {
       customTheme,
       cta: undefined,
       bridgeDefaults: {
-        fromNetwork: 'bsc',
-        toNetwork: devEnv ? 'goerli' : 'ethereum',
-        token: 'BNB',
+        fromNetwork: 'solana',
+        toNetwork: 'bsc',
+        token: 'SOL',
         requiredNetwork: 'bsc',
       },
       pageHeader: 'Pancakeswap/Wormhole',

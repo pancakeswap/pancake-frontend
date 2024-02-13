@@ -128,6 +128,8 @@ export const TESTNET_TOKEN_KEYS: string[] = [
 ].sort()
 
 export const MAINNET_TOKEN_KEYS: string[] = [
+  'SOL',
+  'WSOL',
   'ETH',
   'WETH',
   'USDCeth',
