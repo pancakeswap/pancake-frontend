@@ -1,14 +1,7 @@
 import WormholeBridge from '@wormhole-foundation/wormhole-connect'
 import { useMemo } from 'react'
 import styled, { useTheme } from 'styled-components'
-import {
-  DEFAULT_MAINNET_RPCS,
-  DEFAULT_TESTNET_RPCS,
-  MAINNET_TOKEN_KEYS,
-  NETWORKS,
-  TESTNET_TOKEN_KEYS,
-  devEnv,
-} from './constants'
+import { DEFAULT_MAINNET_RPCS, MAINNET_TOKEN_KEYS, NETWORKS } from './constants'
 import { wormHoleDarkTheme, wormHoleLightTheme } from './theme'
 
 const Page = styled.div`
@@ -20,15 +13,15 @@ export const WormholeBridgeWidget = () => {
   const theme = useTheme()
 
   const wormholeConfig = useMemo(() => {
-    const rpcs = devEnv ? DEFAULT_TESTNET_RPCS : DEFAULT_MAINNET_RPCS
-    const tokens = devEnv ? TESTNET_TOKEN_KEYS : MAINNET_TOKEN_KEYS
+    const rpcs = DEFAULT_MAINNET_RPCS
+    const tokens = MAINNET_TOKEN_KEYS
     const mode = theme.isDark ? 'dark' : 'light'
     const customTheme = theme.isDark ? wormHoleDarkTheme : wormHoleLightTheme
 
     const config = {
-      env: devEnv ? 'testnet' : 'mainnet',
+      env: 'mainnet',
       rpcs,
-      networks: NETWORKS.map((n) => (devEnv ? n.testnet : n.mainnet)),
+      networks: NETWORKS.map((n) => n.mainnet),
       tokens,
       mode,
       customTheme,
