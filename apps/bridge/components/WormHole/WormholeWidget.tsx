@@ -5,7 +5,6 @@ import { DEFAULT_MAINNET_RPCS, MAINNET_TOKEN_KEYS, NETWORKS } from './constants'
 import { wormHoleDarkTheme, wormHoleLightTheme } from './theme'
 
 const Page = styled.div`
-  min-height: 100vh;
   height: max-content;
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 `
@@ -25,12 +24,10 @@ export const WormholeBridgeWidget = () => {
       tokens,
       mode,
       customTheme,
-      cta: undefined,
       bridgeDefaults: {
         fromNetwork: 'solana',
         toNetwork: 'bsc',
         token: 'SOL',
-        requiredNetwork: 'bsc',
       },
       showHamburgerMenu: true,
     }
