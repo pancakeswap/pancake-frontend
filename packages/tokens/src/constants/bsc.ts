@@ -2988,4 +2988,12 @@ export const bscTokens = {
     'GT Protocol',
     'https://www.gt-protocol.io/',
   ),
+  sol: new ERC20Token(
+    ChainId.BSC,
+    '0x570A5D26f7765Ecb712C0924E4De545B89fD43dF',
+    18,
+    'SOL',
+    'SOLANA',
+    'https://solana.com/',
+  ),
 }
