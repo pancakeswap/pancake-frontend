@@ -35,7 +35,7 @@ const Menu = (props) => {
 
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
-    false,
+    true,
     false,
     'usCitizenConfirmModal',
   )

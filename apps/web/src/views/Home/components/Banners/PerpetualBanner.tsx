@@ -57,7 +57,7 @@ const PerpetualBanner = () => {
   const headerRef = useRef<HTMLDivElement>(null)
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
-    false,
+    true,
     false,
     'usCitizenConfirmModal',
   )
