@@ -20,7 +20,19 @@ export const NotLocking = () => {
   )
 }
 
-export const NotLockingCard = () => {
+interface NotLockingCardProps {
+  hideTitle?: boolean
+  hideCardPadding?: boolean
+  customVeCakeCard?: JSX.Element
+  customDataRow?: JSX.Element
+}
+
+export const NotLockingCard: React.FC<React.PropsWithChildren<NotLockingCardProps>> = ({
+  hideTitle,
+  hideCardPadding,
+  customVeCakeCard,
+  customDataRow,
+}) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const { cakeLockAmount, cakeLockWeeks } = useLockCakeData()
@@ -34,8 +46,8 @@ export const NotLockingCard = () => {
   const handleModalOpen = useWriteApproveAndLockCallback()
 
   return (
-    <StyledCard innerCardProps={{ padding: ['24px 16px', '24px 16px', '24px'] }}>
-      <Heading scale="md">{t('Lock CAKE to get veCAKE')}</Heading>
+    <StyledCard innerCardProps={{ padding: hideCardPadding ? 0 : ['24px 16px', '24px 16px', '24px'] }}>
+      {!hideTitle && <Heading scale="md">{t('Lock CAKE to get veCAKE')}</Heading>}
       <Grid
         gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'}
         gridColumnGap="24px"
@@ -47,7 +59,11 @@ export const NotLockingCard = () => {
         <LockCakeForm fieldOnly />
         <LockWeeksForm fieldOnly />
       </Grid>
-      <NewStakingDataSet cakeAmount={Number(cakeLockAmount)} />
+      <NewStakingDataSet
+        cakeAmount={Number(cakeLockAmount)}
+        customVeCakeCard={customVeCakeCard}
+        customDataRow={customDataRow}
+      />
       <ColumnCenter>
         {account ? (
           <Button disabled={disabled} width={['100%', '100%', '50%']} onClick={handleModalOpen}>

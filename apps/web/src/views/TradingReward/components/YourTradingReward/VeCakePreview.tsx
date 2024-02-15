@@ -1,7 +1,8 @@
-import { Box, Text, Flex, useTooltip, TooltipText, Link, Message, Button, BoxProps } from '@pancakeswap/uikit'
+import { Box, Text, Flex, useTooltip, TooltipText, Link, Message, Button, BoxProps, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { GreyCard } from 'components/Card'
 import Image from 'next/image'
+import { NoLockingCakeModal } from 'views/TradingReward/components/YourTradingReward/VeCake/NoLockingCakeModal'
 
 interface VeCakePreviewTextInfoProps extends BoxProps {
   title: string
@@ -23,6 +24,7 @@ const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePreviewTextI
 
 export const VeCakePreview = () => {
   const { t } = useTranslation()
+  const [onPresentNoLockingCakeModal] = useModal(<NoLockingCakeModal />)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -64,7 +66,7 @@ export const VeCakePreview = () => {
             {t('Get veCAKE to start earning')}
             {/* {t('Increase veCAKE to reach min. requirement')} */}
           </Text>
-          <Button ml="-36px">
+          <Button ml="-36px" onClick={onPresentNoLockingCakeModal}>
             {t('Get veCAKE')}
             {/* {t('Increae veCAKE')} */}
           </Button>
