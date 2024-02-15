@@ -7,7 +7,10 @@ import { useMemo } from "react";
 import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 
+import relativeTime from "dayjs/plugin/relativeTime";
 import { BalanceDisplay } from "./BalanceDisplay";
+
+dayjs.extend(relativeTime);
 
 type Props = {
   amount?: BigNumber | number | string;
