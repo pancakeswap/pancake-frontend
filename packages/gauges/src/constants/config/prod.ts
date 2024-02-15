@@ -2732,4 +2732,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: bscTokens.sol.address,
     feeTier: FeeAmount.MEDIUM,
   },
+  {
+    gid: 273,
+    pairName: 'USDT-DMAIL',
+    address: '0x4167f229a0323F480518b61CB35eD4d6a0C5EA27',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.usdt.address,
+    token1Address: bscTokens.dmail.address,
+    feeTier: FeeAmount.HIGH,
+  },
 ]
