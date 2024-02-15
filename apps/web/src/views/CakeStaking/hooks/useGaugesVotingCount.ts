@@ -3,18 +3,16 @@ import { SUPPORT_CAKE_STAKING } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useGaugesVotingContract } from 'hooks/useContract'
 
-type VointCountData = bigint | undefined
-
-export const useGaugesVotingCount = (): VointCountData => {
+export const useGaugesVotingCount = () => {
   const { chainId } = useActiveChainId()
   const gaugesVotingContract = useGaugesVotingContract()
 
-  const { data } = useQuery<VointCountData>({
+  const { data } = useQuery({
     queryKey: ['gaugesVotingCount', gaugesVotingContract.address],
 
     queryFn: async () => {
       try {
-        const count = ((await gaugesVotingContract.read.gaugeCount()) as VointCountData) ?? 0n
+        const count = (await gaugesVotingContract.read.gaugeCount()) ?? 0n
         return count
       } catch (error) {
         console.warn(error)

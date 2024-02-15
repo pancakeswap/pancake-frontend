@@ -34,8 +34,6 @@ export type VotedSlope = {
   ignoredPower?: bigint
 }
 
-type UserVoteSlopesData = [[bigint, bigint, bigint], bigint, [bigint, bigint, bigint], bigint]
-
 const max = (a: bigint, b: bigint) => (a > b ? a : b)
 const sum = (a: bigint, b: bigint) => a + b
 
@@ -78,10 +76,10 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
         ...calls,
       ] as const
       if (hasProxy) {
-        const response = (await publicClient.multicall({
+        const response = await publicClient.multicall({
           contracts: callsWithProxy,
           allowFailure: false,
-        })) as UserVoteSlopesData
+        })
 
         const [
           [_proxySlope, _proxyPower, proxyEnd],

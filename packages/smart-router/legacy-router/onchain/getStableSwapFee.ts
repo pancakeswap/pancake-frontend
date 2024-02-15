@@ -47,10 +47,10 @@ export async function getStableSwapFee(
 
   const client = provider({ chainId })
 
-  const [[feeRaw, adminFeeRaw]] = (await client.multicall({
+  const [[feeRaw, adminFeeRaw]] = await client.multicall({
     contracts: [call],
     allowFailure: false,
-  })) as [[bigint, bigint]]
+  })
 
   return {
     fee: CurrencyAmount.fromRawAmount(outputToken, feeRaw),

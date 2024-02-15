@@ -1,10 +1,10 @@
+import 'utils/workerPolyfill'
+
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
-import { SerializedCurrency, SerializedCurrencyAmount } from '@pancakeswap/smart-router/evm/v3-router/utils/transformer'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
-import 'utils/workerPolyfill'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
@@ -157,9 +157,9 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
     } = parsed.data
     const onChainProvider = createViemPublicClientGetter({ transportSignal: abortController.signal })
     const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider, gasLimit })
-    const currencyAAmount = parseCurrencyAmount(chainId, amount as SerializedCurrencyAmount)
+    const currencyAAmount = parseCurrencyAmount(chainId, amount)
 
-    const currencyB = parseCurrency(chainId, currency as SerializedCurrency)
+    const currencyB = parseCurrency(chainId, currency)
 
     const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
 
