@@ -80,6 +80,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           contracts: callsWithProxy,
           allowFailure: false,
         })
+
         const [
           [_proxySlope, _proxyPower, proxyEnd],
           proxyLastVoteTime,
@@ -163,10 +164,10 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           ignoredSide,
         }
       }
-      const response = await publicClient.multicall({
+      const response = (await publicClient.multicall({
         contracts: calls,
         allowFailure: false,
-      })
+      })) as [[bigint, bigint, bigint], bigint]
       const [[nativeSlope, nativePower, nativeEnd], lastVoteTime] = response
       const voteLocked = dayjs.unix(Number(lastVoteTime)).add(10, 'day').isAfter(dayjs.unix(currentTimestamp))
 
