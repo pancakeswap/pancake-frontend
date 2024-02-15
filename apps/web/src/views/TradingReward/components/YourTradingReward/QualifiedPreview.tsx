@@ -166,7 +166,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
                 {t('at')}
               </Text>
               <Text color="warning" as="span" bold mr="4px" fontSize={14}>
-                {`$${formatNumber(totalMapCap)} (~${formatNumber(totalMapCapCovertCakeAmount)} CAKE)`}
+                {`$${formatNumber(totalMapCap)} (~${formatNumber(totalMapCapCovertCakeAmount)} CAKE).`}
               </Text>
               <Text as="span" mr="4px" fontSize={14}>
                 {t('An additional amount of reward of')}
