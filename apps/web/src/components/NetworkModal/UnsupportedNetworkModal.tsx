@@ -69,7 +69,13 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
               }
             }}
           >
-            {isLoading ? <Dots>{t('Switch network in wallet')}</Dots> : t('Switch network in wallet')}
+            {isLoading ? (
+              <Dots>{isConnected ? t('Switch network in wallet') : t('Switch network')}</Dots>
+            ) : isConnected ? (
+              t('Switch network in wallet')
+            ) : (
+              t('Switch network')
+            )}
           </Button>
         ) : (
           <Message variant="danger">
