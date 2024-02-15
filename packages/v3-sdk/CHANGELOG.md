@@ -1,5 +1,11 @@
 # @pancakeswap/v3-sdk
 
+## 3.7.10
+
+### Patch Changes
+
+- b8f0acb: Remove tokens dependency
+
 ## 3.7.9
 
 ### Patch Changes
