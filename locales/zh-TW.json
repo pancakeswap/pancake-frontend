@@ -1460,7 +1460,7 @@
   "Network": "網路",
   "Switch Network": "切換網路",
   "This pool requires active Pancake Profile and %amount% profile points.": "此資金池需要有效的 Pancake 個人檔案和 %amount% 個人檔案積分。",
-  "This pool requires active Pancake Profile": "此資金池需要有效的 Pancake 個人檔案",
+  "This pool requires active Pancake Profile": "此池子需要有效的 Pancake 個人檔案",
   "This pool requires %amount% profile points.": "此資金池需要 %amount% 個人檔案積分。",
   "Requirement": "要求",
   "Create Profile": "建立個人檔案",
@@ -2676,7 +2676,7 @@
   "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!",
   "Show all positions": "Show all positions",
   "Community Members": "社群成員數量",
-  "Multilingual Communities": "Multilingual Communities",
+  "Multilingual Communities": "社群語種數目",
   "Community Ambassadors": "社群大使們",
   "Top Tweet of the week": "Top Tweet of the week",
   "Web link": "Web link",
@@ -3144,5 +3144,7 @@
   "Show testnet": "Show testnet",
   "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!": "成為我們的 100 強交易者，賺取 3% 交易手續費返利！",
   "Join Now": "参加！",
-  "Updated": "Updated"
+  "Updated": "Updated",
+  "Search name": "Search name",
+  "Note (20 characters)": "Note (20 characters)"
 }
