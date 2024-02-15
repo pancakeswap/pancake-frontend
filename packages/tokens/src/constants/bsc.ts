@@ -2996,4 +2996,12 @@ export const bscTokens = {
     'SOLANA',
     'https://solana.com/',
   ),
+  dmail: new ERC20Token(
+    ChainId.BSC,
+    '0xcC6f1e1B87cfCbe9221808d2d85C501aab0B5192',
+    18,
+    'DMAIL',
+    'Dmail Network',
+    'https://dmail.ai/',
+  ),
 }
