@@ -2676,7 +2676,7 @@
   "0%  Provider  Fee until Sep 12th!": "9 月 12 日之前提供商费用为 0%！",
   "Show all positions": "Show all positions",
   "Community Members": "社区成员数量",
-  "Multilingual Communities": "Multilingual Communities",
+  "Multilingual Communities": "社区语种数目",
   "Community Ambassadors": "Community Ambassadors",
   "Top Tweet of the week": "Top Tweet of the week",
   "Web link": "Web link",
@@ -3144,5 +3144,7 @@
   "Show testnet": "Show testnet",
   "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!": "成为我们的前 100 强交易员，赚取 3% 交易手续费费返利！",
   "Join Now": "参加！",
-  "Updated": "Updated"
+  "Updated": "Updated",
+  "Search name": "Search name",
+  "Note (20 characters)": "Note (20 characters)"
 }
