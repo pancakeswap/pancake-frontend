@@ -1,5 +1,14 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.21
+
+### Patch Changes
+
+- 11e93f3: fix: Add missing dayjs plugin
+- Updated dependencies [b8f0acb]
+  - @pancakeswap/v3-sdk@3.7.10
+  - @pancakeswap/farms@1.0.38
+
 ## 0.1.20
 
 ### Patch Changes
