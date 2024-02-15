@@ -1,8 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BscScanIcon, Modal, ModalProps, ModalV2, ScanLink, UseModalV2Props } from '@pancakeswap/uikit'
+import { AutoColumn, BscScanIcon, Modal, ModalProps, ModalV2, ScanLink, UseModalV2Props } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApproveAndLockStatus } from 'state/vecake/atoms'
 import { getBlockExploreLink } from 'utils'
+import { TxErrorModalContent } from 'views/CakeStaking/components/ApproveAndLockModal/TxErrorModalContent'
 import { LockInfo } from './LockInfo'
 import { PendingModalContent } from './PendingModalContent'
 import { StepsIndicator } from './StepsIndicator'
@@ -78,11 +79,8 @@ export const ApproveAndLockModal: React.FC<ApproveAndLockModalProps> = ({
           <TxSubmittedModalContent title={t('Transaction Submitted')} subTitle={lockInfo} />
         ) : null}
 
-        {status === ApproveAndLockStatus.INCREASE_AMOUNT ? (
-          <PendingModalContent title={t('Confirm Lock')} subTitle={lockInfo} />
-        ) : null}
-        {status === ApproveAndLockStatus.INCREASE_WEEKS ? (
-          <PendingModalContent title={t('Confirm Lock')} subTitle={lockInfo} />
+        {[ApproveAndLockStatus.INCREASE_AMOUNT, ApproveAndLockStatus.INCREASE_WEEKS].includes(status) ? (
+          <TxSubmittedModalContent title={t('Confirm Lock')} subTitle={lockInfo} />
         ) : null}
 
         {status === ApproveAndLockStatus.UNLOCK_CAKE ? <PendingModalContent title={t('Confirm unlock')} /> : null}
@@ -91,6 +89,17 @@ export const ApproveAndLockModal: React.FC<ApproveAndLockModalProps> = ({
 
         {[ApproveAndLockStatus.UNLOCK_CAKE_PENDING, ApproveAndLockStatus.MIGRATE_PENDING].includes(status) ? (
           <TxSubmittedModalContent title={t('Transaction Submitted')} />
+        ) : null}
+
+        {status === ApproveAndLockStatus.ERROR ? (
+          <TxErrorModalContent
+            title={t('Transaction failed. For detailed error message:')}
+            subTitle={
+              <AutoColumn gap="16px">
+                {scanLink} {lockInfo}
+              </AutoColumn>
+            }
+          />
         ) : null}
 
         {status === ApproveAndLockStatus.CONFIRMED ? (

@@ -38,6 +38,8 @@ export const useWriteIncreaseLockAmountCallback = () => {
       const transactionReceipt = await waitForTransaction({ hash })
       if (transactionReceipt?.status === 'success') {
         setStatus(ApproveAndLockStatus.CONFIRMED)
+      } else {
+        setStatus(ApproveAndLockStatus.ERROR)
       }
     }
   }, [veCakeContract, cakeLockAmount, account, setStatus, setTxHash, waitForTransaction, walletClient])

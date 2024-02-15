@@ -33,6 +33,8 @@ export const useWriteWithdrawCallback = () => {
       const transactionReceipt = await waitForTransaction({ hash })
       if (transactionReceipt?.status === 'success') {
         setStatus(ApproveAndLockStatus.CONFIRMED)
+      } else {
+        setStatus(ApproveAndLockStatus.ERROR)
       }
     }
   }, [veCakeContract, account, setStatus, setTxHash, waitForTransaction, walletClient])

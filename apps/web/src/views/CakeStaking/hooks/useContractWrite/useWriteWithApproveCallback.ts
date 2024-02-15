@@ -33,6 +33,8 @@ export const useWriteWithApproveCallback = () => {
             if (transactionReceipt?.status === 'success') {
               setStatus(ApproveAndLockStatus.LOCK_CAKE)
               await write()
+            } else {
+              setStatus(ApproveAndLockStatus.ERROR)
             }
           }
           return

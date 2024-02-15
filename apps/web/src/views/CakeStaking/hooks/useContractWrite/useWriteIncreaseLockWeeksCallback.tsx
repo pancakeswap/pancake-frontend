@@ -47,6 +47,8 @@ export const useWriteIncreaseLockWeeksCallback = () => {
       if (transactionReceipt?.status === 'success') {
         setCakeLockWeeks('')
         setStatus(ApproveAndLockStatus.CONFIRMED)
+      } else {
+        setStatus(ApproveAndLockStatus.ERROR)
       }
     }
   }, [

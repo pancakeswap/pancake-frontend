@@ -46,6 +46,8 @@ export const useWriteLockCallback = () => {
       const transactionReceipt = await waitForTransaction({ hash })
       if (transactionReceipt?.status === 'success') {
         setStatus(ApproveAndLockStatus.CONFIRMED)
+      } else {
+        setStatus(ApproveAndLockStatus.ERROR)
       }
     }
   }, [
