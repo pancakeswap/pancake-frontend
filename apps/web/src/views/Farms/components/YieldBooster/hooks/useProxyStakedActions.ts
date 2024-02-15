@@ -1,12 +1,12 @@
+import { BOOSTED_FARM_GAS_LIMIT } from 'config'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeProxyContract } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
+import { fetchFarmUserDataAsync } from 'state/farms'
 import { useGasPrice } from 'state/user/hooks'
 import { harvestFarm, stakeFarm, unstakeFarm } from 'utils/calls/farms'
-import { fetchFarmUserDataAsync } from 'state/farms'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
-import { BOOSTED_FARM_GAS_LIMIT } from 'config'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useApproveBoostProxyFarm } from '../../../hooks/useApproveFarm'
 import useProxyCAKEBalance from './useProxyCAKEBalance'
 
@@ -19,6 +19,7 @@ export default function useProxyStakedActions(pid, lpContract) {
   const { proxyCakeBalance, refreshProxyCakeBalance } = useProxyCAKEBalance()
 
   const onDone = useCallback(() => {
+    if (!account || !chainId) return
     refreshProxyCakeBalance()
     dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId, proxyAddress }))
   }, [account, proxyAddress, chainId, pid, dispatch, refreshProxyCakeBalance])

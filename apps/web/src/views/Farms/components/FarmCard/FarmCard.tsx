@@ -82,18 +82,23 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: farm.quoteToken.address,
     tokenAddress: farm.token.address,
-    chainId,
+    chainId: farm.token.chainId,
   })
+
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/v2/${liquidityUrlPathParts}`
   const { lpAddress, stableSwapAddress, stableLpFee } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
 
   const infoUrl = useMemo(() => {
     if (farm.isStable) {
-      return `/info${multiChainPaths[chainId]}/pairs/${stableSwapAddress}?type=stableSwap&chain=${CHAIN_QUERY_NAME[chainId]}`
+      return `/info${multiChainPaths[farm.token.chainId]}/pairs/${stableSwapAddress}?type=stableSwap&chain=${
+        CHAIN_QUERY_NAME[farm.token.chainId]
+      }`
     }
-    return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
-  }, [chainId, farm.isStable, lpAddress, stableSwapAddress])
+    return `/info${multiChainPaths[farm.token.chainId]}/pairs/${lpAddress}?chain=${
+      CHAIN_QUERY_NAME[farm.token.chainId]
+    }`
+  }, [farm, lpAddress, stableSwapAddress])
 
   const toggleExpandableSection = useCallback(() => {
     setShowExpandableSection((prev) => !prev)

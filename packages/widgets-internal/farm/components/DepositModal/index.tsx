@@ -42,7 +42,7 @@ const AnnualRoiDisplay = styled(Text)`
 `;
 
 interface DepositModalProps {
-  account: string;
+  account?: string;
   pid: number;
   max: BigNumber;
   stakedBalance: BigNumber;

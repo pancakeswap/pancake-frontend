@@ -15,7 +15,7 @@ export function useFarmV2Multiplier() {
   return {
     totalMultipliers,
     getFarmCakePerSecond: useCallback(
-      (poolWeight: BigNumber) => {
+      (poolWeight?: BigNumber) => {
         const farmCakePerSecondNum =
           poolWeight && regularCakePerBlock ? poolWeight.times(regularCakePerBlock).dividedBy(BSC_BLOCK_TIME) : BIG_ZERO
 

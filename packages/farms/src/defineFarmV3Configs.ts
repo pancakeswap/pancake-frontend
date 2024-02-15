@@ -1,8 +1,8 @@
+import { WNATIVE } from '@pancakeswap/sdk'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { CAKE, unwrappedToken } from '@pancakeswap/tokens'
-import { WNATIVE } from '@pancakeswap/sdk'
 import { priceHelperTokens } from '../constants/common'
-import { FarmConfigV3, ComputedFarmConfigV3 } from './types'
+import { ComputedFarmConfigV3, FarmConfigV3 } from './types'
 
 function sortFarmLP(token0: Token, token1: Token) {
   const commonTokens = priceHelperTokens[token0.chainId as keyof typeof priceHelperTokens]
@@ -31,11 +31,18 @@ function sortFarmLP(token0: Token, token1: Token) {
 export function defineFarmV3Configs(farmConfig: FarmConfigV3[]): ComputedFarmConfigV3[] {
   return farmConfig.map((config) => {
     const [token, quoteToken] = sortFarmLP(config.token0, config.token1)
+    const unwrappedToken0 = unwrappedToken(token)
+    const unwrappedToken1 = unwrappedToken(quoteToken)
+
+    if (!unwrappedToken0 || !unwrappedToken1) {
+      throw new Error(`Invalid farm config token0: ${token.address} or token1: ${quoteToken.address}`)
+    }
+
     return {
       ...config,
       token,
       quoteToken,
-      lpSymbol: `${unwrappedToken(token).symbol}-${unwrappedToken(quoteToken).symbol} LP`,
+      lpSymbol: `${unwrappedToken0.symbol}-${unwrappedToken1.symbol} LP`,
     }
   })
 }
