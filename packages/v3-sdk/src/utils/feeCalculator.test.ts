@@ -1,10 +1,10 @@
-import { BigintIsh, ZERO, CurrencyAmount, Fraction, Percent } from '@pancakeswap/swap-sdk-core'
-import { describe, it, expect, vi, afterEach } from 'vitest'
-import { bscTokens } from '@pancakeswap/tokens'
+import { ChainId } from '@pancakeswap/chains'
+import { BigintIsh, CurrencyAmount, Fraction, Percent, Token, ZERO } from '@pancakeswap/swap-sdk-core'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { FeeCalculator } from './feeCalculator'
 import { Tick } from '../entities'
 import { encodeSqrtRatioX96 } from './encodeSqrtRatioX96'
+import { FeeCalculator } from './feeCalculator'
 
 const {
   getLiquidityFromTick,
@@ -13,6 +13,24 @@ const {
   getDependentAmount,
   getLiquidityFromSqrtRatioX96,
 } = FeeCalculator
+
+const busd = new Token(
+  ChainId.BSC,
+  '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/'
+)
+
+const usdt = new Token(
+  ChainId.BSC,
+  '0x55d398326f99059fF775485246999027B3197955',
+  18,
+  'USDT',
+  'Tether USD',
+  'https://tether.to/'
+)
 
 const createTick = (index: number, liquidityGross: BigintIsh, liquidityNet: BigintIsh) =>
   new Tick({ index, liquidityGross, liquidityNet })
@@ -99,8 +117,8 @@ describe('#getAverageLiquidity', () => {
 describe('#getLiquidityBySingleAmount', () => {
   it('input with token 0 amount', () => {
     const amount = getLiquidityBySingleAmount({
-      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
-      currency: bscTokens.busd,
+      amount: CurrencyAmount.fromRawAmount(usdt, '100'),
+      currency: busd,
       tickLower: -953,
       tickUpper: 953,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
@@ -110,8 +128,8 @@ describe('#getLiquidityBySingleAmount', () => {
 
   it('input with token 1 amount', () => {
     const amount = getLiquidityBySingleAmount({
-      amount: CurrencyAmount.fromRawAmount(bscTokens.busd, '200'),
-      currency: bscTokens.usdt,
+      amount: CurrencyAmount.fromRawAmount(busd, '200'),
+      currency: usdt,
       tickLower: -953,
       tickUpper: 953,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
@@ -123,26 +141,26 @@ describe('#getLiquidityBySingleAmount', () => {
 describe('#getDependentAmount', () => {
   it('input with token 0 amount', () => {
     const amount = getDependentAmount({
-      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
-      currency: bscTokens.busd,
+      amount: CurrencyAmount.fromRawAmount(usdt, '100'),
+      currency: busd,
       tickLower: -1000,
       tickUpper: 1000,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
     })
-    expect(amount.quotient).toEqual(99n)
-    expect(amount.currency).toEqual(bscTokens.busd)
+    expect(amount!.quotient).toEqual(99n)
+    expect(amount!.currency).toEqual(busd)
   })
 
   it('input with token 1 amount', () => {
     const amount = getDependentAmount({
-      amount: CurrencyAmount.fromRawAmount(bscTokens.busd, '100'),
-      currency: bscTokens.usdt,
+      amount: CurrencyAmount.fromRawAmount(busd, '100'),
+      currency: usdt,
       tickLower: -1000,
       tickUpper: 1000,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
     })
-    expect(amount.quotient).toEqual(99n)
-    expect(amount.currency).toEqual(bscTokens.usdt)
+    expect(amount!.quotient).toEqual(99n)
+    expect(amount!.currency).toEqual(usdt)
   })
 })
 
@@ -162,8 +180,8 @@ describe('#getEstimatedLPFee', () => {
       .spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
       .mockImplementationOnce(() => 900n)
     const amount = FeeCalculator.getEstimatedLPFee({
-      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
-      currency: bscTokens.busd,
+      amount: CurrencyAmount.fromRawAmount(usdt, '100'),
+      currency: busd,
       tickLower: 0,
       tickUpper: 10,
       sqrtRatioX96,
@@ -187,8 +205,8 @@ describe('#getEstimatedLPFee', () => {
       .spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
       .mockImplementationOnce(() => 900n)
     const amount = FeeCalculator.getEstimatedLPFee({
-      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
-      currency: bscTokens.busd,
+      amount: CurrencyAmount.fromRawAmount(usdt, '100'),
+      currency: busd,
       tickLower: 0,
       tickUpper: 10,
       sqrtRatioX96,
