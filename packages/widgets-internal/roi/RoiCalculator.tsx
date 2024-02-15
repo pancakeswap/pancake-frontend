@@ -1,33 +1,33 @@
-import { Currency, CurrencyAmount, Price, Token, ZERO, Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
-import { FeeAmount, FeeCalculator, TickMath, sqrtRatioX96ToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
-import { useCallback, useMemo, useState } from "react";
-import BigNumber from "bignumber.js";
+import { Currency, CurrencyAmount, Percent, Price, Token, ZERO, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+import { formatFraction, formatPercent, formatPrice } from "@pancakeswap/utils/formatFractions";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
-import { formatPercent, formatFraction, formatPrice } from "@pancakeswap/utils/formatFractions";
+import { FeeAmount, FeeCalculator, TickMath, sqrtRatioX96ToPrice } from "@pancakeswap/v3-sdk";
+import BigNumber from "bignumber.js";
+import { useCallback, useMemo, useState } from "react";
 
-import { Button, DynamicSection, Flex, Message, MessageText, useMatchBreakpoints } from "@pancakeswap/uikit";
+import { Button, DynamicSection, Flex, useMatchBreakpoints } from "@pancakeswap/uikit";
 
 import { ScrollableContainer } from "@pancakeswap/uikit/components/RoiCalculatorModal/RoiCalculatorModal";
-import { Section } from "./Section";
-import { DepositAmountInput } from "./DepositAmount";
-import { RangeSelector } from "./RangeSelector";
-import { StakeSpan } from "./StakeSpan";
-import { usePriceRange, useRangeHopCallbacks, useRoi, useAmountsByUsdValue } from "./hooks";
-import { CompoundFrequency } from "./CompoundFrequency";
-import { AnimatedArrow } from "./AnimationArrow";
-import { RoiRate } from "./RoiRate";
-import { Details } from "./Details";
-import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
-import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
-import { TickData } from "./types";
-import { TwoColumns } from "./TwoColumns";
-import { PriceChart } from "./PriceChart";
-import { PriceInvertSwitch } from "./PriceInvertSwitch";
-import { FarmingRewardsToggle } from "./FarmingRewardsToggle";
 import { LiquidityChartRangeInput } from "../swap/LiquidityChartRangeInput";
 import { useDensityChartData } from "../swap/LiquidityChartRangeInput/hooks";
+import { AnimatedArrow } from "./AnimationArrow";
+import { CompoundFrequency } from "./CompoundFrequency";
+import { DepositAmountInput } from "./DepositAmount";
+import { Details } from "./Details";
+import { FarmingRewardsToggle } from "./FarmingRewardsToggle";
+import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
+import { PriceChart } from "./PriceChart";
+import { PriceInvertSwitch } from "./PriceInvertSwitch";
+import { RangeSelector } from "./RangeSelector";
+import { RoiRate } from "./RoiRate";
+import { Section } from "./Section";
+import { StakeSpan } from "./StakeSpan";
+import { TwoColumns } from "./TwoColumns";
+import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
+import { useAmountsByUsdValue, usePriceRange, useRangeHopCallbacks, useRoi } from "./hooks";
+import { TickData } from "./types";
 
 export interface RoiCalculatorPositionInfo {
   priceLower?: Price<Token, Token>;
@@ -309,16 +309,6 @@ export function RoiCalculator({
   const farmReward = cakeReward;
   const totalReward = lpReward + farmReward;
 
-  const warningMessage = (
-    <Message variant="warning" mb="1em">
-      <MessageText>
-        {t(
-          "We are in the early stage of V3 deployment. Due to a lack of historical data, numbers and estimates may be inaccurate."
-        )}
-      </MessageText>
-    </Message>
-  );
-
   const depositSection = (
     <Section title={t("Deposit Amount")}>
       <DepositAmountInput
@@ -473,7 +463,6 @@ export function RoiCalculator({
   return (
     <>
       <ScrollableContainer>
-        {warningMessage}
         {content}
         <ImpermanentLossCalculator
           lpReward={lpReward}
