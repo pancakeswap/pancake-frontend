@@ -1,9 +1,9 @@
-import { useCallback } from 'react'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { useERC20 } from 'hooks/useContract'
+import { useCallback } from 'react'
+import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { Address } from 'wagmi'
 
 const useApproveFarm = (lpContract: ReturnType<typeof useERC20>, chainId: number) => {
@@ -23,8 +23,8 @@ export default useApproveFarm
 export const useApproveBoostProxyFarm = (lpContract: ReturnType<typeof useERC20>, proxyAddress?: Address) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const handleApprove = useCallback(async () => {
-    return proxyAddress && callWithGasPrice(lpContract, 'approve', [proxyAddress, MaxUint256])
+    return callWithGasPrice(lpContract, 'approve', [proxyAddress, MaxUint256])
   }, [lpContract, proxyAddress, callWithGasPrice])
 
-  return { onApprove: handleApprove }
+  return { onApprove: proxyAddress ? handleApprove : undefined }
 }

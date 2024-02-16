@@ -45,7 +45,7 @@ interface RoiCalculatorFooterProps {
   autoCompoundFrequency: number;
   multiplier?: string;
   linkLabel: string;
-  linkHref: string;
+  linkHref?: string;
   performanceFee: number;
   rewardCakePerSecond?: boolean;
   isLocked?: boolean;
