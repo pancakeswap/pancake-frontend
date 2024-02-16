@@ -1,6 +1,6 @@
 ---
-'@pancakeswap/tokens': major
-'@pancakeswap/pools': major
+'@pancakeswap/tokens': minior
+'@pancakeswap/pools': minior
 ---
 
 Update changeset

@@ -1,5 +1,5 @@
 ---
-'@pancakeswap/pools': major
+'@pancakeswap/pools': minior
 ---
 
 List DEFI pool
