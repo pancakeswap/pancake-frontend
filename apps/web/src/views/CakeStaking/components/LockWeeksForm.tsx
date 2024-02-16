@@ -71,16 +71,20 @@ const WeekInput: React.FC<{
     [onInput],
   )
 
-  const appendComponent = (
-    <Box width={40} mr={12}>
-      <Image src="/images/cake-staking/lock.png" height={37} width={34} />
-    </Box>
+  const appendComponent = useMemo(
+    () => (
+      <Box width={40} mr={12}>
+        <Image src="/images/cake-staking/lock.png" height={37} width={34} />
+      </Box>
+    ),
+    [],
   )
   return (
     <>
       <BalanceInput
         width="100%"
         mb="8px"
+        placeholder="0"
         inputProps={{
           style: { textAlign: 'left', marginTop: '1px', marginBottom: '1px' },
           disabled,
