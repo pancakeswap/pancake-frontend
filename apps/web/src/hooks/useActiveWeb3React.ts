@@ -23,7 +23,7 @@ export function useNetworkConnectorUpdater() {
     const parsedQueryChainId = getChainId(router.query.chain as string)
 
     if (!parsedQueryChainId && chainId === ChainId.BSC) return setPrevChainId()
-    if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
+    if (parsedQueryChainId !== chainId && chainId && isChainSupported(chainId)) {
       const removeQueriesFromPath =
         previousChainIdRef.current !== chainId &&
         EXCHANGE_PAGE_PATHS.some((item) => {

@@ -68,7 +68,7 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
   const [step, setStep] = useState<number>(0)
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && stepFromQuery) {
       if (+stepFromQuery >= 1 && +stepFromQuery <= 5) {
         setStep(+stepFromQuery - 1)
       }
@@ -78,10 +78,12 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
   usePollFarmsWithUserData()
 
   const scrollToTop = (): void => {
-    window.scrollTo({
-      top: tableWrapperEl.current.offsetTop,
-      behavior: 'smooth',
-    })
+    if (tableWrapperEl.current) {
+      window.scrollTo({
+        top: tableWrapperEl.current.offsetTop,
+        behavior: 'smooth',
+      })
+    }
   }
 
   const handleMigrationStickyClick = () => {

@@ -130,7 +130,7 @@ export function useIsTokenActive(token: ERC20Token | undefined | null): boolean 
 
   const tokenAddress = safeGetAddress(token.address)
 
-  return tokenAddress && !!activeTokens[tokenAddress]
+  return Boolean(tokenAddress && !!activeTokens[tokenAddress])
 }
 
 // Check if currency is included in custom list from user storage
@@ -185,7 +185,7 @@ export function useOnRampToken(tokenAddress?: string): Currency | undefined {
   const { chainId } = useActiveChainId()
   const tokens = useAllOnRampTokens()
   const address = safeGetAddress(tokenAddress)
-  const token = tokens[tokenAddress]
+  const token = address && tokens[address]
 
   return useMemo(() => {
     if (token) return token

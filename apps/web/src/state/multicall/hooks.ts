@@ -333,7 +333,7 @@ export type SingleCallParameters<
   contract?: {
     abi?: TAbi
     address?: Address
-  }
+  } | null
   functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
   options?: ListenerOptionsWithGas
 } & GetFunctionArgs<TAbi, TFunctionName>

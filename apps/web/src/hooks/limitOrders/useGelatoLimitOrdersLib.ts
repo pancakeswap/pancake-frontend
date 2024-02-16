@@ -1,8 +1,8 @@
-import { ChainId } from '@pancakeswap/chains'
 import { ChainId as ChainIdType, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
+import { ChainId } from '@pancakeswap/chains'
+import { useQuery } from '@tanstack/react-query'
 import { GELATO_HANDLER } from 'config/constants/exchange'
 import { useAccount } from 'wagmi'
-import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from '../useActiveChainId'
 
 const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
@@ -13,6 +13,10 @@ const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
     queryKey: ['limitOrders', 'gelatoLimitOrder'],
 
     queryFn: async () => {
+      if (!connector) {
+        throw new Error('No connector')
+      }
+
       const Web3Provider = await import('ethers').then(({ providers }) => {
         return providers.Web3Provider
       })
