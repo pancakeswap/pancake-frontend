@@ -6,6 +6,7 @@ import { multiChainId, MultiChainName } from 'state/info/constant'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
 import { Address } from 'viem'
+import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
@@ -24,11 +25,16 @@ export const CurrencyLogo: React.FC<
     chainName?: MultiChainName
   }>
 > = ({ address, size = '24px', chainName = 'BSC', ...rest }) => {
+  const src =
+    useMemo(() => {
+      return getTokenLogoURL(new Token(multiChainId[chainName], address as Address, 18, ''))
+    }, [address, chainName]) ?? ''
+
   const checkedsummedAddress = safeGetAddress(address)
-  const src = useMemo(() => {
+  const srcFromPCS = useMemo(() => {
     return getImageUrlFromToken(new Token(multiChainId[chainName], checkedsummedAddress as Address, 18, ''))
   }, [checkedsummedAddress, chainName])
-  return <StyledLogo size={size} srcs={[src]} alt="token logo" useFilledIcon {...rest} />
+  return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" useFilledIcon {...rest} />
 }
 
 const DoubleCurrencyWrapper = styled.div`
