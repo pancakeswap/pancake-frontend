@@ -30,9 +30,13 @@ export const useWriteWithdrawCallback = () => {
     setTxHash(hash ?? '')
     setStatus(ApproveAndLockStatus.UNLOCK_CAKE_PENDING)
     if (hash) {
-      await waitForTransaction({ hash })
+      const transactionReceipt = await waitForTransaction({ hash })
+      if (transactionReceipt?.status === 'success') {
+        setStatus(ApproveAndLockStatus.CONFIRMED)
+      } else {
+        setStatus(ApproveAndLockStatus.ERROR)
+      }
     }
-    setStatus(ApproveAndLockStatus.CONFIRMED)
   }, [veCakeContract, account, setStatus, setTxHash, waitForTransaction, walletClient])
 
   return withdraw

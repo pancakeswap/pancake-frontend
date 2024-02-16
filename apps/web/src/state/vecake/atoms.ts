@@ -19,6 +19,7 @@ export enum ApproveAndLockStatus {
   MIGRATE,
   MIGRATE_PENDING,
   CONFIRMED,
+  ERROR,
   // any user rejection
   REJECT,
 }

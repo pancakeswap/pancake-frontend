@@ -35,9 +35,13 @@ export const useWriteIncreaseLockAmountCallback = () => {
     setTxHash(hash ?? '')
     setStatus(ApproveAndLockStatus.INCREASE_AMOUNT_PENDING)
     if (hash) {
-      await waitForTransaction({ hash })
+      const transactionReceipt = await waitForTransaction({ hash })
+      if (transactionReceipt?.status === 'success') {
+        setStatus(ApproveAndLockStatus.CONFIRMED)
+      } else {
+        setStatus(ApproveAndLockStatus.ERROR)
+      }
     }
-    setStatus(ApproveAndLockStatus.CONFIRMED)
   }, [veCakeContract, cakeLockAmount, account, setStatus, setTxHash, waitForTransaction, walletClient])
 
   return increaseLockAmount
