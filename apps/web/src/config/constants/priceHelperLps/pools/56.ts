@@ -1,4 +1,3 @@
-import { getAddress } from 'viem'
 import { SerializedFarmConfig } from '../../types'
 
 const priceHelperLps: SerializedFarmConfig[] = [
@@ -9,11 +8,6 @@ const priceHelperLps: SerializedFarmConfig[] = [
    * Prices are then fetched for all farms (masterchef + priceHelperLps).
    * Before storing to redux, farms without a PID are filtered out.
    */
-].map((p) => ({
-  ...p,
-  token: p.token.serialize,
-  quoteToken: p.quoteToken.serialize,
-  lpAddress: getAddress(p.lpAddress),
-}))
+]
 
 export default priceHelperLps

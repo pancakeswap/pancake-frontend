@@ -1,7 +1,7 @@
-import memoize from 'lodash/memoize'
 import { ContextApi } from '@pancakeswap/localization'
-import { PageMeta } from './types'
+import memoize from 'lodash/memoize'
 import { ASSET_CDN } from './endpoints'
+import { PageMeta } from './types'
 
 export const DEFAULT_META: PageMeta = {
   title: 'PancakeSwap',
@@ -63,11 +63,10 @@ const getPathList = (t: ContextApi['t']): PathList => {
 }
 
 export const getCustomMeta = memoize(
-  (path: string, t: ContextApi['t'], _: string): PageMeta => {
+  (path: string, t: ContextApi['t'], _: string): PageMeta | null => {
     const pathList = getPathList(t)
-    const pathMetadata =
-      pathList.paths[path] ??
-      pathList.paths[Object.entries(pathList.paths).find(([url, data]) => data.basePath && path.startsWith(url))?.[0]]
+    const basePath = Object.entries(pathList.paths).find(([url, data]) => data.basePath && path.startsWith(url))?.[0]
+    const pathMetadata = pathList.paths[path] ?? (basePath && pathList.paths[basePath])
 
     if (pathMetadata) {
       return {

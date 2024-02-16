@@ -1,19 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, ModalV2, useModalV2, Modal, Flex, Text, Box, PreTitle, InfoFilledIcon, Card } from '@pancakeswap/uikit'
+import { Box, Button, Card, Flex, InfoFilledIcon, Modal, ModalV2, PreTitle, Text, useModalV2 } from '@pancakeswap/uikit'
 
-import { ReactNode, useState } from 'react'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
-import { CurrencyAmount, Percent, Currency } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { ReactNode, useState } from 'react'
 
 import { FixedStakingPool, UnstakeType } from '../type'
-import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
-import { StakedLimitEndOn } from './StakedLimitEndOn'
-import { StakeConfirmModal } from './StakeConfirmModal'
+import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
 import { ModalTitle } from './ModalTitle'
+import { StakeConfirmModal } from './StakeConfirmModal'
+import { StakedLimitEndOn } from './StakedLimitEndOn'
 
 export function HarvestModal({
   stakingToken,
@@ -73,7 +73,7 @@ export function HarvestModal({
             />
           }
           width={['100%', '100%', '420px']}
-          maxWidth={['100%', , '420px']}
+          maxWidth={['100%', null, '420px']}
         >
           {isConfirmed ? (
             <StakeConfirmModal

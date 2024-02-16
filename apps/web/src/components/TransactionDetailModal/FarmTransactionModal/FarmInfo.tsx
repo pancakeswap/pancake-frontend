@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { Box, Text, Flex, Link, useTooltip, LightBulbIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { TransactionDetails } from 'state/transactions/reducer'
+import { Box, Flex, LightBulbIcon, Link, Text, useTooltip } from '@pancakeswap/uikit'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
+import { TransactionDetails } from 'state/transactions/reducer'
+import { styled } from 'styled-components'
 
 const ListStyle = styled.div`
   position: relative;
@@ -36,6 +36,11 @@ interface FarmInfoProps {
 
 const FarmPending: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedData }) => {
   const { t } = useTranslation()
+
+  if (!pickedData?.nonBscFarm) {
+    return null
+  }
+
   const { amount, lpSymbol, type } = pickedData.nonBscFarm
   const title = type === NonBscFarmStepType.STAKE ? t('Staking') : t('Unstaking')
 
@@ -55,8 +60,8 @@ const FarmPending: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedD
 
 const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedData }) => {
   const { t } = useTranslation()
-  const { amount, lpSymbol, type, steps } = pickedData.nonBscFarm
-  const firstStep = steps.find((step) => step.step === 1)
+  const { amount, lpSymbol, type, steps } = pickedData?.nonBscFarm ?? {}
+  const firstStep = steps?.find((step) => step.step === 1)
   const text =
     type === NonBscFarmStepType.STAKE ? t('token have been staked in the Farm!') : t('token have been unstaked!')
 
@@ -78,6 +83,10 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
     { placement: 'top' },
   )
 
+  if (!pickedData?.nonBscFarm) {
+    return null
+  }
+
   return (
     <Box mb="24px">
       <Box>
@@ -88,7 +97,7 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
           {text}
         </Text>
       </Box>
-      {firstStep.isFirstTime && (
+      {firstStep?.isFirstTime && (
         <Box mt="24px">
           <Flex>
             <Box display="inline-flex">
@@ -111,6 +120,11 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
 
 const FarmError: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedData }) => {
   const { t } = useTranslation()
+
+  if (!pickedData?.nonBscFarm) {
+    return null
+  }
+
   const { amount, lpSymbol, type, steps } = pickedData.nonBscFarm
   const text = type === NonBscFarmStepType.STAKE ? t('The attempt to stake') : t('The attempt to unstake')
   const errorText = type === NonBscFarmStepType.STAKE ? t('Token fail to stake.') : t('Token fail to unstake.')
@@ -145,7 +159,7 @@ const FarmError: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDat
 }
 
 const FarmInfo: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedData }) => {
-  const { status } = pickedData.nonBscFarm
+  const { status } = pickedData?.nonBscFarm ?? {}
   if (status === FarmTransactionStatus.FAIL) {
     return <FarmError pickedData={pickedData} />
   }

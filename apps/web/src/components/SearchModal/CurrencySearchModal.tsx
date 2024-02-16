@@ -1,27 +1,27 @@
-import { useCallback, useState, useRef, useEffect } from 'react'
+import { usePreviousValue } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
+import { TokenList } from '@pancakeswap/token-lists'
+import { enableList, removeList, useFetchListCallback } from '@pancakeswap/token-lists/react'
 import {
+  Button,
+  Heading,
+  InjectedModalProps,
+  MODAL_SWIPE_TO_CLOSE_VELOCITY,
+  ModalBackButton,
+  ModalBody,
+  ModalCloseButton,
   ModalContainer,
   ModalHeader,
   ModalTitle,
-  ModalBackButton,
-  ModalCloseButton,
-  ModalBody,
-  InjectedModalProps,
-  Heading,
-  Button,
   useMatchBreakpoints,
-  MODAL_SWIPE_TO_CLOSE_VELOCITY,
 } from '@pancakeswap/uikit'
 import { ImportList } from '@pancakeswap/widgets-internal'
 import { useRouter } from 'next/router'
-import { styled } from 'styled-components'
-import { useListState } from 'state/lists/lists'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAllLists } from 'state/lists/hooks'
-import { usePreviousValue } from '@pancakeswap/hooks'
-import { TokenList } from '@pancakeswap/token-lists'
-import { useTranslation } from '@pancakeswap/localization'
-import { enableList, removeList, useFetchListCallback } from '@pancakeswap/token-lists/react'
+import { useListState } from 'state/lists/lists'
+import { styled } from 'styled-components'
 import CurrencySearch from './CurrencySearch'
 import ImportToken from './ImportToken'
 import Manage from './Manage'
@@ -100,7 +100,7 @@ export default function CurrencySearchModal({
 
   const [, dispatch] = useListState()
   const lists = useAllLists()
-  const adding = Boolean(lists[listURL]?.loadingRequestId)
+  const adding = Boolean(listURL && lists[listURL]?.loadingRequestId)
 
   const fetchList = useFetchListCallback(dispatch)
 
@@ -132,7 +132,8 @@ export default function CurrencySearchModal({
   }
   const { isMobile } = useMatchBreakpoints()
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(undefined)
+  const [height, setHeight] = useState<number | undefined>(undefined)
+
   useEffect(() => {
     if (!wrapperRef.current) return
     setHeight(wrapperRef.current.offsetHeight - 330)
