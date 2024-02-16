@@ -3004,4 +3004,5 @@ export const bscTokens = {
     'Dmail Network',
     'https://dmail.ai/',
   ),
+  defi: new ERC20Token(ChainId.BSC, '0x6d106C0B8d2f47c5465bdBD58D1Be253762cBBC1', 18, 'DEFI', 'DeFi', 'https://de.fi/'),
 }

@@ -14,6 +14,15 @@ export const livePools: SerializedPool[] = [
     isFinished: false,
   },
   {
+    sousId: 370,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.defi,
+    contractAddress: '',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0',
+    version: 3,
+  },
+  {
     sousId: 369,
     stakingToken: bscTokens.cake,
     earningToken: bscTokens.gtai,
@@ -59,15 +68,6 @@ export const livePools: SerializedPool[] = [
     isFinished: false,
     version: 3,
   },
-  {
-    sousId: 364,
-    stakingToken: bscTokens.cake,
-    earningToken: bscTokens.csix,
-    contractAddress: '0x692dF8297495f02f31a24A93D10Bd77D072840d7',
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.5131',
-    version: 3,
-  },
 ].map((p) => ({
   ...p,
   contractAddress: getAddress(p.contractAddress),
@@ -77,6 +77,15 @@ export const livePools: SerializedPool[] = [
 
 // known finished pools
 const finishedPools = [
+  {
+    sousId: 364,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.csix,
+    contractAddress: '0x692dF8297495f02f31a24A93D10Bd77D072840d7',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.5131',
+    version: 3,
+  },
   {
     sousId: 363,
     stakingToken: bscTokens.cake,
