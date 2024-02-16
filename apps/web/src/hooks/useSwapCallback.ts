@@ -173,7 +173,7 @@ export function useSwapCallback(
                     inputSymbol,
                     outputAmount,
                     outputSymbol,
-                    ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                    ...(recipient !== account && recipientAddressText && { recipientAddress: recipientAddressText }),
                   },
                 },
                 type: 'swap',
