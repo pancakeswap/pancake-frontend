@@ -67,6 +67,13 @@ function createDatadogRumManager() {
     ddRum.setUser(...args)
   }
 
+  const startView: typeof ddRum.startView = (...args) => {
+    if (!initialized) {
+      return
+    }
+    ddRum.startView(...args)
+  }
+
   const addFeatureFlagEvaluation: typeof ddRum.addFeatureFlagEvaluation = (...args) => {
     if (!initialized) {
       return
@@ -79,6 +86,7 @@ function createDatadogRumManager() {
     init,
     setUser,
     addFeatureFlagEvaluation,
+    startView,
   }
 }
 
