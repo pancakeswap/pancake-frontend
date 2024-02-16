@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.4
+
+### Patch Changes
+
+- 82f61f9: Bump token for missing sol
+
 ## 0.6.3
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/smart-router",
-  "version": "4.14.6",
+  "version": "4.14.7",
   "description": "A SDK for getting best routes from AMM",
   "repository": {
     "type": "git",
