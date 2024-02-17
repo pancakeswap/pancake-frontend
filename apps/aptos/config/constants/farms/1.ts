@@ -55,6 +55,30 @@ const farms: SerializedFarmConfig[] = [
   },
   // * By order of release
   {
+    pid: 24,
+    lpSymbol: 'whUSDC-lzUSDC',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::stapt_token::StakedApt, 0x1::aptos_coin::AptosCoin>',
+    token: mainnetTokens.whusdc,
+    quoteToken: mainnetTokens.lzusdc,
+    dual: {
+      token: mainnetTokens.apt,
+      aptIncentiveInfo: 0,
+    },
+  },
+  {
+    pid: 23,
+    lpSymbol: 'stAPT-lzUSDC',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::stapt_token::StakedApt, 0x1::aptos_coin::AptosCoin>',
+    token: mainnetTokens.stAPT,
+    quoteToken: mainnetTokens.lzusdc,
+    dual: {
+      token: mainnetTokens.apt,
+      aptIncentiveInfo: 0,
+    },
+  },
+  {
     pid: 22,
     lpSymbol: 'APT-stAPT',
     lpAddress:
