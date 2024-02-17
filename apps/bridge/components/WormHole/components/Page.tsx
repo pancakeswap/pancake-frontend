@@ -3,13 +3,11 @@ import Container from './Container'
 
 const StyledPage = styled(Container)`
   width: 100%;
-  min-height: calc(100vh - 56px);
-  height: max-content;
   padding-top: 16px;
   padding-bottom: 16px;
   position: relative;
   z-index: 10;
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
+  background: ${({ theme }) => (theme.isDark ? 'rgb(53,54,88)' : 'rgb(233,247,255)')};
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-top: 24px;

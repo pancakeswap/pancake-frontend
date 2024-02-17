@@ -45,43 +45,44 @@ export const WormholeBridgeWidget = () => {
     <>
       <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Wormhole} />
       <Page>
-        <Box maxWidth="690px" m="auto">
-          <Flex
-            flexDirection="row"
-            borderRadius={[0, null, 24]}
-            alignItems="center"
-            justifyContent={isMobile ? 'center' : 'right'}
-          >
-            <Flex justifyContent="space-between" alignItems="center" paddingTop="24px" paddingX="24px">
-              <Flex alignItems="center" justifyContent="center" paddingX="8px">
-                <Text fontSize="20px">{t('Enable Mainnet')}</Text>
-                <QuestionHelper
-                  text={t(
-                    'Testnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first',
-                  )}
-                  size="20px"
-                  ml="4px"
-                  mt="2px"
-                  zIndex={999}
+        <Box minHeight="calc(100vh - 56px - 70px)">
+          <Box maxWidth="690px" m="auto">
+            <Flex
+              flexDirection="row"
+              borderRadius={[0, null, 24]}
+              alignItems="center"
+              justifyContent={isMobile ? 'center' : 'right'}
+            >
+              <Flex justifyContent="space-between" alignItems="center" paddingTop="24px" paddingX="24px">
+                <Flex alignItems="center" justifyContent="center" paddingX="8px">
+                  <Text fontSize="20px">{t('Enable Mainnet')}</Text>
+                  <QuestionHelper
+                    text={t(
+                      'Testnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first',
+                    )}
+                    size="20px"
+                    ml="4px"
+                    mt="2px"
+                    zIndex={999}
+                  />
+                </Flex>
+                <Toggle
+                  id="toggle-enable-mainnet-button"
+                  scale="md"
+                  checked={enableMainnet}
+                  onChange={() => {
+                    setEnableMainnet((s) => !s)
+                  }}
                 />
               </Flex>
-              <Toggle
-                id="toggle-enable-mainnet-button"
-                scale="md"
-                checked={enableMainnet}
-                onChange={() => {
-                  setEnableMainnet((s) => !s)
-                }}
-              />
             </Flex>
-          </Flex>
-        </Box>
-        <Box mt={isMobile ? -20 : -70}>
-          {wormholeConfig && <WormholeBridge config={wormholeConfig} key={JSON.stringify(wormholeConfig)} />}
-        </Box>
-
-        <Box position="absolute" top="24%" left="45%" zIndex={-1}>
-          <Spinner />
+          </Box>
+          <Box mt={isMobile ? -20 : -70}>
+            {wormholeConfig && <WormholeBridge config={wormholeConfig} key={JSON.stringify(wormholeConfig)} />}
+          </Box>
+          <Box position="absolute" top="35%" left="45%" zIndex={-1}>
+            <Spinner />
+          </Box>
         </Box>
       </Page>
     </>
