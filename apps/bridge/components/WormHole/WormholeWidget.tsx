@@ -17,14 +17,14 @@ export const WormholeBridgeWidget = () => {
   const { t } = useTranslation()
   const theme = useTheme()
 
-  const wormholeConfig: WormholeConnectConfig | undefined = useMemo(() => {
+  const wormholeConfig: (WormholeConnectConfig & { partnerLogo?: string }) | undefined = useMemo(() => {
     const rpcs = enableMainnet ? MAINNET_RPCS : TESTNET_RPCS
     const networks = Object.values(NETWORK_CONFIG).map((n) => (enableMainnet ? n.mainnet : n.testnet))
     const tokens = enableMainnet ? MAINNET_TOKEN_KEYS : TESTNET_TOKEN_KEYS
     const mode = theme.isDark ? 'dark' : 'light'
     const customTheme = theme.isDark ? wormHoleDarkTheme : wormHoleLightTheme
 
-    const config: WormholeConnectConfig = {
+    const config: WormholeConnectConfig & { partnerLogo?: string } = {
       env: enableMainnet ? 'mainnet' : 'testnet',
       rpcs,
       networks,
