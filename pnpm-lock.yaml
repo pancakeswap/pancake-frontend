@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -451,15 +451,24 @@ importers:
       '@material-ui/core':
         specifier: ^4.12.4
         version: 4.12.4(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@pancakeswap/chains':
+        specifier: workspace:^
+        version: link:../../packages/chains
       '@pancakeswap/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
+      '@pancakeswap/localization':
+        specifier: workspace:^
+        version: link:../../packages/localization
       '@pancakeswap/uikit':
         specifier: workspace:*
         version: link:../../packages/uikit
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@pancakeswap/wagmi':
+        specifier: workspace:^
+        version: link:../../packages/wagmi
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
         version: 2.3.2(@types/node@18.0.4)(next@13.5.6)(webpack@5.89.0)
@@ -472,6 +481,12 @@ importers:
       ethers:
         specifier: ^5.0.0
         version: 5.7.2
+      jotai:
+        specifier: ^2.4.3
+        version: 2.5.1(@types/react@18.2.37)(react@18.2.0)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       next:
         specifier: 13.5.6
         version: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
@@ -493,6 +508,9 @@ importers:
       viem:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
+      wagmi:
+        specifier: 1.4.7
+        version: 1.4.7(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(viem@1.19.11)(zod@3.22.4)
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: 13.4.2
@@ -6553,6 +6571,7 @@ packages:
 
   /@motionone/vue@10.16.4:
     resolution: {integrity: sha512-z10PF9JV6SbjFq+/rYabM+8CVlMokgl8RFGvieSGNTmrkQanfHn+15XBrhG3BgUfvmTeSeyShfOHpG0i9zEdcg==}
+    deprecated: Motion One for Vue is deprecated. Use Oku Motion instead https://oku-ui.com/motion
     dependencies:
       '@motionone/dom': 10.16.4
       tslib: 2.6.2

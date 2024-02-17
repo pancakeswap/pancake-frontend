@@ -1,24 +1,15 @@
-import { ModalProvider, PancakeTheme, ResetCSS, UIKitProvider, dark, light } from '@pancakeswap/uikit'
-import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
+import { PancakeTheme, ResetCSS } from '@pancakeswap/uikit'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
 import { createGlobalStyle } from 'styled-components'
+import Providers from '../Providers'
 import { Menu } from '../components/Menu'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
   export interface DefaultTheme extends PancakeTheme {}
-}
-
-const StyledThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
-  const { resolvedTheme } = useNextTheme()
-  return (
-    <UIKitProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>
-      {props.children}
-    </UIKitProvider>
-  )
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -75,20 +66,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
         <title>Bridge | PancakeSwap</title>
       </Head>
-      <NextThemeProvider>
-        <StyledThemeProvider>
-          <ModalProvider>
-            <ResetCSS />
-            <GlobalStyle />
-            {isMounted && (
-              <>
-                <Menu />
-                <Component {...pageProps} />
-              </>
-            )}
-          </ModalProvider>
-        </StyledThemeProvider>
-      </NextThemeProvider>
+      <Providers>
+        <ResetCSS />
+        <GlobalStyle />
+        {isMounted && (
+          <>
+            <Menu />
+            <Component {...pageProps} />
+          </>
+        )}
+      </Providers>
       <Script
         strategy="afterInteractive"
         id="google-tag"

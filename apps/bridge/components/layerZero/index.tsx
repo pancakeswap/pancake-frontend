@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
-import Script from 'next/script'
-import { styled, useTheme } from 'styled-components'
-import { Flex, Box } from '@pancakeswap/uikit'
-import { LAYER_ZERO_JS, FEE_COLLECTOR, FEE_TENTH_BPS, PARTNER_ID } from 'components/layerZero/config'
-import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
+import { Box, Flex } from '@pancakeswap/uikit'
+import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
+import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
 import AptosBridgeFooter from 'components/layerZero/AptosBridgeFooter'
+import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
+import { FEE_COLLECTOR, FEE_TENTH_BPS, LAYER_ZERO_JS, PARTNER_ID } from 'components/layerZero/config'
+import Script from 'next/script'
+import { useEffect, useState } from 'react'
+import { styled, useTheme } from 'styled-components'
 import { PancakeSwapTheme } from './theme'
 
 declare global {
@@ -74,23 +76,26 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
   }, [isCake])
 
   return (
-    <Page>
-      <Script type="module" crossOrigin="anonymous" src={LAYER_ZERO_JS.src} integrity={LAYER_ZERO_JS.integrity} />
-      <link rel="stylesheet" href={`${LAYER_ZERO_JS.css}`} />
-      {show && (
-        <Box width={['100%', null, '420px']} m="auto">
-          <Flex flexDirection="column" bg="backgroundAlt" borderRadius={[0, null, 24]} alignItems="center">
-            <LayerZeroWidget theme={theme} />
-            <Box display={['block', null, 'none']}>
+    <>
+      <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Stargate} />
+      <Page>
+        <Script type="module" crossOrigin="anonymous" src={LAYER_ZERO_JS.src} integrity={LAYER_ZERO_JS.integrity} />
+        <link rel="stylesheet" href={`${LAYER_ZERO_JS.css}`} />
+        {show && (
+          <Box width={['100%', null, '420px']} m="auto">
+            <Flex flexDirection="column" bg="backgroundAlt" borderRadius={[0, null, 24]} alignItems="center">
+              <LayerZeroWidget theme={theme} />
+              <Box display={['block', null, 'none']}>
+                <AptosBridgeFooter isCake />
+              </Box>
+            </Flex>
+            <Box display={['none', null, 'block']}>
               <AptosBridgeFooter isCake />
             </Box>
-          </Flex>
-          <Box display={['none', null, 'block']}>
-            <AptosBridgeFooter isCake />
           </Box>
-        </Box>
-      )}
-    </Page>
+        )}
+      </Page>
+    </>
   )
 }
 

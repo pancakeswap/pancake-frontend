@@ -124,38 +124,6 @@ export interface BridgeDefaults {
   requiredNetwork?: ChainName
 }
 
-export interface WormholeConnectConfig {
-  showHamburgerMenu?: boolean
-  env?: 'mainnet' | 'testnet' | 'devnet'
-  rpcs?: Rpcs
-  rest?: Rpcs
-  networks?: ChainName[]
-  tokens?: string[]
-  mode?: 'dark' | 'light'
-  customTheme?: Theme
-  cta?: {
-    text: string
-    link: string
-  }
-  explorer?: ExplorerConfig
-  menu?: MenuEntry[]
-  bridgeDefaults?: BridgeDefaults
-  routes?: string[]
-  pageHeader?: string
-  cctpWarning?: {
-    href: string
-  }
-  pageSubHeader?: string
-  searchTx?: SearchTxConfig
-  moreTokens?: MoreTokenConfig
-  moreNetworks?: MoreChainConfig
-  partnerLogo?: string
-  walletConnectProjectId?: string
-  ethBridgeMaxAmount?: number
-  wstETHBridgeMaxAmount?: number
-  coinGeckoApiKey?: string
-}
-
 export type ExplorerConfig = {
   href: string
   label?: string

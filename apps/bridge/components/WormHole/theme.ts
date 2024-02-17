@@ -32,7 +32,7 @@ export const wormHoleDarkTheme = {
     A700: '#616161',
   },
   divider: '#ffffff33',
-  background: { default: 'linear-gradient(139.73deg, #2F4F60 0%, #323853 100%)' },
+  background: { default: 'transparent' },
   text: { primary: 'rgba(244, 238, 255, 1)', secondary: 'rgba(184, 173, 210, 1)' },
   error: {
     '50': '#ffebee',
@@ -148,7 +148,7 @@ export const wormHoleLightTheme = {
     A700: '#616161',
   },
   divider: '#ffffff33',
-  background: { default: 'linear-gradient(180deg, #F7F7F8 22.88%, #D6F2EB 99.79%, #2ED8A7 99.87%, #00A380 100%)' },
+  background: { default: 'transparent' },
   text: { primary: 'rgba(40, 13, 95, 1)', secondary: 'rgba(122, 110, 170, 1)' },
   error: {
     '50': '#ffebee',
@@ -225,7 +225,7 @@ export const wormHoleLightTheme = {
   },
   options: { hover: '#ffffff0F', select: '#ffffff19' },
   card: { background: '#EDEAF4', secondary: '#ffffff', elevation: 'none' },
-  popover: { background: '#1b2033', secondary: '#ffffff0C', elevation: 'none' },
+  popover: { background: '#EDEAF4', secondary: '#ffffff0C', elevation: 'none' },
   modal: { background: 'rgba(255, 255, 255, 1)' },
   font: { primary: 'Kanit', header: 'Kanit' },
 }
