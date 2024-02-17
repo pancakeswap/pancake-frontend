@@ -56,7 +56,7 @@ const farms: SerializedFarmConfig[] = [
   // * By order of release
   {
     pid: 24,
-    lpSymbol: 'whUSDC-lzUSDC',
+    lpSymbol: 'whUSDC-lzUSDC LP',
     lpAddress:
       '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::stapt_token::StakedApt, 0x1::aptos_coin::AptosCoin>',
     token: mainnetTokens.whusdc,
@@ -68,7 +68,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 23,
-    lpSymbol: 'stAPT-lzUSDC',
+    lpSymbol: 'stAPT-lzUSDC LP',
     lpAddress:
       '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::stapt_token::StakedApt, 0x1::aptos_coin::AptosCoin>',
     token: mainnetTokens.stAPT,
@@ -80,7 +80,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 22,
-    lpSymbol: 'APT-stAPT',
+    lpSymbol: 'APT-stAPT LP',
     lpAddress:
       '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::stapt_token::StakedApt, 0x1::aptos_coin::AptosCoin>',
     token: mainnetTokens.stAPT,
