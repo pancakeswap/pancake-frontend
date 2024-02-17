@@ -3,6 +3,8 @@ import Container from './Container'
 
 const StyledPage = styled(Container)`
   width: 100%;
+  min-height: calc(100vh - 56px);
+  height: max-content;
   padding-top: 16px;
   padding-bottom: 16px;
   background: ${({ theme }) => theme.colors.gradientBubblegum};

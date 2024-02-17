@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, QuestionHelper, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
 import WormholeBridge, { WormholeConnectConfig } from '@wormhole-foundation/wormhole-connect'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { useTheme } from 'styled-components'
 import Page from './components/Page'
@@ -12,6 +12,7 @@ import { wormHoleDarkTheme, wormHoleLightTheme } from './theme'
 
 export const WormholeBridgeWidget = () => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
@@ -40,6 +41,12 @@ export const WormholeBridgeWidget = () => {
     }
     return config
   }, [theme.isDark, enableMainnet])
+
+  useEffect(() => {
+    setIsLoading(true)
+    const timeout = setTimeout(() => setIsLoading(false), 1500)
+    return () => clearTimeout(timeout)
+  }, [enableMainnet, theme.isDark])
 
   return (
     <>
@@ -76,9 +83,14 @@ export const WormholeBridgeWidget = () => {
             </Flex>
           </Flex>
         </Box>
-        <Box mt={isMobile ? -20 : -70} minHeight="780px">
+        <Box mt={isMobile ? -20 : -70}>
           {wormholeConfig && <WormholeBridge config={wormholeConfig} key={JSON.stringify(wormholeConfig)} />}
         </Box>
+        {isLoading && (
+          <AutoColumn justifyContent="center" alignItems="center" height="100%">
+            <Spinner />
+          </AutoColumn>
+        )}
       </Page>
     </>
   )
