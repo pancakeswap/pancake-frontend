@@ -1,5 +1,6 @@
 {
   "extends": "@pancakeswap/tsconfig/nextjs.json",
+  "include": ["next-env.d.ts"],
   "compilerOptions": {
     "target": "ES2015",
     "baseUrl": "./",
@@ -9,6 +10,5 @@
       "@pancakeswap/uikit/*": ["../../packages/uikit/src/*"]
     }
   },
-  "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "exclude": ["node_modules"]
 }
