@@ -8,7 +8,7 @@ const StyledPage = styled(Container)`
   padding-top: 16px;
   padding-bottom: 16px;
   position: relative;
-  z-index: -10;
+  z-index: 10;
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 
   ${({ theme }) => theme.mediaQueries.sm} {

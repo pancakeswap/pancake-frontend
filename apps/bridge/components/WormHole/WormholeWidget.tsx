@@ -76,7 +76,7 @@ export const WormholeBridgeWidget = () => {
             </Flex>
           </Flex>
         </Box>
-        <Box mt={isMobile ? -20 : -70} zIndex={100}>
+        <Box mt={isMobile ? -20 : -70}>
           {wormholeConfig && <WormholeBridge config={wormholeConfig} key={JSON.stringify(wormholeConfig)} />}
         </Box>
 
