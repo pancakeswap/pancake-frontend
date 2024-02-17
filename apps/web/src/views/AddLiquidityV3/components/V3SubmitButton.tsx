@@ -20,7 +20,7 @@ interface V3SubmitButtonProps {
   showApprovalA: boolean
   approveACallback: () => Promise<SendTransactionResult | undefined>
   currentAllowanceA: CurrencyAmount<Currency> | undefined
-  revokeACallback: () => Promise<SendTransactionResult>
+  revokeACallback: () => Promise<SendTransactionResult | undefined>
   currencies: {
     CURRENCY_A?: Currency
     CURRENCY_B?: Currency

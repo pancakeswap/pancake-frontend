@@ -44,8 +44,8 @@ export type RoiCalculatorProps = {
   sqrtRatioX96?: bigint;
   liquidity?: bigint;
   independentAmount?: CurrencyAmount<Currency>;
-  currencyA?: Currency;
-  currencyB?: Currency;
+  currencyA?: Currency | null;
+  currencyB?: Currency | null;
   balanceA?: CurrencyAmount<Currency>;
   balanceB?: CurrencyAmount<Currency>;
   feeAmount?: FeeAmount;

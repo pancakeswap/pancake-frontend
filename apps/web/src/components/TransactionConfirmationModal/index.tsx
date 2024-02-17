@@ -94,7 +94,7 @@ interface ConfirmationModalProps {
   content: () => React.ReactNode
   attemptingTxn: boolean
   pendingText: string
-  currencyToAdd?: Currency | undefined
+  currencyToAdd?: Currency | undefined | null
 }
 
 const TransactionConfirmationModal: React.FC<

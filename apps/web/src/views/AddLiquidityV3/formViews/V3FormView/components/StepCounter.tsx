@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, Price, Token } from '@pancakeswap/swap-sdk-core'
 import { AddCircleIcon, AutoColumn, AutoRow, IconButton, RemoveIcon } from '@pancakeswap/uikit'
-import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { LightGreyCard } from 'components/Card'
-import { ReactNode, useCallback, useEffect, useState } from 'react'
-import { Price, Token, Currency } from '@pancakeswap/swap-sdk-core'
 import { tryParsePrice } from 'hooks/v3/utils'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 
 interface StepCounterProps {
   value: string
@@ -19,8 +19,8 @@ interface StepCounterProps {
   width?: string
   locked?: boolean // disable input
   title: ReactNode
-  tokenA: Currency | undefined
-  tokenB: Currency | undefined
+  tokenA: Currency | undefined | null
+  tokenB: Currency | undefined | null
 }
 
 const StepCounter = ({

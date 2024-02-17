@@ -1,11 +1,11 @@
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
-import { useContext, useMemo } from 'react'
 import { StableSwap } from '@pancakeswap/smart-router/evm'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useContext, useMemo } from 'react'
 
-import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
-import { useStableSwapInfo } from 'hooks/useStableSwapInfo'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
+import { useStableSwapInfo } from 'hooks/useStableSwapInfo'
+import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 
 export function useDerivedLPInfo(
   amountA: CurrencyAmount<Currency> | undefined,
@@ -15,7 +15,7 @@ export function useDerivedLPInfo(
   price: Price<Currency, Currency> | null
   loading: boolean
 } {
-  const { stableSwapConfig } = useContext(StableConfigContext)
+  const { stableSwapConfig } = useContext(StableConfigContext) || {}
   const { totalSupply, balances, amplifier, loading } = useStableSwapInfo(
     stableSwapConfig?.stableSwapAddress,
     stableSwapConfig?.liquidityToken.address,
@@ -30,13 +30,9 @@ export function useDerivedLPInfo(
     wrappedCurrencyA && token0 && token0.equals(wrappedCurrencyA) ? [amountA, amountB] : [amountB, amountA]
   const poolBalances = useMemo<[CurrencyAmount<Currency>, CurrencyAmount<Currency>] | undefined>(
     () =>
-      token0 &&
-      token1 &&
-      balances[0] &&
-      balances[1] && [
-        CurrencyAmount.fromRawAmount(token0, balances[0]),
-        CurrencyAmount.fromRawAmount(token1, balances[1]),
-      ],
+      token0 && token1 && balances[0] && balances[1]
+        ? [CurrencyAmount.fromRawAmount(token0, balances[0]), CurrencyAmount.fromRawAmount(token1, balances[1])]
+        : undefined,
     [balances, token0, token1],
   )
   const totalSupplyAmount = useMemo(
@@ -52,7 +48,7 @@ export function useDerivedLPInfo(
       lpOutputWithoutFee: null,
       price: null,
     }
-    if (!totalSupplyAmount || !poolBalances || !amount0 || !amount1) {
+    if (!totalSupplyAmount || !poolBalances || !amount0 || !amount1 || !amplifier || !amountA || !amountB) {
       return emptyResult
     }
     const totalValue = poolBalances[0].quotient + poolBalances[1].quotient
@@ -69,6 +65,9 @@ export function useDerivedLPInfo(
         amounts: [amount0, amount1],
       })
       const baseAmount = tryParseAmount('1', amountA.currency)
+      if (!baseAmount) {
+        return emptyResult
+      }
       const quoteAmount = StableSwap.getSwapOutputWithoutFee({
         amplifier,
         balances: poolBalances,

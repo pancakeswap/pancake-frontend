@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount } from "@pancakeswap/sdk";
 import { memo, useCallback } from "react";
 import { styled } from "styled-components";
 
-import { BalanceInput, Text, Flex, Button, Box, QuestionHelper, RowBetween, Card, CardBody } from "@pancakeswap/uikit";
+import { BalanceInput, Box, Button, Card, CardBody, Flex, QuestionHelper, RowBetween, Text } from "@pancakeswap/uikit";
 import { CurrencyLogo } from "../components/CurrencyLogo";
 
 type Props = UsdAmountInputProps & TokenAmountsDisplayProps;
@@ -87,8 +87,8 @@ export const DepositUsdAmountInput = memo(function DepositUsdAmountInput({
 });
 
 interface TokenAmountsDisplayProps {
-  currencyA?: Currency;
-  currencyB?: Currency;
+  currencyA?: Currency | null;
+  currencyB?: Currency | null;
   amountA?: CurrencyAmount<Currency>;
   amountB?: CurrencyAmount<Currency>;
 }
@@ -98,7 +98,7 @@ const TokenDisplayRow = memo(function TokenDisplayRow({
   currency,
 }: {
   amount?: CurrencyAmount<Currency>;
-  currency?: Currency;
+  currency?: Currency | null;
 }) {
   if (!currency) {
     return null;

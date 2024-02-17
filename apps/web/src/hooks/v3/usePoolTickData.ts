@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { FeeAmount, Pool, tickToPrice, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
+import { FeeAmount, Pool, TICK_SPACINGS, tickToPrice } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 
 import { PoolState, TickProcessed } from './types'
@@ -15,8 +15,8 @@ const getActiveTick = (tickCurrent: number | undefined, feeAmount: FeeAmount | u
     : undefined
 
 function useTicksFromSubgraph(
-  currencyA: Currency | undefined,
-  currencyB: Currency | undefined,
+  currencyA: Currency | undefined | null,
+  currencyB: Currency | undefined | null,
   feeAmount: FeeAmount | undefined,
 ) {
   const poolAddress =
@@ -29,8 +29,8 @@ function useTicksFromSubgraph(
 
 // Fetches all ticks for a given pool
 export function useAllV3Ticks(
-  currencyA: Currency | undefined,
-  currencyB: Currency | undefined,
+  currencyA: Currency | undefined | null,
+  currencyB: Currency | undefined | null,
   feeAmount: FeeAmount | undefined,
 ): {
   isLoading: boolean

@@ -1,22 +1,22 @@
 import { Currency, ERC20Token, Price, Token } from "@pancakeswap/sdk";
+import { formatPrice } from "@pancakeswap/utils/formatFractions";
 import {
   FeeAmount,
-  nearestUsableTick,
-  TickMath,
   TICK_SPACINGS,
-  tickToPrice,
+  TickMath,
+  nearestUsableTick,
   priceToClosestTick,
+  tickToPrice,
 } from "@pancakeswap/v3-sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { formatPrice } from "@pancakeswap/utils/formatFractions";
 
-import { tryParsePrice, tryParseTick } from "../utils";
 import { Bound } from "../../swap/LiquidityChartRangeInput";
+import { tryParsePrice, tryParseTick } from "../utils";
 
 interface Params {
   feeAmount?: FeeAmount;
-  baseCurrency?: Currency;
-  quoteCurrency?: Currency;
+  baseCurrency?: Currency | null;
+  quoteCurrency?: Currency | null;
   priceLower?: Price<Token, Token>;
   priceUpper?: Price<Token, Token>;
 }

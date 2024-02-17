@@ -134,7 +134,7 @@ export function UniversalAddLiquidity({
         currencyNew?.isNative || (chainId !== undefined && currencyIdNew === WNATIVE[chainId]?.address)
       const isNATIVEOrWNATIVEOther =
         currencyIdOther !== undefined &&
-        (currencyIdOther === NATIVE[chainId]?.symbol ||
+        ((chainId && currencyIdOther === NATIVE[chainId]?.symbol) ||
           (chainId !== undefined && safeGetAddress(currencyIdOther) === WNATIVE[chainId]?.address))
 
       if (isNATIVEOrWNATIVENew && isNATIVEOrWNATIVEOther) {
@@ -156,7 +156,7 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: [idA],
+              currency: [idA!],
             },
           },
           undefined,
@@ -168,7 +168,7 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: [idA, idB],
+              currency: [idA!, idB!],
             },
           },
           undefined,
@@ -189,7 +189,7 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: [idB],
+              currency: [idB!],
             },
           },
           undefined,
@@ -201,7 +201,7 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: [idA, idB],
+              currency: [idA!, idB!],
             },
           },
           undefined,
@@ -251,7 +251,9 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: newFeeAmount ? [currencyIdA, currencyIdB, newFeeAmount.toString()] : [currencyIdA, currencyIdB],
+              currency: newFeeAmount
+                ? [currencyIdA!, currencyIdB!, newFeeAmount.toString()]
+                : [currencyIdA!, currencyIdB!],
             },
           },
           undefined,

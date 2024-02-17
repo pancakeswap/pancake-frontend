@@ -43,8 +43,8 @@ import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3
 import { useV3FormState } from './formViews/V3FormView/form/reducer'
 
 interface AddLiquidityV3PropsType {
-  currencyA?: Currency
-  currencyB?: Currency
+  currencyA?: Currency | null
+  currencyB?: Currency | null
 }
 
 export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {

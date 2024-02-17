@@ -74,7 +74,8 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
                 }
               : null,
           )
-          .filter(Boolean),
+          // filter boolean assert
+          .filter(Boolean) as PositionDetails[],
       [inputs, positions],
     ),
   }

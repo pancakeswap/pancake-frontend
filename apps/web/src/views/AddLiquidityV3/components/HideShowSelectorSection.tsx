@@ -1,13 +1,13 @@
 import { AutoRow, Button, ChevronDownIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
-import { Dispatch, ReactElement, SetStateAction } from 'react'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 interface HideShowSelectorSectionPropsType {
   noHideButton?: boolean
   showOptions: boolean
   setShowOptions: Dispatch<SetStateAction<boolean>>
-  heading: ReactElement
-  content: ReactElement
+  heading: ReactNode
+  content: ReactNode
 }
 
 export default function HideShowSelectorSection({

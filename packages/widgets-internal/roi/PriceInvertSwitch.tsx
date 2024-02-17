@@ -1,9 +1,9 @@
+import { useTranslation } from "@pancakeswap/localization";
 import { Currency } from "@pancakeswap/sdk";
 import { memo } from "react";
-import { useTranslation } from "@pancakeswap/localization";
 import { styled } from "styled-components";
 
-import { Flex, Text, Button, SyncAltIcon } from "@pancakeswap/uikit";
+import { Button, Flex, SyncAltIcon, Text } from "@pancakeswap/uikit";
 
 const StyledButton = styled(Button)`
   border-radius: 8px;
@@ -12,7 +12,7 @@ const StyledButton = styled(Button)`
 `;
 
 interface Props {
-  baseCurrency?: Currency;
+  baseCurrency?: Currency | null;
   onSwitch?: () => void;
 }
 

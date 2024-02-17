@@ -1,10 +1,10 @@
 import { Currency, Rounding } from "@pancakeswap/sdk";
-import { FeeAmount, tickToPrice, TICK_SPACINGS } from "@pancakeswap/v3-sdk";
+import { FeeAmount, TICK_SPACINGS, tickToPrice } from "@pancakeswap/v3-sdk";
 import { useCallback, useMemo } from "react";
 
 export function useRangeHopCallbacks(
-  baseCurrency: Currency | undefined,
-  quoteCurrency: Currency | undefined,
+  baseCurrency: Currency | undefined | null,
+  quoteCurrency: Currency | undefined | null,
   feeAmount: FeeAmount | undefined,
   tickLower: number | undefined,
   tickUpper: number | undefined,

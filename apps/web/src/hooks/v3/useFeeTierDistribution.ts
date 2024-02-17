@@ -21,8 +21,8 @@ interface FeeTierDistribution {
 }
 
 export function useFeeTierDistribution(
-  currencyA: Currency | undefined,
-  currencyB: Currency | undefined,
+  currencyA: Currency | undefined | null,
+  currencyB: Currency | undefined | null,
 ): FeeTierDistribution {
   const { isPending, error, distributions, tvlByFeeTier } = usePoolTVL(currencyA?.wrapped, currencyB?.wrapped)
 
