@@ -115,7 +115,6 @@ function createDatadogRumManager() {
     addFeatureFlagEvaluation,
     setGlobalContextProperty,
     removeGlobalContextProperty,
-    getGlobalContext: ddRum.getGlobalContext,
   }
 }
 
