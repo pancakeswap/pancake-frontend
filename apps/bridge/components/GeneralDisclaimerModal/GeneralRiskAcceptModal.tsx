@@ -5,7 +5,7 @@ import { memo, useCallback, useEffect } from 'react'
 import { useGetBridgeDisclaimerState } from 'state/useGetBridgeDisclaimerState'
 import { BridgeDisclaimerConfig, BridgeIds } from './config'
 
-function GeneralRiskAcceptModal({ bridgeConfig }: { bridgeConfig: BridgeDisclaimerConfig }) {
+function GeneralRiskAcceptModal({ bridgeConfig }: { bridgeConfig: BridgeDisclaimerConfig }): null {
   const [hasAcceptedRisk, setHasAcceptedRisk] = useGetBridgeDisclaimerState(bridgeConfig.title)
   const { t } = useTranslation()
 
