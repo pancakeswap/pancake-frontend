@@ -37,6 +37,8 @@ export const WormholeBridgeWidget = () => {
         token: enableMainnet ? 'SOL' : 'BNB',
       },
       showHamburgerMenu: false,
+      partnerLogo: 'https://pancakeswap.finance/logo.png',
+      walletConnectProjectId: 'e542ff314e26ff34de2d4fba98db70bb',
     }
     return config
   }, [theme.isDark, enableMainnet])
