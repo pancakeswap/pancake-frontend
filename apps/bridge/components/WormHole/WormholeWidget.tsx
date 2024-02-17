@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
 import WormholeBridge, { WormholeConnectConfig } from '@wormhole-foundation/wormhole-connect'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { useTheme } from 'styled-components'
 import Page from './components/Page'
@@ -12,7 +12,6 @@ import { wormHoleDarkTheme, wormHoleLightTheme } from './theme'
 
 export const WormholeBridgeWidget = () => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
@@ -41,12 +40,6 @@ export const WormholeBridgeWidget = () => {
     }
     return config
   }, [theme.isDark, enableMainnet])
-
-  useEffect(() => {
-    setIsLoading(true)
-    const timeout = setTimeout(() => setIsLoading(false), 1500)
-    return () => clearTimeout(timeout)
-  }, [enableMainnet, theme.isDark])
 
   return (
     <>
@@ -83,14 +76,13 @@ export const WormholeBridgeWidget = () => {
             </Flex>
           </Flex>
         </Box>
-        <Box mt={isMobile ? -20 : -70}>
+        <Box mt={isMobile ? -20 : -70} zIndex={100}>
           {wormholeConfig && <WormholeBridge config={wormholeConfig} key={JSON.stringify(wormholeConfig)} />}
         </Box>
-        {isLoading && (
-          <AutoColumn justifyContent="center" alignItems="center" height="100%">
-            <Spinner />
-          </AutoColumn>
-        )}
+
+        <Box position="absolute" top="24%" left="45%" zIndex={-1}>
+          <Spinner />
+        </Box>
       </Page>
     </>
   )
