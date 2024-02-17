@@ -41,7 +41,7 @@ function createDatadogRumManager() {
       return
     }
     const env = process.env.NEXT_PUBLIC_VERCEL_ENV
-    const sessionSampleRate = env === 'production' ? 1 : env === 'preview' ? 100 : 0
+    const sessionSampleRate = 100
     ddRum.init({
       version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
       enableExperimentalFeatures: ['feature_flags'],
@@ -67,11 +67,36 @@ function createDatadogRumManager() {
     ddRum.setUser(...args)
   }
 
-  const startView: typeof ddRum.startView = (...args) => {
+  const setUserProperty: typeof ddRum.setUserProperty = (...args) => {
     if (!initialized) {
       return
     }
-    ddRum.startView(...args)
+    ddRum.setUserProperty(...args)
+  }
+
+  const clearUser: typeof ddRum.clearUser = (...args) => {
+    if (!initialized) {
+      return
+    }
+    try {
+      ddRum.clearUser(...args)
+    } catch (error) {
+      //
+    }
+  }
+
+  const setGlobalContextProperty: typeof ddRum.setGlobalContextProperty = (...args) => {
+    if (!initialized) {
+      return
+    }
+    ddRum.setGlobalContextProperty(...args)
+  }
+
+  const removeGlobalContextProperty: typeof ddRum.removeGlobalContextProperty = (...args) => {
+    if (!initialized) {
+      return
+    }
+    ddRum.removeGlobalContextProperty(...args)
   }
 
   const addFeatureFlagEvaluation: typeof ddRum.addFeatureFlagEvaluation = (...args) => {
@@ -85,8 +110,12 @@ function createDatadogRumManager() {
     initialized,
     init,
     setUser,
+    clearUser,
+    setUserProperty,
     addFeatureFlagEvaluation,
-    startView,
+    setGlobalContextProperty,
+    removeGlobalContextProperty,
+    getGlobalContext: ddRum.getGlobalContext,
   }
 }
 
