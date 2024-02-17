@@ -43,11 +43,9 @@ function GeneralRiskAcceptModal({ bridgeConfig }: { bridgeConfig: BridgeDisclaim
   )
 
   useEffect(() => {
-    if (!hasAcceptedRisk) {
+    if (typeof hasAcceptedRisk === 'boolean' && !hasAcceptedRisk) {
       onPresentRiskDisclaimer()
-    }
-
-    return onDismiss
+    } else onDismiss()
   }, [onDismiss, onPresentRiskDisclaimer, hasAcceptedRisk])
 
   return null
