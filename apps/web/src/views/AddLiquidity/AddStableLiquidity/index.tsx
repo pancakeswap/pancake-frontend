@@ -245,8 +245,9 @@ export default function AddStableLiquidity({
         return
       }
       call = stableSwapContract.estimateGas
+        // @ts-ignore TODO: Fix viem
         .add_liquidity(args, {
-          account: contract.account,
+          account: contract.account!,
         })
         .then((estimatedGasLimit) => {
           return stableSwapContract.write.add_liquidity(args, {

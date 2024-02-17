@@ -42,7 +42,7 @@ export function TransactionSubmittedContent({
   onDismiss: () => void
   hash: string | undefined
   chainId?: ChainId
-  currencyToAdd?: Currency | undefined
+  currencyToAdd?: Currency | undefined | null
 }) {
   const { t } = useTranslation()
 

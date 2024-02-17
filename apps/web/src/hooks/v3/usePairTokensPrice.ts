@@ -1,7 +1,7 @@
-import { usePairPriceChartTokenData } from 'views/V3Info/hooks'
 import { ChainId } from '@pancakeswap/chains'
 import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
+import { usePairPriceChartTokenData } from 'views/V3Info/hooks'
 
 export const usePairTokensPrice = (pairAddress?: string, duration?: PairDataTimeWindowEnum, chainId?: ChainId) => {
   const priceTimeWindow = useMemo(() => {
@@ -21,7 +21,7 @@ export const usePairTokensPrice = (pairAddress?: string, duration?: PairDataTime
 
   const pairPrice = usePairPriceChartTokenData(pairAddress?.toLowerCase(), priceTimeWindow, chainId)
 
-  const pairPriceData: { time: Date; value: number }[] = useMemo(() => {
+  const pairPriceData: { time: Date; value: number }[] | undefined = useMemo(() => {
     return pairPrice?.data?.map((d) => ({
       time: new Date(d.time * 1000),
       value: d.close,

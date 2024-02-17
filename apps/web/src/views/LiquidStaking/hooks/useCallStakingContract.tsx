@@ -1,15 +1,18 @@
-import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
-import { useContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useContract } from 'hooks/useContract'
 import { useCallback } from 'react'
+import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 
-export const useCallStakingContract = (selectedList: LiquidStakingList) => {
+export const useCallStakingContract = (selectedList: LiquidStakingList | null) => {
   const contract = useContract(selectedList?.contract, selectedList?.abi)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   return useCallback(
     (methodArgsValues: { [methodArgName: string]: any }, overridesValues: { [overrideArgName: string]: any }) => {
+      if (!selectedList) {
+        throw new Error('No selected list')
+      }
       const methodArgs = selectedList.stakingMethodArgs
         .map((methodArg) => {
           return methodArgsValues[methodArg]

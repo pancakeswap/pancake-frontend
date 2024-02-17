@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, CardHeader, Heading, CardBody, Text } from '@pancakeswap/uikit'
+import { Card, CardBody, CardHeader, Heading, Text } from '@pancakeswap/uikit'
 import FoldableText from 'components/FoldableSection/FoldableText'
 import { FAQType } from 'views/LiquidStaking/constants/types'
 
 interface LiquidStakingFAQsProps {
-  config: FAQType[]
+  config?: FAQType[]
 }
 
 export const LiquidStakingFAQs: React.FC<LiquidStakingFAQsProps> = ({ config }) => {

@@ -1,27 +1,27 @@
-import { useEffect, useMemo, useCallback } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { useRouter } from 'next/router'
-import { Button, useToast, AutoRenewIcon } from '@pancakeswap/uikit'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
-import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import useCatchTxError from 'hooks/useCatchTxError'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
-import { useLiquidStakingApprove } from 'views/LiquidStaking/hooks/useLiquidStakingApprove'
-import { useLiquidStakingApprovalStatus } from 'views/LiquidStaking/hooks/useLiquidStakingApprovalStatus'
+import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo } from 'react'
+import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 import { useCallStakingContract } from 'views/LiquidStaking/hooks/useCallStakingContract'
+import { useLiquidStakingApprovalStatus } from 'views/LiquidStaking/hooks/useLiquidStakingApprovalStatus'
+import { useLiquidStakingApprove } from 'views/LiquidStaking/hooks/useLiquidStakingApprove'
 
 interface LiquidStakingButtonProps {
   quoteAmount: BigNumber
-  inputCurrency: Currency | ERC20Token
+  inputCurrency: Currency | ERC20Token | undefined | null
   currentAmount: BigNumber
-  selectedList: LiquidStakingList
-  currencyBalance: CurrencyAmount<Currency>
+  selectedList: LiquidStakingList | null
+  currencyBalance?: CurrencyAmount<Currency>
 }
 
 const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
@@ -37,7 +37,7 @@ const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading } = useCatchTxError()
 
-  const masterChefAddress = masterChefV3Addresses[chainId]
+  const masterChefAddress = chainId && masterChefV3Addresses[chainId]
   const stakingCall = useCallStakingContract(selectedList)
 
   const balance = useMemo(
