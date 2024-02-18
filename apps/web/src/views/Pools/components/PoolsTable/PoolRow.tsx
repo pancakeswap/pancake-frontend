@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Pool } from '@pancakeswap/widgets-internal'
@@ -31,6 +32,7 @@ const MigrateCell = styled(Pool.BaseCell)`
 export const VaultPoolRow: React.FC<
   React.PropsWithChildren<{ vaultKey: VaultKey; account: string; initialActivity?: boolean }>
 > = memo(({ vaultKey, account, initialActivity }) => {
+  const { t } = useTranslation()
   const { isLg, isXl, isXxl, isMobile } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
@@ -51,7 +53,7 @@ export const VaultPoolRow: React.FC<
         <MigrateCell>
           {isMobile ? (
             <Text fontSize={14} lineHeight="14px">
-              This product have been upgraded!
+              {t('This product have been upgraded!')}
             </Text>
           ) : (
             <VeCakeBenefitCard isTableView />
