@@ -1,10 +1,10 @@
-import { Box, Flex } from '@pancakeswap/uikit'
-import AptosBridgeFooter from 'components/layerZero/AptosBridgeFooter'
-import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
-import { FEE_COLLECTOR, FEE_TENTH_BPS, LAYER_ZERO_JS, PARTNER_ID } from 'components/layerZero/config'
-import Script from 'next/script'
 import { useEffect, useState } from 'react'
+import Script from 'next/script'
 import { styled, useTheme } from 'styled-components'
+import { Flex, Box } from '@pancakeswap/uikit'
+import { LAYER_ZERO_JS, FEE_COLLECTOR, FEE_TENTH_BPS, PARTNER_ID } from 'components/layerZero/config'
+import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
+import AptosBridgeFooter from 'components/layerZero/AptosBridgeFooter'
 import { PancakeSwapTheme } from './theme'
 
 declare global {

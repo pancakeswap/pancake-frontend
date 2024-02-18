@@ -1,4 +1,4 @@
-import { WormholeChainIds } from '../components/WormHole/chainId'
+import { WormholeChainIds } from 'components/WormHole/constants'
 
 export const getNodeRealUrl = (chainId: number, key?: string) => {
   let host: string | null = null
