@@ -83,22 +83,22 @@ const NotificationSettingsView = ({
       await updateScopes(getEnabledScopes(scopes))
       const newScope = currentScopes
       prevScopesRef.current = newScope
-      toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message?.())
+      toast.toastSuccess(Events.PreferencesUpdated.title(t), Events.PreferencesUpdated.message?.(t))
     } catch (error) {
       const errMessage = parseErrorMessage(Events.PreferencesError, error)
-      toast.toastError(Events.PreferencesError.title, errMessage)
+      toast.toastError(Events.PreferencesError.title(t), errMessage)
     }
-  }, [currentScopes, toast, scopes, updateScopes])
+  }, [t, currentScopes, toast, scopes, updateScopes])
 
   const handleUnSubscribe = useCallback(async () => {
     try {
       await unsubscribe()
-      toast.toastSuccess(Events.Unsubscribed.title, Events.Unsubscribed.message?.())
+      toast.toastSuccess(Events.Unsubscribed.title(t), Events.Unsubscribed.message?.(t))
     } catch (error) {
       const errMessage = parseErrorMessage(Events.UnsubscribeError, error)
-      toast.toastWarning(Events.UnsubscribeError.title, errMessage)
+      toast.toastWarning(Events.UnsubscribeError.title(t), errMessage)
     }
-  }, [unsubscribe, toast])
+  }, [t, unsubscribe, toast])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
