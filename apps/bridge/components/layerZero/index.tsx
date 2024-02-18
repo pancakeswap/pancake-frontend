@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import Script from 'next/script'
-import { styled, useTheme } from 'styled-components'
-import { Flex, Box } from '@pancakeswap/uikit'
-import { LAYER_ZERO_JS, FEE_COLLECTOR, FEE_TENTH_BPS, PARTNER_ID } from 'components/layerZero/config'
-import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
+import { Box, Flex } from '@pancakeswap/uikit'
 import AptosBridgeFooter from 'components/layerZero/AptosBridgeFooter'
+import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
+import { FEE_COLLECTOR, FEE_TENTH_BPS, LAYER_ZERO_JS, PARTNER_ID } from 'components/layerZero/config'
+import Script from 'next/script'
+import { useEffect, useState } from 'react'
+import { styled, useTheme } from 'styled-components'
 import { PancakeSwapTheme } from './theme'
 
 declare global {
@@ -59,10 +59,10 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             app!.bridgeStore!.currencies.length = 0
-            app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
+            app?.bridgeStore?.addCurrencies(currencies?.filter((i: any) => i.symbol.toLowerCase() === 'cake'))
 
             const srcCake = app?.bridgeStore?.currencies?.find(
-              (i) => i.symbol.toUpperCase() === 'CAKE' && i.chainId === 102,
+              (i: any) => i.symbol.toUpperCase() === 'CAKE' && i.chainId === 102,
             )
             app?.bridgeStore?.setSrcCurrency(srcCake)
           }
