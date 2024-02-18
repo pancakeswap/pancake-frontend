@@ -1,3 +1,5 @@
+import { Theme } from './types'
+
 function darkenColor(color: string, factor: number) {
   const match = color.match(/\w\w/g)
   if (!match) return color
@@ -249,4 +251,20 @@ export const wormHoleLightTheme = {
   popover: { background: '#edeaf4', secondary: '#ffffff', elevation: '5px 5px 10px 5px #CCD2E7' },
   modal: { background: 'rgb(233,247,255)' },
   font: { primary: 'Kanit', header: 'Kanit' },
+}
+
+enum Modes {
+  light = 'light',
+  dark = 'dark',
+}
+
+export const Themes: { [mode in Modes]: { mode: 'light' | 'dark'; customTheme: Theme } } = {
+  light: {
+    mode: 'light',
+    customTheme: wormHoleLightTheme,
+  },
+  dark: {
+    mode: 'dark',
+    customTheme: wormHoleDarkTheme,
+  },
 }

@@ -1,14 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
-import WormholeBridge, { WormholeConnectConfig } from '@wormhole-foundation/wormhole-connect'
+import WormholeBridge from '@wormhole-foundation/wormhole-connect'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
 import { useMemo } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { useTheme } from 'styled-components'
 import Page from './components/Page'
-import { MAINNET_RPCS, MAINNET_TOKEN_KEYS, NETWORK_CONFIG, TESTNET_RPCS, TESTNET_TOKEN_KEYS } from './constants'
-import { wormHoleDarkTheme, wormHoleLightTheme } from './theme'
+import { WORMHOLE_NETWORKS, getBridgeTokens, getRpcUrls, pcsLogo, walletConnectProjectId } from './constants'
+import { Themes } from './theme'
+import { ExtendedWidgetConfig, WidgetEnvs } from './types'
 
 export const WormholeBridgeWidget = () => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
@@ -17,14 +18,15 @@ export const WormholeBridgeWidget = () => {
   const { t } = useTranslation()
   const theme = useTheme()
 
-  const wormholeConfig: (WormholeConnectConfig & { partnerLogo?: string }) | undefined = useMemo(() => {
-    const rpcs = enableMainnet ? MAINNET_RPCS : TESTNET_RPCS
-    const networks = Object.values(NETWORK_CONFIG).map((n) => (enableMainnet ? n.mainnet : n.testnet))
-    const tokens = enableMainnet ? MAINNET_TOKEN_KEYS : TESTNET_TOKEN_KEYS
-    const mode = theme.isDark ? 'dark' : 'light'
-    const customTheme = theme.isDark ? wormHoleDarkTheme : wormHoleLightTheme
+  const wormholeConfig: ExtendedWidgetConfig = useMemo(() => {
+    const widgetEnv = enableMainnet ? WidgetEnvs.mainnet : WidgetEnvs.testnet
+    const { mode, customTheme } = theme.isDark ? Themes.dark : Themes.light
+    const networks = WORMHOLE_NETWORKS.map((n) => n[widgetEnv])
 
-    const config: WormholeConnectConfig & { partnerLogo?: string } = {
+    const rpcs = getRpcUrls(widgetEnv)
+    const tokens = getBridgeTokens(widgetEnv)
+
+    const config: ExtendedWidgetConfig = {
       env: enableMainnet ? 'mainnet' : 'testnet',
       rpcs,
       networks,
@@ -37,8 +39,8 @@ export const WormholeBridgeWidget = () => {
         token: enableMainnet ? 'SOL' : 'BNB',
       },
       showHamburgerMenu: false,
-      partnerLogo: 'https://pancakeswap.finance/logo.png',
-      walletConnectProjectId: 'e542ff314e26ff34de2d4fba98db70bb',
+      partnerLogo: pcsLogo,
+      walletConnectProjectId,
     }
     return config
   }, [theme.isDark, enableMainnet])
@@ -48,39 +50,29 @@ export const WormholeBridgeWidget = () => {
       <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Wormhole} />
       <Page>
         <Box minHeight="calc(100vh - 56px - 70px)">
-          <Box maxWidth="690px" m="auto">
-            <Flex
-              flexDirection="row"
-              borderRadius={[0, null, 24]}
-              alignItems="center"
-              justifyContent={isMobile ? 'center' : 'right'}
-            >
-              <Flex justifyContent="space-between" alignItems="center" paddingTop="24px" paddingX="24px">
-                <Flex alignItems="center" justifyContent="center" paddingX="8px">
-                  <Text fontSize="20px">{t('Enable Mainnet')}</Text>
-                  <QuestionHelper
-                    text={t(
-                      'Testnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first',
-                    )}
-                    size="20px"
-                    ml="4px"
-                    mt="2px"
-                    zIndex={999}
-                  />
-                </Flex>
-                <Toggle
-                  id="toggle-enable-mainnet-button"
-                  scale="md"
-                  checked={enableMainnet}
-                  onChange={() => {
-                    setEnableMainnet((s) => !s)
-                  }}
+          <Flex maxWidth="690px" m="auto" alignItems="center" justifyContent={isMobile ? 'center' : 'right'}>
+            <Flex justifyContent="space-between" alignItems="center" paddingTop="24px" paddingX="24px">
+              <Flex alignItems="center" justifyContent="center" paddingX="8px">
+                <Text fontSize="20px">{t('Enable Mainnet')}</Text>
+                <QuestionHelper
+                  mt="2px"
+                  size="20px"
+                  text={t(
+                    'Testnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first',
+                  )}
                 />
               </Flex>
+              <Toggle
+                id="toggle-enable-mainnet-button"
+                scale="md"
+                checked={enableMainnet}
+                onChange={() => setEnableMainnet((s) => !s)}
+              />
             </Flex>
-          </Box>
-          <Box mt={isMobile ? -20 : -70}>
-            {wormholeConfig && <WormholeBridge config={wormholeConfig} key={JSON.stringify(wormholeConfig)} />}
+          </Flex>
+
+          <Box mt={-45}>
+            <WormholeBridge config={wormholeConfig} key={JSON.stringify(wormholeConfig)} />
           </Box>
           <Box position="absolute" top="35%" left="45%" zIndex={-1}>
             <Spinner />

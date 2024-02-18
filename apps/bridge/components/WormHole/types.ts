@@ -1,3 +1,5 @@
+import { WormholeConnectConfig } from '@wormhole-foundation/wormhole-connect'
+
 export type PaletteColor = {
   50: string
   100: string
@@ -164,3 +166,18 @@ export interface MenuEntry {
   target?: string
   order?: number
 }
+
+export type WidgetTheme = {
+  mode: 'light' | 'dark'
+  theme: Theme
+}
+
+export type ExtendedWidgetConfig = WormholeConnectConfig & { partnerLogo?: string; walletConnectProjectId?: string }
+
+export enum WidgetEnvs {
+  mainnet = 'mainnet',
+  testnet = 'testnet',
+  devnet = 'devnet',
+}
+
+export type Env = keyof typeof WidgetEnvs

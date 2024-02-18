@@ -2,6 +2,7 @@ import { MainnetChainName, TestnetChainName } from '@wormhole-foundation/wormhol
 import { arbitrum, arbitrumGoerli, base, baseGoerli, bsc, bscTestnet, mainnet as ethereum, goerli } from 'wagmi/chains'
 import { getNodeRealUrl } from '../../utils/nodereal'
 import { WormholeChainIds } from './chainId'
+import { Env, WidgetEnvs } from './types'
 
 export type Network = {
   name: string
@@ -67,6 +68,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
   },
 }
 
+export const WORMHOLE_NETWORKS = Object.values(NETWORK_CONFIG)
+
 export const MAINNET_TOKEN_KEYS: string[] = [
   'ETH',
   'WETH',
@@ -124,3 +127,11 @@ export const TESTNET_RPCS: { [testnet: string]: string } = Object.entries(NETWOR
   const { testnet, testnetRpc } = config
   return { ...acc, [testnet]: testnetRpc }
 }, {})
+
+export const getRpcUrls = (env: Omit<Env, 'devnet'>) => (env === WidgetEnvs.mainnet ? MAINNET_RPCS : TESTNET_RPCS)
+
+export const getBridgeTokens = (env: Omit<Env, 'devnet'>) =>
+  env === WidgetEnvs.mainnet ? MAINNET_TOKEN_KEYS : TESTNET_TOKEN_KEYS
+
+export const pcsLogo = 'https://pancakeswap.finance/logo.png'
+export const walletConnectProjectId = 'e542ff314e26ff34de2d4fba98db70bb'
