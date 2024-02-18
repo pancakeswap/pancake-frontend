@@ -1,5 +1,11 @@
+import { Box, BoxProps } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import Container from './Container'
+
+export const Container: React.FC<React.PropsWithChildren<BoxProps>> = ({ children, ...props }) => (
+  <Box px={['16px', '24px']} mx="auto" {...props}>
+    {children}
+  </Box>
+)
 
 const StyledPage = styled(Container)`
   width: 100%;

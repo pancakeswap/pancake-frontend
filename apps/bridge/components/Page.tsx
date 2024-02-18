@@ -1,6 +1,5 @@
-import { Box } from '@pancakeswap/uikit'
-import { ReactNode } from 'react'
 import { styled } from 'styled-components'
+import { Box } from '@pancakeswap/uikit'
 
 const PageContainer = styled(Box)`
   display: flex;
@@ -13,7 +12,7 @@ const PageContainer = styled(Box)`
   }
 `
 
-const Page = ({ children }: { children: ReactNode }) => {
+const Page = ({ children }) => {
   return <PageContainer>{children}</PageContainer>
 }
 

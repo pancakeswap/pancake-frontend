@@ -1,8 +1,21 @@
+import { ChainId } from '@pancakeswap/chains'
 import { MainnetChainName, TestnetChainName } from '@wormhole-foundation/wormhole-connect'
 import { arbitrum, arbitrumGoerli, base, baseGoerli, bsc, bscTestnet, mainnet as ethereum, goerli } from 'wagmi/chains'
 import { getNodeRealUrl } from '../../utils/nodereal'
-import { WormholeChainIds } from './chainId'
 import { Env, WidgetEnvs } from './types'
+
+export enum WormholeChainIds {
+  ETHEREUM = ChainId.ETHEREUM,
+  GOERLI = ChainId.GOERLI,
+  BSC = ChainId.BSC,
+  BSC_TESTNET = ChainId.BSC_TESTNET,
+  ARBITRUM_ONE = ChainId.ARBITRUM_ONE,
+  ARBITRUM_GOERLI = ChainId.ARBITRUM_GOERLI,
+  BASE = ChainId.BASE,
+  BASE_TESTNET = ChainId.BASE_TESTNET,
+  SOLANA = 1399811149,
+  SOLANA_TESTNET = 900,
+}
 
 export type Network = {
   name: string

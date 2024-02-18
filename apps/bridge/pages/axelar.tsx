@@ -1,11 +1,9 @@
+import { useMemo } from 'react'
 import { SquidWidget } from '@0xsquid/widget'
 import { AppConfig } from '@0xsquid/widget/widget/core/types/config'
 import { Box, PancakeTheme } from '@pancakeswap/uikit'
-import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
-import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
-import PageContainer from 'components/Page'
-import { useMemo } from 'react'
 import { useTheme } from 'styled-components'
+import PageContainer from 'components/Page'
 
 const lightStyle = {
   neutralContent: '#7a6eaa',
@@ -64,50 +62,47 @@ const Axelar = () => {
   }, [theme])
 
   return (
-    <>
-      <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Alexar} />
-      <PageContainer>
-        <style jsx global>{`
-          #squid-header-title {
+    <PageContainer>
+      <style jsx global>{`
+        #squid-header-title {
+          font-weight: 600 !important;
+        }
+
+        button > svg {
+          width: 16px;
+        }
+
+        [data-theme='light'] {
+          .tw-dsw-toggle-secondary:not(:checked) {
+            box-shadow: calc(1.5rem * -1) 0 0 2px #efebf4 inset, 0 0 0 2px #efebf4 inset, 0 0 !important;
+          }
+
+          .tw-flex ul li > span:first-child,
+          .tw-flex ul li > span:first-child a,
+          .tw-rounded-t-box.tw-flex.tw-flex-col span.tw-flex.tw-flex-row.tw-items-center:first-child {
+            color: #7645d9 !important;
             font-weight: 600 !important;
           }
+        }
 
-          button > svg {
-            width: 16px;
+        [data-theme='dark'] {
+          .tw-dsw-toggle-secondary:not(:checked) {
+            box-shadow: calc(1.5rem * -1) 0 0 2px #372f46 inset, 0 0 0 2px #372f46 inset, 0 0 !important;
           }
 
-          [data-theme='light'] {
-            .tw-dsw-toggle-secondary:not(:checked) {
-              box-shadow: calc(1.5rem * -1) 0 0 2px #efebf4 inset, 0 0 0 2px #efebf4 inset, 0 0 !important;
-            }
-
-            .tw-flex ul li > span:first-child,
-            .tw-flex ul li > span:first-child a,
-            .tw-rounded-t-box.tw-flex.tw-flex-col span.tw-flex.tw-flex-row.tw-items-center:first-child {
-              color: #7645d9 !important;
-              font-weight: 600 !important;
-            }
+          .tw-flex ul li > span:first-child,
+          .tw-flex ul li > span:first-child a,
+          .tw-rounded-t-box.tw-flex.tw-flex-col span.tw-flex.tw-flex-row.tw-items-center:first-child {
+            color: #a881fc !important;
+            font-weight: 600 !important;
           }
+        }
+      `}</style>
 
-          [data-theme='dark'] {
-            .tw-dsw-toggle-secondary:not(:checked) {
-              box-shadow: calc(1.5rem * -1) 0 0 2px #372f46 inset, 0 0 0 2px #372f46 inset, 0 0 !important;
-            }
-
-            .tw-flex ul li > span:first-child,
-            .tw-flex ul li > span:first-child a,
-            .tw-rounded-t-box.tw-flex.tw-flex-col span.tw-flex.tw-flex-row.tw-items-center:first-child {
-              color: #a881fc !important;
-              font-weight: 600 !important;
-            }
-          }
-        `}</style>
-
-        <Box width={['100%', '420px']} m="auto">
-          <SquidWidget config={config} />
-        </Box>
-      </PageContainer>
-    </>
+      <Box width={['100%', '420px']} m="auto">
+        <SquidWidget config={config} />
+      </Box>
+    </PageContainer>
   )
 }
 
