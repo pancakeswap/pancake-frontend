@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "3.7.9",
+  "version": "3.7.10",
   "description": "⚒️ An SDK for building applications on top of Pancakeswap V3",
   "files": [
     "dist"
@@ -28,7 +28,6 @@
   "dependencies": {
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",

@@ -168,7 +168,7 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
           maxLength={20}
           value={note}
           type="text"
-          placeholder="Note (20 characters)"
+          placeholder={t('Note (20 characters)')}
           onChange={handleInput}
         />
       </Flex>

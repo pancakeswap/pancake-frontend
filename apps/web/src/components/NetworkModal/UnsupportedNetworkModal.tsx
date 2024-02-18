@@ -7,16 +7,16 @@ import useAuth from 'hooks/useAuth'
 import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
 import { useRouter } from 'next/router'
 import { getActiveMenuItem, getActiveSubMenuItem } from 'components/Menu/utils'
-import { useAccount, useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/chains'
+import { viemClients } from 'utils/viem'
 import Dots from '../Loader/Dots'
 
 // Where chain is not supported or page not supported
 export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupportedChains: number[] }) {
   const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
   const switchNetworkLocal = useSwitchNetworkLocal()
-  const { chains } = useNetwork()
   const chainId = useLocalNetworkChain() || ChainId.BSC
   const { isConnected } = useAccount()
   const { logout } = useAuth()
@@ -32,8 +32,11 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
   }, [menuItems, pathname])
 
   const supportedMainnetChains = useMemo(
-    () => chains.filter((chain) => !chain.testnet && pageSupportedChains?.includes(chain.id)),
-    [chains, pageSupportedChains],
+    () =>
+      Object.values(viemClients)
+        .map((client) => client.chain)
+        .filter((chain) => chain && !chain.testnet && pageSupportedChains?.includes(chain.id)),
+    [pageSupportedChains],
   )
 
   return (
@@ -41,7 +44,7 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
       <Grid style={{ gap: '16px' }} maxWidth="336px">
         <Text>
           {t('Currently %feature% only supported in', { feature: typeof title === 'string' ? title : 'this page' })}{' '}
-          {supportedMainnetChains?.map((c) => c.name).join(', ')}
+          {supportedMainnetChains?.map((c) => c?.name).join(', ')}
         </Text>
         <div style={{ textAlign: 'center' }}>
           <Image
@@ -59,14 +62,20 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
           <Button
             isLoading={isLoading}
             onClick={() => {
-              if (supportedMainnetChains.map((c) => c.id).includes(chainId)) {
+              if (supportedMainnetChains.map((c) => c?.id).includes(chainId)) {
                 switchNetworkAsync(chainId)
               } else {
                 switchNetworkAsync(ChainId.BSC)
               }
             }}
           >
-            {isLoading ? <Dots>{t('Switch network in wallet')}</Dots> : t('Switch network in wallet')}
+            {isLoading ? (
+              <Dots>{isConnected ? t('Switch network in wallet') : t('Switch network')}</Dots>
+            ) : isConnected ? (
+              t('Switch network in wallet')
+            ) : (
+              t('Switch network')
+            )}
           </Button>
         ) : (
           <Message variant="danger">

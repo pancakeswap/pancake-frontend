@@ -52,7 +52,7 @@ const FullWidthButtonMenu = styled(ButtonMenu)<{ disabled?: boolean }>`
 `;
 
 export interface RoiCalculatorModalProps {
-  account: string;
+  account?: string;
   pid?: number;
   earningTokenPrice: number;
   apr?: number;
@@ -60,7 +60,7 @@ export interface RoiCalculatorModalProps {
   apy?: number;
   displayApr?: string;
   linkLabel: string;
-  linkHref: string;
+  linkHref?: string;
   stakingTokenBalance: BigNumber;
   stakingTokenDecimals: number;
   stakingTokenSymbol: string;

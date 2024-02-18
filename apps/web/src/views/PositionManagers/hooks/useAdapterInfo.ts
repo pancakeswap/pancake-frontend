@@ -4,9 +4,8 @@ import { usePositionManagerWrapperContract, useContract } from 'hooks/useContrac
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Percent } from '@pancakeswap/sdk'
-import { erc20ABI } from 'wagmi'
+import { erc20ABI, useAccount } from 'wagmi'
 
 export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   token0Amounts: bigint
@@ -107,7 +106,7 @@ export const useAdapterTokensAmounts = (adapterAddress: Address) => {
 }
 
 export const useUserAmounts = (wrapperAddress: Address) => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const contract = usePositionManagerWrapperContract(wrapperAddress)
   const { data, refetch } = useQuery({
     queryKey: ['useUserAmounts', wrapperAddress, account],
@@ -186,7 +185,7 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
 }
 
 export const useUserPendingRewardAmounts = (wrapperAddress: Address) => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const contract = usePositionManagerWrapperContract(wrapperAddress)
   const { data, refetch } = useQuery({
     queryKey: ['useUserPendingRewardAmounts', account, wrapperAddress],

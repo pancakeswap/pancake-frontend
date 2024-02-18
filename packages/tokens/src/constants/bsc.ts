@@ -2988,4 +2988,21 @@ export const bscTokens = {
     'GT Protocol',
     'https://www.gt-protocol.io/',
   ),
+  sol: new ERC20Token(
+    ChainId.BSC,
+    '0x570A5D26f7765Ecb712C0924E4De545B89fD43dF',
+    18,
+    'SOL',
+    'SOLANA',
+    'https://solana.com/',
+  ),
+  dmail: new ERC20Token(
+    ChainId.BSC,
+    '0xcC6f1e1B87cfCbe9221808d2d85C501aab0B5192',
+    18,
+    'DMAIL',
+    'Dmail Network',
+    'https://dmail.ai/',
+  ),
+  defi: new ERC20Token(ChainId.BSC, '0x6d106C0B8d2f47c5465bdBD58D1Be253762cBBC1', 18, 'DEFI', 'DeFi', 'https://de.fi/'),
 }

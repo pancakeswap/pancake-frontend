@@ -1,4 +1,4 @@
-import { parseEther } from 'viem'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   ButtonMenu,
   ButtonMenuItem,
@@ -7,14 +7,14 @@ import {
   IconButton,
   InjectedModalProps,
   ModalBody,
+  ModalTitle,
   ModalWrapper,
   ModalHeader as UIKitModalHeader,
-  ModalTitle,
 } from '@pancakeswap/uikit'
-import { useAccount, useBalance } from 'wagmi'
-import { useState, useCallback } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
+import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
+import { parseEther } from 'viem'
+import { useAccount, useBalance } from 'wagmi'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 import WalletWrongNetwork from './WalletWrongNetwork'
@@ -67,7 +67,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { data, isFetched } = useBalance({ address: account })
-  const hasLowNativeBalance = isFetched && data && data.value <= LOW_NATIVE_BALANCE
+  const hasLowNativeBalance = Boolean(isFetched && data && data.value <= LOW_NATIVE_BALANCE)
 
   const handleClick = useCallback((newIndex: number) => {
     setView(newIndex)
@@ -88,8 +88,8 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
         {view === WalletView.WALLET_INFO && (
           <WalletInfo hasLowNativeBalance={hasLowNativeBalance} switchView={handleClick} onDismiss={onDismiss} />
         )}
-        {view === WalletView.TRANSACTIONS && <WalletTransactions onDismiss={onDismiss} />}
-        {view === WalletView.WRONG_NETWORK && <WalletWrongNetwork onDismiss={onDismiss} />}
+        {view === WalletView.TRANSACTIONS && !!onDismiss && <WalletTransactions onDismiss={onDismiss} />}
+        {view === WalletView.WRONG_NETWORK && !!onDismiss && <WalletWrongNetwork onDismiss={onDismiss} />}
       </ModalBody>
     </ModalWrapper>
   )

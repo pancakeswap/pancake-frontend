@@ -7,7 +7,7 @@ export const ifos: BaseIfoConfig[] = [
   {
     id: 'cakepie',
     address: '0x5f77A54F4314aef5BDd311aCfcccAC90B39432e8',
-    isActive: true,
+    isActive: false,
     cIFO: true,
     name: 'CAKEPIE',
     plannedStartTime: 1704369600, // Thu Jan 04 2024 12:00:00 UTC

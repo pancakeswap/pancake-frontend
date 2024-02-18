@@ -1,16 +1,8 @@
-import { gaugesVotingABI } from '@pancakeswap/gauges'
 import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useMemo } from 'react'
-import {
-  ContractFunctionConfig,
-  ContractFunctionResult,
-  Hex,
-  MulticallContracts,
-  isAddressEqual,
-  zeroAddress,
-} from 'viem'
+import { Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { usePublicClient } from 'wagmi'
 import { useGauges } from './useGauges'
@@ -46,14 +38,13 @@ export const useUserVoteSlopes = () => {
 
       const hasProxy = userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress)
 
-      const contracts: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'voteUserSlopes'>[]> =
-        gauges.map((gauge) => {
-          return {
-            ...gaugesVotingContract,
-            functionName: 'voteUserSlopes',
-            args: [account, gauge.hash as Hex],
-          } as const
-        })
+      const contracts = gauges.map((gauge) => {
+        return {
+          ...gaugesVotingContract,
+          functionName: 'voteUserSlopes',
+          args: [account, gauge.hash as Hex],
+        } as const
+      })
 
       if (hasProxy) {
         gauges.forEach((gauge) => {
@@ -65,10 +56,10 @@ export const useUserVoteSlopes = () => {
         })
       }
 
-      const response = (await publicClient.multicall({
+      const response = await publicClient.multicall({
         contracts,
         allowFailure: false,
-      })) as ContractFunctionResult<typeof gaugesVotingABI, 'voteUserSlopes'>[]
+      })
 
       const len = gauges.length
       return gauges.map((gauge, index) => {

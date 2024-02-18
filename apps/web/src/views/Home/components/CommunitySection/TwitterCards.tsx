@@ -72,13 +72,13 @@ export const useTweetsData = () => {
   return useMemo(() => {
     return [
       {
-        tweet: `🐰💙PancakeSwap Fam, the moment is here!
-🥞Proposal to reduce the max supply of $CAKE from 750M to 450M!
-🌟By reducing our token supply by 300,000,000 $CAKE, we signify PancakeSwap’s successful shift from a high-inflation emissions model to the Ultrasound CAKE era.`,
-        link: 'https://x.com/PancakeSwap/status/1740281555887825335?s=20',
-        date: 'Dec 28',
-        like: '1.3k',
-        impression: '179k',
+        tweet: `🐲 Step into the Dragon Lunar Lottery at PancakeSwap! Chase a treasure of 16,000 CAKE & an additional $3,880 in USDT prizes! ✨
+🧧 Join the celebration: https://app.questn.com/event/869387113325449247
+`,
+        link: 'https://x.com/PancakeSwap/status/1755252804086628435?s=20',
+        date: 'Feb 7',
+        like: '1.1k',
+        impression: '99.2k',
       },
     ]
   }, [])

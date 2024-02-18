@@ -2,6 +2,7 @@ import { goerliTestnetTokens } from '@pancakeswap/tokens'
 import { getAddress } from 'viem'
 import { SerializedFarmConfig } from '../..'
 
+// @ts-ignore
 const priceHelperLps: SerializedFarmConfig[] = [
   {
     pid: null,

@@ -2028,9 +2028,6 @@ importers:
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
-      '@pancakeswap/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       big.js:
         specifier: ^5.2.2
         version: 5.2.2
