@@ -19,7 +19,7 @@ interface FarmCardActionsProps {
   account?: string
   addLiquidityUrl?: string
   lpLabel?: string
-  displayApr?: string
+  displayApr?: string | null
 }
 
 const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({

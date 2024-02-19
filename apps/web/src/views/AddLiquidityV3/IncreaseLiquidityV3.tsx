@@ -4,47 +4,47 @@ import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { AutoColumn, Box, Button, CardBody, useModal } from '@pancakeswap/uikit'
 import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 
-import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
-import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
-import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
+import { useIsExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { FeeAmount, MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { useCallback, useMemo, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
-import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
+import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
+import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
+import { useCallback, useMemo, useState } from 'react'
 import { Field } from 'state/mint/actions'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
 
-import { useTransactionAdder } from 'state/transactions/hooks'
-import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-import { calculateGasMargin } from 'utils'
-import { useRouter } from 'next/router'
+import { useTranslation } from '@pancakeswap/localization'
+import { AppHeader } from 'components/App'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTranslation } from '@pancakeswap/localization'
-import { useSendTransaction } from 'wagmi'
+import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useRouter } from 'next/router'
+import { useTransactionAdder } from 'state/transactions/hooks'
+import { calculateGasMargin } from 'utils'
 import Page from 'views/Page'
-import { AppHeader } from 'components/App'
+import { useSendTransaction } from 'wagmi'
 
 import { BodyWrapper } from 'components/App/AppBody'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { formatRawAmount, formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
-import { hexToBigInt } from 'viem'
+import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 import { isUserRejected } from 'utils/sentry'
 import { getViemClients } from 'utils/viem'
+import { hexToBigInt } from 'viem'
 
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
-import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
-import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
 import { V3SubmitButton } from './components/V3SubmitButton'
+import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
+import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
+import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { useV3FormState } from './formViews/V3FormView/form/reducer'
 
 interface AddLiquidityV3PropsType {
-  currencyA: Currency
-  currencyB: Currency
+  currencyA?: Currency | null
+  currencyB?: Currency | null
 }
 
 export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {

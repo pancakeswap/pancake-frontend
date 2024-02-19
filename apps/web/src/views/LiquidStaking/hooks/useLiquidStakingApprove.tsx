@@ -1,16 +1,16 @@
-import { useCallback } from 'react'
-import { useToast } from '@pancakeswap/uikit'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from '@pancakeswap/localization'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { Address } from 'viem'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useTokenContract } from 'hooks/useContract'
+import { useCallback } from 'react'
+import { Address } from 'viem'
 
 interface UseLiquidStakingApproveProps {
-  approveToken: string
-  contractAddress: string
+  approveToken?: string
+  contractAddress?: string
 }
 
 export const useLiquidStakingApprove = ({ approveToken, contractAddress }: UseLiquidStakingApproveProps) => {

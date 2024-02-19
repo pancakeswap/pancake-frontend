@@ -42,7 +42,7 @@ export function TransactionSubmittedContent({
   onDismiss: () => void
   hash: string | undefined
   chainId?: ChainId
-  currencyToAdd?: Currency | undefined
+  currencyToAdd?: Currency | undefined | null
 }) {
   const { t } = useTranslation()
 
@@ -94,7 +94,7 @@ interface ConfirmationModalProps {
   content: () => React.ReactNode
   attemptingTxn: boolean
   pendingText: string
-  currencyToAdd?: Currency | undefined
+  currencyToAdd?: Currency | undefined | null
 }
 
 const TransactionConfirmationModal: React.FC<

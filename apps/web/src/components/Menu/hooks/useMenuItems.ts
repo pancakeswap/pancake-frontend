@@ -1,8 +1,9 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTheme } from '@pancakeswap/hooks'
-import { useMatchBreakpoints, DropdownMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { DropdownMenuItems, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import config, { ConfigMenuItemsType } from '../config/config'
@@ -29,11 +30,11 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
       return menuItems.map((item) => {
         const innerItems = item?.items?.map((innerItem) => {
-          const itemStatus = menuItemsStatus[innerItem.href]
+          const itemStatus = innerItem.href ? menuItemsStatus[innerItem.href] : undefined
           const modalId = innerItem.confirmModalId
           const isInfo = innerItem.href === '/info/v3'
           if (itemStatus) {
-            let itemMenuStatus = null
+            let itemMenuStatus: DropdownMenuItems['status'] | null = null
             if (itemStatus === 'soon') {
               itemMenuStatus = <DropdownMenuItems['status']>{ text: t('Soon'), color: 'warning' }
             } else if (itemStatus === 'live') {
@@ -50,7 +51,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
             return { ...innerItem, status: itemMenuStatus }
           }
           if (modalId) {
-            let onClickEvent = null
+            let onClickEvent: any = null
             if (modalId === 'usCitizenConfirmModal') {
               onClickEvent = (e: React.MouseEvent<HTMLElement>) => {
                 if (!userNotUsCitizenAcknowledgement && onUsCitizenModalPresent) {
@@ -63,7 +64,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
             return { ...innerItem, onClick: onClickEvent }
           }
           if (isInfo) {
-            const href = `${innerItem.href}${multiChainPaths[chainId] ?? ''}`
+            const href = `${innerItem.href}${multiChainPaths[chainId || ChainId.BSC] ?? ''}`
             return { ...innerItem, href }
           }
 

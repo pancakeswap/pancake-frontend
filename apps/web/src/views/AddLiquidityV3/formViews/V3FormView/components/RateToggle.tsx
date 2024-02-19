@@ -13,7 +13,7 @@ export default function RateToggle({
   currencyA,
   handleRateToggle,
 }: {
-  currencyA?: Currency
+  currencyA?: Currency | null
   handleRateToggle: () => void
 }) {
   const { t } = useTranslation()

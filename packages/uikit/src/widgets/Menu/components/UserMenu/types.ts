@@ -1,5 +1,5 @@
 import { Placement } from "@popperjs/core";
-import { ReactElement, ReactNode } from "react";
+import { ReactNode } from "react";
 import { FlexProps } from "../../../../components/Box";
 
 export const variants = {
@@ -18,7 +18,7 @@ export interface UserMenuProps extends Omit<FlexProps, "children"> {
   avatarClassName?: string;
   variant?: Variant;
   disabled?: boolean;
-  children?: (exposedProps: { isOpen: boolean }) => ReactElement;
+  children?: (exposedProps: { isOpen: boolean }) => ReactNode;
   placement?: Placement;
   recalculatePopover?: boolean;
   ellipsis?: boolean;

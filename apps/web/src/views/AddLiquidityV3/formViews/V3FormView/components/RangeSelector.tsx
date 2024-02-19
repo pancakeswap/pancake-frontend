@@ -1,5 +1,5 @@
-import { Currency, Price, Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, Price, Token } from '@pancakeswap/sdk'
 import { FlexGap } from '@pancakeswap/uikit'
 import { Bound } from 'config/constants/types'
 import StepCounter from './StepCounter'
@@ -27,8 +27,8 @@ export default function RangeSelector({
   getIncrementUpper: () => Price<Token, Token> | undefined
   onLeftRangeInput: (typedValue: Price<Token, Token> | undefined) => void
   onRightRangeInput: (typedValue: Price<Token, Token> | undefined) => void
-  currencyA?: Currency | undefined
-  currencyB?: Currency | undefined
+  currencyA?: Currency | undefined | null
+  currencyB?: Currency | undefined | null
   feeAmount?: number
   ticksAtLimit: { [bound in Bound]?: boolean | undefined }
 }) {

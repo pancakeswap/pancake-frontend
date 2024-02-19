@@ -7,7 +7,7 @@ import { publicClient } from 'utils/wagmi'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
 
 interface UseExchangeRateProps {
-  decimals: number
+  decimals?: number
 }
 
 interface UseExchangeRateDetail {

@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { getGasLimitOnChain, getDefaultGasLimit } from '@pancakeswap/multicall'
+import { getDefaultGasLimit, getGasLimitOnChain } from '@pancakeswap/multicall'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
@@ -14,7 +14,12 @@ export function useMulticallGasLimit(chainId?: ChainId) {
 
   const { data: gasLimitOnChain } = useQuery({
     queryKey: [chainId],
-    queryFn: async () => getGasLimitOnChain({ chainId, client }),
+    queryFn: async () => {
+      if (!chainId) {
+        throw new Error('chainId is not defined')
+      }
+      return getGasLimitOnChain({ chainId, client })
+    },
     enabled: Boolean(chainId && client && !shouldUseDefault),
     refetchOnMount: false,
     refetchOnReconnect: false,

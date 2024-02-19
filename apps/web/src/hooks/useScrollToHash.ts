@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { getHashFromRouter } from 'utils/getHashFromRouter'
 
 const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
@@ -9,7 +9,7 @@ const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
   useEffect(() => {
     if (enabled && !isFetching && router.isReady && !initialScrollDone) {
       const hashFromRouter = getHashFromRouter(router)?.[0].replace('#', '')
-      if (hashFromRouter !== null && hashFromRouter !== '') {
+      if (!!hashFromRouter && hashFromRouter !== '') {
         const elementToScroll = document.getElementById(hashFromRouter)
         if (elementToScroll && window) {
           const scrollAfter = setTimeout(() => {

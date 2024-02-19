@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { isStableSwap, V2TradeAndStableSwap } from 'config/constants/types'
+import { V2TradeAndStableSwap, isStableSwap } from 'config/constants/types'
 import { useMemo } from 'react'
 import { useGasPrice } from 'state/user/hooks'
 import { logSwap, logTx } from 'utils/log'
@@ -10,11 +10,11 @@ import { isUserRejected } from 'utils/sentry'
 import { Hash, isAddress } from 'viem'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import { basisPointsToPercent } from 'utils/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 export enum SwapCallbackState {
   INVALID,
@@ -43,7 +43,7 @@ interface SwapCallEstimate {
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(
-  trade: V2TradeAndStableSwap, // trade to execute, required
+  trade: V2TradeAndStableSwap | null, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: SwapCall[],
@@ -173,7 +173,7 @@ export function useSwapCallback(
                     inputSymbol,
                     outputAmount,
                     outputSymbol,
-                    ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                    ...(recipient !== account && recipientAddressText && { recipientAddress: recipientAddressText }),
                   },
                 },
                 type: 'swap',

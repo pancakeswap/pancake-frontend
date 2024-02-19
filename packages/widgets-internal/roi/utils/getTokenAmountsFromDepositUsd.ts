@@ -3,8 +3,8 @@ import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
 
 interface Params {
   usdValue?: string;
-  currencyA?: Currency;
-  currencyB?: Currency;
+  currencyA?: Currency | null;
+  currencyB?: Currency | null;
   price?: number | string;
   priceLower?: number | string;
   priceUpper?: number | string;

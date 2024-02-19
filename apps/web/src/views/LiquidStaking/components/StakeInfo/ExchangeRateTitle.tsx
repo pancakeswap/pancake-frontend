@@ -1,9 +1,9 @@
-import { Text, QuestionHelper, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, QuestionHelper, Text } from '@pancakeswap/uikit'
 
 interface ExchangeRateTitleProps {
-  tokenOSymbol: string
-  token1Symbol: string
+  tokenOSymbol?: string
+  token1Symbol?: string
 }
 
 export const ExchangeRateTitle: React.FC<ExchangeRateTitleProps> = ({ tokenOSymbol, token1Symbol }) => {

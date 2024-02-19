@@ -1,8 +1,8 @@
 import { Currency, CurrencyAmount, Price } from "@pancakeswap/sdk";
+import { formatAmount, formatPrice } from "@pancakeswap/utils/formatFractions";
 import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
 import { FeeCalculator, TickMath } from "@pancakeswap/v3-sdk";
-import { useCallback, useMemo, useState, useEffect } from "react";
-import { formatPrice, formatAmount } from "@pancakeswap/utils/formatFractions";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { getTokenAmountsFromDepositUsd } from "../utils";
 
@@ -75,8 +75,8 @@ export function useAmounts({
 
 interface AmountsByUsdValueParams {
   usdValue?: string;
-  currencyA?: Currency;
-  currencyB?: Currency;
+  currencyA?: Currency | null;
+  currencyB?: Currency | null;
   price?: Price<Currency, Currency>;
   priceLower?: Price<Currency, Currency>;
   priceUpper?: Price<Currency, Currency>;

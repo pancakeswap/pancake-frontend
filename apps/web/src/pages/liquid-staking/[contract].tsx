@@ -1,26 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Text, RowBetween, Box, Flex, Image } from '@pancakeswap/uikit'
-import { AppBody, AppHeader } from 'components/App'
-import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import Page from 'views/Page'
-import { useCurrency } from 'hooks/Tokens'
-import { LightGreyCard } from 'components/Card'
-import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { Box, CardBody, Flex, Image, RowBetween, Text } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
-import { useCurrencyBalance } from 'state/wallet/hooks'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
+import { AppBody, AppHeader } from 'components/App'
+import { LightGreyCard } from 'components/Card'
+import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
+import { useCurrency } from 'hooks/Tokens'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useState } from 'react'
+import { useCurrencyBalance } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
-import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
-import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
-import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
 import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingButton'
+import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
+import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
+import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
+import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
+import Page from 'views/Page'
 
 const LiquidStakingStakePage = () => {
   const { t } = useTranslation()
@@ -91,7 +91,12 @@ const LiquidStakingStakePage = () => {
               maxAmount={currencyBalance}
               disableCurrencySelect
               value={stakeAmount}
-              onMax={() => setStakeAmount(maxAmountSpend(currencyBalance)?.toExact())}
+              onMax={() => {
+                const max = maxAmountSpend(currencyBalance)?.toExact()
+                if (max) {
+                  setStakeAmount(max)
+                }
+              }}
               onUserInput={setStakeAmount}
               showQuickInputButton
               showMaxButton

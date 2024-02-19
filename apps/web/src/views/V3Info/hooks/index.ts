@@ -119,7 +119,7 @@ export const useTokenPriceChartData = (
 
 // this is for the swap page and ROI calculator
 export const usePairPriceChartTokenData = (
-  address: string,
+  address?: string,
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChainId?: ChainId,
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
@@ -130,6 +130,9 @@ export const usePairPriceChartTokenData = (
     queryKey: [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChainId ?? chainId],
 
     queryFn: async () => {
+      if (!address) {
+        throw new Error('Address is not defined')
+      }
       const utcCurrentTime = dayjs()
       const startTimestamp = utcCurrentTime
         .subtract(1, duration ?? 'day')
@@ -145,7 +148,7 @@ export const usePairPriceChartTokenData = (
       )
     },
 
-    enabled: Boolean(chainId && address && address !== 'undefined'),
+    enabled: Boolean(chainId && !!address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(

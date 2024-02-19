@@ -17,9 +17,9 @@ import { styled } from 'styled-components'
 
 import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 import { Bound } from 'config/constants/types'
-import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useFarm } from 'hooks/useFarm'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
@@ -34,9 +34,9 @@ import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 
 interface Props {
-  baseCurrency?: Currency
-  quoteCurrency?: Currency
-  feeAmount: number
+  baseCurrency?: Currency | null
+  quoteCurrency?: Currency | null
+  feeAmount?: number
   showTitle?: boolean
   showQuestion?: boolean
   allowApply?: boolean

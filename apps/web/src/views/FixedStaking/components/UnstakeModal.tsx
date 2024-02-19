@@ -1,9 +1,9 @@
-import { ModalV2, Modal, Text, Button, Card } from '@pancakeswap/uikit'
-import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
+import { Button, Card, Modal, ModalV2, Text } from '@pancakeswap/uikit'
+import { LightCard } from 'components/Card'
 
-import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { UnstakeType } from '../type'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { ModalTitle } from './ModalTitle'
 
 export function UnstakeEndedModal({
@@ -27,7 +27,7 @@ export function UnstakeEndedModal({
         }}
         title={<ModalTitle token={token} tokenTitle={token.symbol} lockPeriod={lockPeriod} isEnded />}
         width={['100%', '100%', '420px']}
-        maxWidth={['100%', , '420px']}
+        maxWidth={['100%', null, '420px']}
       >
         <LightCard mb="16px">
           <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left">

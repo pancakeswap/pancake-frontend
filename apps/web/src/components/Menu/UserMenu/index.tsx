@@ -1,31 +1,31 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Flex,
   LogoutIcon,
   RefreshIcon,
-  useModal,
   UserMenu as UIKitUserMenu,
   UserMenuDivider,
   UserMenuItem,
   UserMenuVariant,
+  useModal,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import useAirdropModalStatus from 'components/GlobalCheckClaimStatus/hooks/useAirdropModalStatus'
 import Trans from 'components/Trans'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
+import { useDomainNameForAddress } from 'hooks/useDomain'
 import NextLink from 'next/link'
-import { useEffect, useState, useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
-import { useDomainNameForAddress } from 'hooks/useDomain'
-import useAirdropModalStatus from 'components/GlobalCheckClaimStatus/hooks/useAirdropModalStatus'
+import ClaimYourNFT from './ClaimYourNFT'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
-import ClaimYourNFT from './ClaimYourNFT'
 
 const UserMenuItems = () => {
   const { t } = useTranslation()
@@ -122,10 +122,10 @@ const UserMenu = () => {
 
   return (
     <ConnectWalletButton scale="sm">
-      <Box display={['none', , , 'block']}>
+      <Box display={['none', null, null, 'block']}>
         <Trans>Connect Wallet</Trans>
       </Box>
-      <Box display={['block', , , 'none']}>
+      <Box display={['block', null, null, 'none']}>
         <Trans>Connect</Trans>
       </Box>
     </ConnectWalletButton>

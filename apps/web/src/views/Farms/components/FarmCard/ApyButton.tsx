@@ -24,7 +24,7 @@ export interface ApyButtonProps {
   multiplier?: string
   cakePrice?: BigNumber
   apr?: number
-  displayApr?: string
+  displayApr: string | null
   lpRewardsApr?: number
   addLiquidityUrl?: string
   strikethrough?: boolean

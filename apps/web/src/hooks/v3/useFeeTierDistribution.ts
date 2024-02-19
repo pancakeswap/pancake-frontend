@@ -21,8 +21,8 @@ interface FeeTierDistribution {
 }
 
 export function useFeeTierDistribution(
-  currencyA: Currency | undefined,
-  currencyB: Currency | undefined,
+  currencyA: Currency | undefined | null,
+  currencyB: Currency | undefined | null,
 ): FeeTierDistribution {
   const { isPending, error, distributions, tvlByFeeTier } = usePoolTVL(currencyA?.wrapped, currencyB?.wrapped)
 
@@ -119,7 +119,7 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
 
     // sum total tvl for token0 and token1
     const [sumToken0Tvl, sumToken1Tvl] = Object.values(tvlByFeeTier).reduce(
-      (acc: [number, number], value) => {
+      (acc: [number, number], value: any) => {
         const result = acc
 
         result[0] += value[0] ?? 0
