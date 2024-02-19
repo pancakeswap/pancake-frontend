@@ -7,7 +7,7 @@ import { useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
 import { getChainName } from 'state/info/utils'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { v3Clients, v3InfoClients } from 'utils/graphql'
+import { v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
@@ -142,7 +142,7 @@ export const usePairPriceChartTokenData = (
         address,
         DURATION_INTERVAL[duration ?? 'day'],
         startTimestamp,
-        v3Clients[targetChainId ?? chainId],
+        v3InfoClients[targetChainId ?? chainId],
         multiChainName[targetChainId ?? chainId],
         SUBGRAPH_START_BLOCK[chainId],
       )
@@ -212,7 +212,7 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
 
     queryFn: () =>
       fetchedTokenDatas(
-        v3Clients[chainId], // TODO:  v3InfoClients[chainId],
+        v3InfoClients[chainId], // TODO:  v3InfoClients[chainId],
         addresses,
         blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
