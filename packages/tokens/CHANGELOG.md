@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.5
+
+### Patch Changes
+
+- 6157db8: add defi
+
 ## 0.6.4
 
 ### Patch Changes
