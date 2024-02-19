@@ -212,6 +212,12 @@ const tokenDataFetcher = (dataClient: GraphQLClient, tokenAddresses: string[], b
   return Promise.all(addressGroup.map((d) => fetchedTokenDatas(dataClient, d, blocks)))
 }
 
+type DataType =
+  | {
+      [address: string]: TokenData
+    }[]
+  | undefined
+
 export const useTokensData = (addresses: string[], targetChainId?: ChainId): TokenData[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
@@ -232,12 +238,14 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   const allTokensData = useMemo(() => {
-    return data && data.length > 0
-      ? data.reduce((a, b) => {
-          return { ...a, ...b }
-        }, {})
-      : {}
+    if (data) {
+      return data.reduce((acc, d) => {
+        return { ...acc, ...d.data }
+      }, {})
+    }
+    return undefined
   }, [data])
+
   return useMemo(() => (allTokensData ? Object.values(allTokensData) : undefined), [allTokensData])
 }
 
