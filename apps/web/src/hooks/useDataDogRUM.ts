@@ -1,4 +1,3 @@
-import { useIsomorphicEffect } from '@pancakeswap/uikit'
 import { atom, useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { datadogRum } from 'utils/datadog'
@@ -29,17 +28,26 @@ export function useDataDogRUM() {
     }
   }, [ready, address, setReady])
 
-  useIsomorphicEffect(() => {
+  useEffect(() => {
     // @ts-ignore
-    if (window?.ethereum?.isBinance)
-      datadogRum.startView({ name: 'Page View From Binance Web3 Wallet', service: window.location.pathname })
-  }, [])
+    if (ready && window?.ethereum?.isBinance) {
+      datadogRum.setGlobalContextProperty('wallet', 'Binance Web3 Wallet')
+    }
+
+    return () => {
+      datadogRum.removeGlobalContextProperty('wallet')
+    }
+  }, [ready])
 
   useEffect(() => {
     if (ready && address) {
       datadogRum.setUser({
         id: address,
       })
+    }
+
+    return () => {
+      datadogRum.clearUser()
     }
   }, [ready, address])
 }
