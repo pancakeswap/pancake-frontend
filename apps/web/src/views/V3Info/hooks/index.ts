@@ -201,6 +201,17 @@ export const useTopTokensData = ():
   return data?.data
 }
 
+const graphPerPage = 50
+
+const tokenDataFetcher = (dataClient: GraphQLClient, tokenAddresses: string[], blocks?: Block[]) => {
+  const times = Math.ceil(tokenAddresses.length / graphPerPage)
+  const addressGroup: Array<string[]> = []
+  for (let i = 0; i < times; i++) {
+    addressGroup.push(tokenAddresses.slice(i * graphPerPage, (i + 1) * graphPerPage))
+  }
+  return Promise.all(addressGroup.map((d) => fetchedTokenDatas(dataClient, d, blocks)))
+}
+
 export const useTokensData = (addresses: string[], targetChainId?: ChainId): TokenData[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
@@ -211,7 +222,7 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
     queryKey: [`v3/info/token/tokensData/${targetChainId}/${addresses?.join()}`, chainId],
 
     queryFn: () =>
-      fetchedTokenDatas(
+      tokenDataFetcher(
         v3InfoClients[chainId], // TODO:  v3InfoClients[chainId],
         addresses,
         blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
@@ -220,7 +231,14 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
     enabled: Boolean(chainId && blocks && addresses && addresses?.length > 0 && blocks?.length > 0),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
-  return useMemo(() => (data?.data ? Object.values(data?.data) : undefined), [data])
+  const allTokensData = useMemo(() => {
+    return data && data.length > 0
+      ? data.reduce((a, b) => {
+          return { ...a, ...b }
+        }, {})
+      : {}
+  }, [data])
+  return useMemo(() => (allTokensData ? Object.values(allTokensData) : undefined), [allTokensData])
 }
 
 export const useTokenData = (address: string): TokenData | undefined => {
@@ -242,6 +260,7 @@ export const useTokenData = (address: string): TokenData | undefined => {
     enabled: Boolean(chainId && blocks && address && address !== 'undefined' && blocks?.length > 0),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
+
   return data?.data?.[address]
 }
 
