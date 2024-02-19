@@ -1,5 +1,14 @@
 # games
 
+## 0.1.8
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.24
+- @pancakeswap/utils@6.0.2
+- @pancakeswap/localization@6.0.2
+- @pancakeswap/uikit@0.65.5
+
 ## 0.1.7
 
 ### Patch Changes
