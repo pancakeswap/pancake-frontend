@@ -667,7 +667,7 @@
   "On sale soon!": "Η πώληση θα ξεκινήσει σύντομα!",
   "Date": "Ημερομηνία",
   "Your Tickets": "Τα λαχεία σας",
-  "in prizes!": "σε έπαθλα!",
+  "in Prizes!": "in Prizes!",
   "Tickets on sale soon": "Η πώληση των λαχείων ξεκινάει σύντομα",
   "The PancakeSwap Lottery": "The PancakeSwap Lottery",
   "All History": "Όλο το ιστορικό",
@@ -2361,7 +2361,6 @@
   "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.": "Μεταφέρετε τη ρευστότητά σας στο Exchange V3 και συνεχίστε να κάνετε farming ανταμοιβές CAKE.",
   "Automatically fill in the maximum token amount according to your balance and position settings.": "Συμπληρώνει αυτόματα το μέγιστο ποσό νομισμάτων σύμφωνα με τις ρυθμίσεις του υπολοίπου και της θέσης σας.",
   "Price will appear here": "Η τιμή θα εμφανίζεται εδώ",
-  "We are in the early stage of V3 deployment. Due to a lack of historical data, numbers and estimates may be inaccurate.": "Βρισκόμαστε στο αρχικό στάδιο της ανάπτυξης της V3. Λόγω έλλειψης ιστορικών δεδομένων, οι τιμές και οι εκτιμήσεις ενδέχεται να είναι ανακριβείς.",
   "gm eth teams": "gm eth-teams",
   "Ev3ryone's Favourite D3X": "Το αγαπημένο D3X όλων",
   "Discover V3": "Ανακαλύψτε την V3",
@@ -3143,5 +3142,8 @@
   "Savings": "Savings",
   "Show testnet": "Show testnet",
   "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!": "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Updated": "Updated",
+  "Search name": "Search name",
+  "Note (20 characters)": "Note (20 characters)"
 }

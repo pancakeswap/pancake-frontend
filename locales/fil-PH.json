@@ -667,7 +667,7 @@
   "On sale soon!": "Malapit nang i-sale!",
   "Date": "Petsa",
   "Your Tickets": "Ang iyong mga Ticket",
-  "in prizes!": "na mga premyo!",
+  "in Prizes!": "in Prizes!",
   "Tickets on sale soon": "Ang benta ng mga ticket malapit na",
   "The PancakeSwap Lottery": "The PancakeSwap Lottery",
   "All History": "Lahat ng History",
@@ -2361,7 +2361,6 @@
   "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.": "I-migrate ang iyong liquidity sa Exchange V3 at patuloy na mag-farm ng mga CAKE na reward.",
   "Automatically fill in the maximum token amount according to your balance and position settings.": "Awtomatikong punan ang maximum na halaga ng token ayon sa iyong balanse at mga setting ng posisyon.",
   "Price will appear here": "Lalabas dito ang presyo",
-  "We are in the early stage of V3 deployment. Due to a lack of historical data, numbers and estimates may be inaccurate.": "Nasa unang bahagi kami ng pag-deploy ng V3. Dahil kulang ang dating data, posibleng hindi tumpak ang mga numero at pagtatantya.",
   "gm eth teams": "mga gm eth team",
   "Ev3ryone's Favourite D3X": "D3X na Paborito ng Lahat",
   "Discover V3": "Tuklasin ang V3",
@@ -3143,5 +3142,8 @@
   "Savings": "Savings",
   "Show testnet": "Show testnet",
   "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!": "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Updated": "Updated",
+  "Search name": "Search name",
+  "Note (20 characters)": "Note (20 characters)"
 }
