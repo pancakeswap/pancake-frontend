@@ -192,6 +192,14 @@ const config: (
       ],
     },
     {
+      label: t('V4'),
+      href: '/introducing-v4',
+      icon: NftIcon,
+      fillIcon: NftFillIcon,
+      image: '/images/decorations/nft.png',
+      items: [],
+    },
+    {
       label: '',
       href: '/info',
       icon: MoreIcon,
