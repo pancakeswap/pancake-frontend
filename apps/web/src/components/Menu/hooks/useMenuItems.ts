@@ -51,17 +51,16 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
             return { ...innerItem, status: itemMenuStatus }
           }
           if (modalId) {
-            let onClickEvent: any = null
             if (modalId === 'usCitizenConfirmModal') {
-              onClickEvent = (e: React.MouseEvent<HTMLElement>) => {
+              const onClickEvent = () => {
                 if (!userNotUsCitizenAcknowledgement && onUsCitizenModalPresent) {
-                  e.stopPropagation()
-                  e.preventDefault()
                   onUsCitizenModalPresent()
                 }
               }
+
+              return { ...innerItem, onClick: onClickEvent }
             }
-            return { ...innerItem, onClick: onClickEvent }
+            return { ...innerItem }
           }
           if (isInfo) {
             const href = `${innerItem.href}${multiChainPaths[chainId || ChainId.BSC] ?? ''}`
