@@ -1,5 +1,12 @@
 # @pancakeswap/sdk
 
+## 5.7.7
+
+### Patch Changes
+
+- Updated dependencies [c269d43]
+  - @pancakeswap/swap-sdk-core@1.0.1
+
 ## 5.7.6
 
 ### Patch Changes
