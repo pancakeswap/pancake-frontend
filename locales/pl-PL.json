@@ -3145,5 +3145,20 @@
   "Join Now": "Dołącz teraz",
   "Updated": "Zaktualizowano",
   "Search name": "Wyszukaj nazwę",
-  "Note (20 characters)": "Notatka (20 znaków)"
+  "Note (20 characters)": "Notatka (20 znaków)",
+  "New LP Position Added": "Dodano nową pozycję LP",
+  "New LP position successfully added. you will be notified on important updates.": "Dodano nową pozycję LP. Będziesz otrzymywać powiadomienia o ważnych aktualizacjach.",
+  "Notifications Enabled": "Włączone powiadomienia",
+  "You can now opt-in to pancakeswap web notifications": "Możesz teraz wyrazić zgodę na otrzymywanie internetowych powiadomień pancakeswap",
+  "Error Enabling Notifications": "Błąd podczas włączania powiadomień",
+  "Something went wrong when trying to enable notifications %error%": "Coś poszło nie tak podczas próby włączenia powiadomień, %error%",
+  "Subscription Error": "Błąd subskrypcji",
+  "Your notification preferences have been updated.": "Twoje preferencje dotyczące powiadomień zostały zaktualizowane.",
+  "Something went wrong": "Coś poszło nie tak",
+  "Unable to update your preferences %error%": "Nie można zaktualizować preferencji, %error%",
+  "Error Unsubscribing": "Błąd podczas anulowania subskrypcji",
+  "Unable to unsubscribe %error%": "Nie można anulować subskrypcji, %error%",
+  "You successfully unsubscribed from notifications. You can re-subscribe any time": "Anulowano subskrypcję powiadomień. Możesz ponownie subskrybować w dowolnym momencie",
+  "Failed to send": "Nie można wysłać",
+  "This product have been upgraded!": "Ten produkt został uaktualniony!"
 }
