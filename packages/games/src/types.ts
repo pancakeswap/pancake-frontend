@@ -48,6 +48,12 @@ export type Article = {
   link: string
 }
 
+export interface GameLinkType {
+  external?: boolean
+  signUpLink?: string
+  playNowLink: string
+}
+
 export interface GameType {
   id: string
   projectName: string
@@ -62,7 +68,7 @@ export interface GameType {
   }
   projectLogo: Logo
   projectCircleLogo: Logo
-  gameLink: string
+  gameLink: GameLinkType
   posters: {
     layout: PostersLayout
     items: PostersItemData[]

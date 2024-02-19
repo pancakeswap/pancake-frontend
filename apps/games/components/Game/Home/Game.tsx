@@ -228,10 +228,15 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                     )}
                   </Flex>
                 </Flex>
-                <Link width="100% !important" href={gameLink} mb={['32px', '32px', '32px', '32px', '32px', '49px']}>
+                <Link
+                  width="100% !important"
+                  href={gameLink}
+                  external={game?.gameLink?.external}
+                  mb={['32px', '32px', '32px', '32px', '32px', '49px']}
+                >
                   <Button width="100%">
                     <Text bold color="white">
-                      {t('Play Now')}
+                      {game?.gameLink?.signUpLink && !game.gameLink.playNowLink ? t('Sign Up') : t('Play Now')}
                     </Text>
                   </Button>
                 </Link>

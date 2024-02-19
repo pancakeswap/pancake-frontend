@@ -31,8 +31,12 @@ export const nemesisDownfall: GameType = {
     lightTheme: 'https://ndpcs.s3.amazonaws.com/Project+logotype+circle.png',
     darkTheme: 'https://ndpcs.s3.amazonaws.com/Project+logotype+circle.png',
   },
-  gameLink:
-    'https://auth.nemesisdownfall.com/login?client_id=60sha7m7ote2m6ipotns8kdr9b&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fnemesisdownfall.com%2Fsuccessful%2F',
+  gameLink: {
+    external: true,
+    signUpLink:
+      'https://auth.nemesisdownfall.com/login?client_id=60sha7m7ote2m6ipotns8kdr9b&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fnemesisdownfall.com%2Fsuccessful%2F',
+    playNowLink: '',
+  },
   posters: {
     layout: PostersLayout.Horizontal,
     items: [
