@@ -1,8 +1,8 @@
-import { Fragment } from 'react'
-import _uniqueId from 'lodash/uniqueId'
-import { styled } from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex } from '@pancakeswap/uikit'
+import _uniqueId from 'lodash/uniqueId'
+import { Fragment } from 'react'
+import { styled } from 'styled-components'
 import { CountdownProps } from '../../types'
 import Step from './Step'
 
@@ -23,8 +23,8 @@ const ProgressStepper: React.FC<React.PropsWithChildren<CountdownProps>> = ({ st
   const { t } = useTranslation()
   return (
     <Flex>
-      {steps.map((step, index) => {
-        const isPastSpacer = index < activeStepIndex
+      {steps?.map((step, index) => {
+        const isPastSpacer = typeof activeStepIndex !== 'undefined' ? index < activeStepIndex : false
         const stepText = t(step.text)
 
         return (
