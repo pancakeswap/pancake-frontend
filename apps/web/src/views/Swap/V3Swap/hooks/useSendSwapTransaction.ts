@@ -137,7 +137,7 @@ export default function useSendSwapTransaction(
         } else {
           call.gas =
             'gasEstimate' in bestCallOption && bestCallOption.gasEstimate
-              ? calculateGasMargin(bestCallOption.gasEstimate)
+              ? calculateGasMargin(bestCallOption.gasEstimate, 2000n)
               : undefined
         }
 
