@@ -1,5 +1,12 @@
 # @pancakeswap/position-managers
 
+## 0.1.12
+
+### Patch Changes
+
+- Updated dependencies [6157db8]
+  - @pancakeswap/tokens@0.6.5
+
 ## 0.1.11
 
 ### Patch Changes

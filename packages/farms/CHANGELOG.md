@@ -1,5 +1,12 @@
 # @pancakeswap/farms
 
+## 1.0.40
+
+### Patch Changes
+
+- Updated dependencies [6157db8]
+  - @pancakeswap/tokens@0.6.5
+
 ## 1.0.39
 
 ### Patch Changes
