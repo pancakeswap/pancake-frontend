@@ -27,6 +27,7 @@ export interface Logo {
 export enum GenreType {
   TowerDefense = 'Tower Defense',
   Casual = 'Casual',
+  FPS = 'First Person Shooter',
 }
 
 export enum TrendingTagType {
@@ -37,6 +38,9 @@ export enum TrendingTagType {
   Multiplayer = 'Multiplayer',
   CakeToken = 'CAKE token',
   BaseBuilding = 'Base Building',
+  NFT = 'NFT',
+  FPS = 'First Person Shooter',
+  Windows = 'Windows',
 }
 
 export type Article = {
