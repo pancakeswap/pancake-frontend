@@ -3,6 +3,7 @@ import Trans from 'components/Trans'
 import { useTranslation } from '@pancakeswap/localization'
 import { Text, Button, Flex, Box, Balance } from '@pancakeswap/uikit'
 import { WinRateCalculatorState } from 'views/Pottery/hooks/useWinRateCalculator'
+import { ReactNode } from 'react'
 
 const StyledBox = styled(Box)`
   background-color: ${({ theme }) => theme.colors.input};
@@ -13,7 +14,7 @@ const StyledBox = styled(Box)`
 `
 
 interface TvlType {
-  title: string | JSX.Element
+  title: string | ReactNode
   multiply: number
 }
 

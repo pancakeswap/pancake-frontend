@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { Flex, Spinner, Text } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { styled } from 'styled-components'
@@ -68,7 +68,7 @@ const History = () => {
   const results = getFilteredBets(bets, historyFilter)
   const hasBetHistory = results && results.length > 0
 
-  let activeTabComponent: JSX.Element | null = null
+  let activeTabComponent: ReactNode | null = null
 
   switch (activeTab) {
     case HistoryTabs.PNL:
