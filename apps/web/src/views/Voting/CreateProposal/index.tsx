@@ -74,6 +74,8 @@ const CreateProposal = () => {
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
 
+    if (!account) return
+
     try {
       setIsLoading(true)
 
@@ -81,7 +83,7 @@ const CreateProposal = () => {
         getSigner: () => {
           return {
             _signTypedData: (domain, types, message) =>
-              signer.signTypedData({
+              signer?.signTypedData({
                 account,
                 domain,
                 types,
@@ -97,8 +99,8 @@ const CreateProposal = () => {
         type: 'single-choice',
         title: name,
         body,
-        start: combineDateAndTime(startDate, startTime),
-        end: combineDateAndTime(endDate, endTime),
+        start: combineDateAndTime(startDate, startTime) || 0,
+        end: combineDateAndTime(endDate, endTime) || 0,
         choices: choices
           .filter((choice) => choice.value)
           .map((choice) => {
