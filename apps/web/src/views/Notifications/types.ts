@@ -1,3 +1,5 @@
+import { ContextApi } from '@pancakeswap/localization'
+
 export enum ResponseEvents {
   NotificationsEnabled = 'NotificationsEnabled',
   NotificationsEnabledError = 'NotificationsEnabledError',
@@ -37,8 +39,8 @@ export enum PAGE_VIEW {
 }
 
 export type EventInformation = {
-  title: string
-  message?: (error?: any) => string
+  title: (t: ContextApi['t']) => string
+  message?: (t: any, error?: any) => string
 }
 
 export type Scope = {

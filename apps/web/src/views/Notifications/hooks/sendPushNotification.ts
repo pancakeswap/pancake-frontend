@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { NOTIFICATION_HUB_BASE_URL } from 'config/constants/endpoints'
 import crypto from 'crypto'
@@ -20,6 +21,7 @@ interface IUseSendNotification {
 const useSendPushNotification = (): IUseSendNotification => {
   const toast = useToast()
   const { address } = useAccount()
+  const { t } = useTranslation()
 
   const requestNotificationPermission = async () => {
     if (!('Notification' in window)) {
@@ -44,7 +46,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         const existingSubscription = await registration.pushManager.getSubscription()
 
         if (existingSubscription) {
-          // Unsubscribe the user from the existing subscription // fixes brokeb subscriptuon
+          // Unsubscribe the user from the existing subscription // fixes broken subscription
           await existingSubscription.unsubscribe()
         }
 
@@ -76,7 +78,7 @@ const useSendPushNotification = (): IUseSendNotification => {
   const sendPushNotification = async (notificationType: BuilderNames, args: string[], account: string) => {
     const notificationPayload: NotificationPayload = {
       accounts: [account],
-      notification: PancakeNotifications[notificationType](args),
+      notification: PancakeNotifications[notificationType](t, args),
     }
     try {
       await fetch(`${NOTIFICATION_HUB_BASE_URL}/walletconnect-notify`, {
@@ -89,7 +91,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       })
     } catch (error) {
       if (error instanceof Error) {
-        toast.toastError('Failed to send', error.message)
+        toast.toastError(t('Failed to send'), error.message)
       }
     }
   }

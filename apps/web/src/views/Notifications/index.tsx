@@ -5,6 +5,7 @@ import { useAppDispatch } from 'state'
 import { clearArchivedTransactions } from 'state/notifications/actions'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import { useAccount, useSignMessage } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import { APP_DOMAIN, Events, TWO_MINUTES_MILLISECONDS } from './constants'
 import NotificationSettingsView from './containers/NotificationSettings'
@@ -25,6 +26,7 @@ const Notifications = () => {
   const { isSubscribed } = useManageSubscription(account)
   const { subscription } = useSubscription(account)
   const toast = useToast()
+  const { t } = useTranslation()
 
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
@@ -46,9 +48,9 @@ const Notifications = () => {
       })
     } catch (error) {
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
-      toast.toastError(Events.SubscriptionRequestError.title, errMessage)
+      toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
     }
-  }, [signMessageAsync, registerIdentity, account, toast])
+  }, [t, signMessageAsync, registerIdentity, account, toast])
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
