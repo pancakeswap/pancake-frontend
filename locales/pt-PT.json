@@ -3145,5 +3145,20 @@
   "Join Now": "Comece agora",
   "Updated": "Atualizado",
   "Search name": "Pesquisar nome",
-  "Note (20 characters)": "Nota (20 caracteres)"
+  "Note (20 characters)": "Nota (20 caracteres)",
+  "New LP Position Added": "New LP Position Added",
+  "New LP position successfully added. you will be notified on important updates.": "New LP position successfully added. you will be notified on important updates.",
+  "Notifications Enabled": "Notifications Enabled",
+  "You can now opt-in to pancakeswap web notifications": "You can now opt-in to pancakeswap web notifications",
+  "Error Enabling Notifications": "Error Enabling Notifications",
+  "Something went wrong when trying to enable notifications %error%": "Something went wrong when trying to enable notifications %error%",
+  "Subscription Error": "Subscription Error",
+  "Your notification preferences have been updated.": "Your notification preferences have been updated.",
+  "Something went wrong": "Something went wrong",
+  "Unable to update your preferences %error%": "Unable to update your preferences %error%",
+  "Error Unsubscribing": "Error Unsubscribing",
+  "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
+  "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
+  "Failed to send": "Failed to send",
+  "This product have been upgraded!": "This product have been upgraded!"
 }
