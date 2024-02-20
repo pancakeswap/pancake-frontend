@@ -1,8 +1,8 @@
-import { Abi, Address } from 'viem'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { ReactNode } from 'react'
+import { Abi, Address } from 'viem'
 
-interface NativeToken {
+export interface NativeToken {
   name: string
   symbol: string
   decimals: number
@@ -40,4 +40,5 @@ export interface LiquidStakingList {
   stakingMethodArgs: string[]
   stakingOverrides: string[]
   FAQs: FAQType[]
+  requestWithdrawFn: string
 }

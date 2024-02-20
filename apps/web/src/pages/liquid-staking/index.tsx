@@ -1,21 +1,14 @@
-// import { useTranslation } from '@pancakeswap/localization'
-// import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
-import { useState, useCallback, useEffect, useMemo } from 'react'
 import { AppBody } from 'components/App'
+import { SNBNB } from 'config/constants/liquidStaking'
 import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
-import Page from 'views/Page'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { LiquidStakingPageStake } from 'views/LiquidStaking/Stake'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { WithdrawRequest } from 'views/LiquidStaking/components/WithdrawRequest'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
-// import { LiquidStakingPageHistory } from 'views/LiquidStaking/History'
-
-// enum ACTIONS {
-//   STAKE = 0,
-//   UNSTAKE = 1,
-//   HISTORY = 2,
-// }
+import Page from 'views/Page'
 
 export interface OptionProps extends LiquidStakingList {
   label: string
@@ -59,26 +52,24 @@ const LiquidStakingPage = () => {
 
   return (
     <Page>
-      {/* <ButtonMenu
-        mb="32px"
-        scale="sm"
-        activeIndex={selectedTypeIndex}
-        onItemClick={(index) => setSelectedTypeIndex(index)}
-        variant="subtle"
-      >
-        <ButtonMenuItem>{t('Stake')}</ButtonMenuItem>
-        <ButtonMenuItem>{t('Unstake')}</ButtonMenuItem>
-        <ButtonMenuItem>{t('History')}</ButtonMenuItem>
-      </ButtonMenu> */}
       <AppBody mb="24px">
-        <LiquidStakingPageStake
-          selectedList={selectedList}
-          optionsList={optionsList}
-          handleSortOptionChange={handleSortOptionChange}
-        />
-        {/* {ACTIONS.STAKE === selectedTypeIndex && <LiquidStakingPageStake />}
-        {ACTIONS.HISTORY === selectedTypeIndex && <LiquidStakingPageHistory />} */}
+        {selectedList.token0 && selectedList.token1 ? (
+          <LiquidStakingPageStake
+            selectedList={selectedList}
+            optionsList={optionsList}
+            handleSortOptionChange={handleSortOptionChange}
+          />
+        ) : null}
       </AppBody>
+      {selectedList &&
+      selectedList.token0 &&
+      selectedList.token1 &&
+      chainId &&
+      selectedList?.contract !== SNBNB[chainId] ? (
+        <AppBody mb="24px">
+          <WithdrawRequest selectedList={selectedList} />
+        </AppBody>
+      ) : null}
       <AppBody>
         <LiquidStakingFAQs config={selectedList?.FAQs} />
       </AppBody>

@@ -26,7 +26,7 @@ export const LiquidStakingApr: React.FC<LiquidStakingAprProps> = ({ contract, to
   )
 
   return (
-    <RowBetween mb="24px">
+    <RowBetween mb="8px">
       <Flex>
         <Text color="textSubtle">{t('Est. APR')}</Text>
         <QuestionHelper ml="4px" text={tooltipMsg} size="20px" placement="bottom" />

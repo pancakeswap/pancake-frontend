@@ -23,10 +23,10 @@ import useNativeCurrency from './useNativeCurrency'
 const mapWithoutUrls = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) => {
   if (!tokenMap || !chainId) return {}
   return Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: ERC20Token }>((newMap, address) => {
-    const checksummedAddress = safeGetAddress(address)
+    const checksumAddress = safeGetAddress(address)
 
-    if (checksummedAddress && !newMap[checksummedAddress]) {
-      newMap[checksummedAddress] = tokenMap[chainId][address].token
+    if (checksumAddress && !newMap[checksumAddress]) {
+      newMap[checksumAddress] = tokenMap[chainId][address].token
     }
 
     return newMap
@@ -55,10 +55,10 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
         // reduce into all ALL_TOKENS filtered by the current chain
         .reduce<{ [address: string]: ERC20Token }>(
           (tokenMap_, token) => {
-            const checksummedAddress = safeGetAddress(token.address)
+            const checksumAddress = safeGetAddress(token.address)
 
-            if (checksummedAddress) {
-              tokenMap_[checksummedAddress] = token
+            if (checksumAddress) {
+              tokenMap_[checksumAddress] = token
             }
 
             return tokenMap_
@@ -93,10 +93,10 @@ export function useOfficialsAndUserAddedTokens(): { [address: string]: ERC20Toke
         // reduce into all ALL_TOKENS filtered by the current chain
         .reduce<{ [address: string]: ERC20Token }>(
           (tokenMap_, token) => {
-            const checksummedAddress = safeGetAddress(token.address)
+            const checksumAddress = safeGetAddress(token.address)
 
-            if (checksummedAddress) {
-              tokenMap_[checksummedAddress] = token
+            if (checksumAddress) {
+              tokenMap_[checksumAddress] = token
             }
 
             return tokenMap_
@@ -195,17 +195,19 @@ export function useOnRampToken(tokenAddress?: string): Currency | undefined {
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
-  const native = useNativeCurrency()
+  const native: NativeCurrency = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
+
   const token = useToken(isNative ? undefined : currencyId)
   return isNative ? native : token
 }
 
 export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | Currency | null | undefined {
-  const native = useNativeCurrency()
+  const native: NativeCurrency = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
   const token = useOnRampToken(currencyId)
+
   return isNative ? native : token
 }
