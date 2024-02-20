@@ -1,29 +1,29 @@
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  BinanceIcon,
   Box,
+  CameraIcon,
+  CogIcon,
   Flex,
   Grid,
-  Text,
-  CogIcon,
   SellIcon,
-  WalletFilledIcon,
-  CameraIcon,
-  BinanceIcon,
   Skeleton,
+  Text,
+  WalletFilledIcon,
   useModal,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { useProfile } from 'state/profile/hooks'
-import { NftLocation, NftToken, Collection } from 'state/nftMarket/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from '@pancakeswap/localization'
+import { Collection, NftLocation, NftToken } from 'state/nftMarket/types'
+import { useProfile } from 'state/profile/hooks'
+import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
-import { CollectibleRowContainer, SmallRoundedImage } from './styles'
-import ProfileNftModal from '../../../components/ProfileNftModal'
+import { useAccount } from 'wagmi'
 import SellModal from '../../../components/BuySellModals/SellModal'
+import ProfileNftModal from '../../../components/ProfileNftModal'
 import { useCollectionsNftsForAddress } from '../../../hooks/useNftsForAddress'
 import ExpandableCard from './ExpandableCard'
+import { CollectibleRowContainer, SmallRoundedImage } from './styles'
 
 const ScrollableContainer = styled(Box)`
   overflow-y: auto;
@@ -49,7 +49,7 @@ const LocationIcons = {
 
 interface CollectibleRowProps {
   nft: NftToken
-  lowestPrice: string
+  lowestPrice?: string
   onSuccessSale: () => void
 }
 
@@ -110,7 +110,7 @@ const CollectibleRow: React.FC<React.PropsWithChildren<CollectibleRowProps>> = (
 interface CollectiblesByLocationProps {
   location: NftLocation
   nfts: NftToken[]
-  lowestPrice: string
+  lowestPrice?: string
   onSuccessSale: () => void
 }
 
@@ -147,10 +147,10 @@ interface ManageNftsCardProps {
 }
 
 const getNftFilter = (location: NftLocation) => {
-  return (nft: NftToken, collectionAddress: string, tokenId: string | number): boolean => {
+  return (nft: NftToken, collectionAddress: string, tokenId: string | number | undefined): boolean => {
     return (
       safeGetAddress(nft.collectionAddress) === safeGetAddress(collectionAddress) &&
-      (tokenId ? nft.attributes[0].value === tokenId : true) &&
+      (tokenId ? nft.attributes?.[0].value === tokenId : true) &&
       nft.location === location
     )
   }
@@ -165,13 +165,18 @@ const ManageNFTsCard: React.FC<React.PropsWithChildren<ManageNftsCardProps>> = (
   const { t } = useTranslation()
   const { address: account } = useAccount()
 
-  const { isLoading: isProfileLoading, profile } = useProfile()
+  const { isLoading: isProfileFetching, profile } = useProfile()
 
   const {
     nfts: userNfts,
     isLoading,
     refresh,
-  } = useCollectionsNftsForAddress(account, profile, isProfileLoading, { [collection.address]: collection })
+  } = useCollectionsNftsForAddress({
+    account: account || '',
+    profile,
+    isProfileFetching,
+    collections: { [collection.address]: collection },
+  })
 
   const walletFilter = getNftFilter(NftLocation.WALLET)
   const forSaleFilter = getNftFilter(NftLocation.FORSALE)

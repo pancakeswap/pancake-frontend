@@ -36,7 +36,7 @@ ProposalPage.Meta = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export const getStaticProps = (async ({ params }) => {
   const queryClient = new QueryClient()
-  const { id } = params
+  const id = params?.id
   if (typeof id !== 'string') {
     return {
       notFound: true,

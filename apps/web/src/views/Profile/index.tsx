@@ -1,16 +1,16 @@
-import { useCallback } from 'react'
-import { useRouter } from 'next/router'
-import { safeGetAddress } from 'utils'
-import { useAchievementsForAddress, useProfileForAddress } from 'state/profile/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { useTranslation } from '@pancakeswap/localization'
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+import { useAchievementsForAddress, useProfileForAddress } from 'state/profile/hooks'
 import { styled } from 'styled-components'
-import MarketPageHeader from '../Nft/market/components/MarketPageHeader'
-import ProfileHeader from './components/ProfileHeader'
+import { safeGetAddress } from 'utils'
 import NoNftsImage from '../Nft/market/components/Activity/NoNftsImage'
-import TabMenu from './components/TabMenu'
+import MarketPageHeader from '../Nft/market/components/MarketPageHeader'
 import { useNftsForAddress } from '../Nft/market/hooks/useNftsForAddress'
+import ProfileHeader from './components/ProfileHeader'
+import TabMenu from './components/TabMenu'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;
@@ -45,7 +45,7 @@ const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) =>
     nfts: userNfts,
     isLoading: isNftLoading,
     refresh: refreshUserNfts,
-  } = useNftsForAddress(accountAddress, profile, isProfileValidating)
+  } = useNftsForAddress({ account: accountAddress, profile, isProfileFetching: isProfileValidating })
 
   const onSuccess = useCallback(async () => {
     await refreshProfile()
@@ -83,7 +83,7 @@ const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) =>
       <MarketPageHeader position="relative">
         <ProfileHeader
           accountPath={accountAddress}
-          profile={profile}
+          profile={profile || null}
           achievements={achievements}
           nftCollected={userNfts.length}
           isProfileLoading={isProfileFetching}

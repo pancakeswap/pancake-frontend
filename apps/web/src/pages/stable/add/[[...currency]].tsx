@@ -1,14 +1,14 @@
 import { CAKE, USDC } from '@pancakeswap/tokens'
+import { useCurrency } from 'hooks/Tokens'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { CHAIN_IDS } from 'utils/wagmi'
-import { AddLiquidityV3Layout, UniversalAddLiquidity } from 'views/AddLiquidityV3'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import AddLiquidityV2FormProvider from 'views/AddLiquidity/AddLiquidityV2FormProvider'
-import useStableConfig from 'views/Swap/hooks/useStableConfig'
-import { useCurrency } from 'hooks/Tokens'
+import { AddLiquidityV3Layout, UniversalAddLiquidity } from 'views/AddLiquidityV3'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
+import useStableConfig from 'views/Swap/hooks/useStableConfig'
 
 const AddStableLiquidityPage = () => {
   const router = useRouter()
@@ -18,7 +18,7 @@ const AddStableLiquidityPage = () => {
 
   const [currencyIdA, currencyIdB] = router.query.currency || [
     native.symbol,
-    CAKE[chainId]?.address ?? USDC[chainId]?.address,
+    chainId ? CAKE[chainId]?.address ?? USDC[chainId]?.address : '',
   ]
 
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
@@ -57,7 +57,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { currency = [] } = params
+  const currency = params?.currency || []
   const [currencyIdA, currencyIdB] = currency
   const match = currencyIdA?.match(OLD_PATH_STRUCTURE)
 
