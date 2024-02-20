@@ -233,7 +233,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       })
 
       if (chainId) {
-          transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
+        transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       }
       onDone()
     }
@@ -298,7 +298,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       })
 
       if (chainId) {
-          transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
+        transactionDispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       }
       onDone()
     }
@@ -373,7 +373,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       if (length > 1) {
         onPresentTransactionModal()
       } else if (pendingFarm[0].txid && chainId) {
-          transactionDispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
+        transactionDispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
       }
     }
   }
