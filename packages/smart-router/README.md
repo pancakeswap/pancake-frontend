@@ -25,7 +25,7 @@ $ pnpm add viem@^1.19.11 graphql-request @pancakeswap/sdk @pancakeswap/tokens
 ```typescript
 import { createPublicClient, http } from 'viem'
 import { GraphQLClient } from 'graphql-request'
-import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter } from '@pancakeswap/smart-router'
 
 const publicClient = createPublicClient({
   chain: mainnet,
