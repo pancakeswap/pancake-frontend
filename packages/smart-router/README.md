@@ -17,7 +17,7 @@ For working code example, please refer to [smart-router-example](https://github.
 0. Install other dependencies
 
 ```bash
-$ pnpm add viem graphql-request @pancakeswap/sdk @pancakeswap/tokens
+$ pnpm add viem@^1.19.11 graphql-request @pancakeswap/sdk @pancakeswap/tokens
 ```
 
 1. Prepare on-chain rpc provider and subgraph providers
