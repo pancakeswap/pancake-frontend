@@ -19,7 +19,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const queryClient = new QueryClient()
-  const { id } = params
+  const id = params?.id
   if (typeof id !== 'string') {
     return {
       notFound: true,

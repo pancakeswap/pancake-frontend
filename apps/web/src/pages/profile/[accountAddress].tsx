@@ -1,11 +1,11 @@
-import { useAccount } from 'wagmi'
 import { useRouter } from 'next/router'
 import { useProfileForAddress } from 'state/profile/hooks'
+import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
 import { NftProfileLayout } from 'views/Profile'
 import SubMenu from 'views/Profile/components/SubMenu'
 import UnconnectedProfileNfts from 'views/Profile/components/UnconnectedProfileNfts'
 import UserNfts from 'views/Profile/components/UserNfts'
-import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
+import { useAccount } from 'wagmi'
 
 const NftProfilePage = () => {
   const { address: account } = useAccount()
@@ -24,7 +24,7 @@ const NftProfilePage = () => {
     nfts,
     isLoading: isNftLoading,
     refresh: refreshUserNfts,
-  } = useNftsForAddress(accountAddress, profile, isProfileFetching)
+  } = useNftsForAddress({ account: accountAddress, profile, isProfileFetching })
 
   return (
     <>
