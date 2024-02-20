@@ -1,5 +1,5 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   ButtonMenu,
@@ -20,7 +20,7 @@ import { multiChainId, multiChainPaths, multiChainShortName } from 'state/info/c
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { styled } from 'styled-components'
 import { chains } from 'utils/wagmi'
-import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync, linea, base, opBNB } from 'wagmi/chains'
+import { arbitrum, base, bsc, linea, mainnet, opBNB, polygonZkEvm, zkSync } from 'wagmi/chains'
 import { v3InfoPath } from '../../constants'
 import Search from '../Search'
 
@@ -132,7 +132,7 @@ const NetworkSelect: React.FC<{ chainId: ChainId; switchNetwork: (chainId: numbe
           key={chain.id}
           style={{ justifyContent: 'flex-start' }}
           onClick={() => {
-            if (chain.id !== chainId) switchNetwork(chain.id)
+            if (chain.id !== chainId) switchNetwork({ chainId: chain.id })
           }}
         >
           <ChainLogo chainId={chain.id} />

@@ -1,20 +1,16 @@
-import { LotteryStatus, LotteryTicket } from 'config/constants/types'
-import { lotteryV2ABI } from 'config/abi/lotteryV2'
-import { getLotteryV2Address } from 'utils/addressHelpers'
-import { LotteryResponse } from 'state/types'
-import { getLotteryV2Contract } from 'utils/contractHelpers'
-import { bigIntToSerializedBigNumber } from '@pancakeswap/utils/bigNumber'
-import { NUM_ROUNDS_TO_FETCH_FROM_NODES } from 'config/constants/lottery'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
-import { ContractFunctionResult } from 'viem'
+import { bigIntToSerializedBigNumber } from '@pancakeswap/utils/bigNumber'
+import { lotteryV2ABI } from 'config/abi/lotteryV2'
+import { NUM_ROUNDS_TO_FETCH_FROM_NODES } from 'config/constants/lottery'
+import { LotteryStatus, LotteryTicket } from 'config/constants/types'
+import { LotteryResponse } from 'state/types'
+import { getLotteryV2Address } from 'utils/addressHelpers'
+import { getLotteryV2Contract } from 'utils/contractHelpers'
+import { viemClients } from 'utils/viem'
 
 const lotteryContract = getLotteryV2Contract()
 
-const processViewLotterySuccessResponse = (
-  response: ContractFunctionResult<typeof lotteryV2ABI, 'viewLottery'>,
-  lotteryId: string,
-): LotteryResponse => {
+const processViewLotterySuccessResponse = (response: any, lotteryId: string): LotteryResponse => {
   const {
     status,
     startTime,
@@ -94,7 +90,7 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
       } as const),
   )
   try {
-    const client = publicClient({ chainId: ChainId.BSC })
+    const client = viemClients[ChainId.BSC]
     const multicallRes = await client.multicall({
       contracts: calls,
     })
@@ -123,7 +119,7 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
         } as const),
     )
 
-    const client = publicClient({ chainId: ChainId.BSC })
+    const client = viemClients[ChainId.BSC]
     const [currentLotteryId, maxNumberTicketsPerBuyOrClaim] = await client.multicall({
       contracts: calls,
       allowFailure: false,

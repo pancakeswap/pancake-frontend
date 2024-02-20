@@ -1,12 +1,12 @@
-import { useState, useCallback } from 'react'
+import { ChainId } from '@pancakeswap/chains'
+import { Ifo, IfoStatus, PoolIds } from '@pancakeswap/ifos'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
-import { Ifo, IfoStatus, PoolIds } from '@pancakeswap/ifos'
-import { useLpTokenPrice } from 'state/farms/hooks'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/chains'
 import { ifoV1ABI } from 'config/abi/ifoV1'
+import { useCallback, useState } from 'react'
+import { useLpTokenPrice } from 'state/farms/hooks'
+import { getViemClients } from 'utils/viem'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 
@@ -47,7 +47,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           } as const),
       )
 
-      const client = publicClient({ chainId: ChainId.BSC })
+      const client = getViemClients({ chainId: ChainId.BSC })
 
       const [startBlockResult, endBlockResult, raisingAmountResult, totalAmountResult] = await client.multicall({
         contracts: ifoCalls,

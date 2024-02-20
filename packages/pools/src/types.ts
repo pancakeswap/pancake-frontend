@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
-import { PublicClient, Address } from 'viem'
 import type { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
+import { Address, PublicClient } from 'viem'
 
-export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient
+export type OnChainProvider = ({ chainId }: { chainId?: ChainId | undefined }) => PublicClient
 
 export type SerializedBigNumber = string
 

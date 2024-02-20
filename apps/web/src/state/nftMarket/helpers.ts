@@ -1,5 +1,7 @@
+import { ChainId } from '@pancakeswap/chains'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { erc721CollectionABI } from 'config/abi/erc721collection'
+import { nftMarketABI } from 'config/abi/nftMarket'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { COLLECTIONS_WITH_WALLET_OF_OWNER } from 'config/constants/nftsCollections'
@@ -12,12 +14,10 @@ import range from 'lodash/range'
 import lodashSize from 'lodash/size'
 import { stringify } from 'querystring'
 import { safeGetAddress } from 'utils'
-import { Address } from 'wagmi'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import { getNftMarketContract } from 'utils/contractHelpers'
-import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/chains'
-import { nftMarketABI } from 'config/abi/nftMarket'
+import { viemClients } from 'utils/viem'
+import { Address } from 'viem'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { baseNftFields, baseTransactionFields, collectionBaseFields } from './queries'
 import {
@@ -73,7 +73,7 @@ const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promis
         } as const),
     )
   if (totalSupplyCalls.length > 0) {
-    const client = publicClient({ chainId: ChainId.BSC })
+    const client = viemClients[ChainId.BSC]
     const totalSupplyRaw = await client.multicall({
       contracts: totalSupplyCalls,
     })
@@ -493,7 +493,7 @@ export const getAccountNftsOnChainMarketData = async (
       } as const
     })
 
-    const askCallsResultsRaw = await publicClient({ chainId: ChainId.BSC }).multicall({
+    const askCallsResultsRaw = await viemClients[ChainId.BSC].multicall({
       contracts: call,
       allowFailure: false,
     })
@@ -967,7 +967,7 @@ export const fetchWalletTokenIdsForCollections = async (
     } as const
   })
 
-  const client = publicClient({ chainId: ChainId.BSC })
+  const client = viemClients[ChainId.BSC]
 
   const balanceOfCallsResultRaw = await client.multicall({
     contracts: balanceOfCalls,

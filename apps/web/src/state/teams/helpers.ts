@@ -1,13 +1,13 @@
-import merge from 'lodash/merge'
-import teamsList from 'config/constants/teams'
-import { getProfileContract } from 'utils/contractHelpers'
-import { Team } from 'config/constants/types'
-import { TeamsById } from 'state/types'
-import { pancakeProfileABI } from 'config/abi/pancakeProfile'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import fromPairs from 'lodash/fromPairs'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { pancakeProfileABI } from 'config/abi/pancakeProfile'
+import teamsList from 'config/constants/teams'
+import { Team } from 'config/constants/types'
+import fromPairs from 'lodash/fromPairs'
+import merge from 'lodash/merge'
+import { TeamsById } from 'state/types'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { getProfileContract } from 'utils/contractHelpers'
+import { getViemClients } from 'utils/viem'
 
 export const getTeam = async (teamId: number): Promise<Team> => {
   try {
@@ -49,7 +49,7 @@ export const getTeams = async (): Promise<TeamsById> => {
           args: [BigInt(i + 1)] as const,
         } as const),
     )
-    const client = publicClient({ chainId: ChainId.BSC })
+    const client = getViemClients({ chainId: ChainId.BSC })
     const teamData = await client.multicall({
       contracts: calls,
       allowFailure: false,

@@ -46,9 +46,8 @@ import {
 } from 'state/types'
 import { safeGetAddress } from 'utils'
 import { fetchTokenAplPrice, isAlpToken } from 'utils/fetchTokenAplPrice'
-import { getViemClients } from 'utils/viem'
-import { publicClient } from 'utils/wagmi'
-import { Address, erc20ABI } from 'wagmi'
+import { getViemClients, viemClients } from 'utils/viem'
+import { Address, erc20Abi } from 'viem'
 
 import fetchFarms from '../farms/fetchFarms'
 import { nativeStableLpMap } from '../farms/getFarmsPrices'
@@ -116,17 +115,17 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
 export const fetchCakePoolUserDataAsync =
   ({ account, chainId }: { account: string; chainId: ChainId }) =>
   async (dispatch) => {
-    const client = publicClient({ chainId: ChainId.BSC })
+    const client = viemClients[ChainId.BSC]
     const [allowance, stakingTokenBalance] = await client.multicall({
       contracts: [
         {
-          abi: erc20ABI,
+          abi: erc20Abi,
           address: bscTokens.cake.address,
           functionName: 'allowance',
           args: [account as Address, getCakeVaultAddress(chainId)],
         },
         {
-          abi: erc20ABI,
+          abi: erc20Abi,
           address: bscTokens.cake.address,
           functionName: 'balanceOf',
           args: [account as Address],

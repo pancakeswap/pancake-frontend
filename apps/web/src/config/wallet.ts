@@ -1,32 +1,76 @@
 import { isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
-import { WalletFilledIcon } from '@pancakeswap/uikit'
-import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
-import type { ExtendEthereum } from 'global'
+import {
+  BloctoIcon,
+  CoinbaseWalletIcon,
+  MetamaskIcon,
+  TrustWalletIcon,
+  WalletConnectIcon,
+  WalletFilledIcon,
+} from '@pancakeswap/uikit'
+import { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
-import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
+import { Connector } from 'wagmi'
+import { CONNECTORS_INIT_LENGTH, wagmiConfig, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
 export enum ConnectorNames {
-  MetaMask = 'metaMask',
+  MetaMask = 'metaMaskSDK',
   Injected = 'injected',
   WalletConnect = 'walletConnect',
   WalletConnectV1 = 'walletConnectLegacy',
   BSC = 'bsc',
   BinanceW3W = 'BinanceW3W',
   Blocto = 'blocto',
-  WalletLink = 'coinbaseWallet',
+  CoinBase = 'coinbaseWalletSDK',
   Ledger = 'ledger',
   TrustWallet = 'trustWallet',
   CyberWallet = 'cyberwallet',
 }
 
+function getWalletIcon(connector: Connector) {
+  if (connector.icon) {
+    return connector.icon
+  }
+  switch (connector.id) {
+    case ConnectorNames.Injected:
+      return WalletFilledIcon
+    case ConnectorNames.WalletConnect:
+      return WalletConnectIcon
+    case ConnectorNames.MetaMask:
+      return MetamaskIcon
+    case ConnectorNames.CoinBase:
+      return CoinbaseWalletIcon
+    case ConnectorNames.Blocto:
+      return BloctoIcon
+    case ConnectorNames.TrustWallet:
+      return TrustWalletIcon
+    default:
+      return ''
+  }
+}
+
+function connectorAlreadyInjected(wallet: WalletConfigV2) {
+  const connector = getConnectorFromId(wallet.connectorId)
+  if (connector) {
+    for (let i = CONNECTORS_INIT_LENGTH; i < wagmiConfig.connectors.length; i++) {
+      const conectorNamelower = connector.name.toLowerCase()
+      const toCompare = wagmiConfig.connectors[i].name.toLowerCase()
+      if (conectorNamelower === toCompare) {
+        return true
+      }
+    }
+  }
+
+  return false
+}
+
 const createQrCode = (chainId: number, connect) => async () => {
   connect({ connector: walletConnectNoQrCodeConnector, chainId })
-
-  const r = await walletConnectNoQrCodeConnector.getProvider()
+  const r = await walletConnectNoQrCodeConnector({})
+  const provider = await r.getProvider()
   return new Promise<string>((resolve) => {
-    r.on('display_uri', (uri) => {
+    provider.on('display_uri', (uri) => {
       resolve(uri)
     })
   })
@@ -52,6 +96,10 @@ function isBinanceWeb3WalletInstalled() {
   return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBinance)
 }
 
+function isTrustWalletInstalled() {
+  return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isTrust)
+}
+
 const walletsConfig = ({
   chainId,
   connect,
@@ -71,7 +119,6 @@ const walletsConfig = ({
       },
       connectorId: ConnectorNames.MetaMask,
       deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
-      qrCode,
       downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
     },
     {
@@ -108,7 +155,7 @@ const walletsConfig = ({
       id: 'coinbase',
       title: 'Coinbase Wallet',
       icon: `${ASSET_CDN}/web/wallets/coinbase.png`,
-      connectorId: ConnectorNames.WalletLink,
+      connectorId: ConnectorNames.CoinBase,
     },
     {
       id: 'trust',
@@ -116,7 +163,7 @@ const walletsConfig = ({
       icon: `${ASSET_CDN}/web/wallets/trust.png`,
       connectorId: ConnectorNames.TrustWallet,
       get installed() {
-        return !!getTrustWalletProvider()
+        return isTrustWalletInstalled()
       },
       deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
       downloadLink: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph',
@@ -245,21 +292,24 @@ const walletsConfig = ({
   ]
 }
 
+const getConnectorFromId = (id) => {
+  return wagmiConfig.connectors.find((connector) => connector.id === id)
+}
+
 export const createWallets = (chainId: number, connect: any) => {
-  const hasInjected = typeof window !== 'undefined' && !window.ethereum
-  const config = walletsConfig({ chainId, connect })
-  return hasInjected && config.some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
-    ? config // add injected icon if none of injected type wallets installed
-    : [
-        ...config,
-        {
-          id: 'injected',
-          title: 'Injected',
-          icon: WalletFilledIcon,
-          connectorId: ConnectorNames.Injected,
-          installed: typeof window !== 'undefined' && Boolean(window.ethereum),
-        },
-      ]
+  const wallets = walletsConfig({ chainId, connect })
+  const eip6963Connectors = wagmiConfig.connectors.slice(CONNECTORS_INIT_LENGTH)
+  const filteredWallets = wallets.filter((wallet) => !connectorAlreadyInjected(wallet))
+  const eip6963Wallets = eip6963Connectors.map((connector) => {
+    return {
+      id: connector.id,
+      title: connector.name,
+      icon: getWalletIcon(connector),
+      connectorId: connector.id,
+    }
+  })
+
+  return [...filteredWallets, ...eip6963Wallets]
 }
 
 const docLangCodeMapping: Record<string, string> = {

@@ -58,13 +58,14 @@ type GetIfoInfoParams = Params & {
 }
 
 export async function getUserIfoInfo({ account, ifo, chainId, provider }: GetIfoInfoParams) {
-  const client = provider({ chainId })
-  if (!chainId || !account || !client) {
+  if (!chainId || !account) {
     return {
       credit: 0n,
       endTimestamp: 0,
     }
   }
+
+  const client = provider({ chainId })
 
   const ifoCreditContract = getIfoCreditAddressContract(chainId, provider)
   if (!ifo) {

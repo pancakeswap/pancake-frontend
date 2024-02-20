@@ -8,6 +8,7 @@ export interface ExtendEthereum extends WindowProvider {
   isTrustWallet?: true
   isBlocto?: true
   isBinance?: true
+  isTrust?: true
 }
 
 declare global {

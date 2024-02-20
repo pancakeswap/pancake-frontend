@@ -1,10 +1,10 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
-import { Chain, ConnectorNotFoundError, WindowProvider, Address } from 'wagmi'
+import { ProviderRpcError, ResourceUnavailableRpcError, UserRejectedRequestError, getAddress } from 'viem'
+import { Address, Chain, ConnectorNotFoundError, WindowProvider } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import 'wagmi/window'
-import { getAddress, ResourceUnavailableRpcError, ProviderRpcError, UserRejectedRequestError } from 'viem'
 
 declare global {
   interface Window {

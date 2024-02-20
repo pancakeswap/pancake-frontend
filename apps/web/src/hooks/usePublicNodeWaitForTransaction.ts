@@ -23,7 +23,7 @@ const viemClientsPublicNodes = CHAINS.reduce((prev, cur) => {
     ...prev,
     [cur.id]: createPublicClient({
       chain: cur,
-      transport: http(cur.rpcUrls.public.http[0], {
+      transport: http(cur.rpcUrls.default.http[0], {
         timeout: 15_000,
       }),
       batch: {
@@ -54,7 +54,7 @@ export function usePublicNodeWaitForTransaction() {
           if (selectedChain && viemClientsPublicNodes[selectedChain]) {
             return await viemClientsPublicNodes[selectedChain].getTransactionReceipt({ hash: opts.hash })
           }
-          return await provider.getTransactionReceipt({ hash: opts.hash })
+          return await provider?.getTransactionReceipt({ hash: opts.hash })
         } catch (error) {
           if (error instanceof TransactionNotFoundError) {
             throw new RetryableError(`Transaction not found: ${opts.hash}`)

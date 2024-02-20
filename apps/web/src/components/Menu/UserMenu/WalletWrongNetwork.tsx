@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import { Button, Text, Link, HelpIcon, Message, MessageText } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, HelpIcon, Link, Message, MessageText, Text } from '@pancakeswap/uikit'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import { styled } from 'styled-components'
 
 const StyledLink = styled(Link)`
   width: 100%;

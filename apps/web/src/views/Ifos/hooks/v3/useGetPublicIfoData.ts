@@ -1,17 +1,17 @@
+import { Ifo, IfoStatus } from '@pancakeswap/ifos'
+import { bscTokens } from '@pancakeswap/tokens'
 import BigNumber from 'bignumber.js'
-import { useState, useCallback } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
-import round from 'lodash/round'
 import { ifoV2ABI } from 'config/abi/ifoV2'
 import { ifoV3ABI } from 'config/abi/ifoV3'
-import { bscTokens } from '@pancakeswap/tokens'
-import { Ifo, IfoStatus } from '@pancakeswap/ifos'
+import round from 'lodash/round'
+import { useCallback, useState } from 'react'
 
-import { useLpTokenPrice } from 'state/farms/hooks'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useLpTokenPrice } from 'state/farms/hooks'
+import { getViemClients } from 'utils/viem'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 
@@ -97,7 +97,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
-      const client = publicClient({ chainId: ChainId.BSC })
+      const client = getViemClients({ chainId: ChainId.BSC })
       const [
         startBlock,
         endBlock,

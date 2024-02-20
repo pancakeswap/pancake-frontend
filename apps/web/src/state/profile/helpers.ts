@@ -1,13 +1,13 @@
-import { Profile } from 'state/types'
+import { ChainId } from '@pancakeswap/chains'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { API_PROFILE } from 'config/constants/endpoints'
-import { getTeam } from 'state/teams/helpers'
-import { NftToken } from 'state/nftMarket/types'
 import { getNftApi } from 'state/nftMarket/helpers'
+import { NftToken } from 'state/nftMarket/types'
+import { getTeam } from 'state/teams/helpers'
+import { Profile } from 'state/types'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/chains'
-import { Address } from 'wagmi'
+import { getViemClients } from 'utils/viem'
+import { Address } from 'viem'
 
 export interface GetProfileResponse {
   hasRegistered: boolean
@@ -45,7 +45,7 @@ export const getUsername = async (address: string): Promise<string> => {
 
 export const getProfile = async (address: string): Promise<GetProfileResponse> => {
   try {
-    const client = publicClient({ chainId: ChainId.BSC })
+    const client = getViemClients({ chainId: ChainId.BSC })
 
     const profileCallsResult = await client.multicall({
       contracts: [

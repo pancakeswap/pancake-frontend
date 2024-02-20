@@ -99,8 +99,7 @@ import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
 import { veCakeABI } from 'config/abi/veCake'
 import { getViemClients, viemClients } from 'utils/viem'
-import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
-import { Address, erc20ABI, erc721ABI } from 'wagmi'
+import { Abi, Address, PublicClient, WalletClient, erc20Abi, erc721Abi, getContract as viemGetContract } from 'viem'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -118,12 +117,7 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   const c = viemGetContract({
     abi,
     address,
-    // TODO: Fix viem
-    // @ts-ignore
-    publicClient: publicClient ?? viemClients[chainId],
-    // TODO: Fix viem
-    // @ts-ignore
-    walletClient: signer,
+    client: { public: publicClient ?? viemClients[chainId], wallet: signer },
   })
   return {
     ...c,
@@ -133,12 +127,12 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
 }
 
 export const getBep20Contract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: erc20ABI, address, signer })
+  return getContract({ abi: erc20Abi, address, signer })
 }
 
 export const getErc721Contract = (address: Address, walletClient?: WalletClient) => {
   return getContract({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address,
     signer: walletClient,
   })
@@ -152,7 +146,7 @@ export const getPointCenterIfoContract = (signer?: WalletClient) => {
 }
 export const getCakeContract = (chainId?: number) => {
   return getContract({
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: chainId ? CAKE[chainId]?.address : CAKE[ChainId.BSC].address,
     chainId,
   })
