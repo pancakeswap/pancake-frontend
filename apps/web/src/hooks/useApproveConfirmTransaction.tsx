@@ -126,7 +126,7 @@ const useApproveConfirmTransaction = ({
 
   const handleConfirm = useCallback(
     async (params = {}) => {
-      const receipt = await fetchWithCatchTxError(() => {
+      const receipt = await fetchWithCatchTxError(async () => {
         dispatch({ type: 'confirm_sending' })
         return onConfirm(params)
       })
