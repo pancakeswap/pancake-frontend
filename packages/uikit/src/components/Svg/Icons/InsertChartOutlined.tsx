@@ -2,7 +2,7 @@ import * as React from "react";
 import Svg from "../Svg";
 import { SvgProps } from "../types";
 
-export const InsertChartOutlinedIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => (
+const Icon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => (
   <Svg viewBox="0 0 24 24" {...props}>
     <g clipPath="url(#clip0_94_13038)">
       <path
@@ -17,3 +17,5 @@ export const InsertChartOutlinedIcon: React.FC<React.PropsWithChildren<SvgProps>
     </defs>
   </Svg>
 );
+
+export default Icon;
