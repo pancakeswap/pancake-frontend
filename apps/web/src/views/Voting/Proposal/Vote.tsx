@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Button,
   Card,
@@ -12,10 +11,11 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { Proposal } from 'state/types'
-import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useState } from 'react'
+import { Proposal } from 'state/types'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 import CastVoteModal from '../components/CastVoteModal'
 
 interface VoteProps extends CardProps {
@@ -48,7 +48,10 @@ const ChoiceText = styled.div`
 `
 
 const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSuccess, ...props }) => {
-  const [vote, setVote] = useState<State>(null)
+  const [vote, setVote] = useState<State>({
+    label: '',
+    value: 0,
+  })
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
@@ -71,7 +74,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
       </CardHeader>
       <CardBody>
         {proposal.choices.map((choice, index) => {
-          const isChecked = index + 1 === vote?.value
+          const isChecked = index + 1 === vote.value
 
           const handleChange = () => {
             setVote({

@@ -77,12 +77,12 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
   const { chainId } = useActiveChainId()
 
   const isBoostingExpired = useMemo(() => {
-    return lockedEndTime !== 0 && new BigNumber(blockTimestamp?.toString()).gte(lockedEndTime)
+    return blockTimestamp && lockedEndTime !== undefined && new BigNumber(blockTimestamp?.toString()).gte(lockedEndTime)
   }, [blockTimestamp, lockedEndTime])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      {Number.isFinite(lockedCakeBalance) && (
+      {lockedCakeBalance && Number.isFinite(lockedCakeBalance) && (
         <Box>
           <Text>
             {isBoostingExpired
@@ -131,7 +131,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           {block}
         </StyledScanLink>
       </Text>
-      {Number.isFinite(cakeBalance) && (
+      {cakeBalance && Number.isFinite(cakeBalance) && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('Wallet')}
@@ -139,7 +139,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text textAlign="right">{formatNumber(cakeBalance, 0, 3)}</Text>
         </Flex>
       )}
-      {Number.isFinite(cakeVaultBalance) && (
+      {cakeVaultBalance && Number.isFinite(cakeVaultBalance) && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('Flexible CAKE Staking')}
@@ -147,7 +147,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
         </Flex>
       )}
-      {Number.isFinite(cakePoolBalance) && (
+      {cakePoolBalance && Number.isFinite(cakePoolBalance) && (
         <>
           {lockedCakeBalance === 0 ? (
             <Flex alignItems="center" justifyContent="space-between" mb="4px">
@@ -165,8 +165,8 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
               </Text>
             </Flex>
           ) : (
-            <FixedTermWrapper expired={isBoostingExpired}>
-              <FixedTermCardInner expired={isBoostingExpired}>
+            <FixedTermWrapper expired={Boolean(isBoostingExpired)}>
+              <FixedTermCardInner expired={Boolean(isBoostingExpired)}>
                 <Flex>
                   <Text color="textSubtle" fontSize="16px" mr="auto">
                     {t('Fixed Term CAKE Staking')}

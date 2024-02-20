@@ -108,7 +108,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
     >
       <Box mb="24px">
         {view === ConfirmVoteView.MAIN &&
-          (!block || BigInt(block) >= VECAKE_VOTING_POWER_BLOCK ? (
+          (block && BigInt(block) >= VECAKE_VOTING_POWER_BLOCK ? (
             <VeMainView
               block={block}
               vote={vote}
@@ -127,14 +127,14 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
               isLoading={isLoading}
               isPending={isPending}
               total={total}
-              lockedCakeBalance={lockedCakeBalance}
-              lockedEndTime={lockedEndTime}
+              lockedCakeBalance={Number(lockedCakeBalance)}
+              lockedEndTime={Number(lockedEndTime)}
               onConfirm={handleConfirmVote}
               onViewDetails={handleViewDetails}
               onDismiss={handleDismiss}
             />
           ))}
-        {view === ConfirmVoteView.DETAILS && (
+        {view === ConfirmVoteView.DETAILS && block && (
           <DetailsView
             total={total}
             cakeBalance={cakeBalance}
