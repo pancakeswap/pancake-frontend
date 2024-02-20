@@ -70,7 +70,7 @@ interface OnSuccessProps {
 
 type CustomApproveProps = {
   onRequiresApproval: () => Promise<boolean>
-  onApprove: () => Promise<SendTransactionResult>
+  onApprove: () => Promise<SendTransactionResult | undefined> | undefined
 }
 
 type ERC20TokenApproveProps = {
@@ -81,7 +81,7 @@ type ERC20TokenApproveProps = {
 }
 
 type ApproveConfirmTransaction = {
-  onConfirm: (params?) => Promise<SendTransactionResult>
+  onConfirm: (params?) => Promise<SendTransactionResult> | undefined
   onSuccess: ({ state, receipt }: OnSuccessProps) => void
   onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void
 } & (CustomApproveProps | ERC20TokenApproveProps)
@@ -112,7 +112,7 @@ const useApproveConfirmTransaction = ({
   const { fetchWithCatchTxError } = useCatchTxError()
 
   const handleApprove = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => {
+    const receipt = await fetchWithCatchTxError(async () => {
       dispatch({ type: 'approve_sending' })
       return onApprove ? onApprove() : approveCallback()
     })

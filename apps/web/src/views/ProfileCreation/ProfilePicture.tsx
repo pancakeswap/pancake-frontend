@@ -1,5 +1,5 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text, useToast } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
@@ -7,7 +7,7 @@ import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useContext, useEffect, useState } from 'react'
-import { NftLocation } from 'state/nftMarket/types'
+import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -17,9 +17,9 @@ import { ContractFunctionResult } from 'viem'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useAccount, useWalletClient } from 'wagmi'
 import { useNftsForAddress } from '../Nft/market/hooks/useNftsForAddress'
-import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 import NextStepButton from './NextStepButton'
 import SelectionCard from './SelectionCard'
+import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const Link = styled(NextLinkFromReactRouter)`
   color: ${({ theme }) => theme.colors.primary};
@@ -33,11 +33,15 @@ const ProfilePicture: React.FC = () => {
   const { address: account } = useAccount()
   const [isApproved, setIsApproved] = useState(false)
   const [isProfileNftsLoading, setIsProfileNftsLoading] = useState(true)
-  const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)
+  const [userProfileCreationNfts, setUserProfileCreationNfts] = useState<NftToken[] | null>(null)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
 
-  const { isLoading: isProfileLoading, profile } = useProfile()
-  const { nfts, isLoading: isUserNftLoading } = useNftsForAddress(account, profile, isProfileLoading)
+  const { isLoading: isProfileFetching, profile } = useProfile()
+  const { nfts, isLoading: isUserNftLoading } = useNftsForAddress({
+    account: account || '',
+    profile,
+    isProfileFetching,
+  })
 
   useEffect(() => {
     const fetchUserPancakeCollectibles = async () => {
@@ -90,6 +94,8 @@ const ProfilePicture: React.FC = () => {
   const { data: walletClient } = useWalletClient()
 
   const handleApprove = async () => {
+    if (!walletClient) return
+
     const contract = getErc721Contract(selectedNft.collectionAddress, walletClient)
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), BigInt(selectedNft.tokenId)])
