@@ -8,6 +8,7 @@ const DAYS_TO_CALCULATE_AGAINST = [1, 7, 30, 365, 1825]
  * @param earningTokenPrice - price of reward token
  * @param compoundFrequency - how many compounds per 1 day, e.g. 1 = one per day, 0.142857142 - once per week
  * @param performanceFee - performance fee as percentage
+ * @param lpRewardsApr - lpRewardsApr as percentage
  * @returns an array of token values earned as interest, with each element representing interest earned over a different period of time (DAYS_TO_CALCULATE_AGAINST)
  */
 export const getInterestBreakdown = ({
@@ -16,12 +17,14 @@ export const getInterestBreakdown = ({
   earningTokenPrice,
   compoundFrequency = 1,
   performanceFee = 0,
+  lpRewardsApr = 0,
 }: {
   principalInUSD: number
   apr: number
   earningTokenPrice: number
   compoundFrequency?: number
   performanceFee?: number
+  lpRewardsApr?: number
 }) => {
   // Everything here is worked out relative to a year, with the asset compounding at the compoundFrequency rate. 1 = once per day
   const timesCompounded = 365 * compoundFrequency
@@ -49,6 +52,11 @@ export const getInterestBreakdown = ({
         interestEarned -= performanceFeeAsAmount
       }
     }
+    if (lpRewardsApr) {
+      const lpRewardsAprAsDecimal = lpRewardsApr / 100
+      const lpRewardsAprAsAmount = principal * lpRewardsAprAsDecimal * daysAsDecimalOfYear
+      interestEarned += lpRewardsAprAsAmount
+    }
     return parseFloat(interestEarned.toFixed(roundingDecimalsNew))
   })
 }
@@ -57,6 +65,8 @@ export const getInterestBreakdown = ({
  * @param interest how much USD amount you aim to make
  * @param apr APR of farm/pool
  * @param compoundingFrequency how many compounds per 1 day, e.g. 1 = one per day, 0.142857142 - once per week
+ * @param performanceFee - performance fee as percentage
+ * @param lpRewardsApr - lpRewardsApr as percentage
  * @returns an array of principal values needed to reach target interest, with each element representing principal needed for a different period of time (DAYS_TO_CALCULATE_AGAINST)
  */
 export const getPrincipalForInterest = (
@@ -64,12 +74,20 @@ export const getPrincipalForInterest = (
   apr: number,
   compoundingFrequency: number,
   performanceFee = 0,
+  lpRewardsApr = 0,
 ) => {
   return DAYS_TO_CALCULATE_AGAINST.map((days) => {
     const apyAsDecimal = getApy(apr, compoundingFrequency, days, performanceFee)
     // console.log('inside', interest, apyAsDecimal)
     // const apyAsBN = new BigNumber(apyAsDecimal).decimalPlaces(6, BigNumber.ROUND_DOWN).toNumber()
-    return parseFloat((interest / apyAsDecimal).toFixed(2))
+    let ratio = 1
+    if (lpRewardsApr) {
+      const daysAsDecimalOfYear = days / 365
+      const lpRewardsAprAsAmount = daysAsDecimalOfYear * lpRewardsApr
+      const lpRewardsAprAsDecimal = lpRewardsAprAsAmount / 100
+      ratio = 1 / (apyAsDecimal / (lpRewardsAprAsDecimal + apyAsDecimal))
+    }
+    return parseFloat((interest / ratio / apyAsDecimal).toFixed(2))
   })
 }
 

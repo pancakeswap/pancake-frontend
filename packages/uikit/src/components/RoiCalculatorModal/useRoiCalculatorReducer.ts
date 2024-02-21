@@ -180,16 +180,22 @@ const useRoiCalculatorReducer = (
   }, [autoCompoundFrequency]);
 
   // Handler for compounding frequency buttons
-  const setCompoundingFrequency = (index: number) => {
-    dispatch({ type: "setCompoundingFrequency", payload: { index } });
-  };
+  const setCompoundingFrequency = useCallback(
+    (index: number) => {
+      dispatch({ type: "setCompoundingFrequency", payload: { index } });
+    },
+    [dispatch]
+  );
 
   // Handler for principal input when in USD mode
-  const setPrincipalFromUSDValue = (amount: string) => {
-    const principalAsTokenBN = new BigNumber(amount).div(stakingTokenPrice);
-    const principalAsToken = principalAsTokenBN.gt(0) ? principalAsTokenBN.toFixed(TOKEN_PRECISION) : "0.00";
-    dispatch({ type: "setPrincipal", payload: { principalAsUSD: amount, principalAsToken } });
-  };
+  const setPrincipalFromUSDValue = useCallback(
+    (amount: string) => {
+      const principalAsTokenBN = new BigNumber(amount).div(stakingTokenPrice);
+      const principalAsToken = principalAsTokenBN.gt(0) ? principalAsTokenBN.toFixed(TOKEN_PRECISION) : "0.00";
+      dispatch({ type: "setPrincipal", payload: { principalAsUSD: amount, principalAsToken } });
+    },
+    [dispatch]
+  );
 
   // Handler for principal input when in Token mode
   const setPrincipalFromTokenValue = useCallback(
@@ -205,32 +211,41 @@ const useRoiCalculatorReducer = (
   );
 
   // Handler for staking duration buttons
-  const setStakingDuration = (stakingDurationIndex: number) => {
-    dispatch({ type: "setStakingDuration", payload: stakingDurationIndex });
-  };
+  const setStakingDuration = useCallback(
+    (stakingDurationIndex: number) => {
+      dispatch({ type: "setStakingDuration", payload: stakingDurationIndex });
+    },
+    [dispatch]
+  );
 
   // Handler for compounding checkbox
-  const toggleCompounding = () => {
+  const toggleCompounding = useCallback(() => {
     dispatch({ type: "toggleCompounding" });
-  };
+  }, [dispatch]);
 
   // Handler for principal input mode switch
-  const toggleEditingCurrency = () => {
+  const toggleEditingCurrency = useCallback(() => {
     dispatch({ type: "toggleEditingCurrency" });
-  };
+  }, [dispatch]);
 
-  const setCalculatorMode = (modeToSet: CalculatorMode) => {
-    dispatch({ type: "setCalculatorMode", payload: modeToSet });
-  };
+  const setCalculatorMode = useCallback(
+    (modeToSet: CalculatorMode) => {
+      dispatch({ type: "setCalculatorMode", payload: modeToSet });
+    },
+    [dispatch]
+  );
 
   // Handler for ROI input
-  const setTargetRoi = (amount: string) => {
-    const targetRoiAsTokens = new BigNumber(amount).div(earningTokenPrice);
-    dispatch({
-      type: "setTargetRoi",
-      payload: { roiUSD: +amount, roiTokens: targetRoiAsTokens.isNaN() ? 0 : targetRoiAsTokens.toNumber() },
-    });
-  };
+  const setTargetRoi = useCallback(
+    (amount: string) => {
+      const targetRoiAsTokens = new BigNumber(amount).div(earningTokenPrice);
+      dispatch({
+        type: "setTargetRoi",
+        payload: { roiUSD: +amount, roiTokens: targetRoiAsTokens.isNaN() ? 0 : targetRoiAsTokens.toNumber() },
+      });
+    },
+    [dispatch]
+  );
 
   return {
     state,
@@ -254,6 +269,7 @@ interface DefaultCompoundStrategyProps {
   earningTokenPrice: number;
   stakingTokenPrice: number;
   performanceFee: number;
+  lpRewardsApr?: number;
   dispatch: any;
 }
 
@@ -263,6 +279,7 @@ export function DefaultCompoundStrategy({
   earningTokenPrice,
   stakingTokenPrice,
   performanceFee,
+  lpRewardsApr,
   dispatch,
 }: DefaultCompoundStrategyProps) {
   const { principalAsUSD, roiUSD } = state.data;
@@ -279,6 +296,7 @@ export function DefaultCompoundStrategy({
         earningTokenPrice,
         compoundFrequency,
         performanceFee,
+        lpRewardsApr,
       });
       const hasInterest = !Number.isNaN(interestBreakdown[stakingDuration]);
       const roiTokens = hasInterest ? interestBreakdown[stakingDuration] : 0;
@@ -310,7 +328,8 @@ export function DefaultCompoundStrategy({
         roiUSD,
         apr,
         compounding ? compoundingFrequency : 0,
-        performanceFee
+        performanceFee,
+        lpRewardsApr
       );
       const principalUSD = !Number.isNaN(principalForExpectedRoi[stakingDuration])
         ? principalForExpectedRoi[stakingDuration]
