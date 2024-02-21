@@ -12,7 +12,7 @@ const StyledContainer = styled(Box)`
   background: ${({ theme }) => theme.colors.gradientVioletAlt};
   overflow: hidden;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     overflow: auto;
     padding: 68px 16px 107px 16px;
   }
