@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { useTheme } from 'styled-components'
 import Page from './components/Page'
-import { WORMHOLE_NETWORKS, getBridgeTokens, getRpcUrls, pcsLogo, walletConnectProjectId } from './constants'
+import { WORMHOLE_NETWORKS, getBridgeTokens, getRpcUrls, pcsLogo } from './constants'
 import { Themes } from './theme'
 import { ExtendedWidgetConfig, WidgetEnvs } from './types'
 
@@ -40,7 +40,7 @@ export const WormholeBridgeWidget = () => {
       },
       showHamburgerMenu: false,
       partnerLogo: pcsLogo,
-      walletConnectProjectId,
+      // walletConnectProjectId,
     }
     return config
   }, [theme.isDark, enableMainnet])
