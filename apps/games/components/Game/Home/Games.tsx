@@ -44,8 +44,12 @@ const StyledCard = styled(Box)<{ picked?: boolean }>`
 const StyledSwiper = styled(Swiper)`
   position: relative;
   max-width: 298px;
-  margin: 0 auto 20px auto;
+  margin: 0 0 20px 0;
   overflow: initial;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin: 0 auto 20px auto;
+  }
 
   ${({ theme }) => theme.mediaQueries.md} {
     max-width: 630px; // 2 swiper
