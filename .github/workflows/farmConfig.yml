@@ -69,4 +69,4 @@ jobs:
           projectName: farms-config
           directory: ./packages/farms/lists
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref_name == 'develop' && 'master' ||  null  }}
+          branch: ${{ github.ref_name == 'develop' && 'main' ||  null  }}
