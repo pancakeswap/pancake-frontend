@@ -39,4 +39,28 @@ export const polygonZkEvmTokens = {
     'USD Coin',
     'https://www.centre.io/',
   ),
+  reth: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0xb23C20EFcE6e24Acca0Cef9B7B7aA196b84EC942',
+    18,
+    'rETH',
+    'Rocket Pool ETH',
+    'https://www.rocketpool.net/',
+  ),
+  rsETH: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0x8C7D118B5c47a5BCBD47cc51789558B98dAD17c5',
+    18,
+    'rsETH',
+    'rsETH',
+    'https://kelpdao.xyz/',
+  ),
+  wstETH: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0x5D8cfF95D7A57c0BF50B30b43c7CC0D52825D4a9',
+    18,
+    'wstETH',
+    'Wrapped liquid staked Ether 2.0',
+    'https://lido.fi/',
+  ),
 }
