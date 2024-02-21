@@ -3005,4 +3005,12 @@ export const bscTokens = {
     'https://dmail.ai/',
   ),
   defi: new ERC20Token(ChainId.BSC, '0x6d106C0B8d2f47c5465bdBD58D1Be253762cBBC1', 18, 'DEFI', 'DeFi', 'https://de.fi/'),
+  xrgb: new ERC20Token(
+    ChainId.BSC,
+    '0x5cc5E64AB764A0f1E97F23984E20fD4528356a6a',
+    18,
+    'XRGB',
+    'XRGB',
+    'https://xrgb.xyz',
+  ),
 }
