@@ -14,7 +14,7 @@ const handler: NextApiHandler = async (req, res) => {
   const chainQuery = isChainInt ? Number(req.query.chain) : req.query.chain
   const parsedChain = zChain.safeParse(chainQuery)
 
-  if (!parsedChain.success) {
+  if (parsedChain.success !== true) {
     return res.status(400).json({ error: parsedChain.error })
   }
 
