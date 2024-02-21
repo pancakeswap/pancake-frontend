@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { MainnetChainName, TestnetChainName } from '@wormhole-foundation/wormhole-connect'
-import { arbitrum, arbitrumGoerli, base, baseGoerli, bsc, bscTestnet, mainnet as ethereum, goerli } from 'wagmi/chains'
+import { arbitrum, arbitrumGoerli, base, baseGoerli, bsc, bscTestnet, goerli } from 'wagmi/chains'
 import { getNodeRealUrl } from '../../utils/nodereal'
 import { Env, WidgetEnvs } from './types'
 
@@ -52,7 +52,7 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     mainnet: 'ethereum',
     mainnetRpc:
       getNodeRealUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) ||
-      ethereum.rpcUrls.public.http[0],
+      'https://eth-mainnet.g.alchemy.com/v2/aLeAqgQ1dZmYzL6JMbCLHYwnqxKIYboN',
     testnetRpc:
       getNodeRealUrl(WormholeChainIds.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI) ||
       goerli.rpcUrls.public.http[0],
