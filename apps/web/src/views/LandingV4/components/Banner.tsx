@@ -46,6 +46,9 @@ export const Banner = () => {
           }
           .slide-svg-light {
             display: block;
+            > path {
+              fill: #faf9fa !important;
+            }
           }
           [data-theme='dark'] .slide-svg-dark {
             display: block;
