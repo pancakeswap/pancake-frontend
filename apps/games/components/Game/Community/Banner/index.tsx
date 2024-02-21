@@ -1,17 +1,17 @@
-import { useMemo } from 'react'
-import NextLink from 'next/link'
-import { styled } from 'styled-components'
+import { GameType } from '@pancakeswap/games'
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { GameType } from '@pancakeswap/games'
-import { Box, Flex, Text, ChevronLeftIcon, ChevronRightIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
-import 'swiper/css'
-import 'swiper/css/autoplay'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Navigation } from 'swiper/modules'
+import { Box, ChevronLeftIcon, ChevronRightIcon, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { GameCard } from 'components/Game/Community/Banner/GameCard'
 import { Decorations } from 'components/Game/Decorations'
 import { useGamesConfig } from 'hooks/useGamesConfig'
+import NextLink from 'next/link'
+import { useMemo } from 'react'
+import { styled } from 'styled-components'
+import 'swiper/css'
+import 'swiper/css/autoplay'
+import { Autoplay, Navigation } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { getGameLink } from 'utils/getGameLink'
 
 const StyledBackground = styled(Box)`
@@ -98,10 +98,10 @@ export const Banner = () => {
             {t('Every Game, Every Chain, One Destination')}
           </Text>
         </Box>
-        <Box margin="auto" width={['100%', '100%', '100%', '100%', '100%', '100%', '754px']}>
+        <Box margin="auto" width={['100%', '100%', '100%', '100%', '100%', '100%', '1200px']}>
           {games.length > 0 && (
             <Flex width="100%">
-              {games.length > 1 && (
+              {games.length > 3 && (
                 <ArrowButton className="prev" style={{ marginRight: '32px' }}>
                   <ChevronLeftIcon color={theme.colors.textSubtle} />
                 </ArrowButton>
@@ -128,11 +128,13 @@ export const Banner = () => {
                     920: {
                       slidesPerView: 2,
                       spaceBetween: 32,
+                      autoplay: false,
                     },
-                    // 1440: {
-                    //   slidesPerView: 3,
-                    //   spaceBetween: 32,
-                    // },
+                    1440: {
+                      slidesPerView: 3,
+                      spaceBetween: 32,
+                      autoplay: false,
+                    },
                   }}
                 >
                   {games.map((game) => (

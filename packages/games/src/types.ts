@@ -27,6 +27,7 @@ export interface Logo {
 export enum GenreType {
   TowerDefense = 'Tower Defense',
   Casual = 'Casual',
+  FPS = 'First Person Shooter',
 }
 
 export enum TrendingTagType {
@@ -37,11 +38,20 @@ export enum TrendingTagType {
   Multiplayer = 'Multiplayer',
   CakeToken = 'CAKE token',
   BaseBuilding = 'Base Building',
+  NFT = 'NFT',
+  FPS = 'First Person Shooter',
+  Windows = 'Windows',
 }
 
 export type Article = {
   title: string
   link: string
+}
+
+export interface GameLinkType {
+  external?: boolean
+  signUpLink?: string
+  playNowLink: string
 }
 
 export interface GameType {
@@ -58,7 +68,7 @@ export interface GameType {
   }
   projectLogo: Logo
   projectCircleLogo: Logo
-  gameLink: string
+  gameLink: GameLinkType
   posters: {
     layout: PostersLayout
     items: PostersItemData[]

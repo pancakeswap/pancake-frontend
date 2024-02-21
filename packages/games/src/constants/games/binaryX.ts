@@ -1,4 +1,4 @@
-import { GameType, PostersLayout, PostersItemDataType, GenreType, TrendingTagType } from '../../types'
+import { GameType, GenreType, PostersItemDataType, PostersLayout, TrendingTagType } from '../../types'
 
 export const binaryX: GameType = {
   id: 'binary-x',
@@ -31,7 +31,9 @@ export const binaryX: GameType = {
     darkTheme:
       'https://s3.ap-northeast-1.amazonaws.com/binaryx-game/t-temp/109cebd1-5c08-49c8-8435-a7eb4ba8cec34355819590091347704.png',
   },
-  gameLink: 'https://play.cryptomayor.xyz/pancake/index.html',
+  gameLink: {
+    playNowLink: 'https://play.cryptomayor.xyz/pancake/index.html',
+  },
   posters: {
     layout: PostersLayout.Horizontal,
     items: [
