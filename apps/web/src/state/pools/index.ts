@@ -200,7 +200,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
 
     const liveData: any[] = []
 
-    for (const pool of poolsConfig) {
+    await Promise.all(poolsConfig.map(async pool => {
       const timeLimit = timeLimitsSousIdMap[pool.sousId]
       const totalStaking = totalStakingsSousIdMap[pool.sousId]
       const isPoolEndBlockExceeded =
@@ -250,7 +250,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         apr,
         isFinished: isPoolFinished,
       })
-    }
+    }))
 
     dispatch(setPoolsPublicData(liveData || []))
   } catch (error) {
