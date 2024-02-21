@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { MainnetChainName, TestnetChainName } from '@wormhole-foundation/wormhole-connect'
-import { arbitrumGoerli, baseGoerli, bsc, bscTestnet, goerli } from 'wagmi/chains'
+import { arbitrumGoerli, baseGoerli, bscTestnet, goerli } from 'wagmi/chains'
 import { getNodeRealUrl } from '../../utils/nodereal'
 import { Env, WidgetEnvs } from './types'
 
@@ -42,7 +42,7 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'solana',
     mainnet: 'solana',
     mainnetRpc:
-      getNodeRealUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_NODE_REAL_API_SOLANA) ||
+      getNodeRealUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       'https://solana-mainnet.g.alchemy.com/v2/6PZrVyh_Obebi8OKb_1DVwsJKHuJ5142',
     testnetRpc: 'https://solana-devnet.g.alchemy.com/v2/cOwc2pnya8KbOGyED0gAK3KsK5nYgomn',
   },
@@ -51,10 +51,10 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'goerli',
     mainnet: 'ethereum',
     mainnetRpc:
-      getNodeRealUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) ||
+      getNodeRealUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       'https://eth-mainnet.g.alchemy.com/v2/aLeAqgQ1dZmYzL6JMbCLHYwnqxKIYboN',
     testnetRpc:
-      getNodeRealUrl(WormholeChainIds.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI) ||
+      getNodeRealUrl(WormholeChainIds.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       goerli.rpcUrls.public.http[0],
   },
   [NETWORKS.BSC]: {
@@ -62,7 +62,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'bsc',
     mainnet: 'bsc',
     mainnetRpc:
-      getNodeRealUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_BSC) || bsc.rpcUrls.public.http[0],
+      getNodeRealUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
+      'https://bsc-dataseed1.binance.org',
     testnetRpc: bscTestnet.rpcUrls.public.http[0],
   },
   [NETWORKS.ARBITRUM_ONE]: {
@@ -70,7 +71,7 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'arbitrumgoerli',
     mainnet: 'arbitrum',
     mainnetRpc:
-      getNodeRealUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_ARBITRUM_ONE) ||
+      getNodeRealUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       'https://arb-mainnet.g.alchemy.com/v2/hWxZHWy7Z0kRzpOjDLhsRELM-AIN-a4x',
     testnetRpc: arbitrumGoerli.rpcUrls.public.http[0],
   },
@@ -79,7 +80,7 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'basegoerli',
     mainnet: 'base',
     mainnetRpc:
-      getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_BASE) ||
+      getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       'https://base-mainnet.g.alchemy.com/v2/JpagJGy6-8UnlerhhTvpdBt50XDqhb5r',
     testnetRpc: baseGoerli.rpcUrls.public.http[0],
   },

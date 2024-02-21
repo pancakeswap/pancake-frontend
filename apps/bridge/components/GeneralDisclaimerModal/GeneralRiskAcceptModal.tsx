@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useModal } from '@pancakeswap/uikit'
-import DisclaimerModal from 'components/DisclaimerModal.tsx/DisclaimerModal'
+import DisclaimerModal from 'components/DisclaimerModal/DisclaimerModal'
 import { memo, useCallback, useEffect } from 'react'
 import { useGetBridgeDisclaimerState } from 'state/useGetBridgeDisclaimerState'
 import { BridgeDisclaimerConfig, BridgeIds } from './config'
