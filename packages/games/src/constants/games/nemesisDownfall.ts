@@ -4,9 +4,9 @@ export const nemesisDownfall: GameType = {
   id: 'Nemesis-Downfall',
   projectName: 'Nemesis Labs',
   title: 'Nemesis Downfall',
-  subTitle: 'Dive into the mayhem of the intense firefights of Nemesis Downfall',
+  subTitle: 'Dive into the intense firefights of Nemesis Downfall',
   description:
-    'In the unforgiving arenas of Nemesis Downfall, only the sharpest survive. Do you have what it takes to conquer the chaos and emerge victorious ? In this extreme first person shooter experience, fight with everything you have to bring your crypto rewards home!',
+    'In the unforgiving arenas of Nemesis Downfall, only the sharpest survive. Do you have what it takes to emerge victorious?',
   publishDate: 1708617600,
   genre: GenreType.FPS,
   trendingTags: [
@@ -43,7 +43,7 @@ export const nemesisDownfall: GameType = {
       {
         type: PostersItemDataType.Video,
         image: 'https://ndpcs.s3.amazonaws.com/Poster+1.png',
-        video: 'https://ndpcs.s3.amazonaws.com/Nemesis+Downfall+PCS+ann+trailer.mp4',
+        video: 'https://ndpcs.s3.amazonaws.com/Nemesis+Downfall+-+Main+Trailer.mp4',
       },
       {
         type: PostersItemDataType.Image,
