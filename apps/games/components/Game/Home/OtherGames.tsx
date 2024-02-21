@@ -10,8 +10,10 @@ const StyledContainer = styled(Box)`
   width: 100%;
   padding: 68px 16px 40px 16px;
   background: ${({ theme }) => theme.colors.gradientVioletAlt};
+  overflow: hidden;
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    overflow: auto;
     padding: 68px 16px 107px 16px;
   }
 `

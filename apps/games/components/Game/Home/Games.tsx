@@ -45,10 +45,12 @@ const StyledSwiper = styled(Swiper)`
   position: relative;
   max-width: 298px;
   margin: 0 auto 20px auto;
+  overflow: initial;
 
   ${({ theme }) => theme.mediaQueries.md} {
     max-width: 630px; // 2 swiper
     margin: 0 auto 85px auto;
+    overflow: hidden;
   }
 `
 
