@@ -11,7 +11,7 @@ import { WORMHOLE_NETWORKS, getBridgeTokens, getRpcUrls, pcsLogo } from './const
 import { Themes } from './theme'
 import { ExtendedWidgetConfig, WidgetEnvs } from './types'
 
-export const WormholeBridgeWidget = () => {
+export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
 
   const { isMobile } = useMatchBreakpoints()
@@ -21,7 +21,7 @@ export const WormholeBridgeWidget = () => {
   const wormholeConfig: ExtendedWidgetConfig = useMemo(() => {
     const widgetEnv = enableMainnet ? WidgetEnvs.mainnet : WidgetEnvs.testnet
     const { mode, customTheme } = theme.isDark ? Themes.dark : Themes.light
-    const networks = WORMHOLE_NETWORKS.map((n) => n[widgetEnv])
+    const networks = WORMHOLE_NETWORKS.filter((n) => (isAptos ? true : n.name !== 'Aptos')).map((n) => n[widgetEnv])
 
     const rpcs = getRpcUrls(widgetEnv)
     const tokens = getBridgeTokens(widgetEnv)
@@ -34,16 +34,17 @@ export const WormholeBridgeWidget = () => {
       mode,
       customTheme,
       bridgeDefaults: {
-        fromNetwork: enableMainnet ? 'solana' : 'bsc',
-        toNetwork: enableMainnet ? 'bsc' : 'solana',
-        token: enableMainnet ? 'SOL' : 'BNB',
+        fromNetwork: 'solana',
+        toNetwork: isAptos ? 'aptos' : 'bsc',
+        token: 'SOL',
+        requiredNetwork: isAptos ? 'aptos' : undefined,
       },
       showHamburgerMenu: false,
       partnerLogo: pcsLogo,
       // walletConnectProjectId,
     }
     return config
-  }, [theme.isDark, enableMainnet])
+  }, [theme.isDark, enableMainnet, isAptos])
 
   return (
     <>

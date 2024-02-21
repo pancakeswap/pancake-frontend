@@ -15,6 +15,8 @@ export enum WormholeChainIds {
   BASE_TESTNET = ChainId.BASE_TESTNET,
   SOLANA = 1399811149,
   SOLANA_TESTNET = 900,
+  APTOS = 1,
+  APTOS_TESTNET = 34,
 }
 
 export type Network = {
@@ -31,6 +33,7 @@ enum NETWORKS {
   BSC = 'bsc',
   ARBITRUM_ONE = 'arbitrum',
   BASE = 'base',
+  APTOS = 'aptos',
 }
 
 export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
@@ -78,6 +81,13 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     mainnetRpc:
       getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_BASE) || base.rpcUrls.public.http[0],
     testnetRpc: baseGoerli.rpcUrls.public.http[0],
+  },
+  [NETWORKS.APTOS]: {
+    name: 'Aptos',
+    testnet: 'aptos',
+    mainnet: 'aptos',
+    mainnetRpc: 'https://aptos-mainnet.nodereal.io/v1',
+    testnetRpc: 'https://fullnode.devnet.aptoslabs.com/v1',
   },
 }
 
