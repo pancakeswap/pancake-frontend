@@ -99,7 +99,10 @@ export const usePollFarmsWithUserData = () => {
     queryKey: name,
 
     queryFn: async () => {
+      if (!account || !chainId) return
+
       const farmsConfig = await getFarmConfig(chainId)
+
       if (!farmsConfig) return
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }

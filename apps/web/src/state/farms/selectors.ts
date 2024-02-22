@@ -1,8 +1,8 @@
-import BigNumber from 'bignumber.js'
+import { DeserializedFarm, DeserializedFarmsState, deserializeFarm, deserializeFarmUserData } from '@pancakeswap/farms'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { createSelector } from '@reduxjs/toolkit'
-import { deserializeFarm, deserializeFarmUserData } from '@pancakeswap/farms'
+import BigNumber from 'bignumber.js'
 import { State } from '../types'
 
 const selectCakeFarm = (state: State) => state.farms.data.find((f) => f.pid === 2)
@@ -60,20 +60,22 @@ export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
     return lpTokenPrice
   })
 
-export const farmSelector = (chainId: number) =>
-  createSelector(
-    (state: State) => state.farms,
-    (farms) => {
-      const deserializedFarmsData = farms.data.map(deserializeFarm).filter((farm) => farm.token.chainId === chainId)
-      const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock, totalRegularAllocPoint } = farms
+function mapFarm(farms, chainId): DeserializedFarmsState {
+  const deserializedFarmsData = farms.data
+    .map(deserializeFarm)
+    .filter((farm) => farm.token.chainId === chainId) as DeserializedFarm[]
+  const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock, totalRegularAllocPoint } = farms
 
-      return {
-        loadArchivedFarmsData,
-        userDataLoaded,
-        data: deserializedFarmsData,
-        poolLength,
-        regularCakePerBlock,
-        totalRegularAllocPoint,
-      }
-    },
-  )
+  return {
+    data: deserializedFarmsData,
+    loadArchivedFarmsData: Boolean(loadArchivedFarmsData),
+    userDataLoaded: Boolean(userDataLoaded),
+    poolLength: poolLength as number,
+    regularCakePerBlock: regularCakePerBlock as number,
+    totalRegularAllocPoint: totalRegularAllocPoint as string,
+  }
+}
+
+const selectFarms = (state: State) => state.farms
+
+export const farmSelector = (chainId?: number) => createSelector([selectFarms], (farms) => mapFarm(farms, chainId))

@@ -1,12 +1,13 @@
-import { getFarmAuctionContract } from 'utils/contractHelpers'
-import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
-import { FARM_AUCTION_HOSTING_IN_SECONDS } from '@pancakeswap/farms'
-import { BSC_BLOCK_TIME } from 'config'
-import { publicClient } from 'utils/wagmi'
-import { farmAuctionABI } from 'config/abi/farmAuction'
 import { ChainId } from '@pancakeswap/chains'
-import { sortAuctionBidders } from 'views/FarmAuction/helpers'
+import { FARM_AUCTION_HOSTING_IN_SECONDS } from '@pancakeswap/farms'
+import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { BSC_BLOCK_TIME } from 'config'
+import { farmAuctionABI } from 'config/abi/farmAuction'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 import dayjs from 'dayjs'
+import { getFarmAuctionContract } from 'utils/contractHelpers'
+import { publicClient } from 'utils/wagmi'
+import { sortAuctionBidders } from 'views/FarmAuction/helpers'
 
 const fetchFarmsWithAuctions = async (
   currentBlock: number,
@@ -45,25 +46,25 @@ const fetchFarmsWithAuctions = async (
 
   const auctionBidders = auctionBiddersResponse.status === 'success' ? auctionBiddersResponse.result[0] : null
 
-  const blocksSinceEnd = currentBlock - Number(auctionData.endBlock)
+  const blocksSinceEnd = currentBlock - Number(auctionData?.endBlock)
   if (blocksSinceEnd > 0) {
     const secondsSinceEnd = blocksSinceEnd * BSC_BLOCK_TIME
     if (secondsSinceEnd > FARM_AUCTION_HOSTING_IN_SECONDS) {
-      return { winnerFarms: [], auctionHostingEndDate: null }
+      return { winnerFarms: [], auctionHostingEndDate: '' }
     }
-    const sortedBidders = sortAuctionBidders(auctionBidders)
-    const leaderboardThreshold = bigIntToBigNumber(auctionData.leaderboardThreshold)
+    const sortedBidders = auctionBidders ? sortAuctionBidders(auctionBidders) : []
+    const leaderboardThreshold = bigIntToBigNumber(auctionData?.leaderboardThreshold || BIG_INT_ZERO)
     const winnerFarms = sortedBidders
       .filter((bidder) => bidder.amount.gt(leaderboardThreshold))
       .map((bidder) => bidder.lpAddress)
     const currentAuctionEndDate = dayjs().subtract(secondsSinceEnd, 'seconds')
     return {
-      winnerFarms,
+      winnerFarms: winnerFarms.filter(Boolean) as string[],
       auctionHostingEndDate: currentAuctionEndDate.add(FARM_AUCTION_HOSTING_IN_SECONDS, 'seconds').toJSON(),
     }
   }
 
-  return { winnerFarms: [], auctionHostingEndDate: null }
+  return { winnerFarms: [], auctionHostingEndDate: '' }
 }
 
 export default fetchFarmsWithAuctions
