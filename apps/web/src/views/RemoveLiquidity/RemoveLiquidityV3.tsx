@@ -46,7 +46,7 @@ import { hexToBigInt } from 'viem'
 
 import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
-import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
 import { getViemClients } from 'utils/viem'
 import { calculateGasMargin } from 'utils'
@@ -80,10 +80,7 @@ export default function RemoveLiquidityV3() {
 }
 
 function Remove({ tokenId }: { tokenId?: bigint }) {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
 
   // flag for receiving WNATIVE
   const [receiveWNATIVE, setReceiveWNATIVE] = useState(false)
