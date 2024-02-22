@@ -445,7 +445,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{formatCurrencyAmount(liquidityValue0, 4, locale)}</Text>
+                  <Text small>
+                    <FormattedCurrencyAmount currencyAmount={liquidityValue0} />
+                  </Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end" mb="8px">
@@ -463,7 +465,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{formatCurrencyAmount(liquidityValue1, 4, locale)}</Text>
+                  <Text small>
+                    <FormattedCurrencyAmount currencyAmount={liquidityValue1} />
+                  </Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end" mb="8px">
@@ -482,7 +486,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{formatCurrencyAmount(feeValue0, 4, locale)}</Text>
+                  <Text small>
+                    <FormattedCurrencyAmount currencyAmount={feeValue0} />
+                  </Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end" mb="8px">
@@ -500,7 +506,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{formatCurrencyAmount(feeValue1, 4, locale)}</Text>
+                  <Text small>
+                    <FormattedCurrencyAmount currencyAmount={feeValue1} />
+                  </Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end" mb="8px">
