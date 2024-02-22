@@ -87,6 +87,7 @@ export { default as LanguageIcon } from "./Icons/Language";
 export { default as LanguageCurrencyIcon } from "./Icons/LanguageCurrency";
 export { default as LaurelLeftIcon } from "./Icons/LaurelLeft";
 export { default as LaurelRightIcon } from "./Icons/LaurelRight";
+export { default as LibraryIcon } from "./Icons/Library";
 export { default as LightBulbIcon } from "./Icons/LightBulb";
 export { default as LineGraphIcon } from "./Icons/LineGraph";
 export { default as LineaIcon } from "./Icons/Linea";
