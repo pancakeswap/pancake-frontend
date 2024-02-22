@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, V3Pool, V4Router } from '@pancakeswap/smart-router/evm'
 import { Tick } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
@@ -68,6 +68,8 @@ export function useV3CandidatePoolsWithoutTicks(
   currencyB?: Currency,
   options?: V3PoolsHookParams,
 ) {
+  useV3PoolsWithTicksOnChain(currencyA, currencyB, options)
+
   const key = useMemo(() => {
     if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
       return ''
@@ -117,6 +119,46 @@ export function useV3CandidatePoolsWithoutTicks(
     key: data?.key,
     error,
   }
+}
+
+export function useV3PoolsWithTicksOnChain(currencyA?: Currency, currencyB?: Currency, options?: V3PoolsHookParams) {
+  const key = useMemo(() => {
+    if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
+      return ''
+    }
+    const symbols = currencyA.wrapped.sortsBefore(currencyB.wrapped)
+      ? [currencyA.symbol, currencyB.symbol]
+      : [currencyB.symbol, currencyA.symbol]
+    return [currencyA.chainId, ...symbols, currencyA.chainId].join('_')
+  }, [currencyA, currencyB])
+
+  const refreshInterval = useMemo(() => {
+    const chainId = currencyA?.[0]?.token0?.chainId
+    if (!chainId) {
+      return 0
+    }
+    return POOLS_SLOW_REVALIDATE[chainId] || 0
+  }, [currencyA])
+
+  const poolsWithTicks = useQuery({
+    queryKey: ['v3_pools_with_ticks_on_chain', key],
+    queryFn: () =>
+      V4Router.getV3CandidatePools({
+        currencyA,
+        currencyB,
+        clientProvider: getViemClients,
+      }),
+
+    enabled: Boolean(key && options?.enabled),
+    refetchInterval: refreshInterval,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 3,
+  })
+
+  console.log(poolsWithTicks.data)
+  return poolsWithTicks
 }
 
 export function useV3PoolsWithTicks(

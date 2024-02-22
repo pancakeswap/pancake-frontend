@@ -52,3 +52,26 @@ export const V3_QUOTER_ADDRESSES = {
   [ChainId.ARBITRUM_SEPOLIA]: '0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997',
   [ChainId.BASE_SEPOLIA]: '0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997',
 } as const satisfies Record<ChainId, Address>
+
+export const V3_TICK_LENS_ADDRESSES = {
+  [ChainId.ETHEREUM]: '0xbfd8137f7d1516D3ea5cA83523914859ec47F573',
+  [ChainId.GOERLI]: '0x',
+  [ChainId.BSC]: '0xD9270014D396281579760619CCf4c3af0501A47C',
+  [ChainId.BSC_TESTNET]: '0x',
+  [ChainId.ARBITRUM_ONE]: '0x',
+  [ChainId.ARBITRUM_GOERLI]: '0x',
+  [ChainId.POLYGON_ZKEVM]: '0x',
+  [ChainId.POLYGON_ZKEVM_TESTNET]: '0x',
+  [ChainId.ZKSYNC]: '0x',
+  [ChainId.ZKSYNC_TESTNET]: '0x',
+  [ChainId.LINEA]: '0x',
+  [ChainId.LINEA_TESTNET]: '0x',
+  [ChainId.OPBNB]: '0x',
+  [ChainId.OPBNB_TESTNET]: '0x',
+  [ChainId.BASE]: '0x',
+  [ChainId.BASE_TESTNET]: '0x',
+  [ChainId.SCROLL_SEPOLIA]: '0x',
+  [ChainId.SEPOLIA]: '0x',
+  [ChainId.ARBITRUM_SEPOLIA]: '0x',
+  [ChainId.BASE_SEPOLIA]: '0x',
+} as const satisfies Record<ChainId, Address>
