@@ -24,7 +24,7 @@ export interface ApyButtonProps {
   multiplier?: string
   cakePrice?: BigNumber
   apr?: number
-  displayApr: string | null
+  displayApr?: string
   lpRewardsApr?: number
   addLiquidityUrl?: string
   strikethrough?: boolean
@@ -62,7 +62,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const { address: account } = useAccount()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
-  const { lpTokenStakedAmount = BIG_ZERO } = useFarmFromPid(pid)
+  const lpTokenStakedAmount = useFarmFromPid(pid)?.lpTokenStakedAmount || BIG_ZERO
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
 
   const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
