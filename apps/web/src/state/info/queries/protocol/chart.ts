@@ -2,10 +2,10 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { ChartEntry } from 'state/info/types'
-import { fetchChartData, mapDayData } from '../helpers'
-import { PancakeDayDatasResponse } from '../types'
 import { MultiChainName, getMultiChainQueryEndPointWithStableSwap, multiChainStartTime } from '../../constant'
 import { useGetChainName } from '../../hooks'
+import { fetchChartData, mapDayData } from '../helpers'
+import { PancakeDayDatasResponse } from '../types'
 
 /**
  * Data for displaying Liquidity and Volume charts on Overview page
@@ -52,6 +52,8 @@ const useFetchGlobalChartData = (): {
 
   useEffect(() => {
     const fetch = async () => {
+      if (!chainName) return
+
       const { data } = await fetchChartData(chainName, getOverviewChartData)
       if (data) {
         setOverviewChartData(data)

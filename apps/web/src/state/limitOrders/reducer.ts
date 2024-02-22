@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { atomWithReducer } from 'jotai/utils'
-import { replaceLimitOrdersState, selectCurrency, typeInput, switchCurrencies, setRateType } from './actions'
-import { Field, Rate, OrderState } from './types'
+import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
+import { Field, OrderState, Rate } from './types'
 
 export const initialState: OrderState = {
   independentField: Field.INPUT,
@@ -39,13 +39,14 @@ const reducer = createReducer<OrderState>(initialState, (builder) =>
           [otherField]: { currencyId: state[field].currencyId },
         }
       }
+
       // the normal case
       return {
         ...state,
         // independentField and typedValue need to be reset to basis field
         // to show proper market price for new pair if user adjusted the price for the previous pair
         independentField: state.basisField,
-        typedValue: state.basisField === Field.INPUT ? state.inputValue : state.outputValue,
+        typedValue: (state.basisField === Field.INPUT ? state.inputValue : state.outputValue) || '',
         [field]: { currencyId },
       }
     })
