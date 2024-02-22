@@ -45,7 +45,7 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
     if (previousPathname && pathname !== previousPathname) {
       onDismiss?.()
     }
-  }, [pathname, previousPathname])
+  }, [pathname, previousPathname, onDismiss])
 
   return (
     <DisclaimerModal

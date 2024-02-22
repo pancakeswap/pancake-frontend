@@ -211,13 +211,6 @@ const tokenDataFetcher = (dataClient: GraphQLClient, tokenAddresses: string[], b
   }
   return Promise.all(addressGroup.map((d) => fetchedTokenDatas(dataClient, d, blocks)))
 }
-
-type DataType =
-  | {
-      [address: string]: TokenData
-    }[]
-  | undefined
-
 export const useTokensData = (addresses: string[], targetChainId?: ChainId): TokenData[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
