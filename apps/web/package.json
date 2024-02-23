@@ -50,6 +50,7 @@
     "@pancakeswap/gauges": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/ifos": "workspace:*",
+    "@pancakeswap/launch-pools": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/pools": "workspace:*",

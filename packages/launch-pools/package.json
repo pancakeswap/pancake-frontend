@@ -1,0 +1,42 @@
+{
+  "name": "@pancakeswap/launch-pools",
+  "version": "0.0.0",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest --run",
+    "coverage": "vitest run --coverage",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "dependencies": {
+    "@pancakeswap/token-lists": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/pools": "workspace:*",
+    "bignumber.js": "^9.0.0",
+    "lodash": "^4.17.21",
+    "viem": "1.19.11",
+    "wagmi": "1.4.7"
+  },
+  "devDependencies": {
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/utils": "workspace:*",
+    "@types/lodash": "^4.14.168",
+    "tsup": "^6.7.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  }
+}
