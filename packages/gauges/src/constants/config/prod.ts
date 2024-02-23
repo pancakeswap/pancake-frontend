@@ -516,7 +516,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 50,
     address: '0xBe43E64Cd61E0b9207A6beE93e2149317A604326',
-    pairName: 'BNB-LisUSD',
+    pairName: 'BNB-lisUSD',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.bnb.address,
@@ -526,7 +526,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 51,
     address: '0x06E2D4002a693812A6348c91A2bEccf4E926FF2f',
-    pairName: 'BTCB-LisUSD',
+    pairName: 'BTCB-lisUSD',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.btcb.address,
@@ -536,7 +536,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 52,
     address: '0xfdFCdE34d2038EBeDe62e95C65b1492C28c990C9',
-    pairName: 'ETH-LisUSD',
+    pairName: 'ETH-lisUSD',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.eth.address,
@@ -706,7 +706,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 69,
     address: '0x12E79eb21dCc5852F9c6AC1736d977312925da33',
-    pairName: 'LisUSD-USDT',
+    pairName: 'lisUSD-USDT',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.hay.address,
@@ -1056,7 +1056,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 104,
     address: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
-    pairName: 'LisUSD-USDT',
+    pairName: 'lisUSD-USDT',
     chainId: ChainId.BSC,
     type: GaugeType.StableSwap,
     tokenAddresses: [bscTokens.hay.address, bscTokens.usdt.address],
@@ -2229,7 +2229,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 222,
-    pairName: 'LisUSD-USDT',
+    pairName: 'lisUSD-USDT',
     address: '0xB2Aa63f363196caba3154D4187949283F085a488',
     chainId: ChainId.BSC,
     type: GaugeType.StableSwap,
