@@ -162,22 +162,24 @@ export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNa
   return multiChainQueryClient[chainName]
 }
 
-// FIXME: this should be per chain
 export const subgraphTokenName = {
-  '0x738d96Caf7096659DB4C1aFbf1E1BDFD281f388C': 'Ankr Staked MATIC',
-  '0x14016E85a25aeb13065688cAFB43044C2ef86784': 'True USD Old',
-  '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5': 'Lista USD',
-  '0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B': 'Staked Lista BNB',
-  '0x346575fC7f07E6994D76199E41D13dC1575322E1': 'dLP',
+  [ChainId.BSC]: {
+    '0x738d96Caf7096659DB4C1aFbf1E1BDFD281f388C': 'Ankr Staked MATIC',
+    '0x14016E85a25aeb13065688cAFB43044C2ef86784': 'True USD Old',
+    '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5': 'Lista USD',
+    '0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B': 'Staked Lista BNB',
+    '0x346575fC7f07E6994D76199E41D13dC1575322E1': 'dLP',
+  },
 }
 
-// FIXME: this should be per chain
 export const subgraphTokenSymbol = {
-  '0x14016E85a25aeb13065688cAFB43044C2ef86784': 'TUSDOLD',
-  '0x346575fC7f07E6994D76199E41D13dC1575322E1': 'dLP',
-  '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5': 'lisUSD',
-  '0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B': 'slisBNB',
-  '0x11727E5b7Fa33FF4D380F3E7E877F19876c25b97': 'mdLP',
+  [ChainId.BSC]: {
+    '0x14016E85a25aeb13065688cAFB43044C2ef86784': 'TUSDOLD',
+    '0x346575fC7f07E6994D76199E41D13dC1575322E1': 'dLP',
+    '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5': 'lisUSD',
+    '0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B': 'slisBNB',
+    '0x11727E5b7Fa33FF4D380F3E7E877F19876c25b97': 'mdLP',
+  },
 }
 
 export const checkIsStableSwap = () => window.location.href.includes('stableSwap')
