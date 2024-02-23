@@ -34,7 +34,7 @@ export interface LiquidStakingList {
   token1: Token | NativeToken
   aprUrl: string
   abi: Abi
-  approveToken: Token
+  approveToken: Token | null
   shouldCheckApproval: boolean
   exchangeRateMultiCall: ExchangeRateMultiCall[]
   stakingMethodArgs: string[]

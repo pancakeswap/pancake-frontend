@@ -4,7 +4,7 @@ import { StableSwapPool } from './types'
 
 export const pools: StableSwapPool[] = [
   {
-    lpSymbol: 'HAY-BUSD LP',
+    lpSymbol: 'LisUSD-BUSD LP',
     lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
     token: bscTokens.hay,
     quoteToken: bscTokens.busd,
@@ -74,7 +74,7 @@ export const pools: StableSwapPool[] = [
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
-    lpSymbol: 'HAY-USDT LP',
+    lpSymbol: 'LisUSD-USDT LP',
     lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
     token: bscTokens.hay,
     quoteToken: bscTokens.usdt,
