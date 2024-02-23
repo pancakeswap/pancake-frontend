@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool, V4Router } from '@pancakeswap/smart-router/evm'
+import { bscTokens } from '@pancakeswap/tokens'
 import { Tick } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
@@ -148,9 +149,10 @@ export function useV3PoolsWithTicksOnChain(currencyA?: Currency, currencyB?: Cur
         currencyB,
         clientProvider: getViemClients,
       })
-      const test = V4Router.getBestTrade({
+      const test = await V4Router.getBestTrade({
         candidatePools: pools,
         amount: CurrencyAmount.fromRawAmount(currencyA!, '1000000000000000000'),
+        quoteCurrency: bscTokens.cake,
         gasPriceWei: '3',
       })
       return pools

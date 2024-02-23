@@ -7,6 +7,8 @@ import { V4Trade, Edge, Vertice, Graph } from '../types'
 import { getCurrencyPairs, getReserve } from '../pool'
 import { getPoolAddress, getTokenPrice } from '../../v3-router/utils'
 import { getNeighbour } from './edge'
+import { createPriceCalculator } from './priceCalculator'
+import { createPoolQuoteGetter } from '../../v3-router/providers'
 
 type GraphParams = {
   pools: Pool[]
@@ -22,8 +24,8 @@ export function createGraph({ pools }: GraphParams): Graph {
       const vertice0 = createVertice(currency0)
       const vertice1 = createVertice(currency1)
       const edge = createEdge(p, vertice0, vertice1)
-      vertice0.edges.push(edge)
-      vertice1.edges.push(edge)
+      if (!vertice0.edges.includes(edge)) vertice0.edges.push(edge)
+      if (!vertice1.edges.includes(edge)) vertice1.edges.push(edge)
     }
   }
 
@@ -68,96 +70,116 @@ export function createGraph({ pools }: GraphParams): Graph {
 
 type FindBestTradeParams = {
   amount: CurrencyAmount<Currency>
+  quoteCurrency: Currency
   graph: Graph
 }
 
-export function findBestTradeFromGraph({ amount, graph }: FindBestTradeParams): V4Trade<TradeType> {
+export async function findBestTradeFromGraph({
+  amount,
+  graph,
+  quoteCurrency,
+}: FindBestTradeParams): Promise<V4Trade<TradeType>> {
+  // TODO: exact input & output
+  const getPoolQuote = createPoolQuoteGetter(true)
+
   // 1. Set static prices for each vertices
   const start = graph.getVertice(amount.currency)
-  if (!start) {
-    throw new Error(`Cannot find valid vertice for start currency ${amount.currency.symbol}`)
+  const finish = graph.getVertice(quoteCurrency)
+  if (!start || !finish) {
+    throw new Error(`Invalid start vertice or finish vertice. Start ${start}, finish ${finish}`)
   }
-  const priceCalculator = createPriceCalculator(graph, start)
+  const priceCalculator = createPriceCalculator(start)
 
-  return {} as V4Trade<TradeType>
-}
-
-// Get the price reference of all tokens in the graph against the specified vertice
-function createPriceCalculator(graph: Graph, quote: Vertice) {
-  const priceMap = new Map<Vertice, Price<Currency, Currency>>()
-  const processedVert = new Set<Vertice>()
-  const edgeWeight = new Map<Edge, bigint>()
-  let nextEdges: Edge[] = []
-  const getWeight = (e: Edge) => {
-    const weight = edgeWeight.get(e)
-    if (weight === undefined) {
-      throw new Error(`Invalid weight for edge ${e}`)
-    }
-    return weight
-  }
-
-  // anchor price
-  priceMap.set(quote, new Price(quote.currency, quote.currency, 1, 1))
-  nextEdges = getNextEdges(quote)
-  processedVert.add(quote)
-
-  while (nextEdges.length) {
-    const bestEdge = nextEdges.pop() as Edge
-    const [vFrom, vTo] = processedVert.has(bestEdge.vertice1)
-      ? [bestEdge.vertice1, bestEdge.vertice0]
-      : [bestEdge.vertice0, bestEdge.vertice1]
-    if (processedVert.has(vTo)) continue
-    const p = getTokenPrice(bestEdge.pool, vTo.currency, vFrom.currency)
-    const vFromQuotePrice = getQuotePrice(vFrom)
-    invariant(vFromQuotePrice !== undefined, 'Invalid quote price')
-    priceMap.set(vTo, p.multiply(vFromQuotePrice))
-    nextEdges = getNextEdges(vTo)
-    processedVert.add(vTo)
-    console.log(
-      `Pricing: + Token ${vTo.currency.symbol} price=${getQuotePrice(vTo)?.toSignificant(6)}` +
-        ` from ${vFrom.currency.symbol} pool=${getPoolAddress(bestEdge.pool)} liquidity=${getWeight(bestEdge)}`,
-    )
-  }
-
-  function getNextEdges(v: Vertice) {
-    const price = priceMap.get(v)
-    if (!price) {
-      throw new Error('Invalid price')
-    }
-    const newEdges = v.edges.filter((e) => {
-      if (processedVert.has(getNeighbour(e, v))) {
-        return false
+  // 2. Find best path using Dijkstra's algo
+  async function findBestPath(baseAmount: CurrencyAmount<Currency>) {
+    invariant(start !== undefined && finish !== undefined, 'Invalid start/finish vertice')
+    const bestResult = new Map<
+      Vertice,
+      {
+        bestAmount: CurrencyAmount<Currency>
+        bestQuote?: CurrencyAmount<Currency>
+        bestSource?: Edge
       }
-      const tokenReserve = getReserve(e.pool, v.currency)
-      invariant(tokenReserve !== undefined, 'Unexpected empty token reserve')
-      const liquidity = price.quote(tokenReserve).quotient
-      edgeWeight.set(e, liquidity)
-      return true
+    >()
+    const processedVert = new Set<Vertice>()
+    bestResult.set(start, {
+      bestAmount: amount,
     })
-    newEdges.sort((e1, e2) => (getWeight(e1) - getWeight(e2) > 0n ? 1 : -1))
-    const res: Edge[] = []
-    while (nextEdges.length && newEdges.length) {
-      if (getWeight(nextEdges[0]) < getWeight(newEdges[0])) {
-        res.push(nextEdges.shift() as Edge)
-      } else {
-        res.push(newEdges.shift() as Edge)
+    const nextVertList: Vertice[] = [start]
+    const getBestAmount = (vert: Vertice) => bestResult.get(vert)?.bestAmount
+    const getBestQuote = (vert: Vertice) => bestResult.get(vert)?.bestQuote
+    const getBestSource = (vert: Vertice) => bestResult.get(vert)?.bestSource
+    const getNextVert = () => {
+      let vert: Vertice | undefined
+      let bestQuote: CurrencyAmount<Currency> | undefined
+      let bestVertIndex: number | undefined
+      for (const [i, vertice] of nextVertList.entries()) {
+        const currentBestQuote = getBestQuote(vertice)
+        if (vert === undefined || bestQuote === undefined || currentBestQuote?.greaterThan(bestQuote)) {
+          vert = vertice
+          bestQuote = currentBestQuote
+          bestVertIndex = i
+        }
       }
+      return { vert, index: bestVertIndex }
     }
-    return [...res, ...nextEdges, ...newEdges]
+
+    for (;;) {
+      const { vert, index } = getNextVert()
+      if (!vert || index === undefined) return undefined
+
+      if (vert === finish) {
+        const bestPath: Edge[] = []
+        for (let v: Vertice | undefined = finish; getBestSource(v); v = getNeighbour(getBestSource(v)!, v)) {
+          bestPath.unshift(getBestSource(v)!)
+        }
+        return {
+          path: bestPath,
+          inputAmount: baseAmount,
+          outputAmount: getBestAmount(finish),
+        }
+      }
+      nextVertList.splice(index, 1)
+
+      for (const e of vert.edges) {
+        const v2 = vert === e.vertice0 ? e.vertice1 : e.vertice0
+        if (processedVert.has(v2)) continue
+
+        let quoteV2Amount: CurrencyAmount<Currency> | undefined
+        try {
+          const bestAmount = getBestAmount(vert)
+          invariant(bestAmount !== undefined, 'Invalid amount')
+          console.log(
+            `Get quote ${(e.pool as any).token0.symbol} ${(e.pool as any).token1.symbol} ${(e.pool as any).fee}`,
+          )
+          // eslint-disable-next-line no-await-in-loop
+          const quoteResult = await getPoolQuote(e.pool, bestAmount)
+          console.log(`Get quote success ${quoteResult?.quote.toExact()}`)
+          invariant(quoteResult !== undefined, 'Invalid quote result')
+          const { quote } = quoteResult
+
+          quoteV2Amount = quote
+        } catch (_err) {
+          console.error(_err)
+          continue
+        }
+        const price = priceCalculator.getPrice(v2, finish)
+        const newQuote = price?.quote(quoteV2Amount)
+        const bestSource = getBestSource(v2)
+        const v2BestQuote = getBestQuote(v2)
+
+        if (!bestSource) nextVertList.push(v2)
+        if (!bestSource || !v2BestQuote || newQuote?.greaterThan(v2BestQuote)) {
+          bestResult.set(v2, {
+            bestAmount: quoteV2Amount,
+            bestSource: e,
+            bestQuote: newQuote,
+          })
+        }
+      }
+      processedVert.add(vert)
+    }
   }
 
-  function getPrice(base: Vertice, targetQuote: Vertice): Price<Currency, Currency> | undefined {
-    const basePrice = getQuotePrice(base)
-    const quotePrice = getQuotePrice(targetQuote)
-    return basePrice && quotePrice ? basePrice.multiply(quotePrice.invert()) : undefined
-  }
-
-  function getQuotePrice(base: Vertice): Price<Currency, Currency> | undefined {
-    return priceMap.get(base)
-  }
-
-  return {
-    getQuotePrice,
-    getPrice,
-  }
+  return findBestPath(amount) as any as V4Trade<TradeType>
 }

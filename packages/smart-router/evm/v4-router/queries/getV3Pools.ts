@@ -99,17 +99,20 @@ async function fillPoolsWithTicks({ pools, clientProvider }: FillPoolsWithTicksP
           data: result.result as `0x${string}`,
         })
       : undefined
-    const tick = data?.[0]
-      ? new Tick({
-          index: data[0].tick,
-          liquidityNet: data[0].liquidityNet,
-          liquidityGross: data[0].liquidityGross,
-        })
-      : undefined
-    if (!tick) {
+    const newTicks = data
+      ?.map(
+        ({ tick, liquidityNet, liquidityGross }) =>
+          new Tick({
+            index: tick,
+            liquidityNet,
+            liquidityGross,
+          }),
+      )
+      .reverse()
+    if (!newTicks) {
       continue
     }
-    pool.ticks = [...(pool.ticks || []), tick]
+    pool.ticks = [...(pool.ticks || []), ...newTicks]
   }
   // Filter those pools with no ticks found
   return poolsWithTicks.filter((p) => p.ticks?.length)

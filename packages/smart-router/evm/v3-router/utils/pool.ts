@@ -85,7 +85,8 @@ export const getPoolAddress = memoize(
     const [token0, token1] = isV2Pool(pool)
       ? [pool.reserve0.currency.wrapped, pool.reserve1.currency.wrapped]
       : [pool.token0.wrapped, pool.token1.wrapped]
-    return `${pool.type}_${token0.chainId}_${token0.address}_${token1.address}`
+    const fee = isV3Pool(pool) ? pool.fee : 'V2_FEE'
+    return `${pool.type}_${token0.chainId}_${token0.address}_${token1.address}_${fee}`
   },
 )
 
