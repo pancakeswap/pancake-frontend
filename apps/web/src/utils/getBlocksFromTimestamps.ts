@@ -37,10 +37,9 @@ export const getBlocksFromTimestamps = async (
     return []
   }
 
-  const chainId = Object.entries(multiChainName).find(([, value]) => value === chainName)?.[0]
-  const llamaChainName = chainId && getLlamaChainName(chainId as unknown as ChainId)
-
-  if (llamaChainName) {
+  if (chainName === 'ZKSYNC') {
+    const chainId = Object.entries(multiChainName).find(([, value]) => value === chainName)?.[0]
+    const llamaChainName = chainId && getLlamaChainName(chainId as unknown as ChainId)
     const blocks = await timestamps.reduce(async (accumP, timestamp) => {
       const acc = await accumP
       try {
