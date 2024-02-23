@@ -425,4 +425,12 @@ export const ethereumTokens = {
     'PIXEL',
     'https://www.pixels.xyz/',
   ),
+  xrgb: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x5cc5E64AB764A0f1E97F23984E20fD4528356a6a',
+    18,
+    'XRGB',
+    'XRGB',
+    'https://xrgb.xyz/',
+  ),
 }
