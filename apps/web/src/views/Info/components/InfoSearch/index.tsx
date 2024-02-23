@@ -7,21 +7,15 @@ import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { checkIsStableSwap, subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
-import {
-  useChainIdByQuery,
-  useChainNameByQuery,
-  useMultiChainPath,
-  usePoolDatasQuery,
-  useTokenDatasQuery,
-} from 'state/info/hooks'
+import { checkIsStableSwap, multiChainId } from 'state/info/constant'
+import { useChainNameByQuery, useMultiChainPath, usePoolDatasQuery, useTokenDatasQuery } from 'state/info/hooks'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import { safeGetAddress } from 'utils'
 
 const Container = styled.div`
   position: relative;
@@ -132,20 +126,23 @@ type BasicTokenData = {
   symbol: string
   name: string
 }
-const tokenIncludesSearchTerm = (token: BasicTokenData, value: string) => {
+const tokenIncludesSearchTerm = (token: BasicTokenData, chainId: number, value: string) => {
+  const tokenSymbolAlias = getTokenSymbolAlias(token.address, chainId, token.symbol)
+  const tokenNameAlias = getTokenNameAlias(token.address, chainId, token.name)
   return (
     token.address.toLowerCase().includes(value.toLowerCase()) ||
     token.symbol.toLowerCase().includes(value.toLowerCase()) ||
-    token.name.toLowerCase().includes(value.toLowerCase())
+    token.name.toLowerCase().includes(value.toLowerCase()) ||
+    (tokenSymbolAlias && tokenSymbolAlias.toLowerCase().includes(value.toLowerCase())) ||
+    (tokenNameAlias && tokenNameAlias.toLowerCase().includes(value.toLowerCase()))
   )
 }
 
-const poolIncludesSearchTerm = (pool: PoolData | undefined, value: string) => {
+const poolIncludesSearchTerm = (pool: PoolData, chainId: number, value: string) => {
   return (
-    pool &&
-    (pool.address.toLowerCase().includes(value.toLowerCase()) ||
-      tokenIncludesSearchTerm(pool.token0, value) ||
-      tokenIncludesSearchTerm(pool.token1, value))
+    pool.address.toLowerCase().includes(value.toLowerCase()) ||
+    tokenIncludesSearchTerm(pool.token0, chainId, value) ||
+    tokenIncludesSearchTerm(pool.token1, chainId, value)
   )
 }
 
@@ -153,6 +150,8 @@ const Search = () => {
   const router = useRouter()
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
 
   const inputRef = useRef<HTMLInputElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -167,7 +166,6 @@ const Search = () => {
 
   const [tokensShown, setTokensShown] = useState(3)
   const [poolsShown, setPoolsShown] = useState(3)
-  const chainId = useChainIdByQuery()
   const { savedPools, savedTokens, addPool, addToken } = useInfoUserSavedTokensAndPools(chainId)
 
   useEffect(() => {
@@ -221,17 +219,19 @@ const Search = () => {
   const [showWatchlist, setShowWatchlist] = useState(false)
   const tokensForList = useMemo(() => {
     if (showWatchlist) {
-      return watchListTokenData ? watchListTokenData.filter((token) => tokenIncludesSearchTerm(token, value)) : []
+      return watchListTokenData
+        ? watchListTokenData.filter((token) => tokenIncludesSearchTerm(token, chainId, value))
+        : []
     }
     return orderBy(tokens, (token) => token.volumeUSD, 'desc')
-  }, [showWatchlist, tokens, watchListTokenData, value])
+  }, [showWatchlist, tokens, watchListTokenData, chainId, value])
 
   const poolForList = useMemo(() => {
     if (showWatchlist) {
-      return watchListPoolData.filter((pool) => poolIncludesSearchTerm(pool, value))
+      return watchListPoolData.filter((pool) => pool && poolIncludesSearchTerm(pool, chainId, value))
     }
     return orderBy(pools, (pool) => pool?.volumeUSD, 'desc')
-  }, [pools, showWatchlist, watchListPoolData, value])
+  }, [showWatchlist, pools, watchListPoolData, chainId, value])
 
   const contentUnderTokenList = () => {
     const isLoading = tokensLoading
@@ -269,7 +269,6 @@ const Search = () => {
     )
   }
   const chainPath = useMultiChainPath()
-  const chainName = useChainNameByQuery()
   const stableSwapQuery = checkIsStableSwap() ? '?type=stableSwap' : ''
   return (
     <>
@@ -320,7 +319,6 @@ const Search = () => {
               )}
             </ResponsiveGrid>
             {tokensForList.slice(0, tokensShown).map((token) => {
-              const checksummedAddress = safeGetAddress(token.address)
               return (
                 <HoverRowLink
                   onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}${stableSwapQuery}`)}
@@ -330,8 +328,9 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${(checksummedAddress && subgraphTokenName[checksummedAddress]) || token.name} (${
-                          (checksummedAddress && subgraphTokenSymbol[checksummedAddress]) || token.symbol
+                        <Text>{`${token.address && getTokenNameAlias(token.address, chainId, token.name)} (${
+                          token.address && getTokenSymbolAlias(token.address, chainId, token.symbol)
+                        }
                         })`}</Text>
                       </Text>
                       <SaveIcon
@@ -399,7 +398,9 @@ const Search = () => {
                         chainName={chainName}
                       />
                       <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
-                        <Text>{`${p?.token0.symbol} / ${p?.token1.symbol}`}</Text>
+                        <Text>{`${p && getTokenSymbolAlias(p.token0.address, chainId, p.token0.symbol)} / ${
+                          p && getTokenSymbolAlias(p.token1.address, chainId, p.token1.symbol)
+                        }`}</Text>
                       </Text>
                       <SaveIcon
                         id="watchlist-icon"
