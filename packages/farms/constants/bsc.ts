@@ -1066,6 +1066,20 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 180,
+    lpSymbol: 'MGP-BNB LP',
+    lpAddress: '0x2b3DBbA2D1F5158c7BA4b645B7ea187F7F1763af',
+    token: bscTokens.mgp,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
+    pid: 181,
+    lpSymbol: 'PNP-BNB LP',
+    lpAddress: '0x1C5bD1B4A4Fc05cC0Fb1a0f61136512744Ca4F34',
+    token: bscTokens.pnp,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
     pid: 179,
     lpSymbol: 'mDLP-DLP LP',
     lpAddress: '0xA2915ae3bc8C6C03f59496B6Dd26aa6a4335b788',
