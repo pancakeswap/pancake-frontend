@@ -138,10 +138,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       </ScanLink>
       <Text>${formatAmount(transaction.amountUSD)}</Text>
       <Text>
-        <Text>{`${formatAmount(abs0)} ${transaction.token0Symbol}`}</Text>
+        <Text>{`${formatAmount(abs0)} ${token0Symbol}`}</Text>
       </Text>
       <Text>
-        <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
+        <Text>{`${formatAmount(abs1)} ${token1Symbol}`}</Text>
       </Text>
       <ScanLink
         useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}

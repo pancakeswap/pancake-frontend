@@ -204,11 +204,11 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   <TokenButton>
                     <CurrencyLogo address={poolData.token0.address} size="24px" chainName={chainName} />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
-                      {`1 ${poolData.token0.symbol} =  ${formatAmount(poolData.token1Price, {
+                      {`1 ${symbol0} =  ${formatAmount(poolData.token1Price, {
                         notation: 'standard',
                         displayThreshold: 0.001,
                         tokenPrecision: hasSmallDifference ? 'enhanced' : 'normal',
-                      })} ${poolData.token1.symbol}`}
+                      })} ${symbol1}`}
                     </Text>
                   </TokenButton>
                 </NextLinkFromReactRouter>

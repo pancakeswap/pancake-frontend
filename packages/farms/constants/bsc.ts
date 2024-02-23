@@ -1150,7 +1150,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 163,
-    lpSymbol: 'LisUSD-USDT LP',
+    lpSymbol: 'lisUSD-USDT LP',
     lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
     token: bscTokens.hay,
     quoteToken: bscTokens.usdt,
@@ -1452,7 +1452,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 115,
-    lpSymbol: 'LisUSD-BUSD LP',
+    lpSymbol: 'lisUSD-BUSD LP',
     lpAddress: '0x70c26e9805ec5Df3d4aB0b2a3dF86BBA2231B6c1',
     token: bscTokens.hay,
     quoteToken: bscTokens.busd,
@@ -2273,7 +2273,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 121,
-    lpSymbol: 'LisUSD-BUSD LP',
+    lpSymbol: 'lisUSD-BUSD LP',
     lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
     token: bscTokens.hay,
     quoteToken: bscTokens.busd,
