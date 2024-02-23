@@ -1,4 +1,4 @@
-import { WormholeChainIds } from 'components/WormHole/constants'
+import { WormholeChainIds } from '../../components/WormHole/chains'
 
 export const getNodeRealUrl = (chainId: number, key?: string) => {
   let host: string | null = null
@@ -31,7 +31,7 @@ export const getNodeRealUrl = (chainId: number, key?: string) => {
       break
     case WormholeChainIds.SOLANA: //  sol mainnet
       if (key) {
-        host = `https://open-platform.nodereal.io/${key}/solana/`
+        host = `open-platform.nodereal.io/${key}/solana/`
       }
       break
     default:

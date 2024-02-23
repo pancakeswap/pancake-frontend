@@ -1,23 +1,9 @@
-import { ChainId } from '@pancakeswap/chains'
 import { MainnetChainName, TestnetChainName } from '@wormhole-foundation/wormhole-connect'
-import { arbitrumGoerli, baseGoerli, bscTestnet, goerli } from 'wagmi/chains'
-import { getNodeRealUrl } from '../../utils/nodereal'
+import { arbitrum, arbitrumGoerli, base, baseGoerli, bscTestnet, mainnet as ethereum, goerli } from 'wagmi/chains'
+import { getNodeRealUrl } from '../../utils/nodes/nodereal'
+import { getGroveUrl } from '../../utils/nodes/pokt'
+import { WormholeChainIds } from './chains'
 import { Env, WidgetEnvs } from './types'
-
-export enum WormholeChainIds {
-  ETHEREUM = ChainId.ETHEREUM,
-  GOERLI = ChainId.GOERLI,
-  BSC = ChainId.BSC,
-  BSC_TESTNET = ChainId.BSC_TESTNET,
-  ARBITRUM_ONE = ChainId.ARBITRUM_ONE,
-  ARBITRUM_GOERLI = ChainId.ARBITRUM_GOERLI,
-  BASE = ChainId.BASE,
-  BASE_TESTNET = ChainId.BASE_TESTNET,
-  SOLANA = 1399811149,
-  SOLANA_TESTNET = 900,
-  APTOS = 1,
-  APTOS_TESTNET = 34,
-}
 
 export type Network = {
   name: string
@@ -42,17 +28,19 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'solana',
     mainnet: 'solana',
     mainnetRpc:
+      getGroveUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      'https://solana-mainnet.g.alchemy.com/v2/6PZrVyh_Obebi8OKb_1DVwsJKHuJ5142',
-    testnetRpc: 'https://solana-devnet.g.alchemy.com/v2/cOwc2pnya8KbOGyED0gAK3KsK5nYgomn',
+      'https://solana-mainnet.rpc.extrnode.com',
+    testnetRpc: 'https://api.devnet.solana.com',
   },
   [NETWORKS.ETHEREUM]: {
     name: 'Ethereum',
     testnet: 'goerli',
     mainnet: 'ethereum',
     mainnetRpc:
+      getGroveUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      'https://eth-mainnet.g.alchemy.com/v2/aLeAqgQ1dZmYzL6JMbCLHYwnqxKIYboN',
+      ethereum.rpcUrls.public.http[0],
     testnetRpc:
       getNodeRealUrl(WormholeChainIds.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       goerli.rpcUrls.public.http[0],
@@ -62,6 +50,7 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'bsc',
     mainnet: 'bsc',
     mainnetRpc:
+      getGroveUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       'https://bsc-dataseed1.binance.org',
     testnetRpc: bscTestnet.rpcUrls.public.http[0],
@@ -71,8 +60,9 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'arbitrumgoerli',
     mainnet: 'arbitrum',
     mainnetRpc:
+      getGroveUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      'https://arb-mainnet.g.alchemy.com/v2/hWxZHWy7Z0kRzpOjDLhsRELM-AIN-a4x',
+      arbitrum.rpcUrls.public.http[0],
     testnetRpc: arbitrumGoerli.rpcUrls.public.http[0],
   },
   [NETWORKS.BASE]: {
@@ -80,8 +70,9 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'basegoerli',
     mainnet: 'base',
     mainnetRpc:
+      getGroveUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      'https://base-mainnet.g.alchemy.com/v2/JpagJGy6-8UnlerhhTvpdBt50XDqhb5r',
+      base.rpcUrls.public.http[0],
     testnetRpc: baseGoerli.rpcUrls.public.http[0],
   },
   [NETWORKS.APTOS]: {
@@ -111,9 +102,7 @@ export const MAINNET_TOKEN_KEYS: string[] = [
   'USDCarbitrum',
   'ETHbase',
   'WETHbase',
-  'tBTCarbitrum',
-  'tBTCbase',
-  'tBTCsol',
+  'tBTC',
   'WETHbsc',
   'wstETHarbitrum',
   'wstETHbase',
