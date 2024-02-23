@@ -34,7 +34,7 @@ const liquidStaking: LiquidStakingList[] = [
     FAQs: EthWbethFaq(),
   },
   {
-    stakingSymbol: 'BNB / SnBNB',
+    stakingSymbol: 'BNB / slisBNB',
     contract: SNBNB[ChainId.BSC],
     token0: NATIVE[ChainId.BSC],
     token1: bscTokens.snbnb,

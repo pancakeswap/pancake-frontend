@@ -546,7 +546,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 53,
     address: '0x9474e972F49605315763c296B122CBB998b615Cf',
-    pairName: 'SnBNB-BNB',
+    pairName: 'slisBNB-BNB',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     token0Address: bscTokens.snbnb.address,
