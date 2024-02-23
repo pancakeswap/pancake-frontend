@@ -5,11 +5,11 @@ import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
-import { subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
+import { multiChainId } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
-import { safeGetAddress } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import Percent from 'views/Info/components/Percent'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
@@ -95,8 +95,11 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
   const { isXs, isSm } = useMatchBreakpoints()
   const chianPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const stableSwapPath = useStableSwapPath()
-  const checksummedAddress = safeGetAddress(tokenData.address)
+
+  const tokenSymbol = getTokenSymbolAlias(tokenData.address, chainId, tokenData.symbol)
+  const tokenName = getTokenNameAlias(tokenData.address, chainId, tokenData.name)
 
   return (
     <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
@@ -109,10 +112,8 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
-              <Text>{(checksummedAddress && subgraphTokenName[checksummedAddress]) || tokenData.name}</Text>
-              <Text ml="8px">
-                ({(checksummedAddress && subgraphTokenSymbol[checksummedAddress]) || tokenData.symbol})
-              </Text>
+              <Text>{tokenName}</Text>
+              <Text ml="8px">({tokenSymbol})</Text>
             </Flex>
           )}
         </Flex>
