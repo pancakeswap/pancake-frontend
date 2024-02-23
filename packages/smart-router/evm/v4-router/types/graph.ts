@@ -1,11 +1,21 @@
-import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
+
+import { Pool } from '../../v3-router/types'
+
+export type Edge = {
+  vertice0: Vertice
+  vertice1: Vertice
+  pool: Pool
+}
 
 export type Vertice = {
-  currency?: Currency
+  currency: Currency
+  edges: Edge[]
+}
 
-  // Price of current currency against base currency
-  price?: Price<Currency, Currency>
+export type Graph = {
+  vertices: Vertice[]
+  edges: Edge[]
 
-  // Gas price wei in the form of current token
-  gasPrice?: CurrencyAmount<Currency>
+  getVertice: (currency: Currency) => Vertice | undefined
 }

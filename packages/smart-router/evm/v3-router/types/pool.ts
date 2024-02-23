@@ -43,6 +43,9 @@ export interface V3Pool extends BasePool {
 
   // Allow pool with no ticks data provided
   ticks?: Tick[]
+
+  reserve0?: CurrencyAmount<Currency>
+  reserve1?: CurrencyAmount<Currency>
 }
 
 export type Pool = V2Pool | V3Pool | StablePool
