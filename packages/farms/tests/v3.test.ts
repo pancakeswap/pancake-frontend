@@ -17,26 +17,27 @@ const tokenListMap = {
   [ChainId.LINEA]: 'https://tokens.pancakeswap.finance/pancakeswap-linea-default.json',
   [ChainId.BASE]: 'https://tokens.pancakeswap.finance/pancakeswap-base-default.json',
   [ChainId.OPBNB]: 'https://tokens.pancakeswap.finance/pancakeswap-opbnb-default.json',
-}
+} as const
 
 describe('Config farms V3', async () => {
-  const tokenListByChain = {}
+  const tokenListByChain = {} as Record<number, any>
 
   await Promise.all(
-    Object.entries(tokenListMap).map(async ([chainId, url]) => {
+    Object.entries(tokenListMap).map(async ([_chainId, url]) => {
+      const chainId = Number(_chainId)
       try {
         const resp = await fetch(url)
         const json = await resp.json()
         tokenListByChain[chainId] = json
       } catch (error) {
-        console.error('chainId', url, error.message)
+        console.error('chainId', url, error)
         throw error
       }
     }),
   )
   Object.entries(farmsV3ConfigChainMap).forEach(([_chainId, farms]) => {
-    const chainId = Number(_chainId)
-    if (!supportedChainIdV3.filter((id) => !isTestnetChainId(id)).includes(chainId)) return
+    if (!supportedChainIdV3.filter((id) => !isTestnetChainId(id)).includes(Number(_chainId))) return
+    const chainId = Number(_chainId) as ChainId
     const tokenList = tokenListByChain[chainId]
     it(`${chainNames[chainId]}.ts have config in token-list`, () => {
       expect(tokenList).not.toBeUndefined()
@@ -48,6 +49,13 @@ describe('Config farms V3', async () => {
         expect(c.length).toBe(1)
       })
     })
+    const lps = groupBy(farms, 'lpAddress')
+    Object.entries(lps).forEach(([lpAddress, c]) => {
+      it(`${chainNames[chainId]}.ts farms with lpAddress ${lpAddress} should unique`, () => {
+        expect(c.length).toBe(1)
+      })
+    })
+
     farms.forEach((farm) => {
       it(`${chainNames[chainId]}.ts pid #${farm.pid} tokens should has correct chainId`, () => {
         expect(farm.token0.chainId).toBe(chainId)
@@ -71,7 +79,7 @@ describe('Config farms V3', async () => {
     })
 
     const commonPrice: CommonPrice = {}
-    for (const commonToken of priceHelperTokens[chainId].list) {
+    for (const commonToken of priceHelperTokens[chainId as keyof typeof priceHelperTokens].list) {
       commonPrice[commonToken.address] = '1'
     }
     const farmPrices = getFarmsPrices(
