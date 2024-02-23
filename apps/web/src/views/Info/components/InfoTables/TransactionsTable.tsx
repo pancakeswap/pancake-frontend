@@ -1,20 +1,21 @@
 // TODO PCS refactor ternaries
 /* eslint-disable no-nested-ternary */
 import { useTranslation } from '@pancakeswap/localization'
-import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Radio, ScanLink, Skeleton, Text } from '@pancakeswap/uikit'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useChainNameByQuery } from 'state/info/hooks'
-import { Transaction, TransactionType } from 'state/info/types'
-import { styled } from 'styled-components'
-import { getBlockExploreLink, safeGetAddress } from 'utils'
-import { multiChainId, subgraphTokenSymbol, ChainLinkSupportChains } from 'state/info/constant'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import { ChainLinkSupportChains, multiChainId } from 'state/info/constant'
+import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
+import { Transaction, TransactionType } from 'state/info/types'
+import { styled } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 
-import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 dayjs.extend(relativeTime)
@@ -104,12 +105,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
+  const chainId = useChainIdByQuery()
   const { domainName } = useDomainNameForAddress(transaction.sender)
-  const [token0Address, token1Address] = [transaction.token0Address, transaction.token1Address].map(safeGetAddress)
-  const [token0Symbol = transaction.token0Symbol, token1Symbol = transaction.token1Symbol] = [
-    token0Address,
-    token1Address,
-  ].map((address) => (address ? subgraphTokenSymbol[address] : undefined))
+  const token0Symbol = getTokenSymbolAlias(transaction.token0Address, chainId, transaction.token0Symbol)
+  const token1Symbol = getTokenSymbolAlias(transaction.token1Address, chainId, transaction.token1Symbol)
 
   const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
