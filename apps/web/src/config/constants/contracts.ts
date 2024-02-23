@@ -165,7 +165,7 @@ export default {
   },
   tradingReward: {
     [ChainId.ETHEREUM]: '0x',
-    [ChainId.BSC]: '0xb24BbFbB9Dfa421f296a449ae161269A66314f45',
+    [ChainId.BSC]: '0xF02B784cD19aD8C37d5552f2a35Cc06952EcFC9a',
     // [ChainId.BSC]: '0xa842a4AD40FEbbd034fbeF25C7a880464a90e695', // TODO: revert before merge
     [ChainId.BSC_TESTNET]: '0x',
   },
