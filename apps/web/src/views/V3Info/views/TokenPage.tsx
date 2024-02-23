@@ -26,20 +26,15 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useState } from 'react'
-import { getBlockExploreLink, safeGetAddress } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import {
-  ChainLinkSupportChains,
-  multiChainId,
-  multiChainScan,
-  subgraphTokenName,
-  subgraphTokenSymbol,
-} from 'state/info/constant'
+import { ChainLinkSupportChains, multiChainId, multiChainScan } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { styled } from 'styled-components'
+import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
 import BarChart from '../components/BarChart/alt'
@@ -161,7 +156,8 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const chainName = useChainNameByQuery()
   const { chainId } = useActiveChainId()
 
-  const checksumAddress = safeGetAddress(address)
+  const tokenSymbol = getTokenSymbolAlias(address, chainId, tokenData?.symbol)
+  const tokenName = getTokenNameAlias(address, chainId, tokenData?.name)
 
   return (
     <Page>
@@ -189,9 +185,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     <Text color="primary">{t('Tokens')}</Text>
                   </NextLinkFromReactRouter>
                   <Flex>
-                    <Text mr="8px">
-                      {(checksumAddress && subgraphTokenSymbol[checksumAddress]) ?? tokenData.symbol}
-                    </Text>
+                    <Text mr="8px">{tokenSymbol}</Text>
                     <Text>{`(${truncateHash(address)})`}</Text>
                   </Flex>
                 </Breadcrumbs>
@@ -229,10 +223,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       fontSize={isXs || isSm ? '24px' : '40px'}
                       id="info-token-name-title"
                     >
-                      {(checksumAddress && subgraphTokenName[checksumAddress]) || tokenData.name}
+                      {tokenName}
                     </Text>
                     <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                      ({(checksumAddress && subgraphTokenSymbol[checksumAddress]) ?? tokenData.symbol})
+                      ({tokenSymbol})
                     </Text>
                   </Flex>
                   <Flex mt="8px" ml="46px" alignItems="center">
