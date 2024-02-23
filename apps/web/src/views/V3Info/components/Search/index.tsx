@@ -182,12 +182,17 @@ const Search = () => {
   }
 
   useEffect(() => {
+    const body = document.querySelector('body')
     if (showMenu) {
       document.addEventListener('click', handleOutsideClick)
-      document.querySelector('body').style.overflow = 'hidden'
+      if (body) {
+        body.style.overflow = 'hidden'
+      }
     } else {
       document.removeEventListener('click', handleOutsideClick)
-      document.querySelector('body').style.overflow = 'visible'
+      if (body) {
+        body.style.overflow = 'visible'
+      }
     }
     return () => {
       document.removeEventListener('click', handleOutsideClick)
@@ -214,14 +219,14 @@ const Search = () => {
   const [showWatchlist, setShowWatchlist] = useState(false)
   const tokensForList = useMemo(() => {
     if (showWatchlist) {
-      return watchListTokenData?.filter((token) => tokenIncludesSearchTerm(token, value))
+      return watchListTokenData?.filter((token) => tokenIncludesSearchTerm(token, value)) ?? []
     }
     return orderBy(tokens, (token) => token.volumeUSD, 'desc')
   }, [showWatchlist, tokens, watchListTokenData, value])
 
   const poolForList = useMemo(() => {
     if (showWatchlist) {
-      return watchListPoolData?.filter((pool) => poolIncludesSearchTerm(pool, value))
+      return watchListPoolData?.filter((pool) => poolIncludesSearchTerm(pool, value)) ?? []
     }
     return orderBy(pools, (pool) => pool.volumeUSD, 'desc')
   }, [pools, showWatchlist, watchListPoolData, value])
@@ -355,7 +360,7 @@ const Search = () => {
                 else setTokensShown(tokensForList.length)
               }}
               ref={showMoreTokenRef}
-              style={{ display: tokensForList.length <= tokensShown && 'none' }}
+              style={{ display: tokensForList.length <= tokensShown ? 'none' : 'block' }}
             >
               {t('See more...')}
             </HoverText>
@@ -428,7 +433,7 @@ const Search = () => {
                 else setPoolsShown(poolForList?.length)
               }}
               ref={showMorePoolRef}
-              style={{ display: poolForList?.length <= poolsShown && 'none' }}
+              style={{ display: poolForList?.length <= poolsShown ? 'none' : 'block' }}
             >
               {t('See more...')}
             </HoverText>
