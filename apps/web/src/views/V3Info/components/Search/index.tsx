@@ -5,14 +5,14 @@ import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { checkIsStableSwap, subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
-import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
+import { checkIsStableSwap } from 'state/info/constant'
+import { useChainIdByQuery, useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 
-import { safeGetAddress } from 'utils'
+import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { v3InfoPath } from '../../constants'
 import { usePoolsData, useSearchData, useTokensData } from '../../hooks'
 import { PoolData } from '../../types'
@@ -263,6 +263,7 @@ const Search = () => {
   }
   const chainPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
+  const chainId = useChainIdByQuery()
   const stableSwapQuery = checkIsStableSwap() ? '?type=stableSwap' : ''
   return (
     <>
@@ -324,8 +325,9 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${(token.address && subgraphTokenName[safeGetAddress(token.address)]) || token.name} (${
-                          (token.address && subgraphTokenSymbol[safeGetAddress(token.address)]) || token.symbol
+                        <Text>{`${token.address && getTokenNameAlias(token.address, chainId, token.name)} (${
+                          token.address && getTokenSymbolAlias(token.address, chainId, token.symbol)
+                        }
                         })`}</Text>
                       </Text>
                       {/* <SaveIcon
@@ -393,9 +395,11 @@ const Search = () => {
                         chainName={chainName}
                       />
                       <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
-                        <Text>{`${subgraphTokenSymbol[safeGetAddress(p.token0.address)] ?? p.token0.symbol} / ${
-                          subgraphTokenSymbol[safeGetAddress(p.token1.address)] ?? p.token1.symbol
-                        }`}</Text>
+                        <Text>{`${getTokenSymbolAlias(
+                          p.token0.address,
+                          chainId,
+                          p.token0.symbol,
+                        )} / ${getTokenSymbolAlias(p.token1.address, chainId, p.token1.symbol)}`}</Text>
                       </Text>
                       <GreyBadge ml="10px" style={{ fontSize: 14 }}>
                         {feeTierPercent(p.feeTier)}
