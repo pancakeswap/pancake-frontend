@@ -7,7 +7,6 @@ import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom, useAtomValue } from 'jotai'
-import isString from 'lodash/isString'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -431,12 +430,12 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
 
   const singleTokenPriceResult: SignleTokenPrice = {}
 
-  if (isString(wrappedCurrencies.input?.address)) {
-    singleTokenPriceResult[wrappedCurrencies.input?.address] = singleTokenPrice
+  if (wrappedCurrencies.input?.address) {
+    singleTokenPriceResult[wrappedCurrencies.input.address] = singleTokenPrice
   }
 
-  if (isString(wrappedCurrencies.output?.address)) {
-    singleTokenPriceResult[wrappedCurrencies.output?.address] = inverseSingleTokenPrice
+  if (wrappedCurrencies.output?.address) {
+    singleTokenPriceResult[wrappedCurrencies.output.address] = inverseSingleTokenPrice
   }
 
   return {
