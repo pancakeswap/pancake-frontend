@@ -1,10 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
-import { VaultConfig } from '../../types'
+import { SerializedPool } from '@pancakeswap/pools'
 import { SupportedChainId } from '../supportedChains'
 import { launchPools as bscLaunchPools } from './bsc'
 
 export type VaultsConfigByChain = {
-  [chainId in SupportedChainId]: VaultConfig[]
+  [chainId in SupportedChainId]: SerializedPool[]
 }
 
 export const LAUNCH_POOL_CONFIG_BY_CHAIN = {
