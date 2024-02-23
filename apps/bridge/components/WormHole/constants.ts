@@ -137,10 +137,6 @@ export const TESTNET_TOKEN_KEYS: string[] = [
   'ETHbase',
   'WETHbase',
   'USDCbase',
-  'tBTC',
-  'tBTCarbitrum',
-  'tBTCbase',
-  'tBTCsol',
 ].sort()
 
 export const MAINNET_RPCS: { [mainnet: string]: string } = Object.entries(NETWORK_CONFIG).reduce((acc, [, config]) => {
