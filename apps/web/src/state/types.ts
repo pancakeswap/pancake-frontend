@@ -481,7 +481,7 @@ export interface UserRound {
 
 // Pottery
 export interface PotteryState {
-  lastVaultAddress: Address
+  lastVaultAddress: Address | null
   publicData: SerializedPotteryPublicData
   userData: SerializedPotteryUserData
   finishedRoundInfo: PotteryRoundInfo
