@@ -18,6 +18,7 @@ import mapValues from 'lodash/mapValues'
 import _pickBy from 'lodash/pickBy'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
+import { notEmpty } from 'utils/notEmpty'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import ONRAMP_TOKEN_LIST from '../../config/constants/tokenLists/pancake-supported-onramp-currency-list.json'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
@@ -111,7 +112,7 @@ export const combinedTokenMapFromOfficialsUrlsAtom = atom((get) => {
 export const tokenListFromOfficialsUrlsAtom = atom((get) => {
   const lists: ListsState['byUrl'] = get(selectorByUrlsAtom)
 
-  const mergedTokenLists: TokenInfo[] = OFFICIAL_LISTS.reduce((acc, url) => {
+  const mergedTokenLists: TokenInfo[] = OFFICIAL_LISTS.reduce<TokenInfo[]>((acc, url) => {
     if (lists?.[url]?.current?.tokens) {
       acc.push(...(lists?.[url]?.current?.tokens || []))
     }
@@ -166,7 +167,7 @@ export function listToTokenMap(list: TokenList, key?: string): TokenAddressMap {
       }
       return null
     })
-    .filter(Boolean)
+    .filter(notEmpty)
 
   const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, 'chainId')
 
@@ -202,7 +203,10 @@ export function useAllLists(): {
 
   const urls = useAtomValue(selectorByUrlsAtom)
 
-  return useMemo(() => _pickBy(urls, (_, url) => MULTI_CHAIN_LIST_URLS[chainId]?.includes(url)), [chainId, urls])
+  return useMemo(
+    () => _pickBy(urls, (_, url) => chainId && MULTI_CHAIN_LIST_URLS[chainId]?.includes(url)),
+    [chainId, urls],
+  )
 }
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
@@ -218,7 +222,7 @@ export function useActiveListUrls(): string[] | undefined {
   const { chainId } = useActiveChainId()
   const urls = useAtomValue(activeListUrlsAtom)
 
-  return useMemo(() => urls.filter((url) => MULTI_CHAIN_LIST_URLS[chainId]?.includes(url)), [urls, chainId])
+  return useMemo(() => urls.filter((url) => chainId && MULTI_CHAIN_LIST_URLS[chainId]?.includes(url)), [urls, chainId])
 }
 
 export function useInactiveListUrls() {

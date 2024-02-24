@@ -1,12 +1,13 @@
-import { LotteryStatus, LotteryTicket } from 'config/constants/types'
-import { lotteryV2ABI } from 'config/abi/lotteryV2'
-import { getLotteryV2Address } from 'utils/addressHelpers'
-import { LotteryResponse } from 'state/types'
-import { getLotteryV2Contract } from 'utils/contractHelpers'
-import { bigIntToSerializedBigNumber } from '@pancakeswap/utils/bigNumber'
-import { NUM_ROUNDS_TO_FETCH_FROM_NODES } from 'config/constants/lottery'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { bigIntToSerializedBigNumber } from '@pancakeswap/utils/bigNumber'
+import { lotteryV2ABI } from 'config/abi/lotteryV2'
+import { NUM_ROUNDS_TO_FETCH_FROM_NODES } from 'config/constants/lottery'
+import { LotteryStatus, LotteryTicket } from 'config/constants/types'
+import { LotteryResponse } from 'state/types'
+import { getLotteryV2Address } from 'utils/addressHelpers'
+import { getLotteryV2Contract } from 'utils/contractHelpers'
+import { notEmpty } from 'utils/notEmpty'
+import { publicClient } from 'utils/wagmi'
 import { ContractFunctionResult } from 'viem'
 
 const lotteryContract = getLotteryV2Contract()
@@ -67,7 +68,7 @@ const processViewLotteryErrorResponse = (lotteryId: string): LotteryResponse => 
     treasuryFee: '',
     firstTicketId: '',
     amountCollectedInCake: '',
-    finalNumber: null,
+    finalNumber: 0,
     cakePerBracket: [],
     countWinnersPerBracket: [],
     rewardsBreakdown: [],
@@ -95,12 +96,13 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
   )
   try {
     const client = publicClient({ chainId: ChainId.BSC })
-    const multicallRes = await client.multicall({
+    const multicallRes = (await client.multicall({
       contracts: calls,
-    })
-    const processedResponses = multicallRes.map((res, index) =>
-      processViewLotterySuccessResponse(res.result, lotteryIds[index]),
-    )
+    })) as { result: ContractFunctionResult<typeof lotteryV2ABI, 'viewLottery'> }[]
+
+    const processedResponses = multicallRes
+      .filter(notEmpty)
+      .map((res, index) => processViewLotterySuccessResponse(res.result, lotteryIds[index]))
     return processedResponses
   } catch (error) {
     console.error(error)
@@ -143,7 +145,7 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
 
 export const getRoundIdsArray = (currentLotteryId: string): string[] => {
   const currentIdAsInt = parseInt(currentLotteryId, 10)
-  const roundIds = []
+  const roundIds: number[] = []
   for (let i = 0; i < NUM_ROUNDS_TO_FETCH_FROM_NODES; i++) {
     if (currentIdAsInt - i > 0) {
       roundIds.push(currentIdAsInt - i)
