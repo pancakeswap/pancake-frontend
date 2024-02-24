@@ -121,7 +121,6 @@
   "Stake Periods": "质押时长",
   "Staked Amount": "质押的金额",
   "Click here for more information": "点击这里查看更多详情",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ": "前 %days% 天将无法提取资金，随后如果在锁定期结束前解除质押，将收取提前提取费用。",
   "Your funds have been restaked in the pool": "您的资金已重新质押在糖浆池中",
   "This collection has been inactived for a while. Trade at your own risk.": "此收藏已被停用一段时间了。自行承担交易风险。",
   "Info": "信息",
@@ -3171,5 +3170,6 @@
   "Unable to unsubscribe %error%": "无法取消订阅。%error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "您已成功取消订阅通知。您可以随时重新订阅",
   "Failed to send": "无法发送",
-  "This product have been upgraded!": "此产品已升级！"
+  "This product have been upgraded!": "此产品已升级！",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "前 %days% 天将无法提取资金，随后如果在锁定期结束前解除质押，将收取提前提取费用。"
 }
