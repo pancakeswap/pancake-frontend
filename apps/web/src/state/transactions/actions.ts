@@ -76,7 +76,7 @@ export const addTransaction = createAction<{
   approval?: { tokenAddress: string; spender: string }
   claim?: { recipient: string }
   summary?: string
-  translatableSummary?: { text: string; data?: Record<string, string | number | undefined> }
+  translatableSummary?: { text: string; data?: Record<string, string | number> }
   type?: TransactionType
   order?: Order
   nonBscFarm?: NonBscFarmTransactionType
