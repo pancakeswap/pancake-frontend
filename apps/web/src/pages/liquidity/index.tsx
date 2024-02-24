@@ -1,49 +1,49 @@
+import { PositionDetails } from '@pancakeswap/farms'
+import { useTranslation } from '@pancakeswap/localization'
+import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
 import {
   AddIcon,
   Button,
-  CardBody,
-  CardFooter,
-  Text,
-  Dots,
-  Flex,
-  Tag,
   ButtonMenu,
   ButtonMenuItem,
+  CardBody,
+  CardFooter,
   Checkbox,
-  IconButton,
+  Dots,
+  Flex,
   HistoryIcon,
-  useModal,
+  IconButton,
   Link,
+  Tag,
+  Text,
+  useModal,
 } from '@pancakeswap/uikit'
-import { PositionDetails } from '@pancakeswap/farms'
+import { Liquidity } from '@pancakeswap/widgets-internal'
+import { AppBody, AppHeader } from 'components/App'
+import TransactionsModal from 'components/App/Transactions/TransactionsModal'
+import { RangeTag } from 'components/RangeTag'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
-import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import useV2PairsByAccount from 'hooks/useV2Pairs'
+import { useV3Positions } from 'hooks/v3/useV3Positions'
+import { useAtom } from 'jotai'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
+import React, { ReactNode, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
-import { AppBody, AppHeader } from 'components/App'
-import { useV3Positions } from 'hooks/v3/useV3Positions'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { CHAIN_IDS } from 'utils/wagmi'
+import { LiquidityCardRow } from 'views/AddLiquidity/components/LiquidityCardRow'
+import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
+import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import Page from 'views/Page'
-import { useTranslation } from '@pancakeswap/localization'
-import { RangeTag } from 'components/RangeTag'
-import useV2PairsByAccount from 'hooks/useV2Pairs'
 import useStableConfig, {
   LPStablePair,
   StableConfigContext,
   useLPTokensWithBalanceByAccount,
 } from 'views/Swap/hooks/useStableConfig'
-import React, { ReactNode, useMemo, useState } from 'react'
-import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
-import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
-import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import { LiquidityCardRow } from 'views/AddLiquidity/components/LiquidityCardRow'
-import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
-import { useAtom } from 'jotai'
-import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { Liquidity } from '@pancakeswap/widgets-internal'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
