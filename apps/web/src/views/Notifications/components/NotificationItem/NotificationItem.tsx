@@ -44,15 +44,14 @@ interface INotificationprops {
   title: string
   description: string
   date: number
-  url: string
-  id: number
+  url: string | null
+  id: string
   subscriptionId: string
   image?: string | undefined
 }
 
 interface INotificationContainerProps {
-  notifications: NotifyClientTypes.NotifyMessageRecord[]
-  isClosing: boolean
+  notifications: NotifyClientTypes.NotifyNotification[]
   subscriptionId: string
   importantAlertsOnly: boolean
 }
@@ -180,7 +179,10 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
     <StyledNotificationWrapper
       ref={containerRef}
       onClick={handleExpandClick}
-      onMouseEnter={() => dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: true }))}
+      onMouseEnter={() => {
+        if (hasUnread) return
+        dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: true }))
+      }}
     >
       <ContentsContainer>
         <Flex flexDirection="column" width="100%">
@@ -213,7 +215,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
           </Flex>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
             <Text>{formatedDescription}</Text>
-            {url !== '' && (
+            {url && url !== '' && (
               <StyledLink href={url} target="_blank">
                 {linkText}
               </StyledLink>
@@ -225,12 +227,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
   )
 }
 
-const NotificationContainer = ({
-  notifications,
-  isClosing,
-  subscriptionId,
-  importantAlertsOnly,
-}: INotificationContainerProps) => {
+const NotificationContainer = ({ notifications, subscriptionId, importantAlertsOnly }: INotificationContainerProps) => {
   const { t } = useTranslation()
   if (notifications.length === 0) {
     return (
@@ -259,26 +256,23 @@ const NotificationContainer = ({
     )
   }
   return (
-    <NotificationsWrapper isClosing={isClosing}>
+    <NotificationsWrapper>
       {notifications
-        .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1))
-        .filter((notification: NotifyClientTypes.NotifyMessageRecord) => {
+        .sort((a, b) => (a.sentAt < b.sentAt ? 1 : -1))
+        .filter((notification: NotifyClientTypes.NotifyNotification) => {
           if (importantAlertsOnly)
-            return (
-              notification.message.type === SubsctiptionType.Alerts ||
-              notification.message.type === SubsctiptionType.Liquidity
-            )
+            return notification.type === SubsctiptionType.Alerts || notification.type === SubsctiptionType.Liquidity
           return true
         })
-        .map((notification: NotifyClientTypes.NotifyMessageRecord) => {
+        .map((notification: NotifyClientTypes.NotifyNotification) => {
           return (
             <NotificationItem
               key={notification.id}
-              title={notification.message.title}
-              description={notification.message.body}
-              date={notification.publishedAt}
-              url={notification.message.url}
-              image={notification.message.icon}
+              title={notification.title}
+              description={notification.body}
+              date={notification.sentAt}
+              url={notification.url}
+              image="https://pancakeswap.finance/logo.png"
               id={notification.id}
               subscriptionId={subscriptionId}
             />

@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
-import { useManageSubscription } from '@web3inbox/widget-react'
+import { usePrepareRegistration, useRegister, useSubscribe } from '@web3inbox/react'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/image'
 import { useCallback, useState } from 'react'
-import { useAccount } from 'wagmi'
+import { useSignMessage } from 'wagmi'
 import { Events } from '../constants'
 import useSendPushNotification from '../hooks/sendPushNotification'
 import { parseErrorMessage } from '../utils/errorBuilder'
@@ -15,16 +15,14 @@ interface IOnboardingButtonProps {
   onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
   loading: boolean
   isOnBoarded: boolean
-  account: string | undefined
+  account: string | undefined | null
   isReady: boolean
 }
 
 interface IOnBoardingProps {
-  identityKey: string | undefined
-  handleRegistration: () => Promise<void>
   isReady: boolean
-  isSubscribing: boolean
-  setIsSubscribing: (state: boolean) => void
+  account: string | null | undefined
+  isRegistered: boolean
 }
 
 function OnboardingButton({ onClick, loading, isOnBoarded, account, isReady }: IOnboardingButtonProps) {
@@ -40,7 +38,7 @@ function OnboardingButton({ onClick, loading, isOnBoarded, account, isReady }: I
 
   return (
     <AutoColumn gap="md" marginTop="24px" width="100%">
-      <CommitButton variant="primary" onClick={onClick} isLoading={loading} height="50px" disabled={!isReady}>
+      <CommitButton variant="primary" onClick={onClick} isLoading={loading} height="50px">
         <Flex alignItems="center">
           <Text px="4px" fontWeight="bold" color="white">
             {buttonText}
@@ -52,53 +50,63 @@ function OnboardingButton({ onClick, loading, isOnBoarded, account, isReady }: I
   )
 }
 
-const OnBoardingView = ({
-  identityKey,
-  handleRegistration,
-  isReady,
-  isSubscribing,
-  setIsSubscribing,
-}: IOnBoardingProps) => {
-  const [isOboarding, setIsOnBoarding] = useState<boolean>(false)
+const OnBoardingView = ({ isReady, account, isRegistered }: IOnBoardingProps) => {
+  const [isRegistering, setIsRegistering] = useState(false)
   const toast = useToast()
   const { t } = useTranslation()
-  const { address: account } = useAccount()
-  const { subscribe } = useManageSubscription(`eip155:1:${account}`)
+
+  const { subscribe } = useSubscribe()
   const { subscribeToPushNotifications } = useSendPushNotification()
+  const { signMessageAsync } = useSignMessage()
+  const { prepareRegistration } = usePrepareRegistration()
+  const { register } = useRegister()
+
+  const handleRegistration = useCallback(async () => {
+    setIsRegistering(true)
+
+    try {
+      const { message, registerParams } = await prepareRegistration()
+      const signature = await signMessageAsync({ message })
+      await register({ registerParams, signature })
+    } catch (error) {
+      const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
+      toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
+    } finally {
+      setIsRegistering(false)
+    }
+  }, [t, signMessageAsync, prepareRegistration, register, toast])
 
   const handleSubscribe = useCallback(async () => {
-    setIsSubscribing(true)
     try {
-      await subscribeToPushNotifications()
-      await subscribe()
+      if (isRegistered) {
+        await subscribe()
+        await subscribeToPushNotifications()
+      }
     } catch (error) {
-      setIsSubscribing(false)
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
       toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
     }
-  }, [t, toast, subscribe, subscribeToPushNotifications, setIsSubscribing])
+  }, [t, toast, subscribe, isRegistered, subscribeToPushNotifications])
 
   const handleOnBoarding = useCallback(async () => {
-    setIsOnBoarding(true)
     try {
       await handleRegistration()
     } catch (error) {
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
       toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
     }
-    setIsOnBoarding(false)
-  }, [t, setIsOnBoarding, handleRegistration, toast])
+  }, [t, handleRegistration, toast])
 
   const handleAction = useCallback(
     async (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      if (!identityKey) handleOnBoarding()
+      if (!isRegistered) handleOnBoarding()
       else handleSubscribe()
     },
-    [handleSubscribe, handleOnBoarding, identityKey],
+    [handleSubscribe, handleOnBoarding, isRegistered],
   )
 
-  const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(identityKey), t)
+  const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(isRegistered), t)
 
   return (
     <Box width="100%" maxHeight="400px">
@@ -114,9 +122,9 @@ const OnBoardingView = ({
             {onBoardingDescription}
           </Text>
           <OnboardingButton
-            loading={isSubscribing || isOboarding}
+            loading={isRegistering}
             onClick={handleAction}
-            isOnBoarded={Boolean(identityKey)}
+            isOnBoarded={Boolean(isRegistered)}
             account={account}
             isReady={isReady}
           />

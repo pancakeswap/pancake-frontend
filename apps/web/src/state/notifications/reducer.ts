@@ -1,19 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
-import {
-  addArchivedNotification,
-  clearArchivedTransactions,
-  setHasUnread,
-  setImportantAlerts,
-  toggleAllowNotifications,
-} from './actions'
+import { setHasUnread, setImportantAlerts, toggleAllowNotifications } from './actions'
 
-export type NotificationDetails = NotifyClientTypes.NotifyMessageRecord & { timestamp: number }
+export type NotificationDetails = NotifyClientTypes.NotifyNotification & { timestamp: number }
 
 export interface NotificationState {
   notifications: {
     [subscriptionId: string]: {
-      notifications: { [notificationId: string]: NotificationDetails }
       unread: { [notificationId: string]: boolean }
       importantAlertsOnly: boolean
     }
@@ -28,26 +21,6 @@ export const initialState: NotificationState = {
 
 export default createReducer(initialState, (builder) =>
   builder
-    .addCase(
-      addArchivedNotification,
-      (state, { payload: { timestamp, notification, subscriptionId, notificationId } }) => {
-        const subscriptionNotifications = state.notifications?.[subscriptionId]
-
-        return {
-          ...state,
-          notifications: {
-            ...state.notifications,
-            [subscriptionId]: {
-              ...subscriptionNotifications,
-              notifications: {
-                ...(subscriptionNotifications?.notifications ?? {}),
-                [notificationId]: { ...notification, timestamp },
-              },
-            },
-          },
-        }
-      },
-    )
     .addCase(setHasUnread, (notifications, { payload: { subscriptionId, notificationId, hasUnread } }) => {
       return {
         ...notifications,
@@ -79,30 +52,6 @@ export default createReducer(initialState, (builder) =>
       return {
         ...notifications,
         allowNotifications,
-      }
-    })
-    .addCase(clearArchivedTransactions, (notifications, { payload: { subscriptionId } }) => {
-      const txs = notifications.notifications?.[subscriptionId]?.notifications ?? {}
-      const twentyFourHoursAgo = Math.floor(new Date().getTime() / 1000) - 3600 * 24
-
-      const filteredNotifications = Object.keys(txs).reduce((filtered, notificationId) => {
-        const notification = txs[notificationId]
-        if (notification.timestamp >= twentyFourHoursAgo) {
-          // eslint-disable-next-line no-param-reassign
-          filtered[notificationId] = notification
-        }
-        return filtered
-      }, {})
-
-      return {
-        ...notifications,
-        notifications: {
-          ...notifications.notifications,
-          [subscriptionId]: {
-            ...notifications?.notifications?.[subscriptionId],
-            notifications: filteredNotifications,
-          },
-        },
       }
     }),
 )
