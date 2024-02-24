@@ -55,7 +55,7 @@ const OnBoardingView = ({ isReady, account, isRegistered }: IOnBoardingProps) =>
   const toast = useToast()
   const { t } = useTranslation()
 
-  const { subscribe } = useSubscribe()
+  const { subscribe, isLoading } = useSubscribe()
   const { subscribeToPushNotifications } = useSendPushNotification()
   const { signMessageAsync } = useSignMessage()
   const { prepareRegistration } = usePrepareRegistration()
@@ -122,7 +122,7 @@ const OnBoardingView = ({ isReady, account, isRegistered }: IOnBoardingProps) =>
             {onBoardingDescription}
           </Text>
           <OnboardingButton
-            loading={isRegistering}
+            loading={isRegistering || isLoading}
             onClick={handleAction}
             isOnBoarded={Boolean(isRegistered)}
             account={account}

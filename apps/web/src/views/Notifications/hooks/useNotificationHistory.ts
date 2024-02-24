@@ -21,6 +21,14 @@ const useNotificationHistory = (subscriptionId: string | undefined) => {
     }
   }, [dispatch, subscriptionId, unreadNotificationKeys])
 
+  const markAsRead = useCallback(
+    (value: boolean, id: string) => {
+      if (!subscriptionId) return
+      dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: value }))
+    },
+    [dispatch, subscriptionId],
+  )
+
   useEffect(() => {
     const container = containerRef.current
     if (!container) return noop()
@@ -28,16 +36,16 @@ const useNotificationHistory = (subscriptionId: string | undefined) => {
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container
       const isAtBottom = scrollTop + clientHeight >= scrollHeight * 0.97
-      if (isAtBottom) fetchNextPage()
+      if (isAtBottom && hasMore) fetchNextPage()
     }
 
     container.addEventListener('scroll', handleScroll)
     return () => {
       container.removeEventListener('scroll', handleScroll)
     }
-  }, [containerRef, fetchNextPage])
+  }, [containerRef, fetchNextPage, hasMore])
 
-  return { notifications, containerRef, isLoading, markAllNotificationsAsRead, hasUnread }
+  return { notifications, containerRef, isLoading, markAllNotificationsAsRead, markAsRead, hasUnread }
 }
 
 export default useNotificationHistory
