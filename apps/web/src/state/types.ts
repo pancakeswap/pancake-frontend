@@ -132,15 +132,15 @@ export interface DeserializedLockedCakeVault extends Omit<DeserializedCakeVault,
 
 export interface SerializedLockedCakeVault extends Omit<SerializedCakeVault, 'userData'> {
   totalLockedAmount?: SerializedBigNumber
-  userData?: SerializedLockedVaultUser
+  userData: SerializedLockedVaultUser
 }
 
 export interface SerializedCakeVault {
   totalShares?: SerializedBigNumber
   pricePerFullShare?: SerializedBigNumber
   totalCakeInVault?: SerializedBigNumber
-  fees?: SerializedVaultFees
-  userData?: SerializedVaultUser
+  fees: SerializedVaultFees
+  userData: SerializedVaultUser
 }
 
 // Ifo
@@ -448,7 +448,7 @@ export interface LotteryState {
   isTransitioning: boolean
   currentRound: LotteryResponse & { userTickets?: LotteryRoundUserTickets }
   lotteriesData?: LotteryRoundGraphEntity[]
-  userLotteryData?: LotteryUserGraphEntity
+  userLotteryData: LotteryUserGraphEntity
 }
 
 export interface LotteryRoundGraphEntity {

@@ -132,13 +132,13 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
     })
 
     return {
-      currentLotteryId: currentLotteryId ? currentLotteryId.toString() : null,
-      maxNumberTicketsPerBuyOrClaim: maxNumberTicketsPerBuyOrClaim ? maxNumberTicketsPerBuyOrClaim.toString() : null,
+      currentLotteryId: currentLotteryId ? currentLotteryId.toString() : '',
+      maxNumberTicketsPerBuyOrClaim: maxNumberTicketsPerBuyOrClaim ? maxNumberTicketsPerBuyOrClaim.toString() : '',
     }
   } catch (error) {
     return {
-      currentLotteryId: null,
-      maxNumberTicketsPerBuyOrClaim: null,
+      currentLotteryId: '',
+      maxNumberTicketsPerBuyOrClaim: '',
     }
   }
 }
