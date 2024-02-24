@@ -121,7 +121,6 @@
   "Stake Periods": "Insatsperioder",
   "Staked Amount": "Satsat belopp",
   "Click here for more information": "Klicka här för mer information",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ": "Pengarna kommer inte att vara tillgängliga för uttag under de första %days% dagarna, och därefter kommer en avgift för tidigt uttag att tillämpas om beloppet inte bli unstaked innan den låsta perioden är slut. ",
   "Your funds have been restaked in the pool": "Dina medel har satsats om i poolen",
   "This collection has been inactived for a while. Trade at your own risk.": "Denna samling har varit inaktiv ett tag. Handla på egen risk.",
   "Info": "Info",
@@ -3171,5 +3170,6 @@
   "Unable to unsubscribe %error%": "Det gick inte att avregistrera %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Du har avregistrerat dig från notiser. Du kan när som helst prenumerera igen",
   "Failed to send": "Det gick inte att skicka",
-  "This product have been upgraded!": "Den här produkten har uppgraderats!"
+  "This product have been upgraded!": "Den här produkten har uppgraderats!",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Pengarna kommer inte att vara tillgängliga för uttag under de första %days% dagarna, och därefter kommer en avgift för tidigt uttag att tillämpas om beloppet inte bli unstaked innan den låsta perioden är slut. "
 }
