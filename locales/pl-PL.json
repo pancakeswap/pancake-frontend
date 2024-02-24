@@ -121,7 +121,6 @@
   "Stake Periods": "Okresy stakowania",
   "Staked Amount": "Stakowana kwota",
   "Click here for more information": "Kliknij tutaj, aby uzyskać więcej informacji",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ": "Środki będą niedostępne do wypłaty przez pierwsze %days% dni, a następnie zostanie naliczona opłata za wcześniejszą wypłatę, jeśli kwota zostanie odblokowana przed upływem okresu blokady. ",
   "Your funds have been restaked in the pool": "Twoje środki zostały ponownie umieszczone w puli",
   "This collection has been inactived for a while. Trade at your own risk.": "Ta kolekcja była przez pewien czas nieaktywna. Handlujesz na własne ryzyko.",
   "Info": "Informacje",
@@ -3171,5 +3170,6 @@
   "Unable to unsubscribe %error%": "Nie można anulować subskrypcji, %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Anulowano subskrypcję powiadomień. Możesz ponownie subskrybować w dowolnym momencie",
   "Failed to send": "Nie można wysłać",
-  "This product have been upgraded!": "Ten produkt został uaktualniony!"
+  "This product have been upgraded!": "Ten produkt został uaktualniony!",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Środki będą niedostępne do wypłaty przez pierwsze %days% dni, a następnie zostanie naliczona opłata za wcześniejszą wypłatę, jeśli kwota zostanie odblokowana przed upływem okresu blokady. "
 }
