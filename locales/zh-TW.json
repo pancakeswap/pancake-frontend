@@ -95,7 +95,7 @@
   "NFT": "NFT",
   "Fixed-staking Ends": "Fixed-staking Ends",
   "Restake period ends on": "Restake period ends on",
-  "Claim Reward & Restake": "領取獎勵並重新質押",
+  "Claim Reward & Restake": "領取獎勵 & 重新質押",
   "Stake Duration": "鎖定時間",
   "Staked Position": "Staked Position",
   "Locked Cake Boost": "鎖定 CAKE 提升",
@@ -121,7 +121,6 @@
   "Stake Periods": "質押時長",
   "Staked Amount": "Staked Amount",
   "Click here for more information": "點擊以閱讀更多詳情",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ": "前 %days% 天將無法提取資金，隨後如果在鎖定期結束前解除質押，將收取提前提取費用。",
   "Your funds have been restaked in the pool": "Your funds have been restaked in the pool",
   "This collection has been inactived for a while. Trade at your own risk.": "此收藏品已停用一段時間。交易風險需自行承擔。",
   "Info": "資訊",
@@ -3002,7 +3001,7 @@
   "Authorize Push Notifications": "簽名啟用彈出通知",
   "Notifications From PancakeSwap": "PancakeSwap 的通知服務",
   "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet": "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet",
-  "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.": "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.",
+  "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.": "訂閱通知，以隨時收到 PancakeSwap 提供的最新新聞和更新。",
   "LESS": "LESS",
   "MORE": "MORE",
   "Alerts": "警示",
@@ -3171,5 +3170,6 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "Failed to send",
-  "This product have been upgraded!": "This product have been upgraded!"
+  "This product have been upgraded!": "This product have been upgraded!",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "前 %days% 天將無法提取資金，隨後如果在鎖定期結束前解除質押，將收取提前提取費用。"
 }
