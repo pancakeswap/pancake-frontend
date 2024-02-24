@@ -1,9 +1,9 @@
-import { request, gql } from 'graphql-request'
-import { campaignMap } from 'config/constants/campaigns'
 import { TranslateFunction } from '@pancakeswap/localization'
+import { campaignMap } from 'config/constants/campaigns'
 import { GRAPH_API_PROFILE } from 'config/constants/endpoints'
+import { gql, request } from 'graphql-request'
 import { Achievement } from 'state/types'
-import { getAchievementTitle, getAchievementDescription } from 'utils/achievements'
+import { getAchievementDescription, getAchievementTitle } from 'utils/achievements'
 
 interface UserPointIncreaseEvent {
   campaignId: string
@@ -36,7 +36,7 @@ export const getUserPointIncreaseEvents = async (account: string): Promise<UserP
 
     return user.points
   } catch (error) {
-    return null
+    return []
   }
 }
 
@@ -46,16 +46,18 @@ export const getUserPointIncreaseEvents = async (account: string): Promise<UserP
 export const getAchievements = async (account: string, t: TranslateFunction): Promise<Achievement[]> => {
   const pointIncreaseEvents = await getUserPointIncreaseEvents(account)
 
-  if (!pointIncreaseEvents) {
+  if (!pointIncreaseEvents.length) {
     return []
   }
 
-  return pointIncreaseEvents.reduce((accum, userPoint) => {
+  return pointIncreaseEvents.reduce((accum: Achievement[], userPoint) => {
     if (!campaignMap.has(userPoint.campaignId)) {
       return accum
     }
 
     const campaignMeta = campaignMap.get(userPoint.campaignId)
+
+    if (!campaignMeta?.type || !campaignMeta.badge) return accum
 
     accum.push({
       id: userPoint.campaignId,
@@ -66,6 +68,7 @@ export const getAchievements = async (account: string, t: TranslateFunction): Pr
       badge: campaignMeta.badge,
       points: Number(userPoint.points),
     })
+
     return accum
   }, [])
 }
