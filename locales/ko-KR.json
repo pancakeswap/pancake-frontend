@@ -121,7 +121,6 @@
   "Stake Periods": "스테이킹 기간",
   "Staked Amount": "스테이킹된 금액",
   "Click here for more information": "자세한 내용을 보려면 여기를 클릭하세요",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ": "처음 %days%일 동안은 자금을 인출할 수 없으며, 이후에 잠금 기간이 끝나기 전에 언스테이킹하는 경우 조기 인출 수수료가 적용됩니다. ",
   "Your funds have been restaked in the pool": "자금이 풀에 리스테이킹되었습니다",
   "This collection has been inactived for a while. Trade at your own risk.": "이 컬렉션은 한동안 비활성화되었습니다. 거래 시, 그 책임은 사용자에게 있습니다.",
   "Info": "정보",
@@ -3171,5 +3170,6 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "전송 실패",
-  "This product have been upgraded!": "이 제품이 업그레이드되었습니다!"
+  "This product have been upgraded!": "이 제품이 업그레이드되었습니다!",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "처음 %days%일 동안은 자금을 인출할 수 없으며, 이후에 잠금 기간이 끝나기 전에 언스테이킹하는 경우 조기 인출 수수료가 적용됩니다. "
 }
