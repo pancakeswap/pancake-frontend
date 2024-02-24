@@ -121,7 +121,6 @@
   "Stake Periods": "Stake Periods",
   "Staked Amount": "Staked Amount",
   "Click here for more information": "Click here for more information",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Your funds have been restaked in the pool",
   "This collection has been inactived for a while. Trade at your own risk.": "Deze verzameling is al enige tijd inactief. Handel op eigen risico.",
   "Info": "Info",
@@ -3171,5 +3170,6 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "Failed to send",
-  "This product have been upgraded!": "This product have been upgraded!"
+  "This product have been upgraded!": "This product have been upgraded!",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. "
 }
