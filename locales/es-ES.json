@@ -121,7 +121,6 @@
   "Stake Periods": "Periodos de inversión",
   "Staked Amount": "Cantidad invertida",
   "Click here for more information": "Click here for more information",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Tus fondos se volvieron a invertir en el pool",
   "This collection has been inactived for a while. Trade at your own risk.": "Esta colección ha estado inactiva durante tiempo. Negocia bajo tu propio riesgo.",
   "Info": "Información",
@@ -3171,5 +3170,6 @@
   "Unable to unsubscribe %error%": "No se pudo anular la suscripción %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Cancelaste correctamente tu suscripción a las notificaciones. Puedes volver a suscribirte en cualquier momento",
   "Failed to send": "No se pudo enviar",
-  "This product have been upgraded!": "¡Este producto fue actualizado!"
+  "This product have been upgraded!": "¡Este producto fue actualizado!",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. "
 }
