@@ -112,8 +112,8 @@
   "Reward": "Ödül",
   "Est. Reward": "Tahminî Ödül",
   "Unstake Overview": "Unstaking Özeti",
-  "for early withdrawal": "alacaksınız",
-  "You will get": "Erken çekme için",
+  "for early withdrawal": "(erken çekme için)",
+  "You will get": "Şunu alacaksınız:",
   "Unstaked Amount": "Unstake Edilen Tutar",
   "Reward Amount": "Ödül Tutarı",
   "%lockPeriod% days": "%lockPeriod% gün",
@@ -121,7 +121,6 @@
   "Stake Periods": "Staking Dönemleri",
   "Staked Amount": "Stake Edilen Tutar",
   "Click here for more information": "Daha fazla bilgi için buraya tıklayın",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ": "Fonlar ilk %days% gün boyunca çekilemez ve tutar, kilit dönemi sona ermeden unstake edilirse erken çekme ücreti alınır. ",
   "Your funds have been restaked in the pool": "Fonlarınız havuzda yeniden stake edildi",
   "This collection has been inactived for a while. Trade at your own risk.": "Bu koleksiyon bir süredir etkin değil. Yaptığınız yatırımların riski size aittir.",
   "Info": "Bilgi",
@@ -3171,5 +3170,6 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "Failed to send",
-  "This product have been upgraded!": "This product have been upgraded!"
+  "This product have been upgraded!": "This product have been upgraded!",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Fonlar ilk %days% gün boyunca çekilemez ve tutar, kilit dönemi sona ermeden unstake edilirse erken çekme ücreti alınır. "
 }
