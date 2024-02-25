@@ -121,6 +121,7 @@
   "Stake Periods": "Stake Periods",
   "Staked Amount": "Staked Amount",
   "Click here for more information": "Click here for more information",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Your funds have been restaked in the pool",
   "This collection has been inactived for a while. Trade at your own risk.": "このコレクションはしばらく動きがありません。自己リスクでトレードしてください。",
   "Info": "情報",
@@ -2178,7 +2179,7 @@
   "Proven track record of creating quality content related to crypto and especially DeFi": "暗号資産、特にDeFiに関連する質の高いコンテンツ制作の実績",
   "Strong understanding of PancakeSwap and our ecosystem": "PancakeSwapと当社のエコシステムに関する高い理解",
   "You earn commissions from most trading fees paid by your invitees for a limited period of time": "限定期間中にあなたが招待した人が支払ったほとんどの取引手数料から紹介手数料を獲得",
-  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC": "ペアには少なくとも 1 つのメジャートークン（BNB、BTC、BUSD、ETH、MATIC、ARB、DAI、USDT、USDC）が含まれる必要があります",
+  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)",
   "How will I receive my commissions and how often will I be paid?": "紹介手数料の受け取り方法は？支払いの頻度は？",
   "How do I track my referrals and commissions?": "紹介と紹介手数料を追跡するには？",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "アフィリエイトは、アフィリエイトダッシュボードにログインして紹介と紹介手数料の情報を確認できます",
@@ -3013,7 +3014,7 @@
   "ARCHIVED MESSAGES": "ARCHIVED MESSAGES",
   "Archive all read": "Archive all read",
   "Allow notifications": "Allow notifications",
-  "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible",
+  "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible",
   "Show only the notifications that belong to your wallet or LP positions": "Show only the notifications that belong to your wallet or LP positions",
   "Important only": "Important only",
   "help": "help",
@@ -3170,6 +3171,5 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "Failed to send",
-  "This product have been upgraded!": "This product have been upgraded!",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. "
+  "This product have been upgraded!": "This product have been upgraded!"
 }
