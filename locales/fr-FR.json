@@ -121,6 +121,7 @@
   "Stake Periods": "Stake Periods",
   "Staked Amount": "Staked Amount",
   "Click here for more information": "Click here for more information",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Your funds have been restaked in the pool",
   "This collection has been inactived for a while. Trade at your own risk.": "Cette collection est inactive depuis un moment. Vos opérations seront effectuées à vos propres risques.",
   "Info": "Informations",
@@ -2178,7 +2179,7 @@
   "Proven track record of creating quality content related to crypto and especially DeFi": "Expérience avérée de création de contenu de qualité lié aux cryptomonnaies et en particulier à la DeFi",
   "Strong understanding of PancakeSwap and our ecosystem": "Solide connaissance de PancakeSwap et de notre écosystème",
   "You earn commissions from most trading fees paid by your invitees for a limited period of time": "Vous gagnez des commissions sur la plupart des frais de transaction payés par vos invités pour une période limitée de temps",
-  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC",
+  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)",
   "How will I receive my commissions and how often will I be paid?": "Comment à quelle fréquence vais-je recevoir mes commissions ?",
   "How do I track my referrals and commissions?": "Comment puis-je faire le suivi de mes parrainages et de mes commissions ?",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "Les affiliés peuvent se connecter au tableau de bord des affiliés et consulter les informations concernant leurs parrainages et leurs commissions",
@@ -3013,7 +3014,7 @@
   "ARCHIVED MESSAGES": "ARCHIVED MESSAGES",
   "Archive all read": "Archive all read",
   "Allow notifications": "Allow notifications",
-  "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible",
+  "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible",
   "Show only the notifications that belong to your wallet or LP positions": "Show only the notifications that belong to your wallet or LP positions",
   "Important only": "Important only",
   "help": "help",
@@ -3170,6 +3171,5 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "Failed to send",
-  "This product have been upgraded!": "This product have been upgraded!",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. "
+  "This product have been upgraded!": "This product have been upgraded!"
 }
