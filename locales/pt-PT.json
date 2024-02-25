@@ -121,6 +121,7 @@
   "Stake Periods": "Períodos de stake",
   "Staked Amount": "Valor em stake",
   "Click here for more information": "Clique aqui para mais informações",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Os seus fundos foram repostos no fundo comum",
   "This collection has been inactived for a while. Trade at your own risk.": "Esta coleção está inativa há algum tempo. Negoceie por sua conta e risco.",
   "Info": "Info",
@@ -2178,7 +2179,7 @@
   "Proven track record of creating quality content related to crypto and especially DeFi": "Experiência comprovada na criação de conteúdo de qualidade relacionado com cripto, especialmente DeFi",
   "Strong understanding of PancakeSwap and our ecosystem": "Sólida compreensão do PancakeSwap e do nosso ecossistema",
   "You earn commissions from most trading fees paid by your invitees for a limited period of time": "Ganha comissões da maioria das taxas comerciais pagas pelos seus convidados durante um período limitado",
-  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC": "Os pares devem contar com pelo menos 1 token importante (ou seja, BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT e/ou USDC)",
+  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)",
   "How will I receive my commissions and how often will I be paid?": "Como receberei a minha comissão e com que frequência serei pago?",
   "How do I track my referrals and commissions?": "Como posso acompanhar as minhas indicações e comissões?",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "Os afiliados podem iniciar sessão no painel de afiliados e ver a sua indicação e informações sobre a comissão",
@@ -3013,7 +3014,7 @@
   "ARCHIVED MESSAGES": "MENSAGENS ARQUIVADAS",
   "Archive all read": "Arquivar todas as lidas",
   "Allow notifications": "Permitir notificações",
-  "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Ativa a funcionalidade de notificações Web. Se estiver desativada, a sua inscrição será automaticamente anulada e o sino de notificação não será visível",
+  "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible",
   "Show only the notifications that belong to your wallet or LP positions": "Mostrar apenas as notificações que pertencem à sua carteira ou posições LP",
   "Important only": "Apenas importante",
   "help": "ajuda",
@@ -3170,6 +3171,5 @@
   "Unable to unsubscribe %error%": "Não foi possível anular a subscrição %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Anulou com êxito a subscrição das notificações. Pode voltar a subscrever em qualquer altura",
   "Failed to send": "Erro no envio",
-  "This product have been upgraded!": "Este produto foi aprimorado!",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Os fundos não estarão disponíveis para levantamento durante os primeiros %days% dias e, subsequentemente, será aplicada uma comissão de levantamento antecipado se o montante for levantado antes do fim do período de bloqueio. "
+  "This product have been upgraded!": "Este produto foi aprimorado!"
 }
