@@ -121,6 +121,7 @@
   "Stake Periods": "Periodos de inversión",
   "Staked Amount": "Cantidad invertida",
   "Click here for more information": "Click here for more information",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Tus fondos se volvieron a invertir en el pool",
   "This collection has been inactived for a while. Trade at your own risk.": "Esta colección ha estado inactiva durante tiempo. Negocia bajo tu propio riesgo.",
   "Info": "Información",
@@ -2178,7 +2179,7 @@
   "Proven track record of creating quality content related to crypto and especially DeFi": "Experiencia demostrada en la creación de contenidos de calidad relacionados con las criptomonedas y, especialmente, con DeFi",
   "Strong understanding of PancakeSwap and our ecosystem": "Conocimiento profundo de PancakeSwap y nuestro ecosistema",
   "You earn commissions from most trading fees paid by your invitees for a limited period of time": "Ganarás comisiones de la mayoría de las comisiones negociadas pagadas por tus invitados durante un periodo de tiempo limitado",
-  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC": "Los pares deben incluir al menos un token principal (es decir, BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT y/o USDC",
+  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)",
   "How will I receive my commissions and how often will I be paid?": "¿Cómo cobraré mis comisiones y con qué frecuencia?",
   "How do I track my referrals and commissions?": "¿Cómo hago el seguimiento de mis recomendaciones y comisiones?",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "Los afiliados pueden iniciar sesión en el panel de control para afiliados y ver la información sobre tus recomendaciones y comisiones",
@@ -3013,7 +3014,7 @@
   "ARCHIVED MESSAGES": "ARCHIVED MESSAGES",
   "Archive all read": "Archive all read",
   "Allow notifications": "Allow notifications",
-  "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible",
+  "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible",
   "Show only the notifications that belong to your wallet or LP positions": "Show only the notifications that belong to your wallet or LP positions",
   "Important only": "Important only",
   "help": "ayuda",
@@ -3170,6 +3171,5 @@
   "Unable to unsubscribe %error%": "No se pudo anular la suscripción %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Cancelaste correctamente tu suscripción a las notificaciones. Puedes volver a suscribirte en cualquier momento",
   "Failed to send": "No se pudo enviar",
-  "This product have been upgraded!": "¡Este producto fue actualizado!",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. "
+  "This product have been upgraded!": "¡Este producto fue actualizado!"
 }
