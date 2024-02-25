@@ -121,6 +121,7 @@
   "Stake Periods": "Tét időszakok",
   "Staked Amount": "Tét összege",
   "Click here for more information": "További információért kattintson ide",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Az Ön pénzeszközeit újra feltette tétként az összevont pénzalapban",
   "This collection has been inactived for a while. Trade at your own risk.": "Ez a gyűjtemény egy ideje már nem működik. Kereskedjen saját felelősségére.",
   "Info": "Infó",
@@ -2178,7 +2179,7 @@
   "Proven track record of creating quality content related to crypto and especially DeFi": "Igazolt tapasztalat a kriptovalutákkal és különösen a DeFi-vel kapcsolatos minőségi tartalom létrehozása terén",
   "Strong understanding of PancakeSwap and our ecosystem": "A PancakeSwap és az ökoszisztémánk szilárd ismerete",
   "You earn commissions from most trading fees paid by your invitees for a limited period of time": "Korlátozott időszakra jutalékot kap az Ön által ajánlottak által fizetett legtöbb kereskedési díjból",
-  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC": "A pároknak legalább 1 főbb zsetont kell tartalmazniuk (pl. BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT és/vagy USDC)",
+  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)",
   "How will I receive my commissions and how often will I be paid?": "Hogyan és milyen gyakran kapom meg a jutalékomat?",
   "How do I track my referrals and commissions?": "Hogyan követhetem nyomon ajánlásaimat és jutalékaimat?",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "A partnerek bejelentkezhetnek a partneri (affiliate) műszerfalra, és megtekinthetik az ajánlási és jutalék-adatokat",
@@ -3013,7 +3014,7 @@
   "ARCHIVED MESSAGES": "ARCHIVÁLT ÜZENETEK",
   "Archive all read": "Minden elolvasottat archivál",
   "Allow notifications": "Értesítések engedélyezése",
-  "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Engedélyezi a webes értesítések funkciót. Ha kikapcsolja, akkor automatikusan leiratkozik, és az értesítési csengő nem látható",
+  "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible",
   "Show only the notifications that belong to your wallet or LP positions": "Csak a pénztárcájához vagy LP pozícióihoz tartozó értesítések megjelenítése",
   "Important only": "Csak a fontosak",
   "help": "súgó",
@@ -3170,6 +3171,5 @@
   "Unable to unsubscribe %error%": "Nem sikerült leiratkozni %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Sikeresen leiratkozott az értesítésekről. Bármikor újra feliratkozhat",
   "Failed to send": "Nem sikerült elküldeni",
-  "This product have been upgraded!": "Ezt a terméket továbbfejlesztették!",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "A pénzeszközök nem állnak rendelkezésre az első %days% napon, és ezt követően korai kifizetési díjat számítunk fel, ha a tét összegét a zárolt időszak lejárta előtt visszaveszik. "
+  "This product have been upgraded!": "Ezt a terméket továbbfejlesztették!"
 }
