@@ -121,6 +121,7 @@
   "Stake Periods": "Stake Periods",
   "Staked Amount": "Staked Amount",
   "Click here for more information": "Click here for more information",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Your funds have been restaked in the pool",
   "This collection has been inactived for a while. Trade at your own risk.": "এই সংগ্রহটি কিছু সময়ের জন্য নিষ্ক্রিয় করা হয়েছে। আপনার নিজের ঝুঁকিতে ট্রেড করুন।",
   "Info": "তথ্য",
@@ -2178,7 +2179,7 @@
   "Proven track record of creating quality content related to crypto and especially DeFi": "ক্রিপ্টো এবং বিশেষ করে DeFi সম্পর্কিত মানসম্পন্ন কনটেন্ট তৈরির প্রমাণিত ট্র্যাক রেকর্ড",
   "Strong understanding of PancakeSwap and our ecosystem": "PancakeSwap এবং আমাদের ইকোসিস্টেম সম্পর্কে জোরালো ধারণা",
   "You earn commissions from most trading fees paid by your invitees for a limited period of time": "আপনি সীমিত সময়ের জন্য আপনার আমন্ত্রিতদের দ্বারা প্রদত্ত বেশিরভাগ ট্রেডিং ফি থেকে কমিশন উপার্জন করেন",
-  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC",
+  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)",
   "How will I receive my commissions and how often will I be paid?": "আমি কিভাবে আমার কমিশন পাব এবং কত ঘন ঘন আমাকে অর্থ প্রদান করা হবে?",
   "How do I track my referrals and commissions?": "আমি কিভাবে আমার রেফারেল এবং কমিশন ট্র্যাক করব?",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "অ্যাফিলিয়েটরা অ্যাফিলিয়েট ড্যাশবোর্ডে লগইন করতে এবং আপনার রেফারেল ও কমিশনের তথ্য দেখতে পারেন",
@@ -3013,7 +3014,7 @@
   "ARCHIVED MESSAGES": "ARCHIVED MESSAGES",
   "Archive all read": "Archive all read",
   "Allow notifications": "Allow notifications",
-  "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible",
+  "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible",
   "Show only the notifications that belong to your wallet or LP positions": "Show only the notifications that belong to your wallet or LP positions",
   "Important only": "Important only",
   "help": "help",
@@ -3170,6 +3171,5 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "Failed to send",
-  "This product have been upgraded!": "This product have been upgraded!",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. "
+  "This product have been upgraded!": "This product have been upgraded!"
 }
