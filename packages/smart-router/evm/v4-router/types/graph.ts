@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
 
-import { Pool } from '../../v3-router/types'
+import { Pool, Route } from '../../v3-router/types'
 
 export type Edge = {
   vertice0: Vertice
@@ -18,4 +18,6 @@ export type Graph = {
   edges: Edge[]
 
   getVertice: (currency: Currency) => Vertice | undefined
+  getEdge: (pool: Pool, vertA: Vertice, vertB: Vertice) => Edge | undefined
+  applySwap: (route: Pick<Route, 'pools' | 'path' | 'inputAmount' | 'outputAmount'>) => Promise<void>
 }

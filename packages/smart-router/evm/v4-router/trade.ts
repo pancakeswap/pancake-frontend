@@ -1,13 +1,13 @@
-import { createGraph, findBestTradeFromGraph } from './graph'
+import { findBestTrade } from './graph'
 import { TradeConfig } from './types'
 
 export async function getBestTrade({ amount, candidatePools, quoteCurrency, gasPriceWei }: TradeConfig) {
-  const graph = createGraph({ pools: candidatePools })
-  const trade = await findBestTradeFromGraph({
+  const trade = await findBestTrade({
     amount,
-    graph,
     quoteCurrency,
     gasPriceWei,
+    candidatePools,
+    streams: 2,
   })
   return trade
 }

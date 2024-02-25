@@ -8,4 +8,7 @@ export type TradeConfig = Omit<BaseTradeConfig, 'poolProvider'> & {
   candidatePools: Pool[]
 }
 
-export type V4Trade<TTradeType extends TradeType> = Omit<SmartRouterTrade<TTradeType>, 'gasEstimateInUSD'>
+export type V4Trade<TTradeType extends TradeType> = Omit<
+  SmartRouterTrade<TTradeType>,
+  'gasEstimateInUSD' | 'blockNumber'
+>
