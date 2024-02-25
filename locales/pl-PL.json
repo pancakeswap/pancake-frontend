@@ -121,6 +121,7 @@
   "Stake Periods": "Okresy stakowania",
   "Staked Amount": "Stakowana kwota",
   "Click here for more information": "Kliknij tutaj, aby uzyskać więcej informacji",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Środki będą niedostępne do wypłaty przez pierwsze %days% dni, a następnie zostanie naliczona opłata za wcześniejszą wypłatę, jeśli kwota zostanie odblokowana przed upływem okresu blokady. ",
   "Your funds have been restaked in the pool": "Twoje środki zostały ponownie umieszczone w puli",
   "This collection has been inactived for a while. Trade at your own risk.": "Ta kolekcja była przez pewien czas nieaktywna. Handlujesz na własne ryzyko.",
   "Info": "Informacje",
@@ -2178,7 +2179,7 @@
   "Proven track record of creating quality content related to crypto and especially DeFi": "Udokumentowane doświadczenie w tworzeniu wysokiej jakości treści związanych z kryptowalutami, a w szczególności z DeFi",
   "Strong understanding of PancakeSwap and our ecosystem": "Dobra znajomość PancakeSwap i naszego ekosystemu",
   "You earn commissions from most trading fees paid by your invitees for a limited period of time": "Przez określony czas zarabiasz prowizje od większości opłat transakcyjnych wnoszonych przez zaproszone przez Ciebie osoby",
-  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC": "Pary muszą zawierać co najmniej 1 główny token (tj. BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT i/lub USDC",
+  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)": "Pary muszą zawierać co najmniej 1 główny token (tj. BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT i/lub USDC)",
   "How will I receive my commissions and how often will I be paid?": "W jaki sposób będę otrzymywać prowizje i jak często będę otrzymywać wypłaty?",
   "How do I track my referrals and commissions?": "Jak mogę śledzić moje polecenia i prowizje?",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "Partnerzy mogą zalogować się do pulpitu nawigacyjnego partnera i wyświetlić informacje o swoich poleceniach i prowizjach",
@@ -3013,7 +3014,7 @@
   "ARCHIVED MESSAGES": "ZARCHIWIZOWANE WIADOMOŚCI",
   "Archive all read": "Zarchiwizuj wszystkie przeczytane",
   "Allow notifications": "Zezwól na powiadomienia",
-  "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Włącza funkcję powiadomień internetowych. Jeśli jest wyłączona, następuje automatyczne anulowanie subskrypcji i dzwonek powiadomień jest niewidoczny",
+  "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Włącza funkcję powiadomień internetowych. Jeśli jest wyłączona, następuje automatyczne anulowanie subskrypcji i dzwonek powiadomień jest niewidoczny",
   "Show only the notifications that belong to your wallet or LP positions": "Pokazuj tylko powiadomienia dotyczące Twojego portfela lub pozycji LP",
   "Important only": "Tylko ważne",
   "help": "pomoc",
@@ -3170,6 +3171,5 @@
   "Unable to unsubscribe %error%": "Nie można anulować subskrypcji, %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Anulowano subskrypcję powiadomień. Możesz ponownie subskrybować w dowolnym momencie",
   "Failed to send": "Nie można wysłać",
-  "This product have been upgraded!": "Ten produkt został uaktualniony!",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Środki będą niedostępne do wypłaty przez pierwsze %days% dni, a następnie zostanie naliczona opłata za wcześniejszą wypłatę, jeśli kwota zostanie odblokowana przed upływem okresu blokady. "
+  "This product have been upgraded!": "Ten produkt został uaktualniony!"
 }
