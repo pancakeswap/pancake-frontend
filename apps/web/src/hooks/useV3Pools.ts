@@ -153,7 +153,7 @@ export function useV3PoolsWithTicksOnChain(currencyA?: Currency, currencyB?: Cur
         candidatePools: pools,
         amount: CurrencyAmount.fromRawAmount(currencyA!, '1000000000000000000'),
         quoteCurrency: bscTokens.cake,
-        gasPriceWei: '3',
+        gasPriceWei: async () => getViemClients({ chainId: currencyA?.chainId }).getGasPrice(),
       })
       return pools
     },

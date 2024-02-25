@@ -1,14 +1,15 @@
-import { Currency, CurrencyAmount, Price, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { Address } from 'viem'
 import invariant from 'tiny-invariant'
 
 import { Pool } from '../../v3-router/types'
-import { V4Trade, Edge, Vertice, Graph } from '../types'
-import { getCurrencyPairs, getReserve } from '../pool'
-import { getPoolAddress, getTokenPrice } from '../../v3-router/utils'
+import { createPoolQuoteGetter } from '../../v3-router/providers'
+import { getPoolAddress } from '../../v3-router/utils'
+import { V4Trade, Edge, Vertice, Graph, TradeConfig } from '../types'
+import { getCurrencyPairs } from '../pool'
 import { getNeighbour } from './edge'
 import { createPriceCalculator } from './priceCalculator'
-import { createPoolQuoteGetter } from '../../v3-router/providers'
+import { estimateGasCost } from '../gasCost'
 
 type GraphParams = {
   pools: Pool[]
@@ -68,9 +69,7 @@ export function createGraph({ pools }: GraphParams): Graph {
   }
 }
 
-type FindBestTradeParams = {
-  amount: CurrencyAmount<Currency>
-  quoteCurrency: Currency
+type FindBestTradeParams = Omit<TradeConfig, 'candidatePools'> & {
   graph: Graph
 }
 
@@ -78,9 +77,11 @@ export async function findBestTradeFromGraph({
   amount,
   graph,
   quoteCurrency,
+  gasPriceWei,
 }: FindBestTradeParams): Promise<V4Trade<TradeType>> {
   // TODO: exact input & output
   const getPoolQuote = createPoolQuoteGetter(true)
+  const gasPrice = BigInt(typeof gasPriceWei === 'function' ? await gasPriceWei() : gasPriceWei)
 
   // 1. Set static prices for each vertices
   const start = graph.getVertice(amount.currency)
@@ -88,7 +89,7 @@ export async function findBestTradeFromGraph({
   if (!start || !finish) {
     throw new Error(`Invalid start vertice or finish vertice. Start ${start}, finish ${finish}`)
   }
-  const priceCalculator = createPriceCalculator(start)
+  const priceCalculator = createPriceCalculator({ quote: start, gasPriceWei: gasPrice, graph })
 
   // 2. Find best path using Dijkstra's algo
   async function findBestPath(baseAmount: CurrencyAmount<Currency>) {
@@ -96,6 +97,7 @@ export async function findBestTradeFromGraph({
     const bestResult = new Map<
       Vertice,
       {
+        gasSpent?: bigint
         bestAmount: CurrencyAmount<Currency>
         bestQuote?: CurrencyAmount<Currency>
         bestSource?: Edge
@@ -104,11 +106,13 @@ export async function findBestTradeFromGraph({
     const processedVert = new Set<Vertice>()
     bestResult.set(start, {
       bestAmount: amount,
+      gasSpent: 0n,
     })
     const nextVertList: Vertice[] = [start]
     const getBestAmount = (vert: Vertice) => bestResult.get(vert)?.bestAmount
     const getBestQuote = (vert: Vertice) => bestResult.get(vert)?.bestQuote
     const getBestSource = (vert: Vertice) => bestResult.get(vert)?.bestSource
+    const getGasSpent = (vert: Vertice) => bestResult.get(vert)?.gasSpent || 0n
     const getNextVert = () => {
       let vert: Vertice | undefined
       let bestQuote: CurrencyAmount<Currency> | undefined
@@ -129,14 +133,23 @@ export async function findBestTradeFromGraph({
       if (!vert || index === undefined) return undefined
 
       if (vert === finish) {
-        const bestPath: Edge[] = []
+        const path: Pool[] = []
         for (let v: Vertice | undefined = finish; getBestSource(v); v = getNeighbour(getBestSource(v)!, v)) {
-          bestPath.unshift(getBestSource(v)!)
+          const bestSource = getBestSource(v)
+          invariant(bestSource !== undefined, 'Invalid best source')
+          path.unshift(bestSource.pool)
         }
+        const gasCost = getGasSpent(vert)
+        const gasPriceInQuote = priceCalculator.getGasPriceInBase(vert)
+        const gasCostInQuote = gasPriceInQuote?.multiply(gasCost)
+        const outputAmount = getBestAmount(vert)
+        const outputAmountWithGasAdjusted = gasCostInQuote ? outputAmount?.subtract(gasCostInQuote) : undefined
         return {
-          path: bestPath,
+          path,
+          gasCost,
           inputAmount: baseAmount,
-          outputAmount: getBestAmount(finish),
+          outputAmount,
+          outputAmountWithGasAdjusted,
         }
       }
       nextVertList.splice(index, 1)
@@ -145,7 +158,6 @@ export async function findBestTradeFromGraph({
         const v2 = vert === e.vertice0 ? e.vertice1 : e.vertice0
         if (processedVert.has(v2)) continue
 
-        let quoteV2Amount: CurrencyAmount<Currency> | undefined
         try {
           const bestAmount = getBestAmount(vert)
           invariant(bestAmount !== undefined, 'Invalid amount')
@@ -157,24 +169,32 @@ export async function findBestTradeFromGraph({
           console.log(`Get quote success ${quoteResult?.quote.toExact()}`)
           invariant(quoteResult !== undefined, 'Invalid quote result')
           const { quote } = quoteResult
+          const gasPriceInV2 = priceCalculator.getGasPriceInBase(v2)
+          invariant(gasPriceInV2 !== undefined, 'Invalid gas price in v2')
+          const gasSpent = estimateGasCost(quoteResult) + getGasSpent(vert)
 
-          quoteV2Amount = quote
+          const price = priceCalculator.getPrice(v2, finish)
+          invariant(
+            price !== undefined,
+            `Failed to get price, base ${v2.currency.symbol}, quote ${finish.currency.symbol}`,
+          )
+          const gasSpentInQuote = price.quote(gasPriceInV2.multiply(gasSpent))
+          const newQuote = price.quote(quote).subtract(gasSpentInQuote)
+          const bestSource = getBestSource(v2)
+          const v2BestQuote = getBestQuote(v2)
+
+          if (!bestSource) nextVertList.push(v2)
+          if (!bestSource || !v2BestQuote || newQuote?.greaterThan(v2BestQuote)) {
+            bestResult.set(v2, {
+              gasSpent,
+              bestAmount: quote,
+              bestSource: e,
+              bestQuote: newQuote,
+            })
+          }
         } catch (_err) {
           console.error(_err)
           continue
-        }
-        const price = priceCalculator.getPrice(v2, finish)
-        const newQuote = price?.quote(quoteV2Amount)
-        const bestSource = getBestSource(v2)
-        const v2BestQuote = getBestQuote(v2)
-
-        if (!bestSource) nextVertList.push(v2)
-        if (!bestSource || !v2BestQuote || newQuote?.greaterThan(v2BestQuote)) {
-          bestResult.set(v2, {
-            bestAmount: quoteV2Amount,
-            bestSource: e,
-            bestQuote: newQuote,
-          })
         }
       }
       processedVert.add(vert)

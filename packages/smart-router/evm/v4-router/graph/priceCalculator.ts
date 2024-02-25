@@ -1,13 +1,20 @@
-import { Currency, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price, Native } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
-import { Edge, Vertice } from '../types'
+import { Edge, Graph, Vertice } from '../types'
 import { getReserve } from '../pool'
 import { getPoolAddress, getTokenPrice } from '../../v3-router/utils'
 import { getNeighbour } from './edge'
 
+type Params = {
+  graph: Graph
+  quote: Vertice
+  gasPriceWei: bigint
+}
+
 // Get the price reference of all tokens in the graph against the specified vertice
-export function createPriceCalculator(quote: Vertice) {
+export function createPriceCalculator({ graph, quote, gasPriceWei }: Params) {
+  const { chainId } = quote.currency
   const priceMap = new Map<Vertice, Price<Currency, Currency>>()
   const processedVert = new Set<Vertice>()
   const edgeWeight = new Map<Edge, bigint>()
@@ -41,6 +48,17 @@ export function createPriceCalculator(quote: Vertice) {
       `Pricing: + Token ${vTo.currency.symbol} price=${getQuotePrice(vTo)?.toSignificant(6)}` +
         ` from ${vFrom.currency.symbol} pool=${getPoolAddress(bestEdge.pool)} liquidity=${getWeight(bestEdge)}`,
     )
+  }
+
+  const native = Native.onChain(chainId).wrapped
+  const nativeVertice = graph.getVertice(native)
+  if (!nativeVertice) {
+    throw new Error('No valid native currency price found')
+  }
+  const nativePriceInQuote = getQuotePrice(nativeVertice)
+  const gasPriceInQuote = nativePriceInQuote?.quote(CurrencyAmount.fromRawAmount(native, gasPriceWei))
+  if (!gasPriceInQuote) {
+    throw new Error('Failed to get gas price in quote')
   }
 
   function getNextEdges(v: Vertice) {
@@ -80,7 +98,13 @@ export function createPriceCalculator(quote: Vertice) {
     return priceMap.get(base)
   }
 
+  function getGasPriceInBase(base: Vertice): CurrencyAmount<Currency> | undefined {
+    const basePrice = getQuotePrice(base)
+    return gasPriceInQuote ? basePrice?.invert().quote(gasPriceInQuote) : undefined
+  }
+
   return {
+    getGasPriceInBase,
     getQuotePrice,
     getPrice,
   }

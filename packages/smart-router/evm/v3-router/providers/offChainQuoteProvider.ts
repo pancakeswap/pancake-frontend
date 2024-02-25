@@ -168,22 +168,25 @@ function createGetV3Quote(isExactIn = true) {
   }
 }
 
+export type PoolQuote = {
+  pool: Pool
+  quote: CurrencyAmount<Currency>
+  poolAfter: Pool
+}
+
 export function createPoolQuoteGetter(isExactIn = true) {
   const getV2Quote = createGetV2Quote(isExactIn)
   const getStableQuote = createGetStableQuote(isExactIn)
   const getV3Quote = createGetV3Quote(isExactIn)
 
-  return async function getPoolQuote(
-    pool: Pool,
-    amount: CurrencyAmount<Currency>,
-  ): Promise<{ quote: CurrencyAmount<Currency>; pool: Pool } | undefined> {
+  return async function getPoolQuote(pool: Pool, amount: CurrencyAmount<Currency>): Promise<PoolQuote | undefined> {
     if (isV2Pool(pool)) {
       const [quote, newPool] = getV2Quote(pool, amount)
-      return { quote, pool: newPool }
+      return { quote, pool, poolAfter: newPool }
     }
     if (isV3Pool(pool)) {
       const quote = await getV3Quote(pool, amount)
-      return quote ? { quote: quote.quote, pool: quote.pool } : undefined
+      return quote ? { quote: quote.quote, pool, poolAfter: quote.pool } : undefined
     }
     return undefined
   }
