@@ -121,6 +121,7 @@
   "Stake Periods": "Staking Dönemleri",
   "Staked Amount": "Stake Edilen Tutar",
   "Click here for more information": "Daha fazla bilgi için buraya tıklayın",
+  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ",
   "Your funds have been restaked in the pool": "Fonlarınız havuzda yeniden stake edildi",
   "This collection has been inactived for a while. Trade at your own risk.": "Bu koleksiyon bir süredir etkin değil. Yaptığınız yatırımların riski size aittir.",
   "Info": "Bilgi",
@@ -2178,7 +2179,7 @@
   "Proven track record of creating quality content related to crypto and especially DeFi": "Kripto ve özellikle DeFi ile ilgili kaliteli içerik oluşturma konusunda başarılarla dolu bir geçmiş",
   "Strong understanding of PancakeSwap and our ecosystem": "PancakeSwap ve ekosistemimiz hakkında güçlü bir kavrayış",
   "You earn commissions from most trading fees paid by your invitees for a limited period of time": "Sınırlı bir süreliğine davet ettiklerinizin ödediği çoğu işlem ücretinden komisyon kazanırsınız",
-  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC": "Çiftler en az 1 ana token içermelidir (örn. BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT ve/veya USDC)",
+  "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)": "Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)",
   "How will I receive my commissions and how often will I be paid?": "Komisyonlarımı nasıl alacağım ve bana ne sıklıkla ödeme yapılacak?",
   "How do I track my referrals and commissions?": "Tavsiye ettiklerimi ve komisyonlarımı nasıl takip ederim?",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "Ortaklar, ortak panosuna giriş yapıp tavsiye ve komisyon bilgilerini görüntüleyebilir",
@@ -3013,7 +3014,7 @@
   "ARCHIVED MESSAGES": "ARŞİVLENEN MESAJLAR",
   "Archive all read": "Tüm okunanları arşivle",
   "Allow notifications": "Bildirimlere izin ver",
-  "Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible": "Web bildirimleri özelliğini etkinleştirir. Bu ayar kapatılırsa otomatik olarak abonelikten çıkarsınız ve bildirim çanını görmezsiniz",
+  "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible",
   "Show only the notifications that belong to your wallet or LP positions": "Sadece cüzdananız veya LP pozisyonlarınız ile ilgili bildirimleri gösterin",
   "Important only": "Sadece önemli olanlar",
   "help": "yardım",
@@ -3170,6 +3171,5 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "Failed to send",
-  "This product have been upgraded!": "This product have been upgraded!",
-  "Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ": "Fonlar ilk %days% gün boyunca çekilemez ve tutar, kilit dönemi sona ermeden unstake edilirse erken çekme ücreti alınır. "
+  "This product have been upgraded!": "This product have been upgraded!"
 }
