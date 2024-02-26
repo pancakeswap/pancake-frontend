@@ -10,6 +10,7 @@ const ExploreHooksContainer = styled(Box)`
 
   @media screen and (min-width: 1440px) {
     width: 1200px;
+    padding: 0;
     margin: 64px auto;
   }
 `
