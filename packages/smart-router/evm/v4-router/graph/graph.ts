@@ -3,7 +3,7 @@ import { Address } from 'viem'
 import invariant from 'tiny-invariant'
 import { formatFraction } from '@pancakeswap/utils/formatFractions'
 
-import { Pool, Route } from '../../v3-router/types'
+import { Pool } from '../../v3-router/types'
 import { createPoolQuoteGetter } from '../../v3-router/providers'
 import { buildBaseRoute, getPoolAddress } from '../../v3-router/utils'
 import { V4Trade, Edge, Vertice, Graph, TradeConfig, V4Route } from '../types'
@@ -75,32 +75,40 @@ export function createGraph({ pools }: GraphParams): Graph {
     return edge
   }
 
-  // TODO: exact input | output
-  async function applySwap(route: Pick<Route, 'pools' | 'path' | 'inputAmount' | 'outputAmount'>) {
-    const getPoolQuote = createPoolQuoteGetter(true)
-
-    let amount = route.inputAmount
-    for (let i = 0; i < route.path.length - 1; i += 1) {
-      const vertA = getVertice(route.path[i])
-      const vertB = getVertice(route.path[i + 1])
-      const p = route.pools[i]
-      invariant(vertA !== undefined && vertB !== undefined && p !== undefined, '[Apply swap]: Invalid vertice and pool')
-      const edge = getEdge(p, vertA, vertB)
-      invariant(edge !== undefined, '[Apply swap]: No valid edge found')
-      // eslint-disable-next-line no-await-in-loop
-      const quote = await getPoolQuote(edge.pool, amount)
-      invariant(quote !== undefined, '[Apply swap]: Failed to get quote')
-      edge.pool = quote.poolAfter
-      amount = quote.quote
-    }
-  }
-
   return {
     vertices: Array.from(verticeMap.values()),
     edges: Array.from(edgeMap.values()),
     getVertice,
     getEdge,
-    applySwap,
+    applySwap: async ({ isExactIn, route }) => {
+      const getPoolQuote = createPoolQuoteGetter(isExactIn)
+      function* loopPath() {
+        let i = isExactIn ? 0 : route.path.length - 1
+        const next = isExactIn ? () => i++ : () => i--
+        const hasNext = isExactIn ? () => i < route.path.length - 1 : () => i >= 1
+        for (; hasNext(); next()) {
+          yield i
+        }
+      }
+
+      let amount = route.inputAmount
+      for (const i of loopPath()) {
+        const vertA = getVertice(route.path[i])
+        const vertB = getVertice(route.path[i + 1])
+        const p = route.pools[i]
+        invariant(
+          vertA !== undefined && vertB !== undefined && p !== undefined,
+          '[Apply swap]: Invalid vertice and pool',
+        )
+        const edge = getEdge(p, vertA, vertB)
+        invariant(edge !== undefined, '[Apply swap]: No valid edge found')
+        // eslint-disable-next-line no-await-in-loop
+        const quote = await getPoolQuote(edge.pool, amount)
+        invariant(quote !== undefined, '[Apply swap]: Failed to get quote')
+        edge.pool = quote.poolAfter
+        amount = quote.quote
+      }
+    },
   }
 }
 
@@ -226,10 +234,18 @@ export async function findBestTrade({
       }
       const gasCost = getGasSpent(vert)
       const gasPriceInQuote = priceCalculator.getGasPriceInBase(vert)
-      const gasCostInQuote = gasPriceInQuote?.multiply(gasCost)
-      const quoteAmount = getBestAmount(vert)
-      invariant(quoteAmount !== undefined, 'Invalid quote amount')
-      const quoteAmountWithGasAdjusted = gasCostInQuote ? adjustQuoteByGas(quoteAmount, gasCostInQuote) : undefined
+      const gasCostInQuoteRaw = gasPriceInQuote?.multiply(gasCost)
+      const quoteAmountRaw = getBestAmount(vert)
+      invariant(quoteAmountRaw !== undefined, 'Invalid quote amount')
+      const quoteAmountWithGasAdjustedRaw = gasCostInQuoteRaw
+        ? adjustQuoteByGas(quoteAmountRaw, gasCostInQuoteRaw)
+        : undefined
+      const quoteAmount = CurrencyAmount.fromRawAmount(quoteCurrency, quoteAmountRaw.quotient)
+      const gasCostInQuote =
+        gasCostInQuoteRaw && CurrencyAmount.fromRawAmount(quoteCurrency, gasCostInQuoteRaw.quotient)
+      const quoteAmountWithGasAdjusted =
+        quoteAmountWithGasAdjustedRaw &&
+        CurrencyAmount.fromRawAmount(quoteCurrency, quoteAmountWithGasAdjustedRaw.quotient)
 
       const { type } = buildBaseRoute(pools, start.currency, finish.currency)
       return {
@@ -309,7 +325,7 @@ export async function findBestTrade({
       }`,
     )
     // eslint-disable-next-line no-await-in-loop
-    await graph.applySwap(route)
+    await graph.applySwap({ route, isExactIn })
     routes.push({
       ...route,
       percent,
@@ -344,8 +360,8 @@ export async function findBestTrade({
     {
       mergedRoutes: [],
       gasEstimate: 0n,
-      quoteAmount: CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, 0),
-      gasCostInQuote: CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, 0),
+      quoteAmount: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
+      gasCostInQuote: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
     },
   )
 

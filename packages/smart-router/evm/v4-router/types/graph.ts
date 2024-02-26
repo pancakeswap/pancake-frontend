@@ -19,5 +19,8 @@ export type Graph = {
 
   getVertice: (currency: Currency) => Vertice | undefined
   getEdge: (pool: Pool, vertA: Vertice, vertB: Vertice) => Edge | undefined
-  applySwap: (route: Pick<Route, 'pools' | 'path' | 'inputAmount' | 'outputAmount'>) => Promise<void>
+  applySwap: (params: {
+    route: Pick<Route, 'pools' | 'path' | 'inputAmount' | 'outputAmount'>
+    isExactIn: boolean
+  }) => Promise<void>
 }
