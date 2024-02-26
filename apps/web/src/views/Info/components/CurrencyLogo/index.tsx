@@ -1,12 +1,10 @@
-import { Token } from '@pancakeswap/sdk'
+import { useHttpLocations } from '@pancakeswap/hooks'
+import { Currency, Token } from '@pancakeswap/sdk'
 import { TokenLogo } from '@pancakeswap/uikit'
-import { getImageUrlFromToken } from 'components/TokenImage'
+import { getCurrencyLogoUrls } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
-import { multiChainId, MultiChainName } from 'state/info/constant'
+import { MultiChainName } from 'state/info/constant'
 import { styled } from 'styled-components'
-import { safeGetAddress } from 'utils'
-import { Address } from 'viem'
-import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
@@ -21,18 +19,29 @@ export const CurrencyLogo: React.FC<
   React.PropsWithChildren<{
     address?: string
     token?: Token
+    currency?: Currency & {
+      logoURI?: string | undefined
+    }
     size?: string
     chainName?: MultiChainName
   }>
-> = ({ address, size = '24px', chainName = 'BSC', ...rest }) => {
-  const checkedsummedAddress = safeGetAddress(address)
-  const srcs = useMemo(() => {
-    const srcFromPCS =
-      getImageUrlFromToken(new Token(multiChainId[chainName], checkedsummedAddress as Address, 18, '')) ?? ''
-    const src = getTokenLogoURL(new Token(multiChainId[chainName], address as Address, 18, '')) ?? ''
+> = ({ currency, size = '24px', ...rest }) => {
+  const uriLocations = useHttpLocations(currency?.logoURI)
 
-    return [srcFromPCS, src]
-  }, [checkedsummedAddress, chainName, address])
+  const srcs: string[] = useMemo(() => {
+    if (currency?.isNative) return []
+
+    if (currency?.isToken) {
+      const logoUrls = getCurrencyLogoUrls(currency, { useTrustWallet: true })
+
+      if (currency?.logoURI) {
+        return [...uriLocations, ...logoUrls]
+      }
+      return [...logoUrls]
+    }
+    return []
+  }, [currency, uriLocations])
+
   return <StyledLogo size={size} srcs={srcs} alt="token logo" useFilledIcon {...rest} />
 }
 
