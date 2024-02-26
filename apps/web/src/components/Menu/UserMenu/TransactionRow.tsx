@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { BlockIcon, BscScanIcon, CheckmarkCircleIcon, Flex, RefreshIcon } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
 import { TransactionDetails, useTransactionState } from 'state/transactions/reducer'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { FarmTransactionStatus, TransactionType } from 'state/transactions/actions'

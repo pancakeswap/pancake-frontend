@@ -3,8 +3,8 @@ import { Order } from '@gelatonetwork/limit-orders-lib'
 import { createReducer } from '@reduxjs/toolkit'
 import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
 import { Hash } from 'viem'
-import { resetUserState } from '../global/actions'
 import { atomWithStorage, createJSONStorage, useReducerAtom } from 'jotai/utils'
+import { resetUserState } from '../global/actions'
 import {
   FarmTransactionStatus,
   NonBscFarmTransactionType,
