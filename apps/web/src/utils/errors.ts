@@ -25,9 +25,9 @@ export class UserUnexpectedTxError extends BaseError {
   override name = 'UserUnexpectedTxError'
 
   constructor({ expectedData, actualData }: { expectedData: unknown; actualData: unknown }) {
-    super('User initiated unexpected transaction', {
+    super('User initiated transaction with unexpected data', {
       metaMessages: [
-        `User initiated unexpected transaction`,
+        `User initiated transaction with unexpected data`,
         ``,
         `  Expected data: ${expectedData}`,
         `  Actual data: ${actualData}`,

@@ -69,6 +69,12 @@ const useConfirmActions = (
     setPermit2Signature(undefined)
   }, [])
 
+  const showError = useCallback((error: string) => {
+    setErrorMessage(error)
+    setTxHash(undefined)
+    setPermit2Signature(undefined)
+  }, [])
+
   // define the action of each step
   const revokeStep = useMemo(() => {
     const action = async (nextState?: ConfirmModalState) => {
@@ -94,8 +100,12 @@ const useConfirmActions = (
         setConfirmState(nextState ?? ConfirmModalState.APPROVING_TOKEN)
       } catch (error) {
         console.error('revoke error', error)
-        if (userRejectedError(error) || error instanceof UserUnexpectedTxError) {
-          resetState()
+        if (userRejectedError(error)) {
+          showError(t('Transaction rejected'))
+        } else if (error instanceof UserUnexpectedTxError) {
+          showError(t('Revert transaction filled, but Approval not reset to 0. Please try again.'))
+        } else {
+          showError(typeof error === 'string' ? error : (error as any)?.message)
         }
       }
     }
@@ -104,7 +114,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove?.currency, chainId, permit2Allowance, refetch, resetState, revoke])
+  }, [amountToApprove?.currency, chainId, permit2Allowance, refetch, revoke, showError, t])
 
   const permitStep = useMemo(() => {
     return {
@@ -117,13 +127,15 @@ const useConfirmActions = (
           setConfirmState(nextState ?? ConfirmModalState.PENDING_CONFIRMATION)
         } catch (error) {
           if (userRejectedError(error)) {
-            resetState()
+            showError('Transaction rejected')
+          } else {
+            showError(typeof error === 'string' ? error : (error as any)?.message)
           }
         }
       },
       showIndicator: true,
     }
-  }, [permit, resetState])
+  }, [permit, showError])
 
   const approveStep = useMemo(() => {
     return {
@@ -150,14 +162,20 @@ const useConfirmActions = (
           setConfirmState(nextState ?? ConfirmModalState.PERMITTING)
         } catch (error) {
           console.error('approve error', error)
-          if (userRejectedError(error) || error instanceof UserUnexpectedTxError) {
-            resetState()
+          if (userRejectedError(error)) {
+            showError(t('Transaction rejected'))
+          } else if (error instanceof UserUnexpectedTxError) {
+            showError(
+              t('Approve transaction filled, but Approval still not enough to fill current trade. Please try again.'),
+            )
+          } else {
+            showError(typeof error === 'string' ? error : (error as any)?.message)
           }
         }
       },
       showIndicator: true,
     }
-  }, [amountToApprove, approve, chainId, permit2Allowance, refetch, resetState])
+  }, [amountToApprove, approve, chainId, permit2Allowance, refetch, showError, t])
 
   const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const swapPreflightCheck = useCallback(() => {
@@ -202,15 +220,15 @@ const useConfirmActions = (
         } catch (error: any) {
           console.error('swap error', error)
           if (userRejectedError(error)) {
-            resetState()
+            showError('Transaction rejected')
           } else {
-            setErrorMessage(typeof error === 'string' ? error : error?.message)
+            showError(typeof error === 'string' ? error : (error as any)?.message)
           }
         }
       },
       showIndicator: false,
     }
-  }, [chainId, resetState, swap, swapError, swapPreflightCheck])
+  }, [chainId, resetState, showError, swap, swapError, swapPreflightCheck])
 
   const actions = useMemo(() => {
     return {

@@ -85,6 +85,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       ConfirmModalState.PERMITTING,
     ].includes(confirmModalState)
   }, [confirmModalState])
+  const hasError = useMemo(() => swapErrorMessage !== undefined, [swapErrorMessage])
   const stepsVisible = useMemo(() => {
     if (swapErrorMessage) return false
     if (confirmModalState === ConfirmModalState.REVIEWING || confirmModalState === ConfirmModalState.COMPLETED)
@@ -242,11 +243,11 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
 
   return (
     <ConfirmSwapModalContainer
-      minHeight="415px"
+      minHeight={hasError ? 'auto' : '415px'}
       width={['100%', '100%', '100%', '367px']}
-      hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING || swapErrorMessage !== undefined}
+      hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING || hasError}
       headerPadding={loadingAnimationVisible ? '12px 24px 0px 24px !important' : '12px 24px'}
-      bodyPadding={loadingAnimationVisible ? '0 24px 24px 24px' : '24px'}
+      bodyPadding={loadingAnimationVisible && !hasError ? '0 24px 24px 24px' : '24px'}
       bodyTop={loadingAnimationVisible ? '-15px' : '0'}
       handleDismiss={handleDismiss}
     >
