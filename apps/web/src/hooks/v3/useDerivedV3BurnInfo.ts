@@ -6,6 +6,7 @@ import { useToken } from 'hooks/Tokens'
 import { ReactNode, useMemo } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { useAccount } from 'wagmi'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { usePool } from './usePools'
 import { useV3PositionFees } from './useV3PositionFees'
 
@@ -47,7 +48,7 @@ export function useDerivedV3BurnInfo(
     [pool, position],
   )
 
-  const liquidityPercentage = percent ? new Percent(percent, 100) : undefined
+  const liquidityPercentage = !isUndefinedOrNull(percent) ? new Percent(percent!, 100) : undefined
 
   const discountedAmount0 = positionSDK
     ? liquidityPercentage?.multiply(positionSDK.amount0.quotient).quotient
