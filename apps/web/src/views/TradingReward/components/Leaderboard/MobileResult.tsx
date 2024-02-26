@@ -1,14 +1,14 @@
-import { styled } from 'styled-components'
-import { Box, Text, Flex, ProfileAvatar } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
+import { Box, Flex, ProfileAvatar, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { useProfileForAddress } from 'state/profile/hooks'
-import { useDomainNameForAddress } from 'hooks/useDomain'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useMemo } from 'react'
+import { useProfileForAddress } from 'state/profile/hooks'
+import { styled } from 'styled-components'
+import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
 
 export const StyledMobileRow = styled(Box)`
   background-color: ${({ theme }) => theme.card.background};
@@ -51,7 +51,7 @@ const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ is
           </Flex>
         </Flex>
         <Flex width="70%" justifyContent="flex-end" alignSelf="center">
-          <Text color="primary" fontWeight="bold" style={{ alignSelf: 'center' }} mr="8px">
+          <Text ellipsis color="primary" fontWeight="bold" style={{ alignSelf: 'center' }} mr="8px">
             {profile?.username || domainName || truncateHash(rank.origin)}
           </Text>
           <ProfileAvatar width={32} height={32} src={profile?.nft?.image?.thumbnail ?? avatar} />
