@@ -1,5 +1,11 @@
 # @pancakeswap/gauges
 
+## 1.1.0
+
+### Minor Changes
+
+- 9886d06: Allow fetch gagues with block number
+
 ## 1.0.5
 
 ### Patch Changes
