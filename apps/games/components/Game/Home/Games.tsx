@@ -5,7 +5,6 @@ import { StyledTextLineClamp } from 'components/Game/StyledTextLineClamp'
 import dayjs from 'dayjs'
 import { useCallback } from 'react'
 import { styled, useTheme } from 'styled-components'
-import { Autoplay } from 'swiper/modules'
 import type { Swiper as SwiperClass } from 'swiper/types'
 
 import 'swiper/css'
@@ -134,17 +133,10 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
         nextEl: '.next',
       }}
       resizeObserver
-      autoplay={{
-        delay: 15000,
-        pauseOnMouseEnter: true,
-        disableOnInteraction: false,
-      }}
-      modules={[Autoplay]}
       breakpoints={{
         860: {
           slidesPerView: 2,
           spaceBetween: 34,
-          autoplay: false,
         },
       }}
       onRealIndexChange={handleRealIndexChange}
