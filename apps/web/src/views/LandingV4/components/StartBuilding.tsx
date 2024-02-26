@@ -90,7 +90,7 @@ export const StartBuilding = () => {
       <PageSection
         index={2}
         hasCurvedDivider={false}
-        background={theme.colors.gradientCardHeader}
+        background={theme.colors.gradientBubblegum}
         containerProps={{ id: 'start-build' }}
       >
         <OuterWedgeWrapper>
