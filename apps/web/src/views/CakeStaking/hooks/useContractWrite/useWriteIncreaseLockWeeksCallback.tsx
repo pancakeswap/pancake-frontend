@@ -14,7 +14,7 @@ import { useAccount, useWalletClient } from 'wagmi'
 import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 import { useCakeLockStatus } from '../useVeCakeUserInfo'
 
-export const useWriteIncreaseLockWeeksCallback = () => {
+export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
   const veCakeContract = useVeCakeContract()
   const { cakeUnlockTime, cakeLockExpired } = useCakeLockStatus()
   const { address: account } = useAccount()
@@ -49,6 +49,7 @@ export const useWriteIncreaseLockWeeksCallback = () => {
         if (transactionReceipt?.status === 'success') {
           setCakeLockWeeks('')
           setStatus(ApproveAndLockStatus.CONFIRMED)
+          onDismiss?.()
         } else {
           setStatus(ApproveAndLockStatus.ERROR)
         }
@@ -63,15 +64,16 @@ export const useWriteIncreaseLockWeeksCallback = () => {
     }
   }, [
     cakeLockWeeks,
+    roundedUnlockTimestamp,
     veCakeContract.simulate,
     veCakeContract.chain,
-    roundedUnlockTimestamp,
     account,
     setStatus,
     walletClient,
     setTxHash,
     waitForTransaction,
     setCakeLockWeeks,
+    onDismiss,
   ])
 
   return increaseLockWeeks

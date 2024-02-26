@@ -113,7 +113,8 @@ export const LockCakeForm: React.FC<{
   // show input field only
   fieldOnly?: boolean
   disabled?: boolean
-}> = ({ fieldOnly, disabled }) => {
+  onDismiss?: () => void
+}> = ({ fieldOnly, disabled, onDismiss }) => {
   const { t } = useTranslation()
   const [value, onChange] = useAtom(cakeLockAmountAtom)
 
@@ -133,18 +134,18 @@ export const LockCakeForm: React.FC<{
         <>
           {disabled ? null : <LockCakeDataSet />}
 
-          <SubmitLockButton />
+          <SubmitLockButton onDismiss={onDismiss} />
         </>
       )}
     </AutoRow>
   )
 }
 
-const SubmitLockButton = () => {
+const SubmitLockButton = ({ onDismiss }: { onDismiss?: () => void }) => {
   const { t } = useTranslation()
   const cakeLockAmount = useAtomValue(cakeLockAmountAtom)
   const disabled = useMemo(() => !cakeLockAmount || cakeLockAmount === '0', [cakeLockAmount])
-  const increaseLockAmount = useWriteApproveAndIncreaseLockAmountCallback()
+  const increaseLockAmount = useWriteApproveAndIncreaseLockAmountCallback(onDismiss)
 
   return (
     <Button disabled={disabled} width="100%" onClick={increaseLockAmount}>

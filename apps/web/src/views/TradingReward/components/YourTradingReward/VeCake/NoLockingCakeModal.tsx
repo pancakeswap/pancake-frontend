@@ -57,6 +57,7 @@ export const NoLockingCakeModal: React.FC<React.PropsWithChildren<InjectedModalP
             value={<ValueText>{veCake}</ValueText>}
           />
         }
+        onDismiss={onDismiss}
       />
     </StyledModal>
   )

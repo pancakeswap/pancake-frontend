@@ -25,6 +25,7 @@ interface NotLockingCardProps {
   hideCardPadding?: boolean
   customVeCakeCard?: JSX.Element
   customDataRow?: JSX.Element
+  onDismiss?: () => void
 }
 
 export const NotLockingCard: React.FC<React.PropsWithChildren<NotLockingCardProps>> = ({
@@ -32,6 +33,7 @@ export const NotLockingCard: React.FC<React.PropsWithChildren<NotLockingCardProp
   hideCardPadding,
   customVeCakeCard,
   customDataRow,
+  onDismiss,
 }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
@@ -43,7 +45,7 @@ export const NotLockingCard: React.FC<React.PropsWithChildren<NotLockingCardProp
     [cakeLockAmount, cakeLockWeeks],
   )
 
-  const handleModalOpen = useWriteApproveAndLockCallback()
+  const handleModalOpen = useWriteApproveAndLockCallback(onDismiss)
 
   return (
     <StyledCard innerCardProps={{ padding: hideCardPadding ? 0 : ['24px 16px', '24px 16px', '24px'] }}>

@@ -20,10 +20,12 @@ export enum VeCakeModalView {
 
 interface VeCakeAddCakeOrWeeksModalProps extends InjectedModalProps {
   viewMode?: VeCakeModalView
+  showSwitchButton?: boolean
 }
 
 export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeAddCakeOrWeeksModalProps>> = ({
   viewMode,
+  showSwitchButton,
   onDismiss,
 }) => {
   const { t } = useTranslation()
@@ -45,14 +47,20 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
 
   return (
     <Modal title="Increase your veCAKE" headerBorderColor="transparent" maxWidth={500} onDismiss={onDismiss}>
-      <StyledSwitchTextContainer onClick={toggleViewMode}>
-        <ArrowUpDownIcon mr="4px" color="primary" style={{ rotate: '90deg' }} />
-        <Text bold color="primary">
-          {modalViewMode === VeCakeModalView.CAKE_FORM_VIEW ? t('Extend Lock Instead') : t('Add CAKE Instead')}
-        </Text>
-      </StyledSwitchTextContainer>
+      {showSwitchButton && (
+        <StyledSwitchTextContainer onClick={toggleViewMode}>
+          <ArrowUpDownIcon mr="4px" color="primary" style={{ rotate: '90deg' }} />
+          <Text bold color="primary">
+            {modalViewMode === VeCakeModalView.CAKE_FORM_VIEW ? t('Extend Lock Instead') : t('Add CAKE Instead')}
+          </Text>
+        </StyledSwitchTextContainer>
+      )}
       <Flex position="relative">
-        {modalViewMode === VeCakeModalView.CAKE_FORM_VIEW ? <LockCakeForm /> : <LockWeeksForm />}
+        {modalViewMode === VeCakeModalView.CAKE_FORM_VIEW ? (
+          <LockCakeForm onDismiss={onDismiss} />
+        ) : (
+          <LockWeeksForm onDismiss={onDismiss} />
+        )}
       </Flex>
       {/* <PreviewOfVeCakeSnapShotTime /> */}
     </Modal>

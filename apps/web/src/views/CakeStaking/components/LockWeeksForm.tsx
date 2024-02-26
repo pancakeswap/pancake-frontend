@@ -127,7 +127,8 @@ export const LockWeeksForm: React.FC<{
   fieldOnly?: boolean
   expired?: boolean
   disabled?: boolean
-}> = ({ fieldOnly, expired, disabled }) => {
+  onDismiss?: () => void
+}> = ({ fieldOnly, expired, disabled, onDismiss }) => {
   const { t } = useTranslation()
   const [value, onChange] = useAtom(cakeLockWeeksAtom)
   return (
@@ -153,7 +154,7 @@ export const LockWeeksForm: React.FC<{
               <SubmitRenewButton />
             </FlexGap>
           ) : (
-            <SubmitLockButton disabled={disabled} />
+            <SubmitLockButton disabled={disabled} onDismiss={onDismiss} />
           )}
         </>
       )}
@@ -161,11 +162,11 @@ export const LockWeeksForm: React.FC<{
   )
 }
 
-const SubmitLockButton = ({ disabled }) => {
+const SubmitLockButton = ({ disabled, onDismiss }: { disabled?: boolean; onDismiss?: () => void }) => {
   const { t } = useTranslation()
   const cakeLockWeeks = useAtomValue(cakeLockWeeksAtom)
   const _disabled = useMemo(() => !cakeLockWeeks || cakeLockWeeks === '0' || disabled, [cakeLockWeeks, disabled])
-  const increaseLockWeeks = useWriteIncreaseLockWeeksCallback()
+  const increaseLockWeeks = useWriteIncreaseLockWeeksCallback(onDismiss)
 
   return (
     <Button disabled={_disabled} width="100%" onClick={increaseLockWeeks}>
