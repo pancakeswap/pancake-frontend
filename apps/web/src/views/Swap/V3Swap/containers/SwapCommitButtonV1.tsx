@@ -177,6 +177,7 @@ export const SwapCommitButtonV1 = memo(function SwapCommitButton({
           setSwapState((s) => ({
             ...s,
             txHash: undefined,
+            swapErrorMessage: t('Transaction rejected'),
             attemptingTxn: false,
           }))
           // throw reject error to reset the flow
