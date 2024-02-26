@@ -1,15 +1,15 @@
-import merge from 'lodash/merge'
-import teamsList from 'config/constants/teams'
-import { getProfileContract } from 'utils/contractHelpers'
-import { Team } from 'config/constants/types'
-import { TeamsById } from 'state/types'
-import { pancakeProfileABI } from 'config/abi/pancakeProfile'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import fromPairs from 'lodash/fromPairs'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { pancakeProfileABI } from 'config/abi/pancakeProfile'
+import teamsList from 'config/constants/teams'
+import { Team } from 'config/constants/types'
+import fromPairs from 'lodash/fromPairs'
+import merge from 'lodash/merge'
+import { TeamsById } from 'state/types'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { getProfileContract } from 'utils/contractHelpers'
+import { publicClient } from 'utils/wagmi'
 
-export const getTeam = async (teamId: number): Promise<Team> => {
+export const getTeam = async (teamId: number): Promise<Team | null> => {
   try {
     const profileContract = getProfileContract()
     const {
@@ -34,7 +34,7 @@ export const getTeam = async (teamId: number): Promise<Team> => {
 /**
  * Gets on-chain data and merges it with the existing static list of teams
  */
-export const getTeams = async (): Promise<TeamsById> => {
+export const getTeams = async (): Promise<TeamsById | null> => {
   try {
     const profileContract = getProfileContract()
     const teamsById = fromPairs(teamsList.map((team) => [team.id, team]))

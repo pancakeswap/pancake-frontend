@@ -1,7 +1,7 @@
-import { request, gql } from 'graphql-request'
 import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
-import { LotteryRoundGraphEntity, LotteryResponse } from 'state/types'
-import { getRoundIdsArray, fetchMultipleLotteries } from './helpers'
+import { gql, request } from 'graphql-request'
+import { LotteryResponse, LotteryRoundGraphEntity } from 'state/types'
+import { fetchMultipleLotteries, getRoundIdsArray } from './helpers'
 
 export const MAX_LOTTERIES_REQUEST_SIZE = 100
 
@@ -38,10 +38,10 @@ const applyNodeDataToLotteriesGraphResponse = (
       startTime: nodeRoundData.startTime,
       status: nodeRoundData.status,
       id: nodeRoundData.lotteryId,
-      ticketPrice: graphRoundData?.ticketPrice,
-      totalTickets: graphRoundData?.totalTickets,
-      totalUsers: graphRoundData?.totalUsers,
-      winningTickets: graphRoundData?.winningTickets,
+      ticketPrice: graphRoundData?.ticketPrice || '',
+      totalTickets: graphRoundData?.totalTickets || '',
+      totalUsers: graphRoundData?.totalUsers || '',
+      winningTickets: graphRoundData?.winningTickets || '',
     }
   })
 
