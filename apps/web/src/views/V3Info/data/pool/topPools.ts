@@ -37,7 +37,7 @@ export async function fetchTopPoolAddresses(
     const formattedData = data
       ? data.pools
           .map((p) => {
-            if (POOL_HIDE?.[chainId]?.includes(p.id.toLocaleLowerCase())) {
+            if (POOL_HIDE?.[chainId]?.includes(p.id.toLowerCase())) {
               return undefined
             }
             return p.id

@@ -57,7 +57,7 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
       `
       const { poolDayDatas } = await client.request(query, {
         days: numberOfDays,
-        address: address.toLocaleLowerCase(),
+        address: address.toLowerCase(),
       })
       const volumes = poolDayDatas.map((d: { volumeUSD: string }) => Number(d.volumeUSD))
       const feeUSDs = poolDayDatas.map(

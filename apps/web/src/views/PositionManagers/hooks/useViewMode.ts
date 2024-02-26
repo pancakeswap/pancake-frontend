@@ -6,7 +6,7 @@ import { updateQuery } from '@pancakeswap/utils/clientRouter'
 export function useViewMode() {
   const router = useRouter()
   const mode = useMemo(
-    () => (router.query.view === String(ViewMode.CARD).toLocaleLowerCase() ? ViewMode.CARD : ViewMode.TABLE),
+    () => (router.query.view === String(ViewMode.CARD).toLowerCase() ? ViewMode.CARD : ViewMode.TABLE),
     [router.query],
   )
   const setViewMode = useCallback(
@@ -16,7 +16,7 @@ export function useViewMode() {
       }
       router.push(
         updateQuery(router.asPath, {
-          view: viewMode.toLocaleLowerCase(),
+          view: viewMode.toLowerCase(),
         }),
         '',
         { scroll: false },

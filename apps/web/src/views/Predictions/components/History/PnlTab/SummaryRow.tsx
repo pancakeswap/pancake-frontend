@@ -44,11 +44,11 @@ const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, 
       </Text>
       <Flex>
         <Flex flex="2" flexDirection="column">
-          <Text bold fontSize="20px" color={color}>
-            {rounds} {t('Rounds').toLocaleLowerCase()}
+          <Text bold fontSize="20px" color={color} textTransform="lowercase">
+            {rounds} {t('Rounds')}
           </Text>
-          <Text fontSize="12px" color="textSubtle">
-            {type === 'entered' ? t('Total').toLocaleLowerCase() : roundsInPercentsDisplay}
+          <Text fontSize="12px" color="textSubtle" textTransform="lowercase">
+            {type === 'entered' ? t('Total') : roundsInPercentsDisplay}
           </Text>
         </Flex>
         <Flex flex="3" flexDirection="column">
