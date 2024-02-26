@@ -156,6 +156,7 @@ export async function findBestTrade({
   streams,
   graph: graphOverride,
   tradeType,
+  maxHops = 4,
 }: FindBestTradeParams): Promise<V4Trade<TradeType> | undefined> {
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const graph = graphOverride || createGraph({ pools: candidatePools })
@@ -187,6 +188,7 @@ export async function findBestTrade({
     const bestResult = new Map<
       Vertice,
       {
+        hops: number
         gasSpent?: bigint
         bestAmount: CurrencyAmount<Currency>
         bestQuote?: CurrencyAmount<Currency>
@@ -195,10 +197,12 @@ export async function findBestTrade({
     >()
     const processedVert = new Set<Vertice>()
     bestResult.set(start, {
+      hops: 0,
       bestAmount: amount,
       gasSpent: 0n,
     })
     const nextVertList: Vertice[] = [start]
+    const getHops = (vert: Vertice) => bestResult.get(vert)?.hops || 0
     const getBestAmount = (vert: Vertice) => bestResult.get(vert)?.bestAmount
     const getBestQuote = (vert: Vertice) => bestResult.get(vert)?.bestQuote
     const getBestSource = (vert: Vertice) => bestResult.get(vert)?.bestSource
@@ -270,6 +274,10 @@ export async function findBestTrade({
       }
       nextVertList.splice(index, 1)
 
+      if (getHops(vert) > maxHops) {
+        continue
+      }
+
       for (const e of vert.edges) {
         const v2 = vert === e.vertice0 ? e.vertice1 : e.vertice0
         if (processedVert.has(v2)) continue
@@ -299,6 +307,7 @@ export async function findBestTrade({
           if (!bestSource) nextVertList.push(v2)
           if (!bestSource || !v2BestQuote || isQuoteBetter(newQuote, v2BestQuote)) {
             bestResult.set(v2, {
+              hops: getHops(vert) + 1,
               gasSpent,
               bestAmount: quote,
               bestSource: e,
