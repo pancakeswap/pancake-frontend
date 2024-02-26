@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { styled } from 'styled-components'
 import { Box, BoxProps, Text } from '@pancakeswap/uikit'
 

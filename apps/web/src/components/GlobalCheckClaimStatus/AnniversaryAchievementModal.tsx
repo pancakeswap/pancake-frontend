@@ -10,7 +10,7 @@ import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import { useShowOnceAnniversaryModal } from 'hooks/useShowOnceAnniversaryModal'
 import delay from 'lodash/delay'
 import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 

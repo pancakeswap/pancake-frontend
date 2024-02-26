@@ -14,7 +14,7 @@ import {
 import Page from 'components/Layout/Page'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePollFarmsWithUserData } from 'state/farms/hooks'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { farmV3MigrationBunny, farmV3MigrationBunnyFull } from 'views/Home/components/Banners/images'

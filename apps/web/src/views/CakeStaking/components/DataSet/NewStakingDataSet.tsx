@@ -4,7 +4,7 @@ import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/form
 import BN from 'bignumber.js'
 import { WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useLockCakeData } from 'state/vecake/hooks'
 import styled from 'styled-components'
 import { useProxyVeCakeBalance } from 'views/CakeStaking/hooks/useProxyVeCakeBalance'

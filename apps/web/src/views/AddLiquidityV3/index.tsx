@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo } from 'react'
 
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'

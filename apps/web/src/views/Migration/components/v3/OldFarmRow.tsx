@@ -1,5 +1,5 @@
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useFarmUser } from 'state/farms/hooks'
 import ProxyFarmContainer from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
 import { styled } from 'styled-components'

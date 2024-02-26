@@ -19,7 +19,7 @@ import {
 } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useMessages, useSubscription } from '@web3inbox/widget-react'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { addArchivedNotification, setHasUnread, setImportantAlerts } from 'state/notifications/actions'
 import { useAllNotifications, useImportantNotificationsOnly } from 'state/notifications/hooks'

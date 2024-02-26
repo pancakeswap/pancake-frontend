@@ -8,7 +8,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useMessages } from '@web3inbox/widget-react'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { useAppDispatch } from 'state'
 import { setHasUnread } from 'state/notifications/actions'
 import { useHasUnreadNotifications } from 'state/notifications/hooks'

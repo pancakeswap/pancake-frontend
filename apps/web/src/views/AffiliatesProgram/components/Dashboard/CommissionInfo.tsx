@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { useTranslation, Trans } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { Box, Card, Flex, Text } from '@pancakeswap/uikit'

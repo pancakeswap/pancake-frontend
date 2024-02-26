@@ -4,7 +4,7 @@ import { Button, InjectedModalProps } from '@pancakeswap/uikit'
 import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import _toNumber from 'lodash/toNumber'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { Field } from 'state/burn/actions'
 import { AddLiquidityModalHeader, PairDistribution } from './common'
 

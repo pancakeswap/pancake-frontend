@@ -1,7 +1,7 @@
 import { Box, Flex, FlexGap, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
-import React, { Dispatch, ReactNode, SetStateAction, useCallback } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useCallback } from 'react'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
 import { Scope, SubsctiptionType } from 'views/Notifications/types'
 

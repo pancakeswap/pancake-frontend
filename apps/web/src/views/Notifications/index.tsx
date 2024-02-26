@@ -1,6 +1,6 @@
 import { Box, useToast } from '@pancakeswap/uikit'
 import { useInitWeb3InboxClient, useManageSubscription, useSubscription, useW3iAccount } from '@web3inbox/widget-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { clearArchivedTransactions } from 'state/notifications/actions'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
