@@ -261,9 +261,6 @@ export async function findBestTrade({
         try {
           const bestAmount = getBestAmount(vert)
           invariant(bestAmount !== undefined, 'Invalid amount')
-          console.log(
-            `Get quote ${(e.pool as any).token0.symbol} ${(e.pool as any).token1.symbol} ${(e.pool as any).fee}`,
-          )
           // eslint-disable-next-line no-await-in-loop
           const quoteResult = await getPoolQuote(e.pool, bestAmount)
           console.log(`Get quote success ${quoteResult?.quote.toExact()}`)
@@ -347,8 +344,8 @@ export async function findBestTrade({
     {
       mergedRoutes: [],
       gasEstimate: 0n,
-      quoteAmount: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
-      gasCostInQuote: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
+      quoteAmount: CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, 0),
+      gasCostInQuote: CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, 0),
     },
   )
 
