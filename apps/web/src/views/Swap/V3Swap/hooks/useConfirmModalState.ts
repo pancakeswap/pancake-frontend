@@ -264,25 +264,38 @@ export const useConfirmModalState = (
   }, [confirmSteps, actions])
 
   const performStep = useCallback(
-    async (nextStep?: ConfirmModalState) => {
-      if (!confirmActions) {
+    async ({
+      nextStep,
+      stepActions,
+      state,
+    }: {
+      nextStep?: ConfirmModalState
+      stepActions: ConfirmAction[]
+      state: ConfirmModalState
+    }) => {
+      if (!actions) {
         return
       }
 
-      const step = confirmActions.find((s) => s.step === confirmState) ?? confirmActions[0]
+      const step = stepActions.find((s) => s.step === state) ?? stepActions[0]
 
       await step.action(nextStep)
     },
-    [confirmActions, confirmState],
+    [],
   )
 
   const callToAction = useCallback(() => {
     const steps = createSteps()
     setConfirmSteps(steps)
+    const stepActions = steps.map((step) => actions[step])
     const nextStep = steps[1] ?? undefined
 
-    performStep(nextStep)
-  }, [createSteps, performStep])
+    performStep({
+      nextStep,
+      stepActions,
+      state: steps[0],
+    })
+  }, [actions, createSteps, performStep])
 
   // auto perform the next step
   useEffect(() => {
@@ -293,7 +306,7 @@ export const useConfirmModalState = (
     ) {
       const nextStep = confirmActions.findIndex((step) => step.step === confirmState)
       const nextStepState = confirmActions[nextStep + 1]?.step ?? ConfirmModalState.PENDING_CONFIRMATION
-      performStep(nextStepState)
+      performStep({ nextStep: nextStepState, stepActions: confirmActions, state: confirmState })
     }
   }, [confirmActions, confirmState, performStep, preConfirmState])
 
