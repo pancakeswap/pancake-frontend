@@ -8,6 +8,7 @@ import { useSwapState } from 'state/swap/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin, safeGetAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
+import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { viemClients } from 'utils/viem'
 import { Address, Hex, hexToBigInt } from 'viem'
@@ -139,66 +140,77 @@ const useSendMMTransaction = (
           data: calldata,
           value: hexToBigInt(value),
           gas: calculateGasMargin(gasEstimate),
-        }).then((response) => {
-          const { hash } = response
-          const inputSymbol = trade.inputAmount.currency.symbol
-          const outputSymbol = trade.outputAmount.currency.symbol
-          // const pct = basisPointsToPercent(allowedSlippage)
-          const inputAmount = trade.inputAmount.toSignificant(3)
-
-          const outputAmount = trade.outputAmount.toSignificant(3)
-
-          const base = `Swap ${
-            trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''
-          } ${inputAmount} ${inputSymbol} for ${
-            trade.tradeType === TradeType.EXACT_INPUT ? 'min.' : ''
-          } ${outputAmount} ${outputSymbol}`
-
-          const recipientAddressText =
-            recipientAddress && safeGetAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
-
-          const withRecipient = recipient === account ? base : `${base} to ${recipientAddressText}`
-
-          const translatableWithRecipient =
-            trade.tradeType === TradeType.EXACT_OUTPUT
-              ? recipient === account
-                ? 'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%'
-                : 'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%'
-              : recipient === account
-              ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
-              : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
-
-          addTransaction(
-            { hash },
-            {
-              summary: withRecipient,
-              translatableSummary: {
-                text: translatableWithRecipient,
-                data: {
-                  inputAmount,
-                  inputSymbol,
-                  outputAmount,
-                  outputSymbol,
-                  ...(recipient !== account && { recipientAddress: recipientAddressText }),
-                },
-              },
-              type: 'swap',
-            },
-          )
-          logSwap({
-            account,
-            hash,
-            chainId,
-            inputAmount,
-            outputAmount,
-            input: trade.inputAmount.currency,
-            output: trade.outputAmount.currency,
-            type: 'MarketMakerSwap',
-          })
-          logTx({ account, chainId, hash })
-
-          return response
         })
+          .then((response) => {
+            const { hash } = response
+            const inputSymbol = trade.inputAmount.currency.symbol
+            const outputSymbol = trade.outputAmount.currency.symbol
+            // const pct = basisPointsToPercent(allowedSlippage)
+            const inputAmount = trade.inputAmount.toSignificant(3)
+
+            const outputAmount = trade.outputAmount.toSignificant(3)
+
+            const base = `Swap ${
+              trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''
+            } ${inputAmount} ${inputSymbol} for ${
+              trade.tradeType === TradeType.EXACT_INPUT ? 'min.' : ''
+            } ${outputAmount} ${outputSymbol}`
+
+            const recipientAddressText =
+              recipientAddress && safeGetAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
+
+            const withRecipient = recipient === account ? base : `${base} to ${recipientAddressText}`
+
+            const translatableWithRecipient =
+              trade.tradeType === TradeType.EXACT_OUTPUT
+                ? recipient === account
+                  ? 'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%'
+                  : 'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%'
+                : recipient === account
+                ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
+                : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
+
+            addTransaction(
+              { hash },
+              {
+                summary: withRecipient,
+                translatableSummary: {
+                  text: translatableWithRecipient,
+                  data: {
+                    inputAmount,
+                    inputSymbol,
+                    outputAmount,
+                    outputSymbol,
+                    ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                  },
+                },
+                type: 'swap',
+              },
+            )
+            logSwap({
+              account,
+              hash,
+              chainId,
+              inputAmount,
+              outputAmount,
+              input: trade.inputAmount.currency,
+              output: trade.outputAmount.currency,
+              type: 'MarketMakerSwap',
+            })
+            logTx({ account, chainId, hash })
+
+            return response
+          })
+          .catch((error: any) => {
+            // if the user rejected the tx, pass this along
+            if (isUserRejected(error)) {
+              throw new Error('Transaction rejected.')
+            } else {
+              // otherwise, the error was unexpected and we need to convey that
+              console.error(`Swap failed`, error)
+              throw new Error(t('Swap failed: %message%', { message: transactionErrorToUserReadableMessage(error, t) }))
+            }
+          })
       },
     }
   }, [

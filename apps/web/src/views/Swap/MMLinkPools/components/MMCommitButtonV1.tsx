@@ -110,6 +110,8 @@ export function MMSwapCommitButtonV1({
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: result.hash })
       })
       .catch((error) => {
+        console.error('handleSwap error', error)
+
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
