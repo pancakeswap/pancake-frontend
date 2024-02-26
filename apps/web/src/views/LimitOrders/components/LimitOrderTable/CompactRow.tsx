@@ -41,7 +41,12 @@ const CompactRow: React.FC<React.PropsWithChildren<CompactRowProps>> = ({ order 
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
             {t('Price')}
           </Text>
-          <Text small>{`${executionPrice} ${outputToken?.symbol} per ${inputToken?.symbol}`}</Text>
+          <Text small>
+            {`${executionPrice} ${t('%assetA% per %assetB%', {
+              assetA: outputToken?.symbol ?? '',
+              assetB: inputToken?.symbol ?? '',
+            })}`}
+          </Text>
         </Flex>
       </Box>
     </Flex>
