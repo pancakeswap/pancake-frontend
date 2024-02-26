@@ -9,6 +9,7 @@ import {
   cakeLockWeeksAtom,
 } from 'state/vecake/atoms'
 import { useLockCakeData } from 'state/vecake/hooks'
+import { isUserRejected } from 'utils/sentry'
 import { useAccount, useWalletClient } from 'wagmi'
 import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 import { useCakeLockStatus } from '../useVeCakeUserInfo'
@@ -29,24 +30,33 @@ export const useWriteIncreaseLockWeeksCallback = () => {
     const week = Number(cakeLockWeeks)
     if (!week || !roundedUnlockTimestamp) return
 
-    const { request } = await veCakeContract.simulate.increaseUnlockTime([roundedUnlockTimestamp], {
-      account: account!,
-      chain: veCakeContract.chain,
-    })
+    try {
+      const { request } = await veCakeContract.simulate.increaseUnlockTime([roundedUnlockTimestamp], {
+        account: account!,
+        chain: veCakeContract.chain,
+      })
 
-    setStatus(ApproveAndLockStatus.INCREASE_WEEKS)
+      setStatus(ApproveAndLockStatus.INCREASE_WEEKS)
 
-    const hash = await walletClient?.writeContract({
-      ...request,
-      account,
-    })
-    setTxHash(hash ?? '')
-    setStatus(ApproveAndLockStatus.INCREASE_WEEKS_PENDING)
-    if (hash) {
-      const transactionReceipt = await waitForTransaction({ hash })
-      if (transactionReceipt?.status === 'success') {
-        setCakeLockWeeks('')
-        setStatus(ApproveAndLockStatus.CONFIRMED)
+      const hash = await walletClient?.writeContract({
+        ...request,
+        account,
+      })
+      setTxHash(hash ?? '')
+      setStatus(ApproveAndLockStatus.INCREASE_WEEKS_PENDING)
+      if (hash) {
+        const transactionReceipt = await waitForTransaction({ hash })
+        if (transactionReceipt?.status === 'success') {
+          setCakeLockWeeks('')
+          setStatus(ApproveAndLockStatus.CONFIRMED)
+        } else {
+          setStatus(ApproveAndLockStatus.ERROR)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to increase lock weeks', error)
+      if (isUserRejected(error)) {
+        setStatus(ApproveAndLockStatus.REJECT)
       } else {
         setStatus(ApproveAndLockStatus.ERROR)
       }
