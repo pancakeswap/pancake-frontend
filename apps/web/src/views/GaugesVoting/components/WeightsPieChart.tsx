@@ -5,6 +5,7 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import styled, { keyframes } from 'styled-components'
+import { Hash } from 'viem'
 import { ChartLabel } from './ChartLabel'
 import { ChartTooltip, OTHERS_GAUGES } from './ChartTooltip'
 
@@ -93,7 +94,7 @@ export const WeightsPieChart: React.FC<{
         }
       },
       {
-        hash: OTHERS_GAUGES,
+        hash: OTHERS_GAUGES as Hash,
         pairName: `Other|${sortedGauge.length - maxCount}`,
       } as Gauge,
     )

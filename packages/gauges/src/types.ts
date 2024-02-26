@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import type { Address } from 'viem'
+import type { Address, Hash } from 'viem'
 
 export enum GaugeType {
   // @note: this is a hack
@@ -66,13 +66,14 @@ export interface GaugeVeCakePoolConfig extends GaugeBaseConfig {
 export type GaugeConfig = GaugeV2Config | GaugeStableSwapConfig | GaugeV3Config | GaugeALMConfig | GaugeVeCakePoolConfig
 
 export type GaugeInfo = {
-  hash: string
+  hash: Hash
   pairAddress: Address
   masterChef: Address
   pid: number
   chainId: number
   boostMultiplier: number
   maxVoteCap: number
+  killed?: boolean
 }
 
 export type GaugeInfoConfig = GaugeInfo & GaugeConfig

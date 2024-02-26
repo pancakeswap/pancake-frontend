@@ -27,6 +27,7 @@ const ARBITRUM_NODES = [
 
 export const SERVER_NODES = {
   [ChainId.BSC]: [
+    getNodeRealUrl(ChainId.BSC, process.env.SERVER_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
     getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
     'https://bsc.publicnode.com',
