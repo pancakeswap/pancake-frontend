@@ -55,7 +55,7 @@ export function createOffChainQuoteProvider(): QuoteProvider {
               continue
             }
             if (isStablePool(pool)) {
-              quote = getStableQuote(pool, quote)
+              ;[quote] = getStableQuote(pool, quote)
               continue
             }
             if (isV3Pool(pool)) {
@@ -115,16 +115,20 @@ function createGetV2Quote(isExactIn = true) {
 }
 
 function createGetStableQuote(isExactIn = true) {
-  const getQuote = isExactIn ? StableSwap.getSwapOutput : StableSwap.getSwapInput
-  return function getStableQuote(pool: StablePool, amount: CurrencyAmount<Currency>): CurrencyAmount<Currency> {
+  const getQuote = isExactIn ? StableSwap.getQuoteExactIn : StableSwap.getQuoteExactOut
+  return function getStableQuote(
+    pool: StablePool,
+    amount: CurrencyAmount<Currency>,
+  ): [CurrencyAmount<Currency>, StablePool] {
     const { amplifier, balances, fee } = pool
-    return getQuote({
+    const [quote, { balances: newBalances }] = getQuote({
       amount,
       balances,
       amplifier,
       outputCurrency: getOutputCurrency(pool, amount.currency),
       fee,
     })
+    return [quote, { ...pool, balances: newBalances }]
   }
 }
 
@@ -187,6 +191,10 @@ export function createPoolQuoteGetter(isExactIn = true) {
     if (isV3Pool(pool)) {
       const quote = await getV3Quote(pool, amount)
       return quote ? { quote: quote.quote, pool, poolAfter: quote.pool } : undefined
+    }
+    if (isStablePool(pool)) {
+      const [quote, newPool] = getStableQuote(pool, amount)
+      return { quote, pool, poolAfter: newPool }
     }
     return undefined
   }

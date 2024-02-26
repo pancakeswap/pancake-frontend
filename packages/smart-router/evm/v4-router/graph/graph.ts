@@ -6,11 +6,12 @@ import { formatFraction } from '@pancakeswap/utils/formatFractions'
 import { Pool, Route } from '../../v3-router/types'
 import { createPoolQuoteGetter } from '../../v3-router/providers'
 import { buildBaseRoute, getPoolAddress } from '../../v3-router/utils'
-import { V4Trade, Edge, Vertice, Graph, TradeConfig } from '../types'
+import { V4Trade, Edge, Vertice, Graph, TradeConfig, V4Route } from '../types'
 import { getCurrencyPairs } from '../pool'
 import { getNeighbour } from './edge'
 import { createPriceCalculator } from './priceCalculator'
 import { estimateGasCost } from '../gasCost'
+import { isSameRoute, mergeRoute } from './route'
 
 type GraphParams = {
   pools: Pool[]
@@ -90,7 +91,7 @@ export function createGraph({ pools }: GraphParams): Graph {
       const quote = await getPoolQuote(edge.pool, amount)
       invariant(quote !== undefined, '[Apply swap]: Failed to get quote')
       edge.pool = quote.poolAfter
-      amount = quote
+      amount = quote.quote
     }
   }
 
@@ -126,9 +127,17 @@ function getStreamedAmounts(
 }
 
 type FindBestTradeParams = TradeConfig & {
+  amount: CurrencyAmount<Currency>
+  quoteCurrency: Currency
+
+  tradeType: TradeType
+
   // If number is provided then will treat as number of streams, e.g. 3
   // If array is provided then will treat as stream distribution, e.g. [1, 1, 1]
   streams: number[] | number
+
+  // If graph is provided, will use it directly without creating new graph from candidatePools
+  graph?: Graph
 }
 
 export async function findBestTrade({
@@ -137,12 +146,14 @@ export async function findBestTrade({
   quoteCurrency,
   gasPriceWei,
   streams,
-}: FindBestTradeParams): Promise<V4Trade<TradeType>> {
-  const graph = createGraph({ pools: candidatePools })
+  graph: graphOverride,
+  tradeType,
+}: FindBestTradeParams): Promise<V4Trade<TradeType> | undefined> {
+  const isExactIn = tradeType === TradeType.EXACT_INPUT
+  const graph = graphOverride || createGraph({ pools: candidatePools })
   const amounts = getStreamedAmounts(totalAmount, streams)
 
-  // TODO: exact input & output
-  const getPoolQuote = createPoolQuoteGetter(true)
+  const getPoolQuote = createPoolQuoteGetter(isExactIn)
   const gasPrice = BigInt(typeof gasPriceWei === 'function' ? await gasPriceWei() : gasPriceWei)
 
   // 1. Set static prices for each vertices
@@ -152,15 +163,18 @@ export async function findBestTrade({
     throw new Error(`Invalid start vertice or finish vertice. Start ${start}, finish ${finish}`)
   }
   const priceCalculator = createPriceCalculator({ quote: start, gasPriceWei: gasPrice, graph })
+  const adjustQuoteByGas = (quote: CurrencyAmount<Currency>, gasCostInQuote: CurrencyAmount<Currency>) =>
+    isExactIn ? quote.subtract(gasCostInQuote) : quote.add(gasCostInQuote)
+  const isQuoteBetter = (quote: CurrencyAmount<Currency>, compareTo: CurrencyAmount<Currency>) =>
+    isExactIn ? quote.greaterThan(compareTo) : quote.lessThan(compareTo)
+  const getInputAmount = (amount: CurrencyAmount<Currency>, quote: CurrencyAmount<Currency>) =>
+    isExactIn ? amount : quote
+  const getOutputAmount = (amount: CurrencyAmount<Currency>, quote: CurrencyAmount<Currency>) =>
+    isExactIn ? quote : amount
+  const getQuoteAmount = (r: V4Route) => (isExactIn ? r.outputAmount : r.inputAmount)
 
-  // 2. Find best path using Dijkstra's algo
-  async function findBestPath(amount: CurrencyAmount<Currency>): Promise<
-    | (Omit<Route, 'percent'> & {
-        gasCost: bigint
-        outputAmountWithGasAdjusted?: CurrencyAmount<Currency>
-      })
-    | undefined
-  > {
+  // 2. Find best route using Dijkstra's algo
+  async function findBestRoute(amount: CurrencyAmount<Currency>): Promise<Omit<V4Route, 'percent'> | undefined> {
     invariant(start !== undefined && finish !== undefined, 'Invalid start/finish vertice')
     const bestResult = new Map<
       Vertice,
@@ -195,39 +209,48 @@ export async function findBestTrade({
       }
       return { vert, index: bestVertIndex }
     }
+    const getBestRoute = (vert: Vertice) => {
+      const pools: Pool[] = []
+      const path: Currency[] = [vert.currency]
+      for (let v: Vertice | undefined = finish; getBestSource(v); v = getNeighbour(getBestSource(v)!, v)) {
+        const bestSource = getBestSource(v)
+        invariant(bestSource !== undefined, 'Invalid best source')
+        const neighbour = getNeighbour(bestSource, v)
+        if (isExactIn) {
+          pools.unshift(bestSource.pool)
+          path.unshift(neighbour?.currency)
+        } else {
+          pools.push(bestSource.pool)
+          path.push(neighbour?.currency)
+        }
+      }
+      const gasCost = getGasSpent(vert)
+      const gasPriceInQuote = priceCalculator.getGasPriceInBase(vert)
+      const gasCostInQuote = gasPriceInQuote?.multiply(gasCost)
+      const quoteAmount = getBestAmount(vert)
+      invariant(quoteAmount !== undefined, 'Invalid quote amount')
+      const quoteAmountWithGasAdjusted = gasCostInQuote ? adjustQuoteByGas(quoteAmount, gasCostInQuote) : undefined
+
+      const { type } = buildBaseRoute(pools, start.currency, finish.currency)
+      return {
+        type,
+        path,
+        pools,
+        gasCost,
+        inputAmount: getInputAmount(amount, quoteAmount),
+        outputAmount: getOutputAmount(amount, quoteAmount),
+        inputAmountWithGasAdjusted: quoteAmountWithGasAdjusted && getInputAmount(amount, quoteAmountWithGasAdjusted),
+        outputAmountWithGasAdjusted: quoteAmountWithGasAdjusted && getOutputAmount(amount, quoteAmountWithGasAdjusted),
+        gasCostInQuote,
+      }
+    }
 
     for (;;) {
       const { vert, index } = getNextVert()
       if (!vert || index === undefined) return undefined
 
       if (vert === finish) {
-        const pools: Pool[] = []
-        const path: Currency[] = [vert.currency]
-        for (let v: Vertice | undefined = finish; getBestSource(v); v = getNeighbour(getBestSource(v)!, v)) {
-          const bestSource = getBestSource(v)
-          invariant(bestSource !== undefined, 'Invalid best source')
-          const neighbour = getNeighbour(bestSource, v)
-          pools.unshift(bestSource.pool)
-          path.unshift(neighbour?.currency)
-        }
-        const gasCost = getGasSpent(vert)
-        const gasPriceInQuote = priceCalculator.getGasPriceInBase(vert)
-        const gasCostInQuote = gasPriceInQuote?.multiply(gasCost)
-        const outputAmount = getBestAmount(vert)
-        invariant(outputAmount !== undefined, 'Invalid output amount')
-        const outputAmountWithGasAdjusted = gasCostInQuote ? outputAmount?.subtract(gasCostInQuote) : undefined
-
-        // TODO: exact input / output
-        const { type } = buildBaseRoute(pools, start.currency, finish.currency)
-        return {
-          type,
-          path,
-          pools,
-          gasCost,
-          inputAmount: amount,
-          outputAmount,
-          outputAmountWithGasAdjusted,
-        }
+        return getBestRoute(vert)
       }
       nextVertList.splice(index, 1)
 
@@ -256,12 +279,12 @@ export async function findBestTrade({
             `Failed to get price, base ${v2.currency.symbol}, quote ${finish.currency.symbol}`,
           )
           const gasSpentInQuote = price.quote(gasPriceInV2.multiply(gasSpent))
-          const newQuote = price.quote(quote).subtract(gasSpentInQuote)
+          const newQuote = adjustQuoteByGas(price.quote(quote), gasSpentInQuote)
           const bestSource = getBestSource(v2)
           const v2BestQuote = getBestQuote(v2)
 
           if (!bestSource) nextVertList.push(v2)
-          if (!bestSource || !v2BestQuote || newQuote?.greaterThan(v2BestQuote)) {
+          if (!bestSource || !v2BestQuote || isQuoteBetter(newQuote, v2BestQuote)) {
             bestResult.set(v2, {
               gasSpent,
               bestAmount: quote,
@@ -278,11 +301,10 @@ export async function findBestTrade({
     }
   }
 
-  // TODO: correct type
-  const routes: any = []
-  for (const { amount } of amounts) {
+  const routes: V4Route[] = []
+  for (const { amount, percent } of amounts) {
     // eslint-disable-next-line no-await-in-loop
-    const route = await findBestPath(amount)
+    const route = await findBestRoute(amount)
     invariant(
       route !== undefined,
       `No valid route found for base amount ${amount.toExact()} ${amount.currency.symbol} and quote currency ${
@@ -291,7 +313,52 @@ export async function findBestTrade({
     )
     // eslint-disable-next-line no-await-in-loop
     await graph.applySwap(route)
-    routes.push(route)
+    routes.push({
+      ...route,
+      percent,
+    })
   }
-  return routes as any as V4Trade<TradeType>
+  // No valid route found
+  if (!routes.length) {
+    return undefined
+  }
+
+  const { gasEstimate, quoteAmount, gasCostInQuote, mergedRoutes } = routes.reduce<{
+    mergedRoutes: V4Route[]
+    gasEstimate: bigint
+    quoteAmount: CurrencyAmount<Currency>
+    gasCostInQuote: CurrencyAmount<Currency>
+  }>(
+    (result, r) => {
+      const i = result.mergedRoutes.findIndex((route) => isSameRoute(route, r))
+      if (i >= 0) {
+        // eslint-disable-next-line no-param-reassign
+        result.mergedRoutes[i] = mergeRoute(result.mergedRoutes[i], r)
+      } else {
+        result.mergedRoutes.push(r)
+      }
+      return {
+        mergedRoutes: result.mergedRoutes,
+        gasEstimate: result.gasEstimate + r.gasCost,
+        quoteAmount: result.quoteAmount.add(getQuoteAmount(r)),
+        gasCostInQuote: r.gasCostInQuote ? result.gasCostInQuote.add(r.gasCostInQuote) : result.gasCostInQuote,
+      }
+    },
+    {
+      mergedRoutes: [],
+      gasEstimate: 0n,
+      quoteAmount: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
+      gasCostInQuote: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
+    },
+  )
+
+  return {
+    gasCostInQuote,
+    gasEstimate,
+    inputAmount: getInputAmount(totalAmount, quoteAmount),
+    outputAmount: getOutputAmount(totalAmount, quoteAmount),
+    tradeType,
+    graph,
+    routes: mergedRoutes,
+  }
 }

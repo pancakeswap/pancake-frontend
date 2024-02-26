@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool, V4Router } from '@pancakeswap/smart-router/evm'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Tick } from '@pancakeswap/v3-sdk'
@@ -122,7 +122,11 @@ export function useV3CandidatePoolsWithoutTicks(
   }
 }
 
-export function useV3PoolsWithTicksOnChain(currencyA?: Currency, currencyB?: Currency, options?: V3PoolsHookParams) {
+export function useV3PoolsWithTicksOnChain(
+  currencyA?: Currency,
+  currencyB?: Currency,
+  options?: V3PoolsHookParams,
+): V3PoolsResult {
   const key = useMemo(() => {
     if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
       return ''
@@ -141,22 +145,14 @@ export function useV3PoolsWithTicksOnChain(currencyA?: Currency, currencyB?: Cur
     return POOLS_SLOW_REVALIDATE[chainId] || 0
   }, [currencyA])
 
-  const poolsWithTicks = useQuery({
+  const { refetch, error, data, isLoading, isFetching } = useQuery({
     queryKey: ['v3_pools_with_ticks_on_chain', key],
-    queryFn: async () => {
-      const pools = await V4Router.getV3CandidatePools({
+    queryFn: async () =>
+      V4Router.getV3CandidatePools({
         currencyA,
         currencyB,
         clientProvider: getViemClients,
-      })
-      const test = await V4Router.getBestTrade({
-        candidatePools: pools,
-        amount: CurrencyAmount.fromRawAmount(currencyA!, '1000000000000000000'),
-        quoteCurrency: bscTokens.cake,
-        gasPriceWei: async () => getViemClients({ chainId: currencyA?.chainId }).getGasPrice(),
-      })
-      return pools
-    },
+      }),
     enabled: Boolean(key && options?.enabled),
     refetchInterval: refreshInterval,
     refetchOnReconnect: false,
@@ -165,8 +161,13 @@ export function useV3PoolsWithTicksOnChain(currencyA?: Currency, currencyB?: Cur
     retry: 3,
   })
 
-  console.log(poolsWithTicks.data)
-  return poolsWithTicks
+  return {
+    refresh: refetch,
+    error,
+    pools: data,
+    loading: isLoading,
+    syncing: isFetching,
+  }
 }
 
 export function useV3PoolsWithTicks(

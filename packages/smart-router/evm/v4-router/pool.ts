@@ -8,7 +8,7 @@ export function getCurrencyPairs(p: Pool): [Currency, Currency][] {
     return [[p.token0, p.token1]]
   }
   if (isV2Pool(p)) {
-    return [[p.reserve0.currency, p.reserve0.currency]]
+    return [[p.reserve0.currency, p.reserve1.currency]]
   }
   if (isStablePool(p)) {
     const currencies = p.balances.map((b) => b.currency)

@@ -3,7 +3,13 @@ import { Currency } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/smart-router/evm'
 import { useMemo, useCallback } from 'react'
 
-import { useV3CandidatePools, useV3CandidatePoolsWithoutTicks, V3PoolsHookParams, V3PoolsResult } from './useV3Pools'
+import {
+  useV3CandidatePools,
+  useV3CandidatePoolsWithoutTicks,
+  useV3PoolsWithTicksOnChain,
+  V3PoolsHookParams,
+  V3PoolsResult,
+} from './useV3Pools'
 import { useStableCandidatePools } from './usePoolsOnChain'
 import { useV2CandidatePools } from './useV2Pools'
 
@@ -105,6 +111,12 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
     }
   }
 }
+
+// Get v3 pools data from on chain
+export const useCommonPoolsOnChain = commonPoolsHookCreator({
+  key: 'useCommonPoolsOnChain',
+  useV3Pools: useV3PoolsWithTicksOnChain,
+})
 
 export const useCommonPools = commonPoolsHookCreator({ key: 'useCommonPools', useV3Pools: useV3CandidatePools })
 

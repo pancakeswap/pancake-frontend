@@ -14,7 +14,7 @@ export interface SmartRouterTrade<TTradeType extends TradeType> {
   routes: Route[]
 
   gasEstimate: bigint
-  gasEstimateInUSD: CurrencyAmount<Currency>
+  gasEstimateInUSD?: CurrencyAmount<Currency>
   blockNumber?: number
 }
 

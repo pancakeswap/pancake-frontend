@@ -57,7 +57,7 @@ export interface SerializedTrade
   inputAmount: SerializedCurrencyAmount
   outputAmount: SerializedCurrencyAmount
   gasEstimate: string
-  gasEstimateInUSD: SerializedCurrencyAmount
+  gasEstimateInUSD?: SerializedCurrencyAmount
   routes: SerializedRoute[]
 }
 
@@ -123,7 +123,7 @@ export function serializeTrade(trade: SmartRouterTrade<TradeType>): SerializedTr
     outputAmount: serializeCurrencyAmount(trade.outputAmount),
     routes: trade.routes.map(serializeRoute),
     gasEstimate: trade.gasEstimate.toString(),
-    gasEstimateInUSD: serializeCurrencyAmount(trade.gasEstimateInUSD),
+    gasEstimateInUSD: trade.gasEstimateInUSD && serializeCurrencyAmount(trade.gasEstimateInUSD),
   }
 }
 
@@ -187,6 +187,6 @@ export function parseTrade(chainId: ChainId, trade: SerializedTrade): SmartRoute
     outputAmount: parseCurrencyAmount(chainId, trade.outputAmount),
     routes: trade.routes.map((r) => parseRoute(chainId, r)),
     gasEstimate: BigInt(trade.gasEstimate),
-    gasEstimateInUSD: parseCurrencyAmount(chainId, trade.gasEstimateInUSD),
+    gasEstimateInUSD: trade.gasEstimateInUSD && parseCurrencyAmount(chainId, trade.gasEstimateInUSD),
   }
 }

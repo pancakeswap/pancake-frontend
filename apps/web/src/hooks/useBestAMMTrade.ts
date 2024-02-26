@@ -7,6 +7,7 @@ import {
   QuoteProvider,
   SmartRouter,
   SmartRouterTrade,
+  V4Router,
 } from '@pancakeswap/smart-router/evm'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
@@ -25,6 +26,7 @@ import {
   CommonPoolsParams,
   PoolsWithState,
   useCommonPoolsLite,
+  useCommonPoolsOnChain,
   useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
@@ -94,7 +96,13 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const quoterAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled
 
-  const bestTradeFromQuoterWorker = useBestAMMTradeFromQuoterWorker({
+  // const bestTradeFromQuoterWorker = useBestAMMTradeFromQuoterWorker({
+  //   ...params,
+  //   enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled),
+  //   autoRevalidate: quoterAutoRevalidate,
+  // })
+
+  const bestTradeFromQuoterWorker = useBestAMMTradeFromOffchainQuoter({
     ...params,
     enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled),
     autoRevalidate: quoterAutoRevalidate,
@@ -305,6 +313,35 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   createQuoteProvider,
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
+})
+
+export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory({
+  key: 'useBestAMMTradeFromOffchainQuoter',
+  useCommonPools: useCommonPoolsOnChain,
+  createQuoteProvider,
+  useGetBestTrade: createSimpleUseGetBestTradeHook(
+    async (amount, currency, tradeType, { maxHops, maxSplits, gasPriceWei, allowedPoolTypes, poolProvider }) => {
+      const candidatePools = await poolProvider.getCandidatePools({
+        currencyA: amount.currency,
+        currencyB: currency,
+        protocols: allowedPoolTypes,
+      })
+
+      try {
+        const trade = await V4Router.getBestTrade(amount, currency, tradeType, {
+          maxHops,
+          maxSplits,
+          gasPriceWei,
+          allowedPoolTypes,
+          candidatePools,
+        })
+        return trade ?? null
+      } catch (e) {
+        console.error(e)
+        throw e
+      }
+    },
+  ),
 })
 
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
