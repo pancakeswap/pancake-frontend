@@ -102,7 +102,7 @@ const useConfirmActions = (
         if (!newAllowance.equalTo(0)) {
           throw new UserUnexpectedTxError({
             expectedData: 0,
-            actualData: permit2Allowance?.toExact(),
+            actualData: newAllowanceRaw.toString(),
           })
         }
 
@@ -123,7 +123,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove?.currency, chainId, permit2Allowance, refetch, revoke, showError, t])
+  }, [amountToApprove?.currency, chainId, refetch, revoke, showError, t])
 
   const permitStep = useMemo(() => {
     return {
@@ -174,7 +174,7 @@ const useConfirmActions = (
           if (amountToApprove && newAllowance && newAllowance.lessThan(amountToApprove)) {
             throw new UserUnexpectedTxError({
               expectedData: amountToApprove.toExact(),
-              actualData: permit2Allowance?.toExact(),
+              actualData: newAllowanceRaw.toString(),
             })
           }
 
@@ -194,7 +194,7 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [amountToApprove, approve, chainId, permit2Allowance, refetch, showError, t])
+  }, [amountToApprove, approve, chainId, refetch, showError, t])
 
   const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const swapPreflightCheck = useCallback(() => {
