@@ -121,7 +121,7 @@ export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayPr
           ref={targetRef}
         >
           <CurrencyLogo size="100%" currency={inputCurrency} />
-          <RouterTypeText fontWeight="bold">{route.percent}%</RouterTypeText>
+          <RouterTypeText fontWeight="bold">{Math.round(route.percent)}%</RouterTypeText>
         </CurrencyLogoWrapper>
         {tooltipVisible && tooltip}
         {pairNodes}

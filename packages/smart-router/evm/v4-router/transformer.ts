@@ -94,7 +94,7 @@ export function parseRoute(chainId: ChainId, route: SerializedV4Route): V4Route 
 }
 
 export function serializeTrade(trade: V4Trade<TradeType>): SerializedV4Trade {
-  const { _graph, ...rest } = trade
+  const { graph: _graph, ...rest } = trade
   return {
     ...rest,
     inputAmount: serializeCurrencyAmount(trade.inputAmount),
