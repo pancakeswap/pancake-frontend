@@ -3013,4 +3013,12 @@ export const bscTokens = {
     'XRGB',
     'https://xrgb.xyz',
   ),
+  osak: new ERC20Token(
+    ChainId.BSC,
+    '0x11cd72f7A4B699c67f225ca8aBb20bC9F8DB90c7',
+    18,
+    'OSAK',
+    'Osaka Protocol',
+    'https://osaka.win/',
+  ),
 }
