@@ -169,7 +169,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { profile } = useProfile()
-  const { cakeLockExpired } = useCakeLockStatus()
+  const { cakeLockExpired, cakePoolLocked, cakePoolLockExpired } = useCakeLockStatus()
   const { userCreditWithTime } = useVeCakeUserCreditWithTime(incentives?.campaignClaimTime ?? 0)
   const { thresholdLockAmount } = qualification
 
@@ -178,9 +178,12 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     [userCreditWithTime, thresholdLockAmount],
   )
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const isQualified = useMemo(
-    () => Boolean(account && profile?.isActive && isValidLockAmount && !cakeLockExpired),
-    [account, isValidLockAmount, cakeLockExpired, profile?.isActive],
+    () =>
+      Boolean(account && profile?.isActive && isValidLockAmount && !cakeLockExpired) &&
+      Boolean(!cakePoolLocked && !cakePoolLockExpired),
+    [account, profile?.isActive, isValidLockAmount, cakeLockExpired, cakePoolLocked, cakePoolLockExpired],
   )
 
   return (
