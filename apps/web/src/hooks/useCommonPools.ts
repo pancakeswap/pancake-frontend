@@ -21,11 +21,12 @@ interface FactoryOptions {
 }
 
 export interface PoolsWithState {
-  refresh: () => void
+  refresh: () => Promise<unknown>
   pools: Pool[] | undefined
   loading: boolean
   syncing: boolean
   blockNumber?: number
+  dataUpdatedAt?: number
 }
 
 export interface CommonPoolsParams {
@@ -46,6 +47,7 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
       syncing: v3Syncing,
       blockNumber: v3BlockNumber,
       refresh: v3Refresh,
+      dataUpdatedAt: v3PoolsUpdatedAt,
     } = useV3Pools(currencyA, currencyB, { blockNumber, enabled })
     const {
       pools: v2Pools,
@@ -53,6 +55,7 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
       syncing: v2Syncing,
       blockNumber: v2BlockNumber,
       refresh: v2Refresh,
+      dataUpdatedAt: v2PoolsUpdatedAt,
     } = useV2CandidatePools(currencyA, currencyB, { blockNumber, enabled })
     const {
       pools: stablePools,
@@ -60,6 +63,7 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
       syncing: stableSyncing,
       blockNumber: stableBlockNumber,
       refresh: stableRefresh,
+      dataUpdatedAt: stablePoolsUpdatedAt,
     } = useStableCandidatePools(currencyA, currencyB, { blockNumber, enabled })
 
     const consistentBlockNumber = useMemo(
@@ -74,13 +78,16 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
       [v2BlockNumber, v3BlockNumber, stableBlockNumber],
     )
     // FIXME: allow inconsistent block not working as expected
-    const pools = useMemo(
+    const poolsData: [Pool[], number] | undefined = useMemo(
       () =>
         (!v2Loading || v2Pools) &&
         (!v3Loading || v3Pools) &&
         (!stableLoading || stablePools) &&
         (allowInconsistentBlock || !!consistentBlockNumber)
-          ? [...(v2Pools || []), ...(v3Pools || []), ...(stablePools || [])]
+          ? [
+              [...(v2Pools || []), ...(v3Pools || []), ...(stablePools || [])],
+              Math.max(v2PoolsUpdatedAt || 0, Math.max(v3PoolsUpdatedAt || 0, stablePoolsUpdatedAt)),
+            ]
           : undefined,
       [
         v2Loading,
@@ -94,20 +101,19 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
       ],
     )
 
-    const refresh = useCallback(() => {
-      v3Refresh()
-      v2Refresh()
-      stableRefresh()
+    const refresh = useCallback(async () => {
+      return Promise.all([v3Refresh(), v2Refresh(), stableRefresh()])
     }, [v3Refresh, v2Refresh, stableRefresh])
 
     const loading = v2Loading || v3Loading || stableLoading
     const syncing = v2Syncing || v3Syncing || stableSyncing
     return {
       refresh,
-      pools,
+      pools: poolsData?.[0],
       blockNumber: consistentBlockNumber,
       loading,
       syncing,
+      dataUpdatedAt: poolsData?.[1],
     }
   }
 }

@@ -18,12 +18,13 @@ export interface V3PoolsHookParams {
 }
 
 export interface V3PoolsResult {
-  refresh: () => void
+  refresh: () => Promise<unknown>
   pools: V3Pool[] | undefined
   loading: boolean
   syncing: boolean
   blockNumber?: number
   error: Error | null
+  dataUpdatedAt?: number
 }
 
 export function useV3CandidatePools(
@@ -142,7 +143,7 @@ export function useV3PoolsWithTicksOnChain(
     return POOLS_FAST_REVALIDATE[chainId] || 0
   }, [currencyA])
 
-  const { refetch, error, data, isLoading, isFetching } = useQuery({
+  const { refetch, error, data, isLoading, isFetching, dataUpdatedAt } = useQuery({
     queryKey: ['v3_pools_with_ticks_on_chain', key],
     queryFn: async ({ signal }) => {
       const clientProvider = createViemPublicClientGetter({ transportSignal: signal })
@@ -166,6 +167,7 @@ export function useV3PoolsWithTicksOnChain(
     pools: data,
     loading: isLoading,
     syncing: isFetching,
+    dataUpdatedAt,
   }
 }
 

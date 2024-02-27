@@ -10,7 +10,7 @@ import {
   V4Router,
 } from '@pancakeswap/smart-router/evm'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
 
 import { QUOTING_API } from 'config/constants/endpoints'
@@ -145,6 +145,7 @@ function bestTradeHookFactory({
     const { gasPrice } = useFeeDataWithGasPrice()
     const gasLimit = useMulticallGasLimit(currency?.chainId)
     const currenciesUpdated = usePropsChanged(baseCurrency, currency)
+    const queryClient = useQueryClient()
 
     const keepPreviousDataRef = useRef<boolean>(true)
 
@@ -154,7 +155,7 @@ function bestTradeHookFactory({
 
     const blockNumber = useCurrentBlock()
     const {
-      refresh,
+      refresh: refreshPools,
       pools: candidatePools,
       loading,
       syncing,
@@ -191,6 +192,7 @@ function bestTradeHookFactory({
       fetchStatus,
       isPlaceholderData,
       error,
+      refetch,
     } = useQuery({
       queryKey: [
         key,
@@ -279,6 +281,15 @@ function bestTradeHookFactory({
 
     const isValidating = fetchStatus === 'fetching'
     const isLoading = status === 'pending' || isPlaceholderData
+
+    const refresh = useCallback(async () => {
+      const res = await refreshPools()
+      await queryClient.invalidateQueries({
+        queryKey: [key],
+        refetchType: 'none',
+      })
+      refetch()
+    }, [refreshPools, key, queryClient, refetch])
 
     return {
       refresh,
