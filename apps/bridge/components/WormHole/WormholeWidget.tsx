@@ -34,9 +34,9 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
       mode,
       customTheme,
       bridgeDefaults: {
-        fromNetwork: isAptos ? 'aptos' : 'bsc',
-        toNetwork: 'ethereum',
-        token: 'WBNB',
+        fromNetwork: isAptos ? 'aptos' : 'ethereum',
+        toNetwork: 'bsc',
+        token: 'ETH',
         requiredNetwork: isAptos ? 'aptos' : undefined,
       },
       showHamburgerMenu: false,
