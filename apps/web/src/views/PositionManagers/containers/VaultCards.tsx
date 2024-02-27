@@ -8,6 +8,7 @@ import {
   useFetchApr,
   usePositionManagerDetailsData,
   usePositionManagerStatus,
+  usePreview,
   useSearch,
   useSortBy,
   useStakeOnly,
@@ -21,6 +22,7 @@ export const VaultCards = memo(function VaultCards() {
   const { status } = usePositionManagerStatus()
   const [sortBy] = useSortBy()
   const [stakeOnly] = useStakeOnly()
+  const [isPreview] = usePreview()
 
   const { data: positionMangerDetailsData, updateData: updatePositionMangerDetailsData } =
     usePositionManagerDetailsData()
@@ -40,7 +42,7 @@ export const VaultCards = memo(function VaultCards() {
       if ((positionMangerDetailsData?.[d.id]?.startTime ?? 0) <= Date.now() / 1000) {
         return true
       }
-      return false
+      return isPreview || false
     })
     .filter((d) => {
       if (stakeOnly) {
