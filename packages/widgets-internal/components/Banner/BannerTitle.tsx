@@ -2,7 +2,7 @@ import { Text, TextProps, breakpoints } from "@pancakeswap/uikit";
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
-type VariantTypes = "purple";
+type VariantTypes = "purple" | "orange";
 
 type Props = {
   variant: VariantTypes;
@@ -25,6 +25,14 @@ const variants: { [key in VariantTypes]: Variant } = {
   purple: {
     color: "#7645D9",
     strokeColor: "#ffffff",
+    strokeSize: 2,
+    fontSize: 28,
+    lineHeight: 30,
+    fontWeight: 800,
+  },
+  orange: {
+    color: "#FFB237",
+    strokeColor: "#802A21",
     strokeSize: 2,
     fontSize: 28,
     lineHeight: 30,
