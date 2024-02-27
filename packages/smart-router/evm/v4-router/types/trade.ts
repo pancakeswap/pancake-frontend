@@ -5,9 +5,10 @@ import { Graph } from './graph'
 
 export type V4Route = Route & {
   gasCost: bigint
-  gasCostInQuote?: CurrencyAmount<Currency>
-  inputAmountWithGasAdjusted?: CurrencyAmount<Currency>
-  outputAmountWithGasAdjusted?: CurrencyAmount<Currency>
+  gasCostInBase: CurrencyAmount<Currency>
+  gasCostInQuote: CurrencyAmount<Currency>
+  inputAmountWithGasAdjusted: CurrencyAmount<Currency>
+  outputAmountWithGasAdjusted: CurrencyAmount<Currency>
 }
 
 export type TradeConfig = Omit<BaseTradeConfig, 'poolProvider'> & {
@@ -20,5 +21,8 @@ export type V4Trade<TTradeType extends TradeType> = Omit<
 > & {
   routes: V4Route[]
   graph: Graph
-  gasCostInQuote?: CurrencyAmount<Currency>
+  gasCostInQuote: CurrencyAmount<Currency>
+  gasCostInBase: CurrencyAmount<Currency>
+  inputAmountWithGasAdjusted: CurrencyAmount<Currency>
+  outputAmountWithGasAdjusted: CurrencyAmount<Currency>
 }
