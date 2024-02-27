@@ -5,6 +5,8 @@ import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
 import { useMemo } from 'react'
 import { useVeCakeUserCreditWithTime } from 'views/CakeStaking/hooks/useVeCakeUserCreditWithTime'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { NoLockingCakeModal } from 'views/TradingReward/components/YourTradingReward/VeCake/NoLockingCakeModal'
 import {
   VeCakeAddCakeOrWeeksModal,
   VeCakeModalView,
@@ -46,6 +48,7 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
   } = useTranslation()
   const { endTime, thresholdLockAmount, showIncreaseButton } = props
   const { userCreditWithTime } = useVeCakeUserCreditWithTime(endTime)
+  const { cakePoolLocked, cakePoolLockExpired } = useCakeLockStatus()
 
   const [onPresentVeCakeAddCakeModal] = useModal(
     <VeCakeAddCakeOrWeeksModal
@@ -54,6 +57,10 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
       endTime={endTime}
       thresholdLockAmount={thresholdLockAmount}
     />,
+  )
+
+  const [onPresentNoLockingCakeModal] = useModal(
+    <NoLockingCakeModal endTime={endTime} thresholdLockAmount={thresholdLockAmount} />,
   )
 
   const minVeCake = useMemo(
@@ -66,6 +73,15 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
     [userCreditWithTime],
   )
 
+  const onClickModal = () => {
+    // Migration status
+    if (cakePoolLocked && !cakePoolLockExpired) {
+      onPresentNoLockingCakeModal()
+    } else {
+      onPresentVeCakeAddCakeModal()
+    }
+  }
+
   return (
     <Box {...props}>
       <GreyCard>
@@ -77,7 +93,7 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
             <Text fontSize={14} mb={12}>
               {t('Increase your veCAKE to continue earning')}
             </Text>
-            <Button width="100%" onClick={onPresentVeCakeAddCakeModal}>
+            <Button width="100%" onClick={onClickModal}>
               {t('Increase veCAKE')}
             </Button>
           </Box>
