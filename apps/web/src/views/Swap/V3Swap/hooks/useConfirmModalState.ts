@@ -273,7 +273,7 @@ export const useConfirmModalState = (
       stepActions: ConfirmAction[]
       state: ConfirmModalState
     }) => {
-      if (!actions) {
+      if (!stepActions) {
         return
       }
 
