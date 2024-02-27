@@ -87,9 +87,18 @@ const useConfirmActions = (
           await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
         }
 
-        // check if user really reset the approval to 0
-        const { data } = await refetch()
-        const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, data ?? 0n)
+        let newAllowanceRaw: bigint = 0n
+
+        try {
+          // check if user really reset the approval to 0
+          const { data } = await refetch()
+          newAllowanceRaw = data ?? 0n
+        } catch (error) {
+          // assume the approval reset is successful, if we can't check the allowance
+          console.error('check allowance after revoke failed: ', error)
+        }
+
+        const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, newAllowanceRaw ?? 0n)
         if (!newAllowance.equalTo(0)) {
           throw new UserUnexpectedTxError({
             expectedData: 0,
@@ -149,9 +158,19 @@ const useConfirmActions = (
             setTxHash(result.hash)
             await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash, confirmations: 1 })
           }
+          let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
-          const { data } = await refetch()
-          const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, data ?? 0n)
+          try {
+            const { data } = await refetch()
+            newAllowanceRaw = data ?? 0n
+          } catch (error) {
+            // assume the approval is successful, if we can't check the allowance
+            console.error('check allowance after approve failed: ', error)
+          }
+          const newAllowance = CurrencyAmount.fromRawAmount(
+            amountToApprove?.currency as Currency,
+            newAllowanceRaw ?? 0n,
+          )
           if (amountToApprove && newAllowance && newAllowance.lessThan(amountToApprove)) {
             throw new UserUnexpectedTxError({
               expectedData: amountToApprove.toExact(),
