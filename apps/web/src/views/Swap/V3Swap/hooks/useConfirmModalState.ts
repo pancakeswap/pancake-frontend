@@ -1,15 +1,18 @@
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { BSC_BLOCK_TIME } from '@pancakeswap/pools'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState, confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { wait } from 'state/multicall/retry'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { Address, Hex } from 'viem'
@@ -25,11 +28,6 @@ export type ConfirmAction = {
 
 const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
   const { requireApprove, requirePermit, requireRevoke } = usePermit2Requires(amountToApprove, spender)
-  console.info('debug requires', {
-    requireApprove,
-    requirePermit,
-    requireRevoke,
-  })
 
   return useCallback(() => {
     const steps: ConfirmModalState[] = []
@@ -56,7 +54,7 @@ const useConfirmActions = (
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const deadline = useTransactionDeadline()
-  const { revoke, permit, approve, permit2Allowance, refetch } = usePermit2(amountToApprove, spender)
+  const { revoke, permit, approve, refetch } = usePermit2(amountToApprove, spender)
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
   const { callback: swap, error: swapError } = useSwapCallback({
     trade,
@@ -87,8 +85,10 @@ const useConfirmActions = (
       setConfirmState(ConfirmModalState.RESETTING_APPROVAL)
       try {
         const result = await revoke()
-        if (result?.hash) {
+        if (result?.hash && chainId) {
           setTxHash(result.hash)
+          // sync to same with updater /apps/web/src/state/transactions/updater.tsx#L101
+          await wait((AVERAGE_CHAIN_BLOCK_TIMES[chainId] ?? BSC_BLOCK_TIME) * 1000 + 2000)
           await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
         }
 
@@ -159,8 +159,10 @@ const useConfirmActions = (
         setConfirmState(ConfirmModalState.APPROVING_TOKEN)
         try {
           const result = await approve()
-          if (result?.hash) {
+          if (result?.hash && chainId) {
             setTxHash(result.hash)
+            // sync to same with updater /apps/web/src/state/transactions/updater.tsx#L101
+            await wait((AVERAGE_CHAIN_BLOCK_TIMES[chainId] ?? BSC_BLOCK_TIME) * 1000 + 2000)
             await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash, confirmations: 1 })
           }
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
