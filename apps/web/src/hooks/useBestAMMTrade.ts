@@ -315,33 +315,57 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   quoterOptimization: false,
 })
 
+type V4GetBestTradeParams = Parameters<typeof SmartRouter.getBestTrade>
+type V4GetBestTradeReturnType = Omit<Exclude<Awaited<ReturnType<typeof V4Router.getBestTrade>>, undefined>, 'graph'>
+
+function createUseWorkerGetBestTradeOffchain() {
+  return function useWorkerGetBestTradeOffchain(): (
+    ...args: V4GetBestTradeParams
+  ) => Promise<V4GetBestTradeReturnType | null> {
+    const worker = useGlobalWorker()
+
+    return useCallback(
+      async (
+        amount,
+        currency,
+        tradeType,
+        { maxHops, maxSplits, allowedPoolTypes, gasPriceWei, signal, poolProvider },
+      ) => {
+        if (!worker) {
+          throw new Error('Quote worker not initialized')
+        }
+        const candidatePools = await poolProvider.getCandidatePools({
+          currencyA: amount.currency,
+          currencyB: currency,
+          protocols: allowedPoolTypes,
+        })
+        const result = await worker.getBestTradeOffchain({
+          chainId: currency.chainId,
+          currency: SmartRouter.Transformer.serializeCurrency(currency),
+          tradeType,
+          amount: {
+            currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
+            value: amount.quotient.toString(),
+          },
+          gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
+          maxHops,
+          maxSplits,
+          poolTypes: allowedPoolTypes,
+          candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+          signal,
+        })
+        return V4Router.Transformer.parseTrade(currency.chainId, result as any) ?? null
+      },
+      [worker],
+    )
+  }
+}
+
 export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromOffchainQuoter',
   useCommonPools: useCommonPoolsOnChain,
   createQuoteProvider,
-  useGetBestTrade: createSimpleUseGetBestTradeHook(
-    async (amount, currency, tradeType, { maxHops, maxSplits, gasPriceWei, allowedPoolTypes, poolProvider }) => {
-      const candidatePools = await poolProvider.getCandidatePools({
-        currencyA: amount.currency,
-        currencyB: currency,
-        protocols: allowedPoolTypes,
-      })
-
-      try {
-        const trade = await V4Router.getBestTrade(amount, currency, tradeType, {
-          maxHops,
-          maxSplits,
-          gasPriceWei,
-          allowedPoolTypes,
-          candidatePools,
-        })
-        return trade ?? null
-      } catch (e) {
-        console.error(e)
-        throw e
-      }
-    },
-  ),
+  useGetBestTrade: createUseWorkerGetBestTradeOffchain(),
 })
 
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({

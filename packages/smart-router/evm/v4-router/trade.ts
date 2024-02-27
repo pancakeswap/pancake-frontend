@@ -54,14 +54,15 @@ export async function getBestTrade(
   amount: CurrencyAmount<Currency>,
   quoteCurrency: Currency,
   tradeType: TradeType,
-  { candidatePools, gasPriceWei }: TradeConfig,
-) {
+  { candidatePools, gasPriceWei, maxHops }: TradeConfig,
+): Promise<V4Trade<TradeType> | undefined> {
   const bestTrade = await findBestTrade({
     tradeType,
     amount,
     quoteCurrency,
     gasPriceWei,
     candidatePools,
+    maxHops,
     streams: 1,
   })
   const streams = getBestStreamsConfig(bestTrade)
@@ -74,6 +75,7 @@ export async function getBestTrade(
     quoteCurrency,
     gasPriceWei,
     candidatePools,
+    maxHops,
     streams,
   })
 

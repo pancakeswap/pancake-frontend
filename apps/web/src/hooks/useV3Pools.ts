@@ -1,13 +1,12 @@
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool, V4Router } from '@pancakeswap/smart-router/evm'
-import { bscTokens } from '@pancakeswap/tokens'
 import { Tick } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { POOLS_FAST_REVALIDATE, POOLS_SLOW_REVALIDATE } from 'config/pools'
 import { v3Clients } from 'utils/graphql'
-import { getViemClients } from 'utils/viem'
+import { createViemPublicClientGetter, getViemClients } from 'utils/viem'
 
 import { getPoolTicks } from './v3/useAllV3TicksQuery'
 
@@ -69,8 +68,6 @@ export function useV3CandidatePoolsWithoutTicks(
   currencyB?: Currency,
   options?: V3PoolsHookParams,
 ) {
-  useV3PoolsWithTicksOnChain(currencyA, currencyB, options)
-
   const key = useMemo(() => {
     if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
       return ''
@@ -142,17 +139,19 @@ export function useV3PoolsWithTicksOnChain(
     if (!chainId) {
       return 0
     }
-    return POOLS_SLOW_REVALIDATE[chainId] || 0
+    return POOLS_FAST_REVALIDATE[chainId] || 0
   }, [currencyA])
 
   const { refetch, error, data, isLoading, isFetching } = useQuery({
     queryKey: ['v3_pools_with_ticks_on_chain', key],
-    queryFn: async () =>
-      V4Router.getV3CandidatePools({
+    queryFn: async ({ signal }) => {
+      const clientProvider = createViemPublicClientGetter({ transportSignal: signal })
+      return V4Router.getV3CandidatePools({
         currencyA,
         currencyB,
-        clientProvider: getViemClients,
-      }),
+        clientProvider,
+      })
+    },
     enabled: Boolean(key && options?.enabled),
     refetchInterval: refreshInterval,
     refetchOnReconnect: false,
