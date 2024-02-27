@@ -18,11 +18,13 @@ import { styled } from 'styled-components'
 // const bgDesktop = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-desktop.png`
 // const bgMobile = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-mobile.png`
 // const logo = `${ASSET_CDN}/web/banners/nemesis-downfall/logo.png`
+// const bgImage = `${ASSET_CDN}/web/banners/nemesis-downfall/background-image.png`
 
 const floatingAsset = `/images/nemesis-downfall/floating-item.png`
 const bgDesktop = `/images/nemesis-downfall/bg-desktop.png`
 const bgMobile = `/images/nemesis-downfall/bg-mobile.png`
 const logo = `/images/nemesis-downfall/logo-1.png`
+const bgImage = `/images/nemesis-downfall/background-image.jpg`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
@@ -51,7 +53,7 @@ export const NemesisDownfallBanner = () => {
   const { isMobile, isXxl } = useMatchBreakpoints()
 
   return (
-    <BannerContainer background="url('https://png.pngtree.com/background/20211215/original/pngtree-chuva-centro-escolar-simple-picture-image_1452041.jpg')">
+    <BannerContainer background={`url('${bgImage}')`}>
       <BannerMain
         badges={
           <Flex>
