@@ -283,13 +283,13 @@ function bestTradeHookFactory({
     const isLoading = status === 'pending' || isPlaceholderData
 
     const refresh = useCallback(async () => {
-      const res = await refreshPools()
+      await refreshPools()
       await queryClient.invalidateQueries({
         queryKey: [key],
         refetchType: 'none',
       })
       refetch()
-    }, [refreshPools, key, queryClient, refetch])
+    }, [refreshPools, queryClient, refetch])
 
     return {
       refresh,
