@@ -105,7 +105,13 @@ export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayPr
             isV3Pool ? ` (${v3FeeToPercent(pool.fee).toSignificant(6)}%)` : ''
           }`
           return (
-            <PairNode pair={p} key={key} text={text} className={isV3Pool && 'highlight'} tooltipText={tooltipText} />
+            <PairNode
+              pair={p}
+              key={key}
+              text={text}
+              className={isV3Pool ? 'highlight' : ''}
+              tooltipText={tooltipText}
+            />
           )
         })
       : null
