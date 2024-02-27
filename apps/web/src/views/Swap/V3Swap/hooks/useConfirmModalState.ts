@@ -25,6 +25,11 @@ export type ConfirmAction = {
 
 const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
   const { requireApprove, requirePermit, requireRevoke } = usePermit2Requires(amountToApprove, spender)
+  console.info('debug requires', {
+    requireApprove,
+    requirePermit,
+    requireRevoke,
+  })
 
   return useCallback(() => {
     const steps: ConfirmModalState[] = []

@@ -1,5 +1,5 @@
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
-import { bscTestnetTokens, ethereumTokens } from '@pancakeswap/tokens'
+import { bscTestnetTokens, ethereumTokens, goerliTestnetTokens } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import { Address, isAddressEqual } from 'viem'
 import useAccountActiveChain from './useAccountActiveChain'
@@ -25,7 +25,13 @@ export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, sp
       amount?.currency?.chainId === bscTestnetTokens.busd.chainId &&
       isAddressEqual(amount?.currency.address, bscTestnetTokens.busd.address)
 
-    if (!isMainnetUSDT || isBSCTestNetBUSD) return false
+    const isGoerliUSDC =
+      amount?.currency?.chainId === goerliTestnetTokens.usdc.chainId &&
+      isAddressEqual(amount?.currency.address, goerliTestnetTokens.usdc.address)
+
+    if (!isMainnetUSDT && !isBSCTestNetBUSD && !isGoerliUSDC) return false
+
+    console.info('debug requireRevoke', { amount: amount.quotient, allowance: allowance?.quotient })
 
     return !!allowance && allowance.greaterThan(0) && allowance.lessThan(amount)
   }, [allowance, amount])
