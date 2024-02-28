@@ -53,7 +53,7 @@ describe.concurrent(
 
         const isWhitelisted = whitelist.includes(key.toLowerCase())
         if (!isWhitelisted) expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
-        if (!isWhitelisted) expect(token.symbol.toLocaleLowerCase()).toBe(symbol.toLocaleLowerCase())
+        if (!isWhitelisted) expect(token.symbol.toLowerCase()).toBe(symbol.toLowerCase())
         expect(token.decimals).toBe(decimals)
       },
     )

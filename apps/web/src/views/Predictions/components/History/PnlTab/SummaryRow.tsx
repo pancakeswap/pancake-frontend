@@ -34,26 +34,26 @@ const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, 
   const typeTranslationKey = type.charAt(0).toUpperCase() + type.slice(1)
   const displayAmount = type === 'won' ? summary[type].payout : amount
   const amountInUsd = tokenPrice.multipliedBy(displayAmount).toNumber()
-  const { token, displayedDecimals } = useConfig()
+  const config = useConfig()
   const roundsInPercentsDisplay = !Number.isNaN(parseFloat(roundsInPercents)) ? `${roundsInPercents}%` : '0%'
 
-  return (
+  return config?.displayedDecimals && config?.token ? (
     <>
       <Text mt="16px" bold color="textSubtle">
         {t(typeTranslationKey)}
       </Text>
       <Flex>
         <Flex flex="2" flexDirection="column">
-          <Text bold fontSize="20px" color={color}>
-            {rounds} {t('Rounds').toLocaleLowerCase()}
+          <Text bold fontSize="20px" color={color} textTransform="lowercase">
+            {rounds} {t('Rounds')}
           </Text>
-          <Text fontSize="12px" color="textSubtle">
-            {type === 'entered' ? t('Total').toLocaleLowerCase() : roundsInPercentsDisplay}
+          <Text fontSize="12px" color="textSubtle" textTransform="lowercase">
+            {type === 'entered' ? t('Total') : roundsInPercentsDisplay}
           </Text>
         </Flex>
         <Flex flex="3" flexDirection="column">
           <Text bold fontSize="20px" color={color}>
-            {`${summaryTypeSigns[type]}${formatBnb(displayAmount, displayedDecimals)} ${token.symbol}`}
+            {`${summaryTypeSigns[type]}${formatBnb(displayAmount, config?.displayedDecimals)} ${config?.token.symbol}`}
           </Text>
           <Text fontSize="12px" color="textSubtle">
             {`~$${amountInUsd.toFixed(2)}`}
@@ -61,7 +61,7 @@ const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, 
         </Flex>
       </Flex>
     </>
-  )
+  ) : null
 }
 
 export default SummaryRow
