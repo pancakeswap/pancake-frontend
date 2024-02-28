@@ -11,20 +11,14 @@ import {
   LinkExternalAction,
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { styled } from 'styled-components'
 
-// import { ASSET_CDN } from 'config/constants/endpoints'
-// const floatingAsset = `${ASSET_CDN}/web/banners/nemesis-downfall/floating-item.png`
-// const bgDesktop = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-desktop.png`
-// const bgMobile = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-mobile.png`
-// const logo = `${ASSET_CDN}/web/banners/nemesis-downfall/logo.png`
-// const bgImage = `${ASSET_CDN}/web/banners/nemesis-downfall/background-image.png`
-
-const floatingAsset = `/images/nemesis-downfall/floating-item.png`
-const bgDesktop = `/images/nemesis-downfall/bg-desktop.png`
-const bgMobile = `/images/nemesis-downfall/bg-mobile.png`
-const logo = `/images/nemesis-downfall/logo-1.png`
-const bgImage = `/images/nemesis-downfall/background-image.jpg`
+const floatingAsset = `${ASSET_CDN}/web/banners/nemesis-downfall/floating-item.png`
+const bgDesktop = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-desktop.png`
+const bgMobile = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-mobile.png`
+const logo = `${ASSET_CDN}/web/banners/nemesis-downfall/logo.png`
+const bgImage = `${ASSET_CDN}/web/banners/nemesis-downfall/background-image.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
@@ -65,9 +59,9 @@ export const NemesisDownfallBanner = () => {
         }
         title={
           <BannerTitle variant="orange">
-            {isXxl
-              ? t('Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace')
-              : t('Nemesis Downfall Now on PancakeSwap')}
+            {isMobile
+              ? t('Nemesis Downfall Now on PancakeSwap')
+              : t('Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace')}
           </BannerTitle>
         }
         actions={
@@ -83,8 +77,8 @@ export const NemesisDownfallBanner = () => {
                     bold
                     mr="4px"
                     color="white"
-                    textTransform={isMobile ? 'uppercase' : 'capitalize'}
                     fontSize={isMobile ? '12px' : '16px'}
+                    textTransform={isMobile ? 'uppercase' : 'capitalize'}
                   >
                     {t('Play Now')}
                   </Text>
