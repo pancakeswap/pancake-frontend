@@ -7,11 +7,11 @@ import {
   BannerGraphics,
   BannerMain,
   BannerTitle,
+  ButtonLinkAction,
   FloatingGraphic,
   GraphicDetail,
   LinkExternalAction,
   PancakeSwapBadge,
-  ButtonLinkAction,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
@@ -38,7 +38,8 @@ const StyledButtonLinkAction = styled(ButtonLinkAction)`
   background-color: #812b21;
 `
 
-const playNowLink = 'https://pancakeswap.games'
+const playNowLink =
+  'https://pancakeswap.games/?utm_source=nemesis%20FE%20banner&utm_medium=Banner&utm_campaign=nemesis%20FE%20banner&utm_id=nemesis%20FE%20banner'
 const learnMoreLink =
   'https://blog.pancakeswap.finance/articles/introducing-nemesis-downfall-pancake-swap-s-latest-game-fi-release'
 
@@ -51,7 +52,7 @@ export const NemesisDownfallBanner = () => {
       {t('Play Now')}
     </LinkExternalAction>
   ) : (
-    <StyledButtonLinkAction color="white" href={learnMoreLink}>
+    <StyledButtonLinkAction color="white" href={playNowLink}>
       {t('Play Now')}
     </StyledButtonLinkAction>
   )
