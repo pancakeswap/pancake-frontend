@@ -10,12 +10,17 @@ import {
   PoolTypeIcon,
   SingletonIcon,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 
-// import 'swiper/css';
-// import { Swiper, SwiperSlide } from 'swiper/react';
-// import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css'
+import 'swiper/css/autoplay'
+import { Autoplay } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import type { Swiper as SwiperClass } from 'swiper/types'
 
 const FeaturesContainer = styled(Flex)`
   flex-direction: column;
@@ -31,56 +36,65 @@ const FeaturesContainer = styled(Flex)`
 `
 
 const ListStyled = styled(Flex)<{ $isPicked?: boolean }>`
-  width: 340px;
   cursor: pointer;
-  margin-bottom: 8px;
-  padding: 16px 12px 16px 20px;
-  border-radius: 24px;
-  background: ${({ theme, $isPicked }) => ($isPicked ? theme.card.background : 'initial')};
-  border: ${({ theme, $isPicked }) => ($isPicked ? `1px solid ${theme.colors.cardBorder}` : 'initial')};
+  margin-right: 12px;
+  border-radius: 50%;
+  background: ${({ theme, $isPicked }) => ($isPicked ? theme.card.background : 'transparent')};
+  border: solid 1px;
+  border-color: ${({ theme, $isPicked }) => ($isPicked ? `${theme.colors.cardBorder}` : 'transparent')};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 340px;
+    border-radius: 24px;
+    margin: 0 0 8px 0;
+    padding: 16px 12px 16px 20px;
+  }
+`
+
+const SwiperStyled = styled(Swiper)`
+  position: relative;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: -80px;
+    width: 600px;
+    margin-left: auto;
+  }
 `
 
 const DetailStyled = styled(Box)`
-  position: relative;
-  top: -80px;
   width: 600px;
 `
 
 const CountdownContainer = styled.div<{ $percentage: number }>`
   position: relative;
   margin-left: auto;
-  height: 32px;
-  width: 32px;
+  height: 40px;
+  width: 40px;
 
   >svg: first-child {
     position: absolute;
     top: 0;
     right: 0;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     transform: rotateY(-180deg) rotateZ(-90deg);
     stroke-width: 2px;
 
-    > circle:first-child {
-      position: relative;
+    > circle {
       fill: none;
-      z-index: 1;
-      stroke-dasharray: 93px;
-      stroke-dashoffset: 0px;
-      stroke-linecap: round;
       stroke-width: 2px;
-      stroke: ${({ theme }) => theme.colors.primaryBright};
+      stroke-linecap: round;
+      stroke-dasharray: 120px;
+    }
+
+    > circle:first-child {
+      stroke-dashoffset: 0px;
+      stroke: ${({ theme }) => theme.colors.cardBorder};
     }
 
     > circle:nth-child(2) {
-      position: relative;
-      fill: none;
-      z-index: 0;
-      stroke-width: 2px;
-      stroke-linecap: round;
-      stroke-dasharray: 93px;
-      stroke: ${({ theme }) => theme.colors.cardBorder};
-      stroke-dashoffset: ${({ $percentage }) => `${93 * ($percentage / 100)}px`};
+      stroke: ${({ theme }) => theme.colors.primaryBright};
+      stroke-dashoffset: ${({ $percentage }) => `${120 * $percentage}px`};
     }
   }
 
@@ -89,6 +103,25 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: 32px;
+    width: 32px;
+
+    >svg: first-child {
+      height: 32px;
+      width: 32px;
+    }
+
+    > circle {
+      stroke-dasharray: 93px;
+    }
+
+    > circle:nth-child(2) {
+      stroke: ${({ theme }) => theme.colors.primaryBright};
+      stroke-dashoffset: ${({ $percentage }) => `${93 * $percentage}px`};
+    }
   }
 `
 
@@ -162,7 +195,25 @@ const FeaturesConfig = [
 
 export const Features = () => {
   const { t } = useTranslation()
-  const pickedId: number = 1
+  const { isSm, isXs, isMd } = useMatchBreakpoints()
+  const [percentage, setPerCentage] = useState(0)
+  const [step, setStep] = useState(1)
+  const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
+
+  const isBigDevice = !isXs && !isSm && !isMd
+
+  const handleStepClick = (stepIndex: number) => {
+    // setStep(stepIndex)
+    // swiper?.slideTo(stepIndex - 1)
+  }
+
+  const handleRealIndexChange = useCallback((swiperInstance: SwiperClass) => {
+    setStep(swiperInstance.realIndex + 1)
+  }, [])
+
+  const onAutoplayTimeLeft = (s, time, progress) => {
+    setPerCentage(1 - progress)
+  }
 
   return (
     <FeaturesContainer>
@@ -175,46 +226,88 @@ export const Features = () => {
       >
         {t('Features')}
       </Text>
-      <Flex width="100%" flexDirection={['column', 'row']} justifyContent={['space-between']}>
-        <Flex flexDirection={['row', 'column']}>
+      <Flex width="100%" flexDirection={['column', 'column', 'column', 'row']} justifyContent={['space-between']}>
+        <Flex flexDirection={['row', 'row', 'row', 'column']} m={['auto', 'auto', 'auto', '0 auto 0 0']}>
           {FeaturesConfig.map((config) => {
-            const isPicked = pickedId === config.id
-
+            const isPicked = step === config.id
             return (
-              <ListStyled key={config.id} $isPicked={isPicked}>
-                <Flex alignSelf="center" opacity={isPicked ? 1 : 0.6}>
-                  {config.icon}
-                </Flex>
-                <Text color={isPicked ? 'text' : 'textSubtle'} ml="16px" fontSize={20} bold>
-                  {config?.title}
-                </Text>
-                {isPicked && (
-                  <CountdownContainer $percentage={0}>
-                    <svg>
-                      <circle r="15" cx="16" cy="16" />
-                      <circle r="15" cx="16" cy="16" />
-                    </svg>
-                    <ArrowForwardIcon color="primary" />
-                  </CountdownContainer>
-                )}
+              <ListStyled key={config.id} $isPicked={isPicked} onClick={() => handleStepClick(config.id)}>
+                <Box display={['none', 'none', 'none', 'flex']}>
+                  <Flex alignSelf="center" opacity={isPicked ? 1 : 0.6}>
+                    {config.icon}
+                  </Flex>
+                  <Text color={isPicked ? 'text' : 'textSubtle'} ml="16px" fontSize={20} bold>
+                    {config?.title}
+                  </Text>
+                </Box>
+                <CountdownContainer $percentage={percentage}>
+                  {isBigDevice ? (
+                    <>
+                      {isPicked && (
+                        <>
+                          <svg>
+                            <circle r="15" cx="16" cy="16" />
+                            <circle r="15" cx="16" cy="16" />
+                          </svg>
+                          <ArrowForwardIcon color="primary" />
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <svg>
+                        <circle r="19" cx="20" cy="20" />
+                        <circle r="19" cx="20" cy="20" opacity={isPicked ? 1 : 0} />
+                      </svg>
+                      <Flex
+                        position="relative"
+                        left="50%"
+                        top="50%"
+                        opacity={isPicked ? 1 : 0.6}
+                        style={{ transform: 'translate(-30%,-50%)' }}
+                      >
+                        {config.icon}
+                      </Flex>
+                    </>
+                  )}
+                </CountdownContainer>
               </ListStyled>
             )
           })}
         </Flex>
-        <DetailStyled>
-          <Image width={600} height={337} src="/images/v4-landing/features-1.png" alt="img" />
-          <Text
-            bold
-            mb={['16px']}
-            fontSize={['20px', '20px', '20px', '28px']}
-            lineHeight={['24px', '24px', '24px', '32px']}
-          >
-            Hooks
-          </Text>
-          <Text lineHeight={['20px', '20px', '20px', '24px']} fontSize={['14px', '14px', '14px', '16px']}>
-            123
-          </Text>
-        </DetailStyled>
+        <SwiperStyled
+          loop
+          centeredSlides
+          slidesPerView={1}
+          modules={[Autoplay]}
+          autoplay={{
+            delay: 2500,
+            pauseOnMouseEnter: true,
+            disableOnInteraction: false,
+          }}
+          onSwiper={setSwiper}
+          onAutoplayTimeLeft={onAutoplayTimeLeft}
+          onRealIndexChange={handleRealIndexChange}
+        >
+          {FeaturesConfig.map((config) => (
+            <SwiperSlide key={config.id}>
+              <DetailStyled>
+                <Image width={600} height={337} src={config.imgUrl} alt="img" />
+                <Text
+                  bold
+                  mb={['16px']}
+                  fontSize={['20px', '20px', '20px', '28px']}
+                  lineHeight={['24px', '24px', '24px', '32px']}
+                >
+                  {config.title}
+                </Text>
+                <Text lineHeight={['20px', '20px', '20px', '24px']} fontSize={['14px', '14px', '14px', '16px']}>
+                  {config.subTitle}
+                </Text>
+              </DetailStyled>
+            </SwiperSlide>
+          ))}
+        </SwiperStyled>
       </Flex>
     </FeaturesContainer>
   )
