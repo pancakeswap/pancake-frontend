@@ -12,7 +12,7 @@ interface RewardPeriodProps {
   campaignClaimTime: number
   totalAvailableClaimData: UserCampaignInfoDetail[]
   campaignIdsIncentive: Incentives[]
-  currentUserCampaignInfo: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail | undefined
 }
 
 const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({

@@ -93,6 +93,7 @@ const TradingReward = () => {
       />
       <HowToEarn />
       <RewardsBreakdown
+        type={RewardType.CAKE_STAKERS}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
         campaignPairs={allTradingRewardPairData.campaignPairs}

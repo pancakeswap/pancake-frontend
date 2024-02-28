@@ -3,14 +3,20 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Table, Td, Text, Th } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import PairInfo from 'views/TradingReward/components/PairInfo'
+import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 
 interface RewardsBreakdownDesktopViewProps {
+  type: RewardType
   isFetching: boolean
   list: RewardBreakdownDetail
 }
 
-const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewProps>> = ({ isFetching, list }) => {
+const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewProps>> = ({
+  type,
+  isFetching,
+  list,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
 
@@ -74,7 +80,15 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
                           </Text>
                         </Td>
                         <Td textAlign="right" width="20%">
-                          <Text color={pair.preCap > 0 ? 'text' : 'textSubtle'}>{`$${formatNumber(pair.preCap)}`}</Text>
+                          {type === RewardType.CAKE_STAKERS ? (
+                            <Text color={pair.preCap > 0 ? 'text' : 'textSubtle'}>{`$${formatNumber(
+                              pair.preCap,
+                            )}`}</Text>
+                          ) : (
+                            <Text color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
+                              {`$${formatNumber(pair.rewardEarned)}`}
+                            </Text>
+                          )}
                         </Td>
                       </tr>
                     ))}

@@ -12,12 +12,13 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import DesktopView from 'views/TradingReward/components/RewardsBreakdown/DesktopView'
 import MobileView from 'views/TradingReward/components/RewardsBreakdown/MobileView'
-import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { AllTradingRewardPairDetail, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 interface RewardsBreakdownProps {
+  type: RewardType
   allUserCampaignInfo: UserCampaignInfoDetail[]
   allTradingRewardPairData: AllTradingRewardPairDetail
   campaignPairs: { [campaignId in string]: { [chainId in string]: Array<string> } }
@@ -33,6 +34,7 @@ const initList: RewardBreakdownDetail = {
 }
 
 const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>> = ({
+  type,
   allUserCampaignInfo,
   allTradingRewardPairData,
   campaignPairs,
@@ -89,7 +91,9 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   const handleIndex = (pageIndex: number) => {
     if (pageIndex === 0) {
       setCurrentPage(1)
-      setList(currentList)
+      if (currentList) {
+        setList(currentList)
+      }
     } else {
       setCurrentPage(2)
     }
@@ -136,9 +140,9 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       ) : null}
       <Card mt="40px">
         {isDesktop ? (
-          <DesktopView list={list} isFetching={isFetching} />
+          <DesktopView type={type} list={list} isFetching={isFetching} />
         ) : (
-          <MobileView list={list} isFetching={isFetching} />
+          <MobileView type={type} list={list} isFetching={isFetching} />
         )}
       </Card>
     </Flex>

@@ -132,13 +132,13 @@ const BaseContainer = styled(Flex)<{ showBackgroundColor: boolean }>`
 
 interface YourTradingRewardProps {
   isFetching: boolean
-  incentives: Incentives
+  incentives: Incentives | undefined
   campaignIds: Array<string>
   totalAvailableClaimData: UserCampaignInfoDetail[]
   qualification: Qualification
   rewardInfo: { [key in string]: RewardInfo }
   campaignIdsIncentive: Incentives[]
-  currentUserCampaignInfo: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail | undefined
 }
 
 const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps>> = ({
@@ -180,8 +180,8 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             campaignIds={campaignIds}
             rewardInfo={rewardInfo}
             totalAvailableClaimData={totalAvailableClaimData}
-            campaignStart={incentives?.campaignStart}
-            campaignClaimTime={incentives?.campaignClaimTime}
+            campaignStart={incentives?.campaignStart ?? 0}
+            campaignClaimTime={incentives?.campaignClaimTime ?? 0}
             qualification={qualification}
             campaignIdsIncentive={campaignIdsIncentive}
             currentUserCampaignInfo={currentUserCampaignInfo}

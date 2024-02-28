@@ -18,7 +18,7 @@ interface CurrentPeriodProps {
   campaignStart: number
   campaignClaimTime: number
   rewardInfo: { [key in string]: RewardInfo }
-  currentUserCampaignInfo: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail | undefined
 }
 
 const TOP_RANK = 100
@@ -42,14 +42,14 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     currentLanguage: { locale },
   } = useTranslation()
   const cakePriceBusd = useCakePrice()
-  const { data: rank } = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId })
+  const { data: rank } = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId ?? '' })
 
   const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
 
   const currentRewardInfo = useMemo(
-    () => rewardInfo?.[currentUserCampaignInfo?.campaignId],
+    () => rewardInfo?.[currentUserCampaignInfo?.campaignId ?? ''],
     [rewardInfo, currentUserCampaignInfo],
   )
 

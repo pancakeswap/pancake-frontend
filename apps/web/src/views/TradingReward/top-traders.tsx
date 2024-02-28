@@ -1,19 +1,19 @@
-import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/chains'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import Banner from 'views/TradingReward/components/TopTraders/Banner'
-import YourTradingReward from 'views/TradingReward/components/TopTraders/YourTradingReward'
-import CurrentRewardPool from 'views/TradingReward/components/TopTraders/CurrentRewardPool'
-import HowToEarn from 'views/TradingReward/components/HowToEarn'
-import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
-import Questions from 'views/TradingReward/components/Questions'
-import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
-import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import SubMenu from 'views/TradingReward/components/SubMenu'
-import Leaderboard from 'views/TradingReward/components/Leaderboard'
 import useScrollToHash from 'hooks/useScrollToHash'
+import { useMemo } from 'react'
+import HowToEarn from 'views/TradingReward/components/HowToEarn'
+import Leaderboard from 'views/TradingReward/components/Leaderboard'
+import Questions from 'views/TradingReward/components/Questions'
+import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
+import SubMenu from 'views/TradingReward/components/SubMenu'
+import Banner from 'views/TradingReward/components/TopTraders/Banner'
+import CurrentRewardPool from 'views/TradingReward/components/TopTraders/CurrentRewardPool'
+import YourTradingReward from 'views/TradingReward/components/TopTraders/YourTradingReward'
+import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 
 const TradingRewardTopTraders = () => {
   const { chainId } = useActiveChainId()
@@ -42,7 +42,7 @@ const TradingRewardTopTraders = () => {
   const currentUserIncentive = useMemo(
     () =>
       allTradingRewardPairData.campaignIdsIncentive.find(
-        (campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase(),
+        (campaign) => campaign?.campaignId?.toLowerCase() === campaignId.toLowerCase(),
       ),
     [campaignId, allTradingRewardPairData],
   )
@@ -67,7 +67,7 @@ const TradingRewardTopTraders = () => {
           campaignClaimEndTime: tradingRewardPair?.campaignClaimEndTime,
         }
       })
-      .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
+      .filter((item) => currentTime > Number(item?.campaignClaimTime) ?? 0)
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
   if (chainId !== ChainId.BSC) {
@@ -92,6 +92,7 @@ const TradingRewardTopTraders = () => {
       <Leaderboard campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive} />
       <HowToEarn />
       <RewardsBreakdown
+        type={RewardType.TOP_TRADERS}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
         campaignPairs={allTradingRewardPairData.campaignPairs}
