@@ -8,11 +8,11 @@ import { Featured } from 'views/LandingV4/components/NewsAndEvents/Featured'
 
 const NewsAndEventsContainer = styled(Box)`
   width: 100%;
+  max-width: 1200px;
   padding: 0 16px;
   margin: 50px auto;
 
   @media screen and (min-width: 1440px) {
-    width: 1200px;
     padding: 0;
     margin: 80px auto;
   }

@@ -33,16 +33,13 @@ const StepImage = styled(Box)`
 
 const StepsContainer = styled(Flex)`
   width: 204px;
+  max-width: 1200px;
   margin: auto;
   flex-wrap: wrap;
   justify-content: space-between;
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: 588px;
-  }
-
-  @media screen and (min-width: 1440px) {
-    width: 1200px;
   }
 `
 

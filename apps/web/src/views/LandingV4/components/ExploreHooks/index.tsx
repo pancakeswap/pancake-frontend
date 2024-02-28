@@ -5,11 +5,11 @@ import { Contribute } from 'views/LandingV4/components/ExploreHooks/Contribute'
 
 const ExploreHooksContainer = styled(Box)`
   width: 100%;
+  max-width: 1200px;
   padding: 0 16px;
   margin: 40px auto;
 
   @media screen and (min-width: 1440px) {
-    width: 1200px;
     padding: 0;
     margin: 64px auto;
   }
