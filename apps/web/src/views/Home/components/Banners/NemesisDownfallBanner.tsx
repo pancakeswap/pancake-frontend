@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Image, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Image, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
+  BannerActionContainer,
   BannerContainer,
   BannerGraphics,
   BannerMain,
@@ -12,12 +13,11 @@ import {
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { styled } from 'styled-components'
 
 const floatingAsset = `${ASSET_CDN}/web/banners/nemesis-downfall/floating-item.png`
 const bgDesktop = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-desktop.png`
 const bgMobile = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-mobile.png`
-const logo = `${ASSET_CDN}/web/banners/nemesis-downfall/logo.png`
+const logo = `${ASSET_CDN}/web/banners/nemesis-downfall/logo-1.png`
 const bgImage = `${ASSET_CDN}/web/banners/nemesis-downfall/background-image.png`
 
 const bgSmVariant: GraphicDetail = {
@@ -32,19 +32,9 @@ const bgXsVariant: GraphicDetail = {
   height: 182,
 }
 
-const StyledButton = styled(Button)`
-  color: #ffffff;
-  background: #812b21;
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.2);
-
-  &:hover > a {
-    text-decoration: none;
-  }
-`
-
 export const NemesisDownfallBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isXxl } = useMatchBreakpoints()
+  const { isMobile, isTablet } = useMatchBreakpoints()
 
   return (
     <BannerContainer background={`url('${bgImage}')`}>
@@ -59,45 +49,36 @@ export const NemesisDownfallBanner = () => {
         }
         title={
           <BannerTitle variant="orange">
-            {isMobile
+            {isMobile || isTablet
               ? t('Nemesis Downfall Now on PancakeSwap')
               : t('Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace')}
           </BannerTitle>
         }
         actions={
           isMobile ? (
-            <LinkExternalAction color="white" href="https://pancakeswap.games" style={{ alignItems: 'center' }}>
+            <LinkExternalAction
+              mb="20px"
+              color="white"
+              href="https://pancakeswap.games"
+              style={{ alignItems: 'center' }}
+            >
               {t('Play Now')}
             </LinkExternalAction>
           ) : (
-            <>
-              <StyledButton scale={isXxl ? 'md' : 'sm'}>
-                <Link external href="https://pancakeswap.games">
-                  <Text
-                    bold
-                    mr="4px"
-                    color="white"
-                    fontSize={isMobile ? '12px' : '16px'}
-                    textTransform={isMobile ? 'uppercase' : 'capitalize'}
-                  >
-                    {t('Play Now')}
-                  </Text>
-                  <OpenNewIcon color="white" />
-                </Link>
-              </StyledButton>
-              <LinkExternalAction
-                ml="8px"
-                color="white"
-                style={{ alignItems: 'center' }}
-                href="https://blog.pancakeswap.finance/articles/introducing-nemesis-downfall-pancake-swap-s-latest-game-fi-release"
-              >
-                {t('Learn More')}
-              </LinkExternalAction>
-            </>
+            <BannerActionContainer
+              firstButtonTitle={t('Play Now')}
+              firstButtonLink="https://pancakeswap.games"
+              firstButtonBackgroundColor="#812b21"
+              firstButtonTextColor="white"
+              firstButtonBoxShadowColor="inset 0px -2px 0px rgba(0, 0, 0, 0.2)"
+              secondButtonTitle={t('Learn More')}
+              secondButtonTextColor="white"
+              secondButtonLink="https://blog.pancakeswap.finance/articles/introducing-nemesis-downfall-pancake-swap-s-latest-game-fi-release"
+            />
           )
         }
       />
-      <BannerGraphics>
+      <BannerGraphics mb={['20px', '10px', '10px', '10px', '0']}>
         <BackgroundGraphic src={bgDesktop} width={468} height={224} sm={bgSmVariant} xs={bgXsVariant} />
         <FloatingGraphic src={floatingAsset} width={99} height={99} />
       </BannerGraphics>
