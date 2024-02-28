@@ -3162,7 +3162,7 @@
   "Notifications Enabled": "Notificações ativadas",
   "You can now opt-in to pancakeswap web notifications": "Já pode optar por receber notificações Web da pancakeswap",
   "Error Enabling Notifications": "Erro ao ativar as notificações",
-  "Something went wrong when trying to enable notifications %error%": "Ocoreu um erro ao tentar ativar as notificações %error%",
+  "Something went wrong when trying to enable notifications %error%": "Ocorreu um erro ao tentar ativar as notificações %error%",
   "Subscription Error": "Erro de subscrição",
   "Your notification preferences have been updated.": "As suas preferências de notificação foram atualizadas.",
   "Something went wrong": "Ocorreu um erro",
@@ -3171,5 +3171,7 @@
   "Unable to unsubscribe %error%": "Não foi possível anular a subscrição %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Anulou com êxito a subscrição das notificações. Pode voltar a subscrever em qualquer altura",
   "Failed to send": "Erro no envio",
-  "This product have been upgraded!": "Este produto foi aprimorado!"
+  "This product have been upgraded!": "Este produto foi aprimorado!",
+  "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace": "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace",
+  "Nemesis Downfall Now on PancakeSwap": "Nemesis Downfall Now on PancakeSwap"
 }
