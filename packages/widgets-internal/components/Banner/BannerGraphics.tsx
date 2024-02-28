@@ -1,5 +1,4 @@
-import { Box, Flex } from "@pancakeswap/uikit";
-import { PropsWithChildren } from "react";
+import { Box, Flex, FlexProps } from "@pancakeswap/uikit";
 import styled from "styled-components";
 
 import { flyingAnim } from "./animations";
@@ -258,9 +257,13 @@ export const FloatingGraphic = styled(BannerGraphicItem)`
   animation: ${flyingAnim} 2.5s ease-in-out infinite;
 `;
 
-export function BannerGraphics({ children }: PropsWithChildren) {
+interface BannerGraphicsProps extends FlexProps {
+  children?: React.ReactNode;
+}
+
+export function BannerGraphics({ children, ...props }: BannerGraphicsProps) {
   return (
-    <Container>
+    <Container {...props}>
       <GraphicsPaintBoard>{children}</GraphicsPaintBoard>
     </Container>
   );
