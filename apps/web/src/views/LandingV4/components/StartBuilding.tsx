@@ -21,8 +21,6 @@ const HeaderTitle = styled(Box)`
 const StepImage = styled(Box)`
   width: 204px;
   height: 154px;
-  border: solid 1px;
-  border-radius: 24px;
   margin-bottom: 24px;
   background-size: cover;
   background-position: center;
@@ -52,22 +50,22 @@ const BuildingConfig = [
   {
     title: <Trans>Read the White Paper</Trans>,
     iconUrl: '/images/v4-landing/step1.png',
-    imageUrl: '/images/v4-landing/step1.png',
+    imageUrl: '/images/v4-landing/building-1.png',
   },
   {
     title: <Trans>Get the Tools</Trans>,
     iconUrl: '/images/v4-landing/step2.png',
-    imageUrl: '/images/v4-landing/step1.png',
+    imageUrl: '/images/v4-landing/building-2.png',
   },
   {
     title: <Trans>Join the Community</Trans>,
     iconUrl: '/images/v4-landing/step3.png',
-    imageUrl: '/images/v4-landing/step1.png',
+    imageUrl: '/images/v4-landing/building-3.png',
   },
   {
     title: <Trans>Start Building</Trans>,
     iconUrl: '/images/v4-landing/step4.png',
-    imageUrl: '/images/v4-landing/step1.png',
+    imageUrl: '/images/v4-landing/building-4.png',
   },
 ]
 
