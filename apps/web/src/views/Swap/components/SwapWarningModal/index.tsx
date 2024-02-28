@@ -1,7 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
+import { styled } from 'styled-components'
+import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading, Modal } from '@pancakeswap/uikit'
+import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { Box, Heading, Message, ModalBody, ModalContainer, ModalHeader } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
@@ -9,10 +11,6 @@ import Acknowledgement from './Acknowledgement'
 import BSC_WARNING_LIST from './bsc'
 import ETH_WARNING_LIST from './mainnet'
 import ZKSYNC_WARNING_LIST from './zksync'
-
-const StyledModalContainer = styled(ModalContainer)`
-  max-width: 440px;
-`
 
 const MessageContainer = styled(Message)`
   align-items: flex-start;
@@ -22,9 +20,14 @@ const MessageContainer = styled(Message)`
 interface SwapWarningModalProps {
   swapCurrency: WrappedTokenInfo
   onDismiss?: () => void
+  customOnDismiss?: () => void
 }
 
-const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>> = ({ swapCurrency, onDismiss }) => {
+const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>> = ({
+  swapCurrency,
+  customOnDismiss,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { chainId } = useActiveChainId()
@@ -38,17 +41,23 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
   const SWAP_WARNING = chainId ? TOKEN_WARNINGS?.[chainId]?.[swapCurrency.address] : undefined
 
   return (
-    <StyledModalContainer minWidth="280px">
-      <ModalHeader background={theme.colors.gradientCardHeader}>
-        <Heading p="12px 24px">{t('Notice for trading %symbol%', { symbol: SWAP_WARNING?.symbol })}</Heading>
+    <Modal
+      title={t('Warning')}
+      onDismiss={() => {
+        customOnDismiss?.()
+        onDismiss?.()
+      }}
+    >
+      <ModalHeader mb="8px" background={theme.colors.gradientCardHeader}>
+        <Heading p="8px">{t('Notice for trading %symbol%', { symbol: SWAP_WARNING?.symbol })}</Heading>
       </ModalHeader>
-      <ModalBody p="24px">
-        <MessageContainer variant="warning" mb="24px">
+      <ModalBody>
+        <MessageContainer variant="warning" mb="8px">
           <Box>{SWAP_WARNING?.component}</Box>
         </MessageContainer>
         <Acknowledgement handleContinueClick={onDismiss} />
       </ModalBody>
-    </StyledModalContainer>
+    </Modal>
   )
 }
 
