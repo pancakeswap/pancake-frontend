@@ -62,7 +62,8 @@ const MenuConfig = [
       },
       {
         label: 'Wormhole',
-        href: '/wormhole-aptos',
+        href: 'https://www.portalbridge.com/#/transfer',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ],
   },
