@@ -19,7 +19,7 @@ import { VeCakePreviewTextInfo } from 'views/TradingReward/components/YourTradin
 import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
-import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
+import { useTotalTradingReward } from 'views/TradingReward/hooks/useTotalTradingReward'
 
 interface VeCakePreviewProps {
   thresholdLockAmount: number
@@ -60,12 +60,8 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
     [rewardInfo, currentUserCampaignInfo],
   )
 
-  const rewardInUSD = useRewardInUSD({
-    timeRemaining,
-    totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
-    canClaim: currentUserCampaignInfo?.canClaim ?? '0',
-    rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
-    rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
+  const rewardInUSD = useTotalTradingReward({
+    campaignIds: [currentUserCampaignInfo?.campaignId ?? ''],
   })
 
   const rewardInCake = useRewardInCake({

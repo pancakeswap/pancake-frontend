@@ -22,7 +22,7 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
-import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
+import { useTotalTradingReward } from 'views/TradingReward/hooks/useTotalTradingReward'
 
 interface QualifiedPreviewProps {
   timeRemaining: number
@@ -55,12 +55,8 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
 
   const cakePriceBusd = useCakePrice()
 
-  const rewardInUSD = useRewardInUSD({
-    timeRemaining,
-    totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
-    canClaim: currentUserCampaignInfo?.canClaim ?? '0',
-    rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
-    rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
+  const rewardInUSD = useTotalTradingReward({
+    campaignIds: [currentUserCampaignInfo?.campaignId ?? ''],
   })
 
   const rewardInCake = useRewardInCake({
@@ -84,8 +80,8 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
   )
 
   const additionalAmount = useMemo(() => {
-    return new BigNumber(totalMapCap).minus(currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0).toNumber() ?? 0
-  }, [currentUserCampaignInfo, totalMapCap])
+    return new BigNumber(totalMapCap).minus(rewardInUSD ?? 0).toNumber() ?? 0
+  }, [rewardInUSD, totalMapCap])
 
   const isAdditionalAmountHit = useMemo(() => new BigNumber(additionalAmount).gte(0.01), [additionalAmount])
 
