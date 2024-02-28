@@ -21,9 +21,8 @@ export const useTotalTradingReward = ({ campaignIds }: { campaignIds: Array<stri
         const allData = await Promise.all(
           campaignIds.map(async (campaignId: string) => {
             const response = await fetch(
-              `${TRADING_REWARD_API}/campaign/userEstimate/campaignId/${campaignId}/address/${account}/type/${RewardType.TOP_TRADERS}`,
+              `${TRADING_REWARD_API}/campaign/userEstimate/campaignId/${campaignId}/address/${account}/type/${RewardType.CAKE_STAKERS}`,
             )
-
             const result: RankListResponse = await response.json()
             return new BigNumber(result.data.estimateReward).toNumber()
           }),
@@ -36,7 +35,7 @@ export const useTotalTradingReward = ({ campaignIds }: { campaignIds: Array<stri
       }
     },
 
-    enabled: Boolean(Number(campaignIds) > 0 && account),
+    enabled: Boolean(campaignIds.length > 0 && account),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   })

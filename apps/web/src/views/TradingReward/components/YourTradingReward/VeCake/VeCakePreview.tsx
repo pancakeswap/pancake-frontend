@@ -66,7 +66,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
 
   const rewardInCake = useRewardInCake({
     timeRemaining,
-    totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
+    totalEstimateRewardUSD: rewardInUSD ?? 0,
     totalReward: currentUserCampaignInfo?.canClaim ?? '0',
     cakePriceBusd,
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
