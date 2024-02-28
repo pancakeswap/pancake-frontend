@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
+import { useNotificationTypes } from '@web3inbox/react'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useHasUnreadNotification } from 'state/notifications/hooks'
@@ -117,6 +118,8 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
 
 const NotificationContainer = ({ notifications, subscriptionId, importantAlertsOnly }: INotificationContainerProps) => {
   const { t } = useTranslation()
+  const { data: types } = useNotificationTypes()
+
   if (notifications.length === 0) {
     return (
       <NoNotificationsWrapper>
@@ -160,7 +163,7 @@ const NotificationContainer = ({ notifications, subscriptionId, importantAlertsO
               description={notification.body}
               date={notification.sentAt}
               url={notification.url}
-              image="https://pancakeswap.finance/logo.png"
+              image={types?.[notification.type]?.imageUrls.md}
               id={notification.id}
               subscriptionId={subscriptionId}
             />
