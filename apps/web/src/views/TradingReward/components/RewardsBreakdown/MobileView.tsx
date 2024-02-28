@@ -1,9 +1,9 @@
-import { styled } from 'styled-components'
-import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
+import { styled } from 'styled-components'
 import PairInfo from 'views/TradingReward/components/PairInfo'
+import { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 
 const StyledMobileRow = styled(Box)`
   padding: 24px 0;
@@ -65,8 +65,8 @@ const MobileView: React.FC<React.PropsWithChildren<RewardsBreakdownMobileViewPro
                   </Flex>
                   <Flex justifyContent="space-between" mt="8px">
                     <Text fontSize="14px">{t('Reward Earned')}</Text>
-                    <Text fontSize="14px" bold color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
-                      {`$${formatNumber(pair.rewardEarned)}`}
+                    <Text fontSize="14px" bold color={pair.preCap > 0 ? 'text' : 'textSubtle'}>
+                      {`$${formatNumber(pair.preCap)}`}
                     </Text>
                   </Flex>
                 </StyledMobileRow>

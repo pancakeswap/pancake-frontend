@@ -1,21 +1,21 @@
-import { useEffect, useState, useMemo, useCallback } from 'react'
-import { timeFormat } from 'views/TradingReward/utils/timeFormat'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Card,
-  Text,
-  Flex,
-  PaginationButton,
-  useMatchBreakpoints,
+  Box,
   ButtonMenu,
   ButtonMenuItem,
-  Box,
+  Card,
+  Flex,
+  PaginationButton,
+  Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import DesktopView from 'views/TradingReward/components/RewardsBreakdown/DesktopView'
 import MobileView from 'views/TradingReward/components/RewardsBreakdown/MobileView'
+import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
+import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 interface RewardsBreakdownProps {
   allUserCampaignInfo: UserCampaignInfoDetail[]

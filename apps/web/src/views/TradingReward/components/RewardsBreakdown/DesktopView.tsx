@@ -1,9 +1,9 @@
 import { useTheme } from '@pancakeswap/hooks'
-import { Box, Table, Th, Td, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Table, Td, Text, Th } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 import PairInfo from 'views/TradingReward/components/PairInfo'
+import { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 
 interface RewardsBreakdownDesktopViewProps {
   isFetching: boolean
@@ -74,9 +74,7 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
                           </Text>
                         </Td>
                         <Td textAlign="right" width="20%">
-                          <Text color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
-                            {`$${formatNumber(pair.rewardEarned)}`}
-                          </Text>
+                          <Text color={pair.preCap > 0 ? 'text' : 'textSubtle'}>{`$${formatNumber(pair.preCap)}`}</Text>
                         </Td>
                       </tr>
                     ))}
