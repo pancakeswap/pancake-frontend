@@ -11,14 +11,16 @@ import {
   GraphicDetail,
   LinkExternalAction,
   PancakeSwapBadge,
+  ButtonLinkAction,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import styled from 'styled-components'
 
 const floatingAsset = `${ASSET_CDN}/web/banners/nemesis-downfall/floating-item.png`
 const bgDesktop = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-desktop.png`
 const bgMobile = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-mobile.png`
 const logo = `${ASSET_CDN}/web/banners/nemesis-downfall/logo-1.png`
-const bgImage = `${ASSET_CDN}/web/banners/nemesis-downfall/background-image.png`
+const bgImage = `${ASSET_CDN}/web/banners/nemesis-downfall/background-image.jpg`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
@@ -32,9 +34,33 @@ const bgXsVariant: GraphicDetail = {
   height: 182,
 }
 
+const StyledButtonLinkAction = styled(ButtonLinkAction)`
+  background-color: #812b21;
+`
+
+const playNowLink = 'https://pancakeswap.games'
+const learnMoreLink =
+  'https://blog.pancakeswap.finance/articles/introducing-nemesis-downfall-pancake-swap-s-latest-game-fi-release'
+
 export const NemesisDownfallBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isTablet } = useMatchBreakpoints()
+
+  const playNowAction = isMobile ? (
+    <LinkExternalAction color="white" href={playNowLink}>
+      {t('Play Now')}
+    </LinkExternalAction>
+  ) : (
+    <StyledButtonLinkAction color="white" href={learnMoreLink}>
+      {t('Play Now')}
+    </StyledButtonLinkAction>
+  )
+
+  const learnMoreAction = isMobile ? null : (
+    <LinkExternalAction color="white" href={learnMoreLink} showExternalIcon={false}>
+      {t('Learn More')}
+    </LinkExternalAction>
+  )
 
   return (
     <BannerContainer background={`url('${bgImage}')`}>
@@ -55,27 +81,10 @@ export const NemesisDownfallBanner = () => {
           </BannerTitle>
         }
         actions={
-          isMobile ? (
-            <LinkExternalAction
-              mb="20px"
-              color="white"
-              href="https://pancakeswap.games"
-              style={{ alignItems: 'center' }}
-            >
-              {t('Play Now')}
-            </LinkExternalAction>
-          ) : (
-            <BannerActionContainer
-              firstButtonTitle={t('Play Now')}
-              firstButtonLink="https://pancakeswap.games"
-              firstButtonBackgroundColor="#812b21"
-              firstButtonTextColor="white"
-              firstButtonBoxShadowColor="inset 0px -2px 0px rgba(0, 0, 0, 0.2)"
-              secondButtonTitle={t('Learn More')}
-              secondButtonTextColor="white"
-              secondButtonLink="https://blog.pancakeswap.finance/articles/introducing-nemesis-downfall-pancake-swap-s-latest-game-fi-release"
-            />
-          )
+          <BannerActionContainer>
+            {playNowAction}
+            {learnMoreAction}
+          </BannerActionContainer>
         }
       />
       <BannerGraphics mb={['20px', '10px', '10px', '10px', '0']}>
