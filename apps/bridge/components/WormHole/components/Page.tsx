@@ -12,7 +12,7 @@ const StyledPage = styled(Container)`
   padding-top: 12px;
   padding-bottom: 16px;
   position: relative;
-  z-index: 10;
+  z-index: 1;
   background: ${({ theme }) => (theme.isDark ? 'rgb(53,54,88)' : 'rgb(233,247,255)')};
 
   ${({ theme }) => theme.mediaQueries.sm} {
