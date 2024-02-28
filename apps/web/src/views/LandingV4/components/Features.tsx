@@ -12,15 +12,11 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useCallback, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
 import 'swiper/css'
 import 'swiper/css/autoplay'
-import { Autoplay } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-
-import type { Swiper as SwiperClass } from 'swiper/types'
 
 const FeaturesContainer = styled(Flex)`
   width: 100%;
@@ -51,7 +47,7 @@ const ListStyled = styled(Flex)<{ $isPicked?: boolean }>`
   }
 `
 
-const SwiperStyled = styled(Swiper)`
+const DetailStyled = styled(Box)`
   position: relative;
   top: 0;
   width: 100%;
@@ -66,13 +62,6 @@ const SwiperStyled = styled(Swiper)`
     margin: 40px 0px auto 40px;
   }
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    width: 600px;
-  }
-`
-
-const DetailStyled = styled(Box)`
-  width: 100%;
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 600px;
   }
@@ -206,30 +195,58 @@ const FeaturesConfig = [
   },
 ]
 
+const DISPLAY_TIMER = 10000
+
 export const Features = () => {
   const { t } = useTranslation()
   const { isSm, isXs, isMd } = useMatchBreakpoints()
   const [percentage, setPerCentage] = useState(0)
   const [step, setStep] = useState(0)
-  const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
+  const timer = useRef<NodeJS.Timeout | null>(null)
+  const [mouseEntered, setMouseEntered] = useState(false)
+  const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
 
   const isBigDevice = useMemo(() => !isXs && !isSm && !isMd, [isXs, isSm, isMd])
 
   const handleStepClick = (stepIndex: number) => {
-    // console.log('stepIndex', stepIndex)
-    // swiper?.autoplay?.stop()
     setStep(stepIndex)
-    swiper?.slideTo(stepIndex)
-    // swiper?.autoplay?.start()
+    setRemainingTimer(DISPLAY_TIMER)
   }
 
-  const handleRealIndexChange = useCallback((swiperInstance: SwiperClass) => {
-    setStep(swiperInstance.realIndex + 1)
-  }, [])
+  useEffect(() => {
+    const startCountdown = () => {
+      if (mouseEntered) {
+        return
+      }
 
-  const onAutoplayTimeLeft = (s, time, progress) => {
-    setPerCentage(1 - progress)
-  }
+      // Clear previous interval
+      if (timer.current) {
+        clearInterval(timer.current)
+      }
+
+      timer.current = setInterval(() => {
+        const timeInSecond = remainingTimer - 160
+        const newRemainingTimer = timeInSecond > 0 ? timeInSecond : DISPLAY_TIMER
+        setRemainingTimer(newRemainingTimer)
+
+        const newPercentage = 1 - timeInSecond / DISPLAY_TIMER
+        setPerCentage(newPercentage)
+
+        if (newPercentage >= 1) {
+          const nextStepIndex = step === FeaturesConfig.length - 1 ? 0 : step + 1
+          setStep(nextStepIndex)
+        }
+      }, 50)
+    }
+
+    startCountdown()
+
+    return () => {
+      if (timer.current) {
+        clearInterval(timer.current)
+      }
+    }
+  }, [mouseEntered, remainingTimer, step])
 
   return (
     <FeaturesContainer>
@@ -293,40 +310,20 @@ export const Features = () => {
             )
           })}
         </Flex>
-        <SwiperStyled
-          loop
-          resizeObserver
-          centeredSlides
-          slidesPerView={1}
-          modules={[Autoplay]}
-          autoplay={{
-            delay: 2500,
-            pauseOnMouseEnter: true,
-            disableOnInteraction: false,
-          }}
-          onSwiper={setSwiper}
-          onAutoplayTimeLeft={onAutoplayTimeLeft}
-          onRealIndexChange={handleRealIndexChange}
-        >
-          {FeaturesConfig.map((config) => (
-            <SwiperSlide key={config.id}>
-              <DetailStyled>
-                <Image width={600} height={337} src={config.imgUrl} alt="img" />
-                <Text
-                  bold
-                  m={['40px 0 16px 0']}
-                  fontSize={['20px', '20px', '20px', '28px']}
-                  lineHeight={['24px', '24px', '24px', '32px']}
-                >
-                  {config.title}
-                </Text>
-                <Text lineHeight={['20px', '20px', '20px', '24px']} fontSize={['14px', '14px', '14px', '16px']}>
-                  {config.subTitle}
-                </Text>
-              </DetailStyled>
-            </SwiperSlide>
-          ))}
-        </SwiperStyled>
+        <DetailStyled onMouseEnter={() => setMouseEntered(true)} onMouseLeave={() => setMouseEntered(false)}>
+          <Image width={600} height={337} src={FeaturesConfig[step].imgUrl} alt="img" />
+          <Text
+            bold
+            m={['40px 0 16px 0']}
+            fontSize={['20px', '20px', '20px', '28px']}
+            lineHeight={['24px', '24px', '24px', '32px']}
+          >
+            {FeaturesConfig[step].title}
+          </Text>
+          <Text lineHeight={['20px', '20px', '20px', '24px']} fontSize={['14px', '14px', '14px', '16px']}>
+            {FeaturesConfig[step].subTitle}
+          </Text>
+        </DetailStyled>
       </Flex>
     </FeaturesContainer>
   )
