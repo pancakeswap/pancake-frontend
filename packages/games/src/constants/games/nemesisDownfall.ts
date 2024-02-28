@@ -35,7 +35,8 @@ export const nemesisDownfall: GameType = {
     external: true,
     signUpLink:
       'https://auth.nemesisdownfall.com/login?client_id=60sha7m7ote2m6ipotns8kdr9b&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fnemesisdownfall.com%2Fsuccessful%2F',
-    playNowLink: '',
+    playNowLink:
+      'https://auth.nemesisdownfall.com/login?client_id=60sha7m7ote2m6ipotns8kdr9b&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fnemesisdownfall.com%2Fsuccessful%2F',
   },
   posters: {
     layout: PostersLayout.Horizontal,
