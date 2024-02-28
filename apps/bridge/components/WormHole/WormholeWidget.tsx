@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
 import WormholeBridge from '@wormhole-foundation/wormhole-connect'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { useTheme } from 'styled-components'
 import Page from './components/Page'
@@ -14,9 +14,17 @@ import { ExtendedWidgetConfig, WidgetEnvs } from './types'
 export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
 
+  const toast = useToast()
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
   const theme = useTheme()
+
+  const wormholeMessageCallback = useCallback(() => {
+    toast.toastWarning(
+      t('Warning'),
+      t('Please be aware when completing a wormhole bridge you may have to confirm multiple popups in your wallet.'),
+    )
+  }, [toast, t])
 
   const wormholeConfig: ExtendedWidgetConfig = useMemo(() => {
     const widgetEnv = enableMainnet ? WidgetEnvs.mainnet : WidgetEnvs.testnet
@@ -41,14 +49,13 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
       },
       showHamburgerMenu: false,
       partnerLogo: pcsLogo,
-      // walletConnectProjectId,
     }
     return config
   }, [theme.isDark, enableMainnet, isAptos])
 
   return (
     <>
-      <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Wormhole} />
+      <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Wormhole} cb={wormholeMessageCallback} />
       <Page>
         <Box minHeight="calc(100vh - 56px - 70px)">
           <Flex maxWidth="690px" m="auto" alignItems="center" justifyContent={isMobile ? 'center' : 'right'}>
