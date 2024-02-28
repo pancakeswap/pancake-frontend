@@ -42,7 +42,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
       mode,
       customTheme,
       bridgeDefaults: {
-        fromNetwork: isAptos ? 'aptos' : 'ethereum',
+        fromNetwork: isAptos ? 'aptos' : enableMainnet ? 'ethereum' : 'goerli',
         toNetwork: 'bsc',
         token: 'ETH',
         requiredNetwork: isAptos ? 'aptos' : undefined,
