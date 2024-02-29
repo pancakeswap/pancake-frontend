@@ -9,8 +9,6 @@ import { PoolType } from '../v3-router/types'
 const zChainId = z.nativeEnum(ChainId)
 const zFee = z.nativeEnum(FeeAmount)
 const zTradeType = z.nativeEnum(TradeType)
-const zPoolType = z.nativeEnum(PoolType)
-const zPoolTypes = z.array(zPoolType)
 const zAddress = z.custom<Address>((val) => /^0x[a-fA-F0-9]{40}$/.test(val as string))
 const zBigNumber = z.string().regex(/^[0-9]+$/)
 const zSignedBigInt = z.string().regex(/^-?[0-9]+$/)
@@ -90,8 +88,6 @@ export const zRouterPostParams = z
     candidatePools: zPools,
     gasPriceWei: zBigNumber.optional(),
     maxHops: z.number().optional(),
-    maxSplits: z.number().optional(),
-    poolTypes: zPoolTypes.optional(),
   })
   .required({
     chainId: true,

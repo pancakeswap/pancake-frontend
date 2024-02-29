@@ -44,10 +44,10 @@ export function createPriceCalculator({ graph, quote, gasPriceWei }: Params) {
     priceMap.set(vTo, p.multiply(vFromQuotePrice))
     nextEdges = getNextEdges(vTo)
     processedVert.add(vTo)
-    console.log(
-      `Pricing: + Token ${vTo.currency.symbol} price=${getQuotePrice(vTo)?.toSignificant(6)}` +
-        ` from ${vFrom.currency.symbol} pool=${getPoolAddress(bestEdge.pool)} liquidity=${getWeight(bestEdge)}`,
-    )
+    // console.log(
+    //   `Pricing: + Token ${vTo.currency.symbol} price=${getQuotePrice(vTo)?.toSignificant(6)}` +
+    //     ` from ${vFrom.currency.symbol} pool=${getPoolAddress(bestEdge.pool)} liquidity=${getWeight(bestEdge)}`,
+    // )
   }
 
   const native = Native.onChain(chainId).wrapped

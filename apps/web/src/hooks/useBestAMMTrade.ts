@@ -33,6 +33,13 @@ import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useGlobalWorker } from './useWorker'
 
+export class NoValidRouteError extends Error {
+  constructor(message?: string) {
+    super(message)
+    this.name = 'NoValidRouteError'
+  }
+}
+
 SmartRouter.logger.enable('error,log')
 
 type CreateQuoteProviderParams = {
@@ -96,17 +103,27 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const quoterAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled
 
-  // const bestTradeFromQuoterWorker = useBestAMMTradeFromQuoterWorker({
-  //   ...params,
-  //   enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled),
-  //   autoRevalidate: quoterAutoRevalidate,
-  // })
-
-  const bestTradeFromQuoterWorker = useBestAMMTradeFromOffchainQuoter({
+  const bestTradeFromOffchainQuoter = useBestAMMTradeFromOffchainQuoter({
     ...params,
     enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled),
     autoRevalidate: quoterAutoRevalidate,
   })
+
+  const noValidRouteFromOffchainQuoter =
+    Boolean(amount) &&
+    !bestTradeFromOffchainQuoter.trade &&
+    !bestTradeFromOffchainQuoter.isLoading &&
+    bestTradeFromOffchainQuoter.error instanceof NoValidRouteError
+
+  const bestTradeFromOnChainQuoter = useBestAMMTradeFromQuoterWorker({
+    ...params,
+    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && noValidRouteFromOffchainQuoter),
+    autoRevalidate: quoterAutoRevalidate,
+  })
+
+  const bestTradeFromQuoterWorker = noValidRouteFromOffchainQuoter
+    ? bestTradeFromOnChainQuoter
+    : bestTradeFromOffchainQuoter
 
   return useMemo(
     () => (isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker),
@@ -336,12 +353,7 @@ function createUseWorkerGetBestTradeOffchain() {
     const worker = useGlobalWorker()
 
     return useCallback(
-      async (
-        amount,
-        currency,
-        tradeType,
-        { maxHops, maxSplits, allowedPoolTypes, gasPriceWei, signal, poolProvider },
-      ) => {
+      async (amount, currency, tradeType, { maxHops, allowedPoolTypes, gasPriceWei, signal, poolProvider }) => {
         if (!worker) {
           throw new Error('Quote worker not initialized')
         }
@@ -360,12 +372,13 @@ function createUseWorkerGetBestTradeOffchain() {
           },
           gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
           maxHops,
-          maxSplits,
-          poolTypes: allowedPoolTypes,
           candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
           signal,
         })
-        return V4Router.Transformer.parseTrade(currency.chainId, result as any) ?? null
+        if (!result) {
+          throw new NoValidRouteError()
+        }
+        return V4Router.Transformer.parseTrade(currency.chainId, result) ?? null
       },
       [worker],
     )

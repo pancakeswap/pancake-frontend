@@ -82,17 +82,17 @@ export function createGraph({ pools }: GraphParams): Graph {
     getEdge,
     applySwap: async ({ isExactIn, route }) => {
       const getPoolQuote = createPoolQuoteGetter(isExactIn)
-      function* loopPath() {
-        let i = isExactIn ? 0 : route.path.length - 1
-        const next = isExactIn ? () => i++ : () => i--
-        const hasNext = isExactIn ? () => i < route.path.length - 1 : () => i >= 1
-        for (; hasNext(); next()) {
+      function* loopPools() {
+        let i = isExactIn ? 0 : route.pools.length - 1
+        const getNext = () => (isExactIn ? i + 1 : i - 1)
+        const hasNext = isExactIn ? () => i < route.pools.length : () => i >= 0
+        for (; hasNext(); i = getNext()) {
           yield i
         }
       }
 
-      let amount = route.inputAmount
-      for (const i of loopPath()) {
+      let amount = isExactIn ? route.inputAmount : route.outputAmount
+      for (const i of loopPools()) {
         const vertA = getVertice(route.path[i])
         const vertB = getVertice(route.path[i + 1])
         const p = route.pools[i]
@@ -285,6 +285,13 @@ export async function findBestTrade({
       }
 
       for (const e of vert.edges) {
+        const prevBestSource = getBestSource(vert)
+
+        // Exact output doesn't support mixed route
+        if (!isExactIn && prevBestSource && e.pool.type !== prevBestSource.pool.type) {
+          continue
+        }
+
         const v2 = vert === e.vertice0 ? e.vertice1 : e.vertice0
         if (processedVert.has(v2)) continue
 
@@ -293,7 +300,7 @@ export async function findBestTrade({
           invariant(bestAmount !== undefined, 'Invalid amount')
           // eslint-disable-next-line no-await-in-loop
           const quoteResult = await getPoolQuote(e.pool, bestAmount)
-          console.log(`Get quote success ${quoteResult?.quote.toExact()}`)
+          // console.log(`Get quote success ${quoteResult?.quote.toExact()}`)
           invariant(quoteResult !== undefined, 'Invalid quote result')
           const { quote } = quoteResult
           const gasPriceInV2 = priceCalculator.getGasPriceInBase(v2)
@@ -321,7 +328,7 @@ export async function findBestTrade({
             })
           }
         } catch (_err) {
-          console.error(_err)
+          // console.error(_err)
           continue
         }
       }
