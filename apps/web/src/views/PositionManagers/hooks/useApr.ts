@@ -104,9 +104,9 @@ export const useApr = ({
 
   const aprData = useMemo(() => {
     return {
-      combinedApr: !totalApr.isNaN() ? totalApr.toFixed(2) ?? '-' : '',
-      lpApr: !totalLpApr.isNaN() ? totalLpApr.toFixed(2) ?? '-' : '',
-      cakeYieldApr: !cakeYieldApr.isNaN() ? cakeYieldApr.toFixed(2) ?? '-' : '',
+      combinedApr: !totalApr.isNaN() ? totalApr.toFixed(2) ?? '-' : '0.00',
+      lpApr: !totalLpApr.isNaN() ? totalLpApr.toFixed(2) ?? '-' : '0.00',
+      cakeYieldApr: !cakeYieldApr.isNaN() ? cakeYieldApr.toFixed(2) ?? '-' : '0.00',
       isInCakeRewardDateRange,
     }
   }, [totalApr, totalLpApr, cakeYieldApr, isInCakeRewardDateRange])
