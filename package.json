@@ -8,7 +8,7 @@
     "apis/*",
     "scripts"
   ],
-  "packageManager": "pnpm@8.x",
+  "packageManager": "pnpm@8.15.4",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web... --concurrency=26",
