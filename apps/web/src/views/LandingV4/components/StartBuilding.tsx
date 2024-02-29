@@ -22,24 +22,33 @@ const StepImage = styled(Box)`
   width: 204px;
   height: 154px;
   margin-bottom: 24px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
 
   ${({ theme }) => theme.mediaQueries.md} {
+    width: 252px;
+    height: 154px;
+  }
+
+  @media screen and (min-width: 1440px) {
     width: 282px;
-    height: 209px;
+    height: 188px;
   }
 `
 
 const StepsContainer = styled(Flex)`
   width: 204px;
-  max-width: 1200px;
   margin: auto;
   flex-wrap: wrap;
   justify-content: space-between;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 588px;
+    width: 528px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    width: 1200px;
   }
 `
 
@@ -83,6 +92,7 @@ export const StartBuilding = () => {
         `}
       </style>
       <PageSection
+        id="#building"
         index={2}
         hasCurvedDivider={false}
         background={theme.colors.gradientBubblegum}

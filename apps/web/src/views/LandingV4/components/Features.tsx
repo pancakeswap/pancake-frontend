@@ -2,16 +2,19 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 import {
   ArrowForwardIcon,
   Box,
+  Button,
   CalculateIcon,
   DonateIcon,
   Flex,
   HooksIcon,
   Image,
+  OpenNewIcon,
   PoolTypeIcon,
   SingletonIcon,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
@@ -52,6 +55,7 @@ const DetailStyled = styled(Box)`
   top: 0;
   width: 100%;
   margin: 40px auto auto auto;
+  min-height: 500px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 528px;
@@ -249,7 +253,7 @@ export const Features = () => {
   }, [mouseEntered, remainingTimer, step])
 
   return (
-    <FeaturesContainer>
+    <FeaturesContainer id="#features">
       <Text
         bold
         mb="40px"
@@ -309,6 +313,16 @@ export const Features = () => {
               </div>
             )
           })}
+          {isBigDevice && (
+            <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
+              <Button width="fit-content" mt="70px">
+                <Text bold mr="4px">
+                  {t('Read more')}
+                </Text>
+                <OpenNewIcon />
+              </Button>
+            </NextLinkFromReactRouter>
+          )}
         </Flex>
         <DetailStyled onMouseEnter={() => setMouseEntered(true)} onMouseLeave={() => setMouseEntered(false)}>
           <Image width={600} height={337} src={FeaturesConfig[step].imgUrl} alt="img" />

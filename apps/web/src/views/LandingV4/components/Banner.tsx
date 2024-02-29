@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Image, OpenNewIcon, PageSection, Tag, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, OpenNewIcon, PageSection, Tag, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
@@ -7,8 +7,16 @@ import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
 const StyledBannerSection = styled(PageSection)`
   padding: 40px 0;
 
+  > div {
+    padding: 0 !important;
+  }
+
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 128px 0;
+    padding: 128px 16px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    padding: 128px 0px;
   }
 `
 const BgWrapper = styled.div`
@@ -25,6 +33,10 @@ const InnerWrapper = styled.div`
   position: absolute;
   width: 100%;
   bottom: -3px;
+`
+
+const VideoStyled = styled.video`
+  border-radius: 24px;
 `
 
 export const Banner = () => {
@@ -72,22 +84,22 @@ export const Banner = () => {
             <SlideSvgLight className="slide-svg-light" width="100%" />
           </InnerWrapper>
         </BgWrapper>
-        <Flex flexDirection={['column', 'column', 'column', 'row']}>
+        <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'column', 'row']}>
           <Flex
-            m={['22px 0 0 0 0', '22px 0 0 0 0', '22px 0 0 0 0', '0 0 0 48px']}
+            m={['22px 0 0 0 0', '22px 0 0 0 0', '22px 0 0 0 0', '22px 0 0 0 0', '0 0 0 48px']}
             maxWidth={['560px']}
             alignSelf="center"
             flexDirection="column"
           >
-            <Box m={['16px auto', '16px auto', '16px auto', '24px 0']}>
+            <Box m={['16px auto', '16px auto', '16px auto', '16px auto', '16px auto', '16px auto', '24px 0']}>
               <Tag variant="secondary">{t('PancakeSwap v4')}</Tag>
             </Box>
             <Box>
-              <Flex justifyContent={['center', 'center', 'center', 'left']}>
+              <Flex justifyContent={['center', 'center', 'center', 'center', 'center', 'center', 'left']}>
                 <Text
                   bold
-                  fontSize={['40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
                   as="span"
                 >
                   {t('Your')}
@@ -97,26 +109,26 @@ export const Banner = () => {
                   as="span"
                   m="0 4px"
                   color="secondary"
-                  fontSize={['40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
                 >
                   {t('DEX')}
                 </Text>
                 <Text
                   bold
                   as="span"
-                  fontSize={['40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
                 >
                   ,
                 </Text>
               </Flex>
-              <Flex justifyContent={['center', 'center', 'center', 'left']}>
+              <Flex justifyContent={['center', 'center', 'center', 'center', 'center', 'center', 'left']}>
                 <Text
                   bold
                   as="span"
-                  fontSize={['40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
                 >
                   {t('Your')}
                 </Text>
@@ -125,8 +137,8 @@ export const Banner = () => {
                   ml="4px"
                   as="span"
                   color="secondary"
-                  fontSize={['40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
                 >
                   {t('Innovation')}
                 </Text>
@@ -137,8 +149,8 @@ export const Banner = () => {
               fontSize={['20px']}
               lineHeight="110%"
               color="textSubtle"
-              m={['16px 0', '16px 0', '16px 0', '24px 0']}
-              textAlign={['center', 'center', 'center', 'left']}
+              m={['16px 0', '16px 0', '16px 0', '16px 0', '24px 0']}
+              textAlign={['center', 'center', 'center', 'center', 'center', 'center', 'left']}
             >
               {t('Empower, Build and Innovate with PancakeSwap v4')}
             </Text>
@@ -146,7 +158,7 @@ export const Banner = () => {
               target="_blank"
               to="https://blog.pancakeswap.finance/articles/celebrating-traverse-claim-your-exclusive-nfts"
             >
-              <Button display="flex" margin={['auto', 'auto', 'auto', '0']}>
+              <Button display="flex" margin={['auto', 'auto', 'auto', 'auto', 'auto', 'auto', '0']}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
                   {t('Read Whitepaper')}
                 </Text>
@@ -156,14 +168,28 @@ export const Banner = () => {
           </Flex>
           <Box
             height={['337px']}
-            width={['100%', '600px']}
-            m={['40px auto auto auto', '40px auto auto auto', '40px auto auto auto', 'auto']}
+            padding={['16px', '16px', '16px', '0px']}
+            width={['100%', '100%', '100%', '600px']}
+            m={[
+              '40px auto auto auto',
+              '40px auto auto auto',
+              '40px auto auto auto',
+              '40px auto auto auto',
+              '40px auto auto auto',
+              '40px auto auto auto',
+              'auto 0 auto auto',
+            ]}
           >
-            <Image
-              width={600}
-              height={337}
-              alt="banner-image"
-              src="https://img.freepik.com/free-vector/gradient-geometric-modern-background-design_826849-4176.jpg?w=1800&t=st=1708491776~exp=1708492376~hmac=1a36ca65d7f91ebdf21c9052f666b6624283a18b69c9caf5219749cc20889899"
+            <VideoStyled
+              muted
+              autoPlay
+              controls
+              width="100%"
+              height="100%"
+              disablePictureInPicture
+              src="https://www.mobox.io/download/Pancake_Protectors_Video.mp4"
+              poster="https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/5.png"
+              controlsList="nodownload noplaybackrate noremoteplayback"
             />
           </Box>
         </Flex>

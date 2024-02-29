@@ -36,17 +36,12 @@ export const Contribute = () => {
             lineHeight={['28px', '28px', '28px', '28px', '32px']}
             textAlign={['center', 'center', 'center', 'center', 'left']}
           >
-            {t('Contribute to the PancakeSwap Hooks Community!')}
+            {t('Contribute to PancakeSwap v4')}
           </Text>
           <Text lineHeight="24px" textAlign={['center', 'center', 'center', 'center', 'left']} m={['16px 0 32px 0']}>
-            {t(
-              'Brief extract Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna alere.',
-            )}
+            {t(`Build Hooks with us and participate in PancakeSwap's One Million USD Developer Program`)}
           </Text>
-          <NextLinkFromReactRouter
-            target="_blank"
-            to="https://blog.pancakeswap.finance/articles/celebrating-traverse-claim-your-exclusive-nfts"
-          >
+          <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
             <Button display="flex" margin={['auto', 'auto', 'auto', '0']}>
               <Text bold fontSize={['12px', '16px']} mr="4px">
                 {t('Submit Your Hook')}
