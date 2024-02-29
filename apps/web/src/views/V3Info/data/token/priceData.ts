@@ -79,7 +79,7 @@ const DAY_PAIR_MAX = (timestamp: number | string) => {
 const DAY_PAIR_MIN = (timestamp: number | string) => {
   const queryString = `query minPrice($address: String) {
      poolDayDatas(
-        where: { pool: $address, date_gte: ${timestamp},low_gt: 0 }
+        where: { pool: $address, date_gte: ${timestamp} }
       ) {
         low
       }
@@ -134,7 +134,7 @@ const HOUR_PRICE_CHART = gql`
 const HOUR_PRICE_MIN = (timestamp: number | string) => gql`
   query minPrice( $address: String!) {
     poolHourDatas(
-      where: { pool: $address, periodStartUnix: ${timestamp}, low_gt: 0 }
+      where: { pool: $address, periodStartUnix: ${timestamp} }
     ) {
       low
     }
@@ -356,14 +356,18 @@ export async function fetchPairPriceChartTokenData(
             await dataClient.request<PairPriceMinMaxResults>(DAY_PAIR_MIN(blocks?.[0].timestamp), {
               address,
             })
-          )?.poolDayDatas?.map((poolData) => parseFloat(poolData.low)),
+          )?.poolDayDatas
+            ?.filter((poolData) => parseFloat(poolData.low) > 0)
+            .map((poolData) => parseFloat(poolData.low)),
         )?.toString()
       : min(
           (
             await dataClient.request<PairPriceMinMaxResults>(HOUR_PRICE_MIN(blocks?.[0].timestamp), {
               address,
             })
-          )?.poolHourDatas?.map((poolData) => parseFloat(poolData.low)),
+          )?.poolHourDatas
+            ?.filter((poolData) => parseFloat(poolData.low) > 0)
+            .map((poolData) => parseFloat(poolData.low)),
         )?.toString()
 
     // eslint-disable-next-line no-await-in-loop
