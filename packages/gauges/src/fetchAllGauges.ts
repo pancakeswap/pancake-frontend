@@ -5,9 +5,14 @@ import { fetchGaugesCount } from './fetchGaugesCount'
 import { getGaugeHash } from './getGaugeHash'
 import { GaugeInfo } from './types'
 
-export const fetchAllGauges = async (client: PublicClient): Promise<GaugeInfo[]> => {
+export const fetchAllGauges = async (
+  client: PublicClient,
+  options?: {
+    blockNumber?: bigint
+  },
+): Promise<GaugeInfo[]> => {
   const contract = getContract(client)
-  const counts = await fetchGaugesCount(client)
+  const counts = await fetchGaugesCount(client, options)
 
   const multicalls: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'gauges'>[]> = []
 
@@ -22,6 +27,7 @@ export const fetchAllGauges = async (client: PublicClient): Promise<GaugeInfo[]>
   const response = (await client.multicall({
     contracts: multicalls,
     allowFailure: false,
+    ...options,
   })) as ContractFunctionResult<typeof gaugesVotingABI, 'gauges'>[]
 
   return response.reduce((prev, curr) => {

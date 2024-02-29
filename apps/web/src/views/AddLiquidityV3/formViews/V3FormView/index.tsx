@@ -627,7 +627,10 @@ export default function V3FormView({
                       {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
                     </Text>
                     <Text color="text2" fontSize={12}>
-                      {quoteCurrency?.symbol} per {baseCurrency.symbol}
+                      {t('%assetA% per %assetB%', {
+                        assetA: quoteCurrency?.symbol ?? '',
+                        assetB: baseCurrency.symbol ?? '',
+                      })}
                     </Text>
                   </AutoRow>
                 )}

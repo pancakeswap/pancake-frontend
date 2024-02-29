@@ -15,6 +15,7 @@ const handler: NextApiHandler = async (req, res) => {
   const inCap = Boolean(queryParsed.inCap ?? true)
   const bothCap = Boolean(queryParsed.bothCap ?? false)
   const killed = Boolean(queryParsed.killed ?? false)
+  const blockNumber = queryParsed.blockNumber ? BigInt(queryParsed.blockNumber as string) : undefined
 
   try {
     const gauges = await getAllGauges(
@@ -26,10 +27,16 @@ const handler: NextApiHandler = async (req, res) => {
         inCap,
         bothCap,
         killed,
+        blockNumber,
       },
     )
 
-    res.setHeader('Cache-Control', `max-age=0, s-maxage=${MAX_CACHE_SECONDS}, stale-while-revalidate`)
+    if (blockNumber) {
+      // cache for long time if blockNumber is provided
+      res.setHeader('Cache-Control', `max-age=10800, s-maxage=31536000`)
+    } else {
+      res.setHeader('Cache-Control', `max-age=10, s-maxage=${MAX_CACHE_SECONDS}, stale-while-revalidate`)
+    }
     return res.status(200).json({
       data: JSON.parse(stringify(gauges)),
       lastUpdated: Number(Date.now()),

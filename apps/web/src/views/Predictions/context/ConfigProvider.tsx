@@ -1,7 +1,7 @@
 import { PredictionConfig } from '@pancakeswap/prediction'
 import { createContext, useContext } from 'react'
 
-export const ConfigContext = createContext<PredictionConfig | null>(null)
+export const ConfigContext = createContext<PredictionConfig | undefined>(undefined)
 
 export function useConfig() {
   return useContext(ConfigContext)

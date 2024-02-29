@@ -41,7 +41,7 @@ function createDatadogRumManager() {
       return
     }
     const env = process.env.NEXT_PUBLIC_VERCEL_ENV
-    const sessionSampleRate = 100
+    const sessionSampleRate = env === 'production' ? 1 : env === 'preview' ? 100 : 0
     ddRum.init({
       version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
       enableExperimentalFeatures: ['feature_flags'],

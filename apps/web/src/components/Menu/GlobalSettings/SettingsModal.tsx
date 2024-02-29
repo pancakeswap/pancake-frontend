@@ -187,7 +187,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   <Text>{t('Allow notifications')}</Text>
                   <QuestionHelper
                     text={t(
-                      'Enables the web notifications feature. if turned off you will be automatically unsubscribed and the notification bell will not be visible',
+                      'Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible',
                     )}
                     placement="top"
                     ml="4px"

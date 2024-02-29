@@ -13,5 +13,5 @@ export function getGameLink({
     return gameLink.signUpLink
   }
 
-  return isMobile ? gameLink.playNowLink : `/project/${gameId}`
+  return isMobile || gameLink.external ? gameLink.playNowLink : `/project/${gameId}`
 }

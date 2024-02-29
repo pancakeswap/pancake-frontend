@@ -1,9 +1,10 @@
-import { request, gql } from 'graphql-request'
 import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { LotteryTicket } from 'config/constants/types'
-import { LotteryUserGraphEntity, LotteryResponse, UserRound } from 'state/types'
-import { getRoundIdsArray, fetchMultipleLotteries, hasRoundBeenClaimed } from './helpers'
+import { gql, request } from 'graphql-request'
+import { LotteryResponse, LotteryUserGraphEntity, UserRound } from 'state/types'
+import { notEmpty } from 'utils/notEmpty'
 import { fetchUserTicketsForMultipleRounds } from './getUserTicketsData'
+import { fetchMultipleLotteries, getRoundIdsArray, hasRoundBeenClaimed } from './helpers'
 
 export const MAX_USER_LOTTERIES_REQUEST_SIZE = 100
 
@@ -19,32 +20,38 @@ const applyNodeDataToUserGraphResponse = (
   if (userGraphData.length === 0) {
     return lotteryNodeData.map((nodeRound) => {
       const ticketDataForRound = userNodeData.find((roundTickets) => roundTickets.roundId === nodeRound.lotteryId)
+
       return {
         endTime: nodeRound.endTime,
         status: nodeRound.status,
         lotteryId: nodeRound.lotteryId.toString(),
-        claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
-        totalTickets: `${ticketDataForRound.userTickets.length.toString()}`,
-        tickets: ticketDataForRound.userTickets,
+        claimed: hasRoundBeenClaimed(ticketDataForRound?.userTickets || []),
+        totalTickets: `${ticketDataForRound ? ticketDataForRound.userTickets.length.toString() : '0'}`,
+        tickets: ticketDataForRound?.userTickets || [],
       }
     })
   }
 
   // Return the rounds with combined node + subgraph data, plus all remaining subgraph rounds.
-  const nodeRoundsWithGraphData = userNodeData.map((userNodeRound) => {
-    const userGraphRound = userGraphData.find(
-      (graphResponseRound) => graphResponseRound.lotteryId === userNodeRound.roundId,
-    )
-    const nodeRoundData = lotteryNodeData.find((nodeRound) => nodeRound.lotteryId === userNodeRound.roundId)
-    return {
-      endTime: nodeRoundData.endTime,
-      status: nodeRoundData.status,
-      lotteryId: nodeRoundData.lotteryId.toString(),
-      claimed: hasRoundBeenClaimed(userNodeRound.userTickets),
-      totalTickets: userGraphRound?.totalTickets || userNodeRound.userTickets.length.toString(),
-      tickets: userNodeRound.userTickets,
-    }
-  })
+  const nodeRoundsWithGraphData = userNodeData
+    .map((userNodeRound) => {
+      const userGraphRound = userGraphData.find(
+        (graphResponseRound) => graphResponseRound.lotteryId === userNodeRound.roundId,
+      )
+      const nodeRoundData = lotteryNodeData.find((nodeRound) => nodeRound.lotteryId === userNodeRound.roundId)
+
+      if (!nodeRoundData) return undefined
+
+      return {
+        endTime: nodeRoundData.endTime,
+        status: nodeRoundData.status,
+        lotteryId: nodeRoundData.lotteryId.toString(),
+        claimed: hasRoundBeenClaimed(userNodeRound.userTickets),
+        totalTickets: userGraphRound?.totalTickets || userNodeRound.userTickets.length.toString(),
+        tickets: userNodeRound.userTickets,
+      }
+    })
+    .filter(notEmpty)
 
   // Return the rounds with combined data, plus all remaining subgraph rounds.
   const [lastCombinedDataRound] = nodeRoundsWithGraphData.slice(-1)

@@ -1,44 +1,44 @@
+import { ChainId } from '@pancakeswap/chains'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { getSourceChain, isIfoSupported } from '@pancakeswap/ifos'
+import { getLivePoolsConfig } from '@pancakeswap/pools'
+import { Token } from '@pancakeswap/sdk'
+import { Pool } from '@pancakeswap/widgets-internal'
+import { FAST_INTERVAL } from 'config/constants'
+import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { useEffect, useMemo } from 'react'
-import { useAccount } from 'wagmi'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
-import { FAST_INTERVAL } from 'config/constants'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { Pool } from '@pancakeswap/widgets-internal'
-import { Token } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
-import { getLivePoolsConfig } from '@pancakeswap/pools'
-import { isIfoSupported, getSourceChain } from '@pancakeswap/ifos'
+import { useAccount } from 'wagmi'
 
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useQuery } from '@tanstack/react-query'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import {
-  fetchPoolsPublicDataAsync,
-  fetchPoolsUserDataAsync,
-  fetchCakeVaultPublicData,
-  fetchCakeVaultUserData,
-  fetchCakeVaultFees,
-  fetchPoolsStakingLimitsAsync,
-  fetchUserIfoCreditDataAsync,
-  fetchIfoPublicDataAsync,
+  fetchCakeFlexibleSideVaultFees,
   fetchCakeFlexibleSideVaultPublicData,
   fetchCakeFlexibleSideVaultUserData,
-  fetchCakeFlexibleSideVaultFees,
-  fetchCakePoolUserDataAsync,
   fetchCakePoolPublicDataAsync,
+  fetchCakePoolUserDataAsync,
+  fetchCakeVaultFees,
+  fetchCakeVaultPublicData,
+  fetchCakeVaultUserData,
+  fetchIfoPublicDataAsync,
+  fetchPoolsPublicDataAsync,
+  fetchPoolsStakingLimitsAsync,
+  fetchPoolsUserDataAsync,
+  fetchUserIfoCreditDataAsync,
   setInitialPoolConfig,
 } from '.'
-import { VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
+import { VaultKey } from '../types'
 import {
+  ifoCeilingSelector,
+  ifoCreditSelector,
   makePoolWithUserDataLoadingSelector,
   makeVaultPoolByKey,
-  poolsWithVaultSelector,
-  ifoCreditSelector,
-  ifoCeilingSelector,
   makeVaultPoolWithKeySelector,
+  poolsWithVaultSelector,
 } from './selectors'
 
 // Only fetch farms for live pools
@@ -86,7 +86,7 @@ export const useFetchPublicPoolsData = () => {
   }, [dispatch, chainId])
 }
 
-export const usePool = (sousId: number): { pool: Pool.DeserializedPool<Token>; userDataLoaded: boolean } => {
+export const usePool = (sousId: number): { pool?: Pool.DeserializedPool<Token>; userDataLoaded: boolean } => {
   const poolWithUserDataLoadingSelector = useMemo(() => makePoolWithUserDataLoadingSelector(sousId), [sousId])
   return useSelector(poolWithUserDataLoadingSelector)
 }

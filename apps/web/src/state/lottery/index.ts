@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { LotteryTicket, LotteryStatus } from 'config/constants/types'
-import { LotteryState, LotteryRoundGraphEntity, LotteryUserGraphEntity, LotteryResponse } from 'state/types'
-import { fetchLottery, fetchCurrentLotteryIdAndMaxBuy } from './helpers'
+import { LotteryStatus, LotteryTicket } from 'config/constants/types'
+import { LotteryResponse, LotteryRoundGraphEntity, LotteryState, LotteryUserGraphEntity } from 'state/types'
+import { resetUserState } from '../global/actions'
 import getLotteriesData from './getLotteriesData'
 import getUserLotteryData, { getGraphLotteryUser } from './getUserLotteryData'
-import { resetUserState } from '../global/actions'
+import { fetchCurrentLotteryIdAndMaxBuy, fetchLottery } from './helpers'
 
 interface PublicLotteryData {
   currentLotteryId: string
@@ -13,12 +13,12 @@ interface PublicLotteryData {
 }
 
 const initialState: LotteryState = {
-  currentLotteryId: null,
+  currentLotteryId: '',
   isTransitioning: false,
-  maxNumberTicketsPerBuyOrClaim: null,
+  maxNumberTicketsPerBuyOrClaim: '',
   currentRound: {
     isLoading: true,
-    lotteryId: null,
+    lotteryId: '',
     status: LotteryStatus.PENDING,
     startTime: '',
     endTime: '',
@@ -27,7 +27,7 @@ const initialState: LotteryState = {
     treasuryFee: '',
     firstTicketId: '',
     amountCollectedInCake: '',
-    finalNumber: null,
+    finalNumber: 0,
     cakePerBracket: [],
     countWinnersPerBracket: [],
     rewardsBreakdown: [],
@@ -36,7 +36,7 @@ const initialState: LotteryState = {
       tickets: [],
     },
   },
-  lotteriesData: null,
+  lotteriesData: [],
   userLotteryData: { account: '', totalCake: '', totalTickets: '', rounds: [] },
 }
 
@@ -107,6 +107,7 @@ export const LotterySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(resetUserState, (state) => {
       state.userLotteryData = { ...initialState.userLotteryData }
+
       state.currentRound = { ...state.currentRound, userTickets: { ...initialState.currentRound.userTickets } }
     })
     builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryResponse>) => {

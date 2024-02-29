@@ -150,7 +150,7 @@ const Question = () => {
               </StyledListText>
               <StyledListText ml="16px" color="textSubtle">
                 {t(
-                  'Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC',
+                  'Pairs must include at least 1 major token (i.e., BNB, BTC, BUSD, ETH, MATIC, ARB, DAI, USDT and/or USDC)',
                 )}
               </StyledListText>
             </FoldableText>

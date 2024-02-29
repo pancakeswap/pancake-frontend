@@ -58,8 +58,14 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
   const hasCurrencyInfo = inputCurrency && outputCurrency
   const label =
     rateType === Rate.MUL
-      ? `${outputCurrency?.symbol} per ${inputCurrency?.symbol}`
-      : `${inputCurrency?.symbol} per ${outputCurrency?.symbol}`
+      ? t('%assetA% per %assetB%', {
+          assetA: outputCurrency?.symbol ?? '',
+          assetB: inputCurrency?.symbol ?? '',
+        })
+      : t('%assetA% per %assetB%', {
+          assetA: inputCurrency?.symbol ?? '',
+          assetB: outputCurrency?.symbol ?? '',
+        })
 
   const toggleRateType = () => {
     handleRateType(rateType, price)

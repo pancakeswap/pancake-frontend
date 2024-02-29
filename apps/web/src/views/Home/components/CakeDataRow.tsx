@@ -14,6 +14,7 @@ import { publicClient } from 'utils/wagmi'
 import { useCakeEmissionPerBlock } from 'views/Home/hooks/useCakeEmissionPerBlock'
 import { erc20ABI } from 'wagmi'
 import { useQuery } from '@tanstack/react-query'
+import addresses from 'config/constants/contracts'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
@@ -85,7 +86,9 @@ const CakeDataRow = () => {
     queryKey: ['cakeDataRow'],
 
     queryFn: async () => {
-      const [totalSupply, burned, totalLockedAmount] = await publicClient({ chainId: ChainId.BSC }).multicall({
+      const [totalSupply, burned, totalVaultLockedAmount, totalVeLockedAmount] = await publicClient({
+        chainId: ChainId.BSC,
+      }).multicall({
         contracts: [
           { abi: erc20ABI, address: bscTokens.cake.address, functionName: 'totalSupply' },
           {
@@ -99,11 +102,17 @@ const CakeDataRow = () => {
             address: cakeVaultAddress,
             functionName: 'totalLockedAmount',
           },
+          {
+            abi: erc20ABI,
+            address: bscTokens.cake.address,
+            functionName: 'balanceOf',
+            args: [addresses.veCake[ChainId.BSC]],
+          },
         ],
         allowFailure: false,
       })
       const totalBurned = planetFinanceBurnedTokensWei + burned
-      const circulating = totalSupply - (totalBurned + totalLockedAmount)
+      const circulating = totalSupply - (totalBurned + totalVaultLockedAmount + totalVeLockedAmount)
 
       return {
         cakeSupply: totalSupply && burned ? +formatBigInt(totalSupply - totalBurned) : 0,
