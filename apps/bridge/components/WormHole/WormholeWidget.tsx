@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
+import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
 import WormholeBridge from '@wormhole-foundation/wormhole-connect'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
@@ -13,8 +13,6 @@ import { ExtendedWidgetConfig, WidgetEnvs } from './types'
 
 export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
-
-  const toast = useToast()
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
   const theme = useTheme()
@@ -48,7 +46,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
 
   return (
     <>
-      <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Wormhole} cb={wormholeMessageCallback} />
+      <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Wormhole} />
       <Page>
         <Box minHeight="calc(100vh - 56px - 70px)">
           <Flex maxWidth="690px" m="auto" alignItems="center" justifyContent={isMobile ? 'center' : 'right'}>
@@ -67,7 +65,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
                 id="toggle-enable-mainnet-button"
                 scale="md"
                 checked={enableMainnet}
-                onChange={() => setEnableMainnet((s) => !s)}
+                onChange={() => setEnableMainnet((s: boolean) => !s)}
               />
             </Flex>
           </Flex>
