@@ -94,7 +94,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   // check whether the user has approved the router on the input token
   const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
-    amountToApprove,
+    amountToApprove ?? undefined,
     routerAddress,
   )
   const { priceImpactWithoutFee } = useMemo(
@@ -112,17 +112,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     setApprovalSubmitted(false)
   }, [setApprovalSubmitted])
 
-  const {
-    callback: swapCallback,
-    error: swapCallbackError,
-    reason: revertReason,
-  } = useSwapCallback({
-    trade,
-    deadline,
-    onWallchainDrop,
-    wallchainMasterInput,
-  })
-
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: SmartRouterTrade<TradeType> | undefined
     attemptingTxn: boolean
@@ -133,6 +122,17 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     attemptingTxn: false,
     swapErrorMessage: undefined,
     txHash: undefined,
+  })
+
+  const {
+    callback: swapCallback,
+    error: swapCallbackError,
+    reason: revertReason,
+  } = useSwapCallback({
+    trade: isExpertMode ? trade : tradeToConfirm,
+    deadline,
+    onWallchainDrop,
+    wallchainMasterInput,
   })
 
   // Handlers
@@ -371,9 +371,12 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       <CommitButton
         id="swap-button"
         width="100%"
-        variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
+        variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
         disabled={
-          !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || statusWallchain === 'pending'
+          !isValid ||
+          (priceImpactSeverity > 3 && !isExpertMode) ||
+          (isExpertMode && swapCallbackError) ||
+          statusWallchain === 'pending'
         }
         onClick={onSwapHandler}
         data-dd-action-name="Swap commit button"
