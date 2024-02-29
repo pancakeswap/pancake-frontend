@@ -122,7 +122,16 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   const totalUnclaimInUSD = useMemo(() => {
     return unclaimData
-      .map((available) => getUSDValue(available))
+      .map((available) => {
+        console.log(
+          'YOUR UNCLAIMED TRADING REWARDS:',
+          available.campaignId,
+          'totalEstimateRewardUSD:',
+          getUSDValue(available),
+        )
+
+        return getUSDValue(available)
+      })
       .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
   }, [getUSDValue, unclaimData])
 
@@ -148,7 +157,15 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   const totalTradingReward = useMemo(() => {
     return totalAvailableClaimData
-      .map((available) => available.totalEstimateRewardUSD)
+      .map((available) => {
+        console.log(
+          'YOUR TOTAL TRADING REWARD  campaignId:',
+          available.campaignId,
+          'totalEstimateRewardUSD:',
+          available.totalEstimateRewardUSD,
+        )
+        return available.totalEstimateRewardUSD
+      })
       .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
   }, [totalAvailableClaimData])
 
