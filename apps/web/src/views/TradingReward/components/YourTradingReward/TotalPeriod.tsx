@@ -105,10 +105,11 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
     (userCampaignInfoDetail: UserCampaignInfoDetail) => {
       const currentReward = rewardInfo?.[userCampaignInfoDetail?.campaignId]
       if (currentReward) {
-        const rewardCakeUSDPriceAsBg = getBalanceAmount(
-          new BigNumber(currentReward.rewardPrice),
-          currentReward.rewardTokenDecimal,
-        )
+        const rewardCakeUSDPriceAsBg =
+          type === RewardType.CAKE_STAKERS
+            ? userCampaignInfoDetail.totalEstimateRewardUSD
+            : getBalanceAmount(new BigNumber(currentReward.rewardPrice), currentReward.rewardTokenDecimal)
+
         const rewardCakeAmount = getBalanceAmount(
           new BigNumber(userCampaignInfoDetail?.canClaim),
           currentReward.rewardTokenDecimal,
@@ -117,7 +118,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
       }
       return 0
     },
-    [rewardInfo],
+    [rewardInfo, type],
   )
 
   const totalUnclaimInUSD = useMemo(() => {
@@ -127,7 +128,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
           'YOUR UNCLAIMED TRADING REWARDS:',
           available.campaignId,
           'totalEstimateRewardUSD:',
-          getUSDValue(available),
+          available.totalEstimateRewardUSD,
         )
 
         return getUSDValue(available)
