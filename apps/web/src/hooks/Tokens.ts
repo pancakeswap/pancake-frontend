@@ -181,16 +181,16 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   }, [token, chainId, address, isLoading, data, unsupportedTokens])
 }
 
-export function useOnRampToken(tokenAddress?: string): Currency | undefined {
+export function useOnRampToken(currencyId?: string): Currency | undefined {
   const { chainId } = useActiveChainId()
   const tokens = useAllOnRampTokens()
-  const token = tokenAddress && tokens[tokenAddress]
+  const token = currencyId && tokens[currencyId]
 
   return useMemo(() => {
     if (token) return token
-    if (!chainId || !tokenAddress) return undefined
+    if (!chainId || !currencyId) return undefined
     return undefined
-  }, [token, chainId, tokenAddress])
+  }, [token, chainId, currencyId])
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
