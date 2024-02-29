@@ -6,8 +6,8 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 19,
     lpAddress: '0x9aFFdEe9004892624BFFebeB8EDBa4C980Fe6aCF',
-    token0: zksyncTokens.wbtc,
-    token1: zksyncTokens.weth,
+    token0: zksyncTokens.weth,
+    token1: zksyncTokens.wbtc,
     feeAmount: FeeAmount.LOWEST,
   },
   {
