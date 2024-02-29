@@ -66,7 +66,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
                   mt="2px"
                   size="20px"
                   text={t(
-                    'Testnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first',
+                    'Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first',
                   )}
                 />
               </Flex>
