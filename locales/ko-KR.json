@@ -2831,7 +2831,7 @@
   "1.5M Monthly Players Await!": "매달 150만 명의 플레이어가 기다리고 있습니다!",
   "GameFi Spirit": "GameFi Spirit",
   "is Live": "라이브 진행",
-  "Explore Your": "둘러보기:",
+  "Explore Your": "만나보세요:",
   "On %chainName%": "%chainName%",
   "Pancakeswap profile is needed for IFO public sale eligibility.": "IFO 공개 판매 자격을 얻으려면 Pancakeswap 프로필이 필요합니다.",
   "Create your Pancake Profile on %chain%": "%chain%에서 Pancake 프로필을 만드세요",
@@ -3173,5 +3173,12 @@
   "Failed to send": "전송 실패",
   "This product have been upgraded!": "이 제품이 업그레이드되었습니다!",
   "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace": "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace",
-  "Nemesis Downfall Now on PancakeSwap": "Nemesis Downfall Now on PancakeSwap"
+  "Nemesis Downfall Now on PancakeSwap": "Nemesis Downfall Now on PancakeSwap",
+  "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first",
+  "%title% Disclaimer": "%title% Disclaimer",
+  "Go to FAQ guide": "Go to FAQ guide",
+  "This an experimental product": "This an experimental product",
+  "We highly advise you go through the FAQ Guide below before continuing": "We highly advise you go through the FAQ Guide below before continuing",
+  "I have read the FAQ guide and am ready to continue.": "I have read the FAQ guide and am ready to continue.",
+  "Enable Mainnet": "Enable Mainnet"
 }
