@@ -27,9 +27,9 @@ export const useWriteWithApproveCallback = (onDismiss?: () => void) => {
       try {
         if (approvalState === ApprovalState.NOT_APPROVED) {
           setStatus(ApproveAndLockStatus.APPROVING_TOKEN)
-          const { hash } = await approveCallback()
-          if (hash) {
-            const transactionReceipt = await waitForTransaction({ hash })
+          const response = await approveCallback()
+          if (response?.hash) {
+            const transactionReceipt = await waitForTransaction({ hash: response.hash })
             if (transactionReceipt?.status === 'success') {
               setStatus(ApproveAndLockStatus.LOCK_CAKE)
               await write()
