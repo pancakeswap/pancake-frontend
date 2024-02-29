@@ -12,8 +12,8 @@ export enum RewardStatus {
 }
 
 export enum RewardType {
-  CAKE_STAKERS = 'rbTest', // rb -> Prod, rbTest -> test // TODO: revert before merge
-  TOP_TRADERS = 'ttTest', // tt -> Prod, ttTest -> test // TODO: revert before merge
+  CAKE_STAKERS = 'rb', // rb -> Prod, rbTest -> test
+  TOP_TRADERS = 'tt', // tt -> Prod, ttTest -> test
 }
 
 export interface Incentives {
