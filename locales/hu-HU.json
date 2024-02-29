@@ -1523,7 +1523,7 @@
   "You can convert wBETH to ETH through": "Átkonvertálhatod a wBETH-et ETH-ra a következő módon",
   "PancakeSwap is also working to support a conversion contract on our liquid staking page to convert wBETH back to ETH seamlessly.": "A PancakeSwap azon is dolgozik, hogy támogasson egy konverziós szerződést a likvid tét oldalunkon, hogy a wBETH-et zavartalanul vissza lehessen váltani ETH-ra.",
   "You can choose one or both at the same time!": "Választhatja az egyiket vagy mindkettőt egyszerre!",
-  "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "Javasoljuk, hogy először ellenőrizze, hogy jogosult-e a részvételre magánértékesítésben. Ha a árverés során  Az Ön által feltett összeg túl kicsi, előfordulhat, hogy nem kap megfelelő mennyiségű IFO-zsetont.",
+  "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "Javasoljuk, hogy először ellenőrizze, hogy jogosult-e a részvételre  zártkörű értékesítésben. Ha a árverés során  Az Ön által feltett összeg túl kicsi, előfordulhat, hogy nem kap megfelelő mennyiségű IFO-zsetont.",
   "How to Take Part in the Public Sale": "Hogyan vehet részt a árverésen",
   "Private Sale": "Magánaukció",
   "Unsupported Assets": "Nem támogatott eszközök",
@@ -3078,11 +3078,11 @@
   "Note that Fees are just an estimation and may vary slightly when completing a purchase": "Vegye figyelembe, hogy a díjak csak becslések, és a vásárlás befejezésekor némileg változhatnak",
   "What are the sale types? What are the differences between them?": "Melyek az értékesítési típusok? Mi a különbség közöttük?",
   "In the current IFO format. There are three types of sales:": "A jelenlegi IFO formátumban. Háromféle értékesítés létezik:",
-  "Private Sales": "Magánértékesítés",
+  "Private Sales": " zártkörű értékesítés",
   "Public Sales": "árverés",
   "Basic Sales": "Alap értékesítés",
   "There is NO requirement for participating in the Basic Sales.": "Az alapértékesítésben való részvételnek NINCS feltétele.",
-  "To participate in Private Sales, participants will have to meet certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "A magánértékesítésben való részvételhez a résztvevőknek meg kell felelniük bizonyos, az IFO-kártyán bemutatott követelményeknek. Minden jogosult résztvevő bármilyen mennyiségű CAKE-t leköthet a maximális lekötési limitig, amelyet az IFO szavazási javaslattal együtt tesznek közzé.",
+  "To participate in Private Sales, participants will have to meet certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "A  zártkörű értékesítésben való részvételhez a résztvevőknek meg kell felelniük bizonyos, az IFO-kártyán bemutatott követelményeknek. Minden jogosult résztvevő bármilyen mennyiségű CAKE-t leköthet a maximális lekötési limitig, amelyet az IFO szavazási javaslattal együtt tesznek közzé.",
   "How can I get more iCAKE?": "Hogyan szerezhetek még több iCAKE-t?",
   "Your iCAKE number for each IFOs is calculated based on your veCAKE balance at the snapshot time of each IFOs. Usually the snapshot time is the end time of each IFOs. Therefore, iCAKE can varies between different IFOs.": "Az Ön iCAKE-számát az egyes IFO-kra vonatkozóan az egyes IFO-k pillanatfelvételének időpontjában fennálló veCAKE-egyenlege alapján számítják ki. A pillanatfelvétel időpontja általában az egyes IFO-k végének időpontja. Ezért az iCAKE-érték a különböző IFO-k között változhat.",
   "To get more iCAKE, simply get more veCAKE by locking more CAKE in your veCAKE position, or extending your veCAKE position.": "Ahhoz, hogy több iCAKE-t szerezzen, egyszerűen szerezzen több veCAKE-t azáltal, hogy több CAKE-t zárol a veCAKE-pozíciójában, vagy meghosszabbítja a veCAKE-pozícióját.",
@@ -3171,5 +3171,7 @@
   "Unable to unsubscribe %error%": "Nem sikerült leiratkozni %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "Sikeresen leiratkozott az értesítésekről. Bármikor újra feliratkozhat",
   "Failed to send": "Nem sikerült elküldeni",
-  "This product have been upgraded!": "Ezt a terméket továbbfejlesztették!"
+  "This product have been upgraded!": "Ezt a terméket továbbfejlesztették!",
+  "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace": "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace",
+  "Nemesis Downfall Now on PancakeSwap": "Nemesis Downfall Now on PancakeSwap"
 }
