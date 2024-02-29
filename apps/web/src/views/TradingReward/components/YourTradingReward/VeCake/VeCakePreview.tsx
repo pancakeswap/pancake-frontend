@@ -91,7 +91,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
           <Message variant="danger" mt="10px">
             <MessageText>
               <Text as="span" bold m="0 4px">{`$${formatNumber(rewardInUSD)}`}</Text>
-              <Text as="span">{t('unclaimed reward expiring in ')}</Text>
+              <Text as="span">{t('unclaimed reward expiring')}</Text>
               <Text as="span" mr="4px">
                 {timeRemaining > 0 ? (
                   <Text bold as="span" ml="4px">
