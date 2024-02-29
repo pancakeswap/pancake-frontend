@@ -105,10 +105,14 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
     (userCampaignInfoDetail: UserCampaignInfoDetail) => {
       const currentReward = rewardInfo?.[userCampaignInfoDetail?.campaignId]
       if (currentReward) {
-        const rewardCakeUSDPriceAsBg =
-          type === RewardType.CAKE_STAKERS
-            ? userCampaignInfoDetail.totalEstimateRewardUSD
-            : getBalanceAmount(new BigNumber(currentReward.rewardPrice), currentReward.rewardTokenDecimal)
+        if (type === RewardType.CAKE_STAKERS) {
+          return userCampaignInfoDetail.totalEstimateRewardUSD
+        }
+
+        const rewardCakeUSDPriceAsBg = getBalanceAmount(
+          new BigNumber(currentReward.rewardPrice),
+          currentReward.rewardTokenDecimal,
+        )
 
         const rewardCakeAmount = getBalanceAmount(
           new BigNumber(userCampaignInfoDetail?.canClaim),
