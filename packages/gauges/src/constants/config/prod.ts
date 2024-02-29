@@ -2996,7 +2996,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 299,
     pairName: 'WETH-MATIC',
-    address: '0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9',
+    address: '0x7a816241EdaF060e33b774D6D3D6398485dFf9AF',
     chainId: ChainId.POLYGON_ZKEVM,
     type: GaugeType.V3,
     token0Address: polygonZkEvmTokens.weth.address,
@@ -3027,7 +3027,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     gid: 302,
     pairName: 'cbETH-WETH',
     address: '0x257FCbAE4Ac6B26A02E4FC5e1a11e4174B5ce395',
-    chainId: ChainId.ZKSYNC,
+    chainId: ChainId.BASE,
     type: GaugeType.V3,
     token0Address: baseTokens.cbETH.address,
     token1Address: baseTokens.weth.address,

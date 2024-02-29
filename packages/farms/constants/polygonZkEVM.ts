@@ -5,7 +5,7 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 export const farmsV3 = defineFarmV3Configs([
   {
     pid: 17,
-    lpAddress: '0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9',
+    lpAddress: '0x7a816241EdaF060e33b774D6D3D6398485dFf9AF',
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.matic,
     feeAmount: FeeAmount.LOW,
