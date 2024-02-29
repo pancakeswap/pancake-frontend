@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { AllHooks } from 'views/LandingV4/components/ExploreHooks/AllHooks'
 import { Contribute } from 'views/LandingV4/components/ExploreHooks/Contribute'
 
 const ExploreHooksContainer = styled(Box)`
@@ -19,7 +20,7 @@ export const ExploreHooks = () => {
   const { t } = useTranslation()
 
   return (
-    <ExploreHooksContainer>
+    <ExploreHooksContainer id="#hooks">
       <Flex justifyContent="center" mb="40px">
         <Text
           bold
@@ -40,6 +41,7 @@ export const ExploreHooks = () => {
           {t('Hooks')}
         </Text>
       </Flex>
+      <AllHooks />
       <Contribute />
     </ExploreHooksContainer>
   )
