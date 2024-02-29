@@ -41,14 +41,24 @@ export const Contribute = () => {
           <Text lineHeight="24px" textAlign={['center', 'center', 'center', 'center', 'left']} m={['16px 0 32px 0']}>
             {t(`Build Hooks with us and participate in PancakeSwap's One Million USD Developer Program`)}
           </Text>
-          <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
-            <Button display="flex" margin={['auto', 'auto', 'auto', '0']}>
-              <Text bold fontSize={['12px', '16px']} mr="4px">
-                {t('Submit Your Hook')}
-              </Text>
-              <OpenNewIcon />
-            </Button>
-          </NextLinkFromReactRouter>
+          <Flex flexDirection={['column', 'column', 'row']} margin={['auto', 'auto', 'auto', '0']}>
+            <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
+              <Button display="flex" margin="auto">
+                <Text bold fontSize={['12px', '16px']} mr="4px">
+                  {t('Submit Your Hook')}
+                </Text>
+                <OpenNewIcon />
+              </Button>
+            </NextLinkFromReactRouter>
+            <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
+              <Button variant="secondary" display="flex" m={['8px auto 0 auto', '8px auto 0 auto', '0 0 0 8px']}>
+                <Text color="primary" bold fontSize={['12px', '16px']} mr="4px">
+                  {t('Developer Program')}
+                </Text>
+                <OpenNewIcon color="primary" />
+              </Button>
+            </NextLinkFromReactRouter>
+          </Flex>
         </Flex>
         <ImageUI
           style={{
