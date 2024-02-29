@@ -32,6 +32,7 @@ import {
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useGlobalWorker } from './useWorker'
+import { useSpeedQuoteEnabled } from './useSpeedQuoteEnabled'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -78,6 +79,7 @@ interface useBestAMMTradeOptions extends Options {
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
+  const speedQuoteEnabled = useSpeedQuoteEnabled()
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
 
   const isQuoterEnabled = useMemo(
@@ -105,7 +107,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const bestTradeFromOffchainQuoter = useBestAMMTradeFromOffchainQuoter({
     ...params,
-    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled),
+    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && speedQuoteEnabled),
     autoRevalidate: quoterAutoRevalidate,
   })
 
@@ -115,13 +117,14 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     !bestTradeFromOffchainQuoter.isLoading &&
     bestTradeFromOffchainQuoter.error instanceof NoValidRouteError
 
+  const shouldFallbackQuoterOnChain = !speedQuoteEnabled || noValidRouteFromOffchainQuoter
   const bestTradeFromOnChainQuoter = useBestAMMTradeFromQuoterWorker({
     ...params,
-    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && noValidRouteFromOffchainQuoter),
+    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && shouldFallbackQuoterOnChain),
     autoRevalidate: quoterAutoRevalidate,
   })
 
-  const bestTradeFromQuoterWorker = noValidRouteFromOffchainQuoter
+  const bestTradeFromQuoterWorker = shouldFallbackQuoterOnChain
     ? bestTradeFromOnChainQuoter
     : bestTradeFromOffchainQuoter
 

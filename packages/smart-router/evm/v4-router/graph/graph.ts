@@ -280,7 +280,7 @@ export async function findBestTrade({
       }
       nextVertList.splice(index, 1)
 
-      if (getHops(vert) > maxHops) {
+      if (getHops(vert) >= maxHops) {
         continue
       }
 
