@@ -375,7 +375,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         disabled={
           !isValid ||
           (priceImpactSeverity > 3 && !isExpertMode) ||
-          (isExpertMode && swapCallbackError) ||
+          Boolean(isExpertMode && swapCallbackError) ||
           statusWallchain === 'pending'
         }
         onClick={onSwapHandler}
