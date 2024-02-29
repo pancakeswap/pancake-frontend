@@ -136,7 +136,7 @@ export function useV3PoolsWithTicksOnChain(
   }, [currencyA, currencyB])
 
   const refreshInterval = useMemo(() => {
-    const chainId = currencyA?.[0]?.token0?.chainId
+    const chainId = currencyA?.chainId
     if (!chainId) {
       return 0
     }
