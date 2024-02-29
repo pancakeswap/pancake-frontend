@@ -1,6 +1,6 @@
-import { createAction } from '@reduxjs/toolkit'
-import { ChainId } from '@pancakeswap/chains'
 import { Order } from '@gelatonetwork/limit-orders-lib'
+import { ChainId } from '@pancakeswap/chains'
+import { createAction } from '@reduxjs/toolkit'
 
 export type TransactionType =
   | 'approve'
@@ -18,6 +18,7 @@ export type TransactionType =
   | 'non-bsc-farm'
   | 'migrate-v3'
   | 'bridge-icake'
+  | 'claim-liquid-staking'
 
 export interface SerializableTransactionReceipt {
   to: string

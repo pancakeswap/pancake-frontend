@@ -1,12 +1,12 @@
-import { useMemo } from 'react'
-import { Text, RowBetween, Flex, QuestionHelper } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, QuestionHelper, RowBetween, Text } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { useLiquidStakingApr } from 'views/LiquidStaking/hooks/useLiquidStakingApr'
 
 interface LiquidStakingAprProps {
-  contract: string
-  tokenOSymbol: string
+  contract?: string
+  tokenOSymbol?: string
 }
 
 export const LiquidStakingApr: React.FC<LiquidStakingAprProps> = ({ contract, tokenOSymbol }) => {
@@ -26,7 +26,7 @@ export const LiquidStakingApr: React.FC<LiquidStakingAprProps> = ({ contract, to
   )
 
   return (
-    <RowBetween mb="24px">
+    <RowBetween mb="8px">
       <Flex>
         <Text color="textSubtle">{t('Est. APR')}</Text>
         <QuestionHelper ml="4px" text={tooltipMsg} size="20px" placement="bottom" />

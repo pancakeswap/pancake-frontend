@@ -7,7 +7,7 @@ import { useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
 import { getChainName } from 'state/info/utils'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { v3Clients, v3InfoClients } from 'utils/graphql'
+import { v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
@@ -119,7 +119,7 @@ export const useTokenPriceChartData = (
 
 // this is for the swap page and ROI calculator
 export const usePairPriceChartTokenData = (
-  address: string,
+  address?: string,
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChainId?: ChainId,
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
@@ -130,6 +130,9 @@ export const usePairPriceChartTokenData = (
     queryKey: [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChainId ?? chainId],
 
     queryFn: async () => {
+      if (!address) {
+        throw new Error('Address is not defined')
+      }
       const utcCurrentTime = dayjs()
       const startTimestamp = utcCurrentTime
         .subtract(1, duration ?? 'day')
@@ -139,13 +142,13 @@ export const usePairPriceChartTokenData = (
         address,
         DURATION_INTERVAL[duration ?? 'day'],
         startTimestamp,
-        v3Clients[targetChainId ?? chainId],
+        v3InfoClients[targetChainId ?? chainId],
         multiChainName[targetChainId ?? chainId],
         SUBGRAPH_START_BLOCK[chainId],
       )
     },
 
-    enabled: Boolean(chainId && address && address !== 'undefined'),
+    enabled: Boolean(chainId && !!address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(
@@ -198,6 +201,16 @@ export const useTopTokensData = ():
   return data?.data
 }
 
+const graphPerPage = 50
+
+const tokenDataFetcher = (dataClient: GraphQLClient, tokenAddresses: string[], blocks?: Block[]) => {
+  const times = Math.ceil(tokenAddresses.length / graphPerPage)
+  const addressGroup: Array<string[]> = []
+  for (let i = 0; i < times; i++) {
+    addressGroup.push(tokenAddresses.slice(i * graphPerPage, (i + 1) * graphPerPage))
+  }
+  return Promise.all(addressGroup.map((d) => fetchedTokenDatas(dataClient, d, blocks)))
+}
 export const useTokensData = (addresses: string[], targetChainId?: ChainId): TokenData[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
@@ -208,8 +221,8 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
     queryKey: [`v3/info/token/tokensData/${targetChainId}/${addresses?.join()}`, chainId],
 
     queryFn: () =>
-      fetchedTokenDatas(
-        v3Clients[chainId], // TODO:  v3InfoClients[chainId],
+      tokenDataFetcher(
+        v3InfoClients[chainId], // TODO:  v3InfoClients[chainId],
         addresses,
         blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
@@ -217,7 +230,16 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
     enabled: Boolean(chainId && blocks && addresses && addresses?.length > 0 && blocks?.length > 0),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
-  return useMemo(() => (data?.data ? Object.values(data?.data) : undefined), [data])
+  const allTokensData = useMemo(() => {
+    if (data) {
+      return data.reduce((acc, d) => {
+        return { ...acc, ...d.data }
+      }, {})
+    }
+    return undefined
+  }, [data])
+
+  return useMemo(() => (allTokensData ? Object.values(allTokensData) : undefined), [allTokensData])
 }
 
 export const useTokenData = (address: string): TokenData | undefined => {
@@ -239,6 +261,7 @@ export const useTokenData = (address: string): TokenData | undefined => {
     enabled: Boolean(chainId && blocks && address && address !== 'undefined' && blocks?.length > 0),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
+
   return data?.data?.[address]
 }
 

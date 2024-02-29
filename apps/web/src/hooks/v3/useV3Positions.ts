@@ -3,7 +3,7 @@ import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useEffect, useMemo } from 'react'
-import { useContractRead, useContractReads, Address } from 'wagmi'
+import { Address, useContractRead, useContractReads } from 'wagmi'
 
 interface UseV3PositionsResults {
   loading: boolean
@@ -22,13 +22,16 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
   const inputs = useMemo(
     () =>
       tokenIds && positionManager
-        ? tokenIds.map((tokenId) => ({
-            abi: positionManager.abi,
-            address: positionManager.address,
-            functionName: 'positions',
-            args: [tokenId],
-            chainId,
-          }))
+        ? tokenIds.map(
+            (tokenId) =>
+              ({
+                abi: positionManager.abi,
+                address: positionManager.address,
+                functionName: 'positions',
+                args: [tokenId],
+                chainId,
+              } as const),
+          )
         : [],
     [chainId, positionManager, tokenIds],
   )
@@ -47,7 +50,7 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
         positions
           .filter((p) => p.status === 'success')
           .map((p) => {
-            const r = p.result
+            const r = p.result!
             return {
               nonce: r[0],
               operator: r[1],
@@ -71,7 +74,8 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
                 }
               : null,
           )
-          .filter(Boolean),
+          // filter boolean assert
+          .filter(Boolean) as PositionDetails[],
       [inputs, positions],
     ),
   }
@@ -101,9 +105,9 @@ export function useV3TokenIdsByAccount(
   } = useContractRead({
     abi: masterChefV3ABI,
     address: contractAddress as `0x${string}`,
-    args: [account ?? undefined],
-    functionName: 'balanceOf',
     enabled: !!account && !!contractAddress,
+    args: [account!],
+    functionName: 'balanceOf',
     watch: true,
     chainId,
   })
@@ -115,7 +119,7 @@ export function useV3TokenIdsByAccount(
         address: Address
         functionName: 'tokenOfOwnerByIndex'
         args: [Address, number]
-        chainId: number
+        chainId?: number
       }[] = []
       for (let i = 0; i < accountBalance; i++) {
         tokenRequests.push({

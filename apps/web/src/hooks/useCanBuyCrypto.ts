@@ -12,7 +12,8 @@ interface Params {
 export function useCanBuyCrypto({ currencySymbol, chainId }: Params) {
   return useMemo(
     () =>
-      Boolean(currencySymbol && chainId) &&
+      !!currencySymbol &&
+      !!chainId &&
       isBuyCryptoSupported(chainId) &&
       SUPPORTED_ONRAMP_TOKENS.includes(currencySymbol),
     [currencySymbol, chainId],

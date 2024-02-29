@@ -1,14 +1,14 @@
-import { useMemo } from 'react'
-import { Flex, Box, Text, RefreshIcon, WarningIcon, ScanLink } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { chains } from 'utils/wagmi'
+import { Box, Flex, RefreshIcon, ScanLink, Text, WarningIcon } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
-import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import { FarmTransactionStatus, NonBscFarmTransactionStep } from 'state/transactions/actions'
+import { useMemo } from 'react'
 import { ChainLinkSupportChains } from 'state/info/constant'
+import { FarmTransactionStatus, NonBscFarmTransactionStep } from 'state/transactions/actions'
+import { getBlockExploreLink, getBlockExploreName } from 'utils'
+import { chains } from 'utils/wagmi'
 
 interface HarvestDetailProps {
-  status: FarmTransactionStatus
+  status?: FarmTransactionStatus
   step: NonBscFarmTransactionStep
 }
 

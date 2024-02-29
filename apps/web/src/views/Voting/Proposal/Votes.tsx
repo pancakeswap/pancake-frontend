@@ -1,22 +1,22 @@
-import { useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRenewIcon,
+  Button,
   Card,
   CardHeader,
   ChevronDownIcon,
+  ChevronUpIcon,
   Flex,
   Heading,
-  Button,
-  ChevronUpIcon,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import orderBy from 'lodash/orderBy'
-import { useTranslation } from '@pancakeswap/localization'
-import { Vote } from 'state/types'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
-import VotesLoading from '../components/Proposal/VotesLoading'
+import orderBy from 'lodash/orderBy'
+import { useState } from 'react'
+import { Vote } from 'state/types'
+import { useAccount } from 'wagmi'
 import VoteRow from '../components/Proposal/VoteRow'
+import VotesLoading from '../components/Proposal/VotesLoading'
 
 interface VotesProps {
   votes: Vote[]
@@ -25,7 +25,7 @@ interface VotesProps {
 }
 
 const parseVotePower = (incomingVote: Vote) => {
-  let votingPower = parseFloat(incomingVote?.metadata?.votingPower)
+  let votingPower = incomingVote?.metadata?.votingPower && parseFloat(incomingVote?.metadata?.votingPower)
   if (!votingPower) votingPower = 0
   return votingPower
 }
@@ -61,7 +61,7 @@ const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoad
         <>
           {displayVotes.map((vote) => {
             const isVoter = account && vote.voter.toLowerCase() === account.toLowerCase()
-            return <VoteRow key={vote.id} vote={vote} isVoter={isVoter} />
+            return <VoteRow key={vote.id} vote={vote} isVoter={Boolean(isVoter)} />
           })}
           <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
             <Button

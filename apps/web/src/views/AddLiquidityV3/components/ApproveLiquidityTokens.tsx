@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { ethereumTokens } from '@pancakeswap/tokens'
+import { Button, Dots, Link, Message, MessageText, RowBetween } from '@pancakeswap/uikit'
 import { ApprovalState } from 'hooks/useApproveCallback'
+import { useMemo } from 'react'
 import { Field } from 'state/mint/actions'
 import { styled } from 'styled-components'
-import { ethereumTokens } from '@pancakeswap/tokens'
-import { Link, RowBetween, Message, MessageText, Button, Dots } from '@pancakeswap/uikit'
-import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { SendTransactionResult } from 'wagmi/actions'
-import { useMemo } from 'react'
 
 const InlineLink = styled(Link)`
   display: inline-flex;
@@ -21,13 +21,13 @@ interface ApproveLiquidityTokensProps {
   }
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
-  approveACallback: () => Promise<SendTransactionResult>
-  revokeACallback: () => Promise<SendTransactionResult>
+  approveACallback: () => Promise<SendTransactionResult | undefined>
+  revokeACallback: () => Promise<SendTransactionResult | undefined>
   currentAllowanceA: CurrencyAmount<Currency> | undefined
   approvalA: ApprovalState
   showFieldBApproval: boolean
-  approveBCallback: () => Promise<SendTransactionResult>
-  revokeBCallback: () => Promise<SendTransactionResult>
+  approveBCallback: () => Promise<SendTransactionResult | undefined>
+  revokeBCallback: () => Promise<SendTransactionResult | undefined>
   currentAllowanceB: CurrencyAmount<Currency> | undefined
   approvalB: ApprovalState
 }

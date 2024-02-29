@@ -15,39 +15,39 @@ import {
 } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect, useMemo } from 'react'
+import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
 
-import currencyId from 'utils/currencyId'
-import { useRouter } from 'next/router'
 import { Trans, useTranslation } from '@pancakeswap/localization'
+import { useRouter } from 'next/router'
+import currencyId from 'utils/currencyId'
 
-import Page from 'views/Page'
 import { AppHeader } from 'components/App'
-import { styled } from 'styled-components'
 import { atom, useAtom } from 'jotai'
+import { styled } from 'styled-components'
+import Page from 'views/Page'
 
-import { useCurrency } from 'hooks/Tokens'
-import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
-import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
-import AddLiquidity from 'views/AddLiquidity'
 import { usePreviousValue } from '@pancakeswap/hooks'
+import { useCurrency } from 'hooks/Tokens'
+import AddLiquidity from 'views/AddLiquidity'
+import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
+import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 
-import noop from 'lodash/noop'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
+import noop from 'lodash/noop'
 import { resetMintState } from 'state/mint/actions'
-import { safeGetAddress } from 'utils'
+import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
+import { safeGetAddress } from 'utils'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
-import V3FormView from './formViews/V3FormView'
-import { HandleFeePoolSelectFn, SELECTOR_TYPE } from './types'
-import { StableV3Selector } from './components/StableV3Selector'
-import StableFormView from './formViews/StableFormView'
-import { V2Selector } from './components/V2Selector'
-import V2FormView from './formViews/V2FormView'
 import { AprCalculator } from './components/AprCalculator'
+import { StableV3Selector } from './components/StableV3Selector'
+import { V2Selector } from './components/V2Selector'
+import StableFormView from './formViews/StableFormView'
+import V2FormView from './formViews/V2FormView'
+import V3FormView from './formViews/V3FormView'
 import { useCurrencyParams } from './hooks/useCurrencyParams'
+import { HandleFeePoolSelectFn, SELECTOR_TYPE } from './types'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -74,8 +74,8 @@ export const ResponsiveTwoColumns = styled.div`
 const selectTypeAtom = atom(SELECTOR_TYPE.V3)
 
 interface UniversalAddLiquidityPropsType {
-  currencyIdA: string
-  currencyIdB: string
+  currencyIdA?: string
+  currencyIdB?: string
   preferredSelectType?: SELECTOR_TYPE
   preferredFeeAmount?: FeeAmount
 }
@@ -134,7 +134,7 @@ export function UniversalAddLiquidity({
         currencyNew?.isNative || (chainId !== undefined && currencyIdNew === WNATIVE[chainId]?.address)
       const isNATIVEOrWNATIVEOther =
         currencyIdOther !== undefined &&
-        (currencyIdOther === NATIVE[chainId]?.symbol ||
+        ((chainId && currencyIdOther === NATIVE[chainId]?.symbol) ||
           (chainId !== undefined && safeGetAddress(currencyIdOther) === WNATIVE[chainId]?.address))
 
       if (isNATIVEOrWNATIVENew && isNATIVEOrWNATIVEOther) {
@@ -156,7 +156,7 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: [idA],
+              currency: [idA!],
             },
           },
           undefined,
@@ -168,7 +168,7 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: [idA, idB],
+              currency: [idA!, idB!],
             },
           },
           undefined,
@@ -189,7 +189,7 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: [idB],
+              currency: [idB!],
             },
           },
           undefined,
@@ -201,7 +201,7 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: [idA, idB],
+              currency: [idA!, idB!],
             },
           },
           undefined,
@@ -251,7 +251,9 @@ export function UniversalAddLiquidity({
             pathname: newPathname,
             query: {
               ...router.query,
-              currency: newFeeAmount ? [currencyIdA, currencyIdB, newFeeAmount.toString()] : [currencyIdA, currencyIdB],
+              currency: newFeeAmount
+                ? [currencyIdA!, currencyIdB!, newFeeAmount.toString()]
+                : [currencyIdA!, currencyIdB!],
             },
           },
           undefined,
@@ -371,7 +373,7 @@ const SELECTOR_TYPE_T = {
   [SELECTOR_TYPE.STABLE]: <Trans>Add Stable Liquidity</Trans>,
   [SELECTOR_TYPE.V2]: <Trans>Add V2 Liquidity</Trans>,
   [SELECTOR_TYPE.V3]: <Trans>Add V3 Liquidity</Trans>,
-} as const satisfies Record<SELECTOR_TYPE, JSX.Element>
+} as const satisfies Record<SELECTOR_TYPE, ReactNode>
 
 export function AddLiquidityV3Layout({
   showRefreshButton = false,

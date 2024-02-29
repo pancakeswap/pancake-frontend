@@ -1,14 +1,14 @@
-import { styled } from 'styled-components'
-import { useMemo, useState } from 'react'
-import Image from 'next/image'
-import { GameType, PostersLayout, PostersItemData } from '@pancakeswap/games'
-import { Flex, Box, Text, Button, CardHeader, Link, Card, TelegramIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { GameType, PostersItemData, PostersLayout } from '@pancakeswap/games'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Button, Card, CardHeader, Flex, Link, TelegramIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Carousel } from 'components/Game/Home/Carousel'
 import { CarouselView } from 'components/Game/Home/CarouselView'
-import { TrendingTags, StyledTag } from 'components/Game/Home/TrendingTags'
+import { StyledTag, TrendingTags } from 'components/Game/Home/TrendingTags'
 import { StyledTextLineClamp } from 'components/Game/StyledTextLineClamp'
 import { useGameLink } from 'hooks/useGameLink'
+import Image from 'next/image'
+import { useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 
 const StyledGameContainer = styled(Flex)<{ isHorizontal: boolean }>`
   width: 100%;
@@ -188,7 +188,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                   mb={['32px', '32px', '32px', '32px', '32px', '24px']}
                 >
                   <Flex alignSelf={['flex-start', 'center']}>
-                    <StyledTag scale="xs" isPurple style={{ width: 'fit-content' }}>
+                    <StyledTag scale="xs" $isPurple style={{ width: 'fit-content' }}>
                       <Text fontSize={14} color="white">
                         {t('Genre:')}
                       </Text>
@@ -228,10 +228,15 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                     )}
                   </Flex>
                 </Flex>
-                <Link width="100% !important" href={gameLink} mb={['32px', '32px', '32px', '32px', '32px', '49px']}>
+                <Link
+                  width="100% !important"
+                  href={gameLink}
+                  external={game?.gameLink?.external}
+                  mb={['32px', '32px', '32px', '32px', '32px', '49px']}
+                >
                   <Button width="100%">
                     <Text bold color="white">
-                      {t('Play Now')}
+                      {game?.gameLink?.signUpLink && !game.gameLink.playNowLink ? t('Sign Up') : t('Play Now')}
                     </Text>
                   </Button>
                 </Link>

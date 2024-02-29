@@ -1,6 +1,6 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
-import { ArrowForwardIcon, Button, Grid, Message, MessageText, Modal, Text, FlexGap } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { ArrowForwardIcon, Button, FlexGap, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import useAuth from 'hooks/useAuth'
 import { useSessionChainId } from 'hooks/useSessionChainId'
@@ -35,7 +35,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
           <MessageText>
             <FlexGap gap="12px">
               <FlexGap gap="6px">
-                <ChainLogo chainId={chain?.id} /> <ArrowForwardIcon color="#D67E0A" />
+                {chain?.id && <ChainLogo chainId={chain?.id} />} <ArrowForwardIcon color="#D67E0A" />
                 <ChainLogo chainId={chainId} />
               </FlexGap>
               <span>{t('Switch network to continue.')}</span>

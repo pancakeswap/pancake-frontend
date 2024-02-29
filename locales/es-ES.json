@@ -667,7 +667,7 @@
   "On sale soon!": "¡A la venta próximamente!",
   "Date": "Fecha",
   "Your Tickets": "Tus billetes",
-  "in prizes!": "en premios",
+  "in Prizes!": "in Prizes!",
   "Tickets on sale soon": "Los billetes estarán a la venta próximamente",
   "The PancakeSwap Lottery": "The PancakeSwap Lottery",
   "All History": "Todo el historial",
@@ -2361,7 +2361,6 @@
   "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.": "Migra tu liquidez a Exchange V3 y sigue cosechando recompensas de CAKE.",
   "Automatically fill in the maximum token amount according to your balance and position settings.": "Introduce automáticamente la cantidad máxima de tokens según la configuración de tu saldo y posición.",
   "Price will appear here": "El precio aparecerá aquí",
-  "We are in the early stage of V3 deployment. Due to a lack of historical data, numbers and estimates may be inaccurate.": "Estamos en la fase inicial de la implementación de la V3. Debido a la falta de datos históricos, las cifras y estimaciones pueden ser inexactas.",
   "gm eth teams": "equipos gm eth",
   "Ev3ryone's Favourite D3X": "El D3X favorito de todos",
   "Discover V3": "Descubrir V3",
@@ -3143,5 +3142,8 @@
   "Savings": "Savings",
   "Show testnet": "Show testnet",
   "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!": "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Updated": "Updated",
+  "Search name": "Search name",
+  "Note (20 characters)": "Note (20 characters)"
 }

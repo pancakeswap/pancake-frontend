@@ -1,10 +1,10 @@
 import { BigintIsh, Currency, Token } from '@pancakeswap/swap-sdk-core'
-import { computePoolAddress, FeeAmount, Pool, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
-import { useMemo } from 'react'
-import { Address } from 'viem'
-import { useMultipleContractSingleData } from 'state/multicall/hooks'
+import { DEPLOYER_ADDRESSES, FeeAmount, Pool, computePoolAddress } from '@pancakeswap/v3-sdk'
 import { v3PoolStateABI } from 'config/abi/v3PoolState'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMemo } from 'react'
+import { useMultipleContractSingleData } from 'state/multicall/hooks'
+import { Address } from 'viem'
 import { PoolState } from './types'
 
 // Classes are expensive to instantiate, so this caches the recently instantiated pools.
@@ -76,7 +76,7 @@ class PoolCache {
 }
 
 export function usePools(
-  poolKeys: [Currency | undefined, Currency | undefined, FeeAmount | undefined][],
+  poolKeys: [Currency | undefined | null, Currency | undefined | null, FeeAmount | undefined][],
 ): [PoolState, Pool | null][] {
   const { chainId } = useActiveChainId()
 
@@ -143,11 +143,11 @@ export function usePools(
 }
 
 export function usePool(
-  currencyA: Currency | undefined,
-  currencyB: Currency | undefined,
+  currencyA: Currency | undefined | null,
+  currencyB: Currency | undefined | null,
   feeAmount: FeeAmount | undefined,
 ): [PoolState, Pool | null] {
-  const poolKeys: [Currency | undefined, Currency | undefined, FeeAmount | undefined][] = useMemo(
+  const poolKeys: [Currency | undefined | null, Currency | undefined | null, FeeAmount | undefined][] = useMemo(
     () => [[currencyA, currencyB, feeAmount]],
     [currencyA, currencyB, feeAmount],
   )

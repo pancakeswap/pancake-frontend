@@ -4,9 +4,9 @@ export interface FormState {
   name: string
   body: string
   choices: ChoiceIdValue[]
-  startDate: Date
-  startTime: Date
-  endDate: Date
-  endTime: Date
+  startDate: Date | null
+  startTime: Date | null
+  endDate: Date | null
+  endTime: Date | null
   snapshot: number
 }

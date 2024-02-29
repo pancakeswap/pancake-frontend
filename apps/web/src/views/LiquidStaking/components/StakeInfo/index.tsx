@@ -1,16 +1,16 @@
-import { useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-import { Text, RowBetween, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { RowBetween, Skeleton, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
-import { ExchangeRateTitle } from 'views/LiquidStaking/components/StakeInfo/ExchangeRateTitle'
+import BigNumber from 'bignumber.js'
+import { useMemo } from 'react'
 import { LiquidStakingApr } from 'views/LiquidStaking/components/StakeInfo//LiquidStakingApr'
+import { ExchangeRateTitle } from 'views/LiquidStaking/components/StakeInfo/ExchangeRateTitle'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
+import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
 
 interface StakeInfoProps {
-  selectedList: LiquidStakingList
+  selectedList: LiquidStakingList | null
 }
 
 const StakeInfo: React.FC<StakeInfoProps> = ({ selectedList }) => {

@@ -1,11 +1,13 @@
 import DisclaimerModal, { CheckType } from 'components/DisclaimerModal'
 import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useEffect } from 'react'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTheme } from 'styled-components'
 import { Text, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { useRouter } from 'next/router'
+import { usePreviousValue } from '@pancakeswap/hooks'
 
 interface USCitizenConfirmModalProps {
   id: IdType
@@ -24,6 +26,8 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
     t,
     currentLanguage: { code },
   } = useTranslation()
+  const { pathname } = useRouter()
+  const previousPathname = usePreviousValue(pathname)
   const [, setHasAcceptedRisk] = useUserNotUsCitizenAcknowledgement(id)
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
@@ -36,6 +40,12 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
     }
     onDismiss?.()
   }, [id, setHasAcceptedRisk, onDismiss, chainId, code, isDark])
+
+  useEffect(() => {
+    if (previousPathname && pathname !== previousPathname) {
+      onDismiss?.()
+    }
+  }, [pathname, previousPathname, onDismiss])
 
   return (
     <DisclaimerModal

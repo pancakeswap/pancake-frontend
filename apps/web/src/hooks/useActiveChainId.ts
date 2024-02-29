@@ -1,10 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
+import { getChainId } from 'config/chains'
 import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useDeferredValue } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
-import { getChainId } from 'config/chains'
 import { useSessionChainId } from './useSessionChainId'
 
 const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
@@ -54,7 +54,7 @@ export const useActiveChainId = () => {
 
   return {
     chainId,
-    isWrongNetwork: (chain?.unsupported ?? false) || isNotMatched,
+    isWrongNetwork: Boolean((chain?.unsupported ?? false) || isNotMatched),
     isNotMatched,
   }
 }

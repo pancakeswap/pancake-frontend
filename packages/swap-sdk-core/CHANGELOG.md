@@ -1,5 +1,11 @@
 # @pancakeswap/swap-sdk-core
 
+## 1.0.1
+
+### Patch Changes
+
+- c269d43: Bump sdk core for updated types
+
 ## 1.0.0
 
 ### Major Changes

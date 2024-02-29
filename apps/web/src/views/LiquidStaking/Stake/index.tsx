@@ -1,9 +1,9 @@
-import NextLink from 'next/link'
-import { CardBody, Text, Select, Button } from '@pancakeswap/uikit'
-import { AppHeader } from 'components/App'
 import { useTranslation } from '@pancakeswap/localization'
-import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
+import { Box, Button, CardBody, Select, Text } from '@pancakeswap/uikit'
+import { AppHeader } from 'components/App'
+import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
+import StakeInfo from '../components/StakeInfo'
 
 interface LiquidStakingPageStakeProps {
   selectedList: OptionProps
@@ -32,9 +32,12 @@ export const LiquidStakingPageStake: React.FC<LiquidStakingPageStakeProps> = ({
         </Text>
         {optionsList.length > 0 && <Select mb="24px" options={optionsList} onOptionChange={handleSortOptionChange} />}
         <StakeInfo selectedList={selectedList} />
-        <NextLink href={`/liquid-staking/${selectedList?.contract}`}>
-          <Button width="100%">{t('Proceed')}</Button>
-        </NextLink>
+
+        <Box mb="16px">
+          <NextLink href={`/liquid-staking/${selectedList?.contract}`}>
+            <Button width="100%">{t('Proceed')}</Button>
+          </NextLink>
+        </Box>
       </CardBody>
     </>
   )

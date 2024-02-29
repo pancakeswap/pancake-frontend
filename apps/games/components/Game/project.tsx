@@ -1,12 +1,12 @@
-import { styled } from 'styled-components'
-import { useRef, useMemo } from 'react'
-import { useRouter } from 'next/router'
-import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
 import { GameType } from '@pancakeswap/games'
-import { useGamesConfig } from 'hooks/useGamesConfig'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DesktopView } from 'components/Game/Project/DesktopView'
 import { MobileView } from 'components/Game/Project/MobileView'
+import { useGamesConfig } from 'hooks/useGamesConfig'
+import { useRouter } from 'next/router'
+import { useMemo, useRef } from 'react'
+import { styled } from 'styled-components'
 
 const StyledDesktop = styled.div`
   display: flex;
@@ -58,7 +58,7 @@ export const GameProject = () => {
   const splitWrapperRef = useRef<null | HTMLDivElement>(null)
 
   const gameUrl = useMemo(() => {
-    const defaultUrl = gameData?.gameLink
+    const defaultUrl = gameData?.gameLink?.playNowLink
     return query?.gameSearch ? `${defaultUrl}${query?.gameSearch}` : defaultUrl
   }, [gameData, query])
 

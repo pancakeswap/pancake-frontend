@@ -41,7 +41,7 @@ import {
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { getSymbolAlias } from 'utils/getSymbolAlias'
+import { getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
@@ -101,8 +101,8 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const transactions = usePoolTransactionsQuery(address)
   const chainId = useChainIdByQuery()
   const [poolSymbol, symbol0, symbol1] = useMemo(() => {
-    const s0 = getSymbolAlias(poolData?.token0.address, chainId, poolData?.token0.symbol)
-    const s1 = getSymbolAlias(poolData?.token1.address, chainId, poolData?.token1.symbol)
+    const s0 = getTokenSymbolAlias(poolData?.token0.address, chainId, poolData?.token0.symbol)
+    const s1 = getTokenSymbolAlias(poolData?.token1.address, chainId, poolData?.token1.symbol)
     return [`${s0} / ${s1}`, s0, s1]
   }, [chainId, poolData?.token0.address, poolData?.token0.symbol, poolData?.token1.address, poolData?.token1.symbol])
   const { savedPools, addPool } = useInfoUserSavedTokensAndPools(chainId)

@@ -45,7 +45,7 @@ const ExpandingWrapper = styled.div`
 
 interface FarmCardProps {
   farm: FarmWithStakedValue
-  displayApr: string
+  displayApr: string | null
   removed: boolean
   cakePrice?: BigNumber
   account?: string

@@ -1,7 +1,8 @@
-import { Abi, Address } from 'viem'
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { ReactNode } from 'react'
+import { Abi, Address } from 'viem'
 
-interface NativeToken {
+export interface NativeToken {
   name: string
   symbol: string
   decimals: number
@@ -22,8 +23,8 @@ export enum FunctionName {
 
 export interface FAQType {
   id: number
-  title: JSX.Element
-  description: JSX.Element
+  title: ReactNode
+  description: ReactNode
 }
 
 export interface LiquidStakingList {
@@ -33,10 +34,11 @@ export interface LiquidStakingList {
   token1: Token | NativeToken
   aprUrl: string
   abi: Abi
-  approveToken: Token
+  approveToken: Token | null
   shouldCheckApproval: boolean
   exchangeRateMultiCall: ExchangeRateMultiCall[]
   stakingMethodArgs: string[]
   stakingOverrides: string[]
   FAQs: FAQType[]
+  requestWithdrawFn: string
 }

@@ -417,4 +417,20 @@ export const ethereumTokens = {
     'Pandora',
     'https://www.ether.fi/',
   ),
+  pixel: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x3429d03c6F7521AeC737a0BBF2E5ddcef2C3Ae31',
+    18,
+    'PIXEL',
+    'PIXEL',
+    'https://www.pixels.xyz/',
+  ),
+  xrgb: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x5cc5E64AB764A0f1E97F23984E20fD4528356a6a',
+    18,
+    'XRGB',
+    'XRGB',
+    'https://xrgb.xyz/',
+  ),
 }

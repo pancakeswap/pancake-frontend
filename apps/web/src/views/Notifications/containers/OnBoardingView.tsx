@@ -74,9 +74,9 @@ const OnBoardingView = ({
     } catch (error) {
       setIsSubscribing(false)
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
-      toast.toastError(Events.SubscriptionRequestError.title, errMessage)
+      toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
     }
-  }, [toast, subscribe, subscribeToPushNotifications, setIsSubscribing])
+  }, [t, toast, subscribe, subscribeToPushNotifications, setIsSubscribing])
 
   const handleOnBoarding = useCallback(async () => {
     setIsOnBoarding(true)
@@ -84,10 +84,10 @@ const OnBoardingView = ({
       await handleRegistration()
     } catch (error) {
       const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
-      toast.toastError(Events.SubscriptionRequestError.title, errMessage)
+      toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
     }
     setIsOnBoarding(false)
-  }, [setIsOnBoarding, handleRegistration, toast])
+  }, [t, setIsOnBoarding, handleRegistration, toast])
 
   const handleAction = useCallback(
     async (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {

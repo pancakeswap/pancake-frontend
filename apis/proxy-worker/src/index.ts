@@ -7,43 +7,30 @@ const _corsHeaders = `referer, origin, content-type, x-sf`
 
 const router = Router()
 
-router.post('/bsc-exchange', async (request, _, headers: Headers) => {
-  const ip = headers.get('X-Forwarded-For') || headers.get('Cf-Connecting-Ip') || ''
-  const isLocalHost = headers.get('origin') === 'http://localhost:3000'
-  const body = (await request.text?.()) as any
+function createEndpoint(url: string) {
+  return async (request: Request, _: any, headers: Headers) => {
+    const ip = headers.get('X-Forwarded-For') || headers.get('Cf-Connecting-Ip') || ''
+    const isLocalHost = headers.get('origin') === 'http://localhost:3000'
+    const body = (await request.text?.()) as any
 
-  if (!body) return error(400, 'Missing body')
+    if (!body) return error(400, 'Missing body')
 
-  const response = await fetch(NODE_REAL_DATA_ENDPOINT, {
-    headers: {
-      'X-Forwarded-For': ip,
-      origin: isLocalHost ? 'https://pancakeswap.finance' : headers.get('origin') || '',
-    },
-    body,
-    method: 'POST',
-  })
+    const response = await fetch(url, {
+      headers: {
+        'X-Forwarded-For': ip,
+        origin: isLocalHost ? 'https://pancakeswap.finance' : headers.get('origin') || '',
+      },
+      body,
+      method: 'POST',
+    })
 
-  return response
-})
+    return response
+  }
+}
 
-router.post('/bsc-exchange-v3', async (request, _, headers: Headers) => {
-  const ip = headers.get('X-Forwarded-For') || headers.get('Cf-Connecting-Ip') || ''
-  const isLocalHost = headers.get('origin') === 'http://localhost:3000'
-  const body = (await request.text?.()) as any
+router.post('/bsc-exchange', createEndpoint(NODE_REAL_DATA_ENDPOINT))
 
-  if (!body) return error(400, 'Missing body')
-
-  const response = await fetch(NODE_REAL_BSC_V3_ENDPOINT, {
-    headers: {
-      'X-Forwarded-For': ip,
-      origin: isLocalHost ? 'https://pancakeswap.finance' : headers.get('origin') || '',
-    },
-    body,
-    method: 'POST',
-  })
-
-  return response
-})
+router.post('/opbnb-exchange-v3', createEndpoint(OPBNB_ENDPOINT))
 
 router.options('*', handleCors(CORS_ALLOW, _corsMethods, _corsHeaders))
 

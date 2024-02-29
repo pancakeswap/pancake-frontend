@@ -2,7 +2,7 @@ import { Currency } from "@pancakeswap/sdk";
 import { FeeAmount, TICK_SPACINGS, tickToPrice } from "@pancakeswap/v3-sdk";
 import { useMemo } from "react";
 
-import { ChartEntry, TickProcessed, TickDataRaw } from "./types";
+import { ChartEntry, TickDataRaw, TickProcessed } from "./types";
 import { computeSurroundingTicks } from "./utils";
 
 const PRICE_FIXED_DIGITS = 8;
@@ -11,8 +11,8 @@ export function useDensityChartData(poolInfo: {
   liquidity?: bigint;
   tickCurrent?: number;
   feeAmount?: FeeAmount;
-  currencyA?: Currency;
-  currencyB?: Currency;
+  currencyA?: Currency | null;
+  currencyB?: Currency | null;
   ticks?: TickDataRaw[];
 }) {
   const { data: ticks = [] } = usePoolActiveLiquidity(poolInfo);
@@ -63,8 +63,8 @@ export function usePoolActiveLiquidity({
   liquidity?: bigint;
   tickCurrent?: number;
   feeAmount?: FeeAmount;
-  currencyA?: Currency;
-  currencyB?: Currency;
+  currencyA?: Currency | null;
+  currencyB?: Currency | null;
   ticks?: TickDataRaw[];
 }): {
   activeTick?: number;

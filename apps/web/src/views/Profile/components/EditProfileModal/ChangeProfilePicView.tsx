@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, InjectedModalProps, Skeleton, Text, useToast } from '@pancakeswap/uikit'
-import { useAccount, useWalletClient } from 'wagmi'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useProfileContract } from 'hooks/useContract'
+import get from 'lodash/get'
 import { useMemo, useState } from 'react'
 import { useApprovalNfts } from 'state/nftMarket/hooks'
 import { NftLocation } from 'state/nftMarket/types'
@@ -13,25 +13,28 @@ import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
+import { Address, useAccount, useWalletClient } from 'wagmi'
 import { useNftsForAddress } from '../../../Nft/market/hooks/useNftsForAddress'
 
 interface ChangeProfilePicPageProps extends InjectedModalProps {
   onSuccess?: () => void
 }
 
+interface SelectedNFTType {
+  tokenId: string
+  collectionAddress: Address
+}
+
 const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPageProps>> = ({
   onDismiss,
   onSuccess,
 }) => {
-  const [selectedNft, setSelectedNft] = useState({
-    tokenId: null,
-    collectionAddress: null,
-  })
+  const [selectedNft, setSelectedNft] = useState<SelectedNFTType | undefined>()
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { data: signer } = useWalletClient()
-  const { isLoading: isProfileLoading, profile, refresh: refreshProfile } = useProfile()
-  const { nfts, isLoading } = useNftsForAddress(account, profile, isProfileLoading)
+  const { isLoading: isProfileFetching, profile, refresh: refreshProfile } = useProfile()
+  const { nfts, isLoading } = useNftsForAddress({ account: account || '', profile, isProfileFetching })
   const profileContract = useProfileContract()
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -40,24 +43,28 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
   const { data } = useApprovalNfts(nftsInWallet)
 
   const isAlreadyApproved = useMemo(() => {
-    return data ? !!data[selectedNft.tokenId] : false
-  }, [data, selectedNft.tokenId])
+    return data && selectedNft?.tokenId ? !!get(data, selectedNft.tokenId) : false
+  }, [data, selectedNft?.tokenId])
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        if (!selectedNft.tokenId) return true
-        const contract = getErc721Contract(selectedNft.collectionAddress, signer)
-        const approvedAddress = await contract.read.getApproved([selectedNft.tokenId])
+        if (!selectedNft?.tokenId || !selectedNft?.collectionAddress || !signer || !selectedNft?.tokenId) return true
+        const contract = getErc721Contract(selectedNft?.collectionAddress, signer)
+        const approvedAddress = await contract.read.getApproved([BigInt(selectedNft.tokenId)])
         return approvedAddress !== getPancakeProfileAddress()
       },
       onApprove: () => {
+        if (!selectedNft?.collectionAddress || !signer) return undefined
+
         const contract = getErc721Contract(selectedNft.collectionAddress, signer)
 
         return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
       },
       onConfirm: () => {
-        if (!profile.isActive) {
+        if (!selectedNft?.collectionAddress || selectedNft?.tokenId) return undefined
+
+        if (!profile?.isActive) {
           return callWithGasPrice(profileContract, 'reactivateProfile', [
             selectedNft.collectionAddress,
             selectedNft.tokenId,
@@ -99,7 +106,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
                 key={`${walletNft.collectionAddress}#${walletNft.tokenId}`}
                 value={walletNft.tokenId}
                 image={walletNft.image.thumbnail}
-                isChecked={walletNft.tokenId === selectedNft.tokenId}
+                isChecked={walletNft.tokenId === selectedNft?.tokenId}
                 onChange={handleChange}
                 disabled={isApproving || isConfirming || isConfirmed}
               >
@@ -119,9 +126,9 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
         </>
       )}
       <ApproveConfirmButtons
-        isApproveDisabled={isConfirmed || isConfirming || alreadyApproved || selectedNft.tokenId === null}
+        isApproveDisabled={isConfirmed || isConfirming || alreadyApproved || selectedNft?.tokenId === undefined}
         isApproving={isApproving}
-        isConfirmDisabled={!alreadyApproved || isConfirmed || selectedNft.tokenId === null}
+        isConfirmDisabled={!alreadyApproved || isConfirmed || selectedNft?.tokenId === undefined}
         isConfirming={isConfirming}
         onApprove={handleApprove}
         onConfirm={handleConfirm}

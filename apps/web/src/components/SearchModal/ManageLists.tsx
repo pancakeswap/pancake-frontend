@@ -205,7 +205,7 @@ function ManageLists({
         // only show loaded lists, hide unsupported lists
         const isValid = Boolean(lists[listUrl].current) && !UNSUPPORTED_LIST_URLS.includes(listUrl)
 
-        if (isValid) {
+        if (isValid && chainId) {
           return MULTI_CHAIN_LIST_URLS[chainId]?.includes(listUrl)
         }
 

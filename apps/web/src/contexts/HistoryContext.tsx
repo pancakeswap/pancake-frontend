@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
-import { useContext, createContext, useEffect, useState, useMemo } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
-const historyManagerContext = createContext<ReturnType<typeof useHistoryManager>>(null)
+const historyManagerContext = createContext<ReturnType<typeof useHistoryManager> | null>(null)
 
 export function HistoryManagerProvider({ children }) {
   const value = useHistoryManager()

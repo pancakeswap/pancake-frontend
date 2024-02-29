@@ -2334,9 +2334,9 @@ export const bscTokens = {
     ChainId.BSC,
     '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
     18,
-    'HAY',
-    'Hay Destablecoin',
-    'https://helio.money/',
+    'lisUSD',
+    'Lista USD',
+    'https://lista.org',
   ),
   spin: new ERC20Token(
     ChainId.BSC,
@@ -2679,9 +2679,9 @@ export const bscTokens = {
     ChainId.BSC,
     '0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B',
     18,
-    'SnBNB',
-    'Synclub Staked BNB',
-    'https://www.synclub.io/',
+    'slisBNB',
+    'Staked Lista BNB',
+    'https://lista.org/',
   ),
   planet: new ERC20Token(
     ChainId.BSC,
@@ -3005,4 +3005,12 @@ export const bscTokens = {
     'https://dmail.ai/',
   ),
   defi: new ERC20Token(ChainId.BSC, '0x6d106C0B8d2f47c5465bdBD58D1Be253762cBBC1', 18, 'DEFI', 'DeFi', 'https://de.fi/'),
+  xrgb: new ERC20Token(
+    ChainId.BSC,
+    '0x5cc5E64AB764A0f1E97F23984E20fD4528356a6a',
+    18,
+    'XRGB',
+    'XRGB',
+    'https://xrgb.xyz',
+  ),
 }

@@ -1,4 +1,4 @@
-import { GameType, PostersLayout, PostersItemDataType, GenreType, TrendingTagType } from '../../types'
+import { GameType, GenreType, PostersItemDataType, PostersLayout, TrendingTagType } from '../../types'
 
 export const pancakeProtectors: GameType = {
   id: 'pancake-protectors',
@@ -30,7 +30,9 @@ export const pancakeProtectors: GameType = {
     lightTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/mobox-circle-logo.png',
     darkTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/mobox-circle-logo.png',
   },
-  gameLink: 'https://protectors.pancakeswap.finance/',
+  gameLink: {
+    playNowLink: 'https://protectors.pancakeswap.finance/',
+  },
   posters: {
     layout: PostersLayout.Vertical,
     items: [

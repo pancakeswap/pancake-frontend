@@ -667,7 +667,7 @@
   "On sale soon!": "শীঘ্রই মূল্যহ্রাস!",
   "Date": "তারিখ",
   "Your Tickets": "আপনার টিকিট",
-  "in prizes!": "পুরষ্কারে!",
+  "in Prizes!": "in Prizes!",
   "Tickets on sale soon": "টিকিটের মূল্যহ্রাস",
   "The PancakeSwap Lottery": "The PancakeSwap Lottery",
   "All History": "সমস্ত ইতিহাস",
@@ -2361,7 +2361,6 @@
   "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.": "আপনার তারল্য এক্সচেঞ্জ V3-এ পরিবর্তন করুন এবং CAKE পুরস্কার ফার্মিং অব্যাহত রাখুন।",
   "Automatically fill in the maximum token amount according to your balance and position settings.": "আপনার ব্যালেন্স এবং অবস্থান সেটিংস অনুযায়ী স্বয়ংক্রিয়ভাবে সর্বাধিক টোকেনের পরিমাণ পূরণ করুন।",
   "Price will appear here": "দাম এখানে প্রদর্শিত হবে",
-  "We are in the early stage of V3 deployment. Due to a lack of historical data, numbers and estimates may be inaccurate.": "আমরা V3 স্থাপনের প্রাথমিক পর্যায়ে আছি। ঐতিহাসিক তথ্যের অভাবের কারণে সংখ্যা এবং হিসাবে ভুল হতে পারে।",
   "gm eth teams": "gm eth টিম",
   "Ev3ryone's Favourite D3X": "সবার প্রিয় D3X",
   "Discover V3": "V3 আবিষ্কার করুন",
@@ -3143,5 +3142,8 @@
   "Savings": "Savings",
   "Show testnet": "Show testnet",
   "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!": "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Updated": "Updated",
+  "Search name": "Search name",
+  "Note (20 characters)": "Note (20 characters)"
 }

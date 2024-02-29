@@ -1,26 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Text, RowBetween, Box, Flex, Image } from '@pancakeswap/uikit'
-import { AppBody, AppHeader } from 'components/App'
-import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import Page from 'views/Page'
-import { useCurrency } from 'hooks/Tokens'
-import { LightGreyCard } from 'components/Card'
-import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { Box, CardBody, Flex, Image, RowBetween, Text } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
-import { useCurrencyBalance } from 'state/wallet/hooks'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
+import { AppBody, AppHeader } from 'components/App'
+import { LightGreyCard } from 'components/Card'
+import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
+import { useCurrency } from 'hooks/Tokens'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useState } from 'react'
+import { useCurrencyBalance } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
-import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
-import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
-import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
 import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingButton'
+import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
+import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
+import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
+import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
+import Page from 'views/Page'
 
 const LiquidStakingStakePage = () => {
   const { t } = useTranslation()
@@ -85,13 +85,19 @@ const LiquidStakingStakePage = () => {
           <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
             {t('Deposit Amount')}
           </Text>
+
           <Box mb="16px">
             <CurrencyInputPanel
               showUSDPrice
               maxAmount={currencyBalance}
               disableCurrencySelect
               value={stakeAmount}
-              onMax={() => setStakeAmount(maxAmountSpend(currencyBalance)?.toExact())}
+              onMax={() => {
+                const max = maxAmountSpend(currencyBalance)?.toExact()
+                if (max) {
+                  setStakeAmount(max)
+                }
+              }}
               onUserInput={setStakeAmount}
               showQuickInputButton
               showMaxButton
@@ -154,19 +160,23 @@ const LiquidStakingStakePage = () => {
               </Flex>
             </RowBetween>
           </LightGreyCard>
-          <StakeInfo selectedList={selectedList} />
-          <LiquidStakingButton
-            quoteAmount={quoteAmount}
-            inputCurrency={inputCurrency}
-            currentAmount={currentAmount}
-            selectedList={selectedList}
-            currencyBalance={currencyBalance}
-          />
+          <Box mb="16px">{selectedList ? <StakeInfo selectedList={selectedList} /> : null}</Box>
+          {selectedList?.token0 && selectedList?.token1 ? (
+            <LiquidStakingButton
+              quoteAmount={quoteAmount}
+              inputCurrency={inputCurrency}
+              currentAmount={currentAmount}
+              selectedList={selectedList}
+              currencyBalance={currencyBalance}
+            />
+          ) : null}
         </CardBody>
       </AppBody>
-      <AppBody>
-        <LiquidStakingFAQs config={selectedList?.FAQs} />
-      </AppBody>
+      {selectedList?.FAQs ? (
+        <AppBody>
+          <LiquidStakingFAQs config={selectedList.FAQs} />
+        </AppBody>
+      ) : null}
     </Page>
   )
 }

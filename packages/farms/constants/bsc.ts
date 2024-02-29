@@ -48,6 +48,13 @@ export const farmsV3 = defineFarmV3Configs([
   // new lps should follow after the top fixed lps
   // latest first
   {
+    pid: 143,
+    lpAddress: '0x9a5936bab8f9ae1D89DA5fa95C484F7aD597C8C0',
+    token0: bscTokens.xrgb,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 142,
     lpAddress: '0x4167f229a0323F480518b61CB35eD4d6a0C5EA27',
     token0: bscTokens.usdt,
@@ -1059,6 +1066,20 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 180,
+    lpSymbol: 'MGP-BNB LP',
+    lpAddress: '0x2b3DBbA2D1F5158c7BA4b645B7ea187F7F1763af',
+    token: bscTokens.mgp,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
+    pid: 181,
+    lpSymbol: 'PNP-BNB LP',
+    lpAddress: '0x1C5bD1B4A4Fc05cC0Fb1a0f61136512744Ca4F34',
+    token: bscTokens.pnp,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
     pid: 179,
     lpSymbol: 'mDLP-DLP LP',
     lpAddress: '0xA2915ae3bc8C6C03f59496B6Dd26aa6a4335b788',
@@ -1143,7 +1164,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 163,
-    lpSymbol: 'HAY-USDT LP',
+    lpSymbol: 'lisUSD-USDT LP',
     lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
     token: bscTokens.hay,
     quoteToken: bscTokens.usdt,
@@ -1445,7 +1466,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 115,
-    lpSymbol: 'HAY-BUSD LP',
+    lpSymbol: 'lisUSD-BUSD LP',
     lpAddress: '0x70c26e9805ec5Df3d4aB0b2a3dF86BBA2231B6c1',
     token: bscTokens.hay,
     quoteToken: bscTokens.busd,
@@ -2266,7 +2287,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 121,
-    lpSymbol: 'HAY-BUSD LP',
+    lpSymbol: 'lisUSD-BUSD LP',
     lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
     token: bscTokens.hay,
     quoteToken: bscTokens.busd,

@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { CircleLoader, Column, QuestionHelper, RowBetween, RowFixed, Text } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
+import React, { CSSProperties, MutableRefObject, ReactNode, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { styled } from 'styled-components'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
@@ -143,7 +143,7 @@ export default function CurrencyList({
   const { t } = useTranslation()
 
   const Row = useCallback(
-    ({ data, index, style }): JSX.Element => {
+    ({ data, index, style }): ReactNode => {
       const currency: Currency = data[index]
       const isSelected = Boolean(selectedCurrency && currency && selectedCurrency.equals(currency))
       const otherSelected = Boolean(otherCurrency && currency && otherCurrency.equals(currency))

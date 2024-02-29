@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react'
-import { Currency, CurrencyAmount, Fraction, Percent, Token } from '@pancakeswap/sdk'
-import { InjectedModalProps, Button } from '@pancakeswap/uikit'
-import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount, Fraction, Percent, Token } from '@pancakeswap/sdk'
+import { Button, InjectedModalProps } from '@pancakeswap/uikit'
+import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
-import { Field } from 'state/burn/actions'
 import _toNumber from 'lodash/toNumber'
+import React, { useCallback } from 'react'
+import { Field } from 'state/burn/actions'
 import { AddLiquidityModalHeader, PairDistribution } from './common'
 
 interface ConfirmAddLiquidityModalProps {
@@ -18,12 +18,12 @@ interface ConfirmAddLiquidityModalProps {
   noLiquidity?: boolean
   allowedSlippage: number
   liquidityErrorMessage?: string
-  price?: Fraction
+  price?: Fraction | null
   parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   onAdd: () => void
   poolTokenPercentage?: Percent
   liquidityMinted?: CurrencyAmount<Token>
-  currencyToAdd?: Token
+  currencyToAdd?: Token | null
   isStable?: boolean
 }
 

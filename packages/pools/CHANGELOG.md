@@ -1,5 +1,19 @@
 # @pancakeswap/pools
 
+## 5.1.10
+
+### Patch Changes
+
+- @pancakeswap/token-lists@0.0.10
+- @pancakeswap/tokens@0.6.6
+
+## 5.1.9
+
+### Patch Changes
+
+- Updated dependencies [6157db8]
+  - @pancakeswap/tokens@0.6.5
+
 ## 5.1.8
 
 ### Patch Changes

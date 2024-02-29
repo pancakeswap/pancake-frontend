@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { OptionProps } from '@pancakeswap/uikit'
+import { ContextApi } from '@pancakeswap/localization'
 import {
   EventInformation,
   PancakeNotificationBuilders,
@@ -59,12 +60,12 @@ export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTI
 export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
 
 export const PancakeNotifications: {
-  [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(args: T[]) => pushNotification
+  [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(t: ContextApi['t'], args: T[]) => pushNotification
 } = {
-  newLpNotification: (): pushNotification => {
+  newLpNotification: (t): pushNotification => {
     return {
-      title: 'New LP Position Added',
-      body: `New LP position successfully added. you will be notified on important updates.`,
+      title: t('New LP Position Added'),
+      body: t('New LP position successfully added. you will be notified on important updates.'),
       icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pancakeswap.finance',
       type: SubsctiptionType.Liquidity,
@@ -78,31 +79,31 @@ export const PUBLIC_VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_KEY ?? ''
 
 export const Events: { [event in keyof typeof ResponseEvents]: EventInformation } = {
   [ResponseEvents.NotificationsEnabled]: {
-    title: 'Notifications Enabled',
-    message: () => 'You can now opt-in to pancakeswap web notifications',
+    title: (t) => t('Notifications Enabled'),
+    message: (t) => t('You can now opt-in to pancakeswap web notifications'),
   },
   [ResponseEvents.NotificationsEnabledError]: {
-    title: 'Error Enabling Notifications',
-    message: (error) => `Something went wrong when trying to enable notifications ${error}`,
+    title: (t) => t('Error Enabling Notifications'),
+    message: (t, error) => t('Something went wrong when trying to enable notifications %error%', { error }),
   },
   [ResponseEvents.SubscriptionRequestError]: {
-    title: 'Subscription Error',
+    title: (t) => t('Subscription Error'),
   },
   [ResponseEvents.PreferencesUpdated]: {
-    title: 'Success',
-    message: () => 'Your notification preferences have been updated.',
+    title: (t) => t('Success'),
+    message: (t) => t('Your notification preferences have been updated.'),
   },
   [ResponseEvents.PreferencesError]: {
-    title: 'Something went wrong',
-    message: (error) => `Unable to update your preferences ${error}`,
+    title: (t) => t('Something went wrong'),
+    message: (t, error) => t('Unable to update your preferences %error%', { error }),
   },
   [ResponseEvents.UnsubscribeError]: {
-    title: 'Error Unsubscribing',
-    message: (error) => `Unable to unsubscribe ${error}`,
+    title: (t) => t('Error Unsubscribing'),
+    message: (t, error) => t('Unable to unsubscribe %error%', { error }),
   },
   [ResponseEvents.Unsubscribed]: {
-    title: 'Update',
-    message: () => 'You sucessfully unsubsrcibed from notifications. You can re-subscribe any time',
+    title: (t) => t('Update'),
+    message: (t) => t('You successfully unsubscribed from notifications. You can re-subscribe any time'),
   },
 }
 

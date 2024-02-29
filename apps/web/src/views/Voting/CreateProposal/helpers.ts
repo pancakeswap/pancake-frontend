@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import { MINIMUM_CHOICES } from './Choices'
 import { FormState } from './types'
 
-export const combineDateAndTime = (date: Date, time: Date) => {
+export const combineDateAndTime = (date: Date | null, time: Date | null) => {
   const dateDayJs = dayjs(date)
   const timeDayJs = dayjs(time)
   if (!dateDayJs.isValid() || !timeDayJs.isValid()) {
@@ -62,7 +62,7 @@ export const getFormErrors = (formData: FormState, t: ContextApi['t']) => {
   const startDateTimestamp = combineDateAndTime(startDate, startTime)
   const endDateTimestamp = combineDateAndTime(endDate, endTime)
 
-  if (endDateTimestamp < startDateTimestamp) {
+  if (endDateTimestamp && startDateTimestamp && endDateTimestamp < startDateTimestamp) {
     errors.endDate = Array.isArray(errors.endDate)
       ? [...errors.endDate, t('End date must be after the start date')]
       : (errors.endDate = [t('End date must be after the start date')])

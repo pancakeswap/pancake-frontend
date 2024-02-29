@@ -667,7 +667,7 @@
   "On sale soon!": "Sắp được bán!",
   "Date": "Ngày",
   "Your Tickets": "Vé của bạn",
-  "in prizes!": "giải thưởng!",
+  "in Prizes!": "in Prizes!",
   "Tickets on sale soon": "Vé sắp được bán",
   "The PancakeSwap Lottery": "The PancakeSwap Lottery",
   "All History": "Tất cả Lịch sử",
@@ -2361,7 +2361,6 @@
   "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.": "Chuyển đổi thanh khoản của bạn sang Sàn giao dịch V3 và giữ phần thưởng canh tác CAKE.",
   "Automatically fill in the maximum token amount according to your balance and position settings.": "Tự động điền số token tối đa tùy theo số dư và cài đặt vị thế của bạn.",
   "Price will appear here": "Giá sẽ được hiển thị ở đây",
-  "We are in the early stage of V3 deployment. Due to a lack of historical data, numbers and estimates may be inaccurate.": "Chúng tôi đang trong giai đoạn đầu của việc triển khai V3. Bởi thiếu dữ liệu lịch sử, các số và ước tính có thể không chính xác.",
   "gm eth teams": "Đội ngũ gm eth",
   "Ev3ryone's Favourite D3X": "D3X ưa thích của Ev3ryone",
   "Discover V3": "Khám phá V3",
@@ -3143,5 +3142,8 @@
   "Savings": "Savings",
   "Show testnet": "Show testnet",
   "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!": "Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!",
-  "Join Now": "Join Now"
+  "Join Now": "Join Now",
+  "Updated": "Updated",
+  "Search name": "Search name",
+  "Note (20 characters)": "Note (20 characters)"
 }

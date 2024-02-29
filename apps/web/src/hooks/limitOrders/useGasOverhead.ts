@@ -1,13 +1,13 @@
-import { useMemo } from 'react'
-import { formatUnits } from 'viem'
-import { CurrencyAmount, Price, Currency } from '@pancakeswap/sdk'
-import { useTradeExactIn } from 'hooks/Trades'
+import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { Rate } from 'state/limitOrders/types'
 import { GENERIC_GAS_LIMIT_ORDER_EXECUTION } from 'config/constants/exchange'
-import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
-import { useGasPrice } from 'state/user/hooks'
+import { useTradeExactIn } from 'hooks/Trades'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useMemo } from 'react'
+import { Rate } from 'state/limitOrders/types'
+import { useGasPrice } from 'state/user/hooks'
+import { formatUnits } from 'viem'
+import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { useActiveChainId } from '../useActiveChainId'
 
 export default function useGasOverhead(
@@ -27,7 +27,10 @@ export default function useGasOverhead(
 
   const inputIsBNB = inputAmount?.currency.symbol === 'BNB'
 
-  const gasCostInInputTokens = useTradeExactIn(requiredGasAsCurrencyAmount, inputIsBNB ? null : inputAmount?.currency)
+  const gasCostInInputTokens = useTradeExactIn(
+    requiredGasAsCurrencyAmount,
+    inputIsBNB ? undefined : inputAmount?.currency,
+  )
 
   const bufferedOutputAmount = useMemo(() => {
     if (inputIsBNB) return requiredGasAsCurrencyAmount
@@ -45,7 +48,7 @@ export default function useGasOverhead(
   const realExecutionPrice = useMemo(() => {
     if (!inputAmount || (!gasCostInInputTokens && !inputIsBNB) || !realInputAmount || !outputAmount) return null
 
-    if (inputIsBNB && requiredGasAsCurrencyAmount.greaterThan(inputAmount.asFraction)) return undefined
+    if (inputIsBNB && requiredGasAsCurrencyAmount?.greaterThan(inputAmount.asFraction)) return undefined
     if (gasCostInInputTokens && gasCostInInputTokens.outputAmount.greaterThan(inputAmount.asFraction)) return undefined
     return getPriceForOneToken(realInputAmount, outputAmount)
   }, [realInputAmount, outputAmount, inputAmount, gasCostInInputTokens, inputIsBNB, requiredGasAsCurrencyAmount])

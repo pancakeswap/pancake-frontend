@@ -27,6 +27,8 @@
     "ARBITRUM",
     "awgmi",
     "bignumber",
+    "GELATO",
+    "ledgerhq",
     "LINEA",
     "Merkl",
     "multicall",
@@ -34,8 +36,14 @@
     "pancakeswap",
     "tanstack",
     "sepolia",
+    "preinstall",
+    "SNBNB",
+    "stylelint",
+    "tilg",
     "vecake",
+    "viem",
     "wagmi",
+    "WBETH",
     "wbnb",
     "ZKSYNC"
   ]

@@ -4,10 +4,11 @@ import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainIdByQuery, useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { PoolData } from 'state/info/types'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
@@ -87,8 +88,12 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => (
 
 const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => {
   const chainName = useChainNameByQuery()
+  const chainId = useChainIdByQuery()
   const chainPath = useMultiChainPath()
   const stableSwapPath = useStableSwapPath()
+  const token0symbol = getTokenSymbolAlias(poolData.token0.address, chainId, poolData.token0.symbol)
+  const token1symbol = getTokenSymbolAlias(poolData.token1.address, chainId, poolData.token1.symbol)
+
   return (
     <LinkWrapper to={`/info${chainPath}/pairs/${poolData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
@@ -100,7 +105,7 @@ const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => 
             chainName={chainName}
           />
           <Text ml="8px">
-            {poolData.token0.symbol}/{poolData.token1.symbol}
+            {token0symbol}/{token1symbol}
           </Text>
         </Flex>
         <Text>${formatAmount(poolData.volumeUSD)}</Text>

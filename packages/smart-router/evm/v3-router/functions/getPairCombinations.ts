@@ -1,17 +1,17 @@
 import { ChainId } from '@pancakeswap/chains'
+import { GAUGES_CONFIG, GaugeConfig, GaugeType } from '@pancakeswap/gauges'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { getTokensByChain } from '@pancakeswap/tokens'
-import type { Address } from 'viem'
-import { GAUGES_CONFIG, GaugeConfig, GaugeType } from '@pancakeswap/gauges'
 import flatMap from 'lodash/flatMap.js'
 import memoize from 'lodash/memoize.js'
 import uniqBy from 'lodash/uniqBy.js'
+import type { Address } from 'viem'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../../constants'
 import { wrappedCurrency } from '../../utils/currency'
 import { isCurrenciesSameChain, log } from '../utils'
 
-const allGuages = GAUGES_CONFIG[ChainId.BSC]
+const allGauges = GAUGES_CONFIG[ChainId.BSC]
 
 const getToken = memoize(
   (chainId?: ChainId, address?: Address): Token | undefined => {
@@ -31,7 +31,7 @@ const getToken = memoize(
 
 // TODO: move to gauges
 const getGaugesByChain = memoize(
-  (chainId?: ChainId): GaugeConfig[] => allGuages.filter((gauge) => gauge.chainId === chainId),
+  (chainId?: ChainId): GaugeConfig[] => allGauges.filter((gauge) => gauge.chainId === chainId),
   (chainId) => chainId,
 )
 
