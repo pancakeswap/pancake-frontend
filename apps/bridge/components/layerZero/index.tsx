@@ -59,10 +59,10 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             app!.bridgeStore!.currencies.length = 0
-            app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
+            app?.bridgeStore?.addCurrencies(currencies?.filter((i: any) => i.symbol.toLowerCase() === 'cake'))
 
             const srcCake = app?.bridgeStore?.currencies?.find(
-              (i) => i.symbol.toUpperCase() === 'CAKE' && i.chainId === 102,
+              (i: any) => i.symbol.toUpperCase() === 'CAKE' && i.chainId === 102,
             )
             app?.bridgeStore?.setSrcCurrency(srcCake)
           }

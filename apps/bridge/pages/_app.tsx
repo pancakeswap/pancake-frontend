@@ -1,24 +1,15 @@
-import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
-import { useEffect, useState } from 'react'
+import { PancakeTheme, ResetCSS, ToastListener } from '@pancakeswap/uikit'
 import { AppProps } from 'next/app'
-import Script from 'next/script'
-import { createGlobalStyle } from 'styled-components'
-import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import Head from 'next/head'
+import Script from 'next/script'
+import { useEffect, useState } from 'react'
+import { createGlobalStyle } from 'styled-components'
+import Providers from '../Providers'
 import { Menu } from '../components/Menu'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
   export interface DefaultTheme extends PancakeTheme {}
-}
-
-const StyledThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
-  const { resolvedTheme } = useNextTheme()
-  return (
-    <UIKitProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>
-      {props.children}
-    </UIKitProvider>
-  )
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -33,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
   }
   body {
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.gradientBubblegum};
 
     img {
       height: auto;
@@ -75,20 +66,17 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
         <title>Bridge | PancakeSwap</title>
       </Head>
-      <NextThemeProvider>
-        <StyledThemeProvider>
-          <ModalProvider>
-            <ResetCSS />
-            <GlobalStyle />
-            {isMounted && (
-              <>
-                <Menu />
-                <Component {...pageProps} />
-              </>
-            )}
-          </ModalProvider>
-        </StyledThemeProvider>
-      </NextThemeProvider>
+      <Providers>
+        <ResetCSS />
+        <GlobalStyle />
+        {isMounted && (
+          <>
+            <Menu />
+            <Component {...pageProps} />
+          </>
+        )}
+        <ToastListener />
+      </Providers>
       <Script
         strategy="afterInteractive"
         id="google-tag"
