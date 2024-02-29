@@ -16,6 +16,7 @@ import { wait } from 'state/multicall/retry'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { Address, Hex } from 'viem'
+import { mainnet } from 'wagmi'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallback } from './useSwapCallback'
@@ -161,9 +162,10 @@ const useConfirmActions = (
           const result = await approve()
           if (result?.hash && chainId) {
             setTxHash(result.hash)
-            // sync to same with updater /apps/web/src/state/transactions/updater.tsx#L101
-            await wait((AVERAGE_CHAIN_BLOCK_TIMES[chainId] ?? BSC_BLOCK_TIME) * 1000 + 2000)
-            await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash, confirmations: 1 })
+            await publicClient({ chainId }).waitForTransactionReceipt({
+              hash: result.hash,
+              confirmations: chainId === mainnet.id ? 2 : 1,
+            })
           }
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
