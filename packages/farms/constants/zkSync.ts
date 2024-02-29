@@ -6,15 +6,15 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 17,
     lpAddress: '0x374D5C205742AEbE2D9fe9B9741EFA7E12082234',
-    token0: zksyncTokens.dai,
-    token1: zksyncTokens.usdc,
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.dai,
     feeAmount: FeeAmount.LOWEST,
   },
   {
     pid: 16,
     lpAddress: '0x3846400eEe47B29B5A6742620a29128A24921659',
-    token0: zksyncTokens.dai,
-    token1: zksyncTokens.usdt,
+    token0: zksyncTokens.usdt,
+    token1: zksyncTokens.dai,
     feeAmount: FeeAmount.LOWEST,
   },
   {

@@ -2879,8 +2879,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     address: '0x3846400eEe47B29B5A6742620a29128A24921659',
     chainId: ChainId.ZKSYNC,
     type: GaugeType.V3,
-    token0Address: zksyncTokens.dai.address,
-    token1Address: zksyncTokens.usdt.address,
+    token0Address: zksyncTokens.usdt.address,
+    token1Address: zksyncTokens.dai.address,
     feeTier: FeeAmount.LOWEST,
   },
   {
@@ -2889,8 +2889,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     address: '0x374D5C205742AEbE2D9fe9B9741EFA7E12082234',
     chainId: ChainId.ZKSYNC,
     type: GaugeType.V3,
-    token0Address: zksyncTokens.dai.address,
-    token1Address: zksyncTokens.usdc.address,
+    token0Address: zksyncTokens.usdc.address,
+    token1Address: zksyncTokens.dai.address,
     feeTier: FeeAmount.LOWEST,
   },
   {
