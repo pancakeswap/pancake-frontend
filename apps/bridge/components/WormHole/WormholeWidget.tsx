@@ -3,7 +3,7 @@ import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints, 
 import WormholeBridge from '@wormhole-foundation/wormhole-connect'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { useTheme } from 'styled-components'
 import Page from './components/Page'
@@ -18,13 +18,6 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
   const theme = useTheme()
-
-  const wormholeMessageCallback = useCallback(() => {
-    toast.toastWarning(
-      t('Warning'),
-      t('Please be aware when completing wormhole a bridge you may have to confirm multiple popups in your wallet.'),
-    )
-  }, [toast, t])
 
   const wormholeConfig: ExtendedWidgetConfig = useMemo(() => {
     const widgetEnv = enableMainnet ? WidgetEnvs.mainnet : WidgetEnvs.testnet
