@@ -139,10 +139,7 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
           </Heading>
         )}
         {hasExternalLink && (
-          <StyledLink
-            href="https://docs.pancakeswap.finance/" // To-do make wormhole FAQ page
-            external
-          >
+          <StyledLink href="https://docs.pancakeswap.finance/products/bridging/wormhole-bridge-guide" external>
             <Button width="100%" my="16px">
               {t('Go to FAQ guide')}
             </Button>
