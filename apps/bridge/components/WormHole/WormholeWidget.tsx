@@ -22,7 +22,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const wormholeMessageCallback = useCallback(() => {
     toast.toastWarning(
       t('Warning'),
-      t('Please be aware when completing a wormhole bridge you may have to confirm multiple popups in your wallet.'),
+      t('Please be aware when completing wormhole a bridge you may have to confirm multiple popups in your wallet.'),
     )
   }, [toast, t])
 
