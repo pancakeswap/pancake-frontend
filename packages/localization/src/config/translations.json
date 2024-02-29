@@ -3171,5 +3171,6 @@
   "Unable to unsubscribe %error%": "Unable to unsubscribe %error%",
   "You successfully unsubscribed from notifications. You can re-subscribe any time": "You successfully unsubscribed from notifications. You can re-subscribe any time",
   "Failed to send": "Failed to send",
-  "This product have been upgraded!": "This product have been upgraded!"
+  "This product have been upgraded!": "This product have been upgraded!",
+  "Please be aware when completing wormhole a bridge you may have to confirm multiple popups in your wallet.": "Please be aware when completing a wormhole bridge you may have to confirm multiple popups in your wallet."
 }
