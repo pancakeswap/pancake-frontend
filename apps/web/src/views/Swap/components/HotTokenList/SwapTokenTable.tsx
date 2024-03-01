@@ -18,7 +18,8 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useChainNameByQuery, useStableSwapPath } from 'state/info/hooks'
+import { MultiChainName, multiChainName } from 'state/info/constant'
+import { useStableSwapPath } from 'state/info/hooks'
 import { InfoDataSource } from 'state/info/types'
 import { getTokenInfoPath } from 'state/info/utils'
 import { styled } from 'styled-components'
@@ -174,7 +175,7 @@ const DataRow: React.FC<
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
   const address = safeGetAddress(tokenData.address)
-  const chainName = useChainNameByQuery()
+  const chainName = multiChainName[chainId ?? ''] as MultiChainName
   const currencyFromAddress = useMemo(
     () => (address && chainId ? new Token(chainId, address, tokenData.decimals, tokenData.symbol) : undefined),
     [tokenData, chainId, address],
