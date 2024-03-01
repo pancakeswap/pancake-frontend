@@ -194,7 +194,7 @@ const useRoiCalculatorReducer = (
       const principalAsToken = principalAsTokenBN.gt(0) ? principalAsTokenBN.toFixed(TOKEN_PRECISION) : "0.00";
       dispatch({ type: "setPrincipal", payload: { principalAsUSD: amount, principalAsToken } });
     },
-    [dispatch]
+    [dispatch, stakingTokenPrice]
   );
 
   // Handler for principal input when in Token mode
@@ -244,7 +244,7 @@ const useRoiCalculatorReducer = (
         payload: { roiUSD: +amount, roiTokens: targetRoiAsTokens.isNaN() ? 0 : targetRoiAsTokens.toNumber() },
       });
     },
-    [dispatch]
+    [dispatch, earningTokenPrice]
   );
 
   return {
@@ -319,6 +319,7 @@ export function DefaultCompoundStrategy({
     compoundingFrequency,
     mode,
     dispatch,
+    lpRewardsApr,
   ]);
 
   // Calculates and sets principal based on expected ROI value
@@ -358,6 +359,7 @@ export function DefaultCompoundStrategy({
     stakingTokenPrice,
     performanceFee,
     dispatch,
+    lpRewardsApr,
   ]);
 
   return null;
