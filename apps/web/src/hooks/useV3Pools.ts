@@ -9,6 +9,7 @@ import { v3Clients } from 'utils/graphql'
 import { createViemPublicClientGetter, getViemClients } from 'utils/viem'
 
 import { getPoolTicks } from './v3/useAllV3TicksQuery'
+import { useMulticallGasLimit } from './useMulticallGasLimit'
 
 export interface V3PoolsHookParams {
   // Used for caching
@@ -125,6 +126,7 @@ export function useV3PoolsWithTicksOnChain(
   currencyB?: Currency,
   options?: V3PoolsHookParams,
 ): V3PoolsResult {
+  const gasLimit = useMulticallGasLimit(currencyA?.chainId)
   const key = useMemo(() => {
     if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
       return ''
@@ -147,13 +149,20 @@ export function useV3PoolsWithTicksOnChain(
     queryKey: ['v3_pools_with_ticks_on_chain', key],
     queryFn: async ({ signal }) => {
       const clientProvider = createViemPublicClientGetter({ transportSignal: signal })
-      return V4Router.getV3CandidatePools({
-        currencyA,
-        currencyB,
-        clientProvider,
-      })
+      try {
+        const res = await V4Router.getV3CandidatePools({
+          currencyA,
+          currencyB,
+          clientProvider,
+          gasLimit,
+        })
+        return res
+      } catch (e) {
+        console.error(e)
+        throw e
+      }
     },
-    enabled: Boolean(key && options?.enabled),
+    enabled: Boolean(key && options?.enabled && gasLimit),
     refetchInterval: refreshInterval,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

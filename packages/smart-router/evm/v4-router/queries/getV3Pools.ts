@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Currency } from '@pancakeswap/sdk'
+import { BigintIsh, Currency } from '@pancakeswap/sdk'
 import { FeeAmount, TICK_SPACINGS, Tick } from '@pancakeswap/v3-sdk'
 import { multicallByGasLimit } from '@pancakeswap/multicall'
 import { encodeFunctionData, decodeFunctionResult, Address } from 'viem'
@@ -10,6 +10,10 @@ import { tickLensAbi } from '../../abis/ITickLens'
 import { V3_TICK_LENS_ADDRESSES } from '../../constants'
 import { getPairCombinations } from '../../v3-router/functions'
 
+type WithMulticallGasLimit = {
+  gasLimit?: BigintIsh
+}
+
 type WithClientProvider = {
   clientProvider?: OnChainProvider
 }
@@ -17,20 +21,30 @@ type WithClientProvider = {
 export type GetV3CandidatePoolsParams = {
   currencyA?: Currency
   currencyB?: Currency
-} & WithClientProvider
+} & WithClientProvider &
+  WithMulticallGasLimit
 
-export async function getV3CandidatePools({ currencyA, currencyB, clientProvider }: GetV3CandidatePoolsParams) {
+export async function getV3CandidatePools({
+  currencyA,
+  currencyB,
+  clientProvider,
+  gasLimit,
+}: GetV3CandidatePoolsParams) {
   const pairs = getPairCombinations(currencyA, currencyB)
-  return getV3Pools({ pairs, clientProvider })
+  return getV3Pools({ pairs, clientProvider, gasLimit })
 }
 
 export type GetV3PoolsParams = {
   pairs?: [Currency, Currency][]
-} & WithClientProvider
+} & WithClientProvider &
+  WithMulticallGasLimit
 
-export async function getV3Pools({ pairs, clientProvider }: GetV3PoolsParams) {
+export async function getV3Pools({ pairs, clientProvider, gasLimit }: GetV3PoolsParams) {
   const pools = await getV3PoolsWithoutTicksOnChain(pairs || [], clientProvider)
-  return fillPoolsWithTicks({ pools, clientProvider })
+  if (!pools.length) {
+    return pools
+  }
+  return fillPoolsWithTicks({ pools, clientProvider, gasLimit })
 }
 
 function getBitmapIndex(tick: number, tickSpacing: number) {
@@ -59,9 +73,10 @@ const buildBitmapIndexList = createBitmapIndexListBuilder(1000)
 
 type FillPoolsWithTicksParams = {
   pools: V3Pool[]
-} & WithClientProvider
+} & WithClientProvider &
+  WithMulticallGasLimit
 
-async function fillPoolsWithTicks({ pools, clientProvider }: FillPoolsWithTicksParams): Promise<V3Pool[]> {
+async function fillPoolsWithTicks({ pools, clientProvider, gasLimit }: FillPoolsWithTicksParams): Promise<V3Pool[]> {
   const chainId: ChainId = pools[0]?.token0.chainId
   const tickLensAddress = V3_TICK_LENS_ADDRESSES[chainId]
   const client = clientProvider?.({ chainId })
@@ -79,13 +94,13 @@ async function fillPoolsWithTicks({ pools, clientProvider }: FillPoolsWithTicksP
         args: [pools[poolIndex].address, bitmapIndex],
         functionName: 'getPopulatedTicksInWord',
       }),
-      // TODO: find out an appropriate number for the gas limit
-      // Better have retry strategy applied for failed calls
-      gasLimit: 3500000n,
+      gasLimit: 300000n,
     })),
     {
       chainId,
       client,
+      gasLimit,
+      retryFailedCallsWithGreaterLimit: true,
     },
   )
   const poolsWithTicks = pools.map((p) => ({ ...p }))

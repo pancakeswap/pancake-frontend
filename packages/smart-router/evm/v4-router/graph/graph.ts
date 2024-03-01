@@ -156,7 +156,7 @@ export async function findBestTrade({
   streams,
   graph: graphOverride,
   tradeType,
-  maxHops = 4,
+  maxHops = 3,
 }: FindBestTradeParams): Promise<V4Trade<TradeType> | undefined> {
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const inputCurrency = isExactIn ? totalAmount.currency : quoteCurrency
@@ -316,6 +316,11 @@ export async function findBestTrade({
           const newQuote = adjustQuoteByGas(price.quote(quote), gasSpentInQuote)
           const bestSource = getBestSource(v2)
           const v2BestQuote = getBestQuote(v2)
+          // console.log(
+          //   `Vertice ${v2.currency.symbol}, prev best quote ${v2BestQuote?.toExact()}, new quote from`,
+          //   e.pool,
+          //   `: ${newQuote.toExact()}`,
+          // )
 
           if (!bestSource) nextVertList.push(v2)
           if (!bestSource || !v2BestQuote || isQuoteBetter(newQuote, v2BestQuote)) {

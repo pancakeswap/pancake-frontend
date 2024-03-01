@@ -16,6 +16,9 @@ export type CallByGasLimitParams = AbortControl &
 
     // Treat unexecuted calls as failed calls
     dropUnexecutedCalls?: boolean
+
+    // Retry for failed calls with greater gas limit
+    retryFailedCallsWithGreaterLimit?: boolean
   }
 
 export async function multicallByGasLimit(
@@ -26,6 +29,7 @@ export async function multicallByGasLimit(
     client,
     dropUnexecutedCalls,
     signal,
+    retryFailedCallsWithGreaterLimit,
     ...rest
   }: CallByGasLimitParams,
 ) {
@@ -35,8 +39,56 @@ export async function multicallByGasLimit(
     client,
     ...rest,
   })
-  const callChunks = splitCallsIntoChunks(calls, gasLimit)
-  return callByChunks(callChunks, { gasBuffer, client, chainId, dropUnexecutedCalls, signal })
+  const callResult = await callByChunks(splitCallsIntoChunks(calls, gasLimit), {
+    gasBuffer,
+    client,
+    chainId,
+    dropUnexecutedCalls,
+    signal,
+  })
+  if (!retryFailedCallsWithGreaterLimit) {
+    return callResult
+  }
+
+  const retryGasLimitMultiplier = 10n
+  async function retryFailedCalls(result: CallResult) {
+    if (result.results.every((r) => r.success)) {
+      return result
+    }
+
+    let callsToRetry: MulticallRequestWithGas[] = []
+    const failedCallIndexes: number[] = []
+    for (const [index, { success }] of result.results.entries()) {
+      if (!success) {
+        failedCallIndexes.push(index)
+        callsToRetry.push(calls[index])
+      }
+    }
+    if (callsToRetry.some((c) => BigInt(c.gasLimit) > gasLimit)) {
+      console.warn(
+        'Failed to retry with greater limit. The gas limit of some of the calls exceeds the maximum gas limit set by chain',
+      )
+      return result
+    }
+    callsToRetry = callsToRetry.map((c) => ({ ...c, gasLimit: BigInt(c.gasLimit) * retryGasLimitMultiplier }))
+    const retryResult = await callByChunks(splitCallsIntoChunks(callsToRetry, gasLimit), {
+      gasBuffer,
+      client,
+      chainId,
+      dropUnexecutedCalls,
+      signal,
+    })
+    const resultsAfterRetry = [...result.results]
+    for (const [retryIndex, originalIndex] of failedCallIndexes.entries()) {
+      resultsAfterRetry[originalIndex] = retryResult.results[retryIndex]
+    }
+    return retryFailedCalls({
+      results: resultsAfterRetry,
+      blockNumber: retryResult.blockNumber,
+    })
+  }
+
+  return retryFailedCalls(callResult)
 }
 
 type CallParams = Pick<
@@ -140,30 +192,57 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
 }
 
 async function callByChunks(chunks: MulticallRequestWithGas[][], params: CallParams): Promise<CallResult> {
-  const { blockConflictTolerance = getBlockConflictTolerance(params.chainId) } = params
-  const callReturns = await Promise.all(chunks.map((chunk) => call(chunk, params)))
+  try {
+    const { blockConflictTolerance = getBlockConflictTolerance(params.chainId) } = params
+    const callReturns = await Promise.all(chunks.map((chunk) => call(chunk, params)))
 
-  let minBlock = 0n
-  let maxBlock = 0n
-  let results: SingleCallResult[] = []
-  for (const { results: callResults, blockNumber } of callReturns) {
-    if (minBlock === 0n || blockNumber < minBlock) {
-      minBlock = blockNumber
+    let minBlock = 0n
+    let maxBlock = 0n
+    let results: SingleCallResult[] = []
+    for (const { results: callResults, blockNumber } of callReturns) {
+      if (minBlock === 0n || blockNumber < minBlock) {
+        minBlock = blockNumber
+      }
+      if (blockNumber > maxBlock) {
+        maxBlock = blockNumber
+      }
+      if (Number(maxBlock - minBlock) > blockConflictTolerance) {
+        throw new Error(
+          `Multicall failed because of block conflict. Min block is ${minBlock} while max block is ${maxBlock}. Block conflict tolerance is ${blockConflictTolerance}`,
+        )
+      }
+      results = [...results, ...callResults]
     }
-    if (blockNumber > maxBlock) {
-      maxBlock = blockNumber
+    return {
+      results,
+      blockNumber: maxBlock,
     }
-    if (Number(maxBlock - minBlock) > blockConflictTolerance) {
-      throw new Error(
-        `Multicall failed because of block conflict. Min block is ${minBlock} while max block is ${maxBlock}. Block conflict tolerance is ${blockConflictTolerance}`,
-      )
+  } catch (e: unknown) {
+    // Happened on zksync
+    if (e instanceof Error && e.message.includes('Storage invocations limit reached') && chunks[0].length > 1) {
+      return callByChunks(divideChunks(chunks), params)
     }
-    results = [...results, ...callResults]
+    throw e
   }
-  return {
-    results,
-    blockNumber: maxBlock,
+}
+
+function divideChunks<T>(chunks: T[][]) {
+  const newChunks: T[][] = []
+
+  for (const chunk of chunks) {
+    const half = Math.ceil(chunk.length / 2)
+
+    const firstHalf = chunk.slice(0, half)
+    const secondHalf = chunk.slice(half)
+    if (firstHalf.length) {
+      newChunks.push(firstHalf)
+    }
+    if (secondHalf.length) {
+      newChunks.push(secondHalf)
+    }
   }
+
+  return newChunks
 }
 
 function splitCallsIntoChunks(calls: MulticallRequestWithGas[], gasLimit: bigint): MulticallRequestWithGas[][] {
