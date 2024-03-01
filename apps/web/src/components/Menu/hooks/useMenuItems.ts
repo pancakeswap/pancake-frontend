@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { DropdownMenuItems, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import config, { ConfigMenuItemsType } from '../config/config'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
@@ -52,8 +52,10 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
           }
           if (modalId) {
             if (modalId === 'usCitizenConfirmModal') {
-              const onClickEvent = () => {
+              const onClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
                 if (!userNotUsCitizenAcknowledgement && onUsCitizenModalPresent) {
+                  e.stopPropagation()
+                  e.preventDefault()
                   onUsCitizenModalPresent()
                 }
               }
