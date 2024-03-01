@@ -82,6 +82,7 @@ import Link from 'next/link'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useQuery } from '@tanstack/react-query'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -837,6 +838,7 @@ export default function PoolPage() {
           </>
         )}
       </BodyWrapper>
+      <V3SubgraphHealthIndicator />
     </Page>
   )
 }

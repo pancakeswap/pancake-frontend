@@ -41,7 +41,7 @@ const useSubgraphHealth = (subgraphName?: string) => {
             request(
               GRAPH_HEALTH,
               gql`
-            query getNftMarketSubgraphHealth {
+            query getSubgraphHealth {
               indexingStatusForCurrentVersion(subgraphName: "${subgraphName}") {
                 health
                 chains {
