@@ -391,7 +391,7 @@ function createUseWorkerGetBestTradeOffchain() {
           return V4Router.Transformer.parseTrade(currency.chainId, result) ?? null
         } catch (e) {
           console.error(e)
-          throw e
+          throw new NoValidRouteError()
         }
       },
       [worker],

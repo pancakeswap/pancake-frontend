@@ -5,19 +5,20 @@ import { findBestTrade } from './graph'
 import { TradeConfig, V4Trade } from './types'
 import { getPriceImpact } from '../v3-router/utils/getPriceImpact'
 
+const DEFAULT_STREAM = 10
+
 function getBestStreamsConfig(trade?: V4Trade<TradeType>) {
-  const defaultStream = 10
   const maxStreams = 100
   if (!trade) {
-    return defaultStream
+    return DEFAULT_STREAM
   }
   const priceImpact = getPriceImpact(trade)
   if (!priceImpact) {
-    return defaultStream
+    return DEFAULT_STREAM
   }
   const { gasCostInBase, inputAmount, outputAmount } = trade
   if (!gasCostInBase) {
-    return defaultStream
+    return DEFAULT_STREAM
   }
   const amount = trade.tradeType === TradeType.EXACT_INPUT ? inputAmount : outputAmount
 
@@ -26,7 +27,7 @@ function getBestStreamsConfig(trade?: V4Trade<TradeType>) {
   )
   const streams = Math.round(Number(amount.toExact()) / bestFlowAmount)
   if (!Number.isFinite(streams)) {
-    return defaultStream
+    return DEFAULT_STREAM
   }
   return Math.max(1, Math.min(streams, maxStreams))
 }
@@ -56,17 +57,36 @@ export async function getBestTrade(
   tradeType: TradeType,
   { candidatePools, gasPriceWei, maxHops, maxSplits }: TradeConfig,
 ): Promise<V4Trade<TradeType> | undefined> {
-  const bestTrade = await findBestTrade({
-    tradeType,
-    amount,
-    quoteCurrency,
-    gasPriceWei,
-    candidatePools,
-    maxHops,
-    streams: 1,
-  })
   // NOTE: there's no max split cap right now. This option is only used to contron the on/off of multiple splits
-  if (maxSplits !== undefined && maxSplits === 0) {
+  const splitDisabled = maxSplits !== undefined && maxSplits === 0
+
+  let bestTrade: V4Trade<TradeType> | undefined
+  try {
+    bestTrade = await findBestTrade({
+      tradeType,
+      amount,
+      quoteCurrency,
+      gasPriceWei,
+      candidatePools,
+      maxHops,
+      streams: 1,
+    })
+  } catch (e) {
+    if (splitDisabled) {
+      throw e
+    }
+    bestTrade = await findBestTrade({
+      tradeType,
+      amount,
+      quoteCurrency,
+      gasPriceWei,
+      candidatePools,
+      maxHops,
+      streams: DEFAULT_STREAM,
+    })
+  }
+
+  if (splitDisabled) {
     return bestTrade
   }
   const streams = getBestStreamsConfig(bestTrade)
