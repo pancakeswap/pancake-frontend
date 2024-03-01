@@ -12,7 +12,7 @@ export type V4Route = Route & {
   outputAmountWithGasAdjusted: CurrencyAmount<Currency>
 }
 
-export type TradeConfig = Omit<BaseTradeConfig, 'poolProvider' | 'allowedPoolTypes' | 'maxSplits'> & {
+export type TradeConfig = Omit<BaseTradeConfig, 'poolProvider' | 'allowedPoolTypes'> & {
   candidatePools: Pool[]
 } & AbortControl
 

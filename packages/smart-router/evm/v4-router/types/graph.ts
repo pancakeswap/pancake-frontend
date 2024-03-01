@@ -1,7 +1,6 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 
 import { Pool, Route } from '../../v3-router/types'
-import { PoolQuote } from '../../v3-router/providers'
 
 export type Edge = {
   vertice0: Vertice

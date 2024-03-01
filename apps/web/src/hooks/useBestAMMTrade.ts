@@ -356,7 +356,12 @@ function createUseWorkerGetBestTradeOffchain() {
     const worker = useGlobalWorker()
 
     return useCallback(
-      async (amount, currency, tradeType, { maxHops, allowedPoolTypes, gasPriceWei, signal, poolProvider }) => {
+      async (
+        amount,
+        currency,
+        tradeType,
+        { maxHops, allowedPoolTypes, gasPriceWei, signal, poolProvider, maxSplits },
+      ) => {
         if (!worker) {
           throw new Error('Quote worker not initialized')
         }
@@ -376,6 +381,7 @@ function createUseWorkerGetBestTradeOffchain() {
             },
             gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
             maxHops,
+            maxSplits,
             candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
             signal,
           })

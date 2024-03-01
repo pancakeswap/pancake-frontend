@@ -54,7 +54,7 @@ export async function getBestTrade(
   amount: CurrencyAmount<Currency>,
   quoteCurrency: Currency,
   tradeType: TradeType,
-  { candidatePools, gasPriceWei, maxHops }: TradeConfig,
+  { candidatePools, gasPriceWei, maxHops, maxSplits }: TradeConfig,
 ): Promise<V4Trade<TradeType> | undefined> {
   const bestTrade = await findBestTrade({
     tradeType,
@@ -65,6 +65,10 @@ export async function getBestTrade(
     maxHops,
     streams: 1,
   })
+  // NOTE: there's no max split cap right now. This option is only used to contron the on/off of multiple splits
+  if (maxSplits !== undefined && maxSplits === 0) {
+    return bestTrade
+  }
   const streams = getBestStreamsConfig(bestTrade)
   if (streams === 1) {
     return bestTrade

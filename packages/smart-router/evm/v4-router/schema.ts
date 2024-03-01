@@ -88,6 +88,7 @@ export const zRouterPostParams = z
     candidatePools: zPools,
     gasPriceWei: zBigNumber.optional(),
     maxHops: z.number().optional(),
+    maxSplits: z.number().optional(),
   })
   .required({
     chainId: true,

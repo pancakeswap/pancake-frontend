@@ -223,7 +223,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       return
     }
 
-    const { amount, chainId, currency, tradeType, gasPriceWei, maxHops, candidatePools } = parsed.data
+    const { amount, chainId, currency, tradeType, gasPriceWei, maxHops, candidatePools, maxSplits } = parsed.data
     const onChainProvider = createViemPublicClientGetter({ transportSignal: abortController.signal })
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
     const currencyB = parseCurrency(chainId, currency)
@@ -237,6 +237,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
     V4Router.getBestTrade(currencyAAmount, currencyB, tradeType, {
       gasPriceWei: gasPrice,
       maxHops,
+      maxSplits,
       candidatePools: pools,
       signal: abortController.signal,
     })
