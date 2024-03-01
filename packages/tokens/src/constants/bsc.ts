@@ -3021,4 +3021,12 @@ export const bscTokens = {
     'Osaka Protocol',
     'https://osaka.win/',
   ),
+  bnx: new ERC20Token(
+    ChainId.BSC,
+    '0x5b1f874d0b0C5ee17a495CbB70AB8bf64107A3BD',
+    18,
+    'BNX',
+    'BinaryX',
+    'https://www.binaryx.pro/?cmc',
+  ),
 }
