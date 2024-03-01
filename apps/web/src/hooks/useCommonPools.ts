@@ -98,6 +98,9 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
         stablePools,
         allowInconsistentBlock,
         consistentBlockNumber,
+        v3PoolsUpdatedAt,
+        v2PoolsUpdatedAt,
+        stablePoolsUpdatedAt,
       ],
     )
 
