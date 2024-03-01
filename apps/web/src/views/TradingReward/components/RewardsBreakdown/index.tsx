@@ -128,7 +128,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
           })}
         </Text>
       )}
-      {index === 1 || !currentList ? (
+      {(index === 1 || !currentList) && data.length > 1 ? (
         <Box mb="-16px">
           <PaginationButton
             showMaxPageText
