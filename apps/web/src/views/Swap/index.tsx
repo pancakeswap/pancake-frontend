@@ -97,9 +97,7 @@ export default function Swap() {
       <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
         {isDesktop && isChartSupported && (
           <PriceChartContainer
-            inputCurrencyId={inputCurrencyId}
             inputCurrency={currencies[Field.INPUT]}
-            outputCurrencyId={outputCurrencyId}
             outputCurrency={currencies[Field.OUTPUT]}
             isChartExpanded={isChartExpanded}
             setIsChartExpanded={setIsChartExpanded}
@@ -111,9 +109,7 @@ export default function Swap() {
           <BottomDrawer
             content={
               <PriceChartContainer
-                inputCurrencyId={inputCurrencyId}
                 inputCurrency={currencies[Field.INPUT]}
-                outputCurrencyId={outputCurrencyId}
                 outputCurrency={currencies[Field.OUTPUT]}
                 isChartExpanded={isChartExpanded}
                 setIsChartExpanded={setIsChartExpanded}
