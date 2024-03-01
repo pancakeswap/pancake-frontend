@@ -20,14 +20,15 @@ import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useStableSwapPath } from 'state/info/hooks'
 import { InfoDataSource } from 'state/info/types'
+import { getTokenInfoPath } from 'state/info/utils'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
 import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
 import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardIcon'
-import { getTokenInfoPath } from 'state/info/utils'
 
 import { TokenHighlightData } from './types'
 
@@ -172,7 +173,7 @@ const DataRow: React.FC<
   const { chainId } = useActiveChainId()
   const address = safeGetAddress(tokenData.address)
   const currencyFromAddress = useMemo(
-    () => (address ? new Token(chainId, address, tokenData.decimals, tokenData.symbol) : null),
+    () => (address && chainId ? new Token(chainId, address, tokenData.decimals, tokenData.symbol) : undefined),
     [tokenData, chainId, address],
   )
   const tokenInfoLink = useMemo(
@@ -181,7 +182,9 @@ const DataRow: React.FC<
   )
   if (!address) return null
 
-  const isTradeRewardToken = dataSource === InfoDataSource.V3 && tokenData?.pairs?.length > 0
+  const isTradeRewardToken = dataSource === InfoDataSource.V3 && (tokenData?.pairs?.length ?? 0) > 0
+  const tokenSymbol = getTokenSymbolAlias(address, chainId, tokenData?.symbol)
+  const tokenName = getTokenNameAlias(address, chainId, tokenData?.name)
 
   return (
     <LinkWrapper to={tokenInfoLink}>
@@ -191,8 +194,8 @@ const DataRow: React.FC<
           {(isXs || isSm) && <Text ml="4px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
-              <Text>{tokenData.name}</Text>
-              <Text ml="8px">({tokenData.symbol})</Text>
+              <Text>{tokenName}</Text>
+              <Text ml="8px">({tokenSymbol})</Text>
             </Flex>
           )}
         </Flex>
@@ -211,7 +214,7 @@ const DataRow: React.FC<
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
         {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.tvlUSD)}</Text>}
         <Flex alignItems="center" justifyContent="flex-end">
-          {isTradeRewardToken && <TradingRewardIcon pairs={tokenData.pairs} />}
+          {isTradeRewardToken && <TradingRewardIcon pairs={tokenData?.pairs ?? []} />}
           <Button
             variant="text"
             scale="sm"
