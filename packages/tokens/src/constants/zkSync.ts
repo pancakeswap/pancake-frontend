@@ -64,4 +64,12 @@ export const zksyncTokens = {
     'Dai Stablecoin',
     'https://makerdao.com/en/',
   ),
+  wethe: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0xf00DAD97284D0c6F06dc4Db3c32454D4292c6813',
+    18,
+    'WETH.e',
+    'Wrapped Ether Native Bridge',
+    'https://ethereum.org/',
+  ),
 }
