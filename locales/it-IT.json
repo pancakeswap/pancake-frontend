@@ -2897,7 +2897,7 @@
   "total": "totale",
   "CAKE to be locked": "CAKE da bloccare",
   "factor": "fattore",
-  "unlock on": "sblocca il",
+  "unlock on": "sblocco il",
   "lock overview": "panoramica del blocco",
   "Factor": "Fattore",
   "Migrate to get veCAKE": "Migra per ottenere veCAKE",
@@ -3173,5 +3173,12 @@
   "Failed to send": "Failed to send",
   "This product have been upgraded!": "This product have been upgraded!",
   "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace": "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace",
-  "Nemesis Downfall Now on PancakeSwap": "Nemesis Downfall Now on PancakeSwap"
+  "Nemesis Downfall Now on PancakeSwap": "Nemesis Downfall Now on PancakeSwap",
+  "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first",
+  "%title% Disclaimer": "%title% Disclaimer",
+  "Go to FAQ guide": "Go to FAQ guide",
+  "This an experimental product": "This an experimental product",
+  "We highly advise you go through the FAQ Guide below before continuing": "We highly advise you go through the FAQ Guide below before continuing",
+  "I have read the FAQ guide and am ready to continue.": "I have read the FAQ guide and am ready to continue.",
+  "Enable Mainnet": "Enable Mainnet"
 }

@@ -3173,5 +3173,12 @@
   "Failed to send": "Nie można wysłać",
   "This product have been upgraded!": "Ten produkt został uaktualniony!",
   "Nemesis Downfall Now Live on PancakeSwap Gaming Marketplace": "Gra Nemesis Downfall już dostępna na rynku gier PancakeSwap",
-  "Nemesis Downfall Now on PancakeSwap": "Nemesis Downfall już na PancakeSwap"
+  "Nemesis Downfall Now on PancakeSwap": "Nemesis Downfall już na PancakeSwap",
+  "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Sieć główna jest ustawiona domyślnie. Jeśli masz doświadczenia z pomostowaniem, wypróbuj najpierw transakcję w sieci testowej",
+  "%title% Disclaimer": "%title% — zastrzeżenie",
+  "Go to FAQ guide": "Przejdź do często zadawanych pytań",
+  "This an experimental product": "To jest produkt eksperymentalny",
+  "We highly advise you go through the FAQ Guide below before continuing": "Zalecamy zapoznanie się przed kontynuowaniem z poniższymi często zadawanymi pytaniami",
+  "I have read the FAQ guide and am ready to continue.": "Przeczytałem(-am) często zadawane pytania i chcę kontynuować.",
+  "Enable Mainnet": "Włącz sieć główną"
 }
