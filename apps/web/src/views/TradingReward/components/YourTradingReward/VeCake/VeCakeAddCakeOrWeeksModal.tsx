@@ -41,7 +41,7 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
     if (viewMode) {
       setModalViewMode(viewMode)
     }
-  }, [])
+  }, [viewMode])
 
   const toggleViewMode = () => {
     const mode =
