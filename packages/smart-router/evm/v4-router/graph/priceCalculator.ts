@@ -3,7 +3,7 @@ import invariant from 'tiny-invariant'
 
 import { Edge, Graph, Vertice } from '../types'
 import { getReserve } from '../pool'
-import { getPoolAddress, getTokenPrice } from '../../v3-router/utils'
+import { getTokenPrice } from '../../v3-router/utils'
 import { getNeighbour } from './edge'
 
 type Params = {
@@ -11,6 +11,8 @@ type Params = {
   quote: Vertice
   gasPriceWei: bigint
 }
+
+export type PriceCalculator = ReturnType<typeof createPriceCalculator>
 
 // Get the price reference of all tokens in the graph against the specified vertice
 export function createPriceCalculator({ graph, quote, gasPriceWei }: Params) {
@@ -104,6 +106,7 @@ export function createPriceCalculator({ graph, quote, gasPriceWei }: Params) {
   }
 
   return {
+    graph,
     getGasPriceInBase,
     getQuotePrice,
     getPrice,

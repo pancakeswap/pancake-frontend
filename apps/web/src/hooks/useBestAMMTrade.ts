@@ -365,23 +365,28 @@ function createUseWorkerGetBestTradeOffchain() {
           currencyB: currency,
           protocols: allowedPoolTypes,
         })
-        const result = await worker.getBestTradeOffchain({
-          chainId: currency.chainId,
-          currency: SmartRouter.Transformer.serializeCurrency(currency),
-          tradeType,
-          amount: {
-            currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
-            value: amount.quotient.toString(),
-          },
-          gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
-          maxHops,
-          candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
-          signal,
-        })
-        if (!result) {
-          throw new NoValidRouteError()
+        try {
+          const result = await worker.getBestTradeOffchain({
+            chainId: currency.chainId,
+            currency: SmartRouter.Transformer.serializeCurrency(currency),
+            tradeType,
+            amount: {
+              currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
+              value: amount.quotient.toString(),
+            },
+            gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
+            maxHops,
+            candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+            signal,
+          })
+          if (!result) {
+            throw new NoValidRouteError()
+          }
+          return V4Router.Transformer.parseTrade(currency.chainId, result) ?? null
+        } catch (e) {
+          console.error(e)
+          throw e
         }
-        return V4Router.Transformer.parseTrade(currency.chainId, result) ?? null
       },
       [worker],
     )
