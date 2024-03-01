@@ -4,6 +4,13 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
   {
+    pid: 11,
+    lpAddress: '0xE817A59F8A030544Ff65F47536abA272F6d63059',
+    token0: lineaTokens.cake,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 10,
     lpAddress: '0x5AFda31027C3E6A03c77a113FFC031B564AbbF05',
     token0: lineaTokens.wbtc,
