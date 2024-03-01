@@ -91,29 +91,38 @@ export const useCakeLockStatus = (): {
   const { data: userInfo } = useVeCakeUserInfo()
   // if user locked at cakePool before, should migrate
   const cakePoolLockInfo = useCakePoolLockInfo()
+
   const isAllowMigrate = useCheckIsUserAllowMigrate(String(cakePoolLockInfo.lockEndTime))
+
   const shouldMigrate = useMemo(() => {
     return cakePoolLockInfo?.locked && userInfo?.cakePoolType !== CakePoolType.MIGRATED && isAllowMigrate
   }, [cakePoolLockInfo?.locked, isAllowMigrate, userInfo?.cakePoolType])
+
   const delegateOnly = useMemo(() => {
     if (!userInfo) return false
 
     return userInfo.cakePoolType === CakePoolType.DELEGATED && userInfo.amount === 0n
   }, [userInfo])
+
   const now = useMemo(() => dayjs.unix(currentTimestamp), [currentTimestamp])
+
   const cakeLocked = useMemo(() => Boolean(userInfo && userInfo.amount > 0n), [userInfo])
+
   const cakeUnlockTime = useMemo(() => {
     if (!userInfo) return 0
     return Number(userInfo.end)
   }, [userInfo])
+
   const cakeLockExpired = useMemo(() => {
     if (!cakeLocked) return false
     return dayjs.unix(cakeUnlockTime).isBefore(now)
   }, [cakeLocked, cakeUnlockTime, now])
+
   const cakePoolLocked = useMemo(
     () => Boolean(userInfo?.cakeAmount) && userInfo?.withdrawFlag !== CakePoolLockStatus.WITHDRAW,
     [userInfo],
   )
+
   const cakePoolLockExpired = useMemo(() => {
     if (!cakePoolLocked) return false
     return currentTimestamp > userInfo!.lockEndTime
@@ -123,6 +132,7 @@ export const useCakeLockStatus = (): {
     if (!userInfo) return BigInt(0)
     return userInfo.amount ?? 0n
   }, [userInfo])
+
   const proxyCakeLockedAmount = useMemo(() => {
     if (!cakePoolLocked) return 0n
 

@@ -192,7 +192,7 @@ const config = {
       },
       {
         source: '/trading-reward',
-        destination: '/trading-reward/top-traders',
+        destination: '/trading-reward/cake-stakers',
         permanent: true,
       },
     ]

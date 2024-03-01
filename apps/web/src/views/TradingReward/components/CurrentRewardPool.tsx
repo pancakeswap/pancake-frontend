@@ -1,17 +1,17 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Button, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { useCakePrice } from 'hooks/useCakePrice'
+import Link from 'next/link'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { Box, Flex, Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
-import Link from 'next/link'
-import { useCakePrice } from 'hooks/useCakePrice'
-import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
 import TextComponent from 'views/TradingReward/components/TopTraders/YourTradingReward/TextComponent'
 import TimeText from 'views/TradingReward/components/TopTraders/YourTradingReward/TimeText'
+import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
+import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
+import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 const Container = styled(Flex)`
   position: relative;
@@ -79,7 +79,7 @@ const Decorations = styled(Box)`
 
 interface CurrentRewardPoolProps {
   campaignId: string
-  incentives: Incentives
+  incentives: Incentives | undefined
   campaignInfoData: CampaignIdInfoDetail
   rewardInfo: { [key in string]: RewardInfo }
 }
@@ -96,7 +96,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const cakePriceBusd = useCakePrice()
-  const { totalReward, campaignClaimTime } = incentives ?? {}
+  const { totalReward, campaignClaimTime } = incentives ?? { totalReward: '0', campaignClaimTime: 0 }
 
   const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
@@ -120,7 +120,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
         <Flex justifyContent="space-between" mb="10px">
           <TextComponent text={t('Starts')} />
           <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            {t('On %date%', { date: timeFormat(locale, incentives?.campaignStart) })}
+            {t('On %date%', { date: timeFormat(locale, incentives?.campaignStart ?? 0) })}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
@@ -135,7 +135,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
             </Text>
           ) : (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-              {timeFormat(locale, incentives?.campaignClaimTime)}
+              {timeFormat(locale, incentives?.campaignClaimTime ?? 0)}
             </Text>
           )}
         </Flex>

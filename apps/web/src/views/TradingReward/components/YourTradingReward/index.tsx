@@ -1,19 +1,18 @@
-import { useMemo } from 'react'
-import { styled } from 'styled-components'
-import { Box, Flex, Text, Skeleton } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { useMemo } from 'react'
 import { useProfile } from 'state/profile/hooks'
-import { DeserializedLockedCakeVault } from 'state/types'
-import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import { useCakeVault, useFetchIfo as useCakeVaultPool } from 'state/pools/hooks'
-import { Incentives, Qualification, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
+import { styled } from 'styled-components'
+import { useVeCakeUserCreditWithTime } from 'views/CakeStaking/hooks/useVeCakeUserCreditWithTime'
+import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
+import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
 import RewardPeriod from 'views/TradingReward/components/YourTradingReward/RewardPeriod'
+import { Incentives, Qualification, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import { useAccount } from 'wagmi'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 
@@ -148,9 +147,9 @@ const BaseContainer = styled(Flex)<{ showBackgroundColor: boolean }>`
 
 interface YourTradingRewardProps {
   isFetching: boolean
-  incentives: Incentives
+  incentives: Incentives | undefined
   campaignIds: Array<string>
-  currentUserCampaignInfo: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail | undefined
   totalAvailableClaimData: UserCampaignInfoDetail[]
   qualification: Qualification
   rewardInfo: { [key in string]: RewardInfo }
@@ -170,27 +169,19 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { profile } = useProfile()
+  const { cakeLockExpired } = useCakeLockStatus()
+  const { userCreditWithTime } = useVeCakeUserCreditWithTime(incentives?.campaignClaimTime ?? 0)
+  const { thresholdLockAmount } = qualification
 
-  const { thresholdLockTime } = qualification
-
-  useCakeVaultPool()
-
-  const { userData } = useCakeVault() as DeserializedLockedCakeVault
-  const vaultPosition = getVaultPosition(userData)
-
-  const isLockPosition = useMemo(
-    () => Boolean(userData?.locked) && vaultPosition === VaultPosition.Locked,
-    [userData, vaultPosition],
+  const isValidLockAmount = useMemo(
+    () => new BigNumber(userCreditWithTime).gt(0) && new BigNumber(userCreditWithTime).gte(thresholdLockAmount),
+    [userCreditWithTime, thresholdLockAmount],
   )
 
-  const isValidLockDuration = useMemo(() => {
-    const minLockTime = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime)
-    return new BigNumber(userData.lockEndTime).gte(minLockTime)
-  }, [incentives, thresholdLockTime, userData])
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const isQualified = useMemo(
-    () => account && profile?.isActive && isLockPosition && isValidLockDuration,
-    [account, profile, isLockPosition, isValidLockDuration],
+    () => Boolean(account && profile?.isActive && isValidLockAmount && !cakeLockExpired),
+    [account, profile?.isActive, isValidLockAmount, cakeLockExpired],
   )
 
   return (
@@ -224,18 +215,13 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
       {!isFetching && account && profile?.isActive && (
         <Container showBackgroundColor>
           <RewardPeriod
-            userData={userData}
             campaignIds={campaignIds}
             incentives={incentives}
             rewardInfo={rewardInfo}
             currentUserCampaignInfo={currentUserCampaignInfo}
             totalAvailableClaimData={totalAvailableClaimData}
-            campaignStart={incentives?.campaignStart}
-            campaignClaimTime={incentives?.campaignClaimTime}
             isQualified={isQualified}
-            isLockPosition={isLockPosition}
-            isValidLockDuration={isValidLockDuration}
-            thresholdLockTime={thresholdLockTime}
+            thresholdLockAmount={thresholdLockAmount}
             qualification={qualification}
             campaignIdsIncentive={campaignIdsIncentive}
           />

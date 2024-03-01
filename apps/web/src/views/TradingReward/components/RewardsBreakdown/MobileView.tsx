@@ -1,9 +1,10 @@
-import { styled } from 'styled-components'
-import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
+import { styled } from 'styled-components'
 import PairInfo from 'views/TradingReward/components/PairInfo'
+import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 
 const StyledMobileRow = styled(Box)`
   padding: 24px 0;
@@ -16,11 +17,12 @@ const StyledMobileRow = styled(Box)`
 `
 
 interface RewardsBreakdownMobileViewProps {
+  type: RewardType
   isFetching: boolean
   list: RewardBreakdownDetail
 }
 
-const MobileView: React.FC<React.PropsWithChildren<RewardsBreakdownMobileViewProps>> = ({ isFetching, list }) => {
+const MobileView: React.FC<React.PropsWithChildren<RewardsBreakdownMobileViewProps>> = ({ type, isFetching, list }) => {
   const { t } = useTranslation()
 
   return (
@@ -65,9 +67,15 @@ const MobileView: React.FC<React.PropsWithChildren<RewardsBreakdownMobileViewPro
                   </Flex>
                   <Flex justifyContent="space-between" mt="8px">
                     <Text fontSize="14px">{t('Reward Earned')}</Text>
-                    <Text fontSize="14px" bold color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
-                      {`$${formatNumber(pair.rewardEarned)}`}
-                    </Text>
+                    {type === RewardType.CAKE_STAKERS ? (
+                      <Text fontSize="14px" bold color={pair.preCap > 0 ? 'text' : 'textSubtle'}>
+                        {`$${formatNumber(pair.preCap)}`}
+                      </Text>
+                    ) : (
+                      <Text fontSize="14px" bold color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
+                        {`$${formatNumber(pair.rewardEarned)}`}
+                      </Text>
+                    )}
                   </Flex>
                 </StyledMobileRow>
               ))}

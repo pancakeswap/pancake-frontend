@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
 import { AutoRow, Balance, BalanceInput, BalanceInputProps, Button, Flex, FlexGap, Text } from '@pancakeswap/uikit'
-import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { TokenImage } from 'components/TokenImage'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -73,6 +73,7 @@ const CakeInput: React.FC<{
     <>
       <BalanceInput
         width="100%"
+        mb="8px"
         value={value}
         onUserInput={onInput}
         inputProps={{ style: { textAlign: 'left', height: '20px' }, disabled }}
@@ -113,13 +114,16 @@ export const LockCakeForm: React.FC<{
   // show input field only
   fieldOnly?: boolean
   disabled?: boolean
-}> = ({ fieldOnly, disabled }) => {
+  hideLockCakeDataSetStyle?: boolean
+  customVeCakeCard?: null | JSX.Element
+  onDismiss?: () => void
+}> = ({ fieldOnly, disabled, customVeCakeCard, hideLockCakeDataSetStyle, onDismiss }) => {
   const { t } = useTranslation()
   const [value, onChange] = useAtom(cakeLockAmountAtom)
 
   return (
-    <AutoRow alignSelf="start" gap="16px">
-      <FlexGap gap="8px" alignItems="center">
+    <AutoRow alignSelf="start">
+      <FlexGap gap="4px" alignItems="center" mb="4px">
         <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
           {t('add')}
         </Text>
@@ -129,25 +133,32 @@ export const LockCakeForm: React.FC<{
       </FlexGap>
       <CakeInput value={value} onUserInput={onChange} disabled={disabled} />
 
+      {customVeCakeCard}
+
       {fieldOnly ? null : (
         <>
-          {disabled ? null : <LockCakeDataSet />}
+          {disabled ? null : <LockCakeDataSet hideLockCakeDataSetStyle={hideLockCakeDataSetStyle} />}
 
-          <SubmitLockButton />
+          <SubmitLockButton onDismiss={onDismiss} />
         </>
       )}
     </AutoRow>
   )
 }
 
-const SubmitLockButton = () => {
+const SubmitLockButton = ({ onDismiss }: { onDismiss?: () => void }) => {
   const { t } = useTranslation()
+  const _cakeBalance = useBSCCakeBalance()
   const cakeLockAmount = useAtomValue(cakeLockAmountAtom)
-  const disabled = useMemo(() => !cakeLockAmount || cakeLockAmount === '0', [cakeLockAmount])
-  const increaseLockAmount = useWriteApproveAndIncreaseLockAmountCallback()
+  const disabled = useMemo(
+    () =>
+      !cakeLockAmount || cakeLockAmount === '0' || getDecimalAmount(new BN(cakeLockAmount)).gt(_cakeBalance.toString()),
+    [_cakeBalance, cakeLockAmount],
+  )
+  const increaseLockAmount = useWriteApproveAndIncreaseLockAmountCallback(onDismiss)
 
   return (
-    <Button disabled={disabled} width="100%" onClick={increaseLockAmount}>
+    <Button mt="16px" disabled={disabled} width="100%" onClick={increaseLockAmount}>
       {t('Add CAKE')}
     </Button>
   )
