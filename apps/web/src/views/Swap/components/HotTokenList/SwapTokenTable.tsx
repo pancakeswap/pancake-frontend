@@ -13,12 +13,12 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 
-import { CurrencyLogo, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useStableSwapPath } from 'state/info/hooks'
 import { InfoDataSource } from 'state/info/types'
 import { getTokenInfoPath } from 'state/info/utils'
 import { styled } from 'styled-components'
@@ -26,8 +26,10 @@ import { safeGetAddress } from 'utils'
 import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
+
 import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardIcon'
 
 import { TokenHighlightData } from './types'
@@ -172,6 +174,7 @@ const DataRow: React.FC<
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
   const address = safeGetAddress(tokenData.address)
+  const chainName = useChainNameByQuery()
   const currencyFromAddress = useMemo(
     () => (address && chainId ? new Token(chainId, address, tokenData.decimals, tokenData.symbol) : undefined),
     [tokenData, chainId, address],
@@ -190,7 +193,7 @@ const DataRow: React.FC<
     <LinkWrapper to={tokenInfoLink}>
       <ResponsiveGrid style={{ gap: '8px' }}>
         <Flex flexWrap="wrap" width="100%" justifyContent="flex-start" alignItems="center">
-          <ResponsiveLogo size="24px" currency={currencyFromAddress} />
+          <ResponsiveLogo size="24px" chainName={chainName} address={address} />
           {(isXs || isSm) && <Text ml="4px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
