@@ -34,3 +34,13 @@ export interface TokenPairImageProps extends BoxProps {
   primaryImageProps?: Omit<ImageProps, "width" | "height">;
   secondaryImageProps?: Omit<ImageProps, "width" | "height">;
 }
+
+export interface TokenWithBadgeImageProps extends BoxProps {
+  primarySrc: string;
+  chainId: number;
+  variant?: Variant;
+  height: number;
+  width: number;
+  primaryImageProps?: Omit<ImageProps, "width" | "height">;
+  badgeImageProps?: Omit<ImageProps, "width" | "height">;
+}

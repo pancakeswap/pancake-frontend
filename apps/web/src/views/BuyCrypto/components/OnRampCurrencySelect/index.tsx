@@ -1,13 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { ArrowDropDownIcon, Box, BoxProps, Button, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
-import { NumericalInput, CurrencyLogo } from '@pancakeswap/widgets-internal'
+import { CurrencyLogo, NumericalInput } from '@pancakeswap/widgets-internal'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
-import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
-import { useAllOnRampTokens } from 'hooks/Tokens'
+import { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
+import OnRampCurrencySearchModal from 'components/SearchModal/OnRampCurrencyModal'
 import { ReactNode } from 'react'
 import { styled } from 'styled-components'
-import { fiatCurrencyMap, getNetworkDisplay } from 'views/BuyCrypto/constants'
+import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
 
 const DropDownContainer = styled.div<{ error: boolean }>`
   width: 100%;
@@ -104,12 +104,11 @@ export const CurrencySelect = ({
   bottomElement,
   ...props
 }: CurrencySelectProps) => {
-  const onRampTokens = useAllOnRampTokens()
-  const tokensToShow = id === 'onramp-input' ? fiatCurrencyMap : (onRampTokens as any)
+  const tokensToShow = id === 'onramp-input' ? fiatCurrencyMap : onRampCurrencies
   const networkDisplay = getNetworkDisplay(selectedCurrency?.chainId)
 
   const [onPresentCurrencyModal] = useModal(
-    <CurrencySearchModal
+    <OnRampCurrencySearchModal
       onCurrencySelect={onCurrencySelect}
       selectedCurrency={selectedCurrency}
       otherSelectedCurrency={otherSelectedCurrency}

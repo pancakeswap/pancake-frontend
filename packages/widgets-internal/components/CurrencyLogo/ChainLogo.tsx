@@ -1,6 +1,6 @@
+import { Box, HelpIcon } from "@pancakeswap/uikit";
 import Image from "next/image";
 import { memo } from "react";
-import { HelpIcon, Box } from "@pancakeswap/uikit";
 import { SpaceProps } from "styled-system";
 
 export const ChainLogo = memo(

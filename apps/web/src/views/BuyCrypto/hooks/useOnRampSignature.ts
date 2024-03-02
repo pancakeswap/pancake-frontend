@@ -1,0 +1,81 @@
+import { ChainId } from '@pancakeswap/sdk'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import qs from 'qs'
+import { useAccount } from 'wagmi'
+import { combinedNetworkIdMap, ONRAMP_PROVIDERS } from '../constants'
+import { createQueryKey, Evaluate, ExactPartial, OnRampProviderQuote, UseQueryParameters } from '../types'
+
+export const getOnRampSignatureQueryKey = createQueryKey<
+  'fetch-provider-signature',
+  [ExactPartial<GetOnRampSignaturePayload>]
+>('fetch-provider-signature')
+
+type GetOnRampSignatureQueryKey = ReturnType<typeof getOnRampSignatureQueryKey>
+
+export type GetOnRampSignatureReturnType = { signature: string }
+
+export type GetOnRampSignaturePayload = {
+  quote: OnRampProviderQuote
+  walletAddress: string
+  chainId: ChainId
+  externalTransactionId: string
+  redirectUrl: string
+}
+export type UseOnRampSignatureReturnType<selectData = GetOnRampSignatureReturnType> = UseQueryResult<selectData, Error>
+
+export type UseOnRampSignatureParameters<selectData = GetOnRampSignatureReturnType> = Evaluate<
+  GetOnRampSignaturePayload &
+    UseQueryParameters<Evaluate<GetOnRampSignatureReturnType>, Error, selectData, GetOnRampSignatureQueryKey>
+>
+
+export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
+  parameters: Omit<UseOnRampSignatureParameters<selectData>, 'walletAddress' | 'redirectUrl'>,
+): UseOnRampSignatureReturnType<selectData> => {
+  const { address: walletAddress } = useAccount()
+  const { quote, externalTransactionId, chainId, ...query } = parameters
+
+  return useQuery({
+    ...query,
+    queryKey: getOnRampSignatureQueryKey([
+      {
+        chainId,
+        quote,
+        walletAddress,
+        externalTransactionId,
+      },
+    ]),
+    enabled: Boolean(chainId && quote && walletAddress && externalTransactionId),
+    queryFn: async ({ queryKey }) => {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      const { quote, externalTransactionId, chainId, ...rest } = queryKey[1]
+
+      if (!quote || !walletAddress || !chainId || !externalTransactionId) {
+        throw new Error('Invalid parameters')
+      }
+
+      const { provider, cryptoCurrency, fiatCurrency, amount } = quote
+      const network = combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
+      const moonpayCryptoCurrency = `${cryptoCurrency.toLowerCase()}${network}`
+
+      const response = await fetch(
+        `${ONRAMP_API_BASE_URL}/fetch-provider-signature?${qs.stringify({
+          cryptoCurrency: provider === 'MoonPay' ? moonpayCryptoCurrency : cryptoCurrency,
+          provider,
+          fiatCurrency,
+          amount,
+          network,
+          isTestEnv: 'development',
+          redirectUrl: 'https://pancakeswap.finance/buy-crypto',
+          externalTransactionId,
+          ...rest,
+        })}`,
+      )
+      const result: GetOnRampSignatureReturnType = await response.json()
+
+      return result
+    },
+    ...query,
+  })
+}

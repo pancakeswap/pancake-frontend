@@ -1,5 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ContextData, TranslationKey } from '@pancakeswap/localization'
+import { ERC20Token, Native } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/swap-sdk-core'
+import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens } from '@pancakeswap/tokens'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
@@ -235,4 +238,49 @@ export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> =
     name: 'Vietnamese Dong',
     symbol: 'VND',
   },
+}
+
+export const onRampCurrencies: Currency[] = [
+  Native.onChain(ChainId.ETHEREUM),
+  Native.onChain(ChainId.BSC),
+  Native.onChain(ChainId.ARBITRUM_ONE),
+  Native.onChain(ChainId.POLYGON_ZKEVM),
+  Native.onChain(ChainId.ZKSYNC),
+  Native.onChain(ChainId.LINEA),
+  bscTokens.usdt,
+  bscTokens.usdc,
+  ethereumTokens.usdc,
+  ethereumTokens.usdt,
+  ethereumTokens.dai,
+  ethereumTokens.wbtc,
+  arbitrumTokens.usdc,
+  new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+    6,
+    'usdc.e',
+    'USD Coin Ethereum Bridged',
+  ),
+  lineaTokens.usdc,
+  baseTokens.usdc,
+]
+
+export const onRampCurrenciesMapping: { [symbol: string]: Currency } = {
+  // Native tokens
+  // ETH: Native.onChain(ChainId.ETHEREUM),
+  // BNB: Native.onChain(ChainId.BSC),
+  ARBETH: Native.onChain(ChainId.ARBITRUM_ONE),
+  MATIC: Native.onChain(ChainId.POLYGON_ZKEVM),
+  ZKS: Native.onChain(ChainId.ZKSYNC),
+  LINEA: Native.onChain(ChainId.LINEA),
+  // ERC20 tokens
+  WBTC_ETH: ethereumTokens.wbtc,
+  USDT: ethereumTokens.usdt,
+  USDT_ETH: ethereumTokens.usdt,
+  USDC_ETH: bscTokens.usdc,
+  USDC: bscTokens.usdc,
+  USDC_ARB: arbitrumTokens.usdc,
+  USDC_LIN: lineaTokens.usdc,
+  USDC_BAS: baseTokens.usdc,
+  DAI_ETH: ethereumTokens.dai,
 }
