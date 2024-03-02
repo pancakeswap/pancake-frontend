@@ -265,7 +265,14 @@ export const onRampCurrencies: Currency[] = [
   baseTokens.usdc,
 ]
 
-export const onRampCurrenciesMapping: { [symbol: string]: Currency } = {
+const NATIVE_BTC: Partial<Omit<Currency, 'chainId'>> = {
+  name: 'Bitcoin',
+  symbol: 'BTC',
+  chainId: 'bitcoin',
+  isNative: true,
+  decimals: 8,
+}
+export const onRampCurrenciesMapping: { [symbol: string]: Partial<Currency> } = {
   // Native tokens
   // ETH: Native.onChain(ChainId.ETHEREUM),
   // BNB: Native.onChain(ChainId.BSC),
@@ -283,4 +290,11 @@ export const onRampCurrenciesMapping: { [symbol: string]: Currency } = {
   USDC_LIN: lineaTokens.usdc,
   USDC_BAS: baseTokens.usdc,
   DAI_ETH: ethereumTokens.dai,
+  BTC_btc: {
+    name: 'Bitcoin',
+    symbol: 'BTC',
+    chainId: 'bitcoin' as any,
+    isNative: true,
+    decimals: 8,
+  },
 }

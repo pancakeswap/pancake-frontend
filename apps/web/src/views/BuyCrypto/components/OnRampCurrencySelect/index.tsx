@@ -3,8 +3,7 @@ import { Currency } from '@pancakeswap/sdk'
 import { ArrowDropDownIcon, Box, BoxProps, Button, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencyLogo, NumericalInput } from '@pancakeswap/widgets-internal'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
-import { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
-import OnRampCurrencySearchModal from 'components/SearchModal/OnRampCurrencyModal'
+import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
 import { ReactNode } from 'react'
 import { styled } from 'styled-components'
 import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
@@ -73,7 +72,7 @@ const ButtonAsset = ({
   )
 }
 
-interface BuyCryptoSelectorProps extends CurrencySearchModalProps, BoxProps {
+interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>, BoxProps {
   id: 'onramp-fiat' | 'onramp-crypto'
   currencyLoading: boolean
   value: string

@@ -19,6 +19,7 @@ import { ChainLogo } from '@pancakeswap/widgets-internal'
 import isArray from 'lodash/isArray'
 import Image from 'next/image'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Field } from 'state/buyCrypto/actions'
 import { styled } from 'styled-components'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
@@ -75,7 +76,7 @@ const NetworkFilterOverlay = styled(Box)<{ showFilterNetworks: boolean }>`
 
 export interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | null
-  onCurrencySelect?: (currency: Currency) => void
+  onCurrencySelect: (field: Field, newCurrency: Currency) => void
   otherSelectedCurrency?: Currency | null
   tokensToShow?:
     | {
@@ -101,10 +102,11 @@ export default function OnRampCurrencySearchModal({
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
+      const field = mode === 'onramp-fiat' ? Field.OUTPUT : Field.INPUT
+      onCurrencySelect?.(field, currency)
       onDismiss?.()
-      onCurrencySelect?.(currency)
     },
-    [onDismiss, onCurrencySelect],
+    [onDismiss, onCurrencySelect, mode],
   )
 
   const newTokens = useMemo(() => {

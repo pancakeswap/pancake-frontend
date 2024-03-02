@@ -39,8 +39,8 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         network,
       },
     ]),
-    refetchInterval: 30 * 1_000,
-    staleTime: 20 * 1_000,
+    refetchInterval: 40 * 1_000,
+    staleTime: 40 * 1_000,
     enabled: Boolean(cryptoCurrency && fiatAmount && fiatCurrency && network && enabled),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow

@@ -53,7 +53,7 @@ interface ProviderSelectorProps extends BoxProps {
   selectedQuote: OnRampProviderQuote | undefined
   quotes: OnRampProviderQuote[] | undefined
 
-  onQuoteSelect?: () => any
+  onQuoteSelect?: (q: boolean) => void
   error?: boolean
   errorText?: string
   disabled?: boolean
@@ -122,7 +122,7 @@ export const ProviderSelector = ({
           width="100%"
           className="open-currency-select-button"
           selected={!!selectedQuote}
-          onClick={onQuoteSelect}
+          onClick={() => onQuoteSelect?.(true)}
           disabled={quoteLoading}
         >
           <Flex>

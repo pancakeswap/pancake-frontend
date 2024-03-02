@@ -1,22 +1,15 @@
-import type { Currency } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
-// import {
-//   NumberType,
-//   formatNumber as formatLocalNumber,
-// } from '~/src/utils/format'
-// import useLanguageC
 import { useTranslation } from '@pancakeswap/localization'
+import type { Currency } from '@pancakeswap/sdk'
 import ceil from 'lodash/ceil'
+import { useMemo } from 'react'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { useOnRampLimit } from './useOnRampLimits'
 
 function formatNumber(number: number, precision?: number): string {
-  console.log(number)
   if (number >= 10000) {
     const formattedNumber: string = Math.ceil(number / 1000).toString()
     return `${formattedNumber}K`
   }
-
   return number.toFixed(precision ?? 0)
 }
 
@@ -44,6 +37,7 @@ export const useLimitsAndInputError = ({
     cryptoCurrency: cryptoCurrency?.symbol,
     network: cryptoCurrency?.chainId,
   })
+
   const baseCurrency = limitsData?.baseCurrency
   const quoteCurrency = limitsData?.quoteCurrency
 

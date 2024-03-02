@@ -10,6 +10,8 @@ import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
 import { useAccount } from 'wagmi'
 import { Field, replaceBuyCryptoState, selectCurrency, typeInput } from './actions'
 
+const allowTwoDecimalRegex = RegExp(`^\\d+(\\.\\d{0,2})?$`)
+
 export function useBuyCryptoState() {
   return useAtomValue(buyCryptoReducerAtom)
 }
@@ -31,7 +33,9 @@ export function useBuyCryptoActionHandlers(): {
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {
-      dispatch(typeInput({ typedValue }))
+      if (typedValue === '' || allowTwoDecimalRegex.test(typedValue)) {
+        dispatch(typeInput({ typedValue }))
+      }
     },
     [dispatch],
   )

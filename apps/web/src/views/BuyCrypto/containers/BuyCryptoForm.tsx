@@ -1,206 +1,81 @@
 import { ChainId } from '@pancakeswap/chains'
+import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import {
-  ArrowDropDownIcon,
   AutoColumn,
   AutoRow,
   Box,
   Column,
   Flex,
+  Input,
   Message,
-  RowBetween,
+  RefreshIcon,
+  Row,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import { useOnRampCurrency } from 'hooks/Tokens'
-import toString from 'lodash/toString'
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { calculateDefaultAmount, useBuyCryptoActionHandlers, useBuyCryptoState } from 'state/buyCrypto/hooks'
+import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useBuyCryptoActionHandlers, useBuyCryptoState } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
-import styled, { useTheme } from 'styled-components'
-import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { CryptoFormView, OnRampProviderQuote } from 'views/BuyCrypto/types'
+import { useTheme } from 'styled-components'
+import { safeGetAddress } from 'utils'
+import { v4 } from 'uuid'
+import { FiatCurrency, OnRampProviderQuote } from 'views/BuyCrypto/types'
 import { useChainId } from 'wagmi'
 import { BuyCryptoSelector } from '../components/OnRampCurrencySelect'
+import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScreen'
 import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupItem'
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
-import BuyCryptoTooltip from '../components/Tooltip/Tooltip'
-import { FeeTypes, fiatCurrencyMap, getChainCurrencyWarningMessages, providerFeeTypes } from '../constants'
+import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
+import { fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
 import { useOnRampQuotes } from '../hooks/useOnRampQuotes'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
 
-const FilterdNetworkWrapper = styled(Flex)<{ showProviders: boolean }>`
-  position: absolute;
-  width: 100%;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  height: 440px;
-  z-index: 1000;
-  transition: bottom 0.3s ease-in-out;
-  bottom: ${({ showProviders }) => (!showProviders ? '-100%' : '-15%')};
-  border-top-right-radius: 24px;
-  border-top-left-radius: 24px;
-  box-shadow: 6px 20px 12px 8px rgba(74, 74, 104, 0.1);
-`
-const NetworkFilterOverlay = styled(Flex)<{ showProviders: boolean }>`
-  position: absolute;
-  width: 100%;
-  z-index: 1000;
-
-  background-color: #e2d2ff;
-  height: 100%;
-  transition: opacity 0.2s ease-in-out;
-  opacity: ${({ showProviders }) => (!showProviders ? '0' : '0.8')};
-  pointer-events: ${({ showProviders }) => (showProviders ? 'auto' : 'none')};
-`
-export const StyledNotificationWrapper = styled.div<{ show: boolean }>`
-  display: flex;
-  position: relative;
-  overflow: hidden;
-  padding: ${({ show }) => (show ? '16px 16px' : '0px 16px')};
-
-  box-shadow: ${({ theme }) => theme.shadows.inset};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  border-radius: 16px;
-  background-color: ${({ theme, show }) => (show ? theme.colors.input : 'transparent')};
-  width: 100%;
-
-  transition: background-color 0.6s ease, padding 0.3s ease-in-out;
-  border-bottom: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
-`
-
-export const Description = styled.div<{ show: boolean; elementHeight: number }>`
-  overflow: hidden;
-  width: 100%;
-  word-break: break-word;
-  transition: max-height 0.33s ease-in-out;
-  max-height: ${({ show, elementHeight }) => (show ? `${elementHeight}px` : '0px')};
-`
-const StyledFeesContainer = styled(Box)`
-  &:hover {
-    cursor: pointer;
-  }
-`
-
-// width: 100%;
-// display: flex;
-// align-items: center;
-// justify-content: space-between;
-// padding: 16px 16px;
-// box-shadow: ${({ theme, error }) => (error ? theme.shadows.danger : theme.shadows.inset)};
-// border: 1px solid ${({ theme, error }) => (error ? theme.colors.failure : theme.colors.inputSecondary)};
-// border-radius: 16px;
-// background: ${({ theme }) => theme.colors.input};
-// cursor: pointer;
-// position: relative;
-// min-width: 136px;
-// user-select: none;
-// z-index: 20;
-
-// ${({ theme }) => theme.mediaQueries.sm} {
-//   min-width: 168px;
-// }
-// Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),
-// the quote provider won't return a quote. Therefore, we restrict the fiat currency input to a maximum of 2 decimals.
-const allowTwoDecimalRegex = RegExp(`^\\d+(\\.\\d{0,2})?$`)
-type FeeComponents = { providerFee: number; networkFee: number }
-
-const FeeItem = ({ feeTitle, quote, index }: { feeTitle: FeeTypes; quote: OnRampProviderQuote; index: number }) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
-  const theme = useTheme()
-  const FeeEstimates: {
-    [feeType: string]: <T extends FeeComponents = FeeComponents>(args: T) => number
-  } = {
-    [FeeTypes.TotalFees]: (args) => args.networkFee + args.providerFee,
-    [FeeTypes.NetworkingFees]: (args) => args.networkFee,
-    [FeeTypes.ProviderFees]: (args) => args.providerFee,
-  }
-
-  return (
-    <RowBetween paddingLeft={index > 0 ? '12px' : '0px'}>
-      <Flex alignItems="center" justifyContent="center">
-        <Flex justifyContent="center" alignItems="center">
-          {index > 0 && (
-            <div
-              style={{
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                background: `${theme.colors.textSubtle}`,
-                marginRight: '2px',
-              }}
-            />
-          )}
-          <Text fontSize="14px" color="textSubtle">
-            {feeTitle}
-          </Text>
-        </Flex>
-        {feeTitle === FeeTypes.TotalFees && (
-          <BuyCryptoTooltip
-            opacity={0.7}
-            iconSize="17px"
-            tooltipText={t('Note that Fees are just an estimation and may vary slightly when completing a purchase')}
-          />
-        )}
-      </Flex>
-
-      <Text ml="4px" fontSize="14px" color="textSubtle">
-        {formatLocaleNumber({
-          number: FeeEstimates[feeTitle](quote),
-          locale,
-        })}{' '}
-        {quote.fiatCurrency}
-      </Text>
-    </RowBetween>
-  )
+interface OnRampCurrencySelectPopOverProps {
+  quotes: OnRampProviderQuote[] | undefined
+  selectedQuote: OnRampProviderQuote | undefined
+  isFetching: boolean
+  isError: boolean
+  inputError: string | undefined
+  setSelectedQuote: (quote: OnRampProviderQuote) => void
+  setShowProvidersPopOver: any
+  showProivdersPopOver: boolean
 }
-export function BuyCryptoForm({ setModalView }: { setModalView: Dispatch<SetStateAction<CryptoFormView>> }) {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
-  const chainId = useChainId()
-  const [showProivdersPopOver, setShowProvidersPopOver] = useState<boolean>(false)
-  const [selectedQuote, setSelectedQuote] = useState<OnRampProviderQuote | undefined>(undefined)
-  const theme = useTheme()
-  const [show, setShow] = useState<boolean>(false)
-  const [elementHeight, setElementHeight] = useState<number>(500)
 
-  const containerRef = useRef(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const bestQuoteRef = useRef<OnRampProviderQuote | undefined>(undefined)
-
-  const handleExpandClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const target = e.target as HTMLDivElement
-      if (target.tagName !== 'BUTTON') setShow(!show)
-    },
-    [show],
-  )
-
+export function BuyCryptoForm() {
   const {
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useBuyCryptoState()
 
+  const theme = useTheme()
+  const chainId = useChainId()
+  const { t } = useTranslation()
+
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const debouncedQuery = useDebounce(searchQuery, 200)
+  const { isMobile } = useMatchBreakpoints()
+
+  const bestQuoteRef = useRef<OnRampProviderQuote | undefined>(undefined)
+  const externalTxIdRef = useRef(v4())
+
+  const [showProivdersPopOver, setShowProvidersPopOver] = useState<boolean>(false)
+  const [selectedQuote, setSelectedQuote] = useState<OnRampProviderQuote | undefined>(undefined)
+  const { onFieldAInput: handleTypeOutput, onCurrencySelection } = useBuyCryptoActionHandlers()
+
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
-  const outputCurrency: {
-    symbol: string
-    name: string
-  } = useMemo(() => {
+  const outputCurrency: FiatCurrency = useMemo(() => {
     if (!outputCurrencyId) return fiatCurrencyMap.USD
     return fiatCurrencyMap[outputCurrencyId]
   }, [outputCurrencyId])
 
-  const { baseCurrency, inputError, defaultAmt } = useLimitsAndInputError({
+  const { inputError, defaultAmt } = useLimitsAndInputError({
     typedValue: typedValue!,
     cryptoCurrency: inputCurrency!,
     fiatCurrency: outputCurrency,
@@ -215,117 +90,83 @@ export function BuyCryptoForm({ setModalView }: { setModalView: Dispatch<SetStat
     cryptoCurrency: inputCurrency?.symbol,
     fiatCurrency: outputCurrency?.symbol,
     network: inputCurrency?.chainId,
-    fiatAmount: typedValue,
-    enabled: !inputError && typedValue !== '0',
+    fiatAmount: typedValue || defaultAmt,
+    enabled: Boolean(!inputError && typedValue !== '0'),
   })
 
-  const { onFieldAInput, onCurrencySelection } = useBuyCryptoActionHandlers()
-  const handleTypeOutput = useCallback(
-    (value: string) => {
-      if (value === '' || allowTwoDecimalRegex.test(value)) {
-        onFieldAInput(value)
+  // manage focus on modal show
+  const inputRef = useRef<HTMLInputElement>()
+
+  useEffect(() => {
+    if (!isMobile) inputRef.current?.focus()
+  }, [isMobile])
+
+  const handleInput = useCallback((event) => {
+    const input = event.target.value
+    const checksummedInput = safeGetAddress(input)
+    setSearchQuery(checksummedInput || input)
+  }, [])
+
+  const handleEnter = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        const s = debouncedQuery.toLowerCase().trim()
+        if (s === 'btc') {
+          onCurrencySelection(Field.INPUT, 'native')
+        }
       }
     },
-    [onFieldAInput],
+    [debouncedQuery, onCurrencySelection],
   )
-  // need to relocate this
-
-  useEffect(() => {
-    onFieldAInput(toString(calculateDefaultAmount(Number(defaultAmt), baseCurrency?.code.toUpperCase())))
-  }, [onFieldAInput, baseCurrency?.code, defaultAmt])
-
-  const handleCurrencySelect = useCallback(
-    (newCurrency: Currency, field: Field) => {
-      onCurrencySelection(field, newCurrency)
-    },
-    [onCurrencySelection],
-  )
-  const handleInputSelect = useCallback(
-    (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.INPUT),
-    [handleCurrencySelect],
-  )
-  const handleOutputSelect = useCallback(
-    (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.OUTPUT),
-    [handleCurrencySelect],
-  )
-
-  const showProvidersOnClick = useCallback(() => {
-    setShowProvidersPopOver((p) => !p)
-  }, [setShowProvidersPopOver])
-
-  const onQuoteSelect = useCallback(
-    (quote: OnRampProviderQuote) => {
-      setShowProvidersPopOver((p) => !p)
-      setSelectedQuote(quote)
-    },
-    [setShowProvidersPopOver, setSelectedQuote],
-  )
-
-  useEffect(() => {
-    if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
     if (!quotes) return
+    setSelectedQuote(quotes[0])
     if (bestQuoteRef.current !== quotes[0]) {
       bestQuoteRef.current = quotes[0]
       setSelectedQuote(quotes[0])
     }
   }, [quotes])
+
   return (
     <AutoColumn position="relative">
-      <NetworkFilterOverlay showProviders={showProivdersPopOver} onClick={showProvidersOnClick} />
-      <FilterdNetworkWrapper showProviders={showProivdersPopOver}>
-        <FormHeader title={t('Choose a provider')} />
-        <Box px="16px" pb="16px">
-          {quotes &&
-            bestQuoteRef.current &&
-            selectedQuote &&
-            quotes.map((quote) => {
-              return (
-                <ProviderGroupItem
-                  id={`provider-select-${quote.provider}`}
-                  onQuoteSelect={onQuoteSelect}
-                  quotes={quotes}
-                  selectedQuote={selectedQuote ?? bestQuoteRef.current}
-                  quoteLoading={isFetching || !quotes}
-                  bottomElement={<></>}
-                  error={isError || Boolean(inputError)}
-                  currentQuote={quote}
-                />
-              )
-            })}
+      <Flex justifyContent="space-between" alignItems="center">
+        <FormHeader title={t('Buy Crypto')} subTitle={t('Buy crypto in just a few clicks')} />
+        <Box p="24px" mb="18px">
+          <RefreshIcon width="24px" height="24px" color="primary" onClick={refetch as unknown as any} />
         </Box>
-      </FilterdNetworkWrapper>
-      <FormHeader title={t('Buy Crypto')} subTitle={t('Buy crypto in just a few clicks')} />
+      </Flex>
+      <OnRampCurrencySelectPopOver
+        quotes={quotes}
+        selectedQuote={selectedQuote}
+        isError={isError}
+        inputError={inputError}
+        isFetching={isFetching}
+        setSelectedQuote={setSelectedQuote}
+        setShowProvidersPopOver={setShowProvidersPopOver}
+        showProivdersPopOver={showProivdersPopOver}
+      />
       <FormContainer>
         <Box>
           <BuyCryptoSelector
             id="onramp-fiat"
-            onCurrencySelect={handleOutputSelect}
+            onCurrencySelect={onCurrencySelection}
             selectedCurrency={outputCurrency as Currency}
-            showCommonBases={false}
+            currencyLoading={Boolean(!inputCurrency)}
             topElement={
               <Text pl="8px" fontSize="14px" color="textSubtle">
                 {t('I want to spend')}
               </Text>
             }
-            error={Boolean(inputError)}
-            value={typedValue ?? ''}
+            value={typedValue || defaultAmt}
             onUserInput={handleTypeOutput}
-            bottomElement={
-              <Text pt="6px" fontSize="12px" color={theme.colors.failure}>
-                {inputError}
-              </Text>
-            }
-            currencyLoading={!outputCurrency}
+            loading={isFetching || !quotes}
+            error={isError || Boolean(inputError)}
           />
           <BuyCryptoSelector
             id="onramp-crypto"
-            onCurrencySelect={handleInputSelect}
+            onCurrencySelect={onCurrencySelection}
             selectedCurrency={inputCurrency as Currency}
-            showCommonBases={false}
             topElement={
               <Text pl="8px" fontSize="14px" color="textSubtle">
                 {t('I want to buy')}
@@ -335,9 +176,21 @@ export function BuyCryptoForm({ setModalView }: { setModalView: Dispatch<SetStat
             bottomElement={<Box pb="12px" />}
             value=""
           />
+          <Row>
+            <Input
+              id="token-search-input"
+              placeholder={t('paste your BTC address here')}
+              scale="lg"
+              autoComplete="off"
+              value={searchQuery}
+              ref={inputRef as RefObject<HTMLInputElement>}
+              onChange={handleInput}
+              onKeyDown={handleEnter}
+            />
+          </Row>
           <ProviderSelector
             id="provider-select"
-            onQuoteSelect={showProvidersOnClick}
+            onQuoteSelect={setShowProvidersPopOver}
             selectedQuote={selectedQuote ?? bestQuoteRef.current}
             topElement={
               <AutoRow justifyContent="space-between">
@@ -346,43 +199,7 @@ export function BuyCryptoForm({ setModalView }: { setModalView: Dispatch<SetStat
                 </Text>
               </AutoRow>
             }
-            bottomElement={
-              <>
-                <StyledFeesContainer width="100%">
-                  <Flex
-                    width="100%"
-                    height={28}
-                    paddingLeft="8px"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    opacity={0.5}
-                    onClick={handleExpandClick}
-                  >
-                    <Text pt="6px" pb="6px" fontSize="14px" color="text3">
-                      {t('Transaction details')}
-                    </Text>
-                    <ArrowDropDownIcon />
-                  </Flex>
-                  <StyledNotificationWrapper ref={containerRef} show={show}>
-                    <Description ref={contentRef} show={show} elementHeight={elementHeight}>
-                      <RowBetween>
-                        <Text fontSize="14px">
-                          {selectedQuote?.cryptoCurrency} {t('price')}
-                        </Text>
-                        <Text ml="4px" fontSize="13px">
-                          = {formatLocaleNumber({ number: Number(selectedQuote?.price), locale })}{' '}
-                          {selectedQuote?.fiatCurrency}
-                        </Text>
-                      </RowBetween>
-                      {selectedQuote &&
-                        providerFeeTypes[selectedQuote.provider].map((feeType: FeeTypes, index: number) => {
-                          return <FeeItem key={feeType} feeTitle={feeType} quote={selectedQuote} index={index} />
-                        })}
-                    </Description>
-                  </StyledNotificationWrapper>
-                </StyledFeesContainer>
-              </>
-            }
+            bottomElement={<TransactionFeeDetails selectedQuote={selectedQuote} />}
             quoteLoading={isFetching || !quotes}
             quotes={quotes}
             error={isError || Boolean(inputError)}
@@ -397,18 +214,66 @@ export function BuyCryptoForm({ setModalView }: { setModalView: Dispatch<SetStat
         ) : null}
         <Column gap="2px" alignItems="center" justifyContent="center">
           <FiatOnRampModalButton
-            provider={bestQuoteRef.current?.provider}
-            inputCurrency={bestQuoteRef.current?.cryptoCurrency}
-            outputCurrency={bestQuoteRef.current?.fiatCurrency}
-            amount={bestQuoteRef.current?.amount.toString()}
-            disabled={!quotes?.[0] || isFetching || isError}
-            setModalView={setModalView}
+            externalTxIdRef={externalTxIdRef}
+            cryptoCurrency={inputCurrencyId}
+            selectedQuote={selectedQuote}
+            disabled={!quotes || isFetching || isError}
           />
           <Text color="textSubtle" fontSize="14px" px="4px">
-            {t('By continuing you agree to our cookie policy')}
+            {t('By continuing you agree to our')}{' '}
+            <span style={{ color: `${theme.colors.primary}` }}>{t('cookie policy')}</span>
           </Text>
         </Column>
       </FormContainer>
     </AutoColumn>
+  )
+}
+
+const OnRampCurrencySelectPopOver = ({
+  quotes,
+  selectedQuote,
+  isFetching,
+  isError,
+  inputError,
+  setSelectedQuote,
+  setShowProvidersPopOver,
+  showProivdersPopOver,
+}: OnRampCurrencySelectPopOverProps) => {
+  const { t } = useTranslation()
+
+  const showProvidersOnClick = useCallback(() => {
+    setShowProvidersPopOver((p: any) => !p)
+  }, [setShowProvidersPopOver])
+
+  const onQuoteSelect = useCallback(
+    (quote: OnRampProviderQuote) => {
+      setShowProvidersPopOver((p: any) => !p)
+      setSelectedQuote(quote)
+    },
+    [setShowProvidersPopOver, setSelectedQuote],
+  )
+
+  return (
+    <PopOverScreenContainer showPopover={showProivdersPopOver} onClick={showProvidersOnClick}>
+      <FormHeader title={t('Choose a provider')} />
+      <Box px="16px" pb="16px">
+        {quotes &&
+          selectedQuote &&
+          quotes.map((quote) => {
+            return (
+              <ProviderGroupItem
+                key={quote.provider}
+                id={`provider-select-${quote.provider}`}
+                onQuoteSelect={onQuoteSelect}
+                quotes={quotes}
+                selectedQuote={selectedQuote ?? quotes[0]}
+                quoteLoading={isFetching || !quotes}
+                error={isError || Boolean(inputError)}
+                currentQuote={quote}
+              />
+            )
+          })}
+      </Box>
+    </PopOverScreenContainer>
   )
 }

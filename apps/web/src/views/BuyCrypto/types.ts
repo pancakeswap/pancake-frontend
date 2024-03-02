@@ -92,6 +92,11 @@ export enum CryptoFormView {
   Quote,
 }
 
+export type FiatCurrency = {
+  symbol: string
+  name: string
+}
+
 export type OnRampProviderQuote = {
   providerFee: number
   networkFee: number

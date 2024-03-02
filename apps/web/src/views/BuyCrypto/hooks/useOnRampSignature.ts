@@ -46,7 +46,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
         externalTransactionId,
       },
     ]),
-    enabled: Boolean(chainId && quote && walletAddress && externalTransactionId),
+    enabled: Boolean(externalTransactionId && quote && walletAddress && chainId),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const { quote, externalTransactionId, chainId, ...rest } = queryKey[1]
@@ -73,7 +73,6 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
         })}`,
       )
       const result: GetOnRampSignatureReturnType = await response.json()
-
       return result
     },
     ...query,
