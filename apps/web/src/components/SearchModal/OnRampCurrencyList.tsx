@@ -1,8 +1,10 @@
 import { ChainNamesExtended } from '@pancakeswap/chains'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { ArrowForwardIcon, Box, Column, Text, TokenImageWithBadge } from '@pancakeswap/uikit'
+import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { getImageUrlFromToken } from 'components/TokenImage'
-import { CSSProperties, MutableRefObject, useCallback } from 'react'
+import { useAllNativeCurrencies } from 'hooks/Tokens'
+import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { styled } from 'styled-components'
 import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
@@ -32,12 +34,14 @@ function OnRampCurrencyRow({
   isSelected,
   otherSelected,
   style,
+  mode,
 }: {
   currency: Currency
   onSelect: () => void
   isSelected: boolean
   otherSelected: boolean
   style: CSSProperties
+  mode: string
 }) {
   const key = currencyKey(currency)
 
@@ -49,14 +53,18 @@ function OnRampCurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <Box width="28px" height="28px">
-        <TokenImageWithBadge
-          width={28}
-          height={28}
-          primarySrc={getImageUrlFromToken(currency as Token)}
-          chainId={currency.chainId}
-        />
-      </Box>
+      {mode === 'onramp-fiat' ? (
+        <FiatLogo currency={currency} size="24px" />
+      ) : (
+        <Box width="28px" height="28px">
+          <TokenImageWithBadge
+            width={28}
+            height={28}
+            primarySrc={getImageUrlFromToken(currency as Token)}
+            chainId={currency.chainId}
+          />
+        </Box>
+      )}
 
       <Column>
         <Text bold>{currency?.symbol}</Text>
@@ -88,6 +96,10 @@ export default function OnRampCurrencyList({
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   mode: string
 }) {
+  const nativeCurrencies = useAllNativeCurrencies()
+  console.log(nativeCurrencies)
+  const itemData = useMemo(() => [...currencies], [currencies])
+  console.log(itemData)
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: Currency = data[index]
@@ -105,7 +117,6 @@ export default function OnRampCurrencyList({
         otherSelected = Boolean(otherCurrency?.symbol && currency && otherCurrency?.symbol === currency?.symbol)
       }
       const handleSelect = () => onCurrencySelect(currency)
-
       return (
         <OnRampCurrencyRow
           style={style}
@@ -113,6 +124,7 @@ export default function OnRampCurrencyList({
           isSelected={isSelected}
           onSelect={handleSelect}
           otherSelected={otherSelected}
+          mode={mode}
         />
       )
     },
@@ -126,8 +138,8 @@ export default function OnRampCurrencyList({
       height={height}
       ref={fixedListRef as any}
       width="100%"
-      itemData={currencies}
-      itemCount={currencies.length}
+      itemData={itemData}
+      itemCount={itemData.length}
       itemSize={56}
       itemKey={itemKey}
     >

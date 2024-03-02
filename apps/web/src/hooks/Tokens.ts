@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { ChainId } from '@pancakeswap/chains'
-import { ERC20Token } from '@pancakeswap/sdk'
+import { ChainId, mainnetChainIds } from '@pancakeswap/chains'
+import { ERC20Token, Native } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
@@ -35,11 +35,25 @@ const mapWithoutUrls = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) =
 
 const mapWithoutUrlsBySymbol = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) => {
   if (!tokenMap || !chainId) return {}
-  return Object.keys(tokenMap[chainId] || {}).reduce<{ [symbol: string]: ERC20Token }>((newMap, symbol) => {
+  const x = Object.keys(tokenMap[chainId] || {}).reduce<{ [symbol: string]: ERC20Token }>((newMap, symbol) => {
     newMap[symbol] = tokenMap[chainId][symbol].token
 
     return newMap
   }, {})
+  return x
+}
+
+const mapAllWithoutUrlsBySymbol = (tokenMap?: TokenAddressMap<ChainId>) => {
+  if (!tokenMap) return {}
+  const tokenNetworks = Object.values(tokenMap)
+  const newMap = {} as { [symbol: string]: ERC20Token }
+  tokenNetworks.forEach((network) => {
+    Object.values(network).forEach((token) => {
+      newMap[`${token.token.symbol}-${token.token.chainId}`] = token.token as ERC20Token
+    })
+  })
+
+  return newMap
 }
 
 /**
@@ -72,11 +86,10 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
 }
 
 export function useAllOnRampTokens(): { [address: string]: Currency } {
-  const { chainId } = useActiveChainId()
   const tokenMap = useAtomValue(combinedCurrenciesMapFromActiveUrlsAtom)
   return useMemo(() => {
-    return mapWithoutUrlsBySymbol(tokenMap, chainId)
-  }, [tokenMap, chainId])
+    return mapAllWithoutUrlsBySymbol(tokenMap)
+  }, [tokenMap])
 }
 
 /**
@@ -182,15 +195,14 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
 }
 
 export function useOnRampToken(currencyId?: string): Currency | undefined {
-  const { chainId } = useActiveChainId()
   const tokens = useAllOnRampTokens()
   const token = currencyId && tokens[currencyId]
 
   return useMemo(() => {
     if (token) return token
-    if (!chainId || !currencyId) return undefined
+    if (!currencyId) return undefined
     return undefined
-  }, [token, chainId, currencyId])
+  }, [token, currencyId])
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
@@ -203,10 +215,20 @@ export function useCurrency(currencyId: string | undefined): Currency | ERC20Tok
 }
 
 export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | Currency | null | undefined {
-  const native: NativeCurrency = useNativeCurrency()
-  const isNative =
-    currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
+  const nativeCurrencies = useAllNativeCurrencies()
   const token = useOnRampToken(currencyId)
 
-  return isNative ? native : token
+  let native: NativeCurrency | undefined
+  for (const curr of nativeCurrencies) {
+    if (`${curr.symbol}-${curr.chainId}`.toUpperCase() === currencyId?.toUpperCase()) {
+      native = curr
+      break
+    }
+  }
+
+  return native || token
+}
+
+export const useAllNativeCurrencies = (): NativeCurrency[] => {
+  return mainnetChainIds.map((chainId) => Native.onChain(chainId))
 }

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import {
   Box,
   Button,
@@ -77,7 +77,13 @@ export interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | null
   onCurrencySelect?: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
-  tokensToShow?: Token[]
+  tokensToShow?:
+    | {
+        symbol: string
+        name: string
+      }[]
+    | Currency[]
+  mode: string
 }
 
 export default function OnRampCurrencySearchModal({
@@ -86,6 +92,7 @@ export default function OnRampCurrencySearchModal({
   selectedCurrency,
   otherSelectedCurrency,
   tokensToShow,
+  mode,
 }: CurrencySearchModalProps) {
   const [activeChain, setActiveChain] = useState<ChainId | undefined>(undefined)
   const [showFilternetworks, setShowFilternetworks] = useState<boolean>(false)
@@ -154,7 +161,7 @@ export default function OnRampCurrencySearchModal({
                 return true
               })
               .map((chain, index: number) => {
-                const isActive = activeChain === chain.id
+                const isActive = activeChain === chain.id || (activeChain === undefined && index === 0)
                 const rowText = index === 0 ? t('All Networks') : chainNameConverter(chain.name)
                 const allNetworks = index === 0
 
@@ -173,7 +180,7 @@ export default function OnRampCurrencySearchModal({
                       ) : (
                         <ChainLogo chainId={chain.id} />
                       )}
-                      <Text color={isActive ? 'secondary' : 'textSubtle'} bold={isActive} pl="12px">
+                      <Text color={isActive ? 'text' : 'textSubtle'} bold={isActive} pl="12px">
                         {rowText}
                       </Text>
                     </Box>
@@ -204,14 +211,16 @@ export default function OnRampCurrencySearchModal({
           otherSelectedCurrency={otherSelectedCurrency}
           height={height}
           tokensToShow={newTokens}
-          mode="onramp-input"
+          mode={mode}
           onRampFlow
         />
-        <Footer>
-          <Button scale="sm" variant="text" onClick={filternetworksOnClick} className="filter-networks-button">
-            {t('Select Tokens by network')}
-          </Button>
-        </Footer>
+        {mode !== 'onramp-fiat' && (
+          <Footer>
+            <Button scale="sm" variant="text" onClick={filternetworksOnClick} className="filter-networks-button">
+              {t('Select Tokens by network')}
+            </Button>
+          </Footer>
+        )}
       </StyledModalBody>
     </StyledModalContainer>
   )

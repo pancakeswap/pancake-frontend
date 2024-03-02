@@ -138,13 +138,18 @@ function OnRampCurrencySearch({
           />
         </Row>
         <AutoRow display="flex" justifyContent="space-between">
-          {activeChain ? (
+          {mode !== 'onramp-fiat' && activeChain ? (
             <Text color="primary" size="xs" fontWeight="bold" fontSize={15}>
               {t('%network% tokens', { network: ChainNamesExtended[activeChain] })}
             </Text>
-          ) : (
+          ) : mode !== 'onramp-fiat' ? (
             <Text color="primary" size="xs" fontWeight="bold" fontSize={15}>
               {t('All tokens')}
+            </Text>
+          ) : null}
+          {mode === 'onramp-fiat' && (
+            <Text color="primary" size="xs" fontWeight="bold" fontSize={15}>
+              {t('select a currency')}
             </Text>
           )}
         </AutoRow>

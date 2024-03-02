@@ -87,7 +87,7 @@ export default function NetworksFilterPopup({
                   >
                     <Box display="flex">
                       <ChainLogo chainId={chain.id} />
-                      <Text color={chain.id === 56 ? 'secondary' : 'text'} bold={chain.id === 56} pl="12px">
+                      <Text color={isActive ? 'text' : 'secondary'} bold={isActive} pl="12px">
                         {chainNameConverter(chain.name)}
                       </Text>
                     </Box>

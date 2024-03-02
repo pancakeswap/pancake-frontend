@@ -76,9 +76,9 @@ export function BuyCryptoForm({
   )
   // need to relocate this
   const fetchMinBuyAmounts = useCallback(async () => {
-    if (!outputCurrencyId || !inputCurrencyId || !chainId) return
+    if (!outputCurrencyId || !inputCurrency) return
 
-    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrency.symbol, inputCurrency.chainId)
     if (!limitAmounts) return
 
     onFieldAInput(
@@ -93,7 +93,7 @@ export function BuyCryptoForm({
       limitAmounts.baseCurrency?.maxBuyAmount,
       limitAmounts.quoteCurrency?.maxBuyAmount,
     )
-  }, [outputCurrencyId, inputCurrencyId, onFieldAInput, onLimitAmountUpdate, chainId])
+  }, [outputCurrencyId, inputCurrency, onFieldAInput, onLimitAmountUpdate])
 
   useEffect(() => {
     fetchMinBuyAmounts()
@@ -120,7 +120,7 @@ export function BuyCryptoForm({
       <FormContainer>
         <Box>
           <CurrencySelect
-            id="onramp-input"
+            id="onramp-fiat"
             onCurrencySelect={handleOutputSelect}
             selectedCurrency={outputCurrency as Currency}
             showCommonBases={false}
@@ -136,7 +136,7 @@ export function BuyCryptoForm({
             currencyLoading={!outputCurrency}
           />
           <CurrencySelect
-            id="onramp-output"
+            id="onramp-crypto"
             onCurrencySelect={handleInputSelect}
             selectedCurrency={inputCurrency as Currency}
             showCommonBases={false}

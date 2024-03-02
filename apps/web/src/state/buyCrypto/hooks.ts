@@ -1,6 +1,7 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom, useAtomValue } from 'jotai'
 import ceil from 'lodash/ceil'
 import toString from 'lodash/toString'
@@ -9,10 +10,9 @@ import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { useAccount } from 'wagmi'
-import { fetchLimitOfMer, fetchLimitOfMoonpay, fetchLimitOfTransak } from 'views/BuyCrypto/hooks/useProviderQuotes'
 import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { fetchLimitOfMer, fetchLimitOfMoonpay, fetchLimitOfTransak } from 'views/BuyCrypto/hooks/useProviderQuotes'
+import { useAccount } from 'wagmi'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -65,6 +65,11 @@ function getMinMaxAmountCap(quotes: LimitQuote[]) {
       quoteCurrency,
     }
   })
+}
+
+export function extractBeforeDashX(str) {
+  const parts = str.split('-x')
+  return parts[0]
 }
 
 export const fetchMinimumBuyAmount = async (
@@ -189,7 +194,7 @@ export function useBuyCryptoActionHandlers(): {
     dispatch(
       selectCurrency({
         field,
-        currencyId: currency.symbol,
+        currencyId: field === Field.OUTPUT ? currency.symbol : `${currency.symbol}-${currency.chainId}`,
       }),
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -244,7 +249,7 @@ export async function queryParametersToBuyCryptoState(
       currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
-      currencyId: defaultCurr,
+      currencyId: 'BNB-56',
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE

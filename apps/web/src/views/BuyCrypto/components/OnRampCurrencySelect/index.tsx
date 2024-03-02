@@ -54,7 +54,7 @@ const ButtonAsset = ({
   const { t } = useTranslation()
   return (
     <Flex>
-      {id === 'onramp-input' ? (
+      {id === 'onramp-fiat' ? (
         <FiatLogo currency={selectedCurrency} size="24px" style={{ marginRight: '8px' }} />
       ) : (
         <CurrencyLogo currency={selectedCurrency} size="24px" style={{ marginRight: '8px' }} />
@@ -74,7 +74,7 @@ const ButtonAsset = ({
 }
 
 interface CurrencySelectProps extends CurrencySearchModalProps, BoxProps {
-  id: 'onramp-input' | 'onramp-output'
+  id: 'onramp-fiat' | 'onramp-crypto'
   currencyLoading: boolean
   value: string
   onUserInput?: (value: string) => void
@@ -94,8 +94,6 @@ export const CurrencySelect = ({
   onInputBlur,
   selectedCurrency,
   otherSelectedCurrency,
-  showCommonBases,
-  commonBasesType,
   id,
   currencyLoading,
   topElement,
@@ -104,7 +102,7 @@ export const CurrencySelect = ({
   bottomElement,
   ...props
 }: CurrencySelectProps) => {
-  const tokensToShow = id === 'onramp-input' ? fiatCurrencyMap : onRampCurrencies
+  const tokensToShow = id === 'onramp-fiat' ? Object.values(fiatCurrencyMap) : onRampCurrencies
   const networkDisplay = getNetworkDisplay(selectedCurrency?.chainId)
 
   const [onPresentCurrencyModal] = useModal(
@@ -112,8 +110,6 @@ export const CurrencySelect = ({
       onCurrencySelect={onCurrencySelect}
       selectedCurrency={selectedCurrency}
       otherSelectedCurrency={otherSelectedCurrency}
-      showCommonBases={showCommonBases}
-      commonBasesType={commonBasesType}
       tokensToShow={tokensToShow}
       mode={id}
     />,
@@ -125,7 +121,7 @@ export const CurrencySelect = ({
         {topElement}
       </Flex>
       <DropDownContainer error={error as any}>
-        {id === 'onramp-input' && onUserInput ? (
+        {id === 'onramp-fiat' ? (
           <NumericalInput
             error={error}
             disabled={!selectedCurrency}
@@ -134,7 +130,7 @@ export const CurrencySelect = ({
             value={value}
             onBlur={onInputBlur}
             onUserInput={(val) => {
-              onUserInput(val)
+              onUserInput?.(val)
             }}
             align="left"
           />
